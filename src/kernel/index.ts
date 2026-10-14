@@ -633,6 +633,7 @@ export type {
 } from "./models/settings.js";
 export {
   bindSettingsScope,
+  DRAFT_FIRST_SETTING,
   deleteSetting,
   forgetSettingsScope,
   getAllSettings,
@@ -691,6 +692,7 @@ export {
   listPersonalCards,
   listTokens,
   listUserCardsForCurriculumTopic,
+  newTokenEditorialState,
   setTokenMaintenance,
   slugify,
   tokenMatchesCurriculumTopicScope,

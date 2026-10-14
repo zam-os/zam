@@ -1,5 +1,9 @@
 # Log
 
+## 2026-10-14
+
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+
 ## 2026-10-13
 
 - **Update** — [Agent and Library Trust Model](agent-trust-model.md)

@@ -51,6 +51,7 @@ import {
   createToken,
   credentialsNeedVaultAccess,
   DEFAULT_VOICE_ENGINE_PREFERENCE,
+  DRAFT_FIRST_SETTING,
   decidePostCapture,
   decidePreCapture,
   deleteCardForUser,
@@ -121,6 +122,7 @@ import {
   loadStoredCredentials,
   type ModelCapability,
   type ModelEntry,
+  newTokenEditorialState,
   openDatabase,
   openDatabaseWithSync,
   PERSONA_DESCRIPTORS,
@@ -4020,6 +4022,9 @@ const UI_WRITABLE_SETTINGS = new Set([
   "llm.vision.enabled",
   "recall.quick_mode",
   "system.locale",
+  // Off by default: new content is learnable at once. On, it waits as a
+  // draft until it is published (a library's editorial step).
+  "content.draft_first",
 ]);
 
 bridgeCommand
@@ -4821,6 +4826,10 @@ bridgeCommand
           // Absent means on, matching ensureHighQualityQuestion's `!== "false"`.
           dynamicQuestions:
             (await getSetting(db, "llm.dynamic_questions")) !== "false",
+        },
+        content: {
+          // Off unless switched on: new content is learnable at once.
+          draftFirst: (await getSetting(db, DRAFT_FIRST_SETTING)) === "true",
         },
       });
     });
@@ -6326,7 +6335,7 @@ bridgeCommand
           symbiosis_mode: mode,
           source_link: opts.sourceLink || null,
           question,
-          editorial_state: "draft",
+          editorial_state: await newTokenEditorialState(tx),
         });
         for (const context of contexts) {
           await assignTokenToContext(tx, createdToken.id, context.id);

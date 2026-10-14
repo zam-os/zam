@@ -26,6 +26,7 @@ import {
   getTokenBySlug,
   getTokenDeleteImpact,
   listTokens,
+  newTokenEditorialState,
   searchTokensHybrid,
   suggestFoundations,
   updateToken,
@@ -104,7 +105,7 @@ tokenCommand
         bloom_level: Number(opts.bloom) as BloomLevel,
         source_link: opts.sourceLink || null,
         question,
-        editorial_state: "draft",
+        editorial_state: await newTokenEditorialState(db),
       });
 
       for (const context of assignedContexts) {

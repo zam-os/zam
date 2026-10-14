@@ -9,6 +9,7 @@ import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
 import type { CardState } from "./card.js";
 import { deleteCardForUser, ensureCard, getCard } from "./card.js";
+import { DRAFT_FIRST_SETTING, getSetting } from "./settings.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -216,6 +217,18 @@ export async function insertToken(
     );
 
   return id;
+}
+
+/**
+ * The editorial state new content starts in: published, so it is learnable at
+ * once, unless the library switched on draft-first (`content.draft_first`).
+ */
+export async function newTokenEditorialState(
+  db: Database,
+): Promise<"draft" | "published"> {
+  return (await getSetting(db, DRAFT_FIRST_SETTING)) === "true"
+    ? "draft"
+    : "published";
 }
 
 export async function createToken(
@@ -1184,7 +1197,7 @@ export async function importCurriculumCards(
           question_source: "llm",
           provider: card.provider || null,
           topic_id: card.topic_id || null,
-          editorial_state: "draft",
+          editorial_state: await newTokenEditorialState(tx),
         });
         createdCount++;
       } else {
@@ -1512,7 +1525,7 @@ export async function confirmCardSplit(
           symbiosis_mode: symbiosisMode,
           source_link: card.source_link || originalToken.source_link || null,
           question: card.question || null,
-          editorial_state: "draft",
+          editorial_state: await newTokenEditorialState(tx),
         });
         createdCount++;
       }
@@ -1715,7 +1728,7 @@ export async function confirmFoundations(
             symbiosis_mode: symbiosisMode,
             source_link: card.source_link || originalToken.source_link || null,
             question: card.question || null,
-            editorial_state: "draft",
+            editorial_state: await newTokenEditorialState(tx),
           });
           createdCount++;
         }
@@ -1838,7 +1851,7 @@ export async function applySourceProposals(
         question: card.question || null,
         provider: card.provider || null,
         topic_id: card.topic_id || null,
-        editorial_state: "draft",
+        editorial_state: await newTokenEditorialState(db),
       });
       createdCount++;
     } else {

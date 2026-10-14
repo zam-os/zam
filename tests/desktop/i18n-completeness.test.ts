@@ -562,6 +562,11 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "dynamic_questions_on",
   "dynamic_questions_off",
   "dynamic_questions_error",
+  "lbl_draft_first",
+  "lbl_draft_first_help",
+  "draft_first_on",
+  "draft_first_off",
+  "draft_first_error",
   // 0.26.0 companion cloud speech tier — the pairing summary now says which
   // speech capabilities the code carries. en/de shipped; es/fr/pt/zh/ja await
   // native pack review before translation (see i18n pack backlog).

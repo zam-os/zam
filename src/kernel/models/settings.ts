@@ -60,11 +60,20 @@ export type SettingsScopeResolver = (
 
 // ── Key registry ────────────────────────────────────────────────────────────
 
+/**
+ * Whether new learning content starts as a draft that stays out of every
+ * queue until it is published. Off by default: a card an agent or an import
+ * creates is learnable at once. A library that wants an editorial step first
+ * switches it on ("true").
+ */
+export const DRAFT_FIRST_SETTING = "content.draft_first";
+
 /** Library-wide keys: the library's identity and curator-set defaults. */
 const LIBRARY_KEYS = new Set([
   "user.id",
   "search.suggest_min_similarity",
   "search.dedup_threshold",
+  DRAFT_FIRST_SETTING,
 ]);
 
 /** Person keys that would otherwise match a machine prefix below. */

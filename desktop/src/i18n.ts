@@ -6391,6 +6391,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     dynamic_questions_off:
       "Your stored question is used as written — reviews start faster.",
     dynamic_questions_error: "The setting could not be saved.",
+    lbl_draft_first: "New cards start as drafts",
+    lbl_draft_first_help:
+      "Off: a card from an agent or an import is learnable at once. On: it waits in Unpublished until someone publishes it.",
+    draft_first_on: "New cards now wait as drafts until they are published.",
+    draft_first_off: "New cards are learnable at once.",
+    draft_first_error: "The setting could not be saved.",
     wizard_connect_model_link: "Connect an AI model",
     km_nav: "Knowledge map",
     km_view_focus: "Focus map",
@@ -8255,6 +8261,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     dynamic_questions_off:
       "Deine gespeicherte Frage wird unverändert genutzt — die Abfrage startet schneller.",
     dynamic_questions_error: "Die Einstellung konnte nicht gespeichert werden.",
+    lbl_draft_first: "Neue Karten zuerst als Entwurf",
+    lbl_draft_first_help:
+      "Aus: Eine Karte von einem Agenten oder aus einem Import ist sofort lernbar. An: Sie wartet unter „Unveröffentlicht“, bis jemand sie veröffentlicht.",
+    draft_first_on: "Neue Karten warten jetzt als Entwurf, bis sie veröffentlicht sind.",
+    draft_first_off: "Neue Karten sind sofort lernbar.",
+    draft_first_error: "Die Einstellung konnte nicht gespeichert werden.",
     wizard_connect_model_link: "KI-Modell verbinden",
     km_nav: "Wissenskarte",
     km_view_focus: "Fokus-Karte",

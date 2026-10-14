@@ -31,7 +31,7 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | `zam_session_end` | Complete an active session and retrieve the final summary. |
 | `zam_observation_close` | Drop the raw observation files of a session that is still running or was never ended, keeping a digest. `zam_session_end` does this by itself. |
 | `zam_find_tokens` | Search existing knowledge tokens using semantic and lexical queries. |
-| `zam_add_token` | Register a new knowledge token as a draft (not yet in the recall queue). |
+| `zam_add_token` | Register a new knowledge token with the learner's card; learnable at once unless the library keeps new content as drafts first. |
 | `zam_list_drafts` | List unpublished draft tokens for author review. |
 | `zam_publish_revision` | Publish a draft or a classified content revision after author review. |
 | `zam_link_prereq` | Add a prerequisite link between a parent token and a child token. |
@@ -93,7 +93,7 @@ Each token has:
 
 Prerequisites: "to understand A, you must first know B." Register edges via `zam_link_prereq`.
 
-`zam_add_token` writes a **draft**. Drafts do not enter the recall queue. After author review, publish with `zam_publish_revision` (first publication is typically `cosmetic`). Before publishing, the card must satisfy:
+`zam_add_token` makes the card learnable at once. Only a library that switched on draft-first (`content.draft_first`, a Studio setting) keeps it as a **draft** outside the recall queue until you publish it with `zam_publish_revision` after author review (first publication is typically `cosmetic`). Either way, before you add a card it must satisfy:
 
 1. **Short recall target** — intended retrieval in about 5–15 seconds (format-dependent); not a ban on hard tasks.
 2. **Concrete axis** — no open "explain X" without a named axis.
@@ -157,8 +157,8 @@ Call `zam_suggest_foundations` (with concept, question, and domain). Present non
 **Register tokens and prerequisites:**
 As the frontier model, YOU author both the concept and the recall question. Pass a clear, concept-free prompt question so the offline fallback stays high quality.
 Register new tokens and link prerequisites:
-Call `zam_add_token` to register a new token as a draft (include a concept-free question).
-Call `zam_publish_revision` after author review so the token can enter the queue.
+Call `zam_add_token` to register a new token (include a concept-free question).
+If it came back as a draft (the library keeps drafts first), call `zam_publish_revision` after author review so the token can enter the queue.
 Call `zam_link_prereq` to link any parent prerequisites.
 
 ### STEP 3 — Start a session

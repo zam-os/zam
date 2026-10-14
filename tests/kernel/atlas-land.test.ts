@@ -287,6 +287,52 @@ describe("growth", () => {
     expect(nowAt?.region).toBe("logik.mathe.geometrie");
   });
 
+  it("grows a region ringed by other land at its parent's coast, not into a crash", () => {
+    // Github sits in the middle of its island, every hex taken, ringed by
+    // another Fach: no free hex beside it.
+    const centre = { q: 0, r: 0 };
+    const state: LandState = {
+      islands: [{ island: "x", dq: 0, dr: 0, foundedDq: 0, foundedDr: 0 }],
+      land: [
+        {
+          island: "x",
+          ...centre,
+          region: "x.github.allgemein",
+          unit: "token:g1" as UnitKey,
+        },
+        ...neighbours(centre).map((n, i) => ({
+          island: "x",
+          q: n.q,
+          r: n.r,
+          region: "x.andere.allgemein",
+          unit: `token:o${i}` as UnitKey,
+        })),
+      ],
+    };
+    const placements = [
+      place("g1", "x.github.allgemein"),
+      ...neighbours(centre).map((_, i) => place(`o${i}`, "x.andere.allgemein")),
+      // A goal import adds two units below Github.
+      place("g2", "x.github.allgemein"),
+      place("g3", "x.github.absichern"),
+    ];
+    const { next } = settle(placements, state);
+    const after = unitHexes(next);
+    for (const unit of ["g2", "g3"]) {
+      const hex = after.get(`token:${unit}` as UnitKey);
+      expect(hex, unit).toBeDefined();
+      expect(hexDistance(hex ?? centre, centre)).toBe(2);
+    }
+    // Nobody moved.
+    for (const hex of state.land) {
+      expect(after.get(hex.unit as UnitKey)).toEqual({
+        island: "x",
+        q: hex.q,
+        r: hex.r,
+      });
+    }
+  });
+
   it("keeps every existing island where it is when a new island is founded", () => {
     const base = [
       place("a", "logik.mathe.zahlen"),

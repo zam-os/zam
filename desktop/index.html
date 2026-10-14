@@ -645,6 +645,17 @@
                 </span>
               </label>
               <p id="dynamic-questions-status" class="sub-label settings-status-row" aria-live="polite" data-settings-tier="advanced"></p>
+              <!-- Draft first: off by default, so a card an agent or an import
+                   creates is learnable at once. A library that wants an
+                   editorial step switches it on. -->
+              <label class="settings-toggle" for="toggle-draft-first" data-settings-tier="advanced">
+                <input type="checkbox" id="toggle-draft-first" />
+                <span>
+                  <span id="lbl-draft-first">New cards start as drafts</span>
+                  <span id="lbl-draft-first-help" class="settings-card-help"></span>
+                </span>
+              </label>
+              <p id="draft-first-status" class="sub-label settings-status-row" aria-live="polite" data-settings-tier="advanced"></p>
               <!-- Windows-on-ARM only, and hidden until the status call says so.
                    Foundry Local cannot be installed anywhere else, so on every
                    other machine this section was a heading, an explanation and a

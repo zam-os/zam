@@ -965,7 +965,7 @@ export function createMcpServer(
     "zam_add_token",
     {
       description:
-        "Add a new knowledge token as a draft. It does not enter the recall queue until published with zam_publish_revision after author review.",
+        "Add a new knowledge token with the learner's card. It is learnable at once, unless the library has switched on draft-first (content.draft_first): then it stays a draft, out of the recall queue, until published with zam_publish_revision after author review.",
       inputSchema: {
         user: z.string().optional().describe("User ID to auto-create card for"),
         slug: z.string().describe("Unique slug for the token"),

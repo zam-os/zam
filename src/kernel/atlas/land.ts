@@ -337,24 +337,40 @@ export function planSettle(input: PlanSettleInput): SettlePlan {
           free[0].unit = unit;
           continue;
         }
-        // Coast next to the region, else next to its nearest ancestor's land.
-        let base = own;
+        // Coast next to the region, else next to its nearest ancestor's land,
+        // else the island's. A region inside the island, ringed by other
+        // regions, has no free hex beside it: the next base out takes it.
+        const coastOf = (base: LandHex[]): Map<string, Hex> => {
+          const coast = new Map<string, Hex>();
+          for (const h of base) {
+            for (const n of neighbours(h)) {
+              const k = hexKey(n.q, n.r);
+              if (!hexes.has(k)) coast.set(k, n);
+            }
+          }
+          return coast;
+        };
+        const bases: LandHex[][] = [own];
         for (const ancestor of ancestors(leaf)) {
-          if (base.length > 0) break;
-          base = [...hexes.values()].filter(
-            (h) =>
-              h.region === ancestor || ancestors(h.region).includes(ancestor),
+          bases.push(
+            [...hexes.values()].filter(
+              (h) =>
+                h.region === ancestor || ancestors(h.region).includes(ancestor),
+            ),
           );
         }
-        if (base.length === 0) base = [...hexes.values()];
-        const mid = centroid(base.map((h) => toPixel(h.q, h.r)));
-        const coast = new Map<string, Hex>();
-        for (const h of base) {
-          for (const n of neighbours(h)) {
-            const k = hexKey(n.q, n.r);
-            if (!hexes.has(k)) coast.set(k, n);
-          }
+        bases.push([...hexes.values()]);
+        let base: LandHex[] = [];
+        let coast = new Map<string, Hex>();
+        for (const candidate of bases) {
+          if (candidate.length === 0) continue;
+          coast = coastOf(candidate);
+          base = candidate;
+          if (coast.size > 0) break;
         }
+        // An island always has coast; without land there is nothing to grow.
+        if (coast.size === 0) continue;
+        const mid = centroid(base.map((h) => toPixel(h.q, h.r)));
         const offset = place ? { q: place.dq, r: place.dr } : { q: 0, r: 0 };
         const candidates = [...coast.values()].map((h) => {
           const world = toPixel(h.q + offset.q, h.r + offset.r);

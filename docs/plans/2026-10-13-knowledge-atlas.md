@@ -59,7 +59,10 @@ what the learner knows.
 - [x] **Phase 8** — Sinnbilder (D6) — `1bfde677`; see "As built"
 - [x] **After Phase 8** — second Studio check: a Fach's Sinnbild in every
   lens, feedback while a model reads notes, the goal import at a place —
-  this commit; see "Between Phases 8 and 9"
+  `01226f83`; see "Between Phases 8 and 9"
+- [x] **Third Studio check** — a crash when a landlocked region grows, and
+  draft-first as an option that is off — this commit; see "Between Phases 8
+  and 9"
 - [ ] **Phase 9** — own planet, team lenses, typed threads, agent tools (D2,
   D3, D7, D10)
 - [ ] **Phase 10** — Mobile and the MCP Apps panel (D10)
@@ -1512,6 +1515,29 @@ Notizen aus dem Unterricht").
 - `goal-topic-cards.test.ts`: the place in the description, the place
   arguments and `placeBelow`.
 - `material-import-start.test.ts`: the elapsed time.
+
+**Third Studio check.**
+
+- **The atlas stopped loading** ("Cannot read properties of undefined
+  (reading 'h')") after a goal import added units below "Github".
+  - Cause: growth looked for free coast only beside the region, or beside
+    the first ancestor that had land. Github lay inside its island, ringed
+    by other Fächer, so there was none, and the empty candidate list was
+    read.
+  - `planSettle` now tries the region, then each ancestor, then the whole
+    island, and takes the first with free coast. A layout that worked
+    before stays the same.
+  - `atlas-land.test.ts` grows a region ringed by other land.
+- **Draft-first becomes an option, off by default** (owner decision). Goal
+  import, file and source import, curriculum import, splits, foundations,
+  `add-token` and `zam token register` used to create drafts, which stay
+  out of every queue and, unpractised, out of view.
+  - `newTokenEditorialState` reads the library setting `content.draft_first`.
+    Without it, new content is published and learnable at once.
+  - Studio Settings → Advanced has the switch "Neue Karten zuerst als
+    Entwurf".
+  - `zam_add_token`'s description, the zam skill and the OKF article
+    `mcp-surfaces` say so.
 
 ---
 

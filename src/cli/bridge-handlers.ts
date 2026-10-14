@@ -73,6 +73,7 @@ import {
   listTokens,
   monitorLogExists,
   needsGenericCurriculumImport,
+  newTokenEditorialState,
   nextPracticeCard,
   OBSERVER_POLICY_UNSET_HINT,
   pairCommands,
@@ -964,7 +965,8 @@ export async function addToken(db: Database, params: AddTokenParams) {
     // Bridge/MCP callers are agents: their questions are LLM-authored and
     // stay refreshable. Humans author questions via the token CLI instead.
     question_source: params.question ? "llm" : undefined,
-    editorial_state: "draft",
+    // Learnable at once, unless the library wants drafts first.
+    editorial_state: await newTokenEditorialState(db),
   });
 
   for (const context of assignedContexts) {

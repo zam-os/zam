@@ -1236,6 +1236,9 @@ function initializeTranslations() {
     t("lbl_dynamic_questions");
   document.getElementById("lbl-dynamic-questions-help")!.textContent =
     t("lbl_dynamic_questions_help");
+  document.getElementById("lbl-draft-first")!.textContent = t("lbl_draft_first");
+  document.getElementById("lbl-draft-first-help")!.textContent =
+    t("lbl_draft_first_help");
   const aiConfigButton = document.getElementById("btn-toggle-ai-config");
   if (aiConfigButton) {
     aiConfigButton.textContent = aiConfigEditorOpen
@@ -2437,16 +2440,46 @@ async function loadDynamicQuestionSetting(): Promise<void> {
   const toggle = document.getElementById(
     "toggle-dynamic-questions",
   ) as HTMLInputElement | null;
+  const draftFirst = document.getElementById(
+    "toggle-draft-first",
+  ) as HTMLInputElement | null;
   if (!toggle) return;
   try {
     const settings = await runBridge<{
       recall?: { dynamicQuestions?: boolean };
+      content?: { draftFirst?: boolean };
     }>("get-settings");
     // Absent means on, matching the kernel-side `!== "false"` default.
     toggle.checked = settings?.recall?.dynamicQuestions !== false;
+    // Absent means off: new content is learnable at once.
+    if (draftFirst) draftFirst.checked = settings?.content?.draftFirst === true;
   } catch {
     // Leave the checkbox at its markup default rather than claiming a state
     // we could not read.
+  }
+}
+
+/** Draft first (off by default): new content waits until it is published. */
+async function setDraftFirst(enabled: boolean): Promise<void> {
+  const status = document.getElementById("draft-first-status");
+  const toggle = document.getElementById(
+    "toggle-draft-first",
+  ) as HTMLInputElement | null;
+  if (status) status.textContent = "";
+  try {
+    await runBridge("setting-set", [
+      "--key",
+      "content.draft_first",
+      "--value",
+      enabled ? "true" : "false",
+    ]);
+    if (status) {
+      status.textContent = t(enabled ? "draft_first_on" : "draft_first_off");
+    }
+  } catch (error) {
+    console.error("Failed to persist the draft-first setting", error);
+    if (toggle) toggle.checked = !enabled;
+    if (status) status.textContent = t("draft_first_error");
   }
 }
 
@@ -9415,6 +9448,11 @@ window.addEventListener("DOMContentLoaded", () => {
     .getElementById("toggle-dynamic-questions")
     ?.addEventListener("change", (event) => {
       void setDynamicQuestions((event.target as HTMLInputElement).checked);
+    });
+  document
+    .getElementById("toggle-draft-first")
+    ?.addEventListener("change", (event) => {
+      void setDraftFirst((event.target as HTMLInputElement).checked);
     });
 
   document.getElementById("btn-reveal-answer")!.addEventListener("click", () => {

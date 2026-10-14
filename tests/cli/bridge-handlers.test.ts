@@ -25,6 +25,7 @@ import {
   commitTextImport,
   endSession as completeSession,
   createToken,
+  DRAFT_FIRST_SETTING,
   enrolBundledCell,
   ensureCard,
   getCard,
@@ -33,6 +34,7 @@ import {
   getTokenBySlug,
   openDatabase,
   previewTextImport,
+  setSetting,
   type TextImportDocument,
   verifySnapshot,
 } from "../../src/kernel/index.js";
@@ -598,6 +600,7 @@ describe("bridge-handlers unit tests", () => {
   });
 
   it("keeps drafts out of due lists, admission, and rating", async () => {
+    await setSetting(db, DRAFT_FIRST_SETTING, "true");
     const added = await addToken(db, {
       user: "thomas",
       slug: "draft-only",
@@ -777,10 +780,30 @@ describe("bridge-handlers unit tests", () => {
 
     const token = await getTokenBySlug(db, "agent-authored");
     expect(token?.question_source).toBe("llm");
-    expect(token?.editorial_state).toBe("draft");
+    // Learnable at once: draft-first is a library option, off by default.
+    expect(token?.editorial_state).toBe("published");
+  });
+
+  it("addToken publishes at once unless the library wants drafts first", async () => {
+    const result = await addToken(db, {
+      user: "thomas",
+      slug: "capture-published",
+      concept: "Momentum is mass times velocity.",
+      question: "How is momentum defined?",
+      domain: "physics",
+    });
+    expect(result.token.editorial_state).toBe("published");
+    await db
+      .prepare("UPDATE cards SET due_at = '2000-01-01T00:00:00.000Z'")
+      .run();
+    const queue = await buildReviewQueue(db, { userId: "thomas" });
+    expect(queue.items.some((item) => item.tokenId === result.token.id)).toBe(
+      true,
+    );
   });
 
   it("addToken writes a draft that stays out of the queue until publish", async () => {
+    await setSetting(db, DRAFT_FIRST_SETTING, "true");
     const result = await addToken(db, {
       user: "thomas",
       slug: "capture-draft",
