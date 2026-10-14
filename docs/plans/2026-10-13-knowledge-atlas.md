@@ -1735,6 +1735,44 @@ automatically (ADR 2026-10-08b).
   all three lenses, moving the units to world knowledge first for
   Weltwissen and Schule.
 
+**Notes for 9b** (worked out before the hand-over, not built yet).
+
+- **Migration M045**, schema version 45: `connections` and
+  `learner_connections` as sketched above. `learner_connections` gets RLS
+  in `src/cli/deploy/rls-policies.ts`, like `learner_emblems`, and a case
+  in `tests/kernel/postgres-rls.test.ts`.
+- **Direction.**
+  - `a` is always the dependent end: a builds on b, a uses b, a consumes
+    the interface b provides, a is a b.
+  - The planet rule then reads: if a is world knowledge, b must be too.
+  - A Verbindung has no direction, so `addConnection` swaps its ends
+    instead of refusing.
+  - A shared Voraussetzung is refused in `connections`: it belongs in the
+    prerequisite tables (`zam_link_prereq`).
+- **Ends** (ADR Decision 7 table). Every head sits at the end that is
+  depended upon:
+  - Voraussetzung: arrowhead at b, the foundation;
+  - nutzt: open head at b;
+  - ist ein: hollow triangle at b;
+  - Schnittstelle: ball at b, the provider, and socket at a.
+
+  The Studio has drawn the prerequisite arrowhead at the dependent end
+  since Phase 6. Turn it around to match the ADR.
+- **Read.**
+  - `threads` gains `kind`, `scope`, `id` and `note`.
+  - A thread whose other end lies on the other planet keeps that end. A new
+    `portals: Record<UnitKey, {title, planet}>` names those ends.
+  - `snapshotForRead` passes `planetOf` through for this.
+  - Prerequisite threads across planets become portals too.
+- **Render.**
+  - Port the spike's `bundledThreads` (leading kind by priority),
+    `drawMarkers`, `drawPortal` (a globe disc, since the product has no
+    planet Sinnbilder), `drawNote` and the portal hit test.
+  - Clicking a portal opens a lens of that planet at the unit.
+  - The kind's words show at the closest zoom and on lit bundles.
+- **Blocking.** A test rates the foundation of a personal Voraussetzung
+  thread 1 and shows that the dependent stays unblocked.
+
 ---
 
 ## Phase 10 — Mobile and the MCP Apps panel (D10)
