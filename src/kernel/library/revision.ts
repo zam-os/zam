@@ -27,6 +27,7 @@
  * the consequence is this module's.
  */
 
+import { assertDomainKeepsPlanets } from "../atlas/connections.js";
 import type { Database } from "../db/types.js";
 import { normalizeLookupTerm } from "../models/token.js";
 import { assertReadyToPublish } from "./publication.js";
@@ -131,6 +132,10 @@ export async function publishTokenRevisionInTransaction(
     question: changes.question,
     concept: changes.concept,
   });
+  // A new domain keeps the planet rule (ADR 2026-10-13, Decision 2).
+  if (changes.domain !== undefined) {
+    await assertDomainKeepsPlanets(db, input.tokenId, changes.domain);
+  }
   const setClauses: string[] = [];
   const params: unknown[] = [];
   for (const [key, column] of CHANGE_COLUMNS) {

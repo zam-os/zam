@@ -2161,6 +2161,23 @@ read: neither writes knowledge, land or preferences.
   ignored at the repository root. Its cause is not in ZAM's tests; the
   owner suspects the machine's security checks.
 
+### Review round 2 (GPT-6 Astra, on `ec63c1e4`)
+
+- **Accepting a new order** compares every unit's planet before and after
+  the whole replacement, in the curator's transaction. If a unit the order
+  leaves out would make world knowledge depend on a Firma or Privat unit,
+  the accept is refused, and the old order and the proposal stay.
+- **A token's new domain** keeps the planet rule: `updateToken` and a
+  published revision check, before they write, whether the domain moves the
+  unit to another planet across a directed thread
+  (`assertDomainKeepsPlanets`). The operator's bulk domain rename in
+  `zam doctor` stays outside.
+- **The panel bridge and the source rule.** `zam_studio_bridge` cannot tell
+  the panel from the model. A card write there without a source an agent may
+  cite asks the person through the host's elicitation form, which the model
+  cannot answer; a host without elicitation refuses it, and the card is
+  written in ZAM Desktop or with its source.
+
 ## Risks and pitfalls
 
 - **Placing all of a library's units, not only the caller's,** is what makes

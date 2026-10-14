@@ -22,6 +22,7 @@ import { ulid } from "ulid";
 import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
 import { loadBindings, loadUnits, type UnitRow } from "./lenses.js";
+import { PlanetError } from "./planet-error.js";
 import { loadUnitPlanets, ownPlanetOf } from "./planets.js";
 import {
   type PlanetKind,
@@ -394,6 +395,66 @@ export function unitsHeldByThreads(
     }
   }
   return held;
+}
+
+/**
+ * Pure: the first directed thread that runs from world knowledge to a Firma
+ * or Privat unit after a change, where it did not before; null when none.
+ */
+export function newWorldCrossing(
+  ends: ReadonlyArray<{ a: UnitKey; b: UnitKey }>,
+  before: ReadonlyMap<UnitKey, PlanetKind>,
+  after: ReadonlyMap<UnitKey, PlanetKind>,
+): { a: UnitKey; b: UnitKey } | null {
+  const crosses = (
+    planets: ReadonlyMap<UnitKey, PlanetKind>,
+    a: UnitKey,
+    b: UnitKey,
+  ) => {
+    const to = planets.get(b);
+    return planets.get(a) === "welt" && to !== undefined && to !== "welt";
+  };
+  return (
+    ends.find(({ a, b }) => crosses(after, a, b) && !crosses(before, a, b)) ??
+    null
+  );
+}
+
+/**
+ * Refuse a token's new domain when it moves the token's unit to another
+ * planet (a world rule starts or stops covering it) and world knowledge would
+ * then depend on a Firma or Privat unit (Decision 2). Checked before the
+ * write; reads only.
+ */
+export async function assertDomainKeepsPlanets(
+  db: Database,
+  tokenId: string,
+  domain: string,
+): Promise<void> {
+  const units = await loadUnits(db);
+  const unit = units.find((u) => u.tokenIds.includes(tokenId));
+  if (!unit || unit.atomId || unit.domain === domain) return;
+  const bindings = await loadBindings(db);
+  const own = await ownPlanetOf(db);
+  const before = await loadUnitPlanets(db, units, bindings, own);
+  const after = await loadUnitPlanets(
+    db,
+    units.map((u) => (u.key === unit.key ? { ...u, domain } : u)),
+    bindings,
+    own,
+  );
+  if (before.get(unit.key) === after.get(unit.key)) return;
+  const crossing = newWorldCrossing(
+    await directedThreadEnds(db, units),
+    before,
+    after,
+  );
+  if (crossing) {
+    throw new PlanetError(
+      "held-by-thread",
+      `The domain "${domain}" would put ${unit.key} on the ${after.get(unit.key)} planet, and a thread or prerequisite between ${crossing.a} and ${crossing.b} would let world knowledge depend on a Firma or Privat unit.`,
+    );
+  }
 }
 
 /** The library's threads, then the learner's own. Reads only. */

@@ -8,7 +8,7 @@ tags:
   - mcp
   - secrets
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/agent-trust-model.md"
-timestamp: 2026-10-13T22:00:00.000Z
+timestamp: 2026-10-14T23:00:00.000Z
 ---
 
 ZAM treats two things as untrusted: the **agent** that calls its tools, and
@@ -86,7 +86,10 @@ is itself local or LAN.
   with the options it may not pass (`backup-create --dir`,
   `model-upsert --key-ref`, `model-upsert --confirm-endpoint`). A test fails
   when a command joins the list without an entry. Trusted folders, secrets,
-  pairing, observation and endpoint confirmation stay off the list.
+  pairing, observation and endpoint confirmation stay off the list. A card
+  write without a source an agent may cite asks the person through the
+  host's elicitation form, which the model cannot answer (ADR 2026-10-14,
+  Decision 3); without one it is refused.
 - **Pre-approval.** Four read-only tools may run without asking:
   `zam_status`, `zam_get_reviews`, `zam_find_tokens`, `zam_progress_stats`
   (`src/cli/agent-approval.ts`). `zam agent connect codex` writes per-tool

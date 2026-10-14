@@ -284,6 +284,44 @@ export function refusedStudioBridgeOption(
 }
 
 /**
+ * The panel bridge's card writes that set a token's source (ADR 2026-10-14,
+ * Decision 3). A learner's own card needs no source, but this server cannot
+ * tell the panel from the model that calls the same tool.
+ */
+const SOURCE_WRITES: ReadonlySet<string> = new Set([
+  "personal-card-create",
+  "personal-card-update",
+  "personal-card-publish-revision",
+]);
+
+/**
+ * What a panel bridge call would write as a token's source when that source
+ * passes no agent check, so the person has to confirm it: the link, `null`
+ * for none, or `undefined` when nothing needs confirming (another command,
+ * an update that keeps the source, or a source an agent may cite). Pure.
+ */
+export function sourceToConfirm(
+  cmd: string,
+  args: readonly string[],
+): string | null | undefined {
+  if (!SOURCE_WRITES.has(cmd)) return undefined;
+  let link: string | undefined;
+  args.forEach((arg, index) => {
+    if (arg === "--source-link") link = args[index + 1] ?? "";
+    else if (arg.startsWith("--source-link=")) {
+      link = arg.slice("--source-link=".length);
+    }
+  });
+  if (link === undefined && cmd !== "personal-card-create") return undefined;
+  try {
+    checkAgentSource(link);
+    return undefined;
+  } catch {
+    return link?.trim() ? link : null;
+  }
+}
+
+/**
  * Load a bundled MCP Apps panel's HTML (built by `vite.config.panel.mts` into
  * `dist/ui/<fileName>`). Falls back to a self-describing placeholder so
  * `resources/read` never breaks on a checkout without a panel build.
@@ -536,6 +574,47 @@ export function createMcpServer(
         };
       }
     };
+  }
+
+  /**
+   * The person confirms a card whose source no agent check covers, through
+   * the host's elicitation form. Without one, the card is written in ZAM
+   * Desktop or with its source.
+   */
+  async function confirmOwnCard(
+    cmd: string,
+    args: readonly string[],
+    link: string | null,
+  ): Promise<void> {
+    if (!server.server.getClientCapabilities()?.elicitation) {
+      throw new Error(
+        `This app cannot ask you to confirm a card without a source an agent may cite. Write it in ZAM Desktop, or give its source. ${AGENT_SOURCE_RULE}`,
+      );
+    }
+    const at = args.indexOf("--title");
+    const slugAt = args.indexOf("--slug");
+    const name =
+      (at >= 0 ? args[at + 1] : undefined) ??
+      (slugAt >= 0 ? args[slugAt + 1] : undefined) ??
+      "";
+    const verb = cmd === "personal-card-create" ? "Save" : "Change";
+    const answer = await server.server.elicitInput({
+      message: `${verb} the card "${name}" ${link ? `with the source ${link}` : "without a source"}? Confirm only a card you wrote yourself: a card an assistant writes cites the source it read.`,
+      requestedSchema: {
+        type: "object",
+        properties: {
+          own: {
+            type: "boolean",
+            title: "I wrote this card myself",
+            default: false,
+          },
+        },
+        required: ["own"],
+      },
+    });
+    if (answer.action !== "accept" || answer.content?.own !== true) {
+      throw new Error("The card was not saved: it was not confirmed.");
+    }
   }
 
   // 1. zam_status
@@ -1963,6 +2042,13 @@ export function createMcpServer(
         throw new Error(
           `Option not allowed for the Studio panel: ${params.cmd} ${refused.split("=")[0]}`,
         );
+      }
+      // A card without a source an agent may cite is the learner's own: the
+      // person confirms it through the host, which the model cannot answer
+      // (ADR 2026-10-14, Decision 3).
+      const unchecked = sourceToConfirm(params.cmd, params.args);
+      if (unchecked !== undefined) {
+        await confirmOwnCard(params.cmd, params.args, unchecked);
       }
       return await executeBridgeCommandJson(params.cmd, params.args, {
         database: bridgeDatabase,

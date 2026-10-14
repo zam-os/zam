@@ -147,6 +147,30 @@ describe("curated lenses", () => {
     expect(error).toBeInstanceOf(PlanetError);
     expect((error as PlanetError).code).toBe("held-by-thread");
     expect(await regionOf(LEBEN_LENS, linse)).toMatch(/^werkstatt\./);
+
+    // A new order that leaves the unit out is refused the same way, and the
+    // old order and the proposal stay (Astra, review round 2).
+    await db.transaction((tx) =>
+      proposeLensReplacement(
+        tx,
+        LEBEN_LENS,
+        {
+          source: "Neue Ordnung",
+          regions: [{ key: "zuhause", name: "Zuhause", parent: null }],
+        },
+        "agent",
+      ),
+    );
+    const accept = await db
+      .transaction((tx) => acceptLensProposal(tx, LEBEN_LENS))
+      .then(
+        () => null,
+        (e: unknown) => e,
+      );
+    expect(accept).toBeInstanceOf(PlanetError);
+    expect((accept as PlanetError).code).toBe("held-by-thread");
+    expect(await regionOf(LEBEN_LENS, linse)).toMatch(/^werkstatt\./);
+    expect((await lensCuration(db, LEBEN_LENS))?.proposal).not.toBeNull();
   });
 
   it("creates, renames, reorders and moves regions of an own lens", async () => {

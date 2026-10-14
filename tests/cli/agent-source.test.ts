@@ -3,12 +3,16 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
+import { ElicitRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   AgentSourceError,
   checkAgentSource,
 } from "../../src/cli/agent-source.js";
-import { createMcpServer } from "../../src/cli/commands/mcp.js";
+import {
+  createMcpServer,
+  sourceToConfirm,
+} from "../../src/cli/commands/mcp.js";
 import {
   canonicalRoots,
   type Database,
@@ -189,5 +193,135 @@ describe("zam_add_token and its source", () => {
     expect((await getTokenBySlug(db, "scrum-artefakte"))?.source_link).toBe(
       "https://www.scrum.org/resources/what-scrum",
     );
+  });
+});
+
+describe("the panel bridge's card writes and their source (Astra, review round 2)", () => {
+  let dir: string;
+  let db: Database;
+  let server: ReturnType<typeof createMcpServer>;
+  let previousConfig: string | undefined;
+  const clients: Client[] = [];
+
+  beforeEach(async () => {
+    dir = mkdtempSync(join(tmpdir(), "zam-panel-source-"));
+    previousConfig = process.env.ZAM_CONFIG_PATH;
+    process.env.ZAM_CONFIG_PATH = join(dir, "config.json");
+    db = await openDatabase({
+      dbPath: join(dir, "zam.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    server = createMcpServer(db);
+  });
+
+  afterEach(async () => {
+    for (const client of clients.splice(0)) await client.close();
+    await server.close();
+    await db.close();
+    if (previousConfig === undefined) delete process.env.ZAM_CONFIG_PATH;
+    else process.env.ZAM_CONFIG_PATH = previousConfig;
+    rmSync(dir, { recursive: true, force: true, maxRetries: 8 });
+  });
+
+  /** A host, with or without an elicitation form the person answers. */
+  async function connect(answer?: { action: "accept" | "decline"; own?: boolean }) {
+    const client = new Client(
+      { name: "test-host", version: "1.0.0" },
+      answer ? { capabilities: { elicitation: {} } } : {},
+    );
+    const asked: string[] = [];
+    if (answer) {
+      client.setRequestHandler(ElicitRequestSchema, async (request) => {
+        asked.push(String(request.params.message));
+        return answer.action === "accept"
+          ? { action: "accept", content: { own: answer.own === true } }
+          : { action: "decline" };
+      });
+    }
+    const [clientTransport, serverTransport] =
+      InMemoryTransport.createLinkedPair();
+    await Promise.all([
+      client.connect(clientTransport),
+      server.connect(serverTransport),
+    ]);
+    clients.push(client);
+    return { client, asked };
+  }
+
+  const create = (client: Client, concept: string, extra: string[] = []) =>
+    client.callTool({
+      name: "zam_studio_bridge",
+      arguments: {
+        cmd: "personal-card-create",
+        args: [
+          "--user",
+          "thomas",
+          "--title",
+          concept,
+          "--concept",
+          concept,
+          "--question",
+          `Was ist ${concept}?`,
+          ...extra,
+        ],
+      },
+    });
+
+  async function tokens(concept: string): Promise<number> {
+    const row = (await db
+      .prepare("SELECT COUNT(*) AS n FROM tokens WHERE concept = ?")
+      .get(concept)) as { n: number };
+    return Number(row.n);
+  }
+
+  it("lets a card without a source through only when the person confirms it", async () => {
+    const none = await connect();
+    expect((await create(none.client, "Ohne Formular")).isError).toBe(true);
+    expect(await tokens("Ohne Formular")).toBe(0);
+  });
+
+  it("writes what the person confirms, and nothing they decline", async () => {
+    const yes = await connect({ action: "accept", own: true });
+    expect((await create(yes.client, "Selbst geschrieben")).isError).toBeFalsy();
+    expect(yes.asked[0]).toContain("Selbst geschrieben");
+    expect(await tokens("Selbst geschrieben")).toBe(1);
+  });
+
+  it("refuses a declined or unticked confirmation", async () => {
+    for (const answer of [
+      { action: "decline" as const },
+      { action: "accept" as const, own: false },
+    ]) {
+      const host = await connect(answer);
+      const concept = `Abgelehnt ${answer.action}`;
+      expect((await create(host.client, concept)).isError).toBe(true);
+      expect(await tokens(concept)).toBe(0);
+      await host.client.close();
+      clients.splice(clients.indexOf(host.client), 1);
+    }
+  });
+
+  it("asks nothing for a source an agent may cite, and reads which writes need asking", async () => {
+    const host = await connect({ action: "decline" });
+    const page = await create(host.client, "Mit Quelle", [
+      "--source-link",
+      "https://scrumguides.org/scrum-guide.html",
+    ]);
+    expect(page.isError).toBeFalsy();
+    expect(host.asked).toHaveLength(0);
+    expect(sourceToConfirm("personal-card-create", [])).toBeNull();
+    expect(
+      sourceToConfirm("personal-card-create", [
+        "--source-link=http://localhost:3000/a",
+      ]),
+    ).toBe("http://localhost:3000/a");
+    expect(
+      sourceToConfirm("personal-card-update", ["--slug", "s", "--concept", "c"]),
+    ).toBeUndefined();
+    expect(
+      sourceToConfirm("personal-card-update", ["--slug", "s", "--source-link", ""]),
+    ).toBeNull();
+    expect(sourceToConfirm("list-tokens", [])).toBeUndefined();
   });
 });

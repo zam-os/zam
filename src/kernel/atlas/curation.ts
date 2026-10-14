@@ -23,7 +23,7 @@
 import { ulid } from "ulid";
 import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
-import { directedThreadEnds } from "./connections.js";
+import { directedThreadEnds, newWorldCrossing } from "./connections.js";
 import {
   ensureLensRow,
   findLensId,
@@ -269,22 +269,18 @@ async function assertNoNewCrossing(
   before: ReadonlyMap<UnitKey, PlanetKind>,
 ): Promise<void> {
   const { units, planets: after } = await unitPlanetsNow(db);
-  const crosses = (
-    planets: ReadonlyMap<UnitKey, PlanetKind>,
-    a: UnitKey,
-    b: UnitKey,
-  ) => {
-    const to = planets.get(b);
-    return planets.get(a) === "welt" && to !== undefined && to !== "welt";
-  };
-  for (const { a, b } of await directedThreadEnds(db, units)) {
-    if (!crosses(after, a, b) || crosses(before, a, b)) continue;
-    const unit = before.get(a) !== after.get(a) ? a : b;
-    throw new PlanetError(
-      "held-by-thread",
-      `The edit would put ${unit} on the ${after.get(unit)} planet, and a thread or prerequisite between ${a} and ${b} would let world knowledge depend on a Firma or Privat unit.`,
-    );
-  }
+  const crossing = newWorldCrossing(
+    await directedThreadEnds(db, units),
+    before,
+    after,
+  );
+  if (!crossing) return;
+  const { a, b } = crossing;
+  const unit = before.get(a) !== after.get(a) ? a : b;
+  throw new PlanetError(
+    "held-by-thread",
+    `The edit would put ${unit} on the ${after.get(unit)} planet, and a thread or prerequisite between ${a} and ${b} would let world knowledge depend on a Firma or Privat unit.`,
+  );
 }
 
 /**
@@ -661,7 +657,9 @@ export async function proposeLensReplacement(
 /**
  * Accept the pending proposal: the lens's regions, aliases, placements and
  * land are replaced by the proposal's, and the lens follows its source.
- * Rejecting only drops the proposal.
+ * Rejecting only drops the proposal. A replacement after which world
+ * knowledge would depend on a Firma or Privat unit is refused
+ * (`held-by-thread`); run it in a transaction, so a refusal changes nothing.
  */
 export async function acceptLensProposal(
   db: Database,
@@ -694,6 +692,9 @@ export async function acceptLensProposal(
   }
   // Validated again: a stored row may predate a tighter rule.
   const proposal = validateLensProposal(lens, JSON.parse(row.proposal));
+  // A unit the new order leaves out falls back to the rules, maybe onto the
+  // world planet: checked over the whole replacement, below.
+  const planetsBefore = (await unitPlanetsNow(db)).planets;
   // Regions cascade to their placements, aliases, land and islands.
   await db.prepare(`DELETE FROM atlas_regions WHERE lens_id = ?`).run(lensId);
   const idOf = new Map<string, string>();
@@ -754,6 +755,8 @@ export async function acceptLensProposal(
     }
     members++;
   }
+  // Refused, the caller's transaction keeps the old order and the proposal.
+  await assertNoNewCrossing(db, planetsBefore);
   await clear(proposal.source);
   return { accepted: true, regions: proposal.regions.length, members };
 }

@@ -22,10 +22,12 @@ import {
   moveUnitsToPlanet,
   openDatabase,
   orientThread,
+  publishTokenRevision,
   readAtlas,
   removeConnection,
   type UnitKey,
   unitsHeldByThreads,
+  updateToken,
   WELTWISSEN_LENS,
 } from "../../src/kernel/index.js";
 
@@ -414,6 +416,43 @@ describe("atlas connections", () => {
     await expect(
       linkPrereq(db, { token: geburtstag.token.slug, requires: hebel.token.slug }),
     ).resolves.toMatchObject({ success: true });
+  });
+
+  it("keeps the planet rule when a card's domain changes (Astra, review round 2)", async () => {
+    // Both private, the first using the second: fine.
+    const a = await unit("kategorie-a", "familie/dinge");
+    const b = await unit("kategorie-b", "familie/dinge");
+    await addConnection(db, {
+      ...personal,
+      a: a.key,
+      b: b.key,
+      kind: "nutzt",
+    });
+    // A world domain would make the first world knowledge using a private unit.
+    await expect(
+      updateToken(db, a.token.slug, { domain: "physik/optik" }),
+    ).rejects.toMatchObject({ code: "held-by-thread" });
+    await expect(
+      publishTokenRevision(db, {
+        tokenId: a.token.id,
+        materiality: "cosmetic",
+        changes: {
+          domain: "physik/optik",
+          concept: "Ein Ding, das im Haushalt gebraucht wird.",
+        },
+      }),
+    ).rejects.toMatchObject({ code: "held-by-thread" });
+    expect((await getTokenBySlug(db, a.token.slug))?.domain).toBe(
+      "familie/dinge",
+    );
+    // The end depended upon may become world knowledge, and another private
+    // domain changes nothing.
+    await expect(
+      updateToken(db, a.token.slug, { domain: "familie/haushalt" }),
+    ).resolves.toMatchObject({ domain: "familie/haushalt" });
+    await expect(
+      updateToken(db, b.token.slug, { domain: "physik/optik" }),
+    ).resolves.toMatchObject({ domain: "physik/optik" });
   });
 
   it("keeps the planet rule for a new token's prerequisites, and writes no token then (review round 2)", async () => {

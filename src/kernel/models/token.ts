@@ -6,6 +6,7 @@
  */
 
 import { ulid } from "ulid";
+import { assertDomainKeepsPlanets } from "../atlas/connections.js";
 import type { Database } from "../db/types.js";
 import { TOPIC_SOURCE_PREFIX } from "../import/topic-import.js";
 import type { CardState } from "./card.js";
@@ -351,6 +352,11 @@ export async function updateToken(
     values.push(updates.concept);
   }
   if (updates.domain !== undefined) {
+    // A new domain can move the unit to another planet: never so that world
+    // knowledge depends on a Firma or Privat unit (ADR 2026-10-13, D2).
+    if (updates.domain !== token.domain) {
+      await assertDomainKeepsPlanets(db, token.id, updates.domain);
+    }
     fields.push("domain = ?");
     values.push(updates.domain);
   }

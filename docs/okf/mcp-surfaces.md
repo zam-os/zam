@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-14T22:00:00.000Z
+timestamp: 2026-10-14T23:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -146,7 +146,11 @@ The model-visible learning tools cover:
   against the `safeFetch` rules, fetches nothing, and refuses the token
   otherwise. `zam_publish_revision` checks a new `sourceLink` by the same
   rule and never clears one. A learner's own cards in the Studio need no
-  source;
+  source. Through the panel bridge, `zam_studio_bridge` cannot tell the
+  panel from the model, so a card write without a source an agent may cite
+  (`personal-card-create`, or a new source in `personal-card-update` or
+  `personal-card-publish-revision`) asks the person through the host's
+  elicitation form; a host without one refuses it;
 - draft review: `zam_add_token` stores a token with the learner's card that
   is learnable at once. Only when the library switched on draft-first
   (`content.draft_first`, off by default, a Studio setting) is it a draft
