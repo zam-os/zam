@@ -38,6 +38,23 @@ describe("structural publication checks", () => {
     expect(checks.filter((check) => check.blocking)).toEqual([]);
   });
 
+  // An overview card lists the names of a complete set, one point each, by
+  // design (card-shape rule, 2026-10-14). The notice stays — it still catches
+  // a bloated list card — but it must not tell the author to split one.
+  it("names the overview card as an exception to splitting", () => {
+    const notice = structuralPublicationChecks({
+      slug: "osi-layers",
+      concept: "- Physical\n- Data link\n- Network",
+      question: "Which layers does the OSI model have, from the bottom up?",
+      requireQuestion: true,
+    }).find((check) => check.code === "criterion_multiple_points");
+    expect(notice?.blocking).toBe(false);
+    expect(notice?.message).toContain("3 points");
+    expect(notice?.message).toContain(
+      "or it is an overview card that only names the members of a complete set",
+    );
+  });
+
   it("says nothing about a single-point criterion", () => {
     expect(
       structuralPublicationChecks({

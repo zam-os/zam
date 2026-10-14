@@ -22,6 +22,7 @@ import type {
 } from "../../kernel/index.js";
 import {
   BLOOM_VERBS,
+  cardShapeRuleLines,
   endpointUrl,
   ensureMachineProviderRolesSanitized,
   getActiveWorkspaceContext,
@@ -1767,8 +1768,7 @@ For each extracted learning card, you MUST generate:
 8. "prerequisites": An array of "title" values from OTHER cards in this same batch that a learner must know BEFORE understanding this card. Leave empty [] if this card has no dependencies on other cards in the batch. Only reference cards that appear in the same output array. Order foundational concepts (definitions, facts) before their applications (formulas, analysis).
 
 Guidelines:
-- Break complex requirements into multiple separate, atomic cards.
-- Keep questions focused on one fact.
+${cardShapeRuleLines()}
 - Do not repeat the same concept in multiple cards.
 - Test the subject matter directly. Never ask what learners "must know", what
   a curriculum "requires", or merely restate a competency as a question.
@@ -2110,7 +2110,7 @@ The input card details are:
 - Excerpt Context: ${token.context || "N/A"}
 
 For each split proposal card, you MUST generate:
-1. "question": A clear, concise active-recall question testing a single focused fact or concept. The question must not reveal the answer itself.
+1. "question": A clear, concise active-recall question testing one point, or the names of a complete set for an overview card. The question must not reveal the answer itself.
 2. "concept": The reference answer or core fact.
 3. "domain": The category of the card (default to "${token.domain}").
 4. "context": The context excerpt from the original card's context or a derivation of it.
@@ -2118,13 +2118,14 @@ For each split proposal card, you MUST generate:
 6. "symbiosis_mode": Symbiosis mode ("shadowing", "copilot", or "autonomy").
 
 Guidelines:
-- First identify the distinct facts or ideas the original card actually contains, then create exactly one card per idea. The number of cards follows from the content: at least 2, and as many as the card really holds.
-- Never pad: do not add cards that restate, generalize, or merely rephrase another card, and do not split a single idea into several cards.
-- Make sure each card is completely atomic (covers exactly one concept).
+${cardShapeRuleLines()}
+- First identify the distinct points the original card actually contains, then create exactly one card per point. The number of cards follows from the content: at least 2, and as many as the card really holds.
+- When the original card lists the members of a complete set and says something about each, split it into one overview card that asks for the members' names only, plus one card per point said about a member.
+- Never pad: do not add cards that restate, generalize, or merely rephrase another card, and do not split a single point into several cards. The overview card of a listed set is not padding.
 - Do not repeat the same concept across cards.
 - Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any conversational filler.`;
 
-  const userPrompt = `Split the card above into one atomic card per distinct idea it contains.
+  const userPrompt = `Split the card above into one card per point it contains, with a names-only overview card when it lists a complete set.
 
 JSON Array Output:`;
 
@@ -2338,7 +2339,7 @@ The current card details are:
 - Excerpt Context: ${token.context || "N/A"}
 
 For each proposed foundational card, you MUST generate:
-1. "question": A clear, concise active-recall question testing a single foundational fact or prerequisite concept.
+1. "question": A clear, concise active-recall question testing one foundational point, or the names of a complete set for an overview card.
 2. "concept": The reference answer or core fact.
 3. "domain": The category of the card (default to "${token.domain}").
 4. "context": The context excerpt explaining where this prerequisite fits in the learning hierarchy.
@@ -2349,7 +2350,8 @@ Guidelines:
 - First identify which prerequisites the card really depends on, then create exactly one card per prerequisite. The number of cards follows from the card: at least 1, and as many as are genuinely necessary.
 - Never pad: do not add loosely related, merely helpful, or overlapping prerequisites to reach a larger number.
 - Recommend only highly relevant and necessary prerequisites.
-- Keep each proposed card atomic and focused on one concept.
+${cardShapeRuleLines()}
+- When a prerequisite is itself a complete set, it becomes one overview card that asks for the members' names only, plus one card per point about a member that the card above depends on. Together they are one prerequisite, not several, and they are not padding.
 - Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any conversational filler.`;
 
   const userPrompt = `Suggest one foundational prerequisite card per prerequisite the card above genuinely needs.
