@@ -7,12 +7,19 @@ tags:
   - learning-content
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/learning-content.md"
-timestamp: 2026-10-13T23:30:00.000Z
+timestamp: 2026-10-14T12:00:00.000Z
 ---
 
 The Desktop Studio and the shared Studio panel both have a Learning Content page (Lerninhalte). The page opens on **Lern-Karten** (Learning cards). The other area is **Quellen** (Sources).
 
-The actions that create or manage cards stay on Lern-Karten: a new card, goal import, photo or PDF, file import, library topics, and Bonus while items are kept. In the Desktop window the header shows **Neue Karte** (New card) and one **Importieren** (Import) menu that holds photo or PDF, library topics, goal import, and file import; Bonus sits beside them while items are kept. Goal import opens the goal page in a dialog of its own. It no longer opens the first-run flow, which keeps its own goal step; both show the same goal page. The knowledge atlas opens the same dialog from a region's **Hier importieren …** (*Fehlendes Wissen beschreiben*): the model hears where the cards will land, and the confirmed cards land there, each topic as the deepest level and the goal above it. Lehrplan, below, keeps the curriculum import and the enrolment of a learning path, and the menu has no curriculum entry.
+The actions that create or manage cards stay on Lern-Karten: a new card, topic import, photo or PDF, file import, library topics, and Bonus while items are kept. In the Desktop window the header shows **Neue Karte** (New card) and one **Importieren** (Import) menu that holds photo or PDF, library topics, **Themen-Import** (Topic import), and file import; Bonus sits beside them while items are kept.
+
+The topic import ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md)) replaced the goal import. It opens in a dialog of its own, with the same topic area as the first-run flow's topic page. That page follows only when the first-run content page's topic path is chosen.
+- The learner names the topic, and a larger field takes context, prior knowledge and details. Example: PostgreSQL after projects only in Microsoft SQL Server, learned from the parallels and the differences.
+- The model proposes subtopics one level at a time, then cards per kept subtopic. It keeps to what the topic names and adds something else only when it is indispensable for understanding.
+- No file is written. One `zam-topic:` source row records the import.
+
+The knowledge atlas opens the same dialog from a world region's **Hier importieren …** (*Fehlendes Wissen beschreiben*): the model hears where the cards will land, and the confirmed cards land there, each subtopic as the deepest level and the topic above it. A Firma or Privat region does not offer it, since the model knows no company's or person's knowledge. Lehrplan, below, keeps the curriculum import and the enrolment of a learning path, and the menu has no curriculum entry.
 
 # Lern-Karten
 
@@ -48,7 +55,7 @@ The panel bridge does not offer `learning-content-browse` or `knowledge-map`, wh
 
 # Cards from an article
 
-Browsing a source does not create tokens. An OKF article becomes learning tokens when an agent reads it, judges the concepts worth remembering, and records that decomposition through the import in [ADR 2026-07-18](../adr/2026-07-18-okf-learning-import.md), as [mcp-surfaces.md](mcp-surfaces.md) describes. File import, goal import, and photo or PDF import are unchanged.
+Browsing a source does not create tokens. An OKF article becomes learning tokens when an agent reads it, judges the concepts worth remembering, and records that decomposition through the import in [ADR 2026-07-18](../adr/2026-07-18-okf-learning-import.md), as [mcp-surfaces.md](mcp-surfaces.md) describes. File import, topic import, and photo or PDF import are unchanged.
 
 # Citations
 

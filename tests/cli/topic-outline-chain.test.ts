@@ -5,9 +5,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   clearRecallEndpointCache,
   evaluateAnswerViaLLM,
-  GOAL_DECOMPOSITION_MAX_OUTPUT_TOKENS,
-  GOAL_DECOMPOSITION_RETRY_OUTPUT_TOKENS,
-  generateGoalDecompositionViaLLM,
+  SUBTOPIC_MAX_OUTPUT_TOKENS,
+  SUBTOPIC_RETRY_OUTPUT_TOKENS,
+  proposeSubtopicsViaLLM,
 } from "../../src/cli/llm/client.js";
 import {
   type CapabilityFlags,
@@ -19,10 +19,10 @@ import {
 } from "../../src/kernel/index.js";
 
 /**
- * Klara's goal import (2026-09-15): OpenRouter answered the goal
- * decomposition for gpt-5.6-luna with HTTP 200 and `{ error: { code: 429,
+ * Klara's goal import, now the topic import (2026-09-15): OpenRouter
+ * answered the goal decomposition for gpt-5.6-luna with HTTP 200 and `{ error: { code: 429,
  * message: "… temporarily rate-limited upstream …" } }` — no `choices` at
- * all. The goal step read an empty content string out of that and failed
+ * all. The step read an empty content string out of that and failed
  * the learner with "JSON array brackets not found". The same body shape is
  * what OpenRouter uses for provider errors after routing, so every chat
  * reader treats an embedded error as the status it carries: 429 and 401
@@ -129,13 +129,13 @@ const arrayReply = (finish = "stop") => ({
 const chatCalls = (calls: RecordedCall[]) =>
   calls.filter((call) => !call.url.endsWith("/models"));
 
-describe("goal decomposition on the text chain", () => {
+describe("subtopic proposals on the text chain", () => {
   let testConfigDir: string;
   let previousConfigPath: string | undefined;
   let db: Database;
 
   beforeEach(async () => {
-    testConfigDir = mkdtempSync(join(tmpdir(), "zam-goal-chain-"));
+    testConfigDir = mkdtempSync(join(tmpdir(), "zam-topic-chain-"));
     const configPath = join(testConfigDir, "config.json");
     writeFileSync(
       configPath,
@@ -166,9 +166,9 @@ describe("goal decomposition on the text chain", () => {
   });
 
   const decompose = () =>
-    generateGoalDecompositionViaLLM(db, {
+    proposeSubtopicsViaLLM(db, {
       title: "Reibung",
-      description: "frage mich alle reibungsarten der physik ab",
+      context: "frage mich alle reibungsarten der physik ab",
       path: [],
     });
 
@@ -192,7 +192,7 @@ describe("goal decomposition on the text chain", () => {
     stubFetch(() => rateLimitedInA200);
 
     await expect(decompose()).rejects.toThrow(
-      /Goal decomposition failed: openai\/gpt-5.6-luna is temporarily rate-limited upstream/,
+      /Subtopic proposal failed: openai\/gpt-5.6-luna is temporarily rate-limited upstream/,
     );
     await expect(decompose()).rejects.not.toThrow(/brackets not found/);
   });
@@ -214,8 +214,8 @@ describe("goal decomposition on the text chain", () => {
 
     expect(options).toHaveLength(3);
     expect(chatCalls(calls).map((call) => call.body?.max_tokens)).toEqual([
-      GOAL_DECOMPOSITION_MAX_OUTPUT_TOKENS,
-      GOAL_DECOMPOSITION_RETRY_OUTPUT_TOKENS,
+      SUBTOPIC_MAX_OUTPUT_TOKENS,
+      SUBTOPIC_RETRY_OUTPUT_TOKENS,
     ]);
   });
 

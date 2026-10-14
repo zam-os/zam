@@ -1018,6 +1018,18 @@
       ]
     },
     {
+      "id": "topic-import",
+      "parent": "content",
+      "label": "Topic import",
+      "link": "drafts from",
+      "text": "A topic import builds on what the learner already knows, keeps to what the topic names, and writes no file.",
+      "sources": [
+        "docs/adr/2026-10-14-topic-import-and-source-provenance.md",
+        "src/kernel/import/topic-import.ts",
+        "src/cli/llm/client.ts"
+      ]
+    },
+    {
       "id": "open-library",
       "parent": "content",
       "label": "Open Library",

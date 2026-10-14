@@ -1,38 +1,35 @@
 /**
- * Goal import as a dialog of its own.
+ * The topic import as a dialog of its own (ADR 2026-10-14).
  *
- * The goal page (define a goal, let ZAM propose one decomposition level at a
- * time, pick the cards) used to be reachable only inside the first-run flow:
- * Learning Content's "Goal import" reopened that flow at its goal step, with
- * the flow's progress bar, Skip and Finish later around it. It is a content
- * import like any other, so Learning Content now shows the same goal area in
- * a plain dialog. The first-run flow keeps its own goal step; both render
- * through `renderGoalArea`.
+ * The same topic area as the first-run flow's topic page: name a topic and
+ * its context, let ZAM propose one level of subtopics at a time, pick the
+ * cards. Learning Content's Import menu and the atlas's *Hier importieren …*
+ * open it; both render through `renderTopicArea`.
  *
- * Closing keeps a half-decomposed goal for the next opening. Once cards are
+ * Closing keeps a half-decomposed topic for the next opening. Once cards are
  * imported, closing hands the result to the host and the next opening starts
- * with an empty goal.
+ * with an empty topic.
  */
 
 import { t } from "./i18n.js";
 import {
-  createGoalImportState,
-  type GoalImportState,
-  type GoalPlace,
-  renderGoalArea,
+  createTopicImportState,
+  type TopicImportState,
+  type TopicPlace,
+  renderTopicArea,
 } from "./onboarding.js";
 
-export interface GoalImportDialogOptions {
-  /** Without a text model the goal area links to the model setup. */
+export interface TopicImportDialogOptions {
+  /** Without a text model the topic area links to the model setup. */
   openModelSetup(): void;
   /** Cards were imported, at `place` if any; the host refreshes what shows them. */
-  onImported(place: GoalPlace | null): void;
+  onImported(place: TopicPlace | null): void;
 }
 
-const OVERLAY_ID = "goal-import-overlay";
+const OVERLAY_ID = "topic-import-overlay";
 
-let options: GoalImportDialogOptions | null = null;
-let state: GoalImportState = createGoalImportState();
+let options: TopicImportDialogOptions | null = null;
+let state: TopicImportState = createTopicImportState();
 let open = false;
 let returnFocus: HTMLElement | null = null;
 
@@ -41,23 +38,23 @@ function overlay(): HTMLElement | null {
 }
 
 function applyLabels(): void {
-  const title = document.getElementById("lbl-goal-import-title");
-  if (title) title.textContent = t("onboarding_goal_title");
-  const body = document.getElementById("lbl-goal-import-body");
-  if (body) body.textContent = t("onboarding_goal_body");
-  const close = document.getElementById("btn-goal-import-close");
-  if (close) close.textContent = t("goal_import_close");
+  const title = document.getElementById("lbl-topic-import-title");
+  if (title) title.textContent = t("topic_title");
+  const body = document.getElementById("lbl-topic-import-body");
+  if (body) body.textContent = t("topic_body");
+  const close = document.getElementById("btn-topic-import-close");
+  if (close) close.textContent = t("topic_import_close");
 }
 
 function render(): void {
-  const root = document.getElementById("goal-import-root");
+  const root = document.getElementById("topic-import-root");
   if (!root) return;
-  renderGoalArea(
+  renderTopicArea(
     root,
     {
       isLeaving: () => !open,
       openModelSetup: () => {
-        closeGoalImportDialog();
+        closeTopicImportDialog();
         options?.openModelSetup();
       },
     },
@@ -80,34 +77,34 @@ function firstControl(root: HTMLElement): HTMLElement | null {
   );
 }
 
-/** Focus the goal area's first control, or Close when it has none left. */
+/** Focus the topic area's first control, or Close when it has none left. */
 function focusInDialog(): void {
-  const root = document.getElementById("goal-import-root");
+  const root = document.getElementById("topic-import-root");
   const target =
     (root && firstControl(root)) ??
-    document.getElementById("btn-goal-import-close");
+    document.getElementById("btn-topic-import-close");
   target?.focus();
 }
 
 /** Whether two optional places name the same region. */
-function samePlace(a: GoalPlace | null, b: GoalPlace | null): boolean {
+function samePlace(a: TopicPlace | null, b: TopicPlace | null): boolean {
   return a?.lens === b?.lens && a?.regionKey === b?.regionKey;
 }
 
 /**
  * Open the dialog. `returnTo` takes focus back on close; pass it when the
  * control that opened the dialog will be hidden by then (a menu entry).
- * With a `place`, the goal's cards land at that atlas region (ADR
- * 2026-10-13, Decision 9); a goal started elsewhere is not carried over.
+ * With a `place`, the topic's cards land at that atlas region (ADR
+ * 2026-10-13, Decision 9); a topic started elsewhere is not carried over.
  */
-export function openGoalImportDialog(
+export function openTopicImportDialog(
   returnTo?: HTMLElement | null,
-  options: { place?: GoalPlace } = {},
+  options: { place?: TopicPlace } = {},
 ): void {
   const el = overlay();
   if (!el) return;
   const place = options.place ?? null;
-  if (!samePlace(state.place, place)) state = createGoalImportState(place);
+  if (!samePlace(state.place, place)) state = createTopicImportState(place);
   returnFocus =
     returnTo ??
     (document.activeElement instanceof HTMLElement
@@ -120,14 +117,14 @@ export function openGoalImportDialog(
   focusInDialog();
 }
 
-export function closeGoalImportDialog(): void {
+export function closeTopicImportDialog(): void {
   const el = overlay();
   if (!el || !open) return;
   open = false;
   el.classList.remove("active");
   if (state.imported) {
     const place = state.place;
-    state = createGoalImportState();
+    state = createTopicImportState();
     options?.onImported(place);
   }
   returnFocus?.focus();
@@ -135,24 +132,24 @@ export function closeGoalImportDialog(): void {
 }
 
 /** Wire the dialog once; the Learning Content menu entry opens it. */
-export function initGoalImportDialog(next: GoalImportDialogOptions): void {
+export function initTopicImportDialog(next: TopicImportDialogOptions): void {
   options = next;
   applyLabels();
   document
-    .getElementById("btn-goal-import-close")
-    ?.addEventListener("click", () => closeGoalImportDialog());
+    .getElementById("btn-topic-import-close")
+    ?.addEventListener("click", () => closeTopicImportDialog());
   const el = overlay();
   el?.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       event.stopPropagation();
-      closeGoalImportDialog();
+      closeTopicImportDialog();
     }
   });
-  // The goal area redraws itself at every step and removes the control that
+  // The topic area redraws itself at every step and removes the control that
   // had focus, which drops focus to the page behind the dialog. Put it back
   // inside: on the new step's first control, or on Close once an import has
   // left only its result line.
-  const root = document.getElementById("goal-import-root");
+  const root = document.getElementById("topic-import-root");
   if (el && root) {
     new MutationObserver(() => {
       if (open && !el.contains(document.activeElement)) focusInDialog();
@@ -161,7 +158,7 @@ export function initGoalImportDialog(next: GoalImportDialogOptions): void {
 }
 
 /** Re-apply the dialog's own labels after a language switch. */
-export function applyGoalImportLabels(): void {
+export function applyTopicImportLabels(): void {
   applyLabels();
   if (open) render();
 }

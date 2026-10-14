@@ -47,7 +47,6 @@ import {
   confirmFoundations,
   confirmSourceImport,
   countUserCardsForCurriculumTopic,
-  createGoal,
   createToken,
   credentialsNeedVaultAccess,
   DEFAULT_VOICE_ENGINE_PREFERENCE,
@@ -61,7 +60,6 @@ import {
   emptyCapabilityFlags,
   ensureCard,
   ensureMachineAiModelsMigrated,
-  formatGoalBreakdown,
   generateConceptFreeCue,
   generateTokenSlug,
   getActiveWorkspace,
@@ -94,7 +92,6 @@ import {
   getTokenDeleteImpact,
   getTokenNeighborhood,
   getTursoCredentials,
-  goalTopicCurriculumText,
   hasCommand,
   importCurriculumCards,
   inventoryObservationFiles,
@@ -132,6 +129,7 @@ import {
   readMonitorLog,
   readSessionDigest,
   readUiObservationLog,
+  recordTopicImport,
   redactCommand,
   regionTokenIds,
   removeTrustedFolder,
@@ -301,8 +299,8 @@ import {
   evaluateAnswerViaLLM,
   generateChoiceOptionsViaLLM,
   generateFoundationsProposalsViaLLM,
-  generateGoalDecompositionViaLLM,
   generateSplitProposalsViaLLM,
+  generateTopicCardsViaLLM,
   getAvailableModels,
   getCloudModelRecommendation,
   getLlmConfig,
@@ -312,6 +310,7 @@ import {
   inferApiFlavor,
   isLlmOnline,
   type LlmRole,
+  proposeSubtopicsViaLLM,
   translateQuestionViaLLM,
 } from "../llm/client.js";
 import { connectCloudProvider } from "../llm/cloud-connect.js";
@@ -4563,94 +4562,95 @@ bridgeCommand
     });
   });
 
-// ── zam bridge goal-decompose / goal-create ──────────────────────────────────
+// ── zam bridge topic-outline / topic-cards / topic-source (ADR 2026-10-14) ───
+// The topic import: a topic in the learner's words with its context. It
+// writes no file; `topic-source` records the import as one source row.
+
+/** A JSON array of strings from an option, or [] for anything else. */
+function stringArrayOption(raw: string): string[] {
+  const parsed = JSON.parse(raw);
+  return Array.isArray(parsed)
+    ? parsed.filter((item): item is string => typeof item === "string")
+    : [];
+}
 
 bridgeCommand
-  .command("goal-decompose")
+  .command("topic-outline")
   .description(
-    "Propose the next decomposition level of a learning goal via the text " +
-      "LLM (JSON). One level at a time, user-confirmed — never bulk " +
-      "generation (ADR 2026-07-24 §3).",
+    "Propose the next level of subtopics for a topic import via the text " +
+      "LLM (JSON). One level at a time, confirmed by the learner — never " +
+      "bulk generation (ADR 2026-10-14).",
   )
-  .requiredOption("--title <title>", "Goal title")
-  .option("--description <text>", "Why the goal matters to the learner", "")
+  .requiredOption("--title <title>", "The topic, in the learner's words")
+  .option(
+    "--context <text>",
+    "Context, prior knowledge and details from the learner",
+    "",
+  )
   .option(
     "--path <json>",
-    "JSON array of already-confirmed sub-topic labels (drill-down path)",
+    "JSON array of already-kept subtopic labels (drill-down path)",
     "[]",
   )
-  .action(
-    async (opts: { title: string; description: string; path: string }) => {
-      await withDb(async (db) => {
-        let path: string[] = [];
-        try {
-          const parsed = JSON.parse(opts.path);
-          if (Array.isArray(parsed)) {
-            path = parsed.filter(
-              (item): item is string => typeof item === "string",
-            );
-          }
-        } catch {
-          jsonError("Invalid --path JSON");
-        }
-        try {
-          const options = await generateGoalDecompositionViaLLM(db, {
-            title: opts.title,
-            description: opts.description ?? "",
-            path,
-          });
-          jsonOut({
-            success: true,
-            options: options.map((option) => ({
-              id: slugify(option.label) || "topic",
-              ...option,
-            })),
-          });
-        } catch (err) {
-          jsonOut({ success: false, error: (err as Error).message });
-        }
-      });
-    },
-  );
+  .action(async (opts: { title: string; context: string; path: string }) => {
+    await withDb(async (db) => {
+      let path: string[] = [];
+      try {
+        path = stringArrayOption(opts.path);
+      } catch {
+        jsonError("Invalid --path JSON");
+      }
+      try {
+        const options = await proposeSubtopicsViaLLM(db, {
+          title: opts.title,
+          context: opts.context ?? "",
+          path,
+        });
+        jsonOut({
+          success: true,
+          options: options.map((option) => ({
+            id: slugify(option.label) || "topic",
+            ...option,
+          })),
+        });
+      } catch (err) {
+        jsonOut({ success: false, error: (err as Error).message });
+      }
+    });
+  });
 
 bridgeCommand
-  .command("goal-topic-cards")
+  .command("topic-cards")
   .description(
-    "Draft card proposals for ONE confirmed goal topic via the text LLM " +
-      "(JSON, preview only). The goal flow asks once per selected topic, so " +
-      "each request stays bounded and a failing topic keeps the others " +
-      "(ADR 2026-07-24 §3).",
+    "Draft card proposals for ONE kept subtopic of a topic import via the " +
+      "text LLM (JSON, preview only). The topic import asks once per kept " +
+      "subtopic, so each request stays bounded and a failing subtopic keeps " +
+      "the others (ADR 2026-10-14).",
   )
-  .requiredOption("--title <title>", "Goal title (also the cards' domain)")
-  .option("--description <text>", "Why the goal matters to the learner", "")
+  .requiredOption("--title <title>", "The topic (also the cards' domain)")
+  .option(
+    "--context <text>",
+    "Context, prior knowledge and details from the learner",
+    "",
+  )
   .option(
     "--path <json>",
-    "JSON array of confirmed drill-down labels above the topic",
+    "JSON array of kept drill-down labels above the subtopic",
     "[]",
   )
-  .requiredOption("--topic <json>", "JSON {label, description} of the topic")
-  .requiredOption(
-    "--source <path>",
-    "Goal file every proposal cites as source_link",
-  )
+  .requiredOption("--topic <json>", "JSON {label, description} of the subtopic")
   .action(
     async (opts: {
       title: string;
-      description: string;
+      context: string;
       path: string;
       topic: string;
-      source: string;
     }) => {
       await withDb(async (db) => {
         let path: string[] = [];
         let topic: { label: string; description: string } | null = null;
         try {
-          const parsedPath = JSON.parse(opts.path);
-          if (Array.isArray(parsedPath)) {
-            path = parsedPath.filter(
-              (item): item is string => typeof item === "string",
-            );
-          }
+          path = stringArrayOption(opts.path);
           const parsedTopic = JSON.parse(opts.topic);
           if (
             parsedTopic &&
@@ -4669,107 +4669,40 @@ bridgeCommand
           jsonError("--topic must be a JSON {label, description} object");
         }
 
-        const proposals = await importCurriculumViaLLM(
-          db,
-          goalTopicCurriculumText({
-            title: opts.title,
-            description: opts.description ?? "",
-            path,
-            topic,
-          }),
-          opts.title.trim(),
-          opts.source,
-        );
+        const proposals = await generateTopicCardsViaLLM(db, {
+          title: opts.title,
+          context: opts.context ?? "",
+          path,
+          topic,
+        });
         jsonOut({ success: true, proposals });
       });
     },
   );
 
 bridgeCommand
-  .command("goal-create")
+  .command("topic-source")
   .description(
-    "Create a goal markdown file (Lernziel) in the goals directory, with the " +
-      "user-confirmed breakdown recorded in its body (JSON). The file is the " +
-      "source_link every imported card cites (ADR 2026-07-24 §3).",
+    "Record a topic import as one source row, zam-topic:<ULID>, with the " +
+      "topic's title, the date and the learner; nothing else is stored " +
+      "(JSON, ADR 2026-10-14).",
   )
-  .requiredOption("--title <title>", "Goal title")
-  .option("--description <text>", "Why the goal matters to the learner", "")
-  .option(
-    "--path <json>",
-    "JSON array of confirmed drill-down labels above the outline",
-    "[]",
-  )
-  .option(
-    "--outline <json>",
-    "JSON array of {label, description} — the confirmed breakdown",
-    "[]",
-  )
-  .action(
-    async (opts: {
-      title: string;
-      description: string;
-      path: string;
-      outline: string;
-    }) => {
-      await withDb(async (db) => {
-        let path: string[] = [];
-        let outline: Array<{ label: string; description: string }> = [];
-        try {
-          const parsedPath = JSON.parse(opts.path);
-          if (Array.isArray(parsedPath)) {
-            path = parsedPath.filter(
-              (item): item is string => typeof item === "string",
-            );
-          }
-          const parsedOutline = JSON.parse(opts.outline);
-          if (Array.isArray(parsedOutline)) {
-            outline = parsedOutline.filter(
-              (item): item is { label: string; description: string } =>
-                Boolean(item) &&
-                typeof item === "object" &&
-                typeof item.label === "string" &&
-                typeof item.description === "string",
-            );
-          }
-        } catch {
-          jsonError("Invalid --path or --outline JSON");
-        }
-
-        // Same resolution as `zam goal`: the explicit setting wins, else the
-        // active workspace's goals/ directory (regenerable infrastructure).
-        const configuredDir = await getSetting(db, "personal.goals_dir");
-        const activeWorkspace = await ensureActiveWorkspace(db);
-        const goalsDir = configuredDir
-          ? resolve(configuredDir)
-          : join(activeWorkspace.path, "goals");
-        mkdirSync(goalsDir, { recursive: true });
-
-        const base = slugify(opts.title) || "goal";
-        let slug = base;
-        for (let n = 2; existsSync(join(goalsDir, `${slug}.md`)); n++) {
-          slug = `${base}-${n}`;
-        }
-
-        const breakdown = formatGoalBreakdown(path, outline);
-
-        try {
-          const goal = createGoal(goalsDir, {
-            slug,
-            title: opts.title,
-            description: `${opts.description ?? ""}${breakdown}`.trim(),
-          });
-          jsonOut({
-            success: true,
-            slug: goal.slug,
-            title: goal.title,
-            filePath: goal.filePath,
-          });
-        } catch (err) {
-          jsonError((err as Error).message);
-        }
-      });
-    },
-  );
+  .requiredOption("--title <title>", "The topic, in the learner's words")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts: { title: string; user?: string }) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      try {
+        const recorded = await recordTopicImport(db, {
+          title: opts.title,
+          userId,
+        });
+        jsonOut({ success: true, ...recorded });
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
 
 // ── zam bridge embedding-status / embedding-enable ───────────────────────────
 
@@ -8959,7 +8892,7 @@ const SLOW_SERVE_REQUEST_MS = 30_000;
 
 /**
  * The error a command reported inside a successful response — commands such
- * as `goal-decompose` answer `{ success: false, error }` instead of throwing.
+ * as `topic-outline` answer `{ success: false, error }` instead of throwing.
  * A `false` without an `error` string is a status (e.g. `backup-db` on a
  * remote library), not a failure.
  */

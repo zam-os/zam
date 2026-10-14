@@ -2,6 +2,8 @@
 
 ## 2026-10-14
 
+- **Update** — [Local AI Runtimes](local-ai-runtimes.md)
+- **Update** — [Learning Content](learning-content.md)
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 

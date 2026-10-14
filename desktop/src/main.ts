@@ -19,10 +19,10 @@ import {
 } from "../../src/kernel/atlas/palette.js";
 import { initContentImportMenu } from "./content-import-menu.js";
 import {
-  applyGoalImportLabels,
-  initGoalImportDialog,
-  openGoalImportDialog,
-} from "./goal-import.js";
+  applyTopicImportLabels,
+  initTopicImportDialog,
+  openTopicImportDialog,
+} from "./topic-import.js";
 import {
   formatActivityBucketLabel,
   type RecentDaysSummary,
@@ -1284,7 +1284,7 @@ function initializeTranslations() {
   if (lblContentTitle) lblContentTitle.textContent = t("nav_content");
   const lblContentImportMenu = document.getElementById("lbl-content-import-menu");
   if (lblContentImportMenu) lblContentImportMenu.textContent = t("content_import_menu");
-  applyGoalImportLabels();
+  applyTopicImportLabels();
   const btnContentNewCard = document.getElementById("btn-content-new-card");
   if (btnContentNewCard) btnContentNewCard.textContent = t("btn_new_card");
   const contentSearchInput = document.getElementById("content-search-input") as HTMLInputElement;
@@ -1399,9 +1399,9 @@ function initializeTranslations() {
   const btnImportModalSubmit = document.getElementById("btn-import-modal-submit");
   if (btnImportModalSubmit) btnImportModalSubmit.textContent = t("btn_import_submit");
 
-  // Goal import entry (plan Phase 8): reopens the onboarding goal page.
-  const btnContentGoalImport = document.getElementById("btn-content-goal-import");
-  if (btnContentGoalImport) btnContentGoalImport.textContent = t("btn_content_goal_import");
+  // Topic import entry (ADR 2026-10-14): opens the topic import dialog.
+  const btnContentTopicImport = document.getElementById("btn-content-topic-import");
+  if (btnContentTopicImport) btnContentTopicImport.textContent = t("btn_content_topic_import");
   const btnContentLibraryTopics = document.getElementById("btn-content-library-topics");
   if (btnContentLibraryTopics) btnContentLibraryTopics.textContent = t("btn_library_topics");
   const btnDashboardLibraryTopics = document.getElementById("btn-dashboard-library-topics");
@@ -5222,7 +5222,7 @@ function showOnboarding(): void {
   onboardingController.start();
 }
 
-/** Open the flow directly at one page (e.g. Learning Content → goal import). */
+/** Open the flow directly at one page (e.g. the dashboard checklist). */
 function showOnboardingAt(stepId: string): void {
   if (!onboardingController) return;
   switchView("onboarding-view");
@@ -8941,7 +8941,7 @@ async function openAtlas(): Promise<void> {
     reviewRegion: (lens, key, options) =>
       void startAtlasRegionReview(lens, key, options),
     // Import at a place (ADR 2026-10-13, Decision 9).
-    importGoal: (place) => openGoalImportDialog(null, { place }),
+    importTopic: (place) => openTopicImportDialog(null, { place }),
     importMaterial: (place) => void openMaterialImportStart({ place }),
     openCurriculumWizard: () => {
       switchView("learning-content-view");
@@ -9118,9 +9118,9 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   initPanel("study-learning", initStudyLearningControls);
   initPanel("study-workload", initStudyWorkloadControls);
-  // Goal-driven import is a content import of its own (redesign step 4):
-  // Learning Content opens the goal page in a dialog, not the first-run flow.
-  initGoalImportDialog({
+  // The topic import is a content import of its own (ADR 2026-10-14):
+  // Learning Content opens it in a dialog, not the first-run flow.
+  initTopicImportDialog({
     openModelSetup: () => showOnboardingAt("model"),
     onImported: (place) => {
       void loadStudioData();
@@ -9134,11 +9134,11 @@ window.addEventListener("DOMContentLoaded", () => {
     },
   });
   document
-    .getElementById("btn-content-goal-import")
+    .getElementById("btn-content-topic-import")
     // The entry sits in the Import menu, which is hidden once it is chosen;
     // closing the dialog returns to the menu button instead.
     ?.addEventListener("click", () =>
-      openGoalImportDialog(document.getElementById("btn-content-import-menu")),
+      openTopicImportDialog(document.getElementById("btn-content-import-menu")),
     );
   initContentImportMenu();
   // Empty deck on a library with topics (ADR 2026-10-02): start from them.

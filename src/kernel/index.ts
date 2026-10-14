@@ -328,11 +328,6 @@ export type {
   SqlDialect,
   Statement,
 } from "./db/types.js";
-export type { GoalBreakdownItem } from "./goals/breakdown.js";
-export {
-  formatGoalBreakdown,
-  goalTopicCurriculumText,
-} from "./goals/breakdown.js";
 export type { CreateGoalInput, GoalSummary } from "./goals/engine.js";
 // Goals
 export {
@@ -425,6 +420,12 @@ export {
   commitTextImport,
   previewTextImport,
 } from "./import/text-import.js";
+export type { TopicImportRecord } from "./import/topic-import.js";
+export {
+  MAX_TOPIC_TITLE,
+  recordTopicImport,
+  TOPIC_SOURCE_PREFIX,
+} from "./import/topic-import.js";
 export {
   countAnswerPoints,
   MAX_SCORED_BLOOM_LEVEL,

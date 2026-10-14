@@ -71,8 +71,8 @@ export interface AtlasViewDeps {
     regionKey: string,
     options: { due: number; practise: number },
   ): void;
-  /** Open the goal import (describe what is missing) at a place (D9). */
-  importGoal?(place: ImportPlace): void;
+  /** Open the topic import (describe what is missing) at a place (D9). */
+  importTopic?(place: ImportPlace): void;
   /** Open the material import (photos, PDF, notes) at a place (D9). */
   importMaterial(place: ImportPlace): void;
   /** Open the generic curriculum wizard, where no cell covers a place. */
@@ -941,7 +941,10 @@ function regionPanel(
         ),
       },
       {
-        importGoal: s.deps.importGoal,
+        // The model knows only world knowledge; a company's or a person's
+        // comes from its source (ADR 2026-10-14, Decision 5).
+        importTopic:
+          layout.view.lens.planet === "welt" ? s.deps.importTopic : undefined,
         importMaterial: (place) => s.deps.importMaterial(place),
         openCurriculumWizard: s.deps.openCurriculumWizard,
         onChanged: () => void load(s, s.lens ?? undefined),

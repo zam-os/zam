@@ -34,8 +34,8 @@ describe("persona content routing", () => {
       if (path.action.kind === "entry") {
         expect(["curriculum", "free-import"]).toContain(path.action.entry);
       } else {
-        // Step targets must exist in the flow (agent page, goal page).
-        expect(["agent", "goal"]).toContain(path.action.step);
+        // Step targets must exist in the flow (agent page, topic page).
+        expect(["agent", "topic"]).toContain(path.action.step);
       }
     }
   });

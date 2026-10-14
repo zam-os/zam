@@ -71,9 +71,12 @@ what the learner knows.
     see "As built (9a)"
   - [x] **9b** — typed threads and portals — this commit; see "As built
     (9b)"
-  - [ ] **Topic import** ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md),
-    Delivery 1–2): the goal import becomes the topic import and writes no
-    file; *Auf Wikipedia nachlesen* for world units. Lands before 9c.
+  - [x] **Topic import, Delivery 1** ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md)):
+    the goal import becomes the topic import, with a context field and its
+    own prompts, and writes no file; the first-run topic page follows only
+    the topic path; world regions only in the atlas — this commit
+  - [ ] **Topic import, Delivery 2** — *Nachlesen* for world units. Lands
+    before 9c.
   - [ ] **9c** — curated lens edits, agent tools, mixed imports, live
     updates; also the kind per subtopic and the source rules for agents
     (ADR 2026-10-14, Decisions 3 and 5)

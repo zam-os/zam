@@ -205,7 +205,7 @@
               <div id="content-import-menu" class="import-menu hidden" role="menu" aria-labelledby="btn-content-import-menu">
                 <button id="btn-content-material-import" class="import-menu-item" type="button" role="menuitem">Photo / PDF</button>
                 <button id="btn-content-library-topics" class="import-menu-item" type="button" role="menuitem">Library Topics</button>
-                <button id="btn-content-goal-import" class="import-menu-item" type="button" role="menuitem">Goal Import</button>
+                <button id="btn-content-topic-import" class="import-menu-item" type="button" role="menuitem">Topic import</button>
                 <button id="btn-content-import" class="import-menu-item" type="button" role="menuitem">Import File</button>
               </div>
             </div>
@@ -1150,19 +1150,19 @@
         </div>
       </div>
 
-      <!-- GOAL IMPORT (redesign step 4): the goal page as its own dialog,
-           independent of the first-run flow. Filled by goal-import.ts. -->
-      <div id="goal-import-overlay" class="modal-overlay">
-        <div class="modal-box goal-import-modal" role="dialog" aria-modal="true" aria-labelledby="lbl-goal-import-title">
+      <!-- TOPIC IMPORT (ADR 2026-10-14): the topic area as its own dialog,
+           independent of the first-run flow. Filled by topic-import.ts. -->
+      <div id="topic-import-overlay" class="modal-overlay">
+        <div class="modal-box topic-import-modal" role="dialog" aria-modal="true" aria-labelledby="lbl-topic-import-title">
           <div class="modal-header">
-            <h3 id="lbl-goal-import-title">Name a goal — ZAM builds the path.</h3>
+            <h3 id="lbl-topic-import-title">Which topic do you want to learn or strengthen?</h3>
           </div>
           <div class="modal-body">
-            <p id="lbl-goal-import-body" class="goal-import-intro"></p>
-            <div id="goal-import-root" class="onboarding-goal"></div>
+            <p id="lbl-topic-import-body" class="topic-import-intro"></p>
+            <div id="topic-import-root" class="onboarding-topic"></div>
           </div>
           <div class="modal-actions">
-            <button id="btn-goal-import-close" class="btn secondary-btn" type="button">Close</button>
+            <button id="btn-topic-import-close" class="btn secondary-btn" type="button">Close</button>
           </div>
         </div>
       </div>

@@ -18,7 +18,7 @@ vi.mock("../../../src/cli/agent-llm/adapter.js", async (importActual) => {
 import { getAgentAdapter } from "../../../src/cli/agent-llm/adapter.js";
 import {
   AGENT_CURRICULUM_IMPORT_TIMEOUT_MS,
-  generateGoalDecompositionViaLLM,
+  proposeSubtopicsViaLLM,
   importCurriculumViaLLM,
 } from "../../../src/cli/llm/client.js";
 import {
@@ -177,10 +177,11 @@ describe("curriculum import via the agent transport", () => {
   });
 });
 
-// Issue #224: onboarding's model page can connect an agent, so the goal step
-// two pages later has to accept one. Before this was wired, picking Claude Code
-// during first run made goal decomposition fail with "does not support yet".
-describe("goal decomposition via the agent transport", () => {
+// Issue #224: onboarding's model page can connect an agent, so the topic step
+// after it has to accept one. Before this was wired, picking Claude Code
+// during first run made the goal decomposition (now the subtopic proposals)
+// fail with "does not support yet".
+describe("subtopic proposals via the agent transport", () => {
   const CANNED_TOPICS = JSON.stringify([
     { label: "Limits", description: "Understand what a limit expresses." },
     { label: "Derivatives", description: "Rate of change of a function." },
@@ -193,9 +194,9 @@ describe("goal decomposition via the agent transport", () => {
     );
     const db = await seedDb();
 
-    const options = await generateGoalDecompositionViaLLM(db, {
+    const options = await proposeSubtopicsViaLLM(db, {
       title: "Learn calculus",
-      description: "To follow a physics course",
+      context: "To follow a physics course",
       path: [],
     });
 
@@ -204,7 +205,7 @@ describe("goal decomposition via the agent transport", () => {
     expect(vi.mocked(getAgentAdapter)).toHaveBeenCalledWith("claude-code");
   });
 
-  it("sends the goal and the focused path to the adapter", async () => {
+  it("sends the topic, its context and the focused path to the adapter", async () => {
     let seen: { system: string; user: string } | undefined;
     vi.mocked(getAgentAdapter).mockReturnValue(
       fakeAdapter(async (req) => {
@@ -214,14 +215,19 @@ describe("goal decomposition via the agent transport", () => {
     );
     const db = await seedDb();
 
-    await generateGoalDecompositionViaLLM(db, {
+    await proposeSubtopicsViaLLM(db, {
       title: "Learn calculus",
-      description: "To follow a physics course",
+      context: "To follow a physics course",
       path: ["Derivatives"],
     });
 
     expect(seen?.system).toContain("learning-path planner");
+    // The context shapes the subtopics but never becomes content, and the
+    // model keeps to what the topic names (ADR 2026-10-14, Decision 1).
+    expect(seen?.system).toContain("Never turn the context itself into content");
+    expect(seen?.system).toContain("indispensable for understanding");
     expect(seen?.user).toContain("Learn calculus");
+    expect(seen?.user).toContain("To follow a physics course");
     expect(seen?.user).toContain("Derivatives");
   });
 
@@ -234,9 +240,9 @@ describe("goal decomposition via the agent transport", () => {
     const db = await seedDb();
 
     await expect(
-      generateGoalDecompositionViaLLM(db, {
+      proposeSubtopicsViaLLM(db, {
         title: "Learn calculus",
-        description: "",
+        context: "",
         path: [],
       }),
     ).rejects.toThrow(/claude code is offline/i);

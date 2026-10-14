@@ -16,16 +16,17 @@ import {
 } from "../../src/kernel/index.js";
 
 /**
- * A goal import at a Fach that exists only by derivation (an own domain such
- * as `github/…`): the units it creates land below that Fach, and the map
- * still reads in both lenses (ADR 2026-10-13, Decision 9).
+ * An import at a Fach that exists only by derivation (an own domain such as
+ * `github/…`), as a topic import starts one: the units it creates land below
+ * that Fach, and the map still reads in every lens (ADR 2026-10-13,
+ * Decision 9).
  */
-describe("goal import at a derived Fach", () => {
+describe("topic import at a derived Fach", () => {
   let dir: string;
   let db: Database;
 
   beforeEach(async () => {
-    dir = mkdtempSync(join(tmpdir(), "zam-atlas-goal-place-"));
+    dir = mkdtempSync(join(tmpdir(), "zam-atlas-topic-place-"));
     db = await openDatabase({
       dbPath: join(dir, "zam.db"),
       initialize: true,

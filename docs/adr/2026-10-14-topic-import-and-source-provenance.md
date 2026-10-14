@@ -74,6 +74,23 @@ link, a material import.
   - the learner keeps, deepens or stops;
   - cards are drafted per kept subtopic;
   - the learner picks the cards.
+- **The topic comes with its context.** Beside the topic's name, a larger
+  field asks for context, prior knowledge and details: what it is needed
+  for, and what the learner already knows.
+  - Example: learning PostgreSQL after projects only in Microsoft SQL
+    Server. Learning from the parallels and the differences is more
+    effective than starting from zero.
+  - The model reads the context in two ways. It skips what the learner
+    already knows, and it frames subtopics and cards around parallels and
+    differences.
+  - The context is never turned into cards of its own: knowing MSSQL is
+    the starting point, not the content.
+- **Only what the topic names.** As a curriculum names what belongs to a
+  topic, the model keeps to what the learner named. Something the learner did
+  not name is added only when it is indispensable for understanding.
+- **Its own prompt.** The curriculum prompt would read the context as
+  material, so subtopics and cards come from a prompt of the topic import's
+  own.
 - **It writes no file.** Nothing goes into the personal instance or into
   `goals/`, and `personal.goals_dir` plays no part.
 - **The import is recorded like a material import** (2026-10-05, Decision 9):
@@ -84,7 +101,7 @@ link, a material import.
     say where the cards came from.
 - **It replaces the goal import everywhere:**
   - the Import menu;
-  - the first-run flow (how, see Open question 2);
+  - the first-run flow (Decision 6);
   - the default path of the free-learner persona;
   - the atlas, where *Hier importieren …* keeps *Fehlendes Wissen beschreiben*
     as its action and opens the topic import.
@@ -194,6 +211,16 @@ themselves are planned with the agent tools of atlas Phase 9c.
   Firma or Privat region, *Hier importieren …* offers the imports that read
   a source.
 
+### 6. The first-run flow keeps a topic page only for the topic path
+
+- **Page 6 offers the path.** Its fourth path, formerly "Aus einem Ziel",
+  becomes "Ein Thema, das dich interessiert".
+- **Page 7 follows only for that path.** Choosing it opens page 7, "Dein
+  erstes Thema", with the topic import. Every other path continues to
+  "Fertig" without page 7. The step count follows the path taken.
+- **No goal page for everyone.** Goals are no longer the concept every
+  persona passes (2026-07-24 §2).
+
 ## Consequences
 
 **Easier**
@@ -243,19 +270,15 @@ themselves are planned with the agent tools of atlas Phase 9c.
 1. **Reference works besides Wikipedia.** The owner is open to alternatives,
    such as a children's encyclopedia for younger pupils, or a choice by
    language. Which ones, and does the learner pick or does the persona?
-2. **The first-run flow.** Today page 6 ("Woher sollen deine ersten Karten
-   kommen?") offers four paths, and its fourth, "Aus einem Ziel", leads to
-   page 7, a goal page every persona passes. With the topic import as one
-   path among four, page 7 has no reason of its own. This is to be decided on
-   example designs.
 
 ## Delivery
 
 The changes land on PR #407, after atlas Phase 9b, each as its own commit:
 
 1. **The topic import.**
-   - The Studio's strings (en, de), the dialog, the first-run flow as Open
-     question 2 settles it, and the persona default.
+   - The Studio's strings (en, de), the dialog with the context field, the
+     first-run flow (Decision 6) and the persona default.
+   - The topic import's own prompts for subtopics and cards.
    - The bridge commands take the new name, and `goal-create` is retired.
    - The `zam-topic:<ULID>` source row.
    - Tests, and the OKF articles `learning-content` and `bridge-protocol`.
@@ -270,3 +293,4 @@ The changes land on PR #407, after atlas Phase 9b, each as its own commit:
 |---|---|---|
 | 2026-10-14 | Proposed | Owner direction: the goal import is a short topic and is demoted and renamed; goals return later as knowledge for an agent acting as tutor. A unit's source says where its knowledge comes from: world knowledge cites a stable source, preferably one readable without internet, company knowledge its repository or nothing. Reading up on Wikipedia is a function for the learner. Lands in PR #407. |
 | 2026-10-14 | Proposed | Owner answers: a model knows nothing it could not read somewhere, so an agent creates tokens only from a source (a file such as an OKF article or other Markdown, the repository root, or a web page). The topic import therefore writes world knowledge only, and protected topics are imported from their source. A unit from a web source cites that link and reads up there. Open to reference works besides Wikipedia. The first-run pages are discussed on example designs. |
+| 2026-10-14 | Proposed | Owner decisions: the first-run flow shows the topic page only when that path is chosen (variant B, Decision 6). The topic import asks for context, prior knowledge and details beside the topic's name, and the model keeps to what the topic names, adding other things only when they are indispensable for understanding, as a curriculum does. |

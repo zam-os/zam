@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-14T10:00:00.000Z
+timestamp: 2026-10-14T12:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -145,6 +145,26 @@ pause and a two-minute cap per follow-up (ADR 2026-09-15). Ratings logged
 before response-time measurement existed count as worked cards and contribute
 no time.
 
+# Topic import
+
+The topic import ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md))
+turns a topic in the learner's words, with its context, into cards. It
+writes no file:
+
+- `topic-outline --title <topic> [--context <text>] [--path <json>]`
+  proposes the next level of subtopics. The context holds what the topic is
+  needed for and what the learner already knows. The model builds on it but
+  never turns it into content, and it keeps to what the topic names.
+- `topic-cards --title <topic> [--context <text>] [--path <json>] --topic
+  <json>` drafts cards for one kept subtopic, as a preview. The cards cite
+  no source: their knowledge is the model's world knowledge.
+- `topic-source --title <topic>` records the import as one source row,
+  `zam-topic:<ULID>`, with the title, the date and the learner. The confirm
+  (`personal-source-confirm-import --sourceId`) links every card to it.
+
+The goal import's `goal-decompose`, `goal-topic-cards` and `goal-create`
+are retired.
+
 # Material import
 
 Learning cards from photos, PDFs and typed notes (see [material-import.md](material-import.md))
@@ -281,7 +301,7 @@ takes coordinates: only settle places land.
 - `personal-source-confirm-import` takes `--place-region <key>
   [--place-lens <kind>]`: the units the import created land at that region,
   each proposal's `placeBelow` naming the levels below it (the last name on
-  the deepest level). The goal import started at a region passes it.
+  the deepest level). The topic import started at a region passes it.
 - `graph3d-feature [--enable|--disable]` reads or sets this machine's switch
   for the 3D learning graph, an alpha since the atlas took its place, in
   `~/.zam/config.json`.
@@ -431,9 +451,10 @@ whose token sits in a keychain ZAM cannot read fails to open with
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
 - [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
+- [ADR 2026-10-14 — Topic Import, and Where a Unit's Knowledge Comes From](../adr/2026-10-14-topic-import-and-source-provenance.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
-- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-serve-log.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`, `tests/cli/bridge-library-topics.test.ts`, `tests/cli/bridge-material-import.test.ts`, `tests/cli/capability-refresh.test.ts`, `tests/cli/bridge-model-registry.test.ts`
-- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-refresh.ts`, `desktop/src-tauri/src/lib.rs`
+- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-serve-log.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`, `tests/cli/bridge-library-topics.test.ts`, `tests/cli/bridge-material-import.test.ts`, `tests/cli/capability-refresh.test.ts`, `tests/cli/bridge-model-registry.test.ts`, `tests/cli/topic-outline.test.ts`
+- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-refresh.ts`, `src/kernel/import/topic-import.ts`, `desktop/src-tauri/src/lib.rs`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)

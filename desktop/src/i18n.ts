@@ -4977,12 +4977,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_import_title: "Import here",
     atlas_import_at: "New cards go to {path}.",
     atlas_import_curriculum: "From the curriculum",
-    atlas_import_goal: "Describe missing knowledge",
-    atlas_import_goal_help:
-      "Say what you want to know here. ZAM proposes topics, then cards, and you choose.",
-    atlas_import_goal_open: "Describe it…",
-    goal_place_line: "The cards land at: {path}",
-    goal_place_for_model: "Place in the learner's knowledge atlas:",
+    atlas_import_topic: "Describe missing knowledge",
+    atlas_import_topic_help:
+      "Say what you want to know here, and what you already know. ZAM proposes subtopics, then cards, and you choose.",
+    atlas_import_topic_open: "Describe it…",
+    topic_place_line: "The cards land at: {path}",
+    topic_place_for_model: "Place in the learner's knowledge atlas:",
     atlas_import_material: "Notes or material",
     atlas_import_material_help:
       "Photos, a PDF or typed notes. You decide each card, and the cards land here.",
@@ -6120,7 +6120,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_persona_kicker: "Who are you learning as?",
     onboarding_persona_title: "Pick your starting point.",
     onboarding_persona_body:
-      "Your life situation decides where your first learning content comes from — a school curriculum, your own sources, your projects, or a goal you set yourself.",
+      "Your life situation decides where your first learning content comes from — a school curriculum, your own sources, your projects, or a topic you choose yourself.",
     onboarding_persona_hint:
       "This only picks sensible defaults. Every import path stays available to you later, whatever you choose here.",
     onboarding_persona_school_label: "Pupil",
@@ -6137,7 +6137,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_persona_work_context: "Work",
     onboarding_persona_private_label: "Free learner or retiree",
     onboarding_persona_private_why:
-      "Self-chosen interests, no syllabus — start from a goal you define.",
+      "Self-chosen interests, no syllabus — start from a topic you describe.",
     onboarding_persona_private_context: "Personal",
     // Model page (ADR 2026-07-24 §5, Phase 2).
     onboarding_model_kicker: "Connect an AI model",
@@ -6249,41 +6249,42 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     workspace_structure_missing: "folder missing",
     workspace_structure_incomplete: "incomplete",
     workspace_repair_structure: "Repair workspace",
-    // Goal page (ADR 2026-07-24 §3, Phase 7).
-    onboarding_goal_kicker: "Your first goal",
-    onboarding_goal_title: "Name a goal — ZAM builds the path.",
-    onboarding_goal_body:
-      "A goal (Lernziel) is something you want to master, in your own words. ZAM proposes a breakdown one level at a time — you confirm, drill deeper, or stop — and only the cards you approve are imported, each citing your goal file.",
-    onboarding_goal_title_placeholder: "What do you want to master?",
-    onboarding_goal_why_placeholder: "Why does it matter to you? (optional)",
-    onboarding_goal_suggest: "Suggest a breakdown",
-    onboarding_goal_title_missing: "Name the goal first.",
-    onboarding_goal_checking_llm: "Checking your AI model…",
-    onboarding_goal_llm_missing:
-      "Goal breakdown needs an AI model. Connect one on the model page, then come back.",
-    onboarding_goal_to_model_page: "Go to the model page",
-    onboarding_goal_generating: "Proposing the next level…",
-    onboarding_goal_level_hint:
-      "Keep what fits, drill into a topic for more detail, or import the selection as cards.",
-    onboarding_goal_deeper: "↳ Go deeper",
-    onboarding_goal_up: "↑ Up one level",
-    onboarding_goal_import_topics: "Turn selection into cards",
-    onboarding_goal_no_selection: "Select at least one item first.",
-    onboarding_goal_writing_file: "Writing your goal file…",
-    onboarding_goal_generating_topic_cards:
-      "Drafting cards for topic {index} of {total}: {topic}…",
-    onboarding_goal_topics_failed: "No cards yet for these topics:",
-    onboarding_goal_topic_empty: "the model proposed no cards",
-    onboarding_goal_topic_stopped: "stopped when you left this page",
-    onboarding_goal_retry_topics: "Try these topics again",
-    onboarding_goal_cards_hint:
-      "These cards were drafted from your confirmed breakdown. Uncheck anything you don't want — nothing is saved until you import.",
-    onboarding_goal_back_to_topics: "↑ Back to topics",
-    onboarding_goal_import_cards: "Import selected cards",
-    onboarding_goal_importing: "Importing…",
-    onboarding_goal_imported:
-      "Done — {count} cards imported, each citing {file}.",
-    onboarding_goal_error: "Goal import failed: {message}",
+    // Topic import (ADR 2026-10-14; formerly the goal page of 2026-07-24 §3).
+    topic_kicker: "Your first topic",
+    topic_title: "Which topic do you want to learn or strengthen?",
+    topic_body:
+      "Name the topic and say what you need it for and what you already know. ZAM proposes subtopics one level at a time — you keep, drill deeper, or stop — and only the cards you approve are imported.",
+    topic_name_label: "Topic",
+    topic_name_placeholder: "PostgreSQL",
+    topic_context_label: "Context, prior knowledge and details (optional)",
+    topic_context_placeholder:
+      "What do you need it for, and what do you already know? For example: “My projects so far were all Microsoft SQL Server. I want to learn PostgreSQL from the parallels and the differences.”",
+    topic_suggest: "Suggest subtopics",
+    topic_name_missing: "Name the topic first.",
+    topic_checking_llm: "Checking your AI model…",
+    topic_llm_missing:
+      "Proposing subtopics needs an AI model. Connect one on the model page, then come back.",
+    topic_to_model_page: "Go to the model page",
+    topic_generating: "Proposing the next level…",
+    topic_level_hint:
+      "Keep what fits, drill into a subtopic for more detail, or turn the selection into cards.",
+    topic_deeper: "↳ Go deeper",
+    topic_up: "↑ Up one level",
+    topic_import_selection: "Turn selection into cards",
+    topic_no_selection: "Select at least one item first.",
+    topic_generating_cards:
+      "Drafting cards for subtopic {index} of {total}: {topic}…",
+    topic_subtopics_failed: "No cards yet for these subtopics:",
+    topic_subtopic_empty: "the model proposed no cards",
+    topic_subtopic_stopped: "stopped when you left this page",
+    topic_retry_subtopics: "Try these subtopics again",
+    topic_cards_hint:
+      "These cards were drafted from the subtopics you kept. Uncheck anything you don't want — nothing is saved until you import.",
+    topic_back_to_subtopics: "↑ Back to subtopics",
+    topic_import_cards: "Import selected cards",
+    topic_importing: "Importing…",
+    topic_imported: "Done — {count} cards imported.",
+    topic_error: "Topic import failed: {message}",
     // Content page (ADR 2026-07-24 §2, Phase 8).
     onboarding_content_kicker: "Your first learning content",
     onboarding_content_title: "Where should your first cards come from?",
@@ -6302,13 +6303,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_content_okf_body:
       "Let your agent distill durable knowledge from a real project or repo (OKF import) — this path runs through /zam in your connected agent.",
     onboarding_content_okf_action: "Check your agent connection",
-    onboarding_content_goal_label: "From a goal",
-    onboarding_content_goal_body:
-      "No syllabus? Define a Lernziel on the next page and let ZAM propose the learning path.",
-    onboarding_content_goal_action: "Define a goal",
-    btn_content_goal_import: "Goal Import",
+    onboarding_content_topic_label: "A topic that interests you",
+    onboarding_content_topic_body:
+      "No syllabus? Describe a topic and what you already know on the next page, and ZAM proposes subtopics and cards.",
+    onboarding_content_topic_action: "Describe a topic",
+    btn_content_topic_import: "Topic import",
     content_import_menu: "Import",
-    goal_import_close: "Close",
+    topic_import_close: "Close",
     // Dashboard checklist & degraded-mode link-backs (ADR 2026-07-24 §7,
     // Phase 9).
     onboarding_checklist_title: "Finish setting up ZAM",
@@ -6316,7 +6317,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Everything below already works — these steps unlock the rest.",
     onboarding_checklist_model_title: "Connect an AI model",
     onboarding_checklist_model_note:
-      "Reviews and hand-written cards work without one; AI imports, generated questions and the goal path are waiting on a model.",
+      "Reviews and hand-written cards work without one; AI imports, generated questions and the topic import are waiting on a model.",
     onboarding_checklist_agent_title: "Connect an agent",
     onboarding_checklist_agent_note:
       "The Studio works fully without one — but /zam inside an agent (Claude Code, Copilot, …) stays off until a harness is connected.",
@@ -6325,7 +6326,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Your working directory is missing parts of its fresh-setup structure (beliefs/, goals/, skills/). Repair recreates only what is missing.",
     onboarding_checklist_content_title: "Import your first learning content",
     onboarding_checklist_content_note:
-      "Your deck is empty. Pick an import path — curriculum, your own sources, a project, or a goal.",
+      "Your deck is empty. Pick an import path — curriculum, your own sources, a project, or a topic.",
     dashboard_empty_no_cards:
       "No cards yet — the setup checklist has the import paths.",
     // Library topics (ADR 2026-10-02)
@@ -6924,12 +6925,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_import_title: "Hier importieren",
     atlas_import_at: "Neue Karten kommen nach {path}.",
     atlas_import_curriculum: "Aus dem Lehrplan",
-    atlas_import_goal: "Fehlendes Wissen beschreiben",
-    atlas_import_goal_help:
-      "Sag, was du hier wissen willst. ZAM schlägt Themen vor, dann Karten, und du wählst aus.",
-    atlas_import_goal_open: "Beschreiben …",
-    goal_place_line: "Die Karten landen unter: {path}",
-    goal_place_for_model: "Ort im Wissensatlas des Lernenden:",
+    atlas_import_topic: "Fehlendes Wissen beschreiben",
+    atlas_import_topic_help:
+      "Sag, was du hier wissen willst und was du schon weißt. ZAM schlägt Unterthemen vor, dann Karten, und du wählst aus.",
+    atlas_import_topic_open: "Beschreiben …",
+    topic_place_line: "Die Karten landen unter: {path}",
+    topic_place_for_model: "Ort im Wissensatlas des Lernenden:",
     atlas_import_material: "Mitschrift oder Material",
     atlas_import_material_help:
       "Fotos, ein PDF oder eingetippte Notizen. Du entscheidest jede Karte, und die Karten landen hier.",
@@ -8108,7 +8109,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_persona_kicker: "Als wer lernst du?",
     onboarding_persona_title: "Wähle deinen Startpunkt.",
     onboarding_persona_body:
-      "Deine Lebenssituation entscheidet, woher dein erster Lernstoff kommt – aus einem Lehrplan, deinen eigenen Quellen, deinen Projekten oder einem selbst gesetzten Ziel.",
+      "Deine Lebenssituation entscheidet, woher dein erster Lernstoff kommt – aus einem Lehrplan, deinen eigenen Quellen, deinen Projekten oder einem selbst gewählten Thema.",
     onboarding_persona_hint:
       "Das legt nur sinnvolle Voreinstellungen fest. Alle Import-Wege bleiben dir später offen, egal was du hier wählst.",
     onboarding_persona_school_label: "Schüler:in",
@@ -8125,7 +8126,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_persona_work_context: "Arbeit",
     onboarding_persona_private_label: "Frei lernend oder im Ruhestand",
     onboarding_persona_private_why:
-      "Selbstgewählte Interessen, kein Lehrplan – starte mit einem Ziel, das du dir setzt.",
+      "Selbstgewählte Interessen, kein Lehrplan – starte mit einem Thema, das du beschreibst.",
     onboarding_persona_private_context: "Privat",
     // Model page (ADR 2026-07-24 §5, Phase 2).
     onboarding_model_kicker: "KI-Modell verbinden",
@@ -8241,42 +8242,43 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     workspace_structure_missing: "Ordner fehlt",
     workspace_structure_incomplete: "unvollständig",
     workspace_repair_structure: "Arbeitsbereich reparieren",
-    // Goal page (ADR 2026-07-24 §3, Phase 7).
-    onboarding_goal_kicker: "Dein erstes Ziel",
-    onboarding_goal_title: "Nenn ein Ziel – ZAM baut den Weg.",
-    onboarding_goal_body:
-      "Ein Lernziel ist etwas, das du meistern willst – in deinen eigenen Worten. ZAM schlägt die Aufschlüsselung Ebene für Ebene vor: Du bestätigst, gehst tiefer oder stoppst – und nur die Karten, die du freigibst, werden importiert, jede mit Verweis auf deine Ziel-Datei.",
-    onboarding_goal_title_placeholder: "Was willst du meistern?",
-    onboarding_goal_why_placeholder: "Warum ist es dir wichtig? (optional)",
-    onboarding_goal_suggest: "Aufschlüsselung vorschlagen",
-    onboarding_goal_title_missing: "Benenne zuerst das Ziel.",
-    onboarding_goal_checking_llm: "Dein KI-Modell wird geprüft …",
-    onboarding_goal_llm_missing:
-      "Die Ziel-Aufschlüsselung braucht ein KI-Modell. Verbinde eines auf der Modell-Seite und komm dann zurück.",
-    onboarding_goal_to_model_page: "Zur Modell-Seite",
-    onboarding_goal_generating: "Nächste Ebene wird vorgeschlagen …",
-    onboarding_goal_level_hint:
-      "Behalte, was passt, geh bei einem Thema tiefer – oder importiere die Auswahl als Karten.",
-    onboarding_goal_deeper: "↳ Tiefer",
-    onboarding_goal_up: "↑ Eine Ebene hoch",
-    onboarding_goal_import_topics: "Auswahl in Karten verwandeln",
-    onboarding_goal_no_selection: "Wähle zuerst mindestens einen Eintrag.",
-    onboarding_goal_writing_file: "Deine Ziel-Datei wird geschrieben …",
-    onboarding_goal_generating_topic_cards:
-      "Karten für Thema {index} von {total} werden entworfen: {topic} …",
-    onboarding_goal_topics_failed: "Noch keine Karten für diese Themen:",
-    onboarding_goal_topic_empty: "das Modell hat keine Karten vorgeschlagen",
-    onboarding_goal_topic_stopped:
+    // Themen-Import (ADR 2026-10-14; früher die Zielseite aus 2026-07-24 §3).
+    topic_kicker: "Dein erstes Thema",
+    topic_title: "Welches Thema möchtest du lernen oder festigen?",
+    topic_body:
+      "Nenn das Thema und erklär, wofür du es brauchst und was du schon weißt. ZAM schlägt Unterthemen Ebene für Ebene vor – du behältst, gehst tiefer oder stoppst – und nur die Karten, die du freigibst, werden importiert.",
+    topic_name_label: "Thema",
+    topic_name_placeholder: "PostgreSQL",
+    topic_context_label: "Kontext, Vorwissen und Details (optional)",
+    topic_context_placeholder:
+      "Wofür brauchst du es, und was weißt du schon? Zum Beispiel: „Meine bisherigen Projekte liefen alle mit Microsoft SQL Server. Ich will PostgreSQL über die Parallelen und die Unterschiede lernen.“",
+    topic_suggest: "Unterthemen vorschlagen",
+    topic_name_missing: "Benenne zuerst das Thema.",
+    topic_checking_llm: "Dein KI-Modell wird geprüft …",
+    topic_llm_missing:
+      "Unterthemen vorzuschlagen braucht ein KI-Modell. Verbinde eines auf der Modell-Seite und komm dann zurück.",
+    topic_to_model_page: "Zur Modell-Seite",
+    topic_generating: "Nächste Ebene wird vorgeschlagen …",
+    topic_level_hint:
+      "Behalte, was passt, geh bei einem Unterthema tiefer – oder verwandle die Auswahl in Karten.",
+    topic_deeper: "↳ Tiefer",
+    topic_up: "↑ Eine Ebene hoch",
+    topic_import_selection: "Auswahl in Karten verwandeln",
+    topic_no_selection: "Wähle zuerst mindestens einen Eintrag.",
+    topic_generating_cards:
+      "Karten für Unterthema {index} von {total} werden entworfen: {topic} …",
+    topic_subtopics_failed: "Noch keine Karten für diese Unterthemen:",
+    topic_subtopic_empty: "das Modell hat keine Karten vorgeschlagen",
+    topic_subtopic_stopped:
       "angehalten, als du die Seite verlassen hast",
-    onboarding_goal_retry_topics: "Diese Themen erneut versuchen",
-    onboarding_goal_cards_hint:
-      "Diese Karten wurden aus deiner bestätigten Aufschlüsselung entworfen. Wähle ab, was du nicht willst – gespeichert wird erst beim Import.",
-    onboarding_goal_back_to_topics: "↑ Zurück zu den Themen",
-    onboarding_goal_import_cards: "Ausgewählte Karten importieren",
-    onboarding_goal_importing: "Wird importiert …",
-    onboarding_goal_imported:
-      "Fertig – {count} Karten importiert, jede mit Verweis auf {file}.",
-    onboarding_goal_error: "Ziel-Import fehlgeschlagen: {message}",
+    topic_retry_subtopics: "Diese Unterthemen erneut versuchen",
+    topic_cards_hint:
+      "Diese Karten wurden aus den Unterthemen entworfen, die du behalten hast. Wähle ab, was du nicht willst – gespeichert wird erst beim Import.",
+    topic_back_to_subtopics: "↑ Zurück zu den Unterthemen",
+    topic_import_cards: "Ausgewählte Karten importieren",
+    topic_importing: "Wird importiert …",
+    topic_imported: "Fertig – {count} Karten importiert.",
+    topic_error: "Themen-Import fehlgeschlagen: {message}",
     // Content page (ADR 2026-07-24 §2, Phase 8).
     onboarding_content_kicker: "Dein erster Lernstoff",
     onboarding_content_title: "Woher sollen deine ersten Karten kommen?",
@@ -8295,13 +8297,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_content_okf_body:
       "Lass deinen Agenten dauerhaftes Wissen aus einem echten Projekt oder Repo destillieren (OKF-Import) – dieser Weg läuft über /zam in deinem verbundenen Agenten.",
     onboarding_content_okf_action: "Agenten-Verbindung prüfen",
-    onboarding_content_goal_label: "Aus einem Ziel",
-    onboarding_content_goal_body:
-      "Kein Lehrplan? Definiere auf der nächsten Seite ein Lernziel und lass ZAM den Lernweg vorschlagen.",
-    onboarding_content_goal_action: "Ziel definieren",
-    btn_content_goal_import: "Ziel-Import",
+    onboarding_content_topic_label: "Ein Thema, das dich interessiert",
+    onboarding_content_topic_body:
+      "Kein Lehrplan? Beschreib auf der nächsten Seite ein Thema und was du schon weißt, und ZAM schlägt Unterthemen und Karten vor.",
+    onboarding_content_topic_action: "Thema beschreiben",
+    btn_content_topic_import: "Themen-Import",
     content_import_menu: "Importieren",
-    goal_import_close: "Schließen",
+    topic_import_close: "Schließen",
     // Dashboard checklist & degraded-mode link-backs (ADR 2026-07-24 §7,
     // Phase 9).
     onboarding_checklist_title: "Richte ZAM fertig ein",
@@ -8309,7 +8311,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Alles Übrige funktioniert bereits – diese Schritte schalten den Rest frei.",
     onboarding_checklist_model_title: "KI-Modell verbinden",
     onboarding_checklist_model_note:
-      "Wiederholungen und selbst geschriebene Karten funktionieren ohne; KI-Importe, generierte Fragen und der Ziel-Weg warten auf ein Modell.",
+      "Wiederholungen und selbst geschriebene Karten funktionieren ohne; KI-Importe, generierte Fragen und der Themen-Import warten auf ein Modell.",
     onboarding_checklist_agent_title: "Agenten verbinden",
     onboarding_checklist_agent_note:
       "Das Studio funktioniert ohne vollständig – aber /zam in einem Agenten (Claude Code, Copilot, …) bleibt aus, bis ein Agent verbunden ist.",
@@ -8318,7 +8320,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "In deinem Arbeitsverzeichnis fehlen Teile der Grundstruktur (beliefs/, goals/, skills/). Die Reparatur legt nur das Fehlende neu an.",
     onboarding_checklist_content_title: "Ersten Lernstoff importieren",
     onboarding_checklist_content_note:
-      "Dein Stapel ist leer. Wähle einen Import-Weg – Lehrplan, eigene Quellen, ein Projekt oder ein Ziel.",
+      "Dein Stapel ist leer. Wähle einen Import-Weg – Lehrplan, eigene Quellen, ein Projekt oder ein Thema.",
     dashboard_empty_no_cards:
       "Noch keine Karten – die Einrichtungsliste führt zu den Import-Wegen.",
     // Library topics (ADR 2026-10-02)
