@@ -162,28 +162,40 @@ export async function writeCardText(
   let concept = token.concept;
   const media: Array<{ side: "question" | "answer"; segments: CardText }> = [];
 
+  // A field whose stored segments and plain text already match is left
+  // alone, so re-installing an unchanged tile writes no row.
   if (fields.question !== undefined) {
     if (fields.question === null) {
-      sets.push("question_segments = NULL");
-      media.push({ side: "question", segments: [] });
+      if (token.question_segments) {
+        sets.push("question_segments = NULL");
+        media.push({ side: "question", segments: [] });
+      }
     } else {
       const { segments, plain } = prepare("question", fields.question, opts);
-      sets.push("question = ?", "question_segments = ?");
-      params.push(plain, JSON.stringify(segments));
-      question = plain;
-      media.push({ side: "question", segments });
+      const json = JSON.stringify(segments);
+      if (json !== token.question_segments || plain !== token.question) {
+        sets.push("question = ?", "question_segments = ?");
+        params.push(plain, json);
+        question = plain;
+        media.push({ side: "question", segments });
+      }
     }
   }
   if (fields.concept !== undefined) {
     if (fields.concept === null) {
-      sets.push("concept_segments = NULL");
-      media.push({ side: "answer", segments: [] });
+      if (token.concept_segments) {
+        sets.push("concept_segments = NULL");
+        media.push({ side: "answer", segments: [] });
+      }
     } else {
       const { segments, plain } = prepare("concept", fields.concept, opts);
-      sets.push("concept = ?", "concept_segments = ?");
-      params.push(plain, JSON.stringify(segments));
-      concept = plain;
-      media.push({ side: "answer", segments });
+      const json = JSON.stringify(segments);
+      if (json !== token.concept_segments || plain !== token.concept) {
+        sets.push("concept = ?", "concept_segments = ?");
+        params.push(plain, json);
+        concept = plain;
+        media.push({ side: "answer", segments });
+      }
     }
   }
   if (sets.length === 0) {

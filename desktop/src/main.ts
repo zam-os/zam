@@ -9154,6 +9154,18 @@ async function setGraph3dFeature(enabled: boolean): Promise<void> {
 }
 
 // ── KEYBOARD SHORTCUTS & EVENT BINDINGS ──────────────────────────────────
+/**
+ * Deliver fixed bundled tiles to a library that installed them earlier (ADR
+ * 2026-10-14b Decision 7): once per start, well after the first card, a few
+ * tiles per call so a remote library never stalls the Studio. Offline or on a
+ * team library the bridge declines; the next start tries again.
+ */
+function scheduleBundledTileReconcile(): void {
+  window.setTimeout(() => {
+    void runBridge("bundled-tiles-reconcile", ["--max", "5"]).catch(() => {});
+  }, 20_000);
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   applyTheme(loadThemePreference());
   settingsViewMode = loadSettingsViewMode();
@@ -9198,6 +9210,7 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   initPanel("study-learning", initStudyLearningControls);
   initPanel("study-workload", initStudyWorkloadControls);
+  scheduleBundledTileReconcile();
   // The topic import is a content import of its own (ADR 2026-10-14):
   // Learning Content opens it in a dialog, not the first-run flow.
   initTopicImportDialog({

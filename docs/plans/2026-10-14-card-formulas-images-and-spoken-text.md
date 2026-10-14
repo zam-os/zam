@@ -30,8 +30,8 @@ small images.
 - [x] **Phase 1** — kernel: segment types, inventory, tokenizer, markup
   check, projections, converter — `dbb5a670`
 - [x] **Phase 2** — schema and the one write path — `5c6e87f1`
-- [ ] **Phase 3** — Studio recall renders segments; voice speaks them;
-  measurements
+- [x] **Phase 3** — Studio recall renders segments; voice speaks them;
+  measurements — `ba3bf276` (WebKit and VoiceOver measurement open: owner)
 - [ ] **Phase 4** — tiles: segment fields, installer, `installed_tiles`,
   background reinstall, team step
 - [ ] **Phase 5** — bundled tile migration (owner review gate)
@@ -582,6 +582,37 @@ Pure functions only. No schema, no surface.
   - a second call is a no-op;
   - it refuses on the team target. Use the existing Postgres test helpers
     when `pg:test` runs.
+
+### As built (Phase 4)
+
+- **Tile format.**
+  - **Items:** `question_segments` and `concept_segments`; the plain
+    `question`/`concept` may then be left out, and when given they must
+    match the projection.
+  - **Fast checks:** options may be segment lists; distractors may carry
+    `segments`.
+  - **Validation:** every tile segment is validated with
+    `requireSpeech: true`.
+  - **Readers that only need text** (material-import matching) use
+    `kvtItemPlainTexts`.
+- **Substance versus presentation.** The substance comparison reads plain
+  projections. For fast checks it reads the options without
+  `option_segments`, so a tile with no segments compares exactly as before.
+  On every install the installer then calls `writeCardText` and updates the
+  stored fast check. Both skip unchanged values, so an unchanged reinstall
+  still touches no row (`updated_at` included).
+- **`installed_tiles`.** A successful install upserts the row, but only when
+  the version changed or a failure was recorded. A failed install records
+  `failed_at`/`last_error` outside the rolled-back transaction, best effort.
+- **`reconcileInstalledBundledTiles`.** A tile counts as installed when it
+  is recorded, or when every one of its atoms and items is present. A single
+  shared item is not enough: the Optik tiles share six items, and the first
+  version reinstalled all four Optik tiles after one.
+  - **Bridge:** `zam bridge bundled-tiles-reconcile --max 5`.
+  - **Studio** calls it once per start, 20 s after load, and ignores
+    errors.
+  - **Team library:** the kernel refuses a PostgreSQL library unless called
+    as `zam team reinstall-tiles` (administrator).
 
 ## Phase 5 — bundled tile migration (owner review gate)
 

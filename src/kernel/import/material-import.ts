@@ -29,7 +29,7 @@ import {
   getBundledCellTile,
   listBundledCells,
 } from "../library/bundled-cells.js";
-import { installKvtTile } from "../library/kvt-attach.js";
+import { installKvtTile, kvtItemPlainTexts } from "../library/kvt-attach.js";
 import { ensureCard, getCard, reattachCardForUser } from "../models/card.js";
 import {
   type BloomLevel,
@@ -851,6 +851,7 @@ function cellCandidates(
     }
     for (const atom of cell.atoms) {
       for (const item of atom.practice_items ?? []) {
+        const { question, concept } = kvtItemPlainTexts(item);
         candidates.push({
           key: `c:${item.id}`,
           atomId: atom.id,
@@ -861,13 +862,11 @@ function cellCandidates(
             atomId: atom.id,
             itemId: item.id,
           },
-          question: item.question,
-          answer: item.concept,
+          question,
+          answer: concept,
           title: atom.title,
           area: normaliseMaterialArea(atom.domain ?? ""),
-          stems: materialStems(
-            rowText(item.question, item.concept, atom.title),
-          ),
+          stems: materialStems(rowText(question, concept, atom.title)),
           vector: null,
         });
       }

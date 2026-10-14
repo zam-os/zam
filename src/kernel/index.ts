@@ -489,6 +489,8 @@ export type {
   BundledCellInfo,
   BundledCellStatus,
   CurriculumScope,
+  ReconcileBundledTilesOptions,
+  ReconcileBundledTilesResult,
 } from "./library/bundled-cells.js";
 export {
   BUNDLED_CELLS,
@@ -502,6 +504,7 @@ export {
   isBundledCellInstalled,
   listBundledCells,
   needsGenericCurriculumImport,
+  reconcileInstalledBundledTiles,
 } from "./library/bundled-cells.js";
 export {
   CARD_SHAPE_RULES,

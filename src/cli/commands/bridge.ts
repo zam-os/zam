@@ -135,6 +135,7 @@ import {
   readSessionDigest,
   readUiObservationLog,
   readUpForTokens,
+  reconcileInstalledBundledTiles,
   recordTopicImport,
   redactCommand,
   regionTokenIds,
@@ -9280,6 +9281,29 @@ bridgeCommand
           user: opts.user,
         });
         jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+// ── zam bridge bundled-tiles-reconcile ─────────────────────────────────────
+
+bridgeCommand
+  .command("bundled-tiles-reconcile")
+  .description(
+    "Reinstall installed bundled tiles whose version changed, a few per call (JSON)",
+  )
+  .option("--max <n>", "Most tiles to reinstall in this call", "5")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        // A personal library only: the kernel refuses a team library, whose
+        // administrator publishes (ADR 2026-10-14b Decision 7).
+        const result = await reconcileInstalledBundledTiles(db, {
+          maxTiles: Math.max(0, Number(opts.max) || 0),
+        });
+        jsonOut({ success: true, ...result });
       } catch (err: unknown) {
         jsonError((err as Error).message || String(err));
       }
