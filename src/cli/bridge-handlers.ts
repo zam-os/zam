@@ -2000,7 +2000,73 @@ export interface PublishRevisionParams {
     sourceLink?: string | null;
     /** The term to read a world unit up by (ADR 2026-10-14, Decision 4). */
     lookupTerm?: string | null;
+    /**
+     * Card text as segments (ADR 2026-10-14b); `null` makes the field plain
+     * again. Validated here, with the kernel's message for a refused one.
+     */
+    questionSegments?: unknown;
+    conceptSegments?: unknown;
   };
+}
+
+/**
+ * The Studio editor's card text (ADR 2026-10-14b, Decision 9): segments for
+ * a field with formulas, `null` to make a field plain again. Runs in the
+ * caller's transaction, around its plain `updateToken`:
+ *
+ * - `before` clears the segments of fields turned plain, so the plain write
+ *   that follows passes the kernel's no-drift guard;
+ * - `after` writes the segments, which also set the plain columns.
+ */
+export function editedCardText(edit: {
+  questionSegments?: unknown;
+  conceptSegments?: unknown;
+}): {
+  /** Plain fields the caller must not write itself. */
+  segmented: { question: boolean; concept: boolean };
+  before(tx: Database, token: Token): Promise<void>;
+  after(tx: Database, tokenId: string): Promise<void>;
+} {
+  const question = revisionSegments("questionSegments", edit.questionSegments);
+  const concept = revisionSegments("conceptSegments", edit.conceptSegments);
+  return {
+    segmented: { question: Boolean(question), concept: Boolean(concept) },
+    async before(tx, token) {
+      const plainAgain = {
+        ...(question === null && token.question_segments
+          ? { question: null }
+          : {}),
+        ...(concept === null && token.concept_segments
+          ? { concept: null }
+          : {}),
+      };
+      if (Object.keys(plainAgain).length > 0) {
+        await writeCardText(tx, token.id, plainAgain);
+      }
+    },
+    async after(tx, tokenId) {
+      if (!question && !concept) return;
+      await writeCardText(tx, tokenId, {
+        ...(question ? { question } : {}),
+        ...(concept ? { concept } : {}),
+      });
+    },
+  };
+}
+
+/** Segments from a caller, checked before anything is written. */
+function revisionSegments(
+  name: string,
+  value: unknown,
+): CardText | null | undefined {
+  if (value === undefined || value === null) return value;
+  const issues = validateCardText(value);
+  if (issues.length > 0) {
+    throw new Error(
+      `${name}: ${issues.map((issue) => issue.message).join(" ")}`,
+    );
+  }
+  return value as CardText;
 }
 
 export async function publishRevision(
@@ -2015,11 +2081,20 @@ export async function publishRevision(
   }
   if (!tokenId) throw new Error("tokenId or slug is required");
 
+  const { questionSegments, conceptSegments, ...plain } = params.changes ?? {};
+  const question = revisionSegments("questionSegments", questionSegments);
+  const concept = revisionSegments("conceptSegments", conceptSegments);
   const result = await publishTokenRevision(db, {
     tokenId,
     materiality: params.materiality,
     publishedBy: params.publishedBy,
-    changes: params.changes,
+    changes: params.changes
+      ? {
+          ...plain,
+          ...(question !== undefined ? { questionSegments: question } : {}),
+          ...(concept !== undefined ? { conceptSegments: concept } : {}),
+        }
+      : undefined,
   });
 
   return {

@@ -225,7 +225,7 @@ describe("card text storage (ADR 2026-10-14b, plan Phase 2)", () => {
     const stored = (await getTokenById(db, t.id)) as Token;
     await expect(
       updateToken(db, t.slug, { question: "Eine andere Frage" }),
-    ).rejects.toThrow(/formulas or images/);
+    ).rejects.toThrow(/has formulas. Change it in the card editor/);
     await expect(
       updateToken(db, t.slug, { question: stored.question }),
     ).resolves.toBeTruthy();
@@ -255,7 +255,7 @@ describe("card text storage (ADR 2026-10-14b, plan Phase 2)", () => {
         materiality: "cosmetic",
         changes: { question: "Plain drüber" },
       }),
-    ).rejects.toThrow(/formulas or images/);
+    ).rejects.toThrow(/has formulas. Change it in the card editor/);
   });
 
   it("puts segments and spoken text into the review queue", async () => {

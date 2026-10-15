@@ -3,7 +3,12 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
+  editedCardText,
+  publishRevision,
+} from "../../src/cli/bridge-handlers.js";
+import {
   ensureHighQualityQuestion,
+  fixCardTextViaLLM,
   importCurriculumViaLLM,
   parseTranslatedSegments,
 } from "../../src/cli/llm/client.js";
@@ -15,11 +20,15 @@ import {
   type CardText,
   createToken,
   type Database,
+  ensureCard,
   fromPlaceholderText,
+  getTokenBySlug,
+  listPersonalCards,
   openDatabase,
   readCardTextInput,
   setSetting,
   toPlaceholderText,
+  updateToken,
 } from "../../src/kernel/index.js";
 
 /**
@@ -231,5 +240,91 @@ describe("model replies with formulas", () => {
       question: "Wie groß ist W_el = ½CU² bei U = 5 V?",
     });
     expect(fallback?.segments).toBeUndefined();
+  });
+
+  it("the editor's fix asks once for missing speech and refuses a bad formula", async () => {
+    let reply = JSON.stringify([
+      { type: "text", text: "Die Energie ist " },
+      { type: "math", tex: "W = \\frac{1}{2} C U^2" },
+    ]);
+    global.fetch = async (_url, init) => {
+      const body = String(init?.body ?? "");
+      if (!body) return new Response("{}");
+      if (body.includes("teacher reads it aloud")) {
+        return chatReply(
+          JSON.stringify([
+            {
+              tex: "W = \\frac{1}{2} C U^2",
+              speech: "W gleich ein halb C U Quadrat",
+            },
+          ]),
+        );
+      }
+      return chatReply(reply);
+    };
+    const fixed = await fixCardTextViaLLM(db, {
+      side: "answer",
+      current: "Die Energie ist ein halb C U Quadrat.",
+      instruction: "schreib es als Formel",
+    });
+    expect(fixed.segments?.[1]).toEqual({
+      type: "math",
+      tex: "W = \\frac{1}{2} C U^2",
+      speech: "W gleich ein halb C U Quadrat",
+    });
+
+    reply = JSON.stringify([
+      { type: "math", tex: "\\href{x}{y}", speech: "x" },
+    ]);
+    await expect(
+      fixCardTextViaLLM(db, {
+        side: "answer",
+        current: "x",
+        instruction: "verlinke es",
+      }),
+    ).rejects.toThrow(/not valid card text: \[0\]\.tex/);
+  });
+
+  it("the editor's revision round-trips segments and refuses invalid ones with the kernel's message", async () => {
+    const token = await createToken(db, {
+      slug: "energie-editor",
+      concept: "plain",
+      question: "Wie groß ist die Energie?",
+      domain: "physik",
+    });
+    await ensureCard(db, token.id, "learner");
+    await publishRevision(db, {
+      slug: "energie-editor",
+      materiality: "cosmetic",
+      changes: { conceptSegments: ENERGY },
+    });
+    const [listed] = await listPersonalCards(db, "learner");
+    expect(listed.conceptSegments).toEqual(ENERGY);
+    expect(listed.concept).toBe("Wie groß ist W_el = ½CU² bei U = 5 V?");
+
+    await expect(
+      publishRevision(db, {
+        slug: "energie-editor",
+        materiality: "cosmetic",
+        changes: {
+          conceptSegments: [{ type: "math", tex: "\\href{x}{y}" }],
+        },
+      }),
+    ).rejects.toThrow(/^conceptSegments: \[0\]\.tex: /);
+
+    // Back to plain text: the segments go first, then the plain write.
+    const edit = editedCardText({ conceptSegments: null });
+    const stored = await getTokenBySlug(db, "energie-editor");
+    if (!stored) throw new Error("token missing");
+    await db.transaction(async (tx) => {
+      await edit.before(tx, stored);
+      await updateToken(tx, "energie-editor", {
+        concept: "Ein halb C U Quadrat",
+      });
+      await edit.after(tx, stored.id);
+    });
+    const plain = await getTokenBySlug(db, "energie-editor");
+    expect(plain?.concept).toBe("Ein halb C U Quadrat");
+    expect(plain?.concept_segments).toBeNull();
   });
 });

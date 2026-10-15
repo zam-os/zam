@@ -1967,6 +1967,109 @@ fieldset.settings-choice {
   overflow-y: hidden;
 }
 
+/* The formula editor under a card side (ADR 2026-10-14b, Decision 9): the
+   card as it will look, its spoken sentences, "let the AI fix it", and the
+   TeX behind a disclosure for curators. */
+.card-text-editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.cte-preview {
+  padding: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-box);
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.cte-readings {
+  margin: 0;
+  padding-left: var(--space-4);
+  font-size: var(--fs-sm);
+  color: var(--color-muted);
+}
+
+.cte-fix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.cte-fix-input {
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+
+.cte-proposal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-3);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-box);
+  background: var(--color-accent-soft);
+}
+
+.cte-proposal-heading {
+  flex-basis: 100%;
+  font-size: var(--fs-xs);
+  color: var(--color-ink-2);
+}
+
+.cte-proposal-body {
+  flex-basis: 100%;
+}
+
+.cte-status {
+  font-size: var(--fs-sm);
+  color: var(--color-muted);
+}
+
+.cte-source summary {
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  color: var(--color-ink-2);
+}
+
+.cte-source-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.cte-source-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.cte-source-row .cte-text,
+.cte-source-row .cte-tex,
+.cte-source-row .cte-speech {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.cte-tex {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.cte-live {
+  flex-basis: 100%;
+  min-height: 1.4em;
+}
+
+.cte-live.cte-invalid {
+  font-size: var(--fs-xs);
+  color: var(--color-danger);
+}
+
 .card-image {
   display: block;
   max-width: 100%;

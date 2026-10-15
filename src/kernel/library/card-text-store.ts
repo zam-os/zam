@@ -74,8 +74,8 @@ export interface CardTextColumns {
  *
  * A plain `question` or `concept` written to a field that has segments is
  * accepted only when it equals the stored projection (a surface echoing the
- * text it was shown). Anything else must go through the segments; until the
- * Studio editor edits segments (plan Phase 7), it says so.
+ * text it was shown). Anything else must go through the segments, and the
+ * message sends the learner to the Studio's card editor, which edits them.
  */
 export function assertPlainWriteAllowed(
   token: CardTextColumns,
@@ -98,7 +98,7 @@ export function assertPlainWriteAllowed(
   }
   if (segmented.length > 0) {
     throw new Error(
-      `This card's ${segmented.join(" and ")} has formulas or images; edit its segments, not the plain text.`,
+      `This card's ${segmented.join(" and ")} has formulas. Change it in the card editor, which keeps them.`,
     );
   }
 }

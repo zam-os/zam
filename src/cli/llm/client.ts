@@ -23,6 +23,7 @@ import type {
 } from "../../kernel/index.js";
 import {
   BLOOM_VERBS,
+  CARD_TEXT_RULE,
   cardShapeRuleLines,
   endpointUrl,
   ensureMachineProviderRolesSanitized,
@@ -2881,6 +2882,97 @@ Output ONLY the raw translation. Do not include any headers, preamble, quotes, o
   );
 
   return readChatContent(res, "Translation");
+}
+
+/**
+ * "Let the model fix it" (ADR 2026-10-14b, Decision 9): one side of a card,
+ * corrected as the learner asks in their own words. The reply is read like
+ * any agent write — a refused formula is an error — and formulas it left
+ * without speech are asked for once. Nothing is written: the Studio shows the
+ * result for the learner to accept.
+ */
+export async function fixCardTextViaLLM(
+  db: Database,
+  input: {
+    side: "question" | "answer";
+    /** The side as it stands: segments, or plain text. */
+    current: CardText | string;
+    instruction: string;
+    /** The other side's plain text, for context. */
+    otherSide?: string | null;
+  },
+): Promise<{ plain: string; segments: CardText | null }> {
+  const instruction = input.instruction.trim();
+  if (!instruction) throw new Error("Say what should change.");
+  const cfg = await getProviderForRole(db, "text");
+  const endpoint = await resolveUsableTextEndpoint(db, { allowAgent: true });
+  const systemPrompt = `You are ZAM. You correct one side of a learning card, the question or the reference answer, as the learner asks in their own words.
+Change only what the instruction asks for and keep everything else as it is, in the card's language.
+${CARD_TEXT_RULE}
+Output ONLY the corrected text as raw JSON: a JSON string when it has no formula, otherwise the JSON segment list. No preamble, no markdown fence.`;
+  const userPrompt = JSON.stringify(
+    {
+      side: input.side,
+      current: input.current,
+      instruction,
+      ...(input.otherSide ? { otherSide: input.otherSide } : {}),
+    },
+    null,
+    1,
+  );
+  const reply = await sendCardPrompt(
+    endpoint,
+    cfg.locale,
+    systemPrompt,
+    userPrompt,
+    "LLM card text fix",
+  );
+  const read = readCardTextInput(parseCardTextReply(reply), "agent");
+  if (!read.ok) {
+    throw new Error(
+      `The model's correction is not valid card text: ${read.issues
+        .map((issue) => issue.message)
+        .join(" ")}`,
+    );
+  }
+  let segments = read.value.segments;
+  if (segments) {
+    const missing = formulasWithoutSpeech(segments);
+    if (missing.length > 0) {
+      const speech = await requestFormulaSpeechViaLLM(
+        db,
+        missing.map((tex) => ({ tex, card: read.value.plain })),
+      );
+      segments = withSpeech(segments, speech);
+    }
+  }
+  return { plain: read.value.plain, segments };
+}
+
+/** A reply that should be a JSON string or segment list; else its text. */
+export function parseCardTextReply(reply: string): unknown {
+  const text = reply
+    .trim()
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/, "")
+    .trim();
+  const start = text.indexOf("[");
+  const end = text.lastIndexOf("]");
+  if (start >= 0 && end > start) {
+    try {
+      return JSON.parse(text.slice(start, end + 1));
+    } catch {
+      // fall through: a string may contain brackets
+    }
+  }
+  if (text.startsWith('"')) {
+    try {
+      return JSON.parse(text);
+    } catch {
+      // fall through
+    }
+  }
+  return text;
 }
 
 /**

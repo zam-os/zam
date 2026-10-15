@@ -33,6 +33,7 @@ const REVIEWED = [
   "bonus-candidates-list",
   "bundled-cell-enrol",
   "bundled-cells-list",
+  "card-text-fix",
   "database-status",
   "get-active-knowledge-context",
   "get-neighborhood",

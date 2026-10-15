@@ -203,6 +203,11 @@ export const STUDIO_BRIDGE_COMMANDS: Readonly<
     why: "Publishes a revision of the caller's own card.",
   },
   "personal-card-revision-preview": { why: "Reads a revision preview." },
+  // The editor's "let the model fix it" (ADR 2026-10-14b, D9): asks the text
+  // model, returns segments for the learner to accept, writes nothing.
+  "card-text-fix": {
+    why: "Asks the text model for corrected card text; writes nothing.",
+  },
   "list-drafts": { why: "Reads draft tokens." },
   // Untaken published tokens (ADR 2026-10-10). The two lists only read.
   "unchosen-groups": {

@@ -2,6 +2,10 @@ import type {
   CardSegmentPayload,
   ReadUpWire,
 } from "../../src/bridge/protocol.js";
+import {
+  attachCardTextEditor,
+  type CardTextEditor,
+} from "./card-text-editor.js";
 import { runBridge } from "./bridge-transport.js";
 import { currentLocale, t, tf } from "./i18n.js";
 import {
@@ -23,6 +27,9 @@ export interface PersonalCard {
   slug: string;
   title: string;
   concept: string;
+  /** Card text with formulas (ADR 2026-10-14b); absent or null when plain. */
+  questionSegments?: CardSegmentPayload[] | null;
+  conceptSegments?: CardSegmentPayload[] | null;
   domain: string;
   bloomLevel: number;
   context: string;
@@ -367,6 +374,9 @@ let createFirstCardBtn: HTMLButtonElement;
 // Form fields
 let fieldQuestion: HTMLTextAreaElement;
 let fieldConcept: HTMLTextAreaElement;
+/** The formula editors under both fields (ADR 2026-10-14b, D9). */
+let questionEditor: CardTextEditor;
+let conceptEditor: CardTextEditor;
 let fieldTitle: HTMLInputElement;
 let fieldDomain: HTMLInputElement;
 let fieldSourceLink: HTMLInputElement;
@@ -621,6 +631,14 @@ export function initLearningContentStudio(): void {
   fieldConcept = document.getElementById(
     "editor-field-concept",
   ) as HTMLTextAreaElement;
+  questionEditor = attachCardTextEditor(fieldQuestion, {
+    side: "question",
+    otherSide: () => fieldConcept.value,
+  });
+  conceptEditor = attachCardTextEditor(fieldConcept, {
+    side: "answer",
+    otherSide: () => fieldQuestion.value,
+  });
   fieldTitle = document.getElementById(
     "editor-field-title",
   ) as HTMLInputElement;
@@ -1400,8 +1418,8 @@ function selectCard(card: PersonalCard): void {
   layoutContainer.classList.add("show-editor");
 
   // Populate editor form
-  fieldQuestion.value = card.question || "";
-  fieldConcept.value = card.concept || "";
+  questionEditor.load(card.question || "", card.questionSegments);
+  conceptEditor.load(card.concept || "", card.conceptSegments);
   fieldTitle.value = card.title || "";
   fieldDomain.value = card.domain || "";
   fieldSourceLink.value = card.sourceLink || "";
@@ -1452,8 +1470,8 @@ function startCreateNewCard(): void {
   layoutContainer.classList.add("show-editor");
 
   // Clear editor form
-  fieldQuestion.value = "";
-  fieldConcept.value = "";
+  questionEditor.load("", null);
+  conceptEditor.load("", null);
   fieldTitle.value = "";
   fieldDomain.value = "";
   fieldSourceLink.value = "";
@@ -1497,6 +1515,8 @@ function setEditorLocked(locked: boolean): void {
   ]) {
     field.readOnly = locked;
   }
+  questionEditor.setLocked(locked);
+  conceptEditor.setLocked(locked);
   fieldBloom.disabled = locked;
   fieldMode.disabled = locked;
 }
@@ -1647,6 +1667,7 @@ async function publishDraftCard(): Promise<void> {
     if (fieldSourceLink.value.trim()) {
       args.push("--source-link", fieldSourceLink.value.trim());
     }
+    args.push(...cardTextArgs());
     await runBridge<{ success: boolean }>(
       "personal-card-publish-revision",
       args,
@@ -1744,6 +1765,7 @@ async function submitReleaseRevision(): Promise<void> {
     if (context) args.push("--context", context);
     if (question) args.push("--question", question);
     if (sourceLink) args.push("--source-link", sourceLink);
+    args.push(...cardTextArgs());
 
     const res = await runBridge<{
       success: boolean;
@@ -1789,6 +1811,23 @@ function toggleAdvancedSection(): void {
   }
 }
 
+/**
+ * The formula editors' part of a save (ADR 2026-10-14b, D9): segments for a
+ * side with formulas, `null` for one that lost them, nothing otherwise.
+ */
+function cardTextArgs(): string[] {
+  const args: string[] = [];
+  const question = questionEditor.segmentsForSave();
+  if (question !== undefined) {
+    args.push("--question-segments", JSON.stringify(question));
+  }
+  const concept = conceptEditor.segmentsForSave();
+  if (concept !== undefined) {
+    args.push("--concept-segments", JSON.stringify(concept));
+  }
+  return args;
+}
+
 async function saveCard(): Promise<void> {
   const question = fieldQuestion.value.trim();
   const concept = fieldConcept.value.trim();
@@ -1829,6 +1868,7 @@ async function saveCard(): Promise<void> {
       if (contextFilter.value) {
         args.push("--knowledge-context", contextFilter.value);
       }
+      args.push(...cardTextArgs());
 
       const res = await runBridge<{
         success: boolean;
@@ -1867,6 +1907,7 @@ async function saveCard(): Promise<void> {
         question,
         "--source-link",
         sourceLink,
+        ...cardTextArgs(),
       ];
 
       const res = await runBridge<{ success: boolean }>(

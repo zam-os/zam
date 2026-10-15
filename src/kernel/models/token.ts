@@ -12,6 +12,7 @@ import { TOPIC_SOURCE_PREFIX } from "../import/topic-import.js";
 import type { CardText } from "../library/card-text.js";
 import {
   assertPlainWriteAllowed,
+  parseStoredCardText,
   writeCardText,
 } from "../library/card-text-store.js";
 import type { CardState } from "./card.js";
@@ -855,6 +856,12 @@ export interface PersonalCard {
   blocked: number | null;
   provider: string | null;
   topicId: string | null;
+  /**
+   * The question and answer as card-text segments (ADR 2026-10-14b), for an
+   * editor that shows formulas; `null` for plain text.
+   */
+  questionSegments: CardText | null;
+  conceptSegments: CardText | null;
 }
 
 export function slugify(text: string): string {
@@ -997,6 +1004,8 @@ export async function listPersonalCards(
         )
       ) AS "sourceLink",
       t.question,
+      t.question_segments AS "questionSegments",
+      t.concept_segments AS "conceptSegments",
       t.created_at AS "createdAt",
       t.updated_at AS "updatedAt",
       t.editorial_state AS "editorialState",
@@ -1051,6 +1060,8 @@ export async function listPersonalCards(
 
   const rows = (await db.prepare(sql).all(...values)) as PersonalCard[];
   for (const row of rows) {
+    row.questionSegments = parseStoredCardText(row.questionSegments);
+    row.conceptSegments = parseStoredCardText(row.conceptSegments);
     if (!row.provider && row.sourceLink) {
       if (row.sourceLink.includes("lehrplanplus.bayern.de")) {
         row.provider = "lehrplanplus-bayern";

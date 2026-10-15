@@ -38,8 +38,9 @@ small images.
   migrated and tested; owner gate open
   (`scripts/card-text-migration/review-sample.md`)
 - [x] **Phase 6** — writers: prompts, tool contracts, `$` repair,
-  placeholders
-- [ ] **Phase 7** — Anki formula lift and the Studio editor (D9)
+  placeholders — `c5e56ee8`
+- [x] **Phase 7** — Anki formula lift and the Studio editor (D9); editor
+  not yet tried in a browser
 - [ ] **Phase 8** — Mobile, the MCP recall panel, image segments
 - [ ] **Phase 9** — documentation and handover
 
@@ -899,6 +900,57 @@ Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
   `[$]x^2[/$]` imports as math segments, and a refused formula stays text.
 - **Editor:** the bridge revision with segments round-trips, and invalid
   segments are refused with the kernel's message.
+
+### As built (Phase 7)
+
+- **Anki lift** (`src/cli/import/formula-lift.ts`).
+  - **Before the HTML is made inert,** `holdFormulas` replaces every
+    `\(…\)`, `\[…\]`, `[$]…[/$]`, `[$$]…[/$$]` and `[latex]…[/latex]` with a
+    marker; tags and entities inside a formula are resolved. `[latex]`
+    unwraps one `$`/`$$` pair.
+  - **After sanitizing,** `restoreFormulas` turns the markers back into math
+    segments and reads the side with `readCardTextInput(…, "import")`.
+  - **A refused formula** becomes readable text (`texAsText`), not its
+    source, and the card gets a `formula-kept-as-text` notice. Reason: a
+    source formula beside a rendered one would fail the markup check, and
+    raw TeX on a card is what this ADR removes.
+  - **The sanitizer is unchanged** (an inline tag still becomes a space), so
+    an unchanged source hashes as before.
+  - **CSV/TSV imports** are not lifted; the plan names Anki only.
+- **Kernel text import.**
+  - **Cards** carry `questionSegments`/`answerSegments` and `unliftedText`,
+    and new cards are written through `writeCardText`.
+  - **Re-import:** when only the lift tells it from the last import, the
+    preview marks the update `formulasOnly`. It is applied as a cosmetic
+    revision, also to published content (D7), so cards imported before this
+    phase get their formulas on their next re-import without anyone
+    relearning them.
+- **Studio editor** (`desktop/src/card-text-editor.ts`, under both fields).
+  - **Default view:** the rendered side and each formula's spoken sentence.
+  - **"Let the AI fix it":** one line, through the new read-only bridge
+    command `card-text-fix` (in `STUDIO_BRIDGE_COMMANDS` and the reviewed
+    list). The reply is read in `agent` mode, missing speech is asked for
+    once, and the result is a preview to accept or discard.
+  - **"Insert formula":** an empty math segment with a TeX field, a live
+    preview and a speech field.
+  - **Curators:** every formula's TeX and speech, and the text between them,
+    behind a disclosure.
+  - **The text area** is hidden in formula mode and holds the projection,
+    so every existing check keeps working.
+- **Saving.** `personal-card-create`, `personal-card-update` and
+  `personal-card-publish-revision` take `--question-segments` /
+  `--concept-segments`; `null` turns a side plain again. The bridge checks
+  them first (`editedCardText`, `revisionSegments`) and returns the kernel's
+  message. `personal-card-list` now returns the segments.
+- **Kernel guard.** Its refusal now sends the learner to the card editor.
+- **Not verified in a browser.** The browser pane serves only the main
+  checkout, which this work does not touch.
+  `desktop/dev/card-text-editor.html` shows the editor on a sample card
+  with a scripted model reply (`npm --prefix desktop run dev`).
+- **Tests:** a synthetic `.apkg` with `\(\frac{1}{2}\)`, `[$]…[/$]`,
+  `[latex]` and a refused formula; kernel import create and lift-only
+  re-import; the revision round trip and refusal; `card-text-fix` with a
+  scripted model; the guard message.
 
 ## Phase 8 — Mobile, the MCP recall panel, image segments
 
