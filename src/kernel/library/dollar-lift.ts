@@ -162,16 +162,17 @@ function splitInlineLenient(
       k++;
       continue;
     }
+    // Only the next dollar can close: math never contains an unescaped `$`.
+    // When it cannot close (`$HOME und $5`), this one stays text and the
+    // next dollar gets its own chance to open.
     let closeIndex = -1;
-    for (let m = k + 1; m < positions.length; m++) {
-      const close = positions[m];
-      const before = text[close - 1];
-      const next = text[close + 1];
-      if (/\s/.test(before) || (next !== undefined && /[0-9]/.test(next))) {
-        continue;
+    const candidate = positions[k + 1];
+    if (candidate !== undefined) {
+      const before = text[candidate - 1];
+      const next = text[candidate + 1];
+      if (!/\s/.test(before) && !(next !== undefined && /[0-9]/.test(next))) {
+        closeIndex = k + 1;
       }
-      closeIndex = m;
-      break;
     }
     if (closeIndex === -1) {
       unlifted.push({

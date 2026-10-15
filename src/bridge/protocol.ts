@@ -790,6 +790,14 @@ export interface MaterialImportProposalWire {
    * `firma`/`privat` for the library's own planet. Mixed imports only.
    */
   kind?: "welt" | "firma" | "privat";
+  /** Question and answer as segments when they hold a formula (ADR 2026-10-14b). */
+  questionSegments?: CardSegmentPayload[];
+  answerSegments?: CardSegmentPayload[];
+  /**
+   * What stayed text although it looked like TeX: a `$` that is not math,
+   * or a formula the validator refused. The review list shows it.
+   */
+  textNotes?: Array<{ kind: "dollar" | "formula"; text: string }>;
 }
 
 export type MaterialImportTargetWire =

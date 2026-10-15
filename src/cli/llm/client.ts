@@ -16,6 +16,7 @@ import { spawn } from "node:child_process";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import type { DiscussionTurn } from "../../bridge/protocol.js";
 import type {
+  CardText,
   Database,
   ModelCapability,
   SupportedLocale,
@@ -25,6 +26,8 @@ import {
   cardShapeRuleLines,
   endpointUrl,
   ensureMachineProviderRolesSanitized,
+  formulasWithoutSpeech,
+  fromPlaceholderText,
   getActiveWorkspaceContext,
   getKnowledgeContextByName,
   getMachineAiConfig,
@@ -37,9 +40,14 @@ import {
   LANGUAGE_NAMES,
   normalizeLocale,
   normalizeLookupTerm,
+  PLAIN_FORMULA_RULE,
   parseAnswerPoints,
+  plainProjection,
+  readCardTextInput,
   supportsAnswerPoints,
   t,
+  toPlaceholderText,
+  withSpeech,
 } from "../../kernel/index.js";
 import {
   assertModelEndpointAllowed,
@@ -63,6 +71,12 @@ import {
   loadModelRegistry,
   type ResolvedModelEntry,
 } from "./model-registry.js";
+import {
+  buildFormulaSpeechRequest,
+  FORMULA_SPEECH_SYSTEM_PROMPT,
+  type FormulaSpeechItem,
+  parseFormulaSpeechReply,
+} from "./speech-prompt.js";
 
 /** Single source of truth for connection defaults (easy to bump as models evolve). */
 export const DEFAULT_LLM_URL = "http://localhost:8000/v1";
@@ -1098,6 +1112,12 @@ export async function generateQuestionViaLLM(
     sourceLinkContent?: string | null;
     /** Stored question to vary — same knowledge, fresh phrasing. */
     existingQuestion?: string | null;
+    /**
+     * When the stored question holds formulas, it arrives with placeholders
+     * `[[1]]`, `[[2]]`, … and these are their readings (ADR 2026-10-14b,
+     * Decision 6). The reply must keep each placeholder exactly once.
+     */
+    placeholderReadings?: string[];
   },
 ): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "recall");
@@ -1111,9 +1131,15 @@ export async function generateQuestionViaLLM(
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const existingQuestion = input.existingQuestion?.trim();
+  const readings = input.placeholderReadings ?? [];
+  const placeholderGuideline =
+    existingQuestion && readings.length > 0
+      ? `
+6. The canonical question holds its formulas as placeholders: ${readings.map((reading, index) => `[[${index + 1}]] reads "${reading}"`).join("; ")}. Keep every placeholder exactly once, where its formula belongs, and never write a formula, LaTeX or Markdown yourself.`
+      : "";
   const variationGuideline = existingQuestion
     ? `
-5. A canonical question for this token already exists. Generate a fresh VARIATION that tests the SAME criterion (the concept). Different wording or angle is required. Do not change what counts as a complete answer. If you cannot vary without changing the criterion, output the canonical question unchanged.`
+5. A canonical question for this token already exists. Generate a fresh VARIATION that tests the SAME criterion (the concept). Different wording or angle is required. Do not change what counts as a complete answer. If you cannot vary without changing the criterion, output the canonical question unchanged.${placeholderGuideline}`
     : "";
 
   const systemPrompt = `You are ZAM, a highly precise agentic skills trainer.
@@ -1229,7 +1255,8 @@ Guidelines:
 1. Provide a constructive, task-focused evaluation in ${langName} (2-3 sentences). Weave a brief explanation of the target concept into the feedback. Do NOT append a separate, duplicate reference answer or raw "Musterlösung" block. Do not praise the person; comment on the answer.
 2. CRITICAL: ZAM is a strict one-shot card flow, NOT an interactive chat. The correct Musterlösung (reference answer) is revealed alongside your feedback. Therefore, NEVER ask the user to think further, keep guessing, or suggest they try to solve the remaining parts of the question. Immediately evaluate what they wrote and explain the complete solution.
 3. End your response with a completeness verdict on its own line, in ${langName}: "${completeness.complete}" when nothing required is missing, or "${completeness.incomplete} (N)" where N is how many required elements are missing — and name them in the feedback above. Never suggest a rating: how hard the answer was is the learner's to say, not yours. Do NOT add emojis, symbols, or formatting to the verdict line.
-4. Output ONLY the evaluation and the completeness line. Keep it concise and clean. No conversational introduction or markdown wrapper. Do not expose chain-of-thought, internal reasoning, scratchpads, self-corrections, or intermediate drafts. Never output contradictory verdicts or multiple attempts.`;
+4. Output ONLY the evaluation and the completeness line. Keep it concise and clean. No conversational introduction or markdown wrapper. Do not expose chain-of-thought, internal reasoning, scratchpads, self-corrections, or intermediate drafts. Never output contradictory verdicts or multiple attempts.
+5. ${PLAIN_FORMULA_RULE}`;
 
   const userPrompt = `Domain: ${input.domain}
 Slug: ${input.slug}
@@ -1510,8 +1537,16 @@ ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}`
 }
 
 export interface GeneratedCardProposal {
+  /** Plain text; with segments, their projection. */
   question: string;
   concept: string;
+  /**
+   * The question and answer as card-text segments, when the model wrote a
+   * formula (ADR 2026-10-14b, Decision 6). The writers store them through
+   * `createToken`.
+   */
+  question_segments?: CardText;
+  concept_segments?: CardText;
   title?: string; // human-friendly display title for knowledge graph (no domain, Unicode ok)
   domain: string;
   context: string;
@@ -1570,13 +1605,26 @@ function parseGeneratedCardArray(
       );
     }
     const card = value as Record<string, unknown>;
-    for (const field of ["question", "concept", "domain", "context"] as const) {
+    for (const field of ["domain", "context"] as const) {
       if (typeof card[field] !== "string" || card[field].trim().length === 0) {
         throw new Error(
           `Invalid ${label} card at index ${index}: ${field} must be a non-empty string`,
         );
       }
     }
+    // A string, or segments when the card holds a formula. The learner's
+    // import never fails over a formula: a refused one stays readable text.
+    const text = (field: "question" | "concept") => {
+      const result = readCardTextInput(card[field], "import");
+      if (!result.ok) {
+        throw new Error(
+          `Invalid ${label} card at index ${index}: ${field} ${result.issues[0]?.message ?? "must be a non-empty string"}`,
+        );
+      }
+      return result.value;
+    };
+    const question = text("question");
+    const concept = text("concept");
     if (
       card.title !== undefined &&
       (typeof card.title !== "string" || card.title.trim().length === 0)
@@ -1605,8 +1653,10 @@ function parseGeneratedCardArray(
     }
 
     return {
-      question: card.question as string,
-      concept: card.concept as string,
+      question: question.plain,
+      concept: concept.plain,
+      ...(question.segments ? { question_segments: question.segments } : {}),
+      ...(concept.segments ? { concept_segments: concept.segments } : {}),
       title: card.title ? (card.title as string) : undefined,
       domain: card.domain as string,
       context: card.context as string,
@@ -1651,6 +1701,65 @@ function splitCurriculumText(text: string, maxChars: number): string[] {
     start = end;
   }
   return chunks;
+}
+
+/**
+ * Ask the text model once for the readings of formulas that came back
+ * without speech (ADR 2026-10-14b, Decisions 4 and 6). Best effort: a
+ * failure leaves them without speech, and voice mode reads the plain text.
+ */
+export async function requestFormulaSpeechViaLLM(
+  db: Database,
+  items: FormulaSpeechItem[],
+): Promise<Map<string, string>> {
+  if (items.length === 0) return new Map();
+  try {
+    const cfg = await getProviderForRole(db, "text");
+    const endpoint = await resolveUsableTextEndpoint(db, { allowAgent: true });
+    const reply = await sendCardPrompt(
+      endpoint,
+      cfg.locale,
+      FORMULA_SPEECH_SYSTEM_PROMPT,
+      buildFormulaSpeechRequest(items),
+      "LLM formula speech",
+    );
+    return parseFormulaSpeechReply(reply);
+  } catch {
+    return new Map();
+  }
+}
+
+/** Generated cards, with speech asked for where the model left it out. */
+async function withGeneratedSpeech<T extends GeneratedCardProposal>(
+  db: Database,
+  cards: T[],
+): Promise<T[]> {
+  const items: FormulaSpeechItem[] = [];
+  const seen = new Set<string>();
+  for (const card of cards) {
+    for (const [segments, plain] of [
+      [card.question_segments, card.question],
+      [card.concept_segments, card.concept],
+    ] as const) {
+      for (const tex of formulasWithoutSpeech(segments ?? null)) {
+        if (seen.has(tex)) continue;
+        seen.add(tex);
+        items.push({ tex, card: plain });
+      }
+    }
+  }
+  if (items.length === 0) return cards;
+  const speech = await requestFormulaSpeechViaLLM(db, items);
+  if (speech.size === 0) return cards;
+  return cards.map((card) => ({
+    ...card,
+    ...(card.question_segments
+      ? { question_segments: withSpeech(card.question_segments, speech) }
+      : {}),
+    ...(card.concept_segments
+      ? { concept_segments: withSpeech(card.concept_segments, speech) }
+      : {}),
+  }));
 }
 
 function deduplicateGeneratedCards(
@@ -1928,13 +2037,19 @@ JSON Array Output:`;
   );
   // Every card of the subtopic reads up where the subtopic does.
   const lookupTerm = normalizeLookupTerm(input.topic.lookupTerm);
-  return deduplicateGeneratedCards(
-    parseGeneratedCardArray(responseText, "topic import", { min: 0, max: 40 }),
-  ).map((card) => ({
-    ...card,
-    source_link: null,
-    ...(lookupTerm ? { lookup_term: lookupTerm } : {}),
-  }));
+  return withGeneratedSpeech(
+    db,
+    deduplicateGeneratedCards(
+      parseGeneratedCardArray(responseText, "topic import", {
+        min: 0,
+        max: 40,
+      }),
+    ).map((card) => ({
+      ...card,
+      source_link: null,
+      ...(lookupTerm ? { lookup_term: lookupTerm } : {}),
+    })),
+  );
 }
 
 /**
@@ -2268,16 +2383,22 @@ export async function importCurriculumViaLLM(
         `Invalid curriculum import response: expected 0-200 cards, got ${deduplicated.length}`,
       );
     }
-    return deduplicated.map((card) => ({
-      ...card,
-      source_link: sourceUrl || null,
-    }));
+    return withGeneratedSpeech(
+      db,
+      deduplicated.map((card) => ({
+        ...card,
+        source_link: sourceUrl || null,
+      })),
+    );
   }
 
-  return parseGeneratedCardArray(responseText, "curriculum import", {
-    min: 0,
-    max: 200,
-  }).map((card) => ({ ...card, source_link: sourceUrl || null }));
+  return withGeneratedSpeech(
+    db,
+    parseGeneratedCardArray(responseText, "curriculum import", {
+      min: 0,
+      max: 200,
+    }).map((card) => ({ ...card, source_link: sourceUrl || null })),
+  );
 }
 
 /**
@@ -2333,9 +2454,12 @@ JSON Array Output:`;
       system: systemPrompt,
       user: userPrompt,
     });
-    return parseGeneratedCardArray(agentText, "card split", {
-      min: 2,
-    }).map((card) => ({ ...card, source_link: token.source_link || null }));
+    return withGeneratedSpeech(
+      db,
+      parseGeneratedCardArray(agentText, "card split", {
+        min: 2,
+      }).map((card) => ({ ...card, source_link: token.source_link || null })),
+    );
   }
 
   const res = await fetchWithInteractiveTimeout(
@@ -2361,9 +2485,12 @@ JSON Array Output:`;
 
   const responseText = await readChatContent(res, "LLM card split proposals");
 
-  return parseGeneratedCardArray(responseText, "card split", {
-    min: 2,
-  }).map((card) => ({ ...card, source_link: token.source_link || null }));
+  return withGeneratedSpeech(
+    db,
+    parseGeneratedCardArray(responseText, "card split", {
+      min: 2,
+    }).map((card) => ({ ...card, source_link: token.source_link || null })),
+  );
 }
 
 /** One prompt to a resolved endpoint, over the agent harness or HTTP. */
@@ -2562,9 +2689,12 @@ JSON Array Output:`;
       system: systemPrompt,
       user: userPrompt,
     });
-    return parseGeneratedCardArray(agentText, "foundation proposal", {
-      min: 1,
-    }).map((card) => ({ ...card, source_link: token.source_link || null }));
+    return withGeneratedSpeech(
+      db,
+      parseGeneratedCardArray(agentText, "foundation proposal", {
+        min: 1,
+      }).map((card) => ({ ...card, source_link: token.source_link || null })),
+    );
   }
 
   const res = await fetchWithInteractiveTimeout(
@@ -2593,9 +2723,12 @@ JSON Array Output:`;
     "LLM card foundations proposals",
   );
 
-  return parseGeneratedCardArray(responseText, "foundation proposal", {
-    min: 1,
-  }).map((card) => ({ ...card, source_link: token.source_link || null }));
+  return withGeneratedSpeech(
+    db,
+    parseGeneratedCardArray(responseText, "foundation proposal", {
+      min: 1,
+    }).map((card) => ({ ...card, source_link: token.source_link || null })),
+  );
 }
 
 /**
@@ -2748,6 +2881,90 @@ Output ONLY the raw translation. Do not include any headers, preamble, quotes, o
   );
 
   return readChatContent(res, "Translation");
+}
+
+/**
+ * Translate a question that holds formulas (ADR 2026-10-14b, Decision 6).
+ * The model sees the text with placeholders and each formula's reading, and
+ * returns both translated; the stored formulas are spliced back. `null`
+ * when the reply lost a placeholder: the caller keeps the original.
+ */
+export async function translateQuestionSegmentsViaLLM(
+  db: Database,
+  segments: CardText,
+): Promise<CardText | null> {
+  const cfg = await getProviderForRole(db, "recall");
+  const endpoint = await resolveUsableRecallEndpoint(db, { allowAgent: true });
+  const targetLang = LANGUAGE_NAMES[cfg.locale] || "English";
+  const held = toPlaceholderText(segments);
+
+  const systemPrompt = `You are a highly precise translator. Translate the given active-recall question into clear, natural ${targetLang}.
+The question holds its formulas as placeholders [[1]], [[2]], …; "readings" says how each is read aloud. Keep every placeholder exactly once, where its formula belongs, and never write a formula, LaTeX or Markdown yourself. Translate each reading into ${targetLang} as plain words.
+Output ONLY a raw JSON object: {"question":"…","readings":["…"]}, one reading per placeholder, in placeholder order.`;
+  const userPrompt = JSON.stringify({
+    question: held.text,
+    readings: held.readings,
+  });
+
+  const reply =
+    endpoint.transport === "agent"
+      ? await requestAgentCompletion(endpoint, {
+          system: systemPrompt,
+          user: userPrompt,
+        })
+      : await readChatContent(
+          await fetchWithInteractiveTimeout(
+            endpointUrl(endpoint.url, "chat/completions"),
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${endpoint.apiKey}`,
+              },
+              body: JSON.stringify({
+                model: endpoint.model,
+                messages: [
+                  { role: "system", content: systemPrompt },
+                  { role: "user", content: userPrompt },
+                ],
+                temperature: 0.1,
+                max_tokens: DEFAULT_LLM_MAX_TOKENS,
+              }),
+              locale: cfg.locale,
+            },
+          ),
+          "Translation",
+        );
+  return parseTranslatedSegments(reply, segments);
+}
+
+/** A translation reply spliced into the stored segments, or `null`. */
+export function parseTranslatedSegments(
+  reply: string,
+  segments: CardText,
+): CardText | null {
+  const start = reply.indexOf("{");
+  const end = reply.lastIndexOf("}");
+  if (start < 0 || end < start) return null;
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(reply.slice(start, end + 1));
+  } catch {
+    return null;
+  }
+  if (!parsed || typeof parsed !== "object") return null;
+  const { question, readings } = parsed as {
+    question?: unknown;
+    readings?: unknown;
+  };
+  if (typeof question !== "string") return null;
+  return fromPlaceholderText(question.trim(), segments, {
+    readings: Array.isArray(readings)
+      ? readings.map((reading) =>
+          typeof reading === "string" ? reading : null,
+        )
+      : [],
+  });
 }
 
 /**
@@ -3129,6 +3346,11 @@ export interface QuestionResolution {
   question: string;
   source: "llm" | "original";
   model?: string;
+  /**
+   * The varied question's segments, when the stored one has formulas: the
+   * stored formulas spliced into the model's wording (ADR 2026-10-14b).
+   */
+  segments?: CardText;
 }
 
 /**
@@ -4183,6 +4405,8 @@ export async function ensureHighQualityQuestion(
     bloomLevel: number;
     sourceLink?: string | null;
     question?: string | null;
+    /** The stored question's segments; varied through placeholders. */
+    questionSegments?: CardText | null;
   },
 ): Promise<QuestionResolution | null> {
   const { enabled } = await getLlmConfig(db);
@@ -4203,16 +4427,34 @@ export async function ensureHighQualityQuestion(
         }
       }
 
+      const held = token.questionSegments
+        ? toPlaceholderText(token.questionSegments)
+        : null;
       const generated = await generateQuestionViaLLM(db, {
         slug: token.slug,
         concept: token.concept,
         domain: token.domain,
         bloomLevel: token.bloomLevel,
         sourceLinkContent,
-        existingQuestion: token.question,
+        existingQuestion: held ? held.text : token.question,
+        ...(held ? { placeholderReadings: held.readings } : {}),
       });
 
-      if (generated.text.trim().length > 0) {
+      if (held && token.questionSegments) {
+        // A reply that lost a placeholder serves the stored question.
+        const segments = fromPlaceholderText(
+          generated.text.trim(),
+          token.questionSegments,
+        );
+        if (segments) {
+          return {
+            question: plainProjection(segments),
+            source: "llm",
+            model: generated.model,
+            segments,
+          };
+        }
+      } else if (generated.text.trim().length > 0) {
         // Ephemeral by design: the generated question is used for this
         // review only and never written back to the token.
         return {

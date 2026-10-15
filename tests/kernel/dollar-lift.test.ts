@@ -94,6 +94,23 @@ describe("liftDollarMath (lenient)", () => {
     expect(unlifted[0]).toMatchObject({ reason: "unbalanced" });
   });
 
+  it("pairs a dollar only with the next one, so a formula never holds a $", () => {
+    const { segments, unlifted } = liftDollarMath(
+      "Kosten $HOME und $5 bis $10, Formel $x^2$.",
+      "lenient",
+    );
+    expect(segments).toEqual([
+      { type: "text", text: "Kosten $HOME und $5 bis $10, Formel " },
+      { type: "math", tex: "x^2" },
+      { type: "text", text: "." },
+    ]);
+    expect(unlifted.map((span) => span.text.slice(0, 5))).toEqual([
+      "$HOME",
+      "$5 bi",
+      "$10, ",
+    ]);
+  });
+
   it("does not pair a closing dollar followed by a digit", () => {
     const { segments } = liftDollarMath("von $5 bis $10", "lenient");
     expect(segments).toEqual([{ type: "text", text: "von $5 bis $10" }]);

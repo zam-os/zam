@@ -784,6 +784,47 @@ describe("bridge-handlers unit tests", () => {
     expect(token?.editorial_state).toBe("published");
   });
 
+  it("addToken stores segments and names an invalid one (ADR 2026-10-14b)", async () => {
+    await addToken(db, {
+      user: "thomas",
+      slug: "energie-kondensator",
+      domain: "physik",
+      question: "Wie groß ist die Energie im Kondensator?",
+      conceptSegments: [
+        {
+          type: "math",
+          tex: "W_{\\text{el}} = \\frac{1}{2} C U^2",
+          speech: "W el gleich ein halb C U Quadrat",
+        },
+      ],
+    });
+    const token = await getTokenBySlug(db, "energie-kondensator");
+    expect(token?.concept).toBe("W_el = ½CU²");
+    expect(JSON.parse(token?.concept_segments ?? "null")?.[0]?.tex).toBe(
+      "W_{\\text{el}} = \\frac{1}{2} C U^2",
+    );
+
+    await expect(
+      addToken(db, {
+        user: "thomas",
+        slug: "verbotene-formel",
+        domain: "physik",
+        conceptSegments: [
+          { type: "math", tex: "\\href{x}{y}", speech: "Link" },
+        ],
+      }),
+    ).rejects.toThrow(/^conceptSegments: \[0\]\.tex: /);
+    await expect(
+      addToken(db, {
+        user: "thomas",
+        slug: "ohne-sprechtext",
+        domain: "physik",
+        concept: "Es gilt $x^2 = 4$.",
+      }),
+    ).rejects.toThrow(/\[1\]\.speech is required.*conceptSegments/);
+    expect(await getTokenBySlug(db, "verbotene-formel")).toBeUndefined();
+  });
+
   it("addToken publishes at once unless the library wants drafts first", async () => {
     const result = await addToken(db, {
       user: "thomas",

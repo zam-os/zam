@@ -129,6 +129,8 @@ import {
   PERSONA_DESCRIPTORS,
   PlanetError,
   pairCommands,
+  parseStoredCardText,
+  plainProjection,
   postgresVaultAccessPending,
   previewTextImport,
   readMonitorLog,
@@ -326,6 +328,7 @@ import {
   isLlmOnline,
   type LlmRole,
   proposeSubtopicsViaLLM,
+  translateQuestionSegmentsViaLLM,
   translateQuestionViaLLM,
 } from "../llm/client.js";
 import { connectCloudProvider } from "../llm/cloud-connect.js";
@@ -1938,7 +1941,10 @@ bridgeCommand
       let data: {
         slug: string;
         title?: string;
-        concept: string;
+        concept?: string;
+        /** Card text as segments (ADR 2026-10-14b); wins over the string. */
+        concept_segments?: unknown;
+        question_segments?: unknown;
         domain?: string;
         bloom_level?: number;
         context?: string;
@@ -1956,8 +1962,10 @@ bridgeCommand
         jsonError("Invalid JSON input");
       }
 
-      if (!data?.slug || !data?.concept) {
-        jsonError("JSON must include 'slug' and 'concept' fields");
+      if (!data?.slug || !(data?.concept || data?.concept_segments)) {
+        jsonError(
+          "JSON must include 'slug' and 'concept' (or 'concept_segments') fields",
+        );
       }
       // Agents only come this way: a token needs the source it was read
       // from (ADR 2026-10-14, Decision 3).
@@ -1983,6 +1991,8 @@ bridgeCommand
             slug: data.slug,
             title: data.title,
             concept: data.concept,
+            conceptSegments: data.concept_segments,
+            questionSegments: data.question_segments,
             domain: data.domain,
             bloomLevel: data.bloom_level,
             context: data.context,
@@ -4241,6 +4251,10 @@ bridgeCommand
   .command("translate-question")
   .description("Translate a question dynamically using the local LLM (JSON)")
   .requiredOption("--question <text>", "Question in English to translate")
+  .option(
+    "--segments <json>",
+    "The question's card-text segments, when it holds formulas (ADR 2026-10-14b)",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const isEnabled = (await getSetting(db, "llm.enabled")) === "true";
@@ -4253,6 +4267,27 @@ bridgeCommand
         return;
       }
       try {
+        if (opts.segments) {
+          // Formulas are held back as placeholders and spliced back in; a
+          // reply that lost one keeps the original question.
+          const stored = parseStoredCardText(opts.segments);
+          if (!stored) jsonError("--segments is not valid card text");
+          const segments = await translateQuestionSegmentsViaLLM(db, stored);
+          jsonOut(
+            segments
+              ? {
+                  success: true,
+                  translation: plainProjection(segments),
+                  segments,
+                }
+              : {
+                  success: false,
+                  error: "The translation lost a formula",
+                  translation: opts.question,
+                },
+          );
+          return;
+        }
         const translation = await translateQuestionViaLLM(db, opts.question);
         jsonOut({ success: true, translation });
       } catch (err) {
@@ -6971,8 +7006,15 @@ bridgeCommand
 
         const existingToken = await getTokenBySlug(db, baseSlug);
         if (existingToken) {
+          // The existing token's own text: the proposal's segments do not
+          // describe it.
+          const {
+            question_segments: _question,
+            concept_segments: _concept,
+            ...rest
+          } = prop;
           resolvedProposals.push({
-            ...prop,
+            ...rest,
             exists: true,
             slug: existingToken.slug,
             question: existingToken.question || prop.question,
@@ -8165,6 +8207,8 @@ bridgeCommand
       const proposals = cards.map((card) => ({
         question: card.question,
         concept: card.concept,
+        question_segments: card.question_segments ?? null,
+        concept_segments: card.concept_segments ?? null,
         domain: card.domain,
         title: card.title,
         bloom_level: card.bloom_level,

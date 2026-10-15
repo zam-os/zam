@@ -107,6 +107,27 @@ import {
   type DatabaseSource,
 } from "./shared/db.js";
 
+/**
+ * Card text as an agent sends it (ADR 2026-10-14b, Decision 6): a string,
+ * or segments when it holds a formula. The kernel validates it and names a
+ * refused segment; a formula without speech is refused.
+ */
+const cardSegmentsInput = z
+  .array(
+    z.union([
+      z.object({ type: z.literal("text"), text: z.string() }),
+      z.object({
+        type: z.literal("math"),
+        tex: z.string(),
+        speech: z.string().optional(),
+        block: z.boolean().optional(),
+      }),
+    ]),
+  )
+  .min(1);
+const CARD_SEGMENTS_HELP =
+  'Segments for card text with a formula: [{"type":"text","text":"…"},{"type":"math","tex":"…","speech":"…"}] — tex is LaTeX math without dollars, speech how a teacher reads it aloud';
+
 export { createLazyDatabase };
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -1067,11 +1088,27 @@ export function createMcpServer(
     {
       description:
         "Add a new knowledge token with the learner's card. It is learnable at once, unless the library has switched on draft-first (content.draft_first): then it stays a draft, out of the recall queue, until published with zam_publish_revision after author review. " +
+        "Question and concept are plain text without LaTeX or Markdown; one with a formula goes in questionSegments / conceptSegments, every formula with its speech, or the call is refused with the segment named. " +
         AGENT_SOURCE_RULE,
       inputSchema: {
         user: z.string().optional().describe("User ID to auto-create card for"),
         slug: z.string().describe("Unique slug for the token"),
-        concept: z.string().describe("Detailed description of the concept"),
+        concept: z
+          .string()
+          .optional()
+          .describe(
+            "Detailed description of the concept, as plain text without LaTeX or Markdown. Give this or conceptSegments",
+          ),
+        conceptSegments: cardSegmentsInput
+          .optional()
+          .describe(
+            `The concept as segments when it holds a formula. ${CARD_SEGMENTS_HELP}`,
+          ),
+        questionSegments: cardSegmentsInput
+          .optional()
+          .describe(
+            `The question as segments when it holds a formula. ${CARD_SEGMENTS_HELP}`,
+          ),
         title: z.string().optional().describe("Optional display title"),
         domain: z.string().optional().describe("Domain path"),
         bloomLevel: z
@@ -1125,6 +1162,8 @@ export function createMcpServer(
         user: userId,
         slug: params.slug,
         concept: params.concept,
+        conceptSegments: params.conceptSegments,
+        questionSegments: params.questionSegments,
         title: params.title,
         domain: params.domain,
         bloomLevel: params.bloomLevel,
@@ -2638,7 +2677,20 @@ export function createMcpServer(
                 ),
               concept: z
                 .string()
-                .describe("The memorable concept, stated precisely"),
+                .optional()
+                .describe(
+                  "The memorable concept, stated precisely, as plain text. Give this or conceptSegments",
+                ),
+              conceptSegments: cardSegmentsInput
+                .optional()
+                .describe(
+                  `The concept as segments when it holds a formula. ${CARD_SEGMENTS_HELP}`,
+                ),
+              questionSegments: cardSegmentsInput
+                .optional()
+                .describe(
+                  `The question as segments when it holds a formula. ${CARD_SEGMENTS_HELP}`,
+                ),
               bloomLevel: z
                 .number()
                 .int()
@@ -3186,8 +3238,16 @@ export function createMcpServer(
         proposals: z
           .array(
             z.object({
-              question: z.string(),
-              answer: z.string(),
+              question: z
+                .union([z.string(), cardSegmentsInput])
+                .describe(
+                  `A string, or segments when it holds a formula. ${CARD_SEGMENTS_HELP}`,
+                ),
+              answer: z
+                .union([z.string(), cardSegmentsInput])
+                .describe(
+                  `A string, or segments when it holds a formula. ${CARD_SEGMENTS_HELP}`,
+                ),
               title: z.string().nullable().optional(),
               bloom: z.number().int().min(1).max(5),
               file: z

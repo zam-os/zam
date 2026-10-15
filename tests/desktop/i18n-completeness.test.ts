@@ -975,6 +975,8 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "material_origin_completed",
   "material_origin_extra",
   "material_hard_to_read",
+  // Card text (ADR 2026-10-14b): what stayed text in a proposal.
+  "material_text_notes",
   "material_existing",
   "material_existing_held",
   "material_continuation_heading",

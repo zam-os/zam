@@ -34,9 +34,10 @@ small images.
   measurements — `ba3bf276` (WebKit and VoiceOver measurement open: owner)
 - [x] **Phase 4** — tiles: segment fields, installer, `installed_tiles`,
   background reinstall, team step — `51209d5b`
-- [ ] **Phase 5** — bundled tile migration (owner review gate) — migrated
-  and tested; owner gate open (`scripts/card-text-migration/review-sample.md`)
-- [ ] **Phase 6** — writers: prompts, tool contracts, `$` repair,
+- [ ] **Phase 5** — bundled tile migration (owner review gate) — `69520df1`,
+  migrated and tested; owner gate open
+  (`scripts/card-text-migration/review-sample.md`)
+- [x] **Phase 6** — writers: prompts, tool contracts, `$` repair,
   placeholders
 - [ ] **Phase 7** — Anki formula lift and the Studio editor (D9)
 - [ ] **Phase 8** — Mobile, the MCP recall panel, image segments
@@ -779,6 +780,91 @@ Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
 - **Variation:** the round trip keeps `tex` byte for byte, and a dropped
   placeholder falls back.
 - **Prompts:** the prompt snapshot contains the segment rule.
+
+### As built (Phase 6)
+
+- **One reader for writers' card text.** `readCardTextInput(value, mode)`
+  (`src/kernel/library/card-text-input.ts`) takes a string or a segment
+  list and returns the plain projection, segments when there is a formula,
+  review notes, and the formulas still without speech.
+  - **Repairs, in both modes:**
+    - the lenient `$` lift;
+    - emphasis dropped across formula boundaries (`dropEmphasis`, moved here
+      from the migration);
+    - a bare inventory command in text becomes Unicode (`\beta` → `β`);
+    - backslashes a JSON escape ate are put back (`\f`+`rac` → `\frac`),
+      only where the letters spell an inventory command.
+  - **`agent` mode** returns a refused formula as an issue naming the
+    segment. **`import` mode** keeps it as readable text (`texAsText`) and
+    notes it.
+  - **Images** are refused in both modes until Phase 8 attaches material.
+- **Lenient lift fix.** A dollar now pairs only with the next one, so a
+  formula never contains `$`. Before, `$HOME und $5 … $x^2$` became a
+  single formula.
+- **The rule.**
+  - **`CARD_TEXT_RULE`** joins `CARD_SHAPE_RULES`. Its environment list
+    comes from the inventory. Its example shows the JSON with doubled
+    backslashes and says so: a model copying a single-backslash example
+    would reproduce the tiles' `\t`-ate-`\text` damage.
+  - **`PLAIN_FORMULA_RULE`** goes into the evaluation prompt and the
+    generated-choice prompt.
+  - **Imports.** `card-shape.ts` now imports the tokenizer, and its
+    Mobile-bundle test checks that import chain instead of "no imports".
+- **Material import.**
+  - **Contract:** `question`/`answer` may be strings or segment lists. The
+    parsed proposal keeps the plain text and adds `questionSegments`,
+    `answerSegments` and `textNotes`. A staged batch re-parses to the same
+    set.
+  - **Harness path:** the staging reads the set in `agent` mode and refuses
+    a formula without speech (`materialSpeechIssues`), naming
+    `proposals[i].answer[j].speech`.
+  - **Built-in path:** asks the answering text model once for missing
+    speech (`src/cli/llm/speech-prompt.ts`, injectable as
+    `deps.requestSpeech`). What is still missing stays empty.
+  - **Commit:** through `createToken`. **Review list:** renders the
+    segments and shows the notes (`material_text_notes`, en/de only).
+- **Beyond the plan: every generated-card path.** The rule reaches the
+  curriculum, topic, split and foundation prompts, so their parser had to
+  accept segments.
+  - **Parsing:** `parseGeneratedCardArray` reads both fields with
+    `readCardTextInput(…, "import")`, and each generator asks once for
+    missing speech (`withGeneratedSpeech`).
+  - **Writing:** `createToken` takes `question_segments`/`concept_segments`
+    and stores them through `writeCardText`. The four kernel writers (curriculum,
+    split, foundations, source import) pass them through.
+  - **Studio confirms:** split and foundation proposals keep their segments
+    only while the learner has not edited that field; an edited field is
+    plain again. The source and topic confirms pass them through as
+    generated.
+  - **Mobile's curriculum parser** stores the plain projection until Phase 8.
+- **Agent tools.**
+  - **`zam_add_token`** (and `bridge add-token`) take `questionSegments` /
+    `conceptSegments`; `concept` becomes optional beside them.
+  - **The OKF import tool** takes the same fields. Its update path writes
+    segments through `writeCardText`, and a plain re-import clears a field's
+    old segments first.
+  - **Plain strings:** a formula in one is lifted. A refused formula, or a
+    formula without speech, is an error that names the field and the
+    segment and asks for segments.
+  - **`zam_material_import`** takes a string or segments per side.
+- **Variation and translation.**
+  - **Kernel:** `toPlaceholderText` / `fromPlaceholderText`
+    (`card-text-placeholders.ts`). Placeholders may move; a dropped,
+    repeated or invented one, or markup in the reply, splices to `null`.
+  - **Variation:** the review payload now carries the varied segments.
+  - **Translation:** `translateQuestionSegmentsViaLLM` and `bridge
+    translate-question --segments`. No Studio surface calls translation
+    today, and Mobile's translator is Phase 8.
+- **Known gap.** A learner who edits a varied segmented question in the
+  review is refused by the kernel guard, as for any segmented field, until
+  the Phase 7 editor.
+- **Tests:**
+  - `card-text-input.test.ts`, `material-card-text.test.ts`;
+  - `card-text-writers.test.ts` (rule and example, placeholders, a scripted
+    curriculum import with its speech follow-up, scripted variation and
+    fallback);
+  - additions to the staging, bridge-handler, dollar-lift and Mobile
+    curriculum tests.
 
 ## Phase 7 — Anki formula lift and the Studio editor
 

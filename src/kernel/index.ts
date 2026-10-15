@@ -418,12 +418,15 @@ export {
   MAX_PLACE_BELOW,
   MaterialProposalSetError,
   matchMaterialProposals,
+  materialFormulasWithoutSpeech,
+  materialSpeechIssues,
   materialStems,
   normaliseMaterialArea,
   parseMaterialProposalSet,
   presetFor,
   takeMaterialBonusItem,
   VECTOR_MATCH_THRESHOLD,
+  withMaterialSpeech,
 } from "./import/material-import.js";
 export type {
   ConfirmCounts as MaterialConfirmCounts,
@@ -508,7 +511,9 @@ export {
 } from "./library/bundled-cells.js";
 export {
   CARD_SHAPE_RULES,
+  CARD_TEXT_RULE,
   cardShapeRuleLines,
+  PLAIN_FORMULA_RULE,
 } from "./library/card-shape.js";
 export type {
   CardSegment,
@@ -532,6 +537,25 @@ export {
   spokenProjection,
   validateCardText,
 } from "./library/card-text.js";
+export type {
+  CardTextInput,
+  CardTextInputMode,
+  CardTextInputResult,
+  CardTextNote,
+} from "./library/card-text-input.js";
+export {
+  dropEmphasis,
+  formulasWithoutSpeech,
+  readCardTextInput,
+  repairEatenBackslashes,
+  texAsText,
+  withSpeech,
+} from "./library/card-text-input.js";
+export type { PlaceholderText } from "./library/card-text-placeholders.js";
+export {
+  fromPlaceholderText,
+  toPlaceholderText,
+} from "./library/card-text-placeholders.js";
 export type {
   CardTextColumns,
   CardTextFields,

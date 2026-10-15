@@ -212,4 +212,29 @@ describe("mobile curriculum response validation", () => {
       ),
     ).toThrow(/has no context/);
   });
+
+  it("stores a formula card as its plain projection, never as LaTeX", () => {
+    const [card] = parseMobileCurriculumCards(
+      JSON.stringify([
+        {
+          title: "Elektrische Energie",
+          question: [
+            { type: "text", text: "Wie groß ist " },
+            {
+              type: "math",
+              tex: "W_{\\text{el}}",
+              speech: "W el",
+            },
+            { type: "text", text: "?" },
+          ],
+          concept: "$W_{\\text{el}} = \\frac{1}{2} C U^2$",
+          context: "Energie im Kondensator",
+          bloom_level: 1,
+          prerequisites: [],
+        },
+      ]),
+    );
+    expect(card.question).toBe("Wie groß ist W_el?");
+    expect(card.concept).toBe("W_el = ½CU²");
+  });
 });

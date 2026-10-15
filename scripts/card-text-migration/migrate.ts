@@ -34,11 +34,11 @@ import { join } from "node:path";
 import {
   type CardSegment,
   type CardText,
-  findPlainTextMarkup,
   normalizeCardText,
   plainProjection,
   validateCardText,
 } from "../../src/kernel/library/card-text.js";
+import { dropEmphasis } from "../../src/kernel/library/card-text-input.js";
 import { liftDollarMath } from "../../src/kernel/library/dollar-lift.js";
 import { texToPlain } from "../../src/kernel/library/tex-plain.js";
 import { texIssues } from "../../src/kernel/library/tex-tokenizer.js";
@@ -153,57 +153,6 @@ function patched(item: string, field: string, text: string): string {
   return text;
 }
 
-/** Stands for a formula while emphasis is stripped around it. */
-const FORMULA = "\uE000";
-
-/**
- * Drop Markdown emphasis delimiters, keeping the emphasised words. A span may
- * wrap a formula (`**Alkene ($C_nH_{2n}$)**`) or nest inside another
- * (`*„fertig“**,** sagte Paul.*`), so the text segments are joined around a
- * stand-in for each formula and stripped until nothing is left.
- */
-function withoutEmphasis(segments: CardText): CardText {
-  const formulas = segments.filter((s) => s.type !== "text");
-  let joined = segments
-    .map((s) => (s.type === "text" ? s.text : FORMULA))
-    .join("");
-  for (let pass = 0; pass < 10; pass++) {
-    const spans = findPlainTextMarkup(joined).filter(
-      (m) => m.code === "emphasis",
-    );
-    if (spans.length === 0) break;
-    // One pass applies only spans that do not overlap; the next finds the rest.
-    const chosen: typeof spans = [];
-    let end = -1;
-    for (const span of spans.sort((a, b) => a.offset - b.offset)) {
-      if (span.offset < end) continue;
-      chosen.push(span);
-      end = span.offset + span.length;
-    }
-    for (const span of chosen.reverse()) {
-      const inner = span.text
-        .replace(/^(\*\*|__|\*|_)/, "")
-        .replace(/(\*\*|__|\*|_)$/, "");
-      joined =
-        joined.slice(0, span.offset) +
-        inner +
-        joined.slice(span.offset + span.length);
-    }
-  }
-  const texts = joined.split(FORMULA);
-  if (texts.length !== formulas.length + 1) {
-    throw new Error(
-      `emphasis stripping lost a formula in: ${joined.slice(0, 80)}`,
-    );
-  }
-  const out: CardSegment[] = [];
-  texts.forEach((text, index) => {
-    out.push({ type: "text", text });
-    if (index < formulas.length) out.push(formulas[index]);
-  });
-  return out;
-}
-
 /** Text → segments: lift the dollars, clean the text, add speech. */
 function toSegments(
   text: string,
@@ -239,14 +188,14 @@ function toSegments(
       spoken && needsSpeech ? { ...segment, speech: spoken } : { ...segment },
     );
   }
-  return normalizeCardText(withoutEmphasis(out));
+  return normalizeCardText(dropEmphasis(out));
 }
 
 const hasMath = (segments: CardText) => segments.some((s) => s.type === "math");
 
 /** A plain title: formulas written as Unicode, emphasis dropped. */
 function plainTitle(text: string): string {
-  return withoutEmphasis(liftDollarMath(text, "strict").segments)
+  return dropEmphasis(liftDollarMath(text, "strict").segments)
     .map((segment) =>
       segment.type === "math"
         ? texToPlain(segment.tex)

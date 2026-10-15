@@ -11,6 +11,16 @@
  * this app's.
  */
 
+import type {
+  MaterialChoiceWire,
+  MaterialImportAreasResponse,
+  MaterialImportConfirmResponse,
+  MaterialImportFilePreviewResponse,
+  MaterialImportPendingEntry,
+  MaterialImportPendingResponse,
+  MaterialImportReviewResponse,
+  MaterialImportRowWire,
+} from "../../src/bridge/protocol.js";
 import {
   analysisLine,
   COLLAPSE_BONUS_AFTER,
@@ -25,17 +35,8 @@ import {
   type ReviewGroup as SharedReviewGroup,
   startsCollapsed,
 } from "../../src/kernel/import/material-review-state.js";
-import type {
-  MaterialChoiceWire,
-  MaterialImportAreasResponse,
-  MaterialImportConfirmResponse,
-  MaterialImportFilePreviewResponse,
-  MaterialImportPendingEntry,
-  MaterialImportPendingResponse,
-  MaterialImportReviewResponse,
-  MaterialImportRowWire,
-} from "../../src/bridge/protocol.js";
 import { runBridge } from "./bridge-transport.js";
+import { renderCardText } from "./card-text-render.js";
 import { currentLocale, t, tf } from "./i18n.js";
 import {
   initRadioGroupKeyboard,
@@ -520,6 +521,21 @@ function rowElement(
   const answerEl = element("div", { fontSize: "0.9rem" });
   answerEl.textContent = answer;
   article.append(questionEl, answerEl);
+  if (row.kind === "proposal") {
+    // Formulas typeset as the learner will see them (ADR 2026-10-14b); the
+    // plain text above stays until the renderer has loaded.
+    const proposal = review.proposals[row.proposalIndex];
+    void renderCardText(questionEl, proposal.questionSegments, question);
+    void renderCardText(answerEl, proposal.answerSegments, answer);
+    const notes = proposal.textNotes ?? [];
+    if (notes.length > 0) {
+      const note = element("div", { fontSize: "0.8rem", opacity: "0.8" });
+      note.textContent = tf("material_text_notes", {
+        items: notes.map((entry) => entry.text).join(" · "),
+      });
+      article.append(note);
+    }
+  }
 
   if (startsCollapsed(row, choices, choosableCount)) {
     answerEl.hidden = true;

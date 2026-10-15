@@ -1,4 +1,7 @@
-import type { ReadUpWire } from "../../src/bridge/protocol.js";
+import type {
+  CardSegmentPayload,
+  ReadUpWire,
+} from "../../src/bridge/protocol.js";
 import { runBridge } from "./bridge-transport.js";
 import { currentLocale, t, tf } from "./i18n.js";
 import {
@@ -294,7 +297,45 @@ let foundationsProposalsContainer: HTMLElement;
 let btnFoundationsModalCancel: HTMLButtonElement;
 let btnFoundationsModalSubmit: HTMLButtonElement;
 
-interface ProposalEntry {
+/**
+ * A generated proposal's formulas (ADR 2026-10-14b), with the plain text
+ * they were derived from. They travel to the confirm only while the learner
+ * has not edited that text: an edited field is plain again.
+ */
+interface ProposalCardText {
+  question_segments?: CardSegmentPayload[] | null;
+  concept_segments?: CardSegmentPayload[] | null;
+  sourceQuestion?: string;
+  sourceConcept?: string;
+}
+
+function unchangedSegments(
+  text: string,
+  source: string | undefined,
+  segments: CardSegmentPayload[] | null | undefined,
+): CardSegmentPayload[] | null {
+  return segments && source !== undefined && text === source.trim()
+    ? segments
+    : null;
+}
+
+/** The proposal as the confirm command takes it. */
+function confirmedCardText(p: ProposalCardText & { question: string; concept: string }) {
+  return {
+    question_segments: unchangedSegments(
+      p.question.trim(),
+      p.sourceQuestion,
+      p.question_segments,
+    ),
+    concept_segments: unchangedSegments(
+      p.concept.trim(),
+      p.sourceConcept,
+      p.concept_segments,
+    ),
+  };
+}
+
+interface ProposalEntry extends ProposalCardText {
   question: string;
   concept: string;
   domain: string;
@@ -303,7 +344,7 @@ interface ProposalEntry {
 }
 let currentProposals: ProposalEntry[] = [];
 
-interface FoundationProposalEntry {
+interface FoundationProposalEntry extends ProposalCardText {
   question: string;
   concept: string;
   domain: string;
@@ -2178,6 +2219,8 @@ async function submitImport(): Promise<void> {
         proposals: Array<{
           question: string;
           concept: string;
+          question_segments?: CardSegmentPayload[] | null;
+          concept_segments?: CardSegmentPayload[] | null;
           domain: string;
           bloom_level: number;
           symbiosis_mode: string;
@@ -2202,6 +2245,9 @@ async function submitImport(): Promise<void> {
       const sourceProposals = previewRes.proposals.map((p) => ({
         question: p.question,
         concept: p.concept,
+        // Formulas as the model wrote them (ADR 2026-10-14b).
+        question_segments: p.question_segments ?? null,
+        concept_segments: p.concept_segments ?? null,
         domain: p.domain,
         bloom_level: p.bloom_level,
         symbiosis_mode: p.symbiosis_mode || "none",
@@ -2282,7 +2328,11 @@ async function showSplitModal(): Promise<void> {
     }>("personal-card-split-proposals", ["--slug", selectedCard.slug]);
 
     if (res && res.success && Array.isArray(res.proposals)) {
-      currentProposals = res.proposals;
+      currentProposals = res.proposals.map((p) => ({
+        ...p,
+        sourceQuestion: p.question,
+        sourceConcept: p.concept,
+      }));
       renderSplitProposals();
       splitProposalsSection.classList.remove("hidden");
       btnSplitModalSubmit.disabled = false;
@@ -2402,6 +2452,7 @@ async function submitConfirmSplit(): Promise<void> {
     .map((p) => ({
       question: p.question.trim(),
       concept: p.concept.trim(),
+      ...confirmedCardText(p),
       domain: p.domain.trim(),
       bloom_level: p.bloom_level,
       symbiosis_mode: p.symbiosis_mode,
@@ -2472,7 +2523,12 @@ async function showFoundationsModal(): Promise<void> {
     }>("personal-card-foundations-proposals", ["--slug", selectedCard.slug]);
 
     if (res && res.success && Array.isArray(res.proposals)) {
-      currentFoundations = res.proposals.map((p) => ({ ...p, selected: true }));
+      currentFoundations = res.proposals.map((p) => ({
+        ...p,
+        sourceQuestion: p.question,
+        sourceConcept: p.concept,
+        selected: true,
+      }));
       renderFoundationsProposals();
       foundationsProposalsSection.classList.remove("hidden");
       btnFoundationsModalSubmit.disabled = false;
@@ -2583,6 +2639,7 @@ async function submitConfirmFoundations(): Promise<void> {
     .map((p) => ({
       question: p.question.trim(),
       concept: p.concept.trim(),
+      ...confirmedCardText(p),
       domain: p.domain.trim(),
       bloom_level: p.bloom_level,
       symbiosis_mode: p.symbiosis_mode,

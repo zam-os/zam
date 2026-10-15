@@ -9,7 +9,11 @@ import { ulid } from "ulid";
 import { assertDomainKeepsPlanets } from "../atlas/connections.js";
 import type { Database } from "../db/types.js";
 import { TOPIC_SOURCE_PREFIX } from "../import/topic-import.js";
-import { assertPlainWriteAllowed } from "../library/card-text-store.js";
+import type { CardText } from "../library/card-text.js";
+import {
+  assertPlainWriteAllowed,
+  writeCardText,
+} from "../library/card-text-store.js";
 import type { CardState } from "./card.js";
 import { deleteCardForUser, ensureCard, getCard } from "./card.js";
 import { DRAFT_FIRST_SETTING, getSetting } from "./settings.js";
@@ -107,6 +111,25 @@ export interface CreateTokenInput {
   fast_check?: string | null;
   /** The term to read a world unit up by (ADR 2026-10-14, Decision 4). */
   lookup_term?: string | null;
+  /**
+   * Card text as segments (ADR 2026-10-14b), from `readCardTextInput`. With
+   * segments, `createToken` stores them through `writeCardText`, which sets
+   * the plain `question`/`concept` to their projection. Speech is not
+   * required here: a writer that needs it checks before.
+   */
+  question_segments?: CardText | null;
+  concept_segments?: CardText | null;
+}
+
+/**
+ * A proposal's card text as segments, beside its plain `question`/`concept`
+ * (ADR 2026-10-14b): what a card prompt's parser read from a model. The
+ * writer stores them through `createToken`; the plain fields then hold their
+ * projection.
+ */
+export interface ProposalCardText {
+  question_segments?: CardText | null;
+  concept_segments?: CardText | null;
 }
 
 export interface UpdateTokenInput {
@@ -264,7 +287,14 @@ export async function createToken(
   db: Database,
   input: CreateTokenInput,
 ): Promise<Token> {
-  return (await getTokenById(db, await insertToken(db, input))) as Token;
+  const id = await insertToken(db, input);
+  if (input.question_segments || input.concept_segments) {
+    await writeCardText(db, id, {
+      ...(input.question_segments ? { question: input.question_segments } : {}),
+      ...(input.concept_segments ? { concept: input.concept_segments } : {}),
+    });
+  }
+  return (await getTokenById(db, id)) as Token;
 }
 
 function parseTokenFallback(token: Token | undefined): void {
@@ -1034,7 +1064,7 @@ export async function listPersonalCards(
   return rows;
 }
 
-export interface CurriculumCardInput {
+export interface CurriculumCardInput extends ProposalCardText {
   question: string;
   concept: string;
   title?: string;
@@ -1233,6 +1263,8 @@ export async function importCurriculumCards(
           symbiosis_mode: symbiosisMode,
           source_link: card.source_link || null,
           question: card.question || null,
+          question_segments: card.question_segments ?? null,
+          concept_segments: card.concept_segments ?? null,
           // Curriculum cards are LLM-extracted; their questions are LLM
           // inventions, not human-authored content.
           question_source: "llm",
@@ -1463,7 +1495,7 @@ async function inferPrerequisitesFromBatch<
   return [];
 }
 
-export interface SplitProposalInput {
+export interface SplitProposalInput extends ProposalCardText {
   question: string;
   concept: string;
   domain: string;
@@ -1566,6 +1598,8 @@ export async function confirmCardSplit(
           symbiosis_mode: symbiosisMode,
           source_link: card.source_link || originalToken.source_link || null,
           question: card.question || null,
+          question_segments: card.question_segments ?? null,
+          concept_segments: card.concept_segments ?? null,
           editorial_state: await newTokenEditorialState(tx),
         });
         createdCount++;
@@ -1658,7 +1692,7 @@ export async function confirmCardSplit(
   return { createdCount, ensuredCount };
 }
 
-export interface FoundationProposalInput {
+export interface FoundationProposalInput extends ProposalCardText {
   question: string;
   concept: string;
   domain: string;
@@ -1777,6 +1811,8 @@ export async function confirmFoundations(
             symbiosis_mode: symbiosisMode,
             source_link: card.source_link || originalToken.source_link || null,
             question: card.question || null,
+            question_segments: card.question_segments ?? null,
+            concept_segments: card.concept_segments ?? null,
             editorial_state: await newTokenEditorialState(tx),
           });
           createdCount++;
@@ -1810,7 +1846,7 @@ export async function confirmFoundations(
   return { createdCount, linkedCount };
 }
 
-export interface SourceProposalInput {
+export interface SourceProposalInput extends ProposalCardText {
   question: string;
   concept: string;
   domain: string;
@@ -1900,6 +1936,8 @@ export async function applySourceProposals(
         context: card.excerpt || "",
         symbiosis_mode: symbiosisMode,
         question: card.question || null,
+        question_segments: card.question_segments ?? null,
+        concept_segments: card.concept_segments ?? null,
         provider: card.provider || null,
         topic_id: card.topic_id || null,
         editorial_state: await newTokenEditorialState(db),

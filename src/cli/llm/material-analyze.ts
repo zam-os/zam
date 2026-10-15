@@ -33,7 +33,9 @@ import {
   type MaterialProposalSet,
   MaterialProposalSetError,
   mapEndpointPath,
+  materialFormulasWithoutSpeech,
   parseMaterialProposalSet,
+  withMaterialSpeech,
 } from "../../kernel/index.js";
 import { getLastCurriculumSelection } from "../curriculum/breadcrumb.js";
 import { materialFileFromAgent } from "../material-import.js";
@@ -47,6 +49,7 @@ import {
   prepareFoundryEndpoint,
   providerChain,
   readChatContent,
+  requestFormulaSpeechViaLLM,
   resolveCapability,
 } from "./client.js";
 import {
@@ -61,6 +64,7 @@ import {
   mergeMaterialReplies,
   parseMaterialReply,
 } from "./material-prompt.js";
+import type { FormulaSpeechItem } from "./speech-prompt.js";
 
 export { materialFileKind, materialSelection };
 
@@ -303,6 +307,43 @@ export interface MaterialAnalyzeDeps {
   sips?: SipsRunner;
   /** Called as requests finish; the total grows when a request is split. */
   onProgress?: (progress: { done: number; total: number }) => void;
+  /**
+   * The follow-up question for formulas without speech; injected in tests.
+   * Defaults to the text model (`requestFormulaSpeechViaLLM`).
+   */
+  requestSpeech?: (items: FormulaSpeechItem[]) => Promise<Map<string, string>>;
+}
+
+/**
+ * Ask once for the readings the model left out (ADR 2026-10-14b, Decision
+ * 6). What is still missing stays empty: a learner's import never fails
+ * over a formula, and voice mode reads the plain text.
+ */
+async function withAskedSpeech(
+  db: Database,
+  set: MaterialProposalSet,
+  deps: MaterialAnalyzeDeps,
+): Promise<MaterialProposalSet> {
+  const missing = new Set(materialFormulasWithoutSpeech(set));
+  if (missing.size === 0) return set;
+  const items: FormulaSpeechItem[] = [];
+  for (const proposal of set.proposals) {
+    for (const [segments, card] of [
+      [proposal.questionSegments, proposal.question],
+      [proposal.answerSegments, proposal.answer],
+    ] as const) {
+      for (const segment of segments ?? []) {
+        if (segment.type === "math" && missing.delete(segment.tex)) {
+          items.push({ tex: segment.tex, card });
+        }
+      }
+    }
+  }
+  const ask =
+    deps.requestSpeech ??
+    ((list: FormulaSpeechItem[]) => requestFormulaSpeechViaLLM(db, list));
+  const speech = await ask(items).catch(() => new Map<string, string>());
+  return speech.size > 0 ? withMaterialSpeech(set, speech) : set;
 }
 
 async function readAnthropicText(res: Response): Promise<string> {
@@ -603,22 +644,23 @@ export async function analyzeMaterialViaLLM(
         materialFileFromAgent({ name: basename(path), path }, now, null),
       ),
     );
+    let parsed: MaterialProposalSet;
     try {
-      const set = parseMaterialProposalSet({
+      parsed = parseMaterialProposalSet({
         version: 1,
         analysis: merged.analysis,
         proposals: merged.proposals,
         files,
         ...placeOf(opts.place),
       });
-      return {
-        set,
-        model: describeRow(replies[0].row) as MaterialModelInfo,
-        sentTo: [...sentTo].map((row) => describeRow(row) as MaterialModelInfo),
-      };
     } catch (error) {
       throw invalidAnswer(error);
     }
+    return {
+      set: await withAskedSpeech(db, parsed, deps),
+      model: describeRow(replies[0].row) as MaterialModelInfo,
+      sentTo: [...sentTo].map((row) => describeRow(row) as MaterialModelInfo),
+    };
   } finally {
     if (workDir) await rm(workDir, { recursive: true, force: true });
   }
@@ -723,8 +765,9 @@ export async function analyzeMaterialText(
   deps.onProgress?.({ done: 1, total: 1 });
   const now = new Date();
   const name = opts.title?.trim() || "Notes";
+  let parsed: MaterialProposalSet;
   try {
-    const set = parseMaterialProposalSet({
+    parsed = parseMaterialProposalSet({
       version: 1,
       analysis: reply.analysis,
       // Every card comes from the one text, file 0.
@@ -742,12 +785,12 @@ export async function analyzeMaterialText(
       ],
       ...placeOf(opts.place),
     });
-    return {
-      set,
-      model: describeRow(answered) as MaterialModelInfo,
-      sentTo: [...sentTo].map((row) => describeRow(row) as MaterialModelInfo),
-    };
   } catch (error) {
     throw invalidAnswer(error);
   }
+  return {
+    set: await withAskedSpeech(db, parsed, deps),
+    model: describeRow(answered) as MaterialModelInfo,
+    sentTo: [...sentTo].map((row) => describeRow(row) as MaterialModelInfo),
+  };
 }
