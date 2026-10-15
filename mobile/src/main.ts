@@ -11,6 +11,10 @@ import {
   requestPermissions,
   scan,
 } from "@tauri-apps/plugin-barcode-scanner";
+import {
+  attachedMedia,
+  renderCardText,
+} from "../../desktop/src/card-text-render.js";
 import { renderQuestionWithTopic } from "../../desktop/src/question-topic.js";
 import {
   beginTurn,
@@ -650,11 +654,14 @@ async function renderMobileReviewMedia(tokenId: string): Promise<void> {
     ) {
       return;
     }
-    for (const item of media) {
-      appendMobileMedia(
-        item.side === "question" ? reviewQuestionMedia : reviewAnswerMedia,
-        item,
-      );
+    // An image inside the card text is drawn there, not in the strip.
+    for (const side of ["question", "answer"] as const) {
+      for (const item of attachedMedia(media, side)) {
+        appendMobileMedia(
+          side === "question" ? reviewQuestionMedia : reviewAnswerMedia,
+          item,
+        );
+      }
     }
   } catch {
     // Text remains a complete, offline fallback if a legacy media row is bad.
@@ -1010,9 +1017,14 @@ const voiceController = new HandsFreeReviewController(voicePort, {
   currentCard: () => {
     const prompt = reviewSession.currentPrompt;
     if (!prompt) return null;
+    // Formulas are read by their speech (ADR 2026-10-14b, Decision 4).
+    const item = reviewSession.currentItem;
     return {
-      question: prompt.question,
-      expectedAnswer: prompt.concept,
+      question:
+        item?.spokenQuestion && prompt.question === item.question
+          ? item.spokenQuestion
+          : prompt.question,
+      expectedAnswer: item?.spokenConcept ?? prompt.concept,
       revealed: reviewSession.revealed,
       draftAnswer: reviewSession.draftAnswer,
     };
@@ -3057,7 +3069,12 @@ async function renderCurrentReview(message = ""): Promise<void> {
       })
     : item.domain || t("no_domain");
   reviewMeta.textContent = tierLabel ? `${baseMeta} · ${tierLabel}` : baseMeta;
-  renderQuestionWithTopic(reviewQuestion, item.domain, prompt.question);
+  renderQuestionWithTopic(
+    reviewQuestion,
+    item.domain,
+    prompt.question,
+    prompt.question === item.question ? item.questionSegments : null,
+  );
   // The count calibrates how long to keep digging; the points stay hidden.
   const showsPoints = shouldShowPointCount(prompt.concept, item.bloomLevel);
   reviewPointsExpected.hidden = !showsPoints;
@@ -3091,6 +3108,7 @@ async function renderCurrentReview(message = ""): Promise<void> {
       option.type = "button";
       option.className = "btn";
       option.textContent = label;
+      void renderCardText(option, fastCheck.optionSegments?.[optionIndex], label);
       option.dataset.fastCheckIndex = String(optionIndex);
       option.addEventListener("click", () => {
         reviewAnswer.value = label;
@@ -3111,7 +3129,7 @@ async function renderCurrentReview(message = ""): Promise<void> {
   // A choice's rating follows from the pick: no rating buttons.
   reviewHowWell.hidden = Boolean(choicePick);
   reviewRatings.hidden = Boolean(choicePick);
-  expectedAnswer.textContent = prompt.concept;
+  void renderCardText(expectedAnswer, item.conceptSegments, prompt.concept);
   const sourceUrl = externalSourceUrl(prompt.sourceLink);
   reviewSource.hidden = !sourceUrl;
   if (sourceUrl) reviewSource.href = sourceUrl;

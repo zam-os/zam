@@ -578,6 +578,7 @@ export {
   looksLikeMath,
 } from "./library/dollar-lift.js";
 export type {
+  InstallKvtOptions,
   InstallKvtResult,
   KvtAtom,
   KvtPracticeItem,
@@ -726,6 +727,12 @@ export {
   resetCardsForToken,
   updateCard,
 } from "./models/card.js";
+export type { InlineImageType } from "./models/inline-image.js";
+export {
+  inlineImageIssue,
+  MAX_INLINE_IMAGE_BYTES,
+  sniffInlineImageType,
+} from "./models/inline-image.js";
 export type {
   CreateKnowledgeContextInput,
   KnowledgeContext,

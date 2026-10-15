@@ -11,7 +11,10 @@ describe("Tier-1 choice reveal on Mobile", () => {
   it("option click always reveals, and rating is blocked until then", () => {
     expect(main).toContain("revealAnswerButton.click()");
     expect(main).toContain("revealedAnswer.hidden = !reviewSession.revealed");
-    expect(main).toContain("expectedAnswer.textContent = prompt.concept");
+    // The concept is revealed with its formulas typeset (ADR 2026-10-14b).
+    expect(main).toContain(
+      "void renderCardText(expectedAnswer, item.conceptSegments, prompt.concept)",
+    );
     expect(session).toContain("this.snapshot.revealed = true");
     expect(session).toContain(
       'throw new Error("Reveal the answer before rating")',

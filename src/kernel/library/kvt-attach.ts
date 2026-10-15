@@ -43,9 +43,11 @@
 import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
 import { ensureCard, getCard } from "../models/card.js";
+import { inlineImageIssue } from "../models/inline-image.js";
 import { addPrerequisite, removePrerequisite } from "../models/prerequisite.js";
 import { type BloomLevel, getTokenById, insertToken } from "../models/token.js";
 import { syncCuratedDistractors } from "../recall/choice-options.js";
+import { sha256HexBytes } from "../util/sha256.js";
 import {
   type CardText,
   normalizeCardText,
@@ -212,6 +214,18 @@ export interface KvtTile {
    * format changes do not transfer mastery.
    */
   retired_items?: KvtRetiredItem[];
+  /**
+   * The images the tile's card text shows (ADR 2026-10-14b, Decision 5),
+   * shipped beside the tile as `media/<sha256>.<ext>`. The installer gets
+   * their bytes from the caller (`InstallKvtOptions.media`) and checks hash,
+   * type and size before it stores them.
+   */
+  media?: Array<{ sha256: string; type: string }>;
+}
+
+export interface InstallKvtOptions {
+  /** A shipped image's bytes by its SHA-256, or `null` when absent. */
+  media?: (sha256: string) => Uint8Array | null;
 }
 
 export interface InstallKvtResult {
@@ -645,6 +659,7 @@ async function reconcileDerivedEdges(
 export async function installKvtTile(
   db: Database,
   tileInput: unknown,
+  opts: InstallKvtOptions = {},
 ): Promise<InstallKvtResult> {
   const tile = asTile(tileInput);
   const atomIds = new Set(tile.atoms.map((atom) => atom.id));
@@ -679,11 +694,79 @@ export async function installKvtTile(
   }
 
   try {
-    return await installTileInTransaction(db, tile);
+    const images = await tileImages(db, tile, opts);
+    return await installTileInTransaction(db, tile, images);
   } catch (error) {
     await recordTileFailure(db, tile, error);
     throw error;
   }
+}
+
+/**
+ * The images a tile's card text needs and the library does not hold yet,
+ * checked: shipped with the tile, the hash its name claims, PNG, JPEG, WebP
+ * or GIF by its bytes, at most 256 KB. Images belong in a question or an
+ * answer; an option has no media of its own to show one.
+ */
+async function tileImages(
+  db: Database,
+  tile: KvtTile,
+  opts: InstallKvtOptions,
+): Promise<Array<{ hash: string; type: string; bytes: Uint8Array }>> {
+  const declared = new Map(
+    (tile.media ?? []).map((entry) => [entry.sha256, entry.type]),
+  );
+  const wanted = new Set<string>();
+  for (const atom of tile.atoms) {
+    for (const item of atom.practice_items) {
+      for (const segments of [item.question_segments, item.concept_segments]) {
+        for (const segment of segments ?? []) {
+          if (segment.type === "image") wanted.add(segment.media);
+        }
+      }
+      const options = (item.fast_check as { options?: unknown } | undefined)
+        ?.options;
+      if (
+        Array.isArray(options) &&
+        options.some(
+          (option) =>
+            Array.isArray(option) &&
+            option.some((segment) => segment?.type === "image"),
+        )
+      ) {
+        throw new Error(
+          `${item.id}: an image belongs in a question or an answer, not in a fast-check option`,
+        );
+      }
+    }
+  }
+  const out: Array<{ hash: string; type: string; bytes: Uint8Array }> = [];
+  for (const hash of wanted) {
+    const held = await db
+      .prepare("SELECT 1 FROM media_assets WHERE hash = ?")
+      .get(hash);
+    if (held) continue;
+    const type = declared.get(hash);
+    const bytes = type ? opts.media?.(hash) : null;
+    if (!type || !bytes) {
+      throw new Error(
+        `Tile ${tile.tile_id} shows the image ${hash.slice(0, 12)}… but does not ship it`,
+      );
+    }
+    if (sha256HexBytes(bytes) !== hash) {
+      throw new Error(
+        `Tile ${tile.tile_id}: the image ${hash.slice(0, 12)}… does not match its hash`,
+      );
+    }
+    const issue = inlineImageIssue(bytes, type);
+    if (issue) {
+      throw new Error(
+        `Tile ${tile.tile_id}: image ${hash.slice(0, 12)}…: ${issue}`,
+      );
+    }
+    out.push({ hash, type, bytes });
+  }
+  return out;
 }
 
 /**
@@ -715,9 +798,20 @@ async function recordTileFailure(
 async function installTileInTransaction(
   db: Database,
   tile: KvtTile,
+  images: Array<{ hash: string; type: string; bytes: Uint8Array }> = [],
 ): Promise<InstallKvtResult> {
   return db.transaction(async (tx) => {
     const now = new Date().toISOString();
+    // Stored before the items, so their card text can name them.
+    for (const image of images) {
+      await tx
+        .prepare(
+          `INSERT INTO media_assets (hash, mime_type, byte_size, data)
+           VALUES (?, ?, ?, ?)
+           ON CONFLICT (hash) DO NOTHING`,
+        )
+        .run(image.hash, image.type, image.bytes.byteLength, image.bytes);
+    }
     let tokensCreated = 0;
     let tokensRevised = 0;
     let tokensUnchanged = 0;

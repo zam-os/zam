@@ -39,9 +39,10 @@ small images.
   (`scripts/card-text-migration/review-sample.md`)
 - [x] **Phase 6** — writers: prompts, tool contracts, `$` repair,
   placeholders — `c5e56ee8`
-- [x] **Phase 7** — Anki formula lift and the Studio editor (D9); editor
-  not yet tried in a browser
-- [ ] **Phase 8** — Mobile, the MCP recall panel, image segments
+- [x] **Phase 7** — Anki formula lift and the Studio editor (D9) —
+  `5ea17cd3`; editor not yet tried in a browser
+- [x] **Phase 8** — Mobile, the MCP recall panel, image segments; device
+  checks, the math font and SVG rasterising open
 - [ ] **Phase 9** — documentation and handover
 
 **The ADR's deliveries map onto the phases:**
@@ -994,6 +995,59 @@ Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
   - the attachment strip skips it.
 - **Mobile:** the renderer is imported without Node built-ins; the mobile
   build succeeds (`npm run build` in `mobile/`).
+
+### As built (Phase 8)
+
+- **MCP recall panel.**
+  - **Rendering:** question, fast-check options and the revealed answer go
+    through the shared renderer.
+  - **Size:** the single-file panel is 1.06 MB (308 KB gzip) with Temml
+    inlined, as since Phase 3.
+- **Mobile.**
+  - **Rendering:** the review renders question, options and the revealed
+    answer from segments.
+  - **Voice** reads `spokenQuestion` / `spokenConcept`.
+  - **Dependencies:** `temml` is pinned to `0.13.5` in `mobile/package.json`,
+    and `mobile/src/css.d.ts` types the stylesheet import as the desktop
+    does.
+  - **Build:** `npm run typecheck` and `npm run build` in `mobile/` succeed.
+    Temml is a lazy 204 KB chunk (60 KB gzip).
+  - **Tiles:** the bundled tiles grew 15% minified with the Phase 5
+    segments (2.91 → 3.35 MB).
+  - **CSP** adds `img-src 'self' blob: data:`, `media-src 'self' blob:`
+    and `font-src 'self' data:`. The app's own attachments are `blob:` URLs,
+    which the old policy blocked.
+  - **Editing:** a formula card is refused by the kernel guard on the phone,
+    whose message points to the Studio's card editor.
+- **Images.**
+  - **The bytes decide:** `inline-image.ts` checks magic bytes (PNG, JPEG,
+    WebP, GIF) and the 256 KB cap. `writeCardText` checks the stored bytes
+    of every inline image, so a renamed SVG stays out.
+  - **Tiles:** a tile declares `media: [{sha256, type}]`, and
+    `installKvtTile(…, { media })` takes the bytes from the caller. It checks
+    hash, type and size, then stores the asset before the items; their
+    `inline` rows follow from `writeCardText`. A fast-check option may not
+    show an image.
+  - **The attachment strip:** `attachedMedia` in `card-text-render.ts`
+    skips inline rows, and the Studio and Mobile share it.
+- **Open, by design or for the owner:**
+  - **Latin Modern Math is not bundled:** the download needs the owner's
+    approval. Every surface uses the system math fonts through
+    `Temml-Local.css`, and VS Code's CSP would refuse a font anyway.
+  - **SVG rasterising is not built:** no writer accepts images yet (the
+    readers refuse image segments), so it would have no caller. It comes
+    with the first image writer.
+  - **Bundled tiles:** the loader passes no media resolver. The first tile
+    with images adds `media/` beside it and the resolver.
+  - **Device checks:** Pixel 9, the field test's Pixel 6 (TalkBack) and the
+    iPad simulator (VoiceOver) are open for the owner, under Open question 1.
+- **Tests:**
+  - `inline-images.test.ts` (formats, renamed SVG, oversize, tile install,
+    refusals);
+  - the strip filter in `card-text-render.test.ts`;
+  - `tests/mobile/card-text-bundle.test.ts` (no Node built-in in the card-text
+    import graph);
+  - the source-shape tests follow the new calls.
 
 ## Phase 9 — documentation and handover
 

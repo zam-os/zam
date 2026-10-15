@@ -16,6 +16,7 @@
  */
 
 import type { Database } from "../db/types.js";
+import { inlineImageIssue } from "../models/inline-image.js";
 import {
   type CardText,
   type CardTextIssue,
@@ -267,8 +268,8 @@ async function syncInlineMedia(
 
   for (const [hash, alt] of wanted) {
     const asset = (await db
-      .prepare("SELECT mime_type FROM media_assets WHERE hash = ?")
-      .get(hash)) as { mime_type: string } | undefined;
+      .prepare("SELECT mime_type, data FROM media_assets WHERE hash = ?")
+      .get(hash)) as { mime_type: string; data: Uint8Array } | undefined;
     if (!asset) {
       throw new CardTextError(side === "question" ? "question" : "concept", [
         {
@@ -285,6 +286,13 @@ async function syncInlineMedia(
           code: "bad-media-type",
           message: `${asset.mime_type} cannot be shown in card text; use PNG, JPEG, WebP or GIF.`,
         },
+      ]);
+    }
+    // The bytes, not the stored type, decide: a renamed SVG stays out.
+    const issue = inlineImageIssue(new Uint8Array(asset.data), asset.mime_type);
+    if (issue) {
+      throw new CardTextError(side === "question" ? "question" : "concept", [
+        { path: "", code: "bad-media", message: issue },
       ]);
     }
     const next = (await db

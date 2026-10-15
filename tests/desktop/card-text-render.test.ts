@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { renderCardText } from "../../desktop/src/card-text-render.js";
+import {
+  attachedMedia,
+  renderCardText,
+} from "../../desktop/src/card-text-render.js";
 import { renderQuestionWithTopic } from "../../desktop/src/question-topic.js";
 import type { CardSegmentPayload } from "../../src/bridge/protocol.js";
 
@@ -132,5 +135,20 @@ describe("renderQuestionWithTopic with segments", () => {
     expect(element.textContent).toBe(
       "physik › elektrizitaet — Wie ändert sich W_el = ½CU²?",
     );
+  });
+});
+
+describe("the attachment strip (ADR 2026-10-14b, Decision 5)", () => {
+  it("skips an image that is part of the card text", () => {
+    const media = [
+      { side: "question", ordinal: 1, placement: "inline", name: "in text" },
+      { side: "question", ordinal: 2, placement: "attached", name: "beside" },
+      { side: "question", ordinal: 0, name: "legacy row" },
+      { side: "answer", ordinal: 0, placement: "attached", name: "answer" },
+    ];
+    expect(attachedMedia(media, "question").map((entry) => entry.name)).toEqual([
+      "legacy row",
+      "beside",
+    ]);
   });
 });

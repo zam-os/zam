@@ -48,6 +48,11 @@ describe("card text storage (ADR 2026-10-14b, plan Phase 2)", () => {
       initialize: true,
       useConfiguredCloud: false,
     });
+    // The kernel reads the bytes (magic bytes, size), so they must be real.
+    const bytes: Record<string, Buffer> = {
+      [PNG]: Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0]),
+      [SVG]: Buffer.from("<svg xmlns='http://www.w3.org/2000/svg'/>"),
+    };
     for (const [hash, mime] of [
       [PNG, "image/png"],
       [SVG, "image/svg+xml"],
@@ -56,7 +61,7 @@ describe("card text storage (ADR 2026-10-14b, plan Phase 2)", () => {
         .prepare(
           "INSERT INTO media_assets (hash, mime_type, byte_size, data) VALUES (?, ?, ?, ?)",
         )
-        .run(hash, mime, 3, Buffer.from([1, 2, 3]));
+        .run(hash, mime, bytes[hash].length, bytes[hash]);
     }
   });
 

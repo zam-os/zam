@@ -67,7 +67,7 @@ describe("question topic", () => {
       'renderQuestionWithTopic(\n    document.getElementById("question-text")!,',
     );
     expect(file("mobile/src/main.ts")).toContain(
-      "renderQuestionWithTopic(reviewQuestion, item.domain, prompt.question);",
+      "renderQuestionWithTopic(\n    reviewQuestion,\n    item.domain,\n    prompt.question,",
     );
     expect(file("desktop/src/panel/recall.ts")).toContain(
       "renderQuestionWithTopic(\n    question,\n    card.domain,",

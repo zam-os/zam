@@ -33,7 +33,7 @@ import {
   shouldShowPointCount,
 } from "../../src/kernel/library/answer-points.js";
 import { runBridge, setBridgeTransport } from "./bridge-transport.js";
-import { renderCardText } from "./card-text-render.js";
+import { attachedMedia, renderCardText } from "./card-text-render.js";
 import { renderQuestionWithTopic } from "./question-topic.js";
 import {
   DEFAULT_LOCAL_ENDPOINT_URL,
@@ -763,9 +763,7 @@ function renderReviewMedia(
   const container = document.getElementById(containerId);
   if (!container) return;
   container.replaceChildren();
-  for (const item of (media ?? [])
-    .filter((entry) => entry.side === side && entry.placement !== "inline")
-    .sort((left, right) => left.ordinal - right.ordinal)) {
+  for (const item of attachedMedia(media ?? [], side)) {
     if (!SAFE_REVIEW_MEDIA_TYPES.has(item.mimeType)) continue;
     const source = `data:${item.mimeType};base64,${item.dataBase64}`;
     if (item.kind === "audio") {

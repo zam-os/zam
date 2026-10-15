@@ -19,6 +19,19 @@ import type { CardSegmentPayload } from "../../src/bridge/protocol.js";
 import { texToPlain } from "../../src/kernel/library/tex-plain.js";
 import { renderMath } from "./math-render.js";
 
+/**
+ * The media a card shows beside its text, in order: an image that is part
+ * of the card text (`inline`, Decision 5) is drawn there, never again in
+ * the attachment strip. Shared by the Studio and Mobile.
+ */
+export function attachedMedia<
+  T extends { side: string; ordinal: number; placement?: string | null },
+>(media: readonly T[], side: string): T[] {
+  return media
+    .filter((entry) => entry.side === side && entry.placement !== "inline")
+    .sort((left, right) => left.ordinal - right.ordinal);
+}
+
 export interface RenderCardTextOptions {
   /**
    * A displayable URL for an image segment's asset hash — the review
