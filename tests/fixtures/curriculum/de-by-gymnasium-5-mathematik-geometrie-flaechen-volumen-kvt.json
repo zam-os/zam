@@ -67,7 +67,7 @@
           "bloom_level": 2,
           "question": "Definiere Punkt P, Gerade g, Halbgerade [AB und Strecke [AB] mit ihrer Streckenlänge |AB|, erkläre die gegenseitigen Lagebeziehungen zweier Geraden in der Ebene (parallel g || h, senkrecht g ⊥ h, sich schneidend mit Schnittpunkt S) und beschreibe den Aufbau eines 2D-Koordinatensystems mit 4 Quadranten bei Erweiterung auf die ganzen Zahlen Z.",
           "concept": "Grundgebilde: Punkt, Gerade (unendlich), Strahl (1 Endpunkt), Strecke (2 Endpunkte); Lagebeziehungen in Ebene: identisch, echt parallel (gleicher Abstand d), Schnittpunkt S (orthogonal bei 90°); 4 Quadranten im kartesischen Koordinatensystem: I (+|+), II (-|+), III (-|-), IV (+|-).",
-          "sample_solution": "1. Grundgebilde der Geometrie: - **Punkt P**: Nulldimensionales geometrisches Grundelement; besitzt keine Ausdehnung, sondern nur eine exakte Position. - **Gerade g = AB**: Eindimensionales, beidseitig unbegrenztes Gebilde ohne Endpunkte. Durch zwei Punkte A und B ist genau eine Gerade eindeutig festgelegt. - **Halbgerade (Strahl) [AB**: Geht von einem festen Anfangspunkt A aus und verläuft in Richtung von B unbegrenzt weiter. - **Strecke [AB]**: Die gerade, kürzeste Verbindung zwischen zwei festen Endpunkten A und B; ihre endliche Länge wird mit **|AB|** bezeichnet (z. B. |AB| = 5 cm). 2. Lagebeziehungen von Geraden in der Ebene: - **Parallelität (g || h)**: Die Geraden haben überall den gleichen senkrechten Abstand d und keinen gemeinsamen Schnittpunkt. - **Schnitt (g ∩ h = {S})**: Die Geraden schneiden sich in genau einem Punkt S. - **Orthogonalität (g ⊥ h)**: Ein Spezialfall des Schnitts unter einem exakten rechten Winkel von **90°**. 3. Das kartesische 2D-Koordinatensystem mit 4 Quadranten: - Zwei aufeinander senkrecht stehende Zahlengeraden (x-Achse waagrecht, y-Achse senkrecht) schneiden sich im Koordinatenursprung O(0|0). - Durch die ganzen Zahlen Z wird die Zeichenebene in **4 Quadranten** unterteilt:   * **I. Quadrant** (oben rechts): x > 0, y > 0 (z. B. P(3 | 4))   * **II. Quadrant** (oben links): x < 0, y > 0 (z. B. Q(-3 | 4))   * **III. Quadrant** (unten links): x < 0, y < 0 (z. B. R(-3 | -4))   * **IV. Quadrant** (unten rechts): x > 0, y < 0 (z. B. S(3 | -4))."
+          "sample_solution": "1. Grundgebilde der Geometrie: - Punkt P: Nulldimensionales geometrisches Grundelement; besitzt keine Ausdehnung, sondern nur eine exakte Position. - Gerade g = AB: Eindimensionales, beidseitig unbegrenztes Gebilde ohne Endpunkte. Durch zwei Punkte A und B ist genau eine Gerade eindeutig festgelegt. - Halbgerade (Strahl) [AB: Geht von einem festen Anfangspunkt A aus und verläuft in Richtung von B unbegrenzt weiter. - Strecke [AB]: Die gerade, kürzeste Verbindung zwischen zwei festen Endpunkten A und B; ihre endliche Länge wird mit |AB| bezeichnet (z. B. |AB| = 5 cm). 2. Lagebeziehungen von Geraden in der Ebene: - Parallelität (g || h): Die Geraden haben überall den gleichen senkrechten Abstand d und keinen gemeinsamen Schnittpunkt. - Schnitt (g ∩ h = {S}): Die Geraden schneiden sich in genau einem Punkt S. - Orthogonalität (g ⊥ h): Ein Spezialfall des Schnitts unter einem exakten rechten Winkel von 90°. 3. Das kartesische 2D-Koordinatensystem mit 4 Quadranten: - Zwei aufeinander senkrecht stehende Zahlengeraden (x-Achse waagrecht, y-Achse senkrecht) schneiden sich im Koordinatenursprung O(0|0). - Durch die ganzen Zahlen Z wird die Zeichenebene in 4 Quadranten unterteilt:   * I. Quadrant (oben rechts): x > 0, y > 0 (z. B. P(3 | 4))   * II. Quadrant (oben links): x < 0, y > 0 (z. B. Q(-3 | 4))   * III. Quadrant (unten links): x < 0, y < 0 (z. B. R(-3 | -4))   * IV. Quadrant (unten rechts): x > 0, y < 0 (z. B. S(3 | -4))."
         }
       ]
     },
@@ -130,7 +130,140 @@
           "bloom_level": 2,
           "question": "Erkläre die 5 fundamentalen Eigenschaften einer Achsenspiegelung an der Spiegelachse s: 1. Längentreue (|A'B'| = |AB|), 2. Winkeltreue (alpha' = alpha), 3. Geradentreue, 4. Umkehrung des Umlaufsinns (aus mathematisch positivem Drehsinn gegen den Uhrzeigersinn wird Uhrzeigersinn), 5. Fixpunkte (jeder Punkt auf der Achse ist sein eigener Bildpunkt P=P') und beschreibe die Zirkel- und Lineal-Konstruktion der Mittelsenkrechten einer Strecke [AB].",
           "concept": "Eigenschaften: Kongruenzabbildung (längentreu, winkeltreu, geradentreu, flächentreu), kehrt Umlaufsinn um; Spiegelachse ist Mittelsenkrechte der Verbindungsstrecke [PP']; Mittelsenkrechte-Konstruktion: Kreisbögen mit Radius r > 1/2 |AB| um A und B schlagen -> Schnittpunkte der Kreisbögen verbinden.",
-          "sample_solution": "1. Die 5 Gesetzmäßigkeiten der Achsenspiegelung (Geradenspiegelung an Achse s): - **1. Längentreue**: Die Länge jeder gespiegelten Bildstrecke ist exakt gleich der Originalstrecke: $|A'B'| = |AB|$. - **2. Winkeltreue**: Jeder Winkel behält bei der Spiegelung sein genaues Gradmaß: $\\alpha' = \\alpha$. - **3. Geradentreue**: Das Bild einer Geraden ist wieder eine Gerade; parallele Geraden bleiben parallel. - **4. Umkehrung des Umlaufsinns**: Die Achsenspiegelung ist eine **indirekte Kongruenzabbildung**. Ein Dreieck ABC mit Umlaufrichtung gegen den Uhrzeigersinn wird zu einem Dreieck A'B'C' mit Umlaufrichtung im Uhrzeigersinn. - **5. Achseneigenschaft & Fixpunkte**:   * Die Verbindungsstrecke jedes Punktes mit seinem Bildpunkt $[PP']$ steht senkrecht auf der Spiegelachse $s$ ($PP' \\perp s$) und wird von ihr exakt halbiert.   * Alle Punkte, die direkt auf der Spiegelachse liegen, sind **Fixpunkte** ($F = F'$); die Spiegelachse selbst ist eine **Fixpunktgerade**. 2. Zirkelkonstruktion der Mittelsenkrechten $m_{[AB]}$ einer Strecke $[AB]$: - 1. Den Zirkel in Endpunkt A einstechen und einen Kreisbogen schlagen, dessen Radius $r$ deutlich größer als die halbe Streckenlänge ist ($r > \\frac{1}{2} |AB|$). - 2. Mit **demselben unveränderten Zirkelradius** $r$ in Punkt B einstechen und den ersten Kreisbogen schneiden. - 3. Es entstehen zwei Schnittpunkte $S_1$ und $S_2$ (einer oberhalb, einer unterhalb der Strecke). - 4. Die Gerade durch $S_1$ und $S_2$ mit dem Lineal zeichnen: Dies ist die exakte **Mittelsenkrechte $m_{[AB]}$** (sie steht im 90°-Winkel auf [AB] und halbiert sie im Mittelpunkt M)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die 5 Gesetzmäßigkeiten der Achsenspiegelung (Geradenspiegelung an Achse s): - 1. Längentreue: Die Länge jeder gespiegelten Bildstrecke ist exakt gleich der Originalstrecke: "
+            },
+            {
+              "type": "math",
+              "tex": "|A'B'| = |AB|"
+            },
+            {
+              "type": "text",
+              "text": ". - 2. Winkeltreue: Jeder Winkel behält bei der Spiegelung sein genaues Gradmaß: "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha' = \\alpha"
+            },
+            {
+              "type": "text",
+              "text": ". - 3. Geradentreue: Das Bild einer Geraden ist wieder eine Gerade; parallele Geraden bleiben parallel. - 4. Umkehrung des Umlaufsinns: Die Achsenspiegelung ist eine indirekte Kongruenzabbildung. Ein Dreieck ABC mit Umlaufrichtung gegen den Uhrzeigersinn wird zu einem Dreieck A'B'C' mit Umlaufrichtung im Uhrzeigersinn. - 5. Achseneigenschaft & Fixpunkte:   * Die Verbindungsstrecke jedes Punktes mit seinem Bildpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "[PP']"
+            },
+            {
+              "type": "text",
+              "text": " steht senkrecht auf der Spiegelachse "
+            },
+            {
+              "type": "math",
+              "tex": "s"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "PP' \\perp s"
+            },
+            {
+              "type": "text",
+              "text": ") und wird von ihr exakt halbiert.   * Alle Punkte, die direkt auf der Spiegelachse liegen, sind Fixpunkte ("
+            },
+            {
+              "type": "math",
+              "tex": "F = F'"
+            },
+            {
+              "type": "text",
+              "text": "); die Spiegelachse selbst ist eine Fixpunktgerade. 2. Zirkelkonstruktion der Mittelsenkrechten "
+            },
+            {
+              "type": "math",
+              "tex": "m_{[AB]}"
+            },
+            {
+              "type": "text",
+              "text": " einer Strecke "
+            },
+            {
+              "type": "math",
+              "tex": "[AB]"
+            },
+            {
+              "type": "text",
+              "text": ": - 1. Den Zirkel in Endpunkt A einstechen und einen Kreisbogen schlagen, dessen Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r"
+            },
+            {
+              "type": "text",
+              "text": " deutlich größer als die halbe Streckenlänge ist ("
+            },
+            {
+              "type": "math",
+              "tex": "r > \\frac{1}{2} |AB|"
+            },
+            {
+              "type": "text",
+              "text": "). - 2. Mit demselben unveränderten Zirkelradius "
+            },
+            {
+              "type": "math",
+              "tex": "r"
+            },
+            {
+              "type": "text",
+              "text": " in Punkt B einstechen und den ersten Kreisbogen schneiden. - 3. Es entstehen zwei Schnittpunkte "
+            },
+            {
+              "type": "math",
+              "tex": "S_1"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "S_2"
+            },
+            {
+              "type": "text",
+              "text": " (einer oberhalb, einer unterhalb der Strecke). - 4. Die Gerade durch "
+            },
+            {
+              "type": "math",
+              "tex": "S_1"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "S_2"
+            },
+            {
+              "type": "text",
+              "text": " mit dem Lineal zeichnen: Dies ist die exakte Mittelsenkrechte "
+            },
+            {
+              "type": "math",
+              "tex": "m_{[AB]}"
+            },
+            {
+              "type": "text",
+              "text": " (sie steht im 90°-Winkel auf [AB] und halbiert sie im Mittelpunkt M)."
+            }
+          ]
         }
       ]
     },
@@ -193,7 +326,156 @@
           "bloom_level": 2,
           "question": "Leite die Flächeninhaltsformeln für Quadrat (A = a²), Rechteck (A = a·b) und rechtwinkliges Dreieck (A = 1/2 · a·b) her, stelle die Kette der Flächenmaße mit der Umrechnungszahl 100 dar (mm², cm², dm², m², a, ha, km²) und berechne: Ein rechteckiges Baugrundstück hat die Länge a = 40 m und die Breite b = 25 m. Bestimme den Flächeninhalt in m² und in Ar (a) sowie den Umfang U.",
           "concept": "Herleitung: Einheitsquadrate zählen; Dreieck = halbes Rechteck; Flächen-Stufenzahl 100; Grundstück: A = 40 m · 25 m = 1.000 m² = 10 a; Umfang: U = 2 · (40 m + 25 m) = 2 · 65 m = 130 m.",
-          "sample_solution": "1. Herleitung der Flächeninhaltsformeln: - **Flächeninhalt A**: Gibt an, wie viele Einheitsquadrate (z. B. $1\\text{ cm}^2$ oder $1\\text{ m}^2$) eine ebene Figur lückenlos auslegen. - **Rechteck**: In einer Reihe liegen a Einheitsquadrate. Davon gibt es b Reihen übereinander -> **$A = a \\cdot b$** (Umfang: $U = 2a + 2b = 2(a+b)$). - **Quadrat (alle Seiten gleich a)**: **$A = a \\cdot a = a^2$** (Umfang: $U = 4a$). - **Rechtwinkliges Dreieck**: Die Diagonale eines Rechtecks mit den Seiten a und b teilt dieses in genau zwei deckungsgleiche rechtwinklige Dreiecke -> **$A = \\frac{1}{2} \\cdot a \\cdot b$**. 2. Flächenmaße und Umrechnungszahl 100: - Da $1\\text{ m} = 10\\text{ dm}$ ist, gilt für die Fläche $1\\text{ m}^2 = 10\\text{ dm} \\cdot 10\\text{ dm} = 100\\text{ dm}^2$. Die Stufenzahl bei Flächenmaßen ist immer **100**:   * $1\\text{ km}^2 = 100\\text{ ha} = 1.000.000\\text{ m}^2$   * $1\\text{ Hektar (ha)} = 100\\text{ Ar (a)} = 10.000\\text{ m}^2$   * $1\\text{ Ar (a)} = 100\\text{ m}^2$   * $1\\text{ m}^2 = 100\\text{ dm}^2 = 10.000\\text{ cm}^2 = 1.000.000\\text{ mm}^2$. 3. Berechnung Baugrundstück ($a = 40\\text{ m}, b = 25\\text{ m}$): - Flächeninhalt: $A = 40\\text{ m} \\cdot 25\\text{ m} = \\mathbf{1.000\\text{ m}^2}$. - In Ar umrechnen ($1\\text{ a} = 100\\text{ m}^2$): $1.000\\text{ m}^2 : 100 = \\mathbf{10\\text{ a}}$. - Umfang (Zaunlänge): $U = 2 \\cdot (40\\text{ m} + 25\\text{ m}) = 2 \\cdot 65\\text{ m} = \\mathbf{130\\text{ m}}$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Herleitung der Flächeninhaltsformeln: - Flächeninhalt A: Gibt an, wie viele Einheitsquadrate (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ cm}^2"
+            },
+            {
+              "type": "text",
+              "text": " oder "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ m}^2"
+            },
+            {
+              "type": "text",
+              "text": ") eine ebene Figur lückenlos auslegen. - Rechteck: In einer Reihe liegen a Einheitsquadrate. Davon gibt es b Reihen übereinander -> "
+            },
+            {
+              "type": "math",
+              "tex": "A = a \\cdot b"
+            },
+            {
+              "type": "text",
+              "text": " (Umfang: "
+            },
+            {
+              "type": "math",
+              "tex": "U = 2a + 2b = 2(a+b)"
+            },
+            {
+              "type": "text",
+              "text": "). - Quadrat (alle Seiten gleich a): "
+            },
+            {
+              "type": "math",
+              "tex": "A = a \\cdot a = a^2"
+            },
+            {
+              "type": "text",
+              "text": " (Umfang: "
+            },
+            {
+              "type": "math",
+              "tex": "U = 4a"
+            },
+            {
+              "type": "text",
+              "text": "). - Rechtwinkliges Dreieck: Die Diagonale eines Rechtecks mit den Seiten a und b teilt dieses in genau zwei deckungsgleiche rechtwinklige Dreiecke -> "
+            },
+            {
+              "type": "math",
+              "tex": "A = \\frac{1}{2} \\cdot a \\cdot b"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Flächenmaße und Umrechnungszahl 100: - Da "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ m} = 10\\text{ dm}"
+            },
+            {
+              "type": "text",
+              "text": " ist, gilt für die Fläche "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ m}^2 = 10\\text{ dm} \\cdot 10\\text{ dm} = 100\\text{ dm}^2"
+            },
+            {
+              "type": "text",
+              "text": ". Die Stufenzahl bei Flächenmaßen ist immer 100:   * "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ km}^2 = 100\\text{ ha} = 1.000.000\\text{ m}^2"
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ Hektar (ha)} = 100\\text{ Ar (a)} = 10.000\\text{ m}^2"
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ Ar (a)} = 100\\text{ m}^2"
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ m}^2 = 100\\text{ dm}^2 = 10.000\\text{ cm}^2 = 1.000.000\\text{ mm}^2"
+            },
+            {
+              "type": "text",
+              "text": ". 3. Berechnung Baugrundstück ("
+            },
+            {
+              "type": "math",
+              "tex": "a = 40\\text{ m}, b = 25\\text{ m}"
+            },
+            {
+              "type": "text",
+              "text": "): - Flächeninhalt: "
+            },
+            {
+              "type": "math",
+              "tex": "A = 40\\text{ m} \\cdot 25\\text{ m} = \\mathbf{1.000\\text{ m}^2}"
+            },
+            {
+              "type": "text",
+              "text": ". - In Ar umrechnen ("
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ a} = 100\\text{ m}^2"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "1.000\\text{ m}^2 : 100 = \\mathbf{10\\text{ a}}"
+            },
+            {
+              "type": "text",
+              "text": ". - Umfang (Zaunlänge): "
+            },
+            {
+              "type": "math",
+              "tex": "U = 2 \\cdot (40\\text{ m} + 25\\text{ m}) = 2 \\cdot 65\\text{ m} = \\mathbf{130\\text{ m}}"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ]
         }
       ]
     },
@@ -256,7 +538,158 @@
           "bloom_level": 2,
           "question": "Erkläre die Regeln für Schrägbild und Körpernetz eines Quaders (Vorderfläche original, Tiefenkanten unter 45° halbiert, verdeckte Kanten gestrichelt; Netz aus 6 paarweise kongruenten Rechtecken), leite die Formeln für Oberflächeninhalt A_O = 2·(ab + bc + ac) und Rauminhalt V = a·b·c her, stelle die Raummaße dar (1 m³ = 1000 dm³ = 1000 Liter) und berechne Oberfläche und Volumen eines quaderförmigen Kartons mit a = 6 dm, b = 4 dm und c = 5 dm.",
           "concept": "Schrägbildregeln: Front unverzerrt, 45° Neigung, q = 0,5, verdeckt gestrichelt; Oberflächeninhalt A_O = 2*(ab + bc + ac); Volumen V = a*b*c; Raummaße Stufenzahl 1000; Karton: A_O = 2*(24 + 20 + 30) = 2*74 = 148 dm²; V = 6 · 4 · 5 = 120 dm³ = 120 Liter.",
-          "sample_solution": "1. Konstruktion des Schrägbildes (Kavalierperspektive): - **Frontansicht**: Die Vorderfläche wird unverzerrt in wahrer Größe und mit echten Winkeln gezeichnet. - **Tiefenlinien**: Alle nach hinten verlaufenden Kanten werden im Neigungswinkel von **$\\alpha = 45^\\circ$** gezeichnet. - **Verkürzungsfaktor $q = \\frac{1}{2}$**: Die Tiefenkanten werden auf genau die **Hälfte ihrer realen Länge** verkürzt gezeichnet. - **Verdeckte Kanten**: Kanten im Körperinneren, die von Flächen verdeckt werden, werden gestrichelt gezeichnet. 2. Körpermaße des Quaders: - **Körpernetz & Oberflächeninhalt $A_O$**:   * Die Hülle eines Quaders besteht aus 6 rechteckigen Begrenzungsflächen, die paarweise deckungsgleich sind (Boden/Deckel $2ab$, Front/Rückseite $2ac$, linke/rechte Seite $2bc$):     $$A_O = 2 \\cdot (a \\cdot b + b \\cdot c + a \\cdot c)$$   * Würfel: $A_O = 6 \\cdot a^2$. - **Rauminhalt (Volumen $V$)**:   * Das Volumen gibt an, wie viele Einheitswürfel (z. B. $1\\text{ dm}^3$) in den Körper passen: Grundfläche $G = a \\cdot b$ multipliziert mit der Höhe $h = c$:     $$V = a \\cdot b \\cdot c$$   * Würfel: $V = a^3$. - **Raummaße (Stufenzahl 1.000)**:   * $1\\text{ m}^3 = 1.000\\text{ dm}^3 = 1.000\\text{ Liter (l)} = 1.000.000\\text{ cm}^3$. 3. Berechnung Karton ($a = 6\\text{ dm}, b = 4\\text{ dm}, c = 5\\text{ dm}$): - **Oberflächeninhalt**:   $A_O = 2 \\cdot (6 \\cdot 4 + 4 \\cdot 5 + 6 \\cdot 5)\\text{ dm}^2 = 2 \\cdot (24 + 20 + 30)\\text{ dm}^2 = 2 \\cdot 74\\text{ dm}^2 = \\mathbf{148\\text{ dm}^2}$. - **Volumen**:   $V = 6\\text{ dm} \\cdot 4\\text{ dm} \\cdot 5\\text{ dm} = 24 \\cdot 5\\text{ dm}^3 = \\mathbf{120\\text{ dm}^3 = 120\\text{ Liter}}$.\n"
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Konstruktion des Schrägbildes (Kavalierperspektive): - Frontansicht: Die Vorderfläche wird unverzerrt in wahrer Größe und mit echten Winkeln gezeichnet. - Tiefenlinien: Alle nach hinten verlaufenden Kanten werden im Neigungswinkel von "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha = 45^\\circ"
+            },
+            {
+              "type": "text",
+              "text": " gezeichnet. - Verkürzungsfaktor "
+            },
+            {
+              "type": "math",
+              "tex": "q = \\frac{1}{2}"
+            },
+            {
+              "type": "text",
+              "text": ": Die Tiefenkanten werden auf genau die Hälfte ihrer realen Länge verkürzt gezeichnet. - Verdeckte Kanten: Kanten im Körperinneren, die von Flächen verdeckt werden, werden gestrichelt gezeichnet. 2. Körpermaße des Quaders: - Körpernetz & Oberflächeninhalt "
+            },
+            {
+              "type": "math",
+              "tex": "A_O"
+            },
+            {
+              "type": "text",
+              "text": ":   * Die Hülle eines Quaders besteht aus 6 rechteckigen Begrenzungsflächen, die paarweise deckungsgleich sind (Boden/Deckel "
+            },
+            {
+              "type": "math",
+              "tex": "2ab"
+            },
+            {
+              "type": "text",
+              "text": ", Front/Rückseite "
+            },
+            {
+              "type": "math",
+              "tex": "2ac"
+            },
+            {
+              "type": "text",
+              "text": ", linke/rechte Seite "
+            },
+            {
+              "type": "math",
+              "tex": "2bc"
+            },
+            {
+              "type": "text",
+              "text": "):     "
+            },
+            {
+              "type": "math",
+              "tex": "A_O = 2 \\cdot (a \\cdot b + b \\cdot c + a \\cdot c)",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Würfel: "
+            },
+            {
+              "type": "math",
+              "tex": "A_O = 6 \\cdot a^2"
+            },
+            {
+              "type": "text",
+              "text": ". - Rauminhalt (Volumen "
+            },
+            {
+              "type": "math",
+              "tex": "V"
+            },
+            {
+              "type": "text",
+              "text": "):   * Das Volumen gibt an, wie viele Einheitswürfel (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ dm}^3"
+            },
+            {
+              "type": "text",
+              "text": ") in den Körper passen: Grundfläche "
+            },
+            {
+              "type": "math",
+              "tex": "G = a \\cdot b"
+            },
+            {
+              "type": "text",
+              "text": " multipliziert mit der Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h = c"
+            },
+            {
+              "type": "text",
+              "text": ":     "
+            },
+            {
+              "type": "math",
+              "tex": "V = a \\cdot b \\cdot c",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Würfel: "
+            },
+            {
+              "type": "math",
+              "tex": "V = a^3"
+            },
+            {
+              "type": "text",
+              "text": ". - Raummaße (Stufenzahl 1.000):   * "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ m}^3 = 1.000\\text{ dm}^3 = 1.000\\text{ Liter (l)} = 1.000.000\\text{ cm}^3"
+            },
+            {
+              "type": "text",
+              "text": ". 3. Berechnung Karton ("
+            },
+            {
+              "type": "math",
+              "tex": "a = 6\\text{ dm}, b = 4\\text{ dm}, c = 5\\text{ dm}"
+            },
+            {
+              "type": "text",
+              "text": "): - Oberflächeninhalt:   "
+            },
+            {
+              "type": "math",
+              "tex": "A_O = 2 \\cdot (6 \\cdot 4 + 4 \\cdot 5 + 6 \\cdot 5)\\text{ dm}^2 = 2 \\cdot (24 + 20 + 30)\\text{ dm}^2 = 2 \\cdot 74\\text{ dm}^2 = \\mathbf{148\\text{ dm}^2}"
+            },
+            {
+              "type": "text",
+              "text": ". - Volumen:   "
+            },
+            {
+              "type": "math",
+              "tex": "V = 6\\text{ dm} \\cdot 4\\text{ dm} \\cdot 5\\text{ dm} = 24 \\cdot 5\\text{ dm}^3 = \\mathbf{120\\text{ dm}^3 = 120\\text{ Liter}}"
+            },
+            {
+              "type": "text",
+              "text": ".\n"
+            }
+          ]
         }
       ]
     }

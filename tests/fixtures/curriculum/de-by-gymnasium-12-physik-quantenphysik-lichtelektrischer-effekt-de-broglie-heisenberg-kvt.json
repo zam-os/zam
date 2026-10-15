@@ -19,7 +19,7 @@
       "atom_uri": "urn:zam:atom:01K8GC30000000000000000A01",
       "namespace": "gymnasium-physik-photoeffekt",
       "slug": "photoeffekt-einstein-photonenhypothese-austrittsarbeit",
-      "title": "Quantenoptik: Photoeffekt, Einsteins Photonenhypothese ($E = h \\cdot f$) und Planck-Konstante",
+      "title": "Quantenoptik: Photoeffekt, Einsteins Photonenhypothese (E = h·f) und Planck-Konstante",
       "domain": "physik/quantenphysik",
       "reduction": "formal",
       "typical_age_min": 17.5,
@@ -49,7 +49,21 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wovon hängt beim äußeren photoelektrischen Effekt die maximale kinetische Energie $E_{\\text{kin,max}}$ der aus einer Metalloberfläche herausgelösten Fotoelektronen ausschließlich ab?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wovon hängt beim äußeren photoelektrischen Effekt die maximale kinetische Energie "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{kin,max}}",
+              "speech": "E kin max"
+            },
+            {
+              "type": "text",
+              "text": " der aus einer Metalloberfläche herausgelösten Fotoelektronen ausschließlich ab?"
+            }
+          ],
           "concept": "Ausschließlich von der Frequenz f (bzw. Wellenlänge) des einfallenden Lichts und dem Kathodenmaterial (Austrittsarbeit W_A), jedoch niemals von der Lichtintensität",
           "fast_check": {
             "type": "binary_choice",
@@ -58,16 +72,327 @@
               "Von der Helligkeit / Intensität des Lichts"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GC30000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den photoelektrischen Effekt und Einsteins Lichtquantenhypothese: 1. **Klassisches Scheitern vs. Experimentelle Befunde**:   * Klassisch: Die Energie einer Welle hängt von der Intensität (Amplitude) ab $\\implies$ Höhere Intensität müsste schnellere Elektronen erzeugen und bei schwachem Licht müsste eine zeitliche Verzögerung auftreten.   * Experiment: Elektronen treten **verzögerungsfrei** aus; ihre kinetische Energie wächst linear mit der **Frequenz $f$**; unterhalb einer Grenzfrequenz $f_{\\text{grenz}}$ tritt kein Effekt auf (selbst bei extrem starkem Licht), 2. **Einsteinsche Photoeffekt-Gleichung (Albert Einstein, Nobelpreis 1921)**:   * Licht besteht aus Energiequanten (**Photonen**) der Energie $\\mathbf{E = h \\cdot f = h \\cdot \\frac{c}{\\lambda}}$.   * Energiebilanz beim Stoß eines Photons mit einem Elektron:     $$\\mathbf{E_{\\text{kin,max}} = h \\cdot f - W_A = e \\cdot U_G}$$   * $W_A = h \\cdot f_{\\text{grenz}}$: Materialabhängige Austrittsarbeit.   * $U_G$: Gegenspannung bei Stromlosigkeit in der Gegenfeldmethode, 3. **Graphische Auswertung ($U_G$-$f$-Diagramm)**:   * Steigung der Geraden: $m = \\frac{h}{e} \\implies$ experimentelle Bestimmung des Planckschen Wirkungsquantums $h \\approx 6{,}626 \\cdot 10^{-34}\\,\\text{J}\\cdot\\text{s}$.   * $y$-Achsenabschnitt: $-\\frac{W_A}{e}$; Nullstelle: $f_{\\text{grenz}}$.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den photoelektrischen Effekt und Einsteins Lichtquantenhypothese: 1. Klassisches Scheitern vs. Experimentelle Befunde:   * Klassisch: Die Energie einer Welle hängt von der Intensität (Amplitude) ab "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Höhere Intensität müsste schnellere Elektronen erzeugen und bei schwachem Licht müsste eine zeitliche Verzögerung auftreten.   * Experiment: Elektronen treten verzögerungsfrei aus; ihre kinetische Energie wächst linear mit der Frequenz "
+            },
+            {
+              "type": "math",
+              "tex": "f",
+              "speech": "f"
+            },
+            {
+              "type": "text",
+              "text": "; unterhalb einer Grenzfrequenz "
+            },
+            {
+              "type": "math",
+              "tex": "f_{\\text{grenz}}",
+              "speech": "f grenz"
+            },
+            {
+              "type": "text",
+              "text": " tritt kein Effekt auf (selbst bei extrem starkem Licht), 2. Einsteinsche Photoeffekt-Gleichung (Albert Einstein, Nobelpreis 1921):   * Licht besteht aus Energiequanten (Photonen) der Energie "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E = h \\cdot f = h \\cdot \\frac{c}{\\lambda}}",
+              "speech": "E gleich h mal f gleich h mal c durch Lambda"
+            },
+            {
+              "type": "text",
+              "text": ".   * Energiebilanz beim Stoß eines Photons mit einem Elektron:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E_{\\text{kin,max}} = h \\cdot f - W_A = e \\cdot U_G}",
+              "block": true,
+              "speech": "E kin max gleich h mal f minus W A gleich e mal U G"
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "W_A = h \\cdot f_{\\text{grenz}}",
+              "speech": "W A gleich h mal f grenz"
+            },
+            {
+              "type": "text",
+              "text": ": Materialabhängige Austrittsarbeit.   * "
+            },
+            {
+              "type": "math",
+              "tex": "U_G",
+              "speech": "U G"
+            },
+            {
+              "type": "text",
+              "text": ": Gegenspannung bei Stromlosigkeit in der Gegenfeldmethode, 3. Graphische Auswertung ("
+            },
+            {
+              "type": "math",
+              "tex": "U_G",
+              "speech": "U G"
+            },
+            {
+              "type": "text",
+              "text": "-"
+            },
+            {
+              "type": "math",
+              "tex": "f",
+              "speech": "f"
+            },
+            {
+              "type": "text",
+              "text": "-Diagramm):   * Steigung der Geraden: "
+            },
+            {
+              "type": "math",
+              "tex": "m = \\frac{h}{e} \\implies",
+              "speech": "m gleich h durch e, daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " experimentelle Bestimmung des Planckschen Wirkungsquantums "
+            },
+            {
+              "type": "math",
+              "tex": "h \\approx 6{,}626 \\cdot 10^{-34}\\,\\text{J}\\cdot\\text{s}",
+              "speech": "h ungefähr 6,626 mal 10 hoch minus 34 Joulesekunden"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "y",
+              "speech": "y"
+            },
+            {
+              "type": "text",
+              "text": "-Achsenabschnitt: "
+            },
+            {
+              "type": "math",
+              "tex": "-\\frac{W_A}{e}",
+              "speech": "minus W A durch e"
+            },
+            {
+              "type": "text",
+              "text": "; Nullstelle: "
+            },
+            {
+              "type": "math",
+              "tex": "f_{\\text{grenz}}",
+              "speech": "f grenz"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
           "concept": "Photoeffekt: Scheitern der Wellentheorie; Einstein-Gleichung E_kin = h*f - W_A = e*U_G; Gegenfeldmethode; Bestimmung von h über Geradensteigung h/e; Austrittsarbeit W_A = h*f_grenz.",
-          "sample_solution": "1. Der Widerspruch zwischen klassischer Physik und Experiment: - **Klassische Wellenvorstellung**: Licht als kontinuierliche elektromagnetische Welle. Mehr Lichtintensität bedeutet größere elektrische Feldstärke $E$ $\\implies$ Die austretenden Elektronen müssten energiereicher sein. Bei schwachem Licht müsste es Minuten dauern, bis ein Elektron genug Wellenenergie aufgesammelt hat. - **Reale experimentelle Beobachtungen (Hallwachs, Lenard, Millikan)**:   1. Die Elektronen treten **sofort (ohne messbare Verzögerung $< 10^{-9}\\,\\text{s}$)** aus.   2. Die **Intensität** des Lichts bestimmt lediglich die **Zahl (Stromstärke $I_{\\text{Foto}}$)** der herausgeschlagenen Elektronen pro Sekunde.   3. Die **kinetische Maximalenergie $E_{\\text{kin,max}}$** hängt ausschließlich linear von der **Lichtfrequenz $f$** ab.   4. Unterhalb einer materialspezifischen **Grenzfrequenz $f_{\\text{grenz}}$** werden keine Elektronen emittiert – unabhängig davon, wie hell die Lampe leuchtet. 2. Einsteins theoretische Erklärung (1905): - Licht breitet sich nicht nur als Welle aus, sondern wird in unteilbaren Energiepaketen (**Lichtquanten / Photonen**) emittiert, absorbiert und gestreut:   $$\\mathbf{E_{\\text{Photon}} = h \\cdot f = \\frac{h \\cdot c}{\\lambda}}$$   *(mit Planck-Konstante $h \\approx 6{,}626 \\cdot 10^{-34}\\,\\text{J}\\cdot\\text{s}$ und Lichtgeschwindigkeit $c \\approx 3 \\cdot 10^8\\,\\frac{\\text{m}}{\\text{s}}$)*. - **Energieerhaltungssatz beim Elementarprozess (Ein-Photon-Ein-Elektron-Stoß)**:   Ein einzelnes Photon überträgt seine gesamte Energie $h \\cdot f$ auf genau ein Leitungsbandelektron:   $$\\mathbf{h \\cdot f = W_A + E_{\\text{kin,max}}}$$   $$\\implies \\mathbf{E_{\\text{kin,max}} = h \\cdot f - W_A}$$ 3. Die Gegenfeldmethode nach Millikan: - Zur Messung von $E_{\\text{kin,max}}$ wird zwischen Photokathode und Anode eine regelbare Gegenspannung $U$ angelegt, die die Fotoelektronen abbremst. - Wird die Gegenspannung so weit erhöht, dass selbst die schnellsten Elektronen die Anode nicht mehr erreichen ($I_{\\text{Foto}} = 0$), gilt:   $$E_{\\text{kin,max}} = e \\cdot U_G \\implies \\mathbf{U_G(f) = \\frac{h}{e} \\cdot f - \\frac{W_A}{e}}$$ - **Bedeutung des $U_G$-$f$-Graphen**:   * Es ergibt sich eine **Ursprungs-verschobene Gerade**.   * Die **Steigung** aller Metalle ist absolut identisch und beträgt $\\mathbf{m = \\frac{h}{e}}$.   * Der Schnittpunkt mit der Frequenzachse liefert die Grenzfrequenz $\\mathbf{f_{\\text{grenz}} = \\frac{W_A}{h}}$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der Widerspruch zwischen klassischer Physik und Experiment: - Klassische Wellenvorstellung: Licht als kontinuierliche elektromagnetische Welle. Mehr Lichtintensität bedeutet größere elektrische Feldstärke "
+            },
+            {
+              "type": "math",
+              "tex": "E"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Die austretenden Elektronen müssten energiereicher sein. Bei schwachem Licht müsste es Minuten dauern, bis ein Elektron genug Wellenenergie aufgesammelt hat. - Reale experimentelle Beobachtungen (Hallwachs, Lenard, Millikan):   1. Die Elektronen treten sofort (ohne messbare Verzögerung "
+            },
+            {
+              "type": "math",
+              "tex": "< 10^{-9}\\,\\text{s}"
+            },
+            {
+              "type": "text",
+              "text": ") aus.   2. Die Intensität des Lichts bestimmt lediglich die Zahl (Stromstärke "
+            },
+            {
+              "type": "math",
+              "tex": "I_{\\text{Foto}}"
+            },
+            {
+              "type": "text",
+              "text": ") der herausgeschlagenen Elektronen pro Sekunde.   3. Die kinetische Maximalenergie "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{kin,max}}"
+            },
+            {
+              "type": "text",
+              "text": " hängt ausschließlich linear von der Lichtfrequenz "
+            },
+            {
+              "type": "math",
+              "tex": "f"
+            },
+            {
+              "type": "text",
+              "text": " ab.   4. Unterhalb einer materialspezifischen Grenzfrequenz "
+            },
+            {
+              "type": "math",
+              "tex": "f_{\\text{grenz}}"
+            },
+            {
+              "type": "text",
+              "text": " werden keine Elektronen emittiert – unabhängig davon, wie hell die Lampe leuchtet. 2. Einsteins theoretische Erklärung (1905): - Licht breitet sich nicht nur als Welle aus, sondern wird in unteilbaren Energiepaketen (Lichtquanten / Photonen) emittiert, absorbiert und gestreut:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E_{\\text{Photon}} = h \\cdot f = \\frac{h \\cdot c}{\\lambda}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   (mit Planck-Konstante "
+            },
+            {
+              "type": "math",
+              "tex": "h \\approx 6{,}626 \\cdot 10^{-34}\\,\\text{J}\\cdot\\text{s}"
+            },
+            {
+              "type": "text",
+              "text": " und Lichtgeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "c \\approx 3 \\cdot 10^8\\,\\frac{\\text{m}}{\\text{s}}"
+            },
+            {
+              "type": "text",
+              "text": "). - Energieerhaltungssatz beim Elementarprozess (Ein-Photon-Ein-Elektron-Stoß):   Ein einzelnes Photon überträgt seine gesamte Energie "
+            },
+            {
+              "type": "math",
+              "tex": "h \\cdot f"
+            },
+            {
+              "type": "text",
+              "text": " auf genau ein Leitungsbandelektron:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{h \\cdot f = W_A + E_{\\text{kin,max}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies \\mathbf{E_{\\text{kin,max}} = h \\cdot f - W_A}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Die Gegenfeldmethode nach Millikan: - Zur Messung von "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{kin,max}}"
+            },
+            {
+              "type": "text",
+              "text": " wird zwischen Photokathode und Anode eine regelbare Gegenspannung "
+            },
+            {
+              "type": "math",
+              "tex": "U"
+            },
+            {
+              "type": "text",
+              "text": " angelegt, die die Fotoelektronen abbremst. - Wird die Gegenspannung so weit erhöht, dass selbst die schnellsten Elektronen die Anode nicht mehr erreichen ("
+            },
+            {
+              "type": "math",
+              "tex": "I_{\\text{Foto}} = 0"
+            },
+            {
+              "type": "text",
+              "text": "), gilt:   "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{kin,max}} = e \\cdot U_G \\implies \\mathbf{U_G(f) = \\frac{h}{e} \\cdot f - \\frac{W_A}{e}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Bedeutung des "
+            },
+            {
+              "type": "math",
+              "tex": "U_G"
+            },
+            {
+              "type": "text",
+              "text": "-"
+            },
+            {
+              "type": "math",
+              "tex": "f"
+            },
+            {
+              "type": "text",
+              "text": "-Graphen:   * Es ergibt sich eine Ursprungs-verschobene Gerade.   * Die Steigung aller Metalle ist absolut identisch und beträgt "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{m = \\frac{h}{e}}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Der Schnittpunkt mit der Frequenzachse liefert die Grenzfrequenz "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{f_{\\text{grenz}} = \\frac{W_A}{h}}"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -112,7 +437,39 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie lautet die De-Broglie-Gleichung für die Wellenlänge $\\lambda_{\\text{dB}}$ eines sich mit Geschwindigkeit $v$ bewegenden materiellen Teilchens der Masse $m$?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet die De-Broglie-Gleichung für die Wellenlänge "
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda_{\\text{dB}}",
+              "speech": "Lambda de Broglie"
+            },
+            {
+              "type": "text",
+              "text": " eines sich mit Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v",
+              "speech": "v"
+            },
+            {
+              "type": "text",
+              "text": " bewegenden materiellen Teilchens der Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m",
+              "speech": "m"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
           "concept": "lambda_dB = h / p = h / (m * v)",
           "fast_check": {
             "type": "binary_choice",
@@ -121,16 +478,282 @@
               "lambda_dB = (m * v) / h"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GC30000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere Materiewellen, Elektronenbeugung und die Heisenbergsche Unschärferelation: 1. **Louis de Broglies Hypothese der Materiewellen (1924)**:   * Wenn Licht (klassisch Welle) Teilcheneigenschaften besitzt, müssen materielle Teilchen (wie Elektronen, Protonen, C60-Fullerene) auch Welleneigenschaften aufweisen:     $$\\mathbf{\\lambda_{\\text{dB}} = \\frac{h}{p} = \\frac{h}{m \\cdot v} = \\frac{h}{\\sqrt{2 \\cdot m \\cdot e \\cdot U_{\\text{beschl}}}}}$$ 2. **Experimenteller Nachweis (Davisson-Germer / Elektronenbeugungsröhre)**:   * Elektronenstrahl wird an einer polykristallinen Graphitfolie gebeugt $\\implies$ Bragg-Interferenz an Netzebenenabständen $d$ $\\implies$ Entstehung kreisförmiger **Debye-Scherrer-Interferenzringe** auf dem Leuchtschirm, 3. **Die Heisenbergsche Unschärferelation (Werner Heisenberg, 1927)**:   * Es ist prinzipiell unmöglich, Ort $x$ und Impuls $p$ eines Quantenobjekts gleichzeitig beliebig genau zu messen:     $$\\mathbf{\\Delta x \\cdot \\Delta p_x \\ge \\frac{h}{4\\pi} = \\frac{\\hbar}{2}}$$   * *Konsequenz*: Keine klassischen Bahnen (Trajektorien) mehr; das Elektron im Atom wird durch eine Wahrscheinlichkeitswelle $\\psi(\\vec{r}, t)$ (**Orbital**) mit Aufenthaltswahrscheinlichkeitsdichte $|\\psi|^2$ beschrieben (Max Born).",
-          "concept": "Quantenmechanik: De-Broglie-Wellenlänge lambda = h/p = h/sqrt(2*m*e*U); Elektronenbeugung an Graphit; Heisenbergsche Unschärferelation Delta x * Delta p >= hbar/2; Quantenmechanischer Wahrscheinlichkeitscharakter |psi|^2.",
-          "sample_solution": "1. Die De-Broglie-Beziehung für Materiewellen (1924): - **Symmetrieprinzip der Natur**:   * Photonen besitzen Energie $E = h \\cdot f$ und Impuls $p = \\frac{h}{\\lambda}$.   * Louis de Broglie postulierte, dass jedem materiellen Teilchen mit Masse $m$ und Impuls $p = m \\cdot v$ eine Wellenlänge zugeordnet werden kann:     $$\\mathbf{\\lambda_{\\text{dB}} = \\frac{h}{p} = \\frac{h}{m \\cdot v}}$$ - **De-Broglie-Wellenlänge nicht-relativistischer Elektronen nach Beschleunigungsspannung $U$**:   * Mit $E_{\\text{kin}} = e \\cdot U = \\frac{p^2}{2m} \\implies p = \\sqrt{2 m e U}$:     $$\\mathbf{\\lambda_{\\text{dB}} = \\frac{h}{\\sqrt{2 \\cdot m_e \\cdot e \\cdot U}}}$$   * *Beispiel*: Bei $U = 150\\,\\text{V}$ ergibt sich $\\lambda \\approx 0{,}1\\,\\text{nm}$ (entspricht exakt den Atomabständen in Kristallgittern $\\implies$ ideale Auflösung für Elektronenmikroskope). 2. Der experimentelle Nachweis: Elektronenbeugung: - In der Elektronenbeugungsröhre treffen beschleunigte Elektronen auf ein Graphitgitter. - Obwohl Elektronen unteilbare Elementarteilchen mit Masse und Ladung sind, erzeugen sie hinter dem Kristall **Interferenzmuster (Debye-Scherrer-Ringe)**. - **Doppelspaltversuch mit Einzelelektronen**:   * Selbst wenn Elektronen einzeln nacheinander durch den Doppelspalt geschickt werden, baut sich auf dem Detektor nach tausenden Treffern das statistische Interferenzmuster auf $\\implies$ Jedes Quantenobjekt interferiert mit sich selbst! 3. Die Heisenbergsche Unschärferelation (1927): - **Mathematische Formulierung**:   $$\\mathbf{\\Delta x \\cdot \\Delta p_x \\ge \\frac{\\hbar}{2} = \\frac{h}{4\\pi}} \\quad \\text{sowie Energie-Zeit-Unschärfe: } \\mathbf{\\Delta E \\cdot \\Delta t \\ge \\frac{\\hbar}{2}}$$ - **Physikalische Bedeutung**:   * Die Unschärfe ist **keine technische Messungenauigkeit**, sondern eine fundamentale mathematische Eigenschaft der Natur (Fourier-Dualität von Wellenpaket-Lokalisierung und Frequenzbreite).   * Je schärfer der Ort $\\Delta x$ eines Teilchens bestimmt wird (z. B. Beugung am engen Spalt), desto unschärfer und unbestimmter wird sein Impuls $\\Delta p_x$. - **Zusammenbruch des klassischen Weltbilds**:   * Der Begriff der 'deterministischen Planetenbahn' eines Elektrons um den Atomkern verliert jede physikalische Bedeutung. Die Quantenmechanik beschreibt Zustände über die **Schrödinger-Wellenfunktion $\\psi$**, deren Betragsquadrat **$|\\psi(\\vec{r})|^2$ die räumliche Aufenthaltswahrscheinlichkeitsdichte (Orbital)** angibt."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere Materiewellen, Elektronenbeugung und die Heisenbergsche Unschärferelation: 1. Louis de Broglies Hypothese der Materiewellen (1924):   * Wenn Licht (klassisch Welle) Teilcheneigenschaften besitzt, müssen materielle Teilchen (wie Elektronen, Protonen, C60-Fullerene) auch Welleneigenschaften aufweisen:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\lambda_{\\text{dB}} = \\frac{h}{p} = \\frac{h}{m \\cdot v} = \\frac{h}{\\sqrt{2 \\cdot m \\cdot e \\cdot U_{\\text{beschl}}}}}",
+              "block": true,
+              "speech": "Lambda de Broglie gleich h durch p gleich h durch m mal v gleich h durch Wurzel aus 2 mal m mal e mal U Beschleunigung"
+            },
+            {
+              "type": "text",
+              "text": " 2. Experimenteller Nachweis (Davisson-Germer / Elektronenbeugungsröhre):   * Elektronenstrahl wird an einer polykristallinen Graphitfolie gebeugt "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Bragg-Interferenz an Netzebenenabständen "
+            },
+            {
+              "type": "math",
+              "tex": "d",
+              "speech": "d"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Entstehung kreisförmiger Debye-Scherrer-Interferenzringe auf dem Leuchtschirm, 3. Die Heisenbergsche Unschärferelation (Werner Heisenberg, 1927):   * Es ist prinzipiell unmöglich, Ort "
+            },
+            {
+              "type": "math",
+              "tex": "x",
+              "speech": "x"
+            },
+            {
+              "type": "text",
+              "text": " und Impuls "
+            },
+            {
+              "type": "math",
+              "tex": "p",
+              "speech": "p"
+            },
+            {
+              "type": "text",
+              "text": " eines Quantenobjekts gleichzeitig beliebig genau zu messen:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Delta x \\cdot \\Delta p_x \\ge \\frac{h}{4\\pi} = \\frac{\\hbar}{2}}",
+              "block": true,
+              "speech": "Delta x mal Delta p x größer gleich h durch 4 Pi gleich h quer durch 2"
+            },
+            {
+              "type": "text",
+              "text": "   * Konsequenz: Keine klassischen Bahnen (Trajektorien) mehr; das Elektron im Atom wird durch eine Wahrscheinlichkeitswelle "
+            },
+            {
+              "type": "math",
+              "tex": "\\psi(\\vec{r}, t)",
+              "speech": "Psi von Vektor r und t"
+            },
+            {
+              "type": "text",
+              "text": " (Orbital) mit Aufenthaltswahrscheinlichkeitsdichte "
+            },
+            {
+              "type": "math",
+              "tex": "|\\psi|^2",
+              "speech": "Betrag von Psi zum Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " beschrieben (Max Born)."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Quantenmechanik: De-Broglie-Wellenlänge "
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda = \\frac{h}{p} = \\frac{h}{\\sqrt{2 \\cdot m \\cdot e \\cdot U}}",
+              "speech": "Lambda gleich h durch p gleich h durch Wurzel aus 2 mal m mal e mal U"
+            },
+            {
+              "type": "text",
+              "text": "; Elektronenbeugung an Graphit; Heisenbergsche Unschärferelation "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta x \\cdot \\Delta p \\ge \\frac{\\hbar}{2}",
+              "speech": "Delta x mal Delta p größer gleich h quer durch 2"
+            },
+            {
+              "type": "text",
+              "text": "; Quantenmechanischer Wahrscheinlichkeitscharakter "
+            },
+            {
+              "type": "math",
+              "tex": "|\\psi|^2",
+              "speech": "Betrag von Psi zum Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die De-Broglie-Beziehung für Materiewellen (1924): - Symmetrieprinzip der Natur:   * Photonen besitzen Energie "
+            },
+            {
+              "type": "math",
+              "tex": "E = h \\cdot f"
+            },
+            {
+              "type": "text",
+              "text": " und Impuls "
+            },
+            {
+              "type": "math",
+              "tex": "p = \\frac{h}{\\lambda}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Louis de Broglie postulierte, dass jedem materiellen Teilchen mit Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m"
+            },
+            {
+              "type": "text",
+              "text": " und Impuls "
+            },
+            {
+              "type": "math",
+              "tex": "p = m \\cdot v"
+            },
+            {
+              "type": "text",
+              "text": " eine Wellenlänge zugeordnet werden kann:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\lambda_{\\text{dB}} = \\frac{h}{p} = \\frac{h}{m \\cdot v}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - De-Broglie-Wellenlänge nicht-relativistischer Elektronen nach Beschleunigungsspannung "
+            },
+            {
+              "type": "math",
+              "tex": "U"
+            },
+            {
+              "type": "text",
+              "text": ":   * Mit "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{kin}} = e \\cdot U = \\frac{p^2}{2m} \\implies p = \\sqrt{2 m e U}"
+            },
+            {
+              "type": "text",
+              "text": ":     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\lambda_{\\text{dB}} = \\frac{h}{\\sqrt{2 \\cdot m_e \\cdot e \\cdot U}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Beispiel: Bei "
+            },
+            {
+              "type": "math",
+              "tex": "U = 150\\,\\text{V}"
+            },
+            {
+              "type": "text",
+              "text": " ergibt sich "
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda \\approx 0{,}1\\,\\text{nm}"
+            },
+            {
+              "type": "text",
+              "text": " (entspricht exakt den Atomabständen in Kristallgittern "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " ideale Auflösung für Elektronenmikroskope). 2. Der experimentelle Nachweis: Elektronenbeugung: - In der Elektronenbeugungsröhre treffen beschleunigte Elektronen auf ein Graphitgitter. - Obwohl Elektronen unteilbare Elementarteilchen mit Masse und Ladung sind, erzeugen sie hinter dem Kristall Interferenzmuster (Debye-Scherrer-Ringe). - Doppelspaltversuch mit Einzelelektronen:   * Selbst wenn Elektronen einzeln nacheinander durch den Doppelspalt geschickt werden, baut sich auf dem Detektor nach tausenden Treffern das statistische Interferenzmuster auf "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Jedes Quantenobjekt interferiert mit sich selbst! 3. Die Heisenbergsche Unschärferelation (1927): - Mathematische Formulierung:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Delta x \\cdot \\Delta p_x \\ge \\frac{\\hbar}{2} = \\frac{h}{4\\pi}} \\quad \\text{sowie Energie-Zeit-Unschärfe: } \\mathbf{\\Delta E \\cdot \\Delta t \\ge \\frac{\\hbar}{2}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Physikalische Bedeutung:   * Die Unschärfe ist keine technische Messungenauigkeit, sondern eine fundamentale mathematische Eigenschaft der Natur (Fourier-Dualität von Wellenpaket-Lokalisierung und Frequenzbreite).   * Je schärfer der Ort "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta x"
+            },
+            {
+              "type": "text",
+              "text": " eines Teilchens bestimmt wird (z. B. Beugung am engen Spalt), desto unschärfer und unbestimmter wird sein Impuls "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta p_x"
+            },
+            {
+              "type": "text",
+              "text": ". - Zusammenbruch des klassischen Weltbilds:   * Der Begriff der 'deterministischen Planetenbahn' eines Elektrons um den Atomkern verliert jede physikalische Bedeutung. Die Quantenmechanik beschreibt Zustände über die Schrödinger-Wellenfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "\\psi"
+            },
+            {
+              "type": "text",
+              "text": ", deren Betragsquadrat "
+            },
+            {
+              "type": "math",
+              "tex": "|\\psi(\\vec{r})|^2"
+            },
+            {
+              "type": "text",
+              "text": " die räumliche Aufenthaltswahrscheinlichkeitsdichte (Orbital) angibt."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

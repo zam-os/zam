@@ -65,9 +65,332 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das Induktionsgesetz, die Lenzsche Regel und die Selbstinduktion: 1. **Magnetischer Fluss $\\Phi$**:   * $\\mathbf{\\Phi = \\vec{B} \\circ \\vec{A} = B \\cdot A \\cdot \\cos(\\alpha)}$ (Einheit: $1\\text{ Weber [Wb]} = 1\\,\\text{V}\\cdot\\text{s} = 1\\,\\text{T}\\cdot\\text{m}^2$), 2. **Das Faradaysche Induktionsgesetz (Michael Faraday, 1831)**:   * In einer Leiterschleife (oder Spule mit $N$ Windungen) wird eine Spannung induziert, sobald sich der von ihr umfasste magnetische Fluss zeitlich ändert:     $$\\mathbf{U_{\\text{ind}} = -N \\cdot \\frac{\\mathrm{d}\\Phi}{\\mathrm{d}t} = -N \\cdot \\left( \\frac{\\mathrm{d}B}{\\mathrm{d}t} \\cdot A + B \\cdot \\frac{\\mathrm{d}A}{\\mathrm{d}t} \\right)}$$   * Das negative Vorzeichen drückt die **Lenzsche Regel** aus, 3. **Selbstinduktion & Induktivität $L$**:   * Stromänderung in einer Spule erzeugt Änderung des eigenen Magnetfelds $\\implies$ **Selbstinduktionsspannung**:     $$\\mathbf{U_{\\text{ind}} = -L \\cdot \\frac{\\mathrm{d}I}{\\mathrm{d}t}}$$   * **Induktivität einer langen Spule**: $\\mathbf{L = \\mu_0 \\cdot \\mu_r \\cdot \\frac{N^2 \\cdot A}{l}}$ (Einheit: $1\\text{ Henry [H]} = 1\\,\\frac{\\text{V}\\cdot\\text{s}}{\\text{A}}$).   * **Magnetische Feldenergie**: $\\mathbf{W_{\\text{mag}} = \\frac{1}{2} L I^2}$.",
-          "concept": "Induktion: Magnetischer Fluss Phi = B*A*cos(alpha); Faradaysches Gesetz U_ind = -N * dPhi/dt; Lenzsche Regel; Selbstinduktion U_ind = -L * dI/dt; Induktivität L = mu0 * N^2 * A / l; Magnetische Feldenergie W_mag = 1/2 * L * I^2.",
-          "sample_solution": "1. Der magnetische Fluss $\\Phi$: - **Definition**: Ein Maß für die Gesamtzahl der magnetischen Feldlinien, die eine Fläche $A$ senkrecht durchsetzen:   $$\\mathbf{\\Phi = B \\cdot A \\cdot \\cos(\\alpha)} \\quad (\\text{Einheit: } 1\\text{ Wb} = 1\\,\\text{V}\\cdot\\text{s})$$ 2. Das Induktionsgesetz nach Faraday: - Eine Induktionsspannung $U_{\\text{ind}}$ entsteht immer dann, wenn sich der magnetische Fluss $\\Phi$ durch die Schleifenfläche mit der Zeit ändert:   $$\\mathbf{U_{\\text{ind}} = -N \\cdot \\dot{\\Phi}(t) = -N \\cdot \\frac{\\mathrm{d}\\Phi}{\\mathrm{d}t}}$$ - **Zwei fundamentale Entstehungsursachen**:   1. **Induktion durch Flächenänderung ($B = \\text{konstant}$)**:      - Bewegter Leiterstab der Länge $l$ mit Geschwindigkeit $v$ senkrecht im $B$-Feld: $\\mathbf{U_{\\text{ind}} = B \\cdot l \\cdot v}$.      - Generator (rotierende Spule): Erzeugung sinusförmiger Wechselspannung $u(t) = U_0 \\cdot \\sin(\\omega t)$.   2. **Induktion durch Feldänderung ($A = \\text{konstant}$)**:      - $U_{\\text{ind}} = -N \\cdot A \\cdot \\frac{\\mathrm{d}B}{\\mathrm{d}t}$ (z. B. Transformator). 3. Die Lenzsche Regel (Heinrich Lenz, 1834): - *« Der Induktionsstrom fließt stets so, dass das von ihm hervorgerufene Magnetfeld der Ursache der Induktion entgegenwirkt. »* - **Physikalischer Grund**: Das Minuszeichen ist eine direkte Manifestation des **Energieerhaltungssatzes**. Wäre der Induktionsstrom gleichgerichtet, würde er das erzeugende Feld verstärken $\\implies$ unendliche Energieerzeugung aus dem Nichts (*Perpetuum Mobile* – unmöglich). - **Beispiele**: Wirbelstrombremsen in ICE-Zügen, magnetische Dämpfung bei Waagen, Waltenhofensches Pendel. 4. Selbstinduktion und magnetische Feldenergie: - Jede Spule erzeugt bei Stromdurchfluss ihr eigenes Magnetfeld. Ändert sich die Stromstärke $I(t)$, induziert die Spule in sich selbst eine Gegenspannung:   $$\\mathbf{U_{\\text{ind}} = -L \\cdot \\frac{\\mathrm{d}I}{\\mathrm{d}t}}$$ - **Induktivität $L$ einer Zylinderspule**:   $$\\mathbf{L = \\mu_0 \\cdot \\mu_r \\cdot \\frac{N^2 \\cdot A}{l}} \\quad (\\text{Einheit: } 1\\text{ H} = 1\\,\\text{V}\\cdot\\text{s}\\cdot\\text{A}^{-1})$$ - **Im Magnetfeld gespeicherte magnetische Energie**:   $$\\mathbf{W_{\\text{mag}} = \\frac{1}{2} L \\cdot I^2}$$"
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das Induktionsgesetz, die Lenzsche Regel und die Selbstinduktion: 1. Magnetischer Fluss "
+            },
+            {
+              "type": "math",
+              "tex": "\\Phi",
+              "speech": "großes Phi"
+            },
+            {
+              "type": "text",
+              "text": ":   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Phi = \\vec{B} \\circ \\vec{A} = B \\cdot A \\cdot \\cos(\\alpha)}",
+              "speech": "großes Phi gleich Vektor B mal Vektor A gleich B mal A mal Kosinus von Alpha"
+            },
+            {
+              "type": "text",
+              "text": " (Einheit: "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ Weber [Wb]} = 1\\,\\text{V}\\cdot\\text{s} = 1\\,\\text{T}\\cdot\\text{m}^2",
+              "speech": "1 Weber gleich 1 Voltsekunde gleich 1 Tesla mal Quadratmeter"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Das Faradaysche Induktionsgesetz (Michael Faraday, 1831):   * In einer Leiterschleife (oder Spule mit "
+            },
+            {
+              "type": "math",
+              "tex": "N",
+              "speech": "N"
+            },
+            {
+              "type": "text",
+              "text": " Windungen) wird eine Spannung induziert, sobald sich der von ihr umfasste magnetische Fluss zeitlich ändert:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{U_{\\text{ind}} = -N \\cdot \\frac{\\mathrm{d}\\Phi}{\\mathrm{d}t} = -N \\cdot \\left( \\frac{\\mathrm{d}B}{\\mathrm{d}t} \\cdot A + B \\cdot \\frac{\\mathrm{d}A}{\\mathrm{d}t} \\right)}",
+              "block": true,
+              "speech": "U ind gleich minus N mal d großes Phi nach d t gleich minus N mal, d B nach d t mal A plus B mal d A nach d t"
+            },
+            {
+              "type": "text",
+              "text": "   * Das negative Vorzeichen drückt die Lenzsche Regel aus, 3. Selbstinduktion & Induktivität "
+            },
+            {
+              "type": "math",
+              "tex": "L",
+              "speech": "L"
+            },
+            {
+              "type": "text",
+              "text": ":   * Stromänderung in einer Spule erzeugt Änderung des eigenen Magnetfelds "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Selbstinduktionsspannung:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{U_{\\text{ind}} = -L \\cdot \\frac{\\mathrm{d}I}{\\mathrm{d}t}}",
+              "block": true,
+              "speech": "U ind gleich minus L mal d I nach d t"
+            },
+            {
+              "type": "text",
+              "text": "   * Induktivität einer langen Spule: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{L = \\mu_0 \\cdot \\mu_r \\cdot \\frac{N^2 \\cdot A}{l}}",
+              "speech": "L gleich My null mal My r mal N Quadrat mal A durch l"
+            },
+            {
+              "type": "text",
+              "text": " (Einheit: "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ Henry [H]} = 1\\,\\frac{\\text{V}\\cdot\\text{s}}{\\text{A}}",
+              "speech": "1 Henry gleich 1 Voltsekunde pro Ampere"
+            },
+            {
+              "type": "text",
+              "text": ").   * Magnetische Feldenergie: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{W_{\\text{mag}} = \\frac{1}{2} L I^2}",
+              "speech": "W mag gleich ein halb L I Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Induktion: Magnetischer Fluss "
+            },
+            {
+              "type": "math",
+              "tex": "\\Phi = B \\cdot A \\cdot \\cos(\\alpha)",
+              "speech": "großes Phi gleich B mal A mal Kosinus von Alpha"
+            },
+            {
+              "type": "text",
+              "text": "; Faradaysches Gesetz "
+            },
+            {
+              "type": "math",
+              "tex": "U_{\\text{ind}} = -N \\cdot \\frac{d\\Phi}{dt}",
+              "speech": "U ind gleich minus N mal d großes Phi durch d t"
+            },
+            {
+              "type": "text",
+              "text": "; Lenzsche Regel; Selbstinduktion "
+            },
+            {
+              "type": "math",
+              "tex": "U_{\\text{ind}} = -L \\cdot \\frac{dI}{dt}",
+              "speech": "U ind gleich minus L mal d I durch d t"
+            },
+            {
+              "type": "text",
+              "text": "; Induktivität "
+            },
+            {
+              "type": "math",
+              "tex": "L = \\mu_0 \\cdot \\frac{N^2 \\cdot A}{l}",
+              "speech": "L gleich My null mal N Quadrat mal A durch l"
+            },
+            {
+              "type": "text",
+              "text": "; Magnetische Feldenergie "
+            },
+            {
+              "type": "math",
+              "tex": "W_{\\text{mag}} = \\frac{1}{2} \\cdot L \\cdot I^2",
+              "speech": "W mag gleich ein halb mal L mal I Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der magnetische Fluss "
+            },
+            {
+              "type": "math",
+              "tex": "\\Phi"
+            },
+            {
+              "type": "text",
+              "text": ": - Definition: Ein Maß für die Gesamtzahl der magnetischen Feldlinien, die eine Fläche "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": " senkrecht durchsetzen:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Phi = B \\cdot A \\cdot \\cos(\\alpha)} \\quad (\\text{Einheit: } 1\\text{ Wb} = 1\\,\\text{V}\\cdot\\text{s})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Das Induktionsgesetz nach Faraday: - Eine Induktionsspannung "
+            },
+            {
+              "type": "math",
+              "tex": "U_{\\text{ind}}"
+            },
+            {
+              "type": "text",
+              "text": " entsteht immer dann, wenn sich der magnetische Fluss "
+            },
+            {
+              "type": "math",
+              "tex": "\\Phi"
+            },
+            {
+              "type": "text",
+              "text": " durch die Schleifenfläche mit der Zeit ändert:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{U_{\\text{ind}} = -N \\cdot \\dot{\\Phi}(t) = -N \\cdot \\frac{\\mathrm{d}\\Phi}{\\mathrm{d}t}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Zwei fundamentale Entstehungsursachen:   1. Induktion durch Flächenänderung ("
+            },
+            {
+              "type": "math",
+              "tex": "B = \\text{konstant}"
+            },
+            {
+              "type": "text",
+              "text": "):      - Bewegter Leiterstab der Länge "
+            },
+            {
+              "type": "math",
+              "tex": "l"
+            },
+            {
+              "type": "text",
+              "text": " mit Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v"
+            },
+            {
+              "type": "text",
+              "text": " senkrecht im "
+            },
+            {
+              "type": "math",
+              "tex": "B"
+            },
+            {
+              "type": "text",
+              "text": "-Feld: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{U_{\\text{ind}} = B \\cdot l \\cdot v}"
+            },
+            {
+              "type": "text",
+              "text": ".      - Generator (rotierende Spule): Erzeugung sinusförmiger Wechselspannung "
+            },
+            {
+              "type": "math",
+              "tex": "u(t) = U_0 \\cdot \\sin(\\omega t)"
+            },
+            {
+              "type": "text",
+              "text": ".   2. Induktion durch Feldänderung ("
+            },
+            {
+              "type": "math",
+              "tex": "A = \\text{konstant}"
+            },
+            {
+              "type": "text",
+              "text": "):      - "
+            },
+            {
+              "type": "math",
+              "tex": "U_{\\text{ind}} = -N \\cdot A \\cdot \\frac{\\mathrm{d}B}{\\mathrm{d}t}"
+            },
+            {
+              "type": "text",
+              "text": " (z. B. Transformator). 3. Die Lenzsche Regel (Heinrich Lenz, 1834): - « Der Induktionsstrom fließt stets so, dass das von ihm hervorgerufene Magnetfeld der Ursache der Induktion entgegenwirkt. » - Physikalischer Grund: Das Minuszeichen ist eine direkte Manifestation des Energieerhaltungssatzes. Wäre der Induktionsstrom gleichgerichtet, würde er das erzeugende Feld verstärken "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " unendliche Energieerzeugung aus dem Nichts (Perpetuum Mobile – unmöglich). - Beispiele: Wirbelstrombremsen in ICE-Zügen, magnetische Dämpfung bei Waagen, Waltenhofensches Pendel. 4. Selbstinduktion und magnetische Feldenergie: - Jede Spule erzeugt bei Stromdurchfluss ihr eigenes Magnetfeld. Ändert sich die Stromstärke "
+            },
+            {
+              "type": "math",
+              "tex": "I(t)"
+            },
+            {
+              "type": "text",
+              "text": ", induziert die Spule in sich selbst eine Gegenspannung:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{U_{\\text{ind}} = -L \\cdot \\frac{\\mathrm{d}I}{\\mathrm{d}t}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Induktivität "
+            },
+            {
+              "type": "math",
+              "tex": "L"
+            },
+            {
+              "type": "text",
+              "text": " einer Zylinderspule:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{L = \\mu_0 \\cdot \\mu_r \\cdot \\frac{N^2 \\cdot A}{l}} \\quad (\\text{Einheit: } 1\\text{ H} = 1\\,\\text{V}\\cdot\\text{s}\\cdot\\text{A}^{-1})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Im Magnetfeld gespeicherte magnetische Energie:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{W_{\\text{mag}} = \\frac{1}{2} L \\cdot I^2}",
+              "block": true
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -112,7 +435,21 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie lautet die Thomsonsche Schwingungsgleichung für die Periodendauer $T$ eines ungedämpften elektromagnetischen LC-Schwingkreises?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet die Thomsonsche Schwingungsgleichung für die Periodendauer "
+            },
+            {
+              "type": "math",
+              "tex": "T",
+              "speech": "T"
+            },
+            {
+              "type": "text",
+              "text": " eines ungedämpften elektromagnetischen LC-Schwingkreises?"
+            }
+          ],
           "concept": "T = 2 * pi * sqrt(L * C) (Eigenfrequenz f_0 = 1 / (2 * pi * sqrt(L * C)))",
           "fast_check": {
             "type": "binary_choice",
@@ -121,16 +458,353 @@
               "T = 2 * pi * sqrt(L / C)"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GB60000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den elektromagnetischen LC-Schwingkreis und den Übergang zum Hertzschen Dipol: 1. **Der elektromagnetische Schwingungszyklus (LC-Kreis)**:   * $t = 0$: Kondensator voll geladen ($Q = Q_0, U = U_0$), Strom $I = 0$. Gesamte Energie im **elektrischen Feld** ($W_{\\text{ges}} = \\frac{1}{2} C U_0^2$).   * $t = \\frac{T}{4}$: Kondensator entladen ($Q = 0, U = 0$), Strom maximal ($I = I_0$). Gesamte Energie im **magnetischen Feld der Spule** ($W_{\\text{ges}} = \\frac{1}{2} L I_0^2$).   * $t = \\frac{T}{2}$: Kondensator entgegengesetzt voll geladen ($Q = -Q_0$), $I = 0$.   * $t = \\frac{3T}{4}$: Kondensator entladen, maximaler Strom in Gegenrichtung ($-I_0$).   * $t = T$: Ein voller Zyklus vollendet, 2. **Differentialgleichung & Thomsonsche Formel (Lord Kelvin / William Thomson)**:   * Maschenregel: $U_C + U_L = 0 \\implies \\frac{Q}{C} + L \\cdot \\ddot{Q} = 0 \\implies \\ddot{Q}(t) + \\frac{1}{LC} Q(t) = 0$.   * **Eigenkreisfrequenz**: $\\omega_0 = \\frac{1}{\\sqrt{LC}} \\implies \\mathbf{T = 2\\pi \\sqrt{L C}} \\implies \\mathbf{f_0 = \\frac{1}{2\\pi \\sqrt{L C}}}$, 3. **Der Hertzsche Dipol (Heinrich Hertz, 1886)**:   * Zieht man die Platten des Kondensators auseinander und verkürzt die Spule auf einen geraden Stab, öffnet sich der geschlossene Schwingkreis zu einer linearen Antenne (Dipol) $\\implies$ Abstrahlung **freier elektromagnetischer Transversalwellen** (Radiowellen, Licht).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den elektromagnetischen LC-Schwingkreis und den Übergang zum Hertzschen Dipol: 1. Der elektromagnetische Schwingungszyklus (LC-Kreis):   * "
+            },
+            {
+              "type": "math",
+              "tex": "t = 0",
+              "speech": "t gleich 0"
+            },
+            {
+              "type": "text",
+              "text": ": Kondensator voll geladen ("
+            },
+            {
+              "type": "math",
+              "tex": "Q = Q_0, U = U_0",
+              "speech": "Q gleich Q null, U gleich U null"
+            },
+            {
+              "type": "text",
+              "text": "), Strom "
+            },
+            {
+              "type": "math",
+              "tex": "I = 0",
+              "speech": "I gleich 0"
+            },
+            {
+              "type": "text",
+              "text": ". Gesamte Energie im elektrischen Feld ("
+            },
+            {
+              "type": "math",
+              "tex": "W_{\\text{ges}} = \\frac{1}{2} C U_0^2",
+              "speech": "W ges gleich ein halb C U null Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ").   * "
+            },
+            {
+              "type": "math",
+              "tex": "t = \\frac{T}{4}",
+              "speech": "t gleich T durch 4"
+            },
+            {
+              "type": "text",
+              "text": ": Kondensator entladen ("
+            },
+            {
+              "type": "math",
+              "tex": "Q = 0, U = 0",
+              "speech": "Q gleich 0, U gleich 0"
+            },
+            {
+              "type": "text",
+              "text": "), Strom maximal ("
+            },
+            {
+              "type": "math",
+              "tex": "I = I_0",
+              "speech": "I gleich I null"
+            },
+            {
+              "type": "text",
+              "text": "). Gesamte Energie im magnetischen Feld der Spule ("
+            },
+            {
+              "type": "math",
+              "tex": "W_{\\text{ges}} = \\frac{1}{2} L I_0^2",
+              "speech": "W ges gleich ein halb L I null Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ").   * "
+            },
+            {
+              "type": "math",
+              "tex": "t = \\frac{T}{2}",
+              "speech": "t gleich T durch 2"
+            },
+            {
+              "type": "text",
+              "text": ": Kondensator entgegengesetzt voll geladen ("
+            },
+            {
+              "type": "math",
+              "tex": "Q = -Q_0",
+              "speech": "Q gleich minus Q null"
+            },
+            {
+              "type": "text",
+              "text": "), "
+            },
+            {
+              "type": "math",
+              "tex": "I = 0",
+              "speech": "I gleich 0"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "t = \\frac{3T}{4}",
+              "speech": "t gleich 3 T durch 4"
+            },
+            {
+              "type": "text",
+              "text": ": Kondensator entladen, maximaler Strom in Gegenrichtung ("
+            },
+            {
+              "type": "math",
+              "tex": "-I_0",
+              "speech": "minus I null"
+            },
+            {
+              "type": "text",
+              "text": ").   * "
+            },
+            {
+              "type": "math",
+              "tex": "t = T",
+              "speech": "t gleich T"
+            },
+            {
+              "type": "text",
+              "text": ": Ein voller Zyklus vollendet, 2. Differentialgleichung & Thomsonsche Formel (Lord Kelvin / William Thomson):   * Maschenregel: "
+            },
+            {
+              "type": "math",
+              "tex": "U_C + U_L = 0 \\implies \\frac{Q}{C} + L \\cdot \\ddot{Q} = 0 \\implies \\ddot{Q}(t) + \\frac{1}{LC} Q(t) = 0",
+              "speech": "U C plus U L gleich 0, daraus folgt Q durch C plus L mal Q zwei Punkt gleich 0, daraus folgt Q zwei Punkt von t plus 1 durch L C mal Q von t gleich 0"
+            },
+            {
+              "type": "text",
+              "text": ".   * Eigenkreisfrequenz: "
+            },
+            {
+              "type": "math",
+              "tex": "\\omega_0 = \\frac{1}{\\sqrt{LC}} \\implies \\mathbf{T = 2\\pi \\sqrt{L C}} \\implies \\mathbf{f_0 = \\frac{1}{2\\pi \\sqrt{L C}}}",
+              "speech": "Omega null gleich 1 durch Wurzel aus L C daraus folgt T gleich 2 Pi Wurzel aus L C daraus folgt f null gleich 1 durch 2 Pi Wurzel aus L C"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Der Hertzsche Dipol (Heinrich Hertz, 1886):   * Zieht man die Platten des Kondensators auseinander und verkürzt die Spule auf einen geraden Stab, öffnet sich der geschlossene Schwingkreis zu einer linearen Antenne (Dipol) "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Abstrahlung freier elektromagnetischer Transversalwellen (Radiowellen, Licht)."
+            }
+          ],
           "concept": "Schwingkreis: Periodischer Energieaustausch W_el <-> W_mag; Differentialgleichung harmonischer Oszillator; Thomsonsche Formel T = 2*pi*sqrt(L*C); Übergang geschlossener Schwingkreis -> offener Hertzscher Dipol (Abstrahlung elektromagnetischer Wellen).",
-          "sample_solution": "1. Der elektromagnetische Schwingungsvorgang (LC-Oszillator): - **Aufbau**: Parallelschaltung eines geladenen Kondensators $C$ mit einer Spule $L$ (ohne ohmschen Widerstand im Idealfall). - **Der 4-Phasen-Zyklus des Energieaustauschs**: ```mermaid graph LR   A[1. t=0: Volles E-Feld W_el = 1/2 C U^2, I=0] --> B[2. t=T/4: Volles B-Feld W_mag = 1/2 L I^2, U=0]   B --> C[3. t=T/2: Volles E-Feld umgepolt, I=0]   C --> D[4. t=3T/4: Volles B-Feld Gegenstrom, U=0]   D --> A ``` - **Analogie zum mechanischen Federpendel**:   * Kondensatorladung $Q \\longleftrightarrow$ Auslenkung $s$ (potentielle Spannenergie).   * Spulenstrom $I = \\dot{Q} \\longleftrightarrow$ Geschwindigkeit $v = \\dot{s}$ (kinetische Energie).   * Induktivität $L \\longleftrightarrow$ Träge Masse $m$.   * Kehrwert der Kapazität $\\frac{1}{C} \\longleftrightarrow$ Federkonstante $D$. 2. Mathematische Herleitung der Thomsonschen Schwingungsgleichung: - **Anwendung der Kirchhoffschen Maschenregel**:   $$U_C + U_{\\text{ind}} = 0 \\implies \\frac{Q(t)}{C} + L \\cdot \\frac{\\mathrm{d}I}{\\mathrm{d}t} = 0$$ - Da $I(t) = \\dot{Q}(t)$, ergibt sich die homogene lineare Differentialgleichung 2. Ordnung des ungedämpften harmonischen Oszillators:   $$\\mathbf{\\ddot{Q}(t) + \\frac{1}{L \\cdot C} \\cdot Q(t) = 0}$$ - **Lösungsansatz**: $Q(t) = Q_0 \\cdot \\cos(\\omega_0 t)$ mit der **Eigenkreisfrequenz $\\omega_0$**:   $$\\omega_0^2 = \\frac{1}{L C} \\implies \\mathbf{\\omega_0 = \\frac{1}{\\sqrt{L C}}}$$ - **Thomsonsche Periodendauer $T$ und Resonanzfrequenz $f_0$**:   $$\\mathbf{T = \\frac{2\\pi}{\\omega_0} = 2\\pi \\sqrt{L \\cdot C}} \\quad \\iff \\quad \\mathbf{f_0 = \\frac{1}{2\\pi \\sqrt{L \\cdot C}}}$$ 3. Der offene Schwingkreis (Der Hertzsche Dipol): - **Vom geschlossenen zum offenen System**:   * In einem geschlossenen LC-Kreis bleibt das elektrische Feld weitgehend zwischen den Kondensatorplatten und das magnetische Feld in der Spule gefangen.   * Verkleinert man die Platten und biegt die Zuleitungen auseinander, geht der Schwingkreis in einen **gestreckten Leiterstab (Dipolantenne)** über. - **Entstehung elektromagnetischer Wellen**:   * Die hin- und herschwingenden Elektronen erzeugen ein dynamisches elektrisches und magnetisches Wechselfeld.   * Bei sehr hohen Frequenzen ($f \\ge \\text{MHz}$) schnüren sich die Feldlinien im Nulldurchgang der Spannung von der Antenne ab und breiten sich als **freie elektromagnetische Welle mit Lichtgeschwindigkeit $c_0 \\approx 3 \\cdot 10^8\\,\\frac{\\text{m}}{\\text{s}}$** im Raum aus (experimenteller Nachweis durch Heinrich Hertz 1886; Fundament der modernen Funk-, Mobilfunk- und Radartechnik)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der elektromagnetische Schwingungsvorgang (LC-Oszillator): - Aufbau: Parallelschaltung eines geladenen Kondensators "
+            },
+            {
+              "type": "math",
+              "tex": "C"
+            },
+            {
+              "type": "text",
+              "text": " mit einer Spule "
+            },
+            {
+              "type": "math",
+              "tex": "L"
+            },
+            {
+              "type": "text",
+              "text": " (ohne ohmschen Widerstand im Idealfall). - Der 4-Phasen-Zyklus des Energieaustauschs: ```mermaid graph LR   A[1. t=0: Volles E-Feld W_el = 1/2 C U^2, I=0] --> B[2. t=T/4: Volles B-Feld W_mag = 1/2 L I^2, U=0]   B --> C[3. t=T/2: Volles E-Feld umgepolt, I=0]   C --> D[4. t=3T/4: Volles B-Feld Gegenstrom, U=0]   D --> A ``` - Analogie zum mechanischen Federpendel:   * Kondensatorladung "
+            },
+            {
+              "type": "math",
+              "tex": "Q \\longleftrightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Auslenkung "
+            },
+            {
+              "type": "math",
+              "tex": "s"
+            },
+            {
+              "type": "text",
+              "text": " (potentielle Spannenergie).   * Spulenstrom "
+            },
+            {
+              "type": "math",
+              "tex": "I = \\dot{Q} \\longleftrightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v = \\dot{s}"
+            },
+            {
+              "type": "text",
+              "text": " (kinetische Energie).   * Induktivität "
+            },
+            {
+              "type": "math",
+              "tex": "L \\longleftrightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Träge Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m"
+            },
+            {
+              "type": "text",
+              "text": ".   * Kehrwert der Kapazität "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{1}{C} \\longleftrightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Federkonstante "
+            },
+            {
+              "type": "math",
+              "tex": "D"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Mathematische Herleitung der Thomsonschen Schwingungsgleichung: - Anwendung der Kirchhoffschen Maschenregel:   "
+            },
+            {
+              "type": "math",
+              "tex": "U_C + U_{\\text{ind}} = 0 \\implies \\frac{Q(t)}{C} + L \\cdot \\frac{\\mathrm{d}I}{\\mathrm{d}t} = 0",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Da "
+            },
+            {
+              "type": "math",
+              "tex": "I(t) = \\dot{Q}(t)"
+            },
+            {
+              "type": "text",
+              "text": ", ergibt sich die homogene lineare Differentialgleichung 2. Ordnung des ungedämpften harmonischen Oszillators:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\ddot{Q}(t) + \\frac{1}{L \\cdot C} \\cdot Q(t) = 0}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Lösungsansatz: "
+            },
+            {
+              "type": "math",
+              "tex": "Q(t) = Q_0 \\cdot \\cos(\\omega_0 t)"
+            },
+            {
+              "type": "text",
+              "text": " mit der Eigenkreisfrequenz "
+            },
+            {
+              "type": "math",
+              "tex": "\\omega_0"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\omega_0^2 = \\frac{1}{L C} \\implies \\mathbf{\\omega_0 = \\frac{1}{\\sqrt{L C}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Thomsonsche Periodendauer "
+            },
+            {
+              "type": "math",
+              "tex": "T"
+            },
+            {
+              "type": "text",
+              "text": " und Resonanzfrequenz "
+            },
+            {
+              "type": "math",
+              "tex": "f_0"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{T = \\frac{2\\pi}{\\omega_0} = 2\\pi \\sqrt{L \\cdot C}} \\quad \\iff \\quad \\mathbf{f_0 = \\frac{1}{2\\pi \\sqrt{L \\cdot C}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Der offene Schwingkreis (Der Hertzsche Dipol): - Vom geschlossenen zum offenen System:   * In einem geschlossenen LC-Kreis bleibt das elektrische Feld weitgehend zwischen den Kondensatorplatten und das magnetische Feld in der Spule gefangen.   * Verkleinert man die Platten und biegt die Zuleitungen auseinander, geht der Schwingkreis in einen gestreckten Leiterstab (Dipolantenne) über. - Entstehung elektromagnetischer Wellen:   * Die hin- und herschwingenden Elektronen erzeugen ein dynamisches elektrisches und magnetisches Wechselfeld.   * Bei sehr hohen Frequenzen ("
+            },
+            {
+              "type": "math",
+              "tex": "f \\ge \\text{MHz}"
+            },
+            {
+              "type": "text",
+              "text": ") schnüren sich die Feldlinien im Nulldurchgang der Spannung von der Antenne ab und breiten sich als freie elektromagnetische Welle mit Lichtgeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "c_0 \\approx 3 \\cdot 10^8\\,\\frac{\\text{m}}{\\text{s}}"
+            },
+            {
+              "type": "text",
+              "text": " im Raum aus (experimenteller Nachweis durch Heinrich Hertz 1886; Fundament der modernen Funk-, Mobilfunk- und Radartechnik)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

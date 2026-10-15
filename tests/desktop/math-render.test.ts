@@ -7,8 +7,7 @@ import {
   type MathNodeLike,
   temmlOptions,
 } from "../../desktop/src/math-render.js";
-import { liftDollarMath } from "../../src/kernel/library/dollar-lift.js";
-import { texIssues } from "../../src/kernel/library/tex-tokenizer.js";
+import type { CardText } from "../../src/kernel/library/card-text.js";
 
 /**
  * Just enough XML parsing to turn Temml's `renderToString` output into the
@@ -79,12 +78,16 @@ describe("isSafeMathTree", () => {
       const tile = JSON.parse(readFileSync(join(dir, file), "utf-8"));
       for (const atom of tile.atoms) {
         for (const item of atom.practice_items) {
-          for (const field of ["question", "concept", "sample_solution"]) {
-            const text = item[field];
-            if (typeof text !== "string") continue;
-            for (const segment of liftDollarMath(text, "strict").segments) {
+          const fields: unknown[] = [
+            item.question_segments,
+            item.concept_segments,
+            item.sample_solution,
+            ...(item.fast_check?.options ?? []),
+          ];
+          for (const field of fields) {
+            if (!Array.isArray(field)) continue;
+            for (const segment of field as CardText) {
               if (segment.type !== "math") continue;
-              if (texIssues(segment.tex).length > 0) continue;
               checked++;
               const tree = render(segment.tex, segment.block === true);
               if (!isSafeMathTree(tree)) refused.push(segment.tex.slice(0, 60));

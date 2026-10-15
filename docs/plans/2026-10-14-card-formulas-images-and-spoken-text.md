@@ -32,9 +32,10 @@ small images.
 - [x] **Phase 2** — schema and the one write path — `5c6e87f1`
 - [x] **Phase 3** — Studio recall renders segments; voice speaks them;
   measurements — `ba3bf276` (WebKit and VoiceOver measurement open: owner)
-- [ ] **Phase 4** — tiles: segment fields, installer, `installed_tiles`,
-  background reinstall, team step
-- [ ] **Phase 5** — bundled tile migration (owner review gate)
+- [x] **Phase 4** — tiles: segment fields, installer, `installed_tiles`,
+  background reinstall, team step — `51209d5b`
+- [ ] **Phase 5** — bundled tile migration (owner review gate) — migrated
+  and tested; owner gate open (`scripts/card-text-migration/review-sample.md`)
 - [ ] **Phase 6** — writers: prompts, tool contracts, `$` repair,
   placeholders
 - [ ] **Phase 7** — Anki formula lift and the Studio editor (D9)
@@ -664,6 +665,68 @@ Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
 9. **Owner gate.** Thomas reads a sample (fractions, matrices, prescripts,
    the eleven patches, per subject) and skims the diff reports. Note his
    verdict here before committing the phase.
+
+### As built (Phase 5)
+
+- **One script instead of four.** `scripts/card-text-migration/migrate.ts`
+  (run with `tsx`) does the lift, the merge and the worklist in one
+  deterministic pass. Its inputs sit beside it and are reviewed in the diff:
+  - **`patches.json`:** 15 patches. Eight repair the seven strings where
+    JSON `\t`/`\r` ate a backslash. Four fix unbalanced braces, one escapes
+    a bare `&`, and two undo a doubled backslash.
+  - **`rewrites.txt`:** 135 whole-field rewrites. 27 are fields with a bare
+    command (the plan counted four questions; concepts and options had more).
+    The rest are the ASCII-math concepts and options, written as `$…$` TeX
+    with `{,}` decimal commas. This file replaces the ASCII-math worklist.
+  - **`speech.tsv`:** one reading per distinct learner-visible formula
+    (`lang⇥tex⇥speech`, 1,753 lines).
+- **Speech was not written by the content model.** No model was called from
+  the implementing session. `speech-draft.ts` (rule-based, German) drafted
+  all 1,753 readings. The coding agent then read every line and corrected
+  694 of them: units, chemistry, vectors, point coordinates, ranges ("bis"),
+  ratios ("zu"), genotypes, grammar productions and set notation. The owner
+  review below covers the result.
+- **Emphasis** is stripped across formula boundaries
+  (`**Alkene ($C_nH_{2n}$)**`) and until none is left (`**,**` nested in
+  `*…*`).
+- **Sample solutions** are lifted to segments as well, so a tile has one
+  format, but their formulas carry no speech: they are never installed.
+- **Atom titles** become plain Unicode through `texToPlain`. `texToPlain` now
+  keeps a star in a script (`p^*` → `p*`) instead of turning it into `·`.
+- **Only rewritten items change:** 410 items in 186 tiles. They get
+  `materiality: "cosmetic"` and the canonical key order; every other item
+  stays byte for byte.
+- **Repeatable.**
+  - A fresh run from `main` reproduces the tiles byte for byte.
+  - A second run changes nothing.
+  - An unused patch, rewrite or speech line is an error.
+- **Tile test** (`tests/kernel/bundled-tiles-card-text.test.ts`) covers the
+  list above, with two adjustments:
+  - **Projections:** a tile item stores either the plain field or segments,
+    never both, so there is no stored projection to compare. The test asserts
+    exactly one of the two, and that the derived projection carries no
+    markup.
+  - **Images:** `alt` is checked through `validateCardText`. No tile carries
+    an image yet.
+
+  It replaces the corpus test and its `KNOWN_DAMAGED` list in
+  `card-text.test.ts`.
+- **Speech lengths:**
+
+  | median | p95 | p99 | max |
+  |---|---|---|---|
+  | 26 | 118 | 172 | 266 characters |
+
+  The cap stays at 600. A model-written card near the 500-character TeX cap
+  needs the room, and a lower cap buys nothing measurable.
+- **Review material.** `diff-report.ts` writes:
+  - one page per changed tile to the git-ignored `report/`: plain text
+    before → after, each formula with its plain text and speech;
+  - the committed `review-sample.md`: the 15 patches, eight rewrites,
+    fractions, matrices, prescripts, reactions, the longest readings, and a
+    spread per subject.
+- **Owner gate: open.** Thomas's verdict on `review-sample.md` and the
+  report goes here before the branch merges.
 
 ## Phase 6 — writers
 

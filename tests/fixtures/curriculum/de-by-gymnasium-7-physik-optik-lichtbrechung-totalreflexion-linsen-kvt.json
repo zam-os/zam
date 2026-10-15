@@ -65,9 +65,274 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre das Phänomen der Lichtbrechung physikalisch: 1. **Physikalische Ursache**: Die unterschiedliche Lichtausbreitungsgeschwindigkeit $c$ in verschiedenen transparenten Medien (im Vakuum/Luft $c_0 \\approx 300.000\\text{ km/s}$, im Wasser $c_{\\text{Wasser}} \\approx 225.000\\text{ km/s}$, im Glas $c_{\\text{Glas}} \\approx 200.000\\text{ km/s}$), 2. **Der Brechungsindex $n$**: $n = \\frac{c_0}{c}$ (ein Medium mit größerem $n$ heißt **optisch dichter**), 3. **Die beiden Brechungsregeln**:   * Übergang optisch dünn $\\rightarrow$ optisch dicht: Licht wird **zum Lot hin** gebrochen ($\\beta < \\alpha$).   * Übergang optisch dicht $\\rightarrow$ optisch dünn: Licht wird **vom Lot weg** gebrochen ($\\beta > \\alpha$), 4. Das **Fermatsche Prinzip**: Licht wählt zwischen zwei Punkten stets den zeitlich kürzesten Weg.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Erkläre das Phänomen der Lichtbrechung physikalisch: 1. Physikalische Ursache: Die unterschiedliche Lichtausbreitungsgeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "c",
+              "speech": "c"
+            },
+            {
+              "type": "text",
+              "text": " in verschiedenen transparenten Medien (im Vakuum/Luft "
+            },
+            {
+              "type": "math",
+              "tex": "c_0 \\approx 300.000\\text{ km/s}",
+              "speech": "c null ungefähr 300.000 Kilometer pro Sekunde"
+            },
+            {
+              "type": "text",
+              "text": ", im Wasser "
+            },
+            {
+              "type": "math",
+              "tex": "c_{\\text{Wasser}} \\approx 225.000\\text{ km/s}",
+              "speech": "c Wasser ungefähr 225.000 Kilometer pro Sekunde"
+            },
+            {
+              "type": "text",
+              "text": ", im Glas "
+            },
+            {
+              "type": "math",
+              "tex": "c_{\\text{Glas}} \\approx 200.000\\text{ km/s}",
+              "speech": "c Glas ungefähr 200.000 Kilometer pro Sekunde"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Der Brechungsindex "
+            },
+            {
+              "type": "math",
+              "tex": "n",
+              "speech": "n"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "n = \\frac{c_0}{c}",
+              "speech": "n gleich c null durch c"
+            },
+            {
+              "type": "text",
+              "text": " (ein Medium mit größerem "
+            },
+            {
+              "type": "math",
+              "tex": "n",
+              "speech": "n"
+            },
+            {
+              "type": "text",
+              "text": " heißt optisch dichter), 3. Die beiden Brechungsregeln:   * Übergang optisch dünn "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " optisch dicht: Licht wird zum Lot hin gebrochen ("
+            },
+            {
+              "type": "math",
+              "tex": "\\beta < \\alpha",
+              "speech": "Beta kleiner als Alpha"
+            },
+            {
+              "type": "text",
+              "text": ").   * Übergang optisch dicht "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " optisch dünn: Licht wird vom Lot weg gebrochen ("
+            },
+            {
+              "type": "math",
+              "tex": "\\beta > \\alpha",
+              "speech": "Beta größer als Alpha"
+            },
+            {
+              "type": "text",
+              "text": "), 4. Das Fermatsche Prinzip: Licht wählt zwischen zwei Punkten stets den zeitlich kürzesten Weg."
+            }
+          ],
           "concept": "Lichtbrechung entsteht durch Geschwindigkeitsänderung c in Medien; Brechungsindex n = c0 / c; dünn -> dicht: zum Lot (beta < alpha); dicht -> dünn: vom Lot weg (beta > alpha); Fermatsches Prinzip des kürzesten Zeitwegs.",
-          "sample_solution": "1. Physikalische Ursache der Lichtbrechung: - Licht ist eine elektromagnetische Welle, die sich im Vakuum und in Luft mit maximaler Geschwindigkeit ($c_0 \\approx 300.000\\text{ km/s}$) ausbreitet. - Beim Eintritt in materielle durchsichtige Körper wird das Licht durch Wechselwirkung mit den Atomen verlangsamt:   * Wasser: $c_{\\text{Wasser}} \\approx 225.000\\text{ km/s}$   * Kronglas: $c_{\\text{Glas}} \\approx 200.000\\text{ km/s}$   * Diamant: $c_{\\text{Diamant}} \\approx 124.000\\text{ km/s}$. 2. Der Brechungsindex $n$ (Optische Dichte): - Das Verhältnis der Lichtgeschwindigkeit im Vakuum zur Lichtgeschwindigkeit im Medium definiert den **Brechungsindex $n$**:   $$\\mathbf{n = \\frac{c_0}{c}}$$   * Ein Medium mit hoher Lichtgeschwindigkeit heißt **optisch dünner** ($n$ klein).   * Ein Medium mit niedriger Lichtgeschwindigkeit heißt **optisch dichter** ($n$ groß). 3. Die fundamentalen Brechungsregeln: - **1. Fall (Optisch dünn $\\rightarrow$ Optisch dicht, z. B. Luft $\\rightarrow$ Wasser/Glas)**:   * Der Lichtstrahl wird **zum Einfallslot hin gebrochen**.   * Der Brechungswinkel $\\beta$ ist kleiner als der Einfallswinkel $\\alpha$:   $$\\mathbf{\\beta < \\alpha}$$ - **2. Fall (Optisch dicht $\\rightarrow$ Optisch dünn, z. B. Wasser/Glas $\\rightarrow$ Luft)**:   * Der Lichtstrahl wird **vom Einfallslot weg gebrochen**.   * Der Brechungswinkel $\\beta$ ist größer als der Einfallswinkel $\\alpha$:   $$\\mathbf{\\beta > \\alpha}$$ 4. Das Fermatsche Prinzip: - Pierre de Fermat zeigte: Ein Lichtstrahl nimmt zwischen zwei festen Punkten immer denjenigen Weg, für den er die **kürzeste Reisezeit** benötigt (*Prinzip des schnellsten Weges*). Da Licht im dichteren Medium langsamer läuft, verkürzt es die Strecke im dichteren Medium durch Abknicken zum Lot."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Physikalische Ursache der Lichtbrechung: - Licht ist eine elektromagnetische Welle, die sich im Vakuum und in Luft mit maximaler Geschwindigkeit ("
+            },
+            {
+              "type": "math",
+              "tex": "c_0 \\approx 300.000\\text{ km/s}"
+            },
+            {
+              "type": "text",
+              "text": ") ausbreitet. - Beim Eintritt in materielle durchsichtige Körper wird das Licht durch Wechselwirkung mit den Atomen verlangsamt:   * Wasser: "
+            },
+            {
+              "type": "math",
+              "tex": "c_{\\text{Wasser}} \\approx 225.000\\text{ km/s}"
+            },
+            {
+              "type": "text",
+              "text": "   * Kronglas: "
+            },
+            {
+              "type": "math",
+              "tex": "c_{\\text{Glas}} \\approx 200.000\\text{ km/s}"
+            },
+            {
+              "type": "text",
+              "text": "   * Diamant: "
+            },
+            {
+              "type": "math",
+              "tex": "c_{\\text{Diamant}} \\approx 124.000\\text{ km/s}"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Der Brechungsindex "
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": " (Optische Dichte): - Das Verhältnis der Lichtgeschwindigkeit im Vakuum zur Lichtgeschwindigkeit im Medium definiert den Brechungsindex "
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{n = \\frac{c_0}{c}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Ein Medium mit hoher Lichtgeschwindigkeit heißt optisch dünner ("
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": " klein).   * Ein Medium mit niedriger Lichtgeschwindigkeit heißt optisch dichter ("
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": " groß). 3. Die fundamentalen Brechungsregeln: - 1. Fall (Optisch dünn "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Optisch dicht, z. B. Luft "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Wasser/Glas):   * Der Lichtstrahl wird zum Einfallslot hin gebrochen.   * Der Brechungswinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\beta"
+            },
+            {
+              "type": "text",
+              "text": " ist kleiner als der Einfallswinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\beta < \\alpha}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 2. Fall (Optisch dicht "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Optisch dünn, z. B. Wasser/Glas "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Luft):   * Der Lichtstrahl wird vom Einfallslot weg gebrochen.   * Der Brechungswinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\beta"
+            },
+            {
+              "type": "text",
+              "text": " ist größer als der Einfallswinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\beta > \\alpha}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 4. Das Fermatsche Prinzip: - Pierre de Fermat zeigte: Ein Lichtstrahl nimmt zwischen zwei festen Punkten immer denjenigen Weg, für den er die kürzeste Reisezeit benötigt (Prinzip des schnellsten Weges). Da Licht im dichteren Medium langsamer läuft, verkürzt es die Strecke im dichteren Medium durch Abknicken zum Lot."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +393,211 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das Prinzip der Totalreflexion und die Bildkonstruktion an Sammellinsen: 1. **Entstehung der Totalreflexion**: Beim Übergang optisch dicht $\\rightarrow$ optisch dünn wächst der Brechungswinkel $\\beta$ schneller als $\\alpha$; beim **Grenzwinkel $\\alpha_{\\text{grenz}}$** streift der gebrochene Strahl bei $\\beta = 90^\\circ$ entlang der Grenzfläche; für alle $\\alpha > \\alpha_{\\text{grenz}}$ tritt kein Licht mehr aus, sondern wird zu $100\\%$ vollkommen verlustfrei reflektiert, 2. **Technische Anwendungen**: Glasfaserkabel / Lichtwellenleiter (Licht wird im Faserkern durch zigtausendfache Totalreflexion ohne Signalverlust über Ozeane geleitet), Umkehrprismen im Fernglas, Endoskope in der Medizin, 3. **Bildkonstruktion an Sammellinsen (Konvexlinsen)** mit den 3 ausgezeichneten Strahlen:   * **Parallelstrahl** wird zum **Brennpunktstrahl** hinter der Linse.   * **Mittelpunktstrahl** geht ungebrochen geradeaus durch die Linsenmitte.   * **Brennpunktstrahl** vor der Linse wird hinter der Linse zum **Parallelstrahl**.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das Prinzip der Totalreflexion und die Bildkonstruktion an Sammellinsen: 1. Entstehung der Totalreflexion: Beim Übergang optisch dicht "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " optisch dünn wächst der Brechungswinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\beta",
+              "speech": "Beta"
+            },
+            {
+              "type": "text",
+              "text": " schneller als "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha",
+              "speech": "Alpha"
+            },
+            {
+              "type": "text",
+              "text": "; beim Grenzwinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha_{\\text{grenz}}",
+              "speech": "Alpha grenz"
+            },
+            {
+              "type": "text",
+              "text": " streift der gebrochene Strahl bei "
+            },
+            {
+              "type": "math",
+              "tex": "\\beta = 90^\\circ",
+              "speech": "Beta gleich 90 Grad"
+            },
+            {
+              "type": "text",
+              "text": " entlang der Grenzfläche; für alle "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha > \\alpha_{\\text{grenz}}",
+              "speech": "Alpha größer als Alpha grenz"
+            },
+            {
+              "type": "text",
+              "text": " tritt kein Licht mehr aus, sondern wird zu "
+            },
+            {
+              "type": "math",
+              "tex": "100\\%",
+              "speech": "100 Prozent"
+            },
+            {
+              "type": "text",
+              "text": " vollkommen verlustfrei reflektiert, 2. Technische Anwendungen: Glasfaserkabel / Lichtwellenleiter (Licht wird im Faserkern durch zigtausendfache Totalreflexion ohne Signalverlust über Ozeane geleitet), Umkehrprismen im Fernglas, Endoskope in der Medizin, 3. Bildkonstruktion an Sammellinsen (Konvexlinsen) mit den 3 ausgezeichneten Strahlen:   * Parallelstrahl wird zum Brennpunktstrahl hinter der Linse.   * Mittelpunktstrahl geht ungebrochen geradeaus durch die Linsenmitte.   * Brennpunktstrahl vor der Linse wird hinter der Linse zum Parallelstrahl."
+            }
+          ],
           "concept": "Totalreflexion: dicht -> dünn für alpha > alpha_grenz (kein Brechungsstrahl, 100% Reflexion); Anwendungen: Glasfaser, Endoskopie, Prismen; Sammellinse: Parallelstrahl -> Brennpunktstrahl, Mittelpunktstrahl ungebrochen, Brennpunktstrahl -> Parallelstrahl.",
-          "sample_solution": "1. Das physikalische Prinzip der Totalreflexion: - **Voraussetzung 1**: Der Lichtstrahl muss sich im **optisch dichteren Medium** befinden und auf die Grenzfläche zum **optisch dünneren Medium** treffen (z. B. Glas $\\rightarrow$ Luft oder Wasser $\\rightarrow$ Luft). - **Voraussetzung 2**: Da der Strahl vom Lot weg gebrochen wird ($\\beta > \\alpha$), erreicht der Brechungswinkel bei einem bestimmten Einfallswinkel genau $\\beta = 90^\\circ$ (**Grenzwinkel $\\alpha_{\\text{grenz}}$**, bei Wasser/Luft $\\approx 49^\\circ$, bei Glas/Luft $\\approx 42^\\circ$). - **Totalreflexion**:   * Wird der Einfallswinkel noch weiter vergrößert ($\\mathbf{\\alpha > \\alpha_{\\text{grenz}}}$), kann kein Licht mehr in das dünnere Medium übertreten.   * Die Grenzfläche wirkt wie ein **absolut perfekter, verlustfreier Spiegel** ($100 \\%$ der Lichtenergie werden reflektiert). 2. Moderne technische Anwendungen: - **1. Lichtwellenleiter / Glasfasernetze**:   * Ein hochreiner Glaskern wird von einem Mantelglas mit geringerem Brechungsindex umgeben.   * Lichtsignale werden durch permanente Totalreflexion im Zickzackkurs verlustfrei über hunderte Kilometer mit Lichtgeschwindigkeit transportiert (Grundlage des modernen Highspeed-Internets). - **2. Medizinische Endoskopie**:   * Bildübertragung aus dem menschlichen Körperinneren ohne Operation. - **3. Umkehrprismen in Prismenferngläsern**:   * Ersetzen Spiegel, da Totalreflexion an $45^\\circ$-Prismen keinen Helligkeitsverlust aufweist und nicht korrodiert. 3. Die 3 Konstruktionsstrahlen an der Sammellinse (Konvexlinse): - **1. Parallelstrahl**: Fällt parallel zur optischen Achse ein $\\rightarrow$ wird von der Sammellinse so gebrochen, dass er durch den bildseitigen **Brennpunkt $F'$** verläuft. - **2. Mittelpunktstrahl**: Verläuft durch den optischen Linsenmittelpunkt $M$ $\\rightarrow$ geht **völlig ungebrochen geradlinig** durch. - **3. Brennpunktstrahl**: Geht durch den gegenstandsseitigen Brennpunkt $F$ $\\rightarrow$ verlässt die Linse **parallel zur optischen Achse**. - Der Schnittpunkt zweier beliebiger dieser Strahlen definiert den reellen Bildpunkt."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Das physikalische Prinzip der Totalreflexion: - Voraussetzung 1: Der Lichtstrahl muss sich im optisch dichteren Medium befinden und auf die Grenzfläche zum optisch dünneren Medium treffen (z. B. Glas "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Luft oder Wasser "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Luft). - Voraussetzung 2: Da der Strahl vom Lot weg gebrochen wird ("
+            },
+            {
+              "type": "math",
+              "tex": "\\beta > \\alpha"
+            },
+            {
+              "type": "text",
+              "text": "), erreicht der Brechungswinkel bei einem bestimmten Einfallswinkel genau "
+            },
+            {
+              "type": "math",
+              "tex": "\\beta = 90^\\circ"
+            },
+            {
+              "type": "text",
+              "text": " (Grenzwinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha_{\\text{grenz}}"
+            },
+            {
+              "type": "text",
+              "text": ", bei Wasser/Luft "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 49^\\circ"
+            },
+            {
+              "type": "text",
+              "text": ", bei Glas/Luft "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 42^\\circ"
+            },
+            {
+              "type": "text",
+              "text": "). - Totalreflexion:   * Wird der Einfallswinkel noch weiter vergrößert ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\alpha > \\alpha_{\\text{grenz}}}"
+            },
+            {
+              "type": "text",
+              "text": "), kann kein Licht mehr in das dünnere Medium übertreten.   * Die Grenzfläche wirkt wie ein absolut perfekter, verlustfreier Spiegel ("
+            },
+            {
+              "type": "math",
+              "tex": "100 \\%"
+            },
+            {
+              "type": "text",
+              "text": " der Lichtenergie werden reflektiert). 2. Moderne technische Anwendungen: - 1. Lichtwellenleiter / Glasfasernetze:   * Ein hochreiner Glaskern wird von einem Mantelglas mit geringerem Brechungsindex umgeben.   * Lichtsignale werden durch permanente Totalreflexion im Zickzackkurs verlustfrei über hunderte Kilometer mit Lichtgeschwindigkeit transportiert (Grundlage des modernen Highspeed-Internets). - 2. Medizinische Endoskopie:   * Bildübertragung aus dem menschlichen Körperinneren ohne Operation. - 3. Umkehrprismen in Prismenferngläsern:   * Ersetzen Spiegel, da Totalreflexion an "
+            },
+            {
+              "type": "math",
+              "tex": "45^\\circ"
+            },
+            {
+              "type": "text",
+              "text": "-Prismen keinen Helligkeitsverlust aufweist und nicht korrodiert. 3. Die 3 Konstruktionsstrahlen an der Sammellinse (Konvexlinse): - 1. Parallelstrahl: Fällt parallel zur optischen Achse ein "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " wird von der Sammellinse so gebrochen, dass er durch den bildseitigen Brennpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "F'"
+            },
+            {
+              "type": "text",
+              "text": " verläuft. - 2. Mittelpunktstrahl: Verläuft durch den optischen Linsenmittelpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "M"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " geht völlig ungebrochen geradlinig durch. - 3. Brennpunktstrahl: Geht durch den gegenstandsseitigen Brennpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "F"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " verlässt die Linse parallel zur optischen Achse. - Der Schnittpunkt zweier beliebiger dieser Strahlen definiert den reellen Bildpunkt."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

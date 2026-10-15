@@ -65,9 +65,282 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das System der Tropen und die Passatzirkulation: 1. **Das Tageszeitenklima**: Die täglichen Temperaturschwankungen zwischen Tag und Nacht sind größer als die jahreszeitlichen Schwankungen der Monatsmitteltemperaturen (ganzjährig $25–28^\\circ\\text{C}$), 2. **Die Passatzirkulation (Hadley-Zelle)**:   * Äquator: Steiler Einstrahlungswinkel $\\rightarrow$ intensive Erwärmung $\\rightarrow$ Luft dehnt sich aus und steigt auf (Thermisches Tief: **Innertropische Konvergenzzone / ITC**).   * Abkühlung beim Aufstieg $\\rightarrow$ Kondensation $\\rightarrow$ heftige tägliche **Zenitalregen**.   * In großer Höhe fließt die Luft polwärts und sinkt um ca. $30^\\circ\\text{ N/S}$ ab $\\rightarrow$ Erwärmung und Wolkenauflösung (**Subtropischer Hochdruckgürtel**).   * Am Boden strömt die Luft als **Nordost- bzw. Südostpassat** (durch Corioliskraft abgelenkt) zurück zur ITC, 3. **Ökosystem Tropischer Regenwald**:   * **Stockwerkbau**: Kraut-/Strauchschicht ($0–5\\,\\text{m}$) $\\rightarrow$ Untere Baumschicht ($5–15\\,\\text{m}$) $\\rightarrow$ Kronendach ($20–40\\,\\text{m}$) $\\rightarrow$ Urwaldriesen (Emergenten bis $60\\,\\text{m}$).   * **Kurzgeschlossener Nährstoffkreislauf**: Schnelle Zersetzung organischer Substanz durch Mykorrhiza-Symbiosen; Zerstörung durch Brandrodung führt zur irreversiblen Degradation (Lateritkrusten).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das System der Tropen und die Passatzirkulation: 1. Das Tageszeitenklima: Die täglichen Temperaturschwankungen zwischen Tag und Nacht sind größer als die jahreszeitlichen Schwankungen der Monatsmitteltemperaturen (ganzjährig "
+            },
+            {
+              "type": "math",
+              "tex": "25–28^\\circ\\text{C}",
+              "speech": "25 bis 28 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Die Passatzirkulation (Hadley-Zelle):   * Äquator: Steiler Einstrahlungswinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " intensive Erwärmung "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Luft dehnt sich aus und steigt auf (Thermisches Tief: Innertropische Konvergenzzone / ITC).   * Abkühlung beim Aufstieg "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Kondensation "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " heftige tägliche Zenitalregen.   * In großer Höhe fließt die Luft polwärts und sinkt um ca. "
+            },
+            {
+              "type": "math",
+              "tex": "30^\\circ\\text{ N/S}",
+              "speech": "30 Grad Nord oder Süd"
+            },
+            {
+              "type": "text",
+              "text": " ab "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Erwärmung und Wolkenauflösung (Subtropischer Hochdruckgürtel).   * Am Boden strömt die Luft als Nordost- bzw. Südostpassat (durch Corioliskraft abgelenkt) zurück zur ITC, 3. Ökosystem Tropischer Regenwald:   * Stockwerkbau: Kraut-/Strauchschicht ("
+            },
+            {
+              "type": "math",
+              "tex": "0–5\\,\\text{m}",
+              "speech": "0 bis 5 Meter"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Untere Baumschicht ("
+            },
+            {
+              "type": "math",
+              "tex": "5–15\\,\\text{m}",
+              "speech": "5 bis 15 Meter"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Kronendach ("
+            },
+            {
+              "type": "math",
+              "tex": "20–40\\,\\text{m}",
+              "speech": "20 bis 40 Meter"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Urwaldriesen (Emergenten bis "
+            },
+            {
+              "type": "math",
+              "tex": "60\\,\\text{m}",
+              "speech": "60 Meter"
+            },
+            {
+              "type": "text",
+              "text": ").   * Kurzgeschlossener Nährstoffkreislauf: Schnelle Zersetzung organischer Substanz durch Mykorrhiza-Symbiosen; Zerstörung durch Brandrodung führt zur irreversiblen Degradation (Lateritkrusten)."
+            }
+          ],
           "concept": "Tropen: Tageszeitenklima; Passatzirkulation (Hadley-Zelle: ITC-Tief, Zenitalregen, Absinken am Wendekreis-Hoch, Passatwinde mit Coriolis-Ablenkung); Regenwald: Stockwerkbau (bis 60m Urwaldriesen), kurzgeschlossener Nährstoffkreislauf, Bodenverarmung bei Rodung.",
-          "sample_solution": "1. Klimatische Charakteristika der immerfeuchten Tropen: - **Tageszeitenklima**: Es existieren keine thermischen Jahreszeiten; der Temperaturunterschied zwischen Tag und Nacht ($ca. 10–12^\\circ\\text{C}$) übertrifft den Unterschied zwischen den wärmsten und kühlsten Monatsmitteln ($< 2–3^\\circ\\text{C}$). 2. Das System der planetarischen Passatzirkulation (Hadley-Zelle): - **1. Zenitaler Sonnenstand & ITC**:   * Am Äquator steht die Sonne ganzjährig im oder nahe dem Zenit $\\implies$ maximale solare Erwärmung von Boden und bodennahen Luftschichten.   * Die erwärmte Luft dehnt sich aus, wird spezifisch leichter und steigt mit enormer Konvektion in die Höhe (**Thermisches Äquatoriales Tiefdruckband / ITC = Innertropische Konvergenzzone**). - **2. Zenitalregen**:   * Beim Aufstieg kühlt die feucht-heiße Luft um ca. $1^\\circ\\text{C}$ pro $100\\text{ m}$ (trockenadiabatisch) bzw. $0{,}6^\\circ\\text{C}$ (feuchtadiabatisch) ab $\\implies$ Wasserdampf kondensiert $\\implies$ gewaltige Quellwolken (Cumulonimbus) entladen sich am Nachmittag in heftigen **Zenitalregenfällen**. - **3. Subtropischer Hochdruckgürtel & Passatwinde**:   * In der oberen Troposphäre (ca. 15–18 km Höhe) strömt die getrocknete Luft polwärts ab und sinkt im Bereich der Wendekreise ($ca. 25–30^\\circ\\text{ N/S}$) ab.   * Beim Absinken erwärmt sich die Luft kompressionsbedingt $\\implies$ relative Luftfeuchtigkeit sinkt, Wolken lösen sich vollständig auf (**Subtropische Hochdruckgürtel $\\rightarrow$ Wendekreiswüsten wie die Sahara**).   * Zum Ausgleich des Druckgefälles strömt die Luft bodennah zurück zur äquatorialen ITC. Durch die **Corioliskraft** wird dieser Rückstrom auf der Nordhalbkugel nach rechts (**Nordostpassat**) und auf der Südhalbkugel nach links (**Südostpassat**) abgelenkt. 3. Das Ökosystem des Tropischen Regenwaldes: - **Stockwerkbau (Schichtung der Vegetation)**:   * *Moos- und Krautschicht* ($0–2\\text{ m}$): Extrem lichtarm ($< 1\\%$ des Sonnenlichts erreicht den Boden).   * *Strauch- und Unterholzschicht* ($2–10\\text{ m}$).   * *Geschlossenes Kronendach* ($20–40\\text{ m}$): Hauptlebensraum von über $80\\%$ aller Tier- und Pflanzenarten (Aufsetzerpflanzen / Epiphyten wie Orchideen, Lianen).   * *Urwaldriesen (Emergenten)* ($> 50–65\\text{ m}$): Ragen einzeln aus dem Dach hervor; gestützt durch mächtige **Brettwurzeln**. - **Der kurzgeschlossene Nährstoffkreislauf**:   * Tropische Böden (Ferralsole) sind durch Jahrmillionen intensiver Verwitterung und Auswaschung extrem tiefgründig nährstoffarm.   * Nährstoffe werden nicht im Mineralboden gespeichert, sondern zirkulieren in einem **geschlossenen biologischen Kreislauf**: Abgeworfenes Laub wird durch Hitze und Feuchtigkeit innerhalb weniger Wochen von Mikroorganismen und Pilzen zersetzt. Flachwurzeln mit Mykorrhiza nehmen die Nährstoffe sofort wieder in die lebende Pflanze auf.   * **Gefahr der Rodung**: Nach Abholzung und Brandrodung werden die Nährstoffe durch Starkregen binnen weniger Jahre vollständig ausgewaschen; der Boden verhärtet unwiederbringlich zu ziegelartigem Laterit."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Klimatische Charakteristika der immerfeuchten Tropen: - Tageszeitenklima: Es existieren keine thermischen Jahreszeiten; der Temperaturunterschied zwischen Tag und Nacht ("
+            },
+            {
+              "type": "math",
+              "tex": "ca. 10–12^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": ") übertrifft den Unterschied zwischen den wärmsten und kühlsten Monatsmitteln ("
+            },
+            {
+              "type": "math",
+              "tex": "< 2–3^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": "). 2. Das System der planetarischen Passatzirkulation (Hadley-Zelle): - 1. Zenitaler Sonnenstand & ITC:   * Am Äquator steht die Sonne ganzjährig im oder nahe dem Zenit "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " maximale solare Erwärmung von Boden und bodennahen Luftschichten.   * Die erwärmte Luft dehnt sich aus, wird spezifisch leichter und steigt mit enormer Konvektion in die Höhe (Thermisches Äquatoriales Tiefdruckband / ITC = Innertropische Konvergenzzone). - 2. Zenitalregen:   * Beim Aufstieg kühlt die feucht-heiße Luft um ca. "
+            },
+            {
+              "type": "math",
+              "tex": "1^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": " pro "
+            },
+            {
+              "type": "math",
+              "tex": "100\\text{ m}"
+            },
+            {
+              "type": "text",
+              "text": " (trockenadiabatisch) bzw. "
+            },
+            {
+              "type": "math",
+              "tex": "0{,}6^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": " (feuchtadiabatisch) ab "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Wasserdampf kondensiert "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " gewaltige Quellwolken (Cumulonimbus) entladen sich am Nachmittag in heftigen Zenitalregenfällen. - 3. Subtropischer Hochdruckgürtel & Passatwinde:   * In der oberen Troposphäre (ca. 15–18 km Höhe) strömt die getrocknete Luft polwärts ab und sinkt im Bereich der Wendekreise ("
+            },
+            {
+              "type": "math",
+              "tex": "ca. 25–30^\\circ\\text{ N/S}"
+            },
+            {
+              "type": "text",
+              "text": ") ab.   * Beim Absinken erwärmt sich die Luft kompressionsbedingt "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " relative Luftfeuchtigkeit sinkt, Wolken lösen sich vollständig auf (Subtropische Hochdruckgürtel "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Wendekreiswüsten wie die Sahara).   * Zum Ausgleich des Druckgefälles strömt die Luft bodennah zurück zur äquatorialen ITC. Durch die Corioliskraft wird dieser Rückstrom auf der Nordhalbkugel nach rechts (Nordostpassat) und auf der Südhalbkugel nach links (Südostpassat) abgelenkt. 3. Das Ökosystem des Tropischen Regenwaldes: - Stockwerkbau (Schichtung der Vegetation):   * Moos- und Krautschicht ("
+            },
+            {
+              "type": "math",
+              "tex": "0–2\\text{ m}"
+            },
+            {
+              "type": "text",
+              "text": "): Extrem lichtarm ("
+            },
+            {
+              "type": "math",
+              "tex": "< 1\\%"
+            },
+            {
+              "type": "text",
+              "text": " des Sonnenlichts erreicht den Boden).   * Strauch- und Unterholzschicht ("
+            },
+            {
+              "type": "math",
+              "tex": "2–10\\text{ m}"
+            },
+            {
+              "type": "text",
+              "text": ").   * Geschlossenes Kronendach ("
+            },
+            {
+              "type": "math",
+              "tex": "20–40\\text{ m}"
+            },
+            {
+              "type": "text",
+              "text": "): Hauptlebensraum von über "
+            },
+            {
+              "type": "math",
+              "tex": "80\\%"
+            },
+            {
+              "type": "text",
+              "text": " aller Tier- und Pflanzenarten (Aufsetzerpflanzen / Epiphyten wie Orchideen, Lianen).   * Urwaldriesen (Emergenten) ("
+            },
+            {
+              "type": "math",
+              "tex": "> 50–65\\text{ m}"
+            },
+            {
+              "type": "text",
+              "text": "): Ragen einzeln aus dem Dach hervor; gestützt durch mächtige Brettwurzeln. - Der kurzgeschlossene Nährstoffkreislauf:   * Tropische Böden (Ferralsole) sind durch Jahrmillionen intensiver Verwitterung und Auswaschung extrem tiefgründig nährstoffarm.   * Nährstoffe werden nicht im Mineralboden gespeichert, sondern zirkulieren in einem geschlossenen biologischen Kreislauf: Abgeworfenes Laub wird durch Hitze und Feuchtigkeit innerhalb weniger Wochen von Mikroorganismen und Pilzen zersetzt. Flachwurzeln mit Mykorrhiza nehmen die Nährstoffe sofort wieder in die lebende Pflanze auf.   * Gefahr der Rodung: Nach Abholzung und Brandrodung werden die Nährstoffe durch Starkregen binnen weniger Jahre vollständig ausgewaschen; der Boden verhärtet unwiederbringlich zu ziegelartigem Laterit."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +401,128 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere Wüstentypen, Oasenformen und das Phänomen der Desertifikation: 1. **Genetische Wüstentypen (nach Entstehungsursachen)**:   * **Wendekreiswüsten**: Entstehen durch dynamische Absinkbewegung der Passatzirkulation (z. B. Sahara, Arabische Wüste).   * **Regenschattenwüsten / Binnenwüsten**: Lage im Lee mächtiger Hochgebirge oder tief im Kontinentalinneren fernab von Ozeanen (z. B. Gobi, Mojave).   * **Küstenwüsten**: Kalte Meeresströmungen vor der Küste kühlen die Luft ab $\\rightarrow$ Nebelbildung, aber Inversion verhindert Aufstieg und Niederschlag (z. B. Atacama, Namib), 2. **Morphologische Wüstenformen**: Hammada (Fels-/Steinwüste, $70\\%$ der Sahara), Serir (Kieswüste), Erg (Sand-/Dünenwüste, nur $20\\%$), 3. **Oasen**: Fluss-, Grundwasser-, Quell- und artesische Brunnenoasen (Nutzung von fossilem Tiefengrundwasser), 4. **Desertifikation in der Sahelzone**: Zusammenspiel aus Dürreperioden und menschlicher Übernutzung (Überweidung, Entwaldung für Brennholz, Verkürzung der Brachezeiten, falsche Bewässerung $\\rightarrow$ Bodenversalzung).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere Wüstentypen, Oasenformen und das Phänomen der Desertifikation: 1. Genetische Wüstentypen (nach Entstehungsursachen):   * Wendekreiswüsten: Entstehen durch dynamische Absinkbewegung der Passatzirkulation (z. B. Sahara, Arabische Wüste).   * Regenschattenwüsten / Binnenwüsten: Lage im Lee mächtiger Hochgebirge oder tief im Kontinentalinneren fernab von Ozeanen (z. B. Gobi, Mojave).   * Küstenwüsten: Kalte Meeresströmungen vor der Küste kühlen die Luft ab "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Nebelbildung, aber Inversion verhindert Aufstieg und Niederschlag (z. B. Atacama, Namib), 2. Morphologische Wüstenformen: Hammada (Fels-/Steinwüste, "
+            },
+            {
+              "type": "math",
+              "tex": "70\\%",
+              "speech": "70 Prozent"
+            },
+            {
+              "type": "text",
+              "text": " der Sahara), Serir (Kieswüste), Erg (Sand-/Dünenwüste, nur "
+            },
+            {
+              "type": "math",
+              "tex": "20\\%",
+              "speech": "20 Prozent"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Oasen: Fluss-, Grundwasser-, Quell- und artesische Brunnenoasen (Nutzung von fossilem Tiefengrundwasser), 4. Desertifikation in der Sahelzone: Zusammenspiel aus Dürreperioden und menschlicher Übernutzung (Überweidung, Entwaldung für Brennholz, Verkürzung der Brachezeiten, falsche Bewässerung "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Bodenversalzung)."
+            }
+          ],
           "concept": "Trockenräume: Wüstentypen (Wendekreis-, Binnen-, Küstenwüsten mit kalten Meeresströmungen); Formen: Hammada, Serir, Erg; Oasen; Desertifikation in der Sahelzone (Überweidung, Brennholzrodung, Versalzung, Ausbreitung der Wüste).",
-          "sample_solution": "1. Die klimatischen Entstehungsursachen der Wüsten (Genetische Wüstentypen): - **1. Wendekreiswüsten (Passatwüsten)**:   * Liegen im Bereich der subtropischen Hochdruckgürtel ($20–30^\\circ\\text{ N/S}$).   * Die absinkende Hadley-Zirkulation erwärmt sich und trocknet extrem ab $\\implies$ absolute Wolkenlosigkeit und extreme Sonneneinstrahlung (z. B. **Sahara, Große Sandwüste Australiens**). - **2. Binnen- und Regenschattenwüsten**:   * Entweder im Windschatten (Lee) mächtiger Gebirgszüge (z. B. **Mojave** hinter der Sierra Nevada) oder durch extreme Kontinentalität Tausende Kilometer vom Meer entfernt (z. B. **Gobi, Taklamakan** in Zentralasien). - **3. Küstenwüsten (Nebelwüsten)**:   * Entstehen dort, wo kalte Meeresströmungen (z. B. Humboldtstrom vor Chile, Benguelastrom vor Namibia) an tropischen Westküsten entlangfließen.   * Die feucht-warme Seeluft kühlt über dem kalten Meerwasser ab $\\rightarrow$ Bildung dichter Nebeldecken. Beim Übertritt auf das heiße Festland erwärmt sich die Luft sofort $\\implies$ keine Konvektion, **kein Tropfen Regen fällt** (z. B. **Atacama, Namib**). 2. Morphologische Erscheinungsformen der Wüste: - **Hammada (Fels- und Steinwüste)**: Grobe Gesteinstrümmer nach physikalischer Temperaturverwitterung (macht ca. $70\\%$ aller Wüstenflächen aus). - **Serir (Kies- und Geröllwüste)**: Ausgewaschene und vom Wind geschliffene Kiesel. - **Erg (Sand- und Dünenwüste)**: Feine Sandmeere mit Wander- und Sicheldünen (Barchane); macht nur ca. $20\\%$ der Sahara aus. 3. Oasenformen und traditionelle Oasenwirtschaft: - **Flussoase**: Fremdlingsflüsse aus humiden Gebirgen durchqueren die Wüste (z. B. der **Nil** in Ägypten). - **Grundwasseroase**: Nutzung von oberflächennahem Grundwasser in Senken mittels Schöpfbrunnen. - **Artesische Oase**: Tiefenbohrungen zapfen gespanntes, fossiles Grundwasser in artesischen Becken an. - **Stockwerkbau der Oase**: Dattelpalmen als Schattenspender $\\rightarrow$ Obstbäume (Granatäpfel, Feigen) $\\rightarrow$ bodennahe Nutzpflanzen (Getreide, Gemüse, Gewürze). 4. Das Phänomen der Desertifikation am Beispiel der Sahelzone: - **Definition**: Die vom Menschen verursachte oder verstärkte Ausbreitung wüstenhafter Bedingungen in ariden bis semiariden Trockengebieten. - **Ursachenkomplex in der afrikanischen Sahelzone**:   * **Bevölkerungswachstum**: Steigender Bedarf an Nahrung und Feuerholz.   * **Überweidung**: Zu große Rinder- und Ziegenherden zerstören die schützende Grasnarbe mit ihren Tritten und Bissen.   * **Entwaldung**: Rodung von Akazienbäumen für Brennholz und Bauholz.   * **Fehlerhafte Ackerbaumethoden**: Wegfall traditioneller Brachezeiten, Tiefbrunnenbau führt zur Absenkung des Grundwasserspiegels. - **Folgen**: Der fruchtbare Oberboden wird durch Wind- und Wassererosion vollständig abgetragen (**Bodendegradation**); der Boden verkarstet und wird für Generationen unfruchtbar $\\implies$ Hungerkatastrophen und Klimaflucht."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die klimatischen Entstehungsursachen der Wüsten (Genetische Wüstentypen): - 1. Wendekreiswüsten (Passatwüsten):   * Liegen im Bereich der subtropischen Hochdruckgürtel ("
+            },
+            {
+              "type": "math",
+              "tex": "20–30^\\circ\\text{ N/S}"
+            },
+            {
+              "type": "text",
+              "text": ").   * Die absinkende Hadley-Zirkulation erwärmt sich und trocknet extrem ab "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " absolute Wolkenlosigkeit und extreme Sonneneinstrahlung (z. B. Sahara, Große Sandwüste Australiens). - 2. Binnen- und Regenschattenwüsten:   * Entweder im Windschatten (Lee) mächtiger Gebirgszüge (z. B. Mojave hinter der Sierra Nevada) oder durch extreme Kontinentalität Tausende Kilometer vom Meer entfernt (z. B. Gobi, Taklamakan in Zentralasien). - 3. Küstenwüsten (Nebelwüsten):   * Entstehen dort, wo kalte Meeresströmungen (z. B. Humboldtstrom vor Chile, Benguelastrom vor Namibia) an tropischen Westküsten entlangfließen.   * Die feucht-warme Seeluft kühlt über dem kalten Meerwasser ab "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Bildung dichter Nebeldecken. Beim Übertritt auf das heiße Festland erwärmt sich die Luft sofort "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " keine Konvektion, kein Tropfen Regen fällt (z. B. Atacama, Namib). 2. Morphologische Erscheinungsformen der Wüste: - Hammada (Fels- und Steinwüste): Grobe Gesteinstrümmer nach physikalischer Temperaturverwitterung (macht ca. "
+            },
+            {
+              "type": "math",
+              "tex": "70\\%"
+            },
+            {
+              "type": "text",
+              "text": " aller Wüstenflächen aus). - Serir (Kies- und Geröllwüste): Ausgewaschene und vom Wind geschliffene Kiesel. - Erg (Sand- und Dünenwüste): Feine Sandmeere mit Wander- und Sicheldünen (Barchane); macht nur ca. "
+            },
+            {
+              "type": "math",
+              "tex": "20\\%"
+            },
+            {
+              "type": "text",
+              "text": " der Sahara aus. 3. Oasenformen und traditionelle Oasenwirtschaft: - Flussoase: Fremdlingsflüsse aus humiden Gebirgen durchqueren die Wüste (z. B. der Nil in Ägypten). - Grundwasseroase: Nutzung von oberflächennahem Grundwasser in Senken mittels Schöpfbrunnen. - Artesische Oase: Tiefenbohrungen zapfen gespanntes, fossiles Grundwasser in artesischen Becken an. - Stockwerkbau der Oase: Dattelpalmen als Schattenspender "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Obstbäume (Granatäpfel, Feigen) "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " bodennahe Nutzpflanzen (Getreide, Gemüse, Gewürze). 4. Das Phänomen der Desertifikation am Beispiel der Sahelzone: - Definition: Die vom Menschen verursachte oder verstärkte Ausbreitung wüstenhafter Bedingungen in ariden bis semiariden Trockengebieten. - Ursachenkomplex in der afrikanischen Sahelzone:   * Bevölkerungswachstum: Steigender Bedarf an Nahrung und Feuerholz.   * Überweidung: Zu große Rinder- und Ziegenherden zerstören die schützende Grasnarbe mit ihren Tritten und Bissen.   * Entwaldung: Rodung von Akazienbäumen für Brennholz und Bauholz.   * Fehlerhafte Ackerbaumethoden: Wegfall traditioneller Brachezeiten, Tiefbrunnenbau führt zur Absenkung des Grundwasserspiegels. - Folgen: Der fruchtbare Oberboden wird durch Wind- und Wassererosion vollständig abgetragen (Bodendegradation); der Boden verkarstet und wird für Generationen unfruchtbar "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Hungerkatastrophen und Klimaflucht."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

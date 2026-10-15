@@ -49,25 +49,465 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie lautet die unbestimmte Stammfunktion $\\int x^n \\,\\mathrm{d}x$ einer Potenzfunktion mit Exponent $n \\neq -1$?",
-          "concept": "F(x) = (1 / (n + 1)) * x^(n + 1) + C",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet die unbestimmte Stammfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "\\int x^n \\,\\mathrm{d}x",
+              "speech": "Integral über x hoch n d x"
+            },
+            {
+              "type": "text",
+              "text": " einer Potenzfunktion mit Exponent "
+            },
+            {
+              "type": "math",
+              "tex": "n \\neq -1",
+              "speech": "n ungleich minus 1"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "F(x) = \\frac{1}{n + 1} \\cdot x^{n+1} + C",
+              "speech": "F von x gleich 1 durch, n plus 1, mal x hoch, n plus 1, plus C"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "F(x) = (1 / (n + 1)) * x^(n + 1) + C",
-              "F(x) = n * x^(n - 1) + C"
+              [
+                {
+                  "type": "math",
+                  "tex": "F(x) = \\frac{1}{n + 1} \\cdot x^{n+1} + C",
+                  "speech": "F von x gleich 1 durch, n plus 1, mal x hoch, n plus 1, plus C"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "F(x) = n \\cdot x^{n-1} + C",
+                  "speech": "F von x gleich n mal x hoch, n minus 1, plus C"
+                }
+              ]
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GB10000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Grundlagen der Integralrechnung und den Hauptsatz: 1. **Definition der Stammfunktion**:   * Eine differenzierbare Funktion $F(x)$ heißt Stammfunktion von $f(x)$ auf einem Intervall $I$, wenn gilt:     $$\\mathbf{F'(x) = f(x)} \\quad \\forall x \\in I$$   * Zwei Stammfunktionen derselben Funktion $f$ unterscheiden sich nur um eine additive Integrationskonstante $C \\in \\mathbb{R}$, 2. **Elementare Integrationsregeln**:   * **Potenzregel**: $\\int x^n \\,\\mathrm{d}x = \\frac{1}{n+1} x^{n+1} + C$ ($n \\neq -1$).   * **Faktorregel**: $\\int (c \\cdot f(x)) \\,\\mathrm{d}x = c \\cdot \\int f(x) \\,\\mathrm{d}x$.   * **Summenregel**: $\\int (f(x) + g(x)) \\,\\mathrm{d}x = \\int f(x) \\,\\mathrm{d}x + \\int g(x) \\,\\mathrm{d}x$, 3. **Der Hauptsatz der Differential- und Integralrechnung (HDI)**:   * Verknüpft die Flächenberechnung mit der Umkehrung des Differenzierens:     $$\\mathbf{\\int_a^b f(x) \\,\\mathrm{d}x = [F(x)]_a^b = F(b) - F(a)}$$ 4. Berechne das bestimmte Integral $\\int_{1}^{3} (3x^2 - 4x + 2) \\,\\mathrm{d}x$ exakt mithilfe einer Stammfunktion.",
-          "concept": "Integralrechnung: Stammfunktion F'(x)=f(x); Potenzregel; Hauptsatz integral_a^b f(x)dx = [F(x)]_a^b = F(b) - F(a); Rechnung: F(x) = x^3 - 2x^2 + 2x; F(3) = 27 - 18 + 6 = 15; F(1) = 1 - 2 + 2 = 1; Integral = 15 - 1 = 14.",
-          "sample_solution": "1. Der Begriff der Stammfunktion und das unbestimmte Integral: - **Definition**: Eine Funktion $F$ ist eine Stammfunktion von $f$, wenn ihre Ableitung exakt mit $f$ übereinstimmt:   $$\\mathbf{F'(x) = f(x)}$$ - **Menge aller Stammfunktionen (Unbestimmtes Integral)**:   $$\\mathbf{\\int f(x) \\,\\mathrm{d}x = F(x) + C} \\quad (C \\in \\mathbb{R} = \\text{Integrationskonstante})$$ 2. Grundlegende Integrationsregeln: - **1. Potenzregel**:   $$\\mathbf{\\int x^n \\,\\mathrm{d}x = \\frac{1}{n+1} x^{n+1} + C} \\quad (n \\in \\mathbb{R} \\setminus \\{-1\\})$$   *(z. B. $\\int x^3 \\,\\mathrm{d}x = \\frac{1}{4}x^4 + C$, $\\int \\sqrt{x} \\,\\mathrm{d}x = \\int x^{1/2} \\,\\mathrm{d}x = \\frac{2}{3}x^{3/2} + C$)* - **2. Faktorregel**:   $$\\mathbf{\\int c \\cdot f(x) \\,\\mathrm{d}x = c \\cdot \\int f(x) \\,\\mathrm{d}x} \\quad (c \\in \\mathbb{R})$$ - **3. Summenregel**:   $$\\mathbf{\\int (f(x) \\pm g(x)) \\,\\mathrm{d}x = \\int f(x) \\,\\mathrm{d}x \\pm \\int g(x) \\,\\mathrm{d}x}$$ 3. Der Hauptsatz der Differential- und Integralrechnung (HDI): - Das **bestimmte Integral** $\\int_a^b f(x)\\,\\mathrm{d}x$ beschreibt den orientierten Flächeninhalt zwischen dem Graphen von $f$ und der $x$-Achse im Intervall $[a; b]$. - **Berechnungsformel nach Newton und Leibniz**:   $$\\mathbf{\\int_a^b f(x) \\,\\mathrm{d}x = \\Big[ F(x) \\Big]_a^b = F(b) - F(a)}$$ 4. Durchrechnung des Beispiels ($\\int_1^3 (3x^2 - 4x + 2) \\,\\mathrm{d}x$): - **Schritt 1: Bestimmung einer Stammfunktion $F(x)$**:   $$F(x) = 3 \\cdot \\left(\\frac{x^3}{3}\\right) - 4 \\cdot \\left(\\frac{x^2}{2}\\right) + 2x = \\mathbf{x^3 - 2x^2 + 2x}$$ - **Schritt 2: Auswertung an den Integrationsgrenzen $a = 1$ und $b = 3$**:   * Obere Grenze $b = 3$:     $$F(3) = 3^3 - 2(3)^2 + 2(3) = 27 - 18 + 6 = \\mathbf{15}$$   * Untere Grenze $a = 1$:     $$F(1) = 1^3 - 2(1)^2 + 2(1) = 1 - 2 + 2 = \\mathbf{1}$$ - **Schritt 3: Differenz $F(3) - F(1)$**:   $$\\int_1^3 (3x^2 - 4x + 2) \\,\\mathrm{d}x = 15 - 1 = \\mathbf{14}$$."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Grundlagen der Integralrechnung und den Hauptsatz: 1. Definition der Stammfunktion:   * Eine differenzierbare Funktion "
+            },
+            {
+              "type": "math",
+              "tex": "F(x)",
+              "speech": "F von x"
+            },
+            {
+              "type": "text",
+              "text": " heißt Stammfunktion von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x)",
+              "speech": "f von x"
+            },
+            {
+              "type": "text",
+              "text": " auf einem Intervall "
+            },
+            {
+              "type": "math",
+              "tex": "I",
+              "speech": "I"
+            },
+            {
+              "type": "text",
+              "text": ", wenn gilt:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F'(x) = f(x)} \\quad \\forall x \\in I",
+              "block": true,
+              "speech": "F Strich von x gleich f von x, für alle x Element von I"
+            },
+            {
+              "type": "text",
+              "text": "   * Zwei Stammfunktionen derselben Funktion "
+            },
+            {
+              "type": "math",
+              "tex": "f",
+              "speech": "f"
+            },
+            {
+              "type": "text",
+              "text": " unterscheiden sich nur um eine additive Integrationskonstante "
+            },
+            {
+              "type": "math",
+              "tex": "C \\in \\mathbb{R}",
+              "speech": "C Element der reellen Zahlen"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Elementare Integrationsregeln:   * Potenzregel: "
+            },
+            {
+              "type": "math",
+              "tex": "\\int x^n \\,\\mathrm{d}x = \\frac{1}{n+1} x^{n+1} + C",
+              "speech": "Integral über x hoch n d x gleich 1 durch n plus 1 mal x hoch n plus 1 plus C"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "n \\neq -1",
+              "speech": "n ungleich minus 1"
+            },
+            {
+              "type": "text",
+              "text": ").   * Faktorregel: "
+            },
+            {
+              "type": "math",
+              "tex": "\\int (c \\cdot f(x)) \\,\\mathrm{d}x = c \\cdot \\int f(x) \\,\\mathrm{d}x",
+              "speech": "Integral über Klammer auf c mal f von x Klammer zu d x gleich c mal Integral über f von x d x"
+            },
+            {
+              "type": "text",
+              "text": ".   * Summenregel: "
+            },
+            {
+              "type": "math",
+              "tex": "\\int (f(x) + g(x)) \\,\\mathrm{d}x = \\int f(x) \\,\\mathrm{d}x + \\int g(x) \\,\\mathrm{d}x",
+              "speech": "Integral über Klammer auf f von x plus g von x Klammer zu d x gleich Integral über f von x d x plus Integral über g von x d x"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Der Hauptsatz der Differential- und Integralrechnung (HDI):   * Verknüpft die Flächenberechnung mit der Umkehrung des Differenzierens:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\int_a^b f(x) \\,\\mathrm{d}x = [F(x)]_a^b = F(b) - F(a)}",
+              "block": true,
+              "speech": "Integral von a bis b über f von x d x gleich F von x in den Grenzen von a bis b gleich F von b minus F von a"
+            },
+            {
+              "type": "text",
+              "text": " 4. Berechne das bestimmte Integral "
+            },
+            {
+              "type": "math",
+              "tex": "\\int_{1}^{3} (3x^2 - 4x + 2) \\,\\mathrm{d}x",
+              "speech": "Integral von 1 bis 3 über Klammer auf 3 x Quadrat minus 4 x plus 2 Klammer zu d x"
+            },
+            {
+              "type": "text",
+              "text": " exakt mithilfe einer Stammfunktion."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Integralrechnung: Stammfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "F'(x) = f(x)",
+              "speech": "F Strich von x gleich f von x"
+            },
+            {
+              "type": "text",
+              "text": "; Potenzregel; Hauptsatz "
+            },
+            {
+              "type": "math",
+              "tex": "\\int_a^b f(x)\\,dx = [F(x)]_a^b = F(b) - F(a)",
+              "speech": "Integral von a bis b über f von x d x gleich F von x in den Grenzen von a bis b gleich F von b minus F von a"
+            },
+            {
+              "type": "text",
+              "text": "; Rechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "F(x) = x^3 - 2x^2 + 2x",
+              "speech": "F von x gleich x hoch drei minus 2 x Quadrat plus 2 x"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "F(3) = 27 - 18 + 6 = 15",
+              "speech": "F von 3 gleich 27 minus 18 plus 6 gleich 15"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "F(1) = 1 - 2 + 2 = 1",
+              "speech": "F von 1 gleich 1 minus 2 plus 2 gleich 1"
+            },
+            {
+              "type": "text",
+              "text": "; Integral "
+            },
+            {
+              "type": "math",
+              "tex": "= 15 - 1 = 14",
+              "speech": "gleich 15 minus 1 gleich 14"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der Begriff der Stammfunktion und das unbestimmte Integral: - Definition: Eine Funktion "
+            },
+            {
+              "type": "math",
+              "tex": "F"
+            },
+            {
+              "type": "text",
+              "text": " ist eine Stammfunktion von "
+            },
+            {
+              "type": "math",
+              "tex": "f"
+            },
+            {
+              "type": "text",
+              "text": ", wenn ihre Ableitung exakt mit "
+            },
+            {
+              "type": "math",
+              "tex": "f"
+            },
+            {
+              "type": "text",
+              "text": " übereinstimmt:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F'(x) = f(x)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Menge aller Stammfunktionen (Unbestimmtes Integral):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\int f(x) \\,\\mathrm{d}x = F(x) + C} \\quad (C \\in \\mathbb{R} = \\text{Integrationskonstante})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Grundlegende Integrationsregeln: - 1. Potenzregel:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\int x^n \\,\\mathrm{d}x = \\frac{1}{n+1} x^{n+1} + C} \\quad (n \\in \\mathbb{R} \\setminus \\{-1\\})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "\\int x^3 \\,\\mathrm{d}x = \\frac{1}{4}x^4 + C"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\int \\sqrt{x} \\,\\mathrm{d}x = \\int x^{1/2} \\,\\mathrm{d}x = \\frac{2}{3}x^{3/2} + C"
+            },
+            {
+              "type": "text",
+              "text": ") - 2. Faktorregel:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\int c \\cdot f(x) \\,\\mathrm{d}x = c \\cdot \\int f(x) \\,\\mathrm{d}x} \\quad (c \\in \\mathbb{R})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 3. Summenregel:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\int (f(x) \\pm g(x)) \\,\\mathrm{d}x = \\int f(x) \\,\\mathrm{d}x \\pm \\int g(x) \\,\\mathrm{d}x}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Der Hauptsatz der Differential- und Integralrechnung (HDI): - Das bestimmte Integral "
+            },
+            {
+              "type": "math",
+              "tex": "\\int_a^b f(x)\\,\\mathrm{d}x"
+            },
+            {
+              "type": "text",
+              "text": " beschreibt den orientierten Flächeninhalt zwischen dem Graphen von "
+            },
+            {
+              "type": "math",
+              "tex": "f"
+            },
+            {
+              "type": "text",
+              "text": " und der "
+            },
+            {
+              "type": "math",
+              "tex": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Achse im Intervall "
+            },
+            {
+              "type": "math",
+              "tex": "[a; b]"
+            },
+            {
+              "type": "text",
+              "text": ". - Berechnungsformel nach Newton und Leibniz:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\int_a^b f(x) \\,\\mathrm{d}x = \\Big[ F(x) \\Big]_a^b = F(b) - F(a)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 4. Durchrechnung des Beispiels ("
+            },
+            {
+              "type": "math",
+              "tex": "\\int_1^3 (3x^2 - 4x + 2) \\,\\mathrm{d}x"
+            },
+            {
+              "type": "text",
+              "text": "): - Schritt 1: Bestimmung einer Stammfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "F(x)"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "F(x) = 3 \\cdot \\left(\\frac{x^3}{3}\\right) - 4 \\cdot \\left(\\frac{x^2}{2}\\right) + 2x = \\mathbf{x^3 - 2x^2 + 2x}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 2: Auswertung an den Integrationsgrenzen "
+            },
+            {
+              "type": "math",
+              "tex": "a = 1"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "b = 3"
+            },
+            {
+              "type": "text",
+              "text": ":   * Obere Grenze "
+            },
+            {
+              "type": "math",
+              "tex": "b = 3"
+            },
+            {
+              "type": "text",
+              "text": ":     "
+            },
+            {
+              "type": "math",
+              "tex": "F(3) = 3^3 - 2(3)^2 + 2(3) = 27 - 18 + 6 = \\mathbf{15}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Untere Grenze "
+            },
+            {
+              "type": "math",
+              "tex": "a = 1"
+            },
+            {
+              "type": "text",
+              "text": ":     "
+            },
+            {
+              "type": "math",
+              "tex": "F(1) = 1^3 - 2(1)^2 + 2(1) = 1 - 2 + 2 = \\mathbf{1}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 3: Differenz "
+            },
+            {
+              "type": "math",
+              "tex": "F(3) - F(1)"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\int_1^3 (3x^2 - 4x + 2) \\,\\mathrm{d}x = 15 - 1 = \\mathbf{14}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -112,7 +552,21 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Warum darf man zur Berechnung des geometrischen Flächeninhalts zwischen einem Graphen und der $x$-Achse nicht einfach über Nullstellen hinweg integrieren?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Warum darf man zur Berechnung des geometrischen Flächeninhalts zwischen einem Graphen und der "
+            },
+            {
+              "type": "math",
+              "tex": "x",
+              "speech": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Achse nicht einfach über Nullstellen hinweg integrieren?"
+            }
+          ],
           "concept": "Weil Flächen unterhalb der x-Achse ein negatives Vorzeichen im Integral besitzen und sich mit Flächen oberhalb der x-Achse gegenseitig aufheben würden (orientierter Flächeninhalt)",
           "fast_check": {
             "type": "binary_choice",
@@ -121,16 +575,436 @@
               "Weil das Integral an Nullstellen nicht definiert ist"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GB10000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Methodik der geometrischen Flächenberechnung mit Integralen: 1. **Fläche zwischen Funktionsgraph und $x$-Achse (Nullstellenzerlegung)**:   * Schritt 1: Bestimmung aller Nullstellen $x_1, x_2, \\dots$ im Intervall $[a; b]$.   * Schritt 2: Aufteilung des Integrals in Teilintervalle von Nullstelle zu Nullstelle.   * Schritt 3: Summation der **Beträge** der Teilintegrale:     $$\\mathbf{A = |\\int_a^{x_1} f(x)\\,\\mathrm{d}x| + |\\int_{x_1}^b f(x)\\,\\mathrm{d}x|}$$ 2. **Fläche zwischen zwei sich schneidenden Funktionsgraphen $f(x)$ und $g(x)$**:   * Schritt 1: Schnittstellen bestimmen durch Gleichsetzen $f(x) = g(x) \\implies d(x) = f(x) - g(x) = 0$.   * Schritt 2: Integration der Differenzfunktion (*'obere Kurve minus untere Kurve'*):     $$\\mathbf{A = \\int_{x_1}^{x_2} (f(x) - g(x)) \\,\\mathrm{d}x}$$ 3. Berechne den Inhalt der Fläche, die von den Parabeln $f(x) = -x^2 + 4$ und $g(x) = x^2 - 4$ vollständig eingeschlossen wird.",
-          "concept": "Flächenberechnung: Nullstellenzerlegung; Fläche zwischen zwei Graphen A = integral (obere Kurve - untere Kurve) dx; Rechnung: Schnittstellen -x^2 + 4 = x^2 - 4 -> 2x^2 = 8 -> x = +-2; Differenz d(x) = 8 - 2x^2; Stammfunktion D(x) = 8x - 2/3 x^3; D(2) = 16 - 16/3 = 32/3; D(-2) = -32/3; A = 32/3 - (-32/3) = 64/3 approx 21,33 FE.",
-          "sample_solution": "1. Geometrische Fläche vs. Orientierter Integralwert: - **Das Integral $\\int_a^b f(x)\\,\\mathrm{d}x$** wertet Flächenstücke oberhalb der $x$-Achse positiv ($+$) und unterhalb der $x$-Achse negativ ($-$) aus. - **Geometrischer Flächeninhalt $A$**:   * Muss stets positiv sein ($A \\ge 0$). Bei Vorzeichenwechseln (Nullstellen) muss das Intervall an jeder Nullstelle geteilt werden:     $$\\mathbf{A = \\sum_{i} \\left| \\int_{x_i}^{x_{i+1}} f(x)\\,\\mathrm{d}x \\right|}$$ 2. Flächeninhalt zwischen zwei Funktionsgraphen $f$ und $g$: - Liegt im Intervall $[x_1; x_2]$ der Graph von $f$ oberhalb des Graphen von $g$ ($f(x) \\ge g(x)$), so ist der Flächeninhalt die Differenz:   $$\\mathbf{A = \\int_{x_1}^{x_2} \\big( f(x) - g(x) \\big) \\,\\mathrm{d}x}$$ 3. Durchrechnung des Beispiels ($f(x) = -x^2 + 4$ und $g(x) = x^2 - 4$): - **Schritt 1: Schnittstellen berechnen ($f(x) = g(x)$)**:   $$-x^2 + 4 = x^2 - 4 \\implies 2x^2 = 8 \\implies x^2 = 4 \\implies \\mathbf{x_1 = -2}, \\quad \\mathbf{x_2 = +2}$$ - **Schritt 2: Differenzfunktion $d(x) = f(x) - g(x)$**:   * Da $f(0) = 4 > g(0) = -4$, verläuft $f(x)$ oben und $g(x)$ unten:     $$d(x) = (-x^2 + 4) - (x^2 - 4) = \\mathbf{8 - 2x^2}$$ - **Schritt 3: Integration der Differenzfunktion**:   $$A = \\int_{-2}^{2} (8 - 2x^2) \\,\\mathrm{d}x = \\left[ 8x - \\frac{2}{3}x^3 \\right]_{-2}^{2}$$ - **Schritt 4: Auswertung an den Grenzen**:   * Obere Grenze ($x = 2$):     $$8(2) - \\frac{2}{3}(2)^3 = 16 - \\frac{16}{3} = \\frac{48 - 16}{3} = \\mathbf{\\frac{32}{3}}$$   * Untere Grenze ($x = -2$):     $$8(-2) - \\frac{2}{3}(-2)^3 = -16 + \\frac{16}{3} = \\mathbf{-\\frac{32}{3}}$$   * **Gesamter Flächeninhalt**:     $$A = \\frac{32}{3} - \\left( -\\frac{32}{3} \\right) = \\frac{64}{3} = \\mathbf{21\\frac{1}{3}\\,\\text{FE (Flächeneinheiten)} \\approx 21{,}33\\,\\text{FE}}$$."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Methodik der geometrischen Flächenberechnung mit Integralen: 1. Fläche zwischen Funktionsgraph und "
+            },
+            {
+              "type": "math",
+              "tex": "x",
+              "speech": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Achse (Nullstellenzerlegung):   * Schritt 1: Bestimmung aller Nullstellen "
+            },
+            {
+              "type": "math",
+              "tex": "x_1, x_2, \\dots",
+              "speech": "x eins, x zwei, und so weiter"
+            },
+            {
+              "type": "text",
+              "text": " im Intervall "
+            },
+            {
+              "type": "math",
+              "tex": "[a; b]",
+              "speech": "Intervall von a bis b"
+            },
+            {
+              "type": "text",
+              "text": ".   * Schritt 2: Aufteilung des Integrals in Teilintervalle von Nullstelle zu Nullstelle.   * Schritt 3: Summation der Beträge der Teilintegrale:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{A = |\\int_a^{x_1} f(x)\\,\\mathrm{d}x| + |\\int_{x_1}^b f(x)\\,\\mathrm{d}x|}",
+              "block": true,
+              "speech": "A gleich Betrag des Integrals von a bis x eins über f von x d x, plus Betrag des Integrals von x eins bis b über f von x d x"
+            },
+            {
+              "type": "text",
+              "text": " 2. Fläche zwischen zwei sich schneidenden Funktionsgraphen "
+            },
+            {
+              "type": "math",
+              "tex": "f(x)",
+              "speech": "f von x"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "g(x)",
+              "speech": "g von x"
+            },
+            {
+              "type": "text",
+              "text": ":   * Schritt 1: Schnittstellen bestimmen durch Gleichsetzen "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = g(x) \\implies d(x) = f(x) - g(x) = 0",
+              "speech": "f von x gleich g von x, daraus folgt d von x gleich f von x minus g von x gleich 0"
+            },
+            {
+              "type": "text",
+              "text": ".   * Schritt 2: Integration der Differenzfunktion ('obere Kurve minus untere Kurve'):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{A = \\int_{x_1}^{x_2} (f(x) - g(x)) \\,\\mathrm{d}x}",
+              "block": true,
+              "speech": "A gleich Integral von x eins bis x zwei über, f von x minus g von x, d x"
+            },
+            {
+              "type": "text",
+              "text": " 3. Berechne den Inhalt der Fläche, die von den Parabeln "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = -x^2 + 4",
+              "speech": "f von x gleich minus x Quadrat plus 4"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "g(x) = x^2 - 4",
+              "speech": "g von x gleich x Quadrat minus 4"
+            },
+            {
+              "type": "text",
+              "text": " vollständig eingeschlossen wird."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Flächenberechnung: Nullstellenzerlegung; Fläche zwischen zwei Graphen "
+            },
+            {
+              "type": "math",
+              "tex": "A = \\int (\\text{obere Kurve} - \\text{untere Kurve})\\,dx",
+              "speech": "A gleich Integral über, obere Kurve minus untere Kurve, d x"
+            },
+            {
+              "type": "text",
+              "text": "; Rechnung: Schnittstellen "
+            },
+            {
+              "type": "math",
+              "tex": "-x^2 + 4 = x^2 - 4 \\Rightarrow 2x^2 = 8 \\Rightarrow x = \\pm 2",
+              "speech": "minus x Quadrat plus 4 gleich x Quadrat minus 4 daraus folgt 2 x Quadrat gleich 8 daraus folgt x gleich plus minus 2"
+            },
+            {
+              "type": "text",
+              "text": "; Differenz "
+            },
+            {
+              "type": "math",
+              "tex": "d(x) = 8 - 2x^2",
+              "speech": "d von x gleich 8 minus 2 x Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; Stammfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "D(x) = 8x - \\frac{2}{3} x^3",
+              "speech": "D von x gleich 8 x minus zwei Drittel x hoch drei"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "D(2) = 16 - \\frac{16}{3} = \\frac{32}{3}",
+              "speech": "D von 2 gleich 16 minus 16 Drittel gleich 32 Drittel"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "D(-2) = -\\frac{32}{3}",
+              "speech": "D von minus 2 gleich minus 32 Drittel"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "A = \\frac{32}{3} - \\left(-\\frac{32}{3}\\right) = \\frac{64}{3} \\approx 21{,}33",
+              "speech": "A gleich 32 Drittel minus Klammer auf minus 32 Drittel Klammer zu gleich 64 Drittel ungefähr 21,33"
+            },
+            {
+              "type": "text",
+              "text": " FE."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Geometrische Fläche vs. Orientierter Integralwert: - Das Integral "
+            },
+            {
+              "type": "math",
+              "tex": "\\int_a^b f(x)\\,\\mathrm{d}x"
+            },
+            {
+              "type": "text",
+              "text": " wertet Flächenstücke oberhalb der "
+            },
+            {
+              "type": "math",
+              "tex": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Achse positiv ("
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": ") und unterhalb der "
+            },
+            {
+              "type": "math",
+              "tex": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Achse negativ ("
+            },
+            {
+              "type": "math",
+              "tex": "-"
+            },
+            {
+              "type": "text",
+              "text": ") aus. - Geometrischer Flächeninhalt "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": ":   * Muss stets positiv sein ("
+            },
+            {
+              "type": "math",
+              "tex": "A \\ge 0"
+            },
+            {
+              "type": "text",
+              "text": "). Bei Vorzeichenwechseln (Nullstellen) muss das Intervall an jeder Nullstelle geteilt werden:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{A = \\sum_{i} \\left| \\int_{x_i}^{x_{i+1}} f(x)\\,\\mathrm{d}x \\right|}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Flächeninhalt zwischen zwei Funktionsgraphen "
+            },
+            {
+              "type": "math",
+              "tex": "f"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "g"
+            },
+            {
+              "type": "text",
+              "text": ": - Liegt im Intervall "
+            },
+            {
+              "type": "math",
+              "tex": "[x_1; x_2]"
+            },
+            {
+              "type": "text",
+              "text": " der Graph von "
+            },
+            {
+              "type": "math",
+              "tex": "f"
+            },
+            {
+              "type": "text",
+              "text": " oberhalb des Graphen von "
+            },
+            {
+              "type": "math",
+              "tex": "g"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "f(x) \\ge g(x)"
+            },
+            {
+              "type": "text",
+              "text": "), so ist der Flächeninhalt die Differenz:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{A = \\int_{x_1}^{x_2} \\big( f(x) - g(x) \\big) \\,\\mathrm{d}x}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Durchrechnung des Beispiels ("
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = -x^2 + 4"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "g(x) = x^2 - 4"
+            },
+            {
+              "type": "text",
+              "text": "): - Schritt 1: Schnittstellen berechnen ("
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = g(x)"
+            },
+            {
+              "type": "text",
+              "text": "):   "
+            },
+            {
+              "type": "math",
+              "tex": "-x^2 + 4 = x^2 - 4 \\implies 2x^2 = 8 \\implies x^2 = 4 \\implies \\mathbf{x_1 = -2}, \\quad \\mathbf{x_2 = +2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 2: Differenzfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "d(x) = f(x) - g(x)"
+            },
+            {
+              "type": "text",
+              "text": ":   * Da "
+            },
+            {
+              "type": "math",
+              "tex": "f(0) = 4 > g(0) = -4"
+            },
+            {
+              "type": "text",
+              "text": ", verläuft "
+            },
+            {
+              "type": "math",
+              "tex": "f(x)"
+            },
+            {
+              "type": "text",
+              "text": " oben und "
+            },
+            {
+              "type": "math",
+              "tex": "g(x)"
+            },
+            {
+              "type": "text",
+              "text": " unten:     "
+            },
+            {
+              "type": "math",
+              "tex": "d(x) = (-x^2 + 4) - (x^2 - 4) = \\mathbf{8 - 2x^2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 3: Integration der Differenzfunktion:   "
+            },
+            {
+              "type": "math",
+              "tex": "A = \\int_{-2}^{2} (8 - 2x^2) \\,\\mathrm{d}x = \\left[ 8x - \\frac{2}{3}x^3 \\right]_{-2}^{2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 4: Auswertung an den Grenzen:   * Obere Grenze ("
+            },
+            {
+              "type": "math",
+              "tex": "x = 2"
+            },
+            {
+              "type": "text",
+              "text": "):     "
+            },
+            {
+              "type": "math",
+              "tex": "8(2) - \\frac{2}{3}(2)^3 = 16 - \\frac{16}{3} = \\frac{48 - 16}{3} = \\mathbf{\\frac{32}{3}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Untere Grenze ("
+            },
+            {
+              "type": "math",
+              "tex": "x = -2"
+            },
+            {
+              "type": "text",
+              "text": "):     "
+            },
+            {
+              "type": "math",
+              "tex": "8(-2) - \\frac{2}{3}(-2)^3 = -16 + \\frac{16}{3} = \\mathbf{-\\frac{32}{3}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Gesamter Flächeninhalt:     "
+            },
+            {
+              "type": "math",
+              "tex": "A = \\frac{32}{3} - \\left( -\\frac{32}{3} \\right) = \\frac{64}{3} = \\mathbf{21\\frac{1}{3}\\,\\text{FE (Flächeneinheiten)} \\approx 21{,}33\\,\\text{FE}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

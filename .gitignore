@@ -84,3 +84,6 @@ observer/target/
 # Curriculum capture intermediates (re-run scripts/capture-*.ts)
 scripts/.cache/
 .pgdata/
+
+# Card-text migration report (regenerate with scripts/card-text-migration/diff-report.ts)
+scripts/card-text-migration/report/

@@ -135,15 +135,28 @@
           "tier": "tier1_fast",
           "bloom_level": 1,
           "question": "Wie lautet die physikalische Formel des Zerfallsgesetzes für die Anzahl noch vorhandener radioaktiver Atomkerne N(t) in Abhängigkeit von der Halbwertszeit T_1/2?",
-          "concept": "N(t) = N_0 · (1/2)^(t / T_1/2)",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "N(t) = N_0 \\cdot \\left(\\frac{1}{2}\\right)^{t/T_{1/2}}",
+              "speech": "N von t gleich N null mal ein halb hoch, t durch T ein halb"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "N(t) = N_0 · (1/2)^(t / T_1/2)",
+              [
+                {
+                  "type": "math",
+                  "tex": "N(t) = N_0 \\cdot \\left(\\frac{1}{2}\\right)^{t/T_{1/2}}",
+                  "speech": "N von t gleich N null mal ein halb hoch, t durch T ein halb"
+                }
+              ],
               "N(t) = N_0 · (1 - t / T_1/2)"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K4N0P0000000000000000J04",
@@ -151,8 +164,41 @@
           "tier": "tier2_synthesis",
           "bloom_level": 2,
           "question": "Erkläre das Prinzip der Radiokarbonmethode (C-14-Datierung) zur Altersbestimmung organischer Funde: Bildung von C-14 in der Atmosphäre, Aufnahme durch Fotosynthese/Nahrung, Stopp der Aufnahme beim Tod und Berechnung des Alters einer Holzprobe mit einer gemessenen Restaktivität von 25% bei T_1/2 = 5730 Jahren.",
-          "concept": "Kosmische Strahlung erzeugt C-14 -> lebende Organismen halten C-14/C-12 Verhältnis konstant -> nach dem Tod zerfällt C-14 mit T_1/2 = 5730 a; Rest 25% = (1/2)^2 -> 2 Halbwertszeiten = 2 * 5730 a = 11.460 Jahre alt",
-          "sample_solution": "1. Entstehung und Gleichgewicht: In der oberen Erdatmosphäre erzeugt kosmische Strahlung aus Stickstoff das radioaktive Kohlenstoffisotop C-14 (Beta-Strahler, T_1/2 = 5730 Jahre). Über CO₂ nehmen Pflanzen und Tiere während ihrer Lebensdauer C-14 auf; das Verhältnis von C-14 zu stabilem C-12 im Organismus ist konstant. 2. Zerfall nach dem Tod: Mit dem Absterben des Organismus endet der Stoffwechsel und die Zufuhr von C-14. Die vorhandenen C-14-Kerne zerfallen kontinuierlich nach dem Zerfallsgesetz. 3. Berechnung für 25% Restaktivität: N(t)/N_0 = 0,25 = (1/2)^2. Dies entspricht genau n = 2 Halbwertszeiten: t = 2 · T_1/2 = 2 · 5730 Jahre = 11.460 Jahre."
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Kosmische Strahlung erzeugt C-14 -> lebende Organismen halten C-14/C-12 Verhältnis konstant -> nach dem Tod zerfällt C-14 mit "
+            },
+            {
+              "type": "math",
+              "tex": "T_{1/2} = 5730",
+              "speech": "T ein halb gleich 5730"
+            },
+            {
+              "type": "text",
+              "text": " a; Rest 25% "
+            },
+            {
+              "type": "math",
+              "tex": "= \\left(\\frac{1}{2}\\right)^2 \\Rightarrow",
+              "speech": "gleich, ein halb, hoch 2, daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " 2 Halbwertszeiten "
+            },
+            {
+              "type": "math",
+              "tex": "= 2 \\cdot 5730\\,\\text{a} = 11.460",
+              "speech": "gleich 2 mal 5730 Jahre gleich 11.460"
+            },
+            {
+              "type": "text",
+              "text": " Jahre alt"
+            }
+          ],
+          "sample_solution": "1. Entstehung und Gleichgewicht: In der oberen Erdatmosphäre erzeugt kosmische Strahlung aus Stickstoff das radioaktive Kohlenstoffisotop C-14 (Beta-Strahler, T_1/2 = 5730 Jahre). Über CO₂ nehmen Pflanzen und Tiere während ihrer Lebensdauer C-14 auf; das Verhältnis von C-14 zu stabilem C-12 im Organismus ist konstant. 2. Zerfall nach dem Tod: Mit dem Absterben des Organismus endet der Stoffwechsel und die Zufuhr von C-14. Die vorhandenen C-14-Kerne zerfallen kontinuierlich nach dem Zerfallsgesetz. 3. Berechnung für 25% Restaktivität: N(t)/N_0 = 0,25 = (1/2)^2. Dies entspricht genau n = 2 Halbwertszeiten: t = 2 · T_1/2 = 2 · 5730 Jahre = 11.460 Jahre.",
+          "materiality": "cosmetic"
         }
       ]
     },

@@ -19,7 +19,7 @@
       "atom_uri": "urn:zam:atom:01K8GC70000000000000000A01",
       "namespace": "gymnasium-chemie-galvanische-zelle",
       "slug": "galvanische-elemente-standardpotentiale-nernst-gleichung",
-      "title": "Galvanische Elemente: Daniell-Zelle, Standardpotentiale $E^\\circ$ und Nernst-Gleichung",
+      "title": "Galvanische Elemente: Daniell-Zelle, Standardpotentiale E° und Nernst-Gleichung",
       "domain": "chemie/elektrochemie",
       "reduction": "formal",
       "typical_age_min": 17.5,
@@ -65,9 +65,242 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das Daniell-Element und die Nernst-Gleichung: 1. **Aufbau und Funktion des Daniell-Elements**:   * **Anode (Minuspol)**: Zink-Halbzelle $\\mathbf{\\text{Zn}_{\\,(s)} \\longrightarrow \\text{Zn}^{2+}_{\\,(aq)} + 2\\,e^-}$ ($E^\\circ = -0{,}76\\,\\text{V}$, Oxidation).   * **Kathode (Pluspol)**: Kupfer-Halbzelle $\\mathbf{\\text{Cu}^{2+}_{\\,(aq)} + 2\\,e^- \\longrightarrow \\text{Cu}_{\\,(s)}}$ ($E^\\circ = +0{,}34\\,\\text{V}$, Reduktion).   * **Gesamtzellspannung (EMK)**: $\\mathbf{U_0 = E^\\circ(\\text{Kathode}) - E^\\circ(\\text{Anode}) = +0{,}34\\,\\text{V} - (-0{,}76\\,\\text{V}) = \\mathbf{+1{,}10\\,\\text{V}}}$.   * Diaphragma / Salzbrücke: Verhindert Direktkontakt der Lösungen und ermöglicht Ladungsausgleich durch Ionenwanderung, 2. **Die Nernst-Gleichung (Walther Nernst, Nobelpreis 1920)**:   * Berechnet das reale Redoxpotential $E$ bei Nicht-Standardbedingungen ($T = 298\\,\\text{K} = 25^\\circ\\text{C}$):     $$\\mathbf{E = E^\\circ + \\frac{R \\cdot T}{z \\cdot F} \\cdot \\ln\\left( \\frac{c(\\text{Ox})}{c(\\text{Red})} \\right) = E^\\circ + \\frac{0{,}059\\,\\text{V}}{z} \\cdot \\log_{10}\\left( \\frac{c(\\text{Ox})}{c(\\text{Red})} \\right)}$$   * Für eine Metall/Metallionen-Halbzelle ($c(\\text{Red}) = 1$ für festes Metall):     $$\\mathbf{E = E^\\circ + \\frac{0{,}059\\,\\text{V}}{z} \\cdot \\log_{10}(c(\\text{Me}^{z+}))}$$",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das Daniell-Element und die Nernst-Gleichung: 1. Aufbau und Funktion des Daniell-Elements:   * Anode (Minuspol): Zink-Halbzelle "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Zn}_{\\,(s)} \\longrightarrow \\text{Zn}^{2+}_{\\,(aq)} + 2\\,e^-}",
+              "speech": "Zink, fest, führt zu Zink zwei plus, gelöst, plus 2 Elektronen"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "E^\\circ = -0{,}76\\,\\text{V}",
+              "speech": "E null gleich minus 0,76 Volt"
+            },
+            {
+              "type": "text",
+              "text": ", Oxidation).   * Kathode (Pluspol): Kupfer-Halbzelle "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Cu}^{2+}_{\\,(aq)} + 2\\,e^- \\longrightarrow \\text{Cu}_{\\,(s)}}",
+              "speech": "Kupfer zwei plus, gelöst, plus 2 Elektronen führt zu Kupfer, fest"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "E^\\circ = +0{,}34\\,\\text{V}",
+              "speech": "E null gleich plus 0,34 Volt"
+            },
+            {
+              "type": "text",
+              "text": ", Reduktion).   * Gesamtzellspannung (EMK): "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{U_0 = E^\\circ(\\text{Kathode}) - E^\\circ(\\text{Anode}) = +0{,}34\\,\\text{V} - (-0{,}76\\,\\text{V}) = \\mathbf{+1{,}10\\,\\text{V}}}",
+              "speech": "U null gleich E null der Kathode minus E null der Anode gleich plus 0,34 Volt minus minus 0,76 Volt gleich plus 1,10 Volt"
+            },
+            {
+              "type": "text",
+              "text": ".   * Diaphragma / Salzbrücke: Verhindert Direktkontakt der Lösungen und ermöglicht Ladungsausgleich durch Ionenwanderung, 2. Die Nernst-Gleichung (Walther Nernst, Nobelpreis 1920):   * Berechnet das reale Redoxpotential "
+            },
+            {
+              "type": "math",
+              "tex": "E",
+              "speech": "E"
+            },
+            {
+              "type": "text",
+              "text": " bei Nicht-Standardbedingungen ("
+            },
+            {
+              "type": "math",
+              "tex": "T = 298\\,\\text{K} = 25^\\circ\\text{C}",
+              "speech": "T gleich 298 Kelvin gleich 25 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": "):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E = E^\\circ + \\frac{R \\cdot T}{z \\cdot F} \\cdot \\ln\\left( \\frac{c(\\text{Ox})}{c(\\text{Red})} \\right) = E^\\circ + \\frac{0{,}059\\,\\text{V}}{z} \\cdot \\log_{10}\\left( \\frac{c(\\text{Ox})}{c(\\text{Red})} \\right)}",
+              "block": true,
+              "speech": "E gleich E null plus R mal T durch z mal F mal l n von c Ox durch c Red, gleich E null plus 0,059 Volt durch z mal Logarithmus zur Basis 10 von c Ox durch c Red"
+            },
+            {
+              "type": "text",
+              "text": "   * Für eine Metall/Metallionen-Halbzelle ("
+            },
+            {
+              "type": "math",
+              "tex": "c(\\text{Red}) = 1",
+              "speech": "c von Red gleich 1"
+            },
+            {
+              "type": "text",
+              "text": " für festes Metall):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E = E^\\circ + \\frac{0{,}059\\,\\text{V}}{z} \\cdot \\log_{10}(c(\\text{Me}^{z+}))}",
+              "block": true,
+              "speech": "E gleich E null plus 0,059 Volt durch z mal Logarithmus zur Basis 10 der Konzentration von Me z plus"
+            }
+          ],
           "concept": "Elektrochemie 12: Daniell-Element (Zn Anode/Minuspol, Cu Kathode/Pluspol, U0 = 1,10 V); Standard-Wasserstoffelektrode; Nernst-Gleichung E = E0 + (0,059V/z) * log(c(Ox)/c(Red)).",
-          "sample_solution": "1. Aufbau und Wirkungsweise des Daniell-Elements (John Frederic Daniell, 1836): - **Das klassische galvanische Element**:   * Besteht aus zwei räumlich getrennten Halbzellen, die durch einen elektrischen Leiter (Elektronenfluss) und eine poröse Trennwand / Salzbrücke (**Diaphragma**, Ionenwanderung) verbunden sind. - **Die Elektrodenreaktionen**:   * **1. Anode (Minuspol, Oxidation)**:     - Das unedlere Zink gibt Elektronen ab und geht als Kation in Lösung:       $$\\mathbf{\\text{Zn}_{\\,(s)} \\longrightarrow \\text{Zn}^{2+}_{\\,(aq)} + 2\\,e^-} \\quad (E^{\\circ} = -0{,}76\\,\\text{V})$$   * **2. Kathode (Pluspol, Reduktion)**:     - Die edleren Kupfer-Ionen nehmen Elektronen auf und scheiden sich als elementares Kupfer ab:       $$\\mathbf{\\text{Cu}^{2+}_{\\,(aq)} + 2\\,e^- \\longrightarrow \\text{Cu}_{\\,(s)}} \\quad (E^{\\circ} = +0{,}34\\,\\text{V})$$ - **Standard-Zellspannung (Elektromotorische Kraft EMK)**:   $$\\mathbf{U_0 = E^{\\circ}(\\text{Pluspol}) - E^{\\circ}(\\text{Minuspol}) = E^{\\circ}(\\text{Kathode}) - E^{\\circ}(\\text{Anode}) = +0{,}34\\,\\text{V} - (-0{,}76\\,\\text{V}) = \\mathbf{1{,}10\\,\\text{V}}}$$ 2. Die Standard-Wasserstoffelektrode (SHE / Bezugspunkt): - Da Einzelpotentiale nicht absolut messbar sind, wurde das Potential der **Standard-Wasserstoffelektrode** ($Pt / H_2 [1\\,\\text{bar}] / H^+ [1\\,\\text{mol/l}]$ bei $25^\\circ\\text{C}$) willkürlich als Nullpunkt der Skala definiert:   $$\\mathbf{E^{\\circ}(\\text{SHE}) = 0{,}00\\,\\text{V}}$$ 3. Die Nernst-Gleichung für Nicht-Standardbedingungen (1889): - Weicht die Ionenkonzentration von $c = 1\\,\\text{mol/l}$ ab, ändert sich das Elektrodenpotential nach der Nernst-Gleichung:   $$\\mathbf{E = E^{\\circ} + \\frac{R \\cdot T}{z \\cdot F} \\cdot \\ln\\left( \\frac{c(\\text{Ox})}{c(\\text{Red})} \\right)}$$ - Bei $T = 298{,}15\\,\\text{K}$ ($25^\\circ\\text{C}$) fasst man die Naturkonstanten $\\frac{R \\cdot T \\cdot \\ln(10)}{F}$ zusammen zu:   $$\\mathbf{E = E^{\\circ} + \\frac{0{,}05916\\,\\text{V}}{z} \\cdot \\log_{10}\\left( \\frac{c(\\text{Ox})}{c(\\text{Red})} \\right)}$$   *(mit $z$: Anzahl der übertragenen Elektronen pro Formelumsatz; $F \\approx 96485\\,\\frac{\\text{C}}{\\text{mol}}$: Faraday-Konstante)*. - **Folgerung**: Für eine Verzehnfachung der Metallionenkonzentration bei einer einwertigen Halbzelle ($z = 1$) steigt das Potential exakt um **$+59\\,\\text{mV}$** (Nernstsche Steigung)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Aufbau und Wirkungsweise des Daniell-Elements (John Frederic Daniell, 1836): - Das klassische galvanische Element:   * Besteht aus zwei räumlich getrennten Halbzellen, die durch einen elektrischen Leiter (Elektronenfluss) und eine poröse Trennwand / Salzbrücke (Diaphragma, Ionenwanderung) verbunden sind. - Die Elektrodenreaktionen:   * 1. Anode (Minuspol, Oxidation):     - Das unedlere Zink gibt Elektronen ab und geht als Kation in Lösung:       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Zn}_{\\,(s)} \\longrightarrow \\text{Zn}^{2+}_{\\,(aq)} + 2\\,e^-} \\quad (E^{\\circ} = -0{,}76\\,\\text{V})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * 2. Kathode (Pluspol, Reduktion):     - Die edleren Kupfer-Ionen nehmen Elektronen auf und scheiden sich als elementares Kupfer ab:       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Cu}^{2+}_{\\,(aq)} + 2\\,e^- \\longrightarrow \\text{Cu}_{\\,(s)}} \\quad (E^{\\circ} = +0{,}34\\,\\text{V})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Standard-Zellspannung (Elektromotorische Kraft EMK):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{U_0 = E^{\\circ}(\\text{Pluspol}) - E^{\\circ}(\\text{Minuspol}) = E^{\\circ}(\\text{Kathode}) - E^{\\circ}(\\text{Anode}) = +0{,}34\\,\\text{V} - (-0{,}76\\,\\text{V}) = \\mathbf{1{,}10\\,\\text{V}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Die Standard-Wasserstoffelektrode (SHE / Bezugspunkt): - Da Einzelpotentiale nicht absolut messbar sind, wurde das Potential der Standard-Wasserstoffelektrode ("
+            },
+            {
+              "type": "math",
+              "tex": "Pt / H_2 [1\\,\\text{bar}] / H^+ [1\\,\\text{mol/l}]"
+            },
+            {
+              "type": "text",
+              "text": " bei "
+            },
+            {
+              "type": "math",
+              "tex": "25^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": ") willkürlich als Nullpunkt der Skala definiert:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E^{\\circ}(\\text{SHE}) = 0{,}00\\,\\text{V}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Die Nernst-Gleichung für Nicht-Standardbedingungen (1889): - Weicht die Ionenkonzentration von "
+            },
+            {
+              "type": "math",
+              "tex": "c = 1\\,\\text{mol/l}"
+            },
+            {
+              "type": "text",
+              "text": " ab, ändert sich das Elektrodenpotential nach der Nernst-Gleichung:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E = E^{\\circ} + \\frac{R \\cdot T}{z \\cdot F} \\cdot \\ln\\left( \\frac{c(\\text{Ox})}{c(\\text{Red})} \\right)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Bei "
+            },
+            {
+              "type": "math",
+              "tex": "T = 298{,}15\\,\\text{K}"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "25^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": ") fasst man die Naturkonstanten "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{R \\cdot T \\cdot \\ln(10)}{F}"
+            },
+            {
+              "type": "text",
+              "text": " zusammen zu:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E = E^{\\circ} + \\frac{0{,}05916\\,\\text{V}}{z} \\cdot \\log_{10}\\left( \\frac{c(\\text{Ox})}{c(\\text{Red})} \\right)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   (mit "
+            },
+            {
+              "type": "math",
+              "tex": "z"
+            },
+            {
+              "type": "text",
+              "text": ": Anzahl der übertragenen Elektronen pro Formelumsatz; "
+            },
+            {
+              "type": "math",
+              "tex": "F \\approx 96485\\,\\frac{\\text{C}}{\\text{mol}}"
+            },
+            {
+              "type": "text",
+              "text": ": Faraday-Konstante). - Folgerung: Für eine Verzehnfachung der Metallionenkonzentration bei einer einwertigen Halbzelle ("
+            },
+            {
+              "type": "math",
+              "tex": "z = 1"
+            },
+            {
+              "type": "text",
+              "text": ") steigt das Potential exakt um "
+            },
+            {
+              "type": "math",
+              "tex": "+59\\,\\text{mV}"
+            },
+            {
+              "type": "text",
+              "text": " (Nernstsche Steigung)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +361,385 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Elektrolyse, die Faradayschen Gesetze und den Lithium-Ionen-Akkumulator: 1. **Die Elektrolyse (Erzwungene Redoxreaktion)**:   * Umkehrung des galvanischen Elements durch Anlegen einer äußeren Gleichspannung $U > U_{\\text{Zersetzung}} = E_{\\text{Kathode}} - E_{\\text{Anode}} + U_{\\text{Über}}$.   * **Polung bei Elektrolyse**:     - Anode = Pluspol (Oxidation).     - Kathode = Minuspol (Reduktion), 2. **Die Faradayschen Gesetze (Michael Faraday, 1834)**:   * Die an einer Elektrode abgeschiedene Stoffmenge $n$ bzw. Masse $m$ ist proportional zur geflossenen elektrischen Ladung $Q = I \\cdot t$:     $$\\mathbf{m = \\frac{M \\cdot I \\cdot t}{z \\cdot F}}$$   * ($M$: Molare Masse, $I$: Stromstärke, $t$: Zeit, $z$: Elektronenübertragungszahl, $F = 96485\\,\\text{C/mol}$), 3. **Der Lithium-Ionen-Akkumulator (Nobelpreis 2019: Goodenough, Whittingham, Yoshino)**:   * **Prinzip (Rocking-Chair-Batterie)**: Li$^+$-Ionen wandern im Elektrolyten hin und her.   * **Entladung (Spontan / Galvanisch)**:     - Anode ($-$, Oxidation): $\\text{Li}_x\\text{C}_6 \\longrightarrow 6\\,\\text{C} + x\\,\\text{Li}^+ + x\\,e^-$.     - Kathode ($+$, Reduktion): $\\text{Li}_{1-x}\\text{CoO}_2 + x\\,\\text{Li}^+ + x\\,e^- \\longrightarrow \\text{LiCoO}_2$.   * **Hohe Energiedichte** (ca. $3{,}7\\,\\text{V}$ Zellspannung durch das extrem unedle Standardpotential von Lithium $E^\\circ(\\text{Li/Li}^+) = -3{,}04\\,\\text{V}$).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Elektrolyse, die Faradayschen Gesetze und den Lithium-Ionen-Akkumulator: 1. Die Elektrolyse (Erzwungene Redoxreaktion):   * Umkehrung des galvanischen Elements durch Anlegen einer äußeren Gleichspannung "
+            },
+            {
+              "type": "math",
+              "tex": "U > U_{\\text{Zersetzung}} = E_{\\text{Kathode}} - E_{\\text{Anode}} + U_{\\text{Über}}",
+              "speech": "U größer als U Zersetzung gleich E Kathode minus E Anode plus U Über"
+            },
+            {
+              "type": "text",
+              "text": ".   * Polung bei Elektrolyse:     - Anode = Pluspol (Oxidation).     - Kathode = Minuspol (Reduktion), 2. Die Faradayschen Gesetze (Michael Faraday, 1834):   * Die an einer Elektrode abgeschiedene Stoffmenge "
+            },
+            {
+              "type": "math",
+              "tex": "n",
+              "speech": "n"
+            },
+            {
+              "type": "text",
+              "text": " bzw. Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m",
+              "speech": "m"
+            },
+            {
+              "type": "text",
+              "text": " ist proportional zur geflossenen elektrischen Ladung "
+            },
+            {
+              "type": "math",
+              "tex": "Q = I \\cdot t",
+              "speech": "Q gleich I mal t"
+            },
+            {
+              "type": "text",
+              "text": ":     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{m = \\frac{M \\cdot I \\cdot t}{z \\cdot F}}",
+              "block": true,
+              "speech": "m gleich M mal I mal t durch z mal F"
+            },
+            {
+              "type": "text",
+              "text": "   * ("
+            },
+            {
+              "type": "math",
+              "tex": "M",
+              "speech": "M"
+            },
+            {
+              "type": "text",
+              "text": ": Molare Masse, "
+            },
+            {
+              "type": "math",
+              "tex": "I",
+              "speech": "I"
+            },
+            {
+              "type": "text",
+              "text": ": Stromstärke, "
+            },
+            {
+              "type": "math",
+              "tex": "t",
+              "speech": "t"
+            },
+            {
+              "type": "text",
+              "text": ": Zeit, "
+            },
+            {
+              "type": "math",
+              "tex": "z",
+              "speech": "z"
+            },
+            {
+              "type": "text",
+              "text": ": Elektronenübertragungszahl, "
+            },
+            {
+              "type": "math",
+              "tex": "F = 96485\\,\\text{C/mol}",
+              "speech": "F gleich 96485 Coulomb pro Mol"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Der Lithium-Ionen-Akkumulator (Nobelpreis 2019: Goodenough, Whittingham, Yoshino):   * Prinzip (Rocking-Chair-Batterie): Li"
+            },
+            {
+              "type": "math",
+              "tex": "^+",
+              "speech": "plus"
+            },
+            {
+              "type": "text",
+              "text": "-Ionen wandern im Elektrolyten hin und her.   * Entladung (Spontan / Galvanisch):     - Anode ("
+            },
+            {
+              "type": "math",
+              "tex": "-",
+              "speech": "minus"
+            },
+            {
+              "type": "text",
+              "text": ", Oxidation): "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Li}_x\\text{C}_6 \\longrightarrow 6\\,\\text{C} + x\\,\\text{Li}^+ + x\\,e^-",
+              "speech": "Li x C sechs führt zu 6 C plus x Li plus plus x Elektronen"
+            },
+            {
+              "type": "text",
+              "text": ".     - Kathode ("
+            },
+            {
+              "type": "math",
+              "tex": "+",
+              "speech": "plus"
+            },
+            {
+              "type": "text",
+              "text": ", Reduktion): "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Li}_{1-x}\\text{CoO}_2 + x\\,\\text{Li}^+ + x\\,e^- \\longrightarrow \\text{LiCoO}_2",
+              "speech": "Li eins minus x Co O zwei plus x Li plus plus x Elektronen führt zu Li Co O zwei"
+            },
+            {
+              "type": "text",
+              "text": ".   * Hohe Energiedichte (ca. "
+            },
+            {
+              "type": "math",
+              "tex": "3{,}7\\,\\text{V}",
+              "speech": "3,7 Volt"
+            },
+            {
+              "type": "text",
+              "text": " Zellspannung durch das extrem unedle Standardpotential von Lithium "
+            },
+            {
+              "type": "math",
+              "tex": "E^\\circ(\\text{Li/Li}^+) = -3{,}04\\,\\text{V}",
+              "speech": "E null von Li durch Li plus gleich minus 3,04 Volt"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
           "concept": "Elektrochemie 12: Elektrolyse (erzwungen, Polung: Anode Plus, Kathode Minus); Faradaysches Gesetz m = (M*I*t)/(z*F); Lithium-Ionen-Akku (Rocking-Chair-Prinzip, Interkalation in Graphit und LiCoO2, 3,7 V Zellspannung).",
-          "sample_solution": "1. Vergleich: Galvanisches Element vs. Elektrolysezelle: | Kriterium | Galvanisches Element (Batterie / Entladung) | Elektrolysezelle (Beladung / Elektrolyse) | | :--- | :--- | :--- | | **Reaktionsart** | **Freiwillig / spontan** ($\\Delta G < 0$) $\\implies$ Stromerzeugung | **Erzwungen** durch äußere Spannungsquelle ($\\Delta G > 0$) $\\implies$ Stromverbrauch | | **Anode (Oxidation)** | **Minuspol ($-$)** (Elektronenquelle) | **Pluspol ($+$)** (Elektronenentzug durch Quelle) | | **Kathode (Reduktion)** | **Pluspol ($+$)** (Elektronensenke) | **Minuspol ($-$)** (Elektroneneinspeisung durch Quelle) | 2. Die Faradayschen Gesetze der Elektrolyse: - **1. Gesetz**: Die Masse $m$ des an einer Elektrode abgeschiedenen Stoffes ist direkt proportional zur transportierten elektrischen Ladung $Q = I \\cdot t$. - **2. Gesetz**: Zur Abscheidung von $1\\,\\text{mol}$ eines Stoffes mit der Wertigkeit $z$ wird die Ladung $z \\cdot F$ benötigt. - **Kombinierte Faradaysche Gleichung**:   $$\\mathbf{m = \\frac{M \\cdot Q}{z \\cdot F} = \\frac{M \\cdot I \\cdot t}{z \\cdot F}}$$   *(wobei $F = e \\cdot N_A \\approx 96485{,}3\\,\\frac{\\text{C}}{\\text{mol}} = 96485\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{mol}}$ die Faraday-Konstante ist)*. 3. Der moderne Lithium-Ionen-Akkumulator: - **Warum Lithium?**: Lithium ist das leichteste Metall ($M = 6{,}94\\,\\text{g/mol}$) und besitzt das negativste Standard-Redoxpotential aller Elemente ($\\mathbf{E^{\\circ} = -3{,}04\\,\\text{V}}$) $\\implies$ extrem hohe Zellspannung (**$3{,}6\\text{ bis } 3{,}8\\,\\text{V}$**) und unerreichte gravimetrische Energiedichte ($> 250\\,\\text{Wh/kg}$). - **Das 'Rocking-Chair-Prinzip' (Interkalation)**:   * Es wird kein metallisches Lithium abgeschieden (Vermeidung gefährlicher Dendritenbildung und Kurzschlüsse). Stattdessen lagern sich $\\text{Li}^+$-Ionen schadlos in Zwischengitterplätze (Wirtsgitter) ein:   * **1. Anode (Minuspol beim Entladen)**:     - Graphit-Schichtgitter mit interkaliertem Lithium:       $$\\mathbf{\\text{Li}_x\\text{C}_6 \\xrightleftharpoons[\\text{Laden}]{\\text{Entladen}} 6\\,\\text{C} + x\\,\\text{Li}^+ + x\\,e^-}$$   * **2. Kathode (Pluspol beim Entladen)**:     - Übergangsmetall-Schichtoxid (z. B. Lithium-Cobalt(III)-oxid $\\text{LiCoO}_2$ oder $\\text{LiFePO}_4$):       $$\\mathbf{\\text{Li}_{1-x}\\text{CoO}_2 + x\\,\\text{Li}^+ + x\\,e^- \\xrightleftharpoons[\\text{Laden}]{\\text{Entladen}} \\text{LiCoO}_2}$$   * **Elektrolyt**: Wasserfreies aprotisches organisches Lösungsmittel (z. B. Ethylencarbonat mit Leitsalz $\\text{LiPF}_6$), da metallisches Lithium und Graphit-Interkalate explosionsartig mit Wasser zu Wasserstoff reagieren würden."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Vergleich: Galvanisches Element vs. Elektrolysezelle: | Kriterium | Galvanisches Element (Batterie / Entladung) | Elektrolysezelle (Beladung / Elektrolyse) | | :--- | :--- | :--- | | Reaktionsart | Freiwillig / spontan ("
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta G < 0"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Stromerzeugung | Erzwungen durch äußere Spannungsquelle ("
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta G > 0"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Stromverbrauch | | Anode (Oxidation) | Minuspol ("
+            },
+            {
+              "type": "math",
+              "tex": "-"
+            },
+            {
+              "type": "text",
+              "text": ") (Elektronenquelle) | Pluspol ("
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": ") (Elektronenentzug durch Quelle) | | Kathode (Reduktion) | Pluspol ("
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": ") (Elektronensenke) | Minuspol ("
+            },
+            {
+              "type": "math",
+              "tex": "-"
+            },
+            {
+              "type": "text",
+              "text": ") (Elektroneneinspeisung durch Quelle) | 2. Die Faradayschen Gesetze der Elektrolyse: - 1. Gesetz: Die Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m"
+            },
+            {
+              "type": "text",
+              "text": " des an einer Elektrode abgeschiedenen Stoffes ist direkt proportional zur transportierten elektrischen Ladung "
+            },
+            {
+              "type": "math",
+              "tex": "Q = I \\cdot t"
+            },
+            {
+              "type": "text",
+              "text": ". - 2. Gesetz: Zur Abscheidung von "
+            },
+            {
+              "type": "math",
+              "tex": "1\\,\\text{mol}"
+            },
+            {
+              "type": "text",
+              "text": " eines Stoffes mit der Wertigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "z"
+            },
+            {
+              "type": "text",
+              "text": " wird die Ladung "
+            },
+            {
+              "type": "math",
+              "tex": "z \\cdot F"
+            },
+            {
+              "type": "text",
+              "text": " benötigt. - Kombinierte Faradaysche Gleichung:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{m = \\frac{M \\cdot Q}{z \\cdot F} = \\frac{M \\cdot I \\cdot t}{z \\cdot F}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   (wobei "
+            },
+            {
+              "type": "math",
+              "tex": "F = e \\cdot N_A \\approx 96485{,}3\\,\\frac{\\text{C}}{\\text{mol}} = 96485\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{mol}}"
+            },
+            {
+              "type": "text",
+              "text": " die Faraday-Konstante ist). 3. Der moderne Lithium-Ionen-Akkumulator: - Warum Lithium?: Lithium ist das leichteste Metall ("
+            },
+            {
+              "type": "math",
+              "tex": "M = 6{,}94\\,\\text{g/mol}"
+            },
+            {
+              "type": "text",
+              "text": ") und besitzt das negativste Standard-Redoxpotential aller Elemente ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E^{\\circ} = -3{,}04\\,\\text{V}}"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " extrem hohe Zellspannung ("
+            },
+            {
+              "type": "math",
+              "tex": "3{,}6\\text{ bis } 3{,}8\\,\\text{V}"
+            },
+            {
+              "type": "text",
+              "text": ") und unerreichte gravimetrische Energiedichte ("
+            },
+            {
+              "type": "math",
+              "tex": "> 250\\,\\text{Wh/kg}"
+            },
+            {
+              "type": "text",
+              "text": "). - Das 'Rocking-Chair-Prinzip' (Interkalation):   * Es wird kein metallisches Lithium abgeschieden (Vermeidung gefährlicher Dendritenbildung und Kurzschlüsse). Stattdessen lagern sich "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Li}^+"
+            },
+            {
+              "type": "text",
+              "text": "-Ionen schadlos in Zwischengitterplätze (Wirtsgitter) ein:   * 1. Anode (Minuspol beim Entladen):     - Graphit-Schichtgitter mit interkaliertem Lithium:       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Li}_x\\text{C}_6 \\xrightleftharpoons[\\text{Laden}]{\\text{Entladen}} 6\\,\\text{C} + x\\,\\text{Li}^+ + x\\,e^-}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * 2. Kathode (Pluspol beim Entladen):     - Übergangsmetall-Schichtoxid (z. B. Lithium-Cobalt(III)-oxid "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{LiCoO}_2"
+            },
+            {
+              "type": "text",
+              "text": " oder "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{LiFePO}_4"
+            },
+            {
+              "type": "text",
+              "text": "):       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Li}_{1-x}\\text{CoO}_2 + x\\,\\text{Li}^+ + x\\,e^- \\xrightleftharpoons[\\text{Laden}]{\\text{Entladen}} \\text{LiCoO}_2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Elektrolyt: Wasserfreies aprotisches organisches Lösungsmittel (z. B. Ethylencarbonat mit Leitsalz "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{LiPF}_6"
+            },
+            {
+              "type": "text",
+              "text": "), da metallisches Lithium und Graphit-Interkalate explosionsartig mit Wasser zu Wasserstoff reagieren würden."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

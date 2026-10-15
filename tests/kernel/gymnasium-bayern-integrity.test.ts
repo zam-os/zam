@@ -4,12 +4,19 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   ATOM_ID_PATTERN,
+  type CardText,
   type Database,
   enrolBundledCell,
   findBundledCellsForScope,
   listBundledCells,
+  kvtItemPlainTexts,
   openDatabase,
+  plainProjection,
 } from "../../src/kernel/index.js";
+
+/** A sample solution's plain text, whether stored as text or segments. */
+const plainText = (value: string | CardText | undefined): string =>
+  typeof value === "string" ? value : value ? plainProjection(value) : "";
 
 /** Subject ids the Bayern Gymnasium LehrplanPLUS manifest actually uses. */
 const BAYERN_GYMNASIUM_SUBJECTS = new Set([
@@ -91,9 +98,9 @@ describe("Gymnasium Bayern Full Curriculum (Klassen 5–13) Integrity & Quality 
             expect(item.fast_check?.correct_index).toBe(0);
           } else if (item.tier === "tier2_synthesis") {
             if (item.sample_solution) {
-              expect(item.sample_solution.length).toBeGreaterThan(50);
+              expect(plainText(item.sample_solution).length).toBeGreaterThan(50);
             } else {
-              expect(item.concept.length).toBeGreaterThan(20);
+              expect(kvtItemPlainTexts(item).concept.length).toBeGreaterThan(20);
             }
           }
         }

@@ -61,7 +61,17 @@
           "tier": "tier1_fast",
           "bloom_level": 1,
           "question": "Wie berechnet man den Betrag (die Länge) des zweidimensionalen Vektors v = (3, 4)^T?",
-          "concept": "|v| = sqrt(3^2 + 4^2) = sqrt(9 + 16) = sqrt(25) = 5 LE",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "|\\vec{v}| = \\sqrt{3^2 + 4^2} = \\sqrt{9 + 16} = \\sqrt{25} = 5",
+              "speech": "Betrag von Vektor v gleich Wurzel aus 3 Quadrat plus 4 Quadrat gleich Wurzel aus 9 plus 16 gleich Wurzel aus 25 gleich 5"
+            },
+            {
+              "type": "text",
+              "text": " LE"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -69,7 +79,8 @@
               "7 Längeneinheiten"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K4V0M0000000000000000J02",
@@ -77,8 +88,37 @@
           "tier": "tier2_synthesis",
           "bloom_level": 2,
           "question": "Definiere den Verbindungsvektor AB zweier Punkte A(x_A | y_A) und B(x_B | y_B) nach der 'Spitze-minus-Schaft'-Regel, bestimme für A(-2 | 3) und B(4 | -5) den Vektor AB sowie dessen Gegenvektor BA und berechne die exakte Länge der Strecke [AB].",
-          "concept": "AB = B - A = (4 - (-2), -5 - 3)^T = (6, -8)^T; Gegenvektor BA = -AB = (-6, 8)^T; |AB| = sqrt(6^2 + (-8)^2) = sqrt(36 + 64) = sqrt(100) = 10 LE",
-          "sample_solution": "1. Spitze-minus-Schaft-Regel: Der Verbindungsvektor AB vom Anfangspunkt A (Schaft) zum Endpunkt B (Spitze) berechnet sich durch Koordinatensubtraktion: AB = (x_B - x_A, y_B - y_A)^T. 2. Berechnung für A(-2 | 3) und B(4 | -5): AB = (4 - (-2), -5 - 3)^T = (6, -8)^T. 3. Gegenvektor BA: BA = -AB = (-6, 8)^T. 4. Länge (Betrag): |AB| = sqrt(6^2 + (-8)^2) = sqrt(36 + 64) = sqrt(100) = 10 Längeneinheiten."
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\vec{AB} = B - A = (4 - (-2), -5 - 3)^T = (6, -8)^T",
+              "speech": "Vektor A B gleich B minus A gleich Spaltenvektor 4 minus minus 2, minus 5 minus 3, gleich Spaltenvektor 6, minus 8"
+            },
+            {
+              "type": "text",
+              "text": "; Gegenvektor "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{BA} = -\\vec{AB} = (-6, 8)^T",
+              "speech": "Vektor B A gleich minus Vektor A B gleich Spaltenvektor minus 6, 8"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "|\\vec{AB}| = \\sqrt{6^2 + (-8)^2} = \\sqrt{36 + 64} = \\sqrt{100} = 10",
+              "speech": "Betrag von Vektor A B gleich Wurzel aus 6 Quadrat plus minus 8 Quadrat gleich Wurzel aus 36 plus 64 gleich Wurzel aus 100 gleich 10"
+            },
+            {
+              "type": "text",
+              "text": " LE"
+            }
+          ],
+          "sample_solution": "1. Spitze-minus-Schaft-Regel: Der Verbindungsvektor AB vom Anfangspunkt A (Schaft) zum Endpunkt B (Spitze) berechnet sich durch Koordinatensubtraktion: AB = (x_B - x_A, y_B - y_A)^T. 2. Berechnung für A(-2 | 3) und B(4 | -5): AB = (4 - (-2), -5 - 3)^T = (6, -8)^T. 3. Gegenvektor BA: BA = -AB = (-6, 8)^T. 4. Länge (Betrag): |AB| = sqrt(6^2 + (-8)^2) = sqrt(36 + 64) = sqrt(100) = 10 Längeneinheiten.",
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -225,8 +265,46 @@
           "tier": "tier2_synthesis",
           "bloom_level": 2,
           "question": "Erkläre die Flächeninhaltsformel für ein Dreieck ABC im Koordinatensystem mittels Determinante A = 0.5 · |det(AB, AC)| und berechne die Fläche des Dreiecks mit A(1 | 1), B(5 | 2) und C(2 | 6), wobei auf den mathematisch positiven Umlaufsinn (gegen den Uhrzeigersinn) geachtet wird.",
-          "concept": "AB = (4, 1)^T, AC = (1, 5)^T; det(AB, AC) = 4*5 - 1*1 = 20 - 1 = 19; A_Dreieck = 0.5 * 19 = 9.5 FE",
-          "sample_solution": "1. Determinantenformel: Der orientierte Flächeninhalt eines von den Vektoren AB und AC aufgespannten Dreiecks beträgt A = 0,5 · det(AB, AC). Ist das Dreieck gegen den Uhrzeigersinn orientiert, ist die Determinante positiv. 2. Vektoren aufstellen: - AB = (5 - 1, 2 - 1)^T = (4, 1)^T - AC = (2 - 1, 6 - 1)^T = (1, 5)^T 3. Determinante berechnen: det(AB, AC) = | 4  1 | / | 1  5 | = (4 · 5) - (1 · 1) = 20 - 1 = 19. 4. Flächeninhalt: A_Dreieck = 0,5 · 19 = 9,5 Flächeneinheiten (FE)."
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\vec{AB} = (4, 1)^T",
+              "speech": "Vektor A B gleich Spaltenvektor 4, 1"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{AC} = (1, 5)^T",
+              "speech": "Vektor A C gleich Spaltenvektor 1, 5"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "\\det(\\vec{AB}, \\vec{AC}) = 4 \\cdot 5 - 1 \\cdot 1 = 20 - 1 = 19",
+              "speech": "Determinante von Vektor A B, Vektor A C gleich 4 mal 5 minus 1 mal 1 gleich 20 minus 1 gleich 19"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "A_{\\text{Dreieck}} = 0{,}5 \\cdot 19 = 9{,}5",
+              "speech": "A Dreieck gleich 0,5 mal 19 gleich 9,5"
+            },
+            {
+              "type": "text",
+              "text": " FE"
+            }
+          ],
+          "sample_solution": "1. Determinantenformel: Der orientierte Flächeninhalt eines von den Vektoren AB und AC aufgespannten Dreiecks beträgt A = 0,5 · det(AB, AC). Ist das Dreieck gegen den Uhrzeigersinn orientiert, ist die Determinante positiv. 2. Vektoren aufstellen: - AB = (5 - 1, 2 - 1)^T = (4, 1)^T - AC = (2 - 1, 6 - 1)^T = (1, 5)^T 3. Determinante berechnen: det(AB, AC) = | 4  1 | / | 1  5 | = (4 · 5) - (1 · 1) = 20 - 1 = 19. 4. Flächeninhalt: A_Dreieck = 0,5 · 19 = 9,5 Flächeneinheiten (FE).",
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -273,15 +351,34 @@
           "tier": "tier1_fast",
           "bloom_level": 1,
           "question": "Welche Koordinaten erhält man, wenn man den Vektor v = (x, y)^T um 90° gegen den Uhrzeigersinn dreht (Orthogonalvektor / Normalenvektor)?",
-          "concept": "v' = (-y, x)^T",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\vec{v}' = (-y, x)^T",
+              "speech": "Vektor v Strich gleich Spaltenvektor minus y, x"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "(-y, x)^T",
-              "(y, -x)^T"
+              [
+                {
+                  "type": "math",
+                  "tex": "(-y, x)^T",
+                  "speech": "Spaltenvektor minus y, x"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "(y, -x)^T",
+                  "speech": "Spaltenvektor y, minus x"
+                }
+              ]
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K4V0M0000000000000000J08",
@@ -289,8 +386,42 @@
           "tier": "tier2_synthesis",
           "bloom_level": 2,
           "question": "Gib die allgemeine Drehmatrix D_phi = [cos(phi) -sin(phi); sin(phi) cos(phi)] für eine Drehung um das Drehzentrum Z(0|0) um den Winkel phi an und berechne den Bildvektor v' bei Drehung von v = (4, 0)^T um phi = 60° gegen den Uhrzeigersinn.",
-          "concept": "D_60°: cos(60°) = 0.5, sin(60°) = sqrt(3)/2; v' = (4*0.5 - 0*sin(60°), 4*sin(60°) + 0*cos(60°))^T = (2, 2*sqrt(3))^T",
-          "sample_solution": "1. Allgemeine Drehmatrix: Die Drehung eines Vektors v = (x, y)^T um den Ursprung um den Drehwinkel phi lautet: x' = x · cos(phi) - y · sin(phi); y' = x · sin(phi) + y · cos(phi). 2. Berechnung für v = (4, 0)^T und phi = 60°: - Exakte trigonometrische Werte: cos(60°) = 0,5 und sin(60°) = sqrt(3)/2 ≈ 0,866. - x' = 4 · 0,5 - 0 · (sqrt(3)/2) = 2. - y' = 4 · (sqrt(3)/2) + 0 · 0,5 = 2 · sqrt(3) ≈ 3,464. - Bildvektor: v' = (2, 2·sqrt(3))^T."
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "D_{60^\\circ}",
+              "speech": "D 60 Grad"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "\\cos(60^\\circ) = 0{,}5",
+              "speech": "Kosinus von 60 Grad gleich 0,5"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin(60^\\circ) = \\frac{\\sqrt{3}}{2}",
+              "speech": "Sinus von 60 Grad gleich Wurzel aus 3 durch 2"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{v}' = (4 \\cdot 0{,}5 - 0 \\cdot \\sin(60^\\circ), 4 \\cdot \\sin(60^\\circ) + 0 \\cdot \\cos(60^\\circ))^T = (2, 2\\sqrt{3})^T",
+              "speech": "Vektor v Strich gleich Spaltenvektor 4 mal 0,5 minus 0 mal Sinus 60 Grad, 4 mal Sinus 60 Grad plus 0 mal Kosinus 60 Grad, gleich Spaltenvektor 2, 2 Wurzel 3"
+            }
+          ],
+          "sample_solution": "1. Allgemeine Drehmatrix: Die Drehung eines Vektors v = (x, y)^T um den Ursprung um den Drehwinkel phi lautet: x' = x · cos(phi) - y · sin(phi); y' = x · sin(phi) + y · cos(phi). 2. Berechnung für v = (4, 0)^T und phi = 60°: - Exakte trigonometrische Werte: cos(60°) = 0,5 und sin(60°) = sqrt(3)/2 ≈ 0,866. - x' = 4 · 0,5 - 0 · (sqrt(3)/2) = 2. - y' = 4 · (sqrt(3)/2) + 0 · 0,5 = 2 · sqrt(3) ≈ 3,464. - Bildvektor: v' = (2, 2·sqrt(3))^T.",
+          "materiality": "cosmetic"
         }
       ]
     }

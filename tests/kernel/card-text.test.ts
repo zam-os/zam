@@ -1,5 +1,3 @@
-import { readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   type CardText,
@@ -10,8 +8,6 @@ import {
   spokenProjection,
   validateCardText,
 } from "../../src/kernel/library/card-text.js";
-import { liftDollarMath } from "../../src/kernel/library/dollar-lift.js";
-import { texIssues } from "../../src/kernel/library/tex-tokenizer.js";
 
 const HASH = "a".repeat(64);
 const markupCodes = (text: string) =>
@@ -192,63 +188,5 @@ describe("projections", () => {
       { type: "text", text: "ab" },
       { type: "math", tex: "x" },
     ]);
-  });
-});
-
-describe("the bundled corpus against the formula rules", () => {
-  /**
-   * Formulas the bundled tiles carry broken today: seven strings where JSON
-   * turned `\t`/`\r` into control characters, four with unbalanced braces,
-   * one with a bare `&` outside an environment, and two where `\\lambda`
-   * stands for `\lambda`. Plan Phase 5 patches them by hand and empties this
-   * list.
-   */
-  const KNOWN_DAMAGED = new Set([
-    "de-by-gymnasium-10-chemie-sauerstoffgruppen-alkohole-aldehyde-carbonsaeuren-ester-kvt.json|01K8GA80000000000000000J04|sample_solution",
-    "de-by-gymnasium-10-englisch-rhetorik-stil-usa-21st-century-kvt.json|01K8GAB0000000000000000J02|sample_solution",
-    "de-by-gymnasium-10-geographie-geooekozonen-klimawandel-kippelemente-kvt.json|01K8GAF0000000000000000J04|sample_solution",
-    "de-by-gymnasium-10-mathematik-analytische-geometrie-vektoren-skalarprodukt-kvt.json|01K8GA30000000000000000J02|sample_solution",
-    "de-by-gymnasium-10-mathematik-trigonometrie-sinus-kosinussatz-bogenmass-kvt.json|01K8GA00000000000000000J02|question",
-    "de-by-gymnasium-11-biologie-stoffwechselphysiologie-fotosynthese-zellatmung-atp-kvt.json|01K8GBH0000000000000000J04|sample_solution",
-    "de-by-gymnasium-11-chemie-kunststoffe-polymerisation-polykondensation-duroplaste-kvt.json|01K8GB90000000000000000J02|sample_solution",
-    "de-by-gymnasium-11-physik-elektrisches-feld-kondensator-millikan-kvt.json|01K8GB40000000000000000J02|question",
-    "de-by-gymnasium-12-chemie-saeure-base-gleichgewichte-ph-wert-titration-puffer-kvt.json|01K8GC60000000000000000J04|question",
-    "de-by-gymnasium-12-chemie-saeure-base-gleichgewichte-ph-wert-titration-puffer-kvt.json|01K8GC60000000000000000J04|sample_solution",
-    "de-by-gymnasium-12-physik-atomphysik-bohrsches-atommodell-linien-spektren-kernspaltung-kvt.json|01K8GC40000000000000000J04|sample_solution",
-    "de-by-gymnasium-13-chemie-farbstoffe-mesomerie-chromophore-azofarbstoffe-spektroskopie-kvt.json|01K8GD50000000000000000J04|sample_solution",
-    "de-by-gymnasium-13-geographie-klimawandel-kippelemente-ipcc-ressourcen-kvt.json|01K8GDF0000000000000000J02|sample_solution",
-    "de-by-gymnasium-13-geographie-klimawandel-kippelemente-ipcc-ressourcen-kvt.json|01K8GDF0000000000000000J04|sample_solution",
-  ]);
-
-  it("every other formula lifts strictly and passes the tokenizer", () => {
-    const dir = join(process.cwd(), "tests/fixtures/curriculum");
-    const refused: string[] = [];
-    let formulas = 0;
-    for (const file of readdirSync(dir).filter((f) =>
-      f.endsWith("-kvt.json"),
-    )) {
-      const tile = JSON.parse(readFileSync(join(dir, file), "utf-8"));
-      for (const atom of tile.atoms) {
-        for (const item of atom.practice_items) {
-          for (const field of ["question", "concept", "sample_solution"]) {
-            const text = item[field];
-            if (typeof text !== "string") continue;
-            const key = `${file}|${item.id}|${field}`;
-            for (const segment of liftDollarMath(text, "strict").segments) {
-              if (segment.type !== "math") continue;
-              formulas++;
-              if (
-                texIssues(segment.tex).length > 0 &&
-                !KNOWN_DAMAGED.has(key)
-              ) {
-                refused.push(`${key}: ${segment.tex.slice(0, 60)}`);
-              }
-            }
-          }
-        }
-      }
-    }
-    expect(formulas).toBeGreaterThan(6000);
-    expect(refused).toEqual([]);
   });
 });

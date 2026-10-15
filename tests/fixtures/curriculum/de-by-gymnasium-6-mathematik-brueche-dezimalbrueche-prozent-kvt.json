@@ -67,7 +67,228 @@
           "bloom_level": 2,
           "question": "Definiere den Bruch a/b (a = Zähler / Anzahl der Teile, b = Nenner / Einteilung des Ganzen ungleich 0), erkläre Erweitern und Kürzen als Division durch den ggT(a, b) zum vollständig gekürzten Bruch, bestimme den Hauptnenner (kgV der Nenner) zum Größenvergleich zweier ungleichnamiger Brüche und ordne: 5/6, 7/9 und 3/4.",
           "concept": "Bruch: Anteil an Ganzem; Erweitern/Kürzen ändert den Wert nicht; Hauptnenner = kgV(6, 9, 4) = 36; 5/6 = 30/36, 7/9 = 28/36, 3/4 = 27/36 -> 3/4 < 7/9 < 5/6.",
-          "sample_solution": "1. Der mathematische Bruchbegriff: - Ein Bruch $\\frac{a}{b}$ ($a, b \\in \\mathbb{N}, b \\neq 0$) beschreibt den Quotienten aus Zähler $a$ und Nenner $b$:   * **Nenner $b$**: Gibt an, in wie viele gleich große Teile das Ganze unterteilt wird.   * **Zähler $a$**: Gibt an, wie viele dieser Teile betrachtet werden.   * **Echter Bruch**: $a < b$ (Wert $< 1$, z. B. $\\frac{3}{5}$).   * **Unechter Bruch**: $a \\geq b$ (kann als gemischte Zahl geschrieben werden, z. B. $\\frac{7}{4} = 1\\frac{3}{4}$). 2. Erweitern und Kürzen: - **Erweitern mit $k \\neq 0$**: Multiplikation von Zähler und Nenner mit derselben Zahl $k$. Die Einteilung wird feiner, der Gesamtwert bleibt identisch: $\\frac{a}{b} = \\frac{a \\cdot k}{b \\cdot k}$. - **Kürzen durch $t$**: Division von Zähler und Nenner durch einen gemeinsamen Teiler $t$: $\\frac{a}{b} = \\frac{a : t}{b : t}$. - **Vollständig gekürzter Bruch**: Wenn Zähler und Nenner teilerfremd sind ($ggT(a, b) = 1$). 3. Hauptnenner und Größenvergleich: - Ungleichnamige Brüche können erst verglichen werden, wenn sie auf denselben **Hauptnenner (das kleinste gemeinsame Vielfache / kgV der Nenner)** erweitert wurden. - Gegebene Brüche: $\\frac{5}{6}, \\frac{7}{9}, \\frac{3}{4}$.   * Nenner: 6, 9, 4.   * Primfaktorzerlegung: $6 = 2 \\cdot 3$, $9 = 3^2$, $4 = 2^2$.   * $kgV(6, 9, 4) = 2^2 \\cdot 3^2 = 4 \\cdot 9 = \\mathbf{36}$ (Hauptnenner).   * $\\frac{5}{6} = \\frac{5 \\cdot 6}{6 \\cdot 6} = \\frac{30}{36}$   * $\\frac{7}{9} = \\frac{7 \\cdot 4}{9 \\cdot 4} = \\frac{28}{36}$   * $\\frac{3}{4} = \\frac{3 \\cdot 9}{4 \\cdot 9} = \\frac{27}{36}$ - Geordnete Ungleichungskette: $\\mathbf{\\frac{3}{4} < \\frac{7}{9} < \\frac{5}{6}}$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der mathematische Bruchbegriff: - Ein Bruch "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{a}{b}"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "a, b \\in \\mathbb{N}, b \\neq 0"
+            },
+            {
+              "type": "text",
+              "text": ") beschreibt den Quotienten aus Zähler "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": " und Nenner "
+            },
+            {
+              "type": "math",
+              "tex": "b"
+            },
+            {
+              "type": "text",
+              "text": ":   * Nenner "
+            },
+            {
+              "type": "math",
+              "tex": "b"
+            },
+            {
+              "type": "text",
+              "text": ": Gibt an, in wie viele gleich große Teile das Ganze unterteilt wird.   * Zähler "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": ": Gibt an, wie viele dieser Teile betrachtet werden.   * Echter Bruch: "
+            },
+            {
+              "type": "math",
+              "tex": "a < b"
+            },
+            {
+              "type": "text",
+              "text": " (Wert "
+            },
+            {
+              "type": "math",
+              "tex": "< 1"
+            },
+            {
+              "type": "text",
+              "text": ", z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{3}{5}"
+            },
+            {
+              "type": "text",
+              "text": ").   * Unechter Bruch: "
+            },
+            {
+              "type": "math",
+              "tex": "a \\geq b"
+            },
+            {
+              "type": "text",
+              "text": " (kann als gemischte Zahl geschrieben werden, z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{7}{4} = 1\\frac{3}{4}"
+            },
+            {
+              "type": "text",
+              "text": "). 2. Erweitern und Kürzen: - Erweitern mit "
+            },
+            {
+              "type": "math",
+              "tex": "k \\neq 0"
+            },
+            {
+              "type": "text",
+              "text": ": Multiplikation von Zähler und Nenner mit derselben Zahl "
+            },
+            {
+              "type": "math",
+              "tex": "k"
+            },
+            {
+              "type": "text",
+              "text": ". Die Einteilung wird feiner, der Gesamtwert bleibt identisch: "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{a}{b} = \\frac{a \\cdot k}{b \\cdot k}"
+            },
+            {
+              "type": "text",
+              "text": ". - Kürzen durch "
+            },
+            {
+              "type": "math",
+              "tex": "t"
+            },
+            {
+              "type": "text",
+              "text": ": Division von Zähler und Nenner durch einen gemeinsamen Teiler "
+            },
+            {
+              "type": "math",
+              "tex": "t"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{a}{b} = \\frac{a : t}{b : t}"
+            },
+            {
+              "type": "text",
+              "text": ". - Vollständig gekürzter Bruch: Wenn Zähler und Nenner teilerfremd sind ("
+            },
+            {
+              "type": "math",
+              "tex": "ggT(a, b) = 1"
+            },
+            {
+              "type": "text",
+              "text": "). 3. Hauptnenner und Größenvergleich: - Ungleichnamige Brüche können erst verglichen werden, wenn sie auf denselben Hauptnenner (das kleinste gemeinsame Vielfache / kgV der Nenner) erweitert wurden. - Gegebene Brüche: "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{5}{6}, \\frac{7}{9}, \\frac{3}{4}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Nenner: 6, 9, 4.   * Primfaktorzerlegung: "
+            },
+            {
+              "type": "math",
+              "tex": "6 = 2 \\cdot 3"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "9 = 3^2"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "4 = 2^2"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "kgV(6, 9, 4) = 2^2 \\cdot 3^2 = 4 \\cdot 9 = \\mathbf{36}"
+            },
+            {
+              "type": "text",
+              "text": " (Hauptnenner).   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{5}{6} = \\frac{5 \\cdot 6}{6 \\cdot 6} = \\frac{30}{36}"
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{7}{9} = \\frac{7 \\cdot 4}{9 \\cdot 4} = \\frac{28}{36}"
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{3}{4} = \\frac{3 \\cdot 9}{4 \\cdot 9} = \\frac{27}{36}"
+            },
+            {
+              "type": "text",
+              "text": " - Geordnete Ungleichungskette: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\frac{3}{4} < \\frac{7}{9} < \\frac{5}{6}}"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ]
         }
       ]
     },
@@ -130,7 +351,102 @@
           "bloom_level": 2,
           "question": "Formuliere die Rechenregeln für alle 4 Grundrechenarten der Bruchrechnung (Addition/Subtraktion gleichnamig und ungleichnamig; Multiplikation: Zähler mal Zähler, Nenner mal Nenner mit Vorab-Überkreuz-Kürzen; Division: Multiplikation mit dem Kehrbruch) und berechne: a) 3/4 + 5/6 - 2/3, b) (4/15 · 25/8) : 5/6.",
           "concept": "Addition/Subtraktion: Hauptnenner 12 -> 9/12 + 10/12 - 8/12 = 11/12; Multiplikation & Division: 4/15 · 25/8 = (1·5)/(3·2) = 5/6; 5/6 : 5/6 = 1.",
-          "sample_solution": "1. Die Rechengesetze der 4 Grundrechenarten: - **Addition & Subtraktion**:   * Gleichnamige Brüche: Zähler addieren/subtrahieren, Nenner beibehalten: $\\frac{a}{n} \\pm \\frac{b}{n} = \\frac{a \\pm b}{n}$.   * Ungleichnamige Brüche: Vor dem Rechnen auf den gemeinsamen Hauptnenner erweitern. - **Multiplikation**:   * Zähler mit Zähler und Nenner mit Nenner multiplizieren: $\\frac{a}{b} \\cdot \\frac{c}{d} = \\frac{a \\cdot c}{b \\cdot d}$.   * **Goldene Regel**: Immer VOR dem Ausmultiplizieren über Kreuz kürzen! - **Division**:   * Durch einen Bruch wird dividiert, indem man mit seinem **Kehrbruch $\\frac{d}{c}$** multipliziert: $\\frac{a}{b} : \\frac{c}{d} = \\frac{a}{b} \\cdot \\frac{d}{c} = \\frac{a \\cdot d}{b \\cdot c}$. 2. Durchrechnung der Aufgaben: - a) Term: $\\frac{3}{4} + \\frac{5}{6} - \\frac{2}{3}$   * Hauptnenner $kgV(4, 6, 3) = 12$.   * Erweitern: $\\frac{3 \\cdot 3}{12} + \\frac{5 \\cdot 2}{12} - \\frac{2 \\cdot 4}{12} = \\frac{9 + 10 - 8}{12} = \\mathbf{\\frac{11}{12}}$. - b) Term: $\\left(\\frac{4}{15} \\cdot \\frac{25}{8}\\right) : \\frac{5}{6}$   * Multiplikation in der Klammer mit Überkreuzkürzen (4 gegen 8 kürzen mit 4; 25 gegen 15 kürzen mit 5):     $$\\frac{4 \\cdot 25}{15 \\cdot 8} = \\frac{1 \\cdot 5}{3 \\cdot 2} = \\frac{5}{6}$$   * Anschließende Division mit dem Kehrbruch $\\frac{6}{5}$:     $$\\frac{5}{6} : \\frac{5}{6} = \\frac{5}{6} \\cdot \\frac{6}{5} = \\mathbf{1}$$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Rechengesetze der 4 Grundrechenarten: - Addition & Subtraktion:   * Gleichnamige Brüche: Zähler addieren/subtrahieren, Nenner beibehalten: "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{a}{n} \\pm \\frac{b}{n} = \\frac{a \\pm b}{n}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Ungleichnamige Brüche: Vor dem Rechnen auf den gemeinsamen Hauptnenner erweitern. - Multiplikation:   * Zähler mit Zähler und Nenner mit Nenner multiplizieren: "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{a}{b} \\cdot \\frac{c}{d} = \\frac{a \\cdot c}{b \\cdot d}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Goldene Regel: Immer VOR dem Ausmultiplizieren über Kreuz kürzen! - Division:   * Durch einen Bruch wird dividiert, indem man mit seinem Kehrbruch "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{d}{c}"
+            },
+            {
+              "type": "text",
+              "text": " multipliziert: "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{a}{b} : \\frac{c}{d} = \\frac{a}{b} \\cdot \\frac{d}{c} = \\frac{a \\cdot d}{b \\cdot c}"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Durchrechnung der Aufgaben: - a) Term: "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{3}{4} + \\frac{5}{6} - \\frac{2}{3}"
+            },
+            {
+              "type": "text",
+              "text": "   * Hauptnenner "
+            },
+            {
+              "type": "math",
+              "tex": "kgV(4, 6, 3) = 12"
+            },
+            {
+              "type": "text",
+              "text": ".   * Erweitern: "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{3 \\cdot 3}{12} + \\frac{5 \\cdot 2}{12} - \\frac{2 \\cdot 4}{12} = \\frac{9 + 10 - 8}{12} = \\mathbf{\\frac{11}{12}}"
+            },
+            {
+              "type": "text",
+              "text": ". - b) Term: "
+            },
+            {
+              "type": "math",
+              "tex": "\\left(\\frac{4}{15} \\cdot \\frac{25}{8}\\right) : \\frac{5}{6}"
+            },
+            {
+              "type": "text",
+              "text": "   * Multiplikation in der Klammer mit Überkreuzkürzen (4 gegen 8 kürzen mit 4; 25 gegen 15 kürzen mit 5):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{4 \\cdot 25}{15 \\cdot 8} = \\frac{1 \\cdot 5}{3 \\cdot 2} = \\frac{5}{6}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Anschließende Division mit dem Kehrbruch "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{6}{5}"
+            },
+            {
+              "type": "text",
+              "text": ":     "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{5}{6} : \\frac{5}{6} = \\frac{5}{6} \\cdot \\frac{6}{5} = \\mathbf{1}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ]
         }
       ]
     },
@@ -193,7 +509,164 @@
           "bloom_level": 2,
           "question": "Erkläre die Umwandlung von Brüchen in Dezimalbrüche (durch Erweitern auf Stufenzahlen 10, 100, 1000 oder schriftliche Division Zähler : Nenner), unterscheide endliche Dezimalbrüche (z. B. 3/8 = 0,375) von rein periodischen (z. B. 1/3 = 0,333... = 0,bar(3)) und gemischt periodischen Dezimalbrüchen, stelle die Kommaregeln bei Multiplikation und Division dar und berechne: a) 0,45 · 0,08, b) 3,64 : 0,04.",
           "concept": "Dezimalbrüche: Zehnerpotenzen im Nenner; Primfaktor 2/5 -> endlich, sonst periodisch; Multiplikation: Nachkommastellen addieren (2+2=4 Stellen -> 0,0360 = 0,036); Division: Komma in beiden Zahlen um 2 Stellen nach rechts verschieben -> 364 : 4 = 91.",
-          "sample_solution": "1. Zusammenhang zwischen gemeinen Brüchen und Dezimalbrüchen: - **Stellenwertsystem nach dem Komma**: 1. Stelle = Zehntel ($z = 10^{-1}$), 2. Stelle = Hundertstel ($h = 10^{-2}$), 3. Stelle = Tausendstel ($t = 10^{-3}$). - **Endliche Dezimalbrüche**:   * Ein vollständig gekürzter Bruch $\\frac{a}{b}$ ergibt genau dann einen abbrechenden Dezimalbruch, wenn der Nenner $b$ nur die **Primfaktoren 2 und 5** enthält ($b = 2^m \\cdot 5^n$, da $10 = 2 \\cdot 5$).   * Beispiel: $\\frac{3}{8} = \\frac{3 \\cdot 125}{8 \\cdot 125} = \\frac{375}{1.000} = \\mathbf{0,375}$. - **Periodische Dezimalbrüche**:   * Enthält der gekürzte Nenner andere Primfaktoren (3, 7, 11, ...), bricht die schriftliche Division niemals ab, sondern wiederholt periodisch Reste.   * Rein periodisch: $\\frac{1}{3} = 1 : 3 = 0,333\\dots = 0,\\bar{3}$; $\\frac{4}{11} = 0,\\overline{36}$.   * Gemischt periodisch: $\\frac{1}{6} = 0,1666\\dots = 0,1\\bar{6}$. 2. Kommaregeln beim Rechnen mit Dezimalbrüchen: - **Multiplikation**: Zahlen zunächst ohne Komma wie ganze Zahlen multiplizieren. Das Ergebnis erhält genau so viele Nachkommastellen, wie **beide Faktoren zusammen** besitzen. - **Division**: Das Komma wird bei Dividend und Divisor um gleich viele Stellen **nach rechts verschoben**, bis der Divisor eine ganze Zahl ist. Danach normal schriftlich dividieren. 3. Rechnungen: - a) $0,45 \\cdot 0,08$   * Ohne Komma: $45 \\cdot 8 = 360$.   * Nachkommastellen: 2 (bei 0,45) + 2 (bei 0,08) = 4 Nachkommastellen.   * Ergebnis: $0,0360 = \\mathbf{0,036}$. - b) $3,64 : 0,04$   * Kommaverschiebung um 2 Stellen nach rechts in beiden Zahlen: $364 : 4$.   * Schriftliche Rechnung: $360 : 4 = 90$, $4 : 4 = 1 \\rightarrow$ Ergebnis: $\\mathbf{91}$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Zusammenhang zwischen gemeinen Brüchen und Dezimalbrüchen: - Stellenwertsystem nach dem Komma: 1. Stelle = Zehntel ("
+            },
+            {
+              "type": "math",
+              "tex": "z = 10^{-1}"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Stelle = Hundertstel ("
+            },
+            {
+              "type": "math",
+              "tex": "h = 10^{-2}"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Stelle = Tausendstel ("
+            },
+            {
+              "type": "math",
+              "tex": "t = 10^{-3}"
+            },
+            {
+              "type": "text",
+              "text": "). - Endliche Dezimalbrüche:   * Ein vollständig gekürzter Bruch "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{a}{b}"
+            },
+            {
+              "type": "text",
+              "text": " ergibt genau dann einen abbrechenden Dezimalbruch, wenn der Nenner "
+            },
+            {
+              "type": "math",
+              "tex": "b"
+            },
+            {
+              "type": "text",
+              "text": " nur die Primfaktoren 2 und 5 enthält ("
+            },
+            {
+              "type": "math",
+              "tex": "b = 2^m \\cdot 5^n"
+            },
+            {
+              "type": "text",
+              "text": ", da "
+            },
+            {
+              "type": "math",
+              "tex": "10 = 2 \\cdot 5"
+            },
+            {
+              "type": "text",
+              "text": ").   * Beispiel: "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{3}{8} = \\frac{3 \\cdot 125}{8 \\cdot 125} = \\frac{375}{1.000} = \\mathbf{0,375}"
+            },
+            {
+              "type": "text",
+              "text": ". - Periodische Dezimalbrüche:   * Enthält der gekürzte Nenner andere Primfaktoren (3, 7, 11, ...), bricht die schriftliche Division niemals ab, sondern wiederholt periodisch Reste.   * Rein periodisch: "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{1}{3} = 1 : 3 = 0,333\\dots = 0,\\bar{3}"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{4}{11} = 0,\\overline{36}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Gemischt periodisch: "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{1}{6} = 0,1666\\dots = 0,1\\bar{6}"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Kommaregeln beim Rechnen mit Dezimalbrüchen: - Multiplikation: Zahlen zunächst ohne Komma wie ganze Zahlen multiplizieren. Das Ergebnis erhält genau so viele Nachkommastellen, wie beide Faktoren zusammen besitzen. - Division: Das Komma wird bei Dividend und Divisor um gleich viele Stellen nach rechts verschoben, bis der Divisor eine ganze Zahl ist. Danach normal schriftlich dividieren. 3. Rechnungen: - a) "
+            },
+            {
+              "type": "math",
+              "tex": "0,45 \\cdot 0,08"
+            },
+            {
+              "type": "text",
+              "text": "   * Ohne Komma: "
+            },
+            {
+              "type": "math",
+              "tex": "45 \\cdot 8 = 360"
+            },
+            {
+              "type": "text",
+              "text": ".   * Nachkommastellen: 2 (bei 0,45) + 2 (bei 0,08) = 4 Nachkommastellen.   * Ergebnis: "
+            },
+            {
+              "type": "math",
+              "tex": "0,0360 = \\mathbf{0,036}"
+            },
+            {
+              "type": "text",
+              "text": ". - b) "
+            },
+            {
+              "type": "math",
+              "tex": "3,64 : 0,04"
+            },
+            {
+              "type": "text",
+              "text": "   * Kommaverschiebung um 2 Stellen nach rechts in beiden Zahlen: "
+            },
+            {
+              "type": "math",
+              "tex": "364 : 4"
+            },
+            {
+              "type": "text",
+              "text": ".   * Schriftliche Rechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "360 : 4 = 90"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "4 : 4 = 1 \\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Ergebnis: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{91}"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ]
         }
       ]
     },
@@ -256,7 +729,149 @@
           "bloom_level": 2,
           "question": "Definiere das Prozent (%) als Hundertstel (1 % = 1/100 = 0,01), stelle die Beziehungen zwischen Grundwert G (das Ganze = 100 %), Prozentwert W (der absolute Teil) und Prozentsatz p% (der relative Anteil) über Formel und Dreisatz dar und löse folgende 2 Aufgaben: a) Ein Fahrrad kostet regulär 650 €. Im Sommerschlussverkauf wird es mit 20 % Rabatt angeboten. Wie viel Euro spart man (Prozentwert W) und wie hoch ist der neue Preis? b) In einer 6. Gymnasialklasse spielen 18 von insgesamt 24 Schülern ein Musikinstrument. Wie viel Prozent sind das?",
           "concept": "Prozentrechnung: 1% = 1/100; Formeln: W = G · p/100, p% = W/G; a) W = 650 € · 0,20 = 130 € Rabatt -> neuer Preis = 650 - 130 = 520 €; b) p% = 18/24 = 3/4 = 75 %.",
-          "sample_solution": "1. Der Prozentbegriff (lat. *per cento* = von Hundert): - Ein Prozent ($1\\,\\%$) ist nichts anderes als der Bruch **$\\frac{1}{100} = 0,01$**. - Wichtige Merkwerte: $10\\,\\% = \\frac{1}{10} = 0,1$; $20\\,\\% = \\frac{1}{5} = 0,2$; $25\\,\\% = \\frac{1}{4} = 0,25$; $50\\,\\% = \\frac{1}{2} = 0,5$; $75\\,\\% = \\frac{3}{4} = 0,75$. 2. Die 3 Größen der Prozentrechnung und ihre Formeln: - **Grundwert $G$**: Das Ganze, entspricht $100\\,\\%$. - **Prozentwert $W$**: Die konkrete absolute Teilgröße (mit Einheit wie €, kg, m). - **Prozentsatz $p\\,\\% = \\frac{p}{100}$**: Die relative Anteilgröße. - **Zentrale Formeln**:   $$W = G \\cdot \\frac{p}{100} = G \\cdot p\\,\\% \\qquad p\\,\\% = \\frac{W}{G} \\qquad G = \\frac{W}{p\\,\\%} = \\frac{W \\cdot 100}{p}$$ 3. Aufgabenlösungen: - **a) Fahrrad-Rabatt ($G = 650\\text{ €}, p\\,\\% = 20\\,\\% = 0,2$)**:   * Prozentwert (Ersparnis): $W = 650\\text{ €} \\cdot 0,20 = \\mathbf{130\\text{ €}}$.   * Neuer Verkaufspreis: $650\\text{ €} - 130\\text{ €} = \\mathbf{520\\text{ €}}$. - **b) Musikeranteil ($G = 24\\text{ Schüler}, W = 18\\text{ Schüler}$)**:   * Prozentsatz: $p\\,\\% = \\frac{18}{24} = \\frac{3}{4} = \\frac{75}{100} = \\mathbf{75\\,\\%}$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der Prozentbegriff (lat. per cento = von Hundert): - Ein Prozent ("
+            },
+            {
+              "type": "math",
+              "tex": "1\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": ") ist nichts anderes als der Bruch "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{1}{100} = 0,01"
+            },
+            {
+              "type": "text",
+              "text": ". - Wichtige Merkwerte: "
+            },
+            {
+              "type": "math",
+              "tex": "10\\,\\% = \\frac{1}{10} = 0,1"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "20\\,\\% = \\frac{1}{5} = 0,2"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "25\\,\\% = \\frac{1}{4} = 0,25"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "50\\,\\% = \\frac{1}{2} = 0,5"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "75\\,\\% = \\frac{3}{4} = 0,75"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Die 3 Größen der Prozentrechnung und ihre Formeln: - Grundwert "
+            },
+            {
+              "type": "math",
+              "tex": "G"
+            },
+            {
+              "type": "text",
+              "text": ": Das Ganze, entspricht "
+            },
+            {
+              "type": "math",
+              "tex": "100\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": ". - Prozentwert "
+            },
+            {
+              "type": "math",
+              "tex": "W"
+            },
+            {
+              "type": "text",
+              "text": ": Die konkrete absolute Teilgröße (mit Einheit wie €, kg, m). - Prozentsatz "
+            },
+            {
+              "type": "math",
+              "tex": "p\\,\\% = \\frac{p}{100}"
+            },
+            {
+              "type": "text",
+              "text": ": Die relative Anteilgröße. - Zentrale Formeln:   "
+            },
+            {
+              "type": "math",
+              "tex": "W = G \\cdot \\frac{p}{100} = G \\cdot p\\,\\% \\qquad p\\,\\% = \\frac{W}{G} \\qquad G = \\frac{W}{p\\,\\%} = \\frac{W \\cdot 100}{p}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Aufgabenlösungen: - a) Fahrrad-Rabatt ("
+            },
+            {
+              "type": "math",
+              "tex": "G = 650\\text{ €}, p\\,\\% = 20\\,\\% = 0,2"
+            },
+            {
+              "type": "text",
+              "text": "):   * Prozentwert (Ersparnis): "
+            },
+            {
+              "type": "math",
+              "tex": "W = 650\\text{ €} \\cdot 0,20 = \\mathbf{130\\text{ €}}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Neuer Verkaufspreis: "
+            },
+            {
+              "type": "math",
+              "tex": "650\\text{ €} - 130\\text{ €} = \\mathbf{520\\text{ €}}"
+            },
+            {
+              "type": "text",
+              "text": ". - b) Musikeranteil ("
+            },
+            {
+              "type": "math",
+              "tex": "G = 24\\text{ Schüler}, W = 18\\text{ Schüler}"
+            },
+            {
+              "type": "text",
+              "text": "):   * Prozentsatz: "
+            },
+            {
+              "type": "math",
+              "tex": "p\\,\\% = \\frac{18}{24} = \\frac{3}{4} = \\frac{75}{100} = \\mathbf{75\\,\\%}"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ]
         }
       ]
     }

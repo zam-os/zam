@@ -142,6 +142,12 @@ export interface KvtPracticeItem {
   question_segments?: CardText;
   concept_segments?: CardText;
   /**
+   * A worked model answer for authors and reviewers: plain text, or segments
+   * when it holds formulas (their speech optional). Tile data only — the
+   * installer never stores it.
+   */
+  sample_solution?: string | CardText;
+  /**
    * How a changed question/answer affects people who already learned it.
    * Absent means `material` — an unannotated content change must never pass
    * silently under a learner's existing stability.

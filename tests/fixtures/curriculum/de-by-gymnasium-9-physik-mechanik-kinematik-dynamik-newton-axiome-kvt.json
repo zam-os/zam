@@ -49,7 +49,30 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Welche physikalische Bedeutung hat die Fläche unter dem Graphen in einem Geschwindigkeits-Zeit-Diagramm ($v$-$t$-Diagramm)?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche physikalische Bedeutung hat die Fläche unter dem Graphen in einem Geschwindigkeits-Zeit-Diagramm ("
+            },
+            {
+              "type": "math",
+              "tex": "v",
+              "speech": "v"
+            },
+            {
+              "type": "text",
+              "text": "-"
+            },
+            {
+              "type": "math",
+              "tex": "t",
+              "speech": "t"
+            },
+            {
+              "type": "text",
+              "text": "-Diagramm)?"
+            }
+          ],
           "concept": "Der in der Zeitspanne zurückgelegte Weg s (Fläche unter v-t-Kurve = Integral v(t) dt = s)",
           "fast_check": {
             "type": "binary_choice",
@@ -58,16 +81,579 @@
               "Die Beschleunigung a"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8G9D0000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Bewegungsgesetze der Kinematik und ihre Diagramme: 1. **Gleichförmige geradlinige Bewegung ($v = \\text{konstant}, a = 0$)**:   * Weg-Zeit-Gesetz: $s(t) = v \\cdot t + s_0$ (lineare Ursprungsgerade im $s$-$t$-Diagramm; Steigung $= v$).   * Geschwindigkeits-Zeit-Gesetz: $v(t) = v$ (waagrechte Parallele zur $t$-Achse), 2. **Gleichmäßig beschleunigte Bewegung ($a = \\text{konstant}$)**:   * Beschleunigung: $a = \\frac{\\Delta v}{\\Delta t}$ (Einheit: $1\\,\\frac{\\text{m}}{\\text{s}^2}$).   * Geschwindigkeit: $v(t) = a \\cdot t + v_0$ (Steigung im $v$-$t$-Diagramm $= a$).   * Weg-Zeit-Gesetz (aus Ruhe $v_0 = 0$): $s(t) = \\frac{1}{2} a \\cdot t^2$ (Parabelast im $s$-$t$-Diagramm).   * Geschwindigkeits-Weg-Beziehung: $v = \\sqrt{2 \\cdot a \\cdot s}$, 3. **Freier Fall** ($a = g \\approx 9{,}81\\,\\frac{\\text{m}}{\\text{s}^2}$): $v = g \\cdot t$, $h = \\frac{1}{2} g \\cdot t^2$, $v = \\sqrt{2gh}$, 4. Ein Auto beschleunigt aus dem Stand gleichmäßig in $t = 5\\,\\text{s}$ auf $v = 108\\,\\frac{\\text{km}}{\\text{h}}$. Berechne die Beschleunigung $a$ und den während des Beschleunigungsvorgangs zurückgelegten Weg $s$.",
-          "concept": "Kinematik: Gleichförmig s = v*t; Beschleunigt v = a*t, s = 1/2*a*t^2, a = Delta v / Delta t; Freier Fall mit g; Umrechnung: 108 km/h = 30 m/s; a = 30 m/s / 5 s = 6 m/s^2; s = 1/2 * 6 * 25 = 75 m.",
-          "sample_solution": "1. Grundgleichungen der geradlinigen Kinematik: - **1. Gleichförmige Bewegung ($v = \\text{konst.}$, $a = 0$)**:   $$\\mathbf{s(t) = v \\cdot t} \\quad \\iff \\quad \\mathbf{v = \\frac{s}{t}}$$   * Im $s$-$t$-Diagramm: Ursprungsgerade mit der Steigung $m = v$.   * Im $v$-$t$-Diagramm: Waagrechte Gerade; die Rechtecksfläche $A = v \\cdot t$ entspricht dem Weg $s$. - **2. Gleichmäßig beschleunigte Bewegung ($a = \\text{konst.}$)**:   * Definition der Beschleunigung:     $$\\mathbf{a = \\frac{\\Delta v}{\\Delta t}} \\quad (\\text{Einheit: } \\frac{\\text{m}}{\\text{s}^2})$$   * Geschwindigkeit-Zeit-Gesetz (aus der Ruhe $v_0 = 0$):     $$\\mathbf{v(t) = a \\cdot t}$$   * Weg-Zeit-Gesetz:     $$\\mathbf{s(t) = \\frac{1}{2} a \\cdot t^2} = \\frac{1}{2} \\cdot v \\cdot t$$   * Zusammenhang zwischen Endgeschwindigkeit und Weg:     $$\\mathbf{v = \\sqrt{2 \\cdot a \\cdot s}}$$ 2. Der Freie Fall als Sonderfall: - Erdbeschleunigung im Vakuum: $g \\approx 9{,}81\\,\\frac{\\text{m}}{\\text{s}^2}$.   * Fallzeit aus Höhe $h$: $t = \\sqrt{\\frac{2h}{g}}$.   * Aufprallgeschwindigkeit: $\\mathbf{v = \\sqrt{2gh}}$ (folgt auch direkt aus dem Energieerhaltungssatz $mgh = \\frac{1}{2}mv^2$). 3. Durchrechnung des Beispiels: - **Gegeben**: $v_0 = 0$, $t = 5\\,\\text{s}$, $v = 108\\,\\frac{\\text{km}}{\\text{h}} = \\frac{108}{3{,}6}\\,\\frac{\\text{m}}{\\text{s}} = \\mathbf{30\\,\\frac{\\text{m}}{\\text{s}}}$. - **Schritt 1: Beschleunigung $a$**:   $$a = \\frac{v}{t} = \\frac{30\\,\\frac{\\text{m}}{\\text{s}}}{5\\,\\text{s}} = \\mathbf{6\\,\\frac{\\text{m}}{\\text{s}^2}}$$ - **Schritt 2: Zurückgelegter Weg $s$**:   $$s = \\frac{1}{2} a \\cdot t^2 = \\frac{1}{2} \\cdot 6\\,\\frac{\\text{m}}{\\text{s}^2} \\cdot (5\\,\\text{s})^2 = 3 \\cdot 25\\,\\text{m} = \\mathbf{75\\,\\text{m}}$$."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Bewegungsgesetze der Kinematik und ihre Diagramme: 1. Gleichförmige geradlinige Bewegung ("
+            },
+            {
+              "type": "math",
+              "tex": "v = \\text{konstant}, a = 0",
+              "speech": "v gleich konstant, a gleich 0"
+            },
+            {
+              "type": "text",
+              "text": "):   * Weg-Zeit-Gesetz: "
+            },
+            {
+              "type": "math",
+              "tex": "s(t) = v \\cdot t + s_0",
+              "speech": "s von t gleich v mal t plus s null"
+            },
+            {
+              "type": "text",
+              "text": " (lineare Ursprungsgerade im "
+            },
+            {
+              "type": "math",
+              "tex": "s",
+              "speech": "s"
+            },
+            {
+              "type": "text",
+              "text": "-"
+            },
+            {
+              "type": "math",
+              "tex": "t",
+              "speech": "t"
+            },
+            {
+              "type": "text",
+              "text": "-Diagramm; Steigung "
+            },
+            {
+              "type": "math",
+              "tex": "= v",
+              "speech": "gleich v"
+            },
+            {
+              "type": "text",
+              "text": ").   * Geschwindigkeits-Zeit-Gesetz: "
+            },
+            {
+              "type": "math",
+              "tex": "v(t) = v",
+              "speech": "v von t gleich v"
+            },
+            {
+              "type": "text",
+              "text": " (waagrechte Parallele zur "
+            },
+            {
+              "type": "math",
+              "tex": "t",
+              "speech": "t"
+            },
+            {
+              "type": "text",
+              "text": "-Achse), 2. Gleichmäßig beschleunigte Bewegung ("
+            },
+            {
+              "type": "math",
+              "tex": "a = \\text{konstant}",
+              "speech": "a gleich konstant"
+            },
+            {
+              "type": "text",
+              "text": "):   * Beschleunigung: "
+            },
+            {
+              "type": "math",
+              "tex": "a = \\frac{\\Delta v}{\\Delta t}",
+              "speech": "a gleich Delta v durch Delta t"
+            },
+            {
+              "type": "text",
+              "text": " (Einheit: "
+            },
+            {
+              "type": "math",
+              "tex": "1\\,\\frac{\\text{m}}{\\text{s}^2}",
+              "speech": "1 Meter pro Sekunde Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ").   * Geschwindigkeit: "
+            },
+            {
+              "type": "math",
+              "tex": "v(t) = a \\cdot t + v_0",
+              "speech": "v von t gleich a mal t plus v null"
+            },
+            {
+              "type": "text",
+              "text": " (Steigung im "
+            },
+            {
+              "type": "math",
+              "tex": "v",
+              "speech": "v"
+            },
+            {
+              "type": "text",
+              "text": "-"
+            },
+            {
+              "type": "math",
+              "tex": "t",
+              "speech": "t"
+            },
+            {
+              "type": "text",
+              "text": "-Diagramm "
+            },
+            {
+              "type": "math",
+              "tex": "= a",
+              "speech": "gleich a"
+            },
+            {
+              "type": "text",
+              "text": ").   * Weg-Zeit-Gesetz (aus Ruhe "
+            },
+            {
+              "type": "math",
+              "tex": "v_0 = 0",
+              "speech": "v null gleich 0"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "s(t) = \\frac{1}{2} a \\cdot t^2",
+              "speech": "s von t gleich ein halb a mal t Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " (Parabelast im "
+            },
+            {
+              "type": "math",
+              "tex": "s",
+              "speech": "s"
+            },
+            {
+              "type": "text",
+              "text": "-"
+            },
+            {
+              "type": "math",
+              "tex": "t",
+              "speech": "t"
+            },
+            {
+              "type": "text",
+              "text": "-Diagramm).   * Geschwindigkeits-Weg-Beziehung: "
+            },
+            {
+              "type": "math",
+              "tex": "v = \\sqrt{2 \\cdot a \\cdot s}",
+              "speech": "v gleich Wurzel aus 2 mal a mal s"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Freier Fall ("
+            },
+            {
+              "type": "math",
+              "tex": "a = g \\approx 9{,}81\\,\\frac{\\text{m}}{\\text{s}^2}",
+              "speech": "a gleich g ungefähr 9,81 Meter pro Sekunde Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "v = g \\cdot t",
+              "speech": "v gleich g mal t"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "h = \\frac{1}{2} g \\cdot t^2",
+              "speech": "h gleich ein halb g mal t Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "v = \\sqrt{2gh}",
+              "speech": "v gleich Wurzel aus 2 g h"
+            },
+            {
+              "type": "text",
+              "text": ", 4. Ein Auto beschleunigt aus dem Stand gleichmäßig in "
+            },
+            {
+              "type": "math",
+              "tex": "t = 5\\,\\text{s}",
+              "speech": "t gleich 5 Sekunden"
+            },
+            {
+              "type": "text",
+              "text": " auf "
+            },
+            {
+              "type": "math",
+              "tex": "v = 108\\,\\frac{\\text{km}}{\\text{h}}",
+              "speech": "v gleich 108 Kilometer pro Stunde"
+            },
+            {
+              "type": "text",
+              "text": ". Berechne die Beschleunigung "
+            },
+            {
+              "type": "math",
+              "tex": "a",
+              "speech": "a"
+            },
+            {
+              "type": "text",
+              "text": " und den während des Beschleunigungsvorgangs zurückgelegten Weg "
+            },
+            {
+              "type": "math",
+              "tex": "s",
+              "speech": "s"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Kinematik: Gleichförmig "
+            },
+            {
+              "type": "math",
+              "tex": "s = v \\cdot t",
+              "speech": "s gleich v mal t"
+            },
+            {
+              "type": "text",
+              "text": "; Beschleunigt "
+            },
+            {
+              "type": "math",
+              "tex": "v = a \\cdot t",
+              "speech": "v gleich a mal t"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "s = \\frac{1}{2} \\cdot a \\cdot t^2",
+              "speech": "s gleich ein halb mal a mal t Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "a = \\frac{\\Delta v}{\\Delta t}",
+              "speech": "a gleich Delta v durch Delta t"
+            },
+            {
+              "type": "text",
+              "text": "; Freier Fall mit "
+            },
+            {
+              "type": "math",
+              "tex": "g",
+              "speech": "g"
+            },
+            {
+              "type": "text",
+              "text": "; Umrechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "108\\,\\text{km/h} = 30\\,\\text{m/s}",
+              "speech": "108 Kilometer pro Stunde gleich 30 Meter pro Sekunde"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "a = \\frac{30\\,\\text{m/s}}{5\\,\\text{s}} = 6\\,\\text{m/s}^2",
+              "speech": "a gleich 30 Meter pro Sekunde durch 5 Sekunden gleich 6 Meter pro Sekunde Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "s = \\frac{1}{2} \\cdot 6 \\cdot 25 = 75\\,\\text{m}",
+              "speech": "s gleich ein halb mal 6 mal 25 gleich 75 Meter"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Grundgleichungen der geradlinigen Kinematik: - 1. Gleichförmige Bewegung ("
+            },
+            {
+              "type": "math",
+              "tex": "v = \\text{konst.}"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "a = 0"
+            },
+            {
+              "type": "text",
+              "text": "):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{s(t) = v \\cdot t} \\quad \\iff \\quad \\mathbf{v = \\frac{s}{t}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Im "
+            },
+            {
+              "type": "math",
+              "tex": "s"
+            },
+            {
+              "type": "text",
+              "text": "-"
+            },
+            {
+              "type": "math",
+              "tex": "t"
+            },
+            {
+              "type": "text",
+              "text": "-Diagramm: Ursprungsgerade mit der Steigung "
+            },
+            {
+              "type": "math",
+              "tex": "m = v"
+            },
+            {
+              "type": "text",
+              "text": ".   * Im "
+            },
+            {
+              "type": "math",
+              "tex": "v"
+            },
+            {
+              "type": "text",
+              "text": "-"
+            },
+            {
+              "type": "math",
+              "tex": "t"
+            },
+            {
+              "type": "text",
+              "text": "-Diagramm: Waagrechte Gerade; die Rechtecksfläche "
+            },
+            {
+              "type": "math",
+              "tex": "A = v \\cdot t"
+            },
+            {
+              "type": "text",
+              "text": " entspricht dem Weg "
+            },
+            {
+              "type": "math",
+              "tex": "s"
+            },
+            {
+              "type": "text",
+              "text": ". - 2. Gleichmäßig beschleunigte Bewegung ("
+            },
+            {
+              "type": "math",
+              "tex": "a = \\text{konst.}"
+            },
+            {
+              "type": "text",
+              "text": "):   * Definition der Beschleunigung:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{a = \\frac{\\Delta v}{\\Delta t}} \\quad (\\text{Einheit: } \\frac{\\text{m}}{\\text{s}^2})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Geschwindigkeit-Zeit-Gesetz (aus der Ruhe "
+            },
+            {
+              "type": "math",
+              "tex": "v_0 = 0"
+            },
+            {
+              "type": "text",
+              "text": "):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{v(t) = a \\cdot t}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Weg-Zeit-Gesetz:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{s(t) = \\frac{1}{2} a \\cdot t^2} = \\frac{1}{2} \\cdot v \\cdot t",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Zusammenhang zwischen Endgeschwindigkeit und Weg:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{v = \\sqrt{2 \\cdot a \\cdot s}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Der Freie Fall als Sonderfall: - Erdbeschleunigung im Vakuum: "
+            },
+            {
+              "type": "math",
+              "tex": "g \\approx 9{,}81\\,\\frac{\\text{m}}{\\text{s}^2}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Fallzeit aus Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "t = \\sqrt{\\frac{2h}{g}}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Aufprallgeschwindigkeit: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{v = \\sqrt{2gh}}"
+            },
+            {
+              "type": "text",
+              "text": " (folgt auch direkt aus dem Energieerhaltungssatz "
+            },
+            {
+              "type": "math",
+              "tex": "mgh = \\frac{1}{2}mv^2"
+            },
+            {
+              "type": "text",
+              "text": "). 3. Durchrechnung des Beispiels: - Gegeben: "
+            },
+            {
+              "type": "math",
+              "tex": "v_0 = 0"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "t = 5\\,\\text{s}"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "v = 108\\,\\frac{\\text{km}}{\\text{h}} = \\frac{108}{3{,}6}\\,\\frac{\\text{m}}{\\text{s}} = \\mathbf{30\\,\\frac{\\text{m}}{\\text{s}}}"
+            },
+            {
+              "type": "text",
+              "text": ". - Schritt 1: Beschleunigung "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "a = \\frac{v}{t} = \\frac{30\\,\\frac{\\text{m}}{\\text{s}}}{5\\,\\text{s}} = \\mathbf{6\\,\\frac{\\text{m}}{\\text{s}^2}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 2: Zurückgelegter Weg "
+            },
+            {
+              "type": "math",
+              "tex": "s"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "s = \\frac{1}{2} a \\cdot t^2 = \\frac{1}{2} \\cdot 6\\,\\frac{\\text{m}}{\\text{s}^2} \\cdot (5\\,\\text{s})^2 = 3 \\cdot 25\\,\\text{m} = \\mathbf{75\\,\\text{m}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -113,7 +699,26 @@
           "tier": "tier1_fast",
           "bloom_level": 1,
           "question": "Wie lautet das 2. Newtonsche Axiom (Grundgesetz der Dynamik / Aktionsprinzip)?",
-          "concept": "F = m * a (Kraft = Masse * Beschleunigung, 1 Newton = 1 kg * m / s^2)",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "F = m \\cdot a",
+              "speech": "F gleich m mal a"
+            },
+            {
+              "type": "text",
+              "text": " (Kraft = Masse · Beschleunigung, "
+            },
+            {
+              "type": "math",
+              "tex": "1\\,\\text{Newton} = 1\\,\\text{kg} \\cdot \\text{m}/\\text{s}^2",
+              "speech": "1 Newton gleich 1 Kilogramm mal Meter pro Sekunde Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ")"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -121,16 +726,181 @@
               "F = m * v"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8G9D0000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre die drei fundamentalen Newtonschen Axiome der klassischen Mechanik: 1. **1. Newtonsches Axiom (Trägheitsprinzip / Lex Prima)**:   * Ein Körper verharrt im Zustand der Ruhe oder der gleichförmigen geradlinigen Bewegung, solange keine resultierende äußere Kraft auf ihn einwirkt (Kräftegleichgewicht: $\\sum \\vec{F} = 0 \\implies \\vec{v} = \\text{konstant}$), 2. **2. Newtonsches Axiom (Aktionsprinzip / Grundgleichung der Mechanik / Lex Secunda)**:   * Die Beschleunigung eines Körpers ist direkt proportional zur einwirkenden Gesamtkraft $\\vec{F}$ und umgekehrt proportional zu seiner trägen Masse $m$:     $$\\mathbf{\\vec{F} = m \\cdot \\vec{a}} \\quad (\\text{Einheit: } 1\\,\\text{N} = 1\\,\\frac{\\text{kg}\\cdot\\text{m}}{\\text{s}^2})$$ 3. **3. Newtonsches Axiom (Wechselwirkungsprinzip / Gegenwirkungsprinzip / Lex Tertia)**:   * Übt ein Körper A eine Kraft auf einen Körper B aus (**Actio** $\\vec{F}_{A \\rightarrow B}$), so übt Körper B eine gleich große, aber entgegengesetzt gerichtete Gegenkraft auf Körper A aus (**Reactio** $\\vec{F}_{B \\rightarrow A} = -\\vec{F}_{A \\rightarrow B}$).   * *Wichtig*: Actio und Reactio greifen stets an **zwei verschiedenen Körpern** an und können sich daher **niemals gegenseitig aufheben** (z. B. Raketenrückstoß, Schlittschuhabstoß).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Erkläre die drei fundamentalen Newtonschen Axiome der klassischen Mechanik: 1. 1. Newtonsches Axiom (Trägheitsprinzip / Lex Prima):   * Ein Körper verharrt im Zustand der Ruhe oder der gleichförmigen geradlinigen Bewegung, solange keine resultierende äußere Kraft auf ihn einwirkt (Kräftegleichgewicht: "
+            },
+            {
+              "type": "math",
+              "tex": "\\sum \\vec{F} = 0 \\implies \\vec{v} = \\text{konstant}",
+              "speech": "Summe der Kräfte gleich 0, daraus folgt Vektor v gleich konstant"
+            },
+            {
+              "type": "text",
+              "text": "), 2. 2. Newtonsches Axiom (Aktionsprinzip / Grundgleichung der Mechanik / Lex Secunda):   * Die Beschleunigung eines Körpers ist direkt proportional zur einwirkenden Gesamtkraft "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}",
+              "speech": "Vektor F"
+            },
+            {
+              "type": "text",
+              "text": " und umgekehrt proportional zu seiner trägen Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m",
+              "speech": "m"
+            },
+            {
+              "type": "text",
+              "text": ":     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\vec{F} = m \\cdot \\vec{a}} \\quad (\\text{Einheit: } 1\\,\\text{N} = 1\\,\\frac{\\text{kg}\\cdot\\text{m}}{\\text{s}^2})",
+              "block": true,
+              "speech": "Vektor F gleich m mal Vektor a, Einheit: 1 Newton gleich 1 Kilogramm Meter pro Sekunde Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " 3. 3. Newtonsches Axiom (Wechselwirkungsprinzip / Gegenwirkungsprinzip / Lex Tertia):   * Übt ein Körper A eine Kraft auf einen Körper B aus (Actio "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}_{A \\rightarrow B}",
+              "speech": "Vektor F von A auf B"
+            },
+            {
+              "type": "text",
+              "text": "), so übt Körper B eine gleich große, aber entgegengesetzt gerichtete Gegenkraft auf Körper A aus (Reactio "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}_{B \\rightarrow A} = -\\vec{F}_{A \\rightarrow B}",
+              "speech": "Vektor F von B auf A gleich minus Vektor F von A auf B"
+            },
+            {
+              "type": "text",
+              "text": ").   * Wichtig: Actio und Reactio greifen stets an zwei verschiedenen Körpern an und können sich daher niemals gegenseitig aufheben (z. B. Raketenrückstoß, Schlittschuhabstoß)."
+            }
+          ],
           "concept": "Newtonsche Axiome: 1. Trägheitsgesetz (Sum F = 0 -> v = const); 2. Grundgesetz F = m*a; 3. Wechselwirkungsgesetz Actio = Reactio (Kräftepaar an verschiedenen Körpern, kein Kräftegleichgewicht).",
-          "sample_solution": "1. Die drei Axiome der klassischen Mechanik (Sir Isaac Newton, *Philosophiae Naturalis Principia Mathematica*, 1687): - **1. Axiom: Das Trägheitsprinzip (Lex Prima)**:   * Jeder massebehaftete Körper besitzt eine **Trägheit**: Er widersetzt sich jeder Änderung seines Bewegungszustandes.   * *Formulierung*: Wirkt auf einen Körper keine äußere resultierende Kraft ($\\,\\sum \\vec{F} = 0$), so bleibt er entweder in Ruhe oder bewegt sich mit unveränderter Geschwindigkeit geradlinig und gleichförmig weiter ($v = \\text{konstant}$).   * *Beispiel*: Passagiere werden beim scharfen Abbremsen eines Busses nach vorne geschleudert, weil ihr Körper seine Vorwärtsgeschwindigkeit beibehalten will. - **2. Axiom: Das Aktionsprinzip / Grundgesetz der Dynamik (Lex Secunda)**:   * Eine resultierende Kraft $\\vec{F} \\neq 0$ bewirkt eine Beschleunigung $\\vec{a}$ in Richtung der Kraft:     $$\\mathbf{\\vec{F} = m \\cdot \\vec{a}}$$   * **Definition des Newtons**: $1\\text{ Newton [N]} = 1\\,\\frac{\\text{kg}\\cdot\\text{m}}{\\text{s}^2}$ (Die Kraft, die einen Körper der Masse $1\\text{ kg}$ mit $1\\,\\frac{\\text{m}}{\\text{s}^2}$ beschleunigt).   * **Träge vs. schwere Masse**: Die träge Masse bestimmt den Widerstand gegen Beschleunigung; die schwere Masse bestimmt die Gravitationsanziehung ($F_G = m \\cdot g$). Beide sind nach dem Äquivalenzprinzip exakt identisch. - **3. Axiom: Das Wechselwirkungsprinzip (Lex Tertia – Actio et Reactio)**:   * Kräfte treten in der Natur immer paarweise als gegenseitige Wechselwirkung auf:     $$\\mathbf{\\vec{F}_{\\text{Actio}} = -\\vec{F}_{\\text{Reactio}}}$$   * *Fundamental*: **Actio und Reactio greifen an zwei unterschiedlichen Körpern an!**     - *Beispiel Rakete*: Die Rakete beschleunigt Verbrennungsgase nach hinten (Actio); die Gase drücken die Rakete mit exakt gleicher Kraft nach vorne (Reactio $\\implies$ Rückstoßprinzip funktioniert auch im luftleeren Weltraum).     - *Abgrenzung*: Ein 'Kräftegleichgewicht' liegt vor, wenn zwei entgegengesetzte Kräfte am **selben Körper** angreifen und sich zu $\\sum \\vec{F} = 0$ addieren."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die drei Axiome der klassischen Mechanik (Sir Isaac Newton, Philosophiae Naturalis Principia Mathematica, 1687): - 1. Axiom: Das Trägheitsprinzip (Lex Prima):   * Jeder massebehaftete Körper besitzt eine Trägheit: Er widersetzt sich jeder Änderung seines Bewegungszustandes.   * Formulierung: Wirkt auf einen Körper keine äußere resultierende Kraft ("
+            },
+            {
+              "type": "math",
+              "tex": "\\,\\sum \\vec{F} = 0"
+            },
+            {
+              "type": "text",
+              "text": "), so bleibt er entweder in Ruhe oder bewegt sich mit unveränderter Geschwindigkeit geradlinig und gleichförmig weiter ("
+            },
+            {
+              "type": "math",
+              "tex": "v = \\text{konstant}"
+            },
+            {
+              "type": "text",
+              "text": ").   * Beispiel: Passagiere werden beim scharfen Abbremsen eines Busses nach vorne geschleudert, weil ihr Körper seine Vorwärtsgeschwindigkeit beibehalten will. - 2. Axiom: Das Aktionsprinzip / Grundgesetz der Dynamik (Lex Secunda):   * Eine resultierende Kraft "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F} \\neq 0"
+            },
+            {
+              "type": "text",
+              "text": " bewirkt eine Beschleunigung "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{a}"
+            },
+            {
+              "type": "text",
+              "text": " in Richtung der Kraft:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\vec{F} = m \\cdot \\vec{a}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Definition des Newtons: "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ Newton [N]} = 1\\,\\frac{\\text{kg}\\cdot\\text{m}}{\\text{s}^2}"
+            },
+            {
+              "type": "text",
+              "text": " (Die Kraft, die einen Körper der Masse "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ kg}"
+            },
+            {
+              "type": "text",
+              "text": " mit "
+            },
+            {
+              "type": "math",
+              "tex": "1\\,\\frac{\\text{m}}{\\text{s}^2}"
+            },
+            {
+              "type": "text",
+              "text": " beschleunigt).   * Träge vs. schwere Masse: Die träge Masse bestimmt den Widerstand gegen Beschleunigung; die schwere Masse bestimmt die Gravitationsanziehung ("
+            },
+            {
+              "type": "math",
+              "tex": "F_G = m \\cdot g"
+            },
+            {
+              "type": "text",
+              "text": "). Beide sind nach dem Äquivalenzprinzip exakt identisch. - 3. Axiom: Das Wechselwirkungsprinzip (Lex Tertia – Actio et Reactio):   * Kräfte treten in der Natur immer paarweise als gegenseitige Wechselwirkung auf:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\vec{F}_{\\text{Actio}} = -\\vec{F}_{\\text{Reactio}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Fundamental: Actio und Reactio greifen an zwei unterschiedlichen Körpern an!     - Beispiel Rakete: Die Rakete beschleunigt Verbrennungsgase nach hinten (Actio); die Gase drücken die Rakete mit exakt gleicher Kraft nach vorne (Reactio "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Rückstoßprinzip funktioniert auch im luftleeren Weltraum).     - Abgrenzung: Ein 'Kräftegleichgewicht' liegt vor, wenn zwei entgegengesetzte Kräfte am selben Körper angreifen und sich zu "
+            },
+            {
+              "type": "math",
+              "tex": "\\sum \\vec{F} = 0"
+            },
+            {
+              "type": "text",
+              "text": " addieren."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

@@ -564,6 +564,7 @@ export type {
 export {
   ATOM_ID_PATTERN,
   installKvtTile,
+  kvtItemPlainTexts,
   materialiseKvtCards,
 } from "./library/kvt-attach.js";
 export type {

@@ -65,9 +65,313 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Systematisiere den molekularen Ablauf der Vererbung und Proteinbiosynthese: 1. **Aufbau der DNA (Desoxyribonukleinsäure)**:   * Watson-Crick-Modell: Antiparallele Doppelhelix ($5' \\rightarrow 3'$ und $3' \\rightarrow 5'$).   * Nukleotid: Desoxyribose (Zucker) + Phosphatgruppe + 1 organische Base (Adenin $A$, Thymin $T$, Guanin $G$, Cytosin $C$).   * Komplementarität: $A = T$ (2 H-Brücken), $G \\equiv C$ (3 H-Brücken), 2. **Semikonservative DNA-Replikation**:   * Helicase trennt Doppelstrang $\\rightarrow$ DNA-Polymerase synthetisiert Leitstrang kontinuierlich und Folgestrang diskontinuierlich über Okazaki-Fragmente, 3. **Proteinbiosynthese (Genexpression)**:   * **Transkription (Zellkern)**: RNA-Polymerase liest codogenen DNA-Strang ab und synthetisiert komplementäre mRNA (mit Uracil $U$ statt Thymin $T$).   * **Translation (an den Ribosomen im Zytoplasma)**: mRNA wird in Basen-Tripletts (Codons) abgelesen; tRNAs liefern passende Aminosäuren; Bildung einer Polypeptidkette.   * **Eigenschaften des genetischen Codes**: Triplett-Code, universell, degeneriert (redundant), kommafrei, nicht-überlappend; Auslesen über die Code-Sonne von innen ($5'$) nach außen ($3'$).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Systematisiere den molekularen Ablauf der Vererbung und Proteinbiosynthese: 1. Aufbau der DNA (Desoxyribonukleinsäure):   * Watson-Crick-Modell: Antiparallele Doppelhelix ("
+            },
+            {
+              "type": "math",
+              "tex": "5' \\rightarrow 3'",
+              "speech": "5 Strich nach 3 Strich"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "3' \\rightarrow 5'",
+              "speech": "3 Strich nach 5 Strich"
+            },
+            {
+              "type": "text",
+              "text": ").   * Nukleotid: Desoxyribose (Zucker) + Phosphatgruppe + 1 organische Base (Adenin "
+            },
+            {
+              "type": "math",
+              "tex": "A",
+              "speech": "A"
+            },
+            {
+              "type": "text",
+              "text": ", Thymin "
+            },
+            {
+              "type": "math",
+              "tex": "T",
+              "speech": "T"
+            },
+            {
+              "type": "text",
+              "text": ", Guanin "
+            },
+            {
+              "type": "math",
+              "tex": "G",
+              "speech": "G"
+            },
+            {
+              "type": "text",
+              "text": ", Cytosin "
+            },
+            {
+              "type": "math",
+              "tex": "C",
+              "speech": "C"
+            },
+            {
+              "type": "text",
+              "text": ").   * Komplementarität: "
+            },
+            {
+              "type": "math",
+              "tex": "A = T",
+              "speech": "A gleich T"
+            },
+            {
+              "type": "text",
+              "text": " (2 H-Brücken), "
+            },
+            {
+              "type": "math",
+              "tex": "G \\equiv C",
+              "speech": "G dreifach verbunden mit C"
+            },
+            {
+              "type": "text",
+              "text": " (3 H-Brücken), 2. Semikonservative DNA-Replikation:   * Helicase trennt Doppelstrang "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " DNA-Polymerase synthetisiert Leitstrang kontinuierlich und Folgestrang diskontinuierlich über Okazaki-Fragmente, 3. Proteinbiosynthese (Genexpression):   * Transkription (Zellkern): RNA-Polymerase liest codogenen DNA-Strang ab und synthetisiert komplementäre mRNA (mit Uracil "
+            },
+            {
+              "type": "math",
+              "tex": "U",
+              "speech": "U"
+            },
+            {
+              "type": "text",
+              "text": " statt Thymin "
+            },
+            {
+              "type": "math",
+              "tex": "T",
+              "speech": "T"
+            },
+            {
+              "type": "text",
+              "text": ").   * Translation (an den Ribosomen im Zytoplasma): mRNA wird in Basen-Tripletts (Codons) abgelesen; tRNAs liefern passende Aminosäuren; Bildung einer Polypeptidkette.   * Eigenschaften des genetischen Codes: Triplett-Code, universell, degeneriert (redundant), kommafrei, nicht-überlappend; Auslesen über die Code-Sonne von innen ("
+            },
+            {
+              "type": "math",
+              "tex": "5'",
+              "speech": "5 Strich"
+            },
+            {
+              "type": "text",
+              "text": ") nach außen ("
+            },
+            {
+              "type": "math",
+              "tex": "3'",
+              "speech": "3 Strich"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
           "concept": "DNA: Doppelhelix, A-T / G-C; Semikonservative Replikation; Proteinbiosynthese: Transkription (DNA -> mRNA) & Translation (mRNA -> Polypeptid an Ribosomen mit tRNA); Genetischer Code (Code-Sonne, degeneriert, universell, kommafrei).",
-          "sample_solution": "1. Der molekulare Aufbau der DNA: - **Struktur (James Watson & Francis Crick, 1953)**:   * Eine rechtsgängige, **antiparallele Doppelhelix** (ein Strang verläuft in $5' \\rightarrow 3'$-Richtung, der Gegenstrang in $3' \\rightarrow 5'$-Richtung). - **Das Nukleotid als Grundbaustein**:   * Besteht aus drei Komponenten:     1. **Phosphatrest** (verknüpft über Phosphodiesterbindung das $5'$-C-Atom eines Zuckers mit dem $3'$-C-Atom des nächsten Zuckers).     2. **Desoxyribose** ($C_5$-Zucker).     3. **Organische Stickstoffbase**: Purinbasen (Adenin $A$, Guanin $G$) und Pyrimidinbasen (Thymin $T$, Cytosin $C$). - **Spezifische komplementäre Basenpaarung**:   * $\\mathbf{A = T}$ (verbunden über 2 Wasserstoffbrücken).   * $\\mathbf{G \\equiv C}$ (verbunden über 3 Wasserstoffbrücken). 2. Die semikonservative Replikation: - Vor jeder Zellteilung (Mitose/Meiose) verdoppelt sich die DNA in der S-Phase:   * **Helicase** entspiralisiert und trennt die Doppelstränge wie einen Reißverschluss.   * **DNA-Polymerase** synthetisiert neue Tochterstränge komplementär zur Muttermatrize.   * Jeder neu entstandene Doppelstrang besteht somit aus einem alten und einem neu synthetisierten Einzelstrang (**semikonservativ**). 3. Die Proteinbiosynthese (Zentrales Dogma der Molekularbiologie: DNA $\\rightarrow$ RNA $\\rightarrow$ Protein): - **1. Transkription (im Zellkern)**:   * Umschreiben eines Genabschnitts: Die **RNA-Polymerase** liest den codogenen Strang ($3' \\rightarrow 5'$) ab und synthetisiert eine einzelsträngige **Boten-RNA (mRNA)** in $5' \\rightarrow 3'$-Richtung (enthält **Uracil $U$** anstelle von Thymin $T$, und Ribose statt Desoxyribose).   * Die fertige mRNA wandert durch Kernporen ins Zytoplasma. - **2. Translation (an den Ribosomen im Zytoplasma)**:   * Die mRNA bindet an ein **Ribosom** am Startcodon $\\text{AUG}$ (Methionin).   * Transfer-RNAs (**tRNA**) mit spezifischem **Anticodon** transportieren die entsprechende Aminosäure zum Ribosom.   * Das Ribosom verknüpft die Aminosäuren über **Peptidbindungen** zu einer Kette, bis ein Stoppcodon ($\\text{UAA, UAG, UGA}$) erreicht ist. 4. Der genetische Code und die Code-Sonne: - **Triplett-Code**: Eine Abfolge von 3 Basen (**Codon**) codiert für genau eine Aminosäure ($4^3 = 64$ mögliche Codons für 20 proteinogene Aminosäuren). - **Eigenschaften**:   * **Universell**: Gilt für nahezu alle Lebewesen (Beweis für gemeinsamen evolutionären Ursprung).   * **Degeneriert / Redundant**: Mehrere verschiedene Codons können dieselbe Aminosäure codieren (z. B. 6 Codons für Leucin).   * **Kommafrei & Nicht-überlappend**: Wird lückenlos Base für Base ab Startcodon gelesen.   * **Code-Sonne**: Wird von innen ($5'$-Ende) nach außen ($3'$-Ende) gelesen."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der molekulare Aufbau der DNA: - Struktur (James Watson & Francis Crick, 1953):   * Eine rechtsgängige, antiparallele Doppelhelix (ein Strang verläuft in "
+            },
+            {
+              "type": "math",
+              "tex": "5' \\rightarrow 3'"
+            },
+            {
+              "type": "text",
+              "text": "-Richtung, der Gegenstrang in "
+            },
+            {
+              "type": "math",
+              "tex": "3' \\rightarrow 5'"
+            },
+            {
+              "type": "text",
+              "text": "-Richtung). - Das Nukleotid als Grundbaustein:   * Besteht aus drei Komponenten:     1. Phosphatrest (verknüpft über Phosphodiesterbindung das "
+            },
+            {
+              "type": "math",
+              "tex": "5'"
+            },
+            {
+              "type": "text",
+              "text": "-C-Atom eines Zuckers mit dem "
+            },
+            {
+              "type": "math",
+              "tex": "3'"
+            },
+            {
+              "type": "text",
+              "text": "-C-Atom des nächsten Zuckers).     2. Desoxyribose ("
+            },
+            {
+              "type": "math",
+              "tex": "C_5"
+            },
+            {
+              "type": "text",
+              "text": "-Zucker).     3. Organische Stickstoffbase: Purinbasen (Adenin "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": ", Guanin "
+            },
+            {
+              "type": "math",
+              "tex": "G"
+            },
+            {
+              "type": "text",
+              "text": ") und Pyrimidinbasen (Thymin "
+            },
+            {
+              "type": "math",
+              "tex": "T"
+            },
+            {
+              "type": "text",
+              "text": ", Cytosin "
+            },
+            {
+              "type": "math",
+              "tex": "C"
+            },
+            {
+              "type": "text",
+              "text": "). - Spezifische komplementäre Basenpaarung:   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{A = T}"
+            },
+            {
+              "type": "text",
+              "text": " (verbunden über 2 Wasserstoffbrücken).   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{G \\equiv C}"
+            },
+            {
+              "type": "text",
+              "text": " (verbunden über 3 Wasserstoffbrücken). 2. Die semikonservative Replikation: - Vor jeder Zellteilung (Mitose/Meiose) verdoppelt sich die DNA in der S-Phase:   * Helicase entspiralisiert und trennt die Doppelstränge wie einen Reißverschluss.   * DNA-Polymerase synthetisiert neue Tochterstränge komplementär zur Muttermatrize.   * Jeder neu entstandene Doppelstrang besteht somit aus einem alten und einem neu synthetisierten Einzelstrang (semikonservativ). 3. Die Proteinbiosynthese (Zentrales Dogma der Molekularbiologie: DNA "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " RNA "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Protein): - 1. Transkription (im Zellkern):   * Umschreiben eines Genabschnitts: Die RNA-Polymerase liest den codogenen Strang ("
+            },
+            {
+              "type": "math",
+              "tex": "3' \\rightarrow 5'"
+            },
+            {
+              "type": "text",
+              "text": ") ab und synthetisiert eine einzelsträngige Boten-RNA (mRNA) in "
+            },
+            {
+              "type": "math",
+              "tex": "5' \\rightarrow 3'"
+            },
+            {
+              "type": "text",
+              "text": "-Richtung (enthält Uracil "
+            },
+            {
+              "type": "math",
+              "tex": "U"
+            },
+            {
+              "type": "text",
+              "text": " anstelle von Thymin "
+            },
+            {
+              "type": "math",
+              "tex": "T"
+            },
+            {
+              "type": "text",
+              "text": ", und Ribose statt Desoxyribose).   * Die fertige mRNA wandert durch Kernporen ins Zytoplasma. - 2. Translation (an den Ribosomen im Zytoplasma):   * Die mRNA bindet an ein Ribosom am Startcodon "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{AUG}"
+            },
+            {
+              "type": "text",
+              "text": " (Methionin).   * Transfer-RNAs (tRNA) mit spezifischem Anticodon transportieren die entsprechende Aminosäure zum Ribosom.   * Das Ribosom verknüpft die Aminosäuren über Peptidbindungen zu einer Kette, bis ein Stoppcodon ("
+            },
+            {
+              "type": "math",
+              "tex": "\\text{UAA, UAG, UGA}"
+            },
+            {
+              "type": "text",
+              "text": ") erreicht ist. 4. Der genetische Code und die Code-Sonne: - Triplett-Code: Eine Abfolge von 3 Basen (Codon) codiert für genau eine Aminosäure ("
+            },
+            {
+              "type": "math",
+              "tex": "4^3 = 64"
+            },
+            {
+              "type": "text",
+              "text": " mögliche Codons für 20 proteinogene Aminosäuren). - Eigenschaften:   * Universell: Gilt für nahezu alle Lebewesen (Beweis für gemeinsamen evolutionären Ursprung).   * Degeneriert / Redundant: Mehrere verschiedene Codons können dieselbe Aminosäure codieren (z. B. 6 Codons für Leucin).   * Kommafrei & Nicht-überlappend: Wird lückenlos Base für Base ab Startcodon gelesen.   * Code-Sonne: Wird von innen ("
+            },
+            {
+              "type": "math",
+              "tex": "5'"
+            },
+            {
+              "type": "text",
+              "text": "-Ende) nach außen ("
+            },
+            {
+              "type": "math",
+              "tex": "3'"
+            },
+            {
+              "type": "text",
+              "text": "-Ende) gelesen."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +432,483 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Mendelschen Regeln und die humangenetische Stammbaumanalyse: 1. **Begriffe der klassischen Genetik**:   * **Gen**: Erbanlage für ein Merkmal; **Allel**: Zustandsform eines Gens.   * **Homozygot (reinerbig)**: $AA$ oder $aa$; **Heterozygot (mischerbig)**: $Aa$.   * **Dominant**: Setzt sich im Phänotyp durch ($A$); **Rezessiv**: Tritt nur bei Reinerbigkeit phänotypisch in Erscheinung ($a$).   * **Genotyp**: Gesamtheit der Erbanlagen; **Phänotyp**: Äußeres Erscheinungsbild, 2. **Die drei Mendelschen Regeln (Gregor Mendel, 1866)**:   * **1. Regel (Uniformitätsregel)**: Kreuzt man zwei reinerbige Individuen (P-Generation), die sich in einem Merkmal unterscheiden, so sind alle Nachkommen der F1-Generation im Phänotyp und Genotyp untereinander uniform ($100\\% Aa$).   * **2. Regel (Spaltungsregel)**: Kreuzt man die Individuen der F1-Generation untereinander, spaltet sich die F2-Generation auf: phänotypisch $3 : 1$, genotypisch $1 AA : 2 Aa : 1 aa$.   * **3. Regel (Unabhängigkeitsregel / Neukombinationsregel)**: Bei der Kreuzung von Individuen, die sich in zwei Merkmalen unterscheiden (dihybrid), werden die Allele unabhängig voneinander vererbt $\\implies$ F2-Phänotypenverhältnis $9 : 3 : 3 : 1$, 3. **Humangenetische Stammbaumanalyse**:   * **Autosomal-dominant**: Merkmal tritt in jeder Generation auf; gesunde Eltern haben nur gesunde Kinder; Kranke haben mindestens ein betroffenes Elternteil (z. B. Chorea Huntington).   * **Autosomal-rezessiv**: Kann Generationen überspringen; gesunde Eltern können heterozygote Überträger (Konduktoren) sein und kranke Kinder haben ($25\\%$ Risiko bei $Aa \\times Aa$, z. B. Mukoviszidose).   * **Gonosomal-rezessiv (X-chromosomal)**: Fast ausschließlich Männer betroffen (da hemizygot $X^a Y$); Frauen sind symptomfreie Überträgerinnen ($X^A X^a$, z. B. Rot-Grün-Sehschwäche, Bluterkrankheit).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Mendelschen Regeln und die humangenetische Stammbaumanalyse: 1. Begriffe der klassischen Genetik:   * Gen: Erbanlage für ein Merkmal; Allel: Zustandsform eines Gens.   * Homozygot (reinerbig): "
+            },
+            {
+              "type": "math",
+              "tex": "AA",
+              "speech": "groß A groß A"
+            },
+            {
+              "type": "text",
+              "text": " oder "
+            },
+            {
+              "type": "math",
+              "tex": "aa",
+              "speech": "klein a klein a"
+            },
+            {
+              "type": "text",
+              "text": "; Heterozygot (mischerbig): "
+            },
+            {
+              "type": "math",
+              "tex": "Aa",
+              "speech": "groß A klein a"
+            },
+            {
+              "type": "text",
+              "text": ".   * Dominant: Setzt sich im Phänotyp durch ("
+            },
+            {
+              "type": "math",
+              "tex": "A",
+              "speech": "A"
+            },
+            {
+              "type": "text",
+              "text": "); Rezessiv: Tritt nur bei Reinerbigkeit phänotypisch in Erscheinung ("
+            },
+            {
+              "type": "math",
+              "tex": "a",
+              "speech": "a"
+            },
+            {
+              "type": "text",
+              "text": ").   * Genotyp: Gesamtheit der Erbanlagen; Phänotyp: Äußeres Erscheinungsbild, 2. Die drei Mendelschen Regeln (Gregor Mendel, 1866):   * 1. Regel (Uniformitätsregel): Kreuzt man zwei reinerbige Individuen (P-Generation), die sich in einem Merkmal unterscheiden, so sind alle Nachkommen der F1-Generation im Phänotyp und Genotyp untereinander uniform ("
+            },
+            {
+              "type": "math",
+              "tex": "100\\% Aa",
+              "speech": "100 Prozent A a"
+            },
+            {
+              "type": "text",
+              "text": ").   * 2. Regel (Spaltungsregel): Kreuzt man die Individuen der F1-Generation untereinander, spaltet sich die F2-Generation auf: phänotypisch "
+            },
+            {
+              "type": "math",
+              "tex": "3 : 1",
+              "speech": "3 zu 1"
+            },
+            {
+              "type": "text",
+              "text": ", genotypisch "
+            },
+            {
+              "type": "math",
+              "tex": "1 AA : 2 Aa : 1 aa",
+              "speech": "1 groß A groß A zu 2 groß A klein a zu 1 klein a klein a"
+            },
+            {
+              "type": "text",
+              "text": ".   * 3. Regel (Unabhängigkeitsregel / Neukombinationsregel): Bei der Kreuzung von Individuen, die sich in zwei Merkmalen unterscheiden (dihybrid), werden die Allele unabhängig voneinander vererbt "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " F2-Phänotypenverhältnis "
+            },
+            {
+              "type": "math",
+              "tex": "9 : 3 : 3 : 1",
+              "speech": "9 zu 3 zu 3 zu 1"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Humangenetische Stammbaumanalyse:   * Autosomal-dominant: Merkmal tritt in jeder Generation auf; gesunde Eltern haben nur gesunde Kinder; Kranke haben mindestens ein betroffenes Elternteil (z. B. Chorea Huntington).   * Autosomal-rezessiv: Kann Generationen überspringen; gesunde Eltern können heterozygote Überträger (Konduktoren) sein und kranke Kinder haben ("
+            },
+            {
+              "type": "math",
+              "tex": "25\\%",
+              "speech": "25 Prozent"
+            },
+            {
+              "type": "text",
+              "text": " Risiko bei "
+            },
+            {
+              "type": "math",
+              "tex": "Aa \\times Aa",
+              "speech": "groß A klein a gekreuzt mit groß A klein a"
+            },
+            {
+              "type": "text",
+              "text": ", z. B. Mukoviszidose).   * Gonosomal-rezessiv (X-chromosomal): Fast ausschließlich Männer betroffen (da hemizygot "
+            },
+            {
+              "type": "math",
+              "tex": "X^a Y",
+              "speech": "X klein a, Y"
+            },
+            {
+              "type": "text",
+              "text": "); Frauen sind symptomfreie Überträgerinnen ("
+            },
+            {
+              "type": "math",
+              "tex": "X^A X^a",
+              "speech": "X groß A, X klein a"
+            },
+            {
+              "type": "text",
+              "text": ", z. B. Rot-Grün-Sehschwäche, Bluterkrankheit)."
+            }
+          ],
           "concept": "Mendelsche Regeln: 1. Uniformität (100% Aa); 2. Spaltung (3:1 Phänotyp, 1:2:1 Genotyp); 3. Unabhängige Neukombination (9:3:3:1 bei dihybrid); Stammbaumanalyse: autosomal-dominant, autosomal-rezessiv (Konduktoren Aa), X-chromosomal-rezessiv.",
-          "sample_solution": "1. Grundbegriffe der formalen Vererbungslehre: - **Gen & Allel**: Ein Gen bestimmt ein Merkmal (z. B. Blütenfarbe); Allele sind alternative Genvarianten (z. B. $A$ = rot, $a$ = weiß). - **Zygosie**:   * **Homozygot (reinerbig)**: Beide Allele auf den homologen Chromosomen sind identisch ($AA$ oder $aa$).   * **Heterozygot (mischerbig)**: Zwei verschiedene Allele ($Aa$). - **Erbgangstypen**:   * **Dominant-rezessiv**: Das dominante Allel $A$ überdeckt das rezessive Allel $a$ vollständig ($Aa$ hat denselben Phänotyp wie $AA$).   * **Intermediär**: Beide Allele setzen sich gleichwertig durch $\\implies$ Mischform im Phänotyp (z. B. rot + weiß = rosa). 2. Die drei Mendelschen Regeln (Gregor Mendel, 1866): - **1. Mendelsche Regel (Uniformitätsregel)**:   * Kreuzung zweier reinerbiger Eltern ($P: AA \\times aa$):     $$\\mathbf{\\text{F1-Generation: alle } Aa \\implies 100\\% \\text{ uniform}}$$ - **2. Mendelsche Regel (Spaltungsregel)**:   * Kreuzung der mischerbigen F1 untereinander ($F1: Aa \\times Aa$):     * **Kombinationsquadrat (Punnett-Quadrat)**:       | | $A$ ($50\\%$) | $a$ ($50\\%$) |       | :--- | :--- | :--- |       | **$A$** | $AA$ ($25\\%$) | $Aa$ ($25\\%$) |       | **$a$** | $Aa$ ($25\\%$) | $aa$ ($25\\%$) |     * **Genotyp-Verhältnis**: $\\mathbf{1 AA : 2 Aa : 1 aa}$ ($25\\% : 50\\% : 25\\%$).     * **Phänotyp-Verhältnis**: $\\mathbf{3 : 1}$ ($75\\%$ Merkmalsträger zu $25\\%$ rezessiv). - **3. Mendelsche Regel (Unabhängigkeits- und Neukombinationsregel)**:   * Bei dihybriden Erbgängen ($P: AABB \\times aabb$) werden Gene unabhängig voneinander verteilt (sofern sie auf verschiedenen Chromosomen liegen).   * **Phänotypische Aufspaltung in F2**: $\\mathbf{9 : 3 : 3 : 1}$ (Auftreten völlig neuer Merkmalskombinationen). 3. Humangenetische Stammbaumanalyse: - **Autosomal-dominanter Erbgang**:   * Betrifft beide Geschlechter gleichermaßen.   * Erkrankte haben mindestens einen erkrankten Elternteil. Merkmal tritt in **jeder Generation** auf (z. B. *Kurzfingrigkeit, Chorea Huntington*). - **Autosomal-rezessiver Erbgang**:   * Phänotypisch gesunde Eltern können kranke Nachkommen zeugen $\\implies$ beide Eltern sind mischerbige Träger (**Konduktoren**, Genotyp $Aa$).   * Kinder haben ein Erkrankungsrisiko von $25\\%$ (z. B. *Mukoviszidose, Albinismus, Phenylketonurie PKU*). - **X-chromosomal-rezessiver (gonosomaler) Erbgang**:   * Männer besitzen nur ein X-Chromosom ($XY$, **hemizygot**) $\\implies$ ein einziges defektes Allel $X^a$ führt direkt zur Erkrankung.   * Frauen mit $X^A X^a$ sind gesunde Überträgerinnen (Konduktorinnen) $\\implies$ fast ausschließlich Männer erkranken (z. B. *Rot-Grün-Blindheit, Hämophilie / Bluterkrankheit*)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Grundbegriffe der formalen Vererbungslehre: - Gen & Allel: Ein Gen bestimmt ein Merkmal (z. B. Blütenfarbe); Allele sind alternative Genvarianten (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": " = rot, "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": " = weiß). - Zygosie:   * Homozygot (reinerbig): Beide Allele auf den homologen Chromosomen sind identisch ("
+            },
+            {
+              "type": "math",
+              "tex": "AA"
+            },
+            {
+              "type": "text",
+              "text": " oder "
+            },
+            {
+              "type": "math",
+              "tex": "aa"
+            },
+            {
+              "type": "text",
+              "text": ").   * Heterozygot (mischerbig): Zwei verschiedene Allele ("
+            },
+            {
+              "type": "math",
+              "tex": "Aa"
+            },
+            {
+              "type": "text",
+              "text": "). - Erbgangstypen:   * Dominant-rezessiv: Das dominante Allel "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": " überdeckt das rezessive Allel "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": " vollständig ("
+            },
+            {
+              "type": "math",
+              "tex": "Aa"
+            },
+            {
+              "type": "text",
+              "text": " hat denselben Phänotyp wie "
+            },
+            {
+              "type": "math",
+              "tex": "AA"
+            },
+            {
+              "type": "text",
+              "text": ").   * Intermediär: Beide Allele setzen sich gleichwertig durch "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Mischform im Phänotyp (z. B. rot + weiß = rosa). 2. Die drei Mendelschen Regeln (Gregor Mendel, 1866): - 1. Mendelsche Regel (Uniformitätsregel):   * Kreuzung zweier reinerbiger Eltern ("
+            },
+            {
+              "type": "math",
+              "tex": "P: AA \\times aa"
+            },
+            {
+              "type": "text",
+              "text": "):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{F1-Generation: alle } Aa \\implies 100\\% \\text{ uniform}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 2. Mendelsche Regel (Spaltungsregel):   * Kreuzung der mischerbigen F1 untereinander ("
+            },
+            {
+              "type": "math",
+              "tex": "F1: Aa \\times Aa"
+            },
+            {
+              "type": "text",
+              "text": "):     * Kombinationsquadrat (Punnett-Quadrat):       | | "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "50\\%"
+            },
+            {
+              "type": "text",
+              "text": ") | "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "50\\%"
+            },
+            {
+              "type": "text",
+              "text": ") |       | :--- | :--- | :--- |       | "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "AA"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "25\\%"
+            },
+            {
+              "type": "text",
+              "text": ") | "
+            },
+            {
+              "type": "math",
+              "tex": "Aa"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "25\\%"
+            },
+            {
+              "type": "text",
+              "text": ") |       | "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "Aa"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "25\\%"
+            },
+            {
+              "type": "text",
+              "text": ") | "
+            },
+            {
+              "type": "math",
+              "tex": "aa"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "25\\%"
+            },
+            {
+              "type": "text",
+              "text": ") |     * Genotyp-Verhältnis: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{1 AA : 2 Aa : 1 aa}"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "25\\% : 50\\% : 25\\%"
+            },
+            {
+              "type": "text",
+              "text": ").     * Phänotyp-Verhältnis: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{3 : 1}"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "75\\%"
+            },
+            {
+              "type": "text",
+              "text": " Merkmalsträger zu "
+            },
+            {
+              "type": "math",
+              "tex": "25\\%"
+            },
+            {
+              "type": "text",
+              "text": " rezessiv). - 3. Mendelsche Regel (Unabhängigkeits- und Neukombinationsregel):   * Bei dihybriden Erbgängen ("
+            },
+            {
+              "type": "math",
+              "tex": "P: AABB \\times aabb"
+            },
+            {
+              "type": "text",
+              "text": ") werden Gene unabhängig voneinander verteilt (sofern sie auf verschiedenen Chromosomen liegen).   * Phänotypische Aufspaltung in F2: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{9 : 3 : 3 : 1}"
+            },
+            {
+              "type": "text",
+              "text": " (Auftreten völlig neuer Merkmalskombinationen). 3. Humangenetische Stammbaumanalyse: - Autosomal-dominanter Erbgang:   * Betrifft beide Geschlechter gleichermaßen.   * Erkrankte haben mindestens einen erkrankten Elternteil. Merkmal tritt in jeder Generation auf (z. B. Kurzfingrigkeit, Chorea Huntington). - Autosomal-rezessiver Erbgang:   * Phänotypisch gesunde Eltern können kranke Nachkommen zeugen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " beide Eltern sind mischerbige Träger (Konduktoren, Genotyp "
+            },
+            {
+              "type": "math",
+              "tex": "Aa"
+            },
+            {
+              "type": "text",
+              "text": ").   * Kinder haben ein Erkrankungsrisiko von "
+            },
+            {
+              "type": "math",
+              "tex": "25\\%"
+            },
+            {
+              "type": "text",
+              "text": " (z. B. Mukoviszidose, Albinismus, Phenylketonurie PKU). - X-chromosomal-rezessiver (gonosomaler) Erbgang:   * Männer besitzen nur ein X-Chromosom ("
+            },
+            {
+              "type": "math",
+              "tex": "XY"
+            },
+            {
+              "type": "text",
+              "text": ", hemizygot) "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " ein einziges defektes Allel "
+            },
+            {
+              "type": "math",
+              "tex": "X^a"
+            },
+            {
+              "type": "text",
+              "text": " führt direkt zur Erkrankung.   * Frauen mit "
+            },
+            {
+              "type": "math",
+              "tex": "X^A X^a"
+            },
+            {
+              "type": "text",
+              "text": " sind gesunde Überträgerinnen (Konduktorinnen) "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " fast ausschließlich Männer erkranken (z. B. Rot-Grün-Blindheit, Hämophilie / Bluterkrankheit)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

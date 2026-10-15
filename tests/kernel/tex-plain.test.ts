@@ -13,6 +13,11 @@ const GOLDEN: Array<[string, string]> = [
   // Scripts.
   ["x^2", "x²"],
   ["10^{-19}", "10⁻¹⁹"],
+  ["p < p^*", "p < p*"],
+  [
+    "^A_Z\\text{X}^* \\rightarrow ^A_Z\\text{X} + \\gamma",
+    "^A_ZX* → ^A_ZX + γ",
+  ],
   ["e^{-\\lambda \\cdot t}", "e^(-λ·t)"],
   ["a^n", "aⁿ"],
   ["\\varepsilon_0", "ε₀"],

@@ -50,7 +50,17 @@
           "tier": "tier1_fast",
           "bloom_level": 1,
           "question": "Wie lautet die fundamentale physikalische SI-Einheit für mechanische Arbeit und Energie?",
-          "concept": "Joule (J) bzw. Newtonmeter (N * m) = kg * m^2 / s^2",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Joule (J) bzw. Newtonmeter: "
+            },
+            {
+              "type": "math",
+              "tex": "1\\,\\text{J} = 1\\,\\text{N} \\cdot \\text{m} = 1\\,\\text{kg} \\cdot \\text{m}^2/\\text{s}^2",
+              "speech": "1 Joule gleich 1 Newton mal Meter gleich 1 Kilogramm mal Quadratmeter pro Sekunde Quadrat"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -58,16 +68,362 @@
               "Watt (W)"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8G8C0000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere Energie, Arbeit, Leistung und den Energieerhaltungssatz: 1. **Energieformen**:   * **Lageenergie (potentielle Energie)**: $E_{\\text{pot}} = m \\cdot g \\cdot h$ ($g \\approx 9{,}81\\,\\frac{\\text{m}}{\\text{s}^2}$).   * **Bewegungsenergie (kinetische Energie)**: $E_{\\text{kin}} = \\frac{1}{2} m \\cdot v^2$.   * **Spannenergie**: $E_{\\text{spann}} = \\frac{1}{2} D \\cdot s^2$, 2. **Mechanische Arbeit**: $W = F \\cdot s$ (Kraft in Wegrichtung); Formen: Hubarbeit ($W_H = mgh$), Beschleunigungsarbeit, Reibungsarbeit, 3. **Der Energieerhaltungssatz der Mechanik**: In einem abgeschlossenen, reibungsfreien System ist die Summe aus potentieller und kinetischer Energie konstant: $E_{\\text{ges}} = E_{\\text{pot}} + E_{\\text{kin}} = \\text{konstant}$, 4. **Leistung & Wirkungsgrad**: $P = \\frac{W}{t}$ (Einheit Watt: $1\\,\\text{W} = 1\\,\\frac{\\text{J}}{\\text{s}}$), $\\eta = \\frac{E_{\\text{nutz}}}{E_{\\text{zu}}} = \\frac{P_{\\text{nutz}}}{P_{\\text{zu}}} < 1$.",
-          "concept": "Mechanik: Epot = m*g*h, Ekin = 1/2*m*v^2, Espann = 1/2*D*s^2; Arbeit W = F*s (Hubarbeit mgh); Energieerhaltung Epot + Ekin = const; Leistung P = W/t in Watt; Wirkungsgrad eta = Enutz/Ezu.",
-          "sample_solution": "1. Mechanische Energieformen: - **Energie** ist die Fähigkeit eines Körpers, physikalische Arbeit zu verrichten, Wärme abzugeben oder Strahlung auszusenden (Einheit: **1 Joule [J] = 1 N · m = 1 kg · m²/s²**):   * **1. Potentielle Energie (Höhenenergie / Lageenergie)**:     $$\\mathbf{E_{\\text{pot}} = m \\cdot g \\cdot h}$$   * **2. Kinetische Energie (Bewegungsenergie)**:     $$\\mathbf{E_{\\text{kin}} = \\frac{1}{2} m \\cdot v^2}$$   * **3. Spannenergie einer Feder**:     $$\\mathbf{E_{\\text{spann}} = \\frac{1}{2} D \\cdot s^2} \\quad (D = \\text{Federkonstante in N/m})$$ 2. Mechanische Arbeit ($W$): - Arbeit wird verrichtet, wenn ein Körper durch eine Kraft $F$ längs eines Weges $s$ bewegt oder verformt wird:   $$\\mathbf{W = F \\cdot s} \\quad (\\text{für } F \\parallel s)$$   * **Hubarbeit**: $W_{\\text{Hub}} = F_G \\cdot h = m \\cdot g \\cdot h = \\Delta E_{\\text{pot}}$.   * **Beschleunigungsarbeit**: $W_{\\text{Beschl}} = \\frac{1}{2} m v^2 = \\Delta E_{\\text{kin}}$. 3. Der Energieerhaltungssatz der Mechanik: - In einem **abgeschlossenen System ohne Reibungsverluste** kann Energie weder erzeugt noch vernichtet, sondern nur von einer Form in eine andere umgewandelt werden:   $$\\mathbf{E_{\\text{ges}} = E_{\\text{pot}} + E_{\\text{kin}} = \\text{konstant}}$$   *(Beispiel freier Fall aus Höhe $h$: Am Start gilt $E_{\\text{ges}} = mgh$, beim Aufprall $E_{\\text{ges}} = \\frac{1}{2}mv^2 \\implies v = \\sqrt{2gh}$)*. 4. Physikalische Leistung ($P$) und Wirkungsgrad ($\\eta$): - **Leistung $P$**: Gibt an, wie schnell eine bestimmte Arbeit verrichtet wird (Arbeit pro Zeitspanne):   $$\\mathbf{P = \\frac{W}{t} = F \\cdot v} \\quad (\\text{Einheit: } 1\\text{ Watt [W]} = 1\\,\\frac{\\text{J}}{\\text{s}})$$ - **Wirkungsgrad $\\eta$**: Das Verhältnis von nutzbarer Energie zu zugeführter Energie (stets $\\eta < 100\\%$ durch unvermeidliche Reibungswärme):   $$\\mathbf{\\eta = \\frac{E_{\\text{nutz}}}{E_{\\text{zu}}} = \\frac{P_{\\text{nutz}}}{P_{\\text{zu}}}} \\quad (0 \\le \\eta < 1)$$."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere Energie, Arbeit, Leistung und den Energieerhaltungssatz: 1. Energieformen:   * Lageenergie (potentielle Energie): "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{pot}} = m \\cdot g \\cdot h",
+              "speech": "E pot gleich m mal g mal h"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "g \\approx 9{,}81\\,\\frac{\\text{m}}{\\text{s}^2}",
+              "speech": "g ungefähr 9,81 Meter pro Sekunde Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ").   * Bewegungsenergie (kinetische Energie): "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{kin}} = \\frac{1}{2} m \\cdot v^2",
+              "speech": "E kin gleich ein halb m mal v Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ".   * Spannenergie: "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{spann}} = \\frac{1}{2} D \\cdot s^2",
+              "speech": "E spann gleich ein halb D mal s Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Mechanische Arbeit: "
+            },
+            {
+              "type": "math",
+              "tex": "W = F \\cdot s",
+              "speech": "W gleich F mal s"
+            },
+            {
+              "type": "text",
+              "text": " (Kraft in Wegrichtung); Formen: Hubarbeit ("
+            },
+            {
+              "type": "math",
+              "tex": "W_H = mgh",
+              "speech": "W H gleich m g h"
+            },
+            {
+              "type": "text",
+              "text": "), Beschleunigungsarbeit, Reibungsarbeit, 3. Der Energieerhaltungssatz der Mechanik: In einem abgeschlossenen, reibungsfreien System ist die Summe aus potentieller und kinetischer Energie konstant: "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{ges}} = E_{\\text{pot}} + E_{\\text{kin}} = \\text{konstant}",
+              "speech": "E ges gleich E pot plus E kin gleich konstant"
+            },
+            {
+              "type": "text",
+              "text": ", 4. Leistung & Wirkungsgrad: "
+            },
+            {
+              "type": "math",
+              "tex": "P = \\frac{W}{t}",
+              "speech": "P gleich W durch t"
+            },
+            {
+              "type": "text",
+              "text": " (Einheit Watt: "
+            },
+            {
+              "type": "math",
+              "tex": "1\\,\\text{W} = 1\\,\\frac{\\text{J}}{\\text{s}}",
+              "speech": "1 Watt gleich 1 Joule pro Sekunde"
+            },
+            {
+              "type": "text",
+              "text": "), "
+            },
+            {
+              "type": "math",
+              "tex": "\\eta = \\frac{E_{\\text{nutz}}}{E_{\\text{zu}}} = \\frac{P_{\\text{nutz}}}{P_{\\text{zu}}} < 1",
+              "speech": "Eta gleich E nutz durch E zu gleich P nutz durch P zu kleiner als 1"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Mechanik: "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{pot}} = m \\cdot g \\cdot h",
+              "speech": "E pot gleich m mal g mal h"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{kin}} = \\frac{1}{2} \\cdot m \\cdot v^2",
+              "speech": "E kin gleich ein halb mal m mal v Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{spann}} = \\frac{1}{2} \\cdot D \\cdot s^2",
+              "speech": "E spann gleich ein halb mal D mal s Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; Arbeit "
+            },
+            {
+              "type": "math",
+              "tex": "W = F \\cdot s",
+              "speech": "W gleich F mal s"
+            },
+            {
+              "type": "text",
+              "text": " (Hubarbeit "
+            },
+            {
+              "type": "math",
+              "tex": "m g h",
+              "speech": "m g h"
+            },
+            {
+              "type": "text",
+              "text": "); Energieerhaltung "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{pot}} + E_{\\text{kin}} = \\text{const}",
+              "speech": "E pot plus E kin gleich konstant"
+            },
+            {
+              "type": "text",
+              "text": "; Leistung "
+            },
+            {
+              "type": "math",
+              "tex": "P = \\frac{W}{t}",
+              "speech": "P gleich W durch t"
+            },
+            {
+              "type": "text",
+              "text": " in Watt; Wirkungsgrad "
+            },
+            {
+              "type": "math",
+              "tex": "\\eta = \\frac{E_{\\text{nutz}}}{E_{\\text{zu}}}",
+              "speech": "Eta gleich E nutz durch E zu"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Mechanische Energieformen: - Energie ist die Fähigkeit eines Körpers, physikalische Arbeit zu verrichten, Wärme abzugeben oder Strahlung auszusenden (Einheit: 1 Joule [J] = 1 N · m = 1 kg · m²/s²):   * 1. Potentielle Energie (Höhenenergie / Lageenergie):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E_{\\text{pot}} = m \\cdot g \\cdot h}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * 2. Kinetische Energie (Bewegungsenergie):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E_{\\text{kin}} = \\frac{1}{2} m \\cdot v^2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * 3. Spannenergie einer Feder:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E_{\\text{spann}} = \\frac{1}{2} D \\cdot s^2} \\quad (D = \\text{Federkonstante in N/m})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Mechanische Arbeit ("
+            },
+            {
+              "type": "math",
+              "tex": "W"
+            },
+            {
+              "type": "text",
+              "text": "): - Arbeit wird verrichtet, wenn ein Körper durch eine Kraft "
+            },
+            {
+              "type": "math",
+              "tex": "F"
+            },
+            {
+              "type": "text",
+              "text": " längs eines Weges "
+            },
+            {
+              "type": "math",
+              "tex": "s"
+            },
+            {
+              "type": "text",
+              "text": " bewegt oder verformt wird:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{W = F \\cdot s} \\quad (\\text{für } F \\parallel s)",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Hubarbeit: "
+            },
+            {
+              "type": "math",
+              "tex": "W_{\\text{Hub}} = F_G \\cdot h = m \\cdot g \\cdot h = \\Delta E_{\\text{pot}}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Beschleunigungsarbeit: "
+            },
+            {
+              "type": "math",
+              "tex": "W_{\\text{Beschl}} = \\frac{1}{2} m v^2 = \\Delta E_{\\text{kin}}"
+            },
+            {
+              "type": "text",
+              "text": ". 3. Der Energieerhaltungssatz der Mechanik: - In einem abgeschlossenen System ohne Reibungsverluste kann Energie weder erzeugt noch vernichtet, sondern nur von einer Form in eine andere umgewandelt werden:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E_{\\text{ges}} = E_{\\text{pot}} + E_{\\text{kin}} = \\text{konstant}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   (Beispiel freier Fall aus Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h"
+            },
+            {
+              "type": "text",
+              "text": ": Am Start gilt "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{ges}} = mgh"
+            },
+            {
+              "type": "text",
+              "text": ", beim Aufprall "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{ges}} = \\frac{1}{2}mv^2 \\implies v = \\sqrt{2gh}"
+            },
+            {
+              "type": "text",
+              "text": "). 4. Physikalische Leistung ("
+            },
+            {
+              "type": "math",
+              "tex": "P"
+            },
+            {
+              "type": "text",
+              "text": ") und Wirkungsgrad ("
+            },
+            {
+              "type": "math",
+              "tex": "\\eta"
+            },
+            {
+              "type": "text",
+              "text": "): - Leistung "
+            },
+            {
+              "type": "math",
+              "tex": "P"
+            },
+            {
+              "type": "text",
+              "text": ": Gibt an, wie schnell eine bestimmte Arbeit verrichtet wird (Arbeit pro Zeitspanne):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{P = \\frac{W}{t} = F \\cdot v} \\quad (\\text{Einheit: } 1\\text{ Watt [W]} = 1\\,\\frac{\\text{J}}{\\text{s}})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Wirkungsgrad "
+            },
+            {
+              "type": "math",
+              "tex": "\\eta"
+            },
+            {
+              "type": "text",
+              "text": ": Das Verhältnis von nutzbarer Energie zu zugeführter Energie (stets "
+            },
+            {
+              "type": "math",
+              "tex": "\\eta < 100\\%"
+            },
+            {
+              "type": "text",
+              "text": " durch unvermeidliche Reibungswärme):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\eta = \\frac{E_{\\text{nutz}}}{E_{\\text{zu}}} = \\frac{P_{\\text{nutz}}}{P_{\\text{zu}}}} \\quad (0 \\le \\eta < 1)",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +484,259 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Funktionsweise der klassischen Kraftwandler: 1. **Das Hebelgesetz (Drehmoment-Gleichgewicht)**:   * Ein zweiseitiger Hebel ist im Gleichgewicht, wenn die Summe aller linksdrehenden Drehmomente gleich der Summe aller rechtsdrehenden Drehmomente ist:     $$\\mathbf{F_1 \\cdot a_1 = F_2 \\cdot a_2} \\quad (a = \\text{senkrechter Hebelarm zum Drehpunkt})$$ 2. **Feste und lose Rolle & Flaschenzug**:   * *Feste Rolle*: Ändert nur die Kraftrichtung ($F = F_L$).   * *Lose Rolle*: Halbiert die aufzuwendende Zugkraft ($F = \\frac{1}{2} F_L$, doppelter Seilweg).   * *Flaschenzug mit $n$ tragenden Seilstücken*: $F_{\\text{Zug}} = \\frac{F_L}{n}$ und $s_{\\text{Zug}} = n \\cdot h$, 3. **Die Schiefe Ebene**: Hangabtriebskraft $F_H = F_G \\cdot \\frac{h}{l} = F_G \\cdot \\sin(\\alpha)$, 4. **Die Goldene Regel der Mechanik**: $W = F_1 \\cdot s_1 = F_2 \\cdot s_2$ $\\implies$ Man kann Kraft sparen, aber **niemals mechanische Arbeit**.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Funktionsweise der klassischen Kraftwandler: 1. Das Hebelgesetz (Drehmoment-Gleichgewicht):   * Ein zweiseitiger Hebel ist im Gleichgewicht, wenn die Summe aller linksdrehenden Drehmomente gleich der Summe aller rechtsdrehenden Drehmomente ist:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F_1 \\cdot a_1 = F_2 \\cdot a_2} \\quad (a = \\text{senkrechter Hebelarm zum Drehpunkt})",
+              "block": true,
+              "speech": "F eins mal a eins gleich F zwei mal a zwei, Klammer auf a gleich senkrechter Hebelarm zum Drehpunkt Klammer zu"
+            },
+            {
+              "type": "text",
+              "text": " 2. Feste und lose Rolle & Flaschenzug:   * Feste Rolle: Ändert nur die Kraftrichtung ("
+            },
+            {
+              "type": "math",
+              "tex": "F = F_L",
+              "speech": "F gleich F L"
+            },
+            {
+              "type": "text",
+              "text": ").   * Lose Rolle: Halbiert die aufzuwendende Zugkraft ("
+            },
+            {
+              "type": "math",
+              "tex": "F = \\frac{1}{2} F_L",
+              "speech": "F gleich ein halb F L"
+            },
+            {
+              "type": "text",
+              "text": ", doppelter Seilweg).   * Flaschenzug mit "
+            },
+            {
+              "type": "math",
+              "tex": "n",
+              "speech": "n"
+            },
+            {
+              "type": "text",
+              "text": " tragenden Seilstücken: "
+            },
+            {
+              "type": "math",
+              "tex": "F_{\\text{Zug}} = \\frac{F_L}{n}",
+              "speech": "F Zug gleich F L durch n"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "s_{\\text{Zug}} = n \\cdot h",
+              "speech": "s Zug gleich n mal h"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Die Schiefe Ebene: Hangabtriebskraft "
+            },
+            {
+              "type": "math",
+              "tex": "F_H = F_G \\cdot \\frac{h}{l} = F_G \\cdot \\sin(\\alpha)",
+              "speech": "F H gleich F G mal h durch l gleich F G mal Sinus von Alpha"
+            },
+            {
+              "type": "text",
+              "text": ", 4. Die Goldene Regel der Mechanik: "
+            },
+            {
+              "type": "math",
+              "tex": "W = F_1 \\cdot s_1 = F_2 \\cdot s_2",
+              "speech": "W gleich F eins mal s eins gleich F zwei mal s zwei"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Man kann Kraft sparen, aber niemals mechanische Arbeit."
+            }
+          ],
           "concept": "Einfache Maschinen: Hebelgesetz F1*a1 = F2*a2; Flaschenzug F = FL/n mit n Seilen; Schiefe Ebene FH = FG * h/l; Goldene Regel der Mechanik: Was an Kraft gespart wird, muss an Weg zugesetzt werden (Arbeit bleibt gleich).",
-          "sample_solution": "1. Der Hebel und das Drehmoment: - **Definition des Drehmoments $M$**: Drehwirkung einer Kraft mit orthogonalem Hebelarm $a$:   $$M = F \\cdot a \\quad (\\text{in } \\text{N} \\cdot \\text{m})$$ - **Das Hebelgesetz (Hebelgleichgewicht)**:   * Ein Hebel befindet sich im statischen Gleichgewicht, wenn das Produkt aus Kraft und Kraftarm gleich dem Produkt aus Last und Lastarm ist:     $$\\mathbf{F_1 \\cdot a_1 = F_2 \\cdot a_2} \\iff \\mathbf{\\frac{F_1}{F_2} = \\frac{a_2}{a_1}}$$   * *Zweiseitiger Hebel*: Drehpunkt liegt zwischen Kraft- und Lastangriffspunkt (z. B. Wippe, Schere, Balkenwaage).   * *Einseitiger Hebel*: Drehpunkt liegt an einem Ende, Last und Kraft greifen auf derselben Seite an (z. B. Schubkarre, Nussknacker). 2. Rollen und Flaschenzüge: - **1. Feste Rolle**:   * Der Drehpunkt liegt in der Achse; Kraftarm = Lastarm = Radius $r$.   * Erspart keine Kraft ($F_{\\text{Zug}} = F_{\\text{Last}}$), dient lediglich als **Richtungsumlenkung**. - **2. Lose Rolle**:   * Die Rolle hängt im Seil; Drehpunkt ist der Seilaufhängepunkt.   * Kraftarm ist der Durchmesser $2r$, Lastarm ist der Radius $r$.   * **Halbiert die erforderliche Zugkraft** ($F = \\frac{1}{2} F_L$), erfordert aber den **doppelten Zugweg** ($s = 2h$). - **3. Flaschenzug**:   * Kombination aus $k$ festen und $k$ losen Rollen mit insgesamt $n = 2k$ tragenden Seilstücken:     $$\\mathbf{F_{\\text{Zug}} = \\frac{F_{\\text{Last}}}{n}} \\quad \\text{und} \\quad \\mathbf{s_{\\text{Zug}} = n \\cdot h}$$ 3. Die Schiefe Ebene: - Zerlegung der Gewichtskraft $F_G$ in Hangabtriebskraft $F_H$ parallel zur Rampe und Normalkraft $F_N$ senkrecht zur Rampe:   $$\\mathbf{F_H = F_G \\cdot \\frac{h}{l}} \\quad (h = \\text{Höhe}, l = \\text{Länge der Rampe})$$ 4. Die Goldene Regel der Mechanik (Galileo Galilei): - Bei allen idealen (reibungsfreien) Kraftwandlern gilt:   $$\\mathbf{W = F_{\\text{Zug}} \\cdot s_{\\text{Zug}} = F_{\\text{Last}} \\cdot h = \\text{konstant}}$$ - **Kernaussage**: Man kann die benötigte Kraft durch Verlängerung des Weges beliebig reduzieren, es ist jedoch physikalisch unmöglich, mit einer Maschine **mechanische Arbeit zu sparen**."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der Hebel und das Drehmoment: - Definition des Drehmoments "
+            },
+            {
+              "type": "math",
+              "tex": "M"
+            },
+            {
+              "type": "text",
+              "text": ": Drehwirkung einer Kraft mit orthogonalem Hebelarm "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "M = F \\cdot a \\quad (\\text{in } \\text{N} \\cdot \\text{m})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Das Hebelgesetz (Hebelgleichgewicht):   * Ein Hebel befindet sich im statischen Gleichgewicht, wenn das Produkt aus Kraft und Kraftarm gleich dem Produkt aus Last und Lastarm ist:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F_1 \\cdot a_1 = F_2 \\cdot a_2} \\iff \\mathbf{\\frac{F_1}{F_2} = \\frac{a_2}{a_1}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Zweiseitiger Hebel: Drehpunkt liegt zwischen Kraft- und Lastangriffspunkt (z. B. Wippe, Schere, Balkenwaage).   * Einseitiger Hebel: Drehpunkt liegt an einem Ende, Last und Kraft greifen auf derselben Seite an (z. B. Schubkarre, Nussknacker). 2. Rollen und Flaschenzüge: - 1. Feste Rolle:   * Der Drehpunkt liegt in der Achse; Kraftarm = Lastarm = Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r"
+            },
+            {
+              "type": "text",
+              "text": ".   * Erspart keine Kraft ("
+            },
+            {
+              "type": "math",
+              "tex": "F_{\\text{Zug}} = F_{\\text{Last}}"
+            },
+            {
+              "type": "text",
+              "text": "), dient lediglich als Richtungsumlenkung. - 2. Lose Rolle:   * Die Rolle hängt im Seil; Drehpunkt ist der Seilaufhängepunkt.   * Kraftarm ist der Durchmesser "
+            },
+            {
+              "type": "math",
+              "tex": "2r"
+            },
+            {
+              "type": "text",
+              "text": ", Lastarm ist der Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r"
+            },
+            {
+              "type": "text",
+              "text": ".   * Halbiert die erforderliche Zugkraft ("
+            },
+            {
+              "type": "math",
+              "tex": "F = \\frac{1}{2} F_L"
+            },
+            {
+              "type": "text",
+              "text": "), erfordert aber den doppelten Zugweg ("
+            },
+            {
+              "type": "math",
+              "tex": "s = 2h"
+            },
+            {
+              "type": "text",
+              "text": "). - 3. Flaschenzug:   * Kombination aus "
+            },
+            {
+              "type": "math",
+              "tex": "k"
+            },
+            {
+              "type": "text",
+              "text": " festen und "
+            },
+            {
+              "type": "math",
+              "tex": "k"
+            },
+            {
+              "type": "text",
+              "text": " losen Rollen mit insgesamt "
+            },
+            {
+              "type": "math",
+              "tex": "n = 2k"
+            },
+            {
+              "type": "text",
+              "text": " tragenden Seilstücken:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F_{\\text{Zug}} = \\frac{F_{\\text{Last}}}{n}} \\quad \\text{und} \\quad \\mathbf{s_{\\text{Zug}} = n \\cdot h}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Die Schiefe Ebene: - Zerlegung der Gewichtskraft "
+            },
+            {
+              "type": "math",
+              "tex": "F_G"
+            },
+            {
+              "type": "text",
+              "text": " in Hangabtriebskraft "
+            },
+            {
+              "type": "math",
+              "tex": "F_H"
+            },
+            {
+              "type": "text",
+              "text": " parallel zur Rampe und Normalkraft "
+            },
+            {
+              "type": "math",
+              "tex": "F_N"
+            },
+            {
+              "type": "text",
+              "text": " senkrecht zur Rampe:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F_H = F_G \\cdot \\frac{h}{l}} \\quad (h = \\text{Höhe}, l = \\text{Länge der Rampe})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 4. Die Goldene Regel der Mechanik (Galileo Galilei): - Bei allen idealen (reibungsfreien) Kraftwandlern gilt:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{W = F_{\\text{Zug}} \\cdot s_{\\text{Zug}} = F_{\\text{Last}} \\cdot h = \\text{konstant}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Kernaussage: Man kann die benötigte Kraft durch Verlängerung des Weges beliebig reduzieren, es ist jedoch physikalisch unmöglich, mit einer Maschine mechanische Arbeit zu sparen."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

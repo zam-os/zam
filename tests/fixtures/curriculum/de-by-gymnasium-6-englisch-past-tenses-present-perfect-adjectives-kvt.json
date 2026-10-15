@@ -65,9 +65,175 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre Verwendung, Signalwörter und Formen des Simple Past: 1. Verwendung (in der Vergangenheit abgeschlossene Handlungen zu einem festen Zeitpunkt), 2. Signalwörter (*yesterday, last week/year, two days ago, in 2020, when I was young*), 3. Regelmäßige Verben (+ed: *play -> played*, stummes e: *live -> lived*, Konsonantenverdopplung: *stop -> stopped*, y nach Konsonant: *carry -> carried*), 4. Wichtige unregelmäßige Verben (2. Form: *go -> went, see -> saw, buy -> bought, have -> had, be -> was/were*), 5. Verneinung (*didn't + Infinitiv*) und Fragen (*Did + Subjekt + Infinitiv*) und übersetze: a) 'Letzten Sonntag sahen wir einen tollen Film.' b) 'Hast du deine Hausaufgaben gestern gemacht?' – 'Ja, habe ich.'",
+          "question": "Erkläre Verwendung, Signalwörter und Formen des Simple Past: 1. Verwendung (in der Vergangenheit abgeschlossene Handlungen zu einem festen Zeitpunkt), 2. Signalwörter (yesterday, last week/year, two days ago, in 2020, when I was young), 3. Regelmäßige Verben (+ed: play -> played, stummes e: live -> lived, Konsonantenverdopplung: stop -> stopped, y nach Konsonant: carry -> carried), 4. Wichtige unregelmäßige Verben (2. Form: go -> went, see -> saw, buy -> bought, have -> had, be -> was/were), 5. Verneinung (didn't + Infinitiv) und Fragen (Did + Subjekt + Infinitiv) und übersetze: a) 'Letzten Sonntag sahen wir einen tollen Film.' b) 'Hast du deine Hausaufgaben gestern gemacht?' – 'Ja, habe ich.'",
           "concept": "Simple Past: abgeschlossene Vergangenheit zu bestimmtem Zeitpunkt; Signalwörter: yesterday, ago, last; regelmäßig +ed / unregelmäßig 2. Spalte; Verneinung/Frage mit did + Infinitiv (kein did went!); a) 'Last Sunday we saw a great film.' b) 'Did you do your homework yesterday?' – 'Yes, I did.'",
-          "sample_solution": "1. Verwendung und Signalwörter des Simple Past: - **Verwendung**: Für Handlungen, Zustände oder Ereignisketten, die in der **Vergangenheit zu einem konkreten, benannten Zeitpunkt** begonnen haben und **vollständig abgeschlossen** sind. - **Typische Signalwörter**: *yesterday, last Monday / last week / last year, three days ago (vor drei Tagen), in 2018, when I was ten*. 2. Bildungsregeln des Simple Past: - **Regelmäßige Verben (Endung -ed)**:   * Grundform + **-ed**: *watch $\\rightarrow$ watched, play $\\rightarrow$ played*.   * Endung auf stummes -e $\\rightarrow$ nur **-d**: *live $\\rightarrow$ lived, love $\\rightarrow$ loved*.   * Konsonantenverdopplung nach kurzem, betontem Vokal: *stop $\\rightarrow$ sto**pp**ed, travel $\\rightarrow$ trave**ll**ed*.   * Nach Konsonant + y $\\rightarrow$ **-ied**: *worry $\\rightarrow$ worried, try $\\rightarrow$ tried* (aber: *played* nach Vokal). - **Unregelmäßige Verben (Irregular Verbs – 2. Spalte)**:   * Müssen auswendig gelernt werden: *go $\\rightarrow$ went, see $\\rightarrow$ saw, buy $\\rightarrow$ bought, take $\\rightarrow$ took, write $\\rightarrow$ wrote, eat $\\rightarrow$ ate, have $\\rightarrow$ had*.   * Form von 'to be': *I/he/she/it **was***; *you/we/they **were***. - **Verneinte Sätze (Negative Sentences)**:   * **didn't (did not) + Infinitiv**: *'I didn't see him'* (Achtung: Niemals *'didn't saw'*!). - **Fragesätze und Kurzantworten**:   * **Did + Subjekt + Infinitiv ...?**: *'Did you go to London?'* $\\rightarrow$ Short Answer: *'Yes, I did.'* / *'No, I didn't.'* 3. Übersetzungen: - a) 'Letzten Sonntag sahen wir einen tollen Film.' $\\rightarrow$ **'Last Sunday we saw a great film.'** (unregelmäßige 2. Form *saw*). - b) 'Hast du deine Hausaufgaben gestern gemacht?' – 'Ja, habe ich.' $\\rightarrow$ **'Did you do your homework yesterday?' – 'Yes, I did.'**"
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Verwendung und Signalwörter des Simple Past: - Verwendung: Für Handlungen, Zustände oder Ereignisketten, die in der Vergangenheit zu einem konkreten, benannten Zeitpunkt begonnen haben und vollständig abgeschlossen sind. - Typische Signalwörter: yesterday, last Monday / last week / last year, three days ago (vor drei Tagen), in 2018, when I was ten. 2. Bildungsregeln des Simple Past: - Regelmäßige Verben (Endung -ed):   * Grundform + -ed: watch "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " watched, play "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " played.   * Endung auf stummes -e "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " nur -d: live "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " lived, love "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " loved.   * Konsonantenverdopplung nach kurzem, betontem Vokal: *stop "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " sto**pp**ed, travel "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " trave**ll**ed*.   * Nach Konsonant + y "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " -ied: worry "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " worried, try "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " tried (aber: played nach Vokal). - Unregelmäßige Verben (Irregular Verbs – 2. Spalte):   * Müssen auswendig gelernt werden: go "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " went, see "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " saw, buy "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " bought, take "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " took, write "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " wrote, eat "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " ate, have "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " had.   * Form von 'to be': *I/he/she/it **was***; *you/we/they **were***. - Verneinte Sätze (Negative Sentences):   * didn't (did not) + Infinitiv: 'I didn't see him' (Achtung: Niemals 'didn't saw'!). - Fragesätze und Kurzantworten:   * Did + Subjekt + Infinitiv ...?: 'Did you go to London?' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Short Answer: 'Yes, I did.' / 'No, I didn't.' 3. Übersetzungen: - a) 'Letzten Sonntag sahen wir einen tollen Film.' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " 'Last Sunday we saw a great film.' (unregelmäßige 2. Form saw). - b) 'Hast du deine Hausaufgaben gestern gemacht?' – 'Ja, habe ich.' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " 'Did you do your homework yesterday?' – 'Yes, I did.'"
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +294,32 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre Bildung und Verwendung des Past Continuous: 1. Bildungsformel (*was/were + verb-ing*), 2. Verwendung für Handlungen, die zu einem bestimmten Zeitpunkt in der Vergangenheit gerade im Ablauf begriffen waren (*'At 8 pm yesterday, I was sleeping'*), 3. Kombination von Past Continuous und Simple Past im Satzgefüge mit den Signalwörtern **while** (leitet meist die andauernde Hintergrundhandlung im Past Continuous ein) und **when** (leitet das plötzlich eintretende Unterbrechungsereignis im Simple Past ein) und setze die richtigen Zeitformen ein: a) 'While we (have) dinner, the lights suddenly (go) out.' b) 'What you (do) when the storm started?'",
+          "question": "Erkläre Bildung und Verwendung des Past Continuous: 1. Bildungsformel (was/were + verb-ing), 2. Verwendung für Handlungen, die zu einem bestimmten Zeitpunkt in der Vergangenheit gerade im Ablauf begriffen waren ('At 8 pm yesterday, I was sleeping'), 3. Kombination von Past Continuous und Simple Past im Satzgefüge mit den Signalwörtern while (leitet meist die andauernde Hintergrundhandlung im Past Continuous ein) und when (leitet das plötzlich eintretende Unterbrechungsereignis im Simple Past ein) und setze die richtigen Zeitformen ein: a) 'While we (have) dinner, the lights suddenly (go) out.' b) 'What you (do) when the storm started?'",
           "concept": "Past Continuous: was/were + verb-ing; Hintergrundhandlung im Verlauf; Schnittpunkt mit neuem Ereignis im Simple Past (while + Past Continuous, when + Simple Past); a) 'While we were having dinner, the lights suddenly went out.' b) 'What were you doing when the storm started?'.",
-          "sample_solution": "1. Bildung und Funktion des Past Continuous (Progressive): - **Bildungsformel**:   $$\\mathbf{\\text{Form von 'to be' im Past (was / were) + Infinitiv mit Endung -ing}}$$   * *I / he / she / it **was playing***   * *you / we / they **were playing***   * Verneinung: *wasn't / weren't + verb-ing* (*'They weren't listening'*).   * Frage: *'Were you reading?'* - **Grundfunktion**: Beschreibt eine Handlung, die zu einem exakten Zeitpunkt in der Vergangenheit **gerade in vollem Gange (im Verlauf)** war. 2. Das Zusammenspiel von Past Continuous und Simple Past (Unterbrechung): - Häufigste Anwendung in englischen Erzählungen:   * **Die andauernde Hintergrundhandlung (Langer Zeitstrahl)** steht im **Past Continuous** (Signalwort oft **while** = *während*).   * **Das plötzlich neu eintretende, unterbrechende Ereignis (Punkt auf dem Zeitstrahl)** steht im **Simple Past** (Signalwort oft **when** = *als / plötzlich*). 3. Einsetzen in die Beispielsätze: - a) *'While we **were having** dinner, the lights suddenly **went** out.'*   * *were having* = andauernde Handlung im Past Continuous (stummes -e bei *have* entfällt).   * *went out* = plötzliches Ereignis im Simple Past (unregelmäßiges Verb *go $\\rightarrow$ went*). - b) *'What **were you doing** when the storm started?'*   * *were you doing* = Frage nach der momentanen Aktivität im Past Continuous.   * *started* = einsetzender Sturm im Simple Past."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Bildung und Funktion des Past Continuous (Progressive): - Bildungsformel:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Form von 'to be' im Past (was / were) + Infinitiv mit Endung -ing}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * *I / he / she / it **was playing***   * *you / we / they **were playing***   * Verneinung: wasn't / weren't + verb-ing ('They weren't listening').   * Frage: 'Were you reading?' - Grundfunktion: Beschreibt eine Handlung, die zu einem exakten Zeitpunkt in der Vergangenheit gerade in vollem Gange (im Verlauf) war. 2. Das Zusammenspiel von Past Continuous und Simple Past (Unterbrechung): - Häufigste Anwendung in englischen Erzählungen:   * Die andauernde Hintergrundhandlung (Langer Zeitstrahl) steht im Past Continuous (Signalwort oft while = während).   * Das plötzlich neu eintretende, unterbrechende Ereignis (Punkt auf dem Zeitstrahl) steht im Simple Past (Signalwort oft when = als / plötzlich). 3. Einsetzen in die Beispielsätze: - a) 'While we were having dinner, the lights suddenly went out.'   * were having = andauernde Handlung im Past Continuous (stummes -e bei have entfällt).   * went out = plötzliches Ereignis im Simple Past (unregelmäßiges Verb go "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " went). - b) 'What were you doing when the storm started?'   * were you doing = Frage nach der momentanen Aktivität im Past Continuous.   * started = einsetzender Sturm im Simple Past."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -191,9 +380,120 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre Bildung, Verwendung und Signalwörter des Present Perfect: 1. Bildungsformel (*have / has + Past Participle / 3. Form: regular -ed / irregular: see -> seen, go -> gone, write -> written*), 2. Wann Present Perfect verwendet wird (vergangene Handlung mit direktem **Resultat/Auswirkung auf die Gegenwart** oder bisherige Lebenserfahrung), 3. Typische Signalwörter (*just, already, not yet, ever, never, so far*), 4. Der fundamentale Unterschied zu Simple Past (konkreter abgeschlossener Zeitpunkt wie *yesterday, in 2020* verlangt zwingend Simple Past!) und übersetze: a) 'Ich habe gerade meine Schlüssel verloren (und kann jetzt nicht ins Haus).' b) 'Warst du jemals in London?' – 'Ja, ich war letztes Jahr dort.'",
+          "question": "Erkläre Bildung, Verwendung und Signalwörter des Present Perfect: 1. Bildungsformel (have / has + Past Participle / 3. Form: regular -ed / irregular: see -> seen, go -> gone, write -> written), 2. Wann Present Perfect verwendet wird (vergangene Handlung mit direktem Resultat/Auswirkung auf die Gegenwart oder bisherige Lebenserfahrung), 3. Typische Signalwörter (just, already, not yet, ever, never, so far), 4. Der fundamentale Unterschied zu Simple Past (konkreter abgeschlossener Zeitpunkt wie yesterday, in 2020 verlangt zwingend Simple Past!) und übersetze: a) 'Ich habe gerade meine Schlüssel verloren (und kann jetzt nicht ins Haus).' b) 'Warst du jemals in London?' – 'Ja, ich war letztes Jahr dort.'",
           "concept": "Present Perfect: have/has + 3. Form; Auswirkung auf Gegenwart / Lebenserfahrung; Signalwörter: just, already, yet, ever, never; Kontrast zu Simple Past (last year fordert Simple Past!); a) 'I have just lost my keys.' b) 'Have you ever been to London?' – 'Yes, I was there last year.'",
-          "sample_solution": "1. Bildung des Present Perfect Simple: - **Bildungsformel**:   $$\\mathbf{\\text{Form von 'have' (have / has) + Past Participle (3. Verbform)}}$$   * I / you / we / they $\\rightarrow$ **have + 3. Form** (*I've seen, we have worked*).   * he / she / it $\\rightarrow$ **has + 3. Form** (*He's gone, she has written*).   * Regelmäßige Verben: Endung **-ed** (*have cleaned*).   * Unregelmäßige Verben: **3. Spalte der Tabelle** (*break $\\rightarrow$ broke $\\rightarrow$ **broken***; *see $\\rightarrow$ saw $\\rightarrow$ **seen***). 2. Verwendung und der Gegenwartsbezug: - Das Present Perfect schlägt eine Brücke zwischen Vergangenheit und Gegenwart:   * **1. Gegenwärtiges Resultat**: Das Ereignis fand in der Vergangenheit statt, aber das Ergebnis ist **jetzt im Moment wichtig** (*'I have washed my hands'* $\\rightarrow$ sie sind jetzt sauber!).   * **2. Lebenserfahrung bis zum heutigen Tag**: Was jemand in seinem bisherigen Leben schon oder noch nie getan hat (*'She has never eaten sushi'*). 3. Die unverwechselbaren Signalwörter: - **just** (gerade eben): *'I have just arrived.'* - **already** (schon/bereits): *'He has already eaten.'* - **yet** (in Verneinungen 'noch nicht', in Fragen 'schon' – immer am Satzende!): *'I haven't packed my bag yet.'* - **ever** (jemals): *'Have you ever seen a ghost?'* - **never** (noch nie): *'I have never been to America.'* 4. Kontrast: Present Perfect vs. Simple Past: - Steht im Satz ein **konkreter, vergangener Zeitpunkt** (*yesterday, last week, in 2022, 5 minutes ago*), ist das Present Perfect im Englischen streng verboten $\\rightarrow$ zwingend **Simple Past**! 5. Übersetzungen: - a) 'Ich habe gerade meine Schlüssel verloren.' $\\rightarrow$ **'I have just lost my keys.'** (Gegenwartsbezug: Ich stehe jetzt vor verschlossener Tür). - b) 'Warst du jemals in London?' – 'Ja, ich war letztes Jahr dort.' $\\rightarrow$ **'Have you ever been to London?' – 'Yes, I was there last year.'** (1. Satz = Lebenserfahrung $\\rightarrow$ Present Perfect; 2. Satz = konkreter Zeitpunkt *last year* $\\rightarrow$ Simple Past *was*)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Bildung des Present Perfect Simple: - Bildungsformel:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Form von 'have' (have / has) + Past Participle (3. Verbform)}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * I / you / we / they "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " have + 3. Form (I've seen, we have worked).   * he / she / it "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " has + 3. Form (He's gone, she has written).   * Regelmäßige Verben: Endung -ed (have cleaned).   * Unregelmäßige Verben: 3. Spalte der Tabelle (*break "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " broke "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " **broken***; *see "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " saw "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " **seen***). 2. Verwendung und der Gegenwartsbezug: - Das Present Perfect schlägt eine Brücke zwischen Vergangenheit und Gegenwart:   * 1. Gegenwärtiges Resultat: Das Ereignis fand in der Vergangenheit statt, aber das Ergebnis ist jetzt im Moment wichtig ('I have washed my hands' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " sie sind jetzt sauber!).   * 2. Lebenserfahrung bis zum heutigen Tag: Was jemand in seinem bisherigen Leben schon oder noch nie getan hat ('She has never eaten sushi'). 3. Die unverwechselbaren Signalwörter: - just (gerade eben): 'I have just arrived.' - already (schon/bereits): 'He has already eaten.' - yet (in Verneinungen 'noch nicht', in Fragen 'schon' – immer am Satzende!): 'I haven't packed my bag yet.' - ever (jemals): 'Have you ever seen a ghost?' - never (noch nie): 'I have never been to America.' 4. Kontrast: Present Perfect vs. Simple Past: - Steht im Satz ein konkreter, vergangener Zeitpunkt (yesterday, last week, in 2022, 5 minutes ago), ist das Present Perfect im Englischen streng verboten "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " zwingend Simple Past! 5. Übersetzungen: - a) 'Ich habe gerade meine Schlüssel verloren.' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " 'I have just lost my keys.' (Gegenwartsbezug: Ich stehe jetzt vor verschlossener Tür). - b) 'Warst du jemals in London?' – 'Ja, ich war letztes Jahr dort.' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " 'Have you ever been to London?' – 'Yes, I was there last year.' (1. Satz = Lebenserfahrung "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Present Perfect; 2. Satz = konkreter Zeitpunkt last year "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Simple Past was)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -254,9 +554,175 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre die Regeln für die Steigerung englischer Adjektive und den Gebrauch von Mengenwörtern: 1. Einsilbige Adjektive und zweisilbige auf -y (-er / -est: *fast -> faster -> fastest; easy -> easier -> easiest*), 2. Mehrsilbige Adjektive (more / most: *exciting -> more exciting -> the most exciting*), 3. Wichtige unregelmäßige Formen (*good - better - best; bad - worse - worst; much/many - more - most*), 4. Vergleichsstrukturen (*as ... as* bei Gleichheit; *... than* beim Komparativ: *'Tom is taller than Ben'*), 5. Mengenangaben: *much* (unzählbare Nomen: *much water, much time*) vs. *many* (zählbare Pluralnomen: *many books, many friends*) sowie *some* (Aussagesätze) vs. *any* (Verneinung und Fragen) und übersetze: a) 'Dieses Buch ist interessanter als jener Film.' b) 'Hast du irgendwelche Fragen?' – 'Nein, ich habe keine Fragen.'",
+          "question": "Erkläre die Regeln für die Steigerung englischer Adjektive und den Gebrauch von Mengenwörtern: 1. Einsilbige Adjektive und zweisilbige auf -y (-er / -est: fast -> faster -> fastest; easy -> easier -> easiest), 2. Mehrsilbige Adjektive (more / most: exciting -> more exciting -> the most exciting), 3. Wichtige unregelmäßige Formen (good - better - best; bad - worse - worst; much/many - more - most), 4. Vergleichsstrukturen (as ... as bei Gleichheit; ... than beim Komparativ: 'Tom is taller than Ben'), 5. Mengenangaben: much (unzählbare Nomen: much water, much time) vs. many (zählbare Pluralnomen: many books, many friends) sowie some (Aussagesätze) vs. any (Verneinung und Fragen) und übersetze: a) 'Dieses Buch ist interessanter als jener Film.' b) 'Hast du irgendwelche Fragen?' – 'Nein, ich habe keine Fragen.'",
           "concept": "Steigerung: 1-silbig +er/est; 2-silbig auf -y -> -ier/iest; mehrsilbig: more/most; unregelmäßig: good/better/best, bad/worse/worst; much (unzählbar) vs. many (zählbar); some (positiv) vs. any (verneint/Frage); a) 'This book is more interesting than that film.' b) 'Have you got any questions?' – 'No, I haven't got any questions.'",
-          "sample_solution": "1. Die Regeln der Adjektivsteigerung: - **1. Einsilbige Adjektive (und zweisilbige auf -y)**:   * Komparativ: **-er** | Superlativ: **the ... -est**   * *tall $\\rightarrow$ taller $\\rightarrow$ the tallest*   * *big $\\rightarrow$ bi**gg**er $\\rightarrow$ the bi**gg**est* (Konsonantenverdopplung nach kurzem Vokal)   * *happy $\\rightarrow$ ha**ppi**er $\\rightarrow$ the ha**ppi**est* (-y nach Konsonant wird zu -i). - **2. Mehrsilbige Adjektive (ab 2 Silben ohne -y)**:   * Komparativ: **more + Adjektiv** | Superlativ: **the most + Adjektiv**   * *expensive $\\rightarrow$ more expensive $\\rightarrow$ the most expensive*   * *dangerous $\\rightarrow$ more dangerous $\\rightarrow$ the most dangerous*. - **3. Wichtige unregelmäßige Steigerungen**:   * *good $\\rightarrow$ **better** $\\rightarrow$ **the best***   * *bad $\\rightarrow$ **worse** $\\rightarrow$ **the worst***   * *little $\\rightarrow$ **less** $\\rightarrow$ **the least***   * *much / many $\\rightarrow$ **more** $\\rightarrow$ **the most***. - **4. Vergleiche im Satz**:   * Gleichheit: **as ... as** (*'She is as clever as her brother'*).   * Ungleichheit / Komparativ: **Adjektiv-er / more ... + than** (*'An elephant is bigger than a horse'*). 2. Mengenwörter: *much/many* und *some/any*: - **much vs. many**:   * **much**: Nur vor **unzählbaren Nomen** (Singular ohne Pluralform: *much money, much milk, much homework*).   * **many**: Vor **zählbaren Nomen im Plural** (*many apples, many students, many cars*). - **some vs. any**:   * **some**: In **bejahenden Aussagesätzen** (*'I have got some apples'*).   * **any**: In **verneinten Sätzen** und **offenen Fragesätzen** (*'I haven't got any milk'*, *'Have you got any pens?'*). 3. Übersetzungen: - a) 'Dieses Buch ist interessanter als jener Film.' $\\rightarrow$ **'This book is more interesting than that film.'** - b) 'Hast du irgendwelche Fragen?' – 'Nein, ich habe keine Fragen.' $\\rightarrow$ **'Have you got any questions?' – 'No, I haven't got any questions.'**"
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Regeln der Adjektivsteigerung: - 1. Einsilbige Adjektive (und zweisilbige auf -y):   * Komparativ: -er | Superlativ: the ... -est   * tall "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " taller "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " the tallest   * *big "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " bi**gg**er "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " the bi**gg**est* (Konsonantenverdopplung nach kurzem Vokal)   * *happy "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " ha**ppi**er "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " the ha**ppi**est* (-y nach Konsonant wird zu -i). - 2. Mehrsilbige Adjektive (ab 2 Silben ohne -y):   * Komparativ: more + Adjektiv | Superlativ: the most + Adjektiv   * expensive "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " more expensive "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " the most expensive   * dangerous "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " more dangerous "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " the most dangerous. - 3. Wichtige unregelmäßige Steigerungen:   * *good "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " better "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " **the best***   * *bad "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " worse "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " **the worst***   * *little "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " less "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " **the least***   * *much / many "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " more "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " **the most***. - 4. Vergleiche im Satz:   * Gleichheit: as ... as ('She is as clever as her brother').   * Ungleichheit / Komparativ: Adjektiv-er / more ... + than ('An elephant is bigger than a horse'). 2. Mengenwörter: much/many und some/any: - much vs. many:   * much: Nur vor unzählbaren Nomen (Singular ohne Pluralform: much money, much milk, much homework).   * many: Vor zählbaren Nomen im Plural (many apples, many students, many cars). - some vs. any:   * some: In bejahenden Aussagesätzen ('I have got some apples').   * any: In verneinten Sätzen und offenen Fragesätzen ('I haven't got any milk', 'Have you got any pens?'). 3. Übersetzungen: - a) 'Dieses Buch ist interessanter als jener Film.' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " 'This book is more interesting than that film.' - b) 'Hast du irgendwelche Fragen?' – 'Nein, ich habe keine Fragen.' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " 'Have you got any questions?' – 'No, I haven't got any questions.'"
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

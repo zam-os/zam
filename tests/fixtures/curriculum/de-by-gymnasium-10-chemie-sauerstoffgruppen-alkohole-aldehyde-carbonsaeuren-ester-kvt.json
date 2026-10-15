@@ -65,9 +65,311 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere Alkohole, ihre stufenweise Oxidation und die Nachweisreaktionen von Carbonylverbindungen: 1. **Struktur der Alkohole (Alkanole)**:   * Funktionelle Gruppe: **Hydroxygruppe ($-OH$)**.   * **Wasserstoffbrückenbindungen**: Führen zu drastisch höheren Siedepunkten als bei Alkanen gleicher Masse (z. B. Ethan Sdp. $-88{,}6^\\circ\\text{C}$ vs. Ethanol Sdp. $+78{,}3^\\circ\\text{C}$) und Wasserlöslichkeit (Hydrophilie) bei kurzen Ketten.   * **Klassifikation**:     - *Primärer Alkohol*: C-Atom mit $-OH$ ist an 1 weiteres C-Atom gebunden ($R-CH_2-OH$).     - *Sekundärer Alkohol*: an 2 weitere C-Atome gebunden ($R_1-CH(OH)-R_2$).     - *Tertiärer Alkohol*: an 3 weitere C-Atome gebunden ($R_1-C(OH)(R_2)-R_3$), 2. **Stufenweise Oxidation**:   * **Primärer Alkohol** $\\xrightarrow{[O]}$ **Aldehyd (Alkanal, $-CHO$)** $\\xrightarrow{[O]}$ **Carbonsäure ($-COOH$)**.   * **Sekundärer Alkohol** $\\xrightarrow{[O]}$ **Keton (Alkanon, $>C=O$)** (keine Weiteroxidation unter milden Bedingungen).   * **Tertiärer Alkohol**: Keine Oxidation unter Erhalt des C-Gerüsts, 3. **Nachweisreaktionen für Aldehyde (Reduktionsvermögen)**:   * **Fehling-Probe**: Aldehyd oxidiert zur Carbonsäure, während blaue $Cu^{2+}$-Ionen zu ziegelrotem Kupfer(I)-oxid ($Cu_2O$) reduziert werden:     $$\\text{R-CHO} + 2\\,\\text{Cu}^{2+} + 5\\,\\text{OH}^- \\rightarrow \\text{R-COO}^- + \\mathbf{\\text{Cu}_2\\text{O} \\downarrow \\text{ (ziegelrot)}} + 3\\,\\text{H}_2\\text{O}$$   * **Tollens-Probe (Silberspiegelprobe)**: Reduktion von $[Ag(NH_3)_2]^+$ zu elementarem, spiegelndem Silber ($Ag^0$).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere Alkohole, ihre stufenweise Oxidation und die Nachweisreaktionen von Carbonylverbindungen: 1. Struktur der Alkohole (Alkanole):   * Funktionelle Gruppe: Hydroxygruppe ("
+            },
+            {
+              "type": "math",
+              "tex": "-OH",
+              "speech": "O H"
+            },
+            {
+              "type": "text",
+              "text": ").   * Wasserstoffbrückenbindungen: Führen zu drastisch höheren Siedepunkten als bei Alkanen gleicher Masse (z. B. Ethan Sdp. "
+            },
+            {
+              "type": "math",
+              "tex": "-88{,}6^\\circ\\text{C}",
+              "speech": "minus 88,6 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": " vs. Ethanol Sdp. "
+            },
+            {
+              "type": "math",
+              "tex": "+78{,}3^\\circ\\text{C}",
+              "speech": "plus 78,3 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": ") und Wasserlöslichkeit (Hydrophilie) bei kurzen Ketten.   * Klassifikation:     - Primärer Alkohol: C-Atom mit "
+            },
+            {
+              "type": "math",
+              "tex": "-OH",
+              "speech": "O H"
+            },
+            {
+              "type": "text",
+              "text": " ist an 1 weiteres C-Atom gebunden ("
+            },
+            {
+              "type": "math",
+              "tex": "R-CH_2-OH",
+              "speech": "R, C H zwei, O H"
+            },
+            {
+              "type": "text",
+              "text": ").     - Sekundärer Alkohol: an 2 weitere C-Atome gebunden ("
+            },
+            {
+              "type": "math",
+              "tex": "R_1-CH(OH)-R_2",
+              "speech": "R eins, C H O H, R zwei"
+            },
+            {
+              "type": "text",
+              "text": ").     - Tertiärer Alkohol: an 3 weitere C-Atome gebunden ("
+            },
+            {
+              "type": "math",
+              "tex": "R_1-C(OH)(R_2)-R_3",
+              "speech": "R eins, C O H mit R zwei, R drei"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Stufenweise Oxidation:   * Primärer Alkohol "
+            },
+            {
+              "type": "math",
+              "tex": "\\xrightarrow{[O]}",
+              "speech": "reagiert durch Oxidation zu"
+            },
+            {
+              "type": "text",
+              "text": " Aldehyd (Alkanal, "
+            },
+            {
+              "type": "math",
+              "tex": "-CHO",
+              "speech": "C H O"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\xrightarrow{[O]}",
+              "speech": "reagiert durch Oxidation zu"
+            },
+            {
+              "type": "text",
+              "text": " Carbonsäure ("
+            },
+            {
+              "type": "math",
+              "tex": "-COOH",
+              "speech": "C O O H"
+            },
+            {
+              "type": "text",
+              "text": ").   * Sekundärer Alkohol "
+            },
+            {
+              "type": "math",
+              "tex": "\\xrightarrow{[O]}",
+              "speech": "reagiert durch Oxidation zu"
+            },
+            {
+              "type": "text",
+              "text": " Keton (Alkanon, "
+            },
+            {
+              "type": "math",
+              "tex": ">C=O",
+              "speech": "Carbonylgruppe C doppelt gebunden an O"
+            },
+            {
+              "type": "text",
+              "text": ") (keine Weiteroxidation unter milden Bedingungen).   * Tertiärer Alkohol: Keine Oxidation unter Erhalt des C-Gerüsts, 3. Nachweisreaktionen für Aldehyde (Reduktionsvermögen):   * Fehling-Probe: Aldehyd oxidiert zur Carbonsäure, während blaue "
+            },
+            {
+              "type": "math",
+              "tex": "Cu^{2+}",
+              "speech": "C u zwei plus"
+            },
+            {
+              "type": "text",
+              "text": "-Ionen zu ziegelrotem Kupfer(I)-oxid ("
+            },
+            {
+              "type": "math",
+              "tex": "Cu_2O",
+              "speech": "C u zwei O"
+            },
+            {
+              "type": "text",
+              "text": ") reduziert werden:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{R-CHO} + 2\\,\\text{Cu}^{2+} + 5\\,\\text{OH}^- \\rightarrow \\text{R-COO}^- + \\mathbf{\\text{Cu}_2\\text{O} \\downarrow \\text{ (ziegelrot)}} + 3\\,\\text{H}_2\\text{O}",
+              "block": true,
+              "speech": "R C H O plus 2 Cu zwei plus plus 5 O H minus reagiert zu R C O O minus plus Cu zwei O als ziegelroter Niederschlag plus 3 H zwei O"
+            },
+            {
+              "type": "text",
+              "text": "   * Tollens-Probe (Silberspiegelprobe): Reduktion von "
+            },
+            {
+              "type": "math",
+              "tex": "[Ag(NH_3)_2]^+",
+              "speech": "Silber mit zwei N H drei, einfach positiv"
+            },
+            {
+              "type": "text",
+              "text": " zu elementarem, spiegelndem Silber ("
+            },
+            {
+              "type": "math",
+              "tex": "Ag^0",
+              "speech": "A g null"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
           "concept": "Alkohole: Hydroxygruppe -OH, H-Brücken; Primär/Sekundär/Tertiär; Stufenweise Oxidation (primär -> Aldehyd -> Carbonsäure; sekundär -> Keton; tertiär stabil); Nachweise: Fehling (Cu2+ -> Cu2O ziegelrot) und Tollens (Ag+ -> Ag Silberspiegel).",
-          "sample_solution": "1. Struktur und Eigenschaften der Alkohole: - **Funktionelle Gruppe**: Die **Hydroxygruppe ($-OH$)** polarisiert das Molekül stark ($^{\\delta-}O-H^{\\delta+}$). - **Physikalische Konsequenzen**:   * **Wasserstoffbrückenbindungen**: Führen zu starker zwischenmolekularer Anziehung und ungewöhnlich hohen Siedepunkten.   * **Löslichkeitsverhalten (Amphiphilie)**:     - *Kurzkettige Alkohole (Methanol, Ethanol, Propanol)*: Vollständig wasserlöslich (**hydrophil**), da der polare $-OH$-Rest dominiert.     - *Langkettige Alkohole (ab Pentanol, z. B. Octanol)*: Zunehmend wasserunlöslich und fettlöslich (**lipophil**), da der unpolare Alkylrest dominiert. - **Strukturklassen**:   * **Primär**: $-OH$ an endständigem Kohlenstoff (z. B. Ethanol, Propan-1-ol).   * **Sekundär**: $-OH$ an innenständigem C-Atom mit 2 Alkylresten (z. B. Propan-2-ol).   * **Tertiär**: $-OH$ an verzweigtem C-Atom ohne direkt gebundenes H-Atom (z. B. 2-Methylpropan-2-ol). 2. Die stufenweise Oxidation von Alkoholen: - **1. Primäre Alkohole**:   * Werden unter milden Oxidationsmitteln (z. B. Kupfer(II)-oxid $CuO$) zunächst unter Abspaltung von zwei H-Atomen zu **Aldehyden (Alkanale)** und anschließend durch Aufnahme eines Sauerstoffatoms zur **Carbonsäure (Alkansäure)** oxidiert:     $$\\mathbf{R-CH_2-OH \\xrightarrow{[O]} R-CHO \\xrightarrow{[O]} R-COOH}$$ - **2. Sekundäre Alkohole**:   * Werden zu **Ketonen (Alkanone)** dehydriert:     $$\\mathbf{R_1-CH(OH)-R_2 \\xrightarrow{[O]} R_1-CO-R_2}$$   * Eine Weiteroxidation ist ohne Bruch von $C-C$-Bindungen unmöglich. - **3. Tertiäre Alkohole**:   * Besitzen kein H-Atom am hydroxyltragenden C-Atom $\\implies$ sind **oxidationsstabil**. 3. Nachweisreaktionen zur Unterscheidung von Aldehyden und Ketonen: - Da Aldehyde leicht zur Carbonsäure weiteroxidiert werden können, wirken sie als starke **Reduktionsmittel** (Ketone zeigen diese Nachweise negativ):   * **1. Fehling-Reaktion**:     - Reagenz: Mischung aus $CuSO_4$-Lösung (Fehling I) und alkalischer Kalium-Natrium-Tartrat-Lösung (Fehling II).     - *Beobachtung*: Beim Erwärmen schlägt die tiefblaue Lösung über grün/gelb in einen **ziegelroten Niederschlag von Kupfer(I)-oxid ($Cu_2O$)** um:       $$\\mathbf{\\text{R-CHO} + 2\\,\\text{Cu}^{2+} + 5\\,\\text{OH}^- \\rightarrow \\text{R-COO}^- + \\text{Cu}_2\\text{O} \\downarrow + 3\\,\\text{H}_2\\text{O}}$$   * **2. Tollens-Probe (Silberspiegel-Reaktion)**:     - Reagenz: Ammoniakalische Silbernitrat-Lösung ($[Ag(NH_3)_2]^+$).     - *Beobachtung*: Silberionen werden reduziert und scheiden sich an der Reagenzglaswand als glänzender **Silberspiegel** ab:       $$\\mathbf{\\text{R-CHO} + 2\\,[\\text{Ag}(\\text{NH}_3)_2]^+ + 3\\,\\text{OH}^- \\rightarrow \\text{R-COO}^- + 2\\,\\text{Ag} \\downarrow + 4\\,\\text{NH}_3 + 2\\,\\text{H}_2\\text{O}}$$"
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Struktur und Eigenschaften der Alkohole: - Funktionelle Gruppe: Die Hydroxygruppe ("
+            },
+            {
+              "type": "math",
+              "tex": "-OH"
+            },
+            {
+              "type": "text",
+              "text": ") polarisiert das Molekül stark ("
+            },
+            {
+              "type": "math",
+              "tex": "^{\\delta-}O-H^{\\delta+}"
+            },
+            {
+              "type": "text",
+              "text": "). - Physikalische Konsequenzen:   * Wasserstoffbrückenbindungen: Führen zu starker zwischenmolekularer Anziehung und ungewöhnlich hohen Siedepunkten.   * Löslichkeitsverhalten (Amphiphilie):     - Kurzkettige Alkohole (Methanol, Ethanol, Propanol): Vollständig wasserlöslich (hydrophil), da der polare "
+            },
+            {
+              "type": "math",
+              "tex": "-OH"
+            },
+            {
+              "type": "text",
+              "text": "-Rest dominiert.     - Langkettige Alkohole (ab Pentanol, z. B. Octanol): Zunehmend wasserunlöslich und fettlöslich (lipophil), da der unpolare Alkylrest dominiert. - Strukturklassen:   * Primär: "
+            },
+            {
+              "type": "math",
+              "tex": "-OH"
+            },
+            {
+              "type": "text",
+              "text": " an endständigem Kohlenstoff (z. B. Ethanol, Propan-1-ol).   * Sekundär: "
+            },
+            {
+              "type": "math",
+              "tex": "-OH"
+            },
+            {
+              "type": "text",
+              "text": " an innenständigem C-Atom mit 2 Alkylresten (z. B. Propan-2-ol).   * Tertiär: "
+            },
+            {
+              "type": "math",
+              "tex": "-OH"
+            },
+            {
+              "type": "text",
+              "text": " an verzweigtem C-Atom ohne direkt gebundenes H-Atom (z. B. 2-Methylpropan-2-ol). 2. Die stufenweise Oxidation von Alkoholen: - 1. Primäre Alkohole:   * Werden unter milden Oxidationsmitteln (z. B. Kupfer(II)-oxid "
+            },
+            {
+              "type": "math",
+              "tex": "CuO"
+            },
+            {
+              "type": "text",
+              "text": ") zunächst unter Abspaltung von zwei H-Atomen zu Aldehyden (Alkanale) und anschließend durch Aufnahme eines Sauerstoffatoms zur Carbonsäure (Alkansäure) oxidiert:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{R-CH_2-OH \\xrightarrow{[O]} R-CHO \\xrightarrow{[O]} R-COOH}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 2. Sekundäre Alkohole:   * Werden zu Ketonen (Alkanone) dehydriert:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{R_1-CH(OH)-R_2 \\xrightarrow{[O]} R_1-CO-R_2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Eine Weiteroxidation ist ohne Bruch von "
+            },
+            {
+              "type": "math",
+              "tex": "C-C"
+            },
+            {
+              "type": "text",
+              "text": "-Bindungen unmöglich. - 3. Tertiäre Alkohole:   * Besitzen kein H-Atom am hydroxyltragenden C-Atom "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " sind oxidationsstabil. 3. Nachweisreaktionen zur Unterscheidung von Aldehyden und Ketonen: - Da Aldehyde leicht zur Carbonsäure weiteroxidiert werden können, wirken sie als starke Reduktionsmittel (Ketone zeigen diese Nachweise negativ):   * 1. Fehling-Reaktion:     - Reagenz: Mischung aus "
+            },
+            {
+              "type": "math",
+              "tex": "CuSO_4"
+            },
+            {
+              "type": "text",
+              "text": "-Lösung (Fehling I) und alkalischer Kalium-Natrium-Tartrat-Lösung (Fehling II).     - Beobachtung: Beim Erwärmen schlägt die tiefblaue Lösung über grün/gelb in einen ziegelroten Niederschlag von Kupfer(I)-oxid ("
+            },
+            {
+              "type": "math",
+              "tex": "Cu_2O"
+            },
+            {
+              "type": "text",
+              "text": ") um:       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{R-CHO} + 2\\,\\text{Cu}^{2+} + 5\\,\\text{OH}^- \\rightarrow \\text{R-COO}^- + \\text{Cu}_2\\text{O} \\downarrow + 3\\,\\text{H}_2\\text{O}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * 2. Tollens-Probe (Silberspiegel-Reaktion):     - Reagenz: Ammoniakalische Silbernitrat-Lösung ("
+            },
+            {
+              "type": "math",
+              "tex": "[Ag(NH_3)_2]^+"
+            },
+            {
+              "type": "text",
+              "text": ").     - Beobachtung: Silberionen werden reduziert und scheiden sich an der Reagenzglaswand als glänzender Silberspiegel ab:       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{R-CHO} + 2\\,[\\text{Ag}(\\text{NH}_3)_2]^+ + 3\\,\\text{OH}^- \\rightarrow \\text{R-COO}^- + 2\\,\\text{Ag} \\downarrow + 4\\,\\text{NH}_3 + 2\\,\\text{H}_2\\text{O}}",
+              "block": true
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +430,294 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere Carbonsäuren, Mesomeriestabilisierung und die Carbonsäureester: 1. **Die Carboxygruppe ($-COOH$)**:   * Kombination aus Carbonylgruppe ($>C=O$) und Hydroxygruppe ($-OH$).   * **Acidität / Säurestärke**: Carbonsäuren protolysieren in Wasser zu Carboxylat-Anionen ($R-COO^-$) und Oxoniumionen ($H_3O^+$).   * **Mesomeriestabilisierung des Carboxylat-Ions**: Die negative Ladung ist über beide Sauerstoffatome des $O-C-O$-Systems gleichmäßig delokalisiert $\\implies$ energetisch sehr stabil $\\implies$ deutlich stärkere Säuren als Alkohole ($pK_S(\\text{Essigsäure}) \\approx 4{,}75$ vs. $pK_S(\\text{Ethanol}) \\approx 16$), 2. **Die Veresterung (Kondensationsreaktion)**:   * Carbonsäure + Alkohol $\\xrightleftharpoons{\\text{Säurekatalysator } H^+} \\mathbf{\\text{Carbonsäureester} + \\text{H}_2\\text{O}}$.   * Funktionelle Estergruppe: $\\mathbf{-COO-}$.   * Geruchs- und Geschmacksträger (Fruchtester: z. B. Ethansäureethylester, Butansäureethylester [Ananasaroma]); Baustein natürlicher Fette (Triglyceride = Ester des Glycerins mit Fettsäuren), 3. **Esterhydrolyse und alkalische Verseifung**:   * Rückreaktion mit Lauge ($NaOH$): Ester + $OH^- \\rightarrow$ Alkohol + Carboxylat-Ion (irreversibel, Grundlage der Seifenherstellung).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere Carbonsäuren, Mesomeriestabilisierung und die Carbonsäureester: 1. Die Carboxygruppe ("
+            },
+            {
+              "type": "math",
+              "tex": "-COOH",
+              "speech": "C O O H"
+            },
+            {
+              "type": "text",
+              "text": "):   * Kombination aus Carbonylgruppe ("
+            },
+            {
+              "type": "math",
+              "tex": ">C=O",
+              "speech": "Carbonylgruppe C doppelt gebunden an O"
+            },
+            {
+              "type": "text",
+              "text": ") und Hydroxygruppe ("
+            },
+            {
+              "type": "math",
+              "tex": "-OH",
+              "speech": "O H"
+            },
+            {
+              "type": "text",
+              "text": ").   * Acidität / Säurestärke: Carbonsäuren protolysieren in Wasser zu Carboxylat-Anionen ("
+            },
+            {
+              "type": "math",
+              "tex": "R-COO^-",
+              "speech": "R, C O O minus"
+            },
+            {
+              "type": "text",
+              "text": ") und Oxoniumionen ("
+            },
+            {
+              "type": "math",
+              "tex": "H_3O^+",
+              "speech": "H drei O plus"
+            },
+            {
+              "type": "text",
+              "text": ").   * Mesomeriestabilisierung des Carboxylat-Ions: Die negative Ladung ist über beide Sauerstoffatome des "
+            },
+            {
+              "type": "math",
+              "tex": "O-C-O",
+              "speech": "O C O"
+            },
+            {
+              "type": "text",
+              "text": "-Systems gleichmäßig delokalisiert "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " energetisch sehr stabil "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " deutlich stärkere Säuren als Alkohole ("
+            },
+            {
+              "type": "math",
+              "tex": "pK_S(\\text{Essigsäure}) \\approx 4{,}75",
+              "speech": "pK s von Essigsäure ungefähr 4,75"
+            },
+            {
+              "type": "text",
+              "text": " vs. "
+            },
+            {
+              "type": "math",
+              "tex": "pK_S(\\text{Ethanol}) \\approx 16",
+              "speech": "pK s von Ethanol ungefähr 16"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Die Veresterung (Kondensationsreaktion):   * Carbonsäure + Alkohol "
+            },
+            {
+              "type": "math",
+              "tex": "\\xrightleftharpoons{\\text{Säurekatalysator } H^+} \\mathbf{\\text{Carbonsäureester} + \\text{H}_2\\text{O}}",
+              "speech": "steht mit dem Säurekatalysator H plus im Gleichgewicht mit Carbonsäureester plus H zwei O"
+            },
+            {
+              "type": "text",
+              "text": ".   * Funktionelle Estergruppe: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{-COO-}",
+              "speech": "Estergruppe C O O"
+            },
+            {
+              "type": "text",
+              "text": ".   * Geruchs- und Geschmacksträger (Fruchtester: z. B. Ethansäureethylester, Butansäureethylester [Ananasaroma]); Baustein natürlicher Fette (Triglyceride = Ester des Glycerins mit Fettsäuren), 3. Esterhydrolyse und alkalische Verseifung:   * Rückreaktion mit Lauge ("
+            },
+            {
+              "type": "math",
+              "tex": "NaOH",
+              "speech": "N a O H"
+            },
+            {
+              "type": "text",
+              "text": "): Ester + "
+            },
+            {
+              "type": "math",
+              "tex": "OH^- \\rightarrow",
+              "speech": "O H minus reagiert zu"
+            },
+            {
+              "type": "text",
+              "text": " Alkohol + Carboxylat-Ion (irreversibel, Grundlage der Seifenherstellung)."
+            }
+          ],
           "concept": "Carbonsäuren: Carboxygruppe -COOH; Mesomerie des Carboxylat-Anions erklärt Acidität; Veresterung als Kondensation (Säure + Alkohol <-> Ester + H2O); Fruchtester & Fette; Verseifung als alkalische Hydrolyse.",
-          "sample_solution": "1. Struktur und Säurecharakter der Carbonsäuren: - **Funktionelle Carboxygruppe ($-COOH$)**:   * Besteht aus einer stark polarisierenden Carbonylgruppe ($C=O$) und einer Hydroxygruppe ($-OH$). - **Ursache der Acidität (Mesomeriestabilisierung)**:   * In wässriger Lösung gibt die Carbonsäure ein Proton $H^+$ ab:     $$\\text{R-COOH} + \\text{H}_2\\text{O} \\rightleftharpoons \\mathbf{\\text{R-COO}^-} + \\text{H}_3\\text{O}^+$$   * Das entstehende **Carboxylat-Anion** ist extrem stabil, weil die negative Ladung über das gesamte $O-C-O$-Bindungssystem **vollständig delokalisiert (mesomer)** ist:     $$\\left[ \\text{R-C}(=\\text{O})-\\text{O}^- \\longleftrightarrow \\text{R-C}(\\text{O}^-)=\\text{O} \\right]$$   * Beide $C-O$-Bindungen im Carboxylat-Ion sind exakt gleich lang ($126\\text{ pm}$). 2. Die Bildung von Carbonsäureestern (Veresterung): - **Definition**: Eine säurekatalysierte **Kondensationsreaktion** (Verknüpfung zweier Moleküle unter Austritt eines kleinen Moleküls, hier Wasser $\\text{H}_2\\text{O}$):   $$\\mathbf{\\underbrace{\\text{R-COOH}}_{\\text{Carbonsäure}} + \\underbrace{\\text{R'-OH}}_{\\text{Alkohol}} \\xrightleftharpoons{\\text{H}^+} \\underbrace{\\text{R-COO-R'}}_{\text{Ester}} + \\underbrace{\\text{H}_2\\text{O}}_{\\text{Wasser}}}$$   * **Funktionelle Estergruppe**: $\\mathbf{-COO-}$.   * **Gleichgewichtslage**: Das Veresterungsgleichgewicht liegt bei ca. $\\frac{2}{3}$ Ester und $\\frac{1}{3}$ Ausgangsstoffe. Nach dem Prinzip von Le Chatelier kann die Ausbeute durch Wasserentzug (z. B. mit konz. Schwefelsäure) oder Alkoholüberschuss auf fast $100\\%$ gesteigert werden. - **Bedeutung in Natur und Technik**:   * **Fruchtester**: Angenehme Gerüche (z. B. Ethansäuremethylester = Klebstoff/Lösungsmittel, Ethansäurebutylester = Bananenaroma).   * **Fette und Öle**: Dreifache Ester des dreiwertigen Alkohols Glycerin (Propan-1,2,3-triol) mit drei langkettigen Fettsäuren (**Triglyceride**). 3. Esterhydrolyse und alkalische Verseifung: - **Saure Hydrolyse**: Die Gleichgewichtsumkehrung durch Zugabe von überschüssigem Wasser. - **Alkalische Verseifung (Seifenherstellung)**:   * Versetzen eines Esters (z. B. Pflanzenfett) mit konzentrierter Natronlauge ($NaOH$):     $$\\text{Ester} + \\text{OH}^- \\rightarrow \\text{Alkohol} + \\mathbf{\\text{R-COO}^- \\text{ (Carboxylat-Salz / Seife)}}$$   * Da das Carboxylat-Anion im Alkalischen deprotoniert bleibt, kann keine Rückreaktion stattfinden $\\implies$ **Reaktion verläuft vollständig irreversibel**."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Struktur und Säurecharakter der Carbonsäuren: - Funktionelle Carboxygruppe ("
+            },
+            {
+              "type": "math",
+              "tex": "-COOH"
+            },
+            {
+              "type": "text",
+              "text": "):   * Besteht aus einer stark polarisierenden Carbonylgruppe ("
+            },
+            {
+              "type": "math",
+              "tex": "C=O"
+            },
+            {
+              "type": "text",
+              "text": ") und einer Hydroxygruppe ("
+            },
+            {
+              "type": "math",
+              "tex": "-OH"
+            },
+            {
+              "type": "text",
+              "text": "). - Ursache der Acidität (Mesomeriestabilisierung):   * In wässriger Lösung gibt die Carbonsäure ein Proton "
+            },
+            {
+              "type": "math",
+              "tex": "H^+"
+            },
+            {
+              "type": "text",
+              "text": " ab:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{R-COOH} + \\text{H}_2\\text{O} \\rightleftharpoons \\mathbf{\\text{R-COO}^-} + \\text{H}_3\\text{O}^+",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Das entstehende Carboxylat-Anion ist extrem stabil, weil die negative Ladung über das gesamte "
+            },
+            {
+              "type": "math",
+              "tex": "O-C-O"
+            },
+            {
+              "type": "text",
+              "text": "-Bindungssystem vollständig delokalisiert (mesomer) ist:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\left[ \\text{R-C}(=\\text{O})-\\text{O}^- \\longleftrightarrow \\text{R-C}(\\text{O}^-)=\\text{O} \\right]",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Beide "
+            },
+            {
+              "type": "math",
+              "tex": "C-O"
+            },
+            {
+              "type": "text",
+              "text": "-Bindungen im Carboxylat-Ion sind exakt gleich lang ("
+            },
+            {
+              "type": "math",
+              "tex": "126\\text{ pm}"
+            },
+            {
+              "type": "text",
+              "text": "). 2. Die Bildung von Carbonsäureestern (Veresterung): - Definition: Eine säurekatalysierte Kondensationsreaktion (Verknüpfung zweier Moleküle unter Austritt eines kleinen Moleküls, hier Wasser "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{H}_2\\text{O}"
+            },
+            {
+              "type": "text",
+              "text": "):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\underbrace{\\text{R-COOH}}_{\\text{Carbonsäure}} + \\underbrace{\\text{R'-OH}}_{\\text{Alkohol}} \\xrightleftharpoons{\\text{H}^+} \\underbrace{\\text{R-COO-R'}}_{\\text{Ester}} + \\underbrace{\\text{H}_2\\text{O}}_{\\text{Wasser}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Funktionelle Estergruppe: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{-COO-}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Gleichgewichtslage: Das Veresterungsgleichgewicht liegt bei ca. "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{2}{3}"
+            },
+            {
+              "type": "text",
+              "text": " Ester und "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{1}{3}"
+            },
+            {
+              "type": "text",
+              "text": " Ausgangsstoffe. Nach dem Prinzip von Le Chatelier kann die Ausbeute durch Wasserentzug (z. B. mit konz. Schwefelsäure) oder Alkoholüberschuss auf fast "
+            },
+            {
+              "type": "math",
+              "tex": "100\\%"
+            },
+            {
+              "type": "text",
+              "text": " gesteigert werden. - Bedeutung in Natur und Technik:   * Fruchtester: Angenehme Gerüche (z. B. Ethansäuremethylester = Klebstoff/Lösungsmittel, Ethansäurebutylester = Bananenaroma).   * Fette und Öle: Dreifache Ester des dreiwertigen Alkohols Glycerin (Propan-1,2,3-triol) mit drei langkettigen Fettsäuren (Triglyceride). 3. Esterhydrolyse und alkalische Verseifung: - Saure Hydrolyse: Die Gleichgewichtsumkehrung durch Zugabe von überschüssigem Wasser. - Alkalische Verseifung (Seifenherstellung):   * Versetzen eines Esters (z. B. Pflanzenfett) mit konzentrierter Natronlauge ("
+            },
+            {
+              "type": "math",
+              "tex": "NaOH"
+            },
+            {
+              "type": "text",
+              "text": "):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Ester} + \\text{OH}^- \\rightarrow \\text{Alkohol} + \\mathbf{\\text{R-COO}^- \\text{ (Carboxylat-Salz / Seife)}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Da das Carboxylat-Anion im Alkalischen deprotoniert bleibt, kann keine Rückreaktion stattfinden "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Reaktion verläuft vollständig irreversibel."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

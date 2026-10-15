@@ -65,9 +65,42 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere Ovids Metamorphosen, das Proömium und den Mythos von Daedalus und Icarus (Buch VIII): 1. **Das Proömium der Metamorphosen (Buch I, 1–4)**:   * *« In nova fert animus mutatas dicere formas / corpora; di, coeptis (nam vos mutastis et illas) / adspirate meis primaque ab origine mundi / ad mea perpetuum deducite tempora carmen! »*   * **Programmatik**: Ankündigung eines *carmen perpetuum* (fortlaufendes Universalepos in 15 Büchern im Hexameter) von der Weltschöpfung bis in Ovids eigene Gegenwart (Augustus), 2. **Der Daedalus-und-Icarus-Mythos (Buch VIII)**:   * **Daedalus als genialer Erfinder (*artifex*)**: Gefangen auf Kreta überwindet er die Natur durch Technik: *« ignotas animum dimittit in artes naturamque novat »* (Er wendet seinen Sinn unbekannten Künsten zu und erneuert die Natur) $\\implies$ Erfindung der Vogelflügel mit Federn und Wachs.   * **Die Mahnung des Vaters**: Halte die mittlere Bahn ein (**Medio tutissimus ibis** / Fliege weder zu tief wegen der Feuchte des Meeres noch zu hoch wegen der Glut der Sonne).   * **Icarus' jugendliche Hybris**: Übermut, Entzücken am Flug (*cupido volandi*), Verlassen des Führers $\\implies$ Die Sonne schmilzt das Wachs $\\implies$ Tragischer Absturz ins Meer (Ikatisches Meer), 3. **Deutungsebenen**:   * Das Motiv der menschlichen Grenzüberschreitung (Technik vs. Naturgesetze).   * Warnung vor maßloser Selbstüberschätzung (*Hybris*) und Plädoyer für das rechte Maß (*Aurea mediocritas*).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere Ovids Metamorphosen, das Proömium und den Mythos von Daedalus und Icarus (Buch VIII): 1. Das Proömium der Metamorphosen (Buch I, 1–4):   * « In nova fert animus mutatas dicere formas / corpora; di, coeptis (nam vos mutastis et illas) / adspirate meis primaque ab origine mundi / ad mea perpetuum deducite tempora carmen! »   * Programmatik: Ankündigung eines carmen perpetuum (fortlaufendes Universalepos in 15 Büchern im Hexameter) von der Weltschöpfung bis in Ovids eigene Gegenwart (Augustus), 2. Der Daedalus-und-Icarus-Mythos (Buch VIII):   * Daedalus als genialer Erfinder (artifex): Gefangen auf Kreta überwindet er die Natur durch Technik: « ignotas animum dimittit in artes naturamque novat » (Er wendet seinen Sinn unbekannten Künsten zu und erneuert die Natur) "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Erfindung der Vogelflügel mit Federn und Wachs.   * Die Mahnung des Vaters: Halte die mittlere Bahn ein (Medio tutissimus ibis / Fliege weder zu tief wegen der Feuchte des Meeres noch zu hoch wegen der Glut der Sonne).   * Icarus' jugendliche Hybris: Übermut, Entzücken am Flug (cupido volandi), Verlassen des Führers "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Die Sonne schmilzt das Wachs "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Tragischer Absturz ins Meer (Ikatisches Meer), 3. Deutungsebenen:   * Das Motiv der menschlichen Grenzüberschreitung (Technik vs. Naturgesetze).   * Warnung vor maßloser Selbstüberschätzung (Hybris) und Plädoyer für das rechte Maß (Aurea mediocritas)."
+            }
+          ],
           "concept": "Ovid Metamorphosen 13: Proömium (carmen perpetuum, Gestaltwandel); Daedalus & Icarus (artifex, naturam novat, medio tutissimus ibis, cupido volandi, Hybris und Absturz); Aurea mediocritas.",
-          "sample_solution": "1. Das poetologische Programm im Proömium (Metamorphosen I, 1–4): - **Der kühne Anspruch Ovids**:   * Ovid verbindet die epische Monumentalform des **daktylischen Hexameters** mit dem elegisch-alexandrinischen Prinzip des ständigen Formwandels.   * **Ziele**:     1. Besingung verwandelter Körper (*mutatas formas corpora*).     2. Einbeziehung der Götter als Verursacher des Wandels.     3. Ein ununterbrochenes Werk (*carmen perpetuum*) von der Entstehung des Kosmos aus dem Chaos (*prima ab origine mundi*) bis in Ovids Gegenwart (*ad mea tempora* – Augusteische Zeit). 2. Textanalyse: Daedalus und Icarus (Buch VIII, 183–235): - **Der Drang nach Freiheit und die Neuschöpfung der Natur**:   * Daedalus leidet unter dem Exil auf Kreta durch König Minos. Er erkennt: *« Terras licet [...] et undas obstruat: at caelum certe patet; ibimus illac! »* (Mag er Land und Meer versperren: Der Himmel steht gewiss offen; dorthin werden wir entfliehen!).   * *« Naturamque novat »*: Daedalus greift schöpferisch in die gottgegebene Naturordnung ein, indem er dem Menschen Schwingen verleiht. - **Die väterliche Fluganweisung (Die Lehre vom goldenen Mittelweg)**:   * *« [...] medio ut limite curras, Icare, moneo, ne, si demissior ibis, unda gravet pennas, si celsior, ignis adurat: inter utrumque vola! »*     *(Ich ermahne dich, Icarus, auf mittlerer Bahn zu fliegen, damit nicht, wenn du zu tief fliegst, die Welle die Federn beschwert, und wenn du zu hoch fliegst, das Feuer sie versengt: Fliege zwischen beiden!)*. - **Die Tragödie des Icarus**:   * Trunken vor Freiheit und jugendlicher Abenteuerlust verlässt Icarus die sichere Flugbahn seines Vaters (*« Deseruitque ducem caelique cupidine tractus altius egit iter »*).   * Die Nähe der glühenden Sonne erweicht das duftende Wachs (*odoratas vincula ceras*). Die nackten Arme rudern ins Leere; Icarus stürzt ins Meer, das seither seinen Namen trägt (*Icarium mare*). 3. Philosophische und existenzielle Dimension: - **Kritik an menschlicher Hybris**: Technik ermöglicht den Flug, kann aber den Menschen nicht von den ethischen Naturgesetzen entbinden. - **Tragik des Künstlers/Erfinders**: Daedalus verflucht seine eigene Kunstfertigkeit (*« devovitque suas artes »*), als er seinen toten Sohn am Strand begräbt – ein zeitloses Gleichnis für die unkalkulierbaren Risiken menschlicher Schöpferkraft."
+          "sample_solution": "1. Das poetologische Programm im Proömium (Metamorphosen I, 1–4): - Der kühne Anspruch Ovids:   * Ovid verbindet die epische Monumentalform des daktylischen Hexameters mit dem elegisch-alexandrinischen Prinzip des ständigen Formwandels.   * Ziele:     1. Besingung verwandelter Körper (mutatas formas corpora).     2. Einbeziehung der Götter als Verursacher des Wandels.     3. Ein ununterbrochenes Werk (carmen perpetuum) von der Entstehung des Kosmos aus dem Chaos (prima ab origine mundi) bis in Ovids Gegenwart (ad mea tempora – Augusteische Zeit). 2. Textanalyse: Daedalus und Icarus (Buch VIII, 183–235): - Der Drang nach Freiheit und die Neuschöpfung der Natur:   * Daedalus leidet unter dem Exil auf Kreta durch König Minos. Er erkennt: « Terras licet [...] et undas obstruat: at caelum certe patet; ibimus illac! » (Mag er Land und Meer versperren: Der Himmel steht gewiss offen; dorthin werden wir entfliehen!).   * « Naturamque novat »: Daedalus greift schöpferisch in die gottgegebene Naturordnung ein, indem er dem Menschen Schwingen verleiht. - Die väterliche Fluganweisung (Die Lehre vom goldenen Mittelweg):   * « [...] medio ut limite curras, Icare, moneo, ne, si demissior ibis, unda gravet pennas, si celsior, ignis adurat: inter utrumque vola! »     (Ich ermahne dich, Icarus, auf mittlerer Bahn zu fliegen, damit nicht, wenn du zu tief fliegst, die Welle die Federn beschwert, und wenn du zu hoch fliegst, das Feuer sie versengt: Fliege zwischen beiden!). - Die Tragödie des Icarus:   * Trunken vor Freiheit und jugendlicher Abenteuerlust verlässt Icarus die sichere Flugbahn seines Vaters (« Deseruitque ducem caelique cupidine tractus altius egit iter »).   * Die Nähe der glühenden Sonne erweicht das duftende Wachs (odoratas vincula ceras). Die nackten Arme rudern ins Leere; Icarus stürzt ins Meer, das seither seinen Namen trägt (Icarium mare). 3. Philosophische und existenzielle Dimension: - Kritik an menschlicher Hybris: Technik ermöglicht den Flug, kann aber den Menschen nicht von den ethischen Naturgesetzen entbinden. - Tragik des Künstlers/Erfinders: Daedalus verflucht seine eigene Kunstfertigkeit (« devovitque suas artes »), als er seinen toten Sohn am Strand begräbt – ein zeitloses Gleichnis für die unkalkulierbaren Risiken menschlicher Schöpferkraft.",
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +161,188 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den Mythos von Apollo und Daphne (Buch I) und die Regeln der Hexameter-Metrik: 1. **Der Mythos von Apollo und Daphne (Metamorphosen I, 452–567)**:   * **Amors Rache**: Apollo verspottet den kleinen Liebesgott Amor nach dem Sieg über die Python-Schlange. Amor schießt zwei gegensätzliche Pfeile:     - *Goldener Pfeil mit scharfer Spitze*: Entfacht unstillbare Liebesglut bei Apollo.     - *Bleierner Pfeil mit stumpfer Spitze*: Erzeugt panische Liebesflucht und Keuschheitsgelübde bei der Nymphe Daphne.   * **Die Verfolgungsjagd**: Daphne flieht vor dem werbenden Gott; als ihre Kräfte schwinden, fleht sie ihren Vater (den Flussgott Peneus) um Entstellung ihrer reizvollen Schönheit an.   * **Die Verwandlung**: Rinde umschließt ihre Brust, Haare werden zu Laub, Füße zu Wurzeln $\\implies$ Metamorphose in den **Lorbeerbaum (*Laurus*)**.   * **Apollos Versprechen**: Der Lorbeer wird zu seinem heiligen Baum und schmückt künftig die Leiern der Dichter und die Häupter römischer Feldherren und Kaiser (Augustus), 2. **Metrik des Daktylischen Hexameters**:   * Grundschema: 6 Metren:     $$\\mathbf{-\\,\\underline{\\text{v v}} \\;\\mid\\; -\\,\\underline{\\text{v v}} \\;\\mid\\; -\\,\\underline{\\text{v v}} \\;\\mid\\; -\\,\\underline{\\text{v v}} \\;\\mid\\; -\\,\\text{v v} \\;\\mid\\; -\\,\\bar{\\text{x}}}$$   * **Wichtige Zäsuren**:     - *Penthemimeres ($m_3$)*: Sinnabschnitt nach der 5. Halbfuß-Hebung im 3. Metrum.     - *Hephthemimeres ($m_4$)*: Nach der 7. Halbfuß-Hebung im 4. Metrum.     - *Katatriton Trochäus ($t_3$)*: Nach der ersten Kürze im 3. Daktylus.   * **Elision**: Vokal oder Vokal+$m$ am Wortende verschmilzt mit anlautendem Vokal/H des Folgewortes.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den Mythos von Apollo und Daphne (Buch I) und die Regeln der Hexameter-Metrik: 1. Der Mythos von Apollo und Daphne (Metamorphosen I, 452–567):   * Amors Rache: Apollo verspottet den kleinen Liebesgott Amor nach dem Sieg über die Python-Schlange. Amor schießt zwei gegensätzliche Pfeile:     - Goldener Pfeil mit scharfer Spitze: Entfacht unstillbare Liebesglut bei Apollo.     - Bleierner Pfeil mit stumpfer Spitze: Erzeugt panische Liebesflucht und Keuschheitsgelübde bei der Nymphe Daphne.   * Die Verfolgungsjagd: Daphne flieht vor dem werbenden Gott; als ihre Kräfte schwinden, fleht sie ihren Vater (den Flussgott Peneus) um Entstellung ihrer reizvollen Schönheit an.   * Die Verwandlung: Rinde umschließt ihre Brust, Haare werden zu Laub, Füße zu Wurzeln "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Metamorphose in den Lorbeerbaum (Laurus).   * Apollos Versprechen: Der Lorbeer wird zu seinem heiligen Baum und schmückt künftig die Leiern der Dichter und die Häupter römischer Feldherren und Kaiser (Augustus), 2. Metrik des Daktylischen Hexameters:   * Grundschema: 6 Metren:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{-\\,\\underline{\\text{v v}} \\;\\mid\\; -\\,\\underline{\\text{v v}} \\;\\mid\\; -\\,\\underline{\\text{v v}} \\;\\mid\\; -\\,\\underline{\\text{v v}} \\;\\mid\\; -\\,\\text{v v} \\;\\mid\\; -\\,\\bar{\\text{x}}}",
+              "block": true,
+              "speech": "betont unbetont unbetont, betont unbetont unbetont, betont unbetont unbetont, betont unbetont unbetont, betont unbetont unbetont, betont und ein freies Element"
+            },
+            {
+              "type": "text",
+              "text": "   * Wichtige Zäsuren:     - Penthemimeres ("
+            },
+            {
+              "type": "math",
+              "tex": "m_3",
+              "speech": "m drei"
+            },
+            {
+              "type": "text",
+              "text": "): Sinnabschnitt nach der 5. Halbfuß-Hebung im 3. Metrum.     - Hephthemimeres ("
+            },
+            {
+              "type": "math",
+              "tex": "m_4",
+              "speech": "m vier"
+            },
+            {
+              "type": "text",
+              "text": "): Nach der 7. Halbfuß-Hebung im 4. Metrum.     - Katatriton Trochäus ("
+            },
+            {
+              "type": "math",
+              "tex": "t_3",
+              "speech": "t drei"
+            },
+            {
+              "type": "text",
+              "text": "): Nach der ersten Kürze im 3. Daktylus.   * Elision: Vokal oder Vokal+"
+            },
+            {
+              "type": "math",
+              "tex": "m",
+              "speech": "m"
+            },
+            {
+              "type": "text",
+              "text": " am Wortende verschmilzt mit anlautendem Vokal/H des Folgewortes."
+            }
+          ],
           "concept": "Apollo & Daphne 13: Amors 2 Pfeile (Gold = Liebe, Blei = Flucht); Daphnes Verwandlung in Laurus; Hexameter-Schema (- vv | - vv | - vv | - vv | - vv | - x), Zäsuren Penthemimeres m3 und Elision.",
-          "sample_solution": "1. Textinterpretation: Apollo und Daphne (Metamorphosen I): - **Die Hybris des Siegers**:   * Gott Apollo, eben noch stolzer Bezwinger des Python-Drachen, wird durch den winzigen Knaben Amor gedemütigt. Amor beweist: *« Cuncta domat Amor »* (Amor bezwingt alles). - **Die Kontrastierung der Leidenschaften**:   * Apollo verbrennt in blinder Liebesleidenschaft (*« Uritur et sterilem sperando nutrit amorem »*).   * Daphne, Anhängerin der jungfräulichen Jagdgöttin Diana, will in ewiger Freiheit durch die Wälder streifen. - **Die poetische Schilderung der Metamorphose**:   * *« Vix prece finita torpor gravis occupat artus, mollia cinguntur tenui praecordia libro, in frondem crines, in ramos brachia crescunt, pes modo tam velox pigris radicibus haeret, ora cacumen habet: remanet nitor unus in illa. »*     *(Kaum war das Gebet beendet, befällt eine schwere Erstarrung ihre Glieder; ihre zarte Brust wird von weicher Rinde umhüllt; ihre Haare wachsen zu Laub, die Arme zu Ästen; der eben noch so schnelle Fuß haftet in trägen Wurzeln fest; die Wipfelkrone bedeckt ihr Antlitz: Nur ihr strahlender Glanz bleibt in ihr zurück)*. - **Politischer Bezug zu Kaiser Augustus**:   * Apollo erklärt den Lorbeer (*Daphne*) zu seinem ewigen Symbol. Da Augustus Apollo als persönlichen Schutzgott verehrte und sein Haus auf dem Palatin mit Lorbeerbäumen flankierte, schlägt Ovid hier eine virtuose Brücke zwischen mythischem Urbeginn und augusteischer Gegenwart. 2. Metrische Gesetze des Daktylischen Hexameters: - **Silbenquantitäten**:   * **Naturlänge**: Lange Vokale oder Diphthonge ($ae, oe, au$).   * **Positionslänge**: Kurzer Vokal vor zwei oder mehr Konsonanten (oder $x, z$) gilt metrisch als lang. - **Praktisches Skandierungsbeispiel**:   * Textzeile (Met. I, 553):   $$\\mathbf{\\text{Vix prece } \\mid \\text{finiti } \\mid \\text{torp(or) } \\mid \\text{occupat } \\mid \\text{artus}}$$   * Metrische Füße:     1. **Vix pre-ce** ($- \\; \\text{v v}$) $\\mid$ Daktylus     2. **fi-ni-** ($- \\; -$) $\\mid$ Spondeus     3. **ta tor-** ($-$) $\\mid$ Hebung mit **Penthemimeres-Zäsur ($m_3$)**!     4. **p(or) oc-cu-pat** ($- \\; \\text{v v}$) $\\mid$ Elision von *-or* vor *oc-*, Daktylus     5. **ar-tus** ($- \\; -$) $\\mid$ Spondeus im 6. Versfuß (Katalexe)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Textinterpretation: Apollo und Daphne (Metamorphosen I): - Die Hybris des Siegers:   * Gott Apollo, eben noch stolzer Bezwinger des Python-Drachen, wird durch den winzigen Knaben Amor gedemütigt. Amor beweist: « Cuncta domat Amor » (Amor bezwingt alles). - Die Kontrastierung der Leidenschaften:   * Apollo verbrennt in blinder Liebesleidenschaft (« Uritur et sterilem sperando nutrit amorem »).   * Daphne, Anhängerin der jungfräulichen Jagdgöttin Diana, will in ewiger Freiheit durch die Wälder streifen. - Die poetische Schilderung der Metamorphose:   * « Vix prece finita torpor gravis occupat artus, mollia cinguntur tenui praecordia libro, in frondem crines, in ramos brachia crescunt, pes modo tam velox pigris radicibus haeret, ora cacumen habet: remanet nitor unus in illa. »     (Kaum war das Gebet beendet, befällt eine schwere Erstarrung ihre Glieder; ihre zarte Brust wird von weicher Rinde umhüllt; ihre Haare wachsen zu Laub, die Arme zu Ästen; der eben noch so schnelle Fuß haftet in trägen Wurzeln fest; die Wipfelkrone bedeckt ihr Antlitz: Nur ihr strahlender Glanz bleibt in ihr zurück). - Politischer Bezug zu Kaiser Augustus:   * Apollo erklärt den Lorbeer (Daphne) zu seinem ewigen Symbol. Da Augustus Apollo als persönlichen Schutzgott verehrte und sein Haus auf dem Palatin mit Lorbeerbäumen flankierte, schlägt Ovid hier eine virtuose Brücke zwischen mythischem Urbeginn und augusteischer Gegenwart. 2. Metrische Gesetze des Daktylischen Hexameters: - Silbenquantitäten:   * Naturlänge: Lange Vokale oder Diphthonge ("
+            },
+            {
+              "type": "math",
+              "tex": "ae, oe, au"
+            },
+            {
+              "type": "text",
+              "text": ").   * Positionslänge: Kurzer Vokal vor zwei oder mehr Konsonanten (oder "
+            },
+            {
+              "type": "math",
+              "tex": "x, z"
+            },
+            {
+              "type": "text",
+              "text": ") gilt metrisch als lang. - Praktisches Skandierungsbeispiel:   * Textzeile (Met. I, 553):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Vix prece } \\mid \\text{finiti } \\mid \\text{torp(or) } \\mid \\text{occupat } \\mid \\text{artus}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Metrische Füße:     1. Vix pre-ce ("
+            },
+            {
+              "type": "math",
+              "tex": "- \\; \\text{v v}"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\mid"
+            },
+            {
+              "type": "text",
+              "text": " Daktylus     2. fi-ni- ("
+            },
+            {
+              "type": "math",
+              "tex": "- \\; -"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\mid"
+            },
+            {
+              "type": "text",
+              "text": " Spondeus     3. ta tor- ("
+            },
+            {
+              "type": "math",
+              "tex": "-"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\mid"
+            },
+            {
+              "type": "text",
+              "text": " Hebung mit Penthemimeres-Zäsur ("
+            },
+            {
+              "type": "math",
+              "tex": "m_3"
+            },
+            {
+              "type": "text",
+              "text": ")!     4. p(or) oc-cu-pat ("
+            },
+            {
+              "type": "math",
+              "tex": "- \\; \\text{v v}"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\mid"
+            },
+            {
+              "type": "text",
+              "text": " Elision von -or vor oc-, Daktylus     5. ar-tus ("
+            },
+            {
+              "type": "math",
+              "tex": "- \\; -"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\mid"
+            },
+            {
+              "type": "text",
+              "text": " Spondeus im 6. Versfuß (Katalexe)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

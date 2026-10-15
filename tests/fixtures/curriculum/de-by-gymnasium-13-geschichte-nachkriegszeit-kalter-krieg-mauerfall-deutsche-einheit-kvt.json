@@ -65,9 +65,42 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den Weg von der Potsdamer Konferenz über die doppelte Staatsgründung bis zum Bau der Berliner Mauer: 1. **Die Potsdamer Konferenz (Juli/August 1945)**:   * Die 'Großen Drei' (Truman, Churchill/Attlee, Stalin).   * **Die 4 'D's als Grundsätze**: Denazifizierung, Demilitarisierung, Demontage/Dekartellierung, Dezentralisierung / Demokratisierung.   * Aufteilung in 4 Besatzungszonen und 4 Sektoren in Berlin (Alliierter Kontrollrat), 2. **Der Beginn des Kalten Krieges & Die Spaltung (1947–1949)**:   * **Truman-Doktrin (1947)** (Eindämmungspolitik / Containment) & **Marshall-Plan** (ERP / Wirtschaftshilfe).   * **Währungsreform (Juni 1948)**: Einführung der D-Mark in den Westzonen $\\implies$ sowjetische **Berlin-Blockade** $\\implies$ **Berliner Luftbrücke** (Rosinenbomber unter General Clay).   * **Doppelte Staatsgründung 1949**:     - **BRD (23. Mai 1949)**: Parlamentarische Demokratie, Westbindung (Adenauer), Soziale Marktwirtschaft (Erhard).     - **DDR (7. Oktober 1949)**: SED-Diktatur des 'Demokratischen Zentralismus', Planwirtschaft, Satellitenstaat Moskaus, 3. **Eskalation: Volksaufstand 1953 & Mauerbau 1961**:   * **17. Juni 1953**: Volksaufstand in der DDR gegen Normerhöhungen und für freie Wahlen $\\implies$ blutige Niederschlagung durch sowjetische Panzer.   * **13. August 1961**: Walter Ulbricht lässt die Berliner Mauer errichten (*'Niemand hat die Absicht, eine Mauer zu errichten'*), um die Massenflucht von über 2,7 Millionen DDR-Bürgern ('Abstimmung mit den Füßen') in den Westen zu stoppen.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den Weg von der Potsdamer Konferenz über die doppelte Staatsgründung bis zum Bau der Berliner Mauer: 1. Die Potsdamer Konferenz (Juli/August 1945):   * Die 'Großen Drei' (Truman, Churchill/Attlee, Stalin).   * Die 4 'D's als Grundsätze: Denazifizierung, Demilitarisierung, Demontage/Dekartellierung, Dezentralisierung / Demokratisierung.   * Aufteilung in 4 Besatzungszonen und 4 Sektoren in Berlin (Alliierter Kontrollrat), 2. Der Beginn des Kalten Krieges & Die Spaltung (1947–1949):   * Truman-Doktrin (1947) (Eindämmungspolitik / Containment) & Marshall-Plan (ERP / Wirtschaftshilfe).   * Währungsreform (Juni 1948): Einführung der D-Mark in den Westzonen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " sowjetische Berlin-Blockade "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Berliner Luftbrücke (Rosinenbomber unter General Clay).   * Doppelte Staatsgründung 1949:     - BRD (23. Mai 1949): Parlamentarische Demokratie, Westbindung (Adenauer), Soziale Marktwirtschaft (Erhard).     - DDR (7. Oktober 1949): SED-Diktatur des 'Demokratischen Zentralismus', Planwirtschaft, Satellitenstaat Moskaus, 3. Eskalation: Volksaufstand 1953 & Mauerbau 1961:   * 17. Juni 1953: Volksaufstand in der DDR gegen Normerhöhungen und für freie Wahlen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " blutige Niederschlagung durch sowjetische Panzer.   * 13. August 1961: Walter Ulbricht lässt die Berliner Mauer errichten ('Niemand hat die Absicht, eine Mauer zu errichten'), um die Massenflucht von über 2,7 Millionen DDR-Bürgern ('Abstimmung mit den Füßen') in den Westen zu stoppen."
+            }
+          ],
           "concept": "Nachkriegszeit 13: Potsdam 1945 (4 D's); Marshall-Plan & Währungsreform 1948; Berlin-Blockade / Luftbrücke; Doppelte Staatsgründung 1949 (BRD 23. Mai, DDR 7. Okt); Volksaufstand 17. Juni 1953; Berliner Mauerbau 13. August 1961.",
-          "sample_solution": "1. Die Nachkriegsordnung und die Potsdamer Konferenz (1945): - **Ausgangslage**: Bedingungslose Kapitulation der Wehrmacht am 8. Mai 1945 (*Stunde Null / Zusammenbruchsgesellschaft*). - **Die Beschlüsse der Potsdamer Konferenz (August 1945)**:   * Deutschland wird als wirtschaftliche Einheit behandelt, jedoch in **vier Besatzungszonen** (USA, UdSSR, Großbritannien, Frankreich) aufgeteilt.   * **Die 4 'D's**:     1. *Denazifizierung*: Bestrafung von Kriegsverbrechern (Nürnberger Prozesse 1945/46) und Entnazifizierungsverfahren.     2. *Demilitarisierung*: Vollständige Auflösung aller deutschen Streitkräfte und Rüstungsindustrie.     3. *Demontage*: Reparationen für die Zerstörungen des Krieges (von der UdSSR massiv vorangetrieben).     4. *Demokratisierung*: Wiederaufbau des politischen Lebens auf demokratischer Grundlage. 2. Die Verschärfung des Kalten Krieges und die deutsche Spaltung: ```mermaid graph TD   P[1945: Potsdamer Konferenz & 4 Zonen] --> M[1947: Marshall-Plan & Truman-Doktrin]   M --> W[Juni 1948: Währungsreform West -> D-Mark]   W --> B[1948/49: Berlin-Blockade & Luftbrücke]   B --> BRD[23. Mai 1949: Gründung BRD / Grundgesetz]   B --> DDR[7. Okt 1949: Gründung DDR / SED-Monopol] ``` - **Die Berlin-Blockade (1948/49)**:   * Als Reaktion auf die Einführung der D-Mark sperrte die Sowjetunion alle Land- und Wasserwege nach West-Berlin.   * Die westlichen Alliierten versorgten über 2,1 Millionen Berliner über 11 Monate aus der Luft (**Berliner Luftbrücke / Rosinenbomber**). West-Berlin wurde zum Fanal der Freiheit und die Westmächte wandelten sich von Besatzern zu Schutzmächten. 3. Der Mauerbau am 13. August 1961: - **Die Existenzkrise der DDR**:   * Durch Zwangskollektivierung der Landwirtschaft, Mangelwirtschaft und politische Repression (Stasi) flüchteten zwischen 1949 und 1961 über **2,7 Millionen Menschen** – vor allem junge, hochqualifizierte Akademiker und Facharbeiter – über das offene Schlupfloch Berlin in die Bundesrepublik. - **Der Bau des 'Antifaschistischen Schutzwalls'**:   * Trotz Walter Ulbrichts berüchtigter Lüge vom 15. Juni 1961 (*« Niemand hat die Absicht, eine Mauer zu errichten! »*) riegelten DDR-Volkspolizei und Nationale Volksarmee am **13. August 1961** die Sektorengrenze in Berlin mit Stacheldraht und Betonmauern hermetisch ab.   * Die Berliner Mauer zerriss Familien auf 28 Jahre und zementierte die Spaltung der Welt in zwei verfeindete Blöcke mit Todesstreifen und Schießbefehl an der innerdeutschen Grenze."
+          "sample_solution": "1. Die Nachkriegsordnung und die Potsdamer Konferenz (1945): - Ausgangslage: Bedingungslose Kapitulation der Wehrmacht am 8. Mai 1945 (Stunde Null / Zusammenbruchsgesellschaft). - Die Beschlüsse der Potsdamer Konferenz (August 1945):   * Deutschland wird als wirtschaftliche Einheit behandelt, jedoch in vier Besatzungszonen (USA, UdSSR, Großbritannien, Frankreich) aufgeteilt.   * Die 4 'D's:     1. Denazifizierung: Bestrafung von Kriegsverbrechern (Nürnberger Prozesse 1945/46) und Entnazifizierungsverfahren.     2. Demilitarisierung: Vollständige Auflösung aller deutschen Streitkräfte und Rüstungsindustrie.     3. Demontage: Reparationen für die Zerstörungen des Krieges (von der UdSSR massiv vorangetrieben).     4. Demokratisierung: Wiederaufbau des politischen Lebens auf demokratischer Grundlage. 2. Die Verschärfung des Kalten Krieges und die deutsche Spaltung: ```mermaid graph TD   P[1945: Potsdamer Konferenz & 4 Zonen] --> M[1947: Marshall-Plan & Truman-Doktrin]   M --> W[Juni 1948: Währungsreform West -> D-Mark]   W --> B[1948/49: Berlin-Blockade & Luftbrücke]   B --> BRD[23. Mai 1949: Gründung BRD / Grundgesetz]   B --> DDR[7. Okt 1949: Gründung DDR / SED-Monopol] ``` - Die Berlin-Blockade (1948/49):   * Als Reaktion auf die Einführung der D-Mark sperrte die Sowjetunion alle Land- und Wasserwege nach West-Berlin.   * Die westlichen Alliierten versorgten über 2,1 Millionen Berliner über 11 Monate aus der Luft (Berliner Luftbrücke / Rosinenbomber). West-Berlin wurde zum Fanal der Freiheit und die Westmächte wandelten sich von Besatzern zu Schutzmächten. 3. Der Mauerbau am 13. August 1961: - Die Existenzkrise der DDR:   * Durch Zwangskollektivierung der Landwirtschaft, Mangelwirtschaft und politische Repression (Stasi) flüchteten zwischen 1949 und 1961 über 2,7 Millionen Menschen – vor allem junge, hochqualifizierte Akademiker und Facharbeiter – über das offene Schlupfloch Berlin in die Bundesrepublik. - Der Bau des 'Antifaschistischen Schutzwalls':   * Trotz Walter Ulbrichts berüchtigter Lüge vom 15. Juni 1961 (« Niemand hat die Absicht, eine Mauer zu errichten! ») riegelten DDR-Volkspolizei und Nationale Volksarmee am 13. August 1961 die Sektorengrenze in Berlin mit Stacheldraht und Betonmauern hermetisch ab.   * Die Berliner Mauer zerriss Familien auf 28 Jahre und zementierte die Spaltung der Welt in zwei verfeindete Blöcke mit Todesstreifen und Schießbefehl an der innerdeutschen Grenze.",
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +161,79 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den Wandel von der Neuen Ostpolitik über die Friedliche Revolution 1989 zur Deutschen Einheit 1990: 1. **Die Neue Ostpolitik der sozial-liberalen Koalition (Willy Brandt & Egon Bahr, ab 1969)**:   * Leitmotiv: **'Wandel durch Annäherung'** und 'Politik der kleinen Schritte'.   * Anerkennung des Status quo und der bestehenden Grenzen (Oder-Neiße-Grenze) ohne Aufgabe des Wiedervereinigungsgebots.   * **Ostverträge**: Moskauer und Warschauer Vertrag 1970 (Historischer **Kniefall von Warschau** am Denkmal der Ghetto-Helden), Viermächteabkommen über Berlin 1971, **Grundlagenvertrag 1972** (Gleichberechtigte Beziehungen zwischen BRD und DDR).   * Friedensnobelpreis für Willy Brandt 1971, 2. **Die Friedliche Revolution in der DDR (Herbst 1989)**:   * **Ursachen**: Marode Planwirtschaft, Umweltzerstörung, Wahlfälschung bei den Kommunalwahlen im Mai 1989, Michail Gorbatschows Reformkurs (**Glasnost und Perestroika** – Abkehr von der Breschnew-Doktrin), Grenzöffnung Ungarns (Sommer 1989).   * **Montagsdemonstrationen in Leipzig**: Ausgehend von den Friedensgebeten in der Nikolaikirche wächst der Protest (*« Wir sind das Volk! »*); die Staatsmacht wagt kein Blutbad ('chinesische Lösung' bleibt aus).   * **9. November 1989**: Günter Schabowskis legendäre Pressekonferenz (*« Das tritt nach meiner Kenntnis ... ist das sofort, unverzüglich »*) $\\implies$ Sturm auf die Mauer $\\implies$ **Fall der Berliner Mauer**, 3. **Der Weg zur Einheit (1989/90)**:   * Aus *'Wir sind das Volk'* wird *'Wir sind ein Volk'*.   * **Zehn-Punkte-Programm (Helmut Kohl)**: Stufenplan zur Überwindung der Teilung.   * **Erste freie Volkskammerwahl (18. März 1990)**: Überwältigender Sieg der *Allianz für Deutschland* (Wunsch nach schneller Einheit).   * **Währungs-, Wirtschafts- und Sozialunion (1. Juli 1990)**: Einführung der D-Mark in der DDR.   * **Zwei-plus-Vier-Vertrag (12. Sept 1990)**: BRD + DDR mit USA, UdSSR, GB, Frankreich vereinbaren volle Souveränität Deutschlands; Grenzanerkennung Polens; Verzicht auf ABC-Waffen.   * **3. Oktober 1990**: Beitritt der 5 neuen Bundesländer nach Art. 23 GG $\\implies$ **Tag der Deutschen Einheit**.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den Wandel von der Neuen Ostpolitik über die Friedliche Revolution 1989 zur Deutschen Einheit 1990: 1. Die Neue Ostpolitik der sozial-liberalen Koalition (Willy Brandt & Egon Bahr, ab 1969):   * Leitmotiv: 'Wandel durch Annäherung' und 'Politik der kleinen Schritte'.   * Anerkennung des Status quo und der bestehenden Grenzen (Oder-Neiße-Grenze) ohne Aufgabe des Wiedervereinigungsgebots.   * Ostverträge: Moskauer und Warschauer Vertrag 1970 (Historischer Kniefall von Warschau am Denkmal der Ghetto-Helden), Viermächteabkommen über Berlin 1971, Grundlagenvertrag 1972 (Gleichberechtigte Beziehungen zwischen BRD und DDR).   * Friedensnobelpreis für Willy Brandt 1971, 2. Die Friedliche Revolution in der DDR (Herbst 1989):   * Ursachen: Marode Planwirtschaft, Umweltzerstörung, Wahlfälschung bei den Kommunalwahlen im Mai 1989, Michail Gorbatschows Reformkurs (Glasnost und Perestroika – Abkehr von der Breschnew-Doktrin), Grenzöffnung Ungarns (Sommer 1989).   * Montagsdemonstrationen in Leipzig: Ausgehend von den Friedensgebeten in der Nikolaikirche wächst der Protest (« Wir sind das Volk! »); die Staatsmacht wagt kein Blutbad ('chinesische Lösung' bleibt aus).   * 9. November 1989: Günter Schabowskis legendäre Pressekonferenz (« Das tritt nach meiner Kenntnis ... ist das sofort, unverzüglich ») "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Sturm auf die Mauer "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Fall der Berliner Mauer, 3. Der Weg zur Einheit (1989/90):   * Aus 'Wir sind das Volk' wird 'Wir sind ein Volk'.   * Zehn-Punkte-Programm (Helmut Kohl): Stufenplan zur Überwindung der Teilung.   * Erste freie Volkskammerwahl (18. März 1990): Überwältigender Sieg der Allianz für Deutschland (Wunsch nach schneller Einheit).   * Währungs-, Wirtschafts- und Sozialunion (1. Juli 1990): Einführung der D-Mark in der DDR.   * Zwei-plus-Vier-Vertrag (12. Sept 1990): BRD + DDR mit USA, UdSSR, GB, Frankreich vereinbaren volle Souveränität Deutschlands; Grenzanerkennung Polens; Verzicht auf ABC-Waffen.   * 3. Oktober 1990: Beitritt der 5 neuen Bundesländer nach Art. 23 GG "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Tag der Deutschen Einheit."
+            }
+          ],
           "concept": "Deutsche Einheit 13: Ostpolitik Brandt/Bahr (Wandel durch Annäherung, Kniefall Warschau, Grundlagenvertrag 1972); 1989 Friedliche Revolution (Gorbatschow Glasnost/Perestroika, Montagsdemos Leipzig, 9. Nov Mauerfall); 1990 Weg zur Einheit (Kohl 10 Punkte, D-Mark 1. Juli, Zwei-plus-Vier-Vertrag, 3. Oktober Art. 23 GG).",
-          "sample_solution": "1. Die Neue Ostpolitik (Willy Brandt und Egon Bahr, ab 1969): - **Der Paradigmenwechsel**:   * Abkehr von der starren Hallstein-Doktrin (Alleinvertretungsanspruch der BRD).   * **Prämisse**: *« Wandel durch Annäherung »* – Menschliche Erleichterungen für die getrennten Familien durch vertragliche Entspannungspolitik. - **Die Vertragswerke**:   * **1. Warschauer Vertrag (1970)**: Faktische Anerkennung der Oder-Neiße-Grenze zu Polen. Am 7. Dezember 1970 vollzieht Willy Brandt den weltberühmten **Kniefall von Warschau** am Mahnmal des jüdischen Ghetto-Aufstandes – eine stille Bitte um Vergebung für die deutschen Verbrechen im Zweiten Weltkrieg.   * **2. Grundlagenvertrag (1972)**: BRD und DDR vereinbaren gutnachbarliche Beziehungen und richten Ständige Vertretungen ein $\\implies$ 1973 treten beide deutsche Staaten den Vereinten Nationen (UN) bei. 2. Die Friedliche Revolution 1989: - **Die internen und externen Faktoren**:   * **1. Der sowjetische Reformkurs**: Michail Gorbatschow verkündet ab 1985 **Glasnost (Offenheit)** und **Perestroika (Umgestaltung)** und erteilt militärischen Interventionen zur Rettung maroder Satellitenregime eine klare Absage (*« Wer zu spät kommt, den bestraft das Leben »*).   * **2. Die Fluchtbewegung**: Im Sommer 1989 öffnet Ungarn den Eisernen Vorhang; zehntausende DDR-Bürger flüchten über Ungarn und die Prager Botschaft in den Westen.   * **3. Die Bürgerrechtsbewegung und Montagsdemonstrationen**: In Leipzig versammeln sich jeden Montag nach den Friedensgebeten in der Nikolaikirche zehntausende Bürger. Am entscheidenden **9. Oktober 1989** kapitulieren die bewaffneten Sicherheitskräfte vor $70.000$ friedlichen Demonstranten (*« Keine Gewalt! »* und *« Wir sind das Volk! »*). - **Die Nacht des 9. November 1989**:   * SED-Politbüromitglied Günter Schabowski verliest auf einer live übertragenen Pressekonferenz verhaspelt eine neue Reiseregelung. Auf die Journalistenfrage, ab wann dies gelte, antwortet er: *« Das tritt nach meiner Kenntnis ... ist das sofort, unverzüglich. »*   * Hunderttausende strömen an die Grenzübergänge in Berlin; die überforderten Grenzsoldaten öffnen die Schranken $\\implies$ Friedlicher Fall der Mauer nach 28 Jahren. 3. Die Vollendung der Deutschen Einheit 1990: - **Der diplomatische Kraftakt (Zwei-plus-Vier-Vertrag)**:   * Verhandlungen zwischen den beiden deutschen Staaten (BRD/Kohl/Genscher + DDR/de Maizière) und den vier Siegermächten (USA/Bush, UdSSR/Gorbatschow, GB/Thatcher, Frankreich/Mitterrand).   * **Kernelemente**: Deutschland erhält die **volle völkerrechtliche Souveränität**, verbleibt als vereinter Staat in der NATO, bestätigt endgültig die Oder-Neiße-Grenze zu Polen und verzichtet auf Massenvernichtungswaffen. - **Der 3. Oktober 1990**:   * Die wiederbegründeten fünf ostdeutschen Länder (Brandenburg, Mecklenburg-Vorpommern, Sachsen, Sachsen-Anhalt, Thüringen) treten gemäß **Artikel 23 des Grundgesetzes** der Bundesrepublik Deutschland bei $\\implies$ Vollendung der staatlichen Einheit in Freiheit."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Neue Ostpolitik (Willy Brandt und Egon Bahr, ab 1969): - Der Paradigmenwechsel:   * Abkehr von der starren Hallstein-Doktrin (Alleinvertretungsanspruch der BRD).   * Prämisse: « Wandel durch Annäherung » – Menschliche Erleichterungen für die getrennten Familien durch vertragliche Entspannungspolitik. - Die Vertragswerke:   * 1. Warschauer Vertrag (1970): Faktische Anerkennung der Oder-Neiße-Grenze zu Polen. Am 7. Dezember 1970 vollzieht Willy Brandt den weltberühmten Kniefall von Warschau am Mahnmal des jüdischen Ghetto-Aufstandes – eine stille Bitte um Vergebung für die deutschen Verbrechen im Zweiten Weltkrieg.   * 2. Grundlagenvertrag (1972): BRD und DDR vereinbaren gutnachbarliche Beziehungen und richten Ständige Vertretungen ein "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " 1973 treten beide deutsche Staaten den Vereinten Nationen (UN) bei. 2. Die Friedliche Revolution 1989: - Die internen und externen Faktoren:   * 1. Der sowjetische Reformkurs: Michail Gorbatschow verkündet ab 1985 Glasnost (Offenheit) und Perestroika (Umgestaltung) und erteilt militärischen Interventionen zur Rettung maroder Satellitenregime eine klare Absage (« Wer zu spät kommt, den bestraft das Leben »).   * 2. Die Fluchtbewegung: Im Sommer 1989 öffnet Ungarn den Eisernen Vorhang; zehntausende DDR-Bürger flüchten über Ungarn und die Prager Botschaft in den Westen.   * 3. Die Bürgerrechtsbewegung und Montagsdemonstrationen: In Leipzig versammeln sich jeden Montag nach den Friedensgebeten in der Nikolaikirche zehntausende Bürger. Am entscheidenden 9. Oktober 1989 kapitulieren die bewaffneten Sicherheitskräfte vor "
+            },
+            {
+              "type": "math",
+              "tex": "70.000"
+            },
+            {
+              "type": "text",
+              "text": " friedlichen Demonstranten (« Keine Gewalt! » und « Wir sind das Volk! »). - Die Nacht des 9. November 1989:   * SED-Politbüromitglied Günter Schabowski verliest auf einer live übertragenen Pressekonferenz verhaspelt eine neue Reiseregelung. Auf die Journalistenfrage, ab wann dies gelte, antwortet er: « Das tritt nach meiner Kenntnis ... ist das sofort, unverzüglich. »   * Hunderttausende strömen an die Grenzübergänge in Berlin; die überforderten Grenzsoldaten öffnen die Schranken "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Friedlicher Fall der Mauer nach 28 Jahren. 3. Die Vollendung der Deutschen Einheit 1990: - Der diplomatische Kraftakt (Zwei-plus-Vier-Vertrag):   * Verhandlungen zwischen den beiden deutschen Staaten (BRD/Kohl/Genscher + DDR/de Maizière) und den vier Siegermächten (USA/Bush, UdSSR/Gorbatschow, GB/Thatcher, Frankreich/Mitterrand).   * Kernelemente: Deutschland erhält die volle völkerrechtliche Souveränität, verbleibt als vereinter Staat in der NATO, bestätigt endgültig die Oder-Neiße-Grenze zu Polen und verzichtet auf Massenvernichtungswaffen. - Der 3. Oktober 1990:   * Die wiederbegründeten fünf ostdeutschen Länder (Brandenburg, Mecklenburg-Vorpommern, Sachsen, Sachsen-Anhalt, Thüringen) treten gemäß Artikel 23 des Grundgesetzes der Bundesrepublik Deutschland bei "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Vollendung der staatlichen Einheit in Freiheit."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

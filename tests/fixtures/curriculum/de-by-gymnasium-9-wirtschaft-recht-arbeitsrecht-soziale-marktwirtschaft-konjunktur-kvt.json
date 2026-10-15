@@ -65,9 +65,24 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Systematisiere das deutsche Arbeitsrecht und die Prinzipien der Sozialen Marktwirtschaft: 1. **Das Arbeitsverhältnis**:   * **Arbeitsvertrag (§ 611a BGB)**: Gegenseitiger Dienstvertrag. Hauptpflichten: Arbeitnehmer leistet weisungsgebundene Arbeit, Arbeitgeber zahlt vereinbarte Vergütung. Nebenpflichten: Treuepflicht vs. Fürsorgepflicht, 2. **Kündigungsrecht & Kündigungsschutz**:   * **Ordentliche Kündigung (mit Kündigungsfrist)**: Nach Kündigungsschutzgesetz (KSchG in Betrieben mit $> 10$ Beschäftigten) sozial gerechtfertigt nur aus:     1. personenbedingten Gründen (z. B. langanhaltende Krankheit),     2. verhaltensbedingten Gründen (z. B. wiederholte Pflichtverletzung nach Abmahnung),     3. betriebsbedingten Gründen (z. B. Auftragsmangel, mit Sozialauswahl).   * **Außerordentliche (fristlose) Kündigung (§ 626 BGB)**: Nur aus wichtigem Grund (z. B. Diebstahl, schwere Tätlichkeit).   * **Besonderer Kündigungsschutz**: Schwangere (MuSchG), Betriebsräte, Schwerbehinderte, Auszubildende nach der Probezeit, 3. **Tarifvertrag & Mitbestimmung**:   * Tarifpartner: Gewerkschaften vs. Arbeitgeberverbände; Friedenspflicht während der Laufzeit; Streik als Ultima Ratio nach Urabstimmung.   * Betriebsrat (BetrVG): Vertritt die Belegschaft mit Mitbestimmungsrechten bei sozialen, personellen und wirtschaftlichen Angelegenheiten, 4. **Die Soziale Marktwirtschaft (Ludwig Erhard / Alfred Müller-Armack)**:   * *'So viel Markt wie möglich, so viel Staat wie nötig'*: Freier Wettbewerb, Privateigentum und Preisbildung durch Angebot und Nachfrage kombiniert mit sozialem Ausgleich (5 Säulen der gesetzlichen Sozialversicherung: Kranken-, Renten-, Unfall-, Arbeitslosen- und Pflegeversicherung).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Systematisiere das deutsche Arbeitsrecht und die Prinzipien der Sozialen Marktwirtschaft: 1. Das Arbeitsverhältnis:   * Arbeitsvertrag (§ 611a BGB): Gegenseitiger Dienstvertrag. Hauptpflichten: Arbeitnehmer leistet weisungsgebundene Arbeit, Arbeitgeber zahlt vereinbarte Vergütung. Nebenpflichten: Treuepflicht vs. Fürsorgepflicht, 2. Kündigungsrecht & Kündigungsschutz:   * Ordentliche Kündigung (mit Kündigungsfrist): Nach Kündigungsschutzgesetz (KSchG in Betrieben mit "
+            },
+            {
+              "type": "math",
+              "tex": "> 10",
+              "speech": "größer als 10"
+            },
+            {
+              "type": "text",
+              "text": " Beschäftigten) sozial gerechtfertigt nur aus:     1. personenbedingten Gründen (z. B. langanhaltende Krankheit),     2. verhaltensbedingten Gründen (z. B. wiederholte Pflichtverletzung nach Abmahnung),     3. betriebsbedingten Gründen (z. B. Auftragsmangel, mit Sozialauswahl).   * Außerordentliche (fristlose) Kündigung (§ 626 BGB): Nur aus wichtigem Grund (z. B. Diebstahl, schwere Tätlichkeit).   * Besonderer Kündigungsschutz: Schwangere (MuSchG), Betriebsräte, Schwerbehinderte, Auszubildende nach der Probezeit, 3. Tarifvertrag & Mitbestimmung:   * Tarifpartner: Gewerkschaften vs. Arbeitgeberverbände; Friedenspflicht während der Laufzeit; Streik als Ultima Ratio nach Urabstimmung.   * Betriebsrat (BetrVG): Vertritt die Belegschaft mit Mitbestimmungsrechten bei sozialen, personellen und wirtschaftlichen Angelegenheiten, 4. Die Soziale Marktwirtschaft (Ludwig Erhard / Alfred Müller-Armack):   * 'So viel Markt wie möglich, so viel Staat wie nötig': Freier Wettbewerb, Privateigentum und Preisbildung durch Angebot und Nachfrage kombiniert mit sozialem Ausgleich (5 Säulen der gesetzlichen Sozialversicherung: Kranken-, Renten-, Unfall-, Arbeitslosen- und Pflegeversicherung)."
+            }
+          ],
           "concept": "Arbeitsrecht: Arbeitsvertrag, Pflichten; Kündigungsschutz (ordentlich: personen-, verhaltens-, betriebsbedingt nach KSchG; außerordentlich nach § 626 BGB; Sonderkündigungsschutz); Tarifautonomie & Betriebsrat; Soziale Marktwirtschaft (Erhard, Marktmechanismus + sozialer Ausgleich / Sozialversicherungen).",
-          "sample_solution": "1. Grundlagen des individuellen Arbeitsrechts: - **Der Arbeitsvertrag (§ 611a BGB)**:   * Ein privatrechtlicher, gegenseitiger Vertrag, durch den sich der Arbeitnehmer zur Leistung weisungsgebundener, fremdbestimmter Arbeit und der Arbeitgeber zur Zahlung der vereinbarten Vergütung verpflichtet.   * **Pflichten der Vertragspartner**:     * *Arbeitnehmer*: Hauptpflicht zur Arbeitsleistung; Nebenpflichten (Treuepflicht, Verschwiegenheitspflicht, Wettbewerbsverbot).     * *Arbeitgeber*: Hauptpflicht zur Lohnzahlung; Nebenpflichten (Fürsorgepflicht, Arbeitsschutz, Urlaubsgewährung, Zeugnisausstellung). 2. Kündigungsrecht und Kündigungsschutz: - **1. Ordentliche Kündigung (unter Einhaltung der Kündigungsfrist nach § 622 BGB)**:   * Das **Kündigungsschutzgesetz (KSchG)** greift nach 6 Monaten Betriebszugehörigkeit in Betrieben mit mehr als 10 Mitarbeitern. Eine Kündigung ist nur wirksam, wenn sie **sozial gerechtfertigt** ist:     1. **Personenbedingt**: Fehlende Eignung oder dauerhafte schwere Krankheit mit negativer Zukunftsprognose.     2. **Verhaltensbedingt**: Schuldhafte Vertragsverletzung; setzt in der Regel eine vorherige **Abmahnung** voraus (z. B. unentschuldigtes Fehlen).     3. **Betriebsbedingt**: Dringende betriebliche Erfordernisse (z. B. Schließung einer Abteilung); erfordert eine gesetzliche **Sozialauswahl** (Kriterien: Betriebszugehörigkeit, Lebensalter, Unterhaltspflichten, Schwerbehinderung). - **2. Außerordentliche / Fristlose Kündigung (§ 626 BGB)**:   * Beendet das Arbeitsverhältnis mit sofortiger Wirkung ohne Frist; setzt einen **wichtigen Grund** voraus (Unzumutbarkeit der Weiterbeschäftigung, z. B. Spesenbetrug, Diebstahl, schwere Beleidigung); muss innerhalb von 2 Wochen nach Bekanntwerden ausgesprochen werden. - **3. Besonderer Kündigungsschutz**:   * Absolutes Kündigungsverbot für Schwangere und Mütter im Mutterschutz, Eltern in Elternzeit, Mitglieder des Betriebsrats sowie strenge Auflagen (Zustimmung des Integrationsamtes) bei Schwerbehinderten. 3. Kollektives Arbeitsrecht und Tarifautonomie: - **Tarifautonomie (Art. 9 Abs. 3 GG)**:   * Das Recht der Tarifvertragsparteien (Gewerkschaften und Arbeitgeberverbände), Arbeitsbedingungen wie Löhne, Arbeitszeiten und Urlaub eigenständig in Tarifverträgen zu regeln. - **Arbeitskampf und Schlichtung**:   * Während der Laufzeit eines Tarifvertrags gilt die **Friedenspflicht**.   * Nach Scheitern der Verhandlungen und Schlichtung kann nach Urabstimmung (mindestens 75 % Zustimmung der Gewerkschaftsmitglieder) ein **Streik** ausgerufen werden. 4. Die Soziale Marktwirtschaft: - **Konzept (Ludwig Erhard, Alfred Müller-Armack, 1948/49)**:   * Ziel: *« Wohlstand für alle »*. Verbindung des freien Wettbewerbs auf Märkten mit dem Prinzip des sozialen Ausgleichs und der sozialen Sicherheit.   * **Die 5 Säulen der gesetzlichen Sozialversicherung**:     1. Krankenversicherung (1883, Bismarck)     2. Unfallversicherung (1884)     3. Rentenversicherung (1889)     4. Arbeitslosenversicherung (1927)     5. Pflegeversicherung (1995)."
+          "sample_solution": "1. Grundlagen des individuellen Arbeitsrechts: - Der Arbeitsvertrag (§ 611a BGB):   * Ein privatrechtlicher, gegenseitiger Vertrag, durch den sich der Arbeitnehmer zur Leistung weisungsgebundener, fremdbestimmter Arbeit und der Arbeitgeber zur Zahlung der vereinbarten Vergütung verpflichtet.   * Pflichten der Vertragspartner:     * Arbeitnehmer: Hauptpflicht zur Arbeitsleistung; Nebenpflichten (Treuepflicht, Verschwiegenheitspflicht, Wettbewerbsverbot).     * Arbeitgeber: Hauptpflicht zur Lohnzahlung; Nebenpflichten (Fürsorgepflicht, Arbeitsschutz, Urlaubsgewährung, Zeugnisausstellung). 2. Kündigungsrecht und Kündigungsschutz: - 1. Ordentliche Kündigung (unter Einhaltung der Kündigungsfrist nach § 622 BGB):   * Das Kündigungsschutzgesetz (KSchG) greift nach 6 Monaten Betriebszugehörigkeit in Betrieben mit mehr als 10 Mitarbeitern. Eine Kündigung ist nur wirksam, wenn sie sozial gerechtfertigt ist:     1. Personenbedingt: Fehlende Eignung oder dauerhafte schwere Krankheit mit negativer Zukunftsprognose.     2. Verhaltensbedingt: Schuldhafte Vertragsverletzung; setzt in der Regel eine vorherige Abmahnung voraus (z. B. unentschuldigtes Fehlen).     3. Betriebsbedingt: Dringende betriebliche Erfordernisse (z. B. Schließung einer Abteilung); erfordert eine gesetzliche Sozialauswahl (Kriterien: Betriebszugehörigkeit, Lebensalter, Unterhaltspflichten, Schwerbehinderung). - 2. Außerordentliche / Fristlose Kündigung (§ 626 BGB):   * Beendet das Arbeitsverhältnis mit sofortiger Wirkung ohne Frist; setzt einen wichtigen Grund voraus (Unzumutbarkeit der Weiterbeschäftigung, z. B. Spesenbetrug, Diebstahl, schwere Beleidigung); muss innerhalb von 2 Wochen nach Bekanntwerden ausgesprochen werden. - 3. Besonderer Kündigungsschutz:   * Absolutes Kündigungsverbot für Schwangere und Mütter im Mutterschutz, Eltern in Elternzeit, Mitglieder des Betriebsrats sowie strenge Auflagen (Zustimmung des Integrationsamtes) bei Schwerbehinderten. 3. Kollektives Arbeitsrecht und Tarifautonomie: - Tarifautonomie (Art. 9 Abs. 3 GG):   * Das Recht der Tarifvertragsparteien (Gewerkschaften und Arbeitgeberverbände), Arbeitsbedingungen wie Löhne, Arbeitszeiten und Urlaub eigenständig in Tarifverträgen zu regeln. - Arbeitskampf und Schlichtung:   * Während der Laufzeit eines Tarifvertrags gilt die Friedenspflicht.   * Nach Scheitern der Verhandlungen und Schlichtung kann nach Urabstimmung (mindestens 75 % Zustimmung der Gewerkschaftsmitglieder) ein Streik ausgerufen werden. 4. Die Soziale Marktwirtschaft: - Konzept (Ludwig Erhard, Alfred Müller-Armack, 1948/49):   * Ziel: « Wohlstand für alle ». Verbindung des freien Wettbewerbs auf Märkten mit dem Prinzip des sozialen Ausgleichs und der sozialen Sicherheit.   * Die 5 Säulen der gesetzlichen Sozialversicherung:     1. Krankenversicherung (1883, Bismarck)     2. Unfallversicherung (1884)     3. Rentenversicherung (1889)     4. Arbeitslosenversicherung (1927)     5. Pflegeversicherung (1995).",
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +143,104 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den Konjunkturzyklus, das Magische Viereck des Stabilitätsgesetzes und die Geldpolitik: 1. **Die 4 Phasen des Konjunkturzyklus**:   * **1. Aufschwung (Expansion)**: Steigende Nachfrage, zunehmende Produktion, sinkende Arbeitslosigkeit, verhaltene Preissteigerung, optimistische Erwartungen.   * **2. Hochkonjunktur (Boom)**: Vollauslastung / Überhitzung der Kapazitäten, Fachkräftemangel, spürbare Inflation, steigende Zinsen.   * **3. Abschwung (Rezession)**: Rückläufige Auftragseingänge, sinkende Investitionen, steigende Kurzarbeit/Arbeitslosigkeit, Preisniveau stagniert.   * **4. Tiefstand (Depression)**: Hohe Arbeitslosigkeit, geringe Kapazitätsauslastung, Deflationsgefahr, pessimistische Zukunftserwartungen, 2. **Konjunkturindikatoren**:   * **Frühindikatoren (prognostizierend)**: Auftragseingänge, Baugenehmigungen, ifo-Geschäftsklimaindex, Aktienkurse.   * **Präsenzindikatoren (Gegenwart)**: Aktuelles BIP, Kapazitätsauslastung, Industrieproduktion.   * **Spätindikatoren (nachlaufend)**: Arbeitslosenquote, Inflationsrate, Insolvenzen, 3. **Das Magische Viereck (§ 1 Stabilitäts- und Wachstumsgesetz 1967)**:   * 1. Preisniveaustabilität (Inflationsrate $\\approx 2\\%$)   * 2. Hoher Beschäftigungsstand (Arbeitslosenquote $< 3\\%$)   * 3. Stetiges und angemessenes Wirtschaftswachstum (reales BIP-Wachstum $\\approx 2-3\\%$)   * 4. Außenwirtschaftliches Gleichgewicht (ausgeglichene Leistungsbilanz)   * *Magisch*: Zielkonflikte (z. B. Phillips-Kurve: Zielkonflikt zwischen Preisstabilität und Vollbeschäftigung), 4. **Geldpolitische Instrumente der EZB**: Leitzinsanhebungen zur Bekämpfung von Inflation (Verteuerung von Krediten $\\rightarrow$ Dämpfung von Nachfrage und Investitionen) vs. Zinssenkungen zur Stimulierung der Konjunktur.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den Konjunkturzyklus, das Magische Viereck des Stabilitätsgesetzes und die Geldpolitik: 1. Die 4 Phasen des Konjunkturzyklus:   * 1. Aufschwung (Expansion): Steigende Nachfrage, zunehmende Produktion, sinkende Arbeitslosigkeit, verhaltene Preissteigerung, optimistische Erwartungen.   * 2. Hochkonjunktur (Boom): Vollauslastung / Überhitzung der Kapazitäten, Fachkräftemangel, spürbare Inflation, steigende Zinsen.   * 3. Abschwung (Rezession): Rückläufige Auftragseingänge, sinkende Investitionen, steigende Kurzarbeit/Arbeitslosigkeit, Preisniveau stagniert.   * 4. Tiefstand (Depression): Hohe Arbeitslosigkeit, geringe Kapazitätsauslastung, Deflationsgefahr, pessimistische Zukunftserwartungen, 2. Konjunkturindikatoren:   * Frühindikatoren (prognostizierend): Auftragseingänge, Baugenehmigungen, ifo-Geschäftsklimaindex, Aktienkurse.   * Präsenzindikatoren (Gegenwart): Aktuelles BIP, Kapazitätsauslastung, Industrieproduktion.   * Spätindikatoren (nachlaufend): Arbeitslosenquote, Inflationsrate, Insolvenzen, 3. Das Magische Viereck (§ 1 Stabilitäts- und Wachstumsgesetz 1967):   * 1. Preisniveaustabilität (Inflationsrate "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 2\\%",
+              "speech": "ungefähr 2 Prozent"
+            },
+            {
+              "type": "text",
+              "text": ")   * 2. Hoher Beschäftigungsstand (Arbeitslosenquote "
+            },
+            {
+              "type": "math",
+              "tex": "< 3\\%",
+              "speech": "kleiner als 3 Prozent"
+            },
+            {
+              "type": "text",
+              "text": ")   * 3. Stetiges und angemessenes Wirtschaftswachstum (reales BIP-Wachstum "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 2-3\\%",
+              "speech": "ungefähr 2 bis 3 Prozent"
+            },
+            {
+              "type": "text",
+              "text": ")   * 4. Außenwirtschaftliches Gleichgewicht (ausgeglichene Leistungsbilanz)   * Magisch: Zielkonflikte (z. B. Phillips-Kurve: Zielkonflikt zwischen Preisstabilität und Vollbeschäftigung), 4. Geldpolitische Instrumente der EZB: Leitzinsanhebungen zur Bekämpfung von Inflation (Verteuerung von Krediten "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Dämpfung von Nachfrage und Investitionen) vs. Zinssenkungen zur Stimulierung der Konjunktur."
+            }
+          ],
           "concept": "Konjunktur: 4 Phasen (Aufschwung, Boom, Rezession, Depression); Indikatoren (Früh, Präsenz, Spät); Magisches Viereck (Preise, Beschäftigung, Wachstum, Außenhandel); Zielkonflikte; Geldpolitik der EZB (Leitzins, Inflation).",
-          "sample_solution": "1. Der idealtypische Konjunkturzyklus: - Die wellenförmige Schwankung der gesamtwirtschaftlichen Aktivität (Auslastungsgrad des Produktionspotenzials) über einen Zeitraum von 4 bis 8 Jahren:   * **1. Aufschwung (Expansion)**: Zunahme von Konsum und Investitionen, verbesserte Auftragslage, sinkende Arbeitslosigkeit, stabiles bis leicht steigendes Preisniveau.   * **2. Hochkonjunktur (Boom)**: Vollbeschäftigung, Engpässe auf Rohstoff- und Arbeitsmärkten, Kapazitäten an der Belastungsgrenze $\\implies$ Preisanstieg (Inflation) und Lohn-Preis-Spirale.   * **3. Abschwung (Rezession)**: Mindestens zwei aufeinanderfolgende Quartale mit negativem Wirtschaftswachstum; Auftragsrückgang, Entlassungen und Kurzarbeit, sinkende Gewinne.   * **4. Konjunkturtief (Depression)**: Massenarbeitslosigkeit, brachliegende Fabriken, akute Insolvenzwellen und pessimistische Investitionsstimmung. 2. Einteilung der Konjunkturindikatoren: - **Frühindikatoren**: Geben Auskunft über die zukünftige Entwicklung (z. B. **ifo-Geschäftsklimaindex**, Auftragseingänge der Industrie, Zahl der Baugenehmigungen, Aktienindex DAX). - **Präsenzindikatoren**: Zeigen die gegenwärtige Lage an (z. B. monatliche reale Industrieproduktion, Kapazitätsauslastung). - **Spätindikatoren**: Reagieren mit zeitlicher Verzögerung (z. B. **Arbeitslosenquote**, gemessene **Verbraucherpreisinflation**, Unternehmensinsolvenzen). 3. Das Magische Viereck der Wirtschaftspolitik (§ 1 Stabilitätsgesetz 1967): - Definiert die vier gleichrangigen gesamtwirtschaftlichen Hauptziele der deutschen Wirtschaftspolitik:   1. **Stabilität des Preisniveaus**: Inflationsrate von ca. $2\\%$ zur Werterhaltung des Geldes.   2. **Hoher Beschäftigungsstand**: Vermeidung von Unterbeschäftigung (Arbeitslosenquote möglichst unter $3-4\\%$).   3. **Stetiges und angemessenes Wirtschaftswachstum**: Reales Wachstum des Bruttoinlandsprodukts um ca. $2-3\\%$.   4. **Außenwirtschaftliches Gleichgewicht**: Außenbeitrag (Export minus Import) in gesunder Relation zum BIP. - *Warum 'magisch'?*: Die gleichzeitige Verwirklichung aller 4 Ziele ist aufgrund unvermeidbarer **Zielkonflikte** unmöglich (z. B. Kurbelt staatliche Ausgabenpolitik die Beschäftigung an, droht steigende Inflation $\\implies$ Konflikt zwischen Vollbeschäftigung und Preisstabilität). 4. Die Geldpolitik der Europäischen Zentralbank (EZB): - **Vorrangiges Mandat**: Wahrung der **Preisstabilität im Euroraum** (Symmetrisches Inflationsziel von mittelfristig $2\\%$). - **Steuerung über den Leitzins (Hauptrefinanzierungssatz)**:   * **Restriktive Geldpolitik (Zinserhöhung)**: Bei hoher Inflation verteuert die EZB Kredite für Geschäftsbanken. Dies bremst die Kreditvergabe an Unternehmen und Verbraucher, dämpft die Nachfrage und senkt den Preisdruck.   * **Expansive Geldpolitik (Zinssenkung)**: Bei Konjunkturflaute und Deflationsgefahr verbilligt die EZB Kredite, um Investitionen und Konsum anzukurbeln."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der idealtypische Konjunkturzyklus: - Die wellenförmige Schwankung der gesamtwirtschaftlichen Aktivität (Auslastungsgrad des Produktionspotenzials) über einen Zeitraum von 4 bis 8 Jahren:   * 1. Aufschwung (Expansion): Zunahme von Konsum und Investitionen, verbesserte Auftragslage, sinkende Arbeitslosigkeit, stabiles bis leicht steigendes Preisniveau.   * 2. Hochkonjunktur (Boom): Vollbeschäftigung, Engpässe auf Rohstoff- und Arbeitsmärkten, Kapazitäten an der Belastungsgrenze "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Preisanstieg (Inflation) und Lohn-Preis-Spirale.   * 3. Abschwung (Rezession): Mindestens zwei aufeinanderfolgende Quartale mit negativem Wirtschaftswachstum; Auftragsrückgang, Entlassungen und Kurzarbeit, sinkende Gewinne.   * 4. Konjunkturtief (Depression): Massenarbeitslosigkeit, brachliegende Fabriken, akute Insolvenzwellen und pessimistische Investitionsstimmung. 2. Einteilung der Konjunkturindikatoren: - Frühindikatoren: Geben Auskunft über die zukünftige Entwicklung (z. B. ifo-Geschäftsklimaindex, Auftragseingänge der Industrie, Zahl der Baugenehmigungen, Aktienindex DAX). - Präsenzindikatoren: Zeigen die gegenwärtige Lage an (z. B. monatliche reale Industrieproduktion, Kapazitätsauslastung). - Spätindikatoren: Reagieren mit zeitlicher Verzögerung (z. B. Arbeitslosenquote, gemessene Verbraucherpreisinflation, Unternehmensinsolvenzen). 3. Das Magische Viereck der Wirtschaftspolitik (§ 1 Stabilitätsgesetz 1967): - Definiert die vier gleichrangigen gesamtwirtschaftlichen Hauptziele der deutschen Wirtschaftspolitik:   1. Stabilität des Preisniveaus: Inflationsrate von ca. "
+            },
+            {
+              "type": "math",
+              "tex": "2\\%"
+            },
+            {
+              "type": "text",
+              "text": " zur Werterhaltung des Geldes.   2. Hoher Beschäftigungsstand: Vermeidung von Unterbeschäftigung (Arbeitslosenquote möglichst unter "
+            },
+            {
+              "type": "math",
+              "tex": "3-4\\%"
+            },
+            {
+              "type": "text",
+              "text": ").   3. Stetiges und angemessenes Wirtschaftswachstum: Reales Wachstum des Bruttoinlandsprodukts um ca. "
+            },
+            {
+              "type": "math",
+              "tex": "2-3\\%"
+            },
+            {
+              "type": "text",
+              "text": ".   4. Außenwirtschaftliches Gleichgewicht: Außenbeitrag (Export minus Import) in gesunder Relation zum BIP. - Warum 'magisch'?: Die gleichzeitige Verwirklichung aller 4 Ziele ist aufgrund unvermeidbarer Zielkonflikte unmöglich (z. B. Kurbelt staatliche Ausgabenpolitik die Beschäftigung an, droht steigende Inflation "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Konflikt zwischen Vollbeschäftigung und Preisstabilität). 4. Die Geldpolitik der Europäischen Zentralbank (EZB): - Vorrangiges Mandat: Wahrung der Preisstabilität im Euroraum (Symmetrisches Inflationsziel von mittelfristig "
+            },
+            {
+              "type": "math",
+              "tex": "2\\%"
+            },
+            {
+              "type": "text",
+              "text": "). - Steuerung über den Leitzins (Hauptrefinanzierungssatz):   * Restriktive Geldpolitik (Zinserhöhung): Bei hoher Inflation verteuert die EZB Kredite für Geschäftsbanken. Dies bremst die Kreditvergabe an Unternehmen und Verbraucher, dämpft die Nachfrage und senkt den Preisdruck.   * Expansive Geldpolitik (Zinssenkung): Bei Konjunkturflaute und Deflationsgefahr verbilligt die EZB Kredite, um Investitionen und Konsum anzukurbeln."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

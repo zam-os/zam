@@ -65,9 +65,37 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere Schichtenmodelle, Datenkapselung und das Internet-Routing: 1. **Das OSI-7-Schichtenmodell vs. TCP/IP-4-Schichtenmodell**:   * **OSI-Schichten (ISO/IEC 7498-1)**: 7. Anwendung (Application), 6. Darstellung (Presentation), 5. Sitzung (Session), 4. Transport (Transport), 3. Vermittlung (Network), 2. Sicherung (Data Link), 1. Bitübertragung (Physical).   * **TCP/IP-Schichten**:     - 4. *Anwendungsschicht* (HTTP, DNS, SSH, SMTP).     - 3. *Transportschicht* (TCP, UDP).     - 2. *Internetschicht* (IPv4, IPv6, ICMP).     - 1. *Netzzugangsschicht* (Ethernet, WLAN, MAC-Adressen), 2. **Das Prinzip der Datenkapselung (Encapsulation)**:   * Jede Schicht packt die Nutzdaten der darüberliegenden Schicht in ein neues Datenpaket ein und fügt ihren eigenen **Header** (Steuerinformationen: Quell-/Ziel-Port, Quell-/Ziel-IP, Checksumme) und auf Schicht 2 einen Frame-Trailer hinzu.   * Beim Empfänger erfolgt schichtweise das Auspacken (**Entkapselung**), 3. **IP-Adressierung und Routing (Hop-by-Hop)**:   * **IPv4-Adresse**: 32 Bit (z. B. `192.168.1.1`), aufgeteilt in Netzanteil und Hostanteil durch die Subnetzmaske (z. B. `/24` $\\implies 255.255.255.0$).   * **Router-Funktion**: Untersucht die Ziel-IP-Adresse, konsultiert die Routing-Tabelle und leitet das Paket an das 'Next Hop'-Interface weiter.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere Schichtenmodelle, Datenkapselung und das Internet-Routing: 1. Das OSI-7-Schichtenmodell vs. TCP/IP-4-Schichtenmodell:   * OSI-Schichten (ISO/IEC 7498-1): 7. Anwendung (Application), 6. Darstellung (Presentation), 5. Sitzung (Session), 4. Transport (Transport), 3. Vermittlung (Network), 2. Sicherung (Data Link), 1. Bitübertragung (Physical).   * TCP/IP-Schichten:     - 4. Anwendungsschicht (HTTP, DNS, SSH, SMTP).     - 3. Transportschicht (TCP, UDP).     - 2. Internetschicht (IPv4, IPv6, ICMP).     - 1. Netzzugangsschicht (Ethernet, WLAN, MAC-Adressen), 2. Das Prinzip der Datenkapselung (Encapsulation):   * Jede Schicht packt die Nutzdaten der darüberliegenden Schicht in ein neues Datenpaket ein und fügt ihren eigenen Header (Steuerinformationen: Quell-/Ziel-Port, Quell-/Ziel-IP, Checksumme) und auf Schicht 2 einen Frame-Trailer hinzu.   * Beim Empfänger erfolgt schichtweise das Auspacken (Entkapselung), 3. IP-Adressierung und Routing (Hop-by-Hop):   * IPv4-Adresse: 32 Bit (z. B. `192.168.1.1`), aufgeteilt in Netzanteil und Hostanteil durch die Subnetzmaske (z. B. `/24` "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies 255.255.255.0",
+              "speech": "daraus folgt 255.255.255.0"
+            },
+            {
+              "type": "text",
+              "text": ").   * Router-Funktion: Untersucht die Ziel-IP-Adresse, konsultiert die Routing-Tabelle und leitet das Paket an das 'Next Hop'-Interface weiter."
+            }
+          ],
           "concept": "Rechnernetze 12: OSI-7-Schichten vs. TCP/IP-4-Schichten; Datenkapselung (Header/Trailer); Adressierung (MAC Schicht 2, IP Schicht 3); Subnetzmaske & Routing (Next-Hop-Prinzip).",
-          "sample_solution": "1. Schichtenarchitekturen: OSI vs. TCP/IP: - **Grundidee**: Modularisierung und Abstraktion. Jede Schicht bietet der übergeordneten Schicht standardisierte Dienste an, ohne dass die Anwendungssoftware Details der physikalischen Übertragung (Kupferkabel, Glasfaser, Funk) kennen muss. - **Gegenüberstellung**: ```mermaid graph TD   subgraph OSI-7-Schichten     O7[7. Anwendung: HTTP, SMTP, DNS]     O6[6. Darstellung: TLS, JSON]     O5[5. Sitzung: Session Control]     O4[4. Transport: TCP, UDP]     O3[3. Vermittlung: IP, ICMP]     O2[2. Sicherung: Ethernet MAC]     O1[1. Bitübertragung: Bits/Volt]   end   subgraph TCP/IP-4-Schichten     T4[4. Anwendungsschicht]     T3[3. Transportschicht]     T2[2. Internetschicht]     T1[1. Netzzugangsschicht]   end   O7 & O6 & O5 --> T4   O4 --> T3   O3 --> T2   O2 & O1 --> T1 ``` 2. Das Prinzip der Datenkapselung (Encapsulation): - Beim Senden wandern Daten von oben nach unten:   * **1. Anwendungsdaten**: `GET /index.html HTTP/1.1` (Nutzdaten $L_7$).   * **2. Transport-Segment (Schicht 4)**: Anfügen des **TCP-Headers** (Quell-Port, Ziel-Port z. B. 443, Sequenznummer).   * **3. Internet-Paket (Schicht 3)**: Anfügen des **IP-Headers** (Quell-IP, Ziel-IP, TTL / Time-to-Live).   * **4. Ethernet-Frame (Schicht 2)**: Anfügen des **Ethernet-Headers** (Quell-MAC, Ziel-MAC) und der **Frame Check Sequence (FCS)** zur Fehlererkennung.   * **5. Bitstrom (Schicht 1)**: Physikalische Modulation in elektrische Spannungen, Lichtpulse oder Funkwellen. 3. IP-Adressierung und der Routing-Vorgang: - **Netzwerkhierarchie**:   * Eine IPv4-Adresse (32 Bit / 4 Byte) gliedert sich durch die **Subnetzmaske** in:     - **Netz-ID**: Identifiziert das Teilnetz (z. B. `192.168.178.0/24`).     - **Host-ID**: Identifiziert das konkrete Endgerät im Teilnetz (z. B. `.42`). - **Der Weg eines Pakets durch das Internet (Hop-by-Hop Routing)**:   1. Ein Client vergleicht Ziel-IP und Subnetzmaske: Liegt das Ziel im eigenen Subnetz, wird es direkt per MAC-Adresse adressiert (**ARP - Address Resolution Protocol**).   2. Liegt das Ziel in einem fremden Netz, schickt der Client das Paket an das **Standard-Gateway (Router)**.   3. Der Router dekapself den Layer-2-Frame, liest die Ziel-IP auf Layer 3, sucht in seiner **Routing-Tabelle** nach der längsten passenden Präfix-Übereinstimmung (*Longest Prefix Match*) und schickt das Paket mit neuem Layer-2-Header zum nächsten Router (*Next Hop*), bis das Zielnetzwerk erreicht ist."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Schichtenarchitekturen: OSI vs. TCP/IP: - Grundidee: Modularisierung und Abstraktion. Jede Schicht bietet der übergeordneten Schicht standardisierte Dienste an, ohne dass die Anwendungssoftware Details der physikalischen Übertragung (Kupferkabel, Glasfaser, Funk) kennen muss. - Gegenüberstellung: ```mermaid graph TD   subgraph OSI-7-Schichten     O7[7. Anwendung: HTTP, SMTP, DNS]     O6[6. Darstellung: TLS, JSON]     O5[5. Sitzung: Session Control]     O4[4. Transport: TCP, UDP]     O3[3. Vermittlung: IP, ICMP]     O2[2. Sicherung: Ethernet MAC]     O1[1. Bitübertragung: Bits/Volt]   end   subgraph TCP/IP-4-Schichten     T4[4. Anwendungsschicht]     T3[3. Transportschicht]     T2[2. Internetschicht]     T1[1. Netzzugangsschicht]   end   O7 & O6 & O5 --> T4   O4 --> T3   O3 --> T2   O2 & O1 --> T1 ``` 2. Das Prinzip der Datenkapselung (Encapsulation): - Beim Senden wandern Daten von oben nach unten:   * 1. Anwendungsdaten: `GET /index.html HTTP/1.1` (Nutzdaten "
+            },
+            {
+              "type": "math",
+              "tex": "L_7"
+            },
+            {
+              "type": "text",
+              "text": ").   * 2. Transport-Segment (Schicht 4): Anfügen des TCP-Headers (Quell-Port, Ziel-Port z. B. 443, Sequenznummer).   * 3. Internet-Paket (Schicht 3): Anfügen des IP-Headers (Quell-IP, Ziel-IP, TTL / Time-to-Live).   * 4. Ethernet-Frame (Schicht 2): Anfügen des Ethernet-Headers (Quell-MAC, Ziel-MAC) und der Frame Check Sequence (FCS) zur Fehlererkennung.   * 5. Bitstrom (Schicht 1): Physikalische Modulation in elektrische Spannungen, Lichtpulse oder Funkwellen. 3. IP-Adressierung und der Routing-Vorgang: - Netzwerkhierarchie:   * Eine IPv4-Adresse (32 Bit / 4 Byte) gliedert sich durch die Subnetzmaske in:     - Netz-ID: Identifiziert das Teilnetz (z. B. `192.168.178.0/24`).     - Host-ID: Identifiziert das konkrete Endgerät im Teilnetz (z. B. `.42`). - Der Weg eines Pakets durch das Internet (Hop-by-Hop Routing):   1. Ein Client vergleicht Ziel-IP und Subnetzmaske: Liegt das Ziel im eigenen Subnetz, wird es direkt per MAC-Adresse adressiert (ARP - Address Resolution Protocol).   2. Liegt das Ziel in einem fremden Netz, schickt der Client das Paket an das Standard-Gateway (Router).   3. Der Router dekapself den Layer-2-Frame, liest die Ziel-IP auf Layer 3, sucht in seiner Routing-Tabelle nach der längsten passenden Präfix-Übereinstimmung (Longest Prefix Match) und schickt das Paket mit neuem Layer-2-Header zum nächsten Router (Next Hop), bis das Zielnetzwerk erreicht ist."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +156,63 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Vergleiche TCP mit UDP und analysiere das Domain Name System (DNS): 1. **TCP vs. UDP auf Schicht 4**:   * **TCP (Transmission Control Protocol)**:     - Verbindungsorientiert (3-Wege-Handshake: SYN $\\rightarrow$ SYN-ACK $\\rightarrow$ ACK).     - **Zuverlässigkeit**: Garantiert lückenlose Übertragung in korrekter Reihenfolge (Quittungen ACK, Retransmission bei Paketverlust, Prüfsummen).     - **Fluss- und Überlastkontrolle**: Passt Senderate dynamisch an Netzengpässe an (*Sliding Window, Congestion Control*).     - *Einsatz*: Web (HTTP/HTTPS), E-Mail (SMTP/IMAP), Dateitransfer (FTP).   * **UDP (User Datagram Protocol)**:     - Verbindungslos, minimaler Header (8 Byte), keine Quittungen, kein Neuversand (*Best-Effort*).     - Extrem geringe Latenz $\\implies$ ideal für **Echtzeitanwendungen** (VoIP, Videostreaming, Online-Gaming, DNS), 2. **Das Domain Name System (DNS)**:   * **Funktion**: Das 'Telefonbuch des Internets' – Übersetzt menschenlesbare Hostnamen (`www.gymnasium.bayern.de`) in maschinenlesbare IP-Adressen (`192.0.2.1`).   * **Hierarchischer Aufbau**:     - Root-Nameserver (`.` am Ende).     - Top-Level-Domain (TLD: `.de`, `.com`, `.org`).     - Second-Level-Domain (`bayern`).     - Subdomain / Host (`www`).   * **Auflösungsarten**: Rekursiv (DNS-Resolver übernimmt den gesamten Ablauf) vs. Iterativ (Resolver fragt Server für Server von der Wurzel nach unten ab).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Vergleiche TCP mit UDP und analysiere das Domain Name System (DNS): 1. TCP vs. UDP auf Schicht 4:   * TCP (Transmission Control Protocol):     - Verbindungsorientiert (3-Wege-Handshake: SYN "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " SYN-ACK "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " ACK).     - Zuverlässigkeit: Garantiert lückenlose Übertragung in korrekter Reihenfolge (Quittungen ACK, Retransmission bei Paketverlust, Prüfsummen).     - Fluss- und Überlastkontrolle: Passt Senderate dynamisch an Netzengpässe an (Sliding Window, Congestion Control).     - Einsatz: Web (HTTP/HTTPS), E-Mail (SMTP/IMAP), Dateitransfer (FTP).   * UDP (User Datagram Protocol):     - Verbindungslos, minimaler Header (8 Byte), keine Quittungen, kein Neuversand (Best-Effort).     - Extrem geringe Latenz "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " ideal für Echtzeitanwendungen (VoIP, Videostreaming, Online-Gaming, DNS), 2. Das Domain Name System (DNS):   * Funktion: Das 'Telefonbuch des Internets' – Übersetzt menschenlesbare Hostnamen (`www.gymnasium.bayern.de`) in maschinenlesbare IP-Adressen (`192.0.2.1`).   * Hierarchischer Aufbau:     - Root-Nameserver (`.` am Ende).     - Top-Level-Domain (TLD: `.de`, `.com`, `.org`).     - Second-Level-Domain (`bayern`).     - Subdomain / Host (`www`).   * Auflösungsarten: Rekursiv (DNS-Resolver übernimmt den gesamten Ablauf) vs. Iterativ (Resolver fragt Server für Server von der Wurzel nach unten ab)."
+            }
+          ],
           "concept": "Transport & DNS 12: TCP (verbindungsorientiert, 3-Wege-Handshake SYN/SYN-ACK/ACK, zuverlässig mit Retransmission/Flow-Control) vs. UDP (verbindungslos, schnell, kein Overhead); DNS (hierarchischer Namensraum Root -> TLD -> Domain, rekursive vs. iterative Auflösung).",
-          "sample_solution": "1. TCP vs. UDP: Der fundamentale Vergleich auf der Transportschicht: | Eigenschaft | TCP (Transmission Control Protocol) | UDP (User Datagram Protocol) | | :--- | :--- | :--- | | **Verbindungsaufbau** | **Verbindungsorientiert** vor Datenübertragung (**Three-Way-Handshake**: SYN $\\rightarrow$ SYN-ACK $\\rightarrow$ ACK) | **Verbindungslos** (Pakete/Datagramme werden ohne Vorwarnung gesendet) | | **Zuverlässigkeit** | **100 % zuverlässig**: Verlorene Pakete werden per Timeout automatisch erneut gesendet (*Retransmission*); Duplikate werden verworfen | **Unzuverlässig (Best-Effort)**: Keine Quittungen, verlorene Pakete bleiben verloren | | **Reihenfolge** | Garantiert **korrekte Reihenfolge** durch Sequenznummern (Reassembling) | Pakete können in beliebiger Reihenfolge ankommen | | **Geschwindigkeit / Overhead** | Höherer Protokoll-Overhead (Header 20–60 Byte, Verzögerung durch Handshake und ACKs) | **Extrem schnell & leichtgewichtig** (Header nur 8 Byte) | | **Typische Protokolle** | HTTPS, SSH, E-Mail (IMAP/SMTP), SQL-Datenbanken | DNS-Anfragen, VoIP-Telefonie, Videokonferenzen (Zoom/Teams), Multiplayer-Gaming | 2. Der Drei-Wege-Handshake von TCP: ```mermaid sequenceDiagram   autonumber   participant Client   participant Server   Client->>Server: 1. SYN (Initial Sequence Number ISN_c)   Server->>Client: 2. SYN-ACK (ISN_s, ACK = ISN_c + 1)   Client->>Server: 3. ACK (ACK = ISN_s + 1, Connection ESTABLISHED) ``` 3. Das Domain Name System (DNS): - **Architektur**: Eine weltweit verteilte, hierarchisch organisierte Datenbank zur Namensauflösung. - **Die hierarchische Namensauflösung**:   * Ein Client möchte `www.gymnasium.bayern.de.` auflösen:   1. **Lokaler Resolver (Router/Betreiber)**: Prüft lokalen DNS-Cache.   2. **Root-Nameserver (`.`)**: Verweist an die zuständigen Nameserver für die Top-Level-Domain `.de`.   3. **TLD-Nameserver (`.de`)**: Verweist an den autoritativen Nameserver für `bayern.de`.   4. **Autoritativer Nameserver (`bayern.de`)**: Liefert den **A-Record** (IPv4) bzw. **AAAA-Record** (IPv6) für `www.gymnasium.bayern.de`.   5. Der Resolver speichert das Ergebnis temporär (gesteuert durch die **TTL - Time To Live**) und antwortet dem Browser, der nun eine direkte TCP/HTTPS-Verbindung zur IP aufbauen kann."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. TCP vs. UDP: Der fundamentale Vergleich auf der Transportschicht: | Eigenschaft | TCP (Transmission Control Protocol) | UDP (User Datagram Protocol) | | :--- | :--- | :--- | | Verbindungsaufbau | Verbindungsorientiert vor Datenübertragung (Three-Way-Handshake: SYN "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " SYN-ACK "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " ACK) | Verbindungslos (Pakete/Datagramme werden ohne Vorwarnung gesendet) | | Zuverlässigkeit | 100 % zuverlässig: Verlorene Pakete werden per Timeout automatisch erneut gesendet (Retransmission); Duplikate werden verworfen | Unzuverlässig (Best-Effort): Keine Quittungen, verlorene Pakete bleiben verloren | | Reihenfolge | Garantiert korrekte Reihenfolge durch Sequenznummern (Reassembling) | Pakete können in beliebiger Reihenfolge ankommen | | Geschwindigkeit / Overhead | Höherer Protokoll-Overhead (Header 20–60 Byte, Verzögerung durch Handshake und ACKs) | Extrem schnell & leichtgewichtig (Header nur 8 Byte) | | Typische Protokolle | HTTPS, SSH, E-Mail (IMAP/SMTP), SQL-Datenbanken | DNS-Anfragen, VoIP-Telefonie, Videokonferenzen (Zoom/Teams), Multiplayer-Gaming | 2. Der Drei-Wege-Handshake von TCP: ```mermaid sequenceDiagram   autonumber   participant Client   participant Server   Client->>Server: 1. SYN (Initial Sequence Number ISN_c)   Server->>Client: 2. SYN-ACK (ISN_s, ACK = ISN_c + 1)   Client->>Server: 3. ACK (ACK = ISN_s + 1, Connection ESTABLISHED) ``` 3. Das Domain Name System (DNS): - Architektur: Eine weltweit verteilte, hierarchisch organisierte Datenbank zur Namensauflösung. - Die hierarchische Namensauflösung:   * Ein Client möchte `www.gymnasium.bayern.de.` auflösen:   1. Lokaler Resolver (Router/Betreiber): Prüft lokalen DNS-Cache.   2. Root-Nameserver (`.`): Verweist an die zuständigen Nameserver für die Top-Level-Domain `.de`.   3. TLD-Nameserver (`.de`): Verweist an den autoritativen Nameserver für `bayern.de`.   4. Autoritativer Nameserver (`bayern.de`): Liefert den A-Record (IPv4) bzw. AAAA-Record (IPv6) für `www.gymnasium.bayern.de`.   5. Der Resolver speichert das Ergebnis temporär (gesteuert durch die TTL - Time To Live) und antwortet dem Browser, der nun eine direkte TCP/HTTPS-Verbindung zur IP aufbauen kann."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

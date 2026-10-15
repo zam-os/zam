@@ -65,9 +65,273 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere stetige Zufallsgrößen, Dichtefunktionen und Verteilungsfunktionen: 1. **Kriterien für eine Dichtefunktion $f(x)$**:   * Nichtnegativität: $f(x) \\ge 0$ für alle $x \\in \\mathbb{R}$.   * Normierungsbedingung: $\\mathbf{\\int_{-\\infty}^{\\infty} f(x)\\,dx = 1}$, 2. **Zusammenhang zwischen Dichte und Verteilungsfunktion**:   * Verteilungsfunktion: $F(x) = P(X \\le x) = \\int_{-\\infty}^{x} f(t)\\,dt$.   * Fundamentalsatz: $F'(x) = f(x)$ an allen Stetigkeitsstellen.   * Wahrscheinlichkeit für Intervalle: $\\mathbf{P(a \\le X \\le b) = F(b) - F(a) = \\int_{a}^{b} f(x)\\,dx}$, 3. **Konkrete Aufgabe**:   * Eine stetige Zufallsgröße $X$ besitzt die Dichtefunktion $f(x) = \\begin{cases} c \\cdot x^2 & \\text{für } 0 \\le x \\le 3 \\\\ 0 & \\text{sonst} \\end{cases}$.   * a) Bestimme den Parameter $c$, sodass $f$ eine gültige Dichtefunktion ist.   * b) Berechne die Wahrscheinlichkeit $P(1 \\le X \\le 2)$.   * c) Berechne den Erwartungswert $E(X)$.",
-          "concept": "Dichtefunktion 13: int_0^3 c*x^2 dx = [c*x^3/3]_0^3 = 9c = 1 -> c = 1/9; P(1 <= X <= 2) = int_1^2 1/9 x^2 dx = [x^3/27]_1^2 = 8/27 - 1/27 = 7/27; E(X) = int_0^3 x * (1/9 x^2) dx = int_0^3 1/9 x^3 dx = [x^4/36]_0^3 = 81/36 = 9/4 = 2,25.",
-          "sample_solution": "1. Theorie stetiger Zufallsgrößen: - Im Gegensatz zu diskreten Zufallsgrößen (wie Würfelwürfen) können stetige Zufallsgrößen (wie Wartezeiten, Körpergrößen, Messfehler) jeden reellen Wert in einem Intervall annehmen. - Wahrscheinlichkeiten entsprechen **Flächeninhalten** unter dem Graphen der Dichtefunktion $f$. 2. Vollständige Bearbeitung der Aufgabe: - **a) Normierungskonstante $c$ bestimmen**:   * Bedingung: $\\int_{-\\infty}^{\\infty} f(x)\\,dx = 1$.   * $$\\int_{0}^{3} c \\cdot x^2\\,dx = c \\cdot \\left[ \\frac{x^3}{3} \\right]_0^3 = c \\cdot \\left( \\frac{27}{3} - 0 \\right) = 9c$$   * $$9c = 1 \\implies \\mathbf{c = \\frac{1}{9}}$$   * Dichtefunktion: $f(x) = \\frac{1}{9}x^2$ für $x \\in [0; 3]$ (und $0$ sonst). - **b) Wahrscheinlichkeit $P(1 \\le X \\le 2)$**:   * $$P(1 \\le X \\le 2) = \\int_{1}^{2} \\frac{1}{9}x^2\\,dx = \\left[ \\frac{x^3}{27} \\right]_1^2 = \\frac{2^3}{27} - \\frac{1^3}{27} = \\frac{8}{27} - \\frac{1}{27} = \\mathbf{\\frac{7}{27} \\approx 0{,}2593 \\; (25{,}93\\,\\%)}$$ - **c) Erwartungswert $E(X)$**:   * Formel: $E(X) = \\int_{-\\infty}^{\\infty} x \\cdot f(x)\\,dx$.   * $$E(X) = \\int_{0}^{3} x \\cdot \\left(\\frac{1}{9}x^2\\right) dx = \\int_{0}^{3} \\frac{1}{9}x^3\\,dx = \\left[ \\frac{x^4}{36} \\right]_0^3 = \\frac{3^4}{36} - 0 = \\frac{81}{36} = \\mathbf{\\frac{9}{4} = 2{,}25}$$"
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere stetige Zufallsgrößen, Dichtefunktionen und Verteilungsfunktionen: 1. Kriterien für eine Dichtefunktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x)",
+              "speech": "f von x"
+            },
+            {
+              "type": "text",
+              "text": ":   * Nichtnegativität: "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) \\ge 0",
+              "speech": "f von x größer gleich 0"
+            },
+            {
+              "type": "text",
+              "text": " für alle "
+            },
+            {
+              "type": "math",
+              "tex": "x \\in \\mathbb{R}",
+              "speech": "x Element der reellen Zahlen"
+            },
+            {
+              "type": "text",
+              "text": ".   * Normierungsbedingung: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\int_{-\\infty}^{\\infty} f(x)\\,dx = 1}",
+              "speech": "Integral von minus unendlich bis unendlich über f von x d x gleich 1"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Zusammenhang zwischen Dichte und Verteilungsfunktion:   * Verteilungsfunktion: "
+            },
+            {
+              "type": "math",
+              "tex": "F(x) = P(X \\le x) = \\int_{-\\infty}^{x} f(t)\\,dt",
+              "speech": "F von x gleich P von X kleiner gleich x gleich Integral von minus unendlich bis x über f von t d t"
+            },
+            {
+              "type": "text",
+              "text": ".   * Fundamentalsatz: "
+            },
+            {
+              "type": "math",
+              "tex": "F'(x) = f(x)",
+              "speech": "F Strich von x gleich f von x"
+            },
+            {
+              "type": "text",
+              "text": " an allen Stetigkeitsstellen.   * Wahrscheinlichkeit für Intervalle: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{P(a \\le X \\le b) = F(b) - F(a) = \\int_{a}^{b} f(x)\\,dx}",
+              "speech": "P von a kleiner gleich X kleiner gleich b gleich F von b minus F von a gleich Integral von a bis b über f von x d x"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Konkrete Aufgabe:   * Eine stetige Zufallsgröße "
+            },
+            {
+              "type": "math",
+              "tex": "X",
+              "speech": "X"
+            },
+            {
+              "type": "text",
+              "text": " besitzt die Dichtefunktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\begin{cases} c \\cdot x^2 & \\text{für } 0 \\le x \\le 3 \\\\ 0 & \\text{sonst} \\end{cases}",
+              "speech": "f von x gleich c mal x Quadrat für 0 kleiner gleich x kleiner gleich 3, sonst 0"
+            },
+            {
+              "type": "text",
+              "text": ".   * a) Bestimme den Parameter "
+            },
+            {
+              "type": "math",
+              "tex": "c",
+              "speech": "c"
+            },
+            {
+              "type": "text",
+              "text": ", sodass "
+            },
+            {
+              "type": "math",
+              "tex": "f",
+              "speech": "f"
+            },
+            {
+              "type": "text",
+              "text": " eine gültige Dichtefunktion ist.   * b) Berechne die Wahrscheinlichkeit "
+            },
+            {
+              "type": "math",
+              "tex": "P(1 \\le X \\le 2)",
+              "speech": "P von 1 kleiner gleich X kleiner gleich 2"
+            },
+            {
+              "type": "text",
+              "text": ".   * c) Berechne den Erwartungswert "
+            },
+            {
+              "type": "math",
+              "tex": "E(X)",
+              "speech": "E von X"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Dichtefunktion 13: "
+            },
+            {
+              "type": "math",
+              "tex": "\\int_0^3 c \\cdot x^2\\,dx = \\left[\\frac{c \\cdot x^3}{3}\\right]_0^3 = 9c = 1 \\Rightarrow c = \\frac{1}{9}",
+              "speech": "Integral von 0 bis 3 über c mal x Quadrat d x gleich c mal x hoch 3 durch 3 in den Grenzen von 0 bis 3 gleich 9 c gleich 1, daraus folgt c gleich ein Neuntel"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "P(1 \\le X \\le 2) = \\int_1^2 \\frac{1}{9} x^2\\,dx = \\left[\\frac{x^3}{27}\\right]_1^2 = \\frac{8}{27} - \\frac{1}{27} = \\frac{7}{27}",
+              "speech": "P von 1 kleiner gleich X kleiner gleich 2 gleich Integral von 1 bis 2 über ein Neuntel x Quadrat d x gleich x hoch 3 durch 27 in den Grenzen 1 bis 2 gleich 8 durch 27 minus 1 durch 27 gleich 7 durch 27"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "E(X) = \\int_0^3 x \\cdot \\frac{1}{9} x^2\\,dx = \\int_0^3 \\frac{1}{9} x^3\\,dx = \\left[\\frac{x^4}{36}\\right]_0^3 = \\frac{81}{36} = \\frac{9}{4} = 2{,}25",
+              "speech": "E von X gleich Integral von 0 bis 3 über x mal ein Neuntel x Quadrat d x gleich Integral von 0 bis 3 über ein Neuntel x hoch 3 d x gleich x hoch 4 durch 36 in den Grenzen 0 bis 3 gleich 81 durch 36 gleich 9 Viertel gleich 2,25"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Theorie stetiger Zufallsgrößen: - Im Gegensatz zu diskreten Zufallsgrößen (wie Würfelwürfen) können stetige Zufallsgrößen (wie Wartezeiten, Körpergrößen, Messfehler) jeden reellen Wert in einem Intervall annehmen. - Wahrscheinlichkeiten entsprechen Flächeninhalten unter dem Graphen der Dichtefunktion "
+            },
+            {
+              "type": "math",
+              "tex": "f"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Vollständige Bearbeitung der Aufgabe: - a) Normierungskonstante "
+            },
+            {
+              "type": "math",
+              "tex": "c"
+            },
+            {
+              "type": "text",
+              "text": " bestimmen:   * Bedingung: "
+            },
+            {
+              "type": "math",
+              "tex": "\\int_{-\\infty}^{\\infty} f(x)\\,dx = 1"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\int_{0}^{3} c \\cdot x^2\\,dx = c \\cdot \\left[ \\frac{x^3}{3} \\right]_0^3 = c \\cdot \\left( \\frac{27}{3} - 0 \\right) = 9c",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "9c = 1 \\implies \\mathbf{c = \\frac{1}{9}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Dichtefunktion: "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{1}{9}x^2"
+            },
+            {
+              "type": "text",
+              "text": " für "
+            },
+            {
+              "type": "math",
+              "tex": "x \\in [0; 3]"
+            },
+            {
+              "type": "text",
+              "text": " (und "
+            },
+            {
+              "type": "math",
+              "tex": "0"
+            },
+            {
+              "type": "text",
+              "text": " sonst). - b) Wahrscheinlichkeit "
+            },
+            {
+              "type": "math",
+              "tex": "P(1 \\le X \\le 2)"
+            },
+            {
+              "type": "text",
+              "text": ":   * "
+            },
+            {
+              "type": "math",
+              "tex": "P(1 \\le X \\le 2) = \\int_{1}^{2} \\frac{1}{9}x^2\\,dx = \\left[ \\frac{x^3}{27} \\right]_1^2 = \\frac{2^3}{27} - \\frac{1^3}{27} = \\frac{8}{27} - \\frac{1}{27} = \\mathbf{\\frac{7}{27} \\approx 0{,}2593 \\; (25{,}93\\,\\%)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - c) Erwartungswert "
+            },
+            {
+              "type": "math",
+              "tex": "E(X)"
+            },
+            {
+              "type": "text",
+              "text": ":   * Formel: "
+            },
+            {
+              "type": "math",
+              "tex": "E(X) = \\int_{-\\infty}^{\\infty} x \\cdot f(x)\\,dx"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "E(X) = \\int_{0}^{3} x \\cdot \\left(\\frac{1}{9}x^2\\right) dx = \\int_{0}^{3} \\frac{1}{9}x^3\\,dx = \\left[ \\frac{x^4}{36} \\right]_0^3 = \\frac{3^4}{36} - 0 = \\frac{81}{36} = \\mathbf{\\frac{9}{4} = 2{,}25}",
+              "block": true
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -113,24 +377,495 @@
           "tier": "tier1_fast",
           "bloom_level": 1,
           "question": "Wie lautet die Standardisierungsformel (z-Transformation), um eine normalverteilte Zufallsgröße X ~ N(mu, sigma^2) in eine standardnormalverteilte Zufallsgröße Z ~ N(0, 1) zu transformieren?",
-          "concept": "Z = \\frac{X - \\mu}{\\sigma}",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "Z = \\frac{X - \\mu}{\\sigma}",
+              "speech": "Z gleich Bruch: X minus My, durch Sigma"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "Z = \\frac{X - \\mu}{\\sigma}",
-              "Z = \\frac{X + \\sigma}{\\mu}"
+              [
+                {
+                  "type": "math",
+                  "tex": "Z = \\frac{X - \\mu}{\\sigma}",
+                  "speech": "Z gleich Bruch: X minus My, durch Sigma"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "Z = \\frac{X + \\sigma}{\\mu}",
+                  "speech": "Z gleich Bruch: X plus Sigma, durch My"
+                }
+              ]
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GD20000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Gaußsche Normalverteilung, die Sigma-Regeln und den Satz von Moivre-Laplace: 1. **Eigenschaften der Gaußschen Glockenkurve $\\varphi_{\\mu, \\sigma}(x)$**:   * Maximum (Symmetrieachse) bei $x = \\mu$.   * Wendepunkte exakt bei $x = \\mu - \\sigma$ und $x = \\mu + \\sigma$.   * Dichte: $\\varphi_{\\mu, \\sigma}(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x - \\mu}{\\sigma}\\right)^2}$, 2. **Die klassischen Sigma-Umgebungsregeln**:   * **$1\\sigma$-Intervall**: $P(\\mu - 1\\sigma \\le X \\le \\mu + 1\\sigma) \\approx \\mathbf{68{,}3\\,\\%}$.   * **$2\\sigma$-Intervall**: $P(\\mu - 2\\sigma \\le X \\le \\mu + 2\\sigma) \\approx \\mathbf{95{,}4\\,\\%}$.   * **$3\\sigma$-Intervall**: $P(\\mu - 3\\sigma \\le X \\le \\mu + 3\\sigma) \\approx \\mathbf{99{,}7\\,\\%}$.   * **Exakte Prognoseintervalle**: $90\\,\\% \\implies [\\mu \\pm 1{,}64\\sigma]$, $95\\,\\% \\implies [\\mu \\pm 1{,}96\\sigma]$, $99\\,\\% \\implies [\\mu \\pm 2{,}58\\sigma]$, 3. **Approximation nach Moivre-Laplace**:   * Eine binomialverteilte Zufallsgröße $X \\sim B(n, p)$ mit $\\mu = n \\cdot p$ und $\\sigma = \\sqrt{n \\cdot p \\cdot (1 - p)}$ kann bei $\\mathbf{\\sigma > 3}$ (Laplace-Bedingung) durch die Normalverteilung approximiert werden:     $$\\mathbf{P(k_1 \\le X \\le k_2) \\approx \\Phi\\left( \\frac{k_2 + 0{,}5 - \\mu}{\\sigma} \\right) - \\Phi\\left( \\frac{k_1 - 0{,}5 - \\mu}{\\sigma} \\right)}$$   *(mit $+0{,}5$ und $-0{,}5$ als **Stetigkeitskorrektur**)*.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Gaußsche Normalverteilung, die Sigma-Regeln und den Satz von Moivre-Laplace: 1. Eigenschaften der Gaußschen Glockenkurve "
+            },
+            {
+              "type": "math",
+              "tex": "\\varphi_{\\mu, \\sigma}(x)",
+              "speech": "Phi My Sigma von x"
+            },
+            {
+              "type": "text",
+              "text": ":   * Maximum (Symmetrieachse) bei "
+            },
+            {
+              "type": "math",
+              "tex": "x = \\mu",
+              "speech": "x gleich My"
+            },
+            {
+              "type": "text",
+              "text": ".   * Wendepunkte exakt bei "
+            },
+            {
+              "type": "math",
+              "tex": "x = \\mu - \\sigma",
+              "speech": "x gleich My minus Sigma"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "x = \\mu + \\sigma",
+              "speech": "x gleich My plus Sigma"
+            },
+            {
+              "type": "text",
+              "text": ".   * Dichte: "
+            },
+            {
+              "type": "math",
+              "tex": "\\varphi_{\\mu, \\sigma}(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x - \\mu}{\\sigma}\\right)^2}",
+              "speech": "Phi My Sigma von x gleich 1 durch Sigma Wurzel aus 2 Pi mal e hoch minus ein halb mal, x minus My durch Sigma, zum Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Die klassischen Sigma-Umgebungsregeln:   * "
+            },
+            {
+              "type": "math",
+              "tex": "1\\sigma",
+              "speech": "1 Sigma"
+            },
+            {
+              "type": "text",
+              "text": "-Intervall: "
+            },
+            {
+              "type": "math",
+              "tex": "P(\\mu - 1\\sigma \\le X \\le \\mu + 1\\sigma) \\approx \\mathbf{68{,}3\\,\\%}",
+              "speech": "P von My minus 1 Sigma kleiner gleich X kleiner gleich My plus 1 Sigma ungefähr 68,3 Prozent"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "2\\sigma",
+              "speech": "2 Sigma"
+            },
+            {
+              "type": "text",
+              "text": "-Intervall: "
+            },
+            {
+              "type": "math",
+              "tex": "P(\\mu - 2\\sigma \\le X \\le \\mu + 2\\sigma) \\approx \\mathbf{95{,}4\\,\\%}",
+              "speech": "P von My minus 2 Sigma kleiner gleich X kleiner gleich My plus 2 Sigma ungefähr 95,4 Prozent"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "3\\sigma",
+              "speech": "3 Sigma"
+            },
+            {
+              "type": "text",
+              "text": "-Intervall: "
+            },
+            {
+              "type": "math",
+              "tex": "P(\\mu - 3\\sigma \\le X \\le \\mu + 3\\sigma) \\approx \\mathbf{99{,}7\\,\\%}",
+              "speech": "P von My minus 3 Sigma kleiner gleich X kleiner gleich My plus 3 Sigma ungefähr 99,7 Prozent"
+            },
+            {
+              "type": "text",
+              "text": ".   * Exakte Prognoseintervalle: "
+            },
+            {
+              "type": "math",
+              "tex": "90\\,\\% \\implies [\\mu \\pm 1{,}64\\sigma]",
+              "speech": "90 Prozent, daraus folgt das Intervall My plus minus 1,64 Sigma"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "95\\,\\% \\implies [\\mu \\pm 1{,}96\\sigma]",
+              "speech": "95 Prozent, daraus folgt das Intervall My plus minus 1,96 Sigma"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "99\\,\\% \\implies [\\mu \\pm 2{,}58\\sigma]",
+              "speech": "99 Prozent, daraus folgt das Intervall My plus minus 2,58 Sigma"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Approximation nach Moivre-Laplace:   * Eine binomialverteilte Zufallsgröße "
+            },
+            {
+              "type": "math",
+              "tex": "X \\sim B(n, p)",
+              "speech": "X ist binomialverteilt mit n und p"
+            },
+            {
+              "type": "text",
+              "text": " mit "
+            },
+            {
+              "type": "math",
+              "tex": "\\mu = n \\cdot p",
+              "speech": "My gleich n mal p"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\sigma = \\sqrt{n \\cdot p \\cdot (1 - p)}",
+              "speech": "Sigma gleich Wurzel aus n mal p mal, 1 minus p"
+            },
+            {
+              "type": "text",
+              "text": " kann bei "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\sigma > 3}",
+              "speech": "Sigma größer als 3"
+            },
+            {
+              "type": "text",
+              "text": " (Laplace-Bedingung) durch die Normalverteilung approximiert werden:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{P(k_1 \\le X \\le k_2) \\approx \\Phi\\left( \\frac{k_2 + 0{,}5 - \\mu}{\\sigma} \\right) - \\Phi\\left( \\frac{k_1 - 0{,}5 - \\mu}{\\sigma} \\right)}",
+              "block": true,
+              "speech": "P von k eins kleiner gleich X kleiner gleich k zwei ungefähr großes Phi von, k zwei plus 0,5 minus My, durch Sigma, minus großes Phi von, k eins minus 0,5 minus My, durch Sigma"
+            },
+            {
+              "type": "text",
+              "text": "   (mit "
+            },
+            {
+              "type": "math",
+              "tex": "+0{,}5",
+              "speech": "plus 0,5"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "-0{,}5",
+              "speech": "minus 0,5"
+            },
+            {
+              "type": "text",
+              "text": " als Stetigkeitskorrektur)."
+            }
+          ],
           "concept": "Normalverteilung 13: Glockenkurve Symmetrie mu, Wendepunkte mu +- sigma; Sigma-Regeln (68,3%, 95,4%, 99,7%; 95% -> 1,96 sigma); Satz von Moivre-Laplace (sigma > 3, Stetigkeitskorrektur +- 0,5).",
-          "sample_solution": "1. Die Normalverteilung (Carl Friedrich Gauß): - Die Normalverteilung $N(\\mu, \\sigma^2)$ ist das fundamentale Modell der Statistik, da zufällige Abweichungen, die durch Überlagerung vieler kleiner, unabhängiger Einflüsse entstehen, asymptotisch immer normalverteilt sind (**Zentraler Grenzwertsatz**). 2. Die Standardnormalverteilung $\\Phi(z)$ und Symmetriebeziehung: - Jede Normalverteilung lässt sich durch die **z-Transformation** normieren:   $$z = \\frac{x - \\mu}{\\sigma}$$ - Für die kumulierte Verteilungsfunktion $\\Phi(z)$ gilt aufgrund der Punktsymmetrie der Dichte:   $$\\mathbf{\\Phi(-z) = 1 - \\Phi(z)}$$ 3. Die Sigma-Regeln und Prognoseintervalle im Überblick: | Umgebungsradius | Wahrscheinlichkeit $P(\\mu - c\\sigma \\le X \\le \\mu + c\\sigma)$ | Typische Anwendung | | :--- | :--- | :--- | | **$c = 1{,}00$** | **$68{,}27\\,\\%$** | Grobe Streubreite | | **$c = 1{,}64$** | **$90{,}00\\,\\%$** | $90\\,\\%$-Konfidenzintervall | | **$c = 1{,}96$** | **$95{,}00\\,\\%$** | **$95\\,\\%$-Standard-Signifikanzniveau ($5\\,\\%$-Irrtum)** | | **$c = 2{,}00$** | **$95{,}45\\,\\%$** | $2\\sigma$-Faustregel | | **$c = 2{,}58$** | **$99{,}00\\,\\%$** | $99\\,\\%$-Qualitätskontrolle | | **$c = 3{,}00$** | **$99{,}73\\,\\%$** | Fast sichere Grenzen (Six-Sigma-Industriestandard) | 4. Die Approximation nach dem Satz von Moivre-Laplace: - **Warum Stetigkeitskorrektur?**:   * Beim Übergang von einer diskreten Säule (Binomialverteilung mit ganzzahligen Werten $k$) zur stetigen Kurve deckt der Wert $k$ das Intervall $[k - 0{,}5; k + 0{,}5]$ ab.   * Um $P(X = k)$ zu berechnen, integriert man von $k - 0{,}5$ bis $k + 0{,}5$:     $$P(X = k) \\approx \\Phi\\left( \\frac{k + 0{,}5 - \\mu}{\\sigma} \\right) - \\Phi\\left( \\frac{k - 0{,}5 - \\mu}{\\sigma} \\right)$$   * Ohne Stetigkeitskorrektur wäre $P(X = k) = 0$ (Fehler der Punktmasse!)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Normalverteilung (Carl Friedrich Gauß): - Die Normalverteilung "
+            },
+            {
+              "type": "math",
+              "tex": "N(\\mu, \\sigma^2)"
+            },
+            {
+              "type": "text",
+              "text": " ist das fundamentale Modell der Statistik, da zufällige Abweichungen, die durch Überlagerung vieler kleiner, unabhängiger Einflüsse entstehen, asymptotisch immer normalverteilt sind (Zentraler Grenzwertsatz). 2. Die Standardnormalverteilung "
+            },
+            {
+              "type": "math",
+              "tex": "\\Phi(z)"
+            },
+            {
+              "type": "text",
+              "text": " und Symmetriebeziehung: - Jede Normalverteilung lässt sich durch die z-Transformation normieren:   "
+            },
+            {
+              "type": "math",
+              "tex": "z = \\frac{x - \\mu}{\\sigma}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Für die kumulierte Verteilungsfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "\\Phi(z)"
+            },
+            {
+              "type": "text",
+              "text": " gilt aufgrund der Punktsymmetrie der Dichte:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Phi(-z) = 1 - \\Phi(z)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Die Sigma-Regeln und Prognoseintervalle im Überblick: | Umgebungsradius | Wahrscheinlichkeit "
+            },
+            {
+              "type": "math",
+              "tex": "P(\\mu - c\\sigma \\le X \\le \\mu + c\\sigma)"
+            },
+            {
+              "type": "text",
+              "text": " | Typische Anwendung | | :--- | :--- | :--- | | "
+            },
+            {
+              "type": "math",
+              "tex": "c = 1{,}00"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "68{,}27\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " | Grobe Streubreite | | "
+            },
+            {
+              "type": "math",
+              "tex": "c = 1{,}64"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "90{,}00\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "90\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": "-Konfidenzintervall | | "
+            },
+            {
+              "type": "math",
+              "tex": "c = 1{,}96"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "95{,}00\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "95\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": "-Standard-Signifikanzniveau ("
+            },
+            {
+              "type": "math",
+              "tex": "5\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": "-Irrtum) | | "
+            },
+            {
+              "type": "math",
+              "tex": "c = 2{,}00"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "95{,}45\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "2\\sigma"
+            },
+            {
+              "type": "text",
+              "text": "-Faustregel | | "
+            },
+            {
+              "type": "math",
+              "tex": "c = 2{,}58"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "99{,}00\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "99\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": "-Qualitätskontrolle | | "
+            },
+            {
+              "type": "math",
+              "tex": "c = 3{,}00"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "99{,}73\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " | Fast sichere Grenzen (Six-Sigma-Industriestandard) | 4. Die Approximation nach dem Satz von Moivre-Laplace: - Warum Stetigkeitskorrektur?:   * Beim Übergang von einer diskreten Säule (Binomialverteilung mit ganzzahligen Werten "
+            },
+            {
+              "type": "math",
+              "tex": "k"
+            },
+            {
+              "type": "text",
+              "text": ") zur stetigen Kurve deckt der Wert "
+            },
+            {
+              "type": "math",
+              "tex": "k"
+            },
+            {
+              "type": "text",
+              "text": " das Intervall "
+            },
+            {
+              "type": "math",
+              "tex": "[k - 0{,}5; k + 0{,}5]"
+            },
+            {
+              "type": "text",
+              "text": " ab.   * Um "
+            },
+            {
+              "type": "math",
+              "tex": "P(X = k)"
+            },
+            {
+              "type": "text",
+              "text": " zu berechnen, integriert man von "
+            },
+            {
+              "type": "math",
+              "tex": "k - 0{,}5"
+            },
+            {
+              "type": "text",
+              "text": " bis "
+            },
+            {
+              "type": "math",
+              "tex": "k + 0{,}5"
+            },
+            {
+              "type": "text",
+              "text": ":     "
+            },
+            {
+              "type": "math",
+              "tex": "P(X = k) \\approx \\Phi\\left( \\frac{k + 0{,}5 - \\mu}{\\sigma} \\right) - \\Phi\\left( \\frac{k - 0{,}5 - \\mu}{\\sigma} \\right)",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Ohne Stetigkeitskorrektur wäre "
+            },
+            {
+              "type": "math",
+              "tex": "P(X = k) = 0"
+            },
+            {
+              "type": "text",
+              "text": " (Fehler der Punktmasse!)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

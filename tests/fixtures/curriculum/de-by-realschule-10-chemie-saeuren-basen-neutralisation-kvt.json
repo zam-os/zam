@@ -135,15 +135,44 @@
           "tier": "tier1_fast",
           "bloom_level": 1,
           "question": "Um welchen Faktor ändert sich die Konzentration der Oxonium-Ionen c(H3O+), wenn der pH-Wert einer sauren Lösung von pH 3 auf pH 5 ansteigt (Verdünnung)?",
-          "concept": "Sie sinkt um den Faktor 100 (10^2, da der pH-Wert eine dekadisch logarithmische Skala ist)",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Sie sinkt um den Faktor 100 ("
+            },
+            {
+              "type": "math",
+              "tex": "10^2",
+              "speech": "10 hoch 2"
+            },
+            {
+              "type": "text",
+              "text": ", da der pH-Wert eine dekadisch logarithmische Skala ist)"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "Faktor 100 (10^2-fache Abnahme)",
+              [
+                {
+                  "type": "text",
+                  "text": "Faktor 100 ("
+                },
+                {
+                  "type": "math",
+                  "tex": "10^2",
+                  "speech": "10 hoch 2"
+                },
+                {
+                  "type": "text",
+                  "text": "-fache Abnahme)"
+                }
+              ],
               "Faktor 2 (doppelte Abnahme)"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K4S0C0000000000000000J04",
@@ -151,8 +180,55 @@
           "tier": "tier2_synthesis",
           "bloom_level": 2,
           "question": "Erkläre die Autoprotolyse des reinen Wassers, formuliere das Ionenprodukt K_w = c(H3O+) · c(OH-) = 10^-14 mol^2/l^2 bei 25 °C, definiere die mathematische Formel des pH-Wertes (pH = -lg c(H3O+)) und begründe, warum eine neutrale Lösung exakt den pH-Wert 7 aufweist.",
-          "concept": "Autoprotolyse: 2 H2O <=> H3O+ + OH-; K_w = 10^-14; pH = -lg(c(H3O+)); neutral: c(H3O+) = c(OH-) = 10^-7 mol/l -> pH = -lg(10^-7) = 7",
-          "sample_solution": "1. Autoprotolyse des Wassers: Auch in reinstem destilliertem Wasser findet in sehr geringem Umfang eine Eigenübertragung von Protonen zwischen den Wassermolekülen statt: H₂O + H₂O <=> H₃O⁺ + OH⁻. 2. Ionenprodukt des Wassers: Bei 25 °C ist das Produkt der Ionenkonzentrationen immer konstant: K_w = c(H₃O⁺) · c(OH⁻) = 1,0 · 10⁻¹⁴ mol²/l². 3. pH-Wert-Definition: Der pH-Wert ist der negative dekadische Logarithmus der Oxoniumionen-Konzentration: pH = -lg[c(H₃O⁺) / (mol/l)]. 4. Neutralpunkt pH 7: In neutralem Wasser liegen Oxonium- und Hydroxidionen in exakt gleicher Konzentration vor: c(H₃O⁺) = c(OH⁻) = sqrt(10⁻¹⁴) = 10⁻⁷ mol/l. Daher gilt für neutrale Lösungen: pH = -lg(10⁻⁷) = 7 (sauer: pH < 7; basisch/alkalisch: pH > 7)."
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Autoprotolyse: "
+            },
+            {
+              "type": "math",
+              "tex": "2\\,\\text{H}_2\\text{O} \\rightleftharpoons \\text{H}_3\\text{O}^+ + \\text{OH}^-",
+              "speech": "2 H zwei O im Gleichgewicht mit H drei O plus plus O H minus"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "K_w = 10^{-14}",
+              "speech": "K w gleich 10 hoch minus 14"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{pH} = -\\lg(c(\\text{H}_3\\text{O}^+))",
+              "speech": "pH gleich minus l g der Konzentration von H drei O plus"
+            },
+            {
+              "type": "text",
+              "text": "; neutral: "
+            },
+            {
+              "type": "math",
+              "tex": "c(\\text{H}_3\\text{O}^+) = c(\\text{OH}^-) = 10^{-7}",
+              "speech": "c von H drei O plus gleich c von O H minus gleich 10 hoch minus 7"
+            },
+            {
+              "type": "text",
+              "text": " mol/l "
+            },
+            {
+              "type": "math",
+              "tex": "\\Rightarrow \\text{pH} = -\\lg(10^{-7}) = 7",
+              "speech": "daraus folgt pH gleich minus l g von 10 hoch minus sieben gleich 7"
+            }
+          ],
+          "sample_solution": "1. Autoprotolyse des Wassers: Auch in reinstem destilliertem Wasser findet in sehr geringem Umfang eine Eigenübertragung von Protonen zwischen den Wassermolekülen statt: H₂O + H₂O <=> H₃O⁺ + OH⁻. 2. Ionenprodukt des Wassers: Bei 25 °C ist das Produkt der Ionenkonzentrationen immer konstant: K_w = c(H₃O⁺) · c(OH⁻) = 1,0 · 10⁻¹⁴ mol²/l². 3. pH-Wert-Definition: Der pH-Wert ist der negative dekadische Logarithmus der Oxoniumionen-Konzentration: pH = -lg[c(H₃O⁺) / (mol/l)]. 4. Neutralpunkt pH 7: In neutralem Wasser liegen Oxonium- und Hydroxidionen in exakt gleicher Konzentration vor: c(H₃O⁺) = c(OH⁻) = sqrt(10⁻¹⁴) = 10⁻⁷ mol/l. Daher gilt für neutrale Lösungen: pH = -lg(10⁻⁷) = 7 (sauer: pH < 7; basisch/alkalisch: pH > 7).",
+          "materiality": "cosmetic"
         }
       ]
     },

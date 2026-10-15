@@ -49,7 +49,30 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Was gibt der Binomialkoeffizient $\\binom{n}{k} = \\frac{n!}{k! \\cdot (n - k)!}$ in einem $n$-stufigen Bernoulli-Baumdiagramm anschaulich an?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Was gibt der Binomialkoeffizient "
+            },
+            {
+              "type": "math",
+              "tex": "\\binom{n}{k} = \\frac{n!}{k! \\cdot (n - k)!}",
+              "speech": "n über k gleich n Fakultät geteilt durch k Fakultät mal n minus k Fakultät"
+            },
+            {
+              "type": "text",
+              "text": " in einem "
+            },
+            {
+              "type": "math",
+              "tex": "n",
+              "speech": "n"
+            },
+            {
+              "type": "text",
+              "text": "-stufigen Bernoulli-Baumdiagramm anschaulich an?"
+            }
+          ],
           "concept": "Die Anzahl aller Pfade im Baumdiagramm, die genau k Treffer und n - k Nieten enthalten",
           "fast_check": {
             "type": "binary_choice",
@@ -58,16 +81,329 @@
               "Die Wahrscheinlichkeit eines einzelnen Pfades"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GB30000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere Kombinatorik und Bernoulli-Experimente: 1. **Kombinatorische Grundformeln**:   * **Permutationen** von $n$ verschiedenen Elementen: $P_n = n!$.   * **Kombination ohne Wiederholung (Ziehen ohne Zurücklegen ohne Reihenfolge)**:     $$\\mathbf{\\binom{n}{k} = \\frac{n!}{k! \\cdot (n - k)!}} \\quad (0 \\le k \\le n)$$   * Symmetrie: $\\binom{n}{k} = \\binom{n}{n-k}$; Rekursion: $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ (Pascalsches Dreieck), 2. **Das Bernoulli-Experiment & die Bernoulli-Kette**:   * **Bernoulli-Experiment**: Zufallsexperiment mit exakt **zwei Ergebnissen**: Treffer ($T$) mit Wahrscheinlichkeit $p$ und Niete ($N$) mit Gegenwahrscheinlichkeit $q = 1 - p$.   * **Bernoulli-Kette der Länge $n$**: $n$-malige unabhängige Wiederholung eines Bernoulli-Experiments unter identischen Bedingungen (konstantes $p$), 3. Berechne den Binomialkoeffizienten $\\binom{6}{2}$ und bestimme die Wahrscheinlichkeit, beim 6-maligen Werfen eines fairen Laplace-Würfels genau zweimal eine Sechs ($p = \\frac{1}{6}$) zu würfeln.",
-          "concept": "Kombinatorik: Binomialkoeffizient n über k; Bernoulli-Kette (unabhängige Wiederholungen, konstantes p); Rechnung: (6 über 2) = (6*5)/(2*1) = 15 Pfade; P(X=2) = 15 * (1/6)^2 * (5/6)^4 = 15 * (1/36) * (625/1296) = 9375 / 46656 approx 0,2009 (ca. 20,09 %).",
-          "sample_solution": "1. Kombinatorische Grundlagen: - **1. Fakultät**:   $$n! = 1 \\cdot 2 \\cdot 3 \\cdot \\dots \\cdot n \\quad (\\text{Def.: } 0! = 1)$$ - **2. Der Binomialkoeffizient ('$n$ über $k$')**:   $$\\mathbf{\\binom{n}{k} = \\frac{n!}{k! \\cdot (n - k)!} = \\frac{n \\cdot (n - 1) \\cdot \\dots \\cdot (n - k + 1)}{k \\cdot (k - 1) \\cdot \\dots \\cdot 1}}$$   * Gibt die Anzahl der Möglichkeiten an, aus $n$ Objekten $k$ Objekte ohne Berücksichtigung der Reihenfolge auszuwählen. 2. Die Bernoulli-Kette: - **Bedingungen für einen Bernoulli-Prozess**:   1. Jede Stufe hat nur zwei Ausgänge: $T$ (Treffer, $P(T) = p$) und $N$ (Niete, $P(N) = q = 1 - p$).   2. Die Trefferwahrscheinlichkeit $p$ bleibt bei allen Durchläufen **konstant** (Unabhängigkeit der Einzelstufen). 3. Durchrechnung des Beispiels ($n = 6, k = 2, p = \\frac{1}{6}$): - **Schritt 1: Berechnung des Binomialkoeffizienten $\\binom{6}{2}$**:   $$\\binom{6}{2} = \\frac{6 \\cdot 5}{2 \\cdot 1} = \\mathbf{15}$$   *(Es gibt im 6-stufigen Baumdiagramm genau 15 verschiedene Pfade mit 2 Sechsen und 4 Nicht-Sechsen)*. - **Schritt 2: Wahrscheinlichkeit eines einzelnen Pfades**:   $$P(\\text{1 Pfad}) = p^k \\cdot (1 - p)^{n - k} = \\left(\\frac{1}{6}\\right)^2 \\cdot \\left(\\frac{5}{6}\\right)^4 = \\frac{1}{36} \\cdot \\frac{625}{1296} = \\frac{625}{46.656}$$ - **Schritt 3: Gesamtwahrscheinlichkeit nach der 1. Pfadregel**:   $$P(X = 2) = \\binom{6}{2} \\cdot p^2 \\cdot q^4 = 15 \\cdot \\frac{625}{46.656} = \\frac{9375}{46.656} \\approx \\mathbf{0{,}2009 = 20{,}09\\%}$$."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere Kombinatorik und Bernoulli-Experimente: 1. Kombinatorische Grundformeln:   * Permutationen von "
+            },
+            {
+              "type": "math",
+              "tex": "n",
+              "speech": "n"
+            },
+            {
+              "type": "text",
+              "text": " verschiedenen Elementen: "
+            },
+            {
+              "type": "math",
+              "tex": "P_n = n!",
+              "speech": "P n gleich n Fakultät"
+            },
+            {
+              "type": "text",
+              "text": ".   * Kombination ohne Wiederholung (Ziehen ohne Zurücklegen ohne Reihenfolge):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\binom{n}{k} = \\frac{n!}{k! \\cdot (n - k)!}} \\quad (0 \\le k \\le n)",
+              "block": true,
+              "speech": "n über k gleich n Fakultät geteilt durch k Fakultät mal n minus k Fakultät, für 0 kleiner gleich k kleiner gleich n"
+            },
+            {
+              "type": "text",
+              "text": "   * Symmetrie: "
+            },
+            {
+              "type": "math",
+              "tex": "\\binom{n}{k} = \\binom{n}{n-k}",
+              "speech": "n über k gleich n über n minus k"
+            },
+            {
+              "type": "text",
+              "text": "; Rekursion: "
+            },
+            {
+              "type": "math",
+              "tex": "\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}",
+              "speech": "n plus 1 über k plus 1 gleich n über k plus n über k plus 1"
+            },
+            {
+              "type": "text",
+              "text": " (Pascalsches Dreieck), 2. Das Bernoulli-Experiment & die Bernoulli-Kette:   * Bernoulli-Experiment: Zufallsexperiment mit exakt zwei Ergebnissen: Treffer ("
+            },
+            {
+              "type": "math",
+              "tex": "T",
+              "speech": "T"
+            },
+            {
+              "type": "text",
+              "text": ") mit Wahrscheinlichkeit "
+            },
+            {
+              "type": "math",
+              "tex": "p",
+              "speech": "p"
+            },
+            {
+              "type": "text",
+              "text": " und Niete ("
+            },
+            {
+              "type": "math",
+              "tex": "N",
+              "speech": "N"
+            },
+            {
+              "type": "text",
+              "text": ") mit Gegenwahrscheinlichkeit "
+            },
+            {
+              "type": "math",
+              "tex": "q = 1 - p",
+              "speech": "q gleich 1 minus p"
+            },
+            {
+              "type": "text",
+              "text": ".   * Bernoulli-Kette der Länge "
+            },
+            {
+              "type": "math",
+              "tex": "n",
+              "speech": "n"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "n",
+              "speech": "n"
+            },
+            {
+              "type": "text",
+              "text": "-malige unabhängige Wiederholung eines Bernoulli-Experiments unter identischen Bedingungen (konstantes "
+            },
+            {
+              "type": "math",
+              "tex": "p",
+              "speech": "p"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Berechne den Binomialkoeffizienten "
+            },
+            {
+              "type": "math",
+              "tex": "\\binom{6}{2}",
+              "speech": "6 über 2"
+            },
+            {
+              "type": "text",
+              "text": " und bestimme die Wahrscheinlichkeit, beim 6-maligen Werfen eines fairen Laplace-Würfels genau zweimal eine Sechs ("
+            },
+            {
+              "type": "math",
+              "tex": "p = \\frac{1}{6}",
+              "speech": "p gleich ein Sechstel"
+            },
+            {
+              "type": "text",
+              "text": ") zu würfeln."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Kombinatorik: Binomialkoeffizient "
+            },
+            {
+              "type": "math",
+              "tex": "\\binom{n}{k}",
+              "speech": "n über k"
+            },
+            {
+              "type": "text",
+              "text": " (n über k); Bernoulli-Kette (unabhängige Wiederholungen, konstantes "
+            },
+            {
+              "type": "math",
+              "tex": "p",
+              "speech": "p"
+            },
+            {
+              "type": "text",
+              "text": "); Rechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "\\binom{6}{2} = \\frac{6 \\cdot 5}{2 \\cdot 1} = 15",
+              "speech": "6 über 2 gleich 6 mal 5 durch 2 mal 1 gleich 15"
+            },
+            {
+              "type": "text",
+              "text": " Pfade; "
+            },
+            {
+              "type": "math",
+              "tex": "P(X = 2) = 15 \\cdot \\left(\\frac{1}{6}\\right)^2 \\cdot \\left(\\frac{5}{6}\\right)^4 = 15 \\cdot \\frac{1}{36} \\cdot \\frac{625}{1296} = \\frac{9375}{46656} \\approx 0{,}2009",
+              "speech": "P von X gleich 2 gleich 15 mal ein Sechstel Quadrat mal fünf Sechstel hoch 4 gleich 15 mal 1 durch 36 mal 625 durch 1296 gleich 9375 durch 46656 ungefähr 0,2009"
+            },
+            {
+              "type": "text",
+              "text": " (ca. 20,09 %)."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Kombinatorische Grundlagen: - 1. Fakultät:   "
+            },
+            {
+              "type": "math",
+              "tex": "n! = 1 \\cdot 2 \\cdot 3 \\cdot \\dots \\cdot n \\quad (\\text{Def.: } 0! = 1)",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 2. Der Binomialkoeffizient ('"
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": " über "
+            },
+            {
+              "type": "math",
+              "tex": "k"
+            },
+            {
+              "type": "text",
+              "text": "'):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\binom{n}{k} = \\frac{n!}{k! \\cdot (n - k)!} = \\frac{n \\cdot (n - 1) \\cdot \\dots \\cdot (n - k + 1)}{k \\cdot (k - 1) \\cdot \\dots \\cdot 1}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Gibt die Anzahl der Möglichkeiten an, aus "
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": " Objekten "
+            },
+            {
+              "type": "math",
+              "tex": "k"
+            },
+            {
+              "type": "text",
+              "text": " Objekte ohne Berücksichtigung der Reihenfolge auszuwählen. 2. Die Bernoulli-Kette: - Bedingungen für einen Bernoulli-Prozess:   1. Jede Stufe hat nur zwei Ausgänge: "
+            },
+            {
+              "type": "math",
+              "tex": "T"
+            },
+            {
+              "type": "text",
+              "text": " (Treffer, "
+            },
+            {
+              "type": "math",
+              "tex": "P(T) = p"
+            },
+            {
+              "type": "text",
+              "text": ") und "
+            },
+            {
+              "type": "math",
+              "tex": "N"
+            },
+            {
+              "type": "text",
+              "text": " (Niete, "
+            },
+            {
+              "type": "math",
+              "tex": "P(N) = q = 1 - p"
+            },
+            {
+              "type": "text",
+              "text": ").   2. Die Trefferwahrscheinlichkeit "
+            },
+            {
+              "type": "math",
+              "tex": "p"
+            },
+            {
+              "type": "text",
+              "text": " bleibt bei allen Durchläufen konstant (Unabhängigkeit der Einzelstufen). 3. Durchrechnung des Beispiels ("
+            },
+            {
+              "type": "math",
+              "tex": "n = 6, k = 2, p = \\frac{1}{6}"
+            },
+            {
+              "type": "text",
+              "text": "): - Schritt 1: Berechnung des Binomialkoeffizienten "
+            },
+            {
+              "type": "math",
+              "tex": "\\binom{6}{2}"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\binom{6}{2} = \\frac{6 \\cdot 5}{2 \\cdot 1} = \\mathbf{15}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   (Es gibt im 6-stufigen Baumdiagramm genau 15 verschiedene Pfade mit 2 Sechsen und 4 Nicht-Sechsen). - Schritt 2: Wahrscheinlichkeit eines einzelnen Pfades:   "
+            },
+            {
+              "type": "math",
+              "tex": "P(\\text{1 Pfad}) = p^k \\cdot (1 - p)^{n - k} = \\left(\\frac{1}{6}\\right)^2 \\cdot \\left(\\frac{5}{6}\\right)^4 = \\frac{1}{36} \\cdot \\frac{625}{1296} = \\frac{625}{46.656}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 3: Gesamtwahrscheinlichkeit nach der 1. Pfadregel:   "
+            },
+            {
+              "type": "math",
+              "tex": "P(X = 2) = \\binom{6}{2} \\cdot p^2 \\cdot q^4 = 15 \\cdot \\frac{625}{46.656} = \\frac{9375}{46.656} \\approx \\mathbf{0{,}2009 = 20{,}09\\%}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -112,7 +448,39 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie berechnet sich der Erwartungswert $\\mu = E(X)$ einer nach $B(n; p)$ binomialverteilten Zufallsgröße $X$?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet sich der Erwartungswert "
+            },
+            {
+              "type": "math",
+              "tex": "\\mu = E(X)",
+              "speech": "My gleich E von X"
+            },
+            {
+              "type": "text",
+              "text": " einer nach "
+            },
+            {
+              "type": "math",
+              "tex": "B(n; p)",
+              "speech": "B von n und p"
+            },
+            {
+              "type": "text",
+              "text": " binomialverteilten Zufallsgröße "
+            },
+            {
+              "type": "math",
+              "tex": "X",
+              "speech": "X"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
           "concept": "mu = n * p (Kettenlänge multipliziert mit der Trefferwahrscheinlichkeit)",
           "fast_check": {
             "type": "binary_choice",
@@ -121,16 +489,534 @@
               "mu = sqrt(n * p * (1 - p))"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GB30000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Binomialverteilung $B(n; p)$ und ihre statistischen Kenngrößen: 1. **Die Formel von Bernoulli**:   * Die Zufallsgröße $X$ zählt die Anzahl der Treffer:     $$\\mathbf{P(X = k) = B(n; p; k) = \\binom{n}{k} \\cdot p^k \\cdot (1 - p)^{n - k}} \\quad (k \\in \\{0, 1, \\dots, n\\})$$   * **Kumulierte Wahrscheinlichkeit ('höchstens $k$ Treffer')**:     $$\\mathbf{P(X \\le k) = F(n; p; k) = \\sum_{i=0}^k \\binom{n}{i} \\cdot p^i \\cdot (1 - p)^{n - i}}$$   * 'Mindestens $k$ Treffer': $P(X \\ge k) = 1 - P(X \\le k - 1)$, 2. **Statistische Kenngrößen einer Binomialverteilung**:   * **Erwartungswert $\\mu$**: $\\mu = E(X) = n \\cdot p$.   * **Varianz $\\operatorname{Var}(X)$**: $\\sigma^2 = n \\cdot p \\cdot (1 - p)$.   * **Standardabweichung $\\sigma$**: $\\sigma = \\sqrt{n \\cdot p \\cdot (1 - p)}$, 3. **Sigma-Regeln (für $\\sigma > 3$, Laplace-Bedingung)**:   * $1\\sigma$-Intervall: $P(\\mu - \\sigma \\le X \\le \\mu + \\sigma) \\approx 68{,}3\\%$.   * $2\\sigma$-Intervall: $P(\\mu - 2\\sigma \\le X \\le \\mu + 2\\sigma) \\approx 95{,}4\\%$.   * $3\\sigma$-Intervall: $P(\\mu - 3\\sigma \\le X \\le \\mu + 3\\sigma) \\approx 99{,}7\\%$, 4. Ein Medikament heilt eine Erkrankung mit Wahrscheinlichkeit $p = 0{,}8$. Es wird an $n = 100$ Patienten getestet. Berechne den Erwartungswert $\\mu$ und die Standardabweichung $\\sigma$.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Binomialverteilung "
+            },
+            {
+              "type": "math",
+              "tex": "B(n; p)",
+              "speech": "B von n und p"
+            },
+            {
+              "type": "text",
+              "text": " und ihre statistischen Kenngrößen: 1. Die Formel von Bernoulli:   * Die Zufallsgröße "
+            },
+            {
+              "type": "math",
+              "tex": "X",
+              "speech": "X"
+            },
+            {
+              "type": "text",
+              "text": " zählt die Anzahl der Treffer:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{P(X = k) = B(n; p; k) = \\binom{n}{k} \\cdot p^k \\cdot (1 - p)^{n - k}} \\quad (k \\in \\{0, 1, \\dots, n\\})",
+              "block": true,
+              "speech": "P von X gleich k gleich B von n, p, k gleich n über k mal p hoch k mal, 1 minus p, hoch n minus k, für k Element von 0, 1, bis n"
+            },
+            {
+              "type": "text",
+              "text": "   * Kumulierte Wahrscheinlichkeit ('höchstens "
+            },
+            {
+              "type": "math",
+              "tex": "k",
+              "speech": "k"
+            },
+            {
+              "type": "text",
+              "text": " Treffer'):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{P(X \\le k) = F(n; p; k) = \\sum_{i=0}^k \\binom{n}{i} \\cdot p^i \\cdot (1 - p)^{n - i}}",
+              "block": true,
+              "speech": "P von X kleiner gleich k gleich F von n, p, k gleich Summe für i gleich 0 bis k von n über i mal p hoch i mal, 1 minus p, hoch n minus i"
+            },
+            {
+              "type": "text",
+              "text": "   * 'Mindestens "
+            },
+            {
+              "type": "math",
+              "tex": "k",
+              "speech": "k"
+            },
+            {
+              "type": "text",
+              "text": " Treffer': "
+            },
+            {
+              "type": "math",
+              "tex": "P(X \\ge k) = 1 - P(X \\le k - 1)",
+              "speech": "P von X größer gleich k gleich 1 minus P von X kleiner gleich k minus 1"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Statistische Kenngrößen einer Binomialverteilung:   * Erwartungswert "
+            },
+            {
+              "type": "math",
+              "tex": "\\mu",
+              "speech": "My"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "\\mu = E(X) = n \\cdot p",
+              "speech": "My gleich E von X gleich n mal p"
+            },
+            {
+              "type": "text",
+              "text": ".   * Varianz "
+            },
+            {
+              "type": "math",
+              "tex": "\\operatorname{Var}(X)",
+              "speech": "Varianz von X"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "\\sigma^2 = n \\cdot p \\cdot (1 - p)",
+              "speech": "Sigma Quadrat gleich n mal p mal, 1 minus p"
+            },
+            {
+              "type": "text",
+              "text": ".   * Standardabweichung "
+            },
+            {
+              "type": "math",
+              "tex": "\\sigma",
+              "speech": "Sigma"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "\\sigma = \\sqrt{n \\cdot p \\cdot (1 - p)}",
+              "speech": "Sigma gleich Wurzel aus n mal p mal, 1 minus p"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Sigma-Regeln (für "
+            },
+            {
+              "type": "math",
+              "tex": "\\sigma > 3",
+              "speech": "Sigma größer als 3"
+            },
+            {
+              "type": "text",
+              "text": ", Laplace-Bedingung):   * "
+            },
+            {
+              "type": "math",
+              "tex": "1\\sigma",
+              "speech": "1 Sigma"
+            },
+            {
+              "type": "text",
+              "text": "-Intervall: "
+            },
+            {
+              "type": "math",
+              "tex": "P(\\mu - \\sigma \\le X \\le \\mu + \\sigma) \\approx 68{,}3\\%",
+              "speech": "P von My minus Sigma kleiner gleich X kleiner gleich My plus Sigma ungefähr 68,3 Prozent"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "2\\sigma",
+              "speech": "2 Sigma"
+            },
+            {
+              "type": "text",
+              "text": "-Intervall: "
+            },
+            {
+              "type": "math",
+              "tex": "P(\\mu - 2\\sigma \\le X \\le \\mu + 2\\sigma) \\approx 95{,}4\\%",
+              "speech": "P von My minus 2 Sigma kleiner gleich X kleiner gleich My plus 2 Sigma ungefähr 95,4 Prozent"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "3\\sigma",
+              "speech": "3 Sigma"
+            },
+            {
+              "type": "text",
+              "text": "-Intervall: "
+            },
+            {
+              "type": "math",
+              "tex": "P(\\mu - 3\\sigma \\le X \\le \\mu + 3\\sigma) \\approx 99{,}7\\%",
+              "speech": "P von My minus 3 Sigma kleiner gleich X kleiner gleich My plus 3 Sigma ungefähr 99,7 Prozent"
+            },
+            {
+              "type": "text",
+              "text": ", 4. Ein Medikament heilt eine Erkrankung mit Wahrscheinlichkeit "
+            },
+            {
+              "type": "math",
+              "tex": "p = 0{,}8",
+              "speech": "p gleich 0,8"
+            },
+            {
+              "type": "text",
+              "text": ". Es wird an "
+            },
+            {
+              "type": "math",
+              "tex": "n = 100",
+              "speech": "n gleich 100"
+            },
+            {
+              "type": "text",
+              "text": " Patienten getestet. Berechne den Erwartungswert "
+            },
+            {
+              "type": "math",
+              "tex": "\\mu",
+              "speech": "My"
+            },
+            {
+              "type": "text",
+              "text": " und die Standardabweichung "
+            },
+            {
+              "type": "math",
+              "tex": "\\sigma",
+              "speech": "Sigma"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
           "concept": "Binomialverteilung: Bernoulliformel B(n,p,k); Erwartungswert mu = n*p; Streuung sigma = sqrt(n*p*(1-p)); Sigma-Regeln (1sigma 68,3%, 2sigma 95,4%, 3sigma 99,7%); Rechnung: mu = 100 * 0,8 = 80 Patienten; sigma = sqrt(100 * 0,8 * 0,2) = sqrt(16) = 4 Patienten.",
-          "sample_solution": "1. Die Binomialverteilung $B(n; p)$: - **Definition**: Eine diskrete Wahrscheinlichkeitsverteilung, die die Anzahl der Erfolge bei $n$ unabhängigen Versuchen mit konstanter Erfolgswahrscheinlichkeit $p$ modelliert:   $$\\mathbf{P(X = k) = \\binom{n}{k} \\cdot p^k \\cdot (1 - p)^{n - k}}$$ 2. Rechnen mit kumulierten Wahrscheinlichkeiten: - **1. 'Höchstens $k$ Treffer'**:   $$\\mathbf{P(X \\le k) = \\sum_{i=0}^k B(n; p; i)}$$ - **2. 'Mindestens $k$ Treffer' (Gegenereignis)**:   $$\\mathbf{P(X \\ge k) = 1 - P(X \\le k - 1)}$$ - **3. 'Zwischen $a$ und $b$ Treffern' ($a \\le X \\le b$)**:   $$\\mathbf{P(a \\le X \\le b) = P(X \\le b) - P(X \\le a - 1)}$$ 3. Die Kenngrößen der Binomialverteilung: - **Erwartungswert $\\mu$**: Der theoretische Mittelwert bei unendlicher Wiederholung:   $$\\mathbf{\\mu = n \\cdot p}$$ - **Varianz $\\operatorname{Var}(X)$ & Standardabweichung $\\sigma$**: Maß für die Streuung der Werte um den Erwartungswert:   $$\\mathbf{\\sigma^2 = n \\cdot p \\cdot (1 - p)} \\implies \\mathbf{\\sigma = \\sqrt{n \\cdot p \\cdot (1 - p)}}$$ 4. Die Sigma-Regeln (für $\\sigma > 3$): - Durch den Satz von Moivre-Laplace nähert sich die Binomialverteilung der Gaußschen Normalverteilung an:   * **$\\mu \\pm 1\\sigma$**: Intervall $[\\mu - \\sigma; \\mu + \\sigma]$ deckt ca. **$68{,}3\\%$** aller Wahrscheinlichkeitsmasse ab.   * **$\\mu \\pm 2\\sigma$**: Intervall $[\\mu - 2\\sigma; \\mu + 2\\sigma]$ deckt ca. **$95{,}4\\%$** ab.   * **$\\mu \\pm 3\\sigma$**: Intervall $[\\mu - 3\\sigma; \\mu + 3\\sigma]$ deckt ca. **$99{,}7\\%$** ab. 5. Durchrechnung des Beispiels ($n = 100, p = 0{,}8$): - **Erwartungswert $\\mu$**:   $$\\mu = 100 \\cdot 0{,}8 = \\mathbf{80\\,\\text{geheilte Patienten}}$$ - **Standardabweichung $\\sigma$**:   $$\\sigma = \\sqrt{100 \\cdot 0{,}8 \\cdot (1 - 0{,}8)} = \\sqrt{100 \\cdot 0{,}8 \\cdot 0{,}2} = \\sqrt{16} = \\mathbf{4\\,\\text{Patienten}}$$ - **Interpretation**: Bei 100 Behandlungen liegt die Anzahl geheilter Patienten mit ca. $95{,}4\\%$ Wahrscheinlichkeit im $2\\sigma$-Intervall $[80 - 2(4); 80 + 2(4)] = [72; 88]$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Binomialverteilung "
+            },
+            {
+              "type": "math",
+              "tex": "B(n; p)"
+            },
+            {
+              "type": "text",
+              "text": ": - Definition: Eine diskrete Wahrscheinlichkeitsverteilung, die die Anzahl der Erfolge bei "
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": " unabhängigen Versuchen mit konstanter Erfolgswahrscheinlichkeit "
+            },
+            {
+              "type": "math",
+              "tex": "p"
+            },
+            {
+              "type": "text",
+              "text": " modelliert:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{P(X = k) = \\binom{n}{k} \\cdot p^k \\cdot (1 - p)^{n - k}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Rechnen mit kumulierten Wahrscheinlichkeiten: - 1. 'Höchstens "
+            },
+            {
+              "type": "math",
+              "tex": "k"
+            },
+            {
+              "type": "text",
+              "text": " Treffer':   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{P(X \\le k) = \\sum_{i=0}^k B(n; p; i)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 2. 'Mindestens "
+            },
+            {
+              "type": "math",
+              "tex": "k"
+            },
+            {
+              "type": "text",
+              "text": " Treffer' (Gegenereignis):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{P(X \\ge k) = 1 - P(X \\le k - 1)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 3. 'Zwischen "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "b"
+            },
+            {
+              "type": "text",
+              "text": " Treffern' ("
+            },
+            {
+              "type": "math",
+              "tex": "a \\le X \\le b"
+            },
+            {
+              "type": "text",
+              "text": "):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{P(a \\le X \\le b) = P(X \\le b) - P(X \\le a - 1)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Die Kenngrößen der Binomialverteilung: - Erwartungswert "
+            },
+            {
+              "type": "math",
+              "tex": "\\mu"
+            },
+            {
+              "type": "text",
+              "text": ": Der theoretische Mittelwert bei unendlicher Wiederholung:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\mu = n \\cdot p}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Varianz "
+            },
+            {
+              "type": "math",
+              "tex": "\\operatorname{Var}(X)"
+            },
+            {
+              "type": "text",
+              "text": " & Standardabweichung "
+            },
+            {
+              "type": "math",
+              "tex": "\\sigma"
+            },
+            {
+              "type": "text",
+              "text": ": Maß für die Streuung der Werte um den Erwartungswert:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\sigma^2 = n \\cdot p \\cdot (1 - p)} \\implies \\mathbf{\\sigma = \\sqrt{n \\cdot p \\cdot (1 - p)}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 4. Die Sigma-Regeln (für "
+            },
+            {
+              "type": "math",
+              "tex": "\\sigma > 3"
+            },
+            {
+              "type": "text",
+              "text": "): - Durch den Satz von Moivre-Laplace nähert sich die Binomialverteilung der Gaußschen Normalverteilung an:   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\mu \\pm 1\\sigma"
+            },
+            {
+              "type": "text",
+              "text": ": Intervall "
+            },
+            {
+              "type": "math",
+              "tex": "[\\mu - \\sigma; \\mu + \\sigma]"
+            },
+            {
+              "type": "text",
+              "text": " deckt ca. "
+            },
+            {
+              "type": "math",
+              "tex": "68{,}3\\%"
+            },
+            {
+              "type": "text",
+              "text": " aller Wahrscheinlichkeitsmasse ab.   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\mu \\pm 2\\sigma"
+            },
+            {
+              "type": "text",
+              "text": ": Intervall "
+            },
+            {
+              "type": "math",
+              "tex": "[\\mu - 2\\sigma; \\mu + 2\\sigma]"
+            },
+            {
+              "type": "text",
+              "text": " deckt ca. "
+            },
+            {
+              "type": "math",
+              "tex": "95{,}4\\%"
+            },
+            {
+              "type": "text",
+              "text": " ab.   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\mu \\pm 3\\sigma"
+            },
+            {
+              "type": "text",
+              "text": ": Intervall "
+            },
+            {
+              "type": "math",
+              "tex": "[\\mu - 3\\sigma; \\mu + 3\\sigma]"
+            },
+            {
+              "type": "text",
+              "text": " deckt ca. "
+            },
+            {
+              "type": "math",
+              "tex": "99{,}7\\%"
+            },
+            {
+              "type": "text",
+              "text": " ab. 5. Durchrechnung des Beispiels ("
+            },
+            {
+              "type": "math",
+              "tex": "n = 100, p = 0{,}8"
+            },
+            {
+              "type": "text",
+              "text": "): - Erwartungswert "
+            },
+            {
+              "type": "math",
+              "tex": "\\mu"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mu = 100 \\cdot 0{,}8 = \\mathbf{80\\,\\text{geheilte Patienten}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Standardabweichung "
+            },
+            {
+              "type": "math",
+              "tex": "\\sigma"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\sigma = \\sqrt{100 \\cdot 0{,}8 \\cdot (1 - 0{,}8)} = \\sqrt{100 \\cdot 0{,}8 \\cdot 0{,}2} = \\sqrt{16} = \\mathbf{4\\,\\text{Patienten}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Interpretation: Bei 100 Behandlungen liegt die Anzahl geheilter Patienten mit ca. "
+            },
+            {
+              "type": "math",
+              "tex": "95{,}4\\%"
+            },
+            {
+              "type": "text",
+              "text": " Wahrscheinlichkeit im "
+            },
+            {
+              "type": "math",
+              "tex": "2\\sigma"
+            },
+            {
+              "type": "text",
+              "text": "-Intervall "
+            },
+            {
+              "type": "math",
+              "tex": "[80 - 2(4); 80 + 2(4)] = [72; 88]"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

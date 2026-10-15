@@ -260,6 +260,8 @@ const SUPERSCRIPT: Record<string, string> = {
   "9": "⁹",
   "+": "⁺",
   "-": "⁻",
+  // No superscript asterisk exists; `p*` reads as `p^*` is meant.
+  "*": "*",
   "=": "⁼",
   "(": "⁽",
   ")": "⁾",
@@ -694,7 +696,8 @@ class Converter {
       case "-":
         return this.operator(char, compact, before);
       case "*":
-        return "·";
+        // `p^*`, `X^*`: a star in a script marks, it does not multiply.
+        return compact ? "*" : "·";
       case ",":
         return compact ? "," : ", ";
       case ":":
