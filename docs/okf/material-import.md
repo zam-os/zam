@@ -10,7 +10,7 @@ tags:
   - agents
   - atlas
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/material-import.md"
-timestamp: 2026-10-14T21:00:00.000Z
+timestamp: 2026-10-15T08:00:00.000Z
 ---
 
 A learner's class notes and handouts become learning cards in three steps:
@@ -87,6 +87,27 @@ staging file.
 A harness or Studio batch waits in `~/.zam/pending-imports/<ULID>.json` for
 up to seven days. A staging file holds the proposals and file references only
 — no image bytes, no transcript — and is machine-local, never in the library.
+
+# Formulas in proposals
+
+A proposal's `question` and `answer` may each be a string or a segment list
+([card-text-segments.md](card-text-segments.md)); the contract example shows
+one formula card. The parse reads both with `readCardTextInput`: it lifts a
+`$…$` left in a string, drops Markdown emphasis and repairs backslashes a
+JSON escape ate. A `$HOME` or a price stays text, and so does a formula the
+tokenizer refuses (as readable Unicode); both are listed in the proposal's
+`textNotes`, which the review list shows under the card ("Kept as text,
+please check"). The set never fails over a formula.
+
+- **Harness path:** the batch is read in `agent` mode and refused while a
+  formula is refused or lacks `speech`; the error names
+  `proposals[i].answer[j]`, and the agent sends the set again.
+- **Built-in path:** the answering text model is asked once for the readings
+  it left out. What is still missing stays empty, and voice reads the plain
+  form. Mobile stores the cards as they come.
+- **Commit:** the segments are written with the token through
+  `writeCardText`; the review list renders them as the learner will see
+  them.
 
 # At a place on the knowledge atlas
 
@@ -231,6 +252,7 @@ a model.
 
 # Citations
 
+- [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md) (Decision 6: bonus means offered)
 - [ADR 2026-09-13 — Model Capabilities Are Detected](../adr/2026-09-13-model-capabilities-are-detected.md)

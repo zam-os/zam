@@ -41,9 +41,9 @@ small images.
   placeholders — `c5e56ee8`
 - [x] **Phase 7** — Anki formula lift and the Studio editor (D9) —
   `5ea17cd3`; editor not yet tried in a browser
-- [x] **Phase 8** — Mobile, the MCP recall panel, image segments; device
-  checks, the math font and SVG rasterising open
-- [ ] **Phase 9** — documentation and handover
+- [x] **Phase 8** — Mobile, the MCP recall panel, image segments —
+  `43d26c64`; device checks, the math font and SVG rasterising open
+- [x] **Phase 9** — documentation and handover
 
 **The ADR's deliveries map onto the phases:**
 
@@ -1088,6 +1088,58 @@ Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
    - `zam token reembed` after the tile migration.
 6. **This plan.** Mark each phase with its commit hash. Delete the plan
    before the release that ships the feature, unless open tasks remain.
+
+### As built (Phase 9)
+
+- **OKF:**
+  - the new article `card-text-segments.md`;
+  - the nine updates the plan lists, plus the installed-tiles reconcile in
+    `token-card-model.md`.
+
+  The `zam_okf_upsert` tool refuses a bundle under a hidden folder
+  (`.claude/worktrees/…`) and would otherwise write the main checkout. So
+  each article went through the same function the tool calls
+  (`upsertArticle` in `src/cli/okf/io.ts`), with its validation, the
+  regenerated `index.md` and the `log.md` entry, run on this branch's
+  bundle. No bundle file was edited by hand.
+- **Conventions:** the card-text line is in `CLAUDE.md` (Key conventions)
+  and `AGENTS.md` (Hard rules). It also names `readCardTextInput` for text
+  from models and agents.
+- **Knowledge map:** five statements under "Token" (card text, the formula
+  allowlist, rendering, spoken formulas, the editor). The map validates with
+  104 statements.
+- **ADR:** `Partially implemented`, with a status-history row naming what is
+  open; the README row says so too.
+- **This plan stays.** Open tasks remain: the Phase 5 owner gate, the
+  measurements and device checks, the math font, and a first look at the
+  editor.
+
+### Release notes (for the release PR)
+
+**What's new**
+
+- Formulas in cards are typeset in the Studio, on Mobile and in the recall
+  panel, and read aloud as a teacher would say them: in voice mode, and to
+  screen readers through MathML's `alttext`.
+- The bundled school tiles show their formulas instead of raw LaTeX. The
+  fix is cosmetic, so nobody relearns a card.
+- AI models and agents write formulas as checked segments with speech. Anki
+  decks bring their formulas along, and older Anki imports gain theirs on
+  the next re-import.
+- The Studio card editor lets a learner fix a card in their own words
+  ("Let the AI fix it") or insert a formula. Curators find the TeX behind a
+  disclosure.
+
+**Pitfalls**
+
+- **Team libraries:** the administrator runs the schema migration (M048),
+  then `zam team reinstall-tiles`. Members see "update required" until the
+  migration has run.
+- **Embeddings:** run `zam token reembed` after the tile migration. Every
+  changed projection dropped its embedding, so semantic search misses those
+  cards until then.
+- **Mobile's content-security policy** now allows the app's own
+  `blob:`/`data:` images, `blob:` audio and local fonts.
 
 ## Deliberately not in this plan
 

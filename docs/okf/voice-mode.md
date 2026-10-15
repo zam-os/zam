@@ -8,7 +8,7 @@ tags:
   - desktop
   - mobile
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/voice-mode.md"
-timestamp: 2026-10-10T18:00:00.000Z
+timestamp: 2026-10-15T08:00:00.000Z
 ---
 
 Voice mode reads a due card aloud and maps a spoken word to an FSRS rating —
@@ -57,6 +57,16 @@ English. `parseSpokenRating` matches whole words only
 (`nochmal`/`again` → 1 … `leicht` or `einfach`/`easy` → 4).
 `resolveVoiceLocale` narrows any tag to `de-DE` or `en-US`; anything not
 English becomes German.
+
+# Formulas are read by their speech
+
+A card with formulas ([card-text-segments.md](card-text-segments.md)) is
+spoken by its spoken projection: text as written, each formula by its
+`speech` ("W el gleich ein halb C U Quadrat"), each image by its alt text.
+Studio and Mobile hand the controller the review payload's `spokenQuestion`
+and `spokenConcept` instead of the plain text, which would read
+`W_el = ½CU²` symbol by symbol. A formula without speech (a personal import
+without a model) falls back to its plain form.
 
 # Learning mode and timeouts
 
@@ -377,6 +387,7 @@ default, which is how the companion behaved before the cloud tier existed.
 
 # Citations
 
+- [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
 - [ADR 2026-07-31 — Cross-Platform Voice Mode](../adr/2026-07-31-cross-platform-voice-mode.md)
 - [ADR 2026-09-27 — Choice and Auto Learning Modes](../adr/2026-09-27-choice-and-auto-learning-modes.md)

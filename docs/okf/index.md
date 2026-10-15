@@ -27,6 +27,7 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 
 ## data-model
 
+- [Card Text Segments](card-text-segments.md) — A card's question, answer and fast-check options may be a sequence of text, formula and image segments; the plain string stays as their derived projection, formulas are allowlisted LaTeX rendered to MathML on the device and read aloud by their speech, and one write path keeps both in step.
 - [Prerequisite Graph and Blocking](prerequisite-blocking.md) — Tokens form a directed prerequisite graph; blocking and unblocking of dependent cards is separate from FSRS math and coordinated atomically by the review-action kernel API.
 - [Token and Card Model](token-card-model.md) — ZAM separates learning objectives, alignments, curriculum bindings, shared practice items, and each learner's personal FSRS card state.
 

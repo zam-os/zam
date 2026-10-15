@@ -1,5 +1,18 @@
 # Log
 
+## 2026-10-15
+
+- **Update** — [Token and Card Model](token-card-model.md)
+- **Update** — [Learning Content](learning-content.md)
+- **Update** — [Agent and Library Trust Model](agent-trust-model.md)
+- **Update** — [Standalone Mobile Libraries](mobile-standalone-libraries.md)
+- **Update** — [Local Card File Import](local-card-file-import.md)
+- **Update** — [Learning Cards from Photos and Files](material-import.md)
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [Hands-Free Voice Mode](voice-mode.md)
+- **Creation** — [Card Text Segments](card-text-segments.md)
+
 ## 2026-10-14
 
 - **Update** — [Agent and Library Trust Model](agent-trust-model.md)

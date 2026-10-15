@@ -8,7 +8,7 @@ tags:
   - offline
   - studio
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/local-card-file-import.md"
-timestamp: 2026-10-05T21:25:00.000Z
+timestamp: 2026-10-15T08:00:00.000Z
 ---
 
 ZAM's model-free file path starts in the Learning Content Studio: choose a
@@ -57,6 +57,19 @@ text is reduced to inert plain text. Desktop and standalone mobile review
 surfaces reconstruct only bounded image/audio blobs from the trusted database
 bytes and render occlusion overlays themselves.
 
+Anki's formulas become card-text segments
+([card-text-segments.md](card-text-segments.md)). Before a side's HTML is
+made inert, `\(…\)`, `\[…\]`, `[$]…[/$]`, `[$$]…[/$$]` and
+`[latex]…[/latex]` are held out (tags and entities inside a formula
+resolved, one `$`/`$$` pair unwrapped inside `[latex]`); after sanitizing
+they come back as math segments, and the side is read like every learner
+import. A formula the tokenizer refuses becomes readable text and the card
+gets a `formula-kept-as-text` notice; the card is always imported. No
+speech is written: voice reads such a formula's plain form. A re-import
+whose only difference from the last one is this lift is a cosmetic
+revision, applied to published cards too, so earlier imports gain their
+formulas without anyone relearning them. CSV and TSV are not lifted.
+
 The preview reports create, update, skip, conflict, unsupported, new-personal-
 card, media-item, and media-byte counts by deck. Its deterministic plan hash
 covers parsed text, metadata, media digests and presentation metadata, warnings,
@@ -102,6 +115,7 @@ safe re-import identity and rich reviews.
 
 # Citations
 
+- [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
 - [Anki Manual — Editing](https://docs.ankiweb.net/editing.html)

@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-14T22:00:00.000Z
+timestamp: 2026-10-15T08:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -413,6 +413,34 @@ it was:
 The same paths on the CLI are `zam connector setup … --replace`,
 `zam connector restore` and `zam connector clear previous`.
 
+# Card text with formulas
+
+Cards may hold segments ([card-text-segments.md](card-text-segments.md));
+every field below is optional and additive, and a plain card carries none.
+
+- **Review payloads** (`get-review`, `get-reviews`): `questionSegments`,
+  `conceptSegments`, `spokenQuestion`, `spokenConcept`, and per fast check
+  `optionSegments` in presented order. Media entries carry `placement`
+  (`attached` or `inline`); the attachment strip shows only `attached`. A
+  varied question carries the varied segments, with the stored formulas
+  spliced back.
+- **Writes** take segments as JSON beside the plain flags:
+  `personal-card-create`, `personal-card-update` and
+  `personal-card-publish-revision` accept `--question-segments` /
+  `--concept-segments` (`null` turns a side plain again);
+  `add-token` accepts `question_segments` / `concept_segments` in its stdin
+  JSON. Invalid segments return the kernel's message, naming the segment.
+- **`personal-card-list`** returns `questionSegments` / `conceptSegments`.
+- **`card-text-fix --side question|answer --instruction <text>`** (with
+  `--segments` or `--text`, optional `--other`) asks the text model to
+  correct one side as the learner says and returns `{plain, segments}`; it
+  writes nothing.
+- **`translate-question --segments <json>`** translates through
+  placeholders and returns the translated `segments` too.
+- **`bundled-tiles-reconcile --max <n>`** reinstalls installed bundled tiles
+  whose version changed (the Studio calls it once per start); a team
+  library refuses and points to `zam team reinstall-tiles`.
+
 # Per-learner learning interaction
 
 `study-learning-get` and `study-learning-set` expose the learner's review
@@ -511,6 +539,7 @@ whose token sits in a keychain ZAM cannot read fails to open with
 `OS_SECRET_UNAVAILABLE`, distinct from `BITWARDEN_REQUIRED`.
 
 # Citations
+- [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)

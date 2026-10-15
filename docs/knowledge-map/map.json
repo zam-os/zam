@@ -1173,6 +1173,62 @@
       "sources": [
         "docs/adr/2026-10-02-library-topics.md"
       ]
+    },
+    {
+      "id": "card-text",
+      "parent": "token",
+      "label": "Card text",
+      "link": "may hold",
+      "text": "A token's question and answer may hold formulas and images; the plain text stays as their projection, written by one path.",
+      "sources": [
+        "docs/okf/card-text-segments.md",
+        "src/kernel/library/card-text.ts",
+        "src/kernel/library/card-text-store.ts"
+      ]
+    },
+    {
+      "id": "formula-allowlist",
+      "parent": "card-text",
+      "label": "Formula allowlist",
+      "link": "checked by",
+      "text": "A formula is restricted LaTeX that a fail-closed tokenizer accepts before anything stores or renders it.",
+      "sources": [
+        "src/kernel/library/tex-tokenizer.ts",
+        "src/kernel/library/math-inventory.json"
+      ]
+    },
+    {
+      "id": "formula-rendering",
+      "parent": "card-text",
+      "label": "MathML on the device",
+      "link": "shown as",
+      "text": "Studio, Mobile and the recall panel render formulas as checked MathML on the device and show the plain form until it is ready.",
+      "sources": [
+        "desktop/src/card-text-render.ts",
+        "desktop/src/math-render.ts"
+      ]
+    },
+    {
+      "id": "formula-speech",
+      "parent": "card-text",
+      "label": "Spoken formulas",
+      "link": "read aloud by",
+      "text": "Each formula carries the sentence a teacher would read aloud; voice mode and screen readers use it.",
+      "sources": [
+        "docs/okf/voice-mode.md",
+        "src/kernel/library/card-text.ts"
+      ]
+    },
+    {
+      "id": "formula-editor",
+      "parent": "card-text",
+      "label": "Edit in words",
+      "link": "corrected in",
+      "text": "In the Studio a learner fixes a formula card in their own words or inserts a formula; the TeX stays behind a disclosure for curators.",
+      "sources": [
+        "desktop/src/card-text-editor.ts",
+        "docs/okf/learning-content.md"
+      ]
     }
   ],
   "relations": [
