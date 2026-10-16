@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wissenswelt (Spike)</title>
+    <style>
+      :root {
+        --font-ui: "Atkinson Hyperlegible Next Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+        --ink: #131a23;
+        --ink-2: #384454;
+        --muted: #5a6675;
+        --line: #d6dde4;
+        --surface: #ffffff;
+        --surface-2: #f6f8fa;
+        --accent: #2340b5;
+        --danger: #b42318;
+        --radius: 12px;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #cfe3f0; color: var(--ink); font-family: var(--font-ui); font-size: 15px; }
+      canvas#view { display: block; width: 100vw; height: 100vh; cursor: grab; }
+      canvas#view:active { cursor: grabbing; }
+      button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 9px; padding: 6px 11px; cursor: pointer; }
+      button:hover { border-color: var(--accent); }
+      button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+      button.danger { color: var(--danger); }
+      button.danger:hover { border-color: var(--danger); }
+      button.icon { padding: 3px 7px; font-size: 13px; }
+      .hud { position: fixed; z-index: 5; }
+      #where { top: 14px; left: 14px; background: rgba(255,255,255,.94); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 14px; max-width: 46vw; box-shadow: 0 2px 10px rgba(19,26,35,.08); }
+      #where .path { font-weight: 700; font-size: 16px; }
+      #where .meta { color: var(--muted); font-size: 13px; margin-top: 3px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+      #toolbar { top: 14px; right: 14px; display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; max-width: 52vw; }
+      #toolbar button { box-shadow: 0 2px 8px rgba(19,26,35,.08); }
+      #toolbar kbd { font-family: var(--font-ui); font-size: 11px; color: var(--muted); margin-left: 4px; }
+      #minimap { right: 14px; bottom: 14px; border-radius: var(--radius); border: 1px solid var(--line); box-shadow: 0 2px 10px rgba(19,26,35,.12); cursor: pointer; background: #fff; }
+      #carry { bottom: 18px; left: 50%; transform: translateX(-50%); background: #10351f; color: #fff; border-radius: 999px; padding: 7px 8px 7px 18px; display: none; gap: 12px; align-items: center; font-weight: 600; max-width: 70vw; }
+      #stairs { bottom: 70px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,.95); border: 1px solid var(--line); border-radius: 999px; padding: 7px 16px; display: none; }
+      #tooltip { pointer-events: none; background: rgba(19,26,35,.88); color: #fff; padding: 4px 9px; border-radius: 7px; font-size: 13px; display: none; white-space: nowrap; }
+      #panel { top: 84px; right: 14px; bottom: 240px; width: 360px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 6px 24px rgba(19,26,35,.14); display: none; flex-direction: column; overflow: hidden; }
+      #panel .head { display: flex; justify-content: space-between; align-items: start; gap: 8px; padding: 14px 16px 8px; }
+      #panel .head h2 { margin: 0; font-size: 18px; line-height: 1.25; }
+      #panel .body { overflow: auto; padding: 0 16px 16px; }
+      .muted { color: var(--muted); }
+      .small { font-size: 13px; }
+      .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(0,0,0,.08); color: #131a23; white-space: nowrap; }
+      .badge.dark { color: #fff; }
+      .actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+      .list { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-direction: column; gap: 6px; }
+      .list li { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: var(--surface-2); }
+      .row { display: flex; align-items: center; gap: 6px; justify-content: space-between; }
+      .row .grow { flex: 1; min-width: 0; }
+      .tree { margin-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+      .tree .node { display: flex; align-items: center; gap: 6px; padding: 4px 6px; border-radius: 8px; }
+      .tree .node:hover { background: var(--surface-2); }
+      .tree .name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .tree .lvl1 { padding-left: 18px; } .tree .lvl2 { padding-left: 34px; } .tree .lvl3 { padding-left: 50px; }
+      .backdrop { position: fixed; inset: 0; background: rgba(19,26,35,.35); z-index: 20; display: flex; align-items: center; justify-content: center; }
+      .dialog { background: var(--surface); border-radius: 16px; padding: 20px 22px; width: min(520px, calc(100vw - 32px)); max-height: calc(100vh - 48px); overflow: auto; box-shadow: 0 20px 60px rgba(19,26,35,.3); }
+      .dialog.wide { width: min(1040px, calc(100vw - 32px)); }
+      .dialog h2 { margin: 0 0 8px; font-size: 20px; }
+      .dialog input[type=text] { width: 100%; font: inherit; font-size: 16px; padding: 9px 11px; border: 1px solid var(--line-strong, #b9c3cd); border-radius: 9px; margin-top: 6px; }
+      .card-q { font-size: 21px; line-height: 1.4; margin: 14px 0; }
+      .card-a { font-size: 17px; line-height: 1.45; background: #f3f6fb; border-left: 4px solid var(--accent); padding: 10px 14px; border-radius: 8px; }
+      .ratings { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px; }
+      .ratings button { padding: 10px 6px; }
+      .map { display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-end; margin-top: 10px; }
+      .map .bld { border: 1px solid var(--line); border-radius: 12px; padding: 10px; min-width: 180px; background: var(--surface-2); }
+      .map .bld h3 { margin: 0 0 8px; font-size: 15px; display: flex; gap: 6px; align-items: center; justify-content: space-between; }
+      .map .flr { display: flex; gap: 4px; align-items: stretch; margin-top: 4px; }
+      .map .flr .lbl { width: 78px; font-size: 12px; color: var(--muted); display: flex; align-items: center; cursor: pointer; }
+      .map .chip { font-size: 12px; padding: 6px 7px; border-radius: 7px; cursor: pointer; border: 1px solid rgba(0,0,0,.08); width: 92px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .map .chip.fog { filter: blur(.4px); box-shadow: inset 0 0 0 40px rgba(240,244,248,.45); }
+      .legend { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+      #toasts { position: fixed; bottom: 16px; left: 14px; z-index: 30; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; pointer-events: none; }
+      .toast { background: rgba(19,26,35,.92); color: #fff; padding: 9px 16px; border-radius: 10px; font-size: 14px; transition: opacity .5s; max-width: 70vw; }
+      .toast.agent { background: #5b21b6; }
+      .toast.warn { background: #9a3412; }
+      .toast.out { opacity: 0; }
+      .help td { padding: 3px 12px 3px 0; vertical-align: top; }
+      .quick { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+      .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+      .chips button { font-size: 12.5px; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); }
+      .chips button.new { border-style: dashed; background: #fff; }
+      .field { margin-top: 12px; }
+      .field label { display: block; font-size: 13px; font-weight: 700; color: var(--ink-2); }
+      .field input[type=text] { margin-top: 4px; }
+      img.emblem { border-radius: 8px; background: #fbfaf6; border: 1px solid var(--line); flex: none; }
+      .emblem.glyph { font-weight: 700; padding: 2px 6px; border-radius: 8px; background: #fbfaf6; border: 1px solid var(--line); }
+      .emblem-big { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 4px 0 10px; }
+      .emblem-big .glyph { font-weight: 700; font-size: 17px; }
+      kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 0 5px; font-size: 12px; background: #fff; }
+    </style>
+  </head>
+  <body>
+    <canvas id="view"></canvas>
+    <div id="where" class="hud"></div>
+    <div id="toolbar" class="hud"></div>
+    <aside id="panel" class="hud"></aside>
+    <canvas id="minimap" class="hud" title="Lageplan öffnen (M)"></canvas>
+    <div id="carry" class="hud"></div>
+    <div id="stairs" class="hud"></div>
+    <div id="tooltip" class="hud"></div>
+    <div id="toasts"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
