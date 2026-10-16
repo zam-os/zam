@@ -13,6 +13,8 @@
  *   its bearing from the anchor, by at most `MAX_DRIFT_PER_SETTLE` hexes per
  *   settle, so every island keeps its direction.
  * - A unit that left its region frees its hex as reserved land of that region.
+ * - Land no unit reaches any more goes back to the sea: a region left without
+ *   units keeps no reserve, and an island left without units disappears.
  *
  * Pure and deterministic: the same rows in give the same land out.
  */
@@ -93,6 +95,10 @@ export interface SettlePlan {
   islands: IslandPlace[];
   /** Land hexes that are new, or whose unit or region changed. */
   land: LandHex[];
+  /** Stored hexes that go back to the sea: no unit reaches their region. */
+  removedLand: LandHex[];
+  /** Stored islands left without land. */
+  removedIslands: string[];
   /** The whole state after the plan. */
   next: LandState;
 }
@@ -209,6 +215,24 @@ export function planSettle(input: PlanSettleInput): SettlePlan {
         placed.add(hex.unit);
       }
     }
+  }
+
+  // Land no unit reaches any more goes back to the sea. A region that still
+  // holds a unit, or lies on the way to one, keeps its reserve; nothing that
+  // holds a unit moves.
+  const reached = new Set<string>();
+  for (const want of desired.values()) {
+    reached.add(want.leaf);
+    for (const ancestor of ancestors(want.leaf)) reached.add(ancestor);
+  }
+  for (const [island, hexes] of land) {
+    for (const [key, hex] of hexes) {
+      if (!hex.unit && !reached.has(hex.region)) hexes.delete(key);
+    }
+    if (hexes.size === 0) land.delete(island);
+  }
+  for (const island of [...islands.keys()]) {
+    if (!land.has(island) && !reached.has(island)) islands.delete(island);
   }
 
   // Units still without land, by island, in a stable order.
@@ -398,6 +422,8 @@ export function planSettle(input: PlanSettleInput): SettlePlan {
 
   // ── Place founded islands on the sea ───────────────────────────────────────
   for (const island of founded) {
+    // An island whose old land all went back keeps its place; drift makes room.
+    if (islands.has(island)) continue;
     const r = radius(island);
     const placedCentres = [...islands.entries()].map(([key, p]) => ({
       c: islandCentre(p),
@@ -519,9 +545,16 @@ export function planSettle(input: PlanSettleInput): SettlePlan {
     const old = oldIslands.get(i.island);
     return !old || old.dq !== i.dq || old.dr !== i.dr;
   });
+  const kept = new Set(nextLand.map((h) => `${h.island}|${hexKey(h.q, h.r)}`));
   return {
     islands: changedIslands,
     land: changedLand,
+    removedLand: input.state.land.filter(
+      (h) => !kept.has(`${h.island}|${hexKey(h.q, h.r)}`),
+    ),
+    removedIslands: input.state.islands
+      .filter((i) => !islands.has(i.island))
+      .map((i) => i.island),
     next: { islands: nextIslands, land: nextLand },
   };
 }

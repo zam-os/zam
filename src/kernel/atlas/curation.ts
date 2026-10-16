@@ -25,13 +25,16 @@ import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
 import { directedThreadEnds, newWorldCrossing } from "./connections.js";
 import {
+  CUSTOM_LENS_KIND,
   ensureLensRow,
   findLensId,
+  isBuiltInLensKind,
   type LensDefinition,
   type LensRows,
   loadBindings,
   loadLensRows,
   loadUnits,
+  resolveLensKind,
   slugSegment,
   type UnitRow,
   weltwissenSeedRows,
@@ -39,6 +42,7 @@ import {
 import { MAX_PLACE_NAME, type PlacedBy, placeUnits } from "./place.js";
 import {
   assertLensOnLibrary,
+  lensPlacements,
   loadUnitPlanets,
   ownPlanetOf,
   PlanetError,
@@ -80,7 +84,11 @@ export type LensEditErrorCode =
   | "published-alias"
   | "bad-proposal"
   | "no-proposal"
-  | "not-own-planet";
+  | "not-own-planet"
+  | "bad-lens"
+  | "lens-exists"
+  | "unknown-lens"
+  | "not-custom";
 
 export class LensEditError extends Error {
   constructor(
@@ -103,9 +111,13 @@ const REGION_KEY = /^[a-z0-9-]+(\.[a-z0-9-]+)*$/;
 const MAX_KEY = 300;
 const MAX_DOMAIN = 200;
 
-/** Edits a world lens allows: additions only. */
+/**
+ * Edits a world lens allows: additions, and removing a region the library
+ * made itself (`assertOwnWorldRegion`). Nothing moves the published map.
+ */
 const WORLD_OPS: ReadonlySet<LensEditOp> = new Set([
   "create-region",
+  "remove-region",
   "set-alias",
   "remove-alias",
   "place",
@@ -237,6 +249,43 @@ async function assertAliasForOwnKnowledge(
 }
 
 /**
+ * A world region the library may remove: one it made itself. A region of the
+ * published map (the Weltwissen seed, until the central service ships it) or
+ * one a published unit sits in stays where it is.
+ */
+async function assertOwnWorldRegion(
+  db: Database,
+  lens: LensDefinition,
+  rows: LensRows,
+  regionIds: readonly string[],
+): Promise<void> {
+  const ids = new Set(regionIds);
+  const keys = new Set(
+    rows.regions.filter((r) => ids.has(r.id)).map((r) => r.key),
+  );
+  const seed = new Set(weltwissenSeedRows().regions.map((r) => r.key));
+  const seeded = [...keys].find((key) => seed.has(key));
+  if (seeded) {
+    throw new LensEditError(
+      "world-structure",
+      `"${seeded}" is part of the published map; a library removes only regions it made itself.`,
+    );
+  }
+  const { placements } = await lensPlacements(db, lens, rows);
+  const published = placements.find(
+    (p) =>
+      p.unitKey.startsWith("atom:") &&
+      p.path.some((step) => keys.has(step.key)),
+  );
+  if (published) {
+    throw new LensEditError(
+      "published-unit",
+      `${published.unitKey} is published and sits in this region; it keeps the published map's place.`,
+    );
+  }
+}
+
+/**
  * Edits that can change a unit's planet without placing it: a removed region
  * takes its placements along, and an alias decides what a world rule covers.
  */
@@ -283,9 +332,115 @@ async function assertNoNewCrossing(
   );
 }
 
+/** Most levels a custom lens may have; the deepest built-in lens has four. */
+export const MAX_CUSTOM_LENS_LEVELS = 5;
+
+export interface CustomLensInput {
+  /** The lens's permanent id: a slug, never a built-in lens's kind. */
+  kind: string;
+  name: string;
+  /** Level names, the islands first. */
+  levels: string[];
+  /** The level whose regions give the hue; defaults to the second, or the only one. */
+  colourLevel?: number;
+}
+
 /**
- * Apply edits to one lens, in order. A world lens takes additions only, and
- * places own units only (a published unit keeps the published map's place).
+ * Make a custom lens on the library's own planet (Decision 3): one more order
+ * over the same units, with its own level names. It starts empty; edits,
+ * aliases or an accepted proposal fill it, and a unit it does not place keeps
+ * its place in every other lens.
+ */
+export async function createCustomLens(
+  db: Database,
+  input: CustomLensInput,
+): Promise<LensDefinition> {
+  const planet = await ownPlanetOf(db);
+  const kind = typeof input.kind === "string" ? input.kind.trim() : "";
+  if (!CUSTOM_LENS_KIND.test(kind)) {
+    throw new LensEditError(
+      "bad-lens",
+      `"${kind}" is no lens kind: a lower-case slug of 2 to 40 letters, digits and hyphens that starts with a letter.`,
+    );
+  }
+  if (isBuiltInLensKind(kind)) {
+    throw new LensEditError(
+      "lens-exists",
+      `"${kind}" is a lens ZAM defines itself; choose another kind.`,
+    );
+  }
+  const name = cleanName(input.name);
+  if (!name) throw new LensEditError("bad-lens", "A lens needs a name.");
+  const rawLevels = Array.isArray(input.levels) ? input.levels : [];
+  const levels = rawLevels.map(cleanName);
+  if (
+    levels.length === 0 ||
+    levels.length > MAX_CUSTOM_LENS_LEVELS ||
+    levels.some((level) => !level)
+  ) {
+    throw new LensEditError(
+      "bad-lens",
+      `A lens needs 1 to ${MAX_CUSTOM_LENS_LEVELS} named levels, the islands first.`,
+    );
+  }
+  const colourLevel = input.colourLevel ?? Math.min(1, levels.length - 1);
+  if (
+    !Number.isInteger(colourLevel) ||
+    colourLevel < 0 ||
+    colourLevel >= levels.length
+  ) {
+    throw new LensEditError(
+      "bad-lens",
+      `The colour level is one of the lens's levels, 0 to ${levels.length - 1}.`,
+    );
+  }
+  if (await findLensId(db, planet, kind)) {
+    throw new LensEditError(
+      "lens-exists",
+      `This library already has a lens "${kind}".`,
+    );
+  }
+  const lens: LensDefinition = { planet, kind, name, levels, colourLevel };
+  await ensureLensRow(db, lens);
+  return lens;
+}
+
+/**
+ * Remove a custom lens with its regions, aliases, placements and land. Its
+ * units keep their places in every other lens. A built-in lens cannot be
+ * removed. Refused like a removed region when a unit would then fall back to
+ * world knowledge across a thread (Decision 2).
+ */
+export async function removeCustomLens(
+  db: Database,
+  kind: string,
+): Promise<LensDefinition> {
+  if (isBuiltInLensKind(kind)) {
+    throw new LensEditError(
+      "not-custom",
+      `"${kind}" is a lens ZAM defines itself; only a custom lens can be removed.`,
+    );
+  }
+  const lens = await resolveLensKind(db, kind);
+  if (!lens) {
+    throw new LensEditError(
+      "unknown-lens",
+      `This library has no lens "${kind}".`,
+    );
+  }
+  assertLensOnLibrary(lens, await ownPlanetOf(db));
+  const before = (await unitPlanetsNow(db)).planets;
+  await db
+    .prepare(`DELETE FROM atlas_lenses WHERE planet = ? AND kind = ?`)
+    .run(lens.planet, lens.kind);
+  await assertNoNewCrossing(db, before);
+  return lens;
+}
+
+/**
+ * Apply edits to one lens, in order. A world lens keeps the published map: it
+ * takes additions, removes only regions the library made itself, and places
+ * own units only (a published unit keeps the published map's place).
  * Edits that would let world knowledge depend on a Firma or Privat unit are
  * refused (`PlanetError`); the caller's transaction undoes the batch.
  */
@@ -321,7 +476,7 @@ export async function applyLensEdits(
     if (world && !WORLD_OPS.has(edit.op)) {
       throw new LensEditError(
         "world-structure",
-        `A world lens takes additions only; "${edit.op}" would move the published map.`,
+        `A world lens keeps the published map; "${edit.op}" would move it. It takes additions and removes only regions the library made itself.`,
       );
     }
     const rows = await loadLensRows(db, lensId);
@@ -432,9 +587,11 @@ export async function applyLensEdits(
       }
       case "remove-region": {
         const target = region(edit.key);
+        const subtree = subtreeIds(rows, target.id);
+        if (world) await assertOwnWorldRegion(db, lens, rows, subtree);
         // Children, placements, aliases, land and an island go with it; the
         // units fall back to the lens's rules at the next settle.
-        await clearLand(db, lensId, subtreeIds(rows, target.id));
+        await clearLand(db, lensId, subtree);
         await db
           .prepare(`DELETE FROM atlas_regions WHERE id = ?`)
           .run(target.id);

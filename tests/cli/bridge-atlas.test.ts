@@ -465,6 +465,63 @@ describe("zam bridge atlas commands", () => {
     }
   });
 
+  it("makes, fills, reads and removes a custom lens (Decision 3)", () => {
+    const made = runCliJson([
+      "bridge",
+      "atlas-lens-create",
+      "--kind",
+      "projekte",
+      "--name",
+      "Projekte",
+      "--levels",
+      "Projekt,Thema",
+    ]);
+    expect(made.lens).toMatchObject({
+      kind: "projekte",
+      name: "Projekte",
+      levels: ["Projekt", "Thema"],
+      colourLevel: 1,
+    });
+    const view = runCliJson(["bridge", "atlas-read", "--lens", "projekte"]);
+    expect(view.lens.name).toBe("Projekte");
+    expect(view.lenses.map((l: { kind: string }) => l.kind)).toContain(
+      "projekte",
+    );
+    const edited = runCliJson([
+      "bridge",
+      "atlas-lens-edit",
+      "--lens",
+      "projekte",
+      "--edits",
+      JSON.stringify([{ op: "create-region", name: "Balkon" }]),
+    ]);
+    expect(edited.created).toBe(1);
+    expect(
+      runCliError([
+        "bridge",
+        "atlas-lens-create",
+        "--kind",
+        "produkte",
+        "--name",
+        "Produkte",
+        "--levels",
+        "Produkt",
+      ]).code,
+    ).toBe("lens-exists");
+    expect(
+      runCliError(["bridge", "atlas-lens-remove", "--lens", "leben"]).code,
+    ).toBe("not-custom");
+    expect(
+      runCliJson(["bridge", "atlas-lens-remove", "--lens", "projekte"]).removed,
+    ).toBe("projekte");
+    expect(
+      runCliError(["bridge", "atlas-read", "--lens", "projekte"]).error,
+    ).toContain('Unknown atlas lens "projekte"');
+    for (const command of ["atlas-lens-create", "atlas-lens-remove"]) {
+      expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command), command).toBe(false);
+    }
+  });
+
   it("spins and cuts red threads, refusing by the rules (Decision 7)", () => {
     const view = runCliJson(["bridge", "atlas-read", "--lens", "weltwissen"]);
     const own = view.units.find((u: { own: boolean }) => u.own).key;

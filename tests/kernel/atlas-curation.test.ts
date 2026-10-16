@@ -22,6 +22,7 @@ import {
   PRODUKTE_LENS,
   proposeLensReplacement,
   readAtlas,
+  SCHULE_LENS,
   setSetting,
   settleLens,
   UNTERNEHMEN_LENS,
@@ -33,7 +34,7 @@ import { listBundledTiles } from "../../src/kernel/library/bundled-cells.js";
 
 /**
  * Curated lenses (ADR 2026-10-13, Decision 3; plan Phase 9c): edits, the
- * world map's additions-only rule, a pending replacement a curator accepts,
+ * world map's rule that nothing moves the published map, a pending replacement a curator accepts,
  * and the "no longer fits its source" flag.
  */
 
@@ -190,10 +191,9 @@ describe("curated lenses", () => {
       placed: 1,
     });
     expect(await regionOf(LEBEN_LENS, note)).toBe("menschen.freunde");
+    // Familie holds no unit now: it is off the map until one reaches it.
     const view = await readAtlas(db, { userId: USER, lens: LEBEN_LENS });
-    expect(view.regions.find((r) => r.key === "familie")?.name).toBe(
-      "Meine Familie",
-    );
+    expect(view.regions.some((r) => r.key === "familie")).toBe(false);
 
     // A Thema moves below another Bereich; its land is laid out again.
     await settleLens(db, LEBEN_LENS);
@@ -204,6 +204,9 @@ describe("curated lenses", () => {
     expect(
       moved.regions.find((r) => r.key === "menschen.freunde")?.parentKey,
     ).toBe("familie");
+    expect(moved.regions.find((r) => r.key === "familie")?.name).toBe(
+      "Meine Familie",
+    );
     expect(moved.settle.pending).toBeGreaterThan(0);
     await settleLens(db, LEBEN_LENS);
     const settled = await readAtlas(db, { userId: USER, lens: LEBEN_LENS });
@@ -285,7 +288,7 @@ describe("curated lenses", () => {
     expect(await regionOf(LEBEN_LENS, unit)).toBe("garten.gemuese");
   });
 
-  it("takes additions only on a world lens, and own knowledge only", async () => {
+  it("keeps the published map on a world lens, and takes own knowledge only", async () => {
     const tile = listBundledTiles().find((t) =>
       t.atoms.some((a) => a.domain.startsWith("physik/optik")),
     );
@@ -336,6 +339,28 @@ describe("curated lenses", () => {
     ]);
     expect(await regionOf(WELTWISSEN_LENS, ownUnit)).toBe(
       "natur.physik.optik.fotografie",
+    );
+    // A region the library made can go again; its alias goes with it.
+    await edit(WELTWISSEN_LENS, [
+      { op: "remove-region", key: "natur.physik.optik.fotografie" },
+    ]);
+    const view = await readAtlas(db, { userId: USER, lens: WELTWISSEN_LENS });
+    expect(view.regions.some((r) => r.key.endsWith(".fotografie"))).toBe(false);
+    expect(await regionOf(WELTWISSEN_LENS, ownUnit)).toBeUndefined();
+  });
+
+  it("removes no world region a published unit sits in", async () => {
+    const tile = listBundledTiles().find((t) => t.atoms.length > 0);
+    if (!tile) throw new Error("no bundled tile");
+    await installKvtTile(db, tile);
+    await ensureWorldLenses(db);
+    await settleLens(db, SCHULE_LENS);
+    const view = await readAtlas(db, { userId: USER, lens: SCHULE_LENS });
+    const island = view.regions.find((r) => r.level === 0 && !r.provisional);
+    if (!island) throw new Error("no Schule island");
+    await refused(
+      edit(SCHULE_LENS, [{ op: "remove-region", key: island.key }]),
+      "published-unit",
     );
   });
 

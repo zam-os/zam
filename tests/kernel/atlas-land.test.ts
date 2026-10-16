@@ -33,13 +33,23 @@ import {
 } from "../../src/kernel/atlas/settle.js";
 import type { UnitKey } from "../../src/kernel/atlas/types.js";
 import {
+  createToken,
   type Database,
+  deleteToken,
   installKvtTile,
   openDatabase,
 } from "../../src/kernel/index.js";
 import { listBundledTiles } from "../../src/kernel/library/bundled-cells.js";
 
 const EMPTY: LandState = { islands: [], land: [] };
+
+const NOTHING_SETTLED = {
+  regionsCreated: 0,
+  islandsWritten: 0,
+  landWritten: 0,
+  landRemoved: 0,
+  islandsRemoved: 0,
+};
 
 /** A placement along a dotted path: "a.b.c" → a › a.b › a.b.c. */
 function place(unit: string, leaf: string, rank = 0): DerivedPlacement {
@@ -287,6 +297,66 @@ describe("growth", () => {
     expect(nowAt?.region).toBe("logik.mathe.geometrie");
   });
 
+  it("gives land back to the sea when no unit reaches it, without moving anyone", () => {
+    const stay = [
+      place("a", "logik.mathe.zahlen"),
+      place("b", "logik.mathe.zahlen"),
+    ];
+    const gone = [
+      place("c", "logik.mathe.geometrie"),
+      place("d", "natur.physik.mechanik"),
+    ];
+    const first = settle([...stay, ...gone], EMPTY).next;
+    const plan = settle(stay, first);
+    const { next } = plan;
+
+    // A region left without units keeps no reserve; an empty island goes.
+    expect(next.land.some((h) => h.region === "logik.mathe.geometrie")).toBe(
+      false,
+    );
+    expect(next.land.some((h) => h.island === "natur")).toBe(false);
+    expect(next.islands.map((i) => i.island)).toEqual(["logik"]);
+    expect(plan.removedIslands).toEqual(["natur"]);
+    expect(plan.removedLand).toHaveLength(first.land.length - next.land.length);
+    expect(plan.land).toEqual([]);
+
+    // Who stayed keeps their hex, and their region keeps its reserve.
+    const zahlen = (state: LandState) =>
+      state.land.filter((h) => h.region === "logik.mathe.zahlen");
+    expect(zahlen(next)).toEqual(zahlen(first));
+    expect(next.islands).toEqual(
+      first.islands.filter((i) => i.island === "logik"),
+    );
+
+    // Settling again plans nothing.
+    const again = settle(stay, next);
+    expect(again.land).toEqual([]);
+    expect(again.islands).toEqual([]);
+    expect(again.removedLand).toEqual([]);
+    expect(again.removedIslands).toEqual([]);
+
+    // A unit that comes back gets land again.
+    const back = settle([...stay, gone[1]], next).next;
+    expect(back.land.find((h) => h.unit === "token:d")?.island).toBe("natur");
+  });
+
+  it("keeps an island's place when its old land goes back and a new unit arrives", () => {
+    const d = place("d", "natur.physik.mechanik");
+    const first = settle([place("a", "logik.mathe.zahlen"), d], EMPTY).next;
+    // In one settle: a leaves, e arrives in another region of the same island.
+    const plan = settle([place("e", "logik.mathe.geometrie"), d], first);
+    expect(plan.removedIslands).toEqual([]);
+    expect(
+      plan.next.land.filter((h) => h.island === "logik").map((h) => h.region),
+    ).not.toContain("logik.mathe.zahlen");
+    expect(plan.next.land.find((h) => h.unit === "token:e")?.island).toBe(
+      "logik",
+    );
+    expect(plan.next.islands.find((i) => i.island === "logik")).toEqual(
+      first.islands.find((i) => i.island === "logik"),
+    );
+  });
+
   it("grows a region ringed by other land at its parent's coast, not into a crash", () => {
     // Github sits in the middle of its island, every hex taken, ringed by
     // another Fach: no free hex beside it.
@@ -430,15 +500,35 @@ describe("settling a lens in the database", () => {
       expect(again.land).toEqual([]);
 
       const second = await settleLens(db, lens);
-      expect(second).toEqual({
-        regionsCreated: 0,
-        islandsWritten: 0,
-        landWritten: 0,
-      });
+      expect(second).toEqual(NOTHING_SETTLED);
       // Every unit holds exactly one hex.
       const placed = snapshot.state.land.filter((h) => h.unit);
       expect(new Set(placed.map((h) => h.unit)).size).toBe(placed.length);
       expect(placed.length).toBe(snapshot.placements.length);
     }
+  });
+
+  it("gives the land of deleted units back on the next settle", async () => {
+    for (const [slug, domain] of [
+      ["hebel", "physik/mechanik/hebel"],
+      ["linse", "physik/optik/linse"],
+      ["dreieck", "mathematik/geometrie/dreieck"],
+    ]) {
+      await createToken(db, { slug, concept: slug, domain });
+    }
+    expect((await settleLens(db, WELTWISSEN_LENS)).islandsWritten).toBe(2);
+    const before = await snapshotLens(db, WELTWISSEN_LENS);
+    const kept = before?.state.land.filter((h) => h.island === "logik");
+
+    await deleteToken(db, "hebel");
+    await deleteToken(db, "linse");
+    const cleared = await settleLens(db, WELTWISSEN_LENS);
+    expect(cleared.islandsRemoved).toBe(1);
+    expect(cleared.landRemoved).toBeGreaterThan(0);
+
+    const after = await snapshotLens(db, WELTWISSEN_LENS);
+    expect(after?.state.islands.map((i) => i.island)).toEqual(["logik"]);
+    expect(after?.state.land).toEqual(kept);
+    expect(await settleLens(db, WELTWISSEN_LENS)).toEqual(NOTHING_SETTLED);
   });
 });

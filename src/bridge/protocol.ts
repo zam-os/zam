@@ -940,12 +940,35 @@ export type AtlasConditionWire =
   | "forgotten"
   | "unpractised";
 
+/**
+ * A lens kind on the wire: a built-in lens, or a custom lens the library made
+ * on its own planet, named by its slug.
+ */
 export type AtlasLensKindWire =
   | "weltwissen"
   | "schule"
   | "unternehmen"
   | "produkte"
-  | "leben";
+  | "leben"
+  | (string & {});
+
+/** `atlas-lens-create`: the custom lens as it was made. */
+export interface AtlasLensCreateResponse {
+  success: true;
+  lens: {
+    kind: AtlasLensKindWire;
+    planet: "firma" | "privat";
+    name: string;
+    levels: string[];
+    colourLevel: number;
+  };
+}
+
+/** `atlas-lens-remove`: the custom lens that went. */
+export interface AtlasLensRemoveResponse {
+  success: true;
+  removed: AtlasLensKindWire;
+}
 
 /** "atom:<id>" or "token:<id>": one learning unit. */
 export type AtlasUnitKeyWire = string;
@@ -1215,6 +1238,10 @@ export interface AtlasSettleResponse {
   regionsCreated: number;
   islandsWritten: number;
   landWritten: number;
+  /** Hexes that went back to the sea: no unit reaches their region. */
+  landRemoved: number;
+  /** Islands left without units, gone from the map. */
+  islandsRemoved: number;
 }
 
 export interface AtlasPrefsResponse {

@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-15T08:00:00.000Z
+timestamp: 2026-10-16T09:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -283,7 +283,11 @@ argument takes coordinates: only settle places land.
   is refused.
 - `atlas-settle [--lens <kind>]` stores the land, and refuses with
   `not-curator` when PostgreSQL's grants say this connection may not write
-  knowledge.
+  knowledge. Land no unit reaches any more goes back to the sea: a region
+  left without units keeps no reserve, and an island left without units
+  disappears. Every settle result counts them as `landRemoved` and
+  `islandsRemoved`, beside `regionsCreated`, `islandsWritten` and
+  `landWritten`.
 - `atlas-prefs [--lens <kind>] [--home <regionKey>] [--show-new on|off]`
   stores the learner's lens, home region and *Neue Inhalte zeigen*; turning
   the last on installs the cells of the learner's school year, which enrols
@@ -312,9 +316,12 @@ argument takes coordinates: only settle places land.
   in one transaction, then stores the land: `create-region`,
   `rename-region`, `reorder-region`, `move-region` (below a region of the
   same level as its parent), `remove-region` (its units fall back to the
-  lens's rules), `set-alias`, `remove-alias` and `place`. A world lens takes
-  additions only, aliases for the library's own units only, and places no
-  published unit. A move or removal clears the land of the regions it
+  lens's rules), `set-alias`, `remove-alias` and `place`. A world lens never
+  moves the published map: it takes additions, removes only regions the
+  library made itself (a seed region is refused as `world-structure`, one a
+  published unit sits in as `published-unit`), takes aliases for the
+  library's own units only, and places no published unit. A move or
+  removal clears the land of the regions it
   touches, and the settle that follows lays it out again. A batch after
   which world knowledge would depend on a Firma or Privat unit, through a
   placement, a removed region or an alias, is refused as `held-by-thread`
@@ -327,6 +334,18 @@ argument takes coordinates: only settle places land.
   placements and land, and the lens follows that source. No history is kept.
 - `atlas-lens-stale --lens <kind> --stale on|off [--note <text>]` records
   whether an own-planet lens still fits its source; a world lens has none.
+- `atlas-lens-create --kind <slug> --name <name> --levels <a,b,…>
+  [--colour-level <n>]` makes a custom lens on the library's own planet: its
+  own kind (a slug of 2 to 40 lower-case letters, digits and hyphens that is
+  no built-in lens's), a name, and one to five level names, the islands
+  first. The colour level defaults to the second level, or the only one. It
+  starts empty and takes edits, aliases and proposals like any own-planet
+  lens, and every `--lens` option then accepts its kind. Refusals:
+  `bad-lens`, `lens-exists`.
+- `atlas-lens-remove --lens <kind>` removes a custom lens with its regions,
+  aliases, placements and land; its units keep their places in every other
+  lens. A built-in lens is refused as `not-custom`, an unknown one as
+  `unknown-lens`.
 - `atlas-read` returns `curation` for the lens: its `source`, `stale` with
   the note, and a pending `proposal`. Curators see both in the Studio.
 - `atlas-revision` returns a fingerprint of what the atlas shows, one

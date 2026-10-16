@@ -661,7 +661,9 @@ export async function readAtlas(
         (stored ? 0 : 1) +
         missingRegions +
         plan.islands.length +
-        plan.land.length,
+        plan.land.length +
+        plan.removedIslands.length +
+        plan.removedLand.length,
       mayWrite: options.mayWrite ?? false,
     },
     home,

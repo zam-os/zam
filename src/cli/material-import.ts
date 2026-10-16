@@ -19,7 +19,6 @@ import {
   commitMaterialImport,
   type Database,
   findImportsByFingerprints,
-  LENSES,
   type MaterialAreaGroup,
   type MaterialChoice,
   type MaterialCommitResult,
@@ -34,6 +33,7 @@ import {
   type OwnPlanet,
   ownPlanetOf,
   type PlanetKind,
+  resolveLensKind,
   resolvePlace,
   resolveTrustedPath,
   trustedRoots,
@@ -103,10 +103,10 @@ async function placeNames(
   set: MaterialProposalSet,
 ): Promise<MaterialImportReview["place"]> {
   if (!set.place) return null;
-  const lens = LENSES[set.place.lens];
-  const place = await resolvePlace(db, lens, set.place.regionKey).catch(
-    () => null,
-  );
+  const lens = await resolveLensKind(db, set.place.lens);
+  const place = lens
+    ? await resolvePlace(db, lens, set.place.regionKey).catch(() => null)
+    : null;
   return {
     lens: set.place.lens,
     regionKey: set.place.regionKey,

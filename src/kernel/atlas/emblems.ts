@@ -23,6 +23,7 @@ import {
   validateEmblem,
   validateGlyph,
 } from "./emblem.js";
+import { CUSTOM_LENS_KIND, resolveLensKind } from "./lenses.js";
 import type { LensKind } from "./types.js";
 import { seedEmblem, seedSubjectEmblem } from "./weltwissen-emblems.js";
 
@@ -54,13 +55,6 @@ export class EmblemError extends Error {
   }
 }
 
-const LENS_KINDS: ReadonlySet<string> = new Set<LensKind>([
-  "weltwissen",
-  "schule",
-  "unternehmen",
-  "produkte",
-  "leben",
-]);
 const REGION_KEY = /^[a-z0-9-]+(\.[a-z0-9-]+)*$/;
 const MAX_KEY = 300;
 
@@ -90,8 +84,13 @@ export function parseEmblemSubject(key: string): EmblemSubject | null {
   if (unit) return { kind: unit[1] as "atom" | "token", id: unit[2] };
   const subject = /^subject:([a-z0-9][a-z0-9-]{0,80})$/.exec(key);
   if (subject) return { kind: "subject", key: subject[1] };
-  const region = /^region:([a-z]+):(.+)$/.exec(key);
-  if (region && LENS_KINDS.has(region[1]) && REGION_KEY.test(region[2])) {
+  // Every lens kind, built-in or custom, has the custom kind's slug form.
+  const region = /^region:([^:]+):(.+)$/.exec(key);
+  if (
+    region &&
+    CUSTOM_LENS_KIND.test(region[1]) &&
+    REGION_KEY.test(region[2])
+  ) {
     return {
       kind: "region",
       lens: region[1] as LensKind,
@@ -101,7 +100,10 @@ export function parseEmblemSubject(key: string): EmblemSubject | null {
   return null;
 }
 
-/** A unit must exist; a region key needs only the right form (it may be derived). */
+/**
+ * A unit must exist, and a region's lens: built-in or a custom lens of this
+ * library. A region key needs only the right form (it may be derived).
+ */
 async function assertSubject(db: Database, key: string): Promise<void> {
   const subject = parseEmblemSubject(key);
   if (!subject) {
@@ -110,7 +112,16 @@ async function assertSubject(db: Database, key: string): Promise<void> {
       `"${key}" names no unit or region. Use atom:<id>, token:<id>, subject:<fach> or region:<lens>:<key>.`,
     );
   }
-  if (subject.kind === "region" || subject.kind === "subject") return;
+  if (subject.kind === "subject") return;
+  if (subject.kind === "region") {
+    if (!(await resolveLensKind(db, subject.lens))) {
+      throw new EmblemError(
+        "unknown-subject",
+        `"${key}" names a region of no lens this library has.`,
+      );
+    }
+    return;
+  }
   const row = await db
     .prepare(
       subject.kind === "atom"
