@@ -10171,7 +10171,7 @@ function jsonOption(name: string, raw: string): unknown {
 bridgeCommand
   .command("atlas-lens-edit")
   .description(
-    "Edit one lens: create, rename, reorder, move or remove regions, set aliases, place units; a world lens takes additions only (JSON)",
+    "Edit one lens: create, rename, reorder, move or remove regions, set aliases, place units; a world lens takes additions and removes only regions the library made (JSON)",
   )
   .requiredOption("--lens <kind>", "A lens of this library")
   .requiredOption("--edits <json>", "JSON array of edits, applied in order")

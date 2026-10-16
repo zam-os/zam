@@ -1215,6 +1215,10 @@ export interface AtlasSettleResponse {
   regionsCreated: number;
   islandsWritten: number;
   landWritten: number;
+  /** Hexes that went back to the sea: no unit reaches their region. */
+  landRemoved: number;
+  /** Islands left without units, gone from the map. */
+  islandsRemoved: number;
 }
 
 export interface AtlasPrefsResponse {

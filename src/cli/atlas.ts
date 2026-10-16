@@ -1114,7 +1114,13 @@ export async function atlasSortUnits(
       lens: lens.kind,
       placed: [],
       skipped,
-      settled: { regionsCreated: 0, islandsWritten: 0, landWritten: 0 },
+      settled: {
+        regionsCreated: 0,
+        islandsWritten: 0,
+        landWritten: 0,
+        landRemoved: 0,
+        islandsRemoved: 0,
+      },
     };
   }
   const edited = await atlasLensEdit(db, {

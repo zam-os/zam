@@ -135,13 +135,18 @@ export interface SettleResult {
   regionsCreated: number;
   islandsWritten: number;
   landWritten: number;
+  /** Hexes that went back to the sea: no unit reaches their region. */
+  landRemoved: number;
+  /** Islands left without units, gone from the map. */
+  islandsRemoved: number;
 }
 
 /**
  * Write a plan: the regions the placements name but the lens lacks, then the
- * islands, then the land. Units leave their old hexes before they take new
- * ones, so no moment holds a unit twice. A region an earlier `prettify`
- * misspelled takes the placement's name.
+ * land and islands no unit reaches any more go, then the islands, then the
+ * land. Units leave their old hexes before they take new ones, so no moment
+ * holds a unit twice. A region an earlier `prettify` misspelled takes the
+ * placement's name.
  */
 export async function applySettle(
   db: Database,
@@ -192,6 +197,22 @@ export async function applySettle(
       return id;
     };
 
+    for (const hex of plan.removedLand) {
+      await tx
+        .prepare(
+          `DELETE FROM atlas_land
+            WHERE lens_id = ? AND island_id = ? AND q = ? AND r = ?`,
+        )
+        .run(lensId, regionId(hex.island), hex.q, hex.r);
+    }
+    for (const island of plan.removedIslands) {
+      await tx
+        .prepare(
+          `DELETE FROM atlas_islands WHERE lens_id = ? AND region_id = ?`,
+        )
+        .run(lensId, regionId(island));
+    }
+
     for (const island of plan.islands) {
       await tx
         .prepare(
@@ -236,6 +257,8 @@ export async function applySettle(
       regionsCreated,
       islandsWritten: plan.islands.length,
       landWritten: plan.land.length,
+      landRemoved: plan.removedLand.length,
+      islandsRemoved: plan.removedIslands.length,
     };
   });
 }

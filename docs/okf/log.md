@@ -2,6 +2,8 @@
 
 ## 2026-10-16
 
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
 - **Update** — [Learning Content](learning-content.md)
 - **Update** — [Card Text Segments](card-text-segments.md)
 

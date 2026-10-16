@@ -3026,7 +3026,8 @@ export function createMcpServer(
         "reorder-region {key, rank}, move-region {key, parent} (below a region of the same level as its parent), " +
         "remove-region {key} (its units fall back to the lens's rules), set-alias {domain, region} (a domain prefix such as " +
         "'scrum/team-boreas' that lands in a region), remove-alias {domain}, place {unit, region, below?}. A world lens " +
-        "(weltwissen, schule) takes additions only, and aliases for the library's own units only. " +
+        "(weltwissen, schule) never moves the published map: it takes additions, removes only regions the library made " +
+        "itself, and aliases for the library's own units only. " +
         "`propose` for leben, produkte or unternehmen: {source, regions: [{key, name, parent}], aliases?, members?}, the whole " +
         "order from one named source (a team list, the repository's knowledge map); it waits until a curator accepts it in the " +
         "Studio, and nothing changes before. " +

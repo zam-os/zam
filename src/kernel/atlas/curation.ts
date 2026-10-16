@@ -39,6 +39,7 @@ import {
 import { MAX_PLACE_NAME, type PlacedBy, placeUnits } from "./place.js";
 import {
   assertLensOnLibrary,
+  lensPlacements,
   loadUnitPlanets,
   ownPlanetOf,
   PlanetError,
@@ -103,9 +104,13 @@ const REGION_KEY = /^[a-z0-9-]+(\.[a-z0-9-]+)*$/;
 const MAX_KEY = 300;
 const MAX_DOMAIN = 200;
 
-/** Edits a world lens allows: additions only. */
+/**
+ * Edits a world lens allows: additions, and removing a region the library
+ * made itself (`assertOwnWorldRegion`). Nothing moves the published map.
+ */
 const WORLD_OPS: ReadonlySet<LensEditOp> = new Set([
   "create-region",
+  "remove-region",
   "set-alias",
   "remove-alias",
   "place",
@@ -237,6 +242,43 @@ async function assertAliasForOwnKnowledge(
 }
 
 /**
+ * A world region the library may remove: one it made itself. A region of the
+ * published map (the Weltwissen seed, until the central service ships it) or
+ * one a published unit sits in stays where it is.
+ */
+async function assertOwnWorldRegion(
+  db: Database,
+  lens: LensDefinition,
+  rows: LensRows,
+  regionIds: readonly string[],
+): Promise<void> {
+  const ids = new Set(regionIds);
+  const keys = new Set(
+    rows.regions.filter((r) => ids.has(r.id)).map((r) => r.key),
+  );
+  const seed = new Set(weltwissenSeedRows().regions.map((r) => r.key));
+  const seeded = [...keys].find((key) => seed.has(key));
+  if (seeded) {
+    throw new LensEditError(
+      "world-structure",
+      `"${seeded}" is part of the published map; a library removes only regions it made itself.`,
+    );
+  }
+  const { placements } = await lensPlacements(db, lens, rows);
+  const published = placements.find(
+    (p) =>
+      p.unitKey.startsWith("atom:") &&
+      p.path.some((step) => keys.has(step.key)),
+  );
+  if (published) {
+    throw new LensEditError(
+      "published-unit",
+      `${published.unitKey} is published and sits in this region; it keeps the published map's place.`,
+    );
+  }
+}
+
+/**
  * Edits that can change a unit's planet without placing it: a removed region
  * takes its placements along, and an alias decides what a world rule covers.
  */
@@ -284,8 +326,9 @@ async function assertNoNewCrossing(
 }
 
 /**
- * Apply edits to one lens, in order. A world lens takes additions only, and
- * places own units only (a published unit keeps the published map's place).
+ * Apply edits to one lens, in order. A world lens keeps the published map: it
+ * takes additions, removes only regions the library made itself, and places
+ * own units only (a published unit keeps the published map's place).
  * Edits that would let world knowledge depend on a Firma or Privat unit are
  * refused (`PlanetError`); the caller's transaction undoes the batch.
  */
@@ -321,7 +364,7 @@ export async function applyLensEdits(
     if (world && !WORLD_OPS.has(edit.op)) {
       throw new LensEditError(
         "world-structure",
-        `A world lens takes additions only; "${edit.op}" would move the published map.`,
+        `A world lens keeps the published map; "${edit.op}" would move it. It takes additions and removes only regions the library made itself.`,
       );
     }
     const rows = await loadLensRows(db, lensId);
@@ -432,9 +475,11 @@ export async function applyLensEdits(
       }
       case "remove-region": {
         const target = region(edit.key);
+        const subtree = subtreeIds(rows, target.id);
+        if (world) await assertOwnWorldRegion(db, lens, rows, subtree);
         // Children, placements, aliases, land and an island go with it; the
         // units fall back to the lens's rules at the next settle.
-        await clearLand(db, lensId, subtreeIds(rows, target.id));
+        await clearLand(db, lensId, subtree);
         await db
           .prepare(`DELETE FROM atlas_regions WHERE id = ?`)
           .run(target.id);

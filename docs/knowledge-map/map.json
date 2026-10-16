@@ -865,7 +865,7 @@
       "parent": "knowledge-atlas",
       "label": "Curated lenses",
       "link": "is ordered by",
-      "text": "A curator edits an atlas lens or accepts an agent's new order for it; a world lens takes additions only, and no edit takes coordinates.",
+      "text": "A curator edits an atlas lens or accepts an agent's new order for it; no world-lens edit moves the published map or takes coordinates.",
       "sources": [
         "docs/adr/2026-10-13-knowledge-atlas.md",
         "src/kernel/atlas/curation.ts",
@@ -917,6 +917,17 @@
       "sources": [
         "src/kernel/atlas/settle.ts",
         "src/kernel/atlas/land.ts"
+      ]
+    },
+    {
+      "id": "atlas-land-release",
+      "parent": "knowledge-atlas",
+      "label": "Released land",
+      "link": "gives back",
+      "text": "Settle gives land that no unit reaches back to the sea, so an island whose units are all gone disappears from the map.",
+      "sources": [
+        "src/kernel/atlas/land.ts",
+        "src/kernel/atlas/settle.ts"
       ]
     },
     {

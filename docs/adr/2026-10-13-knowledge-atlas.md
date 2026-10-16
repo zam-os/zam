@@ -298,6 +298,9 @@ own levels, and the depth may differ.
     by the central content service, so every learner starts with the same
     readable map. A library adds aliases for its own units only, and one
     school's import never moves the published map.
+  - A library may remove a world region it made itself, such as a Thema it
+    added or a region of the unsorted island. A region of the published map,
+    or one a published unit sits in, stays. (Amended 2026-10-15.)
   - Library topics (2026-10-02) stay the catalogue of sources. A lens is the
     spatial order; the two exist side by side.
 - **One home per unit and lens; titles may repeat.**
@@ -516,6 +519,11 @@ own levels, and the depth may differ.
     units. A relayout happens only when a region outgrows all of its land,
     and the library is told. (The spike still recomputes the curve on every
     change; the product must not.)
+- **Land no unit reaches goes back to the sea.** A freed hex stays its
+  region's reserve while the region holds units. A region left without
+  units keeps no reserve, and an island left without units disappears; a
+  unit that comes back founds it anew. Nothing that holds a unit moves.
+  (Amended 2026-10-15.)
 - **Growth may found new islands or enlarge existing ones.**
   - A new island is founded when a new top-level region appears: a new
     product, grade or subject. A crowded island first uses its reserved land.
@@ -804,6 +812,9 @@ The field test checks the default of *Neue Inhalte zeigen*.
   - condition: a unit takes its weakest card; the bands follow the learner's
     request retention; a card in short steps counts as due;
   - stable positions: adding a unit moves no other unit in its island;
+  - land no unit reaches goes back to the sea and an empty island
+    disappears, without moving a unit; a world lens removes only regions the
+    library made itself;
   - island drift without overlap, keeping each neighbour's bearing;
   - the Sinnbild validator accepts a tree of plain shapes and rejects
     scripts, styles, images, `use`, `foreignObject`, animation, entities,
@@ -846,3 +857,4 @@ The field test checks the default of *Neue Inhalte zeigen*.
 | 2026-10-13 | Proposed | Owner decisions after the first Studio check of Phases 1–7: the atlas is always shown and takes the 3D learning graph's place in the sidebar and on Lern-Karten; the 3D graph becomes an alpha behind a machine-local switch. Building the world shows a busy indicator. A region's due count follows the queue's rules, and a small region with nothing due offers to go through its questions again, earliest due first (Decision 10). |
 | 2026-10-13 | Proposed | Owner input after the second Studio check: a Fach's Sinnbild belongs to the subject and shows in every lens (Decision 6); the goal import is offered at a region, for describing missing knowledge rather than class notes (Decision 9). |
 | 2026-10-14 | Partially implemented | PR #407: delivery phases 0 to 3 (the plan's Phases 1 to 9), and of Phase 4 the read-only MCP Apps panel and the outline on Mobile's Fortschritt tab with a region review. The goal import at a region became the topic import ([ADR 2026-10-14](2026-10-14-topic-import-and-source-provenance.md)). Owner decision: the map itself on Mobile moves to its own feature. |
+| 2026-10-15 | Partially implemented | Owner request after a library deleted its legacy cards and kept an empty unsorted island of hundreds of hexes that no edit could remove: land no unit reaches goes back to the sea (Decision 8), and a library removes world regions it made itself (Decision 3). |

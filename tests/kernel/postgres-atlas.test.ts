@@ -38,6 +38,7 @@ import { applySchemaAndMigrations } from "../../src/kernel/db/provision.js";
 import type { Database } from "../../src/kernel/db/types.js";
 import {
   createToken,
+  deleteToken,
   installKvtTile,
   libraryLenses,
   moveUnitsToPlanet,
@@ -126,6 +127,8 @@ describeWithPostgres("atlas lenses on PostgreSQL (needs POSTGRES_URL)", () => {
         regionsCreated: 0,
         islandsWritten: 0,
         landWritten: 0,
+        landRemoved: 0,
+        islandsRemoved: 0,
       });
       const snapshot = await snapshotLens(db, lens);
       if (!snapshot) throw new Error("lens missing");
@@ -135,6 +138,33 @@ describeWithPostgres("atlas lenses on PostgreSQL (needs POSTGRES_URL)", () => {
         snapshot.state.islands.every((i) => typeof i.dq === "number"),
       ).toBe(true);
     }
+  });
+
+  it("gives the land of deleted units back, then the empty island", async () => {
+    const db = await setup();
+    for (const [slug, domain] of [
+      ["boreas-scrum", "scrum/team-boreas"],
+      ["boreas-kanban", "kanban/team-boreas"],
+    ]) {
+      await createToken(db, { slug, concept: slug, domain });
+    }
+    expect((await settleLens(db, PRODUKTE_LENS)).landWritten).toBeGreaterThan(0);
+
+    await deleteToken(db, "boreas-kanban");
+    const region = await settleLens(db, PRODUKTE_LENS);
+    expect(region.landRemoved).toBeGreaterThan(0);
+    expect(region.islandsRemoved).toBe(0);
+    const left = await snapshotLens(db, PRODUKTE_LENS);
+    expect(left?.state.land.some((h) => h.region.includes("kanban"))).toBe(
+      false,
+    );
+
+    await deleteToken(db, "boreas-scrum");
+    expect((await settleLens(db, PRODUKTE_LENS)).islandsRemoved).toBe(1);
+    expect((await snapshotLens(db, PRODUKTE_LENS))?.state).toEqual({
+      islands: [],
+      land: [],
+    });
   });
 
   it("puts a team library's unsorted own units on the Firma planet (Decision 2)", async () => {
