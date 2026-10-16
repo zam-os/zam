@@ -33,6 +33,7 @@ import {
   shouldShowPointCount,
 } from "../../src/kernel/library/answer-points.js";
 import { runBridge, setBridgeTransport } from "./bridge-transport.js";
+import { attachedMedia, renderCardText } from "./card-text-render.js";
 import { renderQuestionWithTopic } from "./question-topic.js";
 import {
   DEFAULT_LOCAL_ENDPOINT_URL,
@@ -191,6 +192,7 @@ import type {
   AtlasEmblemWire,
   AtlasLensKindWire,
   AtlasPlanetResponse,
+  CardSegmentPayload,
   Graph3dFeatureResponse,
   ModelRefreshCapabilitiesResponse,
   ReadUpWire,
@@ -590,7 +592,15 @@ interface BridgeCard {
     type: "binary_choice" | "multiple_choice";
     options: string[];
     correctIndex: number;
+    /** Options as card-text segments (ADR 2026-10-14b), parallel to options. */
+    optionSegments?: Array<CardSegmentPayload[] | null>;
   } | null;
+  /** Card text as segments (ADR 2026-10-14b); the strings stay the plain form. */
+  questionSegments?: CardSegmentPayload[] | null;
+  conceptSegments?: CardSegmentPayload[] | null;
+  /** What voice mode reads instead of the plain question/answer, when set. */
+  spokenQuestion?: string | null;
+  spokenConcept?: string | null;
 }
 
 interface BridgeMedia {
@@ -610,6 +620,8 @@ interface BridgeMedia {
     width: number;
     height: number;
   }>;
+  /** `inline` media belong to the card text and stay out of the strip. */
+  placement?: "attached" | "inline";
 }
 
 interface ReviewPayload {
@@ -730,6 +742,19 @@ const SAFE_REVIEW_MEDIA_TYPES = new Set([
   "audio/mp4",
 ]);
 
+/**
+ * The image an image segment of the card text names, as a `data:` URL from
+ * the review payload's media (ADR 2026-10-14b Decision 5). Only the safe
+ * raster types the media strip also shows.
+ */
+function cardImageSource(hash: string): string | null {
+  const entry = activeCard?.media?.find(
+    (item) => item.assetHash === hash && item.kind === "image",
+  );
+  if (!entry || !SAFE_REVIEW_MEDIA_TYPES.has(entry.mimeType)) return null;
+  return `data:${entry.mimeType};base64,${entry.dataBase64}`;
+}
+
 function renderReviewMedia(
   containerId: string,
   media: BridgeMedia[] | undefined,
@@ -738,9 +763,7 @@ function renderReviewMedia(
   const container = document.getElementById(containerId);
   if (!container) return;
   container.replaceChildren();
-  for (const item of (media ?? [])
-    .filter((entry) => entry.side === side)
-    .sort((left, right) => left.ordinal - right.ordinal)) {
+  for (const item of attachedMedia(media ?? [], side)) {
     if (!SAFE_REVIEW_MEDIA_TYPES.has(item.mimeType)) continue;
     const source = `data:${item.mimeType};base64,${item.dataBase64}`;
     if (item.kind === "audio") {
@@ -6976,8 +6999,16 @@ function renderReveal(
     revealContentList.appendChild(row);
   };
 
-  // 1. Concept Row
+  // 1. Concept Row — as card text when it has formulas or images.
   addRevealRow("concept", activeCard.concept);
+  if (activeCard.conceptSegments) {
+    const conceptVal = revealContentList.querySelector(".reveal-item .reveal-val");
+    if (conceptVal) {
+      void renderCardText(conceptVal, activeCard.conceptSegments, activeCard.concept, {
+        imageSource: cardImageSource,
+      });
+    }
+  }
   renderReviewMedia("answer-media", activeCard.media, "answer");
 
   // 2. Title Row (human friendly)
@@ -7306,10 +7337,12 @@ const voiceController = createVoiceController(
       "user-answer-input",
     ) as HTMLTextAreaElement | null;
     return {
-      question: activePromptQuestion,
+      // A card with formulas is read by its spoken text (ADR 2026-10-14b
+      // Decision 4): words, never TeX or Unicode symbols.
+      question: activeCard.spokenQuestion ?? activePromptQuestion,
       // The card's concept is what the reveal box shows as the reference
       // answer; mobile reads the same field (mobile/src/main.ts).
-      expectedAnswer: activeCard.concept,
+      expectedAnswer: activeCard.spokenConcept ?? activeCard.concept,
       revealed: !document
         .getElementById("revealed-box")!
         .classList.contains("hidden"),
@@ -7868,19 +7901,29 @@ async function saveInlineEdit(): Promise<void> {
     await runBridge(call.cmd, call.args);
     if (!studySessionActive || activeCard?.slug !== slug) return;
     // Reflect the edit in place (no full re-render — feedback stays put).
+    // A segmented field accepts only an unchanged plain text (the kernel
+    // refuses anything else), so its segments still describe the card.
+    if (activeCard.concept !== concept.trim()) activeCard.conceptSegments = null;
+    if (activePromptQuestion !== question.trim()) activeCard.questionSegments = null;
     activeCard.concept = concept.trim();
     activePromptQuestion = question.trim();
     renderQuestionWithTopic(
       document.getElementById("question-text")!,
       activeCard.domain,
       activePromptQuestion,
+      activeCard.questionSegments,
+      { imageSource: cardImageSource },
     );
     // The edit may have changed how many points the answer asks for.
     renderQuestionPointCount();
     const conceptVal = document
       .getElementById("reveal-content-list")!
       .querySelector(".reveal-item .reveal-val");
-    if (conceptVal) conceptVal.textContent = activeCard.concept;
+    if (conceptVal) {
+      void renderCardText(conceptVal, activeCard.conceptSegments, activeCard.concept, {
+        imageSource: cardImageSource,
+      });
+    }
     closeInlineEditor();
     alert(t("lbl_card_saved_toast"));
   } catch (err) {
@@ -8067,6 +8110,8 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
     document.getElementById("question-text")!,
     activeCard.domain,
     activePromptQuestion,
+    activeCard.questionSegments,
+    { imageSource: cardImageSource },
   );
   renderQuestionPointCount();
   renderReviewMedia("question-media", activeCard.media, "question");
@@ -8533,7 +8578,9 @@ function renderFastCheckAnswer(
     const button = document.createElement("button");
     button.type = "button";
     button.className = "btn secondary-btn btn-large";
-    button.textContent = label;
+    void renderCardText(button, fastCheck.optionSegments?.[index], label, {
+      imageSource: cardImageSource,
+    });
     button.dataset.fastCheckIndex = String(index);
     button.addEventListener("click", () => {
       if (revealInProgress) return;
@@ -9105,6 +9152,18 @@ async function setGraph3dFeature(enabled: boolean): Promise<void> {
 }
 
 // ── KEYBOARD SHORTCUTS & EVENT BINDINGS ──────────────────────────────────
+/**
+ * Deliver fixed bundled tiles to a library that installed them earlier (ADR
+ * 2026-10-14b Decision 7): once per start, well after the first card, a few
+ * tiles per call so a remote library never stalls the Studio. Offline or on a
+ * team library the bridge declines; the next start tries again.
+ */
+function scheduleBundledTileReconcile(): void {
+  window.setTimeout(() => {
+    void runBridge("bundled-tiles-reconcile", ["--max", "5"]).catch(() => {});
+  }, 20_000);
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   applyTheme(loadThemePreference());
   settingsViewMode = loadSettingsViewMode();
@@ -9149,6 +9208,7 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   initPanel("study-learning", initStudyLearningControls);
   initPanel("study-workload", initStudyWorkloadControls);
+  scheduleBundledTileReconcile();
   // The topic import is a content import of its own (ADR 2026-10-14):
   // Learning Content opens it in a dialog, not the first-run flow.
   initTopicImportDialog({

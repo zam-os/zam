@@ -136,7 +136,8 @@ export const MATERIAL_CONTRACT_EXAMPLE = {
       "Messbare Stoffeigenschaften: Dichte, Schmelz- und Siedetemperatur",
   },
   // Both card shapes: the common one-point card, and an overview card for a
-  // complete set — names only, one list item per line.
+  // complete set — names only, one list item per line. The third shows card
+  // text with a formula (ADR 2026-10-14b): segments, the formula with speech.
   proposals: [
     {
       question: "Welche Farbe hat Schwefel?",
@@ -153,6 +154,23 @@ export const MATERIAL_CONTRACT_EXAMPLE = {
       question: "Welche Aggregatzustände kann ein Stoff haben?",
       answer: "- fest\n- flüssig\n- gasförmig",
       title: "Aggregatzustände",
+      bloom: 1,
+      file: 0,
+      page: 1,
+      area: "chemie/stoffe-und-eigenschaften",
+      origin: "page",
+      hardToRead: false,
+    },
+    {
+      question: "Welche Dichte hat Wasser bei 4 °C?",
+      answer: [
+        {
+          type: "math",
+          tex: "\\rho = 1\\,\\frac{\\text{g}}{\\text{cm}^3}",
+          speech: "Rho gleich 1 Gramm pro Kubikzentimeter",
+        },
+      ],
+      title: "Dichte von Wasser",
       bloom: 1,
       file: 0,
       page: 1,

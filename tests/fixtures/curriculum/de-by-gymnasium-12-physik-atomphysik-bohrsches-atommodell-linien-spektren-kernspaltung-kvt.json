@@ -65,9 +65,449 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das Bohrsche Atommodell und Spektrallinien des Wasserstoffs: 1. **Bohrs Postulate (1913)**:   * **1. Bahnen-Postulat**: Elektronen kreisen strahlungsfrei auf bestimmten stationären Bahnen.   * **2. Quantenbedingung**: Der Bahndrehimpuls ist ein ganzzahliges Vielfaches von $\\hbar$: $L = m_e \\cdot v \\cdot r = n \\cdot \\frac{h}{2\\pi} = n \\cdot \\hbar$ ($n \\in \\{1, 2, 3, \\dots\\}$).   * **3. Frequenz-Bedingung**: Beim Übergang zwischen zwei Niveaus $E_m$ und $E_n$ wird ein Photon emittiert/absorbiert: $\\Delta E = E_m - E_n = h \\cdot f$, 2. **Energieniveaus des Wasserstoffs**:   * $E_n = -\\frac{13{,}6\\,\\text{eV}}{n^2}$ (Grundzustand $E_1 = -13{,}6\\,\\text{eV}$, Ionisationsgrenze $E_\\infty = 0\\,\\text{eV}$), 3. **Spektralserien (Rydberg-Formel)**:   * $\\frac{1}{\\lambda} = R_H \\cdot \\left( \\frac{1}{n^2} - \\frac{1}{m^2} \\right)$ mit $R_H \\approx 1{,}097 \\cdot 10^7\\,\\text{m}^{-1}$.   * **Lyman-Serie** ($n=1$, UV-Bereich), **Balmer-Serie** ($n=2$, sichtbares Licht), **Paschen-Serie** ($n=3$, Infrarot).",
-          "concept": "Bohrsches Atommodell: 3 Bohr-Postulate (strahlungsfreie Bahnen, Drehimpulsquantisierung L = n*hbar, Frequenzbedingung Delta E = h*f); H-Atom Energien E_n = -13,6 eV / n^2; Spektralserien (Lyman n=1 UV, Balmer n=2 sichtbar, Paschen n=3 IR); Franck-Hertz-Versuch (inelastische Stöße).",
-          "sample_solution": "1. Die Bohrschen Postulate (Niels Bohr, 1913): - **Das klassische Dilemma**: Nach der Maxwellschen Elektrodynamik müsste ein kreisendes (beschleunigtes) Elektron kontinuierlich elektromagnetische Wellen abstrahlen, in Sekundenbruchteilen in den Kern stürzen und ein kontinuierliches Lichtspektrum aussenden $\\implies$ Atome wären instabil. - **Bohrs revolutionäre Postulate**:   1. **Stationäre Zustände**: Das Elektron bewegt sich auf diskreten Kreisbahnen, ohne elektromagnetische Strahlung zu emittieren.   2. **Drehimpulsquantisierung**: Erlaubt sind nur Bahnen, auf denen der Drehimpuls $L$ ein ganzzahliges Vielfaches des reduzierten Planckschen Wirkungsquantums ist:      $$\\mathbf{L = m_e \\cdot v_n \\cdot r_n = n \\cdot \\hbar = n \\cdot \\frac{h}{2\\pi}} \\quad (n = 1, 2, 3, \\dots)$$      *(De-Broglie-Deutung: Auf der $n$-ten Bahn passt exakt das $n$-fache der De-Broglie-Wellenlänge als stehende Welle auf den Kreisumfang: $2\\pi r_n = n \\cdot \\lambda$)*.   3. **Strahlungsübergänge**: Strahlung wird nur beim Quantensprung von einem höheren Niveau $E_m$ auf ein niedrigeres Niveau $E_n$ als einzelnes Photon emittiert:      $$\\mathbf{h \\cdot f = E_m - E_n \\iff \\lambda = \\frac{h \\cdot c}{E_m - E_n}}$$ 2. Das Termschema des Wasserstoffatoms: - Aus dem Kräftegleichgewicht zwischen Coulomb-Kraft und Zentripetalkraft ($F_C = F_Z$) sowie der Quantenbedingung folgt die Energieformel:   $$\\mathbf{E_n = -\\frac{m_e \\cdot e^4}{8 \\cdot \\varepsilon_0^2 \\cdot h^2} \\cdot \\frac{1}{n^2} = -\\frac{13{,}6\\,\\text{eV}}{n^2}}$$   * **Grundzustand ($n = 1$)**: $E_1 = -13{,}6\\,\\text{eV}$ (stabilster Zustand).   * **1. Angeregter Zustand ($n = 2$)**: $E_2 = -\\frac{13{,}6}{4} = -3{,}4\\,\\text{eV}$.   * **Ionisationsgrenze ($n \\to \\infty$)**: $E_\\infty = 0\\,\\text{eV}$ (Elektron ist frei vom Kern). 3. Die Spektralserien und die Rydberg-Gleichung: - Wellenlängen emittierter Spektrallinien:   $$\\mathbf{\\frac{1}{\\lambda} = R_\\infty \\cdot \\left( \\frac{1}{n^2} - \\frac{1}{m^2} \\right)} \\quad (m > n; \\; R_\\infty \\approx 1{,}09737 \\cdot 10^7\\,\\text{m}^{-1})$$ - **Die Serien im Überblick**:   * **Lyman-Serie ($n = 1$)**: Übergänge von $m \\ge 2 \\rightarrow 1$ $\\implies$ Hochenergetische **Ultraviolett-Strahlung (UV)**.   * **Balmer-Serie ($n = 2$)**: Übergänge von $m \\ge 3 \\rightarrow 2$ $\\implies$ **Sichtbares Licht** ($H_\\alpha = 656\\,\\text{nm}$ rot, $H_\\beta = 486\\,\\text{nm}$ blaugrün, $H_\\gamma = 434\\,\\text{nm}$ blauviolett).   * **Paschen-Serie ($n = 3$)**: Übergänge auf $n = 3$ $\\implies$ **Infrarot-Strahlung (IR)**."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das Bohrsche Atommodell und Spektrallinien des Wasserstoffs: 1. Bohrs Postulate (1913):   * 1. Bahnen-Postulat: Elektronen kreisen strahlungsfrei auf bestimmten stationären Bahnen.   * 2. Quantenbedingung: Der Bahndrehimpuls ist ein ganzzahliges Vielfaches von "
+            },
+            {
+              "type": "math",
+              "tex": "\\hbar",
+              "speech": "h quer"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "L = m_e \\cdot v \\cdot r = n \\cdot \\frac{h}{2\\pi} = n \\cdot \\hbar",
+              "speech": "L gleich m e mal v mal r gleich n mal h durch 2 Pi gleich n mal h quer"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "n \\in \\{1, 2, 3, \\dots\\}",
+              "speech": "n Element der Menge 1, 2, 3 und so weiter"
+            },
+            {
+              "type": "text",
+              "text": ").   * 3. Frequenz-Bedingung: Beim Übergang zwischen zwei Niveaus "
+            },
+            {
+              "type": "math",
+              "tex": "E_m",
+              "speech": "E m"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "E_n",
+              "speech": "E n"
+            },
+            {
+              "type": "text",
+              "text": " wird ein Photon emittiert/absorbiert: "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta E = E_m - E_n = h \\cdot f",
+              "speech": "Delta E gleich E m minus E n gleich h mal f"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Energieniveaus des Wasserstoffs:   * "
+            },
+            {
+              "type": "math",
+              "tex": "E_n = -\\frac{13{,}6\\,\\text{eV}}{n^2}",
+              "speech": "E n gleich minus 13,6 Elektronenvolt durch n Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " (Grundzustand "
+            },
+            {
+              "type": "math",
+              "tex": "E_1 = -13{,}6\\,\\text{eV}",
+              "speech": "E eins gleich minus 13,6 Elektronenvolt"
+            },
+            {
+              "type": "text",
+              "text": ", Ionisationsgrenze "
+            },
+            {
+              "type": "math",
+              "tex": "E_\\infty = 0\\,\\text{eV}",
+              "speech": "E unendlich gleich 0 Elektronenvolt"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Spektralserien (Rydberg-Formel):   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{1}{\\lambda} = R_H \\cdot \\left( \\frac{1}{n^2} - \\frac{1}{m^2} \\right)",
+              "speech": "1 durch Lambda gleich R H mal Klammer auf 1 durch n Quadrat minus 1 durch m Quadrat Klammer zu"
+            },
+            {
+              "type": "text",
+              "text": " mit "
+            },
+            {
+              "type": "math",
+              "tex": "R_H \\approx 1{,}097 \\cdot 10^7\\,\\text{m}^{-1}",
+              "speech": "R H ungefähr 1,097 mal 10 hoch 7 pro Meter"
+            },
+            {
+              "type": "text",
+              "text": ".   * Lyman-Serie ("
+            },
+            {
+              "type": "math",
+              "tex": "n=1",
+              "speech": "n gleich 1"
+            },
+            {
+              "type": "text",
+              "text": ", UV-Bereich), Balmer-Serie ("
+            },
+            {
+              "type": "math",
+              "tex": "n=2",
+              "speech": "n gleich 2"
+            },
+            {
+              "type": "text",
+              "text": ", sichtbares Licht), Paschen-Serie ("
+            },
+            {
+              "type": "math",
+              "tex": "n=3",
+              "speech": "n gleich 3"
+            },
+            {
+              "type": "text",
+              "text": ", Infrarot)."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Bohrsches Atommodell: 3 Bohr-Postulate (strahlungsfreie Bahnen, Drehimpulsquantisierung "
+            },
+            {
+              "type": "math",
+              "tex": "L = n \\cdot \\hbar",
+              "speech": "L gleich n mal h quer"
+            },
+            {
+              "type": "text",
+              "text": ", Frequenzbedingung "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta E = h \\cdot f",
+              "speech": "Delta E gleich h mal f"
+            },
+            {
+              "type": "text",
+              "text": "); H-Atom Energien "
+            },
+            {
+              "type": "math",
+              "tex": "E_n = -\\frac{13{,}6\\,\\text{eV}}{n^2}",
+              "speech": "E n gleich minus 13,6 Elektronenvolt durch n Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; Spektralserien (Lyman "
+            },
+            {
+              "type": "math",
+              "tex": "n = 1",
+              "speech": "n gleich 1"
+            },
+            {
+              "type": "text",
+              "text": " UV, Balmer "
+            },
+            {
+              "type": "math",
+              "tex": "n = 2",
+              "speech": "n gleich 2"
+            },
+            {
+              "type": "text",
+              "text": " sichtbar, Paschen "
+            },
+            {
+              "type": "math",
+              "tex": "n = 3",
+              "speech": "n gleich 3"
+            },
+            {
+              "type": "text",
+              "text": " IR); Franck-Hertz-Versuch (inelastische Stöße)."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Bohrschen Postulate (Niels Bohr, 1913): - Das klassische Dilemma: Nach der Maxwellschen Elektrodynamik müsste ein kreisendes (beschleunigtes) Elektron kontinuierlich elektromagnetische Wellen abstrahlen, in Sekundenbruchteilen in den Kern stürzen und ein kontinuierliches Lichtspektrum aussenden "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Atome wären instabil. - Bohrs revolutionäre Postulate:   1. Stationäre Zustände: Das Elektron bewegt sich auf diskreten Kreisbahnen, ohne elektromagnetische Strahlung zu emittieren.   2. Drehimpulsquantisierung: Erlaubt sind nur Bahnen, auf denen der Drehimpuls "
+            },
+            {
+              "type": "math",
+              "tex": "L"
+            },
+            {
+              "type": "text",
+              "text": " ein ganzzahliges Vielfaches des reduzierten Planckschen Wirkungsquantums ist:      "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{L = m_e \\cdot v_n \\cdot r_n = n \\cdot \\hbar = n \\cdot \\frac{h}{2\\pi}} \\quad (n = 1, 2, 3, \\dots)",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "      (De-Broglie-Deutung: Auf der "
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": "-ten Bahn passt exakt das "
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": "-fache der De-Broglie-Wellenlänge als stehende Welle auf den Kreisumfang: "
+            },
+            {
+              "type": "math",
+              "tex": "2\\pi r_n = n \\cdot \\lambda"
+            },
+            {
+              "type": "text",
+              "text": ").   3. Strahlungsübergänge: Strahlung wird nur beim Quantensprung von einem höheren Niveau "
+            },
+            {
+              "type": "math",
+              "tex": "E_m"
+            },
+            {
+              "type": "text",
+              "text": " auf ein niedrigeres Niveau "
+            },
+            {
+              "type": "math",
+              "tex": "E_n"
+            },
+            {
+              "type": "text",
+              "text": " als einzelnes Photon emittiert:      "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{h \\cdot f = E_m - E_n \\iff \\lambda = \\frac{h \\cdot c}{E_m - E_n}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Das Termschema des Wasserstoffatoms: - Aus dem Kräftegleichgewicht zwischen Coulomb-Kraft und Zentripetalkraft ("
+            },
+            {
+              "type": "math",
+              "tex": "F_C = F_Z"
+            },
+            {
+              "type": "text",
+              "text": ") sowie der Quantenbedingung folgt die Energieformel:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E_n = -\\frac{m_e \\cdot e^4}{8 \\cdot \\varepsilon_0^2 \\cdot h^2} \\cdot \\frac{1}{n^2} = -\\frac{13{,}6\\,\\text{eV}}{n^2}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Grundzustand ("
+            },
+            {
+              "type": "math",
+              "tex": "n = 1"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "E_1 = -13{,}6\\,\\text{eV}"
+            },
+            {
+              "type": "text",
+              "text": " (stabilster Zustand).   * 1. Angeregter Zustand ("
+            },
+            {
+              "type": "math",
+              "tex": "n = 2"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "E_2 = -\\frac{13{,}6}{4} = -3{,}4\\,\\text{eV}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Ionisationsgrenze ("
+            },
+            {
+              "type": "math",
+              "tex": "n \\to \\infty"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "E_\\infty = 0\\,\\text{eV}"
+            },
+            {
+              "type": "text",
+              "text": " (Elektron ist frei vom Kern). 3. Die Spektralserien und die Rydberg-Gleichung: - Wellenlängen emittierter Spektrallinien:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\frac{1}{\\lambda} = R_\\infty \\cdot \\left( \\frac{1}{n^2} - \\frac{1}{m^2} \\right)} \\quad (m > n; \\; R_\\infty \\approx 1{,}09737 \\cdot 10^7\\,\\text{m}^{-1})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Die Serien im Überblick:   * Lyman-Serie ("
+            },
+            {
+              "type": "math",
+              "tex": "n = 1"
+            },
+            {
+              "type": "text",
+              "text": "): Übergänge von "
+            },
+            {
+              "type": "math",
+              "tex": "m \\ge 2 \\rightarrow 1"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Hochenergetische Ultraviolett-Strahlung (UV).   * Balmer-Serie ("
+            },
+            {
+              "type": "math",
+              "tex": "n = 2"
+            },
+            {
+              "type": "text",
+              "text": "): Übergänge von "
+            },
+            {
+              "type": "math",
+              "tex": "m \\ge 3 \\rightarrow 2"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Sichtbares Licht ("
+            },
+            {
+              "type": "math",
+              "tex": "H_\\alpha = 656\\,\\text{nm}"
+            },
+            {
+              "type": "text",
+              "text": " rot, "
+            },
+            {
+              "type": "math",
+              "tex": "H_\\beta = 486\\,\\text{nm}"
+            },
+            {
+              "type": "text",
+              "text": " blaugrün, "
+            },
+            {
+              "type": "math",
+              "tex": "H_\\gamma = 434\\,\\text{nm}"
+            },
+            {
+              "type": "text",
+              "text": " blauviolett).   * Paschen-Serie ("
+            },
+            {
+              "type": "math",
+              "tex": "n = 3"
+            },
+            {
+              "type": "text",
+              "text": "): Übergänge auf "
+            },
+            {
+              "type": "math",
+              "tex": "n = 3"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Infrarot-Strahlung (IR)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -76,7 +516,7 @@
       "atom_uri": "urn:zam:atom:01K8GC40000000000000000A02",
       "namespace": "gymnasium-physik-massendefekt-kernenergie",
       "slug": "massendefekt-bindungsenergie-kernspaltung-kernfusion",
-      "title": "Kernenergetik: Massendefekt ($\\Delta m$), Bindungsenergie pro Nukleon, Kernspaltung und Kernfusion",
+      "title": "Kernenergetik: Massendefekt (Δm), Bindungsenergie pro Nukleon, Kernspaltung und Kernfusion",
       "domain": "physik/kernphysik",
       "reduction": "formal",
       "typical_age_min": 17.5,
@@ -112,25 +552,494 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Warum ist die Masse eines gebundenen Atomkerns stets geringer als die Summe der Ruhemassen seiner freien Protonen und Neutronen (Massendefekt $\\Delta m$)?",
-          "concept": "Weil beim Zusammenfügen der Nukleonen die Kernbindungsenergie nach Einsteins Äquivalenzformel E = Delta m * c^2 in Form von Gammastrahlung freigesetzt wird",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Warum ist die Masse eines gebundenen Atomkerns stets geringer als die Summe der Ruhemassen seiner freien Protonen und Neutronen (Massendefekt "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta m",
+              "speech": "Delta m"
+            },
+            {
+              "type": "text",
+              "text": ")?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Weil beim Zusammenfügen der Nukleonen die Kernbindungsenergie nach Einsteins Äquivalenzformel "
+            },
+            {
+              "type": "math",
+              "tex": "E = \\Delta m \\cdot c^2",
+              "speech": "E gleich Delta m mal c Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " in Form von Gammastrahlung freigesetzt wird"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "Weil Kernbindungsenergie nach E = Delta m * c^2 abgestrahlt wurde",
+              [
+                {
+                  "type": "text",
+                  "text": "Weil Kernbindungsenergie nach "
+                },
+                {
+                  "type": "math",
+                  "tex": "E = \\Delta m \\cdot c^2",
+                  "speech": "E gleich Delta m mal c Quadrat"
+                },
+                {
+                  "type": "text",
+                  "text": " abgestrahlt wurde"
+                }
+              ],
               "Weil Protonen im Kern zerfallen"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GC40000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den Massendefekt, die Bindungsenergie pro Nukleon und vergleiche Kernspaltung mit Kernfusion: 1. **Der Massendefekt $\\Delta m$**:   * Für einen Kern $^{A}_{Z}X$ mit $Z$ Protonen und $N = A - Z$ Neutronen:     $$\\mathbf{\\Delta m = Z \\cdot m_p + (A - Z) \\cdot m_n - m_{\\text{Kern}} > 0}$$   * **Kernbindungsenergie**: $\\mathbf{E_B = \\Delta m \\cdot c^2}$ ($1\\,\\text{u} \\approx 931{,}49\\,\\text{MeV}$), 2. **Kurve der Bindungsenergie pro Nukleon $\\frac{E_B}{A}$**:   * Steigt steil von $^1H$ bis zum Maximum bei **Eisen-56 ($^{56}_{26}\\text{Fe}$)** mit ca. $8{,}8\\,\\text{MeV/Nukleon}$ an und sinkt bei schweren Kernen wie Uran-238 langsam auf ca. $7{,}6\\,\\text{MeV/Nukleon}$ ab.   * **Folge**: Energiefreisetzung ist möglich durch:     - **Kernfusion**: Verschmelzung extrem leichter Kerne ($^2H + ^3H \\rightarrow ^4He + n + 17{,}6\\,\\text{MeV}$).     - **Kernspaltung**: Spaltung schwerer Kerne ($^{235}U + n \\rightarrow ^{144}Ba + ^{89}Kr + 3n + 200\\,\\text{MeV}$), 3. **Die Kettenreaktion der Kernspaltung**:   * Spaltung durch thermische Neutronen setzt 2 bis 3 schnelle Neutronen frei.   * Multiplikationsfaktor $k$: Unterkritisch ($k < 1$), Kritisch ($k = 1$, kontrollierter Leistungsbetrieb im Reaktor mit Steuerstäben/Bor), Überkritisch ($k > 1$, exponentielles Anwachsen / Atombombe).",
-          "concept": "Kernphysik 12: Massendefekt Delta m = Summe(m_Nukleonen) - m_Kern; Bindungsenergie E_B = Delta m * c^2; Kurve E_B/A mit Maximum bei Eisen-56; Kernfusion (Verschmelzung leichter Kerne) vs. Kernspaltung (Uran-235, Kettenreaktion, Multiplikationsfaktor k).",
-          "sample_solution": "1. Der Massendefekt und Einsteins Masse-Energie-Äquivalenz: - **Phänomen**: Ein gebundener Atomkern wie Helium-4 ($^4_2\\text{He}$) ist um ca. $0{,}8\\%$ leichter als zwei freie Protonen und zwei freie Neutronen zusammen. - **Mathematische Formulierung**:   $$\\mathbf{\\Delta m = Z \\cdot m_p + N \\cdot m_n - m_{\\text{Kern}}}$$ - **Bindungsenergie nach Albert Einstein ($E = m \\cdot c^2$)**:   * Beim Zusammenschluss der Nukleonen durch die starke Kernkraft wird Energie freigesetzt. Genau diese Energie fehlt dem gebundenen System als Masse (**Massendefekt**):     $$\\mathbf{E_B = \\Delta m \\cdot c^2}$$   * *(Umgekehrt muss genau dieser Energiebetrag $E_B$ aufgewendet werden, um den Kern wieder vollständig in seine einzelnen freien Nukleonen zu zerlegen)*. 2. Die Bindungsenergie-Kurve pro Nukleon $\\frac{E_B}{A}$: - Trägt man die mittlere Bindungsenergie pro Nukleon $\\frac{E_B}{A}$ gegen die Massenzahl $A$ auf, erhält man die fundamentale Kurve der Kernphysik: ```mermaid graph LR   A[Leichte Kerne: H, D, T] -->|Kernfusion: Energiegewinn| B[Maximum: Eisen-56 8.8 MeV/Nukleon]   C[Schwere Kerne: U-235, Pu-239] -->|Kernspaltung: Energiegewinn| B ``` - **Schlussfolgerungen**:   * **1. Kernfusion**: Verschmilzt man sehr leichte Kerne ($^2_1\text{H} + ^3_1\text{H} \rightarrow ^4_2\text{He} + ^1_0\text{n}$), wandert man auf der steilen Flanke nach oben $\\implies$ enorm hohe Energiefreisetzung (**$17{,}6\\,\\text{MeV}$ pro Fusionsakt** bzw. das Vierfache pro Kilogramm gegenüber der Kernspaltung; Energiequelle der Sonne).   * **2. Kernspaltung**: Spaltet man schwere Kerne ($^{235}\\text{U}$), zerfallen sie in mittelschwere Spaltprodukte mit höherer Bindungsenergie pro Nukleon $\\implies$ Freisetzung von ca. **$200\\,\\text{MeV}$ pro Spaltung**. 3. Die kontrollierte Kettenreaktion der Kernspaltung: - **Spaltungsreaktion von Uran-235**:   $$\\mathbf{^{235}_{92}\\text{U} + ^1_0\\text{n}_{\\text{therm}} \\longrightarrow ^{236}_{92}\\text{U}^* \\longrightarrow ^{144}_{56}\\text{Ba} + ^{89}_{36}\\text{Kr} + 3\\,^1_0\\text{n}_{\\text{schnell}} + 200\\,\\text{MeV}}$$ - **Reaktorphysik und Multiplikationsfaktor $k$**:   * **Moderator (Wasser, Graphit)**: Bremst die schnellen Neutronen ($2\\,\\text{MeV}$) auf thermische Geschwindigkeiten ($0{,}025\\,\\text{eV}$) ab, da nur langsame Neutronen von $^{235}\\text{U}$ mit hoher Wahrscheinlichkeit eingefangen werden.   * **Neutronenmultiplikationsfaktor $k$**:     - $k < 1$ (*Unterkritisch*): Kettenreaktion stirbt ab (Abschaltung).     - $\\mathbf{k = 1}$ (*Kritisch*): Konstante Neutronenzahl $\\implies$ **stabiler stationärer Betrieb** eines Kernkraftwerks (geregelt durch neutronenabsorbierende Steuerstäbe aus Cadmium oder Bor).     - $k > 1$ (*Überkritisch*): Lawinenartige exponentielle Vermehrung der Spaltungen $\\implies$ unkontrollierte Leistungsexplosion."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den Massendefekt, die Bindungsenergie pro Nukleon und vergleiche Kernspaltung mit Kernfusion: 1. Der Massendefekt "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta m",
+              "speech": "Delta m"
+            },
+            {
+              "type": "text",
+              "text": ":   * Für einen Kern "
+            },
+            {
+              "type": "math",
+              "tex": "^{A}_{Z}X",
+              "speech": "X mit Massenzahl A und Kernladungszahl Z"
+            },
+            {
+              "type": "text",
+              "text": " mit "
+            },
+            {
+              "type": "math",
+              "tex": "Z",
+              "speech": "Z"
+            },
+            {
+              "type": "text",
+              "text": " Protonen und "
+            },
+            {
+              "type": "math",
+              "tex": "N = A - Z",
+              "speech": "N gleich A minus Z"
+            },
+            {
+              "type": "text",
+              "text": " Neutronen:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Delta m = Z \\cdot m_p + (A - Z) \\cdot m_n - m_{\\text{Kern}} > 0}",
+              "block": true,
+              "speech": "Delta m gleich Z mal m p plus Klammer auf A minus Z Klammer zu mal m n minus m Kern größer als 0"
+            },
+            {
+              "type": "text",
+              "text": "   * Kernbindungsenergie: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E_B = \\Delta m \\cdot c^2}",
+              "speech": "E B gleich Delta m mal c Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "1\\,\\text{u} \\approx 931{,}49\\,\\text{MeV}",
+              "speech": "1 atomare Masseneinheit ungefähr 931,49 Megaelektronenvolt"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Kurve der Bindungsenergie pro Nukleon "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{E_B}{A}",
+              "speech": "E B durch A"
+            },
+            {
+              "type": "text",
+              "text": ":   * Steigt steil von "
+            },
+            {
+              "type": "math",
+              "tex": "^1H",
+              "speech": "Wasserstoff 1"
+            },
+            {
+              "type": "text",
+              "text": " bis zum Maximum bei Eisen-56 ("
+            },
+            {
+              "type": "math",
+              "tex": "^{56}_{26}\\text{Fe}",
+              "speech": "Eisen mit Massenzahl 56 und Kernladungszahl 26"
+            },
+            {
+              "type": "text",
+              "text": ") mit ca. "
+            },
+            {
+              "type": "math",
+              "tex": "8{,}8\\,\\text{MeV/Nukleon}",
+              "speech": "8,8 Megaelektronenvolt pro Nukleon"
+            },
+            {
+              "type": "text",
+              "text": " an und sinkt bei schweren Kernen wie Uran-238 langsam auf ca. "
+            },
+            {
+              "type": "math",
+              "tex": "7{,}6\\,\\text{MeV/Nukleon}",
+              "speech": "7,6 Megaelektronenvolt pro Nukleon"
+            },
+            {
+              "type": "text",
+              "text": " ab.   * Folge: Energiefreisetzung ist möglich durch:     - Kernfusion: Verschmelzung extrem leichter Kerne ("
+            },
+            {
+              "type": "math",
+              "tex": "^2H + ^3H \\rightarrow ^4He + n + 17{,}6\\,\\text{MeV}",
+              "speech": "Deuterium plus Tritium reagiert zu Helium 4 plus n plus 17,6 Megaelektronenvolt"
+            },
+            {
+              "type": "text",
+              "text": ").     - Kernspaltung: Spaltung schwerer Kerne ("
+            },
+            {
+              "type": "math",
+              "tex": "^{235}U + n \\rightarrow ^{144}Ba + ^{89}Kr + 3n + 200\\,\\text{MeV}",
+              "speech": "Uran 235 plus n reagiert zu Barium 144 plus Krypton 89 plus 3 n plus 200 Megaelektronenvolt"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Die Kettenreaktion der Kernspaltung:   * Spaltung durch thermische Neutronen setzt 2 bis 3 schnelle Neutronen frei.   * Multiplikationsfaktor "
+            },
+            {
+              "type": "math",
+              "tex": "k",
+              "speech": "k"
+            },
+            {
+              "type": "text",
+              "text": ": Unterkritisch ("
+            },
+            {
+              "type": "math",
+              "tex": "k < 1",
+              "speech": "k kleiner als 1"
+            },
+            {
+              "type": "text",
+              "text": "), Kritisch ("
+            },
+            {
+              "type": "math",
+              "tex": "k = 1",
+              "speech": "k gleich 1"
+            },
+            {
+              "type": "text",
+              "text": ", kontrollierter Leistungsbetrieb im Reaktor mit Steuerstäben/Bor), Überkritisch ("
+            },
+            {
+              "type": "math",
+              "tex": "k > 1",
+              "speech": "k größer als 1"
+            },
+            {
+              "type": "text",
+              "text": ", exponentielles Anwachsen / Atombombe)."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Kernphysik 12: Massendefekt "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta m = \\sum m_{\\text{Nukleonen}} - m_{\\text{Kern}}",
+              "speech": "Delta m gleich Summe der Nukleonenmassen minus m Kern"
+            },
+            {
+              "type": "text",
+              "text": "; Bindungsenergie "
+            },
+            {
+              "type": "math",
+              "tex": "E_B = \\Delta m \\cdot c^2",
+              "speech": "E B gleich Delta m mal c Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; Kurve "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{E_B}{A}",
+              "speech": "E B durch A"
+            },
+            {
+              "type": "text",
+              "text": " mit Maximum bei Eisen-56; Kernfusion (Verschmelzung leichter Kerne) vs. Kernspaltung (Uran-235, Kettenreaktion, Multiplikationsfaktor "
+            },
+            {
+              "type": "math",
+              "tex": "k",
+              "speech": "k"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der Massendefekt und Einsteins Masse-Energie-Äquivalenz: - Phänomen: Ein gebundener Atomkern wie Helium-4 ("
+            },
+            {
+              "type": "math",
+              "tex": "^4_2\\text{He}"
+            },
+            {
+              "type": "text",
+              "text": ") ist um ca. "
+            },
+            {
+              "type": "math",
+              "tex": "0{,}8\\%"
+            },
+            {
+              "type": "text",
+              "text": " leichter als zwei freie Protonen und zwei freie Neutronen zusammen. - Mathematische Formulierung:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Delta m = Z \\cdot m_p + N \\cdot m_n - m_{\\text{Kern}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Bindungsenergie nach Albert Einstein ("
+            },
+            {
+              "type": "math",
+              "tex": "E = m \\cdot c^2"
+            },
+            {
+              "type": "text",
+              "text": "):   * Beim Zusammenschluss der Nukleonen durch die starke Kernkraft wird Energie freigesetzt. Genau diese Energie fehlt dem gebundenen System als Masse (Massendefekt):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E_B = \\Delta m \\cdot c^2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * (Umgekehrt muss genau dieser Energiebetrag "
+            },
+            {
+              "type": "math",
+              "tex": "E_B"
+            },
+            {
+              "type": "text",
+              "text": " aufgewendet werden, um den Kern wieder vollständig in seine einzelnen freien Nukleonen zu zerlegen). 2. Die Bindungsenergie-Kurve pro Nukleon "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{E_B}{A}"
+            },
+            {
+              "type": "text",
+              "text": ": - Trägt man die mittlere Bindungsenergie pro Nukleon "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{E_B}{A}"
+            },
+            {
+              "type": "text",
+              "text": " gegen die Massenzahl "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": " auf, erhält man die fundamentale Kurve der Kernphysik: ```mermaid graph LR   A[Leichte Kerne: H, D, T] -->|Kernfusion: Energiegewinn| B[Maximum: Eisen-56 8.8 MeV/Nukleon]   C[Schwere Kerne: U-235, Pu-239] -->|Kernspaltung: Energiegewinn| B ``` - Schlussfolgerungen:   * 1. Kernfusion: Verschmilzt man sehr leichte Kerne ("
+            },
+            {
+              "type": "math",
+              "tex": "^2_1\\text{H} + ^3_1\\text{H} \\rightarrow ^4_2\\text{He} + ^1_0\\text{n}"
+            },
+            {
+              "type": "text",
+              "text": "), wandert man auf der steilen Flanke nach oben "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " enorm hohe Energiefreisetzung ("
+            },
+            {
+              "type": "math",
+              "tex": "17{,}6\\,\\text{MeV}"
+            },
+            {
+              "type": "text",
+              "text": " pro Fusionsakt bzw. das Vierfache pro Kilogramm gegenüber der Kernspaltung; Energiequelle der Sonne).   * 2. Kernspaltung: Spaltet man schwere Kerne ("
+            },
+            {
+              "type": "math",
+              "tex": "^{235}\\text{U}"
+            },
+            {
+              "type": "text",
+              "text": "), zerfallen sie in mittelschwere Spaltprodukte mit höherer Bindungsenergie pro Nukleon "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Freisetzung von ca. "
+            },
+            {
+              "type": "math",
+              "tex": "200\\,\\text{MeV}"
+            },
+            {
+              "type": "text",
+              "text": " pro Spaltung. 3. Die kontrollierte Kettenreaktion der Kernspaltung: - Spaltungsreaktion von Uran-235:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{^{235}_{92}\\text{U} + ^1_0\\text{n}_{\\text{therm}} \\longrightarrow ^{236}_{92}\\text{U}^* \\longrightarrow ^{144}_{56}\\text{Ba} + ^{89}_{36}\\text{Kr} + 3\\,^1_0\\text{n}_{\\text{schnell}} + 200\\,\\text{MeV}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Reaktorphysik und Multiplikationsfaktor "
+            },
+            {
+              "type": "math",
+              "tex": "k"
+            },
+            {
+              "type": "text",
+              "text": ":   * Moderator (Wasser, Graphit): Bremst die schnellen Neutronen ("
+            },
+            {
+              "type": "math",
+              "tex": "2\\,\\text{MeV}"
+            },
+            {
+              "type": "text",
+              "text": ") auf thermische Geschwindigkeiten ("
+            },
+            {
+              "type": "math",
+              "tex": "0{,}025\\,\\text{eV}"
+            },
+            {
+              "type": "text",
+              "text": ") ab, da nur langsame Neutronen von "
+            },
+            {
+              "type": "math",
+              "tex": "^{235}\\text{U}"
+            },
+            {
+              "type": "text",
+              "text": " mit hoher Wahrscheinlichkeit eingefangen werden.   * Neutronenmultiplikationsfaktor "
+            },
+            {
+              "type": "math",
+              "tex": "k"
+            },
+            {
+              "type": "text",
+              "text": ":     - "
+            },
+            {
+              "type": "math",
+              "tex": "k < 1"
+            },
+            {
+              "type": "text",
+              "text": " (Unterkritisch): Kettenreaktion stirbt ab (Abschaltung).     - "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{k = 1}"
+            },
+            {
+              "type": "text",
+              "text": " (Kritisch): Konstante Neutronenzahl "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " stabiler stationärer Betrieb eines Kernkraftwerks (geregelt durch neutronenabsorbierende Steuerstäbe aus Cadmium oder Bor).     - "
+            },
+            {
+              "type": "math",
+              "tex": "k > 1"
+            },
+            {
+              "type": "text",
+              "text": " (Überkritisch): Lawinenartige exponentielle Vermehrung der Spaltungen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " unkontrollierte Leistungsexplosion."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

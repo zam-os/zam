@@ -65,9 +65,10 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Systematisiere die Säulen der objektorientierten Programmierung (OOP): 1. **Klasse vs. Objekt (Instanz)**:   * **Klasse**: Abstrakter Bauplan / Schablone mit Attributen (Zustandsvariablen) und Methoden (Verhalten/Operationen).   * **Objekt**: Konkrete Ausprägung (Instanz) einer Klasse zur Laufzeit im Speicher mit eigenem Zustand.   * **Konstruktor**: Spezielle Methode zur Initialisierung eines neu erzeugten Objekts, 2. **Datenkapselung (Information Hiding)**:   * Sichtbarkeiten: `private` (nur innerhalb der Klasse sichtbar), `public` (öffentliche Schnittstelle), `protected`.   * Zugriffsschutz über Getter- (`gibName()`) und Setter-Methoden (`setzeAlter()`) mit Validierungslogik, 3. **Vererbung (Generalisierung / Spezialisierung)**:   * Eine Unterklasse (Subklasse) erbt alle Attribute und Methoden der Oberklasse (Superklasse) (**'ist-ein'-Beziehung**, z. B. `Hund ist-ein Tier`).   * **Überschreiben von Methoden (Polymorphie)**: Eine Unterklasse kann eine geerbte Methode mit eigenem spezifischem Verhalten neu implementieren.",
+          "question": "Systematisiere die Säulen der objektorientierten Programmierung (OOP): 1. Klasse vs. Objekt (Instanz):   * Klasse: Abstrakter Bauplan / Schablone mit Attributen (Zustandsvariablen) und Methoden (Verhalten/Operationen).   * Objekt: Konkrete Ausprägung (Instanz) einer Klasse zur Laufzeit im Speicher mit eigenem Zustand.   * Konstruktor: Spezielle Methode zur Initialisierung eines neu erzeugten Objekts, 2. Datenkapselung (Information Hiding):   * Sichtbarkeiten: `private` (nur innerhalb der Klasse sichtbar), `public` (öffentliche Schnittstelle), `protected`.   * Zugriffsschutz über Getter- (`gibName()`) und Setter-Methoden (`setzeAlter()`) mit Validierungslogik, 3. Vererbung (Generalisierung / Spezialisierung):   * Eine Unterklasse (Subklasse) erbt alle Attribute und Methoden der Oberklasse (Superklasse) ('ist-ein'-Beziehung, z. B. `Hund ist-ein Tier`).   * Überschreiben von Methoden (Polymorphie): Eine Unterklasse kann eine geerbte Methode mit eigenem spezifischem Verhalten neu implementieren.",
           "concept": "OOP: Klasse (Bauplan) vs. Objekt (Instanz); Konstruktor; Kapselung (private Attribute, public Getter/Setter); Vererbung ('ist-ein' Relation, Generalisierung/Spezialisierung, Überschreiben von Methoden / Polymorphie).",
-          "sample_solution": "1. Die Kernkonzepte der Objektorientierung (OOP): - **1. Klasse**:   * Ein statischer **Bauplan / Schablone** für Objekte desselben Typs.   * Definiert die **Attribute** (Eigenschaften/Zustandsdaten, z. B. `farbe`, `radius`, `kontostand`) und die **Methoden** (Funktionen/Verhalten, z. B. `faehrt()`, `berechneFlaeche()`, `ueberweise()`). - **2. Objekt (Instanz)**:   * Ein konkretes, zur Laufzeit im Arbeitsspeicher erzeugtes Einzelexemplar einer Klasse.   * Ein Objekt besitzt zu jedem Zeitpunkt einen definierten **Zustand** (aktuelle Werte der Attribute) und eine eindeutige Identität. - **3. Konstruktor**:   * Eine spezielle Initialisierungsmethode (in Java: gleicher Name wie Klasse; in Python: `__init__`), die beim Erzeugen eines Objekts mit dem `new`-Operator automatisch aufgerufen wird. 2. Das Prinzip der Datenkapselung (Information Hiding): - **Ziel**: Schutz des inneren Zustands eines Objekts vor unkontrollierten, fehlerhaften Zugriffen von außen. - **Sichtbarkeitsmodifikatoren**:   * `private` (Minuszeichen im UML-Klassendiagramm: `-`): Attribut ist **nur für Methoden der eigenen Klasse** direkt zugänglich.   * `public` (Pluszeichen im UML-Diagramm: `+`): Methode/Attribut gehört zur öffentlichen Schnittstelle und kann von überall aufgerufen werden. - **Getter- und Setter-Methoden**:   * Kontrollierter Lese- und Schreibzugriff (z. B. verhindert `setzeAlter(int a)` im Setter negative Altersangaben). 3. Vererbung und Polymorphie: - **Vererbung (Inheritance)**:   * Mechanismus zur Wiederverwendung und hierarchischen Strukturierung von Code.   * Die Unterklasse (Kindklasse) erbt alle sichtbaren Attribute und Methoden der Oberklasse (Elternklasse) und erweitert oder spezialisiert diese (**« ist-ein »-Beziehung**, z. B. `PKW` ist ein `Fahrzeug`). - **Methodenüberschreiben (Polymorphie / Vielgestaltigkeit)**:   * Eine Unterklasse kann eine von der Oberklasse geerbte Methode überschreiben (z. B. macht die Methode `gibLaut()` in der Oberklasse `Tier` ein allgemeines Geräusch, während die abgeleitete Klasse `Hund` die Methode mit *« Wuff »* und `Katze` mit *« Miau »* überschreibt)."
+          "sample_solution": "1. Die Kernkonzepte der Objektorientierung (OOP): - 1. Klasse:   * Ein statischer Bauplan / Schablone für Objekte desselben Typs.   * Definiert die Attribute (Eigenschaften/Zustandsdaten, z. B. `farbe`, `radius`, `kontostand`) und die Methoden (Funktionen/Verhalten, z. B. `faehrt()`, `berechneFlaeche()`, `ueberweise()`). - 2. Objekt (Instanz):   * Ein konkretes, zur Laufzeit im Arbeitsspeicher erzeugtes Einzelexemplar einer Klasse.   * Ein Objekt besitzt zu jedem Zeitpunkt einen definierten Zustand (aktuelle Werte der Attribute) und eine eindeutige Identität. - 3. Konstruktor:   * Eine spezielle Initialisierungsmethode (in Java: gleicher Name wie Klasse; in Python: `__init__`), die beim Erzeugen eines Objekts mit dem `new`-Operator automatisch aufgerufen wird. 2. Das Prinzip der Datenkapselung (Information Hiding): - Ziel: Schutz des inneren Zustands eines Objekts vor unkontrollierten, fehlerhaften Zugriffen von außen. - Sichtbarkeitsmodifikatoren:   * `private` (Minuszeichen im UML-Klassendiagramm: `-`): Attribut ist nur für Methoden der eigenen Klasse direkt zugänglich.   * `public` (Pluszeichen im UML-Diagramm: `+`): Methode/Attribut gehört zur öffentlichen Schnittstelle und kann von überall aufgerufen werden. - Getter- und Setter-Methoden:   * Kontrollierter Lese- und Schreibzugriff (z. B. verhindert `setzeAlter(int a)` im Setter negative Altersangaben). 3. Vererbung und Polymorphie: - Vererbung (Inheritance):   * Mechanismus zur Wiederverwendung und hierarchischen Strukturierung von Code.   * Die Unterklasse (Kindklasse) erbt alle sichtbaren Attribute und Methoden der Oberklasse (Elternklasse) und erweitert oder spezialisiert diese (« ist-ein »-Beziehung, z. B. `PKW` ist ein `Fahrzeug`). - Methodenüberschreiben (Polymorphie / Vielgestaltigkeit):   * Eine Unterklasse kann eine von der Oberklasse geerbte Methode überschreiben (z. B. macht die Methode `gibLaut()` in der Oberklasse `Tier` ein allgemeines Geräusch, während die abgeleitete Klasse `Hund` die Methode mit « Wuff » und `Katze` mit « Miau » überschreibt).",
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +129,272 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Vergleiche Such- und Sortieralgorithmen hinsichtlich Funktionsweise und Effizienz: 1. **Suchverfahren**:   * **Lineare Suche**: Vergleicht sequentiell jedes Element von Index $0$ bis $n-1$; funktioniert auf unsortierten Listen; Aufwand im Worst-Case: $n$ Vergleiche ($O(n)$).   * **Binäre Suche (Intervallhalbierung / Teile und Herrsche)**: Vergleicht Suchschlüssel mit dem mittleren Element eines **sortierten** Feldes; halbiert den Suchraum in jedem Schritt; Aufwand im Worst-Case: $\\approx \\log_2(n)$ Vergleiche ($O(\\log n)$), 2. **BubbleSort (Sortieren durch Aufsteigen)**:   * Vergleicht wiederholt benachbarte Elemente ($A[i]$ mit $A[i+1]$) und vertauscht sie, falls sie in falscher Reihenfolge stehen.   * Nach jedem Durchlauf 'blubbert' das jeweils größte Element an seine finale Endposition.   * Aufwand: $\\frac{n(n-1)}{2}$ Vergleiche $\\implies O(n^2)$ (quadratische Laufzeit), 3. Wie viele Vergleiche benötigt die binäre Suche im Worst-Case bei einer sortierten Liste von $1.000.000$ Elementen im Vergleich zur linearen Suche?",
-          "concept": "Algorithmen: Lineare Suche O(n) unsortiert; Binäre Suche O(log2 n) auf sortiertem Array; BubbleSort O(n^2) durch Nachbartausch; Vergleich: Linear 1.000.000 Schritte vs. Binär nur ceil(log2(1.000.000)) = 20 Schritte!",
-          "sample_solution": "1. Vergleich der Suchalgorithmen: - **1. Lineare Suche (Sequentielle Suche)**:   * Durchläuft ein Array von links nach rechts Element für Element:     ```java     for (int i = 0; i < n; i++) {       if (array[i] == gesucht) return i;     }     ```   * *Vorteil*: Funktioniert auch auf völlig unsortierten Daten.   * *Laufzeitkomplexität*: Im Worst Case (Element steht ganz hinten oder fehlt) sind **$n$ Vergleiche** nötig ($O(n)$ – linearer Aufwand). - **2. Binäre Suche (Intervallhalbierung / Divide and Conquer)**:   * **Bedingung**: Das Array muss **zwingend sortiert** sein.   * *Ablauf*: Man vergleicht das gesuchte Element mit der Mitte des aktuellen Suchintervalls:     - Ist das Element kleiner, sucht man in der linken Hälfte weiter ($rechts = mitte - 1$).     - Ist das Element größer, sucht man in der rechten Hälfte weiter ($links = mitte + 1$).   * *Laufzeitkomplexität*: In jedem Schritt wird der Suchraum exakt halbiert $\\implies$ **$O(\\log_2 n)$** (logarithmischer Aufwand). 2. Der BubbleSort-Algorithmus: - **Funktionsweise**:   * Das Array wird in mehreren Durchläufen durchwandert. In jedem Durchlauf werden zwei benachbarte Elemente verglichen und bei falscher Sortierung vertauscht.   * Dadurch steigen die größeren Elemente wie Luftblasen im Wasser Schritt für Schritt nach oben auf. - **Laufzeit & Komplexität**:   * Bei $n$ Elementen sind im 1. Durchlauf $n-1$ Vergleiche nötig, im 2. Durchlauf $n-2$ usw.:     $$\\text{Vergleiche} = (n-1) + (n-2) + \\dots + 1 = \\frac{n(n-1)}{2} = \\frac{n^2 - n}{2} \\implies \\mathbf{O(n^2)}$$   * Ineffizient für große Datenmengen (quadratischer Aufwand). 3. Effizienzvergleich an einer Liste mit $n = 1.000.000$ Einträgen: - **Lineare Suche**: Worst Case $= \\mathbf{1.000.000\\text{ Vergleiche}}$. - **Binäre Suche**: Worst Case $= \\lceil \\log_2(1.000.000) \\rceil = \\mathbf{20\\text{ Vergleiche}}$ ($2^{20} = 1.048.576$).   * Die binäre Suche findet den gesuchten Datensatz in nur 20 Schritten statt einer Million Vergleiche $\\implies$ **Faktor 50.000 schneller**!"
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Vergleiche Such- und Sortieralgorithmen hinsichtlich Funktionsweise und Effizienz: 1. Suchverfahren:   * Lineare Suche: Vergleicht sequentiell jedes Element von Index "
+            },
+            {
+              "type": "math",
+              "tex": "0",
+              "speech": "0"
+            },
+            {
+              "type": "text",
+              "text": " bis "
+            },
+            {
+              "type": "math",
+              "tex": "n-1",
+              "speech": "n minus 1"
+            },
+            {
+              "type": "text",
+              "text": "; funktioniert auf unsortierten Listen; Aufwand im Worst-Case: "
+            },
+            {
+              "type": "math",
+              "tex": "n",
+              "speech": "n"
+            },
+            {
+              "type": "text",
+              "text": " Vergleiche ("
+            },
+            {
+              "type": "math",
+              "tex": "O(n)",
+              "speech": "O von n"
+            },
+            {
+              "type": "text",
+              "text": ").   * Binäre Suche (Intervallhalbierung / Teile und Herrsche): Vergleicht Suchschlüssel mit dem mittleren Element eines sortierten Feldes; halbiert den Suchraum in jedem Schritt; Aufwand im Worst-Case: "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx \\log_2(n)",
+              "speech": "ungefähr Logarithmus zur Basis 2 von n"
+            },
+            {
+              "type": "text",
+              "text": " Vergleiche ("
+            },
+            {
+              "type": "math",
+              "tex": "O(\\log n)",
+              "speech": "O von Logarithmus von n"
+            },
+            {
+              "type": "text",
+              "text": "), 2. BubbleSort (Sortieren durch Aufsteigen):   * Vergleicht wiederholt benachbarte Elemente ("
+            },
+            {
+              "type": "math",
+              "tex": "A[i]",
+              "speech": "A an der Stelle i"
+            },
+            {
+              "type": "text",
+              "text": " mit "
+            },
+            {
+              "type": "math",
+              "tex": "A[i+1]",
+              "speech": "A an der Stelle i plus 1"
+            },
+            {
+              "type": "text",
+              "text": ") und vertauscht sie, falls sie in falscher Reihenfolge stehen.   * Nach jedem Durchlauf 'blubbert' das jeweils größte Element an seine finale Endposition.   * Aufwand: "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{n(n-1)}{2}",
+              "speech": "n mal, n minus 1, durch 2"
+            },
+            {
+              "type": "text",
+              "text": " Vergleiche "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies O(n^2)",
+              "speech": "daraus folgt O von n Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " (quadratische Laufzeit), 3. Wie viele Vergleiche benötigt die binäre Suche im Worst-Case bei einer sortierten Liste von "
+            },
+            {
+              "type": "math",
+              "tex": "1.000.000",
+              "speech": "1.000.000"
+            },
+            {
+              "type": "text",
+              "text": " Elementen im Vergleich zur linearen Suche?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Algorithmen: Lineare Suche O(n) unsortiert; Binäre Suche "
+            },
+            {
+              "type": "math",
+              "tex": "O(\\log_2 n)",
+              "speech": "O von Logarithmus zur Basis 2 von n"
+            },
+            {
+              "type": "text",
+              "text": " auf sortiertem Array; BubbleSort "
+            },
+            {
+              "type": "math",
+              "tex": "O(n^2)",
+              "speech": "O von n Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " durch Nachbartausch; Vergleich: Linear 1.000.000 Schritte vs. Binär nur "
+            },
+            {
+              "type": "math",
+              "tex": "\\lceil \\log_2(1.000.000) \\rceil = 20",
+              "speech": "aufgerundeter Logarithmus zur Basis 2 von 1.000.000 gleich 20"
+            },
+            {
+              "type": "text",
+              "text": " Schritte!"
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Vergleich der Suchalgorithmen: - 1. Lineare Suche (Sequentielle Suche):   * Durchläuft ein Array von links nach rechts Element für Element:     ```java     for (int i = 0; i < n; i++) {       if (array[i] == gesucht) return i;     }     ```   * Vorteil: Funktioniert auch auf völlig unsortierten Daten.   * Laufzeitkomplexität: Im Worst Case (Element steht ganz hinten oder fehlt) sind "
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": " Vergleiche nötig ("
+            },
+            {
+              "type": "math",
+              "tex": "O(n)"
+            },
+            {
+              "type": "text",
+              "text": " – linearer Aufwand). - 2. Binäre Suche (Intervallhalbierung / Divide and Conquer):   * Bedingung: Das Array muss zwingend sortiert sein.   * Ablauf: Man vergleicht das gesuchte Element mit der Mitte des aktuellen Suchintervalls:     - Ist das Element kleiner, sucht man in der linken Hälfte weiter ("
+            },
+            {
+              "type": "math",
+              "tex": "rechts = mitte - 1"
+            },
+            {
+              "type": "text",
+              "text": ").     - Ist das Element größer, sucht man in der rechten Hälfte weiter ("
+            },
+            {
+              "type": "math",
+              "tex": "links = mitte + 1"
+            },
+            {
+              "type": "text",
+              "text": ").   * Laufzeitkomplexität: In jedem Schritt wird der Suchraum exakt halbiert "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "O(\\log_2 n)"
+            },
+            {
+              "type": "text",
+              "text": " (logarithmischer Aufwand). 2. Der BubbleSort-Algorithmus: - Funktionsweise:   * Das Array wird in mehreren Durchläufen durchwandert. In jedem Durchlauf werden zwei benachbarte Elemente verglichen und bei falscher Sortierung vertauscht.   * Dadurch steigen die größeren Elemente wie Luftblasen im Wasser Schritt für Schritt nach oben auf. - Laufzeit & Komplexität:   * Bei "
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": " Elementen sind im 1. Durchlauf "
+            },
+            {
+              "type": "math",
+              "tex": "n-1"
+            },
+            {
+              "type": "text",
+              "text": " Vergleiche nötig, im 2. Durchlauf "
+            },
+            {
+              "type": "math",
+              "tex": "n-2"
+            },
+            {
+              "type": "text",
+              "text": " usw.:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Vergleiche} = (n-1) + (n-2) + \\dots + 1 = \\frac{n(n-1)}{2} = \\frac{n^2 - n}{2} \\implies \\mathbf{O(n^2)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Ineffizient für große Datenmengen (quadratischer Aufwand). 3. Effizienzvergleich an einer Liste mit "
+            },
+            {
+              "type": "math",
+              "tex": "n = 1.000.000"
+            },
+            {
+              "type": "text",
+              "text": " Einträgen: - Lineare Suche: Worst Case "
+            },
+            {
+              "type": "math",
+              "tex": "= \\mathbf{1.000.000\\text{ Vergleiche}}"
+            },
+            {
+              "type": "text",
+              "text": ". - Binäre Suche: Worst Case "
+            },
+            {
+              "type": "math",
+              "tex": "= \\lceil \\log_2(1.000.000) \\rceil = \\mathbf{20\\text{ Vergleiche}}"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "2^{20} = 1.048.576"
+            },
+            {
+              "type": "text",
+              "text": ").   * Die binäre Suche findet den gesuchten Datensatz in nur 20 Schritten statt einer Million Vergleiche "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Faktor 50.000 schneller!"
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

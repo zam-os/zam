@@ -65,9 +65,169 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das Bruttoinlandsprodukt (BIP), seine drei Berechnungsmethoden in der VGR und die Grenzen des BIP als Wohlstandsindikator: 1. **Definition des Bruttoinlandsprodukts (BIP)**:   * Der Marktwert aller **Endprodukte (Waren und Dienstleistungen)**, die in einem Land (Inlandskonzept) innerhalb eines Jahres für den Endverbrauch hergestellt wurden.   * Unterschied zum Bruttonationaleinkommen (BNE / Inländerkonzept: Wohnsitz der Wirtschaftssubjekte), 2. **Die drei Berechnungswege der VGR (Identität)**:   * **1. Entstehungsrechnung**: Produktionswert $-$ Vorleistungen $=$ Bruttowertschöpfung $+$ Gütersteuern $-$ Gütersubventionen $=$ **BIP**.   * **2. Verwendungsrechnung**: $BIP = C_{\\text{privat}} + C_{\\text{Staat}} + I_{\\text{Brutto}} + (X - M)$ (Konsumausgaben der privaten Haushalte $+$ staatliche Konsumausgaben $+$ Bruttoinvestitionen $+$ Außenbeitrag [Exporte $-$ Importe]).   * **3. Verteilungsrechnung**: Volkseinkommen $=$ Arbeitnehmerentgelt $+$ Unternehmens- und Vermögenseinkommen, 3. **Grenzen des BIP als Wohlstands- und Lebensqualitätsmaß**:   * Nicht erfasste Leistungen: Hausarbeit, Kindererziehung, Pflege von Angehörigen, Ehrenamt, Schattenwirtschaft / Schwarzarbeit.   * 'Reparaturkosten' steigern das BIP: Verkehrsunfälle, Naturkatastrophen, Umweltverschmutzung und Krankheit erhöhen das BIP durch Wiederaufbau- und Behandlungskosten (*Defensivausgaben*).   * Keine Aussage über **Einkommens- und Vermögensverteilung** (Gini-Koeffizient) oder Ressourcenverbrauch / ökologische Nachhaltigkeit (Alternative: *Human Development Index HDI* oder *Nationaler Wohlfahrtsindex NWI*).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das Bruttoinlandsprodukt (BIP), seine drei Berechnungsmethoden in der VGR und die Grenzen des BIP als Wohlstandsindikator: 1. Definition des Bruttoinlandsprodukts (BIP):   * Der Marktwert aller Endprodukte (Waren und Dienstleistungen), die in einem Land (Inlandskonzept) innerhalb eines Jahres für den Endverbrauch hergestellt wurden.   * Unterschied zum Bruttonationaleinkommen (BNE / Inländerkonzept: Wohnsitz der Wirtschaftssubjekte), 2. Die drei Berechnungswege der VGR (Identität):   * 1. Entstehungsrechnung: Produktionswert "
+            },
+            {
+              "type": "math",
+              "tex": "-",
+              "speech": "minus"
+            },
+            {
+              "type": "text",
+              "text": " Vorleistungen "
+            },
+            {
+              "type": "math",
+              "tex": "=",
+              "speech": "gleich"
+            },
+            {
+              "type": "text",
+              "text": " Bruttowertschöpfung "
+            },
+            {
+              "type": "math",
+              "tex": "+",
+              "speech": "plus"
+            },
+            {
+              "type": "text",
+              "text": " Gütersteuern "
+            },
+            {
+              "type": "math",
+              "tex": "-",
+              "speech": "minus"
+            },
+            {
+              "type": "text",
+              "text": " Gütersubventionen "
+            },
+            {
+              "type": "math",
+              "tex": "=",
+              "speech": "gleich"
+            },
+            {
+              "type": "text",
+              "text": " BIP.   * 2. Verwendungsrechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "BIP = C_{\\text{privat}} + C_{\\text{Staat}} + I_{\\text{Brutto}} + (X - M)",
+              "speech": "B I P gleich C privat plus C Staat plus I Brutto plus Klammer auf X minus M Klammer zu"
+            },
+            {
+              "type": "text",
+              "text": " (Konsumausgaben der privaten Haushalte "
+            },
+            {
+              "type": "math",
+              "tex": "+",
+              "speech": "plus"
+            },
+            {
+              "type": "text",
+              "text": " staatliche Konsumausgaben "
+            },
+            {
+              "type": "math",
+              "tex": "+",
+              "speech": "plus"
+            },
+            {
+              "type": "text",
+              "text": " Bruttoinvestitionen "
+            },
+            {
+              "type": "math",
+              "tex": "+",
+              "speech": "plus"
+            },
+            {
+              "type": "text",
+              "text": " Außenbeitrag [Exporte "
+            },
+            {
+              "type": "math",
+              "tex": "-",
+              "speech": "minus"
+            },
+            {
+              "type": "text",
+              "text": " Importe]).   * 3. Verteilungsrechnung: Volkseinkommen "
+            },
+            {
+              "type": "math",
+              "tex": "=",
+              "speech": "gleich"
+            },
+            {
+              "type": "text",
+              "text": " Arbeitnehmerentgelt "
+            },
+            {
+              "type": "math",
+              "tex": "+",
+              "speech": "plus"
+            },
+            {
+              "type": "text",
+              "text": " Unternehmens- und Vermögenseinkommen, 3. Grenzen des BIP als Wohlstands- und Lebensqualitätsmaß:   * Nicht erfasste Leistungen: Hausarbeit, Kindererziehung, Pflege von Angehörigen, Ehrenamt, Schattenwirtschaft / Schwarzarbeit.   * 'Reparaturkosten' steigern das BIP: Verkehrsunfälle, Naturkatastrophen, Umweltverschmutzung und Krankheit erhöhen das BIP durch Wiederaufbau- und Behandlungskosten (Defensivausgaben).   * Keine Aussage über Einkommens- und Vermögensverteilung (Gini-Koeffizient) oder Ressourcenverbrauch / ökologische Nachhaltigkeit (Alternative: Human Development Index HDI oder Nationaler Wohlfahrtsindex NWI)."
+            }
+          ],
           "concept": "VGR 11: BIP-Definition (Inlandskonzept); Nominales vs. Reales BIP; 3 Berechnungswege (Entstehung, Verwendung [C_priv + C_staat + I + (X - M)], Verteilung); Wohlfahrtskritik am BIP (fehlende Hausarbeit/Ehrenamt, Defensivausgaben erhöhen BIP, keine Verteilungsaussage, Umweltverbrauch).",
-          "sample_solution": "1. Definition und Systematik des BIP in der VGR: - **Bruttoinlandsprodukt (BIP)**: Misst die gesamte wirtschaftliche Leistung einer Volkswirtschaft nach dem **Inlandskonzept** (alle im geografischen Inland erwirtschafteten Werte, unabhängig von der Nationalität des Erzeugers). - **Nominales vs. Reales BIP**:   $$\\mathbf{\\text{Reales BIP} = \\frac{\\text{Nominales BIP}}{\\text{BIP-Deflator / Preisindex}} \\cdot 100}$$   * Das reale BIP eliminiert rein preisbedingte Inflationseffekte und spiegelt das tatsächliche physische Mengenwachstum wider. 2. Die drei Berechnungswege der Volkswirtschaftlichen Gesamtrechnung: ```mermaid graph TD   A[BIP Gesamtwert] --> B[1. Entstehungsrechnung: Wo entsteht Wertschöpfung?]   A --> C[2. Verwendungsrechnung: Wofür wird Geld ausgegeben?]   A --> D[3. Verteilungsrechnung: Wie wird Einkommen aufgeteilt?]   B --> B1[Produktionswert minus Vorleistungen = Bruttowertschöpfung + Gütersteuern - Subventionen]   C --> C1[Privater Konsum C + Staatskonsum G + Bruttoinvestitionen I + Außenbeitrag Exporte - Importe]   D --> D1[Arbeitnehmerentgelt Löhne/Gehälter + Unternehmens- und Vermögenseinkommen = Volkseinkommen] ``` 3. Fundamentale Kritik am BIP als Wohlstands- und Lebensqualitätsmaß: - **1. Gravierende Erfassungslücken**:   * Das BIP erfasst nur marktvermittelte monetäre Transaktionen. Wertvolle gesellschaftliche Leistungen wie **Hausarbeit, Kindererziehung, häusliche Altenpflege und ehrenamtliche Tätigkeiten** (ohne die keine Gesellschaft existieren kann) fließen mit $0\\,€$ in das BIP ein. - **2. Das Paradoxon der Defensivausgaben (Reparaturkosten)**:   * Zerstörerische Ereignisse steigern das BIP: Ein schwerer Autounfall, ein Tankerunfall mit Ölverseuchung oder der Wiederaufbau nach einer Flutkatastrophe kurbeln Werkstätten, Kliniken, Aufräumfirmen und Bauindustrie an $\\implies$ Das BIP wächst, obwohl realer Wohlstand vernichtet wurde. - **3. Ignorieren von Verteilungsgerechtigkeit**:   * Ein rasant steigendes BIP sagt nichts darüber aus, ob der Zuwachs der breiten Bevölkerung zugutekommt oder sich bei den obersten $1\\%$ der Vermögenden konzentriert. - **4. Ökologische Blindheit**:   * Raubbau an endlichen Rohstoffen und die Zerstörung des Weltklimas werden im BIP als positiver Ertrag verbucht, während die gigantischen Folgekosten für künftige Generationen nicht als Verlust bilanziert werden $\\implies$ Notwendigkeit ganzheitlicher Indikatoren wie dem **Human Development Index (HDI)**."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Definition und Systematik des BIP in der VGR: - Bruttoinlandsprodukt (BIP): Misst die gesamte wirtschaftliche Leistung einer Volkswirtschaft nach dem Inlandskonzept (alle im geografischen Inland erwirtschafteten Werte, unabhängig von der Nationalität des Erzeugers). - Nominales vs. Reales BIP:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Reales BIP} = \\frac{\\text{Nominales BIP}}{\\text{BIP-Deflator / Preisindex}} \\cdot 100}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Das reale BIP eliminiert rein preisbedingte Inflationseffekte und spiegelt das tatsächliche physische Mengenwachstum wider. 2. Die drei Berechnungswege der Volkswirtschaftlichen Gesamtrechnung: ```mermaid graph TD   A[BIP Gesamtwert] --> B[1. Entstehungsrechnung: Wo entsteht Wertschöpfung?]   A --> C[2. Verwendungsrechnung: Wofür wird Geld ausgegeben?]   A --> D[3. Verteilungsrechnung: Wie wird Einkommen aufgeteilt?]   B --> B1[Produktionswert minus Vorleistungen = Bruttowertschöpfung + Gütersteuern - Subventionen]   C --> C1[Privater Konsum C + Staatskonsum G + Bruttoinvestitionen I + Außenbeitrag Exporte - Importe]   D --> D1[Arbeitnehmerentgelt Löhne/Gehälter + Unternehmens- und Vermögenseinkommen = Volkseinkommen] ``` 3. Fundamentale Kritik am BIP als Wohlstands- und Lebensqualitätsmaß: - 1. Gravierende Erfassungslücken:   * Das BIP erfasst nur marktvermittelte monetäre Transaktionen. Wertvolle gesellschaftliche Leistungen wie Hausarbeit, Kindererziehung, häusliche Altenpflege und ehrenamtliche Tätigkeiten (ohne die keine Gesellschaft existieren kann) fließen mit "
+            },
+            {
+              "type": "math",
+              "tex": "0\\,€"
+            },
+            {
+              "type": "text",
+              "text": " in das BIP ein. - 2. Das Paradoxon der Defensivausgaben (Reparaturkosten):   * Zerstörerische Ereignisse steigern das BIP: Ein schwerer Autounfall, ein Tankerunfall mit Ölverseuchung oder der Wiederaufbau nach einer Flutkatastrophe kurbeln Werkstätten, Kliniken, Aufräumfirmen und Bauindustrie an "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Das BIP wächst, obwohl realer Wohlstand vernichtet wurde. - 3. Ignorieren von Verteilungsgerechtigkeit:   * Ein rasant steigendes BIP sagt nichts darüber aus, ob der Zuwachs der breiten Bevölkerung zugutekommt oder sich bei den obersten "
+            },
+            {
+              "type": "math",
+              "tex": "1\\%"
+            },
+            {
+              "type": "text",
+              "text": " der Vermögenden konzentriert. - 4. Ökologische Blindheit:   * Raubbau an endlichen Rohstoffen und die Zerstörung des Weltklimas werden im BIP als positiver Ertrag verbucht, während die gigantischen Folgekosten für künftige Generationen nicht als Verlust bilanziert werden "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Notwendigkeit ganzheitlicher Indikatoren wie dem Human Development Index (HDI)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +288,144 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das geldpolitische Instrumentarium der EZB, das Magische Viereck und den wirtschaftspolitischen Theorienstreit: 1. **Die Europäische Zentralbank (EZB) & Geldpolitik**:   * **Oberstes Ziel**: Preisstabilität ($2\\%$ HVPI mittelfristig).   * **Unabhängigkeit**: Institutionell, finanziell, personell und funktionell von Regierungen entkoppelt.   * **Die 3 Zinsinstrumente (Zinskorridor)**:     - **Hauptrefinanzierungssatz**: Leitzins für wöchentliche Kredite an Geschäftsbanken.     - **Spitzenrefinanzierungsfazilität**: Obergrenze (Über-Nacht-Kredit).     - **Einlagefazilität**: Untergrenze (Zins für Über-Nacht-Einlagen der Banken bei der EZB).   * **Restriktive Geldpolitik (Zinserhöhung)**: Verteuert Kredite $\\implies$ dämpft Investitionen und Konsum $\\implies$ senkt Inflation.   * **Expansive Geldpolitik (Zinssenkung / QE)**: Verbilligt Kredite $\\implies$ kurbelt Konjunktur an, 2. **Das Magische Viereck des Stabilitätsgesetzes 1967**:   * 1. Preisniveaustabilität, 2. Hoher Beschäftigungsstand (Vollbeschäftigung), 3. Außenwirtschaftliches Gleichgewicht, 4. Angemessenes und stetiges Wirtschaftswachstum.   * 'Magisch', weil **Zielkonflikte** bestehen (z. B. Phillips-Kurve: Zielkonflikt zwischen Inflation und Arbeitslosigkeit), 3. **Wirtschaftspolitischer Theorienstreit**:   * **Nachfrageorientierung (Keynesianismus / John Maynard Keynes)**: Staat muss in der Rezession durch kreditfinanzierte Mehrausgaben (*Deficit Spending*) die Gesamtnachfrage stützen und im Boom sparen (*Antizyklische Fiskalpolitik*).   * **Angebotsorientierung (Monetarismus / Milton Friedman)**: Staat soll sich heraushalten; Verbesserung der Rahmenbedingungen für Unternehmen durch Steuersenkungen, Deregulierung, Flexibilisierung des Arbeitsmarktes und stetiges Geldmengenwachstum.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das geldpolitische Instrumentarium der EZB, das Magische Viereck und den wirtschaftspolitischen Theorienstreit: 1. Die Europäische Zentralbank (EZB) & Geldpolitik:   * Oberstes Ziel: Preisstabilität ("
+            },
+            {
+              "type": "math",
+              "tex": "2\\%",
+              "speech": "2 Prozent"
+            },
+            {
+              "type": "text",
+              "text": " HVPI mittelfristig).   * Unabhängigkeit: Institutionell, finanziell, personell und funktionell von Regierungen entkoppelt.   * Die 3 Zinsinstrumente (Zinskorridor):     - Hauptrefinanzierungssatz: Leitzins für wöchentliche Kredite an Geschäftsbanken.     - Spitzenrefinanzierungsfazilität: Obergrenze (Über-Nacht-Kredit).     - Einlagefazilität: Untergrenze (Zins für Über-Nacht-Einlagen der Banken bei der EZB).   * Restriktive Geldpolitik (Zinserhöhung): Verteuert Kredite "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " dämpft Investitionen und Konsum "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " senkt Inflation.   * Expansive Geldpolitik (Zinssenkung / QE): Verbilligt Kredite "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " kurbelt Konjunktur an, 2. Das Magische Viereck des Stabilitätsgesetzes 1967:   * 1. Preisniveaustabilität, 2. Hoher Beschäftigungsstand (Vollbeschäftigung), 3. Außenwirtschaftliches Gleichgewicht, 4. Angemessenes und stetiges Wirtschaftswachstum.   * 'Magisch', weil Zielkonflikte bestehen (z. B. Phillips-Kurve: Zielkonflikt zwischen Inflation und Arbeitslosigkeit), 3. Wirtschaftspolitischer Theorienstreit:   * Nachfrageorientierung (Keynesianismus / John Maynard Keynes): Staat muss in der Rezession durch kreditfinanzierte Mehrausgaben (Deficit Spending) die Gesamtnachfrage stützen und im Boom sparen (Antizyklische Fiskalpolitik).   * Angebotsorientierung (Monetarismus / Milton Friedman): Staat soll sich heraushalten; Verbesserung der Rahmenbedingungen für Unternehmen durch Steuersenkungen, Deregulierung, Flexibilisierung des Arbeitsmarktes und stetiges Geldmengenwachstum."
+            }
+          ],
           "concept": "Geld- & Fiskalpolitik 11: EZB (Ziel Preisstabilität 2%, Leitzinsen, Einlagefazilität, restriktiv vs. expansiv); Magisches Viereck (Stabilitätsgesetz 1967 & Zielkonflikte); Keynesianismus (Nachfragepolitik, antizyklische Fiskalpolitik, Deficit Spending) vs. Monetarismus/Angebotsökonomie (Deregulierung, Steuersenkung).",
-          "sample_solution": "1. Die Geldpolitik des Eurosystems (EZB): - **Vorrangiges Mandat (Art. 127 AEUV)**: Gewährleistung der **Preisstabilität** im Euroraum (symmetrisches Inflationsziel von **$2\\%$ mittelfristig**). - **Das zinspolitische Instrumentarium**:   * **1. Hauptrefinanzierungsinstrument (Leitzins)**: Wöchentliche Zuteilung von Zentralbankgeld an Geschäftsbanken gegen Sicherheiten.   * **2. Spitzenrefinanzierungsfazilität (Zinsobergrenze)**: Ermöglicht Banken kurzfristige Übernacht-Liquidität zu einem höheren Zinssatz.   * **3. Einlagefazilität (Zinsuntergrenze)**: Verzinsung von Überschussreserven, die Banken über Nacht bei der Zentralbank parken. - **Wirkungskette der Geldpolitik (Transmissionsmechanismus)**:   * **Inflationsbekämpfung (Restriktive Geldpolitik)**: EZB erhöht die Leitzinsen $\\implies$ Kredite für Unternehmen und Verbraucher verteuern sich, Sparen wird attraktiver $\\implies$ Investitionen und Konsum sinken $\\implies$ Gesamtwirtschaftliche Nachfrage kühlt ab $\\implies$ Preisanstieg verlangsamt sich. 2. Das 'Magische Viereck' (Stabilitäts- und Wachstumsgesetz von 1967): - Definiert die 4 gesamtwirtschaftlichen Hauptziele der staatlichen Wirtschaftspolitik in Deutschland:   1. **Stabiles Preisniveau** (Inflationsrate nahe $2\\%$).   2. **Hoher Beschäftigungsstand** (Arbeitslosenquote $< 3-4\\%$).   3. **Außenwirtschaftliches Gleichgewicht** (Leistungsbilanzsaldo nahe $0$).   4. **Stetiges und angemessenes Wirtschaftswachstum** (reales BIP-Wachstum ca. $2-3\\%$). - **Zielkonflikte ('Magie')**: Die Ziele lassen sich nie alle gleichzeitig maximieren:   * *Konflikt Wachstum/Beschäftigung vs. Preisstabilität*: Konjunkturboom führt zu Fachkräftemangel und steigenden Löhnen $\\implies$ Lohn-Preis-Spirale $\\implies$ Inflation steigt (*Phillips-Kurve*). 3. Der große wirtschaftspolitische Richtungsstreit: | Kriterium | Nachfrageorientierung (Keynesianismus) | Angebotsorientierung (Monetarismus / Neoliberalismus) | | :--- | :--- | :--- | | **Hauptvertreter** | **John Maynard Keynes** (1936) | **Milton Friedman**, Arthur Laffer (Chicago School) | | **Grundüberzeugung** | Der Markt ist instabil (Gleichgewicht bei Unterbeschäftigung); Nachfrage bestimmt das Angebot | Der Markt ist grundsätzlich selbstregulierend und stabil; Angebot schafft sich seine Nachfrage (Saysches Theorem) | | **Rolle des Staates** | **Aktiver Staat**: Antizyklische Fiskalpolitik (In der Krise: Steuern senken, schuldenfinanzierte Staatsinvestitionen [**Deficit Spending**]; im Boom: Steuern erhöhen, Kredite tilgen) | **Schlanker Staat**: Staatliche Eingriffe verzerren den Markt (*Staatsversagen*). Staat soll sich auf Ordnungspolitik beschränken | | **Zentrale Maßnahmen** | Konjunkturpakete, Konsumgutscheine, staatliche Infrastrukturprogramme, Mindestlöhne | Steuersenkungen für Unternehmen, Bürokratieabbau, Deregulierung, Privatisierung, Lohnflexibilisierung | | **Kritik & Schwachstellen** | *Time Lags* (Wirkungsverzögerungen führen zu prozyklischer Verschlimmerung), unkontrollierbare Staatsverschuldung (*Schuldenfalle*) | Vernachlässigung der sozialen Gerechtigkeit, Gefahr von Dumpinglöhnen und Nachfrageeinbrüchen |"
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Geldpolitik des Eurosystems (EZB): - Vorrangiges Mandat (Art. 127 AEUV): Gewährleistung der Preisstabilität im Euroraum (symmetrisches Inflationsziel von "
+            },
+            {
+              "type": "math",
+              "tex": "2\\%"
+            },
+            {
+              "type": "text",
+              "text": " mittelfristig). - Das zinspolitische Instrumentarium:   * 1. Hauptrefinanzierungsinstrument (Leitzins): Wöchentliche Zuteilung von Zentralbankgeld an Geschäftsbanken gegen Sicherheiten.   * 2. Spitzenrefinanzierungsfazilität (Zinsobergrenze): Ermöglicht Banken kurzfristige Übernacht-Liquidität zu einem höheren Zinssatz.   * 3. Einlagefazilität (Zinsuntergrenze): Verzinsung von Überschussreserven, die Banken über Nacht bei der Zentralbank parken. - Wirkungskette der Geldpolitik (Transmissionsmechanismus):   * Inflationsbekämpfung (Restriktive Geldpolitik): EZB erhöht die Leitzinsen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Kredite für Unternehmen und Verbraucher verteuern sich, Sparen wird attraktiver "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Investitionen und Konsum sinken "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Gesamtwirtschaftliche Nachfrage kühlt ab "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Preisanstieg verlangsamt sich. 2. Das 'Magische Viereck' (Stabilitäts- und Wachstumsgesetz von 1967): - Definiert die 4 gesamtwirtschaftlichen Hauptziele der staatlichen Wirtschaftspolitik in Deutschland:   1. Stabiles Preisniveau (Inflationsrate nahe "
+            },
+            {
+              "type": "math",
+              "tex": "2\\%"
+            },
+            {
+              "type": "text",
+              "text": ").   2. Hoher Beschäftigungsstand (Arbeitslosenquote "
+            },
+            {
+              "type": "math",
+              "tex": "< 3-4\\%"
+            },
+            {
+              "type": "text",
+              "text": ").   3. Außenwirtschaftliches Gleichgewicht (Leistungsbilanzsaldo nahe "
+            },
+            {
+              "type": "math",
+              "tex": "0"
+            },
+            {
+              "type": "text",
+              "text": ").   4. Stetiges und angemessenes Wirtschaftswachstum (reales BIP-Wachstum ca. "
+            },
+            {
+              "type": "math",
+              "tex": "2-3\\%"
+            },
+            {
+              "type": "text",
+              "text": "). - Zielkonflikte ('Magie'): Die Ziele lassen sich nie alle gleichzeitig maximieren:   * Konflikt Wachstum/Beschäftigung vs. Preisstabilität: Konjunkturboom führt zu Fachkräftemangel und steigenden Löhnen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Lohn-Preis-Spirale "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Inflation steigt (Phillips-Kurve). 3. Der große wirtschaftspolitische Richtungsstreit: | Kriterium | Nachfrageorientierung (Keynesianismus) | Angebotsorientierung (Monetarismus / Neoliberalismus) | | :--- | :--- | :--- | | Hauptvertreter | John Maynard Keynes (1936) | Milton Friedman, Arthur Laffer (Chicago School) | | Grundüberzeugung | Der Markt ist instabil (Gleichgewicht bei Unterbeschäftigung); Nachfrage bestimmt das Angebot | Der Markt ist grundsätzlich selbstregulierend und stabil; Angebot schafft sich seine Nachfrage (Saysches Theorem) | | Rolle des Staates | Aktiver Staat: Antizyklische Fiskalpolitik (In der Krise: Steuern senken, schuldenfinanzierte Staatsinvestitionen [Deficit Spending]; im Boom: Steuern erhöhen, Kredite tilgen) | Schlanker Staat: Staatliche Eingriffe verzerren den Markt (Staatsversagen). Staat soll sich auf Ordnungspolitik beschränken | | Zentrale Maßnahmen | Konjunkturpakete, Konsumgutscheine, staatliche Infrastrukturprogramme, Mindestlöhne | Steuersenkungen für Unternehmen, Bürokratieabbau, Deregulierung, Privatisierung, Lohnflexibilisierung | | Kritik & Schwachstellen | Time Lags (Wirkungsverzögerungen führen zu prozyklischer Verschlimmerung), unkontrollierbare Staatsverschuldung (Schuldenfalle) | Vernachlässigung der sozialen Gerechtigkeit, Gefahr von Dumpinglöhnen und Nachfrageeinbrüchen |"
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

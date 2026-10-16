@@ -65,9 +65,72 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre die endogenen Kräfte und tektonischen Prozesse in Europa: 1. **Die Theorie der Plattentektonik**: Die Erdkruste (Lithosphäre) besteht aus starren Platten, die auf der zähflüssigen Asthenosphäre durch Konvektionsströme driften, 2. **Konvergierende Plattengrenzen (Kollision & Subduktion) im Mittelmeerraum**: Die Afrikanische Platte schiebt sich nach Norden unter die Eurasische Platte $\\rightarrow$ Faltung der Alpen, Aufschmelzen von Krustengestein zu zähflüssigem Magma $\\rightarrow$ **explosiver Schichtvulkanismus (Vesuv, Santorin, Ätna)** und schwere Erdbeben, 3. **Divergierende Plattengrenzen (Spreading / Ozeanbodenspreizung) in Island**: Die Nordamerikanische und Eurasische Platte driften auf dem **Mittelatlantischen Rücken** auseinander (ca. 2 cm/Jahr) $\\rightarrow$ dünnflüssiges Basaltmagma quillt auf $\\rightarrow$ **Schildvulkane, Spalteneruptionen und Geysire**.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Erkläre die endogenen Kräfte und tektonischen Prozesse in Europa: 1. Die Theorie der Plattentektonik: Die Erdkruste (Lithosphäre) besteht aus starren Platten, die auf der zähflüssigen Asthenosphäre durch Konvektionsströme driften, 2. Konvergierende Plattengrenzen (Kollision & Subduktion) im Mittelmeerraum: Die Afrikanische Platte schiebt sich nach Norden unter die Eurasische Platte "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Faltung der Alpen, Aufschmelzen von Krustengestein zu zähflüssigem Magma "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " explosiver Schichtvulkanismus (Vesuv, Santorin, Ätna) und schwere Erdbeben, 3. Divergierende Plattengrenzen (Spreading / Ozeanbodenspreizung) in Island: Die Nordamerikanische und Eurasische Platte driften auf dem Mittelatlantischen Rücken auseinander (ca. 2 cm/Jahr) "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " dünnflüssiges Basaltmagma quillt auf "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Schildvulkane, Spalteneruptionen und Geysire."
+            }
+          ],
           "concept": "Plattentektonik Europa: 1. Subduktion Afrika unter Eurasien -> Faltung Alpen, Schichtvulkane (Vesuv, Ätna), Erdbeben; 2. Divergenz Island (Mittelatlantischer Rücken) -> Schildvulkane, Spalteneruptionen, Geysire.",
-          "sample_solution": "1. Grundmodell der Plattentektonik in Europa: - Die feste Gesteinskruste (Lithosphäre) schwimmt auf dem heißen, verformbaren oberen Erdmantel (Asthenosphäre). Durch gewaltige thermische **Konvektionsströme** bewegen sich die Kontinental- und Ozeanplatten mit wenigen Zentimetern pro Jahr. 2. Der Mittelmeerraum (Konvergierende Plattengrenze & Subduktionszone): - **Tektonischer Vorgang**: Die **Afrikanische Platte** driftet nach Norden und kollidiert mit der **Eurasischen Kontinentalplatte**. - **Folgen**:   * **Gebirgsbildung (Orogenese)**: Anhebung und Faltung der großen europäischen Faltengebirge (**Alpen, Pyrenäen, Apennin, Karpaten**).   * **Subduktion**: Der ozeanische Teil der afrikanischen Lithosphäre taucht unter den südeuropäischen Kontinentalrand in die Tiefe ab und wird bei über $1000^\\circ\\text{ C}$ aufgeschmolzen.   * **Explosiver Vulkanismus**: Das wasser- und gasreiche, zähflüssige Magma steigt auf und führt zu verheerenden explosiven Ausbrüchen von **Schichtvulkanen (Stratovulkanen wie Vesuv, Vulcano, Stromboli, Ätna)**.   * **Erdbebengefahr**: Durch das Verhaken der Platten bauen sich enorme Spannungen auf, die sich in schweren Erdbeben entladen (z. B. in Mittelitalien, Griechenland, Türkei). 3. Island (Divergierende Plattengrenze / Hotspot): - **Tektonischer Vorgang**: Island liegt direkt auf dem **Mittelatlantischen Rücken**, wo die **Nordamerikanische Platte** und die **Eurasische Platte** um ca. $2\\text{ cm}$ pro Jahr **auseinanderdriften (Seafloor Spreading)**. Zusätzlich liegt darunter ein heißer Mantelplume (**Hotspot**). - **Folgen**:   * Im Dehnungsriss steigt dünnflüssiges, heißes Basaltmagma aus dem Erdmantel empor.   * Typisch sind **effusive (ruhige) Spalteneruptionen**, riesige Lavafelder und flach geneigte **Schildvulkane**.   * Reichhaltige **Geothermie**: Nutzung von Heißwasser zur Strom- und Wärmeerzeugung; spektakuläre Geysire und Fumarolen."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Grundmodell der Plattentektonik in Europa: - Die feste Gesteinskruste (Lithosphäre) schwimmt auf dem heißen, verformbaren oberen Erdmantel (Asthenosphäre). Durch gewaltige thermische Konvektionsströme bewegen sich die Kontinental- und Ozeanplatten mit wenigen Zentimetern pro Jahr. 2. Der Mittelmeerraum (Konvergierende Plattengrenze & Subduktionszone): - Tektonischer Vorgang: Die Afrikanische Platte driftet nach Norden und kollidiert mit der Eurasischen Kontinentalplatte. - Folgen:   * Gebirgsbildung (Orogenese): Anhebung und Faltung der großen europäischen Faltengebirge (Alpen, Pyrenäen, Apennin, Karpaten).   * Subduktion: Der ozeanische Teil der afrikanischen Lithosphäre taucht unter den südeuropäischen Kontinentalrand in die Tiefe ab und wird bei über "
+            },
+            {
+              "type": "math",
+              "tex": "1000^\\circ\\text{ C}"
+            },
+            {
+              "type": "text",
+              "text": " aufgeschmolzen.   * Explosiver Vulkanismus: Das wasser- und gasreiche, zähflüssige Magma steigt auf und führt zu verheerenden explosiven Ausbrüchen von Schichtvulkanen (Stratovulkanen wie Vesuv, Vulcano, Stromboli, Ätna).   * Erdbebengefahr: Durch das Verhaken der Platten bauen sich enorme Spannungen auf, die sich in schweren Erdbeben entladen (z. B. in Mittelitalien, Griechenland, Türkei). 3. Island (Divergierende Plattengrenze / Hotspot): - Tektonischer Vorgang: Island liegt direkt auf dem Mittelatlantischen Rücken, wo die Nordamerikanische Platte und die Eurasische Platte um ca. "
+            },
+            {
+              "type": "math",
+              "tex": "2\\text{ cm}"
+            },
+            {
+              "type": "text",
+              "text": " pro Jahr auseinanderdriften (Seafloor Spreading). Zusätzlich liegt darunter ein heißer Mantelplume (Hotspot). - Folgen:   * Im Dehnungsriss steigt dünnflüssiges, heißes Basaltmagma aus dem Erdmantel empor.   * Typisch sind effusive (ruhige) Spalteneruptionen, riesige Lavafelder und flach geneigte Schildvulkane.   * Reichhaltige Geothermie: Nutzung von Heißwasser zur Strom- und Wärmeerzeugung; spektakuläre Geysire und Fumarolen."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +191,118 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die klimatischen Differenzierungen Europas und die Grundpfeiler der Europäischen Union: 1. **Die 3 Klimabestimmenden Faktoren Europas**:   * **Geographische Breite**: Mäßige Temperaturen durch Lage in der gemischten/gemäßigten Zone.   * **Golfstrom / Nordatlantikstrom**: Transportiert warmes Äquatorwasser nach Nordeuropa $\\rightarrow$ bis zu $10^\\circ\\text{ C}$ mildere Winter als auf gleicher Breite in Nordamerika/Sibirien.   * **Westwindzone**: Feuchte Atlantikluftmassen bringen ganzjährige Niederschläge, 2. **Der Übergang vom Maritimen zum Kontinentalen Klima**:   * *Maritimes / Ozeanisches Klima (Westeuropa/Irland)*: Geringe Jahrestemperaturschwankung (kühle Sommer, milde frostfreie Winter), hohe ganzjährige Niederschläge.   * *Kontinentales Klima (Osteuropa/Polen/Russland)*: Hohe Jahrestemperaturamplitude (heiße Sommer, extrem frostig-kalte Winter), Niederschlagsmaximum im Sommer, 3. **Die Europäische Union (EU) & der Binnenmarkt**: Die **4 Grundfreiheiten** (freier Waren-, Personen-, Dienstleistungs- und Kapitalverkehr) und Abbau von Disparitäten.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die klimatischen Differenzierungen Europas und die Grundpfeiler der Europäischen Union: 1. Die 3 Klimabestimmenden Faktoren Europas:   * Geographische Breite: Mäßige Temperaturen durch Lage in der gemischten/gemäßigten Zone.   * Golfstrom / Nordatlantikstrom: Transportiert warmes Äquatorwasser nach Nordeuropa "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " bis zu "
+            },
+            {
+              "type": "math",
+              "tex": "10^\\circ\\text{ C}",
+              "speech": "10 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": " mildere Winter als auf gleicher Breite in Nordamerika/Sibirien.   * Westwindzone: Feuchte Atlantikluftmassen bringen ganzjährige Niederschläge, 2. Der Übergang vom Maritimen zum Kontinentalen Klima:   * Maritimes / Ozeanisches Klima (Westeuropa/Irland): Geringe Jahrestemperaturschwankung (kühle Sommer, milde frostfreie Winter), hohe ganzjährige Niederschläge.   * Kontinentales Klima (Osteuropa/Polen/Russland): Hohe Jahrestemperaturamplitude (heiße Sommer, extrem frostig-kalte Winter), Niederschlagsmaximum im Sommer, 3. Die Europäische Union (EU) & der Binnenmarkt: Die 4 Grundfreiheiten (freier Waren-, Personen-, Dienstleistungs- und Kapitalverkehr) und Abbau von Disparitäten."
+            }
+          ],
           "concept": "Europa-Klima: Golfstrom (milde Winter), Westwindzone; Wandel von maritim (geringe Amplitude, mild/feucht) zu kontinental (hohe Amplitude, eisig/sommerheiß); EU: 4 Grundfreiheiten im Binnenmarkt.",
-          "sample_solution": "1. Die klimatischen Steuerungsfaktoren Europas: - **1. Lage in der Westwindzone**:   * Europa liegt im Einflussbereich der planetarischen Westwinddrift, die feucht-milde Luftmassen vom Atlantischen Ozean ungehindert über den flachen mitteleuropäischen Raum transportiert. - **2. Der Wärmetransport durch den Nordatlantikstrom (Golfstrom)**:   * Wirkt als globale Fernheizung: Westeuropäische Küstenregionen (z. B. Großbritannien, Norwegen) weisen im Winter um bis zu **$5–10^\\circ\\text{ C}$ höhere Durchschnittstemperaturen** auf als Gebiete auf gleicher geographischer Breite in Kanada oder Ostasien. 2. Der West-Ost-Klimawandel (Maritim vs. Kontinental): - Je weiter man sich vom Atlantik nach Osten ins Innere des eurasischen Kontinents bewegt, desto stärker verliert das Meer seine puffernde Wirkung: | Merkmal | Maritimes / Seeklima (z. B. Dublin, Brest) | Übergangsklima (z. B. München, Berlin) | Kontinentalklima (z. B. Warschau, Moskau) | | :--- | :--- | :--- | :--- | | **Sommer** | Mäßig warm ($16–18^\\circ\\text{ C}$) | Angenehm warm ($18–20^\\circ\\text{ C}$) | Heiß ($> 22^\\circ\\text{ C}$) | | **Winter** | Sehr mild ($> 4^\\circ\\text{ C}$, selten Schnee) | Kalt (um $0^\\circ\\text{ C}$) | Sehr kalt, eisig ($< -5^\\circ\\text{ C}$) | | **Temperaturamplitude** | **Gering** ($< 15^\\circ\\text{ C}$) | Mittel ($ca. 18–20^\\circ\\text{ C}$) | **Extrem hoch** ($> 25–30^\\circ\\text{ C}$) | | **Niederschläge** | Ganzjährig hoch, Maximum Herbst/Winter | Ausgewogen | Geringer, Maximum im Sommer | 3. Die Europäische Union und der europäische Binnenmarkt: - **Der EU-Binnenmarkt** garantiert die **vier fundamentalen Grundfreiheiten**:   * **1. Freier Warenverkehr**: Keine Zölle oder Importbeschränkungen zwischen den 27 Mitgliedsstaaten.   * **2. Freier Personenverkehr (Schengener Abkommen)**: EU-Bürger dürfen in jedem EU-Land ohne Grenzkontrollen reisen, wohnen, studieren und arbeiten.   * **3. Freier Dienstleistungsverkehr**: Unternehmen können grenzüberschreitend Aufträge ausführen.   * **4. Freier Kapitalverkehr**: Ungehinderte Investitionen und Überweisungen in ganz Europa (gestärkt durch den **Euro** als Gemeinschaftswährung)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die klimatischen Steuerungsfaktoren Europas: - 1. Lage in der Westwindzone:   * Europa liegt im Einflussbereich der planetarischen Westwinddrift, die feucht-milde Luftmassen vom Atlantischen Ozean ungehindert über den flachen mitteleuropäischen Raum transportiert. - 2. Der Wärmetransport durch den Nordatlantikstrom (Golfstrom):   * Wirkt als globale Fernheizung: Westeuropäische Küstenregionen (z. B. Großbritannien, Norwegen) weisen im Winter um bis zu "
+            },
+            {
+              "type": "math",
+              "tex": "5–10^\\circ\\text{ C}"
+            },
+            {
+              "type": "text",
+              "text": " höhere Durchschnittstemperaturen auf als Gebiete auf gleicher geographischer Breite in Kanada oder Ostasien. 2. Der West-Ost-Klimawandel (Maritim vs. Kontinental): - Je weiter man sich vom Atlantik nach Osten ins Innere des eurasischen Kontinents bewegt, desto stärker verliert das Meer seine puffernde Wirkung: | Merkmal | Maritimes / Seeklima (z. B. Dublin, Brest) | Übergangsklima (z. B. München, Berlin) | Kontinentalklima (z. B. Warschau, Moskau) | | :--- | :--- | :--- | :--- | | Sommer | Mäßig warm ("
+            },
+            {
+              "type": "math",
+              "tex": "16–18^\\circ\\text{ C}"
+            },
+            {
+              "type": "text",
+              "text": ") | Angenehm warm ("
+            },
+            {
+              "type": "math",
+              "tex": "18–20^\\circ\\text{ C}"
+            },
+            {
+              "type": "text",
+              "text": ") | Heiß ("
+            },
+            {
+              "type": "math",
+              "tex": "> 22^\\circ\\text{ C}"
+            },
+            {
+              "type": "text",
+              "text": ") | | Winter | Sehr mild ("
+            },
+            {
+              "type": "math",
+              "tex": "> 4^\\circ\\text{ C}"
+            },
+            {
+              "type": "text",
+              "text": ", selten Schnee) | Kalt (um "
+            },
+            {
+              "type": "math",
+              "tex": "0^\\circ\\text{ C}"
+            },
+            {
+              "type": "text",
+              "text": ") | Sehr kalt, eisig ("
+            },
+            {
+              "type": "math",
+              "tex": "< -5^\\circ\\text{ C}"
+            },
+            {
+              "type": "text",
+              "text": ") | | Temperaturamplitude | Gering ("
+            },
+            {
+              "type": "math",
+              "tex": "< 15^\\circ\\text{ C}"
+            },
+            {
+              "type": "text",
+              "text": ") | Mittel ("
+            },
+            {
+              "type": "math",
+              "tex": "ca. 18–20^\\circ\\text{ C}"
+            },
+            {
+              "type": "text",
+              "text": ") | Extrem hoch ("
+            },
+            {
+              "type": "math",
+              "tex": "> 25–30^\\circ\\text{ C}"
+            },
+            {
+              "type": "text",
+              "text": ") | | Niederschläge | Ganzjährig hoch, Maximum Herbst/Winter | Ausgewogen | Geringer, Maximum im Sommer | 3. Die Europäische Union und der europäische Binnenmarkt: - Der EU-Binnenmarkt garantiert die vier fundamentalen Grundfreiheiten:   * 1. Freier Warenverkehr: Keine Zölle oder Importbeschränkungen zwischen den 27 Mitgliedsstaaten.   * 2. Freier Personenverkehr (Schengener Abkommen): EU-Bürger dürfen in jedem EU-Land ohne Grenzkontrollen reisen, wohnen, studieren und arbeiten.   * 3. Freier Dienstleistungsverkehr: Unternehmen können grenzüberschreitend Aufträge ausführen.   * 4. Freier Kapitalverkehr: Ungehinderte Investitionen und Überweisungen in ganz Europa (gestärkt durch den Euro als Gemeinschaftswährung)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

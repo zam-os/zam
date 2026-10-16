@@ -49,25 +49,333 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Welche asymptotische Zeitkomplexität (O-Notation) besitzt der Mergesort-Algorithmus im Worst-Case, Average-Case und Best-Case bei $n$ Eingabeelementen?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche asymptotische Zeitkomplexität (O-Notation) besitzt der Mergesort-Algorithmus im Worst-Case, Average-Case und Best-Case bei "
+            },
+            {
+              "type": "math",
+              "tex": "n",
+              "speech": "n"
+            },
+            {
+              "type": "text",
+              "text": " Eingabeelementen?"
+            }
+          ],
           "concept": "O(n * log n) in allen drei Fällen (durch deterministische Teilung in zwei Hälften und lineares Mischen)",
           "fast_check": {
             "type": "binary_choice",
             "options": [
               "O(n * log n) in allen Fällen",
-              "O(n^2)"
+              [
+                {
+                  "type": "math",
+                  "tex": "O(n^2)",
+                  "speech": "O von n Quadrat"
+                }
+              ]
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GBA0000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Landau-O-Notation und vergleiche Quicksort mit Mergesort: 1. **Die O-Notation (Asymptotische Laufzeitanalyse)**:   * $f(n) \\in O(g(n)) \\iff \\exists c > 0, n_0: |f(n)| \\le c \\cdot |g(n)| \\; \\forall n \\ge n_0$.   * Komplexitätsklassen: $O(1) < O(\\log n) < O(n) < O(n \\log n) < O(n^2) < O(2^n) < O(n!)$, 2. **Mergesort (John von Neumann, 1945)**:   * **Prinzip**: *Divide and Conquer* (Teile und Herrsche).   * 1. *Divide*: Rekursive Halbierung des Arrays bis zu einelementigen Teilfeldern ($O(1)$).   * 2. *Conquer*: Rekursives Sortieren der Hälften.   * 3. *Combine*: Verschmelzen (**Merge**) zweier sortierter Teilfelder in linearer Zeit $O(n)$.   * **Eigenschaften**: Zeitkomplexität $O(n \\log n)$ garantiert; stabil; benötigt $O(n)$ zusätzlichen Hilfsspeicher, 3. **Quicksort (C. A. R. Hoare, 1960)**:   * **Prinzip**: Wähle ein **Pivot-Element** $p$. Partitioniere das Array so, dass alle Elemente $< p$ links und alle $\\ge p$ rechts vom Pivot stehen. Sortiere linkes und rechtes Teilfeld rekursiv.   * **Laufzeit**: Average-Case $O(n \\log n)$; Worst-Case $O(n^2)$ (bei bereits sortiertem Array und schlechter Pivotwahl).   * **Eigenschaften**: Extrem schneller In-Place-Algorithmus ($O(\\log n)$ Stack-Speicher); instabil.",
-          "concept": "Algorithmen 11: O-Notation; Mergesort (Divide & Conquer, Merge-Schritt, O(n log n) garantiert, stabil, O(n) Speicher); Quicksort (Pivotelement, Partitionierung, In-Place, Average O(n log n), Worst-Case O(n^2)).",
-          "sample_solution": "1. Die Landau-O-Notation zur Effizienzanalyse: - **Mathematische Definition**: Eine Funktion $f(n)$ wächst asymptotisch nicht schneller als $g(n)$, symbolisiert durch:   $$\\mathbf{f(n) \\in O(g(n)) \\iff \\exists c > 0, n_0 \\in \\mathbb{N}: \\forall n \\ge n_0: 0 \\le f(n) \\le c \\cdot g(n)}$$ - **Hierarchie der Effizienzklassen**:   $$\\mathbf{O(1) \\subset O(\\log n) \\subset O(n) \\subset O(n \\log n) \\subset O(n^2) \\subset O(n^3) \\subset O(2^n) \\subset O(n!)}$$   * *Praktische Auswirkung*: Bei $n = 1.000.000$ benötigt ein $O(n^2)$-Algorithmus $10^{12}$ Operationen (mehrere Stunden), ein $O(n \\log n)$-Algorithmus nur ca. $2 \\cdot 10^7$ Operationen (wenige Millisekunden). 2. Mergesort vs. Quicksort im systematischen Vergleich: | Kriterium | Mergesort | Quicksort | | :--- | :--- | :--- | | **Paradigma** | **Divide and Conquer**: Aufteilen ist trivial, Mischen ist die Hauptarbeit | **Divide and Conquer**: Partitionierung ist die Hauptarbeit, Zusammenfügen entfällt | | **Best-Case** | $\\mathbf{O(n \\log n)}$ | $\\mathbf{O(n \\log n)}$ | | **Average-Case** | $\\mathbf{O(n \\log n)}$ | $\\mathbf{O(n \\log n)}$ (in der Praxis ca. $2\\times$ schneller als Mergesort durch Cache-Lokalität) | | **Worst-Case** | $\\mathbf{O(n \\log n)}$ (deterministisch garantiert) | $\\mathbf{O(n^2)}$ (wenn das Pivot stets das Min/Max ist) | | **Zusatzspeicher** | $\\mathbf{O(n)}$ (benötigt temporäres Hilfsarray zum Mischen) | $\\mathbf{O(\\log n)}$ (In-Place, nur Call-Stack für Rekursion) | | **Stabilität** | **Stabil** (Reihenfolge gleicher Elemente bleibt erhalten) | **Instabil** (gleiche Elemente können vertauscht werden) | 3. Algorithmen-Ablauf: - **Mergesort**:   ```   [38, 27, 43, 3, 9, 82, 10]   Teilen:   [38, 27, 43, 3]  |  [9, 82, 10]   Teilen:   [38, 27] | [43, 3]  |  [9, 82] | [10]   Sortieren & Mischen:   [27, 38] | [3, 43]  |  [9, 82] | [10]   Mischen:  [3, 27, 38, 43]  |  [9, 10, 82]   Finales Mischen (Linear O(n)): [3, 9, 10, 27, 38, 43, 82]   ``` - **Quicksort-Pivotstrategien zur Vermeidung des $O(n^2)$-Worst-Cases**:   * Zufällige Pivot-Wahl (*Randomized Quicksort*).   * Median-of-Three-Strategie (Median aus erstem, mittlerem und letztem Element)."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Landau-O-Notation und vergleiche Quicksort mit Mergesort: 1. Die O-Notation (Asymptotische Laufzeitanalyse):   * "
+            },
+            {
+              "type": "math",
+              "tex": "f(n) \\in O(g(n)) \\iff \\exists c > 0, n_0: |f(n)| \\le c \\cdot |g(n)| \\; \\forall n \\ge n_0",
+              "speech": "f von n Element von O von g von n genau dann, wenn es ein c größer als 0 und ein n null gibt, so dass Betrag von f von n kleiner gleich c mal Betrag von g von n für alle n größer gleich n null"
+            },
+            {
+              "type": "text",
+              "text": ".   * Komplexitätsklassen: "
+            },
+            {
+              "type": "math",
+              "tex": "O(1) < O(\\log n) < O(n) < O(n \\log n) < O(n^2) < O(2^n) < O(n!)",
+              "speech": "O von 1 kleiner als O von Logarithmus von n kleiner als O von n kleiner als O von n Logarithmus von n kleiner als O von n Quadrat kleiner als O von 2 hoch n kleiner als O von n Fakultät"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Mergesort (John von Neumann, 1945):   * Prinzip: Divide and Conquer (Teile und Herrsche).   * 1. Divide: Rekursive Halbierung des Arrays bis zu einelementigen Teilfeldern ("
+            },
+            {
+              "type": "math",
+              "tex": "O(1)",
+              "speech": "O von 1"
+            },
+            {
+              "type": "text",
+              "text": ").   * 2. Conquer: Rekursives Sortieren der Hälften.   * 3. Combine: Verschmelzen (Merge) zweier sortierter Teilfelder in linearer Zeit "
+            },
+            {
+              "type": "math",
+              "tex": "O(n)",
+              "speech": "O von n"
+            },
+            {
+              "type": "text",
+              "text": ".   * Eigenschaften: Zeitkomplexität "
+            },
+            {
+              "type": "math",
+              "tex": "O(n \\log n)",
+              "speech": "O von n Logarithmus von n"
+            },
+            {
+              "type": "text",
+              "text": " garantiert; stabil; benötigt "
+            },
+            {
+              "type": "math",
+              "tex": "O(n)",
+              "speech": "O von n"
+            },
+            {
+              "type": "text",
+              "text": " zusätzlichen Hilfsspeicher, 3. Quicksort (C. A. R. Hoare, 1960):   * Prinzip: Wähle ein Pivot-Element "
+            },
+            {
+              "type": "math",
+              "tex": "p",
+              "speech": "p"
+            },
+            {
+              "type": "text",
+              "text": ". Partitioniere das Array so, dass alle Elemente "
+            },
+            {
+              "type": "math",
+              "tex": "< p",
+              "speech": "kleiner als p"
+            },
+            {
+              "type": "text",
+              "text": " links und alle "
+            },
+            {
+              "type": "math",
+              "tex": "\\ge p",
+              "speech": "größer gleich p"
+            },
+            {
+              "type": "text",
+              "text": " rechts vom Pivot stehen. Sortiere linkes und rechtes Teilfeld rekursiv.   * Laufzeit: Average-Case "
+            },
+            {
+              "type": "math",
+              "tex": "O(n \\log n)",
+              "speech": "O von n Logarithmus von n"
+            },
+            {
+              "type": "text",
+              "text": "; Worst-Case "
+            },
+            {
+              "type": "math",
+              "tex": "O(n^2)",
+              "speech": "O von n Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " (bei bereits sortiertem Array und schlechter Pivotwahl).   * Eigenschaften: Extrem schneller In-Place-Algorithmus ("
+            },
+            {
+              "type": "math",
+              "tex": "O(\\log n)",
+              "speech": "O von Logarithmus von n"
+            },
+            {
+              "type": "text",
+              "text": " Stack-Speicher); instabil."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Algorithmen 11: O-Notation; Mergesort (Divide & Conquer, Merge-Schritt, O(n log n) garantiert, stabil, O(n) Speicher); Quicksort (Pivotelement, Partitionierung, In-Place, Average O(n log n), Worst-Case "
+            },
+            {
+              "type": "math",
+              "tex": "O(n^2)",
+              "speech": "O von n Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Landau-O-Notation zur Effizienzanalyse: - Mathematische Definition: Eine Funktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(n)"
+            },
+            {
+              "type": "text",
+              "text": " wächst asymptotisch nicht schneller als "
+            },
+            {
+              "type": "math",
+              "tex": "g(n)"
+            },
+            {
+              "type": "text",
+              "text": ", symbolisiert durch:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{f(n) \\in O(g(n)) \\iff \\exists c > 0, n_0 \\in \\mathbb{N}: \\forall n \\ge n_0: 0 \\le f(n) \\le c \\cdot g(n)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Hierarchie der Effizienzklassen:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{O(1) \\subset O(\\log n) \\subset O(n) \\subset O(n \\log n) \\subset O(n^2) \\subset O(n^3) \\subset O(2^n) \\subset O(n!)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Praktische Auswirkung: Bei "
+            },
+            {
+              "type": "math",
+              "tex": "n = 1.000.000"
+            },
+            {
+              "type": "text",
+              "text": " benötigt ein "
+            },
+            {
+              "type": "math",
+              "tex": "O(n^2)"
+            },
+            {
+              "type": "text",
+              "text": "-Algorithmus "
+            },
+            {
+              "type": "math",
+              "tex": "10^{12}"
+            },
+            {
+              "type": "text",
+              "text": " Operationen (mehrere Stunden), ein "
+            },
+            {
+              "type": "math",
+              "tex": "O(n \\log n)"
+            },
+            {
+              "type": "text",
+              "text": "-Algorithmus nur ca. "
+            },
+            {
+              "type": "math",
+              "tex": "2 \\cdot 10^7"
+            },
+            {
+              "type": "text",
+              "text": " Operationen (wenige Millisekunden). 2. Mergesort vs. Quicksort im systematischen Vergleich: | Kriterium | Mergesort | Quicksort | | :--- | :--- | :--- | | Paradigma | Divide and Conquer: Aufteilen ist trivial, Mischen ist die Hauptarbeit | Divide and Conquer: Partitionierung ist die Hauptarbeit, Zusammenfügen entfällt | | Best-Case | "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{O(n \\log n)}"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{O(n \\log n)}"
+            },
+            {
+              "type": "text",
+              "text": " | | Average-Case | "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{O(n \\log n)}"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{O(n \\log n)}"
+            },
+            {
+              "type": "text",
+              "text": " (in der Praxis ca. "
+            },
+            {
+              "type": "math",
+              "tex": "2\\times"
+            },
+            {
+              "type": "text",
+              "text": " schneller als Mergesort durch Cache-Lokalität) | | Worst-Case | "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{O(n \\log n)}"
+            },
+            {
+              "type": "text",
+              "text": " (deterministisch garantiert) | "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{O(n^2)}"
+            },
+            {
+              "type": "text",
+              "text": " (wenn das Pivot stets das Min/Max ist) | | Zusatzspeicher | "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{O(n)}"
+            },
+            {
+              "type": "text",
+              "text": " (benötigt temporäres Hilfsarray zum Mischen) | "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{O(\\log n)}"
+            },
+            {
+              "type": "text",
+              "text": " (In-Place, nur Call-Stack für Rekursion) | | Stabilität | Stabil (Reihenfolge gleicher Elemente bleibt erhalten) | Instabil (gleiche Elemente können vertauscht werden) | 3. Algorithmen-Ablauf: - Mergesort:   ```   [38, 27, 43, 3, 9, 82, 10]   Teilen:   [38, 27, 43, 3]  |  [9, 82, 10]   Teilen:   [38, 27] | [43, 3]  |  [9, 82] | [10]   Sortieren & Mischen:   [27, 38] | [3, 43]  |  [9, 82] | [10]   Mischen:  [3, 27, 38, 43]  |  [9, 10, 82]   Finales Mischen (Linear O(n)): [3, 9, 10, 27, 38, 43, 82]   ``` - Quicksort-Pivotstrategien zur Vermeidung des "
+            },
+            {
+              "type": "math",
+              "tex": "O(n^2)"
+            },
+            {
+              "type": "text",
+              "text": "-Worst-Cases:   * Zufällige Pivot-Wahl (Randomized Quicksort).   * Median-of-Three-Strategie (Median aus erstem, mittlerem und letztem Element)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +436,414 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere Graphenstrukturen, Graph-Traversierungen und den Dijkstra-Algorithmus: 1. **Graphen-Definition & Repräsentation**:   * Graph $G = (V, E)$ mit Knotenmenge $V$ (*Vertices*) und Kantenmenge $E$ (*Edges*).   * **Adjazenzmatrix ($|V| \\times |V|$)**: Schnelle Kantenabfrage $O(1)$, aber Speicherbedarf $O(|V|^2)$ (gut für dichte Graphen).   * **Adjazenzliste**: Array von Listen; speichert nur existierende Nachbarn $\\implies$ Speicherbedarf $O(|V| + |E|)$ (ideal für dünnbesetzte Graphen/Straßennetze), 2. **Graph-Traversierungen**:   * **Breitensuche (BFS - Breadth-First Search)**: Verwendet eine **Queue (Warteschlange)**; besucht Schicht für Schicht nach Knotendistanz $\\implies$ findet kürzeste Pfade in ungewichteten Graphen.   * **Tiefensuche (DFS - Depth-First Search)**: Verwendet einen **Stack (Rekursion)**; dringt so tief wie möglich vor bis zu Sackgassen und nutzt Backtracking $\\implies$ für topologisches Sortieren und Zyklenerkennung, 3. **Der Dijkstra-Algorithmus (Edsger W. Dijkstra, 1959)**:   * **Greedy-Strategie** für kürzeste Wege von Startknoten $s$ zu allen Knoten:   * **Initialisierung**: Setze Distanz $d(s) = 0$ und $d(v) = \\infty$ für alle $v \\neq s$. Menge der unbesuchten Knoten $Q = V$.   * **Schleife**: Wähle den Knoten $u \\in Q$ mit minimalem $d(u)$. Entferne $u$ aus $Q$.   * **Relaxation**: Für jeden unbesuchten Nachbarn $v$ von $u$:     $$\\mathbf{\\text{Falls } d(u) + w(u, v) < d(v) \\implies d(v) = d(u) + w(u, v); \\quad \\text{Vorgänger}(v) = u}$$   * **Laufzeit**: Mit Fibonacci-Heap / PriorityQueue in $\\mathbf{O(|E| + |V| \\log |V|)}$.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere Graphenstrukturen, Graph-Traversierungen und den Dijkstra-Algorithmus: 1. Graphen-Definition & Repräsentation:   * Graph "
+            },
+            {
+              "type": "math",
+              "tex": "G = (V, E)",
+              "speech": "G gleich das Paar aus V und E"
+            },
+            {
+              "type": "text",
+              "text": " mit Knotenmenge "
+            },
+            {
+              "type": "math",
+              "tex": "V",
+              "speech": "V"
+            },
+            {
+              "type": "text",
+              "text": " (Vertices) und Kantenmenge "
+            },
+            {
+              "type": "math",
+              "tex": "E",
+              "speech": "E"
+            },
+            {
+              "type": "text",
+              "text": " (Edges).   * Adjazenzmatrix ("
+            },
+            {
+              "type": "math",
+              "tex": "|V| \\times |V|",
+              "speech": "Betrag von V mal Betrag von V"
+            },
+            {
+              "type": "text",
+              "text": "): Schnelle Kantenabfrage "
+            },
+            {
+              "type": "math",
+              "tex": "O(1)",
+              "speech": "O von 1"
+            },
+            {
+              "type": "text",
+              "text": ", aber Speicherbedarf "
+            },
+            {
+              "type": "math",
+              "tex": "O(|V|^2)",
+              "speech": "O von Betrag von V zum Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " (gut für dichte Graphen).   * Adjazenzliste: Array von Listen; speichert nur existierende Nachbarn "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Speicherbedarf "
+            },
+            {
+              "type": "math",
+              "tex": "O(|V| + |E|)",
+              "speech": "O von, Betrag von V plus Betrag von E"
+            },
+            {
+              "type": "text",
+              "text": " (ideal für dünnbesetzte Graphen/Straßennetze), 2. Graph-Traversierungen:   * Breitensuche (BFS - Breadth-First Search): Verwendet eine Queue (Warteschlange); besucht Schicht für Schicht nach Knotendistanz "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " findet kürzeste Pfade in ungewichteten Graphen.   * Tiefensuche (DFS - Depth-First Search): Verwendet einen Stack (Rekursion); dringt so tief wie möglich vor bis zu Sackgassen und nutzt Backtracking "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " für topologisches Sortieren und Zyklenerkennung, 3. Der Dijkstra-Algorithmus (Edsger W. Dijkstra, 1959):   * Greedy-Strategie für kürzeste Wege von Startknoten "
+            },
+            {
+              "type": "math",
+              "tex": "s",
+              "speech": "s"
+            },
+            {
+              "type": "text",
+              "text": " zu allen Knoten:   * Initialisierung: Setze Distanz "
+            },
+            {
+              "type": "math",
+              "tex": "d(s) = 0",
+              "speech": "d von s gleich 0"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "d(v) = \\infty",
+              "speech": "d von v gleich unendlich"
+            },
+            {
+              "type": "text",
+              "text": " für alle "
+            },
+            {
+              "type": "math",
+              "tex": "v \\neq s",
+              "speech": "v ungleich s"
+            },
+            {
+              "type": "text",
+              "text": ". Menge der unbesuchten Knoten "
+            },
+            {
+              "type": "math",
+              "tex": "Q = V",
+              "speech": "Q gleich V"
+            },
+            {
+              "type": "text",
+              "text": ".   * Schleife: Wähle den Knoten "
+            },
+            {
+              "type": "math",
+              "tex": "u \\in Q",
+              "speech": "u Element von Q"
+            },
+            {
+              "type": "text",
+              "text": " mit minimalem "
+            },
+            {
+              "type": "math",
+              "tex": "d(u)",
+              "speech": "d von u"
+            },
+            {
+              "type": "text",
+              "text": ". Entferne "
+            },
+            {
+              "type": "math",
+              "tex": "u",
+              "speech": "u"
+            },
+            {
+              "type": "text",
+              "text": " aus "
+            },
+            {
+              "type": "math",
+              "tex": "Q",
+              "speech": "Q"
+            },
+            {
+              "type": "text",
+              "text": ".   * Relaxation: Für jeden unbesuchten Nachbarn "
+            },
+            {
+              "type": "math",
+              "tex": "v",
+              "speech": "v"
+            },
+            {
+              "type": "text",
+              "text": " von "
+            },
+            {
+              "type": "math",
+              "tex": "u",
+              "speech": "u"
+            },
+            {
+              "type": "text",
+              "text": ":     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Falls } d(u) + w(u, v) < d(v) \\implies d(v) = d(u) + w(u, v); \\quad \\text{Vorgänger}(v) = u}",
+              "block": true,
+              "speech": "Falls d von u plus w von u und v kleiner als d von v, dann d von v gleich d von u plus w von u und v, und Vorgänger von v gleich u"
+            },
+            {
+              "type": "text",
+              "text": "   * Laufzeit: Mit Fibonacci-Heap / PriorityQueue in "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{O(|E| + |V| \\log |V|)}",
+              "speech": "O von Betrag E plus Betrag V mal Logarithmus von Betrag V"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
           "concept": "Graphentheorie: Adjazenzmatrix vs. Adjazenzliste; BFS (Queue, kürzeste Pfade ungewichtet) vs. DFS (Stack, Backtracking); Dijkstra-Algorithmus (Greedy, nicht-negative Gewichte, Relaxation, Distanzarray & Vorgänger, O(|E| + |V| log |V|)).",
-          "sample_solution": "1. Graphentheoretische Grundlagen: - **Mathematische Struktur**: Ein Graph $G = (V, E)$ besteht aus einer endlichen Menge von Knoten $V$ und Kanten $E \\subseteq V \\times V$. Kanten können gerichtet oder ungerichtet sowie mit Gewichten (Kosten, Distanzen) versehen sein. - **Darstellung im Speicher**:   * **1. Adjazenzmatrix $A \\in \\mathbb{R}^{|V| \\times |V|}$**:     - $A[i][j] = w(v_i, v_j)$ bei Kante, sonst $0$ bzw. $\\infty$.     - *Vorteil*: Kantenprüfung `hasEdge(u, v)` in $O(1)$. *Nachteil*: Hoher Speicherbedarf $O(|V|^2)$.   * **2. Adjazenzliste**:     - Jeder Knoten hält eine Liste seiner direkten Nachbarn mit Gewichten.     - *Vorteil*: Extrem speichereffizient $O(|V| + |E|)$; Iteration über Nachbarn in $O(\\text{Grad}(v))$. 2. Graph-Traversierungsstrategien: - **1. Breitensuche (Breadth-First Search - BFS)**:   * *Datenstruktur*: **Warteschlange (FIFO-Queue)**.   * *Verhalten*: Erkundet den Graphen wellenförmig Schicht für Schicht. Alle Knoten im Abstand 1 werden vor den Knoten im Abstand 2 besucht.   * *Anwendung*: Findet garantiert den Pfad mit den wenigsten Kanten in ungewichteten Graphen. - **2. Tiefensuche (Depth-First Search - DFS)**:   * *Datenstruktur*: **Aufrufstapel (LIFO-Stack / Rekursion)**.   * *Verhalten*: Folgt einem Pfad bis zum Ende; bei einer Sackgasse kehrt der Algorithmus per **Backtracking** zum letzten Verzweigungspunkt zurück.   * *Anwendung*: Labyrinthlösung, Erkennung von Kreisen/Zyklen, Bestimmung starker Zusammenhangskomponenten. 3. Der Dijkstra-Algorithmus (Single-Source Shortest Path): - **Voraussetzung**: Alle Kantengewichte müssen nicht-negativ sein ($w(e) \\ge 0$). - **Funktionsweise (Greedy-Prinzip)**:   1. **Initialisierung**:      - `dist[start] = 0`, alle anderen `dist[v] = Infinity`.      - `vorgaenger[v] = null` für alle Knoten.      - Füge alle Knoten in eine Min-Priority-Queue $Q$ ein.   2. **Hauptschleife**:      - Solange $Q$ nicht leer ist:        * Wähle und entferne Knoten $u$ mit kleinstem `dist[u]` aus $Q$ (**Knoten $u$ ist nun optimal abgearbeitet!**).        * Für jeden noch in $Q$ befindlichen Nachbarn $v$ von $u$:          $$\\text{neueDistanz} = \\text{dist}[u] + w(u, v)$$          $$\\mathbf{\\text{Falls neueDistanz} < \\text{dist}[v]: \\quad \\text{dist}[v] = \\text{neueDistanz}, \\quad \\text{vorgaenger}[v] = u}$$   3. **Pfadrekonstruktion**: Rückwärtsverfolgung von Ziel über `vorgaenger` zum Start. - **Effizienz**: Mit binärem Min-Heap in $\\mathbf{O((|V| + |E|) \\cdot \\log |V|)}$; unverzichtbares Rückgrat moderner Navigationssysteme (GPS) und Internet-Routingprotokolle (OSPF)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Graphentheoretische Grundlagen: - Mathematische Struktur: Ein Graph "
+            },
+            {
+              "type": "math",
+              "tex": "G = (V, E)"
+            },
+            {
+              "type": "text",
+              "text": " besteht aus einer endlichen Menge von Knoten "
+            },
+            {
+              "type": "math",
+              "tex": "V"
+            },
+            {
+              "type": "text",
+              "text": " und Kanten "
+            },
+            {
+              "type": "math",
+              "tex": "E \\subseteq V \\times V"
+            },
+            {
+              "type": "text",
+              "text": ". Kanten können gerichtet oder ungerichtet sowie mit Gewichten (Kosten, Distanzen) versehen sein. - Darstellung im Speicher:   * 1. Adjazenzmatrix "
+            },
+            {
+              "type": "math",
+              "tex": "A \\in \\mathbb{R}^{|V| \\times |V|}"
+            },
+            {
+              "type": "text",
+              "text": ":     - "
+            },
+            {
+              "type": "math",
+              "tex": "A[i][j] = w(v_i, v_j)"
+            },
+            {
+              "type": "text",
+              "text": " bei Kante, sonst "
+            },
+            {
+              "type": "math",
+              "tex": "0"
+            },
+            {
+              "type": "text",
+              "text": " bzw. "
+            },
+            {
+              "type": "math",
+              "tex": "\\infty"
+            },
+            {
+              "type": "text",
+              "text": ".     - Vorteil: Kantenprüfung `hasEdge(u, v)` in "
+            },
+            {
+              "type": "math",
+              "tex": "O(1)"
+            },
+            {
+              "type": "text",
+              "text": ". Nachteil: Hoher Speicherbedarf "
+            },
+            {
+              "type": "math",
+              "tex": "O(|V|^2)"
+            },
+            {
+              "type": "text",
+              "text": ".   * 2. Adjazenzliste:     - Jeder Knoten hält eine Liste seiner direkten Nachbarn mit Gewichten.     - Vorteil: Extrem speichereffizient "
+            },
+            {
+              "type": "math",
+              "tex": "O(|V| + |E|)"
+            },
+            {
+              "type": "text",
+              "text": "; Iteration über Nachbarn in "
+            },
+            {
+              "type": "math",
+              "tex": "O(\\text{Grad}(v))"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Graph-Traversierungsstrategien: - 1. Breitensuche (Breadth-First Search - BFS):   * Datenstruktur: Warteschlange (FIFO-Queue).   * Verhalten: Erkundet den Graphen wellenförmig Schicht für Schicht. Alle Knoten im Abstand 1 werden vor den Knoten im Abstand 2 besucht.   * Anwendung: Findet garantiert den Pfad mit den wenigsten Kanten in ungewichteten Graphen. - 2. Tiefensuche (Depth-First Search - DFS):   * Datenstruktur: Aufrufstapel (LIFO-Stack / Rekursion).   * Verhalten: Folgt einem Pfad bis zum Ende; bei einer Sackgasse kehrt der Algorithmus per Backtracking zum letzten Verzweigungspunkt zurück.   * Anwendung: Labyrinthlösung, Erkennung von Kreisen/Zyklen, Bestimmung starker Zusammenhangskomponenten. 3. Der Dijkstra-Algorithmus (Single-Source Shortest Path): - Voraussetzung: Alle Kantengewichte müssen nicht-negativ sein ("
+            },
+            {
+              "type": "math",
+              "tex": "w(e) \\ge 0"
+            },
+            {
+              "type": "text",
+              "text": "). - Funktionsweise (Greedy-Prinzip):   1. Initialisierung:      - `dist[start] = 0`, alle anderen `dist[v] = Infinity`.      - `vorgaenger[v] = null` für alle Knoten.      - Füge alle Knoten in eine Min-Priority-Queue "
+            },
+            {
+              "type": "math",
+              "tex": "Q"
+            },
+            {
+              "type": "text",
+              "text": " ein.   2. Hauptschleife:      - Solange "
+            },
+            {
+              "type": "math",
+              "tex": "Q"
+            },
+            {
+              "type": "text",
+              "text": " nicht leer ist:        * Wähle und entferne Knoten "
+            },
+            {
+              "type": "math",
+              "tex": "u"
+            },
+            {
+              "type": "text",
+              "text": " mit kleinstem `dist[u]` aus "
+            },
+            {
+              "type": "math",
+              "tex": "Q"
+            },
+            {
+              "type": "text",
+              "text": " (Knoten "
+            },
+            {
+              "type": "math",
+              "tex": "u"
+            },
+            {
+              "type": "text",
+              "text": " ist nun optimal abgearbeitet!).        * Für jeden noch in "
+            },
+            {
+              "type": "math",
+              "tex": "Q"
+            },
+            {
+              "type": "text",
+              "text": " befindlichen Nachbarn "
+            },
+            {
+              "type": "math",
+              "tex": "v"
+            },
+            {
+              "type": "text",
+              "text": " von "
+            },
+            {
+              "type": "math",
+              "tex": "u"
+            },
+            {
+              "type": "text",
+              "text": ":          "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{neueDistanz} = \\text{dist}[u] + w(u, v)",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "          "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Falls neueDistanz} < \\text{dist}[v]: \\quad \\text{dist}[v] = \\text{neueDistanz}, \\quad \\text{vorgaenger}[v] = u}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   3. Pfadrekonstruktion: Rückwärtsverfolgung von Ziel über `vorgaenger` zum Start. - Effizienz: Mit binärem Min-Heap in "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{O((|V| + |E|) \\cdot \\log |V|)}"
+            },
+            {
+              "type": "text",
+              "text": "; unverzichtbares Rückgrat moderner Navigationssysteme (GPS) und Internet-Routingprotokolle (OSPF)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

@@ -6,6 +6,14 @@
  */
 
 import type { Database } from "../db/types.js";
+import {
+  type CardText,
+  normalizeCardText,
+  plainProjection,
+  spokenProjection,
+  validateCardText,
+} from "../library/card-text.js";
+import { parseStoredCardText } from "../library/card-text-store.js";
 import { bindStandingAssignments } from "../models/assignment.js";
 import { getDisplayTitle } from "../models/token.js";
 import { seededPermutation } from "../util/seeded.js";
@@ -51,8 +59,14 @@ export interface ReviewFastCheck {
    * of three or four options (ADR 2026-09-27 Decision 2).
    */
   type: "binary_choice" | "multiple_choice";
+  /** Each option's plain text; what every plain surface shows. */
   options: string[];
   correctIndex: number;
+  /**
+   * Options as card-text segments (ADR 2026-10-14b), parallel to `options`;
+   * `null` for a plain option. Absent when no option has segments.
+   */
+  optionSegments?: Array<CardText | null>;
 }
 
 export interface ReviewQueueItem {
@@ -77,6 +91,14 @@ export interface ReviewQueueItem {
   atomId: string | null;
   tier: string | null;
   fastCheck: ReviewFastCheck | null;
+  /** The question as segments (ADR 2026-10-14b); `null` for a plain one. */
+  questionSegments: CardText | null;
+  /** The reference answer as segments; `null` for a plain one. */
+  conceptSegments: CardText | null;
+  /** What voice mode reads for the question; `null` means read `question`. */
+  spokenQuestion: string | null;
+  /** What voice mode reads for the answer; `null` means read `concept`. */
+  spokenConcept: string | null;
 }
 
 /**
@@ -124,6 +146,8 @@ interface CardRow {
   atom_id: string | null;
   tier: string | null;
   fast_check: string | null;
+  question_segments?: string | null;
+  concept_segments?: string | null;
 }
 
 // ── Functions ────────────────────────────────────────────────────────────────
@@ -197,7 +221,9 @@ export async function buildReviewQueue(
            WHERE tm.token_id = t.id AND tm.side = 'answer') AS answer_media_count,
          t.atom_id AS atom_id,
          t.tier AS tier,
-         t.fast_check AS fast_check
+         t.fast_check AS fast_check,
+         t.question_segments AS question_segments,
+         t.concept_segments AS concept_segments
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
@@ -262,7 +288,9 @@ export async function buildReviewQueue(
            WHERE tm.token_id = t.id AND tm.side = 'answer') AS answer_media_count,
          t.atom_id AS atom_id,
          t.tier AS tier,
-         t.fast_check AS fast_check
+         t.fast_check AS fast_check,
+         t.question_segments AS question_segments,
+         t.concept_segments AS concept_segments
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
@@ -416,6 +444,31 @@ function rowToItem(row: CardRow): ReviewQueueItem {
       parseReviewFastCheck(row.fast_check),
       `${row.token_id}:${row.due_at}`,
     ),
+    ...cardTextFields(row.question_segments, row.concept_segments),
+  };
+}
+
+/**
+ * The segment fields of a review item: the stored segments (malformed ones
+ * read as `null`, so the card falls back to its plain text) and what voice
+ * mode reads for each side.
+ */
+export function cardTextFields(
+  questionRaw: unknown,
+  conceptRaw: unknown,
+): Pick<
+  ReviewQueueItem,
+  "questionSegments" | "conceptSegments" | "spokenQuestion" | "spokenConcept"
+> {
+  const questionSegments = parseStoredCardText(questionRaw);
+  const conceptSegments = parseStoredCardText(conceptRaw);
+  return {
+    questionSegments,
+    conceptSegments,
+    spokenQuestion: questionSegments
+      ? spokenProjection(questionSegments)
+      : null,
+    spokenConcept: conceptSegments ? spokenProjection(conceptSegments) : null,
   };
 }
 
@@ -446,13 +499,18 @@ export function presentFastCheck(
     fastCheck.options.map((option, index) => ({ option, index })),
     seed,
   );
-  return {
+  const presented: ReviewFastCheck = {
     type: fastCheck.type,
     options: order.map((entry) => entry.option),
     correctIndex: order.findIndex(
       (entry) => entry.index === fastCheck.correctIndex,
     ),
   };
+  const segments = fastCheck.optionSegments;
+  if (segments) {
+    presented.optionSegments = order.map((entry) => segments[entry.index]);
+  }
+  return presented;
 }
 
 /**
@@ -478,6 +536,8 @@ export function parseReviewFastCheck(raw: unknown): ReviewFastCheck | null {
     options?: unknown;
     correct_index?: unknown;
     correctIndex?: unknown;
+    option_segments?: unknown;
+    optionSegments?: unknown;
   };
   if (
     (candidate.type !== "binary_choice" &&
@@ -506,11 +566,41 @@ export function parseReviewFastCheck(raw: unknown): ReviewFastCheck | null {
   ) {
     return null;
   }
-  return {
+  const parsed: ReviewFastCheck = {
     type: candidate.type,
     options: [...options],
     correctIndex: correctIndex as number,
   };
+  const optionSegments = parseOptionSegments(
+    candidate.option_segments ?? candidate.optionSegments,
+    options,
+  );
+  if (optionSegments) parsed.optionSegments = optionSegments;
+  return parsed;
+}
+
+/**
+ * Segment options parallel to the plain ones. Anything malformed drops the
+ * segments, never the fast check: the plain options still work.
+ */
+/**
+ * An option's segments, kept only where they are the option: valid, and
+ * their plain projection is the option's stored text. A pair that drifted
+ * apart shows the plain option, which is what the answer is compared with.
+ */
+function parseOptionSegments(
+  raw: unknown,
+  options: readonly string[],
+): Array<CardText | null> | null {
+  if (!Array.isArray(raw) || raw.length !== options.length) return null;
+  const out: Array<CardText | null> = raw.map((entry, index) =>
+    entry !== null &&
+    validateCardText(entry).length === 0 &&
+    plainProjection(normalizeCardText(entry as CardText)) === options[index]
+      ? (entry as CardText)
+      : null,
+  );
+  return out.some((entry) => entry !== null) ? out : null;
 }
 
 function applyWorkloadLimits(

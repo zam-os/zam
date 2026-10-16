@@ -49,7 +49,39 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Welche Steigung $m_2$ muss eine Gerade $g_2$ besitzen, damit sie orthogonal (senkrecht) auf der Geraden $g_1: y = 2x - 5$ steht?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Steigung "
+            },
+            {
+              "type": "math",
+              "tex": "m_2",
+              "speech": "m zwei"
+            },
+            {
+              "type": "text",
+              "text": " muss eine Gerade "
+            },
+            {
+              "type": "math",
+              "tex": "g_2",
+              "speech": "g zwei"
+            },
+            {
+              "type": "text",
+              "text": " besitzen, damit sie orthogonal (senkrecht) auf der Geraden "
+            },
+            {
+              "type": "math",
+              "tex": "g_1: y = 2x - 5",
+              "speech": "g eins: y gleich 2 x minus 5"
+            },
+            {
+              "type": "text",
+              "text": " steht?"
+            }
+          ],
           "concept": "m2 = -1/2 (Orthogonalitätsbedingung: m1 * m2 = -1)",
           "fast_check": {
             "type": "binary_choice",
@@ -58,16 +90,429 @@
               "m2 = 2"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8G8A0000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere lineare Funktionen in der Normalform $f(x) = m \\cdot x + t$: 1. **Bedeutung der Parameter**:   * **Steigung $m$**: $m = \\frac{\\Delta y}{\\Delta x} = \\frac{y_2 - y_1}{x_2 - x_1}$ ($m > 0$: streng monoton steigend; $m < 0$: fallend; $m = 0$: konstante waagrechte Gerade).   * **$y$-Achsenabschnitt $t$**: Schnittpunkt mit der Ordinate $S_y(0 \\mid t)$, 2. **Nullstelle $x_0$**: Ansatz $f(x) = 0 \\implies m \\cdot x_0 + t = 0 \\implies x_0 = -\\frac{t}{m}$ ($m \\neq 0$), 3. **Lagebeziehungen zweier Geraden**:   * Parallelität: $g_1 \\parallel g_2 \\iff m_1 = m_2$ (bei $t_1 \\neq t_2$ echt parallel, bei $t_1 = t_2$ identisch).   * Orthogonalität (senkrechter Schnitt): $g_1 \\perp g_2 \\iff m_1 \\cdot m_2 = -1 \\iff m_2 = -\\frac{1}{m_1}$, 4. Bestimme die Funktionsgleichung der Geraden $g$, die durch $P(3 \\mid 1)$ und $Q(-1 \\mid -7)$ verläuft.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere lineare Funktionen in der Normalform "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = m \\cdot x + t",
+              "speech": "f von x gleich m mal x plus t"
+            },
+            {
+              "type": "text",
+              "text": ": 1. Bedeutung der Parameter:   * Steigung "
+            },
+            {
+              "type": "math",
+              "tex": "m",
+              "speech": "m"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "m = \\frac{\\Delta y}{\\Delta x} = \\frac{y_2 - y_1}{x_2 - x_1}",
+              "speech": "m gleich Delta y durch Delta x gleich Bruch: y zwei minus y eins, durch x zwei minus x eins"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "m > 0",
+              "speech": "m größer als 0"
+            },
+            {
+              "type": "text",
+              "text": ": streng monoton steigend; "
+            },
+            {
+              "type": "math",
+              "tex": "m < 0",
+              "speech": "m kleiner als 0"
+            },
+            {
+              "type": "text",
+              "text": ": fallend; "
+            },
+            {
+              "type": "math",
+              "tex": "m = 0",
+              "speech": "m gleich 0"
+            },
+            {
+              "type": "text",
+              "text": ": konstante waagrechte Gerade).   * "
+            },
+            {
+              "type": "math",
+              "tex": "y",
+              "speech": "y"
+            },
+            {
+              "type": "text",
+              "text": "-Achsenabschnitt "
+            },
+            {
+              "type": "math",
+              "tex": "t",
+              "speech": "t"
+            },
+            {
+              "type": "text",
+              "text": ": Schnittpunkt mit der Ordinate "
+            },
+            {
+              "type": "math",
+              "tex": "S_y(0 \\mid t)",
+              "speech": "S y mit den Koordinaten 0 und t"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Nullstelle "
+            },
+            {
+              "type": "math",
+              "tex": "x_0",
+              "speech": "x null"
+            },
+            {
+              "type": "text",
+              "text": ": Ansatz "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = 0 \\implies m \\cdot x_0 + t = 0 \\implies x_0 = -\\frac{t}{m}",
+              "speech": "f von x gleich 0, daraus folgt m mal x null plus t gleich 0, daraus folgt x null gleich minus t durch m"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "m \\neq 0",
+              "speech": "m ungleich 0"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Lagebeziehungen zweier Geraden:   * Parallelität: "
+            },
+            {
+              "type": "math",
+              "tex": "g_1 \\parallel g_2 \\iff m_1 = m_2",
+              "speech": "g eins parallel zu g zwei genau dann, wenn m eins gleich m zwei"
+            },
+            {
+              "type": "text",
+              "text": " (bei "
+            },
+            {
+              "type": "math",
+              "tex": "t_1 \\neq t_2",
+              "speech": "t eins ungleich t zwei"
+            },
+            {
+              "type": "text",
+              "text": " echt parallel, bei "
+            },
+            {
+              "type": "math",
+              "tex": "t_1 = t_2",
+              "speech": "t eins gleich t zwei"
+            },
+            {
+              "type": "text",
+              "text": " identisch).   * Orthogonalität (senkrechter Schnitt): "
+            },
+            {
+              "type": "math",
+              "tex": "g_1 \\perp g_2 \\iff m_1 \\cdot m_2 = -1 \\iff m_2 = -\\frac{1}{m_1}",
+              "speech": "g eins senkrecht zu g zwei genau dann, wenn m eins mal m zwei gleich minus 1 genau dann, wenn m zwei gleich minus 1 durch m eins"
+            },
+            {
+              "type": "text",
+              "text": ", 4. Bestimme die Funktionsgleichung der Geraden "
+            },
+            {
+              "type": "math",
+              "tex": "g",
+              "speech": "g"
+            },
+            {
+              "type": "text",
+              "text": ", die durch "
+            },
+            {
+              "type": "math",
+              "tex": "P(3 \\mid 1)",
+              "speech": "Punkt P mit den Koordinaten 3 und 1"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "Q(-1 \\mid -7)",
+              "speech": "Punkt Q mit den Koordinaten minus 1 und minus 7"
+            },
+            {
+              "type": "text",
+              "text": " verläuft."
+            }
+          ],
           "concept": "Lineare Funktion: f(x) = mx + t; m = Delta y / Delta x; t = y-Achsenabschnitt; Nullstelle x0 = -t/m; Parallel (m1=m2) vs. Orthogonal (m1*m2 = -1); Rechnung: m = (-7 - 1)/(-1 - 3) = -8/-4 = 2; 1 = 2*3 + t -> t = -5 -> g: y = 2x - 5.",
-          "sample_solution": "1. Die Normalform der linearen Funktion $f(x) = m \\cdot x + t$: - **1. Steigung $m$**:   * Beschreibt die Änderungsrate und wird über das **Steigungsdreieck** berechnet:     $$\\mathbf{m = \\frac{\\Delta y}{\\Delta x} = \\frac{y_2 - y_1}{x_2 - x_1}}$$   * $m > 0$: Graph steigt von links unten nach rechts oben (Monotoniewachstum).   * $m < 0$: Graph fällt von links oben nach rechts unten.   * $m = 0$: Parallele zur $x$-Achse ($f(x) = t$). - **2. $y$-Achsenabschnitt $t$**:   * Wert der Funktion an der Stelle $x = 0 \\implies$ Schnittpunkt mit der $y$-Achse ist $\\mathbf{S_y(0 \\mid t)}$. 2. Berechnung der Nullstelle $x_0$: - Die Nullstelle ist die Schnittstelle des Graphen mit der $x$-Achse:   $$f(x_0) = 0 \\iff m \\cdot x_0 + t = 0 \\iff \\mathbf{x_0 = -\\frac{t}{m}} \\quad (m \\neq 0)$$ 3. Relative Lage zweier Geraden in der Ebene: - **Parallelität**: Zwei Geraden sind genau dann parallel, wenn ihre Steigungen übereinstimmen:   $$\\mathbf{g_1 \\parallel g_2 \\iff m_1 = m_2}$$ - **Orthogonalität (Senkrecht)**: Zwei Geraden stehen genau dann senkrecht aufeinander, wenn das Produkt ihrer Steigungen $-1$ ergibt (negative Kehrwerte):   $$\\mathbf{g_1 \\perp g_2 \\iff m_1 \\cdot m_2 = -1 \\iff m_2 = -\\frac{1}{m_1}}$$ 4. Bestimmung der Geradengleichung durch zwei Punkte $P(3 \\mid 1)$ und $Q(-1 \\mid -7)$: - **Schritt 1: Steigung $m$ berechnen**:   $$m = \\frac{y_Q - y_P}{x_Q - x_P} = \\frac{-7 - 1}{-1 - 3} = \\frac{-8}{-4} = \\mathbf{2}$$ - **Schritt 2: $y$-Achsenabschnitt $t$ bestimmen** (Punktprobe mit $P(3 \\mid 1)$):   $$y = m \\cdot x + t \\implies 1 = 2 \\cdot 3 + t \\implies 1 = 6 + t \\implies \\mathbf{t = -5}$$ - **Funktionsgleichung**: $\\mathbf{g: y = 2x - 5}$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Normalform der linearen Funktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = m \\cdot x + t"
+            },
+            {
+              "type": "text",
+              "text": ": - 1. Steigung "
+            },
+            {
+              "type": "math",
+              "tex": "m"
+            },
+            {
+              "type": "text",
+              "text": ":   * Beschreibt die Änderungsrate und wird über das Steigungsdreieck berechnet:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{m = \\frac{\\Delta y}{\\Delta x} = \\frac{y_2 - y_1}{x_2 - x_1}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "m > 0"
+            },
+            {
+              "type": "text",
+              "text": ": Graph steigt von links unten nach rechts oben (Monotoniewachstum).   * "
+            },
+            {
+              "type": "math",
+              "tex": "m < 0"
+            },
+            {
+              "type": "text",
+              "text": ": Graph fällt von links oben nach rechts unten.   * "
+            },
+            {
+              "type": "math",
+              "tex": "m = 0"
+            },
+            {
+              "type": "text",
+              "text": ": Parallele zur "
+            },
+            {
+              "type": "math",
+              "tex": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Achse ("
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = t"
+            },
+            {
+              "type": "text",
+              "text": "). - 2. "
+            },
+            {
+              "type": "math",
+              "tex": "y"
+            },
+            {
+              "type": "text",
+              "text": "-Achsenabschnitt "
+            },
+            {
+              "type": "math",
+              "tex": "t"
+            },
+            {
+              "type": "text",
+              "text": ":   * Wert der Funktion an der Stelle "
+            },
+            {
+              "type": "math",
+              "tex": "x = 0 \\implies"
+            },
+            {
+              "type": "text",
+              "text": " Schnittpunkt mit der "
+            },
+            {
+              "type": "math",
+              "tex": "y"
+            },
+            {
+              "type": "text",
+              "text": "-Achse ist "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{S_y(0 \\mid t)}"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Berechnung der Nullstelle "
+            },
+            {
+              "type": "math",
+              "tex": "x_0"
+            },
+            {
+              "type": "text",
+              "text": ": - Die Nullstelle ist die Schnittstelle des Graphen mit der "
+            },
+            {
+              "type": "math",
+              "tex": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Achse:   "
+            },
+            {
+              "type": "math",
+              "tex": "f(x_0) = 0 \\iff m \\cdot x_0 + t = 0 \\iff \\mathbf{x_0 = -\\frac{t}{m}} \\quad (m \\neq 0)",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Relative Lage zweier Geraden in der Ebene: - Parallelität: Zwei Geraden sind genau dann parallel, wenn ihre Steigungen übereinstimmen:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{g_1 \\parallel g_2 \\iff m_1 = m_2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Orthogonalität (Senkrecht): Zwei Geraden stehen genau dann senkrecht aufeinander, wenn das Produkt ihrer Steigungen "
+            },
+            {
+              "type": "math",
+              "tex": "-1"
+            },
+            {
+              "type": "text",
+              "text": " ergibt (negative Kehrwerte):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{g_1 \\perp g_2 \\iff m_1 \\cdot m_2 = -1 \\iff m_2 = -\\frac{1}{m_1}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 4. Bestimmung der Geradengleichung durch zwei Punkte "
+            },
+            {
+              "type": "math",
+              "tex": "P(3 \\mid 1)"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "Q(-1 \\mid -7)"
+            },
+            {
+              "type": "text",
+              "text": ": - Schritt 1: Steigung "
+            },
+            {
+              "type": "math",
+              "tex": "m"
+            },
+            {
+              "type": "text",
+              "text": " berechnen:   "
+            },
+            {
+              "type": "math",
+              "tex": "m = \\frac{y_Q - y_P}{x_Q - x_P} = \\frac{-7 - 1}{-1 - 3} = \\frac{-8}{-4} = \\mathbf{2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 2: "
+            },
+            {
+              "type": "math",
+              "tex": "y"
+            },
+            {
+              "type": "text",
+              "text": "-Achsenabschnitt "
+            },
+            {
+              "type": "math",
+              "tex": "t"
+            },
+            {
+              "type": "text",
+              "text": " bestimmen (Punktprobe mit "
+            },
+            {
+              "type": "math",
+              "tex": "P(3 \\mid 1)"
+            },
+            {
+              "type": "text",
+              "text": "):   "
+            },
+            {
+              "type": "math",
+              "tex": "y = m \\cdot x + t \\implies 1 = 2 \\cdot 3 + t \\implies 1 = 6 + t \\implies \\mathbf{t = -5}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Funktionsgleichung: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{g: y = 2x - 5}"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -112,7 +557,21 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Welche geometrische Interpretation hat ein lineares 2x2 Gleichungssystem, wenn es genau EINE eindeutige Lösung $(x \\mid y)$ besitzt?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche geometrische Interpretation hat ein lineares 2x2 Gleichungssystem, wenn es genau EINE eindeutige Lösung "
+            },
+            {
+              "type": "math",
+              "tex": "(x \\mid y)",
+              "speech": "Punkt x, y"
+            },
+            {
+              "type": "text",
+              "text": " besitzt?"
+            }
+          ],
           "concept": "Die beiden zugehörigen Geraden schneiden sich in genau einem Schnittpunkt S(x | y)",
           "fast_check": {
             "type": "binary_choice",
@@ -121,16 +580,397 @@
               "Die Geraden sind echt parallel zueinander"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8G8A0000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre die 3 algebraischen Lösungsverfahren für lineare Gleichungssysteme (2x2) und löse das System: 1. **Gleichsetzungsverfahren**: Beide Gleichungen nach derselben Variablen auflösen und gleichsetzen ($T_1(x) = T_2(x)$), 2. **Einsetzungsverfahren**: Eine Gleichung nach einer Variablen isolieren und den Term in die andere Gleichung einsetzen, 3. **Additionsverfahren (Subtraktionsverfahren)**: Multiplikation der Gleichungen mit geeigneten Faktoren, sodass bei gliedweiser Addition/Subtraktion eine Variable eliminiert wird ($c_1 \\cdot \\text{I} + c_2 \\cdot \\text{II}$), 4. Die 3 **Lösungsfälle**: Eindeutige Lösung $L = \\{(x_0 \\mid y_0)\\}$ (schneidende Geraden), Keine Lösung $L = \\emptyset$ (echt parallele Geraden, Widerspruch z. B. $0 = 12$), Unendlich viele Lösungen $L = \\{(x \\mid y) \\mid y = mx+t\\}$ (identische Geraden, wahre Aussage z. B. $0 = 0$), 5. Löse mit dem Additionsverfahren: I: $3x + 2y = 16$, II: $5x - 4y = 8$.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Erkläre die 3 algebraischen Lösungsverfahren für lineare Gleichungssysteme (2x2) und löse das System: 1. Gleichsetzungsverfahren: Beide Gleichungen nach derselben Variablen auflösen und gleichsetzen ("
+            },
+            {
+              "type": "math",
+              "tex": "T_1(x) = T_2(x)",
+              "speech": "T eins von x gleich T zwei von x"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Einsetzungsverfahren: Eine Gleichung nach einer Variablen isolieren und den Term in die andere Gleichung einsetzen, 3. Additionsverfahren (Subtraktionsverfahren): Multiplikation der Gleichungen mit geeigneten Faktoren, sodass bei gliedweiser Addition/Subtraktion eine Variable eliminiert wird ("
+            },
+            {
+              "type": "math",
+              "tex": "c_1 \\cdot \\text{I} + c_2 \\cdot \\text{II}",
+              "speech": "c eins mal Gleichung eins plus c zwei mal Gleichung zwei"
+            },
+            {
+              "type": "text",
+              "text": "), 4. Die 3 Lösungsfälle: Eindeutige Lösung "
+            },
+            {
+              "type": "math",
+              "tex": "L = \\{(x_0 \\mid y_0)\\}",
+              "speech": "L gleich die Menge aus dem Punkt x null, y null"
+            },
+            {
+              "type": "text",
+              "text": " (schneidende Geraden), Keine Lösung "
+            },
+            {
+              "type": "math",
+              "tex": "L = \\emptyset",
+              "speech": "L gleich leere Menge"
+            },
+            {
+              "type": "text",
+              "text": " (echt parallele Geraden, Widerspruch z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "0 = 12",
+              "speech": "0 gleich 12"
+            },
+            {
+              "type": "text",
+              "text": "), Unendlich viele Lösungen "
+            },
+            {
+              "type": "math",
+              "tex": "L = \\{(x \\mid y) \\mid y = mx+t\\}",
+              "speech": "L gleich die Menge aller Punkte x, y mit y gleich m x plus t"
+            },
+            {
+              "type": "text",
+              "text": " (identische Geraden, wahre Aussage z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "0 = 0",
+              "speech": "0 gleich 0"
+            },
+            {
+              "type": "text",
+              "text": "), 5. Löse mit dem Additionsverfahren: I: "
+            },
+            {
+              "type": "math",
+              "tex": "3x + 2y = 16",
+              "speech": "3 x plus 2 y gleich 16"
+            },
+            {
+              "type": "text",
+              "text": ", II: "
+            },
+            {
+              "type": "math",
+              "tex": "5x - 4y = 8",
+              "speech": "5 x minus 4 y gleich 8"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
           "concept": "2x2 LGS: Gleichsetzungs-, Einsetzungs-, Additionsverfahren; 3 Lösungsfälle (1 Schnittpunkt, echt parallel/leer, identisch/unendlich); Additionsverfahren: 2*I: 6x + 4y = 32; (2*I) + II: 11x = 40 -> x = 40/11 -> y = 28/11 -> L = {(40/11 | 28/11)} bzw. bei 3x+2y=16 & 5x-4y=8: 6x+4y=32 + 5x-4y=8 -> 11x = 40 -> x = 40/11.",
-          "sample_solution": "1. Die 3 algebraischen Lösungsverfahren im Überblick: - **1. Gleichsetzungsverfahren**:   * Beide Gleichungen werden nach derselben Unbekannten aufgelöst (z. B. $y = 2x - 3$ und $y = -x + 6$) $\\implies 2x - 3 = -x + 6$. - **2. Einsetzungsverfahren**:   * Eine Unbekannte wird in einer Gleichung isoliert (z. B. $x = 2y + 1$) und als Term in die andere Gleichung anstelle von $x$ eingesetzt. - **3. Additionsverfahren**:   * Beide Gleichungen werden mit passenden Faktoren multipliziert, sodass die Koeffizienten einer Variablen entgegengesetzt gleich werden (z. B. $+4y$ und $-4y$). Durch gliedweises Addieren beider Gleichungen fällt diese Variable weg. 2. Die drei Lösungsfälle und ihre geometrische Deutung: - **1. Eindeutige Lösung $L = \\{(x_0 \\mid y_0)\\}$**:   * Algebra: Führt auf eindeutige Zahlenwerte für $x$ und $y$.   * Geometrie: Die beiden Geraden besitzen unterschiedliche Steigungen ($m_1 \\neq m_2$) und schneiden sich in genau einem Schnittpunkt $S(x_0 \\mid y_0)$. - **2. Keine Lösung $L = \\emptyset$**:   * Algebra: Führt auf einen mathematischen Widerspruch (z. B. $0 = 7$).   * Geometrie: Die Geraden sind **echt parallel** ($m_1 = m_2$, aber $t_1 \\neq t_2$). - **3. Unendlich viele Lösungen**:   * Algebra: Führt auf eine allgemeingültige wahre Aussage (z. B. $0 = 0$).   * Geometrie: Beide Geradengleichungen beschreiben dieselbe **identische Gerade** ($m_1 = m_2$ und $t_1 = t_2$). 3. Vollständige Lösung des Gleichungssystems mit dem Additionsverfahren: - Gegeben:   $$\\text{I: } 3x + 2y = 16$$   $$\\text{II: } 5x - 4y = 8$$ - **Schritt 1: Gleichung I mit $2$ multiplizieren**, um bei $y$ den Koeffizienten $+4$ zu erhalten:   $$\\text{I}': 6x + 4y = 32$$ - **Schritt 2: $\\text{I}'$ und $\\text{II}$ addieren** (Elimination von $y$):   $$(6x + 4y) + (5x - 4y) = 32 + 8$$   $$11x = 40 \\implies \\mathbf{x = \\frac{40}{11}}$$ - **Schritt 3: $x = \\frac{40}{11}$ in Gleichung I einsetzen**:   $$3 \\cdot \\left(\\frac{40}{11}\\right) + 2y = 16$$   $$\\frac{120}{11} + 2y = \\frac{176}{11}$$   $$2y = \\frac{176 - 120}{11} = \\frac{56}{11} \\implies \\mathbf{y = \\frac{28}{11}}$$ - **Lösungsmenge**: $\\mathbf{L = \\left\\{ \\left( \\frac{40}{11} \\,\\middle|\\, \\frac{28}{11} \\right) \\right\\}}$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die 3 algebraischen Lösungsverfahren im Überblick: - 1. Gleichsetzungsverfahren:   * Beide Gleichungen werden nach derselben Unbekannten aufgelöst (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "y = 2x - 3"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "y = -x + 6"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies 2x - 3 = -x + 6"
+            },
+            {
+              "type": "text",
+              "text": ". - 2. Einsetzungsverfahren:   * Eine Unbekannte wird in einer Gleichung isoliert (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "x = 2y + 1"
+            },
+            {
+              "type": "text",
+              "text": ") und als Term in die andere Gleichung anstelle von "
+            },
+            {
+              "type": "math",
+              "tex": "x"
+            },
+            {
+              "type": "text",
+              "text": " eingesetzt. - 3. Additionsverfahren:   * Beide Gleichungen werden mit passenden Faktoren multipliziert, sodass die Koeffizienten einer Variablen entgegengesetzt gleich werden (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "+4y"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "-4y"
+            },
+            {
+              "type": "text",
+              "text": "). Durch gliedweises Addieren beider Gleichungen fällt diese Variable weg. 2. Die drei Lösungsfälle und ihre geometrische Deutung: - 1. Eindeutige Lösung "
+            },
+            {
+              "type": "math",
+              "tex": "L = \\{(x_0 \\mid y_0)\\}"
+            },
+            {
+              "type": "text",
+              "text": ":   * Algebra: Führt auf eindeutige Zahlenwerte für "
+            },
+            {
+              "type": "math",
+              "tex": "x"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "y"
+            },
+            {
+              "type": "text",
+              "text": ".   * Geometrie: Die beiden Geraden besitzen unterschiedliche Steigungen ("
+            },
+            {
+              "type": "math",
+              "tex": "m_1 \\neq m_2"
+            },
+            {
+              "type": "text",
+              "text": ") und schneiden sich in genau einem Schnittpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "S(x_0 \\mid y_0)"
+            },
+            {
+              "type": "text",
+              "text": ". - 2. Keine Lösung "
+            },
+            {
+              "type": "math",
+              "tex": "L = \\emptyset"
+            },
+            {
+              "type": "text",
+              "text": ":   * Algebra: Führt auf einen mathematischen Widerspruch (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "0 = 7"
+            },
+            {
+              "type": "text",
+              "text": ").   * Geometrie: Die Geraden sind echt parallel ("
+            },
+            {
+              "type": "math",
+              "tex": "m_1 = m_2"
+            },
+            {
+              "type": "text",
+              "text": ", aber "
+            },
+            {
+              "type": "math",
+              "tex": "t_1 \\neq t_2"
+            },
+            {
+              "type": "text",
+              "text": "). - 3. Unendlich viele Lösungen:   * Algebra: Führt auf eine allgemeingültige wahre Aussage (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "0 = 0"
+            },
+            {
+              "type": "text",
+              "text": ").   * Geometrie: Beide Geradengleichungen beschreiben dieselbe identische Gerade ("
+            },
+            {
+              "type": "math",
+              "tex": "m_1 = m_2"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "t_1 = t_2"
+            },
+            {
+              "type": "text",
+              "text": "). 3. Vollständige Lösung des Gleichungssystems mit dem Additionsverfahren: - Gegeben:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{I: } 3x + 2y = 16",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{II: } 5x - 4y = 8",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 1: Gleichung I mit "
+            },
+            {
+              "type": "math",
+              "tex": "2"
+            },
+            {
+              "type": "text",
+              "text": " multiplizieren, um bei "
+            },
+            {
+              "type": "math",
+              "tex": "y"
+            },
+            {
+              "type": "text",
+              "text": " den Koeffizienten "
+            },
+            {
+              "type": "math",
+              "tex": "+4"
+            },
+            {
+              "type": "text",
+              "text": " zu erhalten:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{I}': 6x + 4y = 32",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 2: "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{I}'"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{II}"
+            },
+            {
+              "type": "text",
+              "text": " addieren (Elimination von "
+            },
+            {
+              "type": "math",
+              "tex": "y"
+            },
+            {
+              "type": "text",
+              "text": "):   "
+            },
+            {
+              "type": "math",
+              "tex": "(6x + 4y) + (5x - 4y) = 32 + 8",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "11x = 40 \\implies \\mathbf{x = \\frac{40}{11}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 3: "
+            },
+            {
+              "type": "math",
+              "tex": "x = \\frac{40}{11}"
+            },
+            {
+              "type": "text",
+              "text": " in Gleichung I einsetzen:   "
+            },
+            {
+              "type": "math",
+              "tex": "3 \\cdot \\left(\\frac{40}{11}\\right) + 2y = 16",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{120}{11} + 2y = \\frac{176}{11}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "2y = \\frac{176 - 120}{11} = \\frac{56}{11} \\implies \\mathbf{y = \\frac{28}{11}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Lösungsmenge: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{L = \\left\\{ \\left( \\frac{40}{11} \\,\\middle|\\, \\frac{28}{11} \\right) \\right\\}}"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

@@ -50,7 +50,75 @@
           "tier": "tier1_fast",
           "bloom_level": 1,
           "question": "In welche zwei energetisch unterschiedlichen Unterniveaus spalten sich die fünf zuvor entarteten d-Orbitale eines Übergangsmetall-Kations in einem oktaedrischen Ligandenfeld auf?",
-          "concept": "In das energieärmere dreifach entartete t_2g-Niveau (Orbitale d_xy, d_xz, d_yz zwischen den Achsen) und das energiereichere zweifach entartete e_g-Niveau (Orbitale d_z^2, d_x^2-y^2 entlang der Achsen)",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "In das energieärmere dreifach entartete "
+            },
+            {
+              "type": "math",
+              "tex": "t_{2g}",
+              "speech": "t zwei g"
+            },
+            {
+              "type": "text",
+              "text": "-Niveau (Orbitale "
+            },
+            {
+              "type": "math",
+              "tex": "d_{xy}",
+              "speech": "d x y"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "d_{xz}",
+              "speech": "d x z"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "d_{yz}",
+              "speech": "d y z"
+            },
+            {
+              "type": "text",
+              "text": " zwischen den Achsen) und das energiereichere zweifach entartete "
+            },
+            {
+              "type": "math",
+              "tex": "e_g",
+              "speech": "e g"
+            },
+            {
+              "type": "text",
+              "text": "-Niveau (Orbitale "
+            },
+            {
+              "type": "math",
+              "tex": "d_{z^2}",
+              "speech": "d z Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "d_{x^2-y^2}",
+              "speech": "d x Quadrat minus y Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " entlang der Achsen)"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -58,16 +126,476 @@
               "In s- und p-Orbitale"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GD60000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den Aufbau von Koordinationskomplexen, die Ligandenfeldtheorie und die spektrochemische Reihe: 1. **Aufbau von Komplexen (Alfred Werner, Nobelpreis 1913)**:   * **Zentralteilchen**: Übergangsmetall-Ion (Lewis-Säure, Elektronenpaarakzeptor) mit unvollständig besetzten d-Orbitalen.   * **Liganden**: Neutrale Moleküle ($H_2O, NH_3, CO$) oder Anionen ($Cl^-, CN^-, OH^-$) als Lewis-Basen (Elektronenpaardonatoren) mit koordinativen Bindungen.   * **Koordinationszahl (KZ)**: Anzahl der direkt gebundenen Ligandenatome (KZ 6 $\\implies$ Oktaeder; KZ 4 $\\implies$ Tetraeder oder quadratisch-planar wie bei $[Pt(NH_3)_2Cl_2]$ Cisplatin), 2. **Die Ligandenfeldtheorie (CFT / LFT)**:   * Im freien Kation sind alle 5 d-Orbitale energetisch gleichwertig (entartet).   * Im oktaedrischen Feld nähern sich 6 Liganden entlang der Raumachsen ($x, y, z$):     - Die Orbitale $d_{z^2}$ und $d_{x^2-y^2}$ zeigen direkt auf die Liganden $\\implies$ starke elektrostatische Abstoßung $\\implies$ Anhebung ins **$e_g$-Niveau** ($+\\frac{3}{5}\\Delta_o$).     - Die Orbitale $d_{xy}, d_{xz}, d_{yz}$ liegen zwischen den Achsen $\\implies$ geringere Abstoßung $\\implies$ Absenkung ins **$t_{2g}$-Niveau** ($-\\frac{2}{5}\\Delta_o$).   * **d-d-Übergänge als Ursache der Farbigkeit**: Absorption von sichtbarem Licht regt ein Elektron vom $t_{2g}$- ins $e_g$-Niveau an (z. B. $[Cu(H_2O)_6]^{2+}$ absorbiert Rot/Gelb $\\implies$ blauer Farbeindruck), 3. **Spektrochemische Reihe & High-Spin vs. Low-Spin**:   * Schwachfeld-Liganden ($I^- < Cl^- < F^- < H_2O$) $\\implies$ kleines $\\Delta_o < P$ (Spinpaarungsenergie) $\\implies$ **High-Spin** (Hundsche Regel: maximale ungepaarte Spins, paramagnetisch).   * Starkfeld-Liganden ($NH_3 < NO_2^- < CN^- < CO$) $\\implies$ großes $\\Delta_o > P \\implies$ **Low-Spin** (Paarung im $t_{2g}$-Niveau vor Besetzung von $e_g$).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den Aufbau von Koordinationskomplexen, die Ligandenfeldtheorie und die spektrochemische Reihe: 1. Aufbau von Komplexen (Alfred Werner, Nobelpreis 1913):   * Zentralteilchen: Übergangsmetall-Ion (Lewis-Säure, Elektronenpaarakzeptor) mit unvollständig besetzten d-Orbitalen.   * Liganden: Neutrale Moleküle ("
+            },
+            {
+              "type": "math",
+              "tex": "H_2O, NH_3, CO",
+              "speech": "H zwei O, N H drei, C O"
+            },
+            {
+              "type": "text",
+              "text": ") oder Anionen ("
+            },
+            {
+              "type": "math",
+              "tex": "Cl^-, CN^-, OH^-",
+              "speech": "C l minus, C N minus, O H minus"
+            },
+            {
+              "type": "text",
+              "text": ") als Lewis-Basen (Elektronenpaardonatoren) mit koordinativen Bindungen.   * Koordinationszahl (KZ): Anzahl der direkt gebundenen Ligandenatome (KZ 6 "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Oktaeder; KZ 4 "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Tetraeder oder quadratisch-planar wie bei "
+            },
+            {
+              "type": "math",
+              "tex": "[Pt(NH_3)_2Cl_2]",
+              "speech": "Platin mit zwei N H drei und zwei C l"
+            },
+            {
+              "type": "text",
+              "text": " Cisplatin), 2. Die Ligandenfeldtheorie (CFT / LFT):   * Im freien Kation sind alle 5 d-Orbitale energetisch gleichwertig (entartet).   * Im oktaedrischen Feld nähern sich 6 Liganden entlang der Raumachsen ("
+            },
+            {
+              "type": "math",
+              "tex": "x, y, z",
+              "speech": "x, y, z"
+            },
+            {
+              "type": "text",
+              "text": "):     - Die Orbitale "
+            },
+            {
+              "type": "math",
+              "tex": "d_{z^2}",
+              "speech": "d z Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "d_{x^2-y^2}",
+              "speech": "d x Quadrat minus y Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " zeigen direkt auf die Liganden "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " starke elektrostatische Abstoßung "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Anhebung ins "
+            },
+            {
+              "type": "math",
+              "tex": "e_g",
+              "speech": "e g"
+            },
+            {
+              "type": "text",
+              "text": "-Niveau ("
+            },
+            {
+              "type": "math",
+              "tex": "+\\frac{3}{5}\\Delta_o",
+              "speech": "plus drei Fünftel Delta o"
+            },
+            {
+              "type": "text",
+              "text": ").     - Die Orbitale "
+            },
+            {
+              "type": "math",
+              "tex": "d_{xy}, d_{xz}, d_{yz}",
+              "speech": "d x y, d x z, d y z"
+            },
+            {
+              "type": "text",
+              "text": " liegen zwischen den Achsen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " geringere Abstoßung "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Absenkung ins "
+            },
+            {
+              "type": "math",
+              "tex": "t_{2g}",
+              "speech": "t zwei g"
+            },
+            {
+              "type": "text",
+              "text": "-Niveau ("
+            },
+            {
+              "type": "math",
+              "tex": "-\\frac{2}{5}\\Delta_o",
+              "speech": "minus zwei Fünftel Delta o"
+            },
+            {
+              "type": "text",
+              "text": ").   * d-d-Übergänge als Ursache der Farbigkeit: Absorption von sichtbarem Licht regt ein Elektron vom "
+            },
+            {
+              "type": "math",
+              "tex": "t_{2g}",
+              "speech": "t zwei g"
+            },
+            {
+              "type": "text",
+              "text": "- ins "
+            },
+            {
+              "type": "math",
+              "tex": "e_g",
+              "speech": "e g"
+            },
+            {
+              "type": "text",
+              "text": "-Niveau an (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "[Cu(H_2O)_6]^{2+}",
+              "speech": "Kupfer mit sechs H zwei O, zweifach positiv"
+            },
+            {
+              "type": "text",
+              "text": " absorbiert Rot/Gelb "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " blauer Farbeindruck), 3. Spektrochemische Reihe & High-Spin vs. Low-Spin:   * Schwachfeld-Liganden ("
+            },
+            {
+              "type": "math",
+              "tex": "I^- < Cl^- < F^- < H_2O",
+              "speech": "I minus kleiner als C l minus kleiner als F minus kleiner als H zwei O"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " kleines "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta_o < P",
+              "speech": "Delta o kleiner als P"
+            },
+            {
+              "type": "text",
+              "text": " (Spinpaarungsenergie) "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " High-Spin (Hundsche Regel: maximale ungepaarte Spins, paramagnetisch).   * Starkfeld-Liganden ("
+            },
+            {
+              "type": "math",
+              "tex": "NH_3 < NO_2^- < CN^- < CO",
+              "speech": "N H drei kleiner als N O zwei minus kleiner als C N minus kleiner als C O"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " großes "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta_o > P \\implies",
+              "speech": "Delta o größer als P daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Low-Spin (Paarung im "
+            },
+            {
+              "type": "math",
+              "tex": "t_{2g}",
+              "speech": "t zwei g"
+            },
+            {
+              "type": "text",
+              "text": "-Niveau vor Besetzung von "
+            },
+            {
+              "type": "math",
+              "tex": "e_g",
+              "speech": "e g"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
           "concept": "Komplexchemie 13: Alfred Werner Nomenklatur; Oktaedrische d-Orbitalspaltung t2g (3) und eg (2) um Delta_o; d-d-Elektronenübergänge und Komplementärfarben; Spektrochemische Reihe (I- < H2O < NH3 < CN-); High-Spin vs. Low-Spin Komplexe.",
-          "sample_solution": "1. Der Aufbau von Koordinationsverbindungen: - Eine Komplexverbindung $[\\text{M}(\\text{L})_n]^{z+}$ besteht aus:   * **Zentralion**: Ein Übergangsmetall-Kation mit freien Hybridorbitalen (z. B. $\\text{Fe}^{2+}, \\text{Cu}^{2+}, \\text{Co}^{3+}$).   * **Liganden**: Atome oder Moleküle mit mindestens einem freien Elektronenpaar, die eine **dative / koordinative Bindung** zum Zentralion ausbilden.   * **Koordinationssphäre**: In eckigen Klammern geschrieben (z. B. $[\\text{Cu}(\\text{NH}_3)_4(\\text{H}_2\\text{O})_2]\\text{SO}_4$ = Tetraammindiaquakupfer(II)-sulfat). 2. Die Ligandenfeldtheorie im oktaedrischen Feld ($O_h$): ```mermaid graph TD   D[5 entartete d-Orbitale im freien Kation] -->|Oktaedrisches Ligandenfeld| EG[e_g Niveau: d_z2, d_x2-y2 / +0.6 Delta_o]   D -->|Oktaedrisches Ligandenfeld| T2G[t_2g Niveau: d_xy, d_xz, d_yz / -0.4 Delta_o] ``` - **Ursache der Farbigkeit (d-d-Übergänge)**:   * Trifft Licht der passenden Wellenlänge auf den Komplex, wird ein Elektron unter Lichtabsorption vom $t_{2g}$- in das $e_g$-Niveau angeregt:     $$\\mathbf{\\Delta_o = h \\cdot f = \\frac{h \\cdot c}{\\lambda_{\\text{abs}}}}$$   * Da die Ligandenfeldaufspaltung $\\Delta_o$ bei den meisten Übergangsmetallen exakt im Energiebereich des sichtbaren Lichts ($1{,}5\\text{ bis } 3{,}0\\,\\text{eV}$) liegt, zeigen Übergangsmetallkomplexe faszinierende, leuchtende Farben (Kupfer(II)-aqua hellblau, Hexaamminkupfer(II) tiefblau, Permanganat violett). 3. Die spektrochemische Reihe der Liganden: - Experimentell ermittelte Rangfolge nach steigender Feldstärke $\\Delta_o$:   $$\\mathbf{\\text{I}^- < \\text{Br}^- < \\text{Cl}^- < \\text{F}^- < \\text{OH}^- < \\text{H}_2\\text{O} < \\text{NH}_3 < \\text{en} < \\text{NO}_2^- < \\text{CN}^- \\approx \\text{CO}}$$ - **High-Spin vs. Low-Spin am Beispiel von $\\text{Fe}^{3+}$ ($d^5$-System)**:   * **Mit schwachen Liganden (z. B. $[\\text{FeF}_6]^{3-}$)**:     - $\\Delta_o < P$ (Spinpaarungsenergie). Nach der Hundschen Regel besetzen alle 5 Elektronen ungepaart die Orbitale: $t_{2g}^3\\,e_g^2$ $\\implies$ **High-Spin, 5 ungepaarte Elektronen (stark paramagnetisch)**.   * **Mit starken Liganden (z. B. $[\\text{Fe(CN)}_6]^{3-}$)**:     - $\\Delta_o > P$. Es ist energetisch günstiger, Elektronen im $t_{2g}$-Niveau zu paaren: $t_{2g}^5\\,e_g^0$ $\\implies$ **Low-Spin, nur 1 ungepaartes Elektron**."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der Aufbau von Koordinationsverbindungen: - Eine Komplexverbindung "
+            },
+            {
+              "type": "math",
+              "tex": "[\\text{M}(\\text{L})_n]^{z+}"
+            },
+            {
+              "type": "text",
+              "text": " besteht aus:   * Zentralion: Ein Übergangsmetall-Kation mit freien Hybridorbitalen (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Fe}^{2+}, \\text{Cu}^{2+}, \\text{Co}^{3+}"
+            },
+            {
+              "type": "text",
+              "text": ").   * Liganden: Atome oder Moleküle mit mindestens einem freien Elektronenpaar, die eine dative / koordinative Bindung zum Zentralion ausbilden.   * Koordinationssphäre: In eckigen Klammern geschrieben (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "[\\text{Cu}(\\text{NH}_3)_4(\\text{H}_2\\text{O})_2]\\text{SO}_4"
+            },
+            {
+              "type": "text",
+              "text": " = Tetraammindiaquakupfer(II)-sulfat). 2. Die Ligandenfeldtheorie im oktaedrischen Feld ("
+            },
+            {
+              "type": "math",
+              "tex": "O_h"
+            },
+            {
+              "type": "text",
+              "text": "): ```mermaid graph TD   D[5 entartete d-Orbitale im freien Kation] -->|Oktaedrisches Ligandenfeld| EG[e_g Niveau: d_z2, d_x2-y2 / +0.6 Delta_o]   D -->|Oktaedrisches Ligandenfeld| T2G[t_2g Niveau: d_xy, d_xz, d_yz / -0.4 Delta_o] ``` - Ursache der Farbigkeit (d-d-Übergänge):   * Trifft Licht der passenden Wellenlänge auf den Komplex, wird ein Elektron unter Lichtabsorption vom "
+            },
+            {
+              "type": "math",
+              "tex": "t_{2g}"
+            },
+            {
+              "type": "text",
+              "text": "- in das "
+            },
+            {
+              "type": "math",
+              "tex": "e_g"
+            },
+            {
+              "type": "text",
+              "text": "-Niveau angeregt:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Delta_o = h \\cdot f = \\frac{h \\cdot c}{\\lambda_{\\text{abs}}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Da die Ligandenfeldaufspaltung "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta_o"
+            },
+            {
+              "type": "text",
+              "text": " bei den meisten Übergangsmetallen exakt im Energiebereich des sichtbaren Lichts ("
+            },
+            {
+              "type": "math",
+              "tex": "1{,}5\\text{ bis } 3{,}0\\,\\text{eV}"
+            },
+            {
+              "type": "text",
+              "text": ") liegt, zeigen Übergangsmetallkomplexe faszinierende, leuchtende Farben (Kupfer(II)-aqua hellblau, Hexaamminkupfer(II) tiefblau, Permanganat violett). 3. Die spektrochemische Reihe der Liganden: - Experimentell ermittelte Rangfolge nach steigender Feldstärke "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta_o"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{I}^- < \\text{Br}^- < \\text{Cl}^- < \\text{F}^- < \\text{OH}^- < \\text{H}_2\\text{O} < \\text{NH}_3 < \\text{en} < \\text{NO}_2^- < \\text{CN}^- \\approx \\text{CO}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - High-Spin vs. Low-Spin am Beispiel von "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Fe}^{3+}"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "d^5"
+            },
+            {
+              "type": "text",
+              "text": "-System):   * Mit schwachen Liganden (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "[\\text{FeF}_6]^{3-}"
+            },
+            {
+              "type": "text",
+              "text": "):     - "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta_o < P"
+            },
+            {
+              "type": "text",
+              "text": " (Spinpaarungsenergie). Nach der Hundschen Regel besetzen alle 5 Elektronen ungepaart die Orbitale: "
+            },
+            {
+              "type": "math",
+              "tex": "t_{2g}^3\\,e_g^2"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " High-Spin, 5 ungepaarte Elektronen (stark paramagnetisch).   * Mit starken Liganden (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "[\\text{Fe(CN)}_6]^{3-}"
+            },
+            {
+              "type": "text",
+              "text": "):     - "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta_o > P"
+            },
+            {
+              "type": "text",
+              "text": ". Es ist energetisch günstiger, Elektronen im "
+            },
+            {
+              "type": "math",
+              "tex": "t_{2g}"
+            },
+            {
+              "type": "text",
+              "text": "-Niveau zu paaren: "
+            },
+            {
+              "type": "math",
+              "tex": "t_{2g}^5\\,e_g^0"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Low-Spin, nur 1 ungepaartes Elektron."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -113,24 +641,451 @@
           "tier": "tier1_fast",
           "bloom_level": 1,
           "question": "Warum sind Chelatkomplexe mit mehrzähnigen Liganden (wie EDTA 6-zähnig) thermodynamisch um viele Zehnerpotenzen stabiler als analoge Komplexe mit einzähnigen Liganden (Chelateffekt)?",
-          "concept": "Wegen des massiven Entropiegewinns (\\Delta S > 0): Bei der Komplexbildung werden viele freie einzähnige Wassermoleküle freigesetzt, wodurch die Teilchenzahl und Unordnung des Gesamtsystems stark zunimmt",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Wegen des massiven Entropiegewinns ("
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta S > 0",
+              "speech": "Delta S größer als 0"
+            },
+            {
+              "type": "text",
+              "text": "): Bei der Komplexbildung werden viele freie einzähnige Wassermoleküle freigesetzt, wodurch die Teilchenzahl und Unordnung des Gesamtsystems stark zunimmt"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "Wegen des enormen Entropiegewinns (\\Delta S > 0) durch Freisetzung vieler Lösungsmittelmoleküle",
+              [
+                {
+                  "type": "text",
+                  "text": "Wegen des enormen Entropiegewinns ("
+                },
+                {
+                  "type": "math",
+                  "tex": "\\Delta S > 0",
+                  "speech": "Delta S größer als 0"
+                },
+                {
+                  "type": "text",
+                  "text": ") durch Freisetzung vieler Lösungsmittelmoleküle"
+                }
+              ],
               "Weil Chelate keine Elektronen besitzen"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GD60000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den Chelateffekt, EDTA und den molekularen Aufbau von Hämoglobin: 1. **Der Chelateffekt & EDTA**:   * **Zähnigkeit**: Einzahnig ($H_2O, Cl^-$), zweizähnig (*en* / Ethylendiamin), sechszähnig (**EDTA$^{4-}$ / Ethylendiamintetraacetat** mit 2 N- und 4 O-Donoratomen).   * **Thermodynamik der Chelatbildung**:     $$[\\text{Ni}(\\text{H}_2\\text{O})_6]^{2+} + \\text{EDTA}^{4-} \\rightleftharpoons [\\text{Ni}(\\text{EDTA})]^{2-} + 6\\,\\text{H}_2\\text{O}$$   * Links: 2 Teilchen $\\rightarrow$ Rechts: 7 Teilchen $\\implies \\mathbf{\\Delta S^\\circ \\gg 0} \\implies \\mathbf{\\Delta G^\\circ = \\Delta H^\\circ - T\\Delta S^\\circ \\ll 0}$ (enorme Komplexbildungskonstante $K_B > 10^{18}$), 2. **Das Hämoglobin-Molekül als biologischer Sauerstoffträger**:   * **Struktur**: Tetramer aus 4 Untereinheiten mit je einer **Häm-Gruppe**: Ein planarer **Porphyrin-Ring (Protoporphyrin IX)**, der ein zentrales **Eisen(II)-Ion ($Fe^{2+}$)** vierfach chelatartig koordiniert.   * **5. Koordinationsstelle**: Bindung an den proximalen Histidin-Rest der Globin-Proteinkette.   * **6. Koordinationsstelle**: Reversible Anlagerung eines molekularen **Sauerstoffmoleküls ($O_2$)**, 3. **Allosterie & Giftwirkung von CO**:   * **Kooperativer Effekt**: Bei Bindung von $O_2$ schrumpft der Ionenradius von $Fe^{2+}$ durch Übergang vom High-Spin in den Low-Spin-Zustand $\\implies$ Das Eisenion rutscht exakt in die Porphyrinebene $\\implies$ Konformationsänderung (T-State $\\to$ R-State mit 300-fach höherer Affinität der restlichen Untereinheiten).   * **Kohlenstoffmonoxid-Vergiftung (CO)**: Bindet über $\\pi$-Rückbindung ca. **250–300-mal stärker** an das $Fe^{2+}$ als $O_2$ $\\implies$ Blockade des Sauerstofftransports und Erstickung auf zellulärer Ebene.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den Chelateffekt, EDTA und den molekularen Aufbau von Hämoglobin: 1. Der Chelateffekt & EDTA:   * Zähnigkeit: Einzahnig ("
+            },
+            {
+              "type": "math",
+              "tex": "H_2O, Cl^-",
+              "speech": "H zwei O, C l minus"
+            },
+            {
+              "type": "text",
+              "text": "), zweizähnig (en / Ethylendiamin), sechszähnig (EDTA"
+            },
+            {
+              "type": "math",
+              "tex": "^{4-}",
+              "speech": "vier minus"
+            },
+            {
+              "type": "text",
+              "text": " / Ethylendiamintetraacetat mit 2 N- und 4 O-Donoratomen).   * Thermodynamik der Chelatbildung:     "
+            },
+            {
+              "type": "math",
+              "tex": "[\\text{Ni}(\\text{H}_2\\text{O})_6]^{2+} + \\text{EDTA}^{4-} \\rightleftharpoons [\\text{Ni}(\\text{EDTA})]^{2-} + 6\\,\\text{H}_2\\text{O}",
+              "block": true,
+              "speech": "Nickel mit sechs H zwei O, zweifach positiv, plus E D T A, vierfach negativ, im Gleichgewicht mit Nickel E D T A, zweifach negativ, plus 6 H zwei O"
+            },
+            {
+              "type": "text",
+              "text": "   * Links: 2 Teilchen "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Rechts: 7 Teilchen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies \\mathbf{\\Delta S^\\circ \\gg 0} \\implies \\mathbf{\\Delta G^\\circ = \\Delta H^\\circ - T\\Delta S^\\circ \\ll 0}",
+              "speech": "daraus folgt Delta S null sehr viel größer als 0 daraus folgt Delta G null gleich Delta H null minus T Delta S null sehr viel kleiner als 0"
+            },
+            {
+              "type": "text",
+              "text": " (enorme Komplexbildungskonstante "
+            },
+            {
+              "type": "math",
+              "tex": "K_B > 10^{18}",
+              "speech": "K B größer als 10 hoch 18"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Das Hämoglobin-Molekül als biologischer Sauerstoffträger:   * Struktur: Tetramer aus 4 Untereinheiten mit je einer Häm-Gruppe: Ein planarer Porphyrin-Ring (Protoporphyrin IX), der ein zentrales Eisen(II)-Ion ("
+            },
+            {
+              "type": "math",
+              "tex": "Fe^{2+}",
+              "speech": "F e zwei plus"
+            },
+            {
+              "type": "text",
+              "text": ") vierfach chelatartig koordiniert.   * 5. Koordinationsstelle: Bindung an den proximalen Histidin-Rest der Globin-Proteinkette.   * 6. Koordinationsstelle: Reversible Anlagerung eines molekularen Sauerstoffmoleküls ("
+            },
+            {
+              "type": "math",
+              "tex": "O_2",
+              "speech": "O zwei"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Allosterie & Giftwirkung von CO:   * Kooperativer Effekt: Bei Bindung von "
+            },
+            {
+              "type": "math",
+              "tex": "O_2",
+              "speech": "O zwei"
+            },
+            {
+              "type": "text",
+              "text": " schrumpft der Ionenradius von "
+            },
+            {
+              "type": "math",
+              "tex": "Fe^{2+}",
+              "speech": "F e zwei plus"
+            },
+            {
+              "type": "text",
+              "text": " durch Übergang vom High-Spin in den Low-Spin-Zustand "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Das Eisenion rutscht exakt in die Porphyrinebene "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Konformationsänderung (T-State "
+            },
+            {
+              "type": "math",
+              "tex": "\\to",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " R-State mit 300-fach höherer Affinität der restlichen Untereinheiten).   * Kohlenstoffmonoxid-Vergiftung (CO): Bindet über "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi",
+              "speech": "Pi"
+            },
+            {
+              "type": "text",
+              "text": "-Rückbindung ca. 250–300-mal stärker an das "
+            },
+            {
+              "type": "math",
+              "tex": "Fe^{2+}",
+              "speech": "F e zwei plus"
+            },
+            {
+              "type": "text",
+              "text": " als "
+            },
+            {
+              "type": "math",
+              "tex": "O_2",
+              "speech": "O zwei"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Blockade des Sauerstofftransports und Erstickung auf zellulärer Ebene."
+            }
+          ],
           "concept": "Chelat & Hämoglobin 13: EDTA4- sechszähnig; Entropischer Chelateffekt Delta S > 0; Häm-Porphyrinring mit Fe(II); kooperative O2-Bindung durch High-Spin/Low-Spin-Radiusänderung; CO-Vergiftung durch 300-fach stärkere Bindungsaffinität.",
-          "sample_solution": "1. Der Chelateffekt und EDTA (Ethylendiamintetraacetat): - **Der Begriff Chelat** (von griech. *chele* = Krebsschere):   * Ein Chelatligand bindet ein zentrales Metallkation über zwei oder mehr funktionelle Donorgruppen zangenförmig unter Bildung stabiler 5- oder 6-gliedriger Ringe. - **Die thermodynamische Ursache des Chelateffekts**:   * Betrachten wir den Austausch von 6 Wassermolekülen gegen 1 EDTA-Molekül:     $$\\mathbf{[\\text{M}(\\text{H}_2\\text{O})_6]^{2+} + \\text{EDTA}^{4-} \\rightleftharpoons [\\text{M}(\\text{EDTA})]^{2-} + 6\\,\\text{H}_2\\text{O}}$$   * Aus **2 gelösten Teilchen** auf der linken Seite entstehen **7 freie Teilchen** auf der rechten Seite.   * Dies führt zu einer dramatischen Zunahme der Unordnung im System (**hohe positive Reaktionsentropie $\\mathbf{\\Delta S^{\\circ} > 0}$**).   * Nach der Gibbs-Helmholtz-Gleichung $\\mathbf{\\Delta G^{\\circ} = \\Delta H^{\\circ} - T\\,\\Delta S^{\\circ}}$ wird die freie Enthalpie stark negativ $\\implies$ Die Komplexbildungskonstante $K_B$ ist um viele Größenordnungen höher als bei unidentaten Liganden. - **Praktische Anwendungen**: Wasserenthärtung (Komplexierung von $\\text{Ca}^{2+}$ und $\\text{Mg}^{2+}$), Schwermetall-Entgiftung in der Medizin (Therapie von Blei- und Quecksilbervergiftungen). 2. Hämoglobin: Die molekulare Lunge unseres Blutes: - **Aufbau der Häm-Gruppe**:   * Das Zentralion $\\mathbf{\\text{Fe}^{2+}}$ sitzt in einem planaren **Porphyrin-Chelatring** (4 Stickstoffatome koordinieren das Eisen).   * Die **5. axiale Koordinationsstelle** wird durch den Imidazolring eines Histidin-Aminosäurerests (*proximales Histidin F8*) des Hämoglobins besetzt.   * Die **6. axiale Koordinationsstelle** dient der reversiblen Bindung von molekularem Sauerstoff ($\\text{O}_2$). 3. Der allosterische Kooperativitäts-Mechanismus: - **Desoxyhämoglobin (T-Zustand / Tense)**:   * $\\text{Fe}^{2+}$ befindet sich im **High-Spin-Zustand** ($t_{2g}^4\\,e_g^2$). Die besetzten $e_g$-Orbitale vergrößern den Ionenradius ($r \\approx 78\\,\\text{pm}$) $\\implies$ Das Eisen ist zu groß und ragt ca. $40\\,\\text{pm}$ aus der Porphyrinebene heraus. - **Oxyhämoglobin (R-Zustand / Relaxed)**:   * Bindet $\\text{O}_2$ an die 6. Position, wirkt Sauerstoff als Starkfeld-Ligand $\\implies$ Übergang in den **Low-Spin-Zustand** ($t_{2g}^6\\,e_g^0$) $\\implies$ Der Ionenradius schrumpft auf $r \\approx 61\\,\\text{pm}$.   * Das Eisenion schnappt ruckartig direkt in das Zentrum der Porphyrinebene ein und zieht das proximale Histidin mit sich.   * Dieser mechanische Ruck überträgt sich über die Proteinkette auf die anderen drei Untereinheiten des Hämoglobin-Tetramers $\\implies$ **Positive Kooperativität** (sigmoidale Sauerstoffbindungskurve: In der Lunge wird $\\text{O}_2$ gierig aufgenommen, im sauerstoffarmen Gewebe schlagartig abgegeben). 4. Die Gefahr von Kohlenstoffmonoxid (CO): - CO bindet mit seinem freien Elektronenpaar am Kohlenstoff und starker $\\pi$-Rückbindung ca. **$250-300\\text{-mal fester}$** an das $\\text{Fe}^{2+}$ als $\\text{O}_2$. - Bereits geringste Konzentrationen von $0{,}1\\,\\%$ CO in der Atemluft blockieren über $50\\,\\%$ des Hämoglobins und blockieren zudem die Sauerstoffabgabe der verbleibenden Häm-Gruppen $\\implies$ Tödliche innere Erstickung."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der Chelateffekt und EDTA (Ethylendiamintetraacetat): - Der Begriff Chelat (von griech. chele = Krebsschere):   * Ein Chelatligand bindet ein zentrales Metallkation über zwei oder mehr funktionelle Donorgruppen zangenförmig unter Bildung stabiler 5- oder 6-gliedriger Ringe. - Die thermodynamische Ursache des Chelateffekts:   * Betrachten wir den Austausch von 6 Wassermolekülen gegen 1 EDTA-Molekül:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{[\\text{M}(\\text{H}_2\\text{O})_6]^{2+} + \\text{EDTA}^{4-} \\rightleftharpoons [\\text{M}(\\text{EDTA})]^{2-} + 6\\,\\text{H}_2\\text{O}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Aus 2 gelösten Teilchen auf der linken Seite entstehen 7 freie Teilchen auf der rechten Seite.   * Dies führt zu einer dramatischen Zunahme der Unordnung im System (hohe positive Reaktionsentropie "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Delta S^{\\circ} > 0}"
+            },
+            {
+              "type": "text",
+              "text": ").   * Nach der Gibbs-Helmholtz-Gleichung "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Delta G^{\\circ} = \\Delta H^{\\circ} - T\\,\\Delta S^{\\circ}}"
+            },
+            {
+              "type": "text",
+              "text": " wird die freie Enthalpie stark negativ "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Die Komplexbildungskonstante "
+            },
+            {
+              "type": "math",
+              "tex": "K_B"
+            },
+            {
+              "type": "text",
+              "text": " ist um viele Größenordnungen höher als bei unidentaten Liganden. - Praktische Anwendungen: Wasserenthärtung (Komplexierung von "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Ca}^{2+}"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Mg}^{2+}"
+            },
+            {
+              "type": "text",
+              "text": "), Schwermetall-Entgiftung in der Medizin (Therapie von Blei- und Quecksilbervergiftungen). 2. Hämoglobin: Die molekulare Lunge unseres Blutes: - Aufbau der Häm-Gruppe:   * Das Zentralion "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Fe}^{2+}}"
+            },
+            {
+              "type": "text",
+              "text": " sitzt in einem planaren Porphyrin-Chelatring (4 Stickstoffatome koordinieren das Eisen).   * Die 5. axiale Koordinationsstelle wird durch den Imidazolring eines Histidin-Aminosäurerests (proximales Histidin F8) des Hämoglobins besetzt.   * Die 6. axiale Koordinationsstelle dient der reversiblen Bindung von molekularem Sauerstoff ("
+            },
+            {
+              "type": "math",
+              "tex": "\\text{O}_2"
+            },
+            {
+              "type": "text",
+              "text": "). 3. Der allosterische Kooperativitäts-Mechanismus: - Desoxyhämoglobin (T-Zustand / Tense):   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Fe}^{2+}"
+            },
+            {
+              "type": "text",
+              "text": " befindet sich im High-Spin-Zustand ("
+            },
+            {
+              "type": "math",
+              "tex": "t_{2g}^4\\,e_g^2"
+            },
+            {
+              "type": "text",
+              "text": "). Die besetzten "
+            },
+            {
+              "type": "math",
+              "tex": "e_g"
+            },
+            {
+              "type": "text",
+              "text": "-Orbitale vergrößern den Ionenradius ("
+            },
+            {
+              "type": "math",
+              "tex": "r \\approx 78\\,\\text{pm}"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Das Eisen ist zu groß und ragt ca. "
+            },
+            {
+              "type": "math",
+              "tex": "40\\,\\text{pm}"
+            },
+            {
+              "type": "text",
+              "text": " aus der Porphyrinebene heraus. - Oxyhämoglobin (R-Zustand / Relaxed):   * Bindet "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{O}_2"
+            },
+            {
+              "type": "text",
+              "text": " an die 6. Position, wirkt Sauerstoff als Starkfeld-Ligand "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Übergang in den Low-Spin-Zustand ("
+            },
+            {
+              "type": "math",
+              "tex": "t_{2g}^6\\,e_g^0"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Der Ionenradius schrumpft auf "
+            },
+            {
+              "type": "math",
+              "tex": "r \\approx 61\\,\\text{pm}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Das Eisenion schnappt ruckartig direkt in das Zentrum der Porphyrinebene ein und zieht das proximale Histidin mit sich.   * Dieser mechanische Ruck überträgt sich über die Proteinkette auf die anderen drei Untereinheiten des Hämoglobin-Tetramers "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Positive Kooperativität (sigmoidale Sauerstoffbindungskurve: In der Lunge wird "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{O}_2"
+            },
+            {
+              "type": "text",
+              "text": " gierig aufgenommen, im sauerstoffarmen Gewebe schlagartig abgegeben). 4. Die Gefahr von Kohlenstoffmonoxid (CO): - CO bindet mit seinem freien Elektronenpaar am Kohlenstoff und starker "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi"
+            },
+            {
+              "type": "text",
+              "text": "-Rückbindung ca. "
+            },
+            {
+              "type": "math",
+              "tex": "250-300\\text{-mal fester}"
+            },
+            {
+              "type": "text",
+              "text": " an das "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Fe}^{2+}"
+            },
+            {
+              "type": "text",
+              "text": " als "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{O}_2"
+            },
+            {
+              "type": "text",
+              "text": ". - Bereits geringste Konzentrationen von "
+            },
+            {
+              "type": "math",
+              "tex": "0{,}1\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " CO in der Atemluft blockieren über "
+            },
+            {
+              "type": "math",
+              "tex": "50\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " des Hämoglobins und blockieren zudem die Sauerstoffabgabe der verbleibenden Häm-Gruppen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Tödliche innere Erstickung."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

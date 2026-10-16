@@ -49,7 +49,21 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Welche Interferenzbedingung führt bei der Überlagerung zweier kohärenter Wellen mit dem Gangunterschied $\\Delta s$ zu vollständiger destruktiver Interferenz (Auslöschung)?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Interferenzbedingung führt bei der Überlagerung zweier kohärenter Wellen mit dem Gangunterschied "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta s",
+              "speech": "Delta s"
+            },
+            {
+              "type": "text",
+              "text": " zu vollständiger destruktiver Interferenz (Auslöschung)?"
+            }
+          ],
           "concept": "Gangunterschied Delta s = (2k + 1) * lambda / 2 (ungeradzahliges Vielfaches der halben Wellenlänge, z. B. lambda / 2)",
           "fast_check": {
             "type": "binary_choice",
@@ -58,16 +72,225 @@
               "Delta s = k * lambda (ganzzahliges Vielfaches)"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GA40000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere mechanische Wellen, Wellengrundgleichung und Interferenz: 1. **Wellenbegriff & Wellentypen**:   * **Welle**: Räumliche und zeitliche Ausbreitung einer mechanischen Schwingung; transportiert Energie und Impuls, aber **keine Materie**.   * **Transversalwelle (Querwelle)**: Schwingungsrichtung senkrecht zur Ausbreitungsrichtung (z. B. Seilwelle, Licht/EM-Wellen; polarisierbar).   * **Longitudinalwelle (Längswelle)**: Schwingungsrichtung parallel zur Ausbreitungsrichtung (z. B. Schallwellen in Luft, Druckwellen), 2. **Grundgleichung der Wellenausbreitung**:   $$\\mathbf{c = \\lambda \\cdot f = \\frac{\\lambda}{T}} \\quad (c = \\text{Ausbreitungsgeschwindigkeit}, \\lambda = \\text{Wellenlänge}, f = \\text{Frequenz})$$ 3. **Huygenssches Prinzip & Wellenphänomene**:   * Jeder Punkt einer Wellenfront ist Ausgangspunkt einer kugelförmigen Elementarwelle.   * **Beugung**: Abweichung von der geradlinigen Ausbreitung an Kanten/Spalten (deutlich, wenn Spaltbreite $b \\approx \\lambda$).   * **Interferenz (Superpositionsprinzip)**:     - **Konstruktive Interferenz (Verstärkung)**: $\\Delta s = k \\cdot \\lambda$ ($k \\in \\mathbb{Z}$).     - **Destruktive Interferenz (Auslöschung)**: $\\Delta s = (2k + 1) \\cdot \\frac{\\lambda}{2}$, 4. Ein Schallton mit Frequenz $f = 440\\,\\text{Hz}$ (Kammerton A) breitet sich in Luft mit der Schallgeschwindigkeit $c = 340\\,\\frac{\\text{m}}{\\text{s}}$ aus. Berechne die Wellenlänge $\\lambda$.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere mechanische Wellen, Wellengrundgleichung und Interferenz: 1. Wellenbegriff & Wellentypen:   * Welle: Räumliche und zeitliche Ausbreitung einer mechanischen Schwingung; transportiert Energie und Impuls, aber keine Materie.   * Transversalwelle (Querwelle): Schwingungsrichtung senkrecht zur Ausbreitungsrichtung (z. B. Seilwelle, Licht/EM-Wellen; polarisierbar).   * Longitudinalwelle (Längswelle): Schwingungsrichtung parallel zur Ausbreitungsrichtung (z. B. Schallwellen in Luft, Druckwellen), 2. Grundgleichung der Wellenausbreitung:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{c = \\lambda \\cdot f = \\frac{\\lambda}{T}} \\quad (c = \\text{Ausbreitungsgeschwindigkeit}, \\lambda = \\text{Wellenlänge}, f = \\text{Frequenz})",
+              "block": true,
+              "speech": "c gleich Lambda mal f gleich Lambda durch T, Klammer auf c gleich Ausbreitungsgeschwindigkeit, Lambda gleich Wellenlänge, f gleich Frequenz Klammer zu"
+            },
+            {
+              "type": "text",
+              "text": " 3. Huygenssches Prinzip & Wellenphänomene:   * Jeder Punkt einer Wellenfront ist Ausgangspunkt einer kugelförmigen Elementarwelle.   * Beugung: Abweichung von der geradlinigen Ausbreitung an Kanten/Spalten (deutlich, wenn Spaltbreite "
+            },
+            {
+              "type": "math",
+              "tex": "b \\approx \\lambda",
+              "speech": "b ungefähr Lambda"
+            },
+            {
+              "type": "text",
+              "text": ").   * Interferenz (Superpositionsprinzip):     - Konstruktive Interferenz (Verstärkung): "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta s = k \\cdot \\lambda",
+              "speech": "Delta s gleich k mal Lambda"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "k \\in \\mathbb{Z}",
+              "speech": "k Element der ganzen Zahlen"
+            },
+            {
+              "type": "text",
+              "text": ").     - Destruktive Interferenz (Auslöschung): "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta s = (2k + 1) \\cdot \\frac{\\lambda}{2}",
+              "speech": "Delta s gleich Klammer auf 2 k plus 1 Klammer zu mal Lambda durch 2"
+            },
+            {
+              "type": "text",
+              "text": ", 4. Ein Schallton mit Frequenz "
+            },
+            {
+              "type": "math",
+              "tex": "f = 440\\,\\text{Hz}",
+              "speech": "f gleich 440 Hertz"
+            },
+            {
+              "type": "text",
+              "text": " (Kammerton A) breitet sich in Luft mit der Schallgeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "c = 340\\,\\frac{\\text{m}}{\\text{s}}",
+              "speech": "c gleich 340 Meter pro Sekunde"
+            },
+            {
+              "type": "text",
+              "text": " aus. Berechne die Wellenlänge "
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda",
+              "speech": "Lambda"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
           "concept": "Wellenlehre: Transversal- vs. Longitudinalwellen; Grundgleichung c = lambda * f; Huygenssches Prinzip & Beugung; Interferenz (konstruktiv Delta s = k*lambda vs. destruktiv Delta s = (2k+1)*lambda/2); Rechnung: lambda = c / f = 340 / 440 = 0,7727 m approx 77,3 cm.",
-          "sample_solution": "1. Der physikalische Wellenbegriff: - Eine **Welle** entsteht durch die elastische Kopplung schwingungsfähiger Teilchen (Oszillatoren). Sie transportiert Schwingungsenergie durch den Raum, ohne dass die Materie selbst fortbewegt wird (die Teilchen schwingen lediglich um ihre Ruhelage). - **Unterscheidung der Wellentypen**:   * **Transversalwellen (Scherwellen / Querwellen)**:     - Die Oszillatoren schwingen **senkrecht** zur Ausbreitungsrichtung.     - Treten nur in Festkörpern und an Grenzflächen (Wasserwellen) auf; elektromagnetische Wellen sind reine Transversalwellen $\\implies$ **polarisierbar**.   * **Longitudinalwellen (Dichtewellen / Längswellen)**:     - Die Oszillatoren schwingen **in Ausbreitungsrichtung** (Dichteschwankungen aus periodischer Kompression und Verdünnung).     - Können sich in Gasen, Flüssigkeiten und Festkörpern ausbreiten (z. B. **Schallwellen** in Luft). 2. Die fundamentale Wellengleichung: - Der Zusammenhang zwischen Phasengeschwindigkeit $c$, Wellenlänge $\\lambda$, Frequenz $f$ und Periodendauer $T$:   $$\\mathbf{c = \\frac{\\lambda}{T} = \\lambda \\cdot f}$$   * Die Ausbreitungsgeschwindigkeit $c$ ist eine reine **Materialeigenschaft des Mediums** (z. B. Schall in Luft: $c \\approx 340\\,\\frac{\\text{m}}{\\text{s}}$, Schall in Wasser: $c \\approx 1500\\,\\frac{\\text{m}}{\\text{s}}$, Licht im Vakuum: $c_0 \\approx 3 \\cdot 10^8\\,\\frac{\\text{m}}{\\text{s}}$). 3. Überlagerung (Interferenz) und Beugung (Huygens-Fresnel-Prinzip): - **Huygenssches Prinzip**: Jeder von einer Welle erfasste Punkt wird zum Zentrum einer neuen kreis-/kugelförmigen **Elementarwelle**. Die Einhüllende aller Elementarwellen bildet die neue Wellenfront. - **Interferenz zweier kohärenter Wellen (feste Phasenbeziehung)**:   * **Konstruktive Interferenz (Wellenberg trifft auf Wellenberg)**:     $$\\mathbf{\\Delta s = k \\cdot \\lambda} \\quad (k \\in \\{0, 1, 2, \\dots\\}) \\implies \\text{Maximale Amplitude } y_{\\text{res}} = 2 y_{\\text{max}}$$   * **Destruktive Interferenz (Wellenberg trifft auf Wellental)**:     $$\\mathbf{\\Delta s = \\left(k + \\frac{1}{2}\\right) \\cdot \\lambda = (2k + 1) \\cdot \\frac{\\lambda}{2}} \\implies \\text{Vollständige Auslöschung } y_{\\text{res}} = 0$$ 4. Durchrechnung des Beispiels ($f = 440\\,\\text{Hz}, c = 340\\,\\frac{\\text{m}}{\\text{s}}$): - **Wellenlänge $\\lambda$**:   $$\\lambda = \\frac{c}{f} = \\frac{340\\,\\frac{\\text{m}}{\\text{s}}}{440\\,\\text{s}^{-1}} = \\frac{34}{44}\\,\\text{m} = \\mathbf{0{,}773\\,\\text{m} = 77{,}3\\,\\text{cm}}$$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der physikalische Wellenbegriff: - Eine Welle entsteht durch die elastische Kopplung schwingungsfähiger Teilchen (Oszillatoren). Sie transportiert Schwingungsenergie durch den Raum, ohne dass die Materie selbst fortbewegt wird (die Teilchen schwingen lediglich um ihre Ruhelage). - Unterscheidung der Wellentypen:   * Transversalwellen (Scherwellen / Querwellen):     - Die Oszillatoren schwingen senkrecht zur Ausbreitungsrichtung.     - Treten nur in Festkörpern und an Grenzflächen (Wasserwellen) auf; elektromagnetische Wellen sind reine Transversalwellen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " polarisierbar.   * Longitudinalwellen (Dichtewellen / Längswellen):     - Die Oszillatoren schwingen in Ausbreitungsrichtung (Dichteschwankungen aus periodischer Kompression und Verdünnung).     - Können sich in Gasen, Flüssigkeiten und Festkörpern ausbreiten (z. B. Schallwellen in Luft). 2. Die fundamentale Wellengleichung: - Der Zusammenhang zwischen Phasengeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "c"
+            },
+            {
+              "type": "text",
+              "text": ", Wellenlänge "
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda"
+            },
+            {
+              "type": "text",
+              "text": ", Frequenz "
+            },
+            {
+              "type": "math",
+              "tex": "f"
+            },
+            {
+              "type": "text",
+              "text": " und Periodendauer "
+            },
+            {
+              "type": "math",
+              "tex": "T"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{c = \\frac{\\lambda}{T} = \\lambda \\cdot f}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Die Ausbreitungsgeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "c"
+            },
+            {
+              "type": "text",
+              "text": " ist eine reine Materialeigenschaft des Mediums (z. B. Schall in Luft: "
+            },
+            {
+              "type": "math",
+              "tex": "c \\approx 340\\,\\frac{\\text{m}}{\\text{s}}"
+            },
+            {
+              "type": "text",
+              "text": ", Schall in Wasser: "
+            },
+            {
+              "type": "math",
+              "tex": "c \\approx 1500\\,\\frac{\\text{m}}{\\text{s}}"
+            },
+            {
+              "type": "text",
+              "text": ", Licht im Vakuum: "
+            },
+            {
+              "type": "math",
+              "tex": "c_0 \\approx 3 \\cdot 10^8\\,\\frac{\\text{m}}{\\text{s}}"
+            },
+            {
+              "type": "text",
+              "text": "). 3. Überlagerung (Interferenz) und Beugung (Huygens-Fresnel-Prinzip): - Huygenssches Prinzip: Jeder von einer Welle erfasste Punkt wird zum Zentrum einer neuen kreis-/kugelförmigen Elementarwelle. Die Einhüllende aller Elementarwellen bildet die neue Wellenfront. - Interferenz zweier kohärenter Wellen (feste Phasenbeziehung):   * Konstruktive Interferenz (Wellenberg trifft auf Wellenberg):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Delta s = k \\cdot \\lambda} \\quad (k \\in \\{0, 1, 2, \\dots\\}) \\implies \\text{Maximale Amplitude } y_{\\text{res}} = 2 y_{\\text{max}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Destruktive Interferenz (Wellenberg trifft auf Wellental):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Delta s = \\left(k + \\frac{1}{2}\\right) \\cdot \\lambda = (2k + 1) \\cdot \\frac{\\lambda}{2}} \\implies \\text{Vollständige Auslöschung } y_{\\text{res}} = 0",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 4. Durchrechnung des Beispiels ("
+            },
+            {
+              "type": "math",
+              "tex": "f = 440\\,\\text{Hz}, c = 340\\,\\frac{\\text{m}}{\\text{s}}"
+            },
+            {
+              "type": "text",
+              "text": "): - Wellenlänge "
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda = \\frac{c}{f} = \\frac{340\\,\\frac{\\text{m}}{\\text{s}}}{440\\,\\text{s}^{-1}} = \\frac{34}{44}\\,\\text{m} = \\mathbf{0{,}773\\,\\text{m} = 77{,}3\\,\\text{cm}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +351,236 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere stehende Wellen und den akustischen Doppler-Effekt: 1. **Stehende Wellen (Stationäre Wellen)**:   * Entstehen durch Überlagerung zweier gegenläufiger Wellen gleicher Frequenz und Amplitude (z. B. durch Reflexion an einem festen oder offenen Ende).   * **Schwingungsknoten**: Orte dauerhafter Ruhe (Auslöschung); Abstand zweier benachbarter Knoten $= \\frac{\\lambda}{2}$.   * **Schwingungsbäuche**: Orte maximaler Amplitude ($2 y_{\\text{max}}$).   * *Kein Energietransport*, sondern periodischer Austausch von kinetischer und potenzieller Schwingungsenergie, 2. **Eigenschwingungen von Saiten & Pfeifen**:   * Beidseitig fest eingespannte Saite der Länge $L$: $L = n \\cdot \\frac{\\lambda}{2} \\implies f_n = n \\cdot \\frac{c}{2L}$ (Grundton $n=1$, Obertöne $n=2,3,\\dots$), 3. **Der Doppler-Effekt (Christian Doppler, 1842)**:   * Frequenzänderung bei Relativbewegung zwischen Quelle und Beobachter:   * **Bewegte Quelle ($v_Q$) auf ruhenden Beobachter zu**:     $$\\mathbf{f' = f_0 \\cdot \\frac{c}{c - v_Q} > f_0} \\quad (\\text{Ton wird höher})$$   * **Bewegte Quelle von ruhendem Beobachter weg**:     $$\\mathbf{f' = f_0 \\cdot \\frac{c}{c + v_Q} < f_0} \\quad (\\text{Ton wird tiefer})$$   * Überschallknall: Bei $v_Q \\ge c$ bildet sich ein Machscher Kegel (Stoßwelle).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere stehende Wellen und den akustischen Doppler-Effekt: 1. Stehende Wellen (Stationäre Wellen):   * Entstehen durch Überlagerung zweier gegenläufiger Wellen gleicher Frequenz und Amplitude (z. B. durch Reflexion an einem festen oder offenen Ende).   * Schwingungsknoten: Orte dauerhafter Ruhe (Auslöschung); Abstand zweier benachbarter Knoten "
+            },
+            {
+              "type": "math",
+              "tex": "= \\frac{\\lambda}{2}",
+              "speech": "gleich Lambda durch 2"
+            },
+            {
+              "type": "text",
+              "text": ".   * Schwingungsbäuche: Orte maximaler Amplitude ("
+            },
+            {
+              "type": "math",
+              "tex": "2 y_{\\text{max}}",
+              "speech": "2 y max"
+            },
+            {
+              "type": "text",
+              "text": ").   * Kein Energietransport, sondern periodischer Austausch von kinetischer und potenzieller Schwingungsenergie, 2. Eigenschwingungen von Saiten & Pfeifen:   * Beidseitig fest eingespannte Saite der Länge "
+            },
+            {
+              "type": "math",
+              "tex": "L",
+              "speech": "L"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "L = n \\cdot \\frac{\\lambda}{2} \\implies f_n = n \\cdot \\frac{c}{2L}",
+              "speech": "L gleich n mal Lambda durch 2 daraus folgt f n gleich n mal c durch 2 L"
+            },
+            {
+              "type": "text",
+              "text": " (Grundton "
+            },
+            {
+              "type": "math",
+              "tex": "n=1",
+              "speech": "n gleich 1"
+            },
+            {
+              "type": "text",
+              "text": ", Obertöne "
+            },
+            {
+              "type": "math",
+              "tex": "n=2,3,\\dots",
+              "speech": "n gleich 2, 3 und so weiter"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Der Doppler-Effekt (Christian Doppler, 1842):   * Frequenzänderung bei Relativbewegung zwischen Quelle und Beobachter:   * Bewegte Quelle ("
+            },
+            {
+              "type": "math",
+              "tex": "v_Q",
+              "speech": "v Q"
+            },
+            {
+              "type": "text",
+              "text": ") auf ruhenden Beobachter zu:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{f' = f_0 \\cdot \\frac{c}{c - v_Q} > f_0} \\quad (\\text{Ton wird höher})",
+              "block": true,
+              "speech": "f Strich gleich f null mal c durch, c minus v Q, größer als f null, der Ton wird höher"
+            },
+            {
+              "type": "text",
+              "text": "   * Bewegte Quelle von ruhendem Beobachter weg:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{f' = f_0 \\cdot \\frac{c}{c + v_Q} < f_0} \\quad (\\text{Ton wird tiefer})",
+              "block": true,
+              "speech": "f Strich gleich f null mal c durch, c plus v Q, kleiner als f null, der Ton wird tiefer"
+            },
+            {
+              "type": "text",
+              "text": "   * Überschallknall: Bei "
+            },
+            {
+              "type": "math",
+              "tex": "v_Q \\ge c",
+              "speech": "v Q größer gleich c"
+            },
+            {
+              "type": "text",
+              "text": " bildet sich ein Machscher Kegel (Stoßwelle)."
+            }
+          ],
           "concept": "Akustik: Stehende Welle (Knoten & Bäuche, Abstand d = lambda/2, kein Energietransport); Saiteneigenfrequenzen f_n = n * c / (2L); Doppler-Effekt: Quelle nähert sich -> f' = f0 * c/(c - v_Q) (höher); Quelle entfernt sich -> f' = f0 * c/(c + v_Q) (tiefer).",
-          "sample_solution": "1. Phänomenologie der stehenden Welle: - **Entstehung**: Überlagerung (Interferenz) zweier kohärenter Wellen identischer Frequenz und Amplitude, die sich in **entgegengesetzter Richtung** ausbreiten (z. B. Hinwelle und reflektierte Rückwelle auf einer Saite). - **Charakteristische Merkmale**:   * **Schwingungsknoten (Nullstellen)**: Punkte, an denen sich die Wellen zu jedem Zeitpunkt destruktiv auslöschen $\\implies$ Ruhepunkte mit Amplitude $0$.   * **Schwingungsbäuche (Maxima)**: Punkte maximaler Auslenkung ($2 A$).   * **Knotenabstand**: Der Abstand zweier aufeinanderfolgender Knoten (oder zweier Bäuche) beträgt exakt:     $$\\mathbf{\\Delta x_{\\text{Knoten}} = \\frac{\\lambda}{2}}$$   * **Energietransport**: Im Gegensatz zur fortschreitenden Welle transportiert eine stehende Welle **keine Energie durch den Raum**; die Energie pendelt rein ortsfest zwischen potentieller Spannenergie (an den Knoten maximaler Dehnung) und kinetischer Bewegungsenergie (an den Bäuchen) hin und her. 2. Eigenschwingungen von Saiteninstrumenten (Länge $L$, feste Enden): - Da an beiden festen Enden zwingend Schwingungsknoten vorliegen müssen, passen nur ganzzahlige Vielfache einer halben Wellenlänge auf die Saite:   $$\\mathbf{L = n \\cdot \\frac{\\lambda_n}{2}} \\implies \\mathbf{\\lambda_n = \\frac{2L}{n}} \\implies \\mathbf{f_n = n \\cdot \\frac{c}{2L}} \\quad (n = 1, 2, 3, \\dots)$$   * $n = 1$: **Grundschwingung (Grundton)** ($f_1 = \\frac{c}{2L}$).   * $n = 2, 3, \\dots$: **Harmonische Oberschwingungen (Obertöne)**. 3. Der akustische Doppler-Effekt: - Beschreibt die scheinbare Verschiebung der wahrgenommenen Frequenz $f'$, wenn sich Quelle und Beobachter relativ zueinander bewegen:   * **1. Bewegte Schallquelle nähert sich ruhendem Beobachter ($v_Q$)**:     - Die Quelle läuft ihren eigenen ausgesandten Wellenfronten hinterher $\\implies$ Stauchung der Wellenlänge in Ausbreitungsrichtung:       $$\\mathbf{\\lambda' = \\frac{c - v_Q}{f_0}} \\implies \\mathbf{f' = f_0 \\cdot \\frac{c}{c - v_Q} > f_0} \\quad (\\text{höhere Tonhöhe})$$   * **2. Bewegte Schallquelle entfernt sich vom ruhenden Beobachter**:     - Die Wellenberge werden auseinandergezogen:       $$\\mathbf{f' = f_0 \\cdot \\frac{c}{c + v_Q} < f_0} \\quad (\\text{tiefere Tonhöhe})$$   * **Typische Wahrnehmung**: Vorbeifahrt eines Einsatzwagens mit Sirene $\\implies$ markanter plötzlicher Tonabfall beim Passieren (*« Tatüü-Tataa » wird sprunghaft tiefer*)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Phänomenologie der stehenden Welle: - Entstehung: Überlagerung (Interferenz) zweier kohärenter Wellen identischer Frequenz und Amplitude, die sich in entgegengesetzter Richtung ausbreiten (z. B. Hinwelle und reflektierte Rückwelle auf einer Saite). - Charakteristische Merkmale:   * Schwingungsknoten (Nullstellen): Punkte, an denen sich die Wellen zu jedem Zeitpunkt destruktiv auslöschen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Ruhepunkte mit Amplitude "
+            },
+            {
+              "type": "math",
+              "tex": "0"
+            },
+            {
+              "type": "text",
+              "text": ".   * Schwingungsbäuche (Maxima): Punkte maximaler Auslenkung ("
+            },
+            {
+              "type": "math",
+              "tex": "2 A"
+            },
+            {
+              "type": "text",
+              "text": ").   * Knotenabstand: Der Abstand zweier aufeinanderfolgender Knoten (oder zweier Bäuche) beträgt exakt:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Delta x_{\\text{Knoten}} = \\frac{\\lambda}{2}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Energietransport: Im Gegensatz zur fortschreitenden Welle transportiert eine stehende Welle keine Energie durch den Raum; die Energie pendelt rein ortsfest zwischen potentieller Spannenergie (an den Knoten maximaler Dehnung) und kinetischer Bewegungsenergie (an den Bäuchen) hin und her. 2. Eigenschwingungen von Saiteninstrumenten (Länge "
+            },
+            {
+              "type": "math",
+              "tex": "L"
+            },
+            {
+              "type": "text",
+              "text": ", feste Enden): - Da an beiden festen Enden zwingend Schwingungsknoten vorliegen müssen, passen nur ganzzahlige Vielfache einer halben Wellenlänge auf die Saite:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{L = n \\cdot \\frac{\\lambda_n}{2}} \\implies \\mathbf{\\lambda_n = \\frac{2L}{n}} \\implies \\mathbf{f_n = n \\cdot \\frac{c}{2L}} \\quad (n = 1, 2, 3, \\dots)",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "n = 1"
+            },
+            {
+              "type": "text",
+              "text": ": Grundschwingung (Grundton) ("
+            },
+            {
+              "type": "math",
+              "tex": "f_1 = \\frac{c}{2L}"
+            },
+            {
+              "type": "text",
+              "text": ").   * "
+            },
+            {
+              "type": "math",
+              "tex": "n = 2, 3, \\dots"
+            },
+            {
+              "type": "text",
+              "text": ": Harmonische Oberschwingungen (Obertöne). 3. Der akustische Doppler-Effekt: - Beschreibt die scheinbare Verschiebung der wahrgenommenen Frequenz "
+            },
+            {
+              "type": "math",
+              "tex": "f'"
+            },
+            {
+              "type": "text",
+              "text": ", wenn sich Quelle und Beobachter relativ zueinander bewegen:   * 1. Bewegte Schallquelle nähert sich ruhendem Beobachter ("
+            },
+            {
+              "type": "math",
+              "tex": "v_Q"
+            },
+            {
+              "type": "text",
+              "text": "):     - Die Quelle läuft ihren eigenen ausgesandten Wellenfronten hinterher "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Stauchung der Wellenlänge in Ausbreitungsrichtung:       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\lambda' = \\frac{c - v_Q}{f_0}} \\implies \\mathbf{f' = f_0 \\cdot \\frac{c}{c - v_Q} > f_0} \\quad (\\text{höhere Tonhöhe})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * 2. Bewegte Schallquelle entfernt sich vom ruhenden Beobachter:     - Die Wellenberge werden auseinandergezogen:       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{f' = f_0 \\cdot \\frac{c}{c + v_Q} < f_0} \\quad (\\text{tiefere Tonhöhe})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Typische Wahrnehmung: Vorbeifahrt eines Einsatzwagens mit Sirene "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " markanter plötzlicher Tonabfall beim Passieren (« Tatüü-Tataa » wird sprunghaft tiefer)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

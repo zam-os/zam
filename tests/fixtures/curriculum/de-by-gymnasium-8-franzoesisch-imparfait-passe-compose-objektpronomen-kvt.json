@@ -65,9 +65,42 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den narrativen Kontrast zwischen Imparfait und Passé composé in der französischen Erzählung: 1. **Bildung des Imparfait**: Stamm der *nous*-Form im Présent + **-ais, -ais, -ait, -ions, -iez, -aient** (z. B. *nous parlons $\\rightarrow$ je parlais, nous faisions $\\rightarrow$ il faisait*; Ausnahme: *être $\\rightarrow$ j'étais*), 2. **Gegenüberstellung der Verwendungsbereiche**:   * **Imparfait (Die Kulisse / der Hintergrund)**: Beschreibungen von Personen/Zuständen, Wetter, Gefühle, sich wiederholende Gewohnheiten, unbegrenzt andauernde Handlungen (*Signalwörter: toujours, tous les jours, d'habitude, pendant que*).   * **Passé composé (Die Handlung / der Vordergrund)**: Neu einsetzende, plötzlich unterbrechende Ereignisse, zeitlich begrenzte abgeschlossene Aktionen, aufeinanderfolgende Handlungsketten (*Signalwörter: soudain, tout à coup, d'abord, ensuite, un jour*), 3. Übersetze: 'Während ich meine Hausaufgaben machte, klingelte plötzlich das Telefon.'",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den narrativen Kontrast zwischen Imparfait und Passé composé in der französischen Erzählung: 1. Bildung des Imparfait: Stamm der nous-Form im Présent + -ais, -ais, -ait, -ions, -iez, -aient (z. B. nous parlons "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " je parlais, nous faisions "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " il faisait; Ausnahme: être "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " j'étais), 2. Gegenüberstellung der Verwendungsbereiche:   * Imparfait (Die Kulisse / der Hintergrund): Beschreibungen von Personen/Zuständen, Wetter, Gefühle, sich wiederholende Gewohnheiten, unbegrenzt andauernde Handlungen (Signalwörter: toujours, tous les jours, d'habitude, pendant que).   * Passé composé (Die Handlung / der Vordergrund): Neu einsetzende, plötzlich unterbrechende Ereignisse, zeitlich begrenzte abgeschlossene Aktionen, aufeinanderfolgende Handlungsketten (Signalwörter: soudain, tout à coup, d'abord, ensuite, un jour), 3. Übersetze: 'Während ich meine Hausaufgaben machte, klingelte plötzlich das Telefon.'"
+            }
+          ],
           "concept": "Imparfait (nous-Stamm + -ais/-ait/-ions/-iez/-aient, Hintergrund/Gewohnheit/Zustand) vs. Passé composé (Vordergrund/neu eintretende Handlung/Kette); Übersetzung: 'Pendant que je faisais mes devoirs, tout à coup le téléphone a sonné.'",
-          "sample_solution": "1. Bildung des Imparfait: - **Regel**: Man nimmt den **Stamm der 1. Person Plural (nous)** des Présent und hängt die unregelmäßigen Imparfait-Endungen an:   * *je* **-ais**   * *tu* **-ais**   * *il / elle / on* **-ait**   * *nous* **-ions**   * *vous* **-iez**   * *ils / elles* **-aient** - *Einzige Ausnahme*: Das Verb **être** bildet den Stamm **ét-** (*j'étais, tu étais, il était, nous étions, vous étiez, ils étaient*). 2. Die funktionale Gegenüberstellung in Texten: | Merkmal | Imparfait (Hintergrundzeit) | Passé composé (Handlungszeit) | | :--- | :--- | :--- | | **Metapher** | Das Gemälde / die Theaterkulisse | Die Schauspieler / die Aktion auf der Bühne | | **Bedeutung** | Beschreibungen, Stimmungen, Wetter, Gefühle | Neu eintretende, punktuelle Handlungen | | **Dauer** | Nicht zeitlich begrenzte, andauernde Zustände | Zeitlich exakt begrenzte, abgeschlossene Vorgänge | | **Wiederholung** | Regelmäßige Gewohnheiten (*« Jeden Sonntag besuchten wir... »*) | Einmalige, aufeinanderfolgende Ereignisse (*« Zuerst kam er, dann ging er »*) | | **Signalwörter** | *toujours, souvent, d'habitude, chaque fois, pendant que* | *soudain, tout à coup, un jour, à ce moment-là, ensuite, puis* | 3. Zusammenspiel im Satz (Die Unterbrechung): - Eine andauernde Hintergrundhandlung im **Imparfait** wird durch ein neues, plötzliches Ereignis im **Passé composé** unterbrochen: - *Übersetzung*: **« Pendant que je faisais mes devoirs, tout à coup le téléphone a sonné. »**   * *faisais* (Imparfait): Andauernde Hintergrundtätigkeit.   * *a sonné* (Passé composé): Plötzliches, punktuelles Ereignis."
+          "sample_solution": "1. Bildung des Imparfait: - Regel: Man nimmt den Stamm der 1. Person Plural (nous) des Présent und hängt die unregelmäßigen Imparfait-Endungen an:   * je -ais   * tu -ais   * il / elle / on -ait   * nous -ions   * vous -iez   * ils / elles -aient - Einzige Ausnahme: Das Verb être bildet den Stamm ét- (j'étais, tu étais, il était, nous étions, vous étiez, ils étaient). 2. Die funktionale Gegenüberstellung in Texten: | Merkmal | Imparfait (Hintergrundzeit) | Passé composé (Handlungszeit) | | :--- | :--- | :--- | | Metapher | Das Gemälde / die Theaterkulisse | Die Schauspieler / die Aktion auf der Bühne | | Bedeutung | Beschreibungen, Stimmungen, Wetter, Gefühle | Neu eintretende, punktuelle Handlungen | | Dauer | Nicht zeitlich begrenzte, andauernde Zustände | Zeitlich exakt begrenzte, abgeschlossene Vorgänge | | Wiederholung | Regelmäßige Gewohnheiten (« Jeden Sonntag besuchten wir... ») | Einmalige, aufeinanderfolgende Ereignisse (« Zuerst kam er, dann ging er ») | | Signalwörter | toujours, souvent, d'habitude, chaque fois, pendant que | soudain, tout à coup, un jour, à ce moment-là, ensuite, puis | 3. Zusammenspiel im Satz (Die Unterbrechung): - Eine andauernde Hintergrundhandlung im Imparfait wird durch ein neues, plötzliches Ereignis im Passé composé unterbrochen: - Übersetzung: « Pendant que je faisais mes devoirs, tout à coup le téléphone a sonné. »   * faisais (Imparfait): Andauernde Hintergrundtätigkeit.   * a sonné (Passé composé): Plötzliches, punktuelles Ereignis.",
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +161,182 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Systematisiere Objektpronomen, Adverbialpronomen und das Futur simple: 1. **Direkte Objektpronomen (Akkusativ: wen/was?)**: *me, te, le/la, nous, vous, les* (*'Je vois Marc $\\rightarrow$ Je le vois'*), 2. **Indirekte Objektpronomen (Dativ: wem?)**: *me, te, **lui** (ihm/ihr), nous, vous, **leur** (ihnen)* (*'Je parle à mes amis $\\rightarrow$ Je leur parle'*), 3. **Die Adverbialpronomen 'y' und 'en'**:   * **y**: Ersetzt Orte und Sachen mit **à** (*à Paris $\\rightarrow$ y*; *penser à qc $\\rightarrow$ y penser*).   * **en**: Ersetzt Mengenangaben und Sachen mit **de** (*du pain $\\rightarrow$ en*; *parler de qc $\\rightarrow$ en parler*; *combien de pommes? - J'en ai trois*), 4. **Stellung**: Vor dem konjugierten Verb bzw. im Infinitivgefüge direkt vor dem Infinitiv (*'Je veux le voir'*), 5. **Das Futur simple**: Infinitivstamm + **-ai, -as, -a, -ons, -ez, -ont** (*parlerai, finiras, vendra*; unregelmäßig: *être $\\rightarrow$ ser-, avoir $\\rightarrow$ aur-, faire $\\rightarrow$ fer-, aller $\\rightarrow$ ir-*).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Systematisiere Objektpronomen, Adverbialpronomen und das Futur simple: 1. Direkte Objektpronomen (Akkusativ: wen/was?): me, te, le/la, nous, vous, les ('Je vois Marc "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Je le vois'), 2. Indirekte Objektpronomen (Dativ: wem?): me, te, lui (ihm/ihr), nous, vous, leur (ihnen) ('Je parle à mes amis "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Je leur parle'), 3. Die Adverbialpronomen 'y' und 'en':   * y: Ersetzt Orte und Sachen mit à (à Paris "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " y; penser à qc "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " y penser).   * en: Ersetzt Mengenangaben und Sachen mit de (du pain "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " en; parler de qc "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " en parler; combien de pommes? - J'en ai trois), 4. Stellung: Vor dem konjugierten Verb bzw. im Infinitivgefüge direkt vor dem Infinitiv ('Je veux le voir'), 5. Das Futur simple: Infinitivstamm + -ai, -as, -a, -ons, -ez, -ont (parlerai, finiras, vendra; unregelmäßig: être "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " ser-, avoir "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " aur-, faire "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " fer-, aller "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " ir-)."
+            }
+          ],
           "concept": "Objektpronomen: direkt (le, la, les) vs. indirekt (lui, leur); Adverbialpronomen y (à + Ort/Sache) vs. en (de + Sache/Menge); Stellung vor dem Verb; Futur simple: Infinitiv + Endungen von avoir (-ai, -as, -a, -ons, -ez, -ont).",
-          "sample_solution": "1. Die französischen Objektpronomen und ihre Unterscheidung: - **1. Direkte Objektpronomen (COD – Akkusativobjekt)**:   * Ersetzen Nomen ohne Präposition: *me, te, le / la, nous, vous, les*.   * *Beispiel*: *« Tu aimes cette chanson? - Oui, je **la** connais. »* - **2. Indirekte Objektpronomen (COI – Dativobjekt für Personen mit à)**:   * Ersetzen Personen nach der Präposition *à*: *me, te, **lui** (ihm/ihr), nous, vous, **leur** (ihnen)*.   * *Beispiel*: *« J'écris à ma mère $\\rightarrow$ Je **lui** écris. »* / *« Je téléphone à mes grands-parents $\\rightarrow$ Je **leur** téléphone. »* 2. Die Adverbialpronomen 'y' und 'en': - **1. Das Pronomen 'y'**:   * Ersetzt Ortsangaben mit Präpositionen des Ortes (*à, en, dans, chez, sur*): *« Tu vas au cinéma? - Oui, j'**y** vais. »*   * Ersetzt Ergänzungen von Verben mit *à + Sache*: *« Tu penses à ton avenir? - Oui, j'**y** pense. »* - **2. Das Pronomen 'en'**:   * Ersetzt Teilungsartikel / unbestimmte Mengen (*du, de la, des*): *« Tu veux du café? - Oui, j'**en** veux. »*   * Ersetzt Ergänzungen mit *de + Sache*: *« Tu as peur des chiens? - Non, je n'**en** ai pas peur. »*   * Bei Zahlenangaben bleibt die Zahl am Satzende stehen: *« Tu as des frères? - Oui, j'**en** ai deux. »* 3. Die Satzstellung der Pronomen: - Stehen **immer unmittelbar vor dem finiten Verb** bzw. vor dem **Infinitiv**, von dem sie abhängen:   * Präsens: *« Je **le lui** donne. »*   * Verneinung: *« Je ne **lui** parle pas. »*   * Passé composé: *« Je **l'**ai vu. »* (vor dem Hilfsverb *avoir/être*).   * Infinitivkonstruktion: *« Je vais **lui** téléphoner. »* (vor dem Infinitiv). 4. Das Futur simple (Zukunft der Absicht und Vorhersage): - **Bildung**: Infinitiv der regelmäßigen Verben + **haben-Endungen (-ai, -as, -a, -ons, -ez, -ont)**:   * *parler* $\\rightarrow$ *je parler**ai***, *tu parler**as***, *il parler**a***, *nous parler**ons***, *vous parler**ez***, *ils parler**ont***. - **Wichtige unregelmäßige Stämme**:   * *être $\\rightarrow$ ser-* (*je serai*)   * *avoir $\\rightarrow$ aur-* (*j'aurai*)   * *faire $\\rightarrow$ fer-* (*je ferai*)   * *aller $\\rightarrow$ ir-* (*j'irai*)   * *pouvoir $\\rightarrow$ pourr-* (*je pourrai*)   * *vouloir $\\rightarrow$ voudr-* (*je voudrai*)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die französischen Objektpronomen und ihre Unterscheidung: - 1. Direkte Objektpronomen (COD – Akkusativobjekt):   * Ersetzen Nomen ohne Präposition: me, te, le / la, nous, vous, les.   * Beispiel: « Tu aimes cette chanson? - Oui, je la connais. » - 2. Indirekte Objektpronomen (COI – Dativobjekt für Personen mit à):   * Ersetzen Personen nach der Präposition à: me, te, lui (ihm/ihr), nous, vous, leur (ihnen).   * Beispiel: « J'écris à ma mère "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Je lui écris. » / « Je téléphone à mes grands-parents "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Je leur téléphone. » 2. Die Adverbialpronomen 'y' und 'en': - 1. Das Pronomen 'y':   * Ersetzt Ortsangaben mit Präpositionen des Ortes (à, en, dans, chez, sur): « Tu vas au cinéma? - Oui, j'y vais. »   * Ersetzt Ergänzungen von Verben mit à + Sache: « Tu penses à ton avenir? - Oui, j'y pense. » - 2. Das Pronomen 'en':   * Ersetzt Teilungsartikel / unbestimmte Mengen (du, de la, des): « Tu veux du café? - Oui, j'en veux. »   * Ersetzt Ergänzungen mit de + Sache: « Tu as peur des chiens? - Non, je n'en ai pas peur. »   * Bei Zahlenangaben bleibt die Zahl am Satzende stehen: « Tu as des frères? - Oui, j'en ai deux. » 3. Die Satzstellung der Pronomen: - Stehen immer unmittelbar vor dem finiten Verb bzw. vor dem Infinitiv, von dem sie abhängen:   * Präsens: « Je le lui donne. »   * Verneinung: « Je ne lui parle pas. »   * Passé composé: *« Je **l'**ai vu. »* (vor dem Hilfsverb avoir/être).   * Infinitivkonstruktion: « Je vais lui téléphoner. » (vor dem Infinitiv). 4. Das Futur simple (Zukunft der Absicht und Vorhersage): - Bildung: Infinitiv der regelmäßigen Verben + haben-Endungen (-ai, -as, -a, -ons, -ez, -ont):   * parler "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " *je parler**ai***, *tu parler**as***, *il parler**a***, *nous parler**ons***, *vous parler**ez***, *ils parler**ont***. - Wichtige unregelmäßige Stämme:   * être "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " ser- (je serai)   * avoir "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " aur- (j'aurai)   * faire "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " fer- (je ferai)   * aller "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " ir- (j'irai)   * pouvoir "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " pourr- (je pourrai)   * vouloir "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " voudr- (je voudrai)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

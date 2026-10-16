@@ -1,10 +1,15 @@
 import { defineConfig } from "vite";
+import { temmlSurrogates } from "./vite-temml-surrogates";
 
 // @ts-expect-error process is a nodejs global
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
+  // Temml's lexer survives bundling only with this rewrite; the dev server
+  // must not pre-bundle it either, or the rewrite never sees it.
+  plugins: [temmlSurrogates()],
+  optimizeDeps: { exclude: ["temml"] },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //

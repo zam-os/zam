@@ -1,0 +1,99 @@
+[
+  {
+    "item": "01K8GA80000000000000000J04",
+    "field": "sample_solution",
+    "find": "\text{",
+    "replace": "\\text{",
+    "all": true
+  },
+  {
+    "item": "01K8GAF0000000000000000J04",
+    "field": "sample_solution",
+    "find": "\text{",
+    "replace": "\\text{",
+    "all": true
+  },
+  {
+    "item": "01K8GBH0000000000000000J04",
+    "field": "sample_solution",
+    "find": "\text{",
+    "replace": "\\text{",
+    "all": true
+  },
+  {
+    "item": "01K8GB40000000000000000J02",
+    "field": "question",
+    "find": "\to \\varepsilon",
+    "replace": "\\to \\varepsilon"
+  },
+  {
+    "item": "01K8GC60000000000000000J04",
+    "field": "question",
+    "find": "\text{",
+    "replace": "\\text{",
+    "all": true
+  },
+  {
+    "item": "01K8GC40000000000000000J04",
+    "field": "sample_solution",
+    "find": "\text{",
+    "replace": "\\text{",
+    "all": true
+  },
+  {
+    "item": "01K8GC40000000000000000J04",
+    "field": "sample_solution",
+    "find": "\rightarrow",
+    "replace": "\\rightarrow",
+    "all": true
+  },
+  {
+    "item": "01K8GD50000000000000000J04",
+    "field": "sample_solution",
+    "find": "\text{",
+    "replace": "\\text{",
+    "all": true
+  },
+  {
+    "item": "01K8GA30000000000000000J02",
+    "field": "sample_solution",
+    "find": "\\varphi \\le 180^\\circ)",
+    "replace": "\\varphi \\le 180^\\circ)}"
+  },
+  {
+    "item": "01K8GA00000000000000000J02",
+    "field": "question",
+    "find": "\\text{Umkreisradius})}",
+    "replace": "\\text{Umkreisradius})"
+  },
+  {
+    "item": "01K8GB90000000000000000J02",
+    "field": "sample_solution",
+    "find": "]_n-}}",
+    "replace": "]_n-}"
+  },
+  {
+    "item": "01K8GC60000000000000000J04",
+    "field": "sample_solution",
+    "find": "\\text{ (Niere)}}}",
+    "replace": "\\text{ (Niere)}}"
+  },
+  {
+    "item": "01K8GAB0000000000000000J02",
+    "field": "sample_solution",
+    "find": "Function & Psychological",
+    "replace": "Function \\& Psychological"
+  },
+  {
+    "item": "01K8GDF0000000000000000J02",
+    "field": "sample_solution",
+    "find": "\\\\lambda",
+    "replace": "\\lambda"
+  },
+  {
+    "item": "01K8GDF0000000000000000J04",
+    "field": "sample_solution",
+    "find": "\\\\text{Climate Neutrality}",
+    "replace": "\\text{Climate Neutrality}"
+  }
+]

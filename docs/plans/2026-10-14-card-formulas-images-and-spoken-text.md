@@ -27,19 +27,23 @@ small images.
 
 ## Status
 
-- [ ] **Phase 1** — kernel: segment types, inventory, tokenizer, markup
-  check, projections, converter
-- [ ] **Phase 2** — schema and the one write path
-- [ ] **Phase 3** — Studio recall renders segments; voice speaks them;
-  measurements
-- [ ] **Phase 4** — tiles: segment fields, installer, `installed_tiles`,
-  background reinstall, team step
-- [ ] **Phase 5** — bundled tile migration (owner review gate)
-- [ ] **Phase 6** — writers: prompts, tool contracts, `$` repair,
-  placeholders
-- [ ] **Phase 7** — Anki formula lift and the Studio editor (D9)
-- [ ] **Phase 8** — Mobile, the MCP recall panel, image segments
-- [ ] **Phase 9** — documentation and handover
+- [x] **Phase 1** — kernel: segment types, inventory, tokenizer, markup
+  check, projections, converter — `dbb5a670`
+- [x] **Phase 2** — schema and the one write path — `5c6e87f1`
+- [x] **Phase 3** — Studio recall renders segments; voice speaks them;
+  measurements — `ba3bf276` (WebKit and VoiceOver measurement open: owner)
+- [x] **Phase 4** — tiles: segment fields, installer, `installed_tiles`,
+  background reinstall, team step — `51209d5b`
+- [ ] **Phase 5** — bundled tile migration (owner review gate) — `69520df1`,
+  migrated and tested; owner gate open
+  (`scripts/card-text-migration/review-sample.md`)
+- [x] **Phase 6** — writers: prompts, tool contracts, `$` repair,
+  placeholders — `c5e56ee8`
+- [x] **Phase 7** — Anki formula lift and the Studio editor (D9) —
+  `5ea17cd3`; editor not yet tried in a browser
+- [x] **Phase 8** — Mobile, the MCP recall panel, image segments —
+  `43d26c64`; device checks, the math font and SVG rasterising open
+- [x] **Phase 9** — documentation and handover
 
 **The ADR's deliveries map onto the phases:**
 
@@ -258,6 +262,60 @@ Pure functions only. No schema, no surface.
   - `$HOME` stays text.
 - **Projections:** speech falls back to plain, and images read their `alt`.
 
+### As built (Phase 1)
+
+- **Inventory = corpus + a reviewed supplement.**
+  - **From the corpus:** 123 control words, 7 control symbols and exactly 4
+    environments (`aligned`, `array`, `cases`, `pmatrix`).
+  - **From the supplement:** the corpus misses everyday symbols a model
+    writes for new cards (`\theta` never occurs), so
+    `scripts/build-math-inventory.ts` adds a reviewed list of 90 standard
+    commands and 6 control symbols. They complete the families the ADR
+    names (Greek letters, operators, relations, arrows, functions,
+    delimiters, one-argument fonts and accents), and nothing else.
+  - **Environments** stay exactly the corpus's.
+  - **Result:** 213 words, 13 symbols.
+  - **The script** is TypeScript, run with `npx tsx`, so it reuses the
+    kernel's lift. After `--write`, run `npx biome format --write` on the
+    JSON.
+- **Emphasis includes single `*…*` and `_…_`.** 163 bundled questions show
+  single-star italics (`*'Ta-Ta-Ta'*`). Word-boundary edges keep `2*b*c`,
+  `src/*.ts` and `snake_case` as text, and an underscore span that is an
+  identifier (`__init__`) counts as code. This extends the ADR's wording of
+  Decision 2 in its spirit: no Markdown in card text.
+- **Converter conventions,** documented in `tex-plain.ts`:
+  - **Spacing:** math spaces are insignificant, as in TeX, so the ADR's
+    example renders as `W_el = ½CU²`. Relations and `+`/`-` get spaces; a
+    product gets none.
+  - **Subscripts:** letter subscripts stay `_el`.
+  - **Dots:** a linear fraction next to a factor gets a `·` (`G·(M·m)/r²`,
+    `1/LC·Q(t)`).
+  - **Spacing after names:** functions and big operators put a space after
+    their limits (`lim_(x→∞) f(x)`, `∑_(i=1)ⁿ i`).
+- **The lift trims only spaces and newlines.** `trim()` had swallowed the
+  tab that JSON made of `\t` in `\text`, which turned a damaged
+  `ext{CH}_4` into a clean-looking formula.
+- **Corpus facts for Phase 5:**
+  - **Formulas:** 6,159 in all, 2,341 of them in questions; the longest has
+    433 characters.
+  - **Refused formulas:** in 14 fields.
+    - **Seven** are the strings with tab or carriage-return damage.
+    - **Four** carry unbalanced braces: one question (Trigonometrie J02)
+      and three sample solutions.
+    - **One** sample solution (Englisch Rhetorik J02) has a bare `&`
+      outside an environment, which Temml refuses. The tokenizer has
+      refused that since Phase 2.
+    - **Two** sample solutions (Geographie 13 J02 and J04) write `\\lambda`
+      and `\\text` for `\lambda` and `\text`. The tokenizer has refused a
+      doubled backslash before a command name since Phase 3.
+
+    They are listed as `KNOWN_DAMAGED` in `tests/kernel/card-text.test.ts`,
+    and Phase 5 empties that list.
+  - **Bare commands outside dollars:** 4 questions, 7 concepts, 9 options
+    and 5 sample solutions, all in grade 11–13 tiles. Phase 5 patches the
+    questions by hand. The concepts and options go into the ASCII-math
+    worklist, because those fields are rewritten anyway.
+
 ## Phase 2 — schema and the one write path
 
 1. **Migration** (next M-number):
@@ -323,6 +381,39 @@ Pure functions only. No schema, no surface.
   options.
 - **Distractors:** a speech-only change keeps `choiceSourceHash`, and a
   `tex` change alters it.
+
+### As built (Phase 2)
+
+- **Migration M048, `CURRENT_SCHEMA_VERSION = 48`.**
+  - **What it adds:** the token segment columns, `token_media.placement`
+    (validated in code, no `CHECK`), `choice_distractors.text_segments` and
+    `installed_tiles`.
+  - **Where `installed_tiles` is classified:** as a snapshot table and as a
+    team-library knowledge table (`team-provision.ts`).
+  - **Tests:** `npm run pg:test` passes. It needs `npm run pg:up` first; on a
+    Mac without Docker that is the Homebrew PostgreSQL 18.
+- **`writeCardText`** (`src/kernel/library/card-text-store.ts`) is the only
+  writer of a segment column.
+  - **Images:** inline images must already be stored as PNG, JPEG, WebP or
+    GIF. An SVG is refused here, because rasterising it is the importer's
+    job (Phase 8).
+  - **Reading back:** `parseStoredCardText` reads a column without ever
+    throwing.
+- **Revisions:** segments win. A plain `question`/`concept` passed beside
+  segments is replaced by the projection, and `writeCardText` writes the
+  plain column, so the embedding is dropped correctly.
+- **The decompose action** (`token.ts`, the "block" branch that rewrites the
+  original card) turns a segmented field plain when the learner changed its
+  text. It is an explicit restructuring, not a silent edit.
+- **Review payload.** Studio's `card` gains `questionSegments`,
+  `conceptSegments`, `spokenQuestion` and `spokenConcept`, and so does the
+  MCP batch payload. The protocol gains the optional `CardSegmentPayload`
+  type and the matching optional fields.
+- **Dynamic question variation skips segmented questions** until Phase 6
+  brings placeholders. Without that, a model would rewrite the plain
+  projection and lose the formulas.
+- **Temml 0.13.5 is a root dev dependency** (exact pin), for the Phase 3
+  output-check tests.
 
 ## Phase 3 — Studio recall, voice, measurements
 
@@ -391,6 +482,56 @@ Pure functions only. No schema, no surface.
   Restore the prototype afterwards.
 - **Voice:** `voice-review` speaks `spokenQuestion` when present.
 
+### As built (Phase 3)
+
+- **Renderer modules.** `desktop/src/math-render.ts` (Temml, the options and
+  the output check) and `desktop/src/card-text-render.ts` (segments into DOM
+  nodes, progressive). `renderQuestionWithTopic` takes optional segments.
+  - **What Studio renders as card text:** the question, the concept row of
+    the reveal, and the fast-check buttons.
+  - **Choice mode** still shows plain options; segment choices come with the
+    presentation work in Phase 6.
+- **Temml's real output decided the allowlist.** For the 6,147 clean corpus
+  formulas, Temml writes `style` (spacing, borders, `math-depth`,
+  `text-align`) and `class` (`tml-…`, `wbk-…`, `chr-…`, `mathcal`). The
+  check allows exactly those properties and class names, and the test
+  checks every corpus formula against it.
+- **Fonts.** Phase 3 ships Temml's `Temml-Local.css` and `Temml.woff2`. That
+  stylesheet uses the system math font: Cambria Math on Windows, STIX Two
+  Math on macOS, Noto Sans Math where installed.
+  - **Latin Modern Math is not bundled yet.** Committing the font file
+    needs it downloaded from Temml's repository or GUST. That is the
+    owner's call, not an unattended step.
+  - **When it lands:** swap in `Temml-Latin-Modern.css` and commit the font
+    with its GUST licence and SHA-256.
+- **Studio bundle:** a lazy chunk of 204 KB (60 KB gzip), plus 5.6 KB CSS
+  and a 9 KB font, loaded on the first formula. The recall panel inlines it
+  (single-file build), which it needs from Phase 8 on.
+- **Voice reads the spoken text** through the host's `currentCard`. The
+  kernel loop needed no change: `question` and `expectedAnswer` simply
+  carry `spokenQuestion` and `spokenConcept` when the card has segments.
+- **Media placement.** `getTokenMedia` returns `placement`, and the
+  attachment strip skips `inline` rows. Image segments look their asset up
+  in the payload's media.
+- **Two more tokenizer rules** came out of rendering the corpus:
+  - a bare `&` outside an environment (Temml refuses it);
+  - `\\name` outside a matrix, an escaping slip.
+
+  Both are listed under the Phase 1 corpus facts.
+- **Measurement gate: still open, and it needs the owner.**
+  - **The page:** `desktop/dev/math-corpus.html` renders every unique corpus
+    formula with the Studio's renderer and reports how many fell back. It
+    is a dev-only page, not in the build.
+  - **Start it** with `npm --prefix desktop run dev`, then open
+    `http://localhost:1420/dev/math-corpus.html` in Safari (WebKit), and in
+    Chrome or Edge for comparison. "Nur Rückfälle zeigen" lists the
+    failures.
+  - **VoiceOver on macOS** remains a manual check: does it read `alttext`,
+    and can one navigate a fraction and a matrix?
+  - **Why not done unattended:** the session's preview tool only starts
+    servers from the main worktree's launch configuration, which this
+    branch must not edit. Desktop control needs the owner's approval.
+
 ## Phase 4 — tiles: fields, installer, reconcile, team step
 
 1. **Tile format** (`src/kernel/library/kvt-attach.ts`, `KvtPracticeItem`).
@@ -446,6 +587,39 @@ Pure functions only. No schema, no surface.
   - it refuses on the team target. Use the existing Postgres test helpers
     when `pg:test` runs.
 
+### As built (Phase 4)
+
+- **Tile format.**
+  - **Items:** `question_segments` and `concept_segments`; the plain
+    `question`/`concept` may then be left out, and when given they must
+    match the projection.
+  - **Fast checks:** options may be segment lists; distractors may carry
+    `segments`.
+  - **Validation:** every tile segment is validated with
+    `requireSpeech: true`.
+  - **Readers that only need text** (material-import matching) use
+    `kvtItemPlainTexts`.
+- **Substance versus presentation.** The substance comparison reads plain
+  projections. For fast checks it reads the options without
+  `option_segments`, so a tile with no segments compares exactly as before.
+  On every install the installer then calls `writeCardText` and updates the
+  stored fast check. Both skip unchanged values, so an unchanged reinstall
+  still touches no row (`updated_at` included).
+- **`installed_tiles`.** A successful install upserts the row, but only when
+  the version changed or a failure was recorded. A failed install records
+  `failed_at`/`last_error` outside the rolled-back transaction, best effort.
+- **`reconcileInstalledBundledTiles`.** A tile counts as installed when it
+  is recorded with a version, or when every one of its atoms and items is
+  present. A first install that failed records no version, so the learner's
+  failed enrolment is not installed behind their back. A single
+  shared item is not enough: the Optik tiles share six items, and the first
+  version reinstalled all four Optik tiles after one.
+  - **Bridge:** `zam bridge bundled-tiles-reconcile --max 5`.
+  - **Studio** calls it once per start, 20 s after load, and ignores
+    errors.
+  - **Team library:** the kernel refuses a PostgreSQL library unless called
+    as `zam team reinstall-tiles` (administrator).
+
 ## Phase 5 — bundled tile migration (owner review gate)
 
 Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
@@ -496,6 +670,68 @@ Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
 9. **Owner gate.** Thomas reads a sample (fractions, matrices, prescripts,
    the eleven patches, per subject) and skims the diff reports. Note his
    verdict here before committing the phase.
+
+### As built (Phase 5)
+
+- **One script instead of four.** `scripts/card-text-migration/migrate.ts`
+  (run with `tsx`) does the lift, the merge and the worklist in one
+  deterministic pass. Its inputs sit beside it and are reviewed in the diff:
+  - **`patches.json`:** 15 patches. Eight repair the seven strings where
+    JSON `\t`/`\r` ate a backslash. Four fix unbalanced braces, one escapes
+    a bare `&`, and two undo a doubled backslash.
+  - **`rewrites.txt`:** 135 whole-field rewrites. 27 are fields with a bare
+    command (the plan counted four questions; concepts and options had more).
+    The rest are the ASCII-math concepts and options, written as `$…$` TeX
+    with `{,}` decimal commas. This file replaces the ASCII-math worklist.
+  - **`speech.tsv`:** one reading per distinct learner-visible formula
+    (`lang⇥tex⇥speech`, 1,753 lines).
+- **Speech was not written by the content model.** No model was called from
+  the implementing session. `speech-draft.ts` (rule-based, German) drafted
+  all 1,753 readings. The coding agent then read every line and corrected
+  694 of them: units, chemistry, vectors, point coordinates, ranges ("bis"),
+  ratios ("zu"), genotypes, grammar productions and set notation. The owner
+  review below covers the result.
+- **Emphasis** is stripped across formula boundaries
+  (`**Alkene ($C_nH_{2n}$)**`) and until none is left (`**,**` nested in
+  `*…*`).
+- **Sample solutions** are lifted to segments as well, so a tile has one
+  format, but their formulas carry no speech: they are never installed.
+- **Atom titles** become plain Unicode through `texToPlain`. `texToPlain` now
+  keeps a star in a script (`p^*` → `p*`) instead of turning it into `·`.
+- **Only rewritten items change:** 410 items in 186 tiles. They get
+  `materiality: "cosmetic"` and the canonical key order; every other item
+  stays byte for byte.
+- **Repeatable.**
+  - A fresh run from `main` reproduces the tiles byte for byte.
+  - A second run changes nothing.
+  - An unused patch, rewrite or speech line is an error.
+- **Tile test** (`tests/kernel/bundled-tiles-card-text.test.ts`) covers the
+  list above, with two adjustments:
+  - **Projections:** a tile item stores either the plain field or segments,
+    never both, so there is no stored projection to compare. The test asserts
+    exactly one of the two, and that the derived projection carries no
+    markup.
+  - **Images:** `alt` is checked through `validateCardText`. No tile carries
+    an image yet.
+
+  It replaces the corpus test and its `KNOWN_DAMAGED` list in
+  `card-text.test.ts`.
+- **Speech lengths:**
+
+  | median | p95 | p99 | max |
+  |---|---|---|---|
+  | 26 | 118 | 172 | 266 characters |
+
+  The cap stays at 600. A model-written card near the 500-character TeX cap
+  needs the room, and a lower cap buys nothing measurable.
+- **Review material.** `diff-report.ts` writes:
+  - one page per changed tile to the git-ignored `report/`: plain text
+    before → after, each formula with its plain text and speech;
+  - the committed `review-sample.md`: the 15 patches, eight rewrites,
+    fractions, matrices, prescripts, reactions, the longest readings, and a
+    spread per subject.
+- **Owner gate: open.** Thomas's verdict on `review-sample.md` and the
+  report goes here before the branch merges.
 
 ## Phase 6 — writers
 
@@ -549,6 +785,92 @@ Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
   placeholder falls back.
 - **Prompts:** the prompt snapshot contains the segment rule.
 
+### As built (Phase 6)
+
+- **One reader for writers' card text.** `readCardTextInput(value, mode)`
+  (`src/kernel/library/card-text-input.ts`) takes a string or a segment
+  list and returns the plain projection, segments when there is a formula,
+  review notes, and the formulas still without speech.
+  - **Repairs, in both modes:**
+    - the lenient `$` lift;
+    - emphasis dropped across formula boundaries (`dropEmphasis`, moved here
+      from the migration);
+    - a bare inventory command in text becomes Unicode (`\beta` → `β`);
+    - backslashes a JSON escape ate are put back (`\f`+`rac` → `\frac`),
+      only where the letters spell an inventory command.
+  - **`agent` mode** returns a refused formula as an issue naming the
+    segment. **`import` mode** keeps it as readable text (`texAsText`) and
+    notes it.
+  - **Images** are refused in both modes until Phase 8 attaches material.
+- **Lenient lift fix.** A dollar now pairs only with the next one, so a
+  formula never contains `$`. Before, `$HOME und $5 … $x^2$` became a
+  single formula.
+- **The rule.**
+  - **`CARD_TEXT_RULE`** joins `CARD_SHAPE_RULES`. Its environment list
+    comes from the inventory. Its example shows the JSON with doubled
+    backslashes and says so: a model copying a single-backslash example
+    would reproduce the tiles' `\t`-ate-`\text` damage.
+  - **`PLAIN_FORMULA_RULE`** goes into the evaluation prompt and the
+    generated-choice prompt.
+  - **Imports.** `card-shape.ts` now imports the tokenizer, and its
+    Mobile-bundle test checks that import chain instead of "no imports".
+- **Material import.**
+  - **Contract:** `question`/`answer` may be strings or segment lists. The
+    parsed proposal keeps the plain text and adds `questionSegments`,
+    `answerSegments` and `textNotes`. A staged batch re-parses to the same
+    set.
+  - **Harness path:** the staging reads the set in `agent` mode and refuses
+    a formula without speech (`materialSpeechIssues`), naming
+    `proposals[i].answer[j].speech`.
+  - **Built-in path:** asks the answering text model once for missing
+    speech (`src/cli/llm/speech-prompt.ts`, injectable as
+    `deps.requestSpeech`), in requests of at most 60 formulas; a failed
+    request costs only its own formulas. What is still missing stays empty.
+  - **Commit:** through `createToken`. **Review list:** renders the
+    segments and shows the notes (`material_text_notes`, en/de only).
+- **Beyond the plan: every generated-card path.** The rule reaches the
+  curriculum, topic, split and foundation prompts, so their parser had to
+  accept segments.
+  - **Parsing:** `parseGeneratedCardArray` reads both fields with
+    `readCardTextInput(…, "import")`, and each generator asks once for
+    missing speech (`withGeneratedSpeech`).
+  - **Writing:** `createToken` takes `question_segments`/`concept_segments`
+    and stores them through `writeCardText`. The four kernel writers (curriculum,
+    split, foundations, source import) pass them through.
+  - **Studio confirms:** split and foundation proposals keep their segments
+    only while the learner has not edited that field; an edited field is
+    plain again. The source and topic confirms pass them through as
+    generated.
+  - **Mobile's curriculum parser** stores the plain projection until Phase 8.
+- **Agent tools.**
+  - **`zam_add_token`** (and `bridge add-token`) take `questionSegments` /
+    `conceptSegments`; `concept` becomes optional beside them.
+  - **The OKF import tool** takes the same fields. Its update path writes
+    segments through `writeCardText`, and a plain re-import clears a field's
+    old segments first.
+  - **Plain strings:** a formula in one is lifted. A refused formula, or a
+    formula without speech, is an error that names the field and the
+    segment and asks for segments.
+  - **`zam_material_import`** takes a string or segments per side.
+- **Variation and translation.**
+  - **Kernel:** `toPlaceholderText` / `fromPlaceholderText`
+    (`card-text-placeholders.ts`). Placeholders may move; a dropped,
+    repeated or invented one, or markup in the reply, splices to `null`.
+  - **Variation:** the review payload now carries the varied segments.
+  - **Translation:** `translateQuestionSegmentsViaLLM` and `bridge
+    translate-question --segments`. No Studio surface calls translation
+    today, and Mobile's translator is Phase 8.
+- **Known gap.** A learner who edits a varied segmented question in the
+  review is refused by the kernel guard, as for any segmented field, until
+  the Phase 7 editor.
+- **Tests:**
+  - `card-text-input.test.ts`, `material-card-text.test.ts`;
+  - `card-text-writers.test.ts` (rule and example, placeholders, a scripted
+    curriculum import with its speech follow-up, scripted variation and
+    fallback);
+  - additions to the staging, bridge-handler, dollar-lift and Mobile
+    curriculum tests.
+
 ## Phase 7 — Anki formula lift and the Studio editor
 
 1. **Anki import** (`src/cli/import/apkg.ts`,
@@ -582,6 +904,57 @@ Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
   `[$]x^2[/$]` imports as math segments, and a refused formula stays text.
 - **Editor:** the bridge revision with segments round-trips, and invalid
   segments are refused with the kernel's message.
+
+### As built (Phase 7)
+
+- **Anki lift** (`src/cli/import/formula-lift.ts`).
+  - **Before the HTML is made inert,** `holdFormulas` replaces every
+    `\(…\)`, `\[…\]`, `[$]…[/$]`, `[$$]…[/$$]` and `[latex]…[/latex]` with a
+    marker; tags and entities inside a formula are resolved. `[latex]`
+    unwraps one `$`/`$$` pair.
+  - **After sanitizing,** `restoreFormulas` turns the markers back into math
+    segments and reads the side with `readCardTextInput(…, "import")`.
+  - **A refused formula** becomes readable text (`texAsText`), not its
+    source, and the card gets a `formula-kept-as-text` notice. Reason: a
+    source formula beside a rendered one would fail the markup check, and
+    raw TeX on a card is what this ADR removes.
+  - **The sanitizer is unchanged** (an inline tag still becomes a space), so
+    an unchanged source hashes as before.
+  - **CSV/TSV imports** are not lifted; the plan names Anki only.
+- **Kernel text import.**
+  - **Cards** carry `questionSegments`/`answerSegments` and `unliftedText`,
+    and new cards are written through `writeCardText`.
+  - **Re-import:** when only the lift tells it from the last import, the
+    preview marks the update `formulasOnly`. It is applied as a cosmetic
+    revision, also to published content (D7), so cards imported before this
+    phase get their formulas on their next re-import without anyone
+    relearning them.
+- **Studio editor** (`desktop/src/card-text-editor.ts`, under both fields).
+  - **Default view:** the rendered side and each formula's spoken sentence.
+  - **"Let the AI fix it":** one line, through the new read-only bridge
+    command `card-text-fix` (in `STUDIO_BRIDGE_COMMANDS` and the reviewed
+    list). The reply is read in `agent` mode, missing speech is asked for
+    once, and the result is a preview to accept or discard.
+  - **"Insert formula":** an empty math segment with a TeX field, a live
+    preview and a speech field.
+  - **Curators:** every formula's TeX and speech, and the text between them,
+    behind a disclosure.
+  - **The text area** is hidden in formula mode and holds the projection,
+    so every existing check keeps working.
+- **Saving.** `personal-card-create`, `personal-card-update` and
+  `personal-card-publish-revision` take `--question-segments` /
+  `--concept-segments`; `null` turns a side plain again. The bridge checks
+  them first (`editedCardText`, `revisionSegments`) and returns the kernel's
+  message. `personal-card-list` now returns the segments.
+- **Kernel guard.** Its refusal now sends the learner to the card editor.
+- **Not verified in a browser.** The browser pane serves only the main
+  checkout, which this work does not touch.
+  `desktop/dev/card-text-editor.html` shows the editor on a sample card
+  with a scripted model reply (`npm --prefix desktop run dev`).
+- **Tests:** a synthetic `.apkg` with `\(\frac{1}{2}\)`, `[$]…[/$]`,
+  `[latex]` and a refused formula; kernel import create and lift-only
+  re-import; the revision round trip and refusal; `card-text-fix` with a
+  scripted model; the guard message.
 
 ## Phase 8 — Mobile, the MCP recall panel, image segments
 
@@ -626,6 +999,59 @@ Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
 - **Mobile:** the renderer is imported without Node built-ins; the mobile
   build succeeds (`npm run build` in `mobile/`).
 
+### As built (Phase 8)
+
+- **MCP recall panel.**
+  - **Rendering:** question, fast-check options and the revealed answer go
+    through the shared renderer.
+  - **Size:** the single-file panel is 1.06 MB (308 KB gzip) with Temml
+    inlined, as since Phase 3.
+- **Mobile.**
+  - **Rendering:** the review renders question, options and the revealed
+    answer from segments.
+  - **Voice** reads `spokenQuestion` / `spokenConcept`.
+  - **Dependencies:** `temml` is pinned to `0.13.5` in `mobile/package.json`,
+    and `mobile/src/css.d.ts` types the stylesheet import as the desktop
+    does.
+  - **Build:** `npm run typecheck` and `npm run build` in `mobile/` succeed.
+    Temml is a lazy 204 KB chunk (60 KB gzip).
+  - **Tiles:** the bundled tiles grew 15% minified with the Phase 5
+    segments (2.91 → 3.35 MB).
+  - **CSP** adds `img-src 'self' blob: data:`, `media-src 'self' blob:`
+    and `font-src 'self' data:`. The app's own attachments are `blob:` URLs,
+    which the old policy blocked.
+  - **Editing:** a formula card is refused by the kernel guard on the phone,
+    whose message points to the Studio's card editor.
+- **Images.**
+  - **The bytes decide:** `inline-image.ts` checks magic bytes (PNG, JPEG,
+    WebP, GIF) and the 256 KB cap. `writeCardText` checks the stored bytes
+    of every inline image, so a renamed SVG stays out.
+  - **Tiles:** a tile declares `media: [{sha256, type}]`, and
+    `installKvtTile(…, { media })` takes the bytes from the caller. It checks
+    hash, type and size, then stores the asset before the items; their
+    `inline` rows follow from `writeCardText`. A fast-check option may not
+    show an image.
+  - **The attachment strip:** `attachedMedia` in `card-text-render.ts`
+    skips inline rows, and the Studio and Mobile share it.
+- **Open, by design or for the owner:**
+  - **Latin Modern Math is not bundled:** the download needs the owner's
+    approval. Every surface uses the system math fonts through
+    `Temml-Local.css`, and VS Code's CSP would refuse a font anyway.
+  - **SVG rasterising is not built:** no writer accepts images yet (the
+    readers refuse image segments), so it would have no caller. It comes
+    with the first image writer.
+  - **Bundled tiles:** the loader passes no media resolver. The first tile
+    with images adds `media/` beside it and the resolver.
+  - **Device checks:** Pixel 9, the field test's Pixel 6 (TalkBack) and the
+    iPad simulator (VoiceOver) are open for the owner, under Open question 1.
+- **Tests:**
+  - `inline-images.test.ts` (formats, renamed SVG, oversize, tile install,
+    refusals);
+  - the strip filter in `card-text-render.test.ts`;
+  - `tests/mobile/card-text-bundle.test.ts` (no Node built-in in the card-text
+    import graph);
+  - the source-shape tests follow the new calls.
+
 ## Phase 9 — documentation and handover
 
 1. **OKF**, written **through the `zam_okf_upsert` MCP tool**; never edit
@@ -666,6 +1092,86 @@ Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
 6. **This plan.** Mark each phase with its commit hash. Delete the plan
    before the release that ships the feature, unless open tasks remain.
 
+### As built (Phase 9)
+
+- **OKF:**
+  - the new article `card-text-segments.md`;
+  - the nine updates the plan lists, plus the installed-tiles reconcile in
+    `token-card-model.md`.
+
+  The `zam_okf_upsert` tool refuses a bundle under a hidden folder
+  (`.claude/worktrees/…`) and would otherwise write the main checkout. So
+  each article went through the same function the tool calls
+  (`upsertArticle` in `src/cli/okf/io.ts`), with its validation, the
+  regenerated `index.md` and the `log.md` entry, run on this branch's
+  bundle. No bundle file was edited by hand.
+- **Conventions:** the card-text line is in `CLAUDE.md` (Key conventions)
+  and `AGENTS.md` (Hard rules). It also names `readCardTextInput` for text
+  from models and agents.
+- **Knowledge map:** five statements under "Token" (card text, the formula
+  allowlist, rendering, spoken formulas, the editor). The map validates with
+  104 statements.
+- **ADR:** `Partially implemented`, with a status-history row naming what is
+  open; the README row says so too.
+- **This plan stays.** Open tasks remain: the Phase 5 owner gate, the
+  measurements and device checks, the math font, and a first look at the
+  editor.
+
+### Review fixes (PR #412)
+
+Grok and MiMo reviewed the draft PR; one commit addresses what held up:
+
+- **Temml in built bundles.** Vite 8 (Rolldown) printed Temml's two
+  lone-surrogate string literals as U+FFFD, so every built bundle failed on
+  `\frac` and `\text`. `desktop/vite-temml-surrogates.ts` rewrites them as
+  escapes in Studio, Mobile and the panel; `tests/desktop/temml-bundle.test.ts`
+  builds and runs a bundle.
+- **Tokenizer:** refuses invisible formatting characters (zero-width,
+  bidirectional controls) and a `^`, `_` or `\not` with nothing to act on;
+  `texToPlain` reads `\not \in` with spaces.
+- **Readings:** a reading of only spaces is missing; an import drops a
+  reading that is not plain words instead of refusing the card.
+- **Split:** `confirmCardSplit` clears the original card's segments and
+  inline images through `writeCardText`.
+- **Options:** the panel answers a tapped option with its plain text, and
+  the queue serves option segments only when they project to the stored
+  option. A reinstalled curated distractor updates its presentation.
+- **Studio editor:** an invalid formula blocks saving with its reason;
+  drafts carry their segments.
+- **Mobile:** inline images render in review.
+- **Variation:** a plain question's variation is read like an import, so a
+  `$…$` formula from the model is typeset, not shown raw.
+- **Smaller:** speech requests in batches, whole-number ratings only,
+  failed first tile installs not reinstalled, and the corpus page walks
+  segments.
+
+### Release notes (for the release PR)
+
+**What's new**
+
+- Formulas in cards are typeset in the Studio, on Mobile and in the recall
+  panel, and read aloud as a teacher would say them: in voice mode, and to
+  screen readers through MathML's `alttext`.
+- The bundled school tiles show their formulas instead of raw LaTeX. The
+  fix is cosmetic, so nobody relearns a card.
+- AI models and agents write formulas as checked segments with speech. Anki
+  decks bring their formulas along, and older Anki imports gain theirs on
+  the next re-import.
+- The Studio card editor lets a learner fix a card in their own words
+  ("Let the AI fix it") or insert a formula. Curators find the TeX behind a
+  disclosure.
+
+**Pitfalls**
+
+- **Team libraries:** the administrator runs the schema migration (M048),
+  then `zam team reinstall-tiles`. Members see "update required" until the
+  migration has run.
+- **Embeddings:** run `zam token reembed` after the tile migration. Every
+  changed projection dropped its embedding, so semantic search misses those
+  cards until then.
+- **Mobile's content-security policy** now allows the app's own
+  `blob:`/`data:` images, `blob:` audio and local fonts.
+
 ## Deliberately not in this plan
 
 - **Formulas in model replies** (evaluation feedback, tutor dialogue): plain
@@ -691,6 +1197,10 @@ Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
   `correct_index` stays valid.
 - **Temml version.** 0.14.0 changes `\prescript` argument order. Keep the
   exact pin, and upgrade only with the corpus render test.
+- **Temml in a Vite bundle.** Rolldown prints Temml's lone-surrogate string
+  literals as U+FFFD, which breaks its lexer only in built output (dev
+  works). The surrogate plugin throws if Temml changes those literals; keep
+  it in every Vite config that bundles Temml.
 - **`throwOnError`.** With `false`, Temml renders the error in red instead of
   throwing, and the plain fallback never triggers.
 - **Backslashes in text.** Windows paths are legitimate card text; only

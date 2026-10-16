@@ -49,7 +49,30 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie viele reelle Lösungen besitzt eine quadratische Gleichung $ax^2 + bx + c = 0$, wenn ihre Diskriminante $D = b^2 - 4ac < 0$ ist?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie viele reelle Lösungen besitzt eine quadratische Gleichung "
+            },
+            {
+              "type": "math",
+              "tex": "ax^2 + bx + c = 0",
+              "speech": "a x Quadrat plus b x plus c gleich 0"
+            },
+            {
+              "type": "text",
+              "text": ", wenn ihre Diskriminante "
+            },
+            {
+              "type": "math",
+              "tex": "D = b^2 - 4ac < 0",
+              "speech": "D gleich b Quadrat minus 4 a c kleiner als 0"
+            },
+            {
+              "type": "text",
+              "text": " ist?"
+            }
+          ],
           "concept": "Genau 0 reelle Lösungen (die Lösungsmenge ist leer: L = {})",
           "fast_check": {
             "type": "binary_choice",
@@ -58,16 +81,572 @@
               "2 reelle Lösungen"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8G9A0000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere quadratische Funktionen und Gleichungen: 1. **Darstellungsformen der Parabel**:   * **Scheitelpunktform**: $f(x) = a(x - d)^2 + e \\implies$ Scheitelpunkt $S(d \\mid e)$.   * **Allgemeine Form (Normalform)**: $f(x) = ax^2 + bx + c$ ($c = y$-Achsenabschnitt).   * **Linearfaktorform (faktorisierte Form)**: $f(x) = a(x - x_1)(x - x_2)$ bei Nullstellen $x_1, x_2$, 2. **Bedeutung des Formfaktors $a$**:   * $a > 0$: nach oben geöffnet (Tiefpunkt); $a < 0$: nach unten geöffnet (Hochpunkt).   * $|a| > 1$: gestreckt / schmaler als Normalparabel; $|a| < 1$: gestaucht / breiter, 3. **Die Mitternachtsformel (Große Lösungsformel)**:   $$x_{1,2} = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$   * **Diskriminante $D = b^2 - 4ac$**: $D > 0 \\implies 2$ Nullstellen; $D = 0 \\implies 1$ doppelte Nullstelle (Scheitelpunkt auf $x$-Achse); $D < 0 \\implies 0$ Nullstellen, 4. Bestimme Scheitelpunkt und Nullstellen der Parabel $p: f(x) = 2x^2 - 8x + 6$.",
-          "concept": "Quadratische Funktionen: Scheitelpunktform f(x) = a(x-d)^2 + e -> S(d|e); Formfaktor a; Mitternachtsformel x_1,2 = (-b +- sqrt(D))/(2a); Diskriminante D = b^2 - 4ac (3 Fälle); Umrechnung: 2(x^2 - 4x + 3) = 2((x-2)^2 - 1) = 2(x-2)^2 - 2 -> S(2|-2); Nullstellen x1 = 1, x2 = 3.",
-          "sample_solution": "1. Darstellungsformen quadratischer Funktionen: - **1. Scheitelpunktform**:   $$\\mathbf{f(x) = a(x - d)^2 + e \\implies \\text{Scheitel } S(d \\mid e)}$$   * $d$: Verschiebung in $x$-Richtung (nach rechts für $d > 0$, nach links für $d < 0$).   * $e$: Verschiebung in $y$-Richtung nach oben/unten. - **2. Allgemeine Form**:   $$\\mathbf{f(x) = ax^2 + bx + c}$$   * $c = f(0)$: Schnittpunkt mit der $y$-Achse $S_y(0 \\mid c)$. - **3. Faktorisierte Form (Linearfaktorzerlegung)**:   $$\\mathbf{f(x) = a(x - x_1)(x - x_2)}$$ 2. Der Formfaktor $a$: - Öffnungsrichtung: $a > 0$ nach oben, $a < 0$ nach unten. - Streckung/Stauchung: $|a| > 1$ schmaler (gestreckt), $|a| < 1$ breiter (gestaucht), $a = 1$ Normalparabel. 3. Die Mitternachtsformel und Diskriminante $D$: - Für $ax^2 + bx + c = 0$ gilt:   $$\\mathbf{x_{1,2} = \\frac{-b \\pm \\sqrt{D}}{2a}} \\quad \\text{mit} \\quad \\mathbf{D = b^2 - 4ac}$$   * $\\mathbf{D > 0}$: Zwei reelle Lösungen (zwei Schnittpunkte mit der $x$-Achse).   * $\\mathbf{D = 0}$: Genau eine Lösung ($x_0 = -\\frac{b}{2a}$, Parabel berührt die $x$-Achse).   * $\\mathbf{D < 0}$: Keine reelle Lösung ($L = \\emptyset$, Parabel verläuft echt ober- bzw. unterhalb der $x$-Achse). 4. Durchrechnung des Beispiels $p: f(x) = 2x^2 - 8x + 6$: - **Schritt 1: Scheitelpunkt durch quadratische Ergänzung**:   $$f(x) = 2[x^2 - 4x + 3] = 2[(x - 2)^2 - 4 + 3] = 2[(x - 2)^2 - 1] = \\mathbf{2(x - 2)^2 - 2}$$   $$\\implies \\mathbf{S(2 \\mid -2)}$$ - **Schritt 2: Nullstellen mit der Mitternachtsformel** ($a=2, b=-8, c=6$):   $$D = (-8)^2 - 4 \\cdot 2 \\cdot 6 = 64 - 48 = 16 > 0$$   $$x_{1,2} = \\frac{-(-8) \\pm \\sqrt{16}}{2 \\cdot 2} = \\frac{8 \\pm 4}{4}$$   $$\\mathbf{x_1 = \\frac{8 - 4}{4} = 1}, \\quad \\mathbf{x_2 = \\frac{8 + 4}{4} = 3}$$   * **Nullstellen**: $N_1(1 \\mid 0)$ und $N_2(3 \\mid 0)$."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere quadratische Funktionen und Gleichungen: 1. Darstellungsformen der Parabel:   * Scheitelpunktform: "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = a(x - d)^2 + e \\implies",
+              "speech": "f von x gleich a mal Klammer auf x minus d Klammer zu Quadrat plus e, daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Scheitelpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "S(d \\mid e)",
+              "speech": "Punkt S mit den Koordinaten d und e"
+            },
+            {
+              "type": "text",
+              "text": ".   * Allgemeine Form (Normalform): "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = ax^2 + bx + c",
+              "speech": "f von x gleich a x Quadrat plus b x plus c"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "c = y",
+              "speech": "c gleich y"
+            },
+            {
+              "type": "text",
+              "text": "-Achsenabschnitt).   * Linearfaktorform (faktorisierte Form): "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = a(x - x_1)(x - x_2)",
+              "speech": "f von x gleich a mal Klammer auf x minus x eins Klammer zu mal Klammer auf x minus x zwei Klammer zu"
+            },
+            {
+              "type": "text",
+              "text": " bei Nullstellen "
+            },
+            {
+              "type": "math",
+              "tex": "x_1, x_2",
+              "speech": "x eins, x zwei"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Bedeutung des Formfaktors "
+            },
+            {
+              "type": "math",
+              "tex": "a",
+              "speech": "a"
+            },
+            {
+              "type": "text",
+              "text": ":   * "
+            },
+            {
+              "type": "math",
+              "tex": "a > 0",
+              "speech": "a größer als 0"
+            },
+            {
+              "type": "text",
+              "text": ": nach oben geöffnet (Tiefpunkt); "
+            },
+            {
+              "type": "math",
+              "tex": "a < 0",
+              "speech": "a kleiner als 0"
+            },
+            {
+              "type": "text",
+              "text": ": nach unten geöffnet (Hochpunkt).   * "
+            },
+            {
+              "type": "math",
+              "tex": "|a| > 1",
+              "speech": "Betrag von a größer als 1"
+            },
+            {
+              "type": "text",
+              "text": ": gestreckt / schmaler als Normalparabel; "
+            },
+            {
+              "type": "math",
+              "tex": "|a| < 1",
+              "speech": "Betrag von a kleiner als 1"
+            },
+            {
+              "type": "text",
+              "text": ": gestaucht / breiter, 3. Die Mitternachtsformel (Große Lösungsformel):   "
+            },
+            {
+              "type": "math",
+              "tex": "x_{1,2} = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}",
+              "block": true,
+              "speech": "x eins zwei gleich minus b plus minus Wurzel aus b Quadrat minus 4 a c, geteilt durch 2 a"
+            },
+            {
+              "type": "text",
+              "text": "   * Diskriminante "
+            },
+            {
+              "type": "math",
+              "tex": "D = b^2 - 4ac",
+              "speech": "D gleich b Quadrat minus 4 a c"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "D > 0 \\implies 2",
+              "speech": "D größer als 0, daraus folgt 2"
+            },
+            {
+              "type": "text",
+              "text": " Nullstellen; "
+            },
+            {
+              "type": "math",
+              "tex": "D = 0 \\implies 1",
+              "speech": "D gleich 0, daraus folgt 1"
+            },
+            {
+              "type": "text",
+              "text": " doppelte Nullstelle (Scheitelpunkt auf "
+            },
+            {
+              "type": "math",
+              "tex": "x",
+              "speech": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Achse); "
+            },
+            {
+              "type": "math",
+              "tex": "D < 0 \\implies 0",
+              "speech": "D kleiner als 0, daraus folgt 0"
+            },
+            {
+              "type": "text",
+              "text": " Nullstellen, 4. Bestimme Scheitelpunkt und Nullstellen der Parabel "
+            },
+            {
+              "type": "math",
+              "tex": "p: f(x) = 2x^2 - 8x + 6",
+              "speech": "p: f von x gleich 2 x Quadrat minus 8 x plus 6"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Quadratische Funktionen: Scheitelpunktform "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = a(x - d)^2 + e \\Rightarrow S(d|e)",
+              "speech": "f von x gleich a mal Klammer auf x minus d Klammer zu Quadrat plus e, daraus folgt Scheitelpunkt S mit den Koordinaten d und e"
+            },
+            {
+              "type": "text",
+              "text": "; Formfaktor "
+            },
+            {
+              "type": "math",
+              "tex": "a",
+              "speech": "a"
+            },
+            {
+              "type": "text",
+              "text": "; Mitternachtsformel "
+            },
+            {
+              "type": "math",
+              "tex": "x_{1,2} = \\frac{-b \\pm \\sqrt{D}}{2a}",
+              "speech": "x eins zwei gleich minus b plus minus Wurzel aus D, geteilt durch 2 a"
+            },
+            {
+              "type": "text",
+              "text": "; Diskriminante "
+            },
+            {
+              "type": "math",
+              "tex": "D = b^2 - 4ac",
+              "speech": "D gleich b Quadrat minus 4 a c"
+            },
+            {
+              "type": "text",
+              "text": " (3 Fälle); Umrechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "2(x^2 - 4x + 3) = 2((x - 2)^2 - 1) = 2(x - 2)^2 - 2 \\Rightarrow S(2|-2)",
+              "speech": "2 mal Klammer auf x Quadrat minus 4 x plus 3 Klammer zu gleich 2 mal Klammer auf Klammer auf x minus 2 Klammer zu Quadrat minus 1 Klammer zu gleich 2 mal Klammer auf x minus 2 Klammer zu Quadrat minus 2, daraus folgt Scheitelpunkt S mit den Koordinaten 2 und minus 2"
+            },
+            {
+              "type": "text",
+              "text": "; Nullstellen "
+            },
+            {
+              "type": "math",
+              "tex": "x_1 = 1",
+              "speech": "x eins gleich 1"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "x_2 = 3",
+              "speech": "x zwei gleich 3"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Darstellungsformen quadratischer Funktionen: - 1. Scheitelpunktform:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{f(x) = a(x - d)^2 + e \\implies \\text{Scheitel } S(d \\mid e)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "d"
+            },
+            {
+              "type": "text",
+              "text": ": Verschiebung in "
+            },
+            {
+              "type": "math",
+              "tex": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Richtung (nach rechts für "
+            },
+            {
+              "type": "math",
+              "tex": "d > 0"
+            },
+            {
+              "type": "text",
+              "text": ", nach links für "
+            },
+            {
+              "type": "math",
+              "tex": "d < 0"
+            },
+            {
+              "type": "text",
+              "text": ").   * "
+            },
+            {
+              "type": "math",
+              "tex": "e"
+            },
+            {
+              "type": "text",
+              "text": ": Verschiebung in "
+            },
+            {
+              "type": "math",
+              "tex": "y"
+            },
+            {
+              "type": "text",
+              "text": "-Richtung nach oben/unten. - 2. Allgemeine Form:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{f(x) = ax^2 + bx + c}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "c = f(0)"
+            },
+            {
+              "type": "text",
+              "text": ": Schnittpunkt mit der "
+            },
+            {
+              "type": "math",
+              "tex": "y"
+            },
+            {
+              "type": "text",
+              "text": "-Achse "
+            },
+            {
+              "type": "math",
+              "tex": "S_y(0 \\mid c)"
+            },
+            {
+              "type": "text",
+              "text": ". - 3. Faktorisierte Form (Linearfaktorzerlegung):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{f(x) = a(x - x_1)(x - x_2)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Der Formfaktor "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": ": - Öffnungsrichtung: "
+            },
+            {
+              "type": "math",
+              "tex": "a > 0"
+            },
+            {
+              "type": "text",
+              "text": " nach oben, "
+            },
+            {
+              "type": "math",
+              "tex": "a < 0"
+            },
+            {
+              "type": "text",
+              "text": " nach unten. - Streckung/Stauchung: "
+            },
+            {
+              "type": "math",
+              "tex": "|a| > 1"
+            },
+            {
+              "type": "text",
+              "text": " schmaler (gestreckt), "
+            },
+            {
+              "type": "math",
+              "tex": "|a| < 1"
+            },
+            {
+              "type": "text",
+              "text": " breiter (gestaucht), "
+            },
+            {
+              "type": "math",
+              "tex": "a = 1"
+            },
+            {
+              "type": "text",
+              "text": " Normalparabel. 3. Die Mitternachtsformel und Diskriminante "
+            },
+            {
+              "type": "math",
+              "tex": "D"
+            },
+            {
+              "type": "text",
+              "text": ": - Für "
+            },
+            {
+              "type": "math",
+              "tex": "ax^2 + bx + c = 0"
+            },
+            {
+              "type": "text",
+              "text": " gilt:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{x_{1,2} = \\frac{-b \\pm \\sqrt{D}}{2a}} \\quad \\text{mit} \\quad \\mathbf{D = b^2 - 4ac}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{D > 0}"
+            },
+            {
+              "type": "text",
+              "text": ": Zwei reelle Lösungen (zwei Schnittpunkte mit der "
+            },
+            {
+              "type": "math",
+              "tex": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Achse).   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{D = 0}"
+            },
+            {
+              "type": "text",
+              "text": ": Genau eine Lösung ("
+            },
+            {
+              "type": "math",
+              "tex": "x_0 = -\\frac{b}{2a}"
+            },
+            {
+              "type": "text",
+              "text": ", Parabel berührt die "
+            },
+            {
+              "type": "math",
+              "tex": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Achse).   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{D < 0}"
+            },
+            {
+              "type": "text",
+              "text": ": Keine reelle Lösung ("
+            },
+            {
+              "type": "math",
+              "tex": "L = \\emptyset"
+            },
+            {
+              "type": "text",
+              "text": ", Parabel verläuft echt ober- bzw. unterhalb der "
+            },
+            {
+              "type": "math",
+              "tex": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Achse). 4. Durchrechnung des Beispiels "
+            },
+            {
+              "type": "math",
+              "tex": "p: f(x) = 2x^2 - 8x + 6"
+            },
+            {
+              "type": "text",
+              "text": ": - Schritt 1: Scheitelpunkt durch quadratische Ergänzung:   "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = 2[x^2 - 4x + 3] = 2[(x - 2)^2 - 4 + 3] = 2[(x - 2)^2 - 1] = \\mathbf{2(x - 2)^2 - 2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies \\mathbf{S(2 \\mid -2)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 2: Nullstellen mit der Mitternachtsformel ("
+            },
+            {
+              "type": "math",
+              "tex": "a=2, b=-8, c=6"
+            },
+            {
+              "type": "text",
+              "text": "):   "
+            },
+            {
+              "type": "math",
+              "tex": "D = (-8)^2 - 4 \\cdot 2 \\cdot 6 = 64 - 48 = 16 > 0",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "x_{1,2} = \\frac{-(-8) \\pm \\sqrt{16}}{2 \\cdot 2} = \\frac{8 \\pm 4}{4}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{x_1 = \\frac{8 - 4}{4} = 1}, \\quad \\mathbf{x_2 = \\frac{8 + 4}{4} = 3}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Nullstellen: "
+            },
+            {
+              "type": "math",
+              "tex": "N_1(1 \\mid 0)"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "N_2(3 \\mid 0)"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -112,7 +691,21 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie ist der Sinus eines spitzen Winkels $\\alpha$ in einem rechtwinkligen Dreieck definiert?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie ist der Sinus eines spitzen Winkels "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha",
+              "speech": "Alpha"
+            },
+            {
+              "type": "text",
+              "text": " in einem rechtwinkligen Dreieck definiert?"
+            }
+          ],
           "concept": "sin(alpha) = Gegenkathete / Hypotenuse",
           "fast_check": {
             "type": "binary_choice",
@@ -121,16 +714,462 @@
               "Ankathete / Hypotenuse"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8G9A0000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Systematisiere die Satzgruppe des Pythagoras und die Trigonometrie am rechtwinkligen Dreieck: 1. **Die Satzgruppe des Pythagoras** (rechtwinkliges Dreieck $\\triangle ABC$ mit Hypotenuse $c$, Katheten $a, b$, Höhe $h$ und Hypotenusenabschnitten $p, q$):   * **Satz des Pythagoras**: $a^2 + b^2 = c^2$.   * **Höhensatz des Euklid**: $h^2 = p \\cdot q$.   * **Kathetensatz des Euklid**: $a^2 = c \\cdot p$ und $b^2 = c \\cdot q$, 2. **Trigonometrische Verhältnisse**:   * $\\sin \\alpha = \\frac{\\text{Gegenkathete von } \\alpha}{\\text{Hypotenuse}}$.   * $\\cos \\alpha = \\frac{\\text{Ankathete von } \\alpha}{\\text{Hypotenuse}}$.   * $\\tan \\alpha = \\frac{\\text{Gegenkathete von } \\alpha}{\\text{Ankathete von } \\alpha} = \\frac{\\sin \\alpha}{\\cos \\alpha}$, 3. **Trigonometrischer Pythagoras**: $\\sin^2 \\alpha + \\cos^2 \\alpha = 1$, 4. Ein rechtwinkliges Dreieck hat die Hypotenuse $c = 10\\,\\text{cm}$ und einen Winkel $\\alpha = 30^\\circ$. Berechne exakt die Katheten $a$ und $b$ sowie die Fläche $A$ (nutze $\\sin 30^\\circ = 0{,}5$ und $\\cos 30^\\circ = \\frac{\\sqrt{3}}{2}$).",
-          "concept": "Satzgruppe: Pythagoras a^2+b^2=c^2, Höhensatz h^2=p*q, Kathetensatz a^2=c*p; Trigonometrie: sin=G/H, cos=A/H, tan=G/A, sin^2+cos^2=1; Rechnung: a = 10 * sin(30°) = 5 cm; b = 10 * cos(30°) = 5*sqrt(3) cm; A = 1/2 * 5 * 5*sqrt(3) = 12,5*sqrt(3) cm^2.",
-          "sample_solution": "1. Die Satzgruppe des Pythagoras (am Dreieck mit $\\gamma = 90^\\circ$): - **1. Satz des Pythagoras**:   $$\\mathbf{a^2 + b^2 = c^2}$$   * Die Summe der Flächeninhalte der Kathetenquadrate ist gleich dem Flächeninhalt des Hypotenusenquadrats. - **2. Höhensatz des Euklid**:   $$\\mathbf{h^2 = p \\cdot q}$$   * Das Quadrat über der Höhe $h$ ist flächengleich zum Rechteck aus den beiden Hypotenusenabschnitten $p$ und $q$. - **3. Kathetensätze des Euklid**:   $$\\mathbf{a^2 = c \\cdot p} \\quad \\text{und} \\quad \\mathbf{b^2 = c \\cdot q}$$   * Jedes Kathetenquadrat ist flächengleich zum Rechteck aus der Gesamthypotenuse $c$ und dem anliegenden Hypotenusenabschnitt. 2. Trigonometrische Funktionen am rechtwinkligen Dreieck: - **Sinus**: $\\mathbf{\\sin(\\alpha) = \\frac{\\text{Gegenkathete}}{\\text{Hypotenuse}} = \\frac{a}{c}}$ - **Kosinus**: $\\mathbf{\\cos(\\alpha) = \\frac{\\text{Ankathete}}{\\text{Hypotenuse}} = \\frac{b}{c}}$ - **Tangens**: $\\mathbf{\\tan(\\alpha) = \\frac{\\text{Gegenkathete}}{\\text{Ankathete}} = \\frac{a}{b} = \\frac{\\sin(\\alpha)}{\\cos(\\alpha)}}$ - **Fundamentale Identität (Trigonometrischer Pythagoras)**:   $$\\sin^2(\\alpha) + \\cos^2(\\alpha) = \\left(\\frac{a}{c}\\right)^2 + \\left(\\frac{b}{c}\\right)^2 = \\frac{a^2 + b^2}{c^2} = \\frac{c^2}{c^2} = \\mathbf{1}$$ 3. Durchrechnung des Beispiels ($c = 10\\,\\text{cm}, \\alpha = 30^\\circ$): - **Gegenkathete $a$**:   $$a = c \\cdot \\sin(30^\\circ) = 10\\,\\text{cm} \\cdot 0{,}5 = \\mathbf{5\\,\\text{cm}}$$ - **Ankathete $b$**:   $$b = c \\cdot \\cos(30^\\circ) = 10\\,\\text{cm} \\cdot \\frac{\\sqrt{3}}{2} = \\mathbf{5\\sqrt{3}\\,\\text{cm}} \\approx 8{,}66\\,\\text{cm}$$ - **Flächeninhalt $A$**:   $$A = \\frac{1}{2} \\cdot a \\cdot b = \\frac{1}{2} \\cdot 5 \\cdot 5\\sqrt{3} = \\mathbf{12{,}5\\sqrt{3}\\,\\text{cm}^2} \\approx 21{,}65\\,\\text{cm}^2$$."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Systematisiere die Satzgruppe des Pythagoras und die Trigonometrie am rechtwinkligen Dreieck: 1. Die Satzgruppe des Pythagoras (rechtwinkliges Dreieck "
+            },
+            {
+              "type": "math",
+              "tex": "\\triangle ABC",
+              "speech": "Dreieck A B C"
+            },
+            {
+              "type": "text",
+              "text": " mit Hypotenuse "
+            },
+            {
+              "type": "math",
+              "tex": "c",
+              "speech": "c"
+            },
+            {
+              "type": "text",
+              "text": ", Katheten "
+            },
+            {
+              "type": "math",
+              "tex": "a, b",
+              "speech": "a, b"
+            },
+            {
+              "type": "text",
+              "text": ", Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h",
+              "speech": "h"
+            },
+            {
+              "type": "text",
+              "text": " und Hypotenusenabschnitten "
+            },
+            {
+              "type": "math",
+              "tex": "p, q",
+              "speech": "p, q"
+            },
+            {
+              "type": "text",
+              "text": "):   * Satz des Pythagoras: "
+            },
+            {
+              "type": "math",
+              "tex": "a^2 + b^2 = c^2",
+              "speech": "a Quadrat plus b Quadrat gleich c Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ".   * Höhensatz des Euklid: "
+            },
+            {
+              "type": "math",
+              "tex": "h^2 = p \\cdot q",
+              "speech": "h Quadrat gleich p mal q"
+            },
+            {
+              "type": "text",
+              "text": ".   * Kathetensatz des Euklid: "
+            },
+            {
+              "type": "math",
+              "tex": "a^2 = c \\cdot p",
+              "speech": "a Quadrat gleich c mal p"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "b^2 = c \\cdot q",
+              "speech": "b Quadrat gleich c mal q"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Trigonometrische Verhältnisse:   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin \\alpha = \\frac{\\text{Gegenkathete von } \\alpha}{\\text{Hypotenuse}}",
+              "speech": "Sinus Alpha gleich Gegenkathete von Alpha durch Hypotenuse"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\cos \\alpha = \\frac{\\text{Ankathete von } \\alpha}{\\text{Hypotenuse}}",
+              "speech": "Kosinus Alpha gleich Ankathete von Alpha durch Hypotenuse"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\tan \\alpha = \\frac{\\text{Gegenkathete von } \\alpha}{\\text{Ankathete von } \\alpha} = \\frac{\\sin \\alpha}{\\cos \\alpha}",
+              "speech": "Tangens Alpha gleich Gegenkathete von Alpha durch Ankathete von Alpha gleich Sinus Alpha durch Kosinus Alpha"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Trigonometrischer Pythagoras: "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin^2 \\alpha + \\cos^2 \\alpha = 1",
+              "speech": "Sinus Quadrat Alpha plus Kosinus Quadrat Alpha gleich 1"
+            },
+            {
+              "type": "text",
+              "text": ", 4. Ein rechtwinkliges Dreieck hat die Hypotenuse "
+            },
+            {
+              "type": "math",
+              "tex": "c = 10\\,\\text{cm}",
+              "speech": "c gleich 10 Zentimeter"
+            },
+            {
+              "type": "text",
+              "text": " und einen Winkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha = 30^\\circ",
+              "speech": "Alpha gleich 30 Grad"
+            },
+            {
+              "type": "text",
+              "text": ". Berechne exakt die Katheten "
+            },
+            {
+              "type": "math",
+              "tex": "a",
+              "speech": "a"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "b",
+              "speech": "b"
+            },
+            {
+              "type": "text",
+              "text": " sowie die Fläche "
+            },
+            {
+              "type": "math",
+              "tex": "A",
+              "speech": "A"
+            },
+            {
+              "type": "text",
+              "text": " (nutze "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin 30^\\circ = 0{,}5",
+              "speech": "Sinus 30 Grad gleich 0,5"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\cos 30^\\circ = \\frac{\\sqrt{3}}{2}",
+              "speech": "Kosinus 30 Grad gleich Wurzel aus 3 durch 2"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Satzgruppe: Pythagoras "
+            },
+            {
+              "type": "math",
+              "tex": "a^2 + b^2 = c^2",
+              "speech": "a Quadrat plus b Quadrat gleich c Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ", Höhensatz "
+            },
+            {
+              "type": "math",
+              "tex": "h^2 = p \\cdot q",
+              "speech": "h Quadrat gleich p mal q"
+            },
+            {
+              "type": "text",
+              "text": ", Kathetensatz "
+            },
+            {
+              "type": "math",
+              "tex": "a^2 = c \\cdot p",
+              "speech": "a Quadrat gleich c mal p"
+            },
+            {
+              "type": "text",
+              "text": "; Trigonometrie: "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin = \\frac{G}{H}",
+              "speech": "Sinus gleich G durch H"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\cos = \\frac{A}{H}",
+              "speech": "Kosinus gleich Ankathete durch Hypotenuse"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\tan = \\frac{G}{A}",
+              "speech": "Tangens gleich G durch A"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin^2 + \\cos^2 = 1",
+              "speech": "Sinus Quadrat plus Kosinus Quadrat gleich 1"
+            },
+            {
+              "type": "text",
+              "text": "; Rechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "a = 10 \\cdot \\sin(30^\\circ) = 5\\,\\text{cm}",
+              "speech": "a gleich 10 mal Sinus von 30 Grad gleich 5 Zentimeter"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "b = 10 \\cdot \\cos(30^\\circ) = 5\\sqrt{3}\\,\\text{cm}",
+              "speech": "b gleich 10 mal Kosinus von 30 Grad gleich 5 Wurzel aus 3 Zentimeter"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "A = \\frac{1}{2} \\cdot 5 \\cdot 5\\sqrt{3} = 12{,}5\\sqrt{3}\\,\\text{cm}^2",
+              "speech": "A gleich ein halb mal 5 mal 5 Wurzel aus 3 gleich 12,5 Wurzel aus 3 Quadratzentimeter"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Satzgruppe des Pythagoras (am Dreieck mit "
+            },
+            {
+              "type": "math",
+              "tex": "\\gamma = 90^\\circ"
+            },
+            {
+              "type": "text",
+              "text": "): - 1. Satz des Pythagoras:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{a^2 + b^2 = c^2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Die Summe der Flächeninhalte der Kathetenquadrate ist gleich dem Flächeninhalt des Hypotenusenquadrats. - 2. Höhensatz des Euklid:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{h^2 = p \\cdot q}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Das Quadrat über der Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h"
+            },
+            {
+              "type": "text",
+              "text": " ist flächengleich zum Rechteck aus den beiden Hypotenusenabschnitten "
+            },
+            {
+              "type": "math",
+              "tex": "p"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "q"
+            },
+            {
+              "type": "text",
+              "text": ". - 3. Kathetensätze des Euklid:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{a^2 = c \\cdot p} \\quad \\text{und} \\quad \\mathbf{b^2 = c \\cdot q}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Jedes Kathetenquadrat ist flächengleich zum Rechteck aus der Gesamthypotenuse "
+            },
+            {
+              "type": "math",
+              "tex": "c"
+            },
+            {
+              "type": "text",
+              "text": " und dem anliegenden Hypotenusenabschnitt. 2. Trigonometrische Funktionen am rechtwinkligen Dreieck: - Sinus: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\sin(\\alpha) = \\frac{\\text{Gegenkathete}}{\\text{Hypotenuse}} = \\frac{a}{c}}"
+            },
+            {
+              "type": "text",
+              "text": " - Kosinus: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\cos(\\alpha) = \\frac{\\text{Ankathete}}{\\text{Hypotenuse}} = \\frac{b}{c}}"
+            },
+            {
+              "type": "text",
+              "text": " - Tangens: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\tan(\\alpha) = \\frac{\\text{Gegenkathete}}{\\text{Ankathete}} = \\frac{a}{b} = \\frac{\\sin(\\alpha)}{\\cos(\\alpha)}}"
+            },
+            {
+              "type": "text",
+              "text": " - Fundamentale Identität (Trigonometrischer Pythagoras):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin^2(\\alpha) + \\cos^2(\\alpha) = \\left(\\frac{a}{c}\\right)^2 + \\left(\\frac{b}{c}\\right)^2 = \\frac{a^2 + b^2}{c^2} = \\frac{c^2}{c^2} = \\mathbf{1}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Durchrechnung des Beispiels ("
+            },
+            {
+              "type": "math",
+              "tex": "c = 10\\,\\text{cm}, \\alpha = 30^\\circ"
+            },
+            {
+              "type": "text",
+              "text": "): - Gegenkathete "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "a = c \\cdot \\sin(30^\\circ) = 10\\,\\text{cm} \\cdot 0{,}5 = \\mathbf{5\\,\\text{cm}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Ankathete "
+            },
+            {
+              "type": "math",
+              "tex": "b"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "b = c \\cdot \\cos(30^\\circ) = 10\\,\\text{cm} \\cdot \\frac{\\sqrt{3}}{2} = \\mathbf{5\\sqrt{3}\\,\\text{cm}} \\approx 8{,}66\\,\\text{cm}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Flächeninhalt "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "A = \\frac{1}{2} \\cdot a \\cdot b = \\frac{1}{2} \\cdot 5 \\cdot 5\\sqrt{3} = \\mathbf{12{,}5\\sqrt{3}\\,\\text{cm}^2} \\approx 21{,}65\\,\\text{cm}^2",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

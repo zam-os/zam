@@ -9,6 +9,12 @@ import { ulid } from "ulid";
 import { assertDomainKeepsPlanets } from "../atlas/connections.js";
 import type { Database } from "../db/types.js";
 import { TOPIC_SOURCE_PREFIX } from "../import/topic-import.js";
+import type { CardText } from "../library/card-text.js";
+import {
+  assertPlainWriteAllowed,
+  parseStoredCardText,
+  writeCardText,
+} from "../library/card-text-store.js";
 import type { CardState } from "./card.js";
 import { deleteCardForUser, ensureCard, getCard } from "./card.js";
 import { DRAFT_FIRST_SETTING, getSetting } from "./settings.js";
@@ -66,6 +72,13 @@ export interface Token {
    * before M046.
    */
   lookup_term?: string | null;
+  /**
+   * Card text as segments (ADR 2026-10-14b), JSON; absent on rows read
+   * before M048. When set, `question`/`concept` hold the plain projection and
+   * only `writeCardText` may change them. Read with `parseStoredCardText`.
+   */
+  question_segments?: string | null;
+  concept_segments?: string | null;
 }
 
 /** Longest lookup term a token keeps; a reference work's article name. */
@@ -99,6 +112,25 @@ export interface CreateTokenInput {
   fast_check?: string | null;
   /** The term to read a world unit up by (ADR 2026-10-14, Decision 4). */
   lookup_term?: string | null;
+  /**
+   * Card text as segments (ADR 2026-10-14b), from `readCardTextInput`. With
+   * segments, `createToken` stores them through `writeCardText`, which sets
+   * the plain `question`/`concept` to their projection. Speech is not
+   * required here: a writer that needs it checks before.
+   */
+  question_segments?: CardText | null;
+  concept_segments?: CardText | null;
+}
+
+/**
+ * A proposal's card text as segments, beside its plain `question`/`concept`
+ * (ADR 2026-10-14b): what a card prompt's parser read from a model. The
+ * writer stores them through `createToken`; the plain fields then hold their
+ * projection.
+ */
+export interface ProposalCardText {
+  question_segments?: CardText | null;
+  concept_segments?: CardText | null;
 }
 
 export interface UpdateTokenInput {
@@ -256,7 +288,14 @@ export async function createToken(
   db: Database,
   input: CreateTokenInput,
 ): Promise<Token> {
-  return (await getTokenById(db, await insertToken(db, input))) as Token;
+  const id = await insertToken(db, input);
+  if (input.question_segments || input.concept_segments) {
+    await writeCardText(db, id, {
+      ...(input.question_segments ? { question: input.question_segments } : {}),
+      ...(input.concept_segments ? { concept: input.concept_segments } : {}),
+    });
+  }
+  return (await getTokenById(db, id)) as Token;
 }
 
 function parseTokenFallback(token: Token | undefined): void {
@@ -339,6 +378,11 @@ export async function updateToken(
   if (!token) {
     throw new Error(`Token not found: ${slug}`);
   }
+  // Segmented card text changes only through writeCardText (ADR 2026-10-14b).
+  assertPlainWriteAllowed(token, {
+    question: updates.question,
+    concept: updates.concept,
+  });
 
   const fields: string[] = [];
   const values: unknown[] = [];
@@ -812,6 +856,12 @@ export interface PersonalCard {
   blocked: number | null;
   provider: string | null;
   topicId: string | null;
+  /**
+   * The question and answer as card-text segments (ADR 2026-10-14b), for an
+   * editor that shows formulas; `null` for plain text.
+   */
+  questionSegments: CardText | null;
+  conceptSegments: CardText | null;
 }
 
 export function slugify(text: string): string {
@@ -954,6 +1004,8 @@ export async function listPersonalCards(
         )
       ) AS "sourceLink",
       t.question,
+      t.question_segments AS "questionSegments",
+      t.concept_segments AS "conceptSegments",
       t.created_at AS "createdAt",
       t.updated_at AS "updatedAt",
       t.editorial_state AS "editorialState",
@@ -1008,6 +1060,8 @@ export async function listPersonalCards(
 
   const rows = (await db.prepare(sql).all(...values)) as PersonalCard[];
   for (const row of rows) {
+    row.questionSegments = parseStoredCardText(row.questionSegments);
+    row.conceptSegments = parseStoredCardText(row.conceptSegments);
     if (!row.provider && row.sourceLink) {
       if (row.sourceLink.includes("lehrplanplus.bayern.de")) {
         row.provider = "lehrplanplus-bayern";
@@ -1021,7 +1075,7 @@ export async function listPersonalCards(
   return rows;
 }
 
-export interface CurriculumCardInput {
+export interface CurriculumCardInput extends ProposalCardText {
   question: string;
   concept: string;
   title?: string;
@@ -1220,6 +1274,8 @@ export async function importCurriculumCards(
           symbiosis_mode: symbiosisMode,
           source_link: card.source_link || null,
           question: card.question || null,
+          question_segments: card.question_segments ?? null,
+          concept_segments: card.concept_segments ?? null,
           // Curriculum cards are LLM-extracted; their questions are LLM
           // inventions, not human-authored content.
           question_source: "llm",
@@ -1450,7 +1506,7 @@ async function inferPrerequisitesFromBatch<
   return [];
 }
 
-export interface SplitProposalInput {
+export interface SplitProposalInput extends ProposalCardText {
   question: string;
   concept: string;
   domain: string;
@@ -1553,6 +1609,8 @@ export async function confirmCardSplit(
           symbiosis_mode: symbiosisMode,
           source_link: card.source_link || originalToken.source_link || null,
           question: card.question || null,
+          question_segments: card.question_segments ?? null,
+          concept_segments: card.concept_segments ?? null,
           editorial_state: await newTokenEditorialState(tx),
         });
         createdCount++;
@@ -1577,6 +1635,25 @@ export async function confirmCardSplit(
     // 2. original card handling
     if (action === "block") {
       // Update original token fields
+      // A split rewrites the original card's text as plain text. Where that
+      // text differs from a segmented field's projection, the field becomes
+      // plain: the learner replaced it, so its formulas no longer apply.
+      const keepQuestionSegments =
+        (originalQuestion || null) === (originalToken.question ?? null);
+      const keepConceptSegments = originalConcept === originalToken.concept;
+      // The segments go through the one write path, which also removes the
+      // side's inline images (PR #412 review); the plain text follows.
+      const plainAgain = {
+        ...(!keepQuestionSegments && originalToken.question_segments
+          ? { question: null }
+          : {}),
+        ...(!keepConceptSegments && originalToken.concept_segments
+          ? { concept: null }
+          : {}),
+      };
+      if (Object.keys(plainAgain).length > 0) {
+        await writeCardText(tx, originalToken.id, plainAgain);
+      }
       await tx
         .prepare(
           "UPDATE tokens SET question = ?, concept = ?, updated_at = ? WHERE id = ?",
@@ -1637,7 +1714,7 @@ export async function confirmCardSplit(
   return { createdCount, ensuredCount };
 }
 
-export interface FoundationProposalInput {
+export interface FoundationProposalInput extends ProposalCardText {
   question: string;
   concept: string;
   domain: string;
@@ -1756,6 +1833,8 @@ export async function confirmFoundations(
             symbiosis_mode: symbiosisMode,
             source_link: card.source_link || originalToken.source_link || null,
             question: card.question || null,
+            question_segments: card.question_segments ?? null,
+            concept_segments: card.concept_segments ?? null,
             editorial_state: await newTokenEditorialState(tx),
           });
           createdCount++;
@@ -1789,7 +1868,7 @@ export async function confirmFoundations(
   return { createdCount, linkedCount };
 }
 
-export interface SourceProposalInput {
+export interface SourceProposalInput extends ProposalCardText {
   question: string;
   concept: string;
   domain: string;
@@ -1879,6 +1958,8 @@ export async function applySourceProposals(
         context: card.excerpt || "",
         symbiosis_mode: symbiosisMode,
         question: card.question || null,
+        question_segments: card.question_segments ?? null,
+        concept_segments: card.concept_segments ?? null,
         provider: card.provider || null,
         topic_id: card.topic_id || null,
         editorial_state: await newTokenEditorialState(db),

@@ -49,25 +49,460 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie lautet die exakte mathematische Formel für das Volumen $V$ einer Kugel mit dem Radius $r$?",
-          "concept": "V = 4/3 * pi * r^3 (Oberfläche: O = 4 * pi * r^2)",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet die exakte mathematische Formel für das Volumen "
+            },
+            {
+              "type": "math",
+              "tex": "V",
+              "speech": "V"
+            },
+            {
+              "type": "text",
+              "text": " einer Kugel mit dem Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V = \\frac{4}{3} \\cdot \\pi \\cdot r^3",
+              "speech": "V gleich vier Drittel mal Pi mal r hoch drei"
+            },
+            {
+              "type": "text",
+              "text": " (Oberfläche: "
+            },
+            {
+              "type": "math",
+              "tex": "O = 4 \\cdot \\pi \\cdot r^2",
+              "speech": "O gleich 4 mal Pi mal r Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ")"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "V = 4/3 * pi * r^3",
-              "V = 4 * pi * r^2"
+              [
+                {
+                  "type": "math",
+                  "tex": "V = \\frac{4}{3} \\cdot \\pi \\cdot r^3",
+                  "speech": "V gleich vier Drittel mal Pi mal r hoch drei"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "V = 4 \\cdot \\pi \\cdot r^2",
+                  "speech": "V gleich 4 mal Pi mal r Quadrat"
+                }
+              ]
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8G9B0000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Systematisiere die Raumgeometrie spitzer und runder Körper: 1. **Spitzkörper (Pyramide und Kegel)**:   * **Pyramide**: $V = \\frac{1}{3} G \\cdot h$, Oberfläche $O = G + M$ (Summe der Dreiecksflächen).   * **Kreiskegel (Radius $r$, Höhe $h$, Mantellinie $s = \\sqrt{r^2 + h^2}$)**: $V = \\frac{1}{3} \\pi r^2 h$, Mantelfläche $M = \\pi r s$, Gesamtoberfläche $O = \\pi r^2 + \\pi r s$, 2. **Die Kugel**:   * Volumen: $V = \\frac{4}{3}\\pi r^3$.   * Oberfläche: $O = 4\\pi r^2$, 3. **Prinzip von Cavalieri**: Haben zwei Körper dieselbe Höhe und sind ihre Schnittflächen in jeder parallelen Schnittebene flächengleich, so besitzen beide Körper dasselbe Volumen, 4. Berechne das Volumen $V$ und die Mantelfläche $M$ eines geraden Kreiskegels mit Radius $r = 6\\,\\text{cm}$ und Höhe $h = 8\\,\\text{cm}$.",
-          "concept": "Stereometrie: Pyramide V = 1/3*G*h; Kegel V = 1/3*pi*r^2*h, M = pi*r*s mit s = sqrt(r^2+h^2); Kugel V = 4/3*pi*r^3, O = 4*pi*r^2; Cavalieri-Prinzip; Rechnung: s = sqrt(36+64) = 10 cm; V = 1/3 * pi * 36 * 8 = 96*pi cm^3 approx 301,59 cm^3; M = pi * 6 * 10 = 60*pi cm^2 approx 188,50 cm^2.",
-          "sample_solution": "1. Formelsammlung der Raumkörper (Stereometrie): - **1. Pyramide**:   $$\\mathbf{V = \\frac{1}{3} \\cdot G \\cdot h}, \\quad \\mathbf{O = G + M}$$   *(mit Grundfläche $G$ und Mantelfläche $M = \\sum A_{\\triangle}$)*. - **2. Kreiskegel**:   * Mantellinie über Pythagoras: $\\mathbf{s = \\sqrt{r^2 + h^2}}$.   * Volumen: $\\mathbf{V = \\frac{1}{3} \\pi r^2 h}$.   * Mantelfläche: $\\mathbf{M = \\pi \\cdot r \\cdot s}$.   * Gesamtoberfläche: $\\mathbf{O = G + M = \\pi r^2 + \\pi r s = \\pi r (r + s)}$. - **3. Kugel**:   * Volumen: $\\mathbf{V = \\frac{4}{3} \\pi r^3}$.   * Oberfläche: $\\mathbf{O = 4 \\pi r^2}$. 2. Das Prinzip von Cavalieri (Bonaventura Cavalieri): - Liegen zwei Körper auf derselben Grundebene und haben sie die gleiche Höhe $h$, und sind ihre Schnittflächen parallel zur Grundebene in jeder beliebigen Höhe flächengleich ($A_1(z) = A_2(z)$), so gilt:   $$\\mathbf{V_1 = V_2}$$   *(Begründet, warum schiefe Prismen/Zylinder/Pyramiden exakt dasselbe Volumen haben wie gerade Körper derselben Höhe)*. 3. Durchrechnung des Beispiels ($r = 6\\,\\text{cm}, h = 8\\,\\text{cm}$): - **Schritt 1: Mantellinie $s$ berechnen**:   $$s = \\sqrt{r^2 + h^2} = \\sqrt{6^2 + 8^2} = \\sqrt{36 + 64} = \\sqrt{100} = \\mathbf{10\\,\\text{cm}}$$ - **Schritt 2: Volumen $V$**:   $$V = \\frac{1}{3} \\pi r^2 h = \\frac{1}{3} \\pi \\cdot 6^2 \\cdot 8 = \\frac{1}{3} \\pi \\cdot 36 \\cdot 8 = \\mathbf{96\\pi\\,\\text{cm}^3} \\approx 301{,}59\\,\\text{cm}^3$$ - **Schritt 3: Mantelfläche $M$**:   $$M = \\pi \\cdot r \\cdot s = \\pi \\cdot 6 \\cdot 10 = \\mathbf{60\\pi\\,\\text{cm}^2} \\approx 188{,}50\\,\\text{cm}^2$$."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Systematisiere die Raumgeometrie spitzer und runder Körper: 1. Spitzkörper (Pyramide und Kegel):   * Pyramide: "
+            },
+            {
+              "type": "math",
+              "tex": "V = \\frac{1}{3} G \\cdot h",
+              "speech": "V gleich ein Drittel G mal h"
+            },
+            {
+              "type": "text",
+              "text": ", Oberfläche "
+            },
+            {
+              "type": "math",
+              "tex": "O = G + M",
+              "speech": "O gleich G plus M"
+            },
+            {
+              "type": "text",
+              "text": " (Summe der Dreiecksflächen).   * Kreiskegel (Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": ", Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h",
+              "speech": "h"
+            },
+            {
+              "type": "text",
+              "text": ", Mantellinie "
+            },
+            {
+              "type": "math",
+              "tex": "s = \\sqrt{r^2 + h^2}",
+              "speech": "s gleich Wurzel aus r Quadrat plus h Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "V = \\frac{1}{3} \\pi r^2 h",
+              "speech": "V gleich ein Drittel Pi r Quadrat h"
+            },
+            {
+              "type": "text",
+              "text": ", Mantelfläche "
+            },
+            {
+              "type": "math",
+              "tex": "M = \\pi r s",
+              "speech": "M gleich Pi r s"
+            },
+            {
+              "type": "text",
+              "text": ", Gesamtoberfläche "
+            },
+            {
+              "type": "math",
+              "tex": "O = \\pi r^2 + \\pi r s",
+              "speech": "O gleich Pi r Quadrat plus Pi r s"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Die Kugel:   * Volumen: "
+            },
+            {
+              "type": "math",
+              "tex": "V = \\frac{4}{3}\\pi r^3",
+              "speech": "V gleich vier Drittel Pi r hoch drei"
+            },
+            {
+              "type": "text",
+              "text": ".   * Oberfläche: "
+            },
+            {
+              "type": "math",
+              "tex": "O = 4\\pi r^2",
+              "speech": "O gleich 4 Pi r Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Prinzip von Cavalieri: Haben zwei Körper dieselbe Höhe und sind ihre Schnittflächen in jeder parallelen Schnittebene flächengleich, so besitzen beide Körper dasselbe Volumen, 4. Berechne das Volumen "
+            },
+            {
+              "type": "math",
+              "tex": "V",
+              "speech": "V"
+            },
+            {
+              "type": "text",
+              "text": " und die Mantelfläche "
+            },
+            {
+              "type": "math",
+              "tex": "M",
+              "speech": "M"
+            },
+            {
+              "type": "text",
+              "text": " eines geraden Kreiskegels mit Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r = 6\\,\\text{cm}",
+              "speech": "r gleich 6 Zentimeter"
+            },
+            {
+              "type": "text",
+              "text": " und Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h = 8\\,\\text{cm}",
+              "speech": "h gleich 8 Zentimeter"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Stereometrie: Pyramide "
+            },
+            {
+              "type": "math",
+              "tex": "V = \\frac{1}{3} \\cdot G \\cdot h",
+              "speech": "V gleich ein Drittel mal G mal h"
+            },
+            {
+              "type": "text",
+              "text": "; Kegel "
+            },
+            {
+              "type": "math",
+              "tex": "V = \\frac{1}{3} \\cdot \\pi \\cdot r^2 \\cdot h",
+              "speech": "V gleich ein Drittel mal Pi mal r Quadrat mal h"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "M = \\pi \\cdot r \\cdot s",
+              "speech": "M gleich Pi mal r mal s"
+            },
+            {
+              "type": "text",
+              "text": " mit "
+            },
+            {
+              "type": "math",
+              "tex": "s = \\sqrt{r^2 + h^2}",
+              "speech": "s gleich Wurzel aus r Quadrat plus h Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; Kugel "
+            },
+            {
+              "type": "math",
+              "tex": "V = \\frac{4}{3} \\cdot \\pi \\cdot r^3",
+              "speech": "V gleich vier Drittel mal Pi mal r hoch drei"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "O = 4 \\cdot \\pi \\cdot r^2",
+              "speech": "O gleich 4 mal Pi mal r Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; Cavalieri-Prinzip; Rechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "s = \\sqrt{36 + 64} = 10\\,\\text{cm}",
+              "speech": "s gleich Wurzel aus 36 plus 64, gleich 10 Zentimeter"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "V = \\frac{1}{3} \\cdot \\pi \\cdot 36 \\cdot 8 = 96\\pi\\,\\text{cm}^3 \\approx 301{,}59\\,\\text{cm}^3",
+              "speech": "V gleich ein Drittel mal Pi mal 36 mal 8 gleich 96 Pi Kubikzentimeter ungefähr 301,59 Kubikzentimeter"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "M = \\pi \\cdot 6 \\cdot 10 = 60\\pi\\,\\text{cm}^2 \\approx 188{,}50\\,\\text{cm}^2",
+              "speech": "M gleich Pi mal 6 mal 10 gleich 60 Pi Quadratzentimeter ungefähr 188,50 Quadratzentimeter"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Formelsammlung der Raumkörper (Stereometrie): - 1. Pyramide:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{V = \\frac{1}{3} \\cdot G \\cdot h}, \\quad \\mathbf{O = G + M}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   (mit Grundfläche "
+            },
+            {
+              "type": "math",
+              "tex": "G"
+            },
+            {
+              "type": "text",
+              "text": " und Mantelfläche "
+            },
+            {
+              "type": "math",
+              "tex": "M = \\sum A_{\\triangle}"
+            },
+            {
+              "type": "text",
+              "text": "). - 2. Kreiskegel:   * Mantellinie über Pythagoras: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{s = \\sqrt{r^2 + h^2}}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Volumen: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{V = \\frac{1}{3} \\pi r^2 h}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Mantelfläche: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{M = \\pi \\cdot r \\cdot s}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Gesamtoberfläche: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{O = G + M = \\pi r^2 + \\pi r s = \\pi r (r + s)}"
+            },
+            {
+              "type": "text",
+              "text": ". - 3. Kugel:   * Volumen: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{V = \\frac{4}{3} \\pi r^3}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Oberfläche: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{O = 4 \\pi r^2}"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Das Prinzip von Cavalieri (Bonaventura Cavalieri): - Liegen zwei Körper auf derselben Grundebene und haben sie die gleiche Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h"
+            },
+            {
+              "type": "text",
+              "text": ", und sind ihre Schnittflächen parallel zur Grundebene in jeder beliebigen Höhe flächengleich ("
+            },
+            {
+              "type": "math",
+              "tex": "A_1(z) = A_2(z)"
+            },
+            {
+              "type": "text",
+              "text": "), so gilt:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{V_1 = V_2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   (Begründet, warum schiefe Prismen/Zylinder/Pyramiden exakt dasselbe Volumen haben wie gerade Körper derselben Höhe). 3. Durchrechnung des Beispiels ("
+            },
+            {
+              "type": "math",
+              "tex": "r = 6\\,\\text{cm}, h = 8\\,\\text{cm}"
+            },
+            {
+              "type": "text",
+              "text": "): - Schritt 1: Mantellinie "
+            },
+            {
+              "type": "math",
+              "tex": "s"
+            },
+            {
+              "type": "text",
+              "text": " berechnen:   "
+            },
+            {
+              "type": "math",
+              "tex": "s = \\sqrt{r^2 + h^2} = \\sqrt{6^2 + 8^2} = \\sqrt{36 + 64} = \\sqrt{100} = \\mathbf{10\\,\\text{cm}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 2: Volumen "
+            },
+            {
+              "type": "math",
+              "tex": "V"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "V = \\frac{1}{3} \\pi r^2 h = \\frac{1}{3} \\pi \\cdot 6^2 \\cdot 8 = \\frac{1}{3} \\pi \\cdot 36 \\cdot 8 = \\mathbf{96\\pi\\,\\text{cm}^3} \\approx 301{,}59\\,\\text{cm}^3",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 3: Mantelfläche "
+            },
+            {
+              "type": "math",
+              "tex": "M"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "M = \\pi \\cdot r \\cdot s = \\pi \\cdot 6 \\cdot 10 = \\mathbf{60\\pi\\,\\text{cm}^2} \\approx 188{,}50\\,\\text{cm}^2",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -112,7 +547,30 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wann heißen zwei stochastische Ereignisse $A$ und $B$ im mathematischen Sinne stochastisch unabhängig?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wann heißen zwei stochastische Ereignisse "
+            },
+            {
+              "type": "math",
+              "tex": "A",
+              "speech": "A"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "B",
+              "speech": "B"
+            },
+            {
+              "type": "text",
+              "text": " im mathematischen Sinne stochastisch unabhängig?"
+            }
+          ],
           "concept": "Wenn das Eintreffen von A die Wahrscheinlichkeit von B nicht beeinflusst: P(A geschnitten B) = P(A) * P(B) bzw. P_A(B) = P(B)",
           "fast_check": {
             "type": "binary_choice",
@@ -121,16 +579,416 @@
               "P(A geschnitten B) = 0"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8G9B0000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere bedingte Wahrscheinlichkeiten, Vierfeldertafeln und stochastische Unabhängigkeit: 1. **Bedingte Wahrscheinlichkeit**:   * Definition: Die Wahrscheinlichkeit, dass $B$ eintritt, unter der Voraussetzung, dass $A$ bereits eingetreten ist ($P(A) > 0$):     $$\\mathbf{P_A(B) = P(B \\mid A) = \\frac{P(A \\cap B)}{P(A)}}$$ 2. **Die Vierfeldertafel**: Systematische Darstellung der Schnittmengen $P(A \\cap B), P(A \\cap \\overline{B}), P(\\overline{A} \\cap B), P(\\overline{A} \\cap \\overline{B})$ und der Randwahrscheinlichkeiten $P(A), P(\\overline{A}), P(B), P(\\overline{B})$, 3. **Stochastische Unabhängigkeit**: $A$ und $B$ sind stochastisch unabhängig $\\iff P(A \\cap B) = P(A) \\cdot P(B) \\iff P_A(B) = P(B)$, 4. In einer Schule treiben $60\\%$ der Schüler Sport ($S$), $40\\%$ spielen ein Musikinstrument ($M$) und $24\\%$ tun beides ($S \\cap M$). Prüfe rechnerisch, ob Sporttreiben und Musizieren stochastisch unabhängig sind.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere bedingte Wahrscheinlichkeiten, Vierfeldertafeln und stochastische Unabhängigkeit: 1. Bedingte Wahrscheinlichkeit:   * Definition: Die Wahrscheinlichkeit, dass "
+            },
+            {
+              "type": "math",
+              "tex": "B",
+              "speech": "B"
+            },
+            {
+              "type": "text",
+              "text": " eintritt, unter der Voraussetzung, dass "
+            },
+            {
+              "type": "math",
+              "tex": "A",
+              "speech": "A"
+            },
+            {
+              "type": "text",
+              "text": " bereits eingetreten ist ("
+            },
+            {
+              "type": "math",
+              "tex": "P(A) > 0",
+              "speech": "P von A größer als 0"
+            },
+            {
+              "type": "text",
+              "text": "):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{P_A(B) = P(B \\mid A) = \\frac{P(A \\cap B)}{P(A)}}",
+              "block": true,
+              "speech": "P A von B gleich P von B unter der Bedingung A gleich P von A geschnitten mit B durch P von A"
+            },
+            {
+              "type": "text",
+              "text": " 2. Die Vierfeldertafel: Systematische Darstellung der Schnittmengen "
+            },
+            {
+              "type": "math",
+              "tex": "P(A \\cap B), P(A \\cap \\overline{B}), P(\\overline{A} \\cap B), P(\\overline{A} \\cap \\overline{B})",
+              "speech": "P von A geschnitten mit B, P von A geschnitten mit B quer, P von A quer geschnitten mit B, P von A quer geschnitten mit B quer"
+            },
+            {
+              "type": "text",
+              "text": " und der Randwahrscheinlichkeiten "
+            },
+            {
+              "type": "math",
+              "tex": "P(A), P(\\overline{A}), P(B), P(\\overline{B})",
+              "speech": "P von A, P von A quer, P von B, P von B quer"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Stochastische Unabhängigkeit: "
+            },
+            {
+              "type": "math",
+              "tex": "A",
+              "speech": "A"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "B",
+              "speech": "B"
+            },
+            {
+              "type": "text",
+              "text": " sind stochastisch unabhängig "
+            },
+            {
+              "type": "math",
+              "tex": "\\iff P(A \\cap B) = P(A) \\cdot P(B) \\iff P_A(B) = P(B)",
+              "speech": "genau dann, wenn P von A geschnitten mit B gleich P von A mal P von B genau dann, wenn P A von B gleich P von B"
+            },
+            {
+              "type": "text",
+              "text": ", 4. In einer Schule treiben "
+            },
+            {
+              "type": "math",
+              "tex": "60\\%",
+              "speech": "60 Prozent"
+            },
+            {
+              "type": "text",
+              "text": " der Schüler Sport ("
+            },
+            {
+              "type": "math",
+              "tex": "S",
+              "speech": "S"
+            },
+            {
+              "type": "text",
+              "text": "), "
+            },
+            {
+              "type": "math",
+              "tex": "40\\%",
+              "speech": "40 Prozent"
+            },
+            {
+              "type": "text",
+              "text": " spielen ein Musikinstrument ("
+            },
+            {
+              "type": "math",
+              "tex": "M",
+              "speech": "M"
+            },
+            {
+              "type": "text",
+              "text": ") und "
+            },
+            {
+              "type": "math",
+              "tex": "24\\%",
+              "speech": "24 Prozent"
+            },
+            {
+              "type": "text",
+              "text": " tun beides ("
+            },
+            {
+              "type": "math",
+              "tex": "S \\cap M",
+              "speech": "S geschnitten mit M"
+            },
+            {
+              "type": "text",
+              "text": "). Prüfe rechnerisch, ob Sporttreiben und Musizieren stochastisch unabhängig sind."
+            }
+          ],
           "concept": "Bedingte Wahrscheinlichkeit: P_A(B) = P(A geschnitten B) / P(A); Vierfeldertafel; Stochastische Unabhängigkeit: P(A geschnitten B) = P(A) * P(B); Rechnung: P(S)*P(M) = 0,60 * 0,40 = 0,24 = P(S geschnitten M) -> Ereignisse sind stochastisch unabhängig!",
-          "sample_solution": "1. Das Konzept der bedingten Wahrscheinlichkeit: - Beschreibt die Neubewertung der Wahrscheinlichkeit eines Ereignisses $B$, wenn bekannt ist, dass die Vorbedingung $A$ bereits eingetreten ist:   $$\\mathbf{P_A(B) = \\frac{P(A \\cap B)}{P(A)}} \\quad (\\text{für } P(A) > 0)$$   * Äquivalente Multiplikationsregel: $P(A \\cap B) = P(A) \\cdot P_A(B)$. 2. Die Vierfeldertafel (Wahrscheinlichkeiten): | | $B$ | $\\overline{B}$ | Summe (Rand) | | :--- | :--- | :--- | :--- | | **$A$** | $P(A \\cap B)$ | $P(A \\cap \\overline{B})$ | **$P(A)$** | | **$\\overline{A}$** | $P(\\overline{A} \\cap B)$ | $P(\\overline{A} \\cap \\overline{B})$ | **$P(\\overline{A})$** | | **Summe** | **$P(B)$** | **$P(\\overline{B})$** | **$1{,}00$ ($100\\%$)** | 3. Definition der stochastischen Unabhängigkeit: - Zwei Ereignisse $A$ und $B$ heißen **stochastisch unabhängig**, wenn das Eintreten von $A$ keinerlei Information über das Eintreten von $B$ liefert:   $$\\mathbf{P(A \\cap B) = P(A) \\cdot P(B)} \\iff \\mathbf{P_A(B) = P(B)}$$   *(Achtung: Nicht zu verwechseln mit 'unvereinbar' $A \\cap B = \\emptyset$! Unvereinbare Ereignisse mit $P > 0$ sind niemals unabhängig)*. 4. Berechnung der Beispielfrage: - Gegeben:   * $P(S) = 0{,}60$ (Sportler)   * $P(M) = 0{,}40$ (Musiker)   * $P(S \\cap M) = 0{,}24$ (beides) - **Prüfung auf Unabhängigkeit**:   $$P(S) \\cdot P(M) = 0{,}60 \\cdot 0{,}40 = \\mathbf{0{,}24}$$ - **Vergleich**:   $$P(S \\cap M) = 0{,}24 = P(S) \\cdot P(M)$$ - **Ergebnis**: Das Produkt der Einzelwahrscheinlichkeiten stimmt exakt mit der Schnittmengenwahrscheinlichkeit überein $\\implies$ Die beiden Hobbys **Sporttreiben und Musizieren sind stochastisch unabhängig**."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Das Konzept der bedingten Wahrscheinlichkeit: - Beschreibt die Neubewertung der Wahrscheinlichkeit eines Ereignisses "
+            },
+            {
+              "type": "math",
+              "tex": "B"
+            },
+            {
+              "type": "text",
+              "text": ", wenn bekannt ist, dass die Vorbedingung "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": " bereits eingetreten ist:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{P_A(B) = \\frac{P(A \\cap B)}{P(A)}} \\quad (\\text{für } P(A) > 0)",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Äquivalente Multiplikationsregel: "
+            },
+            {
+              "type": "math",
+              "tex": "P(A \\cap B) = P(A) \\cdot P_A(B)"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Die Vierfeldertafel (Wahrscheinlichkeiten): | | "
+            },
+            {
+              "type": "math",
+              "tex": "B"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "\\overline{B}"
+            },
+            {
+              "type": "text",
+              "text": " | Summe (Rand) | | :--- | :--- | :--- | :--- | | "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "P(A \\cap B)"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "P(A \\cap \\overline{B})"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "P(A)"
+            },
+            {
+              "type": "text",
+              "text": " | | "
+            },
+            {
+              "type": "math",
+              "tex": "\\overline{A}"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "P(\\overline{A} \\cap B)"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "P(\\overline{A} \\cap \\overline{B})"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "P(\\overline{A})"
+            },
+            {
+              "type": "text",
+              "text": " | | Summe | "
+            },
+            {
+              "type": "math",
+              "tex": "P(B)"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "P(\\overline{B})"
+            },
+            {
+              "type": "text",
+              "text": " | "
+            },
+            {
+              "type": "math",
+              "tex": "1{,}00"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "100\\%"
+            },
+            {
+              "type": "text",
+              "text": ") | 3. Definition der stochastischen Unabhängigkeit: - Zwei Ereignisse "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "B"
+            },
+            {
+              "type": "text",
+              "text": " heißen stochastisch unabhängig, wenn das Eintreten von "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": " keinerlei Information über das Eintreten von "
+            },
+            {
+              "type": "math",
+              "tex": "B"
+            },
+            {
+              "type": "text",
+              "text": " liefert:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{P(A \\cap B) = P(A) \\cdot P(B)} \\iff \\mathbf{P_A(B) = P(B)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   (Achtung: Nicht zu verwechseln mit 'unvereinbar' "
+            },
+            {
+              "type": "math",
+              "tex": "A \\cap B = \\emptyset"
+            },
+            {
+              "type": "text",
+              "text": "! Unvereinbare Ereignisse mit "
+            },
+            {
+              "type": "math",
+              "tex": "P > 0"
+            },
+            {
+              "type": "text",
+              "text": " sind niemals unabhängig). 4. Berechnung der Beispielfrage: - Gegeben:   * "
+            },
+            {
+              "type": "math",
+              "tex": "P(S) = 0{,}60"
+            },
+            {
+              "type": "text",
+              "text": " (Sportler)   * "
+            },
+            {
+              "type": "math",
+              "tex": "P(M) = 0{,}40"
+            },
+            {
+              "type": "text",
+              "text": " (Musiker)   * "
+            },
+            {
+              "type": "math",
+              "tex": "P(S \\cap M) = 0{,}24"
+            },
+            {
+              "type": "text",
+              "text": " (beides) - Prüfung auf Unabhängigkeit:   "
+            },
+            {
+              "type": "math",
+              "tex": "P(S) \\cdot P(M) = 0{,}60 \\cdot 0{,}40 = \\mathbf{0{,}24}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Vergleich:   "
+            },
+            {
+              "type": "math",
+              "tex": "P(S \\cap M) = 0{,}24 = P(S) \\cdot P(M)",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Ergebnis: Das Produkt der Einzelwahrscheinlichkeiten stimmt exakt mit der Schnittmengenwahrscheinlichkeit überein "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Die beiden Hobbys Sporttreiben und Musizieren sind stochastisch unabhängig."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

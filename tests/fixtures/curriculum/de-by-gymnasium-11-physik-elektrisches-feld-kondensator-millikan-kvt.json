@@ -49,8 +49,63 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie ändert sich die elektrische Feldenergie $W_{\\text{el}} = \\frac{1}{2} C U^2$ eines aufgeladenen, von der Spannungsquelle getrennten Kondensators ($Q = \\text{konstant}$), wenn der Plattenabstand $d$ verdoppelt wird?",
-          "concept": "Die Energie verdoppelt sich (W_el = Q^2 / (2C) und C halbiert sich, da gegen die anziehende Coulomb-Kraft mechanische Trennarbeit verrichtet wird)",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie ändert sich die elektrische Feldenergie "
+            },
+            {
+              "type": "math",
+              "tex": "W_{\\text{el}} = \\frac{1}{2} C U^2",
+              "speech": "W el gleich ein halb C U Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " eines aufgeladenen, von der Spannungsquelle getrennten Kondensators ("
+            },
+            {
+              "type": "math",
+              "tex": "Q = \\text{konstant}",
+              "speech": "Q gleich konstant"
+            },
+            {
+              "type": "text",
+              "text": "), wenn der Plattenabstand "
+            },
+            {
+              "type": "math",
+              "tex": "d",
+              "speech": "d"
+            },
+            {
+              "type": "text",
+              "text": " verdoppelt wird?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Die Energie verdoppelt sich ("
+            },
+            {
+              "type": "math",
+              "tex": "W_{\\text{el}} = \\frac{Q^2}{2C}",
+              "speech": "W el gleich Q Quadrat durch 2 C"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "C",
+              "speech": "C"
+            },
+            {
+              "type": "text",
+              "text": " halbiert sich, da gegen die anziehende Coulomb-Kraft mechanische Trennarbeit verrichtet wird)"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -58,16 +113,441 @@
               "Die Energie halbiert sich"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GB40000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das elektrische Feld und den Plattenkondensator: 1. **Coulombsches Gesetz (Charles Augustin de Coulomb, 1785)**:   $$\\mathbf{F_C = \\frac{1}{4\\pi \\varepsilon_0 \\varepsilon_r} \\cdot \\frac{q_1 \\cdot q_2}{r^2}} \\quad (\\varepsilon_0 \\approx 8{,}854 \\cdot 10^{-12}\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{V}\\cdot\\text{m}})$$ 2. **Elektrische Feldstärke $\\vec{E}$ & Potential $\\varphi$**:   * $\\vec{E} = \\frac{\\vec{F}}{q}$ (Kraft pro Probeladung; Einheit: $\\frac{\\text{N}}{\\text{C}} = \\frac{\\text{V}}{\\text{m}}$).   * Im homogenen Feld eines Plattenkondensators mit Plattenabstand $d$: $\\mathbf{E = \\frac{U}{d}}$, 3. **Der Plattenkondensator**:   * **Kapazität $C$**: $C = \\frac{Q}{U} = \\varepsilon_0 \\cdot \\varepsilon_r \\cdot \\frac{A}{d}$ (Einheit: $1\\text{ Farad [F]} = 1\\,\\frac{\\text{C}}{\\text{V}}$).   * **Gespeicherte Feldenergie**: $\\mathbf{W_{\\text{el}} = \\frac{1}{2} C U^2 = \\frac{1}{2} Q U = \\frac{Q^2}{2C}}$, 4. Ein Plattenkondensator mit Fläche $A = 400\\,\\text{cm}^2$ und Plattenabstand $d = 2\\,\\text{mm}$ im Vakuum ($\to \\varepsilon_r = 1$) ist an eine Spannung von $U = 500\\,\\text{V}$ angeschlossen. Berechne die Kapazität $C$ und die elektrische Feldstärke $E$.",
-          "concept": "Elektrisches Feld: Coulomb-Gesetz; Feldstärke E = U/d; Kapazität C = epsilon_0 * epsilon_r * A / d; Feldenergie W_el = 1/2 * C * U^2; Rechnung: A = 0,04 m^2, d = 0,002 m -> C = 8,854 * 10^-12 * 0,04 / 0,002 = 1,77 * 10^-10 F = 177 pF; E = 500 V / 0,002 m = 250.000 V/m = 250 kV/m.",
-          "sample_solution": "1. Das physikalische Konzept des elektrischen Feldes: - Ein Zustand des Raumes um elektrische Ladungen, der auf andere geladene Körper elektrostatische Kräfte ausübt. - **1. Das Coulombsche Gesetz (Punktladungen)**:   $$\\mathbf{F_C = \\frac{1}{4\\pi \\varepsilon_0} \\cdot \\frac{|q_1 \\cdot q_2|}{r^2}}$$   * Gleiche Ladungen stoßen sich ab, ungleiche ziehen sich an. - **2. Elektrische Feldstärke $\\vec{E}$**:   * Vektorgröße, definiert als Quotient aus der Coulomb-Kraft $\\vec{F}$ auf eine positive Probeladung $q$ und der Ladung $q$ selbst:     $$\\mathbf{\\vec{E} = \\frac{\\vec{F}}{q}} \\quad (\\text{Einheit: } 1\\,\\frac{\\text{N}}{\\text{C}} = 1\\,\\frac{\\text{V}}{\\text{m}})$$   * **Feldlinien**: Verlaufen stets von positiven Ladungen (Quellen) zu negativen Ladungen (Senken); stehen senkrecht auf leitenden Oberflächen und Äquipotentialflächen. 2. Der Plattenkondensator: - Besteht aus zwei parallelen leitenden Platten der Fläche $A$ im Abstand $d$. Zwischen den Platten bildet sich ein **homogenes elektrisches Feld** aus:   $$\\mathbf{E = \\frac{U}{d}}$$ - **Kapazität $C$**:   $$\\mathbf{C = \\frac{Q}{U} = \\varepsilon_0 \\cdot \\varepsilon_r \\cdot \\frac{A}{d}}$$   * $\\varepsilon_0 \\approx 8{,}854 \\cdot 10^{-12}\\,\\frac{\\text{F}}{\\text{m}}$ (elektrische Feldkonstante).   * $\\varepsilon_r$: Relative Permittivität des Dielektrikums zwischen den Platten (z. B. Luft $\\approx 1$, Glas $\\approx 6$, Wasser $\\approx 80$). - **Im elektrischen Feld gespeicherte Energie $W_{\\text{el}}$**:   $$\\mathbf{W_{\\text{el}} = \\int_0^Q U(q)\\,\\mathrm{d}q = \\frac{1}{2} C U^2 = \\frac{1}{2} Q U = \\frac{Q^2}{2C}}$$ 3. Durchrechnung des Beispiels ($A = 400\\,\\text{cm}^2 = 0{,}04\\,\\text{m}^2, d = 2\\,\\text{mm} = 2 \\cdot 10^{-3}\\,\\text{m}, U = 500\\,\\text{V}$): - **Schritt 1: Kapazität $C$**:   $$C = \\varepsilon_0 \\cdot \\frac{A}{d} = 8{,}854 \\cdot 10^{-12}\\,\\frac{\\text{F}}{\\text{m}} \\cdot \\frac{0{,}04\\,\\text{m}^2}{2 \\cdot 10^{-3}\\,\\text{m}} = 8{,}854 \\cdot 10^{-12} \\cdot 20\\,\\text{F} = \\mathbf{1{,}771 \\cdot 10^{-10}\\,\\text{F} = 177{,}1\\,\\text{pF}}$$ - **Schritt 2: Elektrische Feldstärke $E$**:   $$E = \\frac{U}{d} = \\frac{500\\,\\text{V}}{2 \\cdot 10^{-3}\\,\\text{m}} = \\mathbf{250.000\\,\\frac{\\text{V}}{\\text{m}} = 250\\,\\frac{\\text{kV}}{\\text{m}}}$$ - **Schritt 3: Gespeicherte Energie**:   $$W_{\\text{el}} = \\frac{1}{2} C U^2 = \\frac{1}{2} \\cdot 1{,}771 \\cdot 10^{-10}\\,\\text{F} \\cdot (500\\,\\text{V})^2 = \\mathbf{2{,}21 \\cdot 10^{-5}\\,\\text{J} = 22{,}1\\,\\mu\\text{J}}$$."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das elektrische Feld und den Plattenkondensator: 1. Coulombsches Gesetz (Charles Augustin de Coulomb, 1785):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F_C = \\frac{1}{4\\pi \\varepsilon_0 \\varepsilon_r} \\cdot \\frac{q_1 \\cdot q_2}{r^2}} \\quad (\\varepsilon_0 \\approx 8{,}854 \\cdot 10^{-12}\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{V}\\cdot\\text{m}})",
+              "block": true,
+              "speech": "F C gleich 1 durch 4 Pi Epsilon null Epsilon r mal q eins mal q zwei durch r Quadrat, mit Epsilon null ungefähr 8,854 mal 10 hoch minus 12 Amperesekunden pro Voltmeter"
+            },
+            {
+              "type": "text",
+              "text": " 2. Elektrische Feldstärke "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{E}",
+              "speech": "Vektor E"
+            },
+            {
+              "type": "text",
+              "text": " & Potential "
+            },
+            {
+              "type": "math",
+              "tex": "\\varphi",
+              "speech": "Phi"
+            },
+            {
+              "type": "text",
+              "text": ":   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{E} = \\frac{\\vec{F}}{q}",
+              "speech": "Vektor E gleich Vektor F durch q"
+            },
+            {
+              "type": "text",
+              "text": " (Kraft pro Probeladung; Einheit: "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{\\text{N}}{\\text{C}} = \\frac{\\text{V}}{\\text{m}}",
+              "speech": "Newton pro Coulomb gleich Volt pro Meter"
+            },
+            {
+              "type": "text",
+              "text": ").   * Im homogenen Feld eines Plattenkondensators mit Plattenabstand "
+            },
+            {
+              "type": "math",
+              "tex": "d",
+              "speech": "d"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E = \\frac{U}{d}}",
+              "speech": "E gleich U durch d"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Der Plattenkondensator:   * Kapazität "
+            },
+            {
+              "type": "math",
+              "tex": "C",
+              "speech": "C"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "C = \\frac{Q}{U} = \\varepsilon_0 \\cdot \\varepsilon_r \\cdot \\frac{A}{d}",
+              "speech": "C gleich Q durch U gleich Epsilon null mal Epsilon r mal A durch d"
+            },
+            {
+              "type": "text",
+              "text": " (Einheit: "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ Farad [F]} = 1\\,\\frac{\\text{C}}{\\text{V}}",
+              "speech": "1 Farad gleich 1 Coulomb pro Volt"
+            },
+            {
+              "type": "text",
+              "text": ").   * Gespeicherte Feldenergie: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{W_{\\text{el}} = \\frac{1}{2} C U^2 = \\frac{1}{2} Q U = \\frac{Q^2}{2C}}",
+              "speech": "W el gleich ein halb C U Quadrat gleich ein halb Q U gleich Q Quadrat durch 2 C"
+            },
+            {
+              "type": "text",
+              "text": ", 4. Ein Plattenkondensator mit Fläche "
+            },
+            {
+              "type": "math",
+              "tex": "A = 400\\,\\text{cm}^2",
+              "speech": "A gleich 400 Quadratzentimeter"
+            },
+            {
+              "type": "text",
+              "text": " und Plattenabstand "
+            },
+            {
+              "type": "math",
+              "tex": "d = 2\\,\\text{mm}",
+              "speech": "d gleich 2 Millimeter"
+            },
+            {
+              "type": "text",
+              "text": " im Vakuum ("
+            },
+            {
+              "type": "math",
+              "tex": "\\to \\varepsilon_r = 1",
+              "speech": "also Epsilon r gleich 1"
+            },
+            {
+              "type": "text",
+              "text": ") ist an eine Spannung von "
+            },
+            {
+              "type": "math",
+              "tex": "U = 500\\,\\text{V}",
+              "speech": "U gleich 500 Volt"
+            },
+            {
+              "type": "text",
+              "text": " angeschlossen. Berechne die Kapazität "
+            },
+            {
+              "type": "math",
+              "tex": "C",
+              "speech": "C"
+            },
+            {
+              "type": "text",
+              "text": " und die elektrische Feldstärke "
+            },
+            {
+              "type": "math",
+              "tex": "E",
+              "speech": "E"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Elektrisches Feld: Coulomb-Gesetz; Feldstärke "
+            },
+            {
+              "type": "math",
+              "tex": "E = \\frac{U}{d}",
+              "speech": "E gleich U durch d"
+            },
+            {
+              "type": "text",
+              "text": "; Kapazität "
+            },
+            {
+              "type": "math",
+              "tex": "C = \\varepsilon_0 \\cdot \\varepsilon_r \\cdot \\frac{A}{d}",
+              "speech": "C gleich Epsilon null mal Epsilon r mal A durch d"
+            },
+            {
+              "type": "text",
+              "text": "; Feldenergie "
+            },
+            {
+              "type": "math",
+              "tex": "W_{\\text{el}} = \\frac{1}{2} \\cdot C \\cdot U^2",
+              "speech": "W el gleich ein halb mal C mal U Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; Rechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "A = 0{,}04\\,\\text{m}^2",
+              "speech": "A gleich 0,04 Quadratmeter"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "d = 0{,}002\\,\\text{m} \\Rightarrow C = \\frac{8{,}854 \\cdot 10^{-12} \\cdot 0{,}04}{0{,}002} = 1{,}77 \\cdot 10^{-10}\\,\\text{F} = 177\\,\\text{pF}",
+              "speech": "d gleich 0,002 Meter, daraus folgt C gleich 8,854 mal 10 hoch minus 12 mal 0,04 durch 0,002 gleich 1,77 mal 10 hoch minus 10 Farad gleich 177 Pikofarad"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "E = \\frac{500\\,\\text{V}}{0{,}002\\,\\text{m}} = 250.000\\,\\text{V/m} = 250\\,\\text{kV/m}",
+              "speech": "E gleich 500 Volt durch 0,002 Meter gleich 250.000 Volt pro Meter gleich 250 Kilovolt pro Meter"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Das physikalische Konzept des elektrischen Feldes: - Ein Zustand des Raumes um elektrische Ladungen, der auf andere geladene Körper elektrostatische Kräfte ausübt. - 1. Das Coulombsche Gesetz (Punktladungen):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F_C = \\frac{1}{4\\pi \\varepsilon_0} \\cdot \\frac{|q_1 \\cdot q_2|}{r^2}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Gleiche Ladungen stoßen sich ab, ungleiche ziehen sich an. - 2. Elektrische Feldstärke "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{E}"
+            },
+            {
+              "type": "text",
+              "text": ":   * Vektorgröße, definiert als Quotient aus der Coulomb-Kraft "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}"
+            },
+            {
+              "type": "text",
+              "text": " auf eine positive Probeladung "
+            },
+            {
+              "type": "math",
+              "tex": "q"
+            },
+            {
+              "type": "text",
+              "text": " und der Ladung "
+            },
+            {
+              "type": "math",
+              "tex": "q"
+            },
+            {
+              "type": "text",
+              "text": " selbst:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\vec{E} = \\frac{\\vec{F}}{q}} \\quad (\\text{Einheit: } 1\\,\\frac{\\text{N}}{\\text{C}} = 1\\,\\frac{\\text{V}}{\\text{m}})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Feldlinien: Verlaufen stets von positiven Ladungen (Quellen) zu negativen Ladungen (Senken); stehen senkrecht auf leitenden Oberflächen und Äquipotentialflächen. 2. Der Plattenkondensator: - Besteht aus zwei parallelen leitenden Platten der Fläche "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": " im Abstand "
+            },
+            {
+              "type": "math",
+              "tex": "d"
+            },
+            {
+              "type": "text",
+              "text": ". Zwischen den Platten bildet sich ein homogenes elektrisches Feld aus:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E = \\frac{U}{d}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Kapazität "
+            },
+            {
+              "type": "math",
+              "tex": "C"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{C = \\frac{Q}{U} = \\varepsilon_0 \\cdot \\varepsilon_r \\cdot \\frac{A}{d}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\varepsilon_0 \\approx 8{,}854 \\cdot 10^{-12}\\,\\frac{\\text{F}}{\\text{m}}"
+            },
+            {
+              "type": "text",
+              "text": " (elektrische Feldkonstante).   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\varepsilon_r"
+            },
+            {
+              "type": "text",
+              "text": ": Relative Permittivität des Dielektrikums zwischen den Platten (z. B. Luft "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 1"
+            },
+            {
+              "type": "text",
+              "text": ", Glas "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 6"
+            },
+            {
+              "type": "text",
+              "text": ", Wasser "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 80"
+            },
+            {
+              "type": "text",
+              "text": "). - Im elektrischen Feld gespeicherte Energie "
+            },
+            {
+              "type": "math",
+              "tex": "W_{\\text{el}}"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{W_{\\text{el}} = \\int_0^Q U(q)\\,\\mathrm{d}q = \\frac{1}{2} C U^2 = \\frac{1}{2} Q U = \\frac{Q^2}{2C}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Durchrechnung des Beispiels ("
+            },
+            {
+              "type": "math",
+              "tex": "A = 400\\,\\text{cm}^2 = 0{,}04\\,\\text{m}^2, d = 2\\,\\text{mm} = 2 \\cdot 10^{-3}\\,\\text{m}, U = 500\\,\\text{V}"
+            },
+            {
+              "type": "text",
+              "text": "): - Schritt 1: Kapazität "
+            },
+            {
+              "type": "math",
+              "tex": "C"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "C = \\varepsilon_0 \\cdot \\frac{A}{d} = 8{,}854 \\cdot 10^{-12}\\,\\frac{\\text{F}}{\\text{m}} \\cdot \\frac{0{,}04\\,\\text{m}^2}{2 \\cdot 10^{-3}\\,\\text{m}} = 8{,}854 \\cdot 10^{-12} \\cdot 20\\,\\text{F} = \\mathbf{1{,}771 \\cdot 10^{-10}\\,\\text{F} = 177{,}1\\,\\text{pF}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 2: Elektrische Feldstärke "
+            },
+            {
+              "type": "math",
+              "tex": "E"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "E = \\frac{U}{d} = \\frac{500\\,\\text{V}}{2 \\cdot 10^{-3}\\,\\text{m}} = \\mathbf{250.000\\,\\frac{\\text{V}}{\\text{m}} = 250\\,\\frac{\\text{kV}}{\\text{m}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 3: Gespeicherte Energie:   "
+            },
+            {
+              "type": "math",
+              "tex": "W_{\\text{el}} = \\frac{1}{2} C U^2 = \\frac{1}{2} \\cdot 1{,}771 \\cdot 10^{-10}\\,\\text{F} \\cdot (500\\,\\text{V})^2 = \\mathbf{2{,}21 \\cdot 10^{-5}\\,\\text{J} = 22{,}1\\,\\mu\\text{J}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -113,7 +593,21 @@
           "tier": "tier1_fast",
           "bloom_level": 1,
           "question": "Welches fundamentale Ergebnis lieferte der berühmte Öltröpfchenversuch von Robert Andrews Millikan (1909)?",
-          "concept": "Den Nachweis, dass jede elektrische Ladung stets ein ganzzahliges Vielfaches einer kleinsten, unteilbaren Elementarladung e approx 1,602 * 10^-19 C ist (Quantelung der Ladung)",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Den Nachweis, dass jede elektrische Ladung stets ein ganzzahliges Vielfaches einer kleinsten, unteilbaren Elementarladung "
+            },
+            {
+              "type": "math",
+              "tex": "e \\approx 1{,}602 \\cdot 10^{-19}\\,\\text{C}",
+              "speech": "e ungefähr 1,602 mal 10 hoch minus 19 Coulomb"
+            },
+            {
+              "type": "text",
+              "text": " ist (Quantelung der Ladung)"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -121,16 +615,365 @@
               "Dass Elektronen keine Masse besitzen"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GB40000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Bewegung geladener Teilchen im E-Feld und den Millikan-Versuch: 1. **Beschleunigung im elektrischen Längsfeld**:   * Ein Elektron ($q = -e$) durchläuft die Beschleunigungsspannung $U$:     $$\\mathbf{W_{\\text{el}} = e \\cdot U = E_{\\text{kin}} = \\frac{1}{2} m_e v^2} \\implies \\mathbf{v = \\sqrt{\\frac{2 e U}{m_e}}}$$   * Definition der Energieeinheit: $1\\text{ Elektronenvolt [eV]} = 1{,}602 \\cdot 10^{-19}\\,\\text{J}$, 2. **Ablenkung im elektrischen Querfeld (Braun'sche Röhre / Oszilloskop)**:   * In $x$-Richtung: gleichförmige Bewegung $x(t) = v_x \\cdot t$.   * In $y$-Richtung: gleichmäßig beschleunigte Bewegung $y(t) = \\frac{1}{2} a_y t^2 = \\frac{e U_y}{2 m d} t^2 \\implies$ **Wurfparabel**, 3. **Der Millikan-Öltröpfchenversuch**:   * **Schwebemethode**: Elektrische Kraft kompensiert die effektive Gewichtskraft des Tröpfchens:     $$\\mathbf{F_{\\text{el}} = F_G - F_A \\implies q \\cdot \\frac{U_{\\text{schweb}}}{d} = (m_{\\text{Tr}} - m_{\\text{Luft}}) \\cdot g = \\frac{4}{3}\\pi r^3 (\\rho_{\\text{Öl}} - \\rho_{\\text{Luft}}) \\cdot g}$$   * **Sinkmethode (Stokes'sche Reibung $F_R = 6\\pi \\eta r v_{\\text{sink}}$)**: Zur Bestimmung des Tröpfchenradius $r$.   * **Ergebnis**: Alle gemessenen Ladungen $q$ sind ganzzahlige Vielfache $q = n \\cdot e$ mit der **Elementarladung $\\mathbf{e \\approx 1{,}602 \\cdot 10^{-19}\\,\\text{C}}$**.",
-          "concept": "Längsfeld: e*U = 1/2*m*v^2; Querfeld: Parabelbahn; Millikan-Versuch: Schwebemethode F_el = F_G,korr; Sinkmethode mit Stokes-Reibung F_R = 6*pi*eta*r*v; Ergebnis: Elementarladung e = 1,602 * 10^-19 C (Ladungsquantelung q = n*e).",
-          "sample_solution": "1. Teilchendynamik im homogenen elektrostatischen Feld: - **1. Elektrisches Längsfeld (Elektronenkanone / Linearbeschleuniger)**:   * Ein aus einer Glühkathode austretendes Elektron wird durch die Spannung $U_B$ beschleunigt.   * Nach dem Energieerhaltungssatz wird die potentielle elektrische Feldenergie vollständig in kinetische Bewegungsenergie umgewandelt:     $$\\mathbf{e \\cdot U_B = \\frac{1}{2} m_e v^2} \\implies \\mathbf{v = \\sqrt{\\frac{2 e U_B}{m_e}}}$$   * *Beispiel*: Bei $U_B = 200\\,\\text{V}$ erreicht ein Elektron bereits $v \\approx 8{,}4 \\cdot 10^6\\,\\frac{\\text{m}}{\\text{s}}$ (ca. $2{,}8\\%$ der Lichtgeschwindigkeit). - **2. Elektrisches Querfeld (Kathodenstrahlröhre)**:   * Tritt das Elektron senkrecht zu den Feldlinien mit $v_x$ in einen Plattenkondensator ein, wird es analog zum waagrechten Wurf auf einer **Parabelbahn** abgelenkt:     $$y(x) = \\frac{e \\cdot U_y}{2 m_e d v_x^2} \\cdot x^2$$ 2. Der Millikan-Versuch (Robert A. Millikan, Nobelpreis 1923): - **Ziel**: Experimentelle Bestimmung der kleinsten elektrischen Ladungseinheit. - **Versuchsaufbau**: Ein feiner Ölnebel wird durch Reibung beim Zerstäuben elektrostatisch aufgeladen. Winzige Tröpfchen gelangen zwischen die horizontalen Platten eines Plattenkondensators und werden unter dem Mikroskop beobachtet. - **Zwei-Schritte-Messverfahren**:   * **1. Schritt: Sinkmethode ohne elektrisches Feld (Radiusbestimmung)**:     - Das Tröpfchen sinkt im Schwerefeld der Erde nach kurzer Zeit mit konstanter Sinkgeschwindigkeit $v_{\\text{sink}}$, bei der sich Gewichtskraft $F_G$, statischer Auftrieb $F_A$ und die hydrodynamische **Stokes-Reibung** das Gleichgewicht halten:       $$F_G - F_A = F_{\\text{Stokes}} \\implies \\frac{4}{3}\\pi r^3 (\\rho_{\\text{Öl}} - \\rho_{\\text{Luft}}) g = 6\\pi \\eta r v_{\\text{sink}}$$     - Daraus lässt sich der mikroskopisch unmessbare Tröpfchenradius $r$ exakt berechnen:       $$\\mathbf{r = \\sqrt{\\frac{9 \\eta v_{\\text{sink}}}{2 (\\rho_{\\text{Öl}} - \\rho_{\\text{Luft}}) g}}}$$   * **2. Schritt: Schwebemethode mit angelegter Spannung $U_{\\text{schweb}}$**:     - Die Spannung wird so justiert, dass das Tröpfchen im Sehfeld exakt stillsteht (Schwebezustand):       $$F_{\\text{el}} = F_G - F_A \\implies q \\cdot \\frac{U_{\\text{schweb}}}{d} = \\frac{4}{3}\\pi r^3 (\\rho_{\\text{Öl}} - \\rho_{\\text{Luft}}) g$$     - Auflösen nach der Ladung $q$:       $$\\mathbf{q = \\frac{d \\cdot \\frac{4}{3}\\pi r^3 (\\rho_{\\text{Öl}} - \\rho_{\\text{Luft}}) g}{U_{\\text{schweb}}}}$$ - **Physikalische Erkenntnis**:   * Führt man die Messung an hunderten Tröpfchen durch, stellt man fest, dass die berechneten Ladungswerte $q$ niemals beliebige reelle Zahlen sind, sondern stets **ganzzahlige Vielfache einer fundamentalen Naturkonstante**:     $$\\mathbf{q = n \\cdot e} \\quad (n \\in \\mathbb{Z}) \\quad \\text{mit} \\quad \\mathbf{e = 1{,}602176634 \\cdot 10^{-19}\\,\\text{C}}$$."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Bewegung geladener Teilchen im E-Feld und den Millikan-Versuch: 1. Beschleunigung im elektrischen Längsfeld:   * Ein Elektron ("
+            },
+            {
+              "type": "math",
+              "tex": "q = -e",
+              "speech": "q gleich minus e"
+            },
+            {
+              "type": "text",
+              "text": ") durchläuft die Beschleunigungsspannung "
+            },
+            {
+              "type": "math",
+              "tex": "U",
+              "speech": "U"
+            },
+            {
+              "type": "text",
+              "text": ":     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{W_{\\text{el}} = e \\cdot U = E_{\\text{kin}} = \\frac{1}{2} m_e v^2} \\implies \\mathbf{v = \\sqrt{\\frac{2 e U}{m_e}}}",
+              "block": true,
+              "speech": "W el gleich e mal U gleich E kin gleich ein halb m e v Quadrat daraus folgt v gleich Wurzel aus 2 e U durch m e"
+            },
+            {
+              "type": "text",
+              "text": "   * Definition der Energieeinheit: "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ Elektronenvolt [eV]} = 1{,}602 \\cdot 10^{-19}\\,\\text{J}",
+              "speech": "1 Elektronenvolt gleich 1,602 mal 10 hoch minus 19 Joule"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Ablenkung im elektrischen Querfeld (Braun'sche Röhre / Oszilloskop):   * In "
+            },
+            {
+              "type": "math",
+              "tex": "x",
+              "speech": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Richtung: gleichförmige Bewegung "
+            },
+            {
+              "type": "math",
+              "tex": "x(t) = v_x \\cdot t",
+              "speech": "x von t gleich v x mal t"
+            },
+            {
+              "type": "text",
+              "text": ".   * In "
+            },
+            {
+              "type": "math",
+              "tex": "y",
+              "speech": "y"
+            },
+            {
+              "type": "text",
+              "text": "-Richtung: gleichmäßig beschleunigte Bewegung "
+            },
+            {
+              "type": "math",
+              "tex": "y(t) = \\frac{1}{2} a_y t^2 = \\frac{e U_y}{2 m d} t^2 \\implies",
+              "speech": "y von t gleich ein halb a y t Quadrat gleich e U y durch 2 m d mal t Quadrat, daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Wurfparabel, 3. Der Millikan-Öltröpfchenversuch:   * Schwebemethode: Elektrische Kraft kompensiert die effektive Gewichtskraft des Tröpfchens:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F_{\\text{el}} = F_G - F_A \\implies q \\cdot \\frac{U_{\\text{schweb}}}{d} = (m_{\\text{Tr}} - m_{\\text{Luft}}) \\cdot g = \\frac{4}{3}\\pi r^3 (\\rho_{\\text{Öl}} - \\rho_{\\text{Luft}}) \\cdot g}",
+              "block": true,
+              "speech": "F el gleich F G minus F A, daraus folgt q mal U schweb durch d gleich, m Tropfen minus m Luft, mal g gleich vier Drittel Pi r hoch 3, mal Rho Öl minus Rho Luft, mal g"
+            },
+            {
+              "type": "text",
+              "text": "   * Sinkmethode (Stokes'sche Reibung "
+            },
+            {
+              "type": "math",
+              "tex": "F_R = 6\\pi \\eta r v_{\\text{sink}}",
+              "speech": "F R gleich 6 Pi Eta r v sink"
+            },
+            {
+              "type": "text",
+              "text": "): Zur Bestimmung des Tröpfchenradius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": ".   * Ergebnis: Alle gemessenen Ladungen "
+            },
+            {
+              "type": "math",
+              "tex": "q",
+              "speech": "q"
+            },
+            {
+              "type": "text",
+              "text": " sind ganzzahlige Vielfache "
+            },
+            {
+              "type": "math",
+              "tex": "q = n \\cdot e",
+              "speech": "q gleich n mal e"
+            },
+            {
+              "type": "text",
+              "text": " mit der Elementarladung "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{e \\approx 1{,}602 \\cdot 10^{-19}\\,\\text{C}}",
+              "speech": "e ungefähr 1,602 mal 10 hoch minus 19 Coulomb"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Längsfeld: "
+            },
+            {
+              "type": "math",
+              "tex": "e \\cdot U = \\frac{1}{2} \\cdot m \\cdot v^2",
+              "speech": "e mal U gleich ein halb mal m mal v Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; Querfeld: Parabelbahn; Millikan-Versuch: Schwebemethode "
+            },
+            {
+              "type": "math",
+              "tex": "F_{\\text{el}} = F_{G,\\text{korr}}",
+              "speech": "F el gleich F G korrigiert"
+            },
+            {
+              "type": "text",
+              "text": "; Sinkmethode mit Stokes-Reibung "
+            },
+            {
+              "type": "math",
+              "tex": "F_R = 6 \\cdot \\pi \\cdot \\eta \\cdot r \\cdot v",
+              "speech": "F R gleich 6 mal Pi mal Eta mal r mal v"
+            },
+            {
+              "type": "text",
+              "text": "; Ergebnis: Elementarladung "
+            },
+            {
+              "type": "math",
+              "tex": "e = 1{,}602 \\cdot 10^{-19}\\,\\text{C}",
+              "speech": "e gleich 1,602 mal 10 hoch minus 19 Coulomb"
+            },
+            {
+              "type": "text",
+              "text": " (Ladungsquantelung "
+            },
+            {
+              "type": "math",
+              "tex": "q = n \\cdot e",
+              "speech": "q gleich n mal e"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Teilchendynamik im homogenen elektrostatischen Feld: - 1. Elektrisches Längsfeld (Elektronenkanone / Linearbeschleuniger):   * Ein aus einer Glühkathode austretendes Elektron wird durch die Spannung "
+            },
+            {
+              "type": "math",
+              "tex": "U_B"
+            },
+            {
+              "type": "text",
+              "text": " beschleunigt.   * Nach dem Energieerhaltungssatz wird die potentielle elektrische Feldenergie vollständig in kinetische Bewegungsenergie umgewandelt:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{e \\cdot U_B = \\frac{1}{2} m_e v^2} \\implies \\mathbf{v = \\sqrt{\\frac{2 e U_B}{m_e}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Beispiel: Bei "
+            },
+            {
+              "type": "math",
+              "tex": "U_B = 200\\,\\text{V}"
+            },
+            {
+              "type": "text",
+              "text": " erreicht ein Elektron bereits "
+            },
+            {
+              "type": "math",
+              "tex": "v \\approx 8{,}4 \\cdot 10^6\\,\\frac{\\text{m}}{\\text{s}}"
+            },
+            {
+              "type": "text",
+              "text": " (ca. "
+            },
+            {
+              "type": "math",
+              "tex": "2{,}8\\%"
+            },
+            {
+              "type": "text",
+              "text": " der Lichtgeschwindigkeit). - 2. Elektrisches Querfeld (Kathodenstrahlröhre):   * Tritt das Elektron senkrecht zu den Feldlinien mit "
+            },
+            {
+              "type": "math",
+              "tex": "v_x"
+            },
+            {
+              "type": "text",
+              "text": " in einen Plattenkondensator ein, wird es analog zum waagrechten Wurf auf einer Parabelbahn abgelenkt:     "
+            },
+            {
+              "type": "math",
+              "tex": "y(x) = \\frac{e \\cdot U_y}{2 m_e d v_x^2} \\cdot x^2",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Der Millikan-Versuch (Robert A. Millikan, Nobelpreis 1923): - Ziel: Experimentelle Bestimmung der kleinsten elektrischen Ladungseinheit. - Versuchsaufbau: Ein feiner Ölnebel wird durch Reibung beim Zerstäuben elektrostatisch aufgeladen. Winzige Tröpfchen gelangen zwischen die horizontalen Platten eines Plattenkondensators und werden unter dem Mikroskop beobachtet. - Zwei-Schritte-Messverfahren:   * 1. Schritt: Sinkmethode ohne elektrisches Feld (Radiusbestimmung):     - Das Tröpfchen sinkt im Schwerefeld der Erde nach kurzer Zeit mit konstanter Sinkgeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v_{\\text{sink}}"
+            },
+            {
+              "type": "text",
+              "text": ", bei der sich Gewichtskraft "
+            },
+            {
+              "type": "math",
+              "tex": "F_G"
+            },
+            {
+              "type": "text",
+              "text": ", statischer Auftrieb "
+            },
+            {
+              "type": "math",
+              "tex": "F_A"
+            },
+            {
+              "type": "text",
+              "text": " und die hydrodynamische Stokes-Reibung das Gleichgewicht halten:       "
+            },
+            {
+              "type": "math",
+              "tex": "F_G - F_A = F_{\\text{Stokes}} \\implies \\frac{4}{3}\\pi r^3 (\\rho_{\\text{Öl}} - \\rho_{\\text{Luft}}) g = 6\\pi \\eta r v_{\\text{sink}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "     - Daraus lässt sich der mikroskopisch unmessbare Tröpfchenradius "
+            },
+            {
+              "type": "math",
+              "tex": "r"
+            },
+            {
+              "type": "text",
+              "text": " exakt berechnen:       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{r = \\sqrt{\\frac{9 \\eta v_{\\text{sink}}}{2 (\\rho_{\\text{Öl}} - \\rho_{\\text{Luft}}) g}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * 2. Schritt: Schwebemethode mit angelegter Spannung "
+            },
+            {
+              "type": "math",
+              "tex": "U_{\\text{schweb}}"
+            },
+            {
+              "type": "text",
+              "text": ":     - Die Spannung wird so justiert, dass das Tröpfchen im Sehfeld exakt stillsteht (Schwebezustand):       "
+            },
+            {
+              "type": "math",
+              "tex": "F_{\\text{el}} = F_G - F_A \\implies q \\cdot \\frac{U_{\\text{schweb}}}{d} = \\frac{4}{3}\\pi r^3 (\\rho_{\\text{Öl}} - \\rho_{\\text{Luft}}) g",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "     - Auflösen nach der Ladung "
+            },
+            {
+              "type": "math",
+              "tex": "q"
+            },
+            {
+              "type": "text",
+              "text": ":       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{q = \\frac{d \\cdot \\frac{4}{3}\\pi r^3 (\\rho_{\\text{Öl}} - \\rho_{\\text{Luft}}) g}{U_{\\text{schweb}}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Physikalische Erkenntnis:   * Führt man die Messung an hunderten Tröpfchen durch, stellt man fest, dass die berechneten Ladungswerte "
+            },
+            {
+              "type": "math",
+              "tex": "q"
+            },
+            {
+              "type": "text",
+              "text": " niemals beliebige reelle Zahlen sind, sondern stets ganzzahlige Vielfache einer fundamentalen Naturkonstante:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{q = n \\cdot e} \\quad (n \\in \\mathbb{Z}) \\quad \\text{mit} \\quad \\mathbf{e = 1{,}602176634 \\cdot 10^{-19}\\,\\text{C}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

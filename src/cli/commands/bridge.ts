@@ -16,6 +16,7 @@ import { serializeZamPairPayload } from "../../bridge/mobile-pairing.js";
 import type { DiscussionTurn } from "../../bridge/protocol.js";
 import type {
   BloomLevel,
+  CardText,
   ChoiceEvidence,
   Database,
   EditorialState,
@@ -129,12 +130,15 @@ import {
   PERSONA_DESCRIPTORS,
   PlanetError,
   pairCommands,
+  parseStoredCardText,
+  plainProjection,
   postgresVaultAccessPending,
   previewTextImport,
   readMonitorLog,
   readSessionDigest,
   readUiObservationLog,
   readUpForTokens,
+  reconcileInstalledBundledTiles,
   recordTopicImport,
   redactCommand,
   regionTokenIds,
@@ -223,6 +227,7 @@ import {
   unplacedTokenIds,
 } from "../atlas.js";
 import {
+  editedCardText,
   addToken as handleAddToken,
   admitReview as handleAdmitReview,
   analyzeMonitor as handleAnalyzeMonitor,
@@ -311,6 +316,7 @@ import {
   discussReviewViaLLM,
   ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
+  fixCardTextViaLLM,
   generateChoiceOptionsViaLLM,
   generateFoundationsProposalsViaLLM,
   generateSplitProposalsViaLLM,
@@ -325,6 +331,7 @@ import {
   isLlmOnline,
   type LlmRole,
   proposeSubtopicsViaLLM,
+  translateQuestionSegmentsViaLLM,
   translateQuestionViaLLM,
 } from "../llm/client.js";
 import { connectCloudProvider } from "../llm/cloud-connect.js";
@@ -1937,7 +1944,10 @@ bridgeCommand
       let data: {
         slug: string;
         title?: string;
-        concept: string;
+        concept?: string;
+        /** Card text as segments (ADR 2026-10-14b); wins over the string. */
+        concept_segments?: unknown;
+        question_segments?: unknown;
         domain?: string;
         bloom_level?: number;
         context?: string;
@@ -1955,8 +1965,10 @@ bridgeCommand
         jsonError("Invalid JSON input");
       }
 
-      if (!data?.slug || !data?.concept) {
-        jsonError("JSON must include 'slug' and 'concept' fields");
+      if (!data?.slug || !(data?.concept || data?.concept_segments)) {
+        jsonError(
+          "JSON must include 'slug' and 'concept' fields ('concept_segments' may stand in for 'concept')",
+        );
       }
       // Agents only come this way: a token needs the source it was read
       // from (ADR 2026-10-14, Decision 3).
@@ -1982,6 +1994,8 @@ bridgeCommand
             slug: data.slug,
             title: data.title,
             concept: data.concept,
+            conceptSegments: data.concept_segments,
+            questionSegments: data.question_segments,
             domain: data.domain,
             bloomLevel: data.bloom_level,
             context: data.context,
@@ -4240,6 +4254,10 @@ bridgeCommand
   .command("translate-question")
   .description("Translate a question dynamically using the local LLM (JSON)")
   .requiredOption("--question <text>", "Question in English to translate")
+  .option(
+    "--segments <json>",
+    "The question's card-text segments, when it holds formulas (ADR 2026-10-14b)",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const isEnabled = (await getSetting(db, "llm.enabled")) === "true";
@@ -4252,6 +4270,27 @@ bridgeCommand
         return;
       }
       try {
+        if (opts.segments) {
+          // Formulas are held back as placeholders and spliced back in; a
+          // reply that lost one keeps the original question.
+          const stored = parseStoredCardText(opts.segments);
+          if (!stored) jsonError("--segments is not valid card text");
+          const segments = await translateQuestionSegmentsViaLLM(db, stored);
+          jsonOut(
+            segments
+              ? {
+                  success: true,
+                  translation: plainProjection(segments),
+                  segments,
+                }
+              : {
+                  success: false,
+                  error: "The translation lost a formula",
+                  translation: opts.question,
+                },
+          );
+          return;
+        }
         const translation = await translateQuestionViaLLM(db, opts.question);
         jsonOut({ success: true, translation });
       } catch (err) {
@@ -4260,6 +4299,46 @@ bridgeCommand
           error: (err as Error).message,
           translation: opts.question,
         });
+      }
+    });
+  });
+
+// ── zam bridge card-text-fix ───────────────────────────────────────────────
+
+bridgeCommand
+  .command("card-text-fix")
+  .description(
+    "Ask the text model to correct one side of a card as the learner says; writes nothing (JSON, ADR 2026-10-14b D9)",
+  )
+  .requiredOption("--side <side>", "question or answer")
+  .requiredOption(
+    "--instruction <text>",
+    "What should change, in the learner's words",
+  )
+  .option("--segments <json>", "The side as card-text segments")
+  .option("--text <text>", "The side as plain text, when it has no segments")
+  .option("--other <text>", "The other side's plain text, for context")
+  .action(async (opts) => {
+    if (opts.side !== "question" && opts.side !== "answer") {
+      jsonError("--side must be question or answer");
+    }
+    await withDb(async (db) => {
+      let current: CardText | string = opts.text ?? "";
+      if (opts.segments) {
+        const stored = parseStoredCardText(opts.segments);
+        if (!stored) jsonError("--segments is not valid card text");
+        current = stored;
+      }
+      try {
+        const fixed = await fixCardTextViaLLM(db, {
+          side: opts.side,
+          current,
+          instruction: opts.instruction,
+          otherSide: opts.other ?? null,
+        });
+        jsonOut({ success: true, ...fixed });
+      } catch (err) {
+        jsonError((err as Error).message);
       }
     });
   });
@@ -6322,6 +6401,14 @@ bridgeCommand
     },
     [],
   )
+  .option(
+    "--question-segments <json>",
+    "The question as card-text segments (ADR 2026-10-14b)",
+  )
+  .option(
+    "--concept-segments <json>",
+    "The answer as card-text segments (ADR 2026-10-14b)",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
@@ -6329,6 +6416,15 @@ bridgeCommand
         opts.knowledgeContext || [],
       );
       const contexts = await resolveKnowledgeContexts(db, contextNames);
+      let cardText: ReturnType<typeof editedCardText>;
+      try {
+        cardText = editedCardText({
+          questionSegments: parseSegmentsOption(opts.questionSegments),
+          conceptSegments: parseSegmentsOption(opts.conceptSegments),
+        });
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
 
       const bloom = Number(opts.bloom) as BloomLevel;
       if (bloom < 1 || bloom > 5) {
@@ -6352,25 +6448,38 @@ bridgeCommand
         question = generateConceptFreeCue(bloom, slug, opts.domain);
       }
 
-      const { token, card } = await db.transaction(async (tx) => {
-        const createdToken = await createToken(tx, {
-          slug,
-          title: opts.title,
-          concept: opts.concept,
-          domain: opts.domain,
-          bloom_level: bloom,
-          context: opts.context,
-          symbiosis_mode: mode,
-          source_link: opts.sourceLink || null,
-          question,
-          editorial_state: await newTokenEditorialState(tx),
+      let created: {
+        token: Awaited<ReturnType<typeof createToken>>;
+        card: Awaited<ReturnType<typeof ensureCard>>;
+      };
+      try {
+        created = await db.transaction(async (tx) => {
+          const insertedToken = await createToken(tx, {
+            slug,
+            title: opts.title,
+            concept: opts.concept,
+            domain: opts.domain,
+            bloom_level: bloom,
+            context: opts.context,
+            symbiosis_mode: mode,
+            source_link: opts.sourceLink || null,
+            question,
+            editorial_state: await newTokenEditorialState(tx),
+          });
+          // Formulas from the editor: the segments set the plain text.
+          await cardText.after(tx, insertedToken.id);
+          const createdToken =
+            (await getTokenBySlug(tx, insertedToken.slug)) ?? insertedToken;
+          for (const context of contexts) {
+            await assignTokenToContext(tx, createdToken.id, context.id);
+          }
+          const createdCard = await ensureCard(tx, createdToken.id, userId);
+          return { token: createdToken, card: createdCard };
         });
-        for (const context of contexts) {
-          await assignTokenToContext(tx, createdToken.id, context.id);
-        }
-        const createdCard = await ensureCard(tx, createdToken.id, userId);
-        return { token: createdToken, card: createdCard };
-      });
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+      const { token, card } = created;
 
       jsonOut({
         success: true,
@@ -6424,9 +6533,26 @@ bridgeCommand
   )
   .option("--source-link <link>", "Updated source link")
   .option("--question <question>", "Updated question text")
+  .option(
+    "--question-segments <json>",
+    "The question as card-text segments (ADR 2026-10-14b); null makes it plain",
+  )
+  .option(
+    "--concept-segments <json>",
+    "The answer as card-text segments; null makes it plain",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
+      let cardText: ReturnType<typeof editedCardText>;
+      try {
+        cardText = editedCardText({
+          questionSegments: parseSegmentsOption(opts.questionSegments),
+          conceptSegments: parseSegmentsOption(opts.conceptSegments),
+        });
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
       const updates: {
         title?: string;
         concept?: string;
@@ -6439,7 +6565,10 @@ bridgeCommand
       } = {};
 
       if (opts.title !== undefined) updates.title = opts.title;
-      if (opts.concept !== undefined) updates.concept = opts.concept;
+      // A segmented field takes its plain text from its segments.
+      if (opts.concept !== undefined && !cardText.segmented.concept) {
+        updates.concept = opts.concept;
+      }
       if (opts.domain !== undefined) updates.domain = opts.domain;
       if (opts.bloom !== undefined) {
         const bloom = Number(opts.bloom) as BloomLevel;
@@ -6452,7 +6581,7 @@ bridgeCommand
       if (opts.sourceLink !== undefined) {
         updates.source_link = opts.sourceLink === "" ? null : opts.sourceLink;
       }
-      if (opts.question !== undefined) {
+      if (opts.question !== undefined && !cardText.segmented.question) {
         updates.question = opts.question === "" ? null : opts.question;
       }
       if (opts.mode !== undefined) {
@@ -6464,19 +6593,27 @@ bridgeCommand
           opts.mode === "none" ? null : (opts.mode as SymbiosisMode);
       }
 
-      const token = await db.transaction(async (tx) => {
-        const existingToken = await getTokenBySlug(tx, opts.slug);
-        if (!existingToken) {
-          throw new Error(`Token not found: ${opts.slug}`);
-        }
-        const card = await getCard(tx, existingToken.id, userId);
-        if (!card) {
-          throw new Error(
-            `Card not found for token ${opts.slug} and user ${userId}`,
-          );
-        }
-        return updateToken(tx, opts.slug, updates);
-      });
+      let token: Awaited<ReturnType<typeof updateToken>>;
+      try {
+        token = await db.transaction(async (tx) => {
+          const existingToken = await getTokenBySlug(tx, opts.slug);
+          if (!existingToken) {
+            throw new Error(`Token not found: ${opts.slug}`);
+          }
+          const card = await getCard(tx, existingToken.id, userId);
+          if (!card) {
+            throw new Error(
+              `Card not found for token ${opts.slug} and user ${userId}`,
+            );
+          }
+          await cardText.before(tx, existingToken);
+          const updated = await updateToken(tx, opts.slug, updates);
+          await cardText.after(tx, updated.id);
+          return (await getTokenBySlug(tx, opts.slug)) ?? updated;
+        });
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
 
       jsonOut({
         success: true,
@@ -6499,6 +6636,16 @@ bridgeCommand
     });
   });
 
+/** A `--…-segments` option: JSON segments, or `null` for plain text. */
+function parseSegmentsOption(raw: string | undefined): unknown {
+  if (raw === undefined) return undefined;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    throw new Error("card-text segments must be JSON");
+  }
+}
+
 // ── zam bridge personal-card-publish-revision ────────────────────────────────
 
 bridgeCommand
@@ -6519,6 +6666,14 @@ bridgeCommand
   .option("--context <context>", "Updated context")
   .option("--source-link <link>", "Updated source link")
   .option("--question <question>", "Updated question text")
+  .option(
+    "--question-segments <json>",
+    "The question as card-text segments (ADR 2026-10-14b); null makes it plain",
+  )
+  .option(
+    "--concept-segments <json>",
+    "The answer as card-text segments; null makes it plain",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const materiality = opts.materiality as "cosmetic" | "material";
@@ -6535,6 +6690,22 @@ bridgeCommand
       if (opts.sourceLink !== undefined)
         changes.sourceLink = opts.sourceLink === "" ? null : opts.sourceLink;
       if (opts.question !== undefined) changes.question = opts.question;
+      // Segments are validated by the kernel's write path, which names the
+      // segment it refuses.
+      for (const [option, key] of [
+        ["questionSegments", "questionSegments"],
+        ["conceptSegments", "conceptSegments"],
+      ] as const) {
+        const raw = opts[option] as string | undefined;
+        if (raw === undefined) continue;
+        try {
+          changes[key] = JSON.parse(raw);
+        } catch {
+          jsonError(
+            `--${option === "questionSegments" ? "question" : "concept"}-segments is not JSON`,
+          );
+        }
+      }
 
       try {
         const result = await handlePublishRevision(db, {
@@ -6970,8 +7141,15 @@ bridgeCommand
 
         const existingToken = await getTokenBySlug(db, baseSlug);
         if (existingToken) {
+          // The existing token's own text: the proposal's segments do not
+          // describe it.
+          const {
+            question_segments: _question,
+            concept_segments: _concept,
+            ...rest
+          } = prop;
           resolvedProposals.push({
-            ...prop,
+            ...rest,
             exists: true,
             slug: existingToken.slug,
             question: existingToken.question || prop.question,
@@ -8164,6 +8342,8 @@ bridgeCommand
       const proposals = cards.map((card) => ({
         question: card.question,
         concept: card.concept,
+        question_segments: card.question_segments ?? null,
+        concept_segments: card.concept_segments ?? null,
         domain: card.domain,
         title: card.title,
         bloom_level: card.bloom_level,
@@ -9280,6 +9460,29 @@ bridgeCommand
           user: opts.user,
         });
         jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+// ── zam bridge bundled-tiles-reconcile ─────────────────────────────────────
+
+bridgeCommand
+  .command("bundled-tiles-reconcile")
+  .description(
+    "Reinstall installed bundled tiles whose version changed, a few per call (JSON)",
+  )
+  .option("--max <n>", "Most tiles to reinstall in this call", "5")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        // A personal library only: the kernel refuses a team library, whose
+        // administrator publishes (ADR 2026-10-14b Decision 7).
+        const result = await reconcileInstalledBundledTiles(db, {
+          maxTiles: Math.max(0, Number(opts.max) || 0),
+        });
+        jsonOut({ success: true, ...result });
       } catch (err: unknown) {
         jsonError((err as Error).message || String(err));
       }

@@ -49,7 +49,21 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "In welcher Form liegen $\\alpha$-Aminosäuren im festen Kristall und in wässriger Lösung am isoelektrischen Punkt (IEP) vor?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "In welcher Form liegen "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha",
+              "speech": "Alpha"
+            },
+            {
+              "type": "text",
+              "text": "-Aminosäuren im festen Kristall und in wässriger Lösung am isoelektrischen Punkt (IEP) vor?"
+            }
+          ],
           "concept": "Als Zwitterion (+H3N-CHR-COO- mit deprotonierter Carboxylatgruppe und protonierter Ammoniumgruppe)",
           "fast_check": {
             "type": "binary_choice",
@@ -58,16 +72,420 @@
               "Als ungeladene unpolare Neutralform (H2N-CHR-COOH)"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GB80000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die chemische Struktur von Aminosäuren, das Zwitterion und die Peptidbindung: 1. **Struktur der 20 proteinogenen $\\alpha$-Aminosäuren**:   * Zentrales $\\alpha$-C-Atom trägt eine Aminogruppe ($-NH_2$), eine Carboxygruppe ($-COOH$), ein H-Atom und einen spezifischen Seitenketten-Rest ($R$).   * Mit Ausnahme von Glycin ($R = -H$) sind alle Aminosäuren **chiral** und liegen in Proteinen ausschließlich in der **L-Konfiguration** vor, 2. **Säure-Base-Verhalten & Isoelektrischer Punkt (IEP)**:   * Intramolekularer Protonenübergang von der sauren $-COOH$- zur basischen $-NH_2$-Gruppe $\\implies$ **Zwitterion** ($H_3N^+-CH(R)-COO^-$).   * **Ampholyt**:     - Im stark Sauren ($pH < IEP$): Kationische Form ($H_3N^+-CH(R)-COOH$, Nettoladung $+1$).     - Am isoelektrischen Punkt ($pH = IEP$): Zwitterion (Nettoladung $0$, minimale Löslichkeit, keine Wanderung im elektrischen Feld / Gelelektrophorese).     - Im stark Basischen ($pH > IEP$): Anionische Form ($H_2N-CH(R)-COO^-$, Nettoladung $-1$), 3. **Die Peptidbindung (Amidbindung)**:   * Kondensation zweier Aminosäuren unter Wasseraustritt ($-H_2O$):     $$\\mathbf{R_1-COOH + H_2N-R_2 \\rightarrow R_1-CO-NH-R_2 + H_2O}$$   * **Mesomerie & Planarität**: Das freie Elektronenpaar am Stickstoff ist in das Carbonylsystem delokalisiert ($C-N$-Doppelbindungscharakter ca. $40\\%$) $\\implies$ Die $-CO-NH-$-Bindung ist **starr, planar und bei Raumtemperatur nicht frei drehbar** (*trans*-Konfiguration).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die chemische Struktur von Aminosäuren, das Zwitterion und die Peptidbindung: 1. Struktur der 20 proteinogenen "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha",
+              "speech": "Alpha"
+            },
+            {
+              "type": "text",
+              "text": "-Aminosäuren:   * Zentrales "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha",
+              "speech": "Alpha"
+            },
+            {
+              "type": "text",
+              "text": "-C-Atom trägt eine Aminogruppe ("
+            },
+            {
+              "type": "math",
+              "tex": "-NH_2",
+              "speech": "N H zwei"
+            },
+            {
+              "type": "text",
+              "text": "), eine Carboxygruppe ("
+            },
+            {
+              "type": "math",
+              "tex": "-COOH",
+              "speech": "C O O H"
+            },
+            {
+              "type": "text",
+              "text": "), ein H-Atom und einen spezifischen Seitenketten-Rest ("
+            },
+            {
+              "type": "math",
+              "tex": "R",
+              "speech": "R"
+            },
+            {
+              "type": "text",
+              "text": ").   * Mit Ausnahme von Glycin ("
+            },
+            {
+              "type": "math",
+              "tex": "R = -H",
+              "speech": "R gleich minus H"
+            },
+            {
+              "type": "text",
+              "text": ") sind alle Aminosäuren chiral und liegen in Proteinen ausschließlich in der L-Konfiguration vor, 2. Säure-Base-Verhalten & Isoelektrischer Punkt (IEP):   * Intramolekularer Protonenübergang von der sauren "
+            },
+            {
+              "type": "math",
+              "tex": "-COOH",
+              "speech": "C O O H"
+            },
+            {
+              "type": "text",
+              "text": "- zur basischen "
+            },
+            {
+              "type": "math",
+              "tex": "-NH_2",
+              "speech": "N H zwei"
+            },
+            {
+              "type": "text",
+              "text": "-Gruppe "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Zwitterion ("
+            },
+            {
+              "type": "math",
+              "tex": "H_3N^+-CH(R)-COO^-",
+              "speech": "H drei N plus, C H mit Rest R, C O O minus"
+            },
+            {
+              "type": "text",
+              "text": ").   * Ampholyt:     - Im stark Sauren ("
+            },
+            {
+              "type": "math",
+              "tex": "pH < IEP",
+              "speech": "pH kleiner als I E P"
+            },
+            {
+              "type": "text",
+              "text": "): Kationische Form ("
+            },
+            {
+              "type": "math",
+              "tex": "H_3N^+-CH(R)-COOH",
+              "speech": "H drei N plus, C H mit Rest R, C O O H"
+            },
+            {
+              "type": "text",
+              "text": ", Nettoladung "
+            },
+            {
+              "type": "math",
+              "tex": "+1",
+              "speech": "plus 1"
+            },
+            {
+              "type": "text",
+              "text": ").     - Am isoelektrischen Punkt ("
+            },
+            {
+              "type": "math",
+              "tex": "pH = IEP",
+              "speech": "pH gleich I E P"
+            },
+            {
+              "type": "text",
+              "text": "): Zwitterion (Nettoladung "
+            },
+            {
+              "type": "math",
+              "tex": "0",
+              "speech": "0"
+            },
+            {
+              "type": "text",
+              "text": ", minimale Löslichkeit, keine Wanderung im elektrischen Feld / Gelelektrophorese).     - Im stark Basischen ("
+            },
+            {
+              "type": "math",
+              "tex": "pH > IEP",
+              "speech": "pH größer als I E P"
+            },
+            {
+              "type": "text",
+              "text": "): Anionische Form ("
+            },
+            {
+              "type": "math",
+              "tex": "H_2N-CH(R)-COO^-",
+              "speech": "H zwei N, C H mit Rest R, C O O minus"
+            },
+            {
+              "type": "text",
+              "text": ", Nettoladung "
+            },
+            {
+              "type": "math",
+              "tex": "-1",
+              "speech": "minus 1"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Die Peptidbindung (Amidbindung):   * Kondensation zweier Aminosäuren unter Wasseraustritt ("
+            },
+            {
+              "type": "math",
+              "tex": "-H_2O",
+              "speech": "minus H zwei O"
+            },
+            {
+              "type": "text",
+              "text": "):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{R_1-COOH + H_2N-R_2 \\rightarrow R_1-CO-NH-R_2 + H_2O}",
+              "block": true,
+              "speech": "R eins C O O H plus H zwei N R zwei reagiert zu R eins C O N H R zwei plus H zwei O"
+            },
+            {
+              "type": "text",
+              "text": "   * Mesomerie & Planarität: Das freie Elektronenpaar am Stickstoff ist in das Carbonylsystem delokalisiert ("
+            },
+            {
+              "type": "math",
+              "tex": "C-N",
+              "speech": "C N"
+            },
+            {
+              "type": "text",
+              "text": "-Doppelbindungscharakter ca. "
+            },
+            {
+              "type": "math",
+              "tex": "40\\%",
+              "speech": "40 Prozent"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Die "
+            },
+            {
+              "type": "math",
+              "tex": "-CO-NH-",
+              "speech": "Amidgruppe C O N H"
+            },
+            {
+              "type": "text",
+              "text": "-Bindung ist starr, planar und bei Raumtemperatur nicht frei drehbar (trans-Konfiguration)."
+            }
+          ],
           "concept": "Aminosäuren: L-alpha-Aminosäuren; Zwitterion; Säure-Base-Gleichgewichte & Isoelektrischer Punkt IEP; Peptidbindung (-CO-NH-) als mesomeriestabilisierte, planare, nicht drehbare Gruppe.",
-          "sample_solution": "1. Molekularer Aufbau der proteinogenen Aminosäuren: - **Grundgerüst**: Alle 20 Standard-Aminosäuren besitzen am $\\alpha$-Kohlenstoffatom dieselbe funktionelle Kernstruktur:   $$\\mathbf{\\text{H}_2\\text{N}-\\text{CH}(\\text{R})-\\text{COOH}}$$ - **Chiralität**:   * Das $\\alpha$-C-Atom ist asymmetrisch substituiert (Chiralitätszentrum $C^*$), außer beim einfachsten Vertreter **Glycin** ($R = -H$).   * In biologischen Proteinen kommen fast ausnahmslos **L-Aminosäuren** vor (in der Fischer-Projektion mit Carboxygruppe oben steht die Aminogruppe links). 2. Das Zwitterion und der Isoelektrische Punkt (IEP): - **Zwitterionenbildung**:   * Wegen der sauren Carboxygruppe ($pK_S \\approx 2$) und der basischen Aminogruppe ($pK_S \\approx 9{,}5$) wandert das Proton intramolekular:     $$\\mathbf{\\text{H}_2\\text{N}-\\text{CH}(\\text{R})-\\text{COOH} \\rightleftharpoons \\text{H}_3\\text{N}^+-\\text{CH}(\\text{R})-\\text{COO}^-}$$   * *Eigenschaften*: Aminosäuren bilden feste, hochschmelzende Salzkristalle mit Ionenkräften, sind wasserlöslich und unlöslich in unpolaren Lösungsmitteln. - **pH-abhängige Ladungszustände**:   * **1. Kation (im stark Sauren, $pH < IEP$)**:     $$\\mathbf{^+\\text{H}_3\\text{N}-\\text{CH}(\\text{R})-\\text{COOH}} \\quad (\\text{Nettoladung } +1 \\implies \\text{wandert zur Kathode})$$   * **2. Zwitterion (am IEP, $pH = IEP = \\frac{pK_1 + pK_2}{2}$)**:     $$\\mathbf{^+\\text{H}_3\\text{N}-\\text{CH}(\\text{R})-\\text{COO}^-} \\quad (\\text{Nettoladung } 0 \\implies \\text{keine Wanderung})$$   * **3. Anion (im stark Basischen, $pH > IEP$)**:     $$\\mathbf{\\text{H}_2\\text{N}-\\text{CH}(\\text{R})-\\text{COO}^-} \\quad (\\text{Nettoladung } -1 \\implies \\text{wandert zur Anode})$$ 3. Die Peptidbindung: - **Kondensationsreaktion**: Die Carboxygruppe einer Aminosäure reagiert mit der Aminogruppe einer zweiten Aminosäure unter Abspaltung von $\\text{H}_2\\text{O}$:   $$\\mathbf{-\\text{COOH} + \\text{H}_2\\text{N}- \\longrightarrow -\\text{CO}-\\text{NH}- + \\text{H}_2\\text{O}}$$ - **Mesomerie und räumliche Starre**:   * Die Peptidgruppe ist durch Mesomerie zweier Grenzstrukturen stabilisiert:     $$\\left[ -\\text{C}(=\\text{O})-\\text{N}(\\text{H})- \\longleftrightarrow -\\text{C}(\\text{O}^-)=\\text{N}^+(\\text{H})- \\right]$$   * Durch den partiellen **Doppelbindungscharakter der $C-N$-Bindung** liegen alle 6 beteiligten Atome ($C_\\alpha, C, O, N, H, C_\\alpha'$) in einer starren **Peptidebene**. Eine freie Rotation um die $C-N$-Achse ist unmöglich $\\implies$ Grundlage für stabile Raumstrukturen von Proteinen."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Molekularer Aufbau der proteinogenen Aminosäuren: - Grundgerüst: Alle 20 Standard-Aminosäuren besitzen am "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha"
+            },
+            {
+              "type": "text",
+              "text": "-Kohlenstoffatom dieselbe funktionelle Kernstruktur:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{H}_2\\text{N}-\\text{CH}(\\text{R})-\\text{COOH}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Chiralität:   * Das "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha"
+            },
+            {
+              "type": "text",
+              "text": "-C-Atom ist asymmetrisch substituiert (Chiralitätszentrum "
+            },
+            {
+              "type": "math",
+              "tex": "C^*"
+            },
+            {
+              "type": "text",
+              "text": "), außer beim einfachsten Vertreter Glycin ("
+            },
+            {
+              "type": "math",
+              "tex": "R = -H"
+            },
+            {
+              "type": "text",
+              "text": ").   * In biologischen Proteinen kommen fast ausnahmslos L-Aminosäuren vor (in der Fischer-Projektion mit Carboxygruppe oben steht die Aminogruppe links). 2. Das Zwitterion und der Isoelektrische Punkt (IEP): - Zwitterionenbildung:   * Wegen der sauren Carboxygruppe ("
+            },
+            {
+              "type": "math",
+              "tex": "pK_S \\approx 2"
+            },
+            {
+              "type": "text",
+              "text": ") und der basischen Aminogruppe ("
+            },
+            {
+              "type": "math",
+              "tex": "pK_S \\approx 9{,}5"
+            },
+            {
+              "type": "text",
+              "text": ") wandert das Proton intramolekular:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{H}_2\\text{N}-\\text{CH}(\\text{R})-\\text{COOH} \\rightleftharpoons \\text{H}_3\\text{N}^+-\\text{CH}(\\text{R})-\\text{COO}^-}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Eigenschaften: Aminosäuren bilden feste, hochschmelzende Salzkristalle mit Ionenkräften, sind wasserlöslich und unlöslich in unpolaren Lösungsmitteln. - pH-abhängige Ladungszustände:   * 1. Kation (im stark Sauren, "
+            },
+            {
+              "type": "math",
+              "tex": "pH < IEP"
+            },
+            {
+              "type": "text",
+              "text": "):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{^+\\text{H}_3\\text{N}-\\text{CH}(\\text{R})-\\text{COOH}} \\quad (\\text{Nettoladung } +1 \\implies \\text{wandert zur Kathode})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * 2. Zwitterion (am IEP, "
+            },
+            {
+              "type": "math",
+              "tex": "pH = IEP = \\frac{pK_1 + pK_2}{2}"
+            },
+            {
+              "type": "text",
+              "text": "):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{^+\\text{H}_3\\text{N}-\\text{CH}(\\text{R})-\\text{COO}^-} \\quad (\\text{Nettoladung } 0 \\implies \\text{keine Wanderung})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * 3. Anion (im stark Basischen, "
+            },
+            {
+              "type": "math",
+              "tex": "pH > IEP"
+            },
+            {
+              "type": "text",
+              "text": "):     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{H}_2\\text{N}-\\text{CH}(\\text{R})-\\text{COO}^-} \\quad (\\text{Nettoladung } -1 \\implies \\text{wandert zur Anode})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Die Peptidbindung: - Kondensationsreaktion: Die Carboxygruppe einer Aminosäure reagiert mit der Aminogruppe einer zweiten Aminosäure unter Abspaltung von "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{H}_2\\text{O}"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{-\\text{COOH} + \\text{H}_2\\text{N}- \\longrightarrow -\\text{CO}-\\text{NH}- + \\text{H}_2\\text{O}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Mesomerie und räumliche Starre:   * Die Peptidgruppe ist durch Mesomerie zweier Grenzstrukturen stabilisiert:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\left[ -\\text{C}(=\\text{O})-\\text{N}(\\text{H})- \\longleftrightarrow -\\text{C}(\\text{O}^-)=\\text{N}^+(\\text{H})- \\right]",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Durch den partiellen Doppelbindungscharakter der "
+            },
+            {
+              "type": "math",
+              "tex": "C-N"
+            },
+            {
+              "type": "text",
+              "text": "-Bindung liegen alle 6 beteiligten Atome ("
+            },
+            {
+              "type": "math",
+              "tex": "C_\\alpha, C, O, N, H, C_\\alpha'"
+            },
+            {
+              "type": "text",
+              "text": ") in einer starren Peptidebene. Eine freie Rotation um die "
+            },
+            {
+              "type": "math",
+              "tex": "C-N"
+            },
+            {
+              "type": "text",
+              "text": "-Achse ist unmöglich "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Grundlage für stabile Raumstrukturen von Proteinen."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +546,422 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die 4 Strukturebenen von Proteinen, die Denaturierung und die Enzymkinetik: 1. **Die 4 Strukturebenen von Proteinen**:   * **Primärstruktur**: Lineare Aminosäuresequenz, verknüpft über kovalente Peptidbindungen (genetisch determiniert).   * **Sekundärstruktur**: Lokale Faltungsmuster des Peptidrückgrats durch **Wasserstoffbrücken** zwischen $C=O$ und $N-H$ ($\\alpha$-Helix und $\\beta$-Faltblatt).   * **Tertiärstruktur**: Vollständige dreidimensionale Raumfaltung der gesamten Polypeptidkette; stabilisiert durch Wechselwirkungen der **Seitenketten $R$**:     - *Disulfidbrücken* (kovalent zwischen 2 Cysteinen),     - *Ionenbindungen (Salzbrücken)* zwischen $COO^-$ (Asp/Glu) und $NH_3^+$ (Lys/Arg),     - *Wasserstoffbrücken* polarer Reste,     - *Hydrophobe Wechselwirkungen / Van-der-Waals-Kräfte* unpolarer Reste im Inneren.   * **Quartärstruktur**: Zusammenlagerung mehrerer Polypeptidketten (Untereinheiten) zu einem Proteinkomplex (z. B. Hämoglobin: Tetramer aus $2\\alpha$ und $2\\beta$-Ketten mit Häm-Gruppe), 2. **Denaturierung**:   * Verlust der Tertiär- und Sekundärstruktur (und damit der biologischen Funktion) durch Hitze, extreme pH-Werte, Schwermetalle oder Alkohol, **ohne** Spaltung der Primärstruktur/Peptidbindung, 3. **Enzymkinetik nach Michaelis-Menten**:   * Enzym ($E$) + Substrat ($S$) $\\rightleftharpoons$ Enzym-Substrat-Komplex ($[ES]$) $\\rightarrow$ Enzym ($E$) + Produkt ($P$).   * **Michaelis-Menten-Konstante $K_m$**: Substratkonzentration $[S]$, bei der die Reaktionsgeschwindigkeit exakt die **Hälfte der Maximalgeschwindigkeit** beträgt ($v = \\frac{1}{2} v_{\\text{max}}$). Niedriges $K_m \\implies$ hohe Enzym-Substrat-Affinität.   * **Hemmtypen**:     - *Kompetitive Hemmung*: Inhibitor konkurriert mit Substrat um das aktive Zentrum ($K_m$ steigt, $v_{\\text{max}}$ bleibt erreichbar).     - *Allosterische / nicht-kompetitive Hemmung*: Inhibitor bindet an zweites regulatorisches Zentrum $\\implies$ Konformationsänderung ($v_{\\text{max}}$ sinkt).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die 4 Strukturebenen von Proteinen, die Denaturierung und die Enzymkinetik: 1. Die 4 Strukturebenen von Proteinen:   * Primärstruktur: Lineare Aminosäuresequenz, verknüpft über kovalente Peptidbindungen (genetisch determiniert).   * Sekundärstruktur: Lokale Faltungsmuster des Peptidrückgrats durch Wasserstoffbrücken zwischen "
+            },
+            {
+              "type": "math",
+              "tex": "C=O",
+              "speech": "C doppelt gebunden an O"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "N-H",
+              "speech": "N H"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha",
+              "speech": "Alpha"
+            },
+            {
+              "type": "text",
+              "text": "-Helix und "
+            },
+            {
+              "type": "math",
+              "tex": "\\beta",
+              "speech": "Beta"
+            },
+            {
+              "type": "text",
+              "text": "-Faltblatt).   * Tertiärstruktur: Vollständige dreidimensionale Raumfaltung der gesamten Polypeptidkette; stabilisiert durch Wechselwirkungen der Seitenketten "
+            },
+            {
+              "type": "math",
+              "tex": "R",
+              "speech": "R"
+            },
+            {
+              "type": "text",
+              "text": ":     - Disulfidbrücken (kovalent zwischen 2 Cysteinen),     - Ionenbindungen (Salzbrücken) zwischen "
+            },
+            {
+              "type": "math",
+              "tex": "COO^-",
+              "speech": "C O O minus"
+            },
+            {
+              "type": "text",
+              "text": " (Asp/Glu) und "
+            },
+            {
+              "type": "math",
+              "tex": "NH_3^+",
+              "speech": "N H drei plus"
+            },
+            {
+              "type": "text",
+              "text": " (Lys/Arg),     - Wasserstoffbrücken polarer Reste,     - Hydrophobe Wechselwirkungen / Van-der-Waals-Kräfte unpolarer Reste im Inneren.   * Quartärstruktur: Zusammenlagerung mehrerer Polypeptidketten (Untereinheiten) zu einem Proteinkomplex (z. B. Hämoglobin: Tetramer aus "
+            },
+            {
+              "type": "math",
+              "tex": "2\\alpha",
+              "speech": "2 Alpha"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "2\\beta",
+              "speech": "2 Beta"
+            },
+            {
+              "type": "text",
+              "text": "-Ketten mit Häm-Gruppe), 2. Denaturierung:   * Verlust der Tertiär- und Sekundärstruktur (und damit der biologischen Funktion) durch Hitze, extreme pH-Werte, Schwermetalle oder Alkohol, ohne Spaltung der Primärstruktur/Peptidbindung, 3. Enzymkinetik nach Michaelis-Menten:   * Enzym ("
+            },
+            {
+              "type": "math",
+              "tex": "E",
+              "speech": "E"
+            },
+            {
+              "type": "text",
+              "text": ") + Substrat ("
+            },
+            {
+              "type": "math",
+              "tex": "S",
+              "speech": "S"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightleftharpoons",
+              "speech": "im Gleichgewicht mit"
+            },
+            {
+              "type": "text",
+              "text": " Enzym-Substrat-Komplex ("
+            },
+            {
+              "type": "math",
+              "tex": "[ES]",
+              "speech": "Enzym-Substrat-Komplex E S"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Enzym ("
+            },
+            {
+              "type": "math",
+              "tex": "E",
+              "speech": "E"
+            },
+            {
+              "type": "text",
+              "text": ") + Produkt ("
+            },
+            {
+              "type": "math",
+              "tex": "P",
+              "speech": "P"
+            },
+            {
+              "type": "text",
+              "text": ").   * Michaelis-Menten-Konstante "
+            },
+            {
+              "type": "math",
+              "tex": "K_m",
+              "speech": "K m"
+            },
+            {
+              "type": "text",
+              "text": ": Substratkonzentration "
+            },
+            {
+              "type": "math",
+              "tex": "[S]",
+              "speech": "Konzentration von S"
+            },
+            {
+              "type": "text",
+              "text": ", bei der die Reaktionsgeschwindigkeit exakt die Hälfte der Maximalgeschwindigkeit beträgt ("
+            },
+            {
+              "type": "math",
+              "tex": "v = \\frac{1}{2} v_{\\text{max}}",
+              "speech": "v gleich ein halb v max"
+            },
+            {
+              "type": "text",
+              "text": "). Niedriges "
+            },
+            {
+              "type": "math",
+              "tex": "K_m \\implies",
+              "speech": "K m, daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " hohe Enzym-Substrat-Affinität.   * Hemmtypen:     - Kompetitive Hemmung: Inhibitor konkurriert mit Substrat um das aktive Zentrum ("
+            },
+            {
+              "type": "math",
+              "tex": "K_m",
+              "speech": "K m"
+            },
+            {
+              "type": "text",
+              "text": " steigt, "
+            },
+            {
+              "type": "math",
+              "tex": "v_{\\text{max}}",
+              "speech": "v max"
+            },
+            {
+              "type": "text",
+              "text": " bleibt erreichbar).     - Allosterische / nicht-kompetitive Hemmung: Inhibitor bindet an zweites regulatorisches Zentrum "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Konformationsänderung ("
+            },
+            {
+              "type": "math",
+              "tex": "v_{\\text{max}}",
+              "speech": "v max"
+            },
+            {
+              "type": "text",
+              "text": " sinkt)."
+            }
+          ],
           "concept": "Biochemie 11: 4 Proteinstrukturebenen (Primär-, Sekundär- [alpha-Helix, beta-Faltblatt], Tertiär- [Disulfid, Ionen, H-Brücken, hydrophob], Quartärstruktur); Denaturierung; Enzymkinetik (Michaelis-Menten v_max, K_m); Kompetitive vs. Allosterische Hemmung.",
-          "sample_solution": "1. Die vier hierarchischen Proteinstrukturebenen: - **1. Primärstruktur**:   * Die exakte **Sequenz (Reihenfolge)** der Aminosäuren vom N-terminalen Ende ($-NH_2$) zum C-terminalen Ende ($-COOH$), kovalent durch Peptidbindungen verknüpft. - **2. Sekundärstruktur**:   * Regelmäßige periodische Faltungselemente des Peptid-Rückgrats, stabilisiert ausschließlich durch **Wasserstoffbrückenbindungen** zwischen den Carbonylgruppen ($C=O$) und Aminogruppen ($N-H$) der Peptidbindungen:     * **$\\alpha$-Helix**: Schraubenförmige Rechts-Helix; H-Brücke jeweils zur viertnächsten Aminosäure.     * **$\\beta$-Faltblatt**: Nebeneinanderliegende Polypeptidstränge (parallel oder antiparallel), ziehharmonikaartig gefaltet. - **3. Tertiärstruktur**:   * Die charakteristische **dreidimensionale Gesamtfaltung (Konformation)** einer Polypeptidkette.   * Stabilisiert durch 4 Wechselwirkungsarten zwischen den **variablen Seitenketten $R$**:     1. *Disulfidbrücken (kovalente Bindung)*: $-S-S-$ zwischen zwei Cystein-Resten.     2. *Ionenbindungen (Salzbrücken)*: Zwischen positiv geladenen ($Lys^+, Arg^+$) und negativ geladenen Seitenketten ($Asp^-, Glu^-$).     3. *Wasserstoffbrücken*: Zwischen polaren Gruppen (z. B. Serin, Tyrosin).     4. *Hydrophobe Wechselwirkungen*: Unpolare Reste (Leucin, Phenylalanin) meiden Wasser und lagern sich im Inneren des Proteinmoleküls zusammen. - **4. Quartärstruktur**:   * Die funktionelle Zusammenlagerung von zwei oder mehr separaten Polypeptidketten (Untereinheiten) zu einem oligomeren Proteinkomplex (z. B. **Hämoglobin** aus 4 Ketten mit Eisen-Komplex). 2. Die Proteindenaturierung: - **Mechanismus**: Zerstörung der empfindlichen Sekundär-, Tertiär- und Quartärstrukturen durch thermische Energie ($T > 42-60^\\circ\\text{C}$), drastische pH-Wert-Verschiebungen (Zerstörung von Ionen- und H-Brücken) oder Schwermetallionen ($Pb^{2+}, Hg^{2+}$) $\\implies$ Das Protein entfaltet sich, flockt unlöslich aus und verliert irreversibel seine katalytische bzw. biologische Funktion. Die kovalente Primärstruktur bleibt dabei intakt. 3. Enzymkinetik und Katalyse (Leonor Michaelis & Maud Menten, 1913): - Enzyme sind hochspezifische Biokatalysatoren, die die Aktivierungsenergie biochemischer Reaktionen drastisch senken:   $$\\mathbf{E + S \\xrightleftharpoons[k_{-1}]{k_1} [ES] \\xrightarrow{k_2} E + P}$$ - **Michaelis-Menten-Gleichung**:   $$\\mathbf{v = \\frac{v_{\\text{max}} \\cdot [S]}{K_m + [S]}}$$   * **$v_{\\text{max}}$ (Maximalgeschwindigkeit)**: Sättigungszustand, wenn alle Enzymmoleküle permanent mit Substrat besetzt sind ($[ES] = [E]_0$).   * **$K_m$ (Michaelis-Konstante)**: Diejenige Substratkonzentration $[S]$, bei der die Reaktion mit halber Maximalgeschwindigkeit $v = \\frac{1}{2}v_{\\text{max}}$ abläuft. Ein kleiner $K_m$-Wert signalisiert eine hohe Affinität des Enzyms zu seinem Substrat. - **Hemmmechanismen (Inhibition)**:   * **Kompetitive Hemmung**: Der Hemmstoff ähnelt dem Substrat und besetzt das aktive Zentrum. Durch Substratüberschuss verdrängbar $\\implies \\mathbf{K_m \\text{ steigt, } v_{\\text{max}} \\text{ bleibt unverändert}}$.   * **Allosterische (nicht-kompetitive) Hemmung**: Der Inhibitor bindet an ein allosterisches Zentrum außerhalb der Bindungstasche und verformt das aktive Zentrum $\\implies \\mathbf{v_{\\text{max}} \\text{ sinkt irreversibel, } K_m \\text{ bleibt gleich}}$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die vier hierarchischen Proteinstrukturebenen: - 1. Primärstruktur:   * Die exakte Sequenz (Reihenfolge) der Aminosäuren vom N-terminalen Ende ("
+            },
+            {
+              "type": "math",
+              "tex": "-NH_2"
+            },
+            {
+              "type": "text",
+              "text": ") zum C-terminalen Ende ("
+            },
+            {
+              "type": "math",
+              "tex": "-COOH"
+            },
+            {
+              "type": "text",
+              "text": "), kovalent durch Peptidbindungen verknüpft. - 2. Sekundärstruktur:   * Regelmäßige periodische Faltungselemente des Peptid-Rückgrats, stabilisiert ausschließlich durch Wasserstoffbrückenbindungen zwischen den Carbonylgruppen ("
+            },
+            {
+              "type": "math",
+              "tex": "C=O"
+            },
+            {
+              "type": "text",
+              "text": ") und Aminogruppen ("
+            },
+            {
+              "type": "math",
+              "tex": "N-H"
+            },
+            {
+              "type": "text",
+              "text": ") der Peptidbindungen:     * "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha"
+            },
+            {
+              "type": "text",
+              "text": "-Helix: Schraubenförmige Rechts-Helix; H-Brücke jeweils zur viertnächsten Aminosäure.     * "
+            },
+            {
+              "type": "math",
+              "tex": "\\beta"
+            },
+            {
+              "type": "text",
+              "text": "-Faltblatt: Nebeneinanderliegende Polypeptidstränge (parallel oder antiparallel), ziehharmonikaartig gefaltet. - 3. Tertiärstruktur:   * Die charakteristische dreidimensionale Gesamtfaltung (Konformation) einer Polypeptidkette.   * Stabilisiert durch 4 Wechselwirkungsarten zwischen den variablen Seitenketten "
+            },
+            {
+              "type": "math",
+              "tex": "R"
+            },
+            {
+              "type": "text",
+              "text": ":     1. Disulfidbrücken (kovalente Bindung): "
+            },
+            {
+              "type": "math",
+              "tex": "-S-S-"
+            },
+            {
+              "type": "text",
+              "text": " zwischen zwei Cystein-Resten.     2. Ionenbindungen (Salzbrücken): Zwischen positiv geladenen ("
+            },
+            {
+              "type": "math",
+              "tex": "Lys^+, Arg^+"
+            },
+            {
+              "type": "text",
+              "text": ") und negativ geladenen Seitenketten ("
+            },
+            {
+              "type": "math",
+              "tex": "Asp^-, Glu^-"
+            },
+            {
+              "type": "text",
+              "text": ").     3. Wasserstoffbrücken: Zwischen polaren Gruppen (z. B. Serin, Tyrosin).     4. Hydrophobe Wechselwirkungen: Unpolare Reste (Leucin, Phenylalanin) meiden Wasser und lagern sich im Inneren des Proteinmoleküls zusammen. - 4. Quartärstruktur:   * Die funktionelle Zusammenlagerung von zwei oder mehr separaten Polypeptidketten (Untereinheiten) zu einem oligomeren Proteinkomplex (z. B. Hämoglobin aus 4 Ketten mit Eisen-Komplex). 2. Die Proteindenaturierung: - Mechanismus: Zerstörung der empfindlichen Sekundär-, Tertiär- und Quartärstrukturen durch thermische Energie ("
+            },
+            {
+              "type": "math",
+              "tex": "T > 42-60^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": "), drastische pH-Wert-Verschiebungen (Zerstörung von Ionen- und H-Brücken) oder Schwermetallionen ("
+            },
+            {
+              "type": "math",
+              "tex": "Pb^{2+}, Hg^{2+}"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Das Protein entfaltet sich, flockt unlöslich aus und verliert irreversibel seine katalytische bzw. biologische Funktion. Die kovalente Primärstruktur bleibt dabei intakt. 3. Enzymkinetik und Katalyse (Leonor Michaelis & Maud Menten, 1913): - Enzyme sind hochspezifische Biokatalysatoren, die die Aktivierungsenergie biochemischer Reaktionen drastisch senken:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E + S \\xrightleftharpoons[k_{-1}]{k_1} [ES] \\xrightarrow{k_2} E + P}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Michaelis-Menten-Gleichung:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{v = \\frac{v_{\\text{max}} \\cdot [S]}{K_m + [S]}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "v_{\\text{max}}"
+            },
+            {
+              "type": "text",
+              "text": " (Maximalgeschwindigkeit): Sättigungszustand, wenn alle Enzymmoleküle permanent mit Substrat besetzt sind ("
+            },
+            {
+              "type": "math",
+              "tex": "[ES] = [E]_0"
+            },
+            {
+              "type": "text",
+              "text": ").   * "
+            },
+            {
+              "type": "math",
+              "tex": "K_m"
+            },
+            {
+              "type": "text",
+              "text": " (Michaelis-Konstante): Diejenige Substratkonzentration "
+            },
+            {
+              "type": "math",
+              "tex": "[S]"
+            },
+            {
+              "type": "text",
+              "text": ", bei der die Reaktion mit halber Maximalgeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v = \\frac{1}{2}v_{\\text{max}}"
+            },
+            {
+              "type": "text",
+              "text": " abläuft. Ein kleiner "
+            },
+            {
+              "type": "math",
+              "tex": "K_m"
+            },
+            {
+              "type": "text",
+              "text": "-Wert signalisiert eine hohe Affinität des Enzyms zu seinem Substrat. - Hemmmechanismen (Inhibition):   * Kompetitive Hemmung: Der Hemmstoff ähnelt dem Substrat und besetzt das aktive Zentrum. Durch Substratüberschuss verdrängbar "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies \\mathbf{K_m \\text{ steigt, } v_{\\text{max}} \\text{ bleibt unverändert}}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Allosterische (nicht-kompetitive) Hemmung: Der Inhibitor bindet an ein allosterisches Zentrum außerhalb der Bindungstasche und verformt das aktive Zentrum "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies \\mathbf{v_{\\text{max}} \\text{ sinkt irreversibel, } K_m \\text{ bleibt gleich}}"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

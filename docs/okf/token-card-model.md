@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-05T21:10:00.000Z
+timestamp: 2026-10-15T08:00:00.000Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -35,6 +35,14 @@ Bloom drives prompt generation, while tier and fast-check metadata define the
 review interaction. `provider` and `topic_id` remain a legacy one-binding
 projection for curriculum imports; the n:m truth is stored in atom curriculum
 bindings.
+
+A token's question and concept may be **card-text segments**
+(`question_segments`, `concept_segments`, M048): text, formulas with their
+speech, and images. The plain `question`/`concept` columns then hold the
+segments' derived projection, and only `writeCardText` writes either, so
+they cannot drift; a plain write to a segmented field is refused unless it
+echoes the projection. Fast-check options and curated distractors may carry
+segments too. See [card-text-segments.md](card-text-segments.md).
 
 Tokens imported from OKF articles carry an **anchored source link**:
 `<article resource>#<anchor>` (or the bare resource URL without an
@@ -194,6 +202,14 @@ learners in every new card at once. A concept appears in a learner's queue
 only after that card exists and the token is published. Installation,
 enrolment, and publication remain separate kernel steps.
 
+`installed_tiles` (M048) records each installed tile's version, or its
+last failure. `reconcileInstalledBundledTiles` reinstalls the bundled tiles
+whose version changed (the Studio runs it once per start, a few at a time),
+so a fix that is only presentation — `materiality: "cosmetic"`, such as the
+formula migration — reaches every enrolled learner without making anyone
+relearn a card. A team library refuses it: there, tiles change only through
+`zam team reinstall-tiles`, run by the administrator.
+
 A tile may retire practice items. A retired item keeps its cards and review
 history but stops representing its atom: token prerequisites derived from
 atom edges move to the item flagged `edge_representative` (else the first
@@ -209,6 +225,7 @@ exact successor declarations may preserve it, while ambiguous or materially
 changed mappings require real re-retrieval.
 
 # Citations
+- [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)

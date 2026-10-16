@@ -66,9 +66,71 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre Bildung und Kontrastierung der beiden französischen Vergangenheitszeiten: 1. **Bildung des Imparfait**: Stamm der *nous*-Form im Présent + feste Endungen: *-ais, -ais, -ait, -ions, -iez, -aient* (einzige Ausnahme: *être -> ét-* [*j'étais*]), 2. **Wann Imparfait?**: Für andauernde Zustände, Beschreibungen von Wetter/Personen/Landschaften, Gewohnheiten in der Vergangenheit (*tous les jours, souvent*), Hintergrundhandlungen (*pendant que...*), 3. **Wann Passé composé?**: Für einmalige, abgeschlossene Handlungen, Handlungsketten (*d'abord, puis, ensuite*) und neu eintretende, plötzliche Ereignisse (*tout à coup*), die die Hintergrundhandlung unterbrechen und übersetze: 'Als ich klein war [Zustand], spielte ich jeden Tag im Garten [Gewohnheit], aber gestern ging ich ins Kino [einmalige Handlung].'",
+          "question": "Erkläre Bildung und Kontrastierung der beiden französischen Vergangenheitszeiten: 1. Bildung des Imparfait: Stamm der nous-Form im Présent + feste Endungen: -ais, -ais, -ait, -ions, -iez, -aient (einzige Ausnahme: être -> ét- [j'étais]), 2. Wann Imparfait?: Für andauernde Zustände, Beschreibungen von Wetter/Personen/Landschaften, Gewohnheiten in der Vergangenheit (tous les jours, souvent), Hintergrundhandlungen (pendant que...), 3. Wann Passé composé?: Für einmalige, abgeschlossene Handlungen, Handlungsketten (d'abord, puis, ensuite) und neu eintretende, plötzliche Ereignisse (tout à coup), die die Hintergrundhandlung unterbrechen und übersetze: 'Als ich klein war [Zustand], spielte ich jeden Tag im Garten [Gewohnheit], aber gestern ging ich ins Kino [einmalige Handlung].'",
           "concept": "Imparfait: nous-Stamm + -ais/-ait/-ions/-iez/-aient; Zustand/Wetter/Gewohnheit/Hintergrund vs. Passé composé: punktuelle Handlungskette/plötzliches Ereignis; 'Quand j'étais petit, je jouais tous les jours dans le jardin, mais hier je suis allé au cinéma.'",
-          "sample_solution": "1. Bildung des Imparfait: - **Regel**: Man nimmt die 1. Person Plural (*nous*-Form) des Verbs im Présent, streicht die Endung *-ons* ab und hängt die 6 unveränderlichen Imparfait-Endungen an:   * *je* $\\rightarrow$ **-ais**   * *tu* $\\rightarrow$ **-ais**   * *il / elle / on* $\\rightarrow$ **-ait**   * *nous* $\\rightarrow$ **-ions**   * *vous* $\\rightarrow$ **-iez**   * *ils / elles* $\\rightarrow$ **-aient** [stumm, klingt wie *-ais*]. - *Beispiel parler* (nous parlons): *je parlais, tu parlais, il parlait, nous parlions, vous parliez, ils parlaient*. - *Einzige Stamm-Ausnahme*: **être** $\\rightarrow$ Stamm **ét-** (*j'étais, tu étais, il était, nous étions, vous étiez, ils étaient*). 2. Der fundamentale Zeitenkontrast: Imparfait vs. Passé composé: - **1. Das Imparfait (Die 'Videokamera' / Der Hintergrund)**:   * **Beschreibungen**: Wie war das Wetter? Wie sahen Personen/Orte aus? Gefühlszustände (*'Il faisait beau, j'étais triste'*).   * **Regelmäßige Gewohnheiten**: Was geschah wiederholt? (*'Chaque été, nous allions à la mer'*).   * **Andauernde Hintergrundhandlungen**: Was lief gerade im Hintergrund ab? (*'Pendant que je dormais...'*). - **2. Das Passé composé (Der 'Fotoapparat' / Die Haupthandlung)**:   * **Punktuelle Einzelhandlungen**: Neu einsetzende Ereignisse mit festem Start/Ende (*'Hier, j'ai acheté un vélo'*).   * **Handlungsketten**: Nacheinander ablaufende Aktionen (*'D'abord il a mangé, puis il est parti'*).   * **Plötzliche Unterbrechung**: Mitten in die Hintergrundhandlung (*'Pendant que je lisais, le téléphone a sonné'*). 3. Übersetzung des Beispielsatzes: - *„Quand j'étais petit [Zustand/Imparfait], je jouais tous les jours dans le jardin [Gewohnheit/Imparfait], mais hier je suis allé au cinéma [einmalige Handlung/Passé composé].“*"
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Bildung des Imparfait: - Regel: Man nimmt die 1. Person Plural (nous-Form) des Verbs im Présent, streicht die Endung -ons ab und hängt die 6 unveränderlichen Imparfait-Endungen an:   * je "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " -ais   * tu "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " -ais   * il / elle / on "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " -ait   * nous "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " -ions   * vous "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " -iez   * ils / elles "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " -aient [stumm, klingt wie -ais]. - Beispiel parler (nous parlons): je parlais, tu parlais, il parlait, nous parlions, vous parliez, ils parlaient. - Einzige Stamm-Ausnahme: être "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Stamm ét- (j'étais, tu étais, il était, nous étions, vous étiez, ils étaient). 2. Der fundamentale Zeitenkontrast: Imparfait vs. Passé composé: - 1. Das Imparfait (Die 'Videokamera' / Der Hintergrund):   * Beschreibungen: Wie war das Wetter? Wie sahen Personen/Orte aus? Gefühlszustände ('Il faisait beau, j'étais triste').   * Regelmäßige Gewohnheiten: Was geschah wiederholt? ('Chaque été, nous allions à la mer').   * Andauernde Hintergrundhandlungen: Was lief gerade im Hintergrund ab? ('Pendant que je dormais...'). - 2. Das Passé composé (Der 'Fotoapparat' / Die Haupthandlung):   * Punktuelle Einzelhandlungen: Neu einsetzende Ereignisse mit festem Start/Ende ('Hier, j'ai acheté un vélo').   * Handlungsketten: Nacheinander ablaufende Aktionen ('D'abord il a mangé, puis il est parti').   * Plötzliche Unterbrechung: Mitten in die Hintergrundhandlung ('Pendant que je lisais, le téléphone a sonné'). 3. Übersetzung des Beispielsatzes: - „Quand j'étais petit [Zustand/Imparfait], je jouais tous les jours dans le jardin [Gewohnheit/Imparfait], mais hier je suis allé au cinéma [einmalige Handlung/Passé composé].“"
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -130,9 +192,55 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Differenziere die beiden Klassen persönlicher Objektpronomen im Französischen: 1. **Direkte Objektpronomen (COD / Akkusativ: wen oder was?)**: *me, te, le / la / l', nous, vous, les* (ersetzen Nomen ohne Präposition, z. B. *'Je regarde le film' -> 'Je le regarde'*), 2. **Indirekte Objektpronomen (COI / Dativ: wem?)**: *me, te, lui (ihm/ihr), nous, vous, leur (ihnen)* (ersetzen Personen mit Präposition *à*, z. B. *'Je téléphone à Paul' -> 'Je lui téléphone'*), 3. **Stellung im Satz** (immer vor dem finiten Verb, bei Verneinung: *Subjekt + ne + Pronomen + Verb + pas*; bei 2 Verben wie *aller + Infinitiv* vor dem Infinitiv!) und übersetze: a) 'Ich sehe ihn.' b) 'Ich antworte ihr nicht.' c) 'Wir werden sie (die Freunde) einladen.'",
+          "question": "Differenziere die beiden Klassen persönlicher Objektpronomen im Französischen: 1. Direkte Objektpronomen (COD / Akkusativ: wen oder was?): me, te, le / la / l', nous, vous, les (ersetzen Nomen ohne Präposition, z. B. 'Je regarde le film' -> 'Je le regarde'), 2. Indirekte Objektpronomen (COI / Dativ: wem?): me, te, lui (ihm/ihr), nous, vous, leur (ihnen) (ersetzen Personen mit Präposition à, z. B. 'Je téléphone à Paul' -> 'Je lui téléphone'), 3. Stellung im Satz (immer vor dem finiten Verb, bei Verneinung: Subjekt + ne + Pronomen + Verb + pas; bei 2 Verben wie aller + Infinitiv vor dem Infinitiv!) und übersetze: a) 'Ich sehe ihn.' b) 'Ich antworte ihr nicht.' c) 'Wir werden sie (die Freunde) einladen.'",
           "concept": "COD: me, te, le/la, nous, vous, les (direktes Objekt); COI: me, te, lui, nous, vous, leur (Dativobjekt nach à); Pronomenstellung: vor finitem Verb bzw. vor Infinitiv; a) 'Je le vois.' b) 'Je ne lui réponds pas.' c) 'Nous allons les inviter.'",
-          "sample_solution": "1. Die beiden Systeme der französischen Objektpronomen: - **1. Direkte Objektpronomen (COD – Complément d'objet direct)**:   * Ersetzen ein direktes Nomen (Akkusativ: *Wen oder was?* ohne Präposition).   * Formen:     - *me / m'* (mich) | *nous* (uns)     - *te / t'* (dich) | *vous* (euch / Sie)     - **le / l'** (ihn / es - männlich) | **les** (sie - Plural)     - **la / l'** (sie / es - weiblich).   * *Beispiel*: *« Tu connais cette chanson ? – Oui, je **la** connais. »* - **2. Indirekte Objektpronomen (COI – Complément d'objet indirect)**:   * Ersetzen ein Nomen mit der Präposition **à** (Dativ: *Wem?*).   * Formen:     - *me / m'* (mir) | *nous* (uns)     - *te / t'* (dir) | *vous* (euch / Ihnen)     - **lui** (ihm **und** ihr! Kein Geschlechtsunterschied!)     - **leur** (ihnen - Plural).   * *Beispiel*: *« Tu parles à ta mère ? – Oui, je **lui** parle. »* 2. Die eiserne Regel der Pronomenstellung: - Objektpronomen stehen im Französischen **immer direkt vor dem Prädikat / Verb**:   * **Einfacher Aussagesatz**: $\\mathbf{\\text{Subjekt} + \\mathbf{Pronomen} + \\text{Verb}}$ (*'Je **le** vois'*).   * **Verneinter Satz**: $\\mathbf{\\text{Subjekt} + \\mathbf{ne} + \\mathbf{Pronomen} + \\text{Verb} + \\mathbf{pas}}$ (*'Je **ne lui** réponds **pas**'*).   * **Satz mit Hilfsverb / Infinitiv** (*aller + Infinitiv, vouloir + Infinitiv*): Das Pronomen wandert **direkt vor den Infinitiv** (*'Je vais **l\\'**inviter'*). 3. Übersetzungen: - a) 'Ich sehe ihn.' $\\rightarrow$ **« Je le vois. »** (COD *le* vor *vois*). - b) 'Ich antworte ihr nicht.' $\\rightarrow$ **« Je ne lui réponds pas. »** (COI *lui* für *à elle* eingeklammert von *ne ... pas*). - c) 'Wir werden sie (die Freunde) einladen.' $\\rightarrow$ **« Nous allons les inviter. »** (COD *les* steht direkt vor dem Infinitiv *inviter*)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die beiden Systeme der französischen Objektpronomen: - 1. Direkte Objektpronomen (COD – Complément d'objet direct):   * Ersetzen ein direktes Nomen (Akkusativ: Wen oder was? ohne Präposition).   * Formen:     - me / m' (mich) | nous (uns)     - te / t' (dich) | vous (euch / Sie)     - le / l' (ihn / es - männlich) | les (sie - Plural)     - la / l' (sie / es - weiblich).   * Beispiel: « Tu connais cette chanson ? – Oui, je la connais. » - 2. Indirekte Objektpronomen (COI – Complément d'objet indirect):   * Ersetzen ein Nomen mit der Präposition à (Dativ: Wem?).   * Formen:     - me / m' (mir) | nous (uns)     - te / t' (dir) | vous (euch / Ihnen)     - lui (ihm und ihr! Kein Geschlechtsunterschied!)     - leur (ihnen - Plural).   * Beispiel: « Tu parles à ta mère ? – Oui, je lui parle. » 2. Die eiserne Regel der Pronomenstellung: - Objektpronomen stehen im Französischen immer direkt vor dem Prädikat / Verb:   * Einfacher Aussagesatz: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Subjekt} + \\mathbf{Pronomen} + \\text{Verb}}"
+            },
+            {
+              "type": "text",
+              "text": " ('Je le vois').   * Verneinter Satz: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Subjekt} + \\mathbf{ne} + \\mathbf{Pronomen} + \\text{Verb} + \\mathbf{pas}}"
+            },
+            {
+              "type": "text",
+              "text": " ('Je ne lui réponds pas').   * Satz mit Hilfsverb / Infinitiv (aller + Infinitiv, vouloir + Infinitiv): Das Pronomen wandert direkt vor den Infinitiv (*'Je vais **l\\'**inviter'*). 3. Übersetzungen: - a) 'Ich sehe ihn.' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " « Je le vois. » (COD le vor vois). - b) 'Ich antworte ihr nicht.' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " « Je ne lui réponds pas. » (COI lui für à elle eingeklammert von ne ... pas). - c) 'Wir werden sie (die Freunde) einladen.' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " « Nous allons les inviter. » (COD les steht direkt vor dem Infinitiv inviter)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

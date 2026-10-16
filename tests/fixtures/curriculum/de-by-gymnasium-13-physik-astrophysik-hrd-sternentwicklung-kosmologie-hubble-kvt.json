@@ -65,9 +65,425 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die thermischen Strahlungsgesetze, das HRD und die Lebenszyklen von Sternen: 1. **Strahlungsgesetze schwarzer Körper**:   * **Wiensches Verschiebungsgesetz**: $\\lambda_{\\text{max}} \\cdot T = b = 2{,}898 \\cdot 10^{-3}\\,\\text{m}\\cdot\\text{K}$ (Höhere Temperatur $\\implies$ Maximum verschiebt sich ins kurzwellige Blaue/UV).   * **Stefan-Boltzmann-Gesetz**: $P = \\sigma \\cdot A \\cdot T^4 = \\sigma \\cdot (4\\pi R^2) \\cdot T^4$ (mit $\\sigma \\approx 5{,}67 \\cdot 10^{-8}\\,\\frac{\\text{W}}{\\text{m}^2\\text{K}^4}$), 2. **Das Hertzsprung-Russell-Diagramm (HRD)**:   * **Hauptreihe**: $90\\,\\%$ aller Sterne; hydrostatisches Gleichgewicht (Gravitationsdruck = Strahlungsdruck) durch **Wasserstoffbrennen** im Kern.   * **Rote Riesen / Überriesen (oben rechts)**: Hohe Leuchtkraft bei kühler Oberfläche $\\implies$ enormer Radius $R$; Heliumbrennen (Drei-Alpha-Prozess).   * **Weiße Zwerge (unten links)**: Geringe Leuchtkraft bei extrem heißer Oberfläche $\\implies$ extrem kleiner Radius ($R \\approx R_{\\text{Erde}}$), 3. **Endstadien der Sternentwicklung in Abhängigkeit von der Masse**:   * $M < 8\\,M_\\odot$ (z. B. Sonne): Roter Riese $\\rightarrow$ Planetarischer Nebel $\\rightarrow$ **Weißer Zwerg** (stabilisiert durch entarteten Elektronendruck, **Chandrasekhar-Grenze $M \\le 1{,}44\\,M_\\odot$**).   * $8\\,M_\\odot < M < 25\\,M_\\odot$: Supernova Typ II $\\rightarrow$ **Neutronenstern** (stabilisiert durch entarteten Neutronendruck).   * $M > 25\\,M_\\odot$: Gravitationskollaps $\\rightarrow$ **Schwarzes Loch** (Singularität, Ereignishorizont mit Schwarzschild-Radius $r_s = \\frac{2GM}{c^2}$).",
-          "concept": "Astrophysik 12: Wien-Gesetz lambda_max*T = b; Stefan-Boltzmann P = sigma*4pi*R^2*T^4; HRD (Hauptreihe, Riesen, Weiße Zwerge); Endstadien (Weißer Zwerg / Chandrasekhar 1,44 M_Sonne, Neutronenstern, Schwarzes Loch / Schwarzschild-Radius).",
-          "sample_solution": "1. Physikalische Grundlagen der Sternstrahlung: - **1. Wiensches Verschiebungsgesetz (1893)**:   * Ermöglicht die berührungslose Bestimmung der **Oberflächentemperatur** eines Sterns aus dem Maximum seines kontinuierlichen Spektrums:     $$\\mathbf{T = \\frac{b}{\\lambda_{\\text{max}}}} \\quad \\text{mit } b = 2{,}898 \\cdot 10^{-3}\\,\\text{m}\\cdot\\text{K}$$   * *(Bsp.: Sonne mit $\\lambda_{\\text{max}} \\approx 500\\,\\text{nm}$ (grün-gelb) $\\implies T \\approx 5800\\,\\text{K}$)*. - **2. Stefan-Boltzmann-Gesetz (1879)**:   * Die von einer Kugeloberfläche ($A = 4\\pi R^2$) abgestrahlte Gesamtleistung (**Leuchtkraft $L$**) skaliert mit der 4. Potenz der Temperatur:     $$\\mathbf{L = 4\\pi R^2 \\cdot \\sigma \\cdot T^4}$$   * Kennt man Leuchtkraft $L$ und Temperatur $T$, lässt sich der Sternradius $R$ exakt berechnen. 2. Das Hertzsprung-Russell-Diagramm (HRD, 1910): ```mermaid graph TD   subgraph HRD     TopRight[Rote Riesen & Überriesen: Kalt aber riesig]     Main[Hauptreihe: H-Fusion im Kern, Sonne G2V]     BottomLeft[Weiße Zwerge: Heiß aber erdgroß]   end ``` - **Merkhilfe Spektralklassen**: *« Oh Be A Fine Girl/Guy, Kiss Me »* (Klassen O, B, A, F, G, K, M von $T > 30.000\\,\\text{K}$ [blau] bis $T < 3.500\\,\\text{K}$ [rot]). 3. Sternentwicklung und Endstadien: - **Hydrostatisches Gleichgewicht auf der Hauptreihe**:   * Ein stabiler Stern befindet sich im exakten Gleichgewicht: Der nach innen gerichtete **Gravitationsdruck** wird durch den nach außen drängenden **Strahlungs- und Gasdruck** der Kernfusionsreaktionen (Proton-Proton-Kette) kompensiert. - **Die Endstadien nach Erschöpfung des Brennstoffs**:   * **1. Sonnenähnliche Sterne ($M < 8\\,M_\\odot$)**:     - Nach Wasserstoff- und Heliumbrennen wird die Hülle als *Planetarischer Nebel* abgestoßen.     - Der Kern kühlt als **Weißer Zwerg** aus (Dichte $\\approx 10^6\\,\\text{g/cm}^3$). Die **Chandrasekhar-Grenze ($1{,}44\\,M_\\odot$)** ist die maximale Masse, die der Fermi-Druck entarteter Elektronen vor dem Einsturz bewahren kann.   * **2. Massereiche Sterne ($8\\,M_\\odot < M < 25\\,M_\\odot$)**:     - Schalenbrennen bis zum Eisen-Kern ($^{56}\\text{Fe}$). Eisen besitzt die höchste Bindungsenergie pro Nukleon $\\implies$ Kernfusion stoppt abrupt $\\implies$ Kernkollaps in Millisekunden $\\implies$ **Supernova Typ II**.     - Zurück bleibt ein **Neutronenstern** (Radius ca. $10-15\\,\\text{km}$, Dichte $\\approx 10^{14}\\,\\text{g/cm}^3$), der als rotierender **Pulsar** Radiopulse aussendet.   * **3. Extrem massereiche Sterne ($M > 25\\,M_\\odot$)**:     - Keine Kraft kann der Gravitation widerstehen $\\implies$ Kollaps zur Raumzeit-Singularität (**Schwarzes Loch**).     - Der **Schwarzschild-Radius** definiert den Ereignishorizont, ab dem selbst Licht nicht mehr entkommen kann:       $$\\mathbf{r_s = \\frac{2\\,G\\,M}{c^2}}$$       *(Für unsere Sonne wäre $r_s \\approx 3\\,\\text{km}$, für die Erde $r_s \\approx 9\\,\\text{mm}$)*."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die thermischen Strahlungsgesetze, das HRD und die Lebenszyklen von Sternen: 1. Strahlungsgesetze schwarzer Körper:   * Wiensches Verschiebungsgesetz: "
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda_{\\text{max}} \\cdot T = b = 2{,}898 \\cdot 10^{-3}\\,\\text{m}\\cdot\\text{K}",
+              "speech": "Lambda max mal T gleich b gleich 2,898 mal 10 hoch minus 3 Meter mal Kelvin"
+            },
+            {
+              "type": "text",
+              "text": " (Höhere Temperatur "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Maximum verschiebt sich ins kurzwellige Blaue/UV).   * Stefan-Boltzmann-Gesetz: "
+            },
+            {
+              "type": "math",
+              "tex": "P = \\sigma \\cdot A \\cdot T^4 = \\sigma \\cdot (4\\pi R^2) \\cdot T^4",
+              "speech": "P gleich Sigma mal A mal T hoch 4 gleich Sigma mal Klammer auf 4 Pi R Quadrat Klammer zu mal T hoch 4"
+            },
+            {
+              "type": "text",
+              "text": " (mit "
+            },
+            {
+              "type": "math",
+              "tex": "\\sigma \\approx 5{,}67 \\cdot 10^{-8}\\,\\frac{\\text{W}}{\\text{m}^2\\text{K}^4}",
+              "speech": "Sigma ungefähr 5,67 mal 10 hoch minus 8 Watt pro Quadratmeter Kelvin hoch 4"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Das Hertzsprung-Russell-Diagramm (HRD):   * Hauptreihe: "
+            },
+            {
+              "type": "math",
+              "tex": "90\\,\\%",
+              "speech": "90 Prozent"
+            },
+            {
+              "type": "text",
+              "text": " aller Sterne; hydrostatisches Gleichgewicht (Gravitationsdruck = Strahlungsdruck) durch Wasserstoffbrennen im Kern.   * Rote Riesen / Überriesen (oben rechts): Hohe Leuchtkraft bei kühler Oberfläche "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " enormer Radius "
+            },
+            {
+              "type": "math",
+              "tex": "R",
+              "speech": "R"
+            },
+            {
+              "type": "text",
+              "text": "; Heliumbrennen (Drei-Alpha-Prozess).   * Weiße Zwerge (unten links): Geringe Leuchtkraft bei extrem heißer Oberfläche "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " extrem kleiner Radius ("
+            },
+            {
+              "type": "math",
+              "tex": "R \\approx R_{\\text{Erde}}",
+              "speech": "R ungefähr R Erde"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Endstadien der Sternentwicklung in Abhängigkeit von der Masse:   * "
+            },
+            {
+              "type": "math",
+              "tex": "M < 8\\,M_\\odot",
+              "speech": "M kleiner als 8 Sonnenmassen"
+            },
+            {
+              "type": "text",
+              "text": " (z. B. Sonne): Roter Riese "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Planetarischer Nebel "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Weißer Zwerg (stabilisiert durch entarteten Elektronendruck, Chandrasekhar-Grenze "
+            },
+            {
+              "type": "math",
+              "tex": "M \\le 1{,}44\\,M_\\odot",
+              "speech": "M kleiner gleich 1,44 Sonnenmassen"
+            },
+            {
+              "type": "text",
+              "text": ").   * "
+            },
+            {
+              "type": "math",
+              "tex": "8\\,M_\\odot < M < 25\\,M_\\odot",
+              "speech": "8 Sonnenmassen kleiner als M kleiner als 25 Sonnenmassen"
+            },
+            {
+              "type": "text",
+              "text": ": Supernova Typ II "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Neutronenstern (stabilisiert durch entarteten Neutronendruck).   * "
+            },
+            {
+              "type": "math",
+              "tex": "M > 25\\,M_\\odot",
+              "speech": "M größer als 25 Sonnenmassen"
+            },
+            {
+              "type": "text",
+              "text": ": Gravitationskollaps "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Schwarzes Loch (Singularität, Ereignishorizont mit Schwarzschild-Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r_s = \\frac{2GM}{c^2}",
+              "speech": "r s gleich 2 G M durch c Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Astrophysik 12: Wien-Gesetz "
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda_{\\text{max}} \\cdot T = b",
+              "speech": "Lambda max mal T gleich b"
+            },
+            {
+              "type": "text",
+              "text": "; Stefan-Boltzmann "
+            },
+            {
+              "type": "math",
+              "tex": "P = \\sigma \\cdot 4\\pi R^2 \\cdot T^4",
+              "speech": "P gleich Sigma mal 4 Pi R Quadrat mal T hoch vier"
+            },
+            {
+              "type": "text",
+              "text": "; HRD (Hauptreihe, Riesen, Weiße Zwerge); Endstadien (Weißer Zwerg / Chandrasekhar "
+            },
+            {
+              "type": "math",
+              "tex": "1{,}44\\,M_{\\text{Sonne}}",
+              "speech": "1,44 Sonnenmassen"
+            },
+            {
+              "type": "text",
+              "text": ", Neutronenstern, Schwarzes Loch / Schwarzschild-Radius)."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Physikalische Grundlagen der Sternstrahlung: - 1. Wiensches Verschiebungsgesetz (1893):   * Ermöglicht die berührungslose Bestimmung der Oberflächentemperatur eines Sterns aus dem Maximum seines kontinuierlichen Spektrums:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{T = \\frac{b}{\\lambda_{\\text{max}}}} \\quad \\text{mit } b = 2{,}898 \\cdot 10^{-3}\\,\\text{m}\\cdot\\text{K}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * (Bsp.: Sonne mit "
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda_{\\text{max}} \\approx 500\\,\\text{nm}"
+            },
+            {
+              "type": "text",
+              "text": " (grün-gelb) "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies T \\approx 5800\\,\\text{K}"
+            },
+            {
+              "type": "text",
+              "text": "). - 2. Stefan-Boltzmann-Gesetz (1879):   * Die von einer Kugeloberfläche ("
+            },
+            {
+              "type": "math",
+              "tex": "A = 4\\pi R^2"
+            },
+            {
+              "type": "text",
+              "text": ") abgestrahlte Gesamtleistung (Leuchtkraft "
+            },
+            {
+              "type": "math",
+              "tex": "L"
+            },
+            {
+              "type": "text",
+              "text": ") skaliert mit der 4. Potenz der Temperatur:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{L = 4\\pi R^2 \\cdot \\sigma \\cdot T^4}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Kennt man Leuchtkraft "
+            },
+            {
+              "type": "math",
+              "tex": "L"
+            },
+            {
+              "type": "text",
+              "text": " und Temperatur "
+            },
+            {
+              "type": "math",
+              "tex": "T"
+            },
+            {
+              "type": "text",
+              "text": ", lässt sich der Sternradius "
+            },
+            {
+              "type": "math",
+              "tex": "R"
+            },
+            {
+              "type": "text",
+              "text": " exakt berechnen. 2. Das Hertzsprung-Russell-Diagramm (HRD, 1910): ```mermaid graph TD   subgraph HRD     TopRight[Rote Riesen & Überriesen: Kalt aber riesig]     Main[Hauptreihe: H-Fusion im Kern, Sonne G2V]     BottomLeft[Weiße Zwerge: Heiß aber erdgroß]   end ``` - Merkhilfe Spektralklassen: « Oh Be A Fine Girl/Guy, Kiss Me » (Klassen O, B, A, F, G, K, M von "
+            },
+            {
+              "type": "math",
+              "tex": "T > 30.000\\,\\text{K}"
+            },
+            {
+              "type": "text",
+              "text": " [blau] bis "
+            },
+            {
+              "type": "math",
+              "tex": "T < 3.500\\,\\text{K}"
+            },
+            {
+              "type": "text",
+              "text": " [rot]). 3. Sternentwicklung und Endstadien: - Hydrostatisches Gleichgewicht auf der Hauptreihe:   * Ein stabiler Stern befindet sich im exakten Gleichgewicht: Der nach innen gerichtete Gravitationsdruck wird durch den nach außen drängenden Strahlungs- und Gasdruck der Kernfusionsreaktionen (Proton-Proton-Kette) kompensiert. - Die Endstadien nach Erschöpfung des Brennstoffs:   * 1. Sonnenähnliche Sterne ("
+            },
+            {
+              "type": "math",
+              "tex": "M < 8\\,M_\\odot"
+            },
+            {
+              "type": "text",
+              "text": "):     - Nach Wasserstoff- und Heliumbrennen wird die Hülle als Planetarischer Nebel abgestoßen.     - Der Kern kühlt als Weißer Zwerg aus (Dichte "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 10^6\\,\\text{g/cm}^3"
+            },
+            {
+              "type": "text",
+              "text": "). Die Chandrasekhar-Grenze ("
+            },
+            {
+              "type": "math",
+              "tex": "1{,}44\\,M_\\odot"
+            },
+            {
+              "type": "text",
+              "text": ") ist die maximale Masse, die der Fermi-Druck entarteter Elektronen vor dem Einsturz bewahren kann.   * 2. Massereiche Sterne ("
+            },
+            {
+              "type": "math",
+              "tex": "8\\,M_\\odot < M < 25\\,M_\\odot"
+            },
+            {
+              "type": "text",
+              "text": "):     - Schalenbrennen bis zum Eisen-Kern ("
+            },
+            {
+              "type": "math",
+              "tex": "^{56}\\text{Fe}"
+            },
+            {
+              "type": "text",
+              "text": "). Eisen besitzt die höchste Bindungsenergie pro Nukleon "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Kernfusion stoppt abrupt "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Kernkollaps in Millisekunden "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Supernova Typ II.     - Zurück bleibt ein Neutronenstern (Radius ca. "
+            },
+            {
+              "type": "math",
+              "tex": "10-15\\,\\text{km}"
+            },
+            {
+              "type": "text",
+              "text": ", Dichte "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 10^{14}\\,\\text{g/cm}^3"
+            },
+            {
+              "type": "text",
+              "text": "), der als rotierender Pulsar Radiopulse aussendet.   * 3. Extrem massereiche Sterne ("
+            },
+            {
+              "type": "math",
+              "tex": "M > 25\\,M_\\odot"
+            },
+            {
+              "type": "text",
+              "text": "):     - Keine Kraft kann der Gravitation widerstehen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Kollaps zur Raumzeit-Singularität (Schwarzes Loch).     - Der Schwarzschild-Radius definiert den Ereignishorizont, ab dem selbst Licht nicht mehr entkommen kann:       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{r_s = \\frac{2\\,G\\,M}{c^2}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "       (Für unsere Sonne wäre "
+            },
+            {
+              "type": "math",
+              "tex": "r_s \\approx 3\\,\\text{km}"
+            },
+            {
+              "type": "text",
+              "text": ", für die Erde "
+            },
+            {
+              "type": "math",
+              "tex": "r_s \\approx 9\\,\\text{mm}"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -117,20 +533,283 @@
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "v = H_0 \\cdot r",
-              "v = \\frac{H_0}{r^2}"
+              [
+                {
+                  "type": "math",
+                  "tex": "v = H_0 \\cdot r",
+                  "speech": "v gleich H null mal r"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "v = \\frac{H_0}{r^2}",
+                  "speech": "v gleich H null durch r Quadrat"
+                }
+              ]
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GD30000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das Hubble-Lemaître-Gesetz, die kosmologische Rotverschiebung und die drei experimentellen Säulen des Urknallmodells: 1. **Die Kosmologische Rotverschiebung**:   * Spektrallinien entfernter Galaxien sind zu längeren (roteren) Wellenlängen verschoben: $\\mathbf{z = \\frac{\\Delta \\lambda}{\\lambda_0} = \\frac{\\lambda_{\\text{beob}} - \\lambda_0}{\\lambda_0}}$.   * Für $v \\ll c$ gilt näherungsweise: $z \\approx \\frac{v}{c}$.   * *Wichtige physikalische Unterscheidung*: Dies ist kein Doppler-Effekt durch Bewegung von Körpern durch den Raum, sondern eine **Dehnung der Lichtwellen während ihrer Reise durch den sich ausdehnenden Raum selbst**! 2. **Das Hubble-Lemaître-Gesetz (1927/1929)**:   * $\\mathbf{v = H_0 \\cdot r}$ (mit $H_0 \\approx 70\\,\\frac{\\text{km}}{\\text{s}\\cdot\\text{Mpc}}$).   * **Hubble-Zeit (Weltalter)**: Unter Annahme konstanter Expansion ergibt der Kehrwert der Hubble-Konstante das Alter des Universums:     $$\\mathbf{t_{\\text{Hubble}} = \\frac{1}{H_0} \\approx 13{,}8 \\cdot 10^9\\,\\text{Jahre}}$$, 3. **Die drei Hauptbeweise für das Urknallmodell (Big Bang)**:   * **1. Expansion des Raumes**: Nachgewiesen durch Galaxienflucht nach Hubble.   * **2. Die Kosmische Mikrowellen-Hintergrundstrahlung (CMB)**: Entdeckt 1964 von Penzias & Wilson; isotrope Schwarzkörperstrahlung mit $T = 2{,}725\\,\\text{K}$ als 'Nachglimmen' des Urknalls (Entkopplung von Strahlung und Materie ca. $380.000$ Jahre nach dem Urknall).   * **3. Primordiale Nukleosynthese**: Häufigkeitsverteilung der leichten Elemente im Kosmos (ca. $75\\,\\%$ Wasserstoff, $25\\,\\%$ Helium-4, Spuren von Deuterium und Lithium-7).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das Hubble-Lemaître-Gesetz, die kosmologische Rotverschiebung und die drei experimentellen Säulen des Urknallmodells: 1. Die Kosmologische Rotverschiebung:   * Spektrallinien entfernter Galaxien sind zu längeren (roteren) Wellenlängen verschoben: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{z = \\frac{\\Delta \\lambda}{\\lambda_0} = \\frac{\\lambda_{\\text{beob}} - \\lambda_0}{\\lambda_0}}",
+              "speech": "z gleich Delta Lambda durch Lambda null gleich, Lambda beobachtet minus Lambda null, geteilt durch Lambda null"
+            },
+            {
+              "type": "text",
+              "text": ".   * Für "
+            },
+            {
+              "type": "math",
+              "tex": "v \\ll c",
+              "speech": "v sehr viel kleiner als c"
+            },
+            {
+              "type": "text",
+              "text": " gilt näherungsweise: "
+            },
+            {
+              "type": "math",
+              "tex": "z \\approx \\frac{v}{c}",
+              "speech": "z ungefähr v durch c"
+            },
+            {
+              "type": "text",
+              "text": ".   * Wichtige physikalische Unterscheidung: Dies ist kein Doppler-Effekt durch Bewegung von Körpern durch den Raum, sondern eine Dehnung der Lichtwellen während ihrer Reise durch den sich ausdehnenden Raum selbst! 2. Das Hubble-Lemaître-Gesetz (1927/1929):   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{v = H_0 \\cdot r}",
+              "speech": "v gleich H null mal r"
+            },
+            {
+              "type": "text",
+              "text": " (mit "
+            },
+            {
+              "type": "math",
+              "tex": "H_0 \\approx 70\\,\\frac{\\text{km}}{\\text{s}\\cdot\\text{Mpc}}",
+              "speech": "H null ungefähr 70 Kilometer pro Sekunde und Megaparsec"
+            },
+            {
+              "type": "text",
+              "text": ").   * Hubble-Zeit (Weltalter): Unter Annahme konstanter Expansion ergibt der Kehrwert der Hubble-Konstante das Alter des Universums:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{t_{\\text{Hubble}} = \\frac{1}{H_0} \\approx 13{,}8 \\cdot 10^9\\,\\text{Jahre}}",
+              "block": true,
+              "speech": "t Hubble gleich 1 durch H null ungefähr 13,8 mal 10 hoch 9 Jahre"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Die drei Hauptbeweise für das Urknallmodell (Big Bang):   * 1. Expansion des Raumes: Nachgewiesen durch Galaxienflucht nach Hubble.   * 2. Die Kosmische Mikrowellen-Hintergrundstrahlung (CMB): Entdeckt 1964 von Penzias & Wilson; isotrope Schwarzkörperstrahlung mit "
+            },
+            {
+              "type": "math",
+              "tex": "T = 2{,}725\\,\\text{K}",
+              "speech": "T gleich 2,725 Kelvin"
+            },
+            {
+              "type": "text",
+              "text": " als 'Nachglimmen' des Urknalls (Entkopplung von Strahlung und Materie ca. "
+            },
+            {
+              "type": "math",
+              "tex": "380.000",
+              "speech": "380.000"
+            },
+            {
+              "type": "text",
+              "text": " Jahre nach dem Urknall).   * 3. Primordiale Nukleosynthese: Häufigkeitsverteilung der leichten Elemente im Kosmos (ca. "
+            },
+            {
+              "type": "math",
+              "tex": "75\\,\\%",
+              "speech": "75 Prozent"
+            },
+            {
+              "type": "text",
+              "text": " Wasserstoff, "
+            },
+            {
+              "type": "math",
+              "tex": "25\\,\\%",
+              "speech": "25 Prozent"
+            },
+            {
+              "type": "text",
+              "text": " Helium-4, Spuren von Deuterium und Lithium-7)."
+            }
+          ],
           "concept": "Kosmologie 13: Rotverschiebung z = Delta lambda / lambda_0; Hubble-Gesetz v = H_0 * r; Hubble-Zeit t_H = 1/H_0 approx 13,8 Mrd. Jahre; Urknall-Beweise (Raumexpansion, Kosmischer Mikrowellenhintergrund CMB bei 2,7 K, primordiale Elementhäufigkeit 75% H / 25% He).",
-          "sample_solution": "1. Das Hubble-Lemaître-Gesetz und die Raumexpansion: - **Historischer Durchbruch**:   * Georges Lemaître (1927) und Edwin Hubble (1929) entdeckten anhand von Cepheiden in fernen Nebeln (wie Andromeda), dass sich fast alle Galaxien von uns wegbewegen – und zwar umso schneller, je weiter sie entfernt sind:     $$\\mathbf{v = H_0 \\cdot r}$$   *(mit $H_0 \\approx 70\\,\\frac{\\text{km/s}}{\\text{Mpc}}$; $1\\,\\text{Mpc} = 10^6\\,\\text{pc} \\approx 3{,}26 \\cdot 10^6\\,\\text{Lichtjahre} \\approx 3{,}086 \\cdot 10^{22}\\,\\text{m}$)*. - **Kosmologisches Prinzip**:   * Das Universum ist auf großen Skalen homogen (überall dieselbe Dichte) und isotrop (in alle Richtungen gleich). Es gibt kein physikalisches 'Zentrum' der Expansion; von jedem beliebigen Beobachtungspunkt aus fliehen alle anderen Galaxien nach demselben Gesetz. 2. Abschätzung des Alters des Universums (Die Hubble-Zeit): - Wenn sich zwei Galaxien im Abstand $r$ mit konstanter Geschwindigkeit $v = H_0 \\cdot r$ voneinander entfernt haben, benötigten sie dafür die Zeit:   $$t = \\frac{r}{v} = \\frac{r}{H_0 \\cdot r} = \\mathbf{\\frac{1}{H_0}}$$ - Einheitenumrechnung:   $$H_0 = 70\\,\\frac{\\text{km}}{\\text{s}\\cdot\\text{Mpc}} = \\frac{70 \\cdot 10^3\\,\\text{m/s}}{3{,}086 \\cdot 10^{22}\\,\\text{m}} \\approx 2{,}268 \\cdot 10^{-18}\\,\\text{s}^{-1}$$   $$t_{\\text{Hubble}} = \\frac{1}{2{,}268 \\cdot 10^{-18}\\,\\text{s}^{-1}} \\approx 4{,}41 \\cdot 10^{17}\\,\\text{s} = \\mathbf{\\frac{4{,}41 \\cdot 10^{17}}{365{,}25 \\cdot 86400}\\,\\text{a} \\approx 13{,}98 \\cdot 10^9\\,\\text{Jahre}}$$   *(Exakte Satellitenmessungen [Planck-Mission] liefern unter Berücksichtigung von Dunkler Energie und Dunkler Materie ein Weltalter von **$13{,}787 \\pm 0{,}020$ Milliarden Jahren**)*. 3. Die drei experimentellen Säulen des Urknallmodells: - **1. Galaxienflucht und kosmologische Rotverschiebung**:   * Bestätigt die dynamische Expansion der Raumzeit. - **2. Der kosmische Mikrowellenhintergrund (CMB, Cosmic Microwave Background)**:   * Ca. $380.000$ Jahre nach dem Urknall kühlte das expandierende Plasma auf $T \\approx 3000\\,\\text{K}$ ab $\\implies$ Protonen fingen Elektronen ein (Rekombination) $\\implies$ Das Universum wurde schlagartig transparent für Photonen.   * Durch die seitherige Raumausdehnung um den Faktor $\\approx 1100$ wurde diese Strahlung bis heute in den Mikrowellenbereich gedehnt und entspricht exakt einem perfekten Planck-Schwarzkörperspektrum mit **$T = 2{,}725\\,\\text{K}$**. - **3. Primordiale Häufigkeit der leichten Elemente**:   * In den ersten 3 Minuten nach dem Urknall fusionierten Protonen und Neutronen zu leichten Kernen. Die theoretische Vorhersage des Standardmodells (**$75\\,\\%$ Wasserstoff, $24-25\\,\\%$ Helium-4, $0{,}01\\,\\%$ Deuterium**) stimmt exakt mit spektroskopischen Messungen in unberührten interstellaren Gaswolken überein."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Das Hubble-Lemaître-Gesetz und die Raumexpansion: - Historischer Durchbruch:   * Georges Lemaître (1927) und Edwin Hubble (1929) entdeckten anhand von Cepheiden in fernen Nebeln (wie Andromeda), dass sich fast alle Galaxien von uns wegbewegen – und zwar umso schneller, je weiter sie entfernt sind:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{v = H_0 \\cdot r}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   (mit "
+            },
+            {
+              "type": "math",
+              "tex": "H_0 \\approx 70\\,\\frac{\\text{km/s}}{\\text{Mpc}}"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "1\\,\\text{Mpc} = 10^6\\,\\text{pc} \\approx 3{,}26 \\cdot 10^6\\,\\text{Lichtjahre} \\approx 3{,}086 \\cdot 10^{22}\\,\\text{m}"
+            },
+            {
+              "type": "text",
+              "text": "). - Kosmologisches Prinzip:   * Das Universum ist auf großen Skalen homogen (überall dieselbe Dichte) und isotrop (in alle Richtungen gleich). Es gibt kein physikalisches 'Zentrum' der Expansion; von jedem beliebigen Beobachtungspunkt aus fliehen alle anderen Galaxien nach demselben Gesetz. 2. Abschätzung des Alters des Universums (Die Hubble-Zeit): - Wenn sich zwei Galaxien im Abstand "
+            },
+            {
+              "type": "math",
+              "tex": "r"
+            },
+            {
+              "type": "text",
+              "text": " mit konstanter Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v = H_0 \\cdot r"
+            },
+            {
+              "type": "text",
+              "text": " voneinander entfernt haben, benötigten sie dafür die Zeit:   "
+            },
+            {
+              "type": "math",
+              "tex": "t = \\frac{r}{v} = \\frac{r}{H_0 \\cdot r} = \\mathbf{\\frac{1}{H_0}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Einheitenumrechnung:   "
+            },
+            {
+              "type": "math",
+              "tex": "H_0 = 70\\,\\frac{\\text{km}}{\\text{s}\\cdot\\text{Mpc}} = \\frac{70 \\cdot 10^3\\,\\text{m/s}}{3{,}086 \\cdot 10^{22}\\,\\text{m}} \\approx 2{,}268 \\cdot 10^{-18}\\,\\text{s}^{-1}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "t_{\\text{Hubble}} = \\frac{1}{2{,}268 \\cdot 10^{-18}\\,\\text{s}^{-1}} \\approx 4{,}41 \\cdot 10^{17}\\,\\text{s} = \\mathbf{\\frac{4{,}41 \\cdot 10^{17}}{365{,}25 \\cdot 86400}\\,\\text{a} \\approx 13{,}98 \\cdot 10^9\\,\\text{Jahre}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   (Exakte Satellitenmessungen [Planck-Mission] liefern unter Berücksichtigung von Dunkler Energie und Dunkler Materie ein Weltalter von "
+            },
+            {
+              "type": "math",
+              "tex": "13{,}787 \\pm 0{,}020"
+            },
+            {
+              "type": "text",
+              "text": " Milliarden Jahren). 3. Die drei experimentellen Säulen des Urknallmodells: - 1. Galaxienflucht und kosmologische Rotverschiebung:   * Bestätigt die dynamische Expansion der Raumzeit. - 2. Der kosmische Mikrowellenhintergrund (CMB, Cosmic Microwave Background):   * Ca. "
+            },
+            {
+              "type": "math",
+              "tex": "380.000"
+            },
+            {
+              "type": "text",
+              "text": " Jahre nach dem Urknall kühlte das expandierende Plasma auf "
+            },
+            {
+              "type": "math",
+              "tex": "T \\approx 3000\\,\\text{K}"
+            },
+            {
+              "type": "text",
+              "text": " ab "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Protonen fingen Elektronen ein (Rekombination) "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Das Universum wurde schlagartig transparent für Photonen.   * Durch die seitherige Raumausdehnung um den Faktor "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 1100"
+            },
+            {
+              "type": "text",
+              "text": " wurde diese Strahlung bis heute in den Mikrowellenbereich gedehnt und entspricht exakt einem perfekten Planck-Schwarzkörperspektrum mit "
+            },
+            {
+              "type": "math",
+              "tex": "T = 2{,}725\\,\\text{K}"
+            },
+            {
+              "type": "text",
+              "text": ". - 3. Primordiale Häufigkeit der leichten Elemente:   * In den ersten 3 Minuten nach dem Urknall fusionierten Protonen und Neutronen zu leichten Kernen. Die theoretische Vorhersage des Standardmodells ("
+            },
+            {
+              "type": "math",
+              "tex": "75\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " Wasserstoff, "
+            },
+            {
+              "type": "math",
+              "tex": "24-25\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " Helium-4, "
+            },
+            {
+              "type": "math",
+              "tex": "0{,}01\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " Deuterium) stimmt exakt mit spektroskopischen Messungen in unberührten interstellaren Gaswolken überein."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

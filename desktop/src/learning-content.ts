@@ -1,4 +1,11 @@
-import type { ReadUpWire } from "../../src/bridge/protocol.js";
+import type {
+  CardSegmentPayload,
+  ReadUpWire,
+} from "../../src/bridge/protocol.js";
+import {
+  attachCardTextEditor,
+  type CardTextEditor,
+} from "./card-text-editor.js";
 import { runBridge } from "./bridge-transport.js";
 import { currentLocale, t, tf } from "./i18n.js";
 import {
@@ -20,6 +27,9 @@ export interface PersonalCard {
   slug: string;
   title: string;
   concept: string;
+  /** Card text with formulas (ADR 2026-10-14b); absent or null when plain. */
+  questionSegments?: CardSegmentPayload[] | null;
+  conceptSegments?: CardSegmentPayload[] | null;
   domain: string;
   bloomLevel: number;
   context: string;
@@ -86,6 +96,8 @@ interface DraftTokenRow {
   domain: string | null;
   bloomLevel: number | null;
   editorialState: string;
+  questionSegments?: CardSegmentPayload[] | null;
+  conceptSegments?: CardSegmentPayload[] | null;
 }
 
 let segment: LearningListSegment = "personal";
@@ -294,7 +306,45 @@ let foundationsProposalsContainer: HTMLElement;
 let btnFoundationsModalCancel: HTMLButtonElement;
 let btnFoundationsModalSubmit: HTMLButtonElement;
 
-interface ProposalEntry {
+/**
+ * A generated proposal's formulas (ADR 2026-10-14b), with the plain text
+ * they were derived from. They travel to the confirm only while the learner
+ * has not edited that text: an edited field is plain again.
+ */
+interface ProposalCardText {
+  question_segments?: CardSegmentPayload[] | null;
+  concept_segments?: CardSegmentPayload[] | null;
+  sourceQuestion?: string;
+  sourceConcept?: string;
+}
+
+function unchangedSegments(
+  text: string,
+  source: string | undefined,
+  segments: CardSegmentPayload[] | null | undefined,
+): CardSegmentPayload[] | null {
+  return segments && source !== undefined && text === source.trim()
+    ? segments
+    : null;
+}
+
+/** The proposal as the confirm command takes it. */
+function confirmedCardText(p: ProposalCardText & { question: string; concept: string }) {
+  return {
+    question_segments: unchangedSegments(
+      p.question.trim(),
+      p.sourceQuestion,
+      p.question_segments,
+    ),
+    concept_segments: unchangedSegments(
+      p.concept.trim(),
+      p.sourceConcept,
+      p.concept_segments,
+    ),
+  };
+}
+
+interface ProposalEntry extends ProposalCardText {
   question: string;
   concept: string;
   domain: string;
@@ -303,7 +353,7 @@ interface ProposalEntry {
 }
 let currentProposals: ProposalEntry[] = [];
 
-interface FoundationProposalEntry {
+interface FoundationProposalEntry extends ProposalCardText {
   question: string;
   concept: string;
   domain: string;
@@ -326,6 +376,9 @@ let createFirstCardBtn: HTMLButtonElement;
 // Form fields
 let fieldQuestion: HTMLTextAreaElement;
 let fieldConcept: HTMLTextAreaElement;
+/** The formula editors under both fields (ADR 2026-10-14b, D9). */
+let questionEditor: CardTextEditor;
+let conceptEditor: CardTextEditor;
 let fieldTitle: HTMLInputElement;
 let fieldDomain: HTMLInputElement;
 let fieldSourceLink: HTMLInputElement;
@@ -580,6 +633,14 @@ export function initLearningContentStudio(): void {
   fieldConcept = document.getElementById(
     "editor-field-concept",
   ) as HTMLTextAreaElement;
+  questionEditor = attachCardTextEditor(fieldQuestion, {
+    side: "question",
+    otherSide: () => fieldConcept.value,
+  });
+  conceptEditor = attachCardTextEditor(fieldConcept, {
+    side: "answer",
+    otherSide: () => fieldQuestion.value,
+  });
   fieldTitle = document.getElementById(
     "editor-field-title",
   ) as HTMLInputElement;
@@ -1055,6 +1116,8 @@ export async function loadStudioData(): Promise<void> {
           context: token.context ?? "",
           sourceLink: token.sourceLink,
           question: token.question,
+          questionSegments: token.questionSegments ?? null,
+          conceptSegments: token.conceptSegments ?? null,
           editorialState: token.editorialState,
         });
       });
@@ -1359,8 +1422,8 @@ function selectCard(card: PersonalCard): void {
   layoutContainer.classList.add("show-editor");
 
   // Populate editor form
-  fieldQuestion.value = card.question || "";
-  fieldConcept.value = card.concept || "";
+  questionEditor.load(card.question || "", card.questionSegments);
+  conceptEditor.load(card.concept || "", card.conceptSegments);
   fieldTitle.value = card.title || "";
   fieldDomain.value = card.domain || "";
   fieldSourceLink.value = card.sourceLink || "";
@@ -1411,8 +1474,8 @@ function startCreateNewCard(): void {
   layoutContainer.classList.add("show-editor");
 
   // Clear editor form
-  fieldQuestion.value = "";
-  fieldConcept.value = "";
+  questionEditor.load("", null);
+  conceptEditor.load("", null);
   fieldTitle.value = "";
   fieldDomain.value = "";
   fieldSourceLink.value = "";
@@ -1456,6 +1519,8 @@ function setEditorLocked(locked: boolean): void {
   ]) {
     field.readOnly = locked;
   }
+  questionEditor.setLocked(locked);
+  conceptEditor.setLocked(locked);
   fieldBloom.disabled = locked;
   fieldMode.disabled = locked;
 }
@@ -1583,6 +1648,11 @@ async function publishDraftCard(): Promise<void> {
     fieldQuestion.focus();
     return;
   }
+  const formulaProblem = cardTextProblem();
+  if (formulaProblem) {
+    alert(formulaProblem);
+    return;
+  }
   if (btnPublishCard) btnPublishCard.disabled = true;
   try {
     const args = [
@@ -1606,6 +1676,7 @@ async function publishDraftCard(): Promise<void> {
     if (fieldSourceLink.value.trim()) {
       args.push("--source-link", fieldSourceLink.value.trim());
     }
+    args.push(...cardTextArgs());
     await runBridge<{ success: boolean }>(
       "personal-card-publish-revision",
       args,
@@ -1675,6 +1746,11 @@ async function submitReleaseRevision(): Promise<void> {
 
   if (!checkedRadio) return;
 
+  const formulaProblem = cardTextProblem();
+  if (formulaProblem) {
+    alert(formulaProblem);
+    return;
+  }
   const materiality = checkedRadio.value as "cosmetic" | "material";
   const publishedBy = releaseFieldAuthor.value.trim() || undefined;
 
@@ -1703,6 +1779,7 @@ async function submitReleaseRevision(): Promise<void> {
     if (context) args.push("--context", context);
     if (question) args.push("--question", question);
     if (sourceLink) args.push("--source-link", sourceLink);
+    args.push(...cardTextArgs());
 
     const res = await runBridge<{
       success: boolean;
@@ -1748,6 +1825,29 @@ function toggleAdvancedSection(): void {
   }
 }
 
+/**
+ * The formula editors' part of a save (ADR 2026-10-14b, D9): segments for a
+ * side with formulas, `null` for one that lost them, nothing otherwise.
+ */
+/** Why a side cannot be saved yet, shown before anything is sent. */
+function cardTextProblem(): string | null {
+  const problem = questionEditor.problem() ?? conceptEditor.problem();
+  return problem ? `${t("cte_invalid_formula")} ${problem}` : null;
+}
+
+function cardTextArgs(): string[] {
+  const args: string[] = [];
+  const question = questionEditor.segmentsForSave();
+  if (question !== undefined) {
+    args.push("--question-segments", JSON.stringify(question));
+  }
+  const concept = conceptEditor.segmentsForSave();
+  if (concept !== undefined) {
+    args.push("--concept-segments", JSON.stringify(concept));
+  }
+  return args;
+}
+
 async function saveCard(): Promise<void> {
   const question = fieldQuestion.value.trim();
   const concept = fieldConcept.value.trim();
@@ -1761,6 +1861,11 @@ async function saveCard(): Promise<void> {
   if (!concept) {
     alert(t("lbl_err_concept_required"));
     fieldConcept.focus();
+    return;
+  }
+  const formulaProblem = cardTextProblem();
+  if (formulaProblem) {
+    alert(formulaProblem);
     return;
   }
 
@@ -1788,6 +1893,7 @@ async function saveCard(): Promise<void> {
       if (contextFilter.value) {
         args.push("--knowledge-context", contextFilter.value);
       }
+      args.push(...cardTextArgs());
 
       const res = await runBridge<{
         success: boolean;
@@ -1826,6 +1932,7 @@ async function saveCard(): Promise<void> {
         question,
         "--source-link",
         sourceLink,
+        ...cardTextArgs(),
       ];
 
       const res = await runBridge<{ success: boolean }>(
@@ -2178,6 +2285,8 @@ async function submitImport(): Promise<void> {
         proposals: Array<{
           question: string;
           concept: string;
+          question_segments?: CardSegmentPayload[] | null;
+          concept_segments?: CardSegmentPayload[] | null;
           domain: string;
           bloom_level: number;
           symbiosis_mode: string;
@@ -2202,6 +2311,9 @@ async function submitImport(): Promise<void> {
       const sourceProposals = previewRes.proposals.map((p) => ({
         question: p.question,
         concept: p.concept,
+        // Formulas as the model wrote them (ADR 2026-10-14b).
+        question_segments: p.question_segments ?? null,
+        concept_segments: p.concept_segments ?? null,
         domain: p.domain,
         bloom_level: p.bloom_level,
         symbiosis_mode: p.symbiosis_mode || "none",
@@ -2282,7 +2394,11 @@ async function showSplitModal(): Promise<void> {
     }>("personal-card-split-proposals", ["--slug", selectedCard.slug]);
 
     if (res && res.success && Array.isArray(res.proposals)) {
-      currentProposals = res.proposals;
+      currentProposals = res.proposals.map((p) => ({
+        ...p,
+        sourceQuestion: p.question,
+        sourceConcept: p.concept,
+      }));
       renderSplitProposals();
       splitProposalsSection.classList.remove("hidden");
       btnSplitModalSubmit.disabled = false;
@@ -2402,6 +2518,7 @@ async function submitConfirmSplit(): Promise<void> {
     .map((p) => ({
       question: p.question.trim(),
       concept: p.concept.trim(),
+      ...confirmedCardText(p),
       domain: p.domain.trim(),
       bloom_level: p.bloom_level,
       symbiosis_mode: p.symbiosis_mode,
@@ -2472,7 +2589,12 @@ async function showFoundationsModal(): Promise<void> {
     }>("personal-card-foundations-proposals", ["--slug", selectedCard.slug]);
 
     if (res && res.success && Array.isArray(res.proposals)) {
-      currentFoundations = res.proposals.map((p) => ({ ...p, selected: true }));
+      currentFoundations = res.proposals.map((p) => ({
+        ...p,
+        sourceQuestion: p.question,
+        sourceConcept: p.concept,
+        selected: true,
+      }));
       renderFoundationsProposals();
       foundationsProposalsSection.classList.remove("hidden");
       btnFoundationsModalSubmit.disabled = false;
@@ -2583,6 +2705,7 @@ async function submitConfirmFoundations(): Promise<void> {
     .map((p) => ({
       question: p.question.trim(),
       concept: p.concept.trim(),
+      ...confirmedCardText(p),
       domain: p.domain.trim(),
       bloom_level: p.bloom_level,
       symbiosis_mode: p.symbiosis_mode,

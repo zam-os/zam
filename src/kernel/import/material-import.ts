@@ -29,7 +29,14 @@ import {
   getBundledCellTile,
   listBundledCells,
 } from "../library/bundled-cells.js";
-import { installKvtTile } from "../library/kvt-attach.js";
+import type { CardText } from "../library/card-text.js";
+import {
+  type CardTextInputMode,
+  type CardTextNote,
+  readCardTextInput,
+  withSpeech,
+} from "../library/card-text-input.js";
+import { installKvtTile, kvtItemPlainTexts } from "../library/kvt-attach.js";
 import { ensureCard, getCard, reattachCardForUser } from "../models/card.js";
 import {
   type BloomLevel,
@@ -96,8 +103,21 @@ export interface MaterialAnalysis {
 }
 
 export interface MaterialProposal {
+  /** Plain text; with segments, their projection. */
   question: string;
   answer: string;
+  /**
+   * Question and answer as card-text segments, when they hold a formula
+   * (ADR 2026-10-14b, Decision 6). The producer may send either side as a
+   * string with `$…$` or as a segment list; the parse lifts and repairs it.
+   */
+  questionSegments?: CardText;
+  answerSegments?: CardText;
+  /**
+   * What stayed text although it looked like TeX: a `$HOME`, a price, a
+   * formula the tokenizer refused. The review list shows it; never an error.
+   */
+  textNotes?: CardTextNote[];
   title: string | null;
   bloom: BloomLevel;
   /** Index into {@link MaterialProposalSet.files}. */
@@ -360,10 +380,43 @@ function parseFiles(issues: string[], value: unknown): MaterialFile[] {
   return files;
 }
 
+/**
+ * One side of a proposal: `<key>Segments` (the parsed form a staged batch
+ * stores) wins over `<key>`, which may be a string or a segment list.
+ */
+function readCardSide(
+  issues: string[],
+  entry: Record<string, unknown>,
+  key: "question" | "answer",
+  path: string,
+  max: number,
+  mode: CardTextInputMode,
+): { plain: string; segments: CardText | null; notes: CardTextNote[] } | null {
+  const stored = entry[`${key}Segments`];
+  const value = Array.isArray(stored) ? stored : entry[key];
+  if (value === undefined || value === null) {
+    issues.push(`${path}.${key}: required`);
+    return null;
+  }
+  const result = readCardTextInput(value, mode);
+  if (!result.ok) {
+    for (const issue of result.issues) {
+      issues.push(`${path}.${key}${issue.path}: ${issue.message}`);
+    }
+    return null;
+  }
+  if (result.value.plain.length > max) {
+    issues.push(`${path}.${key}: longer than ${max} characters`);
+    return null;
+  }
+  return result.value;
+}
+
 function parseProposals(
   issues: string[],
   value: unknown,
   fileCount: number,
+  mode: CardTextInputMode,
 ): MaterialProposal[] {
   if (!Array.isArray(value) || value.length === 0) {
     issues.push("proposals: must be a non-empty array");
@@ -381,14 +434,8 @@ function parseProposals(
       return;
     }
     const before = issues.length;
-    const question = readText(issues, entry, "question", path, {
-      required: true,
-      max: 1000,
-    });
-    const answer = readText(issues, entry, "answer", path, {
-      required: true,
-      max: 2000,
-    });
+    const question = readCardSide(issues, entry, "question", path, 1000, mode);
+    const answer = readCardSide(issues, entry, "answer", path, 2000, mode);
     const title = readText(issues, entry, "title", path, {
       required: false,
       max: 200,
@@ -475,10 +522,14 @@ function parseProposals(
         kind = entry.kind;
       }
     }
-    if (issues.length > before) return;
+    if (issues.length > before || !question || !answer) return;
+    const textNotes = [...question.notes, ...answer.notes];
     proposals.push({
-      question: question as string,
-      answer: answer as string,
+      question: question.plain,
+      answer: answer.plain,
+      ...(question.segments ? { questionSegments: question.segments } : {}),
+      ...(answer.segments ? { answerSegments: answer.segments } : {}),
+      ...(textNotes.length > 0 ? { textNotes } : {}),
       title: title && title.length > 0 ? title : null,
       bloom: entry.bloom as BloomLevel,
       file: file as number,
@@ -524,8 +575,16 @@ function parsePlace(
  * Validate a proposal set from a model or an agent. Unstructured output never
  * passes (ADR 2026-06-30, testing strategy): every offending path is listed in
  * one {@link MaterialProposalSetError}.
+ *
+ * Card text (ADR 2026-10-14b, Decision 6): `mode: "agent"` names a formula
+ * the tokenizer refuses; the default `import` keeps it as readable text and
+ * notes it for the review list. Missing speech is checked separately
+ * ({@link materialSpeechIssues}), because only the harness path refuses it.
  */
-export function parseMaterialProposalSet(input: unknown): MaterialProposalSet {
+export function parseMaterialProposalSet(
+  input: unknown,
+  opts: { mode?: CardTextInputMode } = {},
+): MaterialProposalSet {
   const issues: string[] = [];
   if (!isRecord(input)) {
     throw new MaterialProposalSetError(["(root): must be an object"]);
@@ -535,7 +594,12 @@ export function parseMaterialProposalSet(input: unknown): MaterialProposalSet {
   }
   const analysis = parseAnalysis(issues, input.analysis);
   const files = parseFiles(issues, input.files);
-  const proposals = parseProposals(issues, input.proposals, files.length);
+  const proposals = parseProposals(
+    issues,
+    input.proposals,
+    files.length,
+    opts.mode ?? "import",
+  );
   const place = parsePlace(issues, input.place);
   if (issues.length > 0 || analysis === null) {
     throw new MaterialProposalSetError(
@@ -548,6 +612,70 @@ export function parseMaterialProposalSet(input: unknown): MaterialProposalSet {
     proposals,
     files,
     ...(place ? { place } : {}),
+  };
+}
+
+/**
+ * Formulas without speech, one line per formula: `proposals[2].question[1]`
+ * and its TeX. The harness path refuses a set with any (ADR 2026-10-14b,
+ * Decision 4: a model-written card carries speech); the agent adds speech
+ * and sends the set again.
+ */
+export function materialSpeechIssues(set: MaterialProposalSet): string[] {
+  const out: string[] = [];
+  set.proposals.forEach((proposal, index) => {
+    for (const [key, segments] of [
+      ["question", proposal.questionSegments],
+      ["answer", proposal.answerSegments],
+    ] as const) {
+      (segments ?? []).forEach((segment, at) => {
+        if (segment.type === "math" && !segment.speech?.trim()) {
+          out.push(
+            `proposals[${index}].${key}[${at}].speech: required — how "${segment.tex}" is read aloud`,
+          );
+        }
+      });
+    }
+  });
+  return out;
+}
+
+/** Every formula without speech in the set, once each. */
+export function materialFormulasWithoutSpeech(
+  set: MaterialProposalSet,
+): string[] {
+  const out = new Set<string>();
+  for (const proposal of set.proposals) {
+    for (const segments of [
+      proposal.questionSegments,
+      proposal.answerSegments,
+    ]) {
+      for (const segment of segments ?? []) {
+        if (segment.type === "math" && !segment.speech?.trim()) {
+          out.add(segment.tex);
+        }
+      }
+    }
+  }
+  return [...out];
+}
+
+/** The set with speech filled in from a `tex → speech` reading list. */
+export function withMaterialSpeech(
+  set: MaterialProposalSet,
+  speech: ReadonlyMap<string, string>,
+): MaterialProposalSet {
+  return {
+    ...set,
+    proposals: set.proposals.map((proposal) => ({
+      ...proposal,
+      ...(proposal.questionSegments
+        ? { questionSegments: withSpeech(proposal.questionSegments, speech) }
+        : {}),
+      ...(proposal.answerSegments
+        ? { answerSegments: withSpeech(proposal.answerSegments, speech) }
+        : {}),
+    })),
   };
 }
 
@@ -851,6 +979,7 @@ function cellCandidates(
     }
     for (const atom of cell.atoms) {
       for (const item of atom.practice_items ?? []) {
+        const { question, concept } = kvtItemPlainTexts(item);
         candidates.push({
           key: `c:${item.id}`,
           atomId: atom.id,
@@ -861,13 +990,11 @@ function cellCandidates(
             atomId: atom.id,
             itemId: item.id,
           },
-          question: item.question,
-          answer: item.concept,
+          question,
+          answer: concept,
           title: atom.title,
           area: normaliseMaterialArea(atom.domain ?? ""),
-          stems: materialStems(
-            rowText(item.question, item.concept, atom.title),
-          ),
+          stems: materialStems(rowText(question, concept, atom.title)),
           vector: null,
         });
       }
@@ -1432,6 +1559,8 @@ export async function commitMaterialImport(
             domain: area,
             bloom_level: proposal.bloom,
             question: proposal.question,
+            question_segments: proposal.questionSegments ?? null,
+            concept_segments: proposal.answerSegments ?? null,
             question_source: "llm",
             source_link: sourceLinkFor(set.files[proposal.file], proposal.page),
             editorial_state: "published",

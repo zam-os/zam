@@ -49,25 +49,453 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie verändert sich die im Laborsystem gemessene Zeitdauer \\Delta t eines bewegten Vorgangs im Vergleich zur im Ruhesystem gemessenen Eigenzeit \\Delta t_0 bei einer Geschwindigkeit v > 0?",
-          "concept": "Sie ist verlangsamt / gedehnt: \\Delta t = \\gamma \\cdot \\Delta t_0 = \\frac{\\Delta t_0}{\\sqrt{1 - \\frac{v^2}{c^2}}} > \\Delta t_0 (Zeitdilatation: 'Bewegte Uhren gehen langsamer')",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie verändert sich die im Laborsystem gemessene Zeitdauer "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta t",
+              "speech": "Delta t"
+            },
+            {
+              "type": "text",
+              "text": " eines bewegten Vorgangs im Vergleich zur im Ruhesystem gemessenen Eigenzeit "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta t_0",
+              "speech": "Delta t null"
+            },
+            {
+              "type": "text",
+              "text": " bei einer Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v > 0",
+              "speech": "v größer als 0"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Sie ist verlangsamt / gedehnt: "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta t = \\gamma \\cdot \\Delta t_0 = \\frac{\\Delta t_0}{\\sqrt{1 - \\frac{v^2}{c^2}}} > \\Delta t_0",
+              "speech": "Delta t gleich Gamma mal Delta t null gleich Delta t null durch Wurzel aus 1 minus v Quadrat durch c Quadrat, größer als Delta t null"
+            },
+            {
+              "type": "text",
+              "text": " (Zeitdilatation: 'Bewegte Uhren gehen langsamer')"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "\\Delta t = \\gamma \\cdot \\Delta t_0 > \\Delta t_0 (Zeitdilatation / Dehnung)",
-              "\\Delta t = \\frac{\\Delta t_0}{\\gamma} < \\Delta t_0 (Verkürzung)"
+              [
+                {
+                  "type": "math",
+                  "tex": "\\Delta t = \\gamma \\cdot \\Delta t_0 > \\Delta t_0",
+                  "speech": "Delta t gleich Gamma mal Delta t null größer als Delta t null"
+                },
+                {
+                  "type": "text",
+                  "text": " (Zeitdilatation / Dehnung)"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "\\Delta t = \\frac{\\Delta t_0}{\\gamma} < \\Delta t_0",
+                  "speech": "Delta t gleich Delta t null durch Gamma kleiner als Delta t null"
+                },
+                {
+                  "type": "text",
+                  "text": " (Verkürzung)"
+                }
+              ]
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GD40000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Grundlagen der Speziellen Relativitätstheorie und das atmosphärische Myonenexperiment: 1. **Die zwei Postulate von Albert Einstein (1905)**:   * **1. Relativitätsprinzip**: Die Naturgesetze haben in allen Inertialsystemen dieselbe mathematische Form. Es gibt keinen ausgezeichneten absoluten Äther-Ruhezustand.   * **2. Konstanz der Lichtgeschwindigkeit**: Die Vakuumlichtgeschwindigkeit $c \\approx 3 \\cdot 10^8\\,\\text{m/s}$ ist in allen Inertialsystemen exakt gleich groß – völlig unabhängig von der Bewegung von Quelle und Empfänger, 2. **Der Lorentz-Faktor & Kinematische Konsequenzen**:   * Lorentz-Faktor: $\\mathbf{\\gamma = \\frac{1}{\\sqrt{1 - \\frac{v^2}{c^2}}} \\ge 1}$.   * **Zeitdilatation**: $\\mathbf{\\Delta t = \\gamma \\cdot \\Delta t_0}$ (Eigenzeit $\\Delta t_0$: Uhr ruht am selben Ort).   * **Längenkontraktion**: $\\mathbf{L = \\frac{L_0}{\\gamma} = L_0 \\cdot \\sqrt{1 - \\frac{v^2}{c^2}}}$ (Eigenlänge $L_0$: Maßstab ruht relativ zum Beobachter; Kontraktion tritt nur in Bewegungsrichtung auf), 3. **Das Myonen-Experiment (Frisch & Smith, 1963)**:   * Myonen entstehen in $h = 10\\,\\text{km}$ Höhe durch kosmische Strahlung und bewegen sich mit $v = 0{,}998\\,c$ zur Erdoberfläche.   * Ihre Eigenlebensdauer im Ruhezustand beträgt nur $\\Delta t_0 = 2{,}2\\,\\mu\\text{s}$.   * a) Zeige klassisch (ohne SRT), wie weit Myonen fliegen könnten ($s = v \\cdot \\Delta t_0$).   * b) Erkläre quantitativ, warum Myonen dennoch die Erdoberfläche erreichen – sowohl aus der Sicht eines irdischen Beobachters (Zeitdilatation) als auch aus der Sicht des mitbewegten Myons (Längenkontraktion).",
-          "concept": "SRT 13: Postulate (Relativitätsprinzip, Lichtgeschwindigkeit c invariant); Lorentzfaktor gamma = 1/sqrt(1 - v^2/c^2); Zeitdilatation Delta t = gamma*Delta t_0; Längenkontraktion L = L_0/gamma; Myonen: klassisch s = 0,998*3e8 * 2,2e-6 = 658 m << 10 km; relativistisch gamma = 1/sqrt(1 - 0,998^2) approx 15,8; Erde: Delta t = 15,8*2,2 us = 34,8 us -> s = 10,4 km; Myon: h' = 10 km / 15,8 = 633 m.",
-          "sample_solution": "1. Die Postulate der Speziellen Relativitätstheorie (Albert Einstein, 1905): - **1. Relativitätsprinzip**: Alle Inertialsysteme (unbeschleunigte Bezugssysteme) sind physikalisch absolut gleichwertig. - **2. Invarianz der Lichtgeschwindigkeit**: Licht breitet sich im Vakuum in jedem Inertialsystem geradlinig mit der universellen Naturkonstante $\\mathbf{c = 299.792.458\\,\\text{m/s}}$ aus (**Michelson-Morley-Nullresultat**, 1887). - **Konsequenz**: Raum und Zeit sind keine absoluten, starren Hintergründe (wie bei Newton), sondern dynamisch miteinander zur **vierdimensionalen Raumzeit** verknüpft. Die Gleichzeitigkeit zweier räumlich getrennter Ereignisse ist relativ! 2. Herleitung der Zeitdilatation über die Lichtuhr: - In einer ruhenden Lichtuhr der Höhe $d$ läuft ein Lichtpuls auf und ab: $\\Delta t_0 = \\frac{2d}{c}$. - Bewegt sich die Uhr mit Geschwindigkeit $v$ quer zur Lichtrichtung, legt das Licht eine diagonale Zickzack-Strecke zurück. Nach dem Satz des Pythagoras gilt:   $$\\left(c \\cdot \\frac{\\Delta t}{2}\\right)^2 = d^2 + \\left(v \\cdot \\frac{\\Delta t}{2}\\right)^2 = \\left(c \\cdot \\frac{\\Delta t_0}{2}\\right)^2 + \\left(v \\cdot \\frac{\\Delta t}{2}\\right)^2$$   $$\\Delta t^2 (c^2 - v^2) = c^2 \\cdot \\Delta t_0^2 \\implies \\mathbf{\\Delta t = \\frac{\\Delta t_0}{\\sqrt{1 - \\frac{v^2}{c^2}}} = \\gamma \\cdot \\Delta t_0}$$ 3. Quantitative Analyse des Myonen-Experiments: - **Gegeben**: $h = 10\\,\\text{km} = 10.000\\,\\text{m}$, $v = 0{,}998\\,c$, $\\Delta t_0 = 2{,}2\\,\\mu\\text{s} = 2{,}2 \\cdot 10^{-6}\\,\\text{s}$. - **a) Klassische Newtonsche Rechnung**:   $$s_{\\text{klassisch}} = v \\cdot \\Delta t_0 = (0{,}998 \\cdot 3 \\cdot 10^8\\,\\text{m/s}) \\cdot (2{,}2 \\cdot 10^{-6}\\,\\text{s}) \\approx \\mathbf{658{,}7\\,\\text{m}}$$   *Nach klassischer Physik könnten Myonen maximal ca. $660\\,\\text{m}$ zurücklegen und müssten längst zerfallen sein, bevor sie die Erdoberfläche erreichen.* - **b) Relativistische Auflösung**:   * **Berechnung des Lorentz-Faktors $\\gamma$**:     $$\\gamma = \\frac{1}{\\sqrt{1 - 0{,}998^2}} = \\frac{1}{\\sqrt{1 - 0{,}996004}} = \\frac{1}{\\sqrt{0{,}003996}} \\approx \\mathbf{15{,}81}$$   * **Sicht 1: Erdbeobachter (Zeitdilatation)**:     - Für den ruhenden Forscher auf der Erde vergeht die Zeit im bewegten Myon viel langsamer. Die Lebensdauer ist um den Faktor $\\gamma \\approx 15{,}81$ verlängert:       $$\\Delta t = \\gamma \\cdot \\Delta t_0 = 15{,}81 \\cdot 2{,}2\\,\\mu\\text{s} \\approx \\mathbf{34{,}78\\,\\mu\\text{s}}$$     - Rechnerische Reichweite im Erdsystem:       $$s = v \\cdot \\Delta t = (0{,}998 \\cdot 3 \\cdot 10^8\\,\\text{m/s}) \\cdot (34{,}78 \\cdot 10^{-6}\\,\\text{s}) \\approx \\mathbf{10{,}41\\,\\text{km}} > 10\\,\\text{km}$$     - Die Myonen erreichen die Erdoberfläche problemlos!   * **Sicht 2: Mitbewegtes Myon (Längenkontraktion)**:     - Im Ruhesystem des Myons vergeht die normale Eigenzeit $\\Delta t_0 = 2{,}2\\,\\mu\\text{s}$.     - Aus Sicht des Myons rast die Erde mit $0{,}998\\,c$ auf es zu. Die Atmosphärenschicht von $10\\,\\text{km}$ erscheint durch **Längenkontraktion** drastisch verkürzt:       $$h' = \\frac{h}{\\gamma} = \\frac{10.000\\,\\text{m}}{15{,}81} \\approx \\mathbf{632{,}5\\,\\text{m}}$$     - Da $632{,}5\\,\\text{m} < 658{,}7\\,\\text{m}$, erreicht die Erdoberfläche das Myon innerhalb seiner natürlichen Lebenszeit von $2{,}2\\,\\mu\\text{s}$.   *(Beide Bezugssysteme stimmen im physikalischen Messergebnis exakt überein – ein triumphaler experimenteller Beweis der SRT!)*"
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Grundlagen der Speziellen Relativitätstheorie und das atmosphärische Myonenexperiment: 1. Die zwei Postulate von Albert Einstein (1905):   * 1. Relativitätsprinzip: Die Naturgesetze haben in allen Inertialsystemen dieselbe mathematische Form. Es gibt keinen ausgezeichneten absoluten Äther-Ruhezustand.   * 2. Konstanz der Lichtgeschwindigkeit: Die Vakuumlichtgeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "c \\approx 3 \\cdot 10^8\\,\\text{m/s}",
+              "speech": "c ungefähr 3 mal 10 hoch 8 Meter pro Sekunde"
+            },
+            {
+              "type": "text",
+              "text": " ist in allen Inertialsystemen exakt gleich groß – völlig unabhängig von der Bewegung von Quelle und Empfänger, 2. Der Lorentz-Faktor & Kinematische Konsequenzen:   * Lorentz-Faktor: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\gamma = \\frac{1}{\\sqrt{1 - \\frac{v^2}{c^2}}} \\ge 1}",
+              "speech": "Gamma gleich 1 durch Wurzel aus 1 minus v Quadrat durch c Quadrat, größer gleich 1"
+            },
+            {
+              "type": "text",
+              "text": ".   * Zeitdilatation: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Delta t = \\gamma \\cdot \\Delta t_0}",
+              "speech": "Delta t gleich Gamma mal Delta t null"
+            },
+            {
+              "type": "text",
+              "text": " (Eigenzeit "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta t_0",
+              "speech": "Delta t null"
+            },
+            {
+              "type": "text",
+              "text": ": Uhr ruht am selben Ort).   * Längenkontraktion: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{L = \\frac{L_0}{\\gamma} = L_0 \\cdot \\sqrt{1 - \\frac{v^2}{c^2}}}",
+              "speech": "L gleich L null durch Gamma gleich L null mal Wurzel aus 1 minus v Quadrat durch c Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " (Eigenlänge "
+            },
+            {
+              "type": "math",
+              "tex": "L_0",
+              "speech": "L null"
+            },
+            {
+              "type": "text",
+              "text": ": Maßstab ruht relativ zum Beobachter; Kontraktion tritt nur in Bewegungsrichtung auf), 3. Das Myonen-Experiment (Frisch & Smith, 1963):   * Myonen entstehen in "
+            },
+            {
+              "type": "math",
+              "tex": "h = 10\\,\\text{km}",
+              "speech": "h gleich 10 Kilometer"
+            },
+            {
+              "type": "text",
+              "text": " Höhe durch kosmische Strahlung und bewegen sich mit "
+            },
+            {
+              "type": "math",
+              "tex": "v = 0{,}998\\,c",
+              "speech": "v gleich 0,998 c"
+            },
+            {
+              "type": "text",
+              "text": " zur Erdoberfläche.   * Ihre Eigenlebensdauer im Ruhezustand beträgt nur "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta t_0 = 2{,}2\\,\\mu\\text{s}",
+              "speech": "Delta t null gleich 2,2 Mikrosekunden"
+            },
+            {
+              "type": "text",
+              "text": ".   * a) Zeige klassisch (ohne SRT), wie weit Myonen fliegen könnten ("
+            },
+            {
+              "type": "math",
+              "tex": "s = v \\cdot \\Delta t_0",
+              "speech": "s gleich v mal Delta t null"
+            },
+            {
+              "type": "text",
+              "text": ").   * b) Erkläre quantitativ, warum Myonen dennoch die Erdoberfläche erreichen – sowohl aus der Sicht eines irdischen Beobachters (Zeitdilatation) als auch aus der Sicht des mitbewegten Myons (Längenkontraktion)."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "SRT 13: Postulate (Relativitätsprinzip, Lichtgeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "c",
+              "speech": "c"
+            },
+            {
+              "type": "text",
+              "text": " invariant); Lorentzfaktor "
+            },
+            {
+              "type": "math",
+              "tex": "\\gamma = \\frac{1}{\\sqrt{1 - \\frac{v^2}{c^2}}}",
+              "speech": "Gamma gleich 1 durch Wurzel aus 1 minus v Quadrat durch c Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; Zeitdilatation "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta t = \\gamma \\cdot \\Delta t_0",
+              "speech": "Delta t gleich Gamma mal Delta t null"
+            },
+            {
+              "type": "text",
+              "text": "; Längenkontraktion "
+            },
+            {
+              "type": "math",
+              "tex": "L = \\frac{L_0}{\\gamma}",
+              "speech": "L gleich L null durch Gamma"
+            },
+            {
+              "type": "text",
+              "text": "; Myonen: klassisch "
+            },
+            {
+              "type": "math",
+              "tex": "s = 0{,}998 \\cdot 3 \\cdot 10^8 \\cdot 2{,}2 \\cdot 10^{-6} = 658\\,\\text{m} \\ll 10\\,\\text{km}",
+              "speech": "s gleich 0,998 mal 3 mal 10 hoch acht mal 2,2 mal 10 hoch minus sechs gleich 658 Meter sehr viel kleiner als 10 Kilometer"
+            },
+            {
+              "type": "text",
+              "text": "; relativistisch "
+            },
+            {
+              "type": "math",
+              "tex": "\\gamma = \\frac{1}{\\sqrt{1 - 0{,}998^2}} \\approx 15{,}8",
+              "speech": "Gamma gleich 1 durch Wurzel aus 1 minus 0,998 Quadrat, ungefähr 15,8"
+            },
+            {
+              "type": "text",
+              "text": "; Erde: "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta t = 15{,}8 \\cdot 2{,}2\\,\\mu\\text{s} = 34{,}8\\,\\mu\\text{s} \\Rightarrow s = 10{,}4\\,\\text{km}",
+              "speech": "Delta t gleich 15,8 mal 2,2 Mikrosekunden gleich 34,8 Mikrosekunden daraus folgt s gleich 10,4 Kilometer"
+            },
+            {
+              "type": "text",
+              "text": "; Myon: "
+            },
+            {
+              "type": "math",
+              "tex": "h' = \\frac{10\\,\\text{km}}{15{,}8} = 633\\,\\text{m}",
+              "speech": "h Strich gleich 10 Kilometer durch 15,8 gleich 633 Meter"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Postulate der Speziellen Relativitätstheorie (Albert Einstein, 1905): - 1. Relativitätsprinzip: Alle Inertialsysteme (unbeschleunigte Bezugssysteme) sind physikalisch absolut gleichwertig. - 2. Invarianz der Lichtgeschwindigkeit: Licht breitet sich im Vakuum in jedem Inertialsystem geradlinig mit der universellen Naturkonstante "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{c = 299.792.458\\,\\text{m/s}}"
+            },
+            {
+              "type": "text",
+              "text": " aus (Michelson-Morley-Nullresultat, 1887). - Konsequenz: Raum und Zeit sind keine absoluten, starren Hintergründe (wie bei Newton), sondern dynamisch miteinander zur vierdimensionalen Raumzeit verknüpft. Die Gleichzeitigkeit zweier räumlich getrennter Ereignisse ist relativ! 2. Herleitung der Zeitdilatation über die Lichtuhr: - In einer ruhenden Lichtuhr der Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "d"
+            },
+            {
+              "type": "text",
+              "text": " läuft ein Lichtpuls auf und ab: "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta t_0 = \\frac{2d}{c}"
+            },
+            {
+              "type": "text",
+              "text": ". - Bewegt sich die Uhr mit Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v"
+            },
+            {
+              "type": "text",
+              "text": " quer zur Lichtrichtung, legt das Licht eine diagonale Zickzack-Strecke zurück. Nach dem Satz des Pythagoras gilt:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\left(c \\cdot \\frac{\\Delta t}{2}\\right)^2 = d^2 + \\left(v \\cdot \\frac{\\Delta t}{2}\\right)^2 = \\left(c \\cdot \\frac{\\Delta t_0}{2}\\right)^2 + \\left(v \\cdot \\frac{\\Delta t}{2}\\right)^2",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta t^2 (c^2 - v^2) = c^2 \\cdot \\Delta t_0^2 \\implies \\mathbf{\\Delta t = \\frac{\\Delta t_0}{\\sqrt{1 - \\frac{v^2}{c^2}}} = \\gamma \\cdot \\Delta t_0}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Quantitative Analyse des Myonen-Experiments: - Gegeben: "
+            },
+            {
+              "type": "math",
+              "tex": "h = 10\\,\\text{km} = 10.000\\,\\text{m}"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "v = 0{,}998\\,c"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta t_0 = 2{,}2\\,\\mu\\text{s} = 2{,}2 \\cdot 10^{-6}\\,\\text{s}"
+            },
+            {
+              "type": "text",
+              "text": ". - a) Klassische Newtonsche Rechnung:   "
+            },
+            {
+              "type": "math",
+              "tex": "s_{\\text{klassisch}} = v \\cdot \\Delta t_0 = (0{,}998 \\cdot 3 \\cdot 10^8\\,\\text{m/s}) \\cdot (2{,}2 \\cdot 10^{-6}\\,\\text{s}) \\approx \\mathbf{658{,}7\\,\\text{m}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   Nach klassischer Physik könnten Myonen maximal ca. "
+            },
+            {
+              "type": "math",
+              "tex": "660\\,\\text{m}"
+            },
+            {
+              "type": "text",
+              "text": " zurücklegen und müssten längst zerfallen sein, bevor sie die Erdoberfläche erreichen. - b) Relativistische Auflösung:   * Berechnung des Lorentz-Faktors "
+            },
+            {
+              "type": "math",
+              "tex": "\\gamma"
+            },
+            {
+              "type": "text",
+              "text": ":     "
+            },
+            {
+              "type": "math",
+              "tex": "\\gamma = \\frac{1}{\\sqrt{1 - 0{,}998^2}} = \\frac{1}{\\sqrt{1 - 0{,}996004}} = \\frac{1}{\\sqrt{0{,}003996}} \\approx \\mathbf{15{,}81}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Sicht 1: Erdbeobachter (Zeitdilatation):     - Für den ruhenden Forscher auf der Erde vergeht die Zeit im bewegten Myon viel langsamer. Die Lebensdauer ist um den Faktor "
+            },
+            {
+              "type": "math",
+              "tex": "\\gamma \\approx 15{,}81"
+            },
+            {
+              "type": "text",
+              "text": " verlängert:       "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta t = \\gamma \\cdot \\Delta t_0 = 15{,}81 \\cdot 2{,}2\\,\\mu\\text{s} \\approx \\mathbf{34{,}78\\,\\mu\\text{s}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "     - Rechnerische Reichweite im Erdsystem:       "
+            },
+            {
+              "type": "math",
+              "tex": "s = v \\cdot \\Delta t = (0{,}998 \\cdot 3 \\cdot 10^8\\,\\text{m/s}) \\cdot (34{,}78 \\cdot 10^{-6}\\,\\text{s}) \\approx \\mathbf{10{,}41\\,\\text{km}} > 10\\,\\text{km}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "     - Die Myonen erreichen die Erdoberfläche problemlos!   * Sicht 2: Mitbewegtes Myon (Längenkontraktion):     - Im Ruhesystem des Myons vergeht die normale Eigenzeit "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta t_0 = 2{,}2\\,\\mu\\text{s}"
+            },
+            {
+              "type": "text",
+              "text": ".     - Aus Sicht des Myons rast die Erde mit "
+            },
+            {
+              "type": "math",
+              "tex": "0{,}998\\,c"
+            },
+            {
+              "type": "text",
+              "text": " auf es zu. Die Atmosphärenschicht von "
+            },
+            {
+              "type": "math",
+              "tex": "10\\,\\text{km}"
+            },
+            {
+              "type": "text",
+              "text": " erscheint durch Längenkontraktion drastisch verkürzt:       "
+            },
+            {
+              "type": "math",
+              "tex": "h' = \\frac{h}{\\gamma} = \\frac{10.000\\,\\text{m}}{15{,}81} \\approx \\mathbf{632{,}5\\,\\text{m}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "     - Da "
+            },
+            {
+              "type": "math",
+              "tex": "632{,}5\\,\\text{m} < 658{,}7\\,\\text{m}"
+            },
+            {
+              "type": "text",
+              "text": ", erreicht die Erdoberfläche das Myon innerhalb seiner natürlichen Lebenszeit von "
+            },
+            {
+              "type": "math",
+              "tex": "2{,}2\\,\\mu\\text{s}"
+            },
+            {
+              "type": "text",
+              "text": ".   (Beide Bezugssysteme stimmen im physikalischen Messergebnis exakt überein – ein triumphaler experimenteller Beweis der SRT!)"
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -113,24 +541,420 @@
           "tier": "tier1_fast",
           "bloom_level": 1,
           "question": "Wie lautet die berühmte Einsteinsche Masse-Energie-Äquivalenz für die Ruheenergie E_0 eines Körpers mit unveränderlicher Ruhemasse m_0?",
-          "concept": "E_0 = m_0 \\cdot c^2",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "E_0 = m_0 \\cdot c^2",
+              "speech": "E null gleich m null mal c Quadrat"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "E_0 = m_0 \\cdot c^2",
-              "E_0 = \\frac{1}{2} m_0 \\cdot v^2"
+              [
+                {
+                  "type": "math",
+                  "tex": "E_0 = m_0 \\cdot c^2",
+                  "speech": "E null gleich m null mal c Quadrat"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "E_0 = \\frac{1}{2} m_0 \\cdot v^2",
+                  "speech": "E null gleich ein halb m null mal v Quadrat"
+                }
+              ]
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GD40000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den relativistischen Impuls, die kinetische Energie und die Energie-Impuls-Beziehung: 1. **Relativistischer Impuls**:   * $\\mathbf{\\vec{p} = \\gamma \\cdot m_0 \\cdot \\vec{v} = \\frac{m_0 \\cdot \\vec{v}}{\\sqrt{1 - \\frac{v^2}{c^2}}}}$.   * Für $v \\to c$ divergiert der Impuls gegen Unendlich $\\implies$ Ein massebehafteter Körper ($m_0 > 0$) kann niemals die Lichtgeschwindigkeit $c$ erreichen, da unendlich viel Energie und Beschleunigungsarbeit nötig wäre, 2. **Relativistische Energieformen**:   * **Ruheenergie**: $E_0 = m_0 \\cdot c^2$.   * **Gesamtenergie**: $E = \\gamma \\cdot m_0 \\cdot c^2$.   * **Kinetische Energie**: $\\mathbf{E_{\\text{kin}} = E - E_0 = (\\gamma - 1) \\cdot m_0 \\cdot c^2}$.   * *(Grenzfall für $v \\ll c$: Taylorentwicklung $\\gamma \\approx 1 + \\frac{1}{2}\\frac{v^2}{c^2} \\implies E_{\\text{kin}} \\approx \\frac{1}{2} m_0 v^2$)*, 3. **Die relativistische Energie-Impuls-Beziehung**:   * Universelle Verknüpfung: $\\mathbf{E^2 = (p \\cdot c)^2 + (m_0 \\cdot c^2)^2}$.   * Für masselose Teilchen wie **Photonen** ($m_0 = 0$): $E = p \\cdot c \\implies \\mathbf{p = \\frac{E}{c} = \\frac{h}{\\lambda}}$ (De-Broglie-Impuls).",
-          "concept": "Relativistische Dynamik 13: Relativistischer Impuls p = gamma*m_0*v; Gesamtenergie E = gamma*m_0*c^2; Kinetische Energie E_kin = (gamma - 1)*m_0*c^2; Energie-Impuls-Beziehung E^2 = (pc)^2 + (m_0 c^2)^2; Photonenimpuls p = h/lambda.",
-          "sample_solution": "1. Der relativistische Impuls und das kosmische Tempolimit: - **Definition**:   * Um den Impulserhaltungssatz in allen Inertialsystemen zu wahren, muss der Impuls relativistisch formuliert werden:     $$\\mathbf{\\vec{p} = \\gamma \\cdot m_0 \\cdot \\vec{v} = \\frac{m_0 \\cdot \\vec{v}}{\\sqrt{1 - \\frac{v^2}{c^2}}}}$$ - **Warum $c$ die unüberwindbare Geschwindigkeitsgrenze ist**:   * Nähert sich die Geschwindigkeit $v$ der Lichtgeschwindigkeit $c$ ($v \\to c$), strebt der Lorentz-Faktor $\\gamma \\to \\infty$.   * Der Impuls und die Trägheit des Körpers wachsen über alle Grenzen; eine weitere Beschleunigung erfordert unendlich viel Arbeit $\\implies$ Kein Körper mit Ruhemasse $m_0 > 0$ kann $c$ erreichen oder überschreiten! 2. Relativistische Kinetische Energie: - Die mechanische Arbeit zur Beschleunigung eines Körpers aus der Ruhe auf Geschwindigkeit $v$ ergibt:   $$E_{\\text{kin}} = \\int_{0}^{s} F\\,ds = \\int_{0}^{t} \\frac{dp}{dt} v\\,dt = \\mathbf{(\\gamma - 1) \\cdot m_0 \\cdot c^2}$$ - **Gesamtenergie $E$**:   $$\\mathbf{E = E_{\\text{kin}} + E_0 = \\gamma \\cdot m_0 \\cdot c^2}$$ - **Klassischer Grenzfall (Korrespondenzprinzip)**:   * Für $v \\ll c$ entwickeln wir $\\gamma = (1 - \\frac{v^2}{c^2})^{-1/2}$ in eine Taylor-Reihe:     $$\\gamma \\approx 1 + \\frac{1}{2}\\frac{v^2}{c^2} + \\frac{3}{8}\\frac{v^4}{c^4} + \\dots$$   * Einsetzen in $E_{\\text{kin}}$:     $$E_{\\text{kin}} \\approx \\left(1 + \\frac{1}{2}\\frac{v^2}{c^2} - 1\\right) m_0 c^2 = \\mathbf{\\frac{1}{2} m_0 v^2}$$ 3. Die Energie-Impuls-Beziehung: - Durch algebraische Verknüpfung von $E = \\gamma m_0 c^2$ und $p = \\gamma m_0 v$ eliminiert man die Geschwindigkeit $v$ und erhält die universelle **Einstein-Gleichung**:   $$\\mathbf{E^2 = p^2 c^2 + m_0^2 c^4}$$ - **Photonen und masselose Quanten**:   * Für ein Photon gilt $m_0 = 0$. Daraus folgt unmittelbar:     $$E = p \\cdot c \\implies \\mathbf{p = \\frac{E}{c} = \\frac{h \\cdot f}{c} = \\frac{h}{\\lambda}}$$   * Obwohl Photonen keine Masse besitzen, tragen sie messbaren Impuls und üben **Strahlungsdruck** aus (Nutzung bei Sonnensegeln im Weltraum)."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den relativistischen Impuls, die kinetische Energie und die Energie-Impuls-Beziehung: 1. Relativistischer Impuls:   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\vec{p} = \\gamma \\cdot m_0 \\cdot \\vec{v} = \\frac{m_0 \\cdot \\vec{v}}{\\sqrt{1 - \\frac{v^2}{c^2}}}}",
+              "speech": "Vektor p gleich Gamma mal m null mal Vektor v gleich m null mal Vektor v durch Wurzel aus 1 minus v Quadrat durch c Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ".   * Für "
+            },
+            {
+              "type": "math",
+              "tex": "v \\to c",
+              "speech": "v gegen c"
+            },
+            {
+              "type": "text",
+              "text": " divergiert der Impuls gegen Unendlich "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Ein massebehafteter Körper ("
+            },
+            {
+              "type": "math",
+              "tex": "m_0 > 0",
+              "speech": "m null größer als 0"
+            },
+            {
+              "type": "text",
+              "text": ") kann niemals die Lichtgeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "c",
+              "speech": "c"
+            },
+            {
+              "type": "text",
+              "text": " erreichen, da unendlich viel Energie und Beschleunigungsarbeit nötig wäre, 2. Relativistische Energieformen:   * Ruheenergie: "
+            },
+            {
+              "type": "math",
+              "tex": "E_0 = m_0 \\cdot c^2",
+              "speech": "E null gleich m null mal c Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ".   * Gesamtenergie: "
+            },
+            {
+              "type": "math",
+              "tex": "E = \\gamma \\cdot m_0 \\cdot c^2",
+              "speech": "E gleich Gamma mal m null mal c Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ".   * Kinetische Energie: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E_{\\text{kin}} = E - E_0 = (\\gamma - 1) \\cdot m_0 \\cdot c^2}",
+              "speech": "E kin gleich E minus E null gleich, Gamma minus 1, mal m null mal c Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ".   * (Grenzfall für "
+            },
+            {
+              "type": "math",
+              "tex": "v \\ll c",
+              "speech": "v sehr viel kleiner als c"
+            },
+            {
+              "type": "text",
+              "text": ": Taylorentwicklung "
+            },
+            {
+              "type": "math",
+              "tex": "\\gamma \\approx 1 + \\frac{1}{2}\\frac{v^2}{c^2} \\implies E_{\\text{kin}} \\approx \\frac{1}{2} m_0 v^2",
+              "speech": "Gamma ungefähr 1 plus ein halb v Quadrat durch c Quadrat daraus folgt E kin ungefähr ein halb m null v Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Die relativistische Energie-Impuls-Beziehung:   * Universelle Verknüpfung: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E^2 = (p \\cdot c)^2 + (m_0 \\cdot c^2)^2}",
+              "speech": "E Quadrat gleich, p mal c, Quadrat, plus, m null mal c Quadrat, Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ".   * Für masselose Teilchen wie Photonen ("
+            },
+            {
+              "type": "math",
+              "tex": "m_0 = 0",
+              "speech": "m null gleich 0"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "E = p \\cdot c \\implies \\mathbf{p = \\frac{E}{c} = \\frac{h}{\\lambda}}",
+              "speech": "E gleich p mal c, daraus folgt p gleich E durch c gleich h durch Lambda"
+            },
+            {
+              "type": "text",
+              "text": " (De-Broglie-Impuls)."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Relativistische Dynamik 13: Relativistischer Impuls "
+            },
+            {
+              "type": "math",
+              "tex": "p = \\gamma \\cdot m_0 \\cdot v",
+              "speech": "p gleich Gamma mal m null mal v"
+            },
+            {
+              "type": "text",
+              "text": "; Gesamtenergie "
+            },
+            {
+              "type": "math",
+              "tex": "E = \\gamma \\cdot m_0 \\cdot c^2",
+              "speech": "E gleich Gamma mal m null mal c Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; Kinetische Energie "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{kin}} = (\\gamma - 1) \\cdot m_0 \\cdot c^2",
+              "speech": "E kin gleich Klammer auf Gamma minus 1 Klammer zu mal m null mal c Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; Energie-Impuls-Beziehung "
+            },
+            {
+              "type": "math",
+              "tex": "E^2 = (pc)^2 + (m_0 c^2)^2",
+              "speech": "E Quadrat gleich Klammer auf p c Klammer zu Quadrat plus Klammer auf m null c Quadrat Klammer zu Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; Photonenimpuls "
+            },
+            {
+              "type": "math",
+              "tex": "p = \\frac{h}{\\lambda}",
+              "speech": "p gleich h durch Lambda"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der relativistische Impuls und das kosmische Tempolimit: - Definition:   * Um den Impulserhaltungssatz in allen Inertialsystemen zu wahren, muss der Impuls relativistisch formuliert werden:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\vec{p} = \\gamma \\cdot m_0 \\cdot \\vec{v} = \\frac{m_0 \\cdot \\vec{v}}{\\sqrt{1 - \\frac{v^2}{c^2}}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Warum "
+            },
+            {
+              "type": "math",
+              "tex": "c"
+            },
+            {
+              "type": "text",
+              "text": " die unüberwindbare Geschwindigkeitsgrenze ist:   * Nähert sich die Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v"
+            },
+            {
+              "type": "text",
+              "text": " der Lichtgeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "c"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "v \\to c"
+            },
+            {
+              "type": "text",
+              "text": "), strebt der Lorentz-Faktor "
+            },
+            {
+              "type": "math",
+              "tex": "\\gamma \\to \\infty"
+            },
+            {
+              "type": "text",
+              "text": ".   * Der Impuls und die Trägheit des Körpers wachsen über alle Grenzen; eine weitere Beschleunigung erfordert unendlich viel Arbeit "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Kein Körper mit Ruhemasse "
+            },
+            {
+              "type": "math",
+              "tex": "m_0 > 0"
+            },
+            {
+              "type": "text",
+              "text": " kann "
+            },
+            {
+              "type": "math",
+              "tex": "c"
+            },
+            {
+              "type": "text",
+              "text": " erreichen oder überschreiten! 2. Relativistische Kinetische Energie: - Die mechanische Arbeit zur Beschleunigung eines Körpers aus der Ruhe auf Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v"
+            },
+            {
+              "type": "text",
+              "text": " ergibt:   "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{kin}} = \\int_{0}^{s} F\\,ds = \\int_{0}^{t} \\frac{dp}{dt} v\\,dt = \\mathbf{(\\gamma - 1) \\cdot m_0 \\cdot c^2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Gesamtenergie "
+            },
+            {
+              "type": "math",
+              "tex": "E"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E = E_{\\text{kin}} + E_0 = \\gamma \\cdot m_0 \\cdot c^2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Klassischer Grenzfall (Korrespondenzprinzip):   * Für "
+            },
+            {
+              "type": "math",
+              "tex": "v \\ll c"
+            },
+            {
+              "type": "text",
+              "text": " entwickeln wir "
+            },
+            {
+              "type": "math",
+              "tex": "\\gamma = (1 - \\frac{v^2}{c^2})^{-1/2}"
+            },
+            {
+              "type": "text",
+              "text": " in eine Taylor-Reihe:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\gamma \\approx 1 + \\frac{1}{2}\\frac{v^2}{c^2} + \\frac{3}{8}\\frac{v^4}{c^4} + \\dots",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Einsetzen in "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{kin}}"
+            },
+            {
+              "type": "text",
+              "text": ":     "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\text{kin}} \\approx \\left(1 + \\frac{1}{2}\\frac{v^2}{c^2} - 1\\right) m_0 c^2 = \\mathbf{\\frac{1}{2} m_0 v^2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Die Energie-Impuls-Beziehung: - Durch algebraische Verknüpfung von "
+            },
+            {
+              "type": "math",
+              "tex": "E = \\gamma m_0 c^2"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "p = \\gamma m_0 v"
+            },
+            {
+              "type": "text",
+              "text": " eliminiert man die Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v"
+            },
+            {
+              "type": "text",
+              "text": " und erhält die universelle Einstein-Gleichung:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E^2 = p^2 c^2 + m_0^2 c^4}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Photonen und masselose Quanten:   * Für ein Photon gilt "
+            },
+            {
+              "type": "math",
+              "tex": "m_0 = 0"
+            },
+            {
+              "type": "text",
+              "text": ". Daraus folgt unmittelbar:     "
+            },
+            {
+              "type": "math",
+              "tex": "E = p \\cdot c \\implies \\mathbf{p = \\frac{E}{c} = \\frac{h \\cdot f}{c} = \\frac{h}{\\lambda}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Obwohl Photonen keine Masse besitzen, tragen sie messbaren Impuls und üben Strahlungsdruck aus (Nutzung bei Sonnensegeln im Weltraum)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

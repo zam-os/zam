@@ -65,9 +65,409 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere gebrochen-rationale Funktionen und führe eine vollständige Asymptotenbestimmung durch: 1. **Klassifikation der Definitionslücken bei $f(x) = \\frac{Z(x)}{N(x)}$**:   * **Hebbare Definitionslücke bei $x_0$**: Wenn $x_0$ Nullstelle von Zähler und Nenner mit gleicher oder höherer Vielfachheit im Zähler ist $\\implies$ der Faktor $(x - x_0)$ lässt sich vollständig herauskürzen; der Grenzwert $\\lim_{x \\to x_0} f(x) = y_0$ existiert.   * **Polstelle (senkrechte Asymptote) bei $x_0$**: Wenn nach dem Kürzen eine Nennernullstelle verbleibt $\\implies \\lim_{x \\to x_0} f(x) = \\pm \\infty$ (mit VZW bei ungerader Polstellen-Ordnung, ohne VZW bei gerader Ordnung), 2. **Grenzverhalten im Unendlichen**:   * $\\operatorname{Grad}(Z) < \\operatorname{Grad}(N) \\implies$ waagrechte Asymptote $y = 0$.   * $\\operatorname{Grad}(Z) = \\operatorname{Grad}(N) \\implies$ waagrechte Asymptote $y = \\frac{a_n}{b_n}$.   * $\\operatorname{Grad}(Z) = \\operatorname{Grad}(N) + 1 \\implies$ **schiefe Asymptote** $y = m x + t$ durch Polynomdivision $f(x) = m x + t + \\frac{R(x)}{N(x)}$, 3. **Konkrete Aufgabe**:   * Gegeben ist die Funktion $f(x) = \\frac{2x^3 - 4x^2 - 2x + 4}{x^2 - 1}$.   * a) Bestimme die maximale Definitionsmenge $D_f$.   * b) Untersuche alle Definitionslücken auf hebbare Lücken bzw. Polstellen.   * c) Bestimme die Gleichung der schiefen Asymptote $y = m x + t$.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere gebrochen-rationale Funktionen und führe eine vollständige Asymptotenbestimmung durch: 1. Klassifikation der Definitionslücken bei "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{Z(x)}{N(x)}",
+              "speech": "f von x gleich Z von x durch N von x"
+            },
+            {
+              "type": "text",
+              "text": ":   * Hebbare Definitionslücke bei "
+            },
+            {
+              "type": "math",
+              "tex": "x_0",
+              "speech": "x null"
+            },
+            {
+              "type": "text",
+              "text": ": Wenn "
+            },
+            {
+              "type": "math",
+              "tex": "x_0",
+              "speech": "x null"
+            },
+            {
+              "type": "text",
+              "text": " Nullstelle von Zähler und Nenner mit gleicher oder höherer Vielfachheit im Zähler ist "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " der Faktor "
+            },
+            {
+              "type": "math",
+              "tex": "(x - x_0)",
+              "speech": "x minus x null"
+            },
+            {
+              "type": "text",
+              "text": " lässt sich vollständig herauskürzen; der Grenzwert "
+            },
+            {
+              "type": "math",
+              "tex": "\\lim_{x \\to x_0} f(x) = y_0",
+              "speech": "Limes für x gegen x null f von x gleich y null"
+            },
+            {
+              "type": "text",
+              "text": " existiert.   * Polstelle (senkrechte Asymptote) bei "
+            },
+            {
+              "type": "math",
+              "tex": "x_0",
+              "speech": "x null"
+            },
+            {
+              "type": "text",
+              "text": ": Wenn nach dem Kürzen eine Nennernullstelle verbleibt "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies \\lim_{x \\to x_0} f(x) = \\pm \\infty",
+              "speech": "daraus folgt Limes für x gegen x null f von x gleich plus minus unendlich"
+            },
+            {
+              "type": "text",
+              "text": " (mit VZW bei ungerader Polstellen-Ordnung, ohne VZW bei gerader Ordnung), 2. Grenzverhalten im Unendlichen:   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\operatorname{Grad}(Z) < \\operatorname{Grad}(N) \\implies",
+              "speech": "Grad von Z kleiner als Grad von N, daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " waagrechte Asymptote "
+            },
+            {
+              "type": "math",
+              "tex": "y = 0",
+              "speech": "y gleich 0"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\operatorname{Grad}(Z) = \\operatorname{Grad}(N) \\implies",
+              "speech": "Grad von Z gleich Grad von N, daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " waagrechte Asymptote "
+            },
+            {
+              "type": "math",
+              "tex": "y = \\frac{a_n}{b_n}",
+              "speech": "y gleich a n durch b n"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\operatorname{Grad}(Z) = \\operatorname{Grad}(N) + 1 \\implies",
+              "speech": "Grad von Z gleich Grad von N plus 1, daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " schiefe Asymptote "
+            },
+            {
+              "type": "math",
+              "tex": "y = m x + t",
+              "speech": "y gleich m x plus t"
+            },
+            {
+              "type": "text",
+              "text": " durch Polynomdivision "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = m x + t + \\frac{R(x)}{N(x)}",
+              "speech": "f von x gleich m x plus t plus R von x durch N von x"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Konkrete Aufgabe:   * Gegeben ist die Funktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{2x^3 - 4x^2 - 2x + 4}{x^2 - 1}",
+              "speech": "f von x gleich Bruch: 2 x hoch drei minus 4 x Quadrat minus 2 x plus 4, durch x Quadrat minus 1"
+            },
+            {
+              "type": "text",
+              "text": ".   * a) Bestimme die maximale Definitionsmenge "
+            },
+            {
+              "type": "math",
+              "tex": "D_f",
+              "speech": "D f"
+            },
+            {
+              "type": "text",
+              "text": ".   * b) Untersuche alle Definitionslücken auf hebbare Lücken bzw. Polstellen.   * c) Bestimme die Gleichung der schiefen Asymptote "
+            },
+            {
+              "type": "math",
+              "tex": "y = m x + t",
+              "speech": "y gleich m x plus t"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
           "concept": "Gebrochen-rationale Funktionen 13: D_f = R \\ {-1, 1}; Faktorisierung Zähler 2(x-1)(x+1)(x-2) -> hebbare Lücken bei x = 1 und x = -1; gekürzte Funktion f(x) = 2x - 4 (Gerade mit zwei Löchern); schiefe Asymptote y = 2x - 4.",
-          "sample_solution": "1. Theorie gebrochen-rationaler Funktionen: - Eine gebrochen-rationale Funktion $f(x) = \\frac{Z(x)}{N(x)}$ ist überall dort definiert, wo $N(x) \\neq 0$. - **Verhalten an den Lücken**:   * Lässt sich der Linearfaktor $(x - x_0)$ durch Kürzen restlos aus dem Nenner entfernen, liegt eine **hebbare Lücke** vor. Der Graph hat dort ein punktförmiges 'Loch' bei $(x_0 \\mid y_0)$.   * Bleibt $(x - x_0)^k$ im Nenner stehen, ist $x_0$ eine **Polstelle $k$-ter Ordnung** mit senkrechter Asymptote $x = x_0$. 2. Vollständige Bearbeitung der Aufgabe: - **a) Definitionsbereich $D_f$**:   * Nennernullstellen: $x^2 - 1 = 0 \\implies x_1 = 1, \\; x_2 = -1$.   * $$\\mathbf{D_f = \\mathbb{R} \\setminus \\{-1; 1\\}}$$ - **b) Untersuchung der Definitionslücken**:   * Wir faktorisieren Zähler und Nenner:     - Nenner: $N(x) = (x - 1)(x + 1)$.     - Zähler: $Z(x) = 2x^3 - 4x^2 - 2x + 4 = 2x^2(x - 2) - 2(x - 2) = 2(x^2 - 1)(x - 2) = 2(x - 1)(x + 1)(x - 2)$.   * **Kürzen für alle $x \\in D_f$**:     $$f(x) = \\frac{2(x - 1)(x + 1)(x - 2)}{(x - 1)(x + 1)} = \\mathbf{2x - 4}$$   * **Ergebnis**: Sowohl $x = 1$ als auch $x = -1$ sind **hebbare Definitionslücken** (keine Polstellen!).     - Lücke 1: $\\lim_{x \\to 1} f(x) = 2(1) - 4 = -2 \\implies \\mathbf{L_1(1 \\mid -2)}$.     - Lücke 2: $\\lim_{x \\to -1} f(x) = 2(-1) - 4 = -6 \\implies \\mathbf{L_2(-1 \\mid -6)}$. - **c) Asymptote für $x \\to \\pm \\infty$**:   * Da die gekürzte Funktion exakt mit der linearen Geradengleichung $y = 2x - 4$ übereinstimmt, ist die schiefe Asymptote identisch mit der Geraden:     $$\\mathbf{y = 2x - 4}$$   *(Der Graph von $f$ ist eine Gerade mit Steigung $m = 2$ und $y$-Achsenabschnitt $t = -4$, die an den Stellen $x = 1$ und $x = -1$ zwei punktförmige Löcher besitzt)*."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Theorie gebrochen-rationaler Funktionen: - Eine gebrochen-rationale Funktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{Z(x)}{N(x)}"
+            },
+            {
+              "type": "text",
+              "text": " ist überall dort definiert, wo "
+            },
+            {
+              "type": "math",
+              "tex": "N(x) \\neq 0"
+            },
+            {
+              "type": "text",
+              "text": ". - Verhalten an den Lücken:   * Lässt sich der Linearfaktor "
+            },
+            {
+              "type": "math",
+              "tex": "(x - x_0)"
+            },
+            {
+              "type": "text",
+              "text": " durch Kürzen restlos aus dem Nenner entfernen, liegt eine hebbare Lücke vor. Der Graph hat dort ein punktförmiges 'Loch' bei "
+            },
+            {
+              "type": "math",
+              "tex": "(x_0 \\mid y_0)"
+            },
+            {
+              "type": "text",
+              "text": ".   * Bleibt "
+            },
+            {
+              "type": "math",
+              "tex": "(x - x_0)^k"
+            },
+            {
+              "type": "text",
+              "text": " im Nenner stehen, ist "
+            },
+            {
+              "type": "math",
+              "tex": "x_0"
+            },
+            {
+              "type": "text",
+              "text": " eine Polstelle "
+            },
+            {
+              "type": "math",
+              "tex": "k"
+            },
+            {
+              "type": "text",
+              "text": "-ter Ordnung mit senkrechter Asymptote "
+            },
+            {
+              "type": "math",
+              "tex": "x = x_0"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Vollständige Bearbeitung der Aufgabe: - a) Definitionsbereich "
+            },
+            {
+              "type": "math",
+              "tex": "D_f"
+            },
+            {
+              "type": "text",
+              "text": ":   * Nennernullstellen: "
+            },
+            {
+              "type": "math",
+              "tex": "x^2 - 1 = 0 \\implies x_1 = 1, \\; x_2 = -1"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{D_f = \\mathbb{R} \\setminus \\{-1; 1\\}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - b) Untersuchung der Definitionslücken:   * Wir faktorisieren Zähler und Nenner:     - Nenner: "
+            },
+            {
+              "type": "math",
+              "tex": "N(x) = (x - 1)(x + 1)"
+            },
+            {
+              "type": "text",
+              "text": ".     - Zähler: "
+            },
+            {
+              "type": "math",
+              "tex": "Z(x) = 2x^3 - 4x^2 - 2x + 4 = 2x^2(x - 2) - 2(x - 2) = 2(x^2 - 1)(x - 2) = 2(x - 1)(x + 1)(x - 2)"
+            },
+            {
+              "type": "text",
+              "text": ".   * Kürzen für alle "
+            },
+            {
+              "type": "math",
+              "tex": "x \\in D_f"
+            },
+            {
+              "type": "text",
+              "text": ":     "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{2(x - 1)(x + 1)(x - 2)}{(x - 1)(x + 1)} = \\mathbf{2x - 4}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Ergebnis: Sowohl "
+            },
+            {
+              "type": "math",
+              "tex": "x = 1"
+            },
+            {
+              "type": "text",
+              "text": " als auch "
+            },
+            {
+              "type": "math",
+              "tex": "x = -1"
+            },
+            {
+              "type": "text",
+              "text": " sind hebbare Definitionslücken (keine Polstellen!).     - Lücke 1: "
+            },
+            {
+              "type": "math",
+              "tex": "\\lim_{x \\to 1} f(x) = 2(1) - 4 = -2 \\implies \\mathbf{L_1(1 \\mid -2)}"
+            },
+            {
+              "type": "text",
+              "text": ".     - Lücke 2: "
+            },
+            {
+              "type": "math",
+              "tex": "\\lim_{x \\to -1} f(x) = 2(-1) - 4 = -6 \\implies \\mathbf{L_2(-1 \\mid -6)}"
+            },
+            {
+              "type": "text",
+              "text": ". - c) Asymptote für "
+            },
+            {
+              "type": "math",
+              "tex": "x \\to \\pm \\infty"
+            },
+            {
+              "type": "text",
+              "text": ":   * Da die gekürzte Funktion exakt mit der linearen Geradengleichung "
+            },
+            {
+              "type": "math",
+              "tex": "y = 2x - 4"
+            },
+            {
+              "type": "text",
+              "text": " übereinstimmt, ist die schiefe Asymptote identisch mit der Geraden:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{y = 2x - 4}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   (Der Graph von "
+            },
+            {
+              "type": "math",
+              "tex": "f"
+            },
+            {
+              "type": "text",
+              "text": " ist eine Gerade mit Steigung "
+            },
+            {
+              "type": "math",
+              "tex": "m = 2"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "y"
+            },
+            {
+              "type": "text",
+              "text": "-Achsenabschnitt "
+            },
+            {
+              "type": "math",
+              "tex": "t = -4"
+            },
+            {
+              "type": "text",
+              "text": ", die an den Stellen "
+            },
+            {
+              "type": "math",
+              "tex": "x = 1"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "x = -1"
+            },
+            {
+              "type": "text",
+              "text": " zwei punktförmige Löcher besitzt)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -112,7 +512,30 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Für welche reellen Exponenten p konvergiert das uneigentliche Integral \\int_{1}^{\\infty} \\frac{1}{x^p} \\, dx gegen einen endlichen Flächeninhalt?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Für welche reellen Exponenten "
+            },
+            {
+              "type": "math",
+              "tex": "p",
+              "speech": "p"
+            },
+            {
+              "type": "text",
+              "text": " konvergiert das uneigentliche Integral "
+            },
+            {
+              "type": "math",
+              "tex": "\\int_{1}^{\\infty} \\frac{1}{x^p} \\, dx",
+              "speech": "Integral von 1 bis unendlich über 1 durch x hoch p d x"
+            },
+            {
+              "type": "text",
+              "text": " gegen einen endlichen Flächeninhalt?"
+            }
+          ],
           "concept": "Für alle p > 1 (für p <= 1 divergiert das Integral gegen unendlich)",
           "fast_check": {
             "type": "binary_choice",
@@ -121,16 +544,439 @@
               "Für alle p < 1"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GD00000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere Kurvenscharen, Ortskurven und berechne uneigentliche Integrale: 1. **Bestimmung von Ortskurven für Scharen $f_k(x)$**:   * Bestimme die Koordinaten des charakteristischen Punktes in Abhängigkeit von $k$: $x = x(k)$ und $y = y(k)$.   * Löse die Gleichung $x = x(k)$ nach dem Parameter $k$ auf: $k = g(x)$.   * Setze $k = g(x)$ in die $y$-Gleichung ein $\\implies \\mathbf{y = y(g(x))}$ (**Gleichung der Ortskurve**), 2. **Definition des Uneigentlichen Integrals**:   * **1. Art (unbeschränkte Grenze)**: $\\int_{a}^{\\infty} f(x)\\,dx = \\lim_{u \\to \\infty} \\int_{a}^{u} f(x)\\,dx$.   * **2. Art (unbeschränkter Integrand bei $x_0$)**: $\\int_{x_0}^{b} f(x)\\,dx = \\lim_{u \\to x_0^+} \\int_{u}^{b} f(x)\\,dx$.   * Wenn der Grenzwert existiert und endlich ist, nennt man das Integral **konvergent**, andernfalls **divergent**, 3. **Berechnungsaufgabe**:   * Gegeben ist die Funktion $f(x) = x \\cdot e^{-2x}$ für $x \\ge 0$.   * a) Bestimme das unbestimmte Integral $\\int x \\cdot e^{-2x}\\,dx$ mittels partieller Integration.   * b) Berechne den Flächeninhalt $A = \\int_{0}^{\\infty} x \\cdot e^{-2x}\\,dx$, den der Graph von $f$ mit der positiven $x$-Achse vollständig einschließt.",
-          "concept": "Ortskurven & Uneigentliche Integrale 13: Partielle Integration int x*e^(-2x) dx = -1/2 x e^(-2x) - 1/4 e^(-2x); Grenzübertragung u -> inf liefert A = 0 - (-1/4) = 1/4 FE.",
-          "sample_solution": "1. Ortskurven von Extrempunkten einer Schar: - Das Verfahren zur Parameterelimination:   1. Extrempunkt $E_k(x_k \\mid y_k)$ bestimmen (über $f'_k(x) = 0$).   2. $x$-Koordinate nach dem Scharparameter $k$ freistellen.   3. Den Ausdruck für $k$ in die $y$-Koordinate einsetzen $\\implies$ Reine Beziehung $y = h(x)$, auf der alle Extrempunkte sämtlicher Kurven der Schar liegen. 2. Berechnung des uneigentlichen Integrals: - **Schritt 1: Partielle Integration von $\\int x \\cdot e^{-2x}\\,dx$**:   * Formel: $\\int u(x) \\cdot v'(x)\\,dx = u(x) \\cdot v(x) - \\int u'(x) \\cdot v(x)\\,dx$.   * Wähle: $u(x) = x \\implies u'(x) = 1$.   * Wähle: $v'(x) = e^{-2x} \\implies v(x) = -\\frac{1}{2} e^{-2x}$.   * Einsetzen:     $$\\int x \\cdot e^{-2x}\\,dx = -\\frac{1}{2} x \\cdot e^{-2x} - \\int 1 \\cdot \\left(-\\frac{1}{2} e^{-2x}\\right) dx$$     $$= -\\frac{1}{2} x \\cdot e^{-2x} + \\frac{1}{2} \\int e^{-2x}\\,dx$$     $$= -\\frac{1}{2} x \\cdot e^{-2x} - \\frac{1}{4} e^{-2x} + C = \\mathbf{-e^{-2x} \\left( \\frac{1}{2}x + \\frac{1}{4} \\right) + C}$$ - **Schritt 2: Bestimmtes Integral mit oberer variabler Grenze $u > 0$**:   $$I(u) = \\int_{0}^{u} x \\cdot e^{-2x}\\,dx = \\left[ -e^{-2x} \\left( \\frac{1}{2}x + \\frac{1}{4} \\right) \\right]_0^u$$   $$I(u) = \\left( -e^{-2u} \\left( \\frac{1}{2}u + \\frac{1}{4} \\right) \\right) - \\left( -e^{0} \\left( 0 + \\frac{1}{4} \\right) \\right)$$   $$I(u) = -e^{-2u} \\left( \\frac{1}{2}u + \\frac{1}{4} \\right) + \\frac{1}{4}$$ - **Schritt 3: Grenzwert für $u \\to \\infty$**:   * Da die Exponentialfunktion $e^{2u}$ für $u \\to \\infty$ jedes Polynom dominiert, gilt nach de L'Hospital:     $$\\lim_{u \\to \\infty} \\frac{\\frac{1}{2}u + \\frac{1}{4}}{e^{2u}} = \\lim_{u \\to \\infty} \\frac{\\frac{1}{2}}{2e^{2u}} = 0$$   * Folglich:     $$\\mathbf{A = \\lim_{u \\to \\infty} I(u) = 0 + \\frac{1}{4} = \\mathbf{\\frac{1}{4}\\,\\text{Flächeneinheiten (FE)}}}$$   * Das uneigentliche Integral **konvergiert** gegen den exakten Wert $0{,}25$ FE."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere Kurvenscharen, Ortskurven und berechne uneigentliche Integrale: 1. Bestimmung von Ortskurven für Scharen "
+            },
+            {
+              "type": "math",
+              "tex": "f_k(x)",
+              "speech": "f k von x"
+            },
+            {
+              "type": "text",
+              "text": ":   * Bestimme die Koordinaten des charakteristischen Punktes in Abhängigkeit von "
+            },
+            {
+              "type": "math",
+              "tex": "k",
+              "speech": "k"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "x = x(k)",
+              "speech": "x gleich x von k"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "y = y(k)",
+              "speech": "y gleich y von k"
+            },
+            {
+              "type": "text",
+              "text": ".   * Löse die Gleichung "
+            },
+            {
+              "type": "math",
+              "tex": "x = x(k)",
+              "speech": "x gleich x von k"
+            },
+            {
+              "type": "text",
+              "text": " nach dem Parameter "
+            },
+            {
+              "type": "math",
+              "tex": "k",
+              "speech": "k"
+            },
+            {
+              "type": "text",
+              "text": " auf: "
+            },
+            {
+              "type": "math",
+              "tex": "k = g(x)",
+              "speech": "k gleich g von x"
+            },
+            {
+              "type": "text",
+              "text": ".   * Setze "
+            },
+            {
+              "type": "math",
+              "tex": "k = g(x)",
+              "speech": "k gleich g von x"
+            },
+            {
+              "type": "text",
+              "text": " in die "
+            },
+            {
+              "type": "math",
+              "tex": "y",
+              "speech": "y"
+            },
+            {
+              "type": "text",
+              "text": "-Gleichung ein "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies \\mathbf{y = y(g(x))}",
+              "speech": "daraus folgt y gleich y von g von x"
+            },
+            {
+              "type": "text",
+              "text": " (Gleichung der Ortskurve), 2. Definition des Uneigentlichen Integrals:   * 1. Art (unbeschränkte Grenze): "
+            },
+            {
+              "type": "math",
+              "tex": "\\int_{a}^{\\infty} f(x)\\,dx = \\lim_{u \\to \\infty} \\int_{a}^{u} f(x)\\,dx",
+              "speech": "Integral von a bis unendlich über f von x d x gleich Limes für u gegen unendlich Integral von a bis u über f von x d x"
+            },
+            {
+              "type": "text",
+              "text": ".   * 2. Art (unbeschränkter Integrand bei "
+            },
+            {
+              "type": "math",
+              "tex": "x_0",
+              "speech": "x null"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "\\int_{x_0}^{b} f(x)\\,dx = \\lim_{u \\to x_0^+} \\int_{u}^{b} f(x)\\,dx",
+              "speech": "Integral von x null bis b über f von x d x gleich Limes für u gegen x null von rechts, Integral von u bis b über f von x d x"
+            },
+            {
+              "type": "text",
+              "text": ".   * Wenn der Grenzwert existiert und endlich ist, nennt man das Integral konvergent, andernfalls divergent, 3. Berechnungsaufgabe:   * Gegeben ist die Funktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = x \\cdot e^{-2x}",
+              "speech": "f von x gleich x mal e hoch minus 2 x"
+            },
+            {
+              "type": "text",
+              "text": " für "
+            },
+            {
+              "type": "math",
+              "tex": "x \\ge 0",
+              "speech": "x größer gleich 0"
+            },
+            {
+              "type": "text",
+              "text": ".   * a) Bestimme das unbestimmte Integral "
+            },
+            {
+              "type": "math",
+              "tex": "\\int x \\cdot e^{-2x}\\,dx",
+              "speech": "Integral über x mal e hoch minus 2 x d x"
+            },
+            {
+              "type": "text",
+              "text": " mittels partieller Integration.   * b) Berechne den Flächeninhalt "
+            },
+            {
+              "type": "math",
+              "tex": "A = \\int_{0}^{\\infty} x \\cdot e^{-2x}\\,dx",
+              "speech": "A gleich Integral von 0 bis unendlich über x mal e hoch minus 2 x d x"
+            },
+            {
+              "type": "text",
+              "text": ", den der Graph von "
+            },
+            {
+              "type": "math",
+              "tex": "f",
+              "speech": "f"
+            },
+            {
+              "type": "text",
+              "text": " mit der positiven "
+            },
+            {
+              "type": "math",
+              "tex": "x",
+              "speech": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Achse vollständig einschließt."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Ortskurven & Uneigentliche Integrale 13: Partielle Integration "
+            },
+            {
+              "type": "math",
+              "tex": "\\int x \\cdot e^{-2x}\\,dx = -\\frac{1}{2} x e^{-2x} - \\frac{1}{4} e^{-2x}",
+              "speech": "Integral über x mal e hoch minus 2 x d x gleich minus ein halb x e hoch minus 2 x minus ein Viertel e hoch minus 2 x"
+            },
+            {
+              "type": "text",
+              "text": "; Grenzübertragung "
+            },
+            {
+              "type": "math",
+              "tex": "u \\to \\infty",
+              "speech": "u gegen unendlich"
+            },
+            {
+              "type": "text",
+              "text": " liefert "
+            },
+            {
+              "type": "math",
+              "tex": "A = 0 - \\left(-\\frac{1}{4}\\right) = \\frac{1}{4}",
+              "speech": "A gleich 0 minus Klammer auf minus ein Viertel Klammer zu gleich ein Viertel"
+            },
+            {
+              "type": "text",
+              "text": " FE."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Ortskurven von Extrempunkten einer Schar: - Das Verfahren zur Parameterelimination:   1. Extrempunkt "
+            },
+            {
+              "type": "math",
+              "tex": "E_k(x_k \\mid y_k)"
+            },
+            {
+              "type": "text",
+              "text": " bestimmen (über "
+            },
+            {
+              "type": "math",
+              "tex": "f'_k(x) = 0"
+            },
+            {
+              "type": "text",
+              "text": ").   2. "
+            },
+            {
+              "type": "math",
+              "tex": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Koordinate nach dem Scharparameter "
+            },
+            {
+              "type": "math",
+              "tex": "k"
+            },
+            {
+              "type": "text",
+              "text": " freistellen.   3. Den Ausdruck für "
+            },
+            {
+              "type": "math",
+              "tex": "k"
+            },
+            {
+              "type": "text",
+              "text": " in die "
+            },
+            {
+              "type": "math",
+              "tex": "y"
+            },
+            {
+              "type": "text",
+              "text": "-Koordinate einsetzen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Reine Beziehung "
+            },
+            {
+              "type": "math",
+              "tex": "y = h(x)"
+            },
+            {
+              "type": "text",
+              "text": ", auf der alle Extrempunkte sämtlicher Kurven der Schar liegen. 2. Berechnung des uneigentlichen Integrals: - Schritt 1: Partielle Integration von "
+            },
+            {
+              "type": "math",
+              "tex": "\\int x \\cdot e^{-2x}\\,dx"
+            },
+            {
+              "type": "text",
+              "text": ":   * Formel: "
+            },
+            {
+              "type": "math",
+              "tex": "\\int u(x) \\cdot v'(x)\\,dx = u(x) \\cdot v(x) - \\int u'(x) \\cdot v(x)\\,dx"
+            },
+            {
+              "type": "text",
+              "text": ".   * Wähle: "
+            },
+            {
+              "type": "math",
+              "tex": "u(x) = x \\implies u'(x) = 1"
+            },
+            {
+              "type": "text",
+              "text": ".   * Wähle: "
+            },
+            {
+              "type": "math",
+              "tex": "v'(x) = e^{-2x} \\implies v(x) = -\\frac{1}{2} e^{-2x}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Einsetzen:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\int x \\cdot e^{-2x}\\,dx = -\\frac{1}{2} x \\cdot e^{-2x} - \\int 1 \\cdot \\left(-\\frac{1}{2} e^{-2x}\\right) dx",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "     "
+            },
+            {
+              "type": "math",
+              "tex": "= -\\frac{1}{2} x \\cdot e^{-2x} + \\frac{1}{2} \\int e^{-2x}\\,dx",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "     "
+            },
+            {
+              "type": "math",
+              "tex": "= -\\frac{1}{2} x \\cdot e^{-2x} - \\frac{1}{4} e^{-2x} + C = \\mathbf{-e^{-2x} \\left( \\frac{1}{2}x + \\frac{1}{4} \\right) + C}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 2: Bestimmtes Integral mit oberer variabler Grenze "
+            },
+            {
+              "type": "math",
+              "tex": "u > 0"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "I(u) = \\int_{0}^{u} x \\cdot e^{-2x}\\,dx = \\left[ -e^{-2x} \\left( \\frac{1}{2}x + \\frac{1}{4} \\right) \\right]_0^u",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "I(u) = \\left( -e^{-2u} \\left( \\frac{1}{2}u + \\frac{1}{4} \\right) \\right) - \\left( -e^{0} \\left( 0 + \\frac{1}{4} \\right) \\right)",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "I(u) = -e^{-2u} \\left( \\frac{1}{2}u + \\frac{1}{4} \\right) + \\frac{1}{4}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 3: Grenzwert für "
+            },
+            {
+              "type": "math",
+              "tex": "u \\to \\infty"
+            },
+            {
+              "type": "text",
+              "text": ":   * Da die Exponentialfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "e^{2u}"
+            },
+            {
+              "type": "text",
+              "text": " für "
+            },
+            {
+              "type": "math",
+              "tex": "u \\to \\infty"
+            },
+            {
+              "type": "text",
+              "text": " jedes Polynom dominiert, gilt nach de L'Hospital:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\lim_{u \\to \\infty} \\frac{\\frac{1}{2}u + \\frac{1}{4}}{e^{2u}} = \\lim_{u \\to \\infty} \\frac{\\frac{1}{2}}{2e^{2u}} = 0",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Folglich:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{A = \\lim_{u \\to \\infty} I(u) = 0 + \\frac{1}{4} = \\mathbf{\\frac{1}{4}\\,\\text{Flächeneinheiten (FE)}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Das uneigentliche Integral konvergiert gegen den exakten Wert "
+            },
+            {
+              "type": "math",
+              "tex": "0{,}25"
+            },
+            {
+              "type": "text",
+              "text": " FE."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

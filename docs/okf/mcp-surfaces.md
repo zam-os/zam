@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-14T23:00:00.000Z
+timestamp: 2026-10-15T08:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -157,6 +157,17 @@ The model-visible learning tools cover:
   that stays out of every queue, due list, admission and rating until
   `zam_publish_revision`; the same setting governs topic, file, curriculum and
   foundation imports. `zam_list_drafts` lists unpublished captures;
+- card text with formulas ([ADR 2026-10-14b](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md),
+  Decision 6): question and concept are plain text without LaTeX or
+  Markdown. One that holds a formula goes as segments —
+  `questionSegments` / `conceptSegments` on `zam_add_token` and on each
+  `zam_okf_import` token, a string or a segment list per side on
+  `zam_material_import` — every formula with its `speech`. Agents fail
+  loudly: a `$…$` in a string is lifted, but a formula the tokenizer
+  refuses, or one without speech, returns an error that names the field
+  and the segment, and nothing is written. The card-shape rules every
+  card prompt states include the segment contract with a short example
+  (`CARD_TEXT_RULE`). See [card-text-segments.md](card-text-segments.md);
 - material import: `zam_material_import_context` hands an agent the rules for
   turning a learner's photo or PDF into card proposals, the contract with an
   example, the learner's areas and the subject codes; with a `place` (a region
@@ -615,6 +626,7 @@ is painted, so one learner's preference cannot bleed into another's session.
 
 # Citations
 
+- [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [Field-test slice plan](../plans/2026-08-15-central-learning-field-test-slice.md)

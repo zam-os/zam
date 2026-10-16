@@ -67,7 +67,7 @@
           "bloom_level": 2,
           "question": "Erkläre die mathematisch-geographische Struktur des weltweiten Gradnetzes der Erde: 1. Breitenkreise (Parallelkreise: Äquator 0° teilt Nord- und Südhalbkugel, 90° N und 90° S an den Polen, Wendekreise bei 23,5° N/S, Polarkreise bei 66,5° N/S), 2. Längenhalbkreise / Meridiane (verbinden Nord- und Südpol, Nullmeridian von Greenwich 0° bis 180° Ost/West, Datumsgrenze), 3. Exakte Punktbestimmung mit geographischen Koordinaten (immer zuerst Breite, dann Länge) und bestimme die Koordinaten der bayerischen Landeshauptstadt München (ca. 48° 08' N, 11° 34' O).",
           "concept": "Breitenkreise: parallel, 0° Äquator bis 90° Pole (Breite N/S); Meridiane: schneiden sich an Polen, 0° Greenwich bis 180° W/O (Länge O/W); Globale Ortung durch Schnittpunkt [Breite | Länge].",
-          "sample_solution": "1. Das Gradnetz der Erde als globales Koordinatensystem: - **Geographische Breite (Breitenkreise / Parallelkreise)**:   * Verlaufen parallel zum Äquator in Ost-West-Richtung. Sie schneiden sich niemals.   * **Äquator (0°)**: Mit einem Umfang von ca. 40.075 km der größte Breitenkreis; teilt die Erde in Nord- und Südhalbkugel.   * Zählung: 0° bis **90° Nord (Nordpol)** und 0° bis **90° Süd (Südpol)**.   * **Besondere Breitenkreise**:     - Nördlicher und Südlicher Wendekreis bei **23,5° N bzw. S** (Grenzen der Tropen, wo die Sonne im Zenit stehen kann).     - Nördlicher und Südlicher Polarkreis bei **66,5° N bzw. S** (Grenzen, ab denen Polartag und Polarnacht auftreten). - **Geographische Länge (Längenhalbkreise / Meridiane)**:   * Verlaufen in Nord-Süd-Richtung und verbinden Nordpol und Südpol. Alle Meridiane sind exakt gleich lang (ca. 20.000 km).   * **Nullmeridian (0°)**: Verläuft durch die historische Sternwarte von **Greenwich (London)**.   * Zählung: 0° bis **180° östliche Länge (O / E)** und 0° bis **180° westliche Länge (W)**. Der 180°-Meridian im Pazifik bildet im Wesentlichen die internationale **Datumsgrenze**. 2. Punktbestimmung mit geographischen Koordinaten: - Jeder Punkt der Erdoberfläche ist als Schnittpunkt von genau einem Breitenkreis und einem Längenhalbkreis eindeutig festgelegt. - Konvention: Immer **zuerst die geographische Breite**, danach die **geographische Länge**. - Beispiel München: **48° 08' N, 11° 34' O** (48 Grad 8 Minuten nördliche Breite, 11 Grad 34 Minuten östliche Länge)."
+          "sample_solution": "1. Das Gradnetz der Erde als globales Koordinatensystem: - Geographische Breite (Breitenkreise / Parallelkreise):   * Verlaufen parallel zum Äquator in Ost-West-Richtung. Sie schneiden sich niemals.   * Äquator (0°): Mit einem Umfang von ca. 40.075 km der größte Breitenkreis; teilt die Erde in Nord- und Südhalbkugel.   * Zählung: 0° bis 90° Nord (Nordpol) und 0° bis 90° Süd (Südpol).   * Besondere Breitenkreise:     - Nördlicher und Südlicher Wendekreis bei 23,5° N bzw. S (Grenzen der Tropen, wo die Sonne im Zenit stehen kann).     - Nördlicher und Südlicher Polarkreis bei 66,5° N bzw. S (Grenzen, ab denen Polartag und Polarnacht auftreten). - Geographische Länge (Längenhalbkreise / Meridiane):   * Verlaufen in Nord-Süd-Richtung und verbinden Nordpol und Südpol. Alle Meridiane sind exakt gleich lang (ca. 20.000 km).   * Nullmeridian (0°): Verläuft durch die historische Sternwarte von Greenwich (London).   * Zählung: 0° bis 180° östliche Länge (O / E) und 0° bis 180° westliche Länge (W). Der 180°-Meridian im Pazifik bildet im Wesentlichen die internationale Datumsgrenze. 2. Punktbestimmung mit geographischen Koordinaten: - Jeder Punkt der Erdoberfläche ist als Schnittpunkt von genau einem Breitenkreis und einem Längenhalbkreis eindeutig festgelegt. - Konvention: Immer zuerst die geographische Breite, danach die geographische Länge. - Beispiel München: 48° 08' N, 11° 34' O (48 Grad 8 Minuten nördliche Breite, 11 Grad 34 Minuten östliche Länge)."
         }
       ]
     },
@@ -130,7 +130,100 @@
           "bloom_level": 2,
           "question": "Erkläre die Übersetzung der 3D-Realität in eine 2D-Karte: 1. Maßstabszahl (Kartenstrecke · Maßstabszahl = reale Strecke), 2. Höhenlinien / Isohypsen und Höhenschichtenfarben zur Darstellung des 3D-Reliefs (Äquidistanz / Höhenunterschied zwischen zwei Linien), 3. Generalisierung und Signaturen (Vereinfachung und Symbolik in der Legende) und berechne: Auf einer Wanderkarte mit Maßstab 1 : 50.000 misst der Weg zwischen Berghütte und Gipfelkreuz genau 6,4 cm. Wie viele Kilometer beträgt die reale Wanderdistanz (Luftlinie)?",
           "concept": "Maßstab: Streckenberechnung (6,4 cm · 50.000 = 320.000 cm = 3.200 m = 3,2 km); Höhenlinien: Höhenabstand = Äquidistanz; enge Linien = Steilhang; Geländeprofil durch Schnittlinie; Generalisierung = maßstabsbedingte Vereinfachung.",
-          "sample_solution": "1. Elemente der topographischen Kartographie: - **1. Der Maßstab ($1 : M$)**:   * Das mathematische Verkleinerungsverhältnis: $1\\text{ cm}$ auf der Karte entspricht $M\\text{ cm}$ in der Wirklichkeit.   * Großer Maßstab (z. B. $1 : 25.000$): Zeigt einen kleinen Geländeausschnitt mit vielen feinen Details (Wanderkarte).   * Kleiner Maßstab (z. B. $1 : 1.000.000$): Stark verkleinerte Übersichtskarte (z. B. Deutschlandkarte). - **2. Höhenlinien (Isohypsen) und Relief**:   * Braune geschlossene Linien, die alle Punkte gleicher Meereshöhe (m über Normalnull) verbinden.   * **Äquidistanz**: Der konstante vertikale Höhenabstand zwischen zwei aufeinanderfolgenden Höhenlinien (z. B. alle $20\\text{ m}$).   * **Steilheit**: Enge Linienabstände = steiler Berghang / Felswand; weite Linienabstände = sanfter Hang oder Talsohle. - **3. Generalisierung & Signaturen**:   * Da nicht jedes Haus oder jeder Baum maßstabsgetreu gezeichnet werden kann, werden Kartenelemente **generalisiert** (vereinfacht, zusammengefasst, versetzt) und durch genormte Symbole (**Signaturen**) in der Legende dargestellt. 2. Entfernungsberechnung: - Gemessene Kartenstrecke: $s_{\\text{Karte}} = 6,4\\text{ cm}$. - Maßstab: $1 : 50.000$. - Reale Strecke in Zentimetern: $s_{\\text{Real}} = 6,4\\text{ cm} \\cdot 50.000 = 320.000\\text{ cm}$. - Umrechnung in Meter: $320.000\\text{ cm} : 100 = 3.200\\text{ m}$. - Umrechnung in Kilometer: $3.200\\text{ m} : 1.000 = \\mathbf{3,2\\text{ km}}$ Luftlinien-Distanz."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Elemente der topographischen Kartographie: - 1. Der Maßstab ("
+            },
+            {
+              "type": "math",
+              "tex": "1 : M"
+            },
+            {
+              "type": "text",
+              "text": "):   * Das mathematische Verkleinerungsverhältnis: "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ cm}"
+            },
+            {
+              "type": "text",
+              "text": " auf der Karte entspricht "
+            },
+            {
+              "type": "math",
+              "tex": "M\\text{ cm}"
+            },
+            {
+              "type": "text",
+              "text": " in der Wirklichkeit.   * Großer Maßstab (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "1 : 25.000"
+            },
+            {
+              "type": "text",
+              "text": "): Zeigt einen kleinen Geländeausschnitt mit vielen feinen Details (Wanderkarte).   * Kleiner Maßstab (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "1 : 1.000.000"
+            },
+            {
+              "type": "text",
+              "text": "): Stark verkleinerte Übersichtskarte (z. B. Deutschlandkarte). - 2. Höhenlinien (Isohypsen) und Relief:   * Braune geschlossene Linien, die alle Punkte gleicher Meereshöhe (m über Normalnull) verbinden.   * Äquidistanz: Der konstante vertikale Höhenabstand zwischen zwei aufeinanderfolgenden Höhenlinien (z. B. alle "
+            },
+            {
+              "type": "math",
+              "tex": "20\\text{ m}"
+            },
+            {
+              "type": "text",
+              "text": ").   * Steilheit: Enge Linienabstände = steiler Berghang / Felswand; weite Linienabstände = sanfter Hang oder Talsohle. - 3. Generalisierung & Signaturen:   * Da nicht jedes Haus oder jeder Baum maßstabsgetreu gezeichnet werden kann, werden Kartenelemente generalisiert (vereinfacht, zusammengefasst, versetzt) und durch genormte Symbole (Signaturen) in der Legende dargestellt. 2. Entfernungsberechnung: - Gemessene Kartenstrecke: "
+            },
+            {
+              "type": "math",
+              "tex": "s_{\\text{Karte}} = 6,4\\text{ cm}"
+            },
+            {
+              "type": "text",
+              "text": ". - Maßstab: "
+            },
+            {
+              "type": "math",
+              "tex": "1 : 50.000"
+            },
+            {
+              "type": "text",
+              "text": ". - Reale Strecke in Zentimetern: "
+            },
+            {
+              "type": "math",
+              "tex": "s_{\\text{Real}} = 6,4\\text{ cm} \\cdot 50.000 = 320.000\\text{ cm}"
+            },
+            {
+              "type": "text",
+              "text": ". - Umrechnung in Meter: "
+            },
+            {
+              "type": "math",
+              "tex": "320.000\\text{ cm} : 100 = 3.200\\text{ m}"
+            },
+            {
+              "type": "text",
+              "text": ". - Umrechnung in Kilometer: "
+            },
+            {
+              "type": "math",
+              "tex": "3.200\\text{ m} : 1.000 = \\mathbf{3,2\\text{ km}}"
+            },
+            {
+              "type": "text",
+              "text": " Luftlinien-Distanz."
+            }
+          ]
         }
       ]
     },
@@ -193,7 +286,132 @@
           "bloom_level": 2,
           "question": "Erkläre die Entstehung der 4 Jahreszeiten durch das Zusammenspiel von Erdrevolution (365 1/4 Tage) und der konstanten Schiefstellung der Erdachse um 23,5° (Einstrahlungswinkel und Tageslänge), beschreibe die 4 Kardinalpunkte des Jahres (21. Juni Sommersonnenwende, 21. Dezember Wintersonnenwende, 21. März / 23. September Äquinoktium / Tag-und-Nacht-Gleiche) und grenze die 3 solaren Beleuchtungszonen der Erde voneinander ab (Tropen zwischen 23,5° N und S mit Zenitständen, Gemäßigte Zone mit 4 Jahreszeiten, Polarzone jenseits 66,5° mit Polartag/Polarnacht).",
           "concept": "Jahreszeiten entstehen durch 23,5° Achsenneigung und Sonnenumlauf: veränderlicher Einstrahlungswinkel steuert Erwärmung pro m²; 3 Beleuchtungszonen: Tropen (steil/heiß), Gemäßigt (variabel), Polar (flach/kalt, Polartag/nacht).",
-          "sample_solution": "1. Die solare Entstehung der Jahreszeiten: - **Ursache**: Die Erdachse ist gegenüber der Senkrechten zur Bahnebene (Ekliptik) um einen konstanten Winkel von **$\\approx 23,5^\\circ$** geneigt und behält diese Raumausrichtung während des 365-tägigen Sonnenumlaufs bei. - **Wirkungsweise**: Nicht die Distanz zur Sonne, sondern der **Einstrahlungswinkel der Sonnenstrahlen** und die **Tageslänge** bestimmen die Erwärmung:   * Steiler Einstrahlungswinkel $\\rightarrow$ Hohe Strahlungsenergie pro Flächeneinheit $\\rightarrow$ Sommer.   * Flacher Einstrahlungswinkel $\\rightarrow$ Strahlung verteilt sich auf große Fläche, langer Weg durch die Atmosphäre $\\rightarrow$ Winter. 2. Die 4 markanten Sonnenstände im Jahreslauf: - **21. Juni (Sommersonnenwende)**: Nordhalbkugel maximal zur Sonne geneigt. Sonne steht am Nördlichen Wendekreis ($23,5^\\circ\\text{ N}$) im Zenit ($90^\\circ$). Längster Tag des Jahres in Bayern. Jenseits des Nördlichen Polarkreises geht die Sonne nicht unter (**Polartag**). - **21. Dezember (Wintersonnenwende)**: Nordhalbkugel von der Sonne abgewandt. Sonne im Zenit am Südlichen Wendekreis ($23,5^\\circ\\text{ S}$). Kürzester Tag in Bayern; **Polarnacht** am Nordpol. - **21. März und 23. September (Äquinoktium / Tag-und-Nacht-Gleiche)**: Sonne steht senkrecht über dem Äquator ($0^\\circ$). Tag und Nacht dauern überall auf der Erde exakt 12 Stunden. 3. Die 3 solaren Beleuchtungszonen der Erde: - **1. Tropen (Tropische Zone, $23,5^\\circ\\text{ N}$ bis $23,5^\\circ\\text{ S}$)**: Liegen zwischen den beiden Wendekreisen; die Sonne steht mindestens einmal im Jahr senkrecht im Zenit. Ganzjährig warm/heiß ohne thermische Jahreszeiten (Tageszeitenklima). - **2. Gemäßigte Zonen ($23,5^\\circ$ bis $66,5^\\circ\\text{ N und S}$)**: Ausgeprägte 4 Jahreszeiten; Sonne steht nie im Zenit, geht aber jeden Tag auf und unter (unsere Heimat Bayern). - **3. Polarzonen (Kalte Zone, $66,5^\\circ$ bis $90^\\circ\\text{ N und S}$)**: Extrem flacher Einfallswinkel; Phänomen von **Polartag** (Sonne scheint 24 h) und **Polarnacht** (Sonne bleibt über Wochen unter dem Horizont)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die solare Entstehung der Jahreszeiten: - Ursache: Die Erdachse ist gegenüber der Senkrechten zur Bahnebene (Ekliptik) um einen konstanten Winkel von "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 23,5^\\circ"
+            },
+            {
+              "type": "text",
+              "text": " geneigt und behält diese Raumausrichtung während des 365-tägigen Sonnenumlaufs bei. - Wirkungsweise: Nicht die Distanz zur Sonne, sondern der Einstrahlungswinkel der Sonnenstrahlen und die Tageslänge bestimmen die Erwärmung:   * Steiler Einstrahlungswinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Hohe Strahlungsenergie pro Flächeneinheit "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Sommer.   * Flacher Einstrahlungswinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Strahlung verteilt sich auf große Fläche, langer Weg durch die Atmosphäre "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Winter. 2. Die 4 markanten Sonnenstände im Jahreslauf: - 21. Juni (Sommersonnenwende): Nordhalbkugel maximal zur Sonne geneigt. Sonne steht am Nördlichen Wendekreis ("
+            },
+            {
+              "type": "math",
+              "tex": "23,5^\\circ\\text{ N}"
+            },
+            {
+              "type": "text",
+              "text": ") im Zenit ("
+            },
+            {
+              "type": "math",
+              "tex": "90^\\circ"
+            },
+            {
+              "type": "text",
+              "text": "). Längster Tag des Jahres in Bayern. Jenseits des Nördlichen Polarkreises geht die Sonne nicht unter (Polartag). - 21. Dezember (Wintersonnenwende): Nordhalbkugel von der Sonne abgewandt. Sonne im Zenit am Südlichen Wendekreis ("
+            },
+            {
+              "type": "math",
+              "tex": "23,5^\\circ\\text{ S}"
+            },
+            {
+              "type": "text",
+              "text": "). Kürzester Tag in Bayern; Polarnacht am Nordpol. - 21. März und 23. September (Äquinoktium / Tag-und-Nacht-Gleiche): Sonne steht senkrecht über dem Äquator ("
+            },
+            {
+              "type": "math",
+              "tex": "0^\\circ"
+            },
+            {
+              "type": "text",
+              "text": "). Tag und Nacht dauern überall auf der Erde exakt 12 Stunden. 3. Die 3 solaren Beleuchtungszonen der Erde: - 1. Tropen (Tropische Zone, "
+            },
+            {
+              "type": "math",
+              "tex": "23,5^\\circ\\text{ N}"
+            },
+            {
+              "type": "text",
+              "text": " bis "
+            },
+            {
+              "type": "math",
+              "tex": "23,5^\\circ\\text{ S}"
+            },
+            {
+              "type": "text",
+              "text": "): Liegen zwischen den beiden Wendekreisen; die Sonne steht mindestens einmal im Jahr senkrecht im Zenit. Ganzjährig warm/heiß ohne thermische Jahreszeiten (Tageszeitenklima). - 2. Gemäßigte Zonen ("
+            },
+            {
+              "type": "math",
+              "tex": "23,5^\\circ"
+            },
+            {
+              "type": "text",
+              "text": " bis "
+            },
+            {
+              "type": "math",
+              "tex": "66,5^\\circ\\text{ N und S}"
+            },
+            {
+              "type": "text",
+              "text": "): Ausgeprägte 4 Jahreszeiten; Sonne steht nie im Zenit, geht aber jeden Tag auf und unter (unsere Heimat Bayern). - 3. Polarzonen (Kalte Zone, "
+            },
+            {
+              "type": "math",
+              "tex": "66,5^\\circ"
+            },
+            {
+              "type": "text",
+              "text": " bis "
+            },
+            {
+              "type": "math",
+              "tex": "90^\\circ\\text{ N und S}"
+            },
+            {
+              "type": "text",
+              "text": "): Extrem flacher Einfallswinkel; Phänomen von Polartag (Sonne scheint 24 h) und Polarnacht (Sonne bleibt über Wochen unter dem Horizont)."
+            }
+          ]
         }
       ]
     },
@@ -256,7 +474,36 @@
           "bloom_level": 2,
           "question": "Gliedere den Freistaat Bayern naturräumlich von Nord nach Süd (1. Fränkisches Schichtstufenland & Ostbayerische Mittelgebirge wie Spessart, Rhön, Frankenwald, Fichtelgebirge, Oberpfälzer/Bayerischer Wald mit Großem Arber 1456 m; 2. Schwäbisch-Bayerisches Alpenvorland mit Schotterebenen und eiszeitlichen Zungenbecken-Seen wie Chiemsee/Starnberger See; 3. Bayerische Alpen mit Zugspitze 2962 m), nenne die 7 Regierungsbezirke mit Regierungssitzen und vergleiche Ackerbaugebiete (Löss im Gäuboden) mit Grünlandwirtschaft (Allgäu).",
           "concept": "3 Großlandschaften Bayerns: Schichtstufen/Mittelgebirge, Alpenvorland (Moränen, Seen), Alpen; 7 Bezirke: Oberbayern (München), Niederbayern (Landshut), Oberpfalz (Regensburg), Oberfranken (Bayreuth), Mittelfranken (Ansbach), Unterfranken (Würzburg), Schwaben (Augsburg); Landnutzung: Ackerbau in Lössbecken, Milchwirtschaft im Allgäu.",
-          "sample_solution": "1. Die 3 naturräumlichen Großlandschaften Bayerns: - **1. Das Süddeutsche Schichtstufenland & Ostbayerische Grundgebirge (Norden & Osten)**:   * Gekennzeichnet durch Schichtstufen (Fränkische Alb, Steigerwald, Spessart) und alte Mittelgebirge (Fichtelgebirge, Bayerischer Wald mit dem **Großen Arber 1.456 m**).   * Landwirtschaft: Weinbau im Maintal, Ackerbau auf Lössdecken (Ochsenfurter Gau), Forstwirtschaft in den Gebirgen. - **2. Das Schwäbisch-Bayerische Alpenvorland (Zentral & Süden)**:   * Reicht von der Donau bis zum Fuß der Alpen. Entstanden durch eiszeitliche Schotterablagerungen (Münchner Schotterebene) und Gletscherzungen, die die großen bayerischen Seen schufen (**Chiemsee, Starnberger See, Ammersee**).   * Hohe Niederschläge im Süden begünstigen Grünland- und Milchwirtschaft (Allgäu). - **3. Die Bayerischen Alpen (Südrand)**:   * Hochgebirge aus Kalk- und Dolomitgestein (Allgäuer, Wetterstein- und Berchtesgadener Alpen). Höchster Berg Deutschlands: Die **Zugspitze mit 2.962 m**. 2. Die 7 Regierungsbezirke und ihre Regierungshauptstädte: - **Oberbayern**: *München* (zugleich Landeshauptstadt) - **Niederbayern**: *Landshut* - **Oberpfalz**: *Regensburg* - **Oberfranken**: *Bayreuth* - **Mittelfranken**: *Ansbach* (größte Stadt: Nürnberg) - **Unterfranken**: *Würzburg* - **Schwaben**: *Augsburg*. 3. Landwirtschaftliche Differenzierung: - **Gäuboden (Dungau um Straubing)**: Fruchtbarste Lösslehmböden, warme Sommer $\\rightarrow$ Intensiver Ackerbau (Weizen, Zuckerrüben, Mais). - **Allgäu**: Höhenlage über 800 m, hohe Niederschläge ($> 1.200\\text{ mm}$) $\\rightarrow$ Dauergrünland, Milcherzeugung und Käseproduktion."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die 3 naturräumlichen Großlandschaften Bayerns: - 1. Das Süddeutsche Schichtstufenland & Ostbayerische Grundgebirge (Norden & Osten):   * Gekennzeichnet durch Schichtstufen (Fränkische Alb, Steigerwald, Spessart) und alte Mittelgebirge (Fichtelgebirge, Bayerischer Wald mit dem Großen Arber 1.456 m).   * Landwirtschaft: Weinbau im Maintal, Ackerbau auf Lössdecken (Ochsenfurter Gau), Forstwirtschaft in den Gebirgen. - 2. Das Schwäbisch-Bayerische Alpenvorland (Zentral & Süden):   * Reicht von der Donau bis zum Fuß der Alpen. Entstanden durch eiszeitliche Schotterablagerungen (Münchner Schotterebene) und Gletscherzungen, die die großen bayerischen Seen schufen (Chiemsee, Starnberger See, Ammersee).   * Hohe Niederschläge im Süden begünstigen Grünland- und Milchwirtschaft (Allgäu). - 3. Die Bayerischen Alpen (Südrand):   * Hochgebirge aus Kalk- und Dolomitgestein (Allgäuer, Wetterstein- und Berchtesgadener Alpen). Höchster Berg Deutschlands: Die Zugspitze mit 2.962 m. 2. Die 7 Regierungsbezirke und ihre Regierungshauptstädte: - Oberbayern: München (zugleich Landeshauptstadt) - Niederbayern: Landshut - Oberpfalz: Regensburg - Oberfranken: Bayreuth - Mittelfranken: Ansbach (größte Stadt: Nürnberg) - Unterfranken: Würzburg - Schwaben: Augsburg. 3. Landwirtschaftliche Differenzierung: - Gäuboden (Dungau um Straubing): Fruchtbarste Lösslehmböden, warme Sommer "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Intensiver Ackerbau (Weizen, Zuckerrüben, Mais). - Allgäu: Höhenlage über 800 m, hohe Niederschläge ("
+            },
+            {
+              "type": "math",
+              "tex": "> 1.200\\text{ mm}"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Dauergrünland, Milcherzeugung und Käseproduktion."
+            }
+          ]
         }
       ]
     }

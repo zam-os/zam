@@ -1,0 +1,411 @@
+Whole-field rewrites for the bundled tile migration (ADR 2026-10-14b
+Decision 8, plan Phase 5). Each block is "@ <practice-item id>#<field>"
+followed by the field's new text. Formulas that had no dollars — bare TeX
+commands, and ASCII math such as a^2 = b^2 + c^2 - 2*b*c*cos(alpha) — are
+written as $…$ TeX; the prose around them is unchanged. Decimal commas inside
+a formula are {,}. Keyed by item id, so tiles sharing an item stay identical.
+
+@ 01K8GA30000000000000000J02#concept
+Vektoren im $\mathbb{R}^3$: Verbindungsvektor $\vec{AB} = B - A$; Betrag $|\vec{v}| = \sqrt{v_1^2 + v_2^2 + v_3^2}$; Skalarprodukt $\vec{a} \cdot \vec{b} = a_1 b_1 + a_2 b_2 + a_3 b_3$; Orthogonalität $\vec{a} \cdot \vec{b} = 0$; Rechnung: $|\vec{a}| = \sqrt{4 + 9 + 36} = \sqrt{49} = 7$; $\vec{a} \cdot \vec{b} = 2 \cdot 6 + (-3) \cdot 4 + 6 \cdot 0 = 12 - 12 + 0 = 0 \Rightarrow$ orthogonal!
+
+@ 01K8GA30000000000000000J04#concept
+Geraden im $\mathbb{R}^3$: Parameterform $X = P + \lambda \cdot \vec{v}$; Punktprobe; 4 Lagebeziehungen: identisch (kollinear + Schnitt), echt parallel (kollinear ohne Schnitt), schneidend (nicht kollinear + Schnittpunkt), windschief (nicht kollinear + kein Schnittpunkt).
+
+@ 01K8GA10000000000000000J02#concept
+Exponentialfunktion: $f(x) = b \cdot a^x = b \cdot e^{k \cdot t}$; Asymptote $y = 0$; Verdopplungszeit $T_2 = \frac{\ln(2)}{k}$; Halbwertszeit $T_{1/2} = \frac{\ln(2)}{|k|}$; Rechnung: $B(t) = 500 \cdot 2^{t/3}$; nach 9 h: $\frac{t}{3} = 3$ Verdopplungen $\Rightarrow B(9) = 500 \cdot 2^3 = 500 \cdot 8 = 4000$ Bakterien.
+
+@ 01K8GA10000000000000000J03#concept
+$\log_a(u^r) = r \cdot \log_a(u)$ (Exponentenregel: Exponent wird zum multiplikativen Vorfaktor)
+
+@ 01K8GA10000000000000000J03#option0
+$\log_a(u^r) = r \cdot \log_a(u)$
+
+@ 01K8GA10000000000000000J03#option1
+$\log_a(u^r) = (\log_a u)^r$
+
+@ 01K8GA10000000000000000J04#concept
+Logarithmus: Umkehrfunktion $\log_a(b) = x \Leftrightarrow a^x = b$; $\ln(x)$ zur Basis $e$; 3 Gesetze: $\log(u \cdot v) = \log u + \log v$, $\log\left(\frac{u}{v}\right) = \log u - \log v$, $\log(u^r) = r \cdot \log u$; Basiswechsel; Rechnung: $2^{2x-1} = 16 = 2^4 \Rightarrow 2x - 1 = 4 \Rightarrow 2x = 5 \Rightarrow x = 2{,}5$.
+
+@ 01K8GA20000000000000000J03#concept
+$f'(x) = n \cdot x^{n-1}$
+
+@ 01K8GA20000000000000000J03#option0
+$f'(x) = n \cdot x^{n-1}$
+
+@ 01K8GA20000000000000000J03#option1
+$f'(x) = \frac{x^{n+1}}{n+1}$
+
+@ 01K8GA20000000000000000J04#concept
+Differentialrechnung: Differenzenquotient $\frac{\Delta y}{\Delta x}$; Differentialquotient $f'(x_0) = \lim_{h \to 0} \frac{f(x_0 + h) - f(x_0)}{h}$ (Tangentensteigung); Potenzregel $(x^n)' = n \cdot x^{n-1}$; Faktor- & Summenregel; Rechnung: $f'(x) = 12x^2 - 10x + 7$; $f'(2) = 12 \cdot 4 - 20 + 7 = 48 - 20 + 7 = 35$.
+
+@ 01K8GA00000000000000000J01#concept
+$a^2 = b^2 + c^2 - 2 \cdot b \cdot c \cdot \cos(\alpha)$
+
+@ 01K8GA00000000000000000J01#option0
+$a^2 = b^2 + c^2 - 2bc \cdot \cos(\alpha)$
+
+@ 01K8GA00000000000000000J01#option1
+$a^2 = b^2 + c^2 + 2bc \cdot \cos(\alpha)$
+
+@ 01K8GA00000000000000000J02#concept
+Trigonometrie im allgemeinen Dreieck: Sinussatz $\frac{a}{\sin \alpha} = \frac{b}{\sin \beta} = \frac{c}{\sin \gamma}$; Kosinussatz $a^2 = b^2 + c^2 - 2bc \cdot \cos \alpha$; Fläche $A = \frac{1}{2} \cdot b \cdot c \cdot \sin \alpha$; Rechnung: $a^2 = 36 + 100 - 2 \cdot 6 \cdot 10 \cdot 0{,}5 = 136 - 60 = 76 \Rightarrow a = \sqrt{76} = 2\sqrt{19} \approx 8{,}72\,\text{cm}$; $A = \frac{1}{2} \cdot 6 \cdot 10 \cdot \frac{\sqrt{3}}{2} = 15\sqrt{3} \approx 25{,}98\,\text{cm}^2$.
+
+@ 01K8GA50000000000000000J01#concept
+Aus zweifach positiv geladenen Helium-4-Atomkernen ($^4_2\text{He}$, bestehend aus 2 Protonen und 2 Neutronen)
+
+@ 01K8GA50000000000000000J02#concept
+Kernphysik: Alpha- (He-4), Beta- (e- / e+), Gamma-Strahlung (Photonen); Zerfallsgesetz $N(t) = N_0 \cdot \left(\frac{1}{2}\right)^{t/T_{1/2}}$; Aktivität $A = \lambda \cdot N$ in Bq; Rechnung: $t = 24\,\text{d} = 3 \cdot T_{1/2} \Rightarrow N(24) = N_0 \cdot \left(\frac{1}{2}\right)^3 = \frac{10^{12}}{8} = 1{,}25 \cdot 10^{11}$ unzerfallene Kerne.
+
+@ 01K8GA50000000000000000J03#concept
+Die Massendifferenz wurde beim Kernzusammenbau gemäß $E = \Delta m \cdot c^2$ als Kernbindungsenergie freigesetzt
+
+@ 01K8GA50000000000000000J03#option0
+Masse wurde als Bindungsenergie freigesetzt ($E = \Delta m \cdot c^2$)
+
+@ 01K8GA50000000000000000J04#concept
+Massendefekt $\Delta m = Z \cdot m_p + N \cdot m_n - m_{\text{Kern}}$; Bindungsenergie $E = \Delta m \cdot c^2$; Bindungsenergie-Kurve (Maximum bei Fe-56); Kernspaltung (U-235) vs. Kernfusion (D-T -> He-4 + n).
+
+@ 01K8GA60000000000000000J02#concept
+Kreisbewegung: $\omega = \frac{2\pi}{T}$; $v = \omega \cdot r$; $a_Z = \frac{v^2}{r}$; $F_Z = \frac{m \cdot v^2}{r}$; Rechnung: $F_Z = \frac{1200\,\text{kg} \cdot 400\,\text{m}^2/\text{s}^2}{50\,\text{m}} = 1200 \cdot 8 = 9600\,\text{N} = 9{,}6\,\text{kN}$.
+
+@ 01K8GA60000000000000000J03#concept
+$\frac{T_1^2}{T_2^2} = \frac{a_1^3}{a_2^3}$ (Die Quadrate der Umlaufzeiten verhalten sich wie die Kuben der großen Halbachsen: $\frac{T^2}{a^3} = \text{konstant}$)
+
+@ 01K8GA60000000000000000J03#option0
+$\frac{T_1^2}{T_2^2} = \frac{a_1^3}{a_2^3}$ ($\frac{T^2}{a^3} = \text{const}$)
+
+@ 01K8GA60000000000000000J04#concept
+Gravitation: $F_G = G \cdot \frac{m_1 \cdot m_2}{r^2}$; Fallbeschleunigung $g = \frac{G \cdot M}{R^2}$; 3 Keplersche Gesetze (1. Ellipsen, 2. Flächensatz $\frac{dA}{dt} = \text{const}$, 3. $\frac{T^2}{a^3} = \text{const}$); Satellitengeschwindigkeit $v = \sqrt{\frac{G \cdot M}{r}}$.
+
+@ 01K8GBA0000000000000000J01#option1
+$O(n^2)$
+
+@ 01K8GBA0000000000000000J02#concept
+Algorithmen 11: O-Notation; Mergesort (Divide & Conquer, Merge-Schritt, O(n log n) garantiert, stabil, O(n) Speicher); Quicksort (Pivotelement, Partitionierung, In-Place, Average O(n log n), Worst-Case $O(n^2)$).
+
+@ 01K8GB20000000000000000J02#concept
+Ebenen: Parameterform, Normalenform, Koordinatenform; Kreuzprodukt $\vec{n} = \vec{u} \times \vec{v}$; Umwandlung: $\vec{n} = (1, 0, 2)^T \times (0, 1, -1)^T = (0 - 2, 0 - (-1), 1 - 0)^T = (-2, 1, 1)^T$; $d = \vec{A} \cdot \vec{n} = 1 \cdot (-2) + 2 \cdot 1 + 0 \cdot 1 = 0 \Rightarrow E: -2x_1 + x_2 + x_3 = 0$ (bzw. $2x_1 - x_2 - x_3 = 0$).
+
+@ 01K8GB20000000000000000J04#concept
+HNF: $d(P; E) = \frac{|n_1 p_1 + n_2 p_2 + n_3 p_3 - d|}{\sqrt{n_1^2 + n_2^2 + n_3^2}}$; Lotgerade $l: X = P + t \cdot \vec{n}$; Rechnung: $|\vec{n}| = \sqrt{4 + 1 + 4} = \sqrt{9} = 3$; Einsetzen $P(4|1|7)$: $\frac{2 \cdot 4 - 1 + 2 \cdot 7 - 12}{3} = \frac{8 - 1 + 14 - 12}{3} = \frac{9}{3} = 3$ LE; Lotfußpunkt $L$: $X = (4, 1, 7)^T - 1 \cdot (2, -1, 2)^T = (2, 2, 5)^T$.
+
+@ 01K8GB10000000000000000J01#concept
+$F(x) = \frac{1}{n + 1} \cdot x^{n+1} + C$
+
+@ 01K8GB10000000000000000J01#option0
+$F(x) = \frac{1}{n + 1} \cdot x^{n+1} + C$
+
+@ 01K8GB10000000000000000J01#option1
+$F(x) = n \cdot x^{n-1} + C$
+
+@ 01K8GB10000000000000000J02#concept
+Integralrechnung: Stammfunktion $F'(x) = f(x)$; Potenzregel; Hauptsatz $\int_a^b f(x)\,dx = [F(x)]_a^b = F(b) - F(a)$; Rechnung: $F(x) = x^3 - 2x^2 + 2x$; $F(3) = 27 - 18 + 6 = 15$; $F(1) = 1 - 2 + 2 = 1$; Integral $= 15 - 1 = 14$.
+
+@ 01K8GB10000000000000000J04#concept
+Flächenberechnung: Nullstellenzerlegung; Fläche zwischen zwei Graphen $A = \int (\text{obere Kurve} - \text{untere Kurve})\,dx$; Rechnung: Schnittstellen $-x^2 + 4 = x^2 - 4 \Rightarrow 2x^2 = 8 \Rightarrow x = \pm 2$; Differenz $d(x) = 8 - 2x^2$; Stammfunktion $D(x) = 8x - \frac{2}{3} x^3$; $D(2) = 16 - \frac{16}{3} = \frac{32}{3}$; $D(-2) = -\frac{32}{3}$; $A = \frac{32}{3} - \left(-\frac{32}{3}\right) = \frac{64}{3} \approx 21{,}33$ FE.
+
+@ 01K8GB00000000000000000J04#concept
+Extremwertproblem: Hauptbedingung $A = a \cdot b$; Nebenbedingung $2a + b = 40 \Rightarrow b = 40 - 2a$; Zielfunktion $A(a) = a \cdot (40 - 2a) = 40a - 2a^2$; Ableitung $A'(a) = 40 - 4a = 0 \Rightarrow a = 10\,\text{m}$; $b = 20\,\text{m}$; $A_{\text{max}} = 200\,\text{m}^2$; Randwerte $A(0) = A(20) = 0$.
+
+@ 01K8GB30000000000000000J02#concept
+Kombinatorik: Binomialkoeffizient $\binom{n}{k}$ (n über k); Bernoulli-Kette (unabhängige Wiederholungen, konstantes $p$); Rechnung: $\binom{6}{2} = \frac{6 \cdot 5}{2 \cdot 1} = 15$ Pfade; $P(X = 2) = 15 \cdot \left(\frac{1}{6}\right)^2 \cdot \left(\frac{5}{6}\right)^4 = 15 \cdot \frac{1}{36} \cdot \frac{625}{1296} = \frac{9375}{46656} \approx 0{,}2009$ (ca. 20,09 %).
+
+@ 01K8GB40000000000000000J01#concept
+Die Energie verdoppelt sich ($W_{\text{el}} = \frac{Q^2}{2C}$ und $C$ halbiert sich, da gegen die anziehende Coulomb-Kraft mechanische Trennarbeit verrichtet wird)
+
+@ 01K8GB40000000000000000J02#concept
+Elektrisches Feld: Coulomb-Gesetz; Feldstärke $E = \frac{U}{d}$; Kapazität $C = \varepsilon_0 \cdot \varepsilon_r \cdot \frac{A}{d}$; Feldenergie $W_{\text{el}} = \frac{1}{2} \cdot C \cdot U^2$; Rechnung: $A = 0{,}04\,\text{m}^2$, $d = 0{,}002\,\text{m} \Rightarrow C = \frac{8{,}854 \cdot 10^{-12} \cdot 0{,}04}{0{,}002} = 1{,}77 \cdot 10^{-10}\,\text{F} = 177\,\text{pF}$; $E = \frac{500\,\text{V}}{0{,}002\,\text{m}} = 250.000\,\text{V/m} = 250\,\text{kV/m}$.
+
+@ 01K8GB40000000000000000J03#concept
+Den Nachweis, dass jede elektrische Ladung stets ein ganzzahliges Vielfaches einer kleinsten, unteilbaren Elementarladung $e \approx 1{,}602 \cdot 10^{-19}\,\text{C}$ ist (Quantelung der Ladung)
+
+@ 01K8GB40000000000000000J04#concept
+Längsfeld: $e \cdot U = \frac{1}{2} \cdot m \cdot v^2$; Querfeld: Parabelbahn; Millikan-Versuch: Schwebemethode $F_{\text{el}} = F_{G,\text{korr}}$; Sinkmethode mit Stokes-Reibung $F_R = 6 \cdot \pi \cdot \eta \cdot r \cdot v$; Ergebnis: Elementarladung $e = 1{,}602 \cdot 10^{-19}\,\text{C}$ (Ladungsquantelung $q = n \cdot e$).
+
+@ 01K8GB60000000000000000J02#concept
+Induktion: Magnetischer Fluss $\Phi = B \cdot A \cdot \cos(\alpha)$; Faradaysches Gesetz $U_{\text{ind}} = -N \cdot \frac{d\Phi}{dt}$; Lenzsche Regel; Selbstinduktion $U_{\text{ind}} = -L \cdot \frac{dI}{dt}$; Induktivität $L = \mu_0 \cdot \frac{N^2 \cdot A}{l}$; Magnetische Feldenergie $W_{\text{mag}} = \frac{1}{2} \cdot L \cdot I^2$.
+
+@ 01K8GB50000000000000000J02#concept
+Magnetfeld: Spulenfeld $B = \mu_0 \cdot \frac{N}{l} \cdot I$; Lorentzkraft $\vec{F}_L = q \cdot (\vec{v} \times \vec{B})$; Bahnradius $r = \frac{m \cdot v}{q \cdot B}$; Rechnung: $r = \frac{9{,}109 \cdot 10^{-31} \cdot 2 \cdot 10^7}{1{,}602 \cdot 10^{-19} \cdot 5 \cdot 10^{-3}} = \frac{1{,}8218 \cdot 10^{-23}}{8{,}01 \cdot 10^{-22}} = 0{,}0227\,\text{m} = 2{,}27\,\text{cm}$.
+
+@ 01K8GC50000000000000000J02#concept
+Chemisches Gleichgewicht 12: $v_{\text{hin}} = v_{\text{rück}}$; Massenwirkungsgesetz $K_c = \frac{[C]^c \cdot [D]^d}{[A]^a \cdot [B]^b}$; Interpretation von $K_c \gg 1$ vs. $K_c \ll 1$; Thermodynamik $\Delta G_0 = -R \cdot T \cdot \ln(K_c)$.
+
+@ 01K8GC60000000000000000J02#concept
+Säure-Base 12: Brønsted-Paare; Autoprotolyse $K_w = 10^{-14}$ ($\text{pH} + \text{pOH} = 14$); Säurekonstante $K_s$ und $\text{p}K_s$; pH-Berechnung stark ($\text{pH} = -\log c_0$) vs. schwach ($\text{pH} = \frac{1}{2} \cdot (\text{p}K_s - \log c_0)$).
+
+@ 01K8GC90000000000000000J02#concept
+RSA 12: $N = p \cdot q$; $\varphi(N) = (p - 1) \cdot (q - 1)$; $e \cdot d \equiv 1 \pmod{\varphi(N)}$; Verschlüsselung $c = m^e \text{ mod } N$; Entschlüsselung $m = c^d \text{ mod } N$; Rechnung: $N = 33$, $\varphi(N) = 20$, $e = 3 \Rightarrow d = 7$ ($3 \cdot 7 = 21 \equiv 1 \pmod{20}$); $c = 4^3 \text{ mod } 33 = 64 \text{ mod } 33 = 31$; $m = 31^7 \text{ mod } 33 = 4$.
+
+@ 01K8GC00000000000000000J01#concept
+$f'(x) = 2 \cdot e^{-x} + (2x - 3) \cdot (-e^{-x}) = e^{-x} \cdot (2 - 2x + 3) = (5 - 2x) \cdot e^{-x}$
+
+@ 01K8GC00000000000000000J01#option0
+$f'(x) = (5 - 2x) \cdot e^{-x}$
+
+@ 01K8GC00000000000000000J01#option1
+$f'(x) = 2 \cdot e^{-x}$
+
+@ 01K8GC00000000000000000J02#concept
+Kurvendiskussion e-Funktion: Nullstellen $x_1 = 2$, $x_2 = -2$; $f'(x) = (-x^2 + 2x + 4) \cdot e^{-x}$; $f''(x) = (x^2 - 4x + 2) \cdot e^{-x}$; Extremstellen $x = 1 \pm \sqrt{5}$; Grenzwerte: $\lim_{x \to +\infty} f(x) = 0$ (Dominanz der e-Funktion), $\lim_{x \to -\infty} f(x) = +\infty$.
+
+@ 01K8GC00000000000000000J03#concept
+$V_x = \pi \cdot \int_a^b [f(x)]^2\,dx$
+
+@ 01K8GC00000000000000000J03#option0
+$V_x = \pi \cdot \int_a^b [f(x)]^2\,dx$
+
+@ 01K8GC00000000000000000J04#concept
+Uneigentliche Integrale: Grenzwert $\lim_{z \to \infty} \int_a^z f(x)\,dx$; Rotationsvolumen $V_x = \pi \cdot \int [f(x)]^2\,dx$; Rechnung: a) Fläche $A = \lim_{z \to \infty} \left[-4 \cdot e^{-0{,}5x}\right]_0^z = 4$ FE; b) Volumen $V = \pi \cdot \int_0^\infty 4 \cdot e^{-x}\,dx = 4\pi$ VE.
+
+@ 01K8GC40000000000000000J02#concept
+Bohrsches Atommodell: 3 Bohr-Postulate (strahlungsfreie Bahnen, Drehimpulsquantisierung $L = n \cdot \hbar$, Frequenzbedingung $\Delta E = h \cdot f$); H-Atom Energien $E_n = -\frac{13{,}6\,\text{eV}}{n^2}$; Spektralserien (Lyman $n = 1$ UV, Balmer $n = 2$ sichtbar, Paschen $n = 3$ IR); Franck-Hertz-Versuch (inelastische Stöße).
+
+@ 01K8GC40000000000000000J03#concept
+Weil beim Zusammenfügen der Nukleonen die Kernbindungsenergie nach Einsteins Äquivalenzformel $E = \Delta m \cdot c^2$ in Form von Gammastrahlung freigesetzt wird
+
+@ 01K8GC40000000000000000J03#option0
+Weil Kernbindungsenergie nach $E = \Delta m \cdot c^2$ abgestrahlt wurde
+
+@ 01K8GC40000000000000000J04#concept
+Kernphysik 12: Massendefekt $\Delta m = \sum m_{\text{Nukleonen}} - m_{\text{Kern}}$; Bindungsenergie $E_B = \Delta m \cdot c^2$; Kurve $\frac{E_B}{A}$ mit Maximum bei Eisen-56; Kernfusion (Verschmelzung leichter Kerne) vs. Kernspaltung (Uran-235, Kettenreaktion, Multiplikationsfaktor $k$).
+
+@ 01K8GC30000000000000000J04#concept
+Quantenmechanik: De-Broglie-Wellenlänge $\lambda = \frac{h}{p} = \frac{h}{\sqrt{2 \cdot m \cdot e \cdot U}}$; Elektronenbeugung an Graphit; Heisenbergsche Unschärferelation $\Delta x \cdot \Delta p \ge \frac{\hbar}{2}$; Quantenmechanischer Wahrscheinlichkeitscharakter $|\psi|^2$.
+
+@ 01K8GCJ0000000000000000J02#concept
+Mikroökonomie 12: Vollkommener Markt (Polypol, Wohlfahrtsoptimum); Monopol: $E(x) = p(x) \cdot x$, $E'(x) = K'(x) \Rightarrow$ Cournotscher Punkt $C(x_C | p_C)$; Rechnung: $E(x) = 100x - 2x^2 \Rightarrow E'(x) = 100 - 4x$; $K'(x) = 20 \Rightarrow 100 - 4x = 20 \Rightarrow x_C = 20$ ME; $p_C = 100 - 2 \cdot 20 = 60$ GE; $G(20) = E(20) - K(20) = 1200 - 700 = 500$ GE.
+
+@ 01K8GDE0000000000000000J01#option0
+$r \cdot B > C$ (Hamilton-Regel)
+
+@ 01K8GD50000000000000000J01#question
+Wie verändert sich die Energie-Differenz $\Delta E$ zwischen HOMO und LUMO und die absorbierte Wellenlänge $\lambda$, wenn das konjugierte $\pi$-Elektronensystem eines Moleküls verlängert wird?
+
+@ 01K8GD50000000000000000J01#concept
+Die Energielücke $\Delta E$ sinkt und die absorbierte Wellenlänge $\lambda$ verschiebt sich zu größeren Werten in den sichtbaren Bereich (Bathochromer Effekt / Rotverschiebung)
+
+@ 01K8GD50000000000000000J01#option0
+$\Delta E$ sinkt und $\lambda$ verschiebt sich zu größeren Wellenlängen (bathochrom)
+
+@ 01K8GD50000000000000000J01#option1
+$\Delta E$ steigt und $\lambda$ verschiebt sich ins harte UV
+
+@ 01K8GD60000000000000000J01#concept
+In das energieärmere dreifach entartete $t_{2g}$-Niveau (Orbitale $d_{xy}$, $d_{xz}$, $d_{yz}$ zwischen den Achsen) und das energiereichere zweifach entartete $e_g$-Niveau (Orbitale $d_{z^2}$, $d_{x^2-y^2}$ entlang der Achsen)
+
+@ 01K8GD60000000000000000J03#concept
+Wegen des massiven Entropiegewinns ($\Delta S > 0$): Bei der Komplexbildung werden viele freie einzähnige Wassermoleküle freigesetzt, wodurch die Teilchenzahl und Unordnung des Gesamtsystems stark zunimmt
+
+@ 01K8GD60000000000000000J03#option0
+Wegen des enormen Entropiegewinns ($\Delta S > 0$) durch Freisetzung vieler Lösungsmittelmoleküle
+
+@ 01K8GD70000000000000000J04#concept
+Automaten 13: DEA 5-Tupel $(Z, \Sigma, \delta, z_0, F)$; NEA Potenzmengenkonstruktion (äquivalente Sprachmächtigkeit $L(\text{NEA}) = L(\text{DEA})$); Pumping-Lemma ($w = xyz$, $|y| \ge 1$, $|xy| \le p$, $xy^i z \in L$) zum Beweis der Nicht-Regularität.
+
+@ 01K8GD00000000000000000J03#question
+Für welche reellen Exponenten $p$ konvergiert das uneigentliche Integral $\int_{1}^{\infty} \frac{1}{x^p} \, dx$ gegen einen endlichen Flächeninhalt?
+
+@ 01K8GD00000000000000000J04#concept
+Ortskurven & Uneigentliche Integrale 13: Partielle Integration $\int x \cdot e^{-2x}\,dx = -\frac{1}{2} x e^{-2x} - \frac{1}{4} e^{-2x}$; Grenzübertragung $u \to \infty$ liefert $A = 0 - \left(-\frac{1}{4}\right) = \frac{1}{4}$ FE.
+
+@ 01K8GD10000000000000000J01#question
+Mit welcher trigonometrischen Funktion berechnet man den Schnittwinkel $\beta$ zwischen einer Geraden mit Richtungsvektor $\vec{u}$ und einer Ebene mit Normalenvektor $\vec{n}$?
+
+@ 01K8GD10000000000000000J01#concept
+$\sin(\beta) = \frac{|\vec{u} \cdot \vec{n}|}{|\vec{u}| \cdot |\vec{n}|}$ (weil der Normalenvektor senkrecht auf der Ebene steht und daher das Komplement $90^\circ - \beta$ erfasst)
+
+@ 01K8GD10000000000000000J01#option0
+$\sin(\beta) = \frac{|\vec{u} \cdot \vec{n}|}{|\vec{u}| \cdot |\vec{n}|}$
+
+@ 01K8GD10000000000000000J01#option1
+$\cos(\beta) = \frac{|\vec{u} \cdot \vec{n}|}{|\vec{u}| \cdot |\vec{n}|}$
+
+@ 01K8GD10000000000000000J03#concept
+$r_k = \sqrt{r^2 - d^2}$ (nach dem Satz des Pythagoras am rechtwinkligen Dreieck aus Kugelmittelpunkt, Kreismittelpunkt und Kreisrand)
+
+@ 01K8GD10000000000000000J03#option0
+$r_k = \sqrt{r^2 - d^2}$
+
+@ 01K8GD20000000000000000J02#concept
+Dichtefunktion 13: $\int_0^3 c \cdot x^2\,dx = \left[\frac{c \cdot x^3}{3}\right]_0^3 = 9c = 1 \Rightarrow c = \frac{1}{9}$; $P(1 \le X \le 2) = \int_1^2 \frac{1}{9} x^2\,dx = \left[\frac{x^3}{27}\right]_1^2 = \frac{8}{27} - \frac{1}{27} = \frac{7}{27}$; $E(X) = \int_0^3 x \cdot \frac{1}{9} x^2\,dx = \int_0^3 \frac{1}{9} x^3\,dx = \left[\frac{x^4}{36}\right]_0^3 = \frac{81}{36} = \frac{9}{4} = 2{,}25$.
+
+@ 01K8GD20000000000000000J03#concept
+$Z = \frac{X - \mu}{\sigma}$
+
+@ 01K8GD20000000000000000J03#option0
+$Z = \frac{X - \mu}{\sigma}$
+
+@ 01K8GD20000000000000000J03#option1
+$Z = \frac{X + \sigma}{\mu}$
+
+@ 01K8GD30000000000000000J02#concept
+Astrophysik 12: Wien-Gesetz $\lambda_{\text{max}} \cdot T = b$; Stefan-Boltzmann $P = \sigma \cdot 4\pi R^2 \cdot T^4$; HRD (Hauptreihe, Riesen, Weiße Zwerge); Endstadien (Weißer Zwerg / Chandrasekhar $1{,}44\,M_{\text{Sonne}}$, Neutronenstern, Schwarzes Loch / Schwarzschild-Radius).
+
+@ 01K8GD30000000000000000J03#option0
+$v = H_0 \cdot r$
+
+@ 01K8GD30000000000000000J03#option1
+$v = \frac{H_0}{r^2}$
+
+@ 01K8GD40000000000000000J01#question
+Wie verändert sich die im Laborsystem gemessene Zeitdauer $\Delta t$ eines bewegten Vorgangs im Vergleich zur im Ruhesystem gemessenen Eigenzeit $\Delta t_0$ bei einer Geschwindigkeit $v > 0$?
+
+@ 01K8GD40000000000000000J01#concept
+Sie ist verlangsamt / gedehnt: $\Delta t = \gamma \cdot \Delta t_0 = \frac{\Delta t_0}{\sqrt{1 - \frac{v^2}{c^2}}} > \Delta t_0$ (Zeitdilatation: 'Bewegte Uhren gehen langsamer')
+
+@ 01K8GD40000000000000000J01#option0
+$\Delta t = \gamma \cdot \Delta t_0 > \Delta t_0$ (Zeitdilatation / Dehnung)
+
+@ 01K8GD40000000000000000J01#option1
+$\Delta t = \frac{\Delta t_0}{\gamma} < \Delta t_0$ (Verkürzung)
+
+@ 01K8GD40000000000000000J02#concept
+SRT 13: Postulate (Relativitätsprinzip, Lichtgeschwindigkeit $c$ invariant); Lorentzfaktor $\gamma = \frac{1}{\sqrt{1 - \frac{v^2}{c^2}}}$; Zeitdilatation $\Delta t = \gamma \cdot \Delta t_0$; Längenkontraktion $L = \frac{L_0}{\gamma}$; Myonen: klassisch $s = 0{,}998 \cdot 3 \cdot 10^8 \cdot 2{,}2 \cdot 10^{-6} = 658\,\text{m} \ll 10\,\text{km}$; relativistisch $\gamma = \frac{1}{\sqrt{1 - 0{,}998^2}} \approx 15{,}8$; Erde: $\Delta t = 15{,}8 \cdot 2{,}2\,\mu\text{s} = 34{,}8\,\mu\text{s} \Rightarrow s = 10{,}4\,\text{km}$; Myon: $h' = \frac{10\,\text{km}}{15{,}8} = 633\,\text{m}$.
+
+@ 01K8GD40000000000000000J03#concept
+$E_0 = m_0 \cdot c^2$
+
+@ 01K8GD40000000000000000J03#option0
+$E_0 = m_0 \cdot c^2$
+
+@ 01K8GD40000000000000000J03#option1
+$E_0 = \frac{1}{2} m_0 \cdot v^2$
+
+@ 01K8GD40000000000000000J04#concept
+Relativistische Dynamik 13: Relativistischer Impuls $p = \gamma \cdot m_0 \cdot v$; Gesamtenergie $E = \gamma \cdot m_0 \cdot c^2$; Kinetische Energie $E_{\text{kin}} = (\gamma - 1) \cdot m_0 \cdot c^2$; Energie-Impuls-Beziehung $E^2 = (pc)^2 + (m_0 c^2)^2$; Photonenimpuls $p = \frac{h}{\lambda}$.
+
+@ 01K4YM5Z000000000000000J06#concept
+Potenz $a^n$; Vorzeichen: negative Basis hoch gerade = positiv, hoch ungerade = negativ; Zehnerpotenzen: $10^n$ hat $n$ Nullen; a) (-2)⁵ = -32; b) (+10.000) - (-125) = 10.000 + 125 = 10.125; c) 4.000.000 + 250.000 = 4.250.000.
+
+@ 01K4YM5Z000000000000000J08#concept
+Zählprinzip: Multiplikation der Pfadverzweigungen; Baumdiagramm: jeder Pfad = 1 Ergebnis; Mit Wiederholung: $n^k$ (z. B. 10⁴ = 10.000 PINs); Ohne Wiederholung / Permutation: 5! = 5 · 4 · 3 · 2 · 1 = 120 Reihenfolgen.
+
+@ 01K8G8F0000000000000000J02#concept
+Schalenmodell ($2n^2$); PSE: Hauptgruppe = Valenzelektronen, Periode = Schalen; Oktettregel; Ionenbindung: Metall -> Kation + e-, Nichtmetall + e- -> Anion; Ionengitter (Coulomb-Anziehung, Gitterenergie, hohe Schmelzpunkte, spröde, leiten als Schmelze/Lösung).
+
+@ 01K8G8B0000000000000000J03#concept
+$A = \pi \cdot r^2$
+
+@ 01K8G8B0000000000000000J03#option0
+$A = \pi \cdot r^2$
+
+@ 01K8G8C0000000000000000J01#concept
+Joule (J) bzw. Newtonmeter: $1\,\text{J} = 1\,\text{N} \cdot \text{m} = 1\,\text{kg} \cdot \text{m}^2/\text{s}^2$
+
+@ 01K8G8C0000000000000000J02#concept
+Mechanik: $E_{\text{pot}} = m \cdot g \cdot h$, $E_{\text{kin}} = \frac{1}{2} \cdot m \cdot v^2$, $E_{\text{spann}} = \frac{1}{2} \cdot D \cdot s^2$; Arbeit $W = F \cdot s$ (Hubarbeit $m g h$); Energieerhaltung $E_{\text{pot}} + E_{\text{kin}} = \text{const}$; Leistung $P = \frac{W}{t}$ in Watt; Wirkungsgrad $\eta = \frac{E_{\text{nutz}}}{E_{\text{zu}}}$.
+
+@ 01K8G9E0000000000000000J01#concept
+$N_A \approx 6{,}022 \cdot 10^{23}$ Teilchen / mol
+
+@ 01K8G9E0000000000000000J01#option0
+$6{,}022 \cdot 10^{23}$ Teilchen / mol
+
+@ 01K8G9E0000000000000000J01#option1
+$6{,}022 \cdot 10^{12}$ Teilchen / mol
+
+@ 01K8G9E0000000000000000J02#concept
+Stöchiometrie: $n = \frac{m}{M}$; $N = n \cdot N_A$; $V_m = 22{,}4$ l/mol bei STP; Konzentration $c = \frac{n}{V}$; Rechnung: $M(\text{H}_2\text{O}) = 2 \cdot 1 + 16 = 18$ g/mol; $n = \frac{36\,\text{g}}{18\,\text{g/mol}} = 2$ mol; $N = 2 \cdot 6{,}022 \cdot 10^{23} = 1{,}2044 \cdot 10^{24}$ Moleküle.
+
+@ 01K8G9E0000000000000000J04#concept
+Brønsted: Säure = Protonendonator, Base = Protonenakzeptor; Ampholyte (z. B. $\text{H}_2\text{O}$); Autoprotolyse $K_w = [\text{H}_3\text{O}^+] \cdot [\text{OH}^-] = 10^{-14}$; $\text{pH} = -\lg[\text{H}_3\text{O}^+]$; $\text{pH} + \text{pOH} = 14$; Neutralisation $\text{H}_3\text{O}^+ + \text{OH}^- \rightarrow 2\,\text{H}_2\text{O}$; Titration $c_A \cdot V_A = c_B \cdot V_B$.
+
+@ 01K8G9G0000000000000000J04#concept
+Algorithmen: Lineare Suche O(n) unsortiert; Binäre Suche $O(\log_2 n)$ auf sortiertem Array; BubbleSort $O(n^2)$ durch Nachbartausch; Vergleich: Linear 1.000.000 Schritte vs. Binär nur $\lceil \log_2(1.000.000) \rceil = 20$ Schritte!
+
+@ 01K8G9A0000000000000000J02#concept
+Quadratische Funktionen: Scheitelpunktform $f(x) = a(x - d)^2 + e \Rightarrow S(d|e)$; Formfaktor $a$; Mitternachtsformel $x_{1,2} = \frac{-b \pm \sqrt{D}}{2a}$; Diskriminante $D = b^2 - 4ac$ (3 Fälle); Umrechnung: $2(x^2 - 4x + 3) = 2((x - 2)^2 - 1) = 2(x - 2)^2 - 2 \Rightarrow S(2|-2)$; Nullstellen $x_1 = 1$, $x_2 = 3$.
+
+@ 01K8G9A0000000000000000J04#concept
+Satzgruppe: Pythagoras $a^2 + b^2 = c^2$, Höhensatz $h^2 = p \cdot q$, Kathetensatz $a^2 = c \cdot p$; Trigonometrie: $\sin = \frac{G}{H}$, $\cos = \frac{A}{H}$, $\tan = \frac{G}{A}$, $\sin^2 + \cos^2 = 1$; Rechnung: $a = 10 \cdot \sin(30^\circ) = 5\,\text{cm}$; $b = 10 \cdot \cos(30^\circ) = 5\sqrt{3}\,\text{cm}$; $A = \frac{1}{2} \cdot 5 \cdot 5\sqrt{3} = 12{,}5\sqrt{3}\,\text{cm}^2$.
+
+@ 01K8G9B0000000000000000J01#concept
+$V = \frac{4}{3} \cdot \pi \cdot r^3$ (Oberfläche: $O = 4 \cdot \pi \cdot r^2$)
+
+@ 01K8G9B0000000000000000J01#option0
+$V = \frac{4}{3} \cdot \pi \cdot r^3$
+
+@ 01K8G9B0000000000000000J01#option1
+$V = 4 \cdot \pi \cdot r^2$
+
+@ 01K8G9B0000000000000000J02#concept
+Stereometrie: Pyramide $V = \frac{1}{3} \cdot G \cdot h$; Kegel $V = \frac{1}{3} \cdot \pi \cdot r^2 \cdot h$, $M = \pi \cdot r \cdot s$ mit $s = \sqrt{r^2 + h^2}$; Kugel $V = \frac{4}{3} \cdot \pi \cdot r^3$, $O = 4 \cdot \pi \cdot r^2$; Cavalieri-Prinzip; Rechnung: $s = \sqrt{36 + 64} = 10\,\text{cm}$; $V = \frac{1}{3} \cdot \pi \cdot 36 \cdot 8 = 96\pi\,\text{cm}^3 \approx 301{,}59\,\text{cm}^3$; $M = \pi \cdot 6 \cdot 10 = 60\pi\,\text{cm}^2 \approx 188{,}50\,\text{cm}^2$.
+
+@ 01K8G9C0000000000000000J02#concept
+Elektrizität: E-Feld (Feldlinien von + nach -, Coulomb $F \sim \frac{q_1 \cdot q_2}{r^2}$); Stromstärke $I = \frac{Q}{t}$; Spannung $U = \frac{W}{Q}$; Ohmsches Gesetz $R = \frac{U}{I}$; Drahtwiderstand $R = \rho \cdot \frac{l}{A}$.
+
+@ 01K8G9D0000000000000000J02#concept
+Kinematik: Gleichförmig $s = v \cdot t$; Beschleunigt $v = a \cdot t$, $s = \frac{1}{2} \cdot a \cdot t^2$, $a = \frac{\Delta v}{\Delta t}$; Freier Fall mit $g$; Umrechnung: $108\,\text{km/h} = 30\,\text{m/s}$; $a = \frac{30\,\text{m/s}}{5\,\text{s}} = 6\,\text{m/s}^2$; $s = \frac{1}{2} \cdot 6 \cdot 25 = 75\,\text{m}$.
+
+@ 01K8G9D0000000000000000J03#concept
+$F = m \cdot a$ (Kraft = Masse · Beschleunigung, $1\,\text{Newton} = 1\,\text{kg} \cdot \text{m}/\text{s}^2$)
+
+@ 01K4S0C0000000000000000J03#concept
+Sie sinkt um den Faktor 100 ($10^2$, da der pH-Wert eine dekadisch logarithmische Skala ist)
+
+@ 01K4S0C0000000000000000J03#option0
+Faktor 100 ($10^2$-fache Abnahme)
+
+@ 01K4S0C0000000000000000J04#concept
+Autoprotolyse: $2\,\text{H}_2\text{O} \rightleftharpoons \text{H}_3\text{O}^+ + \text{OH}^-$; $K_w = 10^{-14}$; $\text{pH} = -\lg(c(\text{H}_3\text{O}^+))$; neutral: $c(\text{H}_3\text{O}^+) = c(\text{OH}^-) = 10^{-7}$ mol/l $\Rightarrow \text{pH} = -\lg(10^{-7}) = 7$
+
+@ 01K4V0M0000000000000000J01#concept
+$|\vec{v}| = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5$ LE
+
+@ 01K4V0M0000000000000000J02#concept
+$\vec{AB} = B - A = (4 - (-2), -5 - 3)^T = (6, -8)^T$; Gegenvektor $\vec{BA} = -\vec{AB} = (-6, 8)^T$; $|\vec{AB}| = \sqrt{6^2 + (-8)^2} = \sqrt{36 + 64} = \sqrt{100} = 10$ LE
+
+@ 01K4V0M0000000000000000J06#concept
+$\vec{AB} = (4, 1)^T$, $\vec{AC} = (1, 5)^T$; $\det(\vec{AB}, \vec{AC}) = 4 \cdot 5 - 1 \cdot 1 = 20 - 1 = 19$; $A_{\text{Dreieck}} = 0{,}5 \cdot 19 = 9{,}5$ FE
+
+@ 01K4V0M0000000000000000J07#concept
+$\vec{v}' = (-y, x)^T$
+
+@ 01K4V0M0000000000000000J07#option0
+$(-y, x)^T$
+
+@ 01K4V0M0000000000000000J07#option1
+$(y, -x)^T$
+
+@ 01K4V0M0000000000000000J08#concept
+$D_{60^\circ}$: $\cos(60^\circ) = 0{,}5$, $\sin(60^\circ) = \frac{\sqrt{3}}{2}$; $\vec{v}' = (4 \cdot 0{,}5 - 0 \cdot \sin(60^\circ), 4 \cdot \sin(60^\circ) + 0 \cdot \cos(60^\circ))^T = (2, 2\sqrt{3})^T$
+
+@ 01K4X0M0000000000000000J02#concept
+$f(0) = a \cdot b^0 + c = a + c \Rightarrow$ Schnittpunkt $S_y(0 | a + c)$; $b > 1$ exponentielles Wachstum, $0 < b < 1$ exponentieller Zerfall; Asymptote $y = c$
+
+@ 01K4X0M0000000000000000J03#concept
+$\log_{10}(1000) = 3$ (da $10^3 = 1000$) und $\log_2(32) = 5$ (da $2^5 = 32$)
+
+@ 01K4X0M0000000000000000J04#concept
+1. $\log_b(u \cdot v) = \log_b(u) + \log_b(v)$; 2. $\log_b\left(\frac{u}{v}\right) = \log_b(u) - \log_b(v)$; 3. $\log_b(u^r) = r \cdot \log_b(u)$; Basiswechsel: $\log_b(a) = \frac{\ln(a)}{\ln(b)} = \frac{\lg(a)}{\lg(b)}$
+
+@ 01K4X0M0000000000000000J05#concept
+$x = 3$ (da $5^3 = 125$) bzw. $x = \log_3(20) = \frac{\lg(20)}{\lg(3)} \approx 2{,}727$
+
+@ 01K4X0M0000000000000000J06#concept
+$4 \cdot 2^{3x-1} = 32 \Rightarrow 2^{3x-1} = 8 = 2^3 \Rightarrow 3x - 1 = 3 \Rightarrow 3x = 4 \Rightarrow x = \frac{4}{3} \approx 1{,}33$
+
+@ 01K4X0M0000000000000000J07#concept
+$N(24) = N_0 \cdot \left(\frac{1}{2}\right)^3 = \frac{1}{8} = 12{,}5\,\%$ von $N_0$
+
+@ 01K4X0M0000000000000000J08#concept
+$N(t) = 500 \cdot 1{,}15^t$; $N(10) = 500 \cdot 1{,}15^{10} \approx 2023$ Bakterien; Verdopplung: $1{,}15^t = 2 \Rightarrow t = \frac{\lg(2)}{\lg(1{,}15)} \approx 4{,}96$ Stunden
+
+@ 01K4N0P0000000000000000J03#concept
+$N(t) = N_0 \cdot \left(\frac{1}{2}\right)^{t/T_{1/2}}$
+
+@ 01K4N0P0000000000000000J03#option0
+$N(t) = N_0 \cdot \left(\frac{1}{2}\right)^{t/T_{1/2}}$
+
+@ 01K4N0P0000000000000000J04#concept
+Kosmische Strahlung erzeugt C-14 -> lebende Organismen halten C-14/C-12 Verhältnis konstant -> nach dem Tod zerfällt C-14 mit $T_{1/2} = 5730$ a; Rest 25% $= \left(\frac{1}{2}\right)^2 \Rightarrow$ 2 Halbwertszeiten $= 2 \cdot 5730\,\text{a} = 11.460$ Jahre alt
+
+@ 01K4M5Z0000000000000000J06#concept
+Potenz $a^n$ = Produkt aus n gleichen Faktoren a; Quadratzahlen 1²=1, 2²=4, 3²=9, 4²=16, 5²=25, 6²=36, 7²=49, 8²=64, 9²=81, 10²=100, 11²=121, 12²=144, 13²=169, 14²=196, 15²=225; Zehnerpotenzen: Exponent = Anzahl Nullen; a) 2⁵ = 32; b) 27 + 16 = 43; c) 35 · 10⁴ = 350.000.
+
+@ 01K4A7D0000000000000000J05#option0
+256 Zeichen ($2^8$)
+
+@ 01K4A7D0000000000000000J05#option1
+128 Zeichen ($2^7$)

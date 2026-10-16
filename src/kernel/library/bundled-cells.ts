@@ -1698,3 +1698,113 @@ export async function enrolBundledCell(
     alreadyEnrolled,
   };
 }
+
+// ── Delivering changed tiles to an existing library (ADR 2026-10-14b D7) ────
+
+/** When this process started: a tile that failed since is not retried now. */
+const PROCESS_STARTED_AT = new Date().toISOString();
+
+export interface ReconcileBundledTilesOptions {
+  /** Most tiles to reinstall in one call; the next start continues. */
+  maxTiles?: number;
+  /** Stops between tiles when aborted. */
+  signal?: AbortSignal;
+}
+
+export interface ReconcileBundledTilesResult {
+  /** Bundled tiles with at least one installed item. */
+  installed: number;
+  /** Tiles reinstalled by this call. */
+  reinstalled: string[];
+  /** Tiles that failed, with the reason; retried at the next start. */
+  failed: Array<{ tileId: string; error: string }>;
+  /** Changed tiles left for a later call (limit reached or aborted). */
+  remaining: number;
+}
+
+/**
+ * Reinstall the bundled tiles this library holds whose version changed, so
+ * learners who enrolled before a fix receive it (ADR 2026-10-14b Decision 7).
+ *
+ * Only installed tiles are touched, one transaction each, at most
+ * `maxTiles` per call; a tile with installed items but no recorded version
+ * counts as changed once. A tile that failed since this process started is
+ * skipped, so a broken tile never loops. Never on a team library: there an
+ * app update must not publish curriculum — the administrator runs
+ * `zam team reinstall-tiles`.
+ */
+export async function reconcileInstalledBundledTiles(
+  db: Database,
+  options: ReconcileBundledTilesOptions & { allowTeamLibrary?: boolean } = {},
+): Promise<ReconcileBundledTilesResult> {
+  if (db.dialect === "postgres" && !options.allowTeamLibrary) {
+    throw new Error(
+      "A team library's tiles are reinstalled by its administrator: zam team reinstall-tiles",
+    );
+  }
+  const tiles = Object.values(BUNDLED_TILES);
+  const rows = (await db
+    .prepare("SELECT tile_id, version, failed_at FROM installed_tiles")
+    .all()) as Array<{
+    tile_id: string;
+    version: string;
+    failed_at: string | null;
+  }>;
+  const recorded = new Map(rows.map((row) => [row.tile_id, row]));
+
+  // Installed means recorded with a version, or — for a library from before
+  // M048 — every atom and item present, as `isBundledCellInstalled` reads
+  // it. A first install that failed records no version: the learner never
+  // got that tile, so it is not reinstalled behind their back. One shared
+  // item does not install a whole tile: the Optik tiles share six items.
+  const atomIds = new Set(tiles.flatMap((t) => t.atoms.map((a) => a.id)));
+  const itemIds = new Set(
+    tiles.flatMap((t) =>
+      t.atoms.flatMap((a) => a.practice_items.map((item) => item.id)),
+    ),
+  );
+  const [presentAtoms, presentItems] = await Promise.all([
+    existingIds(db, "learning_atoms", [...atomIds]),
+    existingIds(db, "tokens", [...itemIds]),
+  ]);
+  const installed = tiles.filter(
+    (tile) =>
+      Boolean(recorded.get(tile.tile_id)?.version) ||
+      tile.atoms.every(
+        (atom) =>
+          presentAtoms.has(atom.id) &&
+          atom.practice_items.every((item) => presentItems.has(item.id)),
+      ),
+  );
+  const changed = installed.filter((tile) => {
+    const row = recorded.get(tile.tile_id);
+    if (row?.failed_at && row.failed_at >= PROCESS_STARTED_AT) return false;
+    return (
+      !row || row.version !== String(tile.version) || row.failed_at !== null
+    );
+  });
+
+  const limit = Math.max(0, options.maxTiles ?? Number.POSITIVE_INFINITY);
+  const result: ReconcileBundledTilesResult = {
+    installed: installed.length,
+    reinstalled: [],
+    failed: [],
+    remaining: 0,
+  };
+  for (const [index, tile] of changed.entries()) {
+    if (options.signal?.aborted || result.reinstalled.length >= limit) {
+      result.remaining = changed.length - index;
+      break;
+    }
+    try {
+      await installKvtTile(db, tile);
+      result.reinstalled.push(tile.tile_id);
+    } catch (error) {
+      result.failed.push({
+        tileId: tile.tile_id,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+  return result;
+}

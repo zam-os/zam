@@ -65,9 +65,31 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Vergleiche die 3 Typen von Bedingungssätzen (If-Clauses) im Englischen: Type 1 (erfüllbare Bedingung: *if + Simple Present -> will + Infinitiv*), Type 2 (unwahrscheinliche Gegenwart: *if + Simple Past -> would + Infinitiv*), Type 3 (nicht mehr erfüllbare Vergangenheit: *if + Past Perfect -> would have + Past Participle*), erläutere das Verbot von 'would im if-Satz' und übersetze: a) 'Wenn sie den Wecker gestellt hätte, hätte sie den Zug nicht verpasst.' b) 'Wenn wir mehr gelernt hätten, hätten wir den Test bestanden.'",
+          "question": "Vergleiche die 3 Typen von Bedingungssätzen (If-Clauses) im Englischen: Type 1 (erfüllbare Bedingung: if + Simple Present -> will + Infinitiv), Type 2 (unwahrscheinliche Gegenwart: if + Simple Past -> would + Infinitiv), Type 3 (nicht mehr erfüllbare Vergangenheit: if + Past Perfect -> would have + Past Participle), erläutere das Verbot von 'would im if-Satz' und übersetze: a) 'Wenn sie den Wecker gestellt hätte, hätte sie den Zug nicht verpasst.' b) 'Wenn wir mehr gelernt hätten, hätten wir den Test bestanden.'",
           "concept": "3 If-Satz-Typen; Type 3: If + had + 3. Form, Main clause: would have + 3. Form; niemals 'would' im if-Teil; a) 'If she had set the alarm clock, she wouldn't have missed the train.' b) 'If we had studied more, we would have passed the test.'",
-          "sample_solution": "1. Synopse der 3 Conditional Clause Typen: - **Type 1 (Real condition in future / Erfüllbare Bedingung)**:   * *If-clause*: **Simple Present** | *Main clause*: **will-Future / Modalverb + Infinitiv**   * *'If it rains tomorrow, we will stay at home.'* - **Type 2 (Unreal condition in present / Theoretisch denkbare Gegenwart)**:   * *If-clause*: **Simple Past** | *Main clause*: **would + Infinitiv**   * *'If I had enough money, I would buy a car.'* - **Type 3 (Impossible condition in past / Nicht mehr änderbare Vergangenheit)**:   * Beschreibt ein vergangenes Ereignis, das **nicht eingetreten ist** und nachträglich nicht mehr verändert werden kann (Bedauern, Vorwurf, hypothetische Rückschau).   * *If-clause*: **Past Perfect (had + Past Participle / 3. Form)**   * *Main clause*: **would have / could have / might have + Past Participle (3. Form)**.   * *Eiserne Grundregel*: **Niemals 'would' im if-Satz!** (*'If I would have...'* ist falsch!). 2. Übersetzungen: - a) 'Wenn sie den Wecker gestellt hätte, hätte sie den Zug nicht verpasst.' $\\rightarrow$ **« If she had set the alarm clock, she wouldn't have missed the train. »** - b) 'Wenn wir mehr gelernt hätten, hätten wir den Test bestanden.' $\\rightarrow$ **« If we had studied (more), we would have passed the test. »**"
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Synopse der 3 Conditional Clause Typen: - Type 1 (Real condition in future / Erfüllbare Bedingung):   * If-clause: Simple Present | Main clause: will-Future / Modalverb + Infinitiv   * 'If it rains tomorrow, we will stay at home.' - Type 2 (Unreal condition in present / Theoretisch denkbare Gegenwart):   * If-clause: Simple Past | Main clause: would + Infinitiv   * 'If I had enough money, I would buy a car.' - Type 3 (Impossible condition in past / Nicht mehr änderbare Vergangenheit):   * Beschreibt ein vergangenes Ereignis, das nicht eingetreten ist und nachträglich nicht mehr verändert werden kann (Bedauern, Vorwurf, hypothetische Rückschau).   * If-clause: Past Perfect (had + Past Participle / 3. Form)   * Main clause: would have / could have / might have + Past Participle (3. Form).   * Eiserne Grundregel: Niemals 'would' im if-Satz! ('If I would have...' ist falsch!). 2. Übersetzungen: - a) 'Wenn sie den Wecker gestellt hätte, hätte sie den Zug nicht verpasst.' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " « If she had set the alarm clock, she wouldn't have missed the train. » - b) 'Wenn wir mehr gelernt hätten, hätten wir den Test bestanden.' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " « If we had studied (more), we would have passed the test. »"
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +150,271 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre die Regeln für Reported Speech mit vergangenem Einleitungssatz (*said, told, explained*): 1. **Backshift of Tenses (Verschiebung um eine Zeitstufe in die Vergangenheit)**: Simple Present -> Simple Past; Present Continuous -> Past Continuous; Simple Past / Present Perfect -> Past Perfect; will -> would; can -> could, 2. **Anpassung der Personal- und Possessivpronomen** (*I -> he/she, my -> his/her*), 3. **Anpassung von Orts- und Zeitangaben** (*now -> then, today -> that day, yesterday -> the day before, tomorrow -> the next day, here -> there*) und wandle folgende Sätze in Reported Speech um: a) Tom: 'I am playing football today.' -> *Tom said that...* b) Sarah: 'I visited London last year.' -> *Sarah explained that...*",
+          "question": "Erkläre die Regeln für Reported Speech mit vergangenem Einleitungssatz (said, told, explained): 1. Backshift of Tenses (Verschiebung um eine Zeitstufe in die Vergangenheit): Simple Present -> Simple Past; Present Continuous -> Past Continuous; Simple Past / Present Perfect -> Past Perfect; will -> would; can -> could, 2. Anpassung der Personal- und Possessivpronomen (I -> he/she, my -> his/her), 3. Anpassung von Orts- und Zeitangaben (now -> then, today -> that day, yesterday -> the day before, tomorrow -> the next day, here -> there) und wandle folgende Sätze in Reported Speech um: a) Tom: 'I am playing football today.' -> Tom said that... b) Sarah: 'I visited London last year.' -> Sarah explained that...",
           "concept": "Reported Speech: 1. Backshift of Tenses (alle Zeiten eine Stufe zurück); 2. Pronomen anpassen; 3. Zeit-/Ortsadverbien anpassen; a) 'Tom said that he was playing football that day.' b) 'Sarah explained that she had visited London the year before.'",
-          "sample_solution": "1. Die 3 Transformationsregeln der Reported Speech: - Steht das einleitende Verb in der Vergangenheit (*He said, she told me, they asked*), müssen 3 Anpassungen vorgenommen werden: - **1. Der Zeitensprung (Backshift of Tenses)**:   * **Simple Present** $\\rightarrow$ **Simple Past** (*like $\\rightarrow$ liked*)   * **Present Continuous** $\\rightarrow$ **Past Continuous** (*is working $\\rightarrow$ was working*)   * **Simple Past** $\\rightarrow$ **Past Perfect** (*went $\\rightarrow$ had gone*)   * **Present Perfect** $\\rightarrow$ **Past Perfect** (*has seen $\\rightarrow$ had seen*)   * **Past Perfect** $\\rightarrow$ bleibt **Past Perfect**   * **will** $\\rightarrow$ **would** | **can** $\\rightarrow$ **could** | **may** $\\rightarrow$ **might** | **must** $\\rightarrow$ **had to**. - **2. Pronomenverschiebung (Pronouns)**:   * Sprecherperspektive anpassen: *'I'* $\\rightarrow$ *he/she*; *'my'* $\\rightarrow$ *his/her*; *'we'* $\\rightarrow$ *they*. - **3. Verschiebung von Zeit- und Ortsangaben (Adverbials)**:   * *now* $\\rightarrow$ *then*   * *today* $\\rightarrow$ *that day*   * *yesterday* $\\rightarrow$ *the day before / the previous day*   * *tomorrow* $\\rightarrow$ *the next day / the following day*   * *last week* $\\rightarrow$ *the week before*   * *ago* $\\rightarrow$ *before*   * *here* $\\rightarrow$ *there* | *this* $\\rightarrow$ *that*. 2. Lösung der Transformationsaufgaben: - **a) Tom: 'I am playing football today.'**   * $\\rightarrow$ **« Tom said that he was playing football that day. »**   * (*I $\\rightarrow$ he*, *am playing $\\rightarrow$ was playing*, *today $\\rightarrow$ that day*). - **b) Sarah: 'I visited London last year.'**   * $\\rightarrow$ **« Sarah explained that she had visited London the year before (the previous year). »**   * (*I $\\rightarrow$ she*, *visited $\\rightarrow$ had visited*, *last year $\\rightarrow$ the year before*)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die 3 Transformationsregeln der Reported Speech: - Steht das einleitende Verb in der Vergangenheit (He said, she told me, they asked), müssen 3 Anpassungen vorgenommen werden: - 1. Der Zeitensprung (Backshift of Tenses):   * Simple Present "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Simple Past (like "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " liked)   * Present Continuous "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Past Continuous (is working "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " was working)   * Simple Past "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Past Perfect (went "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " had gone)   * Present Perfect "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Past Perfect (has seen "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " had seen)   * Past Perfect "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " bleibt Past Perfect   * will "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " would | can "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " could | may "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " might | must "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " had to. - 2. Pronomenverschiebung (Pronouns):   * Sprecherperspektive anpassen: 'I' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " he/she; 'my' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " his/her; 'we' "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " they. - 3. Verschiebung von Zeit- und Ortsangaben (Adverbials):   * now "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " then   * today "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " that day   * yesterday "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " the day before / the previous day   * tomorrow "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " the next day / the following day   * last week "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " the week before   * ago "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " before   * here "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " there | this "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " that. 2. Lösung der Transformationsaufgaben: - a) Tom: 'I am playing football today.'   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " « Tom said that he was playing football that day. »   * (I "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " he, am playing "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " was playing, today "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " that day). - b) Sarah: 'I visited London last year.'   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " « Sarah explained that she had visited London the year before (the previous year). »   * (I "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " she, visited "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " had visited, last year "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " the year before)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

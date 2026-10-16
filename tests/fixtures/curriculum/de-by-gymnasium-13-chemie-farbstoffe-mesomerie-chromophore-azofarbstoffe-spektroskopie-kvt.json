@@ -49,25 +49,520 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie verändert sich die Energie-Differenz \\Delta E zwischen HOMO und LUMO und die absorbierte Wellenlänge \\lambda, wenn das konjugierte \\pi-Elektronensystem eines Moleküls verlängert wird?",
-          "concept": "Die Energielücke \\Delta E sinkt und die absorbierte Wellenlänge \\lambda verschiebt sich zu größeren Werten in den sichtbaren Bereich (Bathochromer Effekt / Rotverschiebung)",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie verändert sich die Energie-Differenz "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta E",
+              "speech": "Delta E"
+            },
+            {
+              "type": "text",
+              "text": " zwischen HOMO und LUMO und die absorbierte Wellenlänge "
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda",
+              "speech": "Lambda"
+            },
+            {
+              "type": "text",
+              "text": ", wenn das konjugierte "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi",
+              "speech": "Pi"
+            },
+            {
+              "type": "text",
+              "text": "-Elektronensystem eines Moleküls verlängert wird?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Die Energielücke "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta E",
+              "speech": "Delta E"
+            },
+            {
+              "type": "text",
+              "text": " sinkt und die absorbierte Wellenlänge "
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda",
+              "speech": "Lambda"
+            },
+            {
+              "type": "text",
+              "text": " verschiebt sich zu größeren Werten in den sichtbaren Bereich (Bathochromer Effekt / Rotverschiebung)"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "\\Delta E sinkt und \\lambda verschiebt sich zu größeren Wellenlängen (bathochrom)",
-              "\\Delta E steigt und \\lambda verschiebt sich ins harte UV"
+              [
+                {
+                  "type": "math",
+                  "tex": "\\Delta E",
+                  "speech": "Delta E"
+                },
+                {
+                  "type": "text",
+                  "text": " sinkt und "
+                },
+                {
+                  "type": "math",
+                  "tex": "\\lambda",
+                  "speech": "Lambda"
+                },
+                {
+                  "type": "text",
+                  "text": " verschiebt sich zu größeren Wellenlängen (bathochrom)"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "\\Delta E",
+                  "speech": "Delta E"
+                },
+                {
+                  "type": "text",
+                  "text": " steigt und "
+                },
+                {
+                  "type": "math",
+                  "tex": "\\lambda",
+                  "speech": "Lambda"
+                },
+                {
+                  "type": "text",
+                  "text": " verschiebt sich ins harte UV"
+                }
+              ]
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GD50000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das quantenchemische Modell der Farbigkeit, die Mesomerie und das Chromophor-Auxochrom-Konzept: 1. **Quantenmechanische Ursache der Farbigkeit**:   * Lichtabsorption erfolgt, wenn die Photonenenergie exakt der Bandlücke zwischen dem höchsten besetzten Molekülorbital (**HOMO**) und dem niedrigsten unbesetzten Molekülorbital (**LUMO**) entspricht:     $$\\mathbf{\\Delta E = E_{\\text{LUMO}} - E_{\\text{HOMO}} = h \\cdot f = \\frac{h \\cdot c}{\\lambda}}$$.   * **Komplementärfarben-Prinzip**: Absorbiert ein Stoff z. B. blaues Licht ($\\approx 450\\,\\text{nm}$), erscheint er dem menschlichen Auge in der Mischfarbe Gelb/Orange, 2. **Das Teilchen-im-Kasten-Modell für delokalisierte $\\pi$-Elektronen**:   * Mit zunehmender Länge $L$ des Kettensystems sinkt der Abstand benachbarter Energieniveaus ($E_n \\sim \\frac{n^2}{L^2}$).   * Folge: $\\Delta E$ sinkt $\\implies \\lambda$ steigt $\\implies$ **Bathochromer Effekt (Rotverschiebung)** $\\implies$ Absorption rückt aus dem unsichtbaren UV ins sichtbare Lichtspektrum ($400-750\\,\\text{nm}$), 3. **Das Wittsche Farbstoffmodell (1876)**:   * **Chromophor (Farbträger)**: System konjugierter Doppelbindungen mit Gruppen wie $-N=N-$ (Azo), $-C=O$ (Carbonyl), $-NO_2$ (Nitro).   * **Auxochrome (Elektronendonatoren / $+M$-Effekt)**: Gruppen mit freien Elektronenpaaren ($-OH, -NH_2, -N(CH_3)_2$), die Elektronendichte ins $\\pi$-System schieben.   * **Antiauxochrome (Elektronenakzeptoren / $-M$-Effekt)**: Gruppen mit elektronenziehender Wirkung ($-NO_2, -SO_3H$).   * **Push-Pull-System**: Kombination aus Auxochrom und Antiauxochrom verstärkt die Delokalisierung und Polarisation extrem $\\implies$ tiefere Farbigkeit.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das quantenchemische Modell der Farbigkeit, die Mesomerie und das Chromophor-Auxochrom-Konzept: 1. Quantenmechanische Ursache der Farbigkeit:   * Lichtabsorption erfolgt, wenn die Photonenenergie exakt der Bandlücke zwischen dem höchsten besetzten Molekülorbital (HOMO) und dem niedrigsten unbesetzten Molekülorbital (LUMO) entspricht:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Delta E = E_{\\text{LUMO}} - E_{\\text{HOMO}} = h \\cdot f = \\frac{h \\cdot c}{\\lambda}}",
+              "block": true,
+              "speech": "Delta E gleich E LUMO minus E HOMO gleich h mal f gleich h mal c durch Lambda"
+            },
+            {
+              "type": "text",
+              "text": ".   * Komplementärfarben-Prinzip: Absorbiert ein Stoff z. B. blaues Licht ("
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 450\\,\\text{nm}",
+              "speech": "ungefähr 450 Nanometer"
+            },
+            {
+              "type": "text",
+              "text": "), erscheint er dem menschlichen Auge in der Mischfarbe Gelb/Orange, 2. Das Teilchen-im-Kasten-Modell für delokalisierte "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi",
+              "speech": "Pi"
+            },
+            {
+              "type": "text",
+              "text": "-Elektronen:   * Mit zunehmender Länge "
+            },
+            {
+              "type": "math",
+              "tex": "L",
+              "speech": "L"
+            },
+            {
+              "type": "text",
+              "text": " des Kettensystems sinkt der Abstand benachbarter Energieniveaus ("
+            },
+            {
+              "type": "math",
+              "tex": "E_n \\sim \\frac{n^2}{L^2}",
+              "speech": "E n proportional zu n Quadrat durch L Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ").   * Folge: "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta E",
+              "speech": "Delta E"
+            },
+            {
+              "type": "text",
+              "text": " sinkt "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies \\lambda",
+              "speech": "daraus folgt Lambda"
+            },
+            {
+              "type": "text",
+              "text": " steigt "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Bathochromer Effekt (Rotverschiebung) "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Absorption rückt aus dem unsichtbaren UV ins sichtbare Lichtspektrum ("
+            },
+            {
+              "type": "math",
+              "tex": "400-750\\,\\text{nm}",
+              "speech": "400 bis 750 Nanometer"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Das Wittsche Farbstoffmodell (1876):   * Chromophor (Farbträger): System konjugierter Doppelbindungen mit Gruppen wie "
+            },
+            {
+              "type": "math",
+              "tex": "-N=N-",
+              "speech": "Azogruppe N doppelt gebunden an N"
+            },
+            {
+              "type": "text",
+              "text": " (Azo), "
+            },
+            {
+              "type": "math",
+              "tex": "-C=O",
+              "speech": "C doppelt gebunden an O"
+            },
+            {
+              "type": "text",
+              "text": " (Carbonyl), "
+            },
+            {
+              "type": "math",
+              "tex": "-NO_2",
+              "speech": "N O zwei"
+            },
+            {
+              "type": "text",
+              "text": " (Nitro).   * Auxochrome (Elektronendonatoren / "
+            },
+            {
+              "type": "math",
+              "tex": "+M",
+              "speech": "plus M"
+            },
+            {
+              "type": "text",
+              "text": "-Effekt): Gruppen mit freien Elektronenpaaren ("
+            },
+            {
+              "type": "math",
+              "tex": "-OH, -NH_2, -N(CH_3)_2",
+              "speech": "O H, N H zwei und N mit zwei C H drei"
+            },
+            {
+              "type": "text",
+              "text": "), die Elektronendichte ins "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi",
+              "speech": "Pi"
+            },
+            {
+              "type": "text",
+              "text": "-System schieben.   * Antiauxochrome (Elektronenakzeptoren / "
+            },
+            {
+              "type": "math",
+              "tex": "-M",
+              "speech": "minus M"
+            },
+            {
+              "type": "text",
+              "text": "-Effekt): Gruppen mit elektronenziehender Wirkung ("
+            },
+            {
+              "type": "math",
+              "tex": "-NO_2, -SO_3H",
+              "speech": "N O zwei und S O drei H"
+            },
+            {
+              "type": "text",
+              "text": ").   * Push-Pull-System: Kombination aus Auxochrom und Antiauxochrom verstärkt die Delokalisierung und Polarisation extrem "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " tiefere Farbigkeit."
+            }
+          ],
           "concept": "Farbstoffe 13: HOMO-LUMO-Übergang Delta E = h*c/lambda; Komplementärfarbe; Bathochromer Effekt bei Verlängerung des pi-Systems; Farbstofftheorie nach Witt (Chromophor, Auxochrom +M, Antiauxochrom -M, Push-Pull-Effekt).",
-          "sample_solution": "1. Warum erscheinen organische Stoffe farbig? - **Das Absorptions-Prinzip**:   * Weißes Sonnenlicht umfasst alle Wellenlängen des sichtbaren Spektrums von ca. $380\\,\\text{nm}$ (violett) bis $750\\,\\text{nm}$ (rot).   * Trifft ein Photon auf ein Farbstoffmolekül, wird ein $\\pi$-Elektron aus dem Grundzustand (**HOMO** / Highest Occupied Molecular Orbital) in einen angeregten Zustand (**LUMO** / Lowest Unoccupied Molecular Orbital) gehoben:     $$\\mathbf{\\Delta E = \\frac{h \\cdot c}{\\lambda_{\\text{abs}}}}$$ - **Die Komplementärfarbe**:   * Das Auge registriert das reflektierte oder transmittierte Restlicht:     - Absorption von *Blau* ($435-480\\,\\text{nm}$) $\\implies$ Farbeindruck **Gelb/Orange**.     - Absorption von *Grün* ($500-560\\,\\text{nm}$) $\\implies$ Farbeindruck **Rot/Purpur**. 2. Konjugierte $\\pi$-Elektronensysteme und der bathochrome Effekt: - Bei isolierten Doppelbindungen (Ethen) ist die Bandlücke $\\Delta E$ riesig; Absorption liegt im fernen UV ($\\approx 170\\,\\text{nm}$, farblos). - Bei alternierenden Doppel- und Einfachbindungen ($-C=C-C=C-$) überlappen die $p_z$-Orbitale zu einem gemeinsamen, delokalisierten $\\pi$-Elektronenschlauch:   * Nach dem **Teilchen-im-Kasten-Modell** gilt für den Übergang:     $$\\Delta E \\approx \\frac{h^2 \\cdot (N+1)}{8 \\cdot m_e \\cdot L^2}$$   * Je länger das delokalisierte System ($L \\uparrow$), desto kleiner wird $\\Delta E$ und desto größer wird die absorbierte Wellenlänge $\\lambda_{\\text{abs}}$ (**Bathochromer Effekt**).   * Ab ca. 8–11 konjugierten Doppelbindungen (z. B. $\\beta$-Carotin in Karotten mit 11 Doppelbindungen) liegt die Absorption im sichtbaren Blaubereich $\\implies$ intensive orangerote Eigenfarbe! 3. Das Wittsche Farbstoffkonzept und Push-Pull-Systeme: - **1. Chromophor**: Das mesomere Grundgerüst mit ungesättigten funktionellen Gruppen (z. B. die Azogruppe $-N=N-$). - **2. Auxochrome ($+M$-Substituenten)**: Schieben ihre freien Elektronenpaare per Resonanz in das aromatische System hinein (z. B. $-NR_2, -OH, -O^-$). - **3. Antiauxochrome ($-M$-Substituenten)**: Ziehen Elektronen aus dem System ab (z. B. $-NO_2, -C=O$). - **Der Push-Pull-Effekt**:   * Stehen sich Auxochrom (Push) und Antiauxochrom (Pull) an den Enden eines konjugierten Systems gegenüber, stabilisieren sie stark polare mesomere Grenzstrukturen $\\implies$ Die HOMO-LUMO-Lücke schrumpft dramatisch $\\implies$ Intensive Farbigkeit bei hoher Lichtechtheit."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Warum erscheinen organische Stoffe farbig? - Das Absorptions-Prinzip:   * Weißes Sonnenlicht umfasst alle Wellenlängen des sichtbaren Spektrums von ca. "
+            },
+            {
+              "type": "math",
+              "tex": "380\\,\\text{nm}"
+            },
+            {
+              "type": "text",
+              "text": " (violett) bis "
+            },
+            {
+              "type": "math",
+              "tex": "750\\,\\text{nm}"
+            },
+            {
+              "type": "text",
+              "text": " (rot).   * Trifft ein Photon auf ein Farbstoffmolekül, wird ein "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi"
+            },
+            {
+              "type": "text",
+              "text": "-Elektron aus dem Grundzustand (HOMO / Highest Occupied Molecular Orbital) in einen angeregten Zustand (LUMO / Lowest Unoccupied Molecular Orbital) gehoben:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Delta E = \\frac{h \\cdot c}{\\lambda_{\\text{abs}}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Die Komplementärfarbe:   * Das Auge registriert das reflektierte oder transmittierte Restlicht:     - Absorption von Blau ("
+            },
+            {
+              "type": "math",
+              "tex": "435-480\\,\\text{nm}"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Farbeindruck Gelb/Orange.     - Absorption von Grün ("
+            },
+            {
+              "type": "math",
+              "tex": "500-560\\,\\text{nm}"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Farbeindruck Rot/Purpur. 2. Konjugierte "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi"
+            },
+            {
+              "type": "text",
+              "text": "-Elektronensysteme und der bathochrome Effekt: - Bei isolierten Doppelbindungen (Ethen) ist die Bandlücke "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta E"
+            },
+            {
+              "type": "text",
+              "text": " riesig; Absorption liegt im fernen UV ("
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 170\\,\\text{nm}"
+            },
+            {
+              "type": "text",
+              "text": ", farblos). - Bei alternierenden Doppel- und Einfachbindungen ("
+            },
+            {
+              "type": "math",
+              "tex": "-C=C-C=C-"
+            },
+            {
+              "type": "text",
+              "text": ") überlappen die "
+            },
+            {
+              "type": "math",
+              "tex": "p_z"
+            },
+            {
+              "type": "text",
+              "text": "-Orbitale zu einem gemeinsamen, delokalisierten "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi"
+            },
+            {
+              "type": "text",
+              "text": "-Elektronenschlauch:   * Nach dem Teilchen-im-Kasten-Modell gilt für den Übergang:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta E \\approx \\frac{h^2 \\cdot (N+1)}{8 \\cdot m_e \\cdot L^2}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Je länger das delokalisierte System ("
+            },
+            {
+              "type": "math",
+              "tex": "L \\uparrow"
+            },
+            {
+              "type": "text",
+              "text": "), desto kleiner wird "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta E"
+            },
+            {
+              "type": "text",
+              "text": " und desto größer wird die absorbierte Wellenlänge "
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda_{\\text{abs}}"
+            },
+            {
+              "type": "text",
+              "text": " (Bathochromer Effekt).   * Ab ca. 8–11 konjugierten Doppelbindungen (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "\\beta"
+            },
+            {
+              "type": "text",
+              "text": "-Carotin in Karotten mit 11 Doppelbindungen) liegt die Absorption im sichtbaren Blaubereich "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " intensive orangerote Eigenfarbe! 3. Das Wittsche Farbstoffkonzept und Push-Pull-Systeme: - 1. Chromophor: Das mesomere Grundgerüst mit ungesättigten funktionellen Gruppen (z. B. die Azogruppe "
+            },
+            {
+              "type": "math",
+              "tex": "-N=N-"
+            },
+            {
+              "type": "text",
+              "text": "). - 2. Auxochrome ("
+            },
+            {
+              "type": "math",
+              "tex": "+M"
+            },
+            {
+              "type": "text",
+              "text": "-Substituenten): Schieben ihre freien Elektronenpaare per Resonanz in das aromatische System hinein (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "-NR_2, -OH, -O^-"
+            },
+            {
+              "type": "text",
+              "text": "). - 3. Antiauxochrome ("
+            },
+            {
+              "type": "math",
+              "tex": "-M"
+            },
+            {
+              "type": "text",
+              "text": "-Substituenten): Ziehen Elektronen aus dem System ab (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "-NO_2, -C=O"
+            },
+            {
+              "type": "text",
+              "text": "). - Der Push-Pull-Effekt:   * Stehen sich Auxochrom (Push) und Antiauxochrom (Pull) an den Enden eines konjugierten Systems gegenüber, stabilisieren sie stark polare mesomere Grenzstrukturen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Die HOMO-LUMO-Lücke schrumpft dramatisch "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Intensive Farbigkeit bei hoher Lichtechtheit."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +623,329 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den zweistufigen Reaktionsmechanismus der Azofarbstoff-Synthese und das Phänomen der Fluoreszenz: 1. **1. Schritt: Diazotierung (Eisbad $0-5^\\circ\\text{C}$)**:   * Ein primäres aromatisches Amin (z. B. Anilin oder Sulfanilsäure) reagiert in salzsaurer Lösung mit Natriumnitrit ($NaNO_2 + HCl \\rightarrow HNO_2 + NaCl$).   * Das entstehende elektrophile Nitrosonium-Kation ($NO^+$) greift die Aminogruppe an $\\implies$ Wasserabspaltung $\\implies$ Bildung des mesomeriestabilisierten **Diazonium-Kations**:     $$\\mathbf{\\text{Ar}-\\text{NH}_2 + \\text{HNO}_2 + \\text{H}^+ \\longrightarrow \\text{Ar}-\\text{N}^+ \\equiv \\text{N} + 2\\,\\text{H}_2\\text{O}}$$, 2. **2. Schritt: Azo-Kupplung (Elektrophile aromatische Substitution)**:   * Das Diazonium-Kation fungiert als schwaches Elektrophil und greift einen stark aktivierten Aromaten (**Kupplungskomponente**: z. B. Phenolat im schwach alkalischen Milieu oder $N,N$-Dimethylanilin im schwach sauren Milieu) in *para*-Stellung an:     $$\\mathbf{\\text{Ar}-\\text{N}^+ \\equiv \\text{N} + \\text{Ar}'-\\text{OH} \\longrightarrow \\text{Ar}-\\text{N}=\\text{N}-\\text{Ar}'-\\text{OH} + \\text{H}^+}$$   * Es entsteht die charakteristische **Azogruppe ($-N=N-$)**, die beide aromatischen $\\pi$-Elektronensysteme konjugativ verknüpft, 3. **Photolumineszenz (Jablonski-Diagramm)**:   * **Fluoreszenz**: Nach optischer Anregung ($S_0 \\rightarrow S_1$) erfolgt strahlungslose Relaxation auf das Schwingungsgrundniveau von $S_1$, gefolgt von spontaner Photonenemission ($S_1 \\rightarrow S_0$) innerhalb von Nanosekunden (**Stokes-Verschiebung**: Emissionslicht ist langwelliger / energieärmer als Anregungslicht!).   * **Phosphoreszenz**: *Intersystem Crossing* (Spin-Umkehr in metastabilen Triplett-Zustand $T_1$) $\\implies$ verbotener Übergang $T_1 \\rightarrow S_0$ dauert Millisekunden bis Stunden (Nachleuchten).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den zweistufigen Reaktionsmechanismus der Azofarbstoff-Synthese und das Phänomen der Fluoreszenz: 1. 1. Schritt: Diazotierung (Eisbad "
+            },
+            {
+              "type": "math",
+              "tex": "0-5^\\circ\\text{C}",
+              "speech": "0 bis 5 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": "):   * Ein primäres aromatisches Amin (z. B. Anilin oder Sulfanilsäure) reagiert in salzsaurer Lösung mit Natriumnitrit ("
+            },
+            {
+              "type": "math",
+              "tex": "NaNO_2 + HCl \\rightarrow HNO_2 + NaCl",
+              "speech": "N a N O zwei plus H C l reagiert zu H N O zwei plus N a C l"
+            },
+            {
+              "type": "text",
+              "text": ").   * Das entstehende elektrophile Nitrosonium-Kation ("
+            },
+            {
+              "type": "math",
+              "tex": "NO^+",
+              "speech": "N O plus"
+            },
+            {
+              "type": "text",
+              "text": ") greift die Aminogruppe an "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Wasserabspaltung "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Bildung des mesomeriestabilisierten Diazonium-Kations:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Ar}-\\text{NH}_2 + \\text{HNO}_2 + \\text{H}^+ \\longrightarrow \\text{Ar}-\\text{N}^+ \\equiv \\text{N} + 2\\,\\text{H}_2\\text{O}}",
+              "block": true,
+              "speech": "Ar N H zwei plus H N O zwei plus H plus führt zu Ar N plus dreifach gebunden an N, plus 2 H zwei O"
+            },
+            {
+              "type": "text",
+              "text": ", 2. 2. Schritt: Azo-Kupplung (Elektrophile aromatische Substitution):   * Das Diazonium-Kation fungiert als schwaches Elektrophil und greift einen stark aktivierten Aromaten (Kupplungskomponente: z. B. Phenolat im schwach alkalischen Milieu oder "
+            },
+            {
+              "type": "math",
+              "tex": "N,N",
+              "speech": "N, N"
+            },
+            {
+              "type": "text",
+              "text": "-Dimethylanilin im schwach sauren Milieu) in para-Stellung an:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Ar}-\\text{N}^+ \\equiv \\text{N} + \\text{Ar}'-\\text{OH} \\longrightarrow \\text{Ar}-\\text{N}=\\text{N}-\\text{Ar}'-\\text{OH} + \\text{H}^+}",
+              "block": true,
+              "speech": "Ar N plus dreifach gebunden an N, plus Ar Strich O H, führt zu Ar N doppelt gebunden an N Ar Strich O H, plus H plus"
+            },
+            {
+              "type": "text",
+              "text": "   * Es entsteht die charakteristische Azogruppe ("
+            },
+            {
+              "type": "math",
+              "tex": "-N=N-",
+              "speech": "Azogruppe N doppelt gebunden an N"
+            },
+            {
+              "type": "text",
+              "text": "), die beide aromatischen "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi",
+              "speech": "Pi"
+            },
+            {
+              "type": "text",
+              "text": "-Elektronensysteme konjugativ verknüpft, 3. Photolumineszenz (Jablonski-Diagramm):   * Fluoreszenz: Nach optischer Anregung ("
+            },
+            {
+              "type": "math",
+              "tex": "S_0 \\rightarrow S_1",
+              "speech": "S null geht über in S eins"
+            },
+            {
+              "type": "text",
+              "text": ") erfolgt strahlungslose Relaxation auf das Schwingungsgrundniveau von "
+            },
+            {
+              "type": "math",
+              "tex": "S_1",
+              "speech": "S eins"
+            },
+            {
+              "type": "text",
+              "text": ", gefolgt von spontaner Photonenemission ("
+            },
+            {
+              "type": "math",
+              "tex": "S_1 \\rightarrow S_0",
+              "speech": "S eins geht über in S null"
+            },
+            {
+              "type": "text",
+              "text": ") innerhalb von Nanosekunden (Stokes-Verschiebung: Emissionslicht ist langwelliger / energieärmer als Anregungslicht!).   * Phosphoreszenz: Intersystem Crossing (Spin-Umkehr in metastabilen Triplett-Zustand "
+            },
+            {
+              "type": "math",
+              "tex": "T_1",
+              "speech": "T eins"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " verbotener Übergang "
+            },
+            {
+              "type": "math",
+              "tex": "T_1 \\rightarrow S_0",
+              "speech": "T eins geht über in S null"
+            },
+            {
+              "type": "text",
+              "text": " dauert Millisekunden bis Stunden (Nachleuchten)."
+            }
+          ],
           "concept": "Azo-Farbstoffe & Lumineszenz 13: Diazotierung bei 0-5°C (primäres Amin + HNO2 -> Diazonium-Salz); Azo-Kupplung (elektrophile aromatische Substitution mit aktivierter Kupplungskomponente); Fluoreszenz (S1 -> S0, Stokes-Shift) vs. Phosphoreszenz (Intersystem Crossing T1 -> S0).",
-          "sample_solution": "1. Der zweistufige Syntheseweg von Azo-Farbstoffen: - **1. Stufe: Die Diazotierung**:   * **Reaktionspartner**: Primäres aromatisches Amin (z. B. Sulfanilsäure) + Salpetrige Säure $\\text{HNO}_2$ (frisch erzeugt aus $\\text{NaNO}_2 + \\text{HCl}$).   * **Mechanismus**: Bildung des reaktiven Nitrosonium-Ions $\\text{NO}^+$, das die Aminogruppe elektrophil angreift. Nach doppelter Protonenübertragung und Wasserabspaltung entsteht das **Benzoldiazonium-Kation**:     $$\\mathbf{[\\text{Ar}-\\text{N}^+ \\equiv \\text{N} \\longleftrightarrow \\text{Ar}-\\text{N}=\\text{N}^+]}$$   * **Bedingung**: Kühlung auf $0\\text{ bis } 5^\\circ\\text{C}$ ist zwingend erforderlich, da das Diazoniumsalz bei $T > 5^\\circ\\text{C}$ unter Stickstoffentwicklung ($\text{N}_2$) zu Phenol hydrolysiert. - **2. Stufe: Die Azo-Kupplung**:   * **Reaktionstyp**: Elektrophile aromatische Substitution ($S_E\\text{Ar}$).   * **Mechanismus**: Das schwach elektrophile Diazonium-Ion greift einen elektronendichten, aktivierten Aromaten (Kupplungskomponente: Phenole oder aromatische Amine) selektiv in *para*-Position an:     $$\\mathbf{\\text{Ar}-\\text{N}_2^+ + \\text{C}_6\\text{H}_5-\\text{N(CH}_3)_2 \\longrightarrow \\text{Ar}-\\text{N}=\\text{N}-\\text{C}_6\\text{H}_4-\\text{N(CH}_3)_2 + \\text{H}^+}$$   * **Bedeutung**: Durch die neu entstandene Azobrücke ($-N=N-$) verschmelzen die $\\pi$-Elektronensysteme beider Benzolringe zu einem riesigen delokalisierten Gesamtsystem $\\implies$ Kräftige Farbigkeit (z. B. Methylorange, Sudanrot). 2. Photophysik: Das Jablonski-Diagramm und Fluoreszenz: ```mermaid graph TD   S0[S_0: Singulett-Grundzustand] -->|Absorption h*f_abs| S1[S_1: Angeregter Singulett-Zustand]   S1 -->|Strahlungslose Relaxation Kasha-Regel| S1_low[S_1 Schwingungsgrundniveau]   S1_low -->|Fluoreszenz h*f_fl spontan| S0   S1_low -->|Intersystem Crossing ISC Spinumkehr| T1[T_1: Metastabiler Triplett-Zustand]   T1 -->|Phosphoreszenz h*f_ph verboten/langsam| S0 ``` - **Stokes-Verschiebung (Stokes Shift)**:   * Da vor der Photonenemission thermische Energie durch Schwingungsrelaxation abgegeben wird, besitzt das emittierte Fluoreszenzphoton weniger Energie als das anregende Photon:     $$\\mathbf{E_{\\text{Emission}} < E_{\\text{Absorption}} \\implies \\lambda_{\\text{Emission}} > \\lambda_{\\text{Absorption}}}$$   * *(Anwendung: Textmarker und optische Aufheller in Waschmitteln absorbieren unsichtbares UV-Licht [$\\approx 365\\,\\text{nm}$] und emittieren leuchtend helles, sichtbares blau/grünes Fluoreszenzlicht [$\\approx 450-520\\,\\text{nm}$])*. - **Unterschied zur Phosphoreszenz**:   * Fluoreszenz ist spin-erlaubt (Singulett $\\to$ Singulett, $\\Delta S = 0$, Dauer $10^{-9}-10^{-7}\\,\\text{s}$).   * Phosphoreszenz erfordert eine Spin-Umkehr ($T_1 \\to S_0$, quantenmechanisch 'verboten', Lebensdauern von Sekunden bis Stunden $\\implies$ typisches 'Nachleuchten' von Notausgangsschildern im Dunkeln)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der zweistufige Syntheseweg von Azo-Farbstoffen: - 1. Stufe: Die Diazotierung:   * Reaktionspartner: Primäres aromatisches Amin (z. B. Sulfanilsäure) + Salpetrige Säure "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{HNO}_2"
+            },
+            {
+              "type": "text",
+              "text": " (frisch erzeugt aus "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{NaNO}_2 + \\text{HCl}"
+            },
+            {
+              "type": "text",
+              "text": ").   * Mechanismus: Bildung des reaktiven Nitrosonium-Ions "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{NO}^+"
+            },
+            {
+              "type": "text",
+              "text": ", das die Aminogruppe elektrophil angreift. Nach doppelter Protonenübertragung und Wasserabspaltung entsteht das Benzoldiazonium-Kation:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{[\\text{Ar}-\\text{N}^+ \\equiv \\text{N} \\longleftrightarrow \\text{Ar}-\\text{N}=\\text{N}^+]}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Bedingung: Kühlung auf "
+            },
+            {
+              "type": "math",
+              "tex": "0\\text{ bis } 5^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": " ist zwingend erforderlich, da das Diazoniumsalz bei "
+            },
+            {
+              "type": "math",
+              "tex": "T > 5^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": " unter Stickstoffentwicklung ("
+            },
+            {
+              "type": "math",
+              "tex": "\\text{N}_2"
+            },
+            {
+              "type": "text",
+              "text": ") zu Phenol hydrolysiert. - 2. Stufe: Die Azo-Kupplung:   * Reaktionstyp: Elektrophile aromatische Substitution ("
+            },
+            {
+              "type": "math",
+              "tex": "S_E\\text{Ar}"
+            },
+            {
+              "type": "text",
+              "text": ").   * Mechanismus: Das schwach elektrophile Diazonium-Ion greift einen elektronendichten, aktivierten Aromaten (Kupplungskomponente: Phenole oder aromatische Amine) selektiv in para-Position an:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Ar}-\\text{N}_2^+ + \\text{C}_6\\text{H}_5-\\text{N(CH}_3)_2 \\longrightarrow \\text{Ar}-\\text{N}=\\text{N}-\\text{C}_6\\text{H}_4-\\text{N(CH}_3)_2 + \\text{H}^+}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Bedeutung: Durch die neu entstandene Azobrücke ("
+            },
+            {
+              "type": "math",
+              "tex": "-N=N-"
+            },
+            {
+              "type": "text",
+              "text": ") verschmelzen die "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi"
+            },
+            {
+              "type": "text",
+              "text": "-Elektronensysteme beider Benzolringe zu einem riesigen delokalisierten Gesamtsystem "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Kräftige Farbigkeit (z. B. Methylorange, Sudanrot). 2. Photophysik: Das Jablonski-Diagramm und Fluoreszenz: ```mermaid graph TD   S0[S_0: Singulett-Grundzustand] -->|Absorption h*f_abs| S1[S_1: Angeregter Singulett-Zustand]   S1 -->|Strahlungslose Relaxation Kasha-Regel| S1_low[S_1 Schwingungsgrundniveau]   S1_low -->|Fluoreszenz h*f_fl spontan| S0   S1_low -->|Intersystem Crossing ISC Spinumkehr| T1[T_1: Metastabiler Triplett-Zustand]   T1 -->|Phosphoreszenz h*f_ph verboten/langsam| S0 ``` - Stokes-Verschiebung (Stokes Shift):   * Da vor der Photonenemission thermische Energie durch Schwingungsrelaxation abgegeben wird, besitzt das emittierte Fluoreszenzphoton weniger Energie als das anregende Photon:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{E_{\\text{Emission}} < E_{\\text{Absorption}} \\implies \\lambda_{\\text{Emission}} > \\lambda_{\\text{Absorption}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * (Anwendung: Textmarker und optische Aufheller in Waschmitteln absorbieren unsichtbares UV-Licht ["
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 365\\,\\text{nm}"
+            },
+            {
+              "type": "text",
+              "text": "] und emittieren leuchtend helles, sichtbares blau/grünes Fluoreszenzlicht ["
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 450-520\\,\\text{nm}"
+            },
+            {
+              "type": "text",
+              "text": "]). - Unterschied zur Phosphoreszenz:   * Fluoreszenz ist spin-erlaubt (Singulett "
+            },
+            {
+              "type": "math",
+              "tex": "\\to"
+            },
+            {
+              "type": "text",
+              "text": " Singulett, "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta S = 0"
+            },
+            {
+              "type": "text",
+              "text": ", Dauer "
+            },
+            {
+              "type": "math",
+              "tex": "10^{-9}-10^{-7}\\,\\text{s}"
+            },
+            {
+              "type": "text",
+              "text": ").   * Phosphoreszenz erfordert eine Spin-Umkehr ("
+            },
+            {
+              "type": "math",
+              "tex": "T_1 \\to S_0"
+            },
+            {
+              "type": "text",
+              "text": ", quantenmechanisch 'verboten', Lebensdauern von Sekunden bis Stunden "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " typisches 'Nachleuchten' von Notausgangsschildern im Dunkeln)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

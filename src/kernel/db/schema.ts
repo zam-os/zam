@@ -272,7 +272,13 @@ CREATE TABLE IF NOT EXISTS tokens (
   -- The term to read a world unit up by in a reference work, such as the
   -- Wikipedia article a topic import's model proposed (ADR 2026-10-14,
   -- Decision 4, M046). Never a source link and never fetched.
-  lookup_term TEXT
+  lookup_term TEXT,
+  -- Card text as typed segments (ADR 2026-10-14b, M048): JSON lists of
+  -- text, math and image segments. When set, question and concept hold
+  -- their plain projections, written only by writeCardText.
+  -- NULL = a plain card.
+  question_segments TEXT,
+  concept_segments  TEXT
 );
 
 -- Stable provenance for deterministic local-file imports (ADR 2026-08-09).
@@ -317,6 +323,10 @@ CREATE TABLE IF NOT EXISTS token_media (
   original_name  TEXT NOT NULL,
   alt_text       TEXT,
   occlusion_json TEXT,
+  -- 'attached' (shown beside the card, as Anki media) or 'inline' (an image
+  -- segment of the card text, ADR 2026-10-14b Decision 5, M048). Validated
+  -- in code. Inline rows keep their asset alive like any other row.
+  placement      TEXT NOT NULL DEFAULT 'attached',
   PRIMARY KEY (token_id, side, ordinal)
 );
 
@@ -668,7 +678,10 @@ CREATE TABLE IF NOT EXISTS choice_distractors (
   chosen_count    INTEGER NOT NULL DEFAULT 0,
   retired_at      TEXT,
   retired_reason  TEXT CHECK (retired_reason IN ('disputed', 'unchosen', 'filter')),
-  created_at      TEXT NOT NULL
+  created_at      TEXT NOT NULL,
+  -- The option as card-text segments (ADR 2026-10-14b, M048); text holds its
+  -- plain projection. NULL = a plain option.
+  text_segments   TEXT
 );
 -- Personal: a learner disputed an option taken from another item or a curated
 -- option. Never shared — derived options are built from one learner's history.
@@ -679,7 +692,19 @@ CREATE TABLE IF NOT EXISTS choice_exclusions (
   created_at    TEXT NOT NULL,
   PRIMARY KEY (user_id, token_id, excluded_key)
 );
-${ATLAS_TABLES}${ATLAS_LAND_TABLES}${ATLAS_VARIANT_TABLES}${EMBLEM_TABLES}${CONNECTION_TABLES}`;
+${ATLAS_TABLES}${ATLAS_LAND_TABLES}${ATLAS_VARIANT_TABLES}${EMBLEM_TABLES}${CONNECTION_TABLES}
+-- Bundled tiles this library has installed, and the version it holds
+-- (ADR 2026-10-14b Decision 7, M048). A later app version reinstalls a
+-- tile whose version differs, so learners who already enrolled receive a
+-- cosmetic fix. Knowledge, shared; written only by the installer.
+CREATE TABLE IF NOT EXISTS installed_tiles (
+  tile_id      TEXT PRIMARY KEY,
+  version      TEXT NOT NULL,
+  installed_at TEXT NOT NULL,
+  failed_at    TEXT,
+  last_error   TEXT
+);
+`;
 
 /** Performance indexes. Applied after migrations — see `SCHEMA_TABLES`. */
 export const SCHEMA_INDEXES = `

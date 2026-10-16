@@ -49,7 +49,21 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Welche Maßeinheit besitzt die physikalische Kraft $F$ im internationalen Einheitensystem (SI)?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Maßeinheit besitzt die physikalische Kraft "
+            },
+            {
+              "type": "math",
+              "tex": "F",
+              "speech": "F"
+            },
+            {
+              "type": "text",
+              "text": " im internationalen Einheitensystem (SI)?"
+            }
+          ],
           "concept": "Newton [N] (1 N ist die Kraft, die einer Masse von 1 kg die Beschleunigung 1 m/s² erteilt)",
           "fast_check": {
             "type": "binary_choice",
@@ -58,16 +72,218 @@
               "Kilogramm [kg]"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K4P7M0000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre den physikalischen Kraftbegriff und das Hookesche Gesetz: 1. **Kraftwirkungen**: Eine Kraft erkennt man an ihren Wirkungen: **Verformung** eines Körpers (elastisch vs. plastisch) oder **Änderung des Bewegungszustandes** (Beschleunigen, Bremsen, Richtungsänderung), 2. **Kräfte als gerichtete Größen (Vektoren)**: Eine Kraft $\\vec{F}$ ist eindeutig festgelegt durch **Angriffspunkt, Richtung (Wirkungslinie)** und **Betrag (Länge des Pfeils)**, 3. **Das Hookesche Gesetz**: Bei elastischer Verformung ist die rücktreibende Federkraft $F$ direkt proportional zur Auslenkung/Verlängerung $\\Delta s$:   $$F = D \\cdot \\Delta s$$   (mit Federhärte / Richtgröße $D = \\frac{F}{\\Delta s}$ in $\\text{N/m}$ bzw. $\\text{N/cm}$), 4. Berechne: Eine Schraubenfeder wird durch eine Kraft von $F_1 = 4\\text{ N}$ um $\\Delta s_1 = 8\\text{ cm}$ gedehnt. Wie weit dehnt sie sich bei $F_2 = 10\\text{ N}$?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Erkläre den physikalischen Kraftbegriff und das Hookesche Gesetz: 1. Kraftwirkungen: Eine Kraft erkennt man an ihren Wirkungen: Verformung eines Körpers (elastisch vs. plastisch) oder Änderung des Bewegungszustandes (Beschleunigen, Bremsen, Richtungsänderung), 2. Kräfte als gerichtete Größen (Vektoren): Eine Kraft "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}",
+              "speech": "Vektor F"
+            },
+            {
+              "type": "text",
+              "text": " ist eindeutig festgelegt durch Angriffspunkt, Richtung (Wirkungslinie) und Betrag (Länge des Pfeils), 3. Das Hookesche Gesetz: Bei elastischer Verformung ist die rücktreibende Federkraft "
+            },
+            {
+              "type": "math",
+              "tex": "F",
+              "speech": "F"
+            },
+            {
+              "type": "text",
+              "text": " direkt proportional zur Auslenkung/Verlängerung "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta s",
+              "speech": "Delta s"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "F = D \\cdot \\Delta s",
+              "block": true,
+              "speech": "F gleich D mal Delta s"
+            },
+            {
+              "type": "text",
+              "text": "   (mit Federhärte / Richtgröße "
+            },
+            {
+              "type": "math",
+              "tex": "D = \\frac{F}{\\Delta s}",
+              "speech": "D gleich F durch Delta s"
+            },
+            {
+              "type": "text",
+              "text": " in "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{N/m}",
+              "speech": "Newton pro Meter"
+            },
+            {
+              "type": "text",
+              "text": " bzw. "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{N/cm}",
+              "speech": "Newton pro Zentimeter"
+            },
+            {
+              "type": "text",
+              "text": "), 4. Berechne: Eine Schraubenfeder wird durch eine Kraft von "
+            },
+            {
+              "type": "math",
+              "tex": "F_1 = 4\\text{ N}",
+              "speech": "F eins gleich 4 Newton"
+            },
+            {
+              "type": "text",
+              "text": " um "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta s_1 = 8\\text{ cm}",
+              "speech": "Delta s eins gleich 8 Zentimeter"
+            },
+            {
+              "type": "text",
+              "text": " gedehnt. Wie weit dehnt sie sich bei "
+            },
+            {
+              "type": "math",
+              "tex": "F_2 = 10\\text{ N}",
+              "speech": "F zwei gleich 10 Newton"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
           "concept": "Kräfte wirken verformend oder beschleunigend; Vektor (Angriffspunkt, Richtung, Betrag); Hookesches Gesetz F = D * delta_s mit Federkonstante D; Rechnung: D = 4 N / 8 cm = 0,5 N/cm -> delta_s2 = 10 N / (0,5 N/cm) = 20 cm.",
-          "sample_solution": "1. Der physikalische Kraftbegriff: - Kräfte sind Ursache für Veränderungen und können nicht direkt 'gesehen', sondern nur an ihren **zwei charakteristischen Wirkungen** erkannt und gemessen werden:   * **1. Statische Wirkung (Verformung)**:     - *Elastisch*: Körper nimmt nach Entlastung seine Ursprungsform wieder ein (z. B. Feder, Trampolin).     - *Plastisch*: Dauerhafte Formänderung (z. B. Knete, verbeultes Blech).   * **2. Dynamische Wirkung (Bewegungsänderung)**:     - Änderung des Betrags der Geschwindigkeit (Anfahren, Bremsen) oder Änderung der Bewegungsrichtung (Kurvenfahrt). 2. Kräfte als Vektoren (Gerichtete Größen $\\vec{F}$): - Ein Kraftpfeil wird im Maßstab (z. B. $1\\text{ cm} \\mathrel{\\widehat{=}} 10\\text{ N}$) gezeichnet und erfordert 3 Angaben:   * **1. Angriffspunkt** (wo die Kraft ansetzt).   * **2. Richtung / Wirkungslinie** (Pfeilspitze).   * **3. Betrag der Kraft** (Länge des Pfeils). 3. Das Hookesche Gesetz: - Für elastische Schraubenfedern gilt: Die Dehnung $\\Delta s$ ist **direkt proportional** zur wirkenden Zugkraft $F$ ($F \\sim \\Delta s$):   $$\\mathbf{F = D \\cdot \\Delta s} \\iff \\mathbf{D = \\frac{F}{\\Delta s}}$$   * $D$ ist die **Federkonstante (Federhärte)** in $\\left[\\frac{\\text{N}}{\\text{m}}\\right]$ oder $\\left[\\frac{\\text{N}}{\\text{cm}}\\right]$. 4. Lösung der Rechenaufgabe: - **1. Federkonstante ermitteln**:   $$D = \\frac{F_1}{\\Delta s_1} = \\frac{4\\text{ N}}{8\\text{ cm}} = 0,5\\text{ N/cm}$$ - **2. Dehnung bei $F_2 = 10\\text{ N}$**:   $$\\Delta s_2 = \\frac{F_2}{D} = \\frac{10\\text{ N}}{0,5\\text{ N/cm}} = \\mathbf{20\\text{ cm}}$$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der physikalische Kraftbegriff: - Kräfte sind Ursache für Veränderungen und können nicht direkt 'gesehen', sondern nur an ihren zwei charakteristischen Wirkungen erkannt und gemessen werden:   * 1. Statische Wirkung (Verformung):     - Elastisch: Körper nimmt nach Entlastung seine Ursprungsform wieder ein (z. B. Feder, Trampolin).     - Plastisch: Dauerhafte Formänderung (z. B. Knete, verbeultes Blech).   * 2. Dynamische Wirkung (Bewegungsänderung):     - Änderung des Betrags der Geschwindigkeit (Anfahren, Bremsen) oder Änderung der Bewegungsrichtung (Kurvenfahrt). 2. Kräfte als Vektoren (Gerichtete Größen "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}"
+            },
+            {
+              "type": "text",
+              "text": "): - Ein Kraftpfeil wird im Maßstab (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ cm} \\mathrel{\\widehat{=}} 10\\text{ N}"
+            },
+            {
+              "type": "text",
+              "text": ") gezeichnet und erfordert 3 Angaben:   * 1. Angriffspunkt (wo die Kraft ansetzt).   * 2. Richtung / Wirkungslinie (Pfeilspitze).   * 3. Betrag der Kraft (Länge des Pfeils). 3. Das Hookesche Gesetz: - Für elastische Schraubenfedern gilt: Die Dehnung "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta s"
+            },
+            {
+              "type": "text",
+              "text": " ist direkt proportional zur wirkenden Zugkraft "
+            },
+            {
+              "type": "math",
+              "tex": "F"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "F \\sim \\Delta s"
+            },
+            {
+              "type": "text",
+              "text": "):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F = D \\cdot \\Delta s} \\iff \\mathbf{D = \\frac{F}{\\Delta s}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "D"
+            },
+            {
+              "type": "text",
+              "text": " ist die Federkonstante (Federhärte) in "
+            },
+            {
+              "type": "math",
+              "tex": "\\left[\\frac{\\text{N}}{\\text{m}}\\right]"
+            },
+            {
+              "type": "text",
+              "text": " oder "
+            },
+            {
+              "type": "math",
+              "tex": "\\left[\\frac{\\text{N}}{\\text{cm}}\\right]"
+            },
+            {
+              "type": "text",
+              "text": ". 4. Lösung der Rechenaufgabe: - 1. Federkonstante ermitteln:   "
+            },
+            {
+              "type": "math",
+              "tex": "D = \\frac{F_1}{\\Delta s_1} = \\frac{4\\text{ N}}{8\\text{ cm}} = 0,5\\text{ N/cm}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 2. Dehnung bei "
+            },
+            {
+              "type": "math",
+              "tex": "F_2 = 10\\text{ N}"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta s_2 = \\frac{F_2}{D} = \\frac{10\\text{ N}}{0,5\\text{ N/cm}} = \\mathbf{20\\text{ cm}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -112,7 +328,21 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Ein Astronaut hat auf der Erde eine Masse von $80\\text{ kg}$. Wie groß ist seine Masse auf dem Mond (wo die Schwerkraft nur ein Sechstel beträgt)?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Ein Astronaut hat auf der Erde eine Masse von "
+            },
+            {
+              "type": "math",
+              "tex": "80\\text{ kg}",
+              "speech": "80 Kilogramm"
+            },
+            {
+              "type": "text",
+              "text": ". Wie groß ist seine Masse auf dem Mond (wo die Schwerkraft nur ein Sechstel beträgt)?"
+            }
+          ],
           "concept": "Exakt 80 kg, da die Masse eine ortsunabhängige Stoffeigenschaft ist (nur die Gewichtskraft sinkt auf dem Mond auf ca. 130 N)",
           "fast_check": {
             "type": "binary_choice",
@@ -121,16 +351,399 @@
               "Nur ca. 13,3 kg"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K4P7M0000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Differenziere die fundamentalen Größen der Mechanik: 1. **Masse $m$ vs. Gewichtskraft $F_G$**: Masse ist eine universelle Körpereigenschaft (Trägheit und Materiemenge, Einheit $\\text{kg}$); Gewichtskraft $F_G = m \\cdot g$ ist ortsabhängig (Erde: $g \\approx 9,81\\text{ N/kg}$, Mond: $g_{\\text{Mond}} \\approx 1,62\\text{ N/kg}$), 2. **Dichte $\\rho$**: Stoffspezifische Masse pro Volumeneinheit: $\\rho = \\frac{m}{V}$ (Wasser: $\\rho = 1,0\\text{ g/cm}^3 = 1000\\text{ kg/m}^3$), 3. **Druck $p$**: Senkrecht auf eine Fläche $A$ wirkende Kraft: $p = \\frac{F}{A}$ (Einheit Pascal $[\\text{Pa}] = [\\text{N/m}^2]$, $1\\text{ bar} = 100.000\\text{ Pa} = 1000\\text{ hPa}$), 4. Hydrostatischer Schweredruck in Flüssigkeiten: $p(h) = \\rho \\cdot g \\cdot h$ (nimmt linear mit der Eintauchtiefe zu).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Differenziere die fundamentalen Größen der Mechanik: 1. Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m",
+              "speech": "m"
+            },
+            {
+              "type": "text",
+              "text": " vs. Gewichtskraft "
+            },
+            {
+              "type": "math",
+              "tex": "F_G",
+              "speech": "F G"
+            },
+            {
+              "type": "text",
+              "text": ": Masse ist eine universelle Körpereigenschaft (Trägheit und Materiemenge, Einheit "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{kg}",
+              "speech": "Kilogramm"
+            },
+            {
+              "type": "text",
+              "text": "); Gewichtskraft "
+            },
+            {
+              "type": "math",
+              "tex": "F_G = m \\cdot g",
+              "speech": "F G gleich m mal g"
+            },
+            {
+              "type": "text",
+              "text": " ist ortsabhängig (Erde: "
+            },
+            {
+              "type": "math",
+              "tex": "g \\approx 9,81\\text{ N/kg}",
+              "speech": "g ungefähr 9,81 Newton pro Kilogramm"
+            },
+            {
+              "type": "text",
+              "text": ", Mond: "
+            },
+            {
+              "type": "math",
+              "tex": "g_{\\text{Mond}} \\approx 1,62\\text{ N/kg}",
+              "speech": "g Mond ungefähr 1,62 Newton pro Kilogramm"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Dichte "
+            },
+            {
+              "type": "math",
+              "tex": "\\rho",
+              "speech": "Rho"
+            },
+            {
+              "type": "text",
+              "text": ": Stoffspezifische Masse pro Volumeneinheit: "
+            },
+            {
+              "type": "math",
+              "tex": "\\rho = \\frac{m}{V}",
+              "speech": "Rho gleich m durch V"
+            },
+            {
+              "type": "text",
+              "text": " (Wasser: "
+            },
+            {
+              "type": "math",
+              "tex": "\\rho = 1,0\\text{ g/cm}^3 = 1000\\text{ kg/m}^3",
+              "speech": "Rho gleich 1,0 Gramm pro Kubikzentimeter gleich 1000 Kilogramm pro Kubikmeter"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Druck "
+            },
+            {
+              "type": "math",
+              "tex": "p",
+              "speech": "p"
+            },
+            {
+              "type": "text",
+              "text": ": Senkrecht auf eine Fläche "
+            },
+            {
+              "type": "math",
+              "tex": "A",
+              "speech": "A"
+            },
+            {
+              "type": "text",
+              "text": " wirkende Kraft: "
+            },
+            {
+              "type": "math",
+              "tex": "p = \\frac{F}{A}",
+              "speech": "p gleich F durch A"
+            },
+            {
+              "type": "text",
+              "text": " (Einheit Pascal "
+            },
+            {
+              "type": "math",
+              "tex": "[\\text{Pa}] = [\\text{N/m}^2]",
+              "speech": "Einheit Pascal gleich Newton pro Quadratmeter"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ bar} = 100.000\\text{ Pa} = 1000\\text{ hPa}",
+              "speech": "1 bar gleich 100.000 Pascal gleich 1000 Hektopascal"
+            },
+            {
+              "type": "text",
+              "text": "), 4. Hydrostatischer Schweredruck in Flüssigkeiten: "
+            },
+            {
+              "type": "math",
+              "tex": "p(h) = \\rho \\cdot g \\cdot h",
+              "speech": "p von h gleich Rho mal g mal h"
+            },
+            {
+              "type": "text",
+              "text": " (nimmt linear mit der Eintauchtiefe zu)."
+            }
+          ],
           "concept": "Masse (ortsungebunden, kg) vs. Gewichtskraft (Fg = m * g, N); Dichte rho = m / V; Druck p = F / A in Pascal (N/m²); Schweredruck p = rho * g * h.",
-          "sample_solution": "1. Der fundamentale Unterschied: Masse vs. Gewichtskraft: - **Masse $m$ (Skalar, Einheit $[\\text{kg}]$)**:   * Maß für die Trägheit und die Menge an Materie eines Körpers.   * **Ortsunabhängige Invariante**: Bleibt auf der Erde, auf dem Mond und im schwerelosen Weltall absolut identisch. - **Gewichtskraft $F_G$ (Vektor, Einheit $[\\text{N}]$)**:   * Die Kraft, mit der ein Himmelskörper eine Masse gravitativ anzieht:   $$\\mathbf{F_G = m \\cdot g}$$   * **Ortsabhängig**: Hängt vom lokalen **Ortsfaktor (Schwerebeschleunigung $g$)** ab:     - Erde (Mitteleuropa): $g_{\\text{Erde}} \\approx 9,81\\text{ N/kg}$ (eine Masse von $100\\text{ g}$ wiegt ca. $1\\text{ N}$).     - Mond: $g_{\\text{Mond}} \\approx 1,62\\text{ N/kg} \\approx \\frac{1}{6} g_{\\text{Erde}}$.     - Jupiter: $g_{\\text{Jupiter}} \\approx 24,8\\text{ N/kg}$. 2. Die Dichte $\\rho$ (Stoffspezifische Größe): - Gibt an, wie viel Masse in einem bestimmten Volumen $V$ gepackt ist:   $$\\mathbf{\\rho = \\frac{m}{V}} \\qquad \\left[\\frac{\\text{g}}{\\text{cm}^3}\\right] \\text{ bzw. } \\left[\\frac{\\text{kg}}{\\text{m}^3}\\right]$$   * Umrechnung: $1\\text{ g/cm}^3 = 1000\\text{ kg/m}^3$.   * *Beispiele*: Gold $19,3\\text{ g/cm}^3$, Eisen $7,87\\text{ g/cm}^3$, Aluminium $2,7\\text{ g/cm}^3$, Wasser $1,00\\text{ g/cm}^3$, Luft $\\approx 1,2\\text{ kg/m}^3$.   * *Auftriebsprinzip*: Ein Körper schwimmt in einer Flüssigkeit, wenn seine mittlere Dichte kleiner als die Dichte der Flüssigkeit ist ($\\rho_{\\text{Körper}} < \\rho_{\\text{Flüssigkeit}}$). 3. Der physikalische Druck $p$: - Definiert als Quotient aus der senkrecht wirkenden Kraft $F$ und der Fläche $A$:   $$\\mathbf{p = \\frac{F}{A}} \\qquad \\left[\\text{Pa} = \\frac{\\text{N}}{\\text{m}^2}\\right]$$   * $1\\text{ hPa} = 100\\text{ Pa}$, $1\\text{ bar} = 100.000\\text{ Pa} = 10^5\\text{ N/m}^2$. - **Hydrostatischer Schweredruck in Flüssigkeiten**:   $$\\mathbf{p_{\\text{hydr}} = \\rho \\cdot g \\cdot h}$$   *(In Wasser steigt der Druck alle 10 Meter Tiefe um rund $1\\text{ bar}$ an).* "
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der fundamentale Unterschied: Masse vs. Gewichtskraft: - Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m"
+            },
+            {
+              "type": "text",
+              "text": " (Skalar, Einheit "
+            },
+            {
+              "type": "math",
+              "tex": "[\\text{kg}]"
+            },
+            {
+              "type": "text",
+              "text": "):   * Maß für die Trägheit und die Menge an Materie eines Körpers.   * Ortsunabhängige Invariante: Bleibt auf der Erde, auf dem Mond und im schwerelosen Weltall absolut identisch. - Gewichtskraft "
+            },
+            {
+              "type": "math",
+              "tex": "F_G"
+            },
+            {
+              "type": "text",
+              "text": " (Vektor, Einheit "
+            },
+            {
+              "type": "math",
+              "tex": "[\\text{N}]"
+            },
+            {
+              "type": "text",
+              "text": "):   * Die Kraft, mit der ein Himmelskörper eine Masse gravitativ anzieht:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F_G = m \\cdot g}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Ortsabhängig: Hängt vom lokalen Ortsfaktor (Schwerebeschleunigung "
+            },
+            {
+              "type": "math",
+              "tex": "g"
+            },
+            {
+              "type": "text",
+              "text": ") ab:     - Erde (Mitteleuropa): "
+            },
+            {
+              "type": "math",
+              "tex": "g_{\\text{Erde}} \\approx 9,81\\text{ N/kg}"
+            },
+            {
+              "type": "text",
+              "text": " (eine Masse von "
+            },
+            {
+              "type": "math",
+              "tex": "100\\text{ g}"
+            },
+            {
+              "type": "text",
+              "text": " wiegt ca. "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ N}"
+            },
+            {
+              "type": "text",
+              "text": ").     - Mond: "
+            },
+            {
+              "type": "math",
+              "tex": "g_{\\text{Mond}} \\approx 1,62\\text{ N/kg} \\approx \\frac{1}{6} g_{\\text{Erde}}"
+            },
+            {
+              "type": "text",
+              "text": ".     - Jupiter: "
+            },
+            {
+              "type": "math",
+              "tex": "g_{\\text{Jupiter}} \\approx 24,8\\text{ N/kg}"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Die Dichte "
+            },
+            {
+              "type": "math",
+              "tex": "\\rho"
+            },
+            {
+              "type": "text",
+              "text": " (Stoffspezifische Größe): - Gibt an, wie viel Masse in einem bestimmten Volumen "
+            },
+            {
+              "type": "math",
+              "tex": "V"
+            },
+            {
+              "type": "text",
+              "text": " gepackt ist:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\rho = \\frac{m}{V}} \\qquad \\left[\\frac{\\text{g}}{\\text{cm}^3}\\right] \\text{ bzw. } \\left[\\frac{\\text{kg}}{\\text{m}^3}\\right]",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Umrechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ g/cm}^3 = 1000\\text{ kg/m}^3"
+            },
+            {
+              "type": "text",
+              "text": ".   * Beispiele: Gold "
+            },
+            {
+              "type": "math",
+              "tex": "19,3\\text{ g/cm}^3"
+            },
+            {
+              "type": "text",
+              "text": ", Eisen "
+            },
+            {
+              "type": "math",
+              "tex": "7,87\\text{ g/cm}^3"
+            },
+            {
+              "type": "text",
+              "text": ", Aluminium "
+            },
+            {
+              "type": "math",
+              "tex": "2,7\\text{ g/cm}^3"
+            },
+            {
+              "type": "text",
+              "text": ", Wasser "
+            },
+            {
+              "type": "math",
+              "tex": "1,00\\text{ g/cm}^3"
+            },
+            {
+              "type": "text",
+              "text": ", Luft "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 1,2\\text{ kg/m}^3"
+            },
+            {
+              "type": "text",
+              "text": ".   * Auftriebsprinzip: Ein Körper schwimmt in einer Flüssigkeit, wenn seine mittlere Dichte kleiner als die Dichte der Flüssigkeit ist ("
+            },
+            {
+              "type": "math",
+              "tex": "\\rho_{\\text{Körper}} < \\rho_{\\text{Flüssigkeit}}"
+            },
+            {
+              "type": "text",
+              "text": "). 3. Der physikalische Druck "
+            },
+            {
+              "type": "math",
+              "tex": "p"
+            },
+            {
+              "type": "text",
+              "text": ": - Definiert als Quotient aus der senkrecht wirkenden Kraft "
+            },
+            {
+              "type": "math",
+              "tex": "F"
+            },
+            {
+              "type": "text",
+              "text": " und der Fläche "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{p = \\frac{F}{A}} \\qquad \\left[\\text{Pa} = \\frac{\\text{N}}{\\text{m}^2}\\right]",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ hPa} = 100\\text{ Pa}"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ bar} = 100.000\\text{ Pa} = 10^5\\text{ N/m}^2"
+            },
+            {
+              "type": "text",
+              "text": ". - Hydrostatischer Schweredruck in Flüssigkeiten:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{p_{\\text{hydr}} = \\rho \\cdot g \\cdot h}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   (In Wasser steigt der Druck alle 10 Meter Tiefe um rund "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ bar}"
+            },
+            {
+              "type": "text",
+              "text": " an). "
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

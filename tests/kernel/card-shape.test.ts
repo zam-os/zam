@@ -54,10 +54,17 @@ describe("card-shape rules", () => {
   });
 
   it("stays free of Node built-ins, for Mobile's bundle", () => {
-    const source = readFileSync(
-      join(process.cwd(), "src", "kernel", "library", "card-shape.ts"),
-      "utf8",
-    );
-    expect(source).not.toMatch(/^import /m);
+    // The card-text rule names the inventory's environments (ADR
+    // 2026-10-14b), so the rules import the tokenizer, which imports only
+    // the inventory JSON. Nothing in that chain may reach a Node built-in.
+    const imports = (file: string) =>
+      [
+        ...readFileSync(
+          join(process.cwd(), "src", "kernel", "library", file),
+          "utf8",
+        ).matchAll(/^import .* from "([^"]+)"/gm),
+      ].map((match) => match[1]);
+    expect(imports("card-shape.ts")).toEqual(["./tex-tokenizer.js"]);
+    expect(imports("tex-tokenizer.ts")).toEqual(["./math-inventory.json"]);
   });
 });

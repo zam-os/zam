@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formel-Editor</title>
+    <!--
+      Dev-only page (ADR 2026-10-14b, plan Phase 7): the Studio's formula
+      editor on a sample card, with a scripted "let the AI fix it" reply.
+      Not part of the Studio build; open it with `npm --prefix desktop run
+      dev` at /dev/card-text-editor.html.
+    -->
+    <link rel="stylesheet" href="../src/styles.css" />
+    <style>
+      body { margin: 1rem; max-width: 46rem; }
+      textarea { width: 100%; }
+      pre { font: 12px ui-monospace, monospace; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <h1>Formel-Editor</h1>
+    <label for="question">Frage</label>
+    <textarea id="question" rows="2"></textarea>
+    <label for="answer">Antwort</label>
+    <textarea id="answer" rows="3"></textarea>
+    <p><button id="save" type="button">Was würde gespeichert?</button></p>
+    <pre id="saved"></pre>
+    <script type="module" src="./card-text-editor.ts"></script>
+  </body>
+</html>

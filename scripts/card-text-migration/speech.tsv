@@ -1,0 +1,1754 @@
+# language	tex	speech — how a teacher reads each formula aloud (ADR 2026-10-14b D4)
+de	-	minus
+de	-\cdot -=+	minus mal minus ergibt plus
+de	-\frac{2}{5}\Delta_o	minus zwei Fünftel Delta o
+de	-\frac{W_A}{e}	minus W A durch e
+de	-\text{I}	minus I
+de	-\vec{v} = \begin{pmatrix} -v_x \\ -v_y \end{pmatrix}	minus Vektor v gleich dem Vektor aus minus v x und minus v y
+de	-0{,}5	minus 0,5
+de	-1	minus 1
+de	-18^\circ\text{C}	minus 18 Grad Celsius
+de	-50\,\text{mV}	minus 50 Millivolt
+de	-70\,\text{mV}	minus 70 Millivolt
+de	-80\,\text{mV}	minus 80 Millivolt
+de	-88{,}6^\circ\text{C}	minus 88,6 Grad Celsius
+de	-C=O	C doppelt gebunden an O
+de	-CH_3	C H drei
+de	-CHO	C H O
+de	-CO-NH-	Amidgruppe C O N H
+de	-COOH	C O O H
+de	-H_2O	minus H zwei O
+de	-I_0	minus I null
+de	-M	minus M
+de	-N=N-	Azogruppe N doppelt gebunden an N
+de	-NH_2	N H zwei
+de	-NH-CO-O-	Urethangruppe N H C O O
+de	-NO_2	N O zwei
+de	-NO_2, -SO_3H	N O zwei und S O drei H
+de	-OH	O H
+de	-OH, -NH_2, -N(CH_3)_2	O H, N H zwei und N mit zwei C H drei
+de	-x^2 + 4 = x^2 - 4 \Rightarrow 2x^2 = 8 \Rightarrow x = \pm 2	minus x Quadrat plus 4 gleich x Quadrat minus 4 daraus folgt 2 x Quadrat gleich 8 daraus folgt x gleich plus minus 2
+de	— \,—	betont, betont
+de	— \,\smile\smile	betont, unbetont, unbetont
+de	(-0,4) \cdot (-15)	minus 0,4 mal minus 15
+de	(-y, x)^T	Spaltenvektor minus y, x
+de	(\lambda, \mu)	Lambda und My
+de	(\vec{x} - \vec{m})^2 = r^2	Klammer auf Vektor x minus Vektor m Klammer zu Quadrat gleich r Quadrat
+de	(0\;0\;0\;|\;7)	Zeile null, null, null, Strich, sieben
+de	(0|0)	Punkt null, null
+de	(A|b)	erweiterte Matrix A, Strich, b
+de	(c \cdot f(x))' = c \cdot f'(x)	Klammer auf c mal f von x Klammer zu Strich gleich c mal f Strich von x
+de	(c)' = 0	c Strich gleich 0
+de	(d, N)	das Paar d und N
+de	(e, N)	das Paar e und N
+de	(f(x) + g(x))' = f'(x) + g'(x)	Klammer auf f von x plus g von x Klammer zu Strich gleich f Strich von x plus g Strich von x
+de	(x - x_0)	x minus x null
+de	(x \mid y)	Punkt x, y
+de	(x_1 - m_1)^2 + (x_2 - m_2)^2 + (x_3 - m_3)^2 = r^2	Klammer auf x eins minus m eins Klammer zu Quadrat plus Klammer auf x zwei minus m zwei Klammer zu Quadrat plus Klammer auf x drei minus m drei Klammer zu Quadrat gleich r Quadrat
+de	(x^n)' = n \cdot x^{n-1}	Klammer auf x hoch n Klammer zu Strich gleich n mal x hoch n minus eins
+de	(y, -x)^T	Spaltenvektor y, minus x
+de	(Z, \Sigma, \delta, z_0, F)	das Tupel Z, großes Sigma, Delta, z null, F
+de	[\text{Ni}(\text{H}_2\text{O})_6]^{2+} + \text{EDTA}^{4-} \rightleftharpoons [\text{Ni}(\text{EDTA})]^{2-} + 6\,\text{H}_2\text{O}	Nickel mit sechs H zwei O, zweifach positiv, plus E D T A, vierfach negativ, im Gleichgewicht mit Nickel E D T A, zweifach negativ, plus 6 H zwei O
+de	[\text{Pa}] = [\text{N/m}^2]	Einheit Pascal gleich Newton pro Quadratmeter
+de	[0; +\infty[	Intervall von 0 bis plus unendlich, rechts offen
+de	[a; b]	Intervall von a bis b
+de	[AB]	Strecke A B
+de	[Ag(NH_3)_2]^+	Silber mit zwei N H drei, einfach positiv
+de	[Cu(H_2O)_6]^{2+}	Kupfer mit sechs H zwei O, zweifach positiv
+de	[ES]	Enzym-Substrat-Komplex E S
+de	[PP']	Strecke P P Strich
+de	[Pt(NH_3)_2Cl_2]	Platin mit zwei N H drei und zwei C l
+de	[S]	Konzentration von S
+de	[x_0; x_0 + h]	Intervall von x null bis x null plus h
+de	\alpha	Alpha
+de	\alpha \to \beta	Alpha wird zu Beta
+de	\alpha + \beta + \gamma	Alpha plus Beta plus Gamma
+de	\alpha + \beta + \gamma = 180^\circ	Alpha plus Beta plus Gamma gleich 180 Grad
+de	\alpha + \beta = 180^\circ	Alpha plus Beta gleich 180 Grad
+de	\alpha = \alpha_1	Alpha gleich Alpha eins
+de	\alpha = \alpha_2	Alpha gleich Alpha zwei
+de	\alpha = \alpha'	Alpha gleich Alpha Strich
+de	\alpha = 0{,}05	Alpha gleich 0,05
+de	\alpha = 30^\circ	Alpha gleich 30 Grad
+de	\alpha = 60^\circ	Alpha gleich 60 Grad
+de	\alpha > \alpha_{\text{grenz}}	Alpha größer als Alpha grenz
+de	\alpha_{\text{grenz}}	Alpha grenz
+de	\approx \log_2(n)	ungefähr Logarithmus zur Basis 2 von n
+de	\approx 150\,\text{kJ/mol}	ungefähr 150 Kilojoule pro Mol
+de	\approx 2-3\%	ungefähr 2 bis 3 Prozent
+de	\approx 2\,\%	ungefähr 2 Prozent
+de	\approx 2\%	ungefähr 2 Prozent
+de	\approx 30\,\%	ungefähr 30 Prozent
+de	\approx 40\,\text{Gt}	ungefähr 40 Gigatonnen
+de	\approx 400	ungefähr 400
+de	\approx 450\,\text{nm}	ungefähr 450 Nanometer
+de	\approx 64\%	ungefähr 64 Prozent
+de	\bar{\nu}_e	Elektron-Antineutrino
+de	\bar{A}	A quer
+de	\bar{A} = \{k+1, \dots, n\}	A quer gleich die Menge von k plus 1 bis n
+de	\begin{aligned}   (I)   & \quad x_1 + 2x_2 - x_3 = 3 \\   (II)  & \quad 2x_1 + 5x_2 + x_3 = 11 \\   (III) & \quad -x_1 - x_2 + 4x_3 = 4 \end{aligned}	Gleichung eins: x eins plus 2 x zwei minus x drei gleich 3; Gleichung zwei: 2 x eins plus 5 x zwei plus x drei gleich 11; Gleichung drei: minus x eins minus x zwei plus 4 x drei gleich 4
+de	\beta	Beta
+de	\beta < \alpha	Beta kleiner als Alpha
+de	\beta = 90^\circ	Beta gleich 90 Grad
+de	\beta > \alpha	Beta größer als Alpha
+de	\beta^-	Beta minus
+de	\binom{6}{2}	6 über 2
+de	\binom{6}{2} = \frac{6 \cdot 5}{2 \cdot 1} = 15	6 über 2 gleich 6 mal 5 durch 2 mal 1 gleich 15
+de	\binom{n}{k}	n über k
+de	\binom{n}{k} = \binom{n}{n-k}	n über k gleich n über n minus k
+de	\binom{n}{k} = \frac{n!}{k! \cdot (n - k)!}	n über k gleich n Fakultät geteilt durch k Fakultät mal n minus k Fakultät
+de	\binom{n+1}{k+1} = \binom{n}{k} + \binom{n}{k+1}	n plus 1 über k plus 1 gleich n über k plus n über k plus 1
+de	\cong	kongruent zu
+de	\cos \alpha = \frac{\text{Ankathete von } \alpha}{\text{Hypotenuse}}	Kosinus Alpha gleich Ankathete von Alpha durch Hypotenuse
+de	\cos = \frac{A}{H}	Kosinus gleich Ankathete durch Hypotenuse
+de	\cos 30^\circ = \frac{\sqrt{3}}{2}	Kosinus 30 Grad gleich Wurzel aus 3 durch 2
+de	\cos 60^\circ = 0{,}5	Kosinus 60 Grad gleich 0,5
+de	\cos 90^\circ = 0 \implies c^2 = a^2 + b^2	Kosinus 90 Grad gleich 0 daraus folgt c Quadrat gleich a Quadrat plus b Quadrat
+de	\cos(\beta) = \frac{|\vec{u} \cdot \vec{n}|}{|\vec{u}| \cdot |\vec{n}|}	Kosinus von Beta gleich Betrag von Vektor u mal Vektor n, durch Betrag von Vektor u, mal Betrag von Vektor n
+de	\cos(\varphi) = \frac{\vec{a} \circ \vec{b}}{|\vec{a}| \cdot |\vec{b}|}	Kosinus von Phi gleich Vektor a mal Vektor b durch Betrag von Vektor a mal Betrag von Vektor b
+de	\cos(60^\circ) = 0{,}5	Kosinus von 60 Grad gleich 0,5
+de	\Delta ABC \cong \Delta A'B'C'	Dreieck A B C kongruent zu Dreieck A Strich B Strich C Strich
+de	\Delta E	Delta E
+de	\Delta E = E_m - E_n = h \cdot f	Delta E gleich E m minus E n gleich h mal f
+de	\Delta E = h \cdot f	Delta E gleich h mal f
+de	\Delta EN < 0{,}4	Delta E N kleiner als 0,4
+de	\Delta G_0 = -R \cdot T \cdot \ln(K_c)	Delta G null gleich minus R mal T mal l n von K c
+de	\Delta H	Delta H
+de	\Delta H < 0	Delta H kleiner als 0
+de	\Delta H_G	Delta H G
+de	\Delta m	Delta m
+de	\Delta m = \sum m_{\text{Nukleonen}} - m_{\text{Kern}}	Delta m gleich Summe der Nukleonenmassen minus m Kern
+de	\Delta m = Z \cdot m_p + N \cdot m_n - m_{\text{Kern}}	Delta m gleich Z mal m p plus N mal m n minus m Kern
+de	\Delta s	Delta s
+de	\Delta s = (2k + 1) \cdot \frac{\lambda}{2}	Delta s gleich Klammer auf 2 k plus 1 Klammer zu mal Lambda durch 2
+de	\Delta s = k \cdot \lambda	Delta s gleich k mal Lambda
+de	\Delta S > 0	Delta S größer als 0
+de	\Delta s_1 = 8\text{ cm}	Delta s eins gleich 8 Zentimeter
+de	\Delta t	Delta t
+de	\Delta t = \frac{\Delta t_0}{\gamma} < \Delta t_0	Delta t gleich Delta t null durch Gamma kleiner als Delta t null
+de	\Delta t = \gamma \cdot \Delta t_0	Delta t gleich Gamma mal Delta t null
+de	\Delta t = \gamma \cdot \Delta t_0 = \frac{\Delta t_0}{\sqrt{1 - \frac{v^2}{c^2}}} > \Delta t_0	Delta t gleich Gamma mal Delta t null gleich Delta t null durch Wurzel aus 1 minus v Quadrat durch c Quadrat, größer als Delta t null
+de	\Delta t = \gamma \cdot \Delta t_0 > \Delta t_0	Delta t gleich Gamma mal Delta t null größer als Delta t null
+de	\Delta T = \text{Temperaturänderung}	Delta T gleich Temperaturänderung
+de	\Delta t = 15{,}8 \cdot 2{,}2\,\mu\text{s} = 34{,}8\,\mu\text{s} \Rightarrow s = 10{,}4\,\text{km}	Delta t gleich 15,8 mal 2,2 Mikrosekunden gleich 34,8 Mikrosekunden daraus folgt s gleich 10,4 Kilometer
+de	\Delta t_0	Delta t null
+de	\Delta t_0 = 2{,}2\,\mu\text{s}	Delta t null gleich 2,2 Mikrosekunden
+de	\Delta U	Delta U
+de	\Delta x \cdot \Delta p \ge \frac{\hbar}{2}	Delta x mal Delta p größer gleich h quer durch 2
+de	\Delta_o < P	Delta o kleiner als P
+de	\Delta_o > P \implies	Delta o größer als P daraus folgt
+de	\delta: Z \times \Sigma \to Z	Delta bildet Z kreuz großes Sigma ab nach Z
+de	\delta(z, a)	Delta von z und a
+de	\delta^-	Delta minus
+de	\delta^*(z_0, w) \in F	Delta Stern von z null und w ist Element von F
+de	\delta^+	Delta plus
+de	\det(\vec{AB}, \vec{AC}) = 4 \cdot 5 - 1 \cdot 1 = 20 - 1 = 19	Determinante von Vektor A B, Vektor A C gleich 4 mal 5 minus 1 mal 1 gleich 20 minus 1 gleich 19
+de	\eta = \frac{E_{\text{nutz}}}{E_{\text{zu}}}	Eta gleich E nutz durch E zu
+de	\eta = \frac{E_{\text{nutz}}}{E_{\text{zu}}} = \frac{P_{\text{nutz}}}{P_{\text{zu}}} < 1	Eta gleich E nutz durch E zu gleich P nutz durch P zu kleiner als 1
+de	\frac{\Delta y}{\Delta x}	Delta y durch Delta x
+de	\frac{\text{mol}}{\text{l}}	Mol pro Liter
+de	\frac{\text{N}}{\text{C}} = \frac{\text{V}}{\text{m}}	Newton pro Coulomb gleich Volt pro Meter
+de	\frac{\text{rad}}{\text{s}}	Radiant pro Sekunde
+de	\frac{1}{\lambda} = R_H \cdot \left( \frac{1}{n^2} - \frac{1}{m^2} \right)	1 durch Lambda gleich R H mal Klammer auf 1 durch n Quadrat minus 1 durch m Quadrat Klammer zu
+de	\frac{1}{R_{\text{ges}}} = \frac{1}{R_1} + \frac{1}{R_2} \implies R_{\text{ges}} = \frac{R_1 \cdot R_2}{R_1 + R_2} < \min(R_1, R_2)	1 durch R ges gleich 1 durch R eins plus 1 durch R zwei, daraus folgt R ges gleich R eins mal R zwei durch R eins plus R zwei, kleiner als das Minimum von R eins und R zwei
+de	\frac{2 \cdot 4 - 1 + 2 \cdot 7 - 12}{3} = \frac{8 - 1 + 14 - 12}{3} = \frac{9}{3} = 3	2 mal 4 minus 1 plus 2 mal 7 minus 12, geteilt durch 3, gleich 8 minus 1 plus 14 minus 12, geteilt durch 3, gleich 9 durch 3 gleich 3
+de	\frac{a}{\sin \alpha} = \frac{b}{\sin \beta} = \frac{c}{\sin \gamma}	a durch Sinus Alpha gleich b durch Sinus Beta gleich c durch Sinus Gamma
+de	\frac{dA}{dt} = \text{const}	d A nach d t gleich konstant
+de	\frac{E_B}{A}	E B durch A
+de	\frac{n(n-1)}{2}	n mal, n minus 1, durch 2
+de	\frac{T_1^2}{T_2^2} = \frac{a_1^3}{a_2^3}	T eins Quadrat durch T zwei Quadrat gleich a eins hoch drei durch a zwei hoch drei
+de	\frac{t}{3} = 3	t durch 3 gleich 3
+de	\frac{T^2}{a^3} = \text{const}	T Quadrat durch a hoch drei gleich konstant
+de	\frac{T^2}{a^3} = \text{konstant}	T Quadrat durch a hoch drei gleich konstant
+de	\gamma	Gamma
+de	\gamma \approx 1 + \frac{1}{2}\frac{v^2}{c^2} \implies E_{\text{kin}} \approx \frac{1}{2} m_0 v^2	Gamma ungefähr 1 plus ein halb v Quadrat durch c Quadrat daraus folgt E kin ungefähr ein halb m null v Quadrat
+de	\gamma = \frac{1}{\sqrt{1 - \frac{v^2}{c^2}}}	Gamma gleich 1 durch Wurzel aus 1 minus v Quadrat durch c Quadrat
+de	\gamma = \frac{1}{\sqrt{1 - 0{,}998^2}} \approx 15{,}8	Gamma gleich 1 durch Wurzel aus 1 minus 0,998 Quadrat, ungefähr 15,8
+de	\gamma = 90^\circ	Gamma gleich 90 Grad
+de	\gamma_1 A \gamma_2 \to \gamma_1 \beta \gamma_2	Gamma eins A Gamma zwei geht über in Gamma eins Beta Gamma zwei
+de	\ge p	größer gleich p
+de	\hbar	h quer
+de	\iff P(A \cap B) = P(A) \cdot P(B) \iff P_A(B) = P(B)	genau dann, wenn P von A geschnitten mit B gleich P von A mal P von B genau dann, wenn P A von B gleich P von B
+de	\implies	daraus folgt
+de	\implies \cos \alpha = \frac{b^2 + c^2 - a^2}{2bc}	daraus folgt Kosinus Alpha gleich b Quadrat plus c Quadrat minus a Quadrat, geteilt durch 2 b c
+de	\implies \lambda	daraus folgt Lambda
+de	\implies \lim_{x \to x_0} f(x) = \pm \infty	daraus folgt Limes für x gegen x null f von x gleich plus minus unendlich
+de	\implies \mathbf{\Delta S^\circ \gg 0} \implies \mathbf{\Delta G^\circ = \Delta H^\circ - T\Delta S^\circ \ll 0}	daraus folgt Delta S null sehr viel größer als 0 daraus folgt Delta G null gleich Delta H null minus T Delta S null sehr viel kleiner als 0
+de	\implies \mathbf{\mathcal{L}(\text{NEA}) = \mathcal{L}(\text{DEA}) = \text{Reguläre Sprachen}}	daraus folgt L von NEA gleich L von DEA gleich reguläre Sprachen
+de	\implies \mathbf{\text{ADP} + \text{P}_i \rightarrow \text{ATP}}	daraus folgt A D P plus anorganisches Phosphat reagiert zu A T P
+de	\implies \mathbf{\text{Das Halteproblem ist unentscheidbar}}	daraus folgt Das Halteproblem ist unentscheidbar
+de	\implies \mathbf{pH = -\log(c_0)}	daraus folgt p H gleich minus Logarithmus von c null
+de	\implies \mathbf{r = 0{,}75}	daraus folgt r gleich 0,75
+de	\implies \mathbf{y = y(g(x))}	daraus folgt y gleich y von g von x
+de	\implies \text{Oxidation: } Zn \rightarrow Zn^{2+} + 2e^-	daraus folgt Oxidation: Zink reagiert zu Zink zwei plus plus 2 Elektronen
+de	\implies \text{Reduktion: } Cu^{2+} + 2e^- \rightarrow Cu	daraus folgt Reduktion: Kupfer zwei plus plus 2 Elektronen reagiert zu Kupfer
+de	\implies 255.255.255.0	daraus folgt 255.255.255.0
+de	\implies D	daraus folgt D
+de	\implies D = \mathbb{Q} \setminus \{x \mid \text{Nenner}(x) = 0\}	daraus folgt D gleich Q ohne die Menge der x mit Nenner von x gleich 0
+de	\implies f_Z = \frac{q \cdot B}{2\pi m}	daraus folgt f Z gleich q mal B durch 2 Pi m
+de	\implies H	daraus folgt H
+de	\implies Na^+	daraus folgt N a plus
+de	\implies O(n^2)	daraus folgt O von n Quadrat
+de	\int (c \cdot f(x)) \,\mathrm{d}x = c \cdot \int f(x) \,\mathrm{d}x	Integral über Klammer auf c mal f von x Klammer zu d x gleich c mal Integral über f von x d x
+de	\int (f(x) + g(x)) \,\mathrm{d}x = \int f(x) \,\mathrm{d}x + \int g(x) \,\mathrm{d}x	Integral über Klammer auf f von x plus g von x Klammer zu d x gleich Integral über f von x d x plus Integral über g von x d x
+de	\int x \cdot e^{-2x}\,dx	Integral über x mal e hoch minus 2 x d x
+de	\int x \cdot e^{-2x}\,dx = -\frac{1}{2} x e^{-2x} - \frac{1}{4} e^{-2x}	Integral über x mal e hoch minus 2 x d x gleich minus ein halb x e hoch minus 2 x minus ein Viertel e hoch minus 2 x
+de	\int x^n \,\mathrm{d}x	Integral über x hoch n d x
+de	\int x^n \,\mathrm{d}x = \frac{1}{n+1} x^{n+1} + C	Integral über x hoch n d x gleich 1 durch n plus 1 mal x hoch n plus 1 plus C
+de	\int_{1}^{\infty} \frac{1}{x^p} \, dx	Integral von 1 bis unendlich über 1 durch x hoch p d x
+de	\int_{1}^{3} (3x^2 - 4x + 2) \,\mathrm{d}x	Integral von 1 bis 3 über Klammer auf 3 x Quadrat minus 4 x plus 2 Klammer zu d x
+de	\int_{a}^{\infty} f(x)\,dx = \lim_{u \to \infty} \int_{a}^{u} f(x)\,dx	Integral von a bis unendlich über f von x d x gleich Limes für u gegen unendlich Integral von a bis u über f von x d x
+de	\int_{x_0}^{b} f(x)\,dx = \lim_{u \to x_0^+} \int_{u}^{b} f(x)\,dx	Integral von x null bis b über f von x d x gleich Limes für u gegen x null von rechts, Integral von u bis b über f von x d x
+de	\int_0^3 c \cdot x^2\,dx = \left[\frac{c \cdot x^3}{3}\right]_0^3 = 9c = 1 \Rightarrow c = \frac{1}{9}	Integral von 0 bis 3 über c mal x Quadrat d x gleich c mal x hoch 3 durch 3 in den Grenzen von 0 bis 3 gleich 9 c gleich 1, daraus folgt c gleich ein Neuntel
+de	\int_a^b f(x)\,dx = [F(x)]_a^b = F(b) - F(a)	Integral von a bis b über f von x d x gleich F von x in den Grenzen von a bis b gleich F von b minus F von a
+de	\lambda	Lambda
+de	\lambda = \frac{\ln 2}{T_{1/2}}	Lambda gleich l n 2 durch T ein halb
+de	\lambda = \frac{h}{p} = \frac{h}{\sqrt{2 \cdot m \cdot e \cdot U}}	Lambda gleich h durch p gleich h durch Wurzel aus 2 mal m mal e mal U
+de	\lambda_{\text{dB}}	Lambda de Broglie
+de	\lambda_{\text{max}} \cdot T = b	Lambda max mal T gleich b
+de	\lambda_{\text{max}} \cdot T = b = 2{,}898 \cdot 10^{-3}\,\text{m}\cdot\text{K}	Lambda max mal T gleich b gleich 2,898 mal 10 hoch minus 3 Meter mal Kelvin
+de	\lceil \log_2(1.000.000) \rceil = 20	aufgerundeter Logarithmus zur Basis 2 von 1.000.000 gleich 20
+de	\left(-\frac{3}{7}\right) \cdot 18{,}5 + \left(-\frac{3}{7}\right) \cdot 2{,}5	minus drei Siebtel mal 18,5 plus minus drei Siebtel mal 2,5
+de	\leftrightarrow	Mesomeriepfeil
+de	\Leftrightarrow	genau dann, wenn
+de	\lg(x) = \log_{10}(x)	l g von x gleich Logarithmus zur Basis 10 von x
+de	\lim_{x \to -\infty} f(x) = +\infty	Limes für x gegen minus unendlich f von x gleich plus unendlich
+de	\lim_{x \to +\infty} f(x) = 0	Limes für x gegen plus unendlich f von x gleich 0
+de	\lim_{x \to x_0} f(x) = y_0	Limes für x gegen x null f von x gleich y null
+de	\lim_{z \to \infty} \int_a^z f(x)\,dx	Limes für z gegen unendlich Integral von a bis z über f von x d x
+de	\ln(1) = 0	l n von 1 gleich 0
+de	\ln(e) = 1	l n von e gleich 1
+de	\ln(e^x) = x	l n von e hoch x gleich x
+de	\ln(x)	l n von x
+de	\ln(x) = \log_e(x)	l n von x gleich Logarithmus zur Basis e von x
+de	\log_{10}(1000) = 3	Logarithmus zur Basis 10 von 1000 gleich 3
+de	\log_2(32) = 5	Logarithmus zur Basis 2 von 32 gleich 5
+de	\log_a(b) = \frac{\ln(b)}{\ln(a)} = \frac{\lg(b)}{\lg(a)}	Logarithmus zur Basis a von b gleich l n von b durch l n von a gleich l g von b durch l g von a
+de	\log_a(b) = x \Leftrightarrow a^x = b	Logarithmus zur Basis a von b gleich x genau dann, wenn a hoch x gleich b
+de	\log_a(u \cdot v) = \log_a(u) + \log_a(v)	Logarithmus zur Basis a von u mal v gleich Logarithmus zur Basis a von u plus Logarithmus zur Basis a von v
+de	\log_a(u^r)	Logarithmus zur Basis a von u hoch r
+de	\log_a(u^r) = (\log_a u)^r	Logarithmus zur Basis a von u hoch r gleich, Logarithmus zur Basis a von u, hoch r
+de	\log_a(u^r) = r \cdot \log_a(u)	Logarithmus zur Basis a von u hoch r gleich r mal Logarithmus zur Basis a von u
+de	\log_a\left(\frac{u}{v}\right) = \log_a(u) - \log_a(v)	Logarithmus zur Basis a von u durch v gleich Logarithmus zur Basis a von u minus Logarithmus zur Basis a von v
+de	\log_b(a) = \frac{\ln(a)}{\ln(b)} = \frac{\lg(a)}{\lg(b)}	Logarithmus zur Basis b von a gleich l n von a durch l n von b gleich l g von a durch l g von b
+de	\log_b(u \cdot v) = \log_b(u) + \log_b(v)	Logarithmus zur Basis b von u mal v gleich Logarithmus zur Basis b von u plus Logarithmus zur Basis b von v
+de	\log_b(u^r) = r \cdot \log_b(u)	Logarithmus zur Basis b von u hoch r gleich r mal Logarithmus zur Basis b von u
+de	\log_b\left(\frac{u}{v}\right) = \log_b(u) - \log_b(v)	Logarithmus zur Basis b von u durch v gleich Logarithmus zur Basis b von u minus Logarithmus zur Basis b von v
+de	\log(u \cdot v) = \log u + \log v	Logarithmus von u mal v gleich Logarithmus von u plus Logarithmus von v
+de	\log(u^r) = r \cdot \log u	Logarithmus von u hoch r gleich r mal Logarithmus von u
+de	\log\left(\frac{u}{v}\right) = \log u - \log v	Logarithmus von u durch v gleich Logarithmus von u minus Logarithmus von v
+de	\mathbb{D} = \mathbb{R}	D gleich R
+de	\mathbb{D}_A	D A
+de	\mathbb{L}	L
+de	\mathbb{Q}	Q
+de	\mathbb{Q} = \left\{\frac{p}{q} \,\middle|\, p \in \mathbb{Z}, q \in \mathbb{N}\setminus\{0\}\right\}	Q gleich die Menge aller Brüche p durch q mit p Element von Z und q Element von N ohne 0
+de	\mathbb{R}^3	R drei
+de	\mathbf{-\,\underline{\text{v v}} \;\mid\; -\,\underline{\text{v v}} \;\mid\; -\,\underline{\text{v v}} \;\mid\; -\,\underline{\text{v v}} \;\mid\; -\,\text{v v} \;\mid\; -\,\bar{\text{x}}}	betont unbetont unbetont, betont unbetont unbetont, betont unbetont unbetont, betont unbetont unbetont, betont unbetont unbetont, betont und ein freies Element
+de	\mathbf{-COO-}	Estergruppe C O O
+de	\mathbf{— \,\underline{\smile\smile} \mid — \,\underline{\smile\smile} \mid — \,\underline{\smile\smile} \mid — \,\underline{\smile\smile} \mid — \,\smile\smile \mid — \,\underline{\smile}}	betont unbetont unbetont, betont unbetont unbetont, betont unbetont unbetont, betont unbetont unbetont, betont unbetont unbetont, betont unbetont
+de	\mathbf{(4n + 2)\,\pi\text{-Elektronen}}	4 n plus 2 Pi-Elektronen
+de	\mathbf{\binom{n}{k} = \frac{n!}{k! \cdot (n - k)!}} \quad (0 \le k \le n)	n über k gleich n Fakultät geteilt durch k Fakultät mal n minus k Fakultät, für 0 kleiner gleich k kleiner gleich n
+de	\mathbf{\Delta E = E_{\text{LUMO}} - E_{\text{HOMO}} = h \cdot f = \frac{h \cdot c}{\lambda}}	Delta E gleich E LUMO minus E HOMO gleich h mal f gleich h mal c durch Lambda
+de	\mathbf{\Delta G^\circ = -R \cdot T \cdot \ln(K_c)}	Delta G null gleich minus R mal T mal l n von K c
+de	\mathbf{\Delta m = Z \cdot m_p + (A - Z) \cdot m_n - m_{\text{Kern}} > 0}	Delta m gleich Z mal m p plus Klammer auf A minus Z Klammer zu mal m n minus m Kern größer als 0
+de	\mathbf{\Delta m = Z \cdot m_p + N \cdot m_n - m_{\text{Kern}} > 0}	Delta m gleich Z mal m p plus N mal m n minus m Kern größer als 0
+de	\mathbf{\Delta t = \gamma \cdot \Delta t_0}	Delta t gleich Gamma mal Delta t null
+de	\mathbf{\Delta U = Q + W}	Delta U gleich Q plus W
+de	\mathbf{\Delta x \cdot \Delta p_x \ge \frac{h}{4\pi} = \frac{\hbar}{2}}	Delta x mal Delta p x größer gleich h durch 4 Pi gleich h quer durch 2
+de	\mathbf{\frac{a}{\sin \alpha} = \frac{b}{\sin \beta} = \frac{c}{\sin \gamma} = 2R} \quad (R = \text{Umkreisradius})	a durch Sinus Alpha gleich b durch Sinus Beta gleich c durch Sinus Gamma gleich 2 R, Klammer auf R gleich Umkreisradius Klammer zu
+de	\mathbf{\frac{T_1^2}{T_2^2} = \frac{a_1^3}{a_2^3} \iff \frac{T^2}{a^3} = \text{konstant}}	T eins Quadrat durch T zwei Quadrat gleich a eins hoch drei durch a zwei hoch drei genau dann, wenn T Quadrat durch a hoch drei gleich konstant
+de	\mathbf{\gamma = \frac{1}{\sqrt{1 - \frac{v^2}{c^2}}} \ge 1}	Gamma gleich 1 durch Wurzel aus 1 minus v Quadrat durch c Quadrat, größer gleich 1
+de	\mathbf{\int_{-\infty}^{\infty} f(x)\,dx = 1}	Integral von minus unendlich bis unendlich über f von x d x gleich 1
+de	\mathbf{\int_a^\infty f(x)\,\mathrm{d}x = \lim_{z \to \infty} \int_a^z f(x)\,\mathrm{d}x}	Integral von a bis unendlich über f von x d x gleich Limes für z gegen unendlich Integral von a bis z über f von x d x
+de	\mathbf{\int_a^b f(x) \,\mathrm{d}x = [F(x)]_a^b = F(b) - F(a)}	Integral von a bis b über f von x d x gleich F von x in den Grenzen von a bis b gleich F von b minus F von a
+de	\mathbf{\lambda_{\text{dB}} = \frac{h}{p} = \frac{h}{m \cdot v} = \frac{h}{\sqrt{2 \cdot m \cdot e \cdot U_{\text{beschl}}}}}	Lambda de Broglie gleich h durch p gleich h durch m mal v gleich h durch Wurzel aus 2 mal m mal e mal U Beschleunigung
+de	\mathbf{\log_a(b) = x \iff a^x = b} \quad (a > 0, a \neq 1, b > 0)	Logarithmus zur Basis a von b gleich x genau dann, wenn a hoch x gleich b, Klammer auf a größer als 0, a ungleich 1, b größer als 0 Klammer zu
+de	\mathbf{\mathcal{L}_3 \subsetneq \mathcal{L}_2 \subsetneq \mathcal{L}_1 \subsetneq \mathcal{L}_0}	L drei echte Teilmenge von L zwei echte Teilmenge von L eins echte Teilmenge von L null
+de	\mathbf{\Phi = \vec{B} \circ \vec{A} = B \cdot A \cdot \cos(\alpha)}	großes Phi gleich Vektor B mal Vektor A gleich B mal A mal Kosinus von Alpha
+de	\mathbf{\sigma > 3}	Sigma größer als 3
+de	\mathbf{\text{Ar}-\text{N}^+ \equiv \text{N} + \text{Ar}'-\text{OH} \longrightarrow \text{Ar}-\text{N}=\text{N}-\text{Ar}'-\text{OH} + \text{H}^+}	Ar N plus dreifach gebunden an N, plus Ar Strich O H, führt zu Ar N doppelt gebunden an N Ar Strich O H, plus H plus
+de	\mathbf{\text{Ar}-\text{NH}_2 + \text{HNO}_2 + \text{H}^+ \longrightarrow \text{Ar}-\text{N}^+ \equiv \text{N} + 2\,\text{H}_2\text{O}}	Ar N H zwei plus H N O zwei plus H plus führt zu Ar N plus dreifach gebunden an N, plus 2 H zwei O
+de	\mathbf{\text{C}_6\text{H}_{12}\text{O}_6 + 6\,\text{O}_2 + 6\,\text{H}_2\text{O} \longrightarrow 6\,\text{CO}_2 + 12\,\text{H}_2\text{O} + \text{Energie (ca. 30–32 ATP)}}	C sechs H zwölf O sechs plus 6 O zwei plus 6 H zwei O führt zu 6 C O zwei plus 12 H zwei O plus Energie, etwa 30 bis 32 A T P
+de	\mathbf{\text{Cu}^{2+}_{\,(aq)} + 2\,e^- \longrightarrow \text{Cu}_{\,(s)}}	Kupfer zwei plus, gelöst, plus 2 Elektronen führt zu Kupfer, fest
+de	\mathbf{\text{Falls } d(u) + w(u, v) < d(v) \implies d(v) = d(u) + w(u, v); \quad \text{Vorgänger}(v) = u}	Falls d von u plus w von u und v kleiner als d von v, dann d von v gleich d von u plus w von u und v, und Vorgänger von v gleich u
+de	\mathbf{\text{Gesamtfitness} = \text{Direkte Fitness} + \text{Indirekte Fitness}}	Gesamtfitness gleich Direkte Fitness plus Indirekte Fitness
+de	\mathbf{\text{HNF: } \frac{n_1 x_1 + n_2 x_2 + n_3 x_3 - d}{\sqrt{n_1^2 + n_2^2 + n_3^2}} = 0}	Hessesche Normalform: n eins x eins plus n zwei x zwei plus n drei x drei minus d, geteilt durch Wurzel aus n eins Quadrat plus n zwei Quadrat plus n drei Quadrat, gleich 0
+de	\mathbf{\text{HNF}: \frac{n_1 x_1 + n_2 x_2 + n_3 x_3 - d}{\sqrt{n_1^2 + n_2^2 + n_3^2}} = 0}	Hessesche Normalform: n eins x eins plus n zwei x zwei plus n drei x drei minus d, geteilt durch Wurzel aus n eins Quadrat plus n zwei Quadrat plus n drei Quadrat, gleich 0
+de	\mathbf{\text{if} + \text{Simple Past}, \quad \text{would} + \text{Infinitive}}	if plus Simple Past, would plus Infinitive
+de	\mathbf{\text{if} + \text{Simple Present}, \quad \text{will} + \text{Infinitive}}	if plus Simple Present, will plus Infinitive
+de	\mathbf{\text{N}_{2\,(g)} + 3\,\text{H}_{2\,(g)} \rightleftharpoons 2\,\text{NH}_{3\,(g)}} \quad (\Delta H = -92{,}4\,\text{kJ/mol}, \text{ exotherm})	N zwei gasförmig plus 3 H zwei gasförmig im Gleichgewicht mit 2 N H drei gasförmig, Delta H gleich minus 92,4 Kilojoule pro Mol, exotherm
+de	\mathbf{\text{pH} = -\lg[H_3O^+]}	pH gleich minus l g der Konzentration von H drei O plus
+de	\mathbf{\text{Si } + \text{Imparfait} \implies \text{Conditionnel Présent}}	Si plus Imparfait daraus folgt Conditionnel Présent
+de	\mathbf{\text{Si } + \text{Plus-que-parfait} \implies \text{Conditionnel Passé}}	Si plus Plus-que-parfait daraus folgt Conditionnel Passé
+de	\mathbf{\text{Si } + \text{Présent} \implies \text{Futur simple / Présent / Impératif}}	Si plus Présent daraus folgt Futur simple / Présent / Impératif
+de	\mathbf{\text{Zn}_{\,(s)} \longrightarrow \text{Zn}^{2+}_{\,(aq)} + 2\,e^-}	Zink, fest, führt zu Zink zwei plus, gelöst, plus 2 Elektronen
+de	\mathbf{\varphi(N) = (p - 1) \cdot (q - 1)}	Phi von N gleich, p minus 1, mal, q minus 1
+de	\mathbf{\vec{a} \circ \vec{b} = a_1 b_1 + a_2 b_2 + a_3 b_3 = |\vec{a}| \cdot |\vec{b}| \cdot \cos(\varphi)}	Vektor a mal Vektor b gleich a eins b eins plus a zwei b zwei plus a drei b drei gleich Betrag von Vektor a mal Betrag von Vektor b mal Kosinus von Phi
+de	\mathbf{\vec{F} = m \cdot \vec{a}} \quad (\text{Einheit: } 1\,\text{N} = 1\,\frac{\text{kg}\cdot\text{m}}{\text{s}^2})	Vektor F gleich m mal Vektor a, Einheit: 1 Newton gleich 1 Kilogramm Meter pro Sekunde Quadrat
+de	\mathbf{\vec{F}_L = q \cdot (\vec{v} \times \vec{B})} \implies |F_L| = |q| \cdot v \cdot B \cdot \sin(\alpha)	Vektor F L gleich q mal, Vektor v kreuz Vektor B, daraus folgt Betrag von F L gleich Betrag von q mal v mal B mal Sinus von Alpha
+de	\mathbf{\vec{p} = \gamma \cdot m_0 \cdot \vec{v} = \frac{m_0 \cdot \vec{v}}{\sqrt{1 - \frac{v^2}{c^2}}}}	Vektor p gleich Gamma mal m null mal Vektor v gleich m null mal Vektor v durch Wurzel aus 1 minus v Quadrat durch c Quadrat
+de	\mathbf{\vec{u} \times \vec{v} = \begin{pmatrix} u_1 \\ u_2 \\ u_3 \end{pmatrix} \times \begin{pmatrix} v_1 \\ v_2 \\ v_3 \end{pmatrix} = \begin{pmatrix} u_2 v_3 - u_3 v_2 \\ u_3 v_1 - u_1 v_3 \\ u_1 v_2 - u_2 v_1 \end{pmatrix}}	Vektor u kreuz Vektor v gleich Vektor u eins, u zwei, u drei kreuz Vektor v eins, v zwei, v drei gleich Vektor u zwei v drei minus u drei v zwei, u drei v eins minus u eins v drei, u eins v zwei minus u zwei v eins
+de	\mathbf{\vec{v}_n = M^n \cdot \vec{v}_0}	Vektor v n gleich M hoch n mal Vektor v null
+de	\mathbf{6\,\text{CO}_2 + 12\,\text{H}_2\text{O} \xrightarrow{h\nu, \text{Chlorophyll}} \text{C}_6\text{H}_{12}\text{O}_6 + 6\,\text{O}_2 + 6\,\text{H}_2\text{O}}	6 C O zwei plus 12 H zwei O reagiert mit Licht und Chlorophyll zu C sechs H zwölf O sechs plus 6 O zwei plus 6 H zwei O
+de	\mathbf{A = \int_{x_1}^{x_2} (f(x) - g(x)) \,\mathrm{d}x}	A gleich Integral von x eins bis x zwei über, f von x minus g von x, d x
+de	\mathbf{A = |\int_a^{x_1} f(x)\,\mathrm{d}x| + |\int_{x_1}^b f(x)\,\mathrm{d}x|}	A gleich Betrag des Integrals von a bis x eins über f von x d x, plus Betrag des Integrals von x eins bis b über f von x d x
+de	\mathbf{a_Z = \frac{v^2}{r} = \omega^2 \cdot r}	a Z gleich v Quadrat durch r gleich Omega Quadrat mal r
+de	\mathbf{AUG}	A U G
+de	\mathbf{B = \mu_0 \cdot \mu_r \cdot \frac{N}{l} \cdot I}	B gleich My null mal My r mal N durch l mal I
+de	\mathbf{c \equiv m^e \pmod N}	c kongruent m hoch e modulo N
+de	\mathbf{c = \lambda \cdot f = \frac{\lambda}{T}} \quad (c = \text{Ausbreitungsgeschwindigkeit}, \lambda = \text{Wellenlänge}, f = \text{Frequenz})	c gleich Lambda mal f gleich Lambda durch T, Klammer auf c gleich Ausbreitungsgeschwindigkeit, Lambda gleich Wellenlänge, f gleich Frequenz Klammer zu
+de	\mathbf{d(g, h) = |(\vec{b} - \vec{a}) \cdot \vec{n}_0|}	d von g und h gleich Betrag von, Vektor b minus Vektor a, mal Vektor n null
+de	\mathbf{d(P, E) = \left| \frac{n_1 p_1 + n_2 p_2 + n_3 p_3 - d}{|\vec{n}|} \right|}	d von P und E gleich Betrag von, n eins p eins plus n zwei p zwei plus n drei p drei minus d, geteilt durch Betrag von Vektor n
+de	\mathbf{d(P; E) = \left| \frac{n_1 p_1 + n_2 p_2 + n_3 p_3 - d}{|\vec{n}|} \right|}	d von P und E gleich Betrag von, n eins p eins plus n zwei p zwei plus n drei p drei minus d, geteilt durch Betrag von Vektor n
+de	\mathbf{e \approx 1{,}602 \cdot 10^{-19}\,\text{C}}	e ungefähr 1,602 mal 10 hoch minus 19 Coulomb
+de	\mathbf{e \cdot d \equiv 1 \pmod{\varphi(N)}}	e mal d kongruent 1 modulo Phi von N
+de	\mathbf{E = \frac{U}{d}}	E gleich U durch d
+de	\mathbf{E = E^\circ + \frac{0{,}059\,\text{V}}{z} \cdot \log_{10}(c(\text{Me}^{z+}))}	E gleich E null plus 0,059 Volt durch z mal Logarithmus zur Basis 10 der Konzentration von Me z plus
+de	\mathbf{E = E^\circ + \frac{R \cdot T}{z \cdot F} \cdot \ln\left( \frac{c(\text{Ox})}{c(\text{Red})} \right) = E^\circ + \frac{0{,}059\,\text{V}}{z} \cdot \log_{10}\left( \frac{c(\text{Ox})}{c(\text{Red})} \right)}	E gleich E null plus R mal T durch z mal F mal l n von c Ox durch c Red, gleich E null plus 0,059 Volt durch z mal Logarithmus zur Basis 10 von c Ox durch c Red
+de	\mathbf{E = h \cdot f = h \cdot \frac{c}{\lambda}}	E gleich h mal f gleich h mal c durch Lambda
+de	\mathbf{E_{\text{kin,max}} = h \cdot f - W_A = e \cdot U_G}	E kin max gleich h mal f minus W A gleich e mal U G
+de	\mathbf{E_{\text{kin}} = E - E_0 = (\gamma - 1) \cdot m_0 \cdot c^2}	E kin gleich E minus E null gleich, Gamma minus 1, mal m null mal c Quadrat
+de	\mathbf{E_B = \Delta m \cdot c^2}	E B gleich Delta m mal c Quadrat
+de	\mathbf{E'(x_C) = K'(x_C)}	E Strich von x C gleich K Strich von x C
+de	\mathbf{E^2 = (p \cdot c)^2 + (m_0 \cdot c^2)^2}	E Quadrat gleich, p mal c, Quadrat, plus, m null mal c Quadrat, Quadrat
+de	\mathbf{F_{\text{el}} = F_G - F_A \implies q \cdot \frac{U_{\text{schweb}}}{d} = (m_{\text{Tr}} - m_{\text{Luft}}) \cdot g = \frac{4}{3}\pi r^3 (\rho_{\text{Öl}} - \rho_{\text{Luft}}) \cdot g}	F el gleich F G minus F A, daraus folgt q mal U schweb durch d gleich, m Tropfen minus m Luft, mal g gleich vier Drittel Pi r hoch 3, mal Rho Öl minus Rho Luft, mal g
+de	\mathbf{F_1 \cdot a_1 = F_2 \cdot a_2} \quad (a = \text{senkrechter Hebelarm zum Drehpunkt})	F eins mal a eins gleich F zwei mal a zwei, Klammer auf a gleich senkrechter Hebelarm zum Drehpunkt Klammer zu
+de	\mathbf{F_C = \frac{1}{4\pi \varepsilon_0 \varepsilon_r} \cdot \frac{q_1 \cdot q_2}{r^2}} \quad (\varepsilon_0 \approx 8{,}854 \cdot 10^{-12}\,\frac{\text{A}\cdot\text{s}}{\text{V}\cdot\text{m}})	F C gleich 1 durch 4 Pi Epsilon null Epsilon r mal q eins mal q zwei durch r Quadrat, mit Epsilon null ungefähr 8,854 mal 10 hoch minus 12 Amperesekunden pro Voltmeter
+de	\mathbf{F_G = G \cdot \frac{m_1 \cdot m_2}{r^2}} \quad (G \approx 6{,}674 \cdot 10^{-11}\,\frac{\text{N}\cdot\text{m}^2}{\text{kg}^2})	F G gleich G mal m eins mal m zwei durch r Quadrat, mit G ungefähr 6,674 mal 10 hoch minus 11 Newton Quadratmeter pro Kilogramm Quadrat
+de	\mathbf{F_Z = m \cdot a_Z = m \cdot \frac{v^2}{r} = m \cdot \omega^2 \cdot r}	F Z gleich m mal a Z gleich m mal v Quadrat durch r gleich m mal Omega Quadrat mal r
+de	\mathbf{f' = f_0 \cdot \frac{c}{c - v_Q} > f_0} \quad (\text{Ton wird höher})	f Strich gleich f null mal c durch, c minus v Q, größer als f null, der Ton wird höher
+de	\mathbf{f' = f_0 \cdot \frac{c}{c + v_Q} < f_0} \quad (\text{Ton wird tiefer})	f Strich gleich f null mal c durch, c plus v Q, kleiner als f null, der Ton wird tiefer
+de	\mathbf{f'(x_0) = \lim_{h \rightarrow 0} \frac{f(x_0 + h) - f(x_0)}{h}}	f Strich von x null gleich Limes für h gegen 0 von, f von x null plus h minus f von x null, geteilt durch h
+de	\mathbf{F'(x) = f(x)} \quad \forall x \in I	F Strich von x gleich f von x, für alle x Element von I
+de	\mathbf{f(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0} \quad (a_n \neq 0, n \in \mathbb{N}_0)	f von x gleich a n x hoch n plus a n minus 1 x hoch n minus 1 plus und so weiter plus a eins x plus a null, mit a n ungleich 0 und n Element von N null
+de	\mathbf{g: \vec{X} = \vec{P} + \lambda \cdot \vec{v}} \quad (\lambda \in \mathbb{R})	g: Vektor X gleich Vektor P plus Lambda mal Vektor v, mit Lambda Element von R
+de	\mathbf{h' == h}	h Strich ist gleich h
+de	\mathbf{K_c = \frac{k_{\text{hin}}}{k_{\text{rueck}}} = \frac{[\text{C}]^c \cdot [\text{D}]^d}{[\text{A}]^a \cdot [\text{B}]^b}}	K c gleich k hin durch k rück gleich Konzentration von C hoch c mal Konzentration von D hoch d, geteilt durch Konzentration von A hoch a mal Konzentration von B hoch b
+de	\mathbf{K_w = c(\text{H}_3\text{O}^+) \cdot c(\text{OH}^-) = 10^{-14}\,\frac{\text{mol}^2}{\text{l}^2} \iff \mathbf{pH + pOH = 14}}	K w gleich c von H drei O plus mal c von O H minus gleich 10 hoch minus 14 Mol Quadrat pro Liter Quadrat, genau dann, wenn pH plus pOH gleich 14
+de	\mathbf{L = \frac{L_0}{\gamma} = L_0 \cdot \sqrt{1 - \frac{v^2}{c^2}}}	L gleich L null durch Gamma gleich L null mal Wurzel aus 1 minus v Quadrat durch c Quadrat
+de	\mathbf{L = \mu_0 \cdot \mu_r \cdot \frac{N^2 \cdot A}{l}}	L gleich My null mal My r mal N Quadrat mal A durch l
+de	\mathbf{L(G) = \{w \in \Sigma^* \mid S \Rightarrow^* w\}}	L von G gleich die Menge aller w aus großes Sigma Stern, die aus S ableitbar sind
+de	\mathbf{M \cdot \vec{v}_{\text{stat}} = \vec{v}_{\text{stat}} \iff (M - E) \cdot \vec{v}_{\text{stat}} = \vec{0}}	M mal Vektor v stat gleich Vektor v stat genau dann, wenn, M minus E, mal Vektor v stat gleich Nullvektor
+de	\mathbf{m \equiv c^d \pmod N}	m kongruent c hoch d modulo N
+de	\mathbf{m = \frac{M \cdot I \cdot t}{z \cdot F}}	m gleich M mal I mal t durch z mal F
+de	\mathbf{m_{\text{Sekante}} = \frac{\Delta y}{\Delta x} = \frac{f(x_0 + h) - f(x_0)}{h}}	m Sekante gleich Delta y durch Delta x gleich, f von x null plus h minus f von x null, geteilt durch h
+de	\mathbf{N = p \cdot q}	N gleich p mal q
+de	\mathbf{N(t) = N_0 \cdot e^{-\lambda \cdot t} = N_0 \cdot \left(\frac{1}{2}\right)^{\frac{t}{T_{1/2}}}}	N von t gleich N null mal e hoch minus Lambda mal t gleich N null mal ein halb hoch t durch T ein halb
+de	\mathbf{O(|E| + |V| \log |V|)}	O von Betrag E plus Betrag V mal Logarithmus von Betrag V
+de	\mathbf{P \neq NP}	P ungleich N P
+de	\mathbf{P = NP}	P gleich N P
+de	\mathbf{P_A(B) = P(B \mid A) = \frac{P(A \cap B)}{P(A)}}	P A von B gleich P von B unter der Bedingung A gleich P von A geschnitten mit B durch P von A
+de	\mathbf{P(\cos \alpha \mid \sin \alpha)}	Punkt P mit den Koordinaten Kosinus Alpha und Sinus Alpha
+de	\mathbf{P(\text{Fehler 1. Art}) = P_{p_0}(X \in \bar{A}) \le \alpha}	P von Fehler 1. Art gleich P p null von X Element von A quer, kleiner gleich Alpha
+de	\mathbf{P(\text{Fehler 2. Art}) = P_{p_1}(X \in A)}	P von Fehler 2. Art gleich P p eins von X Element von A
+de	\mathbf{P(a \le X \le b) = F(b) - F(a) = \int_{a}^{b} f(x)\,dx}	P von a kleiner gleich X kleiner gleich b gleich F von b minus F von a gleich Integral von a bis b über f von x d x
+de	\mathbf{P(k_1 \le X \le k_2) \approx \Phi\left( \frac{k_2 + 0{,}5 - \mu}{\sigma} \right) - \Phi\left( \frac{k_1 - 0{,}5 - \mu}{\sigma} \right)}	P von k eins kleiner gleich X kleiner gleich k zwei ungefähr großes Phi von, k zwei plus 0,5 minus My, durch Sigma, minus großes Phi von, k eins minus 0,5 minus My, durch Sigma
+de	\mathbf{P(X \le k) = F(n; p; k) = \sum_{i=0}^k \binom{n}{i} \cdot p^i \cdot (1 - p)^{n - i}}	P von X kleiner gleich k gleich F von n, p, k gleich Summe für i gleich 0 bis k von n über i mal p hoch i mal, 1 minus p, hoch n minus i
+de	\mathbf{P(X = k) = B(n; p; k) = \binom{n}{k} \cdot p^k \cdot (1 - p)^{n - k}} \quad (k \in \{0, 1, \dots, n\})	P von X gleich k gleich B von n, p, k gleich n über k mal p hoch k mal, 1 minus p, hoch n minus k, für k Element von 0, 1, bis n
+de	\mathbf{pH = 7{,}35 - 7{,}45}	pH gleich 7,35 bis 7,45
+de	\mathbf{pH = pK_s + \log_{10}\left( \frac{c(A^-)}{c(HA)} \right)}	pH gleich pK s plus Logarithmus zur Basis 10 von c von A minus durch c von H A
+de	\mathbf{pH = pK_s}	pH gleich pK s
+de	\mathbf{r \cdot B > C}	r mal B größer als C
+de	\mathbf{R_1-COOH + H_2N-R_2 \rightarrow R_1-CO-NH-R_2 + H_2O}	R eins C O O H plus H zwei N R zwei reagiert zu R eins C O N H R zwei plus H zwei O
+de	\mathbf{r_k = \sqrt{r^2 - d^2}}	r k gleich Wurzel aus r Quadrat minus d Quadrat
+de	\mathbf{s = h^{d_A} \pmod{N_A}}	s gleich h hoch d A modulo N A
+de	\mathbf{t_{\text{Hubble}} = \frac{1}{H_0} \approx 13{,}8 \cdot 10^9\,\text{Jahre}}	t Hubble gleich 1 durch H null ungefähr 13,8 mal 10 hoch 9 Jahre
+de	\mathbf{U_{\text{ind}} = -L \cdot \frac{\mathrm{d}I}{\mathrm{d}t}}	U ind gleich minus L mal d I nach d t
+de	\mathbf{U_{\text{ind}} = -N \cdot \frac{\mathrm{d}\Phi}{\mathrm{d}t} = -N \cdot \left( \frac{\mathrm{d}B}{\mathrm{d}t} \cdot A + B \cdot \frac{\mathrm{d}A}{\mathrm{d}t} \right)}	U ind gleich minus N mal d großes Phi nach d t gleich minus N mal, d B nach d t mal A plus B mal d A nach d t
+de	\mathbf{U_0 = E^\circ(\text{Kathode}) - E^\circ(\text{Anode}) = +0{,}34\,\text{V} - (-0{,}76\,\text{V}) = \mathbf{+1{,}10\,\text{V}}}	U null gleich E null der Kathode minus E null der Anode gleich plus 0,34 Volt minus minus 0,76 Volt gleich plus 1,10 Volt
+de	\mathbf{UAA, UAG, UGA}	U A A, U A G, U G A
+de	\mathbf{v = H_0 \cdot r}	v gleich H null mal r
+de	\mathbf{V_x = \pi \int_a^b [f(x)]^2\,\mathrm{d}x}	V x gleich Pi mal Integral von a bis b über f von x Quadrat d x
+de	\mathbf{W_{\text{el}} = \frac{1}{2} C U^2 = \frac{1}{2} Q U = \frac{Q^2}{2C}}	W el gleich ein halb C U Quadrat gleich ein halb Q U gleich Q Quadrat durch 2 C
+de	\mathbf{W_{\text{el}} = e \cdot U = E_{\text{kin}} = \frac{1}{2} m_e v^2} \implies \mathbf{v = \sqrt{\frac{2 e U}{m_e}}}	W el gleich e mal U gleich E kin gleich ein halb m e v Quadrat daraus folgt v gleich Wurzel aus 2 e U durch m e
+de	\mathbf{W_{\text{mag}} = \frac{1}{2} L I^2}	W mag gleich ein halb L I Quadrat
+de	\mathbf{x = \frac{\alpha}{180^\circ} \cdot \pi} \iff \mathbf{\alpha = \frac{x}{\pi} \cdot 180^\circ}	x gleich Alpha durch 180 Grad mal Pi genau dann, wenn Alpha gleich x durch Pi mal 180 Grad
+de	\mathbf{x y^i z \in L}	x y hoch i z Element von L
+de	\mathbf{z = \frac{\Delta \lambda}{\lambda_0} = \frac{\lambda_{\text{beob}} - \lambda_0}{\lambda_0}}	z gleich Delta Lambda durch Lambda null gleich, Lambda beobachtet minus Lambda null, geteilt durch Lambda null
+de	\mathcal{O}((V+E)\log V)	O von, V plus E, mal Logarithmus von V
+de	\mathcal{O}(\log^6 n)	O von Logarithmus von n hoch 6
+de	\mathcal{O}(n \log n)	O von n mal Logarithmus von n
+de	\mathcal{O}(n^k)	O von n hoch k
+de	\mathcal{P}(Z)	Potenzmenge von Z
+de	\mu	My
+de	\mu = E(X)	My gleich E von X
+de	\mu = E(X) = n \cdot p	My gleich E von X gleich n mal p
+de	\mu = n \cdot p	My gleich n mal p
+de	\mu_0 = 4\pi \cdot 10^{-7}\,\frac{\text{V}\cdot\text{s}}{\text{A}\cdot\text{m}}	My null gleich 4 Pi mal 10 hoch minus 7 Voltsekunden pro Amperemeter
+de	\omega	Omega
+de	\omega = \frac{\Delta \varphi}{\Delta t} = \frac{2\pi}{T} = 2\pi f	Omega gleich Delta Phi durch Delta t gleich 2 Pi durch T gleich 2 Pi f
+de	\omega = \frac{2\pi}{T}	Omega gleich 2 Pi durch T
+de	\omega_0 = \frac{1}{\sqrt{LC}} \implies \mathbf{T = 2\pi \sqrt{L C}} \implies \mathbf{f_0 = \frac{1}{2\pi \sqrt{L C}}}	Omega null gleich 1 durch Wurzel aus L C daraus folgt T gleich 2 Pi Wurzel aus L C daraus folgt f null gleich 1 durch 2 Pi Wurzel aus L C
+de	\operatorname{ggT}(e, \varphi(N)) = 1	größter gemeinsamer Teiler von e und Phi von N gleich 1
+de	\operatorname{Grad}(Z) < \operatorname{Grad}(N) \implies	Grad von Z kleiner als Grad von N, daraus folgt
+de	\operatorname{Grad}(Z) = \operatorname{Grad}(N) \implies	Grad von Z gleich Grad von N, daraus folgt
+de	\operatorname{Grad}(Z) = \operatorname{Grad}(N) + 1 \implies	Grad von Z gleich Grad von N plus 1, daraus folgt
+de	\operatorname{Var}(X)	Varianz von X
+de	\overline{E}	E quer
+de	\Phi	großes Phi
+de	\Phi = B \cdot A \cdot \cos(\alpha)	großes Phi gleich B mal A mal Kosinus von Alpha
+de	\pi	Pi
+de	\pm 1-2\,\%	plus minus 1 bis 2 Prozent
+de	\psi(\vec{r}, t)	Psi von Vektor r und t
+de	\rho	Rho
+de	\rho = \frac{m}{V}	Rho gleich m durch V
+de	\rho = 1,0\text{ g/cm}^3 = 1000\text{ kg/m}^3	Rho gleich 1,0 Gramm pro Kubikzentimeter gleich 1000 Kilogramm pro Kubikmeter
+de	\rightarrow	führt zu
+de	\Rightarrow \text{pH} = -\lg(10^{-7}) = 7	daraus folgt pH gleich minus l g von 10 hoch minus sieben gleich 7
+de	\Rightarrow B(9) = 500 \cdot 2^3 = 500 \cdot 8 = 4000	daraus folgt B von 9 gleich 500 mal 2 hoch drei gleich 500 mal 8 gleich 4000
+de	\rightleftharpoons	im Gleichgewicht mit
+de	\sigma	Sigma
+de	\Sigma	großes Sigma
+de	\sigma \approx 5{,}67 \cdot 10^{-8}\,\frac{\text{W}}{\text{m}^2\text{K}^4}	Sigma ungefähr 5,67 mal 10 hoch minus 8 Watt pro Quadratmeter Kelvin hoch 4
+de	\sigma = \sqrt{n \cdot p \cdot (1 - p)}	Sigma gleich Wurzel aus n mal p mal, 1 minus p
+de	\sigma > 3	Sigma größer als 3
+de	\sigma^2 = n \cdot p \cdot (1 - p)	Sigma Quadrat gleich n mal p mal, 1 minus p
+de	\sim	proportional zu
+de	\sin \alpha = \frac{\text{Gegenkathete von } \alpha}{\text{Hypotenuse}}	Sinus Alpha gleich Gegenkathete von Alpha durch Hypotenuse
+de	\sin = \frac{G}{H}	Sinus gleich G durch H
+de	\sin 30^\circ = 0{,}5	Sinus 30 Grad gleich 0,5
+de	\sin 60^\circ = \frac{\sqrt{3}}{2}	Sinus 60 Grad gleich Wurzel aus 3 durch 2
+de	\sin(\beta) = \frac{|\vec{u} \cdot \vec{n}|}{|\vec{u}| \cdot |\vec{n}|}	Sinus von Beta gleich Betrag von Vektor u mal Vektor n durch Betrag von Vektor u mal Betrag von Vektor n
+de	\sin(60^\circ) = \frac{\sqrt{3}}{2}	Sinus von 60 Grad gleich Wurzel aus 3 durch 2
+de	\sin^2 \alpha + \cos^2 \alpha = 1	Sinus Quadrat Alpha plus Kosinus Quadrat Alpha gleich 1
+de	\sin^2 + \cos^2 = 1	Sinus Quadrat plus Kosinus Quadrat gleich 1
+de	\smile — \smile — \smile — \smile — \smile —	unbetont betont, unbetont betont, unbetont betont, unbetont betont, unbetont betont, unbetont betont
+de	\sum \vec{F} = 0 \implies \vec{v} = \text{konstant}	Summe der Kräfte gleich 0, daraus folgt Vektor v gleich konstant
+de	\sum v_i = 1	Summe der v i gleich 1
+de	\tan \alpha = \frac{\text{Gegenkathete von } \alpha}{\text{Ankathete von } \alpha} = \frac{\sin \alpha}{\cos \alpha}	Tangens Alpha gleich Gegenkathete von Alpha durch Ankathete von Alpha gleich Sinus Alpha durch Kosinus Alpha
+de	\tan = \frac{G}{A}	Tangens gleich G durch A
+de	\text{AfA} = \frac{\text{Anschaffungskosten (netto)}}{\text{Nutzungsdauer } n}	AfA gleich Anschaffungskosten netto geteilt durch Nutzungsdauer n
+de	\text{ATP}	A T P
+de	\text{Ca}^{2+}	Calcium zwei plus
+de	\text{CH}_4	C H vier
+de	\text{CO}_2	C O zwei
+de	\text{CO}_2 + \text{H}_2\text{O} \rightleftharpoons \text{H}_2\text{CO}_3 \rightleftharpoons \text{H}^+ + \text{HCO}_3^-	C O zwei plus H zwei O im Gleichgewicht mit H zwei C O drei im Gleichgewicht mit H plus plus H C O drei minus
+de	\text{FADH}_2	F A D H zwei
+de	\text{fak}(n) = \begin{cases} 1 & \text{für } n = 0 \\ n \cdot \text{fak}(n-1) & \text{für } n > 0 \end{cases}	fak von n gleich 1 für n gleich 0, sonst n mal fak von n minus 1 für n größer als 0
+de	\text{H}_2\text{O}	H zwei O
+de	\text{H}_3\text{O}^+ + \text{OH}^- \rightarrow 2\,\text{H}_2\text{O}	H drei O plus plus O H minus reagiert zu 2 H zwei O
+de	\text{Hz} = \text{s}^{-1}	Hertz gleich 1 pro Sekunde
+de	\text{kg}	Kilogramm
+de	\text{Li}_{1-x}\text{CoO}_2 + x\,\text{Li}^+ + x\,e^- \longrightarrow \text{LiCoO}_2	Li eins minus x Co O zwei plus x Li plus plus x Elektronen führt zu Li Co O zwei
+de	\text{Li}_x\text{C}_6 \longrightarrow 6\,\text{C} + x\,\text{Li}^+ + x\,e^-	Li x C sechs führt zu 6 C plus x Li plus plus x Elektronen
+de	\text{N/cm}	Newton pro Zentimeter
+de	\text{N/m}	Newton pro Meter
+de	\text{NAD}^+	N A D plus
+de	\text{NADH/H}^+	N A D H und H plus
+de	\text{NADP}^+	N A D P plus
+de	\text{NADP}^+ + 2\,e^- + 2\,\text{H}^+ \rightarrow \mathbf{\text{NADPH} + \text{H}^+}	N A D P plus plus 2 Elektronen plus 2 H plus reagiert zu N A D P H plus H plus
+de	\text{NADPH/H}^+	N A D P H und H plus
+de	\text{O}_2 \implies \mathbf{\text{H}_2\text{O}}	O zwei, daraus folgt H zwei O
+de	\text{OZ} = -\text{I}	Oxidationszahl gleich minus eins
+de	\text{OZ} = -\text{II}	Oxidationszahl gleich minus zwei
+de	\text{OZ} = \text{Ionenladung}	Oxidationszahl gleich Ionenladung
+de	\text{OZ} = +\text{I}	Oxidationszahl gleich plus eins
+de	\text{OZ} = 0	Oxidationszahl gleich 0
+de	\text{p}K_s	pK s
+de	\text{pH} + \text{pOH} = 14	pH plus pOH gleich 14
+de	\text{pH} < 7	pH kleiner als 7
+de	\text{pH} = -\lg(c(\text{H}_3\text{O}^+))	pH gleich minus l g der Konzentration von H drei O plus
+de	\text{pH} = -\lg[\text{H}_3\text{O}^+]	pH gleich minus l g der Konzentration von H drei O plus
+de	\text{pH} = -\log c_0	pH gleich minus Logarithmus von c null
+de	\text{pH} = \frac{1}{2} \cdot (\text{p}K_s - \log c_0)	pH gleich ein halb mal, pK s minus Logarithmus von c null
+de	\text{pH} = 7	pH gleich 7
+de	\text{pH} > 7	pH größer als 7
+de	\text{pOH} = -\lg[OH^-] \implies \mathbf{\text{pH} + \text{pOH} = 14}	pOH gleich minus l g der Konzentration von O H minus, daraus folgt pH plus pOH gleich 14
+de	\text{R-CHO} + 2\,\text{Cu}^{2+} + 5\,\text{OH}^- \rightarrow \text{R-COO}^- + \mathbf{\text{Cu}_2\text{O} \downarrow \text{ (ziegelrot)}} + 3\,\text{H}_2\text{O}	R C H O plus 2 Cu zwei plus plus 5 O H minus reagiert zu R C O O minus plus Cu zwei O als ziegelroter Niederschlag plus 3 H zwei O
+de	\to	führt zu
+de	\to \varepsilon_r = 1	also Epsilon r gleich 1
+de	\triangle ABC	Dreieck A B C
+de	\varepsilon	Epsilon
+de	\varphi	Phi
+de	\varphi_{\mu, \sigma}(x)	Phi My Sigma von x
+de	\varphi_{\mu, \sigma}(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}	Phi My Sigma von x gleich 1 durch Sigma Wurzel aus 2 Pi mal e hoch minus ein halb mal, x minus My durch Sigma, zum Quadrat
+de	\varphi(N)	Phi von N
+de	\varphi(N) = (p - 1) \cdot (q - 1)	Phi von N gleich, p minus 1, mal, q minus 1
+de	\varphi(N) = 20	Phi von N gleich 20
+de	\vec{a}	Vektor a
+de	\vec{a} \cdot \vec{b} = 0	Vektor a mal Vektor b gleich 0
+de	\vec{a} \cdot \vec{b} = 2 \cdot 6 + (-3) \cdot 4 + 6 \cdot 0 = 12 - 12 + 0 = 0 \Rightarrow	Vektor a mal Vektor b gleich 2 mal 6 plus minus 3 mal 4 plus 6 mal 0 gleich 12 minus 12 plus 0 gleich 0, daraus folgt
+de	\vec{a} \cdot \vec{b} = a_1 b_1 + a_2 b_2 + a_3 b_3	Vektor a mal Vektor b gleich a eins b eins plus a zwei b zwei plus a drei b drei
+de	\vec{a} \perp \vec{b} \iff \vec{a} \circ \vec{b} = 0	Vektor a senkrecht zu Vektor b genau dann, wenn Vektor a mal Vektor b gleich 0
+de	\vec{a} = \begin{pmatrix} 2 \\ -3 \\ 6 \end{pmatrix}	Vektor a gleich Spaltenvektor 2, minus 3, 6
+de	\vec{AB} = (4, 1)^T	Vektor A B gleich Spaltenvektor 4, 1
+de	\vec{AB} = \begin{pmatrix} 7-2 \\ 4-1 \end{pmatrix} = \begin{pmatrix} 5 \\ 3 \end{pmatrix}	Vektor A B gleich Spaltenvektor 7 minus 2, 4 minus 1, gleich Spaltenvektor 5, 3
+de	\vec{AB} = \begin{pmatrix} x_B - x_A \\ y_B - y_A \end{pmatrix}	Vektor A B gleich Spaltenvektor x B minus x A, y B minus y A
+de	\vec{AB} = \vec{B} - \vec{A} = \begin{pmatrix} b_1 - a_1 \\ b_2 - a_2 \\ b_3 - a_3 \end{pmatrix}	Vektor A B gleich Vektor B minus Vektor A gleich Spaltenvektor b eins minus a eins, b zwei minus a zwei, b drei minus a drei
+de	\vec{AB} = B - A	Vektor A B gleich B minus A
+de	\vec{AB} = B - A = (4 - (-2), -5 - 3)^T = (6, -8)^T	Vektor A B gleich B minus A gleich Spaltenvektor 4 minus minus 2, minus 5 minus 3, gleich Spaltenvektor 6, minus 8
+de	\vec{AC} = (1, 5)^T	Vektor A C gleich Spaltenvektor 1, 5
+de	\vec{b}	Vektor b
+de	\vec{B}	Vektor B
+de	\vec{b} = \begin{pmatrix} 6 \\ 4 \\ 0 \end{pmatrix}	Vektor b gleich Spaltenvektor 6, 4, 0
+de	\vec{BA} = -\vec{AB} = (-6, 8)^T	Vektor B A gleich minus Vektor A B gleich Spaltenvektor minus 6, 8
+de	\vec{E}	Vektor E
+de	\vec{E} \perp \vec{B} \perp \vec{v}	Vektor E senkrecht zu Vektor B senkrecht zu Vektor v
+de	\vec{E} = \frac{\vec{F}}{q}	Vektor E gleich Vektor F durch q
+de	\vec{F}	Vektor F
+de	\vec{F}_{A \rightarrow B}	Vektor F von A auf B
+de	\vec{F}_{B \rightarrow A} = -\vec{F}_{A \rightarrow B}	Vektor F von B auf A gleich minus Vektor F von A auf B
+de	\vec{F}_L	Vektor F L
+de	\vec{F}_L = q \cdot (\vec{v} \times \vec{B})	Vektor F L gleich q mal, Vektor v kreuz Vektor B
+de	\vec{n}	Vektor n
+de	\vec{n} \perp E	Vektor n senkrecht zu E
+de	\vec{n} = (1, 0, 2)^T \times (0, 1, -1)^T = (0 - 2, 0 - (-1), 1 - 0)^T = (-2, 1, 1)^T	Vektor n gleich Spaltenvektor 1, 0, 2 kreuz Spaltenvektor 0, 1, minus 1, gleich Spaltenvektor 0 minus 2, 0 minus minus 1, 1 minus 0, gleich Spaltenvektor minus 2, 1, 1
+de	\vec{n} = \vec{u} \times \vec{v}	Vektor n gleich Vektor u kreuz Vektor v
+de	\vec{n}_0	Vektor n null
+de	\vec{n}_0 = \frac{\vec{u}_g \times \vec{u}_h}{|\vec{u}_g \times \vec{u}_h|}	Vektor n null gleich Vektor u g kreuz Vektor u h, geteilt durch den Betrag von Vektor u g kreuz Vektor u h
+de	\vec{P}	Vektor P
+de	\vec{Q} = \vec{P} + \lambda \vec{v} \implies	Vektor Q gleich Vektor P plus Lambda mal Vektor v, daraus folgt
+de	\vec{s} = \vec{v} + \vec{w}	Vektor s gleich Vektor v plus Vektor w
+de	\vec{s} = \vec{v}+\vec{w} = \begin{pmatrix} 6-1 \\ -2+5 \end{pmatrix} = \begin{pmatrix} 5 \\ 3 \end{pmatrix}	Vektor s gleich Vektor v plus Vektor w gleich Spaltenvektor 6 minus 1, minus 2 plus 5, gleich Spaltenvektor 5, 3
+de	\vec{u}	Vektor u
+de	\vec{u} \not\parallel \vec{v}	Vektor u nicht parallel zu Vektor v
+de	\vec{u} + \vec{w} = \begin{pmatrix} u_x + w_x \\ u_y + w_y \end{pmatrix}	Vektor u plus Vektor w gleich Spaltenvektor u x plus w x, u y plus w y
+de	\vec{v}	Vektor v
+de	\vec{v} \neq \vec{0}	Vektor v ungleich Nullvektor
+de	\vec{v} \perp \vec{B}	Vektor v senkrecht zu Vektor B
+de	\vec{v} = \begin{pmatrix} 6 \\ -2 \end{pmatrix}	Vektor v gleich Spaltenvektor 6, minus 2
+de	\vec{v} = \vec{AB}	Vektor v gleich Vektor A B
+de	\vec{v}_{\text{stat}}	Vektor v stat
+de	\vec{v}_{\text{stat}} = \begin{pmatrix} x \\ y \end{pmatrix}	Vektor v stat gleich Spaltenvektor x, y
+de	\vec{v}_g = k \cdot \vec{v}_h	Vektor v g gleich k mal Vektor v h
+de	\vec{v}' = (-y, x)^T	Vektor v Strich gleich Spaltenvektor minus y, x
+de	\vec{v}' = (4 \cdot 0{,}5 - 0 \cdot \sin(60^\circ), 4 \cdot \sin(60^\circ) + 0 \cdot \cos(60^\circ))^T = (2, 2\sqrt{3})^T	Vektor v Strich gleich Spaltenvektor 4 mal 0,5 minus 0 mal Sinus 60 Grad, 4 mal Sinus 60 Grad plus 0 mal Kosinus 60 Grad, gleich Spaltenvektor 2, 2 Wurzel 3
+de	\vec{w} = \begin{pmatrix} -1 \\ 5 \end{pmatrix}	Vektor w gleich Spaltenvektor minus 1, 5
+de	\xrightarrow{[O]}	reagiert durch Oxidation zu
+de	\xrightleftharpoons{\text{Säurekatalysator } H^+} \mathbf{\text{Carbonsäureester} + \text{H}_2\text{O}}	steht mit dem Säurekatalysator H plus im Gleichgewicht mit Carbonsäureester plus H zwei O
+de	^{235}U + n \rightarrow ^{144}Ba + ^{89}Kr + 3n + 200\,\text{MeV}	Uran 235 plus n reagiert zu Barium 144 plus Krypton 89 plus 3 n plus 200 Megaelektronenvolt
+de	^{4-}	vier minus
+de	^{56}_{26}\text{Fe}	Eisen mit Massenzahl 56 und Kernladungszahl 26
+de	^{A}_{Z}X	X mit Massenzahl A und Kernladungszahl Z
+de	^\bullet CH_3 + Cl_2 \rightarrow CH_3Cl + Cl^\bullet	Methylradikal C H drei plus C l zwei reagiert zu C H drei C l plus Chlorradikal
+de	^\bullet CH_3 + Cl^\bullet \rightarrow CH_3Cl	Methylradikal C H drei plus Chlorradikal reagiert zu C H drei C l
+de	^+	plus
+de	^1H	Wasserstoff 1
+de	^2_1\text{H}	Wasserstoff mit Massenzahl 2 und Kernladungszahl 1
+de	^2H + ^3H \rightarrow ^4He + n + 17{,}6\,\text{MeV}	Deuterium plus Tritium reagiert zu Helium 4 plus n plus 17,6 Megaelektronenvolt
+de	^3_1\text{H}	Wasserstoff mit Massenzahl 3 und Kernladungszahl 1
+de	^4_2\text{He}	Helium mit Massenzahl 4 und Kernladungszahl 2
+de	^A_Z\text{X} \rightarrow ^{A-4}_{Z-2}\text{Y} + ^4_2\text{He}	X mit Massenzahl A und Kernladungszahl Z reagiert zu Y mit Massenzahl A minus 4 und Kernladungszahl Z minus 2 plus Helium 4
+de	^A_Z\text{X} \rightarrow ^A_{Z+1}\text{Y} + ^0_{-1}e + \bar{\nu}_e	X mit Massenzahl A und Kernladungszahl Z reagiert zu Y mit Massenzahl A und Kernladungszahl Z plus 1, plus Elektron, plus Elektron-Antineutrino
+de	^A_Z\text{X}^* \rightarrow ^A_Z\text{X} + \gamma	angeregter Kern X mit Massenzahl A und Kernladungszahl Z reagiert zu X plus Gamma
+de	+	plus
+de	+\cdot -=-	plus mal minus ergibt minus
+de	+\cdot +=+	plus mal plus ergibt plus
+de	+\frac{3}{5}\Delta_o	plus drei Fünftel Delta o
+de	+0{,}5	plus 0,5
+de	+1	plus 1
+de	+112^\circ	plus 112 Grad
+de	+15^\circ\text{C}	plus 15 Grad Celsius
+de	+18{,}7^\circ	plus 18,7 Grad
+de	+2\,\text{ATP}	plus 2 A T P
+de	+2\,\text{FADH}_2	plus 2 F A D H zwei
+de	+2\,\text{GTP/ATP}	plus 2 GTP oder ATP
+de	+2\,\text{NADH/H}^+	plus 2 NADH und H plus
+de	+2\text{ bis } +3\,\%	plus 2 bis plus 3 Prozent
+de	+33\,\text{K}	plus 33 Kelvin
+de	+52{,}7^\circ	plus 52,7 Grad
+de	+6\,\text{NADH/H}^+	plus 6 NADH und H plus
+de	+7\,\%	plus 7 Prozent
+de	+7\,\text{m}	plus 7 Meter
+de	+78{,}3^\circ\text{C}	plus 78,3 Grad Celsius
+de	+M	plus M
+de	<	kleiner als
+de	< 0{,}1\%	kleiner als 0,1 Prozent
+de	< 3\,\%	kleiner als 3 Prozent
+de	< 3\%	kleiner als 3 Prozent
+de	< p	kleiner als p
+de	=	gleich
+de	= \frac{\lambda}{2}	gleich Lambda durch 2
+de	= \left(\frac{1}{2}\right)^2 \Rightarrow	gleich, ein halb, hoch 2, daraus folgt
+de	= 15 - 1 = 14	gleich 15 minus 1 gleich 14
+de	= 2 \cdot 5730\,\text{a} = 11.460	gleich 2 mal 5730 Jahre gleich 11.460
+de	= a	gleich a
+de	= v	gleich v
+de	>	größer als
+de	> 1	größer als 1
+de	> 10	größer als 10
+de	> 100\text{ Mio. K}	größer als 100 Millionen Kelvin
+de	> 200\,\text{m}^2	größer als 200 Quadratmeter
+de	> 2000\,\text{mm}	größer als 2000 Millimeter
+de	> 40\%	größer als 40 Prozent
+de	> 75\,\%	größer als 75 Prozent
+de	>C=O	Carbonylgruppe C doppelt gebunden an O
+de	|\alpha| \le |\beta|	Betrag von Alpha kleiner gleich Betrag von Beta
+de	|\psi|^2	Betrag von Psi zum Quadrat
+de	|\vec{a}|	Betrag von Vektor a
+de	|\vec{a}| = \sqrt{4 + 9 + 36} = \sqrt{49} = 7	Betrag von Vektor a gleich Wurzel aus 4 plus 9 plus 36 gleich Wurzel aus 49 gleich 7
+de	|\vec{AB}| = \sqrt{6^2 + (-8)^2} = \sqrt{36 + 64} = \sqrt{100} = 10	Betrag von Vektor A B gleich Wurzel aus 6 Quadrat plus minus 8 Quadrat gleich Wurzel aus 36 plus 64 gleich Wurzel aus 100 gleich 10
+de	|\vec{n}| = \sqrt{4 + 1 + 4} = \sqrt{9} = 3	Betrag von Vektor n gleich Wurzel aus 4 plus 1 plus 4 gleich Wurzel aus 9 gleich 3
+de	|\vec{n}| = \sqrt{n_1^2 + n_2^2 + n_3^2}	Betrag von Vektor n gleich Wurzel aus n eins Quadrat plus n zwei Quadrat plus n drei Quadrat
+de	|\vec{u} \times \vec{v}|	Betrag von Vektor u kreuz Vektor v
+de	|\vec{v}| = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5	Betrag von Vektor v gleich Wurzel aus 3 Quadrat plus 4 Quadrat gleich Wurzel aus 9 plus 16 gleich Wurzel aus 25 gleich 5
+de	|\vec{v}| = \sqrt{v_1^2 + v_2^2 + v_3^2}	Betrag von Vektor v gleich Wurzel aus v eins Quadrat plus v zwei Quadrat plus v drei Quadrat
+de	|a|	Betrag von a
+de	|a| < 1	Betrag von a kleiner als 1
+de	|a| > 1	Betrag von a größer als 1
+de	|v|	Betrag von v
+de	|V| \times |V|	Betrag von V mal Betrag von V
+de	|w| \ge p	Länge von w größer gleich p
+de	|x y| \le p	Länge von x y kleiner gleich p
+de	|xy| \le p	Länge von x y kleiner gleich p
+de	|y| \ge 1	Länge von y größer gleich 1
+de	0	0
+de	0 < a < 1	0 kleiner als a kleiner als 1
+de	0 < b < 1	0 kleiner als b kleiner als 1
+de	0 = \text{absolute Gleichverteilung}	0 gleich absolute Gleichverteilung
+de	0 = 0	0 gleich 0
+de	0 = 12	0 gleich 12
+de	0-5^\circ\text{C}	0 bis 5 Grad Celsius
+de	0–5\,\text{m}	0 bis 5 Meter
+de	0{,}4 \le \Delta EN \le 1{,}7	0,4 kleiner gleich Delta E N kleiner gleich 1,7
+de	0{,}5\%	0,5 Prozent
+de	0\,\text{K} = -273{,}15^\circ\text{C}	0 Kelvin gleich minus 273,15 Grad Celsius
+de	0\text{ K}	0 Kelvin
+de	0^\circ = 0	0 Grad gleich 0
+de	1	1
+de	1 - \alpha	1 minus Alpha
+de	1 - \beta	1 minus Beta
+de	1 : 100.000	1 zu 100.000
+de	1 < e < \varphi(N)	1 kleiner als e kleiner als Phi von N
+de	1 = \text{eine Person besitzt alles}	1 gleich eine Person besitzt alles
+de	1 AA : 2 Aa : 1 aa	1 groß A groß A zu 2 groß A klein a zu 1 klein a klein a
+de	1-2\,\%	1 bis 2 Prozent
+de	1:n	1 zu n
+de	1.000.000	1.000.000
+de	1{,}15^t = 2 \Rightarrow t = \frac{\lg(2)}{\lg(1{,}15)} \approx 4{,}96	1,15 hoch t gleich 2, daraus folgt t gleich l g von 2 durch l g von 1,15 ungefähr 4,96
+de	1{,}44\,M_{\text{Sonne}}	1,44 Sonnenmassen
+de	1{,}5\,\text{ATP pro FADH}_2	1,5 ATP pro FADH zwei
+de	1{,}5\%	1,5 Prozent
+de	1{,}5^\circ\text{C}	1,5 Grad Celsius
+de	1\,\frac{\text{m}}{\text{s}}	1 Meter pro Sekunde
+de	1\,\frac{\text{m}}{\text{s}^2}	1 Meter pro Sekunde Quadrat
+de	1\,\text{A} = 1\,\frac{\text{C}}{\text{s}}	1 Ampere gleich 1 Coulomb pro Sekunde
+de	1\,\text{Glucose } (C_6)	1 Glucose, C sechs
+de	1\,\text{J} = 1\,\text{N} \cdot \text{m} = 1\,\text{kg} \cdot \text{m}^2/\text{s}^2	1 Joule gleich 1 Newton mal Meter gleich 1 Kilogramm mal Quadratmeter pro Sekunde Quadrat
+de	1\,\text{kWh} = 3{,}6\,\text{MJ}	1 Kilowattstunde gleich 3,6 Megajoule
+de	1\,\text{mol}	1 Mol
+de	1\,\text{Newton} = 1\,\text{kg} \cdot \text{m}/\text{s}^2	1 Newton gleich 1 Kilogramm mal Meter pro Sekunde Quadrat
+de	1\,\text{u} \approx 931{,}49\,\text{MeV}	1 atomare Masseneinheit ungefähr 931,49 Megaelektronenvolt
+de	1\,\text{V} = 1\,\frac{\text{J}}{\text{C}}	1 Volt gleich 1 Joule pro Coulomb
+de	1\,\text{W} = 1\,\frac{\text{J}}{\text{s}}	1 Watt gleich 1 Joule pro Sekunde
+de	1\sigma	1 Sigma
+de	1\text{ ATP}	1 A T P
+de	1\text{ bar} = 100.000\text{ Pa} = 1000\text{ hPa}	1 bar gleich 100.000 Pascal gleich 1000 Hektopascal
+de	1\text{ Becquerel [Bq]} = 1\,\frac{\text{Zerfall}}{\text{s}}	1 Becquerel gleich 1 Zerfall pro Sekunde
+de	1\text{ Elektronenvolt [eV]} = 1{,}602 \cdot 10^{-19}\,\text{J}	1 Elektronenvolt gleich 1,602 mal 10 hoch minus 19 Joule
+de	1\text{ Farad [F]} = 1\,\frac{\text{C}}{\text{V}}	1 Farad gleich 1 Coulomb pro Volt
+de	1\text{ Henry [H]} = 1\,\frac{\text{V}\cdot\text{s}}{\text{A}}	1 Henry gleich 1 Voltsekunde pro Ampere
+de	1\text{ Tesla [T]} = 1\,\frac{\text{V}\cdot\text{s}}{\text{m}^2} = 1\,\frac{\text{N}}{\text{A}\cdot\text{m}}	1 Tesla gleich 1 Voltsekunde pro Quadratmeter gleich 1 Newton pro Ampere mal Meter
+de	1\text{ Weber [Wb]} = 1\,\text{V}\cdot\text{s} = 1\,\text{T}\cdot\text{m}^2	1 Weber gleich 1 Voltsekunde gleich 1 Tesla mal Quadratmeter
+de	10	10
+de	10^\circ\text{ C}	10 Grad Celsius
+de	10^2	10 hoch 2
+de	10^3 = 1000	10 hoch drei gleich 1000
+de	10^n	10 hoch n
+de	100/120 = 0{,}83	100 durch 120 gleich 0,83
+de	100\,\%	100 Prozent
+de	100\%	100 Prozent
+de	100\% Aa	100 Prozent A a
+de	100^\circ\text{C}	100 Grad Celsius
+de	108\,\text{km/h} = 30\,\text{m/s}	108 Kilometer pro Stunde gleich 30 Meter pro Sekunde
+de	120\,\frac{\text{m}}{\text{s}}	120 Meter pro Sekunde
+de	120^\circ	120 Grad
+de	1400-1600\,\text{cm}^3	1400 bis 1600 Kubikzentimeter
+de	15	15
+de	1600\,\text{cm}^3	1600 Kubikzentimeter
+de	180^\circ	180 Grad
+de	180^\circ = \pi	180 Grad gleich Pi
+de	2 \times	2 mal
+de	2 y_{\text{max}}	2 y max
+de	2:1	2 zu 1
+de	2(x^2 - 4x + 3) = 2((x - 2)^2 - 1) = 2(x - 2)^2 - 2 \Rightarrow S(2|-2)	2 mal Klammer auf x Quadrat minus 4 x plus 3 Klammer zu gleich 2 mal Klammer auf Klammer auf x minus 2 Klammer zu Quadrat minus 1 Klammer zu gleich 2 mal Klammer auf x minus 2 Klammer zu Quadrat minus 2, daraus folgt Scheitelpunkt S mit den Koordinaten 2 und minus 2
+de	2{,}5\,\text{ATP pro NADH/H}^+	2,5 ATP pro NADH und H plus
+de	2\,\text{ATP}	2 A T P
+de	2\,\text{H}_2\text{O} \rightarrow \text{O}_2 + 4\,\text{H}^+ + 4\,e^-	2 H zwei O reagiert zu O zwei plus 4 H plus plus 4 Elektronen
+de	2\,\text{H}_2\text{O} \rightleftharpoons \text{H}_3\text{O}^+ + \text{OH}^-	2 H zwei O im Gleichgewicht mit H drei O plus plus O H minus
+de	2\,\text{kg}	2 Kilogramm
+de	2\,\text{Pyruvat } (C_3)	2 Pyruvat, C drei
+de	2\,\text{Pyruvat} \rightarrow 2\,\text{Acetyl-CoA } (C_2) + 2\,\text{CO}_2 + 2\,\text{NADH/H}^+	2 Pyruvat reagiert zu 2 Acetyl-CoA, C zwei, plus 2 C O zwei plus 2 NADH und H plus
+de	2\,\text{Umdrehungen}	2 Umdrehungen
+de	2\,^\bullet CH_3 \rightarrow C_2H_6	2 Methylradikale reagieren zu C zwei H sechs
+de	2\,H_2O \rightarrow 2\,H_2 + O_2	2 H zwei O reagiert zu 2 H zwei plus O zwei
+de	2\,H_2O \rightleftharpoons H_3O^+ + OH^- \implies K_W = [H_3O^+] \cdot [OH^-] = 10^{-14}\,\frac{\text{mol}^2}{\text{l}^2} \text{ (bei } 25^\circ\text{C)}	2 H zwei O im Gleichgewicht mit H drei O plus plus O H minus, daraus folgt K W gleich Konzentration von H drei O plus mal Konzentration von O H minus gleich 10 hoch minus 14 Mol Quadrat pro Liter Quadrat, bei 25 Grad Celsius
+de	2\,K^+	2 K plus
+de	2\%	2 Prozent
+de	2\alpha	2 Alpha
+de	2\beta	2 Beta
+de	2\sigma	2 Sigma
+de	2^{2x-1} = 16 = 2^4 \Rightarrow 2x - 1 = 4 \Rightarrow 2x = 5 \Rightarrow x = 2{,}5	2 hoch, 2 x minus 1, gleich 16 gleich 2 hoch 4, daraus folgt 2 x minus 1 gleich 4, daraus folgt 2 x gleich 5, daraus folgt x gleich 2,5
+de	2^\circ\text{C}	2 Grad Celsius
+de	2^5 = 32	2 hoch fünf gleich 32
+de	2^7	2 hoch sieben
+de	2^8	2 hoch acht
+de	2^n	2 hoch n
+de	20–40\,\text{m}	20 bis 40 Meter
+de	20\%	20 Prozent
+de	20^\circ\text{C}	20 Grad Celsius
+de	200-250\,\text{Gt CO}_2	200 bis 250 Gigatonnen C O zwei
+de	230\,\text{V}	230 Volt
+de	24\,\text{Tagen}	24 Tagen
+de	24\%	24 Prozent
+de	25–28^\circ\text{C}	25 bis 28 Grad Celsius
+de	25\,\%	25 Prozent
+de	25\%	25 Prozent
+de	25^\circ\text{C}	25 Grad Celsius
+de	270^\circ = \frac{3\pi}{2}	270 Grad gleich 3 Pi durch 2
+de	280\,\text{ppm}	280 ppm
+de	2a + b = 40 \Rightarrow b = 40 - 2a	2 a plus b gleich 40, daraus folgt b gleich 40 minus 2 a
+de	2n	2 n
+de	2n^2	2 n Quadrat
+de	2x_1 - x_2 - x_3 = 0	2 x eins minus x zwei minus x drei gleich 0
+de	3	3
+de	3 : 1	3 zu 1
+de	3 \cdot (2x - 4) - (x + 2) = 4 \cdot (x - 1) + 6	3 mal Klammer auf 2 x minus 4 Klammer zu minus Klammer auf x plus 2 Klammer zu gleich 4 mal Klammer auf x minus 1 Klammer zu plus 6
+de	3 \cdot 2^{2x - 1} = 48	3 mal 2 hoch, 2 x minus 1, gleich 48
+de	3 \cdot 7 = 21 \equiv 1 \pmod{20}	3 mal 7 gleich 21 kongruent 1 modulo 20
+de	3'	3 Strich
+de	3' \rightarrow 5'	3 Strich nach 5 Strich
+de	3' \to 5'	3 Strich nach 5 Strich
+de	3{,}7\,\text{V}	3,7 Volt
+de	3\,Na^+	3 N a plus
+de	3\sigma	3 Sigma
+de	30^\circ = \frac{\pi}{6}	30 Grad gleich Pi durch 6
+de	30^\circ\text{ N/S}	30 Grad Nord oder Süd
+de	300.000	300.000
+de	36\,\text{g}	36 Gramm
+de	360^\circ	360 Grad
+de	360^\circ = 2\pi	360 Grad gleich 2 Pi
+de	380.000	380.000
+de	3x + 2y = 16	3 x plus 2 y gleich 16
+de	4 \cdot 2^{3x-1} = 32 \Rightarrow 2^{3x-1} = 8 = 2^3 \Rightarrow 3x - 1 = 3 \Rightarrow 3x = 4 \Rightarrow x = \frac{4}{3} \approx 1{,}33	4 mal 2 hoch, 3 x minus 1, gleich 32, daraus folgt 2 hoch, 3 x minus 1, gleich 8 gleich 2 hoch 3, daraus folgt 3 x minus 1 gleich 3, daraus folgt 3 x gleich 4, daraus folgt x gleich vier Drittel ungefähr 1,33
+de	4\,\text{CO}_2	4 C O zwei
+de	40\%	40 Prozent
+de	400-500\,\text{cm}^3	400 bis 500 Kubikzentimeter
+de	400-750\,\text{nm}	400 bis 750 Nanometer
+de	425\,\text{ppm}	425 ppm
+de	45^\circ = \frac{\pi}{4}	45 Grad gleich Pi durch 4
+de	5–15\,\text{m}	5 bis 15 Meter
+de	5'	5 Strich
+de	5' \rightarrow 3'	5 Strich nach 3 Strich
+de	5' \to 3'	5 Strich nach 3 Strich
+de	5'-GAATTC-3'	5 Strich, G A A T T C, 3 Strich
+de	5'-NGG-3'	5 Strich, N G G, 3 Strich
+de	5^3 = 125	5 hoch drei gleich 125
+de	50-60^\circ\text{C}	50 bis 60 Grad Celsius
+de	50\,\%	50 Prozent
+de	50\%	50 Prozent
+de	5x - 4y = 8	5 x minus 4 y gleich 8
+de	5x - 8 = 2x + 13	5 x minus 8 gleich 2 x plus 13
+de	6{,}022 \cdot 10^{12}	6,022 mal 10 hoch 12
+de	6{,}022 \cdot 10^{23}	6,022 mal 10 hoch 23
+de	6\,\pi	6 Pi
+de	60.000	60.000
+de	60\,\text{m}	60 Meter
+de	60\%	60 Prozent
+de	60^\circ = \frac{\pi}{3}	60 Grad gleich Pi durch 3
+de	600-750\,\text{cm}^3	600 bis 750 Kubikzentimeter
+de	650\,\text{cm}^3	650 Kubikzentimeter
+de	7{,}6\,\text{MeV/Nukleon}	7,6 Megaelektronenvolt pro Nukleon
+de	70\%	70 Prozent
+de	72\,\frac{\text{km}}{\text{h}}	72 Kilometer pro Stunde
+de	72^\circ\text{C}	72 Grad Celsius
+de	75\,\%	75 Prozent
+de	8{,}8\,\text{MeV}	8,8 Megaelektronenvolt
+de	8{,}8\,\text{MeV/Nukleon}	8,8 Megaelektronenvolt pro Nukleon
+de	8\,M_\odot < M < 25\,M_\odot	8 Sonnenmassen kleiner als M kleiner als 25 Sonnenmassen
+de	80\text{ kg}	80 Kilogramm
+de	8000	8000
+de	9	9
+de	9 : 3 : 3 : 1	9 zu 3 zu 3 zu 1
+de	90/80 = 1{,}125	90 durch 80 gleich 1,125
+de	90\,\%	90 Prozent
+de	90\,\% \implies [\mu \pm 1{,}64\sigma]	90 Prozent, daraus folgt das Intervall My plus minus 1,64 Sigma
+de	90^\circ - \beta	90 Grad minus Beta
+de	90^\circ = \frac{\pi}{2}	90 Grad gleich Pi durch 2
+de	900-1100\,\text{cm}^3	900 bis 1100 Kubikzentimeter
+de	95\,\% \implies [\mu \pm 1{,}96\sigma]	95 Prozent, daraus folgt das Intervall My plus minus 1,96 Sigma
+de	95^\circ\text{C}	95 Grad Celsius
+de	98\%	98 Prozent
+de	99{,}9\%	99,9 Prozent
+de	99{,}95\%	99,95 Prozent
+de	99\,\% \implies [\mu \pm 2{,}58\sigma]	99 Prozent, daraus folgt das Intervall My plus minus 2,58 Sigma
+de	a	a
+de	A	A
+de	a - b = a + (-b)	a minus b gleich a plus Klammer auf minus b Klammer zu
+de	a \cdot (b + c) = a \cdot b + a \cdot c	a mal Klammer auf b plus c Klammer zu gleich a mal b plus a mal c
+de	A \implies \beta	A, daraus folgt Beta
+de	A \in V	A Element von V
+de	a \perp [PP']	a senkrecht zur Strecke P P Strich
+de	A \to \beta	groß A wird zu Beta
+de	A \to a	groß A wird zu klein a
+de	A \to a B	groß A wird zu klein a groß B
+de	A \to B a	groß A wird zu groß B klein a
+de	a + b > c	a plus b größer als c
+de	a < 0	a kleiner als 0
+de	a = \frac{\Delta v}{\Delta t}	a gleich Delta v durch Delta t
+de	A = \frac{1}{2} \cdot 5 \cdot 5\sqrt{3} = 12{,}5\sqrt{3}\,\text{cm}^2	A gleich ein halb mal 5 mal 5 Wurzel aus 3 gleich 12,5 Wurzel aus 3 Quadratzentimeter
+de	A = \frac{1}{2} \cdot 6 \cdot 10 \cdot \frac{\sqrt{3}}{2} = 15\sqrt{3} \approx 25{,}98\,\text{cm}^2	A gleich ein halb mal 6 mal 10 mal Wurzel aus 3 durch 2 gleich 15 Wurzel aus 3 ungefähr 25,98 Quadratzentimeter
+de	A = \frac{1}{2} \cdot b \cdot c \cdot \sin \alpha	A gleich ein halb mal b mal c mal Sinus Alpha
+de	A = \frac{1}{2} a b \sin \gamma = \frac{1}{2} b c \sin \alpha = \frac{1}{2} a c \sin \beta	A gleich ein halb a b Sinus Gamma gleich ein halb b c Sinus Alpha gleich ein halb a c Sinus Beta
+de	a = \frac{30\,\text{m/s}}{5\,\text{s}} = 6\,\text{m/s}^2	a gleich 30 Meter pro Sekunde durch 5 Sekunden gleich 6 Meter pro Sekunde Quadrat
+de	A = \frac{32}{3} - \left(-\frac{32}{3}\right) = \frac{64}{3} \approx 21{,}33	A gleich 32 Drittel minus Klammer auf minus 32 Drittel Klammer zu gleich 64 Drittel ungefähr 21,33
+de	A = \int (\text{obere Kurve} - \text{untere Kurve})\,dx	A gleich Integral über, obere Kurve minus untere Kurve, d x
+de	A = \int_{0}^{\infty} x \cdot e^{-2x}\,dx	A gleich Integral von 0 bis unendlich über x mal e hoch minus 2 x d x
+de	A = \int_0^\infty f(x)\,\mathrm{d}x	A gleich Integral von 0 bis unendlich über f von x d x
+de	A = \lambda \cdot N	A gleich Lambda mal N
+de	A = \lim_{z \to \infty} \left[-4 \cdot e^{-0{,}5x}\right]_0^z = 4	A gleich Limes für z gegen unendlich von, minus 4 mal e hoch minus 0,5 x, in den Grenzen 0 bis z, gleich 4
+de	A = \pi \cdot r^2	A gleich Pi mal r Quadrat
+de	A = \pi r^2 = \frac{1}{4}\pi d^2	A gleich Pi r Quadrat gleich ein Viertel Pi d Quadrat
+de	a = \text{konstant}	a gleich konstant
+de	A = 0 - \left(-\frac{1}{4}\right) = \frac{1}{4}	A gleich 0 minus Klammer auf minus ein Viertel Klammer zu gleich ein Viertel
+de	A = 0{,}04\,\text{m}^2	A gleich 0,04 Quadratmeter
+de	a = 10 \cdot \sin(30^\circ) = 5\,\text{cm}	a gleich 10 mal Sinus von 30 Grad gleich 5 Zentimeter
+de	A = 400\,\text{cm}^2	A gleich 400 Quadratzentimeter
+de	A = a \cdot b	A gleich a mal b
+de	a = g \approx 9{,}81\,\frac{\text{m}}{\text{s}^2}	a gleich g ungefähr 9,81 Meter pro Sekunde Quadrat
+de	A = T	A gleich T
+de	A = Z + N	A gleich Z plus N
+de	a > 0	a größer als 0
+de	a > 0, a \neq 1	a größer als 0, a ungleich 1
+de	a > 1	a größer als 1
+de	A_{\text{Dreieck}} = 0{,}5 \cdot 19 = 9{,}5	A Dreieck gleich 0,5 mal 19 gleich 9,5
+de	A_{\text{max}}	A max
+de	A_{\text{max}} = 200\,\text{m}^2	A max gleich 200 Quadratmeter
+de	A_{\text{Sektor}} = \pi r^2 \cdot \frac{\alpha}{360^\circ} = \frac{1}{2} b \cdot r	A Sektor gleich Pi r Quadrat mal Alpha durch 360 Grad gleich ein halb b mal r
+de	a_0 = a_0 x^0	a null gleich a null x hoch null
+de	A_1 = A_2 \implies	A eins gleich A zwei daraus folgt
+de	a_1, a_2	a eins, a zwei
+de	A_e	A e
+de	A_E	A E
+de	a_n	a n
+de	a_n x^n	a n x hoch n
+de	a_Z	a Z
+de	a_Z = \frac{v^2}{r}	a Z gleich v Quadrat durch r
+de	A-B-B-A	A B B A
+de	a, b	a, b
+de	A, B, C	A, B, C
+de	A'(a) = 40 - 4a = 0 \Rightarrow a = 10\,\text{m}	A Strich von a gleich 40 minus 4 a gleich 0, daraus folgt a gleich 10 Meter
+de	A(0) = A(20) = 0	A von 0 gleich A von 20 gleich 0
+de	A(2|1)	Punkt A mit den Koordinaten 2 und 1
+de	A(a_1|a_2|a_3)	Punkt A mit den Koordinaten a eins, a zwei und a drei
+de	A(a, b)	A von a und b
+de	A(a)	A von a
+de	A(a) = a \cdot (40 - 2a) = 40a - 2a^2	A von a gleich a mal Klammer auf 40 minus 2 a Klammer zu gleich 40 a minus 2 a Quadrat
+de	A(t)	A von t
+de	A(t) = \lambda \cdot N(t)	A von t gleich Lambda mal N von t
+de	A(x_A|y_A)	Punkt A mit den Koordinaten x A und y A
+de	A[i]	A an der Stelle i
+de	A[i+1]	A an der Stelle i plus 1
+de	a\,\text{A} + b\,\text{B} \rightleftharpoons c\,\text{C} + d\,\text{D}	a A plus b B im Gleichgewicht mit c C plus d D
+de	A^-	A minus
+de	a^2 + b^2 = c^2	a Quadrat plus b Quadrat gleich c Quadrat
+de	a^2 = 36 + 100 - 2 \cdot 6 \cdot 10 \cdot 0{,}5 = 136 - 60 = 76 \Rightarrow a = \sqrt{76} = 2\sqrt{19} \approx 8{,}72\,\text{cm}	a Quadrat gleich 36 plus 100 minus 2 mal 6 mal 10 mal 0,5 gleich 136 minus 60 gleich 76, daraus folgt a gleich Wurzel aus 76 gleich 2 Wurzel aus 19 ungefähr 8,72 Zentimeter
+de	a^2 = b^2 + c^2 - 2 \cdot b \cdot c \cdot \cos(\alpha)	a Quadrat gleich b Quadrat plus c Quadrat minus 2 mal b mal c mal Kosinus von Alpha
+de	a^2 = b^2 + c^2 - 2bc \cdot \cos \alpha	a Quadrat gleich b Quadrat plus c Quadrat minus 2 b c mal Kosinus Alpha
+de	a^2 = b^2 + c^2 - 2bc \cdot \cos(\alpha)	a Quadrat gleich b Quadrat plus c Quadrat minus 2 b c mal Kosinus von Alpha
+de	a^2 = b^2 + c^2 - 2bc \cos \alpha	a Quadrat gleich b Quadrat plus c Quadrat minus 2 b c Kosinus Alpha
+de	a^2 = b^2 + c^2 + 2bc \cdot \cos(\alpha)	a Quadrat gleich b Quadrat plus c Quadrat plus 2 b c mal Kosinus von Alpha
+de	a^2 = c \cdot p	a Quadrat gleich c mal p
+de	a^n	a hoch n
+de	aa	klein a klein a
+de	Aa	groß A klein a
+de	AA	groß A groß A
+de	Aa \times Aa	groß A klein a gekreuzt mit groß A klein a
+de	AB	A B
+de	Ag^0	A g null
+de	ax^2 + bx + c = 0	a x Quadrat plus b x plus c gleich 0
+de	b	b
+de	B	B
+de	b \approx \lambda	b ungefähr Lambda
+de	B + H^+ \rightarrow HB^+	B plus H plus reagiert zu H B plus
+de	B = \mu_0 \cdot \frac{N}{l} \cdot I	B gleich My null mal N durch l mal I
+de	b = 10 \cdot \cos(30^\circ) = 5\sqrt{3}\,\text{cm}	b gleich 10 mal Kosinus von 30 Grad gleich 5 Wurzel aus 3 Zentimeter
+de	b = 2\pi r \cdot \frac{\alpha}{360^\circ}	b gleich 2 Pi r mal Alpha durch 360 Grad
+de	b = 20\,\text{m}	b gleich 20 Meter
+de	B = 5\,\text{mT}	B gleich 5 Millitesla
+de	b = 6\,\text{cm}	b gleich 6 Zentimeter
+de	b > 0	b größer als 0
+de	b > 1	b größer als 1
+de	B_0 = 500	B null gleich 500
+de	B_2	B zwei
+de	b_6f	Cytochrom b sechs f
+de	B_s	B s
+de	b, c	b, c
+de	B(7|4)	Punkt B mit den Koordinaten 7 und 4
+de	B(b_1|b_2|b_3)	Punkt B mit den Koordinaten b eins, b zwei und b drei
+de	B(n; p)	B von n und p
+de	B(t)	B von t
+de	B(t) = 500 \cdot 2^{t/3}	B von t gleich 500 mal 2 hoch, t durch 3
+de	B(t) = B_0 \cdot a^t	B von t gleich B null mal a hoch t
+de	B(t) = B_0 \cdot e^{k \cdot t}	B von t gleich B null mal e hoch k mal t
+de	B(x_B|y_B)	Punkt B mit den Koordinaten x B und y B
+de	b^2 = a^2 + c^2 - 2ac \cos \beta	b Quadrat gleich a Quadrat plus c Quadrat minus 2 a c Kosinus Beta
+de	b^2 = c \cdot q	b Quadrat gleich c mal q
+de	BIP = C_{\text{privat}} + C_{\text{Staat}} + I_{\text{Brutto}} + (X - M)	B I P gleich C privat plus C Staat plus I Brutto plus Klammer auf X minus M Klammer zu
+de	Br_2	B r zwei
+de	Br^-	B r minus
+de	Br^{\delta+}	B r Delta plus
+de	c	c
+de	C	C
+de	c \approx 3 \cdot 10^8\,\text{m/s}	c ungefähr 3 mal 10 hoch 8 Meter pro Sekunde
+de	C \in \mathbb{R}	C Element der reellen Zahlen
+de	c \neq 0	c ungleich 0
+de	c = \frac{n}{V}	c gleich n durch V
+de	C = \frac{Q}{U} = \varepsilon_0 \cdot \varepsilon_r \cdot \frac{A}{d}	C gleich Q durch U gleich Epsilon null mal Epsilon r mal A durch d
+de	c = \text{spezifische Wärmekapazität in } \frac{\text{kJ}}{\text{kg}\cdot\text{K}}	c gleich spezifische Wärmekapazität in Kilojoule pro Kilogramm mal Kelvin
+de	C = \varepsilon_0 \cdot \varepsilon_r \cdot \frac{A}{d}	C gleich Epsilon null mal Epsilon r mal A durch d
+de	c = 10\,\text{cm}	c gleich 10 Zentimeter
+de	c = 340\,\frac{\text{m}}{\text{s}}	c gleich 340 Meter pro Sekunde
+de	c = 4^3 \text{ mod } 33 = 64 \text{ mod } 33 = 31	c gleich 4 hoch 3 modulo 33 gleich 64 modulo 33 gleich 31
+de	c = m^e \text{ mod } N	c gleich m hoch e modulo N
+de	c = y	c gleich y
+de	c_{\text{Glas}} \approx 200.000\text{ km/s}	c Glas ungefähr 200.000 Kilometer pro Sekunde
+de	c_{\text{Wasser}} \approx 225.000\text{ km/s}	c Wasser ungefähr 225.000 Kilometer pro Sekunde
+de	C_{10}H_{22}	C 10 H 22
+de	c_0	c null
+de	c_0 \approx 300.000\text{ km/s}	c null ungefähr 300.000 Kilometer pro Sekunde
+de	c_1 \cdot \text{I} + c_2 \cdot \text{II}	c eins mal Gleichung eins plus c zwei mal Gleichung zwei
+de	C_2	C zwei
+de	C_2H_6	C zwei H sechs
+de	C_3	C drei
+de	C_3H_8	C drei H acht
+de	C_4	C vier
+de	C_4H_{10}	C vier H 10
+de	C_5	C fünf
+de	C_5H_{12}	C fünf H 12
+de	C_6	C sechs
+de	C_6H_{12}O_6	C sechs H 12 O sechs
+de	C_6H_6	C sechs H sechs
+de	c_A \cdot V_A = c_B \cdot V_B	c A mal V A gleich c B mal V B
+de	C_n H_{2n}	C n H zwei n
+de	c_W = 4{,}19\,\frac{\text{kJ}}{\text{kg}\cdot\text{K}}	c W gleich 4,19 Kilojoule pro Kilogramm mal Kelvin
+de	C-N	C N
+de	c(\text{H}_3\text{O}^+) = c(\text{OH}^-) = 10^{-7}	c von H drei O plus gleich c von O H minus gleich 10 hoch minus 7
+de	c(\text{Red}) = 1	c von Red gleich 1
+de	c(H_3O^+) = c(A^-)	c von H drei O plus gleich c von A minus
+de	c(HA) \approx c_0	c von H A ungefähr c null
+de	C(x_C \mid p_C)	Punkt C mit den Koordinaten x C und p C
+de	C(x_C | p_C)	Punkt C mit den Koordinaten x C und p C
+de	c^2 = a^2 + b^2 - 2ab \cos \gamma	c Quadrat gleich a Quadrat plus b Quadrat minus 2 a b Kosinus Gamma
+de	C=C	C doppelt gebunden an C
+de	C=O	C doppelt gebunden an O
+de	C2-C5	C 2 bis C 5
+de	ca. 10^{-10}\,\text{m}	circa 10 hoch minus 10 Meter
+de	ca. 10^{-15}\,\text{m}	circa 10 hoch minus 15 Meter
+de	CH_2OH	C H zwei O H
+de	CH_3COO^-	C H drei C O O minus
+de	CH_3COO^- + H_2O \rightleftharpoons CH_3COOH + OH^-	C H drei C O O minus plus H zwei O im Gleichgewicht mit C H drei C O O H plus O H minus
+de	CH_3COOH	C H drei C O O H
+de	CH_4	C H vier
+de	CH_4 + Cl_2 \xrightarrow{h\nu} CH_3Cl + HCl	C H vier plus C l zwei reagiert unter Licht zu C H drei C l plus H C l
+de	CH_4 + Cl^\bullet \rightarrow ^\bullet CH_3 + HCl	C H vier plus Chlorradikal reagiert zu Methylradikal plus H C l
+de	Cl_2	C l zwei
+de	Cl_2 \xrightarrow{h\nu} 2\,Cl^\bullet	C l zwei reagiert unter Licht zu 2 Chlorradikalen
+de	Cl^-	C l minus
+de	Cl^-, CN^-, OH^-	C l minus, C N minus, O H minus
+de	CO_2	C O zwei
+de	COO^-	C O O minus
+de	Cu_2O	C u zwei O
+de	Cu, Ag, Au, Pt	C u, A g, A u, P t
+de	Cu^{2+}	C u zwei plus
+de	CuSO_4	C u S O vier
+de	d	d
+de	D	D
+de	D < 0 \implies 0	D kleiner als 0, daraus folgt 0
+de	d < r	d kleiner als r
+de	D = \frac{F}{\Delta s}	D gleich F durch Delta s
+de	d = \vec{A} \cdot \vec{n} = 1 \cdot (-2) + 2 \cdot 1 + 0 \cdot 1 = 0 \Rightarrow E: -2x_1 + x_2 + x_3 = 0	d gleich Vektor A mal Vektor n gleich 1 mal minus 2 plus 2 mal 1 plus 0 mal 1 gleich 0, daraus folgt Ebene E: minus 2 x eins plus x zwei plus x drei gleich 0
+de	d = \vec{A} \circ \vec{n}	d gleich Vektor A mal Vektor n
+de	D = 0 \implies 1	D gleich 0, daraus folgt 1
+de	d = 0{,}002\,\text{m} \Rightarrow C = \frac{8{,}854 \cdot 10^{-12} \cdot 0{,}04}{0{,}002} = 1{,}77 \cdot 10^{-10}\,\text{F} = 177\,\text{pF}	d gleich 0,002 Meter, daraus folgt C gleich 8,854 mal 10 hoch minus 12 mal 0,04 durch 0,002 gleich 1,77 mal 10 hoch minus 10 Farad gleich 177 Pikofarad
+de	d = 2\,\text{mm}	d gleich 2 Millimeter
+de	D = b^2 - 4ac	D gleich b Quadrat minus 4 a c
+de	D = b^2 - 4ac < 0	D gleich b Quadrat minus 4 a c kleiner als 0
+de	d = d(M, E)	d gleich d von M und E
+de	d = r	d gleich r
+de	D > 0 \implies 2	D größer als 0, daraus folgt 2
+de	d > r	d größer als r
+de	D_{60^\circ}	D 60 Grad
+de	d_{x^2-y^2}	d x Quadrat minus y Quadrat
+de	d_{xy}	d x y
+de	d_{xy}, d_{xz}, d_{yz}	d x y, d x z, d y z
+de	d_{xz}	d x z
+de	d_{yz}	d y z
+de	d_{z^2}	d z Quadrat
+de	D_f	D f
+de	D(-2) = -\frac{32}{3}	D von minus 2 gleich minus 32 Drittel
+de	D(\langle D \rangle)	D angewendet auf die Kodierung von D
+de	D(\langle M \rangle)	D angewendet auf die Kodierung von M
+de	D(2) = 16 - \frac{16}{3} = \frac{32}{3}	D von 2 gleich 16 minus 16 Drittel gleich 32 Drittel
+de	d(P, A) = d(P, B)	d von P und A gleich d von P und B
+de	d(P, a) = d(P', a)	d von P und a gleich d von P Strich und a
+de	d(P, E)	d von P und E
+de	d(P; E)	d von P und E
+de	d(P; E) = \frac{|n_1 p_1 + n_2 p_2 + n_3 p_3 - d|}{\sqrt{n_1^2 + n_2^2 + n_3^2}}	d von P und E gleich Betrag von n eins p eins plus n zwei p zwei plus n drei p drei minus d, geteilt durch Wurzel aus n eins Quadrat plus n zwei Quadrat plus n drei Quadrat
+de	d(s) = 0	d von s gleich 0
+de	d(u)	d von u
+de	d(v) = \infty	d von v gleich unendlich
+de	d(x) = 8 - 2x^2	d von x gleich 8 minus 2 x Quadrat
+de	D(x) = 8x - \frac{2}{3} x^3	D von x gleich 8 x minus zwei Drittel x hoch drei
+de	db	d b
+de	DB = E - K_v = x \cdot db	D B gleich E minus K v gleich x mal d b
+de	db = p - k_v	d b gleich p minus k v
+de	db > 0	d b größer als 0
+de	e	e
+de	E	E
+de	e \approx 1{,}602 \cdot 10^{-19}\,\text{C}	e ungefähr 1,602 mal 10 hoch minus 19 Coulomb
+de	e \approx 2{,}71828	e ungefähr 2,71828
+de	e \cdot d \equiv 1 \pmod{\varphi(N)}	e mal d kongruent 1 modulo Phi von N
+de	e \cdot U = \frac{1}{2} \cdot m \cdot v^2	e mal U gleich ein halb mal m mal v Quadrat
+de	E = \Delta m \cdot c^2	E gleich Delta m mal c Quadrat
+de	E = \frac{500\,\text{V}}{0{,}002\,\text{m}} = 250.000\,\text{V/m} = 250\,\text{kV/m}	E gleich 500 Volt durch 0,002 Meter gleich 250.000 Volt pro Meter gleich 250 Kilovolt pro Meter
+de	E = \frac{U}{d}	E gleich U durch d
+de	E = \gamma \cdot m_0 \cdot c^2	E gleich Gamma mal m null mal c Quadrat
+de	e = 1{,}602 \cdot 10^{-19}\,\text{C}	e gleich 1,602 mal 10 hoch minus 19 Coulomb
+de	e = 3 \Rightarrow d = 7	e gleich 3, daraus folgt d gleich 7
+de	E = p \cdot c \implies \mathbf{p = \frac{E}{c} = \frac{h}{\lambda}}	E gleich p mal c, daraus folgt p gleich E durch c gleich h durch Lambda
+de	E_{\text{Edukte}} < E_{\text{Produkte}} \implies \Delta H > 0	E Edukte kleiner als E Produkte, daraus folgt Delta H größer als 0
+de	E_{\text{Edukte}} > E_{\text{Produkte}} \implies \Delta H < 0	E Edukte größer als E Produkte, daraus folgt Delta H kleiner als 0
+de	E_{\text{ges}} = E_{\text{pot}} + E_{\text{kin}} = \text{konstant}	E ges gleich E pot plus E kin gleich konstant
+de	E_{\text{kin,max}}	E kin max
+de	E_{\text{kin}} = (\gamma - 1) \cdot m_0 \cdot c^2	E kin gleich Klammer auf Gamma minus 1 Klammer zu mal m null mal c Quadrat
+de	E_{\text{kin}} = \frac{1}{2} \cdot m \cdot v^2	E kin gleich ein halb mal m mal v Quadrat
+de	E_{\text{kin}} = \frac{1}{2} m \cdot v^2	E kin gleich ein halb m mal v Quadrat
+de	E_{\text{pot}} + E_{\text{kin}} = \text{const}	E pot plus E kin gleich konstant
+de	E_{\text{pot}} = m \cdot g \cdot h	E pot gleich m mal g mal h
+de	E_{\text{spann}} = \frac{1}{2} \cdot D \cdot s^2	E spann gleich ein halb mal D mal s Quadrat
+de	E_{\text{spann}} = \frac{1}{2} D \cdot s^2	E spann gleich ein halb D mal s Quadrat
+de	E_\infty = 0\,\text{eV}	E unendlich gleich 0 Elektronenvolt
+de	E_0 = \frac{1}{2} m_0 \cdot v^2	E null gleich ein halb m null mal v Quadrat
+de	E_0 = m_0 \cdot c^2	E null gleich m null mal c Quadrat
+de	E_1 = -13{,}6\,\text{eV}	E eins gleich minus 13,6 Elektronenvolt
+de	E_A	E A
+de	E_B	E B
+de	E_B = \Delta m \cdot c^2	E B gleich Delta m mal c Quadrat
+de	e_g	e g
+de	E_m	E m
+de	E_n	E n
+de	E_n \sim \frac{n^2}{L^2}	E n proportional zu n Quadrat durch L Quadrat
+de	E_n = -\frac{13{,}6\,\text{eV}}{n^2}	E n gleich minus 13,6 Elektronenvolt durch n Quadrat
+de	E: (\vec{X} - \vec{A}) \circ \vec{n} = 0	Ebene E: Klammer auf Vektor X minus Vektor A Klammer zu mal Vektor n gleich 0
+de	E: \vec{n} \circ \vec{X} = d	Ebene E: Vektor n mal Vektor X gleich d
+de	E: \vec{X} = \begin{pmatrix} 1 \\ 2 \\ 0 \end{pmatrix} + r \begin{pmatrix} 1 \\ 0 \\ 2 \end{pmatrix} + s \begin{pmatrix} 0 \\ 1 \\ -1 \end{pmatrix}	Ebene E: Vektor X gleich Spaltenvektor 1, 2, 0 plus r mal Spaltenvektor 1, 0, 2 plus s mal Spaltenvektor 0, 1, minus 1
+de	E: \vec{X} = \vec{A} + r \cdot \vec{u} + s \cdot \vec{v}	Ebene E: Vektor X gleich Vektor A plus r mal Vektor u plus s mal Vektor v
+de	E: 2x_1 - 2x_2 + x_3 - 18 = 0	Ebene E: 2 x eins minus 2 x zwei plus x drei minus 18 gleich 0
+de	E: 2x_1 - x_2 + 2x_3 - 9 = 0	Ebene E: 2 x eins minus x zwei plus 2 x drei minus 9 gleich 0
+de	E: 2x_1 - x_2 + 2x_3 = 12	Ebene E: 2 x eins minus x zwei plus 2 x drei gleich 12
+de	E: n_1 x_1 + n_2 x_2 + n_3 x_3 - d = 0	Ebene E: n eins x eins plus n zwei x zwei plus n drei x drei minus d gleich 0
+de	E: n_1 x_1 + n_2 x_2 + n_3 x_3 = d	Ebene E: n eins x eins plus n zwei x zwei plus n drei x drei gleich d
+de	E'(x) = a - 2b \cdot x	E Strich von x gleich a minus 2 b mal x
+de	E'(x) = K'(x)	E Strich von x gleich K Strich von x
+de	E'(x) = K'(x) \Rightarrow	E Strich von x gleich K Strich von x, daraus folgt
+de	E(X)	E von X
+de	E(X) = \int_0^3 x \cdot \frac{1}{9} x^2\,dx = \int_0^3 \frac{1}{9} x^3\,dx = \left[\frac{x^4}{36}\right]_0^3 = \frac{81}{36} = \frac{9}{4} = 2{,}25	E von X gleich Integral von 0 bis 3 über x mal ein Neuntel x Quadrat d x gleich Integral von 0 bis 3 über ein Neuntel x hoch 3 d x gleich x hoch 4 durch 36 in den Grenzen 0 bis 3 gleich 81 durch 36 gleich 9 Viertel gleich 2,25
+de	E(x) = 100x - 2x^2 \Rightarrow E'(x) = 100 - 4x	E von x gleich 100 x minus 2 x Quadrat, daraus folgt E Strich von x gleich 100 minus 4 x
+de	E(x) = p(x) \cdot x	E von x gleich p von x mal x
+de	E(x) = p(x) \cdot x = a \cdot x - b \cdot x^2 \implies	E von x gleich p von x mal x gleich a mal x minus b mal x Quadrat, daraus folgt
+de	e^-	e minus
+de	e^{-x}	e hoch minus x
+de	e^{\ln(x)} = x	e hoch l n von x gleich x
+de	E^\circ = -0{,}76\,\text{V}	E null gleich minus 0,76 Volt
+de	E^\circ = +0{,}34\,\text{V}	E null gleich plus 0,34 Volt
+de	E^\circ(\text{Li/Li}^+) = -3{,}04\,\text{V}	E null von Li durch Li plus gleich minus 3,04 Volt
+de	E^0	E null
+de	E^2 = (pc)^2 + (m_0 c^2)^2	E Quadrat gleich Klammer auf p c Klammer zu Quadrat plus Klammer auf m null c Quadrat Klammer zu Quadrat
+de	EN	E N
+de	EN = 4{,}0	E N gleich 4,0
+de	f	f
+de	F	F
+de	F \sim \frac{q_1 \cdot q_2}{r^2}	F proportional zu q eins mal q zwei durch r Quadrat
+de	F \subseteq Z	F Teilmenge von Z
+de	F = \frac{1}{2} F_L	F gleich ein halb F L
+de	F = \frac{1}{4\pi \varepsilon_0} \cdot \frac{|q_1 \cdot q_2|}{r^2}	F gleich 1 durch 4 Pi Epsilon null mal Betrag von q eins mal q zwei, durch r Quadrat
+de	f = \frac{1}{T}	f gleich 1 durch T
+de	f = 440\,\text{Hz}	f gleich 440 Hertz
+de	F = 96485\,\text{C/mol}	F gleich 96485 Coulomb pro Mol
+de	F = D \cdot \Delta s	F gleich D mal Delta s
+de	F = F_L	F gleich F L
+de	F = m \cdot a	F gleich m mal a
+de	F_{\text{el}} = F_{G,\text{korr}}	F el gleich F G korrigiert
+de	F_{\text{el}} = F_L \implies q \cdot E = q \cdot v \cdot B \implies \mathbf{v_0 = \frac{E}{B}}	F el gleich F L, daraus folgt q mal E gleich q mal v mal B, daraus folgt v null gleich E durch B
+de	f_{\text{grenz}}	f grenz
+de	F_{\text{Zug}} = \frac{F_L}{n}	F Zug gleich F L durch n
+de	F_1 = 4\text{ N}	F eins gleich 4 Newton
+de	F_2 = 10\text{ N}	F zwei gleich 10 Newton
+de	F_G	F G
+de	F_G \sim \frac{1}{r^2}	F G proportional zu 1 durch r Quadrat
+de	F_G = F_Z \implies G \frac{M \cdot m}{r^2} = m \frac{v^2}{r} \implies \mathbf{v = \sqrt{\frac{G \cdot M}{r}}}	F G gleich F Z, daraus folgt G mal M mal m durch r Quadrat gleich m mal v Quadrat durch r, daraus folgt v gleich Wurzel aus G mal M durch r
+de	F_G = G \cdot \frac{m_1 \cdot m_2}{r^2}	F G gleich G mal m eins mal m zwei durch r Quadrat
+de	F_G = m \cdot g	F G gleich m mal g
+de	F_H = F_G \cdot \frac{h}{l} = F_G \cdot \sin(\alpha)	F H gleich F G mal h durch l gleich F G mal Sinus von Alpha
+de	f_k(x)	f k von x
+de	F_L = F_Z \implies q \cdot v \cdot B = m \cdot \frac{v^2}{r} \implies \mathbf{r = \frac{m \cdot v}{q \cdot B}}	F L gleich F Z, daraus folgt q mal v mal B gleich m mal v Quadrat durch r, daraus folgt r gleich m mal v, geteilt durch q mal B
+de	F_R = 6 \cdot \pi \cdot \eta \cdot r \cdot v	F R gleich 6 mal Pi mal Eta mal r mal v
+de	F_R = 6\pi \eta r v_{\text{sink}}	F R gleich 6 Pi Eta r v sink
+de	F_Z	F Z
+de	F_Z = \frac{1200\,\text{kg} \cdot 400\,\text{m}^2/\text{s}^2}{50\,\text{m}} = 1200 \cdot 8 = 9600\,\text{N} = 9{,}6\,\text{kN}	F Z gleich 1200 Kilogramm mal 400 Quadratmeter pro Sekunde Quadrat, geteilt durch 50 Meter, gleich 1200 mal 8 gleich 9600 Newton gleich 9,6 Kilonewton
+de	F_Z = \frac{m \cdot v^2}{r}	F Z gleich m mal v Quadrat durch r
+de	f''	f Strich Strich
+de	f'''(x_W) \neq 0	f Strich Strich Strich von x W ungleich 0
+de	f'''(x)	f Strich Strich Strich von x
+de	f''(x_E) \neq 0	f Strich Strich von x E ungleich 0
+de	f''(x)	f Strich Strich von x
+de	f''(x) = (x^2 - 4x + 2) \cdot e^{-x}	f Strich Strich von x gleich Klammer auf x Quadrat minus 4 x plus 2 Klammer zu mal e hoch minus x
+de	f''(x) = 0	f Strich Strich von x gleich 0
+de	f'(2) = 12 \cdot 4 - 20 + 7 = 48 - 20 + 7 = 35	f Strich von 2 gleich 12 mal 4 minus 20 plus 7 gleich 48 minus 20 plus 7 gleich 35
+de	f'(x_0) = \lim_{h \to 0} \frac{f(x_0 + h) - f(x_0)}{h}	f Strich von x null gleich Limes für h gegen 0 von, f von x null plus h minus f von x null, geteilt durch h
+de	f'(x_0) = 0	f Strich von x null gleich 0
+de	f'(x)	f Strich von x
+de	f'(x) = (-x^2 + 2x + 4) \cdot e^{-x}	f Strich von x gleich Klammer auf minus x Quadrat plus 2 x plus 4 Klammer zu mal e hoch minus x
+de	f'(x) = (5 - 2x) \cdot e^{-x}	f Strich von x gleich Klammer auf 5 minus 2 x Klammer zu mal e hoch minus x
+de	f'(x) = \frac{x^{n+1}}{n+1}	f Strich von x gleich x hoch, n plus 1, geteilt durch n plus 1
+de	f'(x) = 0	f Strich von x gleich 0
+de	f'(x) = 12x^2 - 10x + 7	f Strich von x gleich 12 x Quadrat minus 10 x plus 7
+de	f'(x) = 2 \cdot e^{-x}	f Strich von x gleich 2 mal e hoch minus x
+de	f'(x) = 2 \cdot e^{-x} + (2x - 3) \cdot (-e^{-x}) = e^{-x} \cdot (2 - 2x + 3) = (5 - 2x) \cdot e^{-x}	f Strich von x gleich 2 mal e hoch minus x plus Klammer auf 2 x minus 3 Klammer zu mal Klammer auf minus e hoch minus x Klammer zu gleich e hoch minus x mal Klammer auf 2 minus 2 x plus 3 Klammer zu gleich Klammer auf 5 minus 2 x Klammer zu mal e hoch minus x
+de	F'(x) = f(x)	F Strich von x gleich f von x
+de	f'(x) = n \cdot x^{n-1}	f Strich von x gleich n mal x hoch, n minus 1
+de	f(-x) = -f(x) \iff	f von minus x gleich minus f von x genau dann, wenn
+de	f(-x) = f(x) \iff	f von minus x gleich f von x genau dann, wenn
+de	f(0) = a \cdot b^0 + c = a + c \Rightarrow	f von 0 gleich a mal b hoch 0 plus c gleich a plus c, daraus folgt
+de	F(1) = 1 - 2 + 2 = 1	F von 1 gleich 1 minus 2 plus 2 gleich 1
+de	F(3) = 27 - 18 + 6 = 15	F von 3 gleich 27 minus 18 plus 6 gleich 15
+de	f(n) \in O(g(n)) \iff \exists c > 0, n_0: |f(n)| \le c \cdot |g(n)| \; \forall n \ge n_0	f von n Element von O von g von n genau dann, wenn es ein c größer als 0 und ein n null gibt, so dass Betrag von f von n kleiner gleich c mal Betrag von g von n für alle n größer gleich n null
+de	f(x)	f von x
+de	F(x)	F von x
+de	f(x) \ge 0	f von x größer gleich 0
+de	f(x) = -x^2 + 4	f von x gleich minus x Quadrat plus 4
+de	f(x) = (2x - 3) \cdot e^{-x}	f von x gleich Klammer auf 2 x minus 3 Klammer zu mal e hoch minus x
+de	f(x) = (x^2 - 4) \cdot e^{-x}	f von x gleich Klammer auf x Quadrat minus 4 Klammer zu mal e hoch minus x
+de	f(x) = \begin{cases} c \cdot x^2 & \text{für } 0 \le x \le 3 \\ 0 & \text{sonst} \end{cases}	f von x gleich c mal x Quadrat für 0 kleiner gleich x kleiner gleich 3, sonst 0
+de	F(x) = \frac{1}{n + 1} \cdot x^{n+1} + C	F von x gleich 1 durch, n plus 1, mal x hoch, n plus 1, plus C
+de	f(x) = \frac{2x^3 - 4x^2 - 2x + 4}{x^2 - 1}	f von x gleich Bruch: 2 x hoch drei minus 4 x Quadrat minus 2 x plus 4, durch x Quadrat minus 1
+de	f(x) = \frac{Z(x)}{N(x)}	f von x gleich Z von x durch N von x
+de	f(x) = 0 \implies m \cdot x_0 + t = 0 \implies x_0 = -\frac{t}{m}	f von x gleich 0, daraus folgt m mal x null plus t gleich 0, daraus folgt x null gleich minus t durch m
+de	f(x) = 2 \cdot e^{-0{,}5 x}	f von x gleich 2 mal e hoch minus 0,5 x
+de	f(x) = 4x^3 - 5x^2 + 7x - 9	f von x gleich 4 x hoch drei minus 5 x Quadrat plus 7 x minus 9
+de	f(x) = a \cdot \sin(b(x - c)) + d	f von x gleich a mal Sinus von b mal Klammer auf x minus c Klammer zu, plus d
+de	f(x) = a_n (x - x_1)^{k_1} (x - x_2)^{k_2} \dots	f von x gleich a n mal Klammer auf x minus x eins Klammer zu hoch k eins mal Klammer auf x minus x zwei Klammer zu hoch k zwei und so weiter
+de	f(x) = a(x - d)^2 + e \implies	f von x gleich a mal Klammer auf x minus d Klammer zu Quadrat plus e, daraus folgt
+de	f(x) = a(x - d)^2 + e \Rightarrow S(d|e)	f von x gleich a mal Klammer auf x minus d Klammer zu Quadrat plus e, daraus folgt Scheitelpunkt S mit den Koordinaten d und e
+de	f(x) = a(x - x_1)(x - x_2)	f von x gleich a mal Klammer auf x minus x eins Klammer zu mal Klammer auf x minus x zwei Klammer zu
+de	f(x) = ax^2 + bx + c	f von x gleich a x Quadrat plus b x plus c
+de	f(x) = b \cdot a^x	f von x gleich b mal a hoch x
+de	f(x) = b \cdot a^x = b \cdot e^{k \cdot t}	f von x gleich b mal a hoch x gleich b mal e hoch k mal t
+de	f(x) = g(x) \implies d(x) = f(x) - g(x) = 0	f von x gleich g von x, daraus folgt d von x gleich f von x minus g von x gleich 0
+de	f(x) = m \cdot x + t	f von x gleich m mal x plus t
+de	f(x) = m x + t + \frac{R(x)}{N(x)}	f von x gleich m x plus t plus R von x durch N von x
+de	F(x) = n \cdot x^{n-1} + C	F von x gleich n mal x hoch, n minus 1, plus C
+de	F(x) = P(X \le x) = \int_{-\infty}^{x} f(t)\,dt	F von x gleich P von X kleiner gleich x gleich Integral von minus unendlich bis x über f von t d t
+de	f(x) = x \cdot e^{-2x}	f von x gleich x mal e hoch minus 2 x
+de	F(x) = x^3 - 2x^2 + 2x	F von x gleich x hoch drei minus 2 x Quadrat plus 2 x
+de	f(x) = x^3 - 3x^2 + 4	f von x gleich x hoch drei minus 3 x Quadrat plus 4
+de	f(x) = x^n	f von x gleich x hoch n
+de	Fe^{2+}	F e zwei plus
+de	FeBr_3	F e B r drei
+de	g	g
+de	G	G
+de	g \approx 9,81\text{ N/kg}	g ungefähr 9,81 Newton pro Kilogramm
+de	g \approx 9{,}81\,\frac{\text{m}}{\text{s}^2}	g ungefähr 9,81 Meter pro Sekunde Quadrat
+de	g \cap h = \{S\}	g geschnitten mit h gleich die Menge aus S
+de	G \equiv C	G dreifach verbunden mit C
+de	g \parallel h	g parallel zu h
+de	G = (V, \Sigma, P, S)	G gleich das Tupel aus V, großes Sigma, P und S
+de	G = (V, E)	G gleich das Paar aus V und E
+de	g = \frac{G \cdot M}{R^2}	g gleich G mal M durch R Quadrat
+de	G = \text{Grundwert}	G gleich Grundwert
+de	G = 0	G gleich 0
+de	G = DB - K_f	G gleich D B minus K f
+de	g = G \frac{M_E}{R_E^2} \approx 9{,}81\,\frac{\text{m}}{\text{s}^2}	g gleich G mal M E durch R E Quadrat ungefähr 9,81 Meter pro Sekunde Quadrat
+de	g = h	g gleich h
+de	g_{\text{Mond}} \approx 1,62\text{ N/kg}	g Mond ungefähr 1,62 Newton pro Kilogramm
+de	g_1 \parallel g_2 \iff m_1 = m_2	g eins parallel zu g zwei genau dann, wenn m eins gleich m zwei
+de	g_1 \perp g_2 \iff m_1 \cdot m_2 = -1 \iff m_2 = -\frac{1}{m_1}	g eins senkrecht zu g zwei genau dann, wenn m eins mal m zwei gleich minus 1 genau dann, wenn m zwei gleich minus 1 durch m eins
+de	g_1: y = 2x - 5	g eins: y gleich 2 x minus 5
+de	g_2	g zwei
+de	g: \vec{x} = \vec{a} + r \vec{u}_g	g: Vektor x gleich Vektor a plus r Vektor u g
+de	g: \vec{X} = \vec{P} + \lambda \vec{v}	g: Vektor X gleich Vektor P plus Lambda Vektor v
+de	G(20) = E(20) - K(20) = 1200 - 700 = 500	G von 20 gleich E von 20 minus K von 20 gleich 1200 minus 700 gleich 500
+de	G(x_C)	G von x C
+de	g(x)	g von x
+de	g(x) = x^2 - 4	g von x gleich x Quadrat minus 4
+de	G^- = G \cdot (1 - p\%)	G minus gleich G mal Klammer auf 1 minus p Prozent Klammer zu
+de	G^+ = G \cdot (1 + p\%)	G plus gleich G mal Klammer auf 1 plus p Prozent Klammer zu
+de	h	h
+de	H	H
+de	h \approx 6{,}626 \cdot 10^{-34}\,\text{J}\cdot\text{s}	h ungefähr 6,626 mal 10 hoch minus 34 Joulesekunden
+de	h \rightarrow 0	h gegen 0
+de	h = \frac{1}{2} g \cdot t^2	h gleich ein halb g mal t Quadrat
+de	h = 10\,\text{km}	h gleich 10 Kilometer
+de	h = 8\,\text{cm}	h gleich 8 Zentimeter
+de	h = H(M)	h gleich H von M
+de	H_0	H null
+de	H_0 \approx 70\,\frac{\text{km}}{\text{s}\cdot\text{Mpc}}	H null ungefähr 70 Kilometer pro Sekunde und Megaparsec
+de	H_0: p \ge 0{,}90	H null: p größer gleich 0,90
+de	H_0: p \le p_0	H null: p kleiner gleich p null
+de	H_1	H eins
+de	H_1: p < 0{,}90	H eins: p kleiner als 0,90
+de	H_1: p > p_0	H eins: p größer als p null
+de	H_2, Cl_2, CH_4	H zwei, C l zwei, C H vier
+de	H_2, O_2, Fe, S_8	H zwei, O zwei, F e, S acht
+de	H_2N-CH(R)-COO^-	H zwei N, C H mit Rest R, C O O minus
+de	H_2O	H zwei O
+de	H_2O, Cl^-	H zwei O, C l minus
+de	H_2O, CO_2, CH_4, N_2O	H zwei O, C O zwei, C H vier, N zwei O
+de	H_2O, NH_3, CO	H zwei O, N H drei, C O
+de	H_3N^+-CH(R)-COO^-	H drei N plus, C H mit Rest R, C O O minus
+de	H_3N^+-CH(R)-COOH	H drei N plus, C H mit Rest R, C O O H
+de	H_3O^+	H drei O plus
+de	H_3O^+ / H_2O	H drei O plus, H zwei O
+de	H_3O^+ + OH^- \rightarrow 2\,H_2O	H drei O plus plus O H minus reagiert zu 2 H zwei O
+de	h_a \perp a	h a senkrecht zu a
+de	h_a, h_b, h_c	h a, h b, h c
+de	h: \vec{x} = \vec{b} + s \vec{u}_h	h: Vektor x gleich Vektor b plus s Vektor u h
+de	h' = \frac{10\,\text{km}}{15{,}8} = 633\,\text{m}	h Strich gleich 10 Kilometer durch 15,8 gleich 633 Meter
+de	h' = s^{e_A} \pmod{N_A}	h Strich gleich s hoch e A modulo N A
+de	H(\langle M \rangle, \langle M \rangle)	H angewendet auf die Kodierung von M und die Kodierung von M
+de	H(\langle M \rangle, w)	H angewendet auf die Kodierung von M und w
+de	H(M_1) = H(M_2)	H von M eins gleich H von M zwei
+de	H^+	H plus
+de	h^2 = p \cdot q	h Quadrat gleich p mal q
+de	HA	H A
+de	HA \rightarrow H^+ + A^-	H A reagiert zu H plus plus A minus
+de	HA + \text{H}_2\text{O} \rightleftharpoons \text{H}_3\text{O}^+ + A^- \implies \mathbf{K_s = \frac{c(\text{H}_3\text{O}^+) \cdot c(A^-)}{c(HA)}} \implies \mathbf{pK_s = -\log(K_s)}	H A plus H zwei O im Gleichgewicht mit H drei O plus plus A minus, daraus folgt K s gleich c von H drei O plus mal c von A minus, geteilt durch c von H A, daraus folgt pK s gleich minus Logarithmus von K s
+de	HCl	H C l
+de	HCl / Cl^-	H C l, C l minus
+de	HCl, HNO_3	H C l, H N O drei
+de	HCO_3^-	H C O drei minus
+de	HDI \ge 0{,}80	H D I größer gleich 0,80
+de	HO-R'-OH	H O, R Strich, O H
+de	i	i
+de	I	I
+de	i \in \mathbb{N}_0	i Element der natürlichen Zahlen mit 0
+de	I = \frac{Q}{t}	I gleich Q durch t
+de	I = 0	I gleich 0
+de	I = I_0	I gleich I null
+de	I_{\text{ges}}	I ges
+de	I_{\text{ges}} = I_1 + I_2	I ges gleich I eins plus I zwei
+de	I_{\text{ges}} = I_1 = I_2	I ges gleich I eins gleich I zwei
+de	I_1	I eins
+de	I_2	I zwei
+de	I_3^-, I_5^-	I drei minus, I fünf minus
+de	I^- < Cl^- < F^- < H_2O	I minus kleiner als C l minus kleiner als F minus kleiner als H zwei O
+de	k	k
+de	K	K
+de	K \cap E = \{B\}	K geschnitten mit E gleich die Menge aus B
+de	K \cap E = \emptyset	K geschnitten mit E gleich leere Menge
+de	k \in \mathbb{Z}	k Element der ganzen Zahlen
+de	k < 0	k kleiner als 0
+de	k < 1	k kleiner als 1
+de	k = \ln(a)	k gleich l n von a
+de	k = 1	k gleich 1
+de	k = 2, 4	k gleich 2 und 4
+de	k = 3, 5	k gleich 3 und 5
+de	k = g(x)	k gleich g von x
+de	k > 0	k größer als 0
+de	k > 1	k größer als 1
+de	K_B > 10^{18}	K B größer als 10 hoch 18
+de	K_c	K c
+de	K_c \approx 1	K c ungefähr 1
+de	K_c \gg 1	K c sehr viel größer als 1
+de	K_c \ll 1	K c sehr viel kleiner als 1
+de	K_c = \frac{[C]^c \cdot [D]^d}{[A]^a \cdot [B]^b}	K c gleich Konzentration von C hoch c mal Konzentration von D hoch d, geteilt durch Konzentration von A hoch a mal Konzentration von B hoch b
+de	K_f	K f
+de	K_f = 60.000\text{ €}	K f gleich 60.000 Euro
+de	K_m	K m
+de	K_m \implies	K m, daraus folgt
+de	K_s	K s
+de	K_s = \frac{c(\text{H}_3\text{O}^+) \cdot c(A^-)}{c(HA)} \implies c(\text{H}_3\text{O}^+) = K_s \cdot \frac{c(HA)}{c(A^-)}	K s gleich c von H drei O plus mal c von A minus, geteilt durch c von H A, daraus folgt c von H drei O plus gleich K s mal c von H A durch c von A minus
+de	K_s = \frac{c(\text{H}_3\text{O}^+)^2}{c_0} \implies c(\text{H}_3\text{O}^+) = \sqrt{K_s \cdot c_0} \implies \mathbf{pH = \frac{1}{2}\left( pK_s - \log(c_0) \right)}	K s gleich c von H drei O plus zum Quadrat durch c null, daraus folgt c von H drei O plus gleich Wurzel aus K s mal c null, daraus folgt pH gleich ein halb mal, pK s minus Logarithmus von c null
+de	k_v	k v
+de	K_v	K v
+de	k_v = 40\text{ €}	k v gleich 40 Euro
+de	K_w = [\text{H}_3\text{O}^+] \cdot [\text{OH}^-] = 10^{-14}	K w gleich Konzentration von H drei O plus mal Konzentration von O H minus gleich 10 hoch minus 14
+de	K_w = 10^{-14}	K w gleich 10 hoch minus 14
+de	K, L, M, N...	K, L, M, N und so weiter
+de	K, Na, Mg, Al, Zn, Fe	K, N a, M g, A l, Z n, F e
+de	K: (x_1 - 1)^2 + (x_2 + 2)^2 + (x_3 - 3)^2 = 25	Kugel K: Klammer auf x eins minus 1 Klammer zu Quadrat plus Klammer auf x zwei plus 2 Klammer zu Quadrat plus Klammer auf x drei minus 3 Klammer zu Quadrat gleich 25
+de	K'(x) = 20 \Rightarrow 100 - 4x = 20 \Rightarrow x_C = 20	K Strich von x gleich 20, daraus folgt 100 minus 4 x gleich 20, daraus folgt x C gleich 20
+de	K(M; r)	K von M und r
+de	K(x) = 20x + 300	K von x gleich 20 x plus 300
+de	K^+	K plus
+de	K=2, L=8, M=18	K gleich 2, L gleich 8, M gleich 18
+de	l	l
+de	L	L
+de	L = \{(x \mid y) \mid y = mx+t\}	L gleich die Menge aller Punkte x, y mit y gleich m x plus t
+de	L = \{(x_0 \mid y_0)\}	L gleich die Menge aus dem Punkt x null, y null
+de	L = \{a^n b^n \mid n \ge 1\}	L gleich die Menge aller a hoch n b hoch n mit n größer gleich 1
+de	L = \{x\}	L gleich die Menge aus x
+de	L = \emptyset	L gleich leere Menge
+de	L = \frac{L_0}{\gamma}	L gleich L null durch Gamma
+de	L = \mu_0 \cdot \frac{N^2 \cdot A}{l}	L gleich My null mal N Quadrat mal A durch l
+de	L = m_e \cdot v \cdot r = n \cdot \frac{h}{2\pi} = n \cdot \hbar	L gleich m e mal v mal r gleich n mal h durch 2 Pi gleich n mal h quer
+de	L = n \cdot \frac{\lambda}{2} \implies f_n = n \cdot \frac{c}{2L}	L gleich n mal Lambda durch 2 daraus folgt f n gleich n mal c durch 2 L
+de	L = n \cdot \hbar	L gleich n mal h quer
+de	L_0	L null
+de	l: X = P + t \cdot \vec{n}	Gerade l: X gleich P plus t mal Vektor n
+de	L' \le_p L	L Strich polynomiell reduzierbar auf L
+de	L(\text{NEA}) = L(\text{DEA})	L von N E A gleich L von D E A
+de	m	m
+de	M	M
+de	M \le 1{,}44\,M_\odot	M kleiner gleich 1,44 Sonnenmassen
+de	m \neq 0	m ungleich 0
+de	M \rightarrow M^{n+} + n e^-	M reagiert zu M n plus plus n Elektronen
+de	m < 0	m kleiner als 0
+de	M < 8\,M_\odot	M kleiner als 8 Sonnenmassen
+de	m < N	m kleiner als N
+de	M = (Z, \Sigma, \delta, z_0, F)	M gleich das Tupel aus Z, großes Sigma, Delta, z null und F
+de	M = \begin{pmatrix} 0{,}8 & 0{,}3 \\ 0{,}2 & 0{,}7 \end{pmatrix}	M gleich die Matrix mit den Zeilen 0,8 und 0,3 sowie 0,2 und 0,7
+de	m = \frac{\Delta y}{\Delta x} = \frac{y_2 - y_1}{x_2 - x_1}	m gleich Delta y durch Delta x gleich Bruch: y zwei minus y eins, durch x zwei minus x eins
+de	m = \frac{h}{e} \implies	m gleich h durch e, daraus folgt
+de	M = \pi \cdot 6 \cdot 10 = 60\pi\,\text{cm}^2 \approx 188{,}50\,\text{cm}^2	M gleich Pi mal 6 mal 10 gleich 60 Pi Quadratzentimeter ungefähr 188,50 Quadratzentimeter
+de	M = \pi \cdot r \cdot s	M gleich Pi mal r mal s
+de	M = \pi r s	M gleich Pi r s
+de	m = \text{Masse in g}	m gleich Masse in Gramm
+de	m = \text{Masse in kg}	m gleich Masse in Kilogramm
+de	M = \text{molare Masse in } \frac{\text{g}}{\text{mol}}	M gleich molare Masse in Gramm pro Mol
+de	m = 0	m gleich 0
+de	m = 1200\,\text{kg}	m gleich 1200 Kilogramm
+de	m = 31^7 \text{ mod } 33 = 4	m gleich 31 hoch 7 modulo 33 gleich 4
+de	m = 4	m gleich 4
+de	m = c^d \text{ mod } N	m gleich c hoch d modulo N
+de	m > 0	m größer als 0
+de	M > 25\,M_\odot	M größer als 25 Sonnenmassen
+de	m g h	m g h
+de	m_{[AB]}	Mittelsenkrechte der Strecke A B
+de	m_{\text{Kern}}	m Kern
+de	m_0 = 0	m null gleich 0
+de	m_0 > 0	m null größer als 0
+de	M_1 \neq M_2	M eins ungleich M zwei
+de	m_2	m zwei
+de	m_3	m drei
+de	m_4	m vier
+de	m_a, m_b, m_c	m a, m b, m c
+de	m_e = 9{,}109 \cdot 10^{-31}\,\text{kg}, e = 1{,}602 \cdot 10^{-19}\,\text{C}	m e gleich 9,109 mal 10 hoch minus 31 Kilogramm, e gleich 1,602 mal 10 hoch minus 19 Coulomb
+de	M_k	M k
+de	M_k =	M k gleich
+de	M_U	M U
+de	M(\langle M \rangle)	M angewendet auf die Kodierung von M
+de	M(\text{H}_2\text{O}) = 2 \cdot 1 + 16 = 18	M von H zwei O gleich 2 mal 1 plus 16 gleich 18
+de	M(H) = 1\,\frac{\text{g}}{\text{mol}}	M von H gleich 1 Gramm pro Mol
+de	M(O) = 16\,\frac{\text{g}}{\text{mol}}	M von O gleich 16 Gramm pro Mol
+de	M(w)	M von w
+de	n	n
+de	N	N
+de	n \cdot M \rightarrow -[M]_n-	n mal M reagiert zum Polymer M n
+de	n \in \{1, 2, 3, \dots\}	n Element der Menge 1, 2, 3 und so weiter
+de	n \in \mathbb{R}	n Element der reellen Zahlen
+de	n \neq -1	n ungleich minus 1
+de	n \rightarrow n-1	n wird zu n minus 1
+de	n = \frac{36\,\text{g}}{18\,\text{g/mol}} = 2	n gleich 36 Gramm durch 18 Gramm pro Mol gleich 2
+de	n = \frac{c_0}{c}	n gleich c null durch c
+de	n = \frac{m}{M}	n gleich m durch M
+de	n = \frac{m}{M} \iff m = n \cdot M	n gleich m durch M genau dann, wenn m gleich n mal M
+de	n = \text{Stoffmenge in mol}	n gleich Stoffmenge in Mol
+de	n = 1	n gleich 1
+de	n = 1, 2, 3...	n gleich 1, 2, 3 und so weiter
+de	n = 100	n gleich 100
+de	n = 2	n gleich 2
+de	N = 2 \cdot 6{,}022 \cdot 10^{23} = 1{,}2044 \cdot 10^{24}	N gleich 2 mal 6,022 mal 10 hoch 23 gleich 1,2044 mal 10 hoch 24
+de	n = 3	n gleich 3
+de	N = 33	N gleich 33
+de	N = A - Z	N gleich A minus Z
+de	N = n \cdot N_A	N gleich n mal N A
+de	N = N_0 \cdot 2^n	N gleich N null mal 2 hoch n
+de	N = p \cdot q	N gleich p mal q
+de	N_0	N null
+de	N_0 = 10^{12}	N null gleich 10 hoch 12
+de	n_1 x_1 + n_2 x_2 + n_3 x_3 - d = 0	n eins x eins plus n zwei x zwei plus n drei x drei minus d gleich 0
+de	N_2: \text{N}\equiv\text{N}	N zwei: N dreifach gebunden an N
+de	N_2O	N zwei O
+de	N_A	N A
+de	N_A \approx 6{,}022 \cdot 10^{23}	N A ungefähr 6,022 mal 10 hoch 23
+de	N_A \approx 6{,}022 \cdot 10^{23}\,\text{mol}^{-1}	N A ungefähr 6,022 mal 10 hoch 23 pro Mol
+de	n-1	n minus 1
+de	N-H	N H
+de	N, \varphi(N)	N, Phi von N
+de	N,N	N, N
+de	n:m	n zu m
+de	n!	n Fakultät
+de	N(10) = 500 \cdot 1{,}15^{10} \approx 2023	N von 10 gleich 500 mal 1,15 hoch 10 ungefähr 2023
+de	N(24) = N_0 \cdot \left(\frac{1}{2}\right)^3 = \frac{1}{8} = 12{,}5\,\%	N von 24 gleich N null mal ein halb hoch 3 gleich ein Achtel gleich 12,5 Prozent
+de	N(t) = 500 \cdot 1{,}15^t	N von t gleich 500 mal 1,15 hoch t
+de	N(t) = N_0 \cdot \left(\frac{1}{2}\right)^{t/T_{1/2}}	N von t gleich N null mal ein halb hoch, t durch T ein halb
+de	n^k	n hoch k
+de	n=1	n gleich 1
+de	n=1 \implies 6\,\pi	n gleich 1, daraus folgt 6 Pi
+de	n=2	n gleich 2
+de	n=2,3,\dots	n gleich 2, 3 und so weiter
+de	n=3	n gleich 3
+de	Na^+	N a plus
+de	Na^+, Cl^-, Fe^{3+}	N a plus, C l minus, F e drei plus
+de	Na^+/K^+	N a plus und K plus
+de	NaCl	N a C l
+de	NaNO_2 + HCl \rightarrow HNO_2 + NaCl	N a N O zwei plus H C l reagiert zu H N O zwei plus N a C l
+de	NaOH	N a O H
+de	NH_3 < NO_2^- < CN^- < CO	N H drei kleiner als N O zwei minus kleiner als C N minus kleiner als C O
+de	NH_3^+	N H drei plus
+de	NO^+	N O plus
+de	O = \pi r^2 + \pi r s	O gleich Pi r Quadrat plus Pi r s
+de	O = 4 \cdot \pi \cdot r^2	O gleich 4 mal Pi mal r Quadrat
+de	O = 4\pi r^2	O gleich 4 Pi r Quadrat
+de	O = G + M	O gleich G plus M
+de	O_2	O zwei
+de	O_2: \text{O}=\text{O}	O zwei: O doppelt gebunden an O
+de	O-C-O	O C O
+de	O(\log n)	O von Logarithmus von n
+de	O(\log_2 n)	O von Logarithmus zur Basis 2 von n
+de	O(|V| + |E|)	O von, Betrag von V plus Betrag von E
+de	O(|V|^2)	O von Betrag von V zum Quadrat
+de	O(1)	O von 1
+de	O(1) < O(\log n) < O(n) < O(n \log n) < O(n^2) < O(2^n) < O(n!)	O von 1 kleiner als O von Logarithmus von n kleiner als O von n kleiner als O von n Logarithmus von n kleiner als O von n Quadrat kleiner als O von 2 hoch n kleiner als O von n Fakultät
+de	O(n \log n)	O von n Logarithmus von n
+de	O(n)	O von n
+de	O(n^2)	O von n Quadrat
+de	O=C=N-R-N=C=O	O doppelt gebunden an C doppelt gebunden an N, R, N doppelt gebunden an C doppelt gebunden an O
+de	OH^-	O H minus
+de	OH^- \rightarrow	O H minus reagiert zu
+de	p	p
+de	P	P
+de	p \approx 150-250\,\text{bar}	p ungefähr 150 bis 250 bar
+de	p \ge 1	p größer gleich 1
+de	p \neq q	p ungleich q
+de	p < p^*	p kleiner als p Stern
+de	p = \frac{1}{6}	p gleich ein Sechstel
+de	p = \frac{2\pi}{|b|}	p gleich 2 Pi durch Betrag von b
+de	p = \frac{F}{A}	p gleich F durch A
+de	p = \frac{h}{\lambda}	p gleich h durch Lambda
+de	P = \frac{W}{t}	P gleich W durch t
+de	p = \gamma \cdot m_0 \cdot v	p gleich Gamma mal m null mal v
+de	P = \sigma \cdot 4\pi R^2 \cdot T^4	P gleich Sigma mal 4 Pi R Quadrat mal T hoch vier
+de	P = \sigma \cdot A \cdot T^4 = \sigma \cdot (4\pi R^2) \cdot T^4	P gleich Sigma mal A mal T hoch 4 gleich Sigma mal Klammer auf 4 Pi R Quadrat Klammer zu mal T hoch 4
+de	p = 0{,}8	p gleich 0,8
+de	P = 1840\,\text{W}	P gleich 1840 Watt
+de	p = 3, q = 11, e = 3	p gleich 3, q gleich 11, e gleich 3
+de	p = 70\text{ €}	p gleich 70 Euro
+de	P = NP	P gleich N P
+de	P = U \cdot I = I^2 \cdot R = \frac{U^2}{R}	P gleich U mal I gleich I Quadrat mal R gleich U Quadrat durch R
+de	p > p^*	p größer als p Stern
+de	p_{\text{AfA}}\% = \frac{100\%}{n}	p AfA Prozent gleich 100 Prozent durch n
+de	p_{\text{Sonder}} > k_v	p Sonder größer als k v
+de	P_{680}	P 680
+de	P_{700}	P 700
+de	P_{p_0}(X \in \bar{A}) = P_{p_0}(X \ge k+1) = 1 - P_{p_0}(X \le k) \le \alpha \iff P_{p_0}(X \le k) \ge 1 - \alpha	P p null von X Element von A quer gleich P p null von X größer gleich k plus 1 gleich 1 minus P p null von X kleiner gleich k kleiner gleich Alpha, genau dann, wenn P p null von X kleiner gleich k größer gleich 1 minus Alpha
+de	p_0	p null
+de	p_1	p eins
+de	p_C	p C
+de	p_C \implies	p C, daraus folgt
+de	p_C = 100 - 2 \cdot 20 = 60	p C gleich 100 minus 2 mal 20 gleich 60
+de	P_g	P g
+de	P_n = n!	P n gleich n Fakultät
+de	p, q	p, q
+de	p: f(x) = 2x^2 - 8x + 6	p: f von x gleich 2 x Quadrat minus 8 x plus 6
+de	P'	P Strich
+de	P' = P + \vec{v} = (-3+6 | 4-2) = (3|2)	P Strich gleich P plus Vektor v gleich Punkt mit den Koordinaten minus 3 plus 6 und 4 minus 2 gleich Punkt mit den Koordinaten 3 und 2
+de	P(-3|4)	Punkt P mit den Koordinaten minus 3 und 4
+de	P(\mu - \sigma \le X \le \mu + \sigma) \approx 68{,}3\%	P von My minus Sigma kleiner gleich X kleiner gleich My plus Sigma ungefähr 68,3 Prozent
+de	P(\mu - 1\sigma \le X \le \mu + 1\sigma) \approx \mathbf{68{,}3\,\%}	P von My minus 1 Sigma kleiner gleich X kleiner gleich My plus 1 Sigma ungefähr 68,3 Prozent
+de	P(\mu - 2\sigma \le X \le \mu + 2\sigma) \approx \mathbf{95{,}4\,\%}	P von My minus 2 Sigma kleiner gleich X kleiner gleich My plus 2 Sigma ungefähr 95,4 Prozent
+de	P(\mu - 2\sigma \le X \le \mu + 2\sigma) \approx 95{,}4\%	P von My minus 2 Sigma kleiner gleich X kleiner gleich My plus 2 Sigma ungefähr 95,4 Prozent
+de	P(\mu - 3\sigma \le X \le \mu + 3\sigma) \approx \mathbf{99{,}7\,\%}	P von My minus 3 Sigma kleiner gleich X kleiner gleich My plus 3 Sigma ungefähr 99,7 Prozent
+de	P(\mu - 3\sigma \le X \le \mu + 3\sigma) \approx 99{,}7\%	P von My minus 3 Sigma kleiner gleich X kleiner gleich My plus 3 Sigma ungefähr 99,7 Prozent
+de	P(1 \le X \le 2)	P von 1 kleiner gleich X kleiner gleich 2
+de	P(1 \le X \le 2) = \int_1^2 \frac{1}{9} x^2\,dx = \left[\frac{x^3}{27}\right]_1^2 = \frac{8}{27} - \frac{1}{27} = \frac{7}{27}	P von 1 kleiner gleich X kleiner gleich 2 gleich Integral von 1 bis 2 über ein Neuntel x Quadrat d x gleich x hoch 3 durch 27 in den Grenzen 1 bis 2 gleich 8 durch 27 minus 1 durch 27 gleich 7 durch 27
+de	P(3 \mid 1)	Punkt P mit den Koordinaten 3 und 1
+de	P(4 \mid 1 \mid 7)	Punkt P mit den Koordinaten 4, 1 und 7
+de	P(4|1|7)	Punkt P mit den Koordinaten 4, 1 und 7
+de	P(5 \mid 4 \mid 8)	Punkt P mit den Koordinaten 5, 4 und 8
+de	P(A \cap B), P(A \cap \overline{B}), P(\overline{A} \cap B), P(\overline{A} \cap \overline{B})	P von A geschnitten mit B, P von A geschnitten mit B quer, P von A quer geschnitten mit B, P von A quer geschnitten mit B quer
+de	P(A) > 0	P von A größer als 0
+de	P(A), P(\overline{A}), P(B), P(\overline{B})	P von A, P von A quer, P von B, P von B quer
+de	P(E) = \frac{|E|}{Space(\Omega)} = \frac{\text{Anzahl der günstigen Ergebnisse}}{\text{Anzahl der möglichen Ergebnisse}}	P von E gleich Betrag von E durch die Größe von großes Omega gleich Anzahl der günstigen Ergebnisse durch Anzahl der möglichen Ergebnisse
+de	p(h) = \rho \cdot g \cdot h	p von h gleich Rho mal g mal h
+de	P(p_1, p_2, p_3)	Punkt P mit den Koordinaten p eins, p zwei und p drei
+de	P(p_1|p_2|p_3)	Punkt P mit den Koordinaten p eins, p zwei und p drei
+de	P(X \ge k) = 1 - P(X \le k - 1)	P von X größer gleich k gleich 1 minus P von X kleiner gleich k minus 1
+de	P(X = 2) = 15 \cdot \left(\frac{1}{6}\right)^2 \cdot \left(\frac{5}{6}\right)^4 = 15 \cdot \frac{1}{36} \cdot \frac{625}{1296} = \frac{9375}{46656} \approx 0{,}2009	P von X gleich 2 gleich 15 mal ein Sechstel Quadrat mal fünf Sechstel hoch 4 gleich 15 mal 1 durch 36 mal 625 durch 1296 gleich 9375 durch 46656 ungefähr 0,2009
+de	p(x) = 100 - 2x	p von x gleich 100 minus 2 x
+de	p(x) = a - b \cdot x	p von x gleich a minus b mal x
+de	p\% = \frac{p}{100} = \text{Prozentsatz}	p Prozent gleich p durch 100 gleich Prozentsatz
+de	p^*	p Stern
+de	p^+	p plus
+de	pH \approx 1	pH ungefähr 1
+de	pH \approx 2{,}9	pH ungefähr 2,9
+de	pH \approx 8{,}5-9	pH ungefähr 8,5 bis 9
+de	pH < IEP	pH kleiner als I E P
+de	pH = 7{,}0	pH gleich 7,0
+de	pH = IEP	pH gleich I E P
+de	pH > IEP	pH größer als I E P
+de	pK_s	pK s
+de	pK_s < 1	pK s kleiner als 1
+de	pK_s = 4{,}75	pK s gleich 4,75
+de	pK_s > 4	pK s größer als 4
+de	pK_S(\text{Essigsäure}) \approx 4{,}75	pK s von Essigsäure ungefähr 4,75
+de	pK_S(\text{Ethanol}) \approx 16	pK s von Ethanol ungefähr 16
+de	q	q
+de	Q	Q
+de	q = -e	q gleich minus e
+de	Q = -Q_0	Q gleich minus Q null
+de	Q = \text{konstant}	Q gleich konstant
+de	Q = \text{Wärmemenge in J}	Q gleich Wärmemenge in Joule
+de	Q = 0, U = 0	Q gleich 0, U gleich 0
+de	q = 1 - p	q gleich 1 minus p
+de	Q = c \cdot m \cdot \Delta T	Q gleich c mal m mal Delta T
+de	Q = I \cdot t	Q gleich I mal t
+de	q = n \cdot e	q gleich n mal e
+de	Q = Q_0, U = U_0	Q gleich Q null, U gleich U null
+de	Q = V	Q gleich V
+de	q_s = \text{spezifische Schmelzwärme}	q s gleich spezifische Schmelzwärme
+de	Q_S = q_s \cdot m	Q S gleich q s mal m
+de	q_v = \text{spezifische Verdampfungswärme}	q v gleich spezifische Verdampfungswärme
+de	Q_V = q_v \cdot m	Q V gleich q v mal m
+de	Q(-1 \mid -7)	Punkt Q mit den Koordinaten minus 1 und minus 7
+de	q^*	q Stern
+de	r	r
+de	R	R
+de	R \approx R_{\text{Erde}}	R ungefähr R Erde
+de	r \cdot B > C	r mal B größer als C
+de	R = -H	R gleich minus H
+de	r = \frac{9{,}109 \cdot 10^{-31} \cdot 2 \cdot 10^7}{1{,}602 \cdot 10^{-19} \cdot 5 \cdot 10^{-3}} = \frac{1{,}8218 \cdot 10^{-23}}{8{,}01 \cdot 10^{-22}} = 0{,}0227\,\text{m} = 2{,}27\,\text{cm}	r gleich 9,109 mal 10 hoch minus 31 mal 2 mal 10 hoch 7, geteilt durch 1,602 mal 10 hoch minus 19 mal 5 mal 10 hoch minus 3, gleich 1,8218 mal 10 hoch minus 23 durch 8,01 mal 10 hoch minus 22 gleich 0,0227 Meter gleich 2,27 Zentimeter
+de	r = \frac{m \cdot v_0}{q \cdot B_2} \implies \mathbf{m = \frac{q \cdot B_1 \cdot B_2 \cdot r}{E}}	r gleich m mal v null durch q mal B zwei, daraus folgt m gleich q mal B eins mal B zwei mal r durch E
+de	r = \frac{m \cdot v}{q \cdot B}	r gleich m mal v durch q mal B
+de	R = \frac{U}{I}	R gleich U durch I
+de	R = \rho \cdot \frac{l}{A}	R gleich Rho mal l durch A
+de	r = 0{,}125	r gleich 0,125
+de	r = 0{,}25	r gleich 0,25
+de	r = 0{,}5	r gleich 0,5
+de	r = 0{,}75	r gleich 0,75
+de	r = 1	r gleich 1
+de	r = 50\,\text{m}	r gleich 50 Meter
+de	r = 6\,\text{cm}	r gleich 6 Zentimeter
+de	r = f(x) \implies A(x) = \pi \cdot [f(x)]^2	r gleich f von x, daraus folgt A von x gleich Pi mal f von x zum Quadrat
+de	r = R_E, M = M_E	r gleich R E, M gleich M E
+de	R_{\text{ges}} = R_1 + R_2	R ges gleich R eins plus R zwei
+de	R_1-C(OH)(R_2)-R_3	R eins, C O H mit R zwei, R drei
+de	R_1-CH(OH)-R_2	R eins, C H O H, R zwei
+de	R_H \approx 1{,}097 \cdot 10^7\,\text{m}^{-1}	R H ungefähr 1,097 mal 10 hoch 7 pro Meter
+de	r_i = d(I, a) = d(I, b) = d(I, c)	r i gleich d von I und a gleich d von I und b gleich d von I und c
+de	r_k	r k
+de	r_k = \sqrt{r^2 - d^2}	r k gleich Wurzel aus r Quadrat minus d Quadrat
+de	r_s = \frac{2GM}{c^2}	r s gleich 2 G M durch c Quadrat
+de	r_u = |UA| = |UB| = |UC|	r u gleich Länge U A gleich Länge U B gleich Länge U C
+de	R-(CH_2-CHX)_n^\bullet	R, Klammer auf C H zwei C H X Klammer zu n, Radikal
+de	R-CH_2-OH	R, C H zwei, O H
+de	R-COO^-	R, C O O minus
+de	r, s \in \mathbb{R}	r, s Element der reellen Zahlen
+de	R^\bullet	R Radikal
+de	r=UA=UB=UC	r gleich U A gleich U B gleich U C
+de	rad	Radiant
+de	s	s
+de	S	S
+de	S \cap M	S geschnitten mit M
+de	S \in V	S Element von V
+de	s = \frac{1}{2} \cdot 6 \cdot 25 = 75\,\text{m}	s gleich ein halb mal 6 mal 25 gleich 75 Meter
+de	s = \frac{1}{2} \cdot a \cdot t^2	s gleich ein halb mal a mal t Quadrat
+de	s = \sqrt{36 + 64} = 10\,\text{cm}	s gleich Wurzel aus 36 plus 64, gleich 10 Zentimeter
+de	s = \sqrt{r^2 + h^2}	s gleich Wurzel aus r Quadrat plus h Quadrat
+de	s = 0{,}998 \cdot 3 \cdot 10^8 \cdot 2{,}2 \cdot 10^{-6} = 658\,\text{m} \ll 10\,\text{km}	s gleich 0,998 mal 3 mal 10 hoch acht mal 2,2 mal 10 hoch minus sechs gleich 658 Meter sehr viel kleiner als 10 Kilometer
+de	s = v \cdot \Delta t_0	s gleich v mal Delta t null
+de	s = v \cdot t	s gleich v mal t
+de	s_{\text{Zug}} = n \cdot h	s Zug gleich n mal h
+de	S_0 \approx 1361\,\text{W/m}^2	S null ungefähr 1361 Watt pro Quadratmeter
+de	S_0 \rightarrow S_1	S null geht über in S eins
+de	S_1	S eins
+de	S_1 \rightarrow S_0	S eins geht über in S null
+de	s_a, s_b, s_c	s a, s b, s c
+de	S_E	S E
+de	S_n = (n - 2) \cdot 180^\circ	S n gleich Klammer auf n minus 2 Klammer zu mal 180 Grad
+de	S_R	S R
+de	S_y(0 \mid t)	S y mit den Koordinaten 0 und t
+de	S_y(0 | a + c)	S y mit den Koordinaten 0 und a plus c
+de	S_y(0|f(0))	S y mit den Koordinaten 0 und f von 0
+de	S(d \mid e)	Punkt S mit den Koordinaten d und e
+de	S(p) = D(p) \implies	S von p gleich D von p, daraus folgt
+de	s(t) = \frac{1}{2} a \cdot t^2	s von t gleich ein halb a mal t Quadrat
+de	s(t) = v \cdot t + s_0	s von t gleich v mal t plus s null
+de	SO_4^{2-}: S = +\text{VI}	S O vier zwei minus: Oxidationszahl von S gleich plus 6
+de	sp^2	s p zwei
+de	t	t
+de	T	T
+de	T \approx 400-500^\circ\text{C}	T ungefähr 400 bis 500 Grad Celsius
+de	T = \frac{2\pi r}{v} = \frac{2\pi m}{q \cdot B}	T gleich 2 Pi r durch v gleich 2 Pi m durch q mal B
+de	t = \frac{3T}{4}	t gleich 3 T durch 4
+de	t = \frac{T}{2}	t gleich T durch 2
+de	t = \frac{T}{4}	t gleich T durch 4
+de	t = 0	t gleich 0
+de	T = 0^\circ\text{C}, p = 1013\,\text{hPa}	T gleich 0 Grad Celsius, p gleich 1013 Hektopascal
+de	T = 2{,}725\,\text{K}	T gleich 2,725 Kelvin
+de	t = 24\,\text{d} = 3 \cdot T_{1/2} \Rightarrow N(24) = N_0 \cdot \left(\frac{1}{2}\right)^3 = \frac{10^{12}}{8} = 1{,}25 \cdot 10^{11}	t gleich 24 Tage gleich 3 mal T ein halb, daraus folgt N von 24 gleich N null mal ein halb hoch 3 gleich 10 hoch 12 durch 8 gleich 1,25 mal 10 hoch 11
+de	T = 298\,\text{K} = 25^\circ\text{C}	T gleich 298 Kelvin gleich 25 Grad Celsius
+de	t = 5\,\text{s}	t gleich 5 Sekunden
+de	t = T	t gleich T
+de	T > 25^\circ\text{C}	T größer als 25 Grad Celsius
+de	T_{1/2}	T ein halb
+de	T_{1/2} = \frac{\ln(2)}{|k|}	T ein halb gleich l n von 2 durch Betrag von k
+de	T_{1/2} = 5730	T ein halb gleich 5730
+de	T_{1/2} = 8\,\text{Tagen}	T ein halb gleich 8 Tagen
+de	t_{2g}	t zwei g
+de	T_1	T eins
+de	t_1 \neq t_2	t eins ungleich t zwei
+de	T_1 \rightarrow S_0	T eins geht über in S null
+de	t_1 = t_2	t eins gleich t zwei
+de	T_1 = T_2 \Leftrightarrow T_1 + T_3 = T_2 + T_3	T eins gleich T zwei genau dann, wenn T eins plus T drei gleich T zwei plus T drei
+de	T_1, T_2	T eins, T zwei
+de	T_1(x) = T_2(x)	T eins von x gleich T zwei von x
+de	T_2	T zwei
+de	T_2 = \frac{\ln(2)}{k}	T zwei gleich l n von 2 durch k
+de	t_3	t drei
+de	T(x) = \frac{2x^2 - 8}{x^2 - 4x + 4}	T von x gleich Bruch: 2 x Quadrat minus 8, durch x Quadrat minus 4 x plus 4
+de	TM = (Z, \Sigma, \Gamma, \delta, z_0, \square, F)	T M gleich das Tupel aus Z, großes Sigma, großes Gamma, Delta, z null, Blank und F
+de	u	u
+de	U	U
+de	u \in Q	u Element von Q
+de	U \sim I	U proportional zu I
+de	u \to \infty	u gegen unendlich
+de	U = \frac{W}{Q}	U gleich W durch Q
+de	U = 2\pi r = \pi d	U gleich 2 Pi r gleich Pi d
+de	U = 40\,\text{m}	U gleich 40 Meter
+de	U = 500\,\text{V}	U gleich 500 Volt
+de	U > U_{\text{Zersetzung}} = E_{\text{Kathode}} - E_{\text{Anode}} + U_{\text{Über}}	U größer als U Zersetzung gleich E Kathode minus E Anode plus U Über
+de	U_{\text{ges}} = U_1 + U_2	U ges gleich U eins plus U zwei
+de	U_{\text{ges}} = U_1 = U_2	U ges gleich U eins gleich U zwei
+de	U_{\text{ind}} = -L \cdot \frac{dI}{dt}	U ind gleich minus L mal d I durch d t
+de	U_{\text{ind}} = -N \cdot \frac{d\Phi}{dt}	U ind gleich minus N mal d großes Phi durch d t
+de	U_C + U_L = 0 \implies \frac{Q}{C} + L \cdot \ddot{Q} = 0 \implies \ddot{Q}(t) + \frac{1}{LC} Q(t) = 0	U C plus U L gleich 0, daraus folgt Q durch C plus L mal Q zwei Punkt gleich 0, daraus folgt Q zwei Punkt von t plus 1 durch L C mal Q von t gleich 0
+de	U_G	U G
+de	U_H = R_H \cdot \frac{I \cdot B}{d}	U H gleich R H mal I mal B durch d
+de	U, S, H	U, S, H
+de	v	v
+de	V	V
+de	V \cap \Sigma = \emptyset	V geschnitten mit großes Sigma gleich leere Menge
+de	v \ll c	v sehr viel kleiner als c
+de	v \neq s	v ungleich s
+de	v \to c	v gegen c
+de	v = \frac{1}{2} v_{\text{max}}	v gleich ein halb v max
+de	V = \frac{1}{3} \cdot \pi \cdot 36 \cdot 8 = 96\pi\,\text{cm}^3 \approx 301{,}59\,\text{cm}^3	V gleich ein Drittel mal Pi mal 36 mal 8 gleich 96 Pi Kubikzentimeter ungefähr 301,59 Kubikzentimeter
+de	V = \frac{1}{3} \cdot \pi \cdot r^2 \cdot h	V gleich ein Drittel mal Pi mal r Quadrat mal h
+de	V = \frac{1}{3} \cdot G \cdot h	V gleich ein Drittel mal G mal h
+de	V = \frac{1}{3} \pi r^2 h	V gleich ein Drittel Pi r Quadrat h
+de	V = \frac{1}{3} G \cdot h	V gleich ein Drittel G mal h
+de	v = \frac{2\pi r}{T} = \omega \cdot r	v gleich 2 Pi r durch T gleich Omega mal r
+de	V = \frac{4}{3} \cdot \pi \cdot r^3	V gleich vier Drittel mal Pi mal r hoch drei
+de	V = \frac{4}{3}\pi r^3	V gleich vier Drittel Pi r hoch drei
+de	v = \frac{H_0}{r^2}	v gleich H null durch r Quadrat
+de	v = \omega \cdot r	v gleich Omega mal r
+de	V = \pi \cdot \int_0^\infty 4 \cdot e^{-x}\,dx = 4\pi	V gleich Pi mal Integral von 0 bis unendlich über 4 mal e hoch minus x d x gleich 4 Pi
+de	v = \sqrt{\frac{G \cdot M}{r}}	v gleich Wurzel aus G mal M durch r
+de	v = \sqrt{2 \cdot a \cdot s}	v gleich Wurzel aus 2 mal a mal s
+de	v = \sqrt{2gh}	v gleich Wurzel aus 2 g h
+de	v = \text{konstant}, a = 0	v gleich konstant, a gleich 0
+de	v = 0{,}998\,c	v gleich 0,998 c
+de	v = 108\,\frac{\text{km}}{\text{h}}	v gleich 108 Kilometer pro Stunde
+de	v = 2 \cdot 10^7\,\frac{\text{m}}{\text{s}}	v gleich 2 mal 10 hoch 7 Meter pro Sekunde
+de	v = 20\,\frac{\text{m}}{\text{s}}	v gleich 20 Meter pro Sekunde
+de	V = 4 \cdot \pi \cdot r^2	V gleich 4 mal Pi mal r Quadrat
+de	v = a \cdot t	v gleich a mal t
+de	v = g \cdot t	v gleich g mal t
+de	v = H_0 \cdot r	v gleich H null mal r
+de	V = n \cdot V_m	V gleich n mal V m
+de	v > 0	v größer als 0
+de	v_{\text{hin}} = k_{\text{hin}} \cdot [\text{A}]^a \cdot [\text{B}]^b	v hin gleich k hin mal Konzentration von A hoch a mal Konzentration von B hoch b
+de	v_{\text{hin}} = v_{\text{rück}}	v hin gleich v rück
+de	v_{\text{hin}} = v_{\text{rueck}}	v hin gleich v rück
+de	v_{\text{max}}	v max
+de	v_{\text{rueck}} = k_{\text{rueck}} \cdot [\text{C}]^c \cdot [\text{D}]^d	v rück gleich k rück mal Konzentration von C hoch c mal Konzentration von D hoch d
+de	v_0 = 0	v null gleich 0
+de	v_0 = E/B_1	v null gleich E durch B eins
+de	v_1 \approx 7{,}9\,\frac{\text{km}}{\text{s}}	v eins ungefähr 7,9 Kilometer pro Sekunde
+de	V_m	V m
+de	V_m = 22{,}4	V m gleich 22,4
+de	V_m = 22{,}4\,\frac{\text{l}}{\text{mol}}	V m gleich 22,4 Liter pro Mol
+de	v_Q	v Q
+de	v_Q \ge c	v Q größer gleich c
+de	V_x	V x
+de	V_x = \pi \cdot \int [f(x)]^2\,dx	V x gleich Pi mal Integral über f von x zum Quadrat d x
+de	V_x = \pi \cdot \int_a^b [f(x)]^2\,dx	V x gleich Pi mal Integral von a bis b über f von x zum Quadrat d x
+de	v(t) = a \cdot t + v_0	v von t gleich a mal t plus v null
+de	v(t) = v	v von t gleich v
+de	w	w
+de	W	W
+de	w \in L	w Element von L
+de	W = \text{Prozentwert}	W gleich Prozentwert
+de	W = 0	W gleich 0
+de	w = a_1 a_2 \dots a_n	w gleich a eins a zwei bis a n
+de	W = F \cdot s	W gleich F mal s
+de	W = F_1 \cdot s_1 = F_2 \cdot s_2	W gleich F eins mal s eins gleich F zwei mal s zwei
+de	W = G \cdot p\%	W gleich G mal p Prozent
+de	W = P \cdot t = U \cdot I \cdot t	W gleich P mal t gleich U mal I mal t
+de	w = x y z	w gleich x y z
+de	w = xyz	w gleich x y z
+de	W_{\text{el}} = \frac{1}{2} \cdot C \cdot U^2	W el gleich ein halb mal C mal U Quadrat
+de	W_{\text{el}} = \frac{1}{2} C U^2	W el gleich ein halb C U Quadrat
+de	W_{\text{el}} = \frac{Q^2}{2C}	W el gleich Q Quadrat durch 2 C
+de	W_{\text{ges}} = \frac{1}{2} C U_0^2	W ges gleich ein halb C U null Quadrat
+de	W_{\text{ges}} = \frac{1}{2} L I_0^2	W ges gleich ein halb L I null Quadrat
+de	W_{\text{mag}} = \frac{1}{2} \cdot L \cdot I^2	W mag gleich ein halb mal L mal I Quadrat
+de	w_\alpha	w Alpha
+de	w_\alpha, w_\beta, w_\gamma	w Alpha, w Beta, w Gamma
+de	W_A = h \cdot f_{\text{grenz}}	W A gleich h mal f grenz
+de	W_H = mgh	W H gleich m g h
+de	x	x
+de	X	X
+de	x \ge 0	x größer gleich 0
+de	x \in \bar{A}	x Element von A quer
+de	x \in \mathbb{Q}	x Element der rationalen Zahlen
+de	x \in \mathbb{R}	x Element der reellen Zahlen
+de	x \in A	x Element von A
+de	x \rightarrow -\infty: y \rightarrow 0	für x gegen minus unendlich geht y gegen 0
+de	x \rightarrow \pm \infty	x gegen plus minus unendlich
+de	x \rightarrow +\infty: y \rightarrow 0	für x gegen plus unendlich geht y gegen 0
+de	X \sim B(n, p)	X ist binomialverteilt mit n und p
+de	X \sim B(n; p_0)	X ist binomialverteilt mit n und p null
+de	x \to -\infty	x gegen minus unendlich
+de	x \to +\infty	x gegen plus unendlich
+de	X + m e^- \rightarrow X^{m-}	X plus m Elektronen reagiert zu X m minus
+de	X = (4, 1, 7)^T - 1 \cdot (2, -1, 2)^T = (2, 2, 5)^T	X gleich Spaltenvektor 4, 1, 7 minus 1 mal Spaltenvektor 2, minus 1, 2 gleich Spaltenvektor 2, 2, 5
+de	x = \log_3(20) = \frac{\lg(20)}{\lg(3)} \approx 2{,}727	x gleich Logarithmus zur Basis 3 von 20 gleich l g von 20 durch l g von 3 ungefähr 2,727
+de	x = \mu	x gleich My
+de	x = \mu - \sigma	x gleich My minus Sigma
+de	x = \mu + \sigma	x gleich My plus Sigma
+de	x = 1 \pm \sqrt{5}	x gleich 1 plus minus Wurzel aus 5
+de	x = 3	x gleich 3
+de	X = P + \lambda \cdot \vec{v}	X gleich P plus Lambda mal Vektor v
+de	x = x(k)	x gleich x von k
+de	x y^i z \notin L	x y hoch i z nicht Element von L
+de	x_{\text{BEP}}	x B E P
+de	x_{\text{BEP}} = \frac{K_f}{db}	x B E P gleich K f durch d b
+de	x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}	x eins zwei gleich minus b plus minus Wurzel aus b Quadrat minus 4 a c, geteilt durch 2 a
+de	x_{1,2} = \frac{-b \pm \sqrt{D}}{2a}	x eins zwei gleich minus b plus minus Wurzel aus D, geteilt durch 2 a
+de	x_0	x null
+de	x_0 = 2	x null gleich 2
+de	x_1 = -1	x eins gleich minus 1
+de	x_1 = 1	x eins gleich 1
+de	x_1 = 2	x eins gleich 2
+de	x_1, x_2	x eins, x zwei
+de	x_1, x_2, \dots	x eins, x zwei, und so weiter
+de	x_2 = -2	x zwei gleich minus 2
+de	x_2 = 3	x zwei gleich 3
+de	x_C	x C
+de	x, y, z	x, y, z
+de	x(t) = v_x \cdot t	x von t gleich v x mal t
+de	X^A X^a	X groß A, X klein a
+de	X^a Y	X klein a, Y
+de	xy^i z \in L	x y hoch i z Element von L
+de	y	y
+de	y = \frac{a_n}{b_n}	y gleich a n durch b n
+de	y = 0	y gleich 0
+de	y = c	y gleich c
+de	y = m x + t	y gleich m x plus t
+de	y = y(k)	y gleich y von k
+de	y(t) = \frac{1}{2} a_y t^2 = \frac{e U_y}{2 m d} t^2 \implies	y von t gleich ein halb a y t Quadrat gleich e U y durch 2 m d mal t Quadrat, daraus folgt
+de	z	z
+de	Z	Z
+de	z \approx \frac{v}{c}	z ungefähr v durch c
+de	Z = \frac{X - \mu}{\sigma}	Z gleich Bruch: X minus My, durch Sigma
+de	Z = \frac{X + \sigma}{\mu}	Z gleich Bruch: X plus Sigma, durch My
+de	z_{\max} = 2n^2	z max gleich 2 n Quadrat
+de	z_0 \in Z	z null Element von Z
+de	Z_1, Z_2, \dots, Z_k	Z eins, Z zwei bis Z k
+de	Z(x, y)	Z von x und y
+de	Z(x)	Z von x
+de	ZnSO_4	Z n S O vier

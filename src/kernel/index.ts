@@ -418,12 +418,15 @@ export {
   MAX_PLACE_BELOW,
   MaterialProposalSetError,
   matchMaterialProposals,
+  materialFormulasWithoutSpeech,
+  materialSpeechIssues,
   materialStems,
   normaliseMaterialArea,
   parseMaterialProposalSet,
   presetFor,
   takeMaterialBonusItem,
   VECTOR_MATCH_THRESHOLD,
+  withMaterialSpeech,
 } from "./import/material-import.js";
 export type {
   ConfirmCounts as MaterialConfirmCounts,
@@ -489,6 +492,8 @@ export type {
   BundledCellInfo,
   BundledCellStatus,
   CurriculumScope,
+  ReconcileBundledTilesOptions,
+  ReconcileBundledTilesResult,
 } from "./library/bundled-cells.js";
 export {
   BUNDLED_CELLS,
@@ -502,12 +507,78 @@ export {
   isBundledCellInstalled,
   listBundledCells,
   needsGenericCurriculumImport,
+  reconcileInstalledBundledTiles,
 } from "./library/bundled-cells.js";
 export {
   CARD_SHAPE_RULES,
+  CARD_TEXT_RULE,
   cardShapeRuleLines,
+  PLAIN_FORMULA_RULE,
 } from "./library/card-shape.js";
 export type {
+  CardSegment,
+  CardText,
+  CardTextIssue,
+  ImageSegment,
+  MathSegment,
+  PlainTextMarkup,
+  PlainTextMarkupCode,
+  TextSegment,
+  ValidateCardTextOptions,
+} from "./library/card-text.js";
+export {
+  describePlainTextMarkup,
+  findPlainTextMarkup,
+  isValidCardText,
+  MAX_CARD_SEGMENTS,
+  MAX_SPEECH_LENGTH,
+  normalizeCardText,
+  plainProjection,
+  spokenProjection,
+  validateCardText,
+} from "./library/card-text.js";
+export type {
+  CardTextInput,
+  CardTextInputMode,
+  CardTextInputResult,
+  CardTextNote,
+} from "./library/card-text-input.js";
+export {
+  dropEmphasis,
+  formulasWithoutSpeech,
+  readCardTextInput,
+  repairEatenBackslashes,
+  texAsText,
+  withSpeech,
+} from "./library/card-text-input.js";
+export type { PlaceholderText } from "./library/card-text-placeholders.js";
+export {
+  fromPlaceholderText,
+  toPlaceholderText,
+} from "./library/card-text-placeholders.js";
+export type {
+  CardTextColumns,
+  CardTextFields,
+  WriteCardTextResult,
+} from "./library/card-text-store.js";
+export {
+  assertPlainWriteAllowed,
+  CardTextError,
+  parseStoredCardText,
+  writeCardText,
+} from "./library/card-text-store.js";
+export type {
+  DollarLiftMode,
+  DollarLiftResult,
+  UnliftedDollarSpan,
+} from "./library/dollar-lift.js";
+export {
+  DollarLiftError,
+  liftDollarMath,
+  looksLikeMath,
+} from "./library/dollar-lift.js";
+export type {
+  InstallKvtOptions,
   InstallKvtResult,
   KvtAtom,
   KvtPracticeItem,
@@ -518,6 +589,7 @@ export type {
 export {
   ATOM_ID_PATTERN,
   installKvtTile,
+  kvtItemPlainTexts,
   materialiseKvtCards,
 } from "./library/kvt-attach.js";
 export type {
@@ -584,6 +656,22 @@ export {
   publishTokenRevision,
   publishTokenRevisionInTransaction,
 } from "./library/revision.js";
+export { texToPlain } from "./library/tex-plain.js";
+export type {
+  TexIssue,
+  TexIssueCode,
+  TexLexResult,
+  TexToken,
+} from "./library/tex-tokenizer.js";
+export {
+  FORBIDDEN_TEX_COMMANDS,
+  isInventoryControlWord,
+  MATH_ENVIRONMENTS,
+  MATH_INVENTORY_VERSION,
+  MAX_TEX_LENGTH,
+  texIssues,
+  tokenizeTex,
+} from "./library/tex-tokenizer.js";
 export type {
   LibraryTopic,
   StartLibraryTopicResult,
@@ -639,6 +727,12 @@ export {
   resetCardsForToken,
   updateCard,
 } from "./models/card.js";
+export type { InlineImageType } from "./models/inline-image.js";
+export {
+  inlineImageIssue,
+  MAX_INLINE_IMAGE_BYTES,
+  sniffInlineImageType,
+} from "./models/inline-image.js";
 export type {
   CreateKnowledgeContextInput,
   KnowledgeContext,
@@ -1142,6 +1236,7 @@ export type {
 } from "./scheduler/queue.js";
 export {
   buildReviewQueue,
+  cardTextFields,
   parseReviewFastCheck,
   presentFastCheck,
   TIER1_FIRST_RULE,

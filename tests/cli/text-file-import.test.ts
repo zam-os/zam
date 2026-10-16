@@ -120,6 +120,55 @@ function richAnkiCollection(): Buffer {
   return readFileSync(path);
 }
 
+/** A Basic deck whose notes write formulas the ways Anki does. */
+function formulaAnkiCollection(): Buffer {
+  const directory = mkdtempSync(join(tmpdir(), "zam-formula-apkg-db-"));
+  tempDirs.push(directory);
+  const path = join(directory, "collection.anki2");
+  const sqlite = new BetterSqlite3(path);
+  sqlite.exec(`
+    CREATE TABLE col (models TEXT NOT NULL, decks TEXT NOT NULL);
+    CREATE TABLE notes (
+      id INTEGER PRIMARY KEY, guid TEXT NOT NULL, mid INTEGER NOT NULL,
+      tags TEXT NOT NULL, flds TEXT NOT NULL
+    );
+    CREATE TABLE cards (
+      id INTEGER PRIMARY KEY, nid INTEGER NOT NULL, did INTEGER NOT NULL,
+      ord INTEGER NOT NULL
+    );
+  `);
+  const models = {
+    300: {
+      name: "Basic",
+      type: 0,
+      flds: [{ name: "Front" }, { name: "Back" }],
+      tmpls: [{ name: "Card 1", ord: 0, qfmt: "{{Front}}", afmt: "{{Back}}" }],
+    },
+  };
+  sqlite
+    .prepare("INSERT INTO col (models, decks) VALUES (?, ?)")
+    .run(JSON.stringify(models), JSON.stringify({ 1: { name: "Mathe" } }));
+  const notes: Array<[string, string]> = [
+    [
+      "Was ist <b>\\(\\frac{1}{2}\\)</b>?",
+      "[$]x^2 &lt; 4[/$] kostet $5",
+    ],
+    ["Siehe \\(\\href{x}{y}\\)", "[latex]$$a^2$$[/latex]"],
+  ];
+  notes.forEach(([front, back], index) => {
+    sqlite
+      .prepare(
+        "INSERT INTO notes (id, guid, mid, tags, flds) VALUES (?, ?, ?, ?, ?)",
+      )
+      .run(index + 1, `formula-${index}`, 300, "", `${front}\u001f${back}`);
+    sqlite
+      .prepare("INSERT INTO cards (id, nid, did, ord) VALUES (?, ?, ?, ?)")
+      .run(index + 1, index + 1, 1, 0);
+  });
+  sqlite.close();
+  return readFileSync(path);
+}
+
 function crc32(data: Uint8Array): number {
   let crc = 0xffffffff;
   for (const byte of data) {
@@ -400,6 +449,48 @@ describe("safe APKG text import", () => {
       occlusions: [],
     });
     expect(document.unsupported).toEqual([]);
+  });
+});
+
+describe("formulas in an Anki deck (ADR 2026-10-14b, plan Phase 7)", () => {
+  it("lifts Anki's delimiters into math segments and keeps a refused formula as text", async () => {
+    const path = tempFile(
+      "formulas.apkg",
+      zip([
+        {
+          name: "collection.anki2",
+          data: formulaAnkiCollection(),
+          deflate: true,
+        },
+        { name: "media", data: Buffer.from("{}") },
+      ]),
+    );
+    const document = await loadApkgDocument(path);
+    const [half, refused] = document.cards;
+
+    expect(half.questionSegments).toEqual([
+      { type: "text", text: "Was ist " },
+      { type: "math", tex: "\\frac{1}{2}" },
+      // The sanitizer has always turned an inline tag (`</b>`) into a space.
+      { type: "text", text: " ?" },
+    ]);
+    expect(half.question).toBe("Was ist ½ ?");
+    expect(half.answerSegments?.[0]).toEqual({ type: "math", tex: "x^2 < 4" });
+    // A price stays text.
+    expect(half.answer).toBe("x² < 4 kostet $5");
+    expect(half.unliftedText).toEqual({
+      question: "Was ist \\(\\frac{1}{2}\\) ?",
+      answer: "[$]x^2 < 4[/$] kostet $5",
+    });
+
+    expect(refused.questionSegments).toBeUndefined();
+    expect(refused.question).toBe("Siehe href x y");
+    expect(refused.answerSegments).toEqual([
+      { type: "math", tex: "a^2", block: true },
+    ]);
+    expect(refused.warnings).toEqual([
+      expect.objectContaining({ code: "formula-kept-as-text" }),
+    ]);
   });
 });
 

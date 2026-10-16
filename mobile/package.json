@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^2.11.1",
-    "@tauri-apps/plugin-barcode-scanner": "^2.4.5"
+    "@tauri-apps/plugin-barcode-scanner": "^2.4.5",
+    "temml": "0.13.5"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.11.4",

@@ -43,9 +43,18 @@
 import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
 import { ensureCard, getCard } from "../models/card.js";
+import { inlineImageIssue } from "../models/inline-image.js";
 import { addPrerequisite, removePrerequisite } from "../models/prerequisite.js";
 import { type BloomLevel, getTokenById, insertToken } from "../models/token.js";
 import { syncCuratedDistractors } from "../recall/choice-options.js";
+import { sha256HexBytes } from "../util/sha256.js";
+import {
+  type CardText,
+  normalizeCardText,
+  plainProjection,
+  validateCardText,
+} from "./card-text.js";
+import { writeCardText } from "./card-text-store.js";
 import { assertFieldsReadyToPublish } from "./publication.js";
 import { publishTokenRevisionInTransaction } from "./revision.js";
 
@@ -115,9 +124,31 @@ export interface KvtPracticeItem {
    * 2026-09-27 Decision 6). Presentation data, not substance: changing them
    * never makes a card due.
    */
-  choice_distractors?: Array<{ text: string; reason?: string | null }>;
-  question: string;
-  concept: string;
+  choice_distractors?: Array<{
+    text?: string;
+    /** The option as card-text segments (ADR 2026-10-14b). */
+    segments?: CardText;
+    reason?: string | null;
+  }>;
+  /**
+   * Plain question and answer. With `question_segments`/`concept_segments`
+   * they are derived and may be left out; when given beside segments they
+   * must equal the segments' plain projection.
+   */
+  question?: string;
+  concept?: string;
+  /**
+   * Card text as segments (ADR 2026-10-14b): formulas with their speech,
+   * images with alt text. Published content, so every formula needs speech.
+   */
+  question_segments?: CardText;
+  concept_segments?: CardText;
+  /**
+   * A worked model answer for authors and reviewers: plain text, or segments
+   * when it holds formulas (their speech optional). Tile data only — the
+   * installer never stores it.
+   */
+  sample_solution?: string | CardText;
   /**
    * How a changed question/answer affects people who already learned it.
    * Absent means `material` — an unannotated content change must never pass
@@ -183,6 +214,18 @@ export interface KvtTile {
    * format changes do not transfer mastery.
    */
   retired_items?: KvtRetiredItem[];
+  /**
+   * The images the tile's card text shows (ADR 2026-10-14b, Decision 5),
+   * shipped beside the tile as `media/<sha256>.<ext>`. The installer gets
+   * their bytes from the caller (`InstallKvtOptions.media`) and checks hash,
+   * type and size before it stores them.
+   */
+  media?: Array<{ sha256: string; type: string }>;
+}
+
+export interface InstallKvtOptions {
+  /** A shipped image's bytes by its SHA-256, or `null` when absent. */
+  media?: (sha256: string) => Uint8Array | null;
 }
 
 export interface InstallKvtResult {
@@ -328,32 +371,168 @@ function slugForItem(atom: KvtAtom, item: KvtPracticeItem): string {
  * and read back without loss while the interaction model is still open
  * (ADR 2026-08-14b, question 5).
  */
-function fastCheckOf(item: KvtPracticeItem): string | null {
-  if (item.fast_check === undefined || item.fast_check === null) return null;
+function fastCheckOf(item: KvtPracticeItem): FastCheckForms {
+  if (item.fast_check === undefined || item.fast_check === null) {
+    return { substance: null, stored: null };
+  }
   if (typeof item.fast_check !== "object") {
     throw new Error(`fast_check on ${item.id} must be an object`);
   }
-  return JSON.stringify(item.fast_check);
+  const check = item.fast_check as Record<string, unknown>;
+  const options = check.options;
+  if (
+    !Array.isArray(options) ||
+    !options.some((option) => Array.isArray(option))
+  ) {
+    const verbatim = JSON.stringify(item.fast_check);
+    return { substance: verbatim, stored: verbatim };
+  }
+  // Segment options (ADR 2026-10-14b): the plain options stay the substance,
+  // the segments travel beside them and change no learner's state.
+  const plain: string[] = [];
+  const segments: Array<CardText | null> = [];
+  options.forEach((option, index) => {
+    if (typeof option === "string") {
+      plain.push(option);
+      segments.push(null);
+      return;
+    }
+    const issues = validateCardText(option, { requireSpeech: true });
+    if (issues.length > 0) {
+      throw new Error(
+        `fast_check.options[${index}] on ${item.id}: ${issues.map((i) => i.message).join(" ")}`,
+      );
+    }
+    const normalized = normalizeCardText(option as CardText);
+    plain.push(plainProjection(normalized));
+    segments.push(normalized);
+  });
+  const { option_segments: _ignored, ...rest } = check;
+  return {
+    substance: JSON.stringify({ ...rest, options: plain }),
+    stored: JSON.stringify({
+      ...rest,
+      options: plain,
+      option_segments: segments,
+    }),
+  };
+}
+
+interface FastCheckForms {
+  /** What counts as substance: the plain options only. */
+  substance: string | null;
+  /** What is stored: the plain options plus their segments. */
+  stored: string | null;
+}
+
+/** A stored fast check's substance: its JSON without the option segments. */
+function fastCheckSubstance(stored: string | null): string | null {
+  if (!stored) return stored;
+  try {
+    const parsed = JSON.parse(stored) as Record<string, unknown>;
+    if (!("option_segments" in parsed)) return stored;
+    const { option_segments: _ignored, ...rest } = parsed;
+    return JSON.stringify(rest);
+  } catch {
+    return stored;
+  }
+}
+
+/**
+ * An item's plain question and answer for readers that only need text (the
+ * material import's matching): the strings when present, else the
+ * segments' projection. Never throws; the installer validates.
+ */
+export function kvtItemPlainTexts(item: KvtPracticeItem): {
+  question: string;
+  concept: string;
+} {
+  const plain = (text: string | undefined, segments: CardText | undefined) =>
+    text ??
+    (segments && validateCardText(segments).length === 0
+      ? plainProjection(normalizeCardText(segments))
+      : "");
+  return {
+    question: plain(item.question, item.question_segments),
+    concept: plain(item.concept, item.concept_segments),
+  };
+}
+
+interface ItemTexts {
+  question: string;
+  concept: string;
+  questionSegments: CardText | null;
+  conceptSegments: CardText | null;
+}
+
+/**
+ * An item's question and answer: from segments when it has them (their plain
+ * projection), else the plain strings. A plain string given beside segments
+ * must agree with them, so a tile cannot say two different things.
+ */
+function itemTexts(item: KvtPracticeItem): ItemTexts {
+  const side = (
+    name: "question" | "concept",
+    segments: CardText | undefined,
+    plain: string | undefined,
+  ): { text: string; segments: CardText | null } => {
+    if (!segments) {
+      if (typeof plain !== "string") {
+        throw new Error(`Practice item ${item.id} needs a ${name}`);
+      }
+      return { text: plain, segments: null };
+    }
+    const issues = validateCardText(segments, { requireSpeech: true });
+    if (issues.length > 0) {
+      throw new Error(
+        `${name}_segments on ${item.id}: ${issues.map((i) => i.message).join(" ")}`,
+      );
+    }
+    const normalized = normalizeCardText(segments);
+    const projection = plainProjection(normalized);
+    if (plain !== undefined && plain !== projection) {
+      throw new Error(
+        `Practice item ${item.id}: ${name} does not match ${name}_segments (expected "${projection}")`,
+      );
+    }
+    return { text: projection, segments: normalized };
+  };
+  const question = side("question", item.question_segments, item.question);
+  const concept = side("concept", item.concept_segments, item.concept);
+  return {
+    question: question.text,
+    concept: concept.text,
+    questionSegments: question.segments,
+    conceptSegments: concept.segments,
+  };
 }
 
 function choiceDistractorsOf(
   item: KvtPracticeItem,
-): Array<{ text: string; reason: string | null }> {
+): Array<{ text: string; segments?: CardText; reason: string | null }> {
   const raw = item.choice_distractors;
   if (raw === undefined || raw === null) return [];
   if (!Array.isArray(raw)) {
     throw new Error(`choice_distractors on ${item.id} must be an array`);
   }
   return raw.map((entry, index) => {
+    const reason = typeof entry?.reason === "string" ? entry.reason : null;
+    if (entry?.segments) {
+      const issues = validateCardText(entry.segments, { requireSpeech: true });
+      if (issues.length > 0) {
+        throw new Error(
+          `choice_distractors[${index}] on ${item.id}: ${issues.map((i) => i.message).join(" ")}`,
+        );
+      }
+      const segments = normalizeCardText(entry.segments);
+      return { text: plainProjection(segments), segments, reason };
+    }
     if (!entry || typeof entry.text !== "string" || !entry.text.trim()) {
       throw new Error(
         `choice_distractors[${index}] on ${item.id} needs a non-empty text`,
       );
     }
-    return {
-      text: entry.text,
-      reason: typeof entry.reason === "string" ? entry.reason : null,
-    };
+    return { text: entry.text, reason };
   });
 }
 
@@ -480,6 +659,7 @@ async function reconcileDerivedEdges(
 export async function installKvtTile(
   db: Database,
   tileInput: unknown,
+  opts: InstallKvtOptions = {},
 ): Promise<InstallKvtResult> {
   const tile = asTile(tileInput);
   const atomIds = new Set(tile.atoms.map((atom) => atom.id));
@@ -513,8 +693,125 @@ export async function installKvtTile(
     }
   }
 
+  try {
+    const images = await tileImages(db, tile, opts);
+    return await installTileInTransaction(db, tile, images);
+  } catch (error) {
+    await recordTileFailure(db, tile, error);
+    throw error;
+  }
+}
+
+/**
+ * The images a tile's card text needs and the library does not hold yet,
+ * checked: shipped with the tile, the hash its name claims, PNG, JPEG, WebP
+ * or GIF by its bytes, at most 256 KB. Images belong in a question or an
+ * answer; an option has no media of its own to show one.
+ */
+async function tileImages(
+  db: Database,
+  tile: KvtTile,
+  opts: InstallKvtOptions,
+): Promise<Array<{ hash: string; type: string; bytes: Uint8Array }>> {
+  const declared = new Map(
+    (tile.media ?? []).map((entry) => [entry.sha256, entry.type]),
+  );
+  const wanted = new Set<string>();
+  for (const atom of tile.atoms) {
+    for (const item of atom.practice_items) {
+      for (const segments of [item.question_segments, item.concept_segments]) {
+        for (const segment of segments ?? []) {
+          if (segment.type === "image") wanted.add(segment.media);
+        }
+      }
+      const options = (item.fast_check as { options?: unknown } | undefined)
+        ?.options;
+      if (
+        Array.isArray(options) &&
+        options.some(
+          (option) =>
+            Array.isArray(option) &&
+            option.some((segment) => segment?.type === "image"),
+        )
+      ) {
+        throw new Error(
+          `${item.id}: an image belongs in a question or an answer, not in a fast-check option`,
+        );
+      }
+    }
+  }
+  const out: Array<{ hash: string; type: string; bytes: Uint8Array }> = [];
+  for (const hash of wanted) {
+    const held = await db
+      .prepare("SELECT 1 FROM media_assets WHERE hash = ?")
+      .get(hash);
+    if (held) continue;
+    const type = declared.get(hash);
+    const bytes = type ? opts.media?.(hash) : null;
+    if (!type || !bytes) {
+      throw new Error(
+        `Tile ${tile.tile_id} shows the image ${hash.slice(0, 12)}… but does not ship it`,
+      );
+    }
+    if (sha256HexBytes(bytes) !== hash) {
+      throw new Error(
+        `Tile ${tile.tile_id}: the image ${hash.slice(0, 12)}… does not match its hash`,
+      );
+    }
+    const issue = inlineImageIssue(bytes, type);
+    if (issue) {
+      throw new Error(
+        `Tile ${tile.tile_id}: image ${hash.slice(0, 12)}…: ${issue}`,
+      );
+    }
+    out.push({ hash, type, bytes });
+  }
+  return out;
+}
+
+/**
+ * Remember that a tile failed to install, so a background reinstall tries it
+ * again later instead of in a loop. Best effort: the original error matters
+ * more than this bookkeeping.
+ */
+async function recordTileFailure(
+  db: Database,
+  tile: KvtTile,
+  error: unknown,
+): Promise<void> {
+  const message = error instanceof Error ? error.message : String(error);
+  try {
+    await db
+      .prepare(
+        `INSERT INTO installed_tiles (tile_id, version, installed_at, failed_at, last_error)
+         VALUES (?, '', ?, ?, ?)
+         ON CONFLICT (tile_id) DO UPDATE
+            SET failed_at = excluded.failed_at,
+                last_error = excluded.last_error`,
+      )
+      .run(tile.tile_id, nowIso(), nowIso(), message.slice(0, 500));
+  } catch {
+    // A library without M048 or a read-only connection: nothing to record.
+  }
+}
+
+async function installTileInTransaction(
+  db: Database,
+  tile: KvtTile,
+  images: Array<{ hash: string; type: string; bytes: Uint8Array }> = [],
+): Promise<InstallKvtResult> {
   return db.transaction(async (tx) => {
     const now = new Date().toISOString();
+    // Stored before the items, so their card text can name them.
+    for (const image of images) {
+      await tx
+        .prepare(
+          `INSERT INTO media_assets (hash, mime_type, byte_size, data)
+           VALUES (?, ?, ?, ?)
+           ON CONFLICT (hash) DO NOTHING`,
+        )
+        .run(image.hash, image.type, image.bytes.byteLength, image.bytes);
+    }
     let tokensCreated = 0;
     let tokensRevised = 0;
     let tokensUnchanged = 0;
@@ -617,6 +914,13 @@ export async function installKvtTile(
 
       for (const item of atom.practice_items) {
         assertItemId(item.id, "practice-item id");
+        const texts = itemTexts(item);
+        const fastCheck = fastCheckOf(item);
+        const asToken = {
+          id: item.id,
+          question: texts.question,
+          concept: texts.concept,
+        };
         const existing = await getTokenById(tx, item.id);
         if (!existing) {
           const slug = slugForItem(atom, item);
@@ -631,8 +935,8 @@ export async function installKvtTile(
           }
           assertFieldsReadyToPublish({
             slug,
-            concept: item.concept,
-            question: item.question,
+            concept: texts.concept,
+            question: texts.question,
             domain: atom.domain ?? "",
             requireQuestion: true,
           });
@@ -640,8 +944,8 @@ export async function installKvtTile(
             id: item.id,
             slug,
             title: atom.title,
-            concept: item.concept,
-            question: item.question,
+            concept: texts.concept,
+            question: texts.question,
             question_source: "manual",
             domain: atom.domain ?? "",
             bloom_level: bloomOf(item),
@@ -650,12 +954,21 @@ export async function installKvtTile(
             topic_id: projected?.topic_code ?? null,
             language: item.language ?? null,
             tier: item.tier ?? null,
-            fast_check: fastCheckOf(item),
+            fast_check: fastCheck.stored,
           });
           await tx
             .prepare("UPDATE tokens SET edge_representative = ? WHERE id = ?")
             .run(item.edge_representative ? 1 : 0, item.id);
-          await syncCuratedDistractors(tx, item, choiceDistractorsOf(item));
+          await writeCardText(
+            tx,
+            item.id,
+            {
+              question: texts.questionSegments,
+              concept: texts.conceptSegments,
+            },
+            { requireSpeech: true },
+          );
+          await syncCuratedDistractors(tx, asToken, choiceDistractorsOf(item));
           tokensCreated += 1;
           itemsSuperseded += await applyDeclaredReplacements(tx, tile, item);
           continue;
@@ -679,15 +992,18 @@ export async function installKvtTile(
           );
         }
 
+        // Substance is the plain text a learner answers against. Segments,
+        // speech, alt text and option segments are presentation: written
+        // below on every install, never a revision (ADR 2026-10-14b D7).
         const substanceChanged =
           existing.title !== atom.title ||
-          existing.concept !== item.concept ||
-          (existing.question ?? "") !== item.question ||
+          existing.concept !== texts.concept ||
+          (existing.question ?? "") !== texts.question ||
           existing.bloom_level !== bloomOf(item) ||
           existing.domain !== (atom.domain ?? existing.domain) ||
           existing.language !== (item.language ?? null) ||
           existing.tier !== (item.tier ?? null) ||
-          existing.fast_check !== fastCheckOf(item);
+          fastCheckSubstance(existing.fast_check) !== fastCheck.substance;
 
         if (substanceChanged) {
           // Absent materiality means material: a published wording change that
@@ -698,13 +1014,15 @@ export async function installKvtTile(
             materiality: item.materiality ?? "material",
             changes: {
               title: atom.title,
-              question: item.question,
-              concept: item.concept,
+              question: texts.question,
+              concept: texts.concept,
+              questionSegments: texts.questionSegments,
+              conceptSegments: texts.conceptSegments,
               domain: atom.domain ?? existing.domain,
               bloomLevel: bloomOf(item),
               language: item.language ?? null,
               tier: item.tier ?? null,
-              fastCheck: fastCheckOf(item),
+              fastCheck: fastCheck.stored,
             },
             publishedBy: tile.publisher ?? tile.tile_id,
           });
@@ -727,7 +1045,24 @@ export async function installKvtTile(
             item.edge_representative ? 1 : 0,
             item.id,
           );
-        await syncCuratedDistractors(tx, item, choiceDistractorsOf(item));
+        // Presentation follows the tile on every install, without a
+        // revision: an added speech or alt text, or option segments, reach
+        // learners who enrolled long ago (ADR 2026-10-14b Decision 7).
+        await writeCardText(
+          tx,
+          item.id,
+          { question: texts.questionSegments, concept: texts.conceptSegments },
+          { requireSpeech: true },
+        );
+        if (
+          fastCheck.stored !== null &&
+          fastCheck.stored !== existing.fast_check
+        ) {
+          await tx
+            .prepare("UPDATE tokens SET fast_check = ? WHERE id = ?")
+            .run(fastCheck.stored, item.id);
+        }
+        await syncCuratedDistractors(tx, asToken, choiceDistractorsOf(item));
         itemsSuperseded += await applyDeclaredReplacements(tx, tile, item);
       }
     }
@@ -801,6 +1136,22 @@ export async function installKvtTile(
         edge.requires_id,
       );
     }
+
+    // The version this library now holds (ADR 2026-10-14b Decision 7). An
+    // unchanged reinstall leaves the row alone, like every other row.
+    await tx
+      .prepare(
+        `INSERT INTO installed_tiles (tile_id, version, installed_at, failed_at, last_error)
+         VALUES (?, ?, ?, NULL, NULL)
+         ON CONFLICT (tile_id) DO UPDATE
+            SET version = excluded.version,
+                installed_at = excluded.installed_at,
+                failed_at = NULL,
+                last_error = NULL
+          WHERE installed_tiles.version <> excluded.version
+             OR installed_tiles.failed_at IS NOT NULL`,
+      )
+      .run(tile.tile_id, String(tile.version), now);
 
     return {
       tileId: tile.tile_id,

@@ -8,7 +8,7 @@ tags:
   - mcp
   - secrets
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/agent-trust-model.md"
-timestamp: 2026-10-14T23:00:00.000Z
+timestamp: 2026-10-15T08:00:00.000Z
 ---
 
 ZAM treats two things as untrusted: the **agent** that calls its tools, and
@@ -106,6 +106,15 @@ is itself local or LAN.
   shown is its re-serialisation, never the input, and surfaces show it only
   as an image of a `data:` URL; the glyph only as text. A stricter validator
   version re-checks stored rows and drops those that no longer pass.
+- **Formulas and card images.** A formula in card text is restricted LaTeX
+  that `tokenizeTex` must accept before anything stores or renders it: an
+  allowlist of commands and environments, no `\href`, `\def`, `%`, `#` or
+  `$`, at most 500 characters ([card-text-segments.md](card-text-segments.md)).
+  Temml renders it with `trust: false`, and its MathML must pass an element,
+  attribute and style allowlist; an agent's refused formula is an error that
+  names the segment. An image in card text is PNG, JPEG, WebP or GIF by its
+  bytes and at most 256 KB, so a renamed SVG never enters. `card-text-fix`
+  on the panel bridge only asks the text model and writes nothing.
 - **Backups.** Every harness file `zam agent connect` replaces is kept next to
   it as `<file>.zam-backup-<time>`.
 - **Copilot canvas.** The extension's loopback server answers only under a
@@ -162,6 +171,7 @@ before it ships:
 
 # Citations
 
+- [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
 - [ADR 2026-10-08 — Observation Without Content](../adr/2026-10-08-skill-learner-observation.md)
 - [ADR 2026-07-30b — Credential Secret Backends](../adr/2026-07-30b-credential-secret-backends.md)
