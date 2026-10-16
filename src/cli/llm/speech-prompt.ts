@@ -10,7 +10,7 @@
 
 import { repairEatenBackslashes } from "../../kernel/library/card-text-input.js";
 
-/** At most this many formulas go into one follow-up question. */
+/** At most this many formulas go into one follow-up request. */
 export const MAX_SPEECH_REQUEST_FORMULAS = 60;
 
 export interface FormulaSpeechItem {
@@ -27,13 +27,23 @@ Rules:
 - Examples: "W_{\\text{el}} = \\frac{1}{2} C U^2" → "W el gleich ein halb C U Quadrat"; "\\vec{F} = m \\cdot \\vec{a}" → "Vektor F gleich m mal Vektor a"; "x_{1,2}" → "x eins zwei".
 - Output ONLY a raw JSON array, one object per formula, the formula copied exactly: [{"tex":"…","speech":"…"}]. In JSON every backslash is written twice.`;
 
-/** The user message: the formulas with their cards, as JSON. */
+/**
+ * The formulas in requests of at most `MAX_SPEECH_REQUEST_FORMULAS`, so a
+ * long import asks about every formula instead of dropping the rest.
+ */
+export function formulaSpeechBatches(
+  items: FormulaSpeechItem[],
+): FormulaSpeechItem[][] {
+  const batches: FormulaSpeechItem[][] = [];
+  for (let i = 0; i < items.length; i += MAX_SPEECH_REQUEST_FORMULAS) {
+    batches.push(items.slice(i, i + MAX_SPEECH_REQUEST_FORMULAS));
+  }
+  return batches;
+}
+
+/** The user message for one batch: the formulas with their cards, as JSON. */
 export function buildFormulaSpeechRequest(items: FormulaSpeechItem[]): string {
-  return `Formulas:\n${JSON.stringify(
-    items.slice(0, MAX_SPEECH_REQUEST_FORMULAS),
-    null,
-    1,
-  )}\n\nJSON Array Output:`;
+  return `Formulas:\n${JSON.stringify(items, null, 1)}\n\nJSON Array Output:`;
 }
 
 /**

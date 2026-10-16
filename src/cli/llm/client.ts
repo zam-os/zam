@@ -76,6 +76,7 @@ import {
   buildFormulaSpeechRequest,
   FORMULA_SPEECH_SYSTEM_PROMPT,
   type FormulaSpeechItem,
+  formulaSpeechBatches,
   parseFormulaSpeechReply,
 } from "./speech-prompt.js";
 
@@ -1706,28 +1707,41 @@ function splitCurriculumText(text: string, maxChars: number): string[] {
 
 /**
  * Ask the text model once for the readings of formulas that came back
- * without speech (ADR 2026-10-14b, Decisions 4 and 6). Best effort: a
- * failure leaves them without speech, and voice mode reads the plain text.
+ * without speech (ADR 2026-10-14b, Decisions 4 and 6), in batches of
+ * `MAX_SPEECH_REQUEST_FORMULAS`. Best effort: a failed batch leaves its
+ * formulas without speech, and voice mode reads the plain text.
  */
 export async function requestFormulaSpeechViaLLM(
   db: Database,
   items: FormulaSpeechItem[],
 ): Promise<Map<string, string>> {
-  if (items.length === 0) return new Map();
+  const speech = new Map<string, string>();
+  if (items.length === 0) return speech;
+  let ask: (batch: FormulaSpeechItem[]) => Promise<string>;
   try {
     const cfg = await getProviderForRole(db, "text");
     const endpoint = await resolveUsableTextEndpoint(db, { allowAgent: true });
-    const reply = await sendCardPrompt(
-      endpoint,
-      cfg.locale,
-      FORMULA_SPEECH_SYSTEM_PROMPT,
-      buildFormulaSpeechRequest(items),
-      "LLM formula speech",
-    );
-    return parseFormulaSpeechReply(reply);
+    ask = (batch) =>
+      sendCardPrompt(
+        endpoint,
+        cfg.locale,
+        FORMULA_SPEECH_SYSTEM_PROMPT,
+        buildFormulaSpeechRequest(batch),
+        "LLM formula speech",
+      );
   } catch {
-    return new Map();
+    return speech;
   }
+  for (const batch of formulaSpeechBatches(items)) {
+    try {
+      for (const [tex, reading] of parseFormulaSpeechReply(await ask(batch))) {
+        speech.set(tex, reading);
+      }
+    } catch {
+      // This batch stays without speech; the next one is still asked.
+    }
+  }
+  return speech;
 }
 
 /** Generated cards, with speech asked for where the model left it out. */
@@ -4548,12 +4562,17 @@ export async function ensureHighQualityQuestion(
         }
       } else if (generated.text.trim().length > 0) {
         // Ephemeral by design: the generated question is used for this
-        // review only and never written back to the token.
-        return {
-          question: generated.text,
-          source: "llm",
-          model: generated.model,
-        };
+        // review only and never written back to the token. A formula the
+        // model wrote in dollars is read like an imported one.
+        const read = readCardTextInput(generated.text.trim(), "import");
+        if (read.ok) {
+          return {
+            question: read.value.plain,
+            source: "llm",
+            model: generated.model,
+            ...(read.value.segments ? { segments: read.value.segments } : {}),
+          };
+        }
       }
     } catch {
       // Fail silently and fall back to the stored database question.

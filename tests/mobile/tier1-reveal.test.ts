@@ -13,7 +13,7 @@ describe("Tier-1 choice reveal on Mobile", () => {
     expect(main).toContain("revealedAnswer.hidden = !reviewSession.revealed");
     // The concept is revealed with its formulas typeset (ADR 2026-10-14b).
     expect(main).toContain(
-      "void renderCardText(expectedAnswer, item.conceptSegments, prompt.concept)",
+      "void renderCardText(\n    expectedAnswer,\n    item.conceptSegments,\n    prompt.concept,",
     );
     expect(session).toContain("this.snapshot.revealed = true");
     expect(session).toContain(

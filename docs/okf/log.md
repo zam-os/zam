@@ -1,5 +1,10 @@
 # Log
 
+## 2026-10-16
+
+- **Update** — [Learning Content](learning-content.md)
+- **Update** — [Card Text Segments](card-text-segments.md)
+
 ## 2026-10-15
 
 - **Update** — [Token and Card Model](token-card-model.md)

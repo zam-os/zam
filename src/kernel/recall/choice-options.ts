@@ -212,24 +212,55 @@ export async function syncCuratedDistractors(
   entries: readonly NewDistractor[],
 ): Promise<void> {
   const sourceHash = choiceSourceHash(token);
-  const wanted = new Set(
-    entries.map((entry) =>
-      normalizeOption(
-        entry.segments ? plainProjection(entry.segments) : entry.text,
-      ),
-    ),
-  );
+  const wanted = new Map<
+    string,
+    { text: string; segments: string | null; reason: string | null }
+  >();
+  for (const entry of entries) {
+    let segments: CardText | null = null;
+    if (entry.segments) {
+      const issues = validateCardText(entry.segments);
+      if (issues.length > 0) throw new CardTextError("option", issues);
+      segments = normalizeCardText(entry.segments);
+    }
+    const text = segments ? plainProjection(segments) : entry.text.trim();
+    wanted.set(normalizeOption(text), {
+      text,
+      segments: segments ? JSON.stringify(segments) : null,
+      reason: entry.reason?.trim() || null,
+    });
+  }
   const rows = (await db
     .prepare(
-      `SELECT id, text FROM choice_distractors
+      `SELECT id, text, text_segments, reason FROM choice_distractors
         WHERE token_id = ? AND source = 'curated'`,
     )
-    .all(token.id)) as Array<{ id: string; text: string }>;
+    .all(token.id)) as Array<{
+    id: string;
+    text: string;
+    text_segments: string | null;
+    reason: string | null;
+  }>;
   for (const row of rows) {
-    if (!wanted.has(normalizeOption(row.text))) {
+    const entry = wanted.get(normalizeOption(row.text));
+    if (!entry) {
       await db
         .prepare("DELETE FROM choice_distractors WHERE id = ?")
         .run(row.id);
+      continue;
+    }
+    // Same option, new presentation (a fixed formula or reading, a
+    // reworded reason): the tile's version replaces it (PR #412 review).
+    if (
+      entry.text !== row.text ||
+      entry.segments !== row.text_segments ||
+      entry.reason !== row.reason
+    ) {
+      await db
+        .prepare(
+          "UPDATE choice_distractors SET text = ?, text_segments = ?, reason = ? WHERE id = ?",
+        )
+        .run(entry.text, entry.segments, entry.reason, row.id);
     }
   }
   await storeDistractors(db, {

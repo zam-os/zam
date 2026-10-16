@@ -1752,8 +1752,10 @@ export async function reconcileInstalledBundledTiles(
   }>;
   const recorded = new Map(rows.map((row) => [row.tile_id, row]));
 
-  // Installed means recorded, or — for a library from before M048 — every
-  // atom and item present, as `isBundledCellInstalled` reads it. One shared
+  // Installed means recorded with a version, or — for a library from before
+  // M048 — every atom and item present, as `isBundledCellInstalled` reads
+  // it. A first install that failed records no version: the learner never
+  // got that tile, so it is not reinstalled behind their back. One shared
   // item does not install a whole tile: the Optik tiles share six items.
   const atomIds = new Set(tiles.flatMap((t) => t.atoms.map((a) => a.id)));
   const itemIds = new Set(
@@ -1767,7 +1769,7 @@ export async function reconcileInstalledBundledTiles(
   ]);
   const installed = tiles.filter(
     (tile) =>
-      recorded.has(tile.tile_id) ||
+      Boolean(recorded.get(tile.tile_id)?.version) ||
       tile.atoms.every(
         (atom) =>
           presentAtoms.has(atom.id) &&

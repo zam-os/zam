@@ -612,6 +612,8 @@ class Converter {
 
   private atom(textMode: boolean, compact: boolean, before: string): string {
     const token = this.tokens[this.i++];
+    // A projection never throws: a formula that ends early ends here.
+    if (!token) return "";
     switch (token.kind) {
       case "open": {
         // `{,}` is TeX's decimal comma: a comma with no separator space.
@@ -819,6 +821,8 @@ class Converter {
         return "";
       case "not": {
         // NFC composes `∈` + U+0338 into `∉` and `=` + U+0338 into `≠`.
+        // TeX ignores the space in `\not \in`; so does the projection.
+        this.skipSpaces();
         const next = this.atom(textMode, compact, before);
         const core = next.trim();
         return core ? next.replace(core, `${core}̸`).normalize("NFC") : next;

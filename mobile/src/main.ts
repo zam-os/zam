@@ -600,22 +600,34 @@ const SAFE_REVIEW_MEDIA_TYPES = new Set([
 ]);
 let reviewMediaRequest = 0;
 let reviewMediaUrls: string[] = [];
+/** Images inside the card text, by asset hash (ADR 2026-10-14b, D5). */
+let reviewInlineImages = new Map<string, string>();
+const reviewImages = {
+  imageSource: (hash: string) => reviewInlineImages.get(hash) ?? null,
+};
 
 function clearReviewMedia(): void {
   reviewQuestionMedia.replaceChildren();
   reviewAnswerMedia.replaceChildren();
   for (const url of reviewMediaUrls) URL.revokeObjectURL(url);
   reviewMediaUrls = [];
+  reviewInlineImages = new Map();
 }
 
-function appendMobileMedia(container: HTMLElement, media: TokenMedia): void {
-  if (!SAFE_REVIEW_MEDIA_TYPES.has(media.mimeType)) return;
+/** A blob URL for media bytes, revoked with the next card's media. */
+function mediaUrl(media: TokenMedia): string {
   const bytes = new Uint8Array(media.data.byteLength);
   bytes.set(media.data);
   const url = URL.createObjectURL(
     new Blob([bytes.buffer], { type: media.mimeType }),
   );
   reviewMediaUrls.push(url);
+  return url;
+}
+
+function appendMobileMedia(container: HTMLElement, media: TokenMedia): void {
+  if (!SAFE_REVIEW_MEDIA_TYPES.has(media.mimeType)) return;
+  const url = mediaUrl(media);
   if (media.kind === "audio") {
     const audio = document.createElement("audio");
     audio.controls = true;
@@ -643,6 +655,26 @@ function appendMobileMedia(container: HTMLElement, media: TokenMedia): void {
   container.appendChild(frame);
 }
 
+/** Question and revealed answer again, once the card's images are loaded. */
+function renderReviewCardText(): void {
+  const item = reviewSession.currentItem;
+  const prompt = reviewSession.currentPrompt;
+  if (!item || !prompt) return;
+  renderQuestionWithTopic(
+    reviewQuestion,
+    item.domain,
+    prompt.question,
+    prompt.question === item.question ? item.questionSegments : null,
+    reviewImages,
+  );
+  void renderCardText(
+    expectedAnswer,
+    item.conceptSegments,
+    prompt.concept,
+    reviewImages,
+  );
+}
+
 async function renderMobileReviewMedia(tokenId: string): Promise<void> {
   const request = ++reviewMediaRequest;
   clearReviewMedia();
@@ -663,6 +695,19 @@ async function renderMobileReviewMedia(tokenId: string): Promise<void> {
         );
       }
     }
+    for (const item of media) {
+      if (
+        item.placement !== "inline" ||
+        item.kind !== "image" ||
+        !SAFE_REVIEW_MEDIA_TYPES.has(item.mimeType) ||
+        reviewInlineImages.has(item.assetHash)
+      ) {
+        continue;
+      }
+      reviewInlineImages.set(item.assetHash, mediaUrl(item));
+    }
+    // The text was drawn before the images loaded: draw it again with them.
+    if (reviewInlineImages.size > 0) renderReviewCardText();
   } catch {
     // Text remains a complete, offline fallback if a legacy media row is bad.
   }
@@ -3074,6 +3119,7 @@ async function renderCurrentReview(message = ""): Promise<void> {
     item.domain,
     prompt.question,
     prompt.question === item.question ? item.questionSegments : null,
+    reviewImages,
   );
   // The count calibrates how long to keep digging; the points stay hidden.
   const showsPoints = shouldShowPointCount(prompt.concept, item.bloomLevel);
@@ -3129,7 +3175,12 @@ async function renderCurrentReview(message = ""): Promise<void> {
   // A choice's rating follows from the pick: no rating buttons.
   reviewHowWell.hidden = Boolean(choicePick);
   reviewRatings.hidden = Boolean(choicePick);
-  void renderCardText(expectedAnswer, item.conceptSegments, prompt.concept);
+  void renderCardText(
+    expectedAnswer,
+    item.conceptSegments,
+    prompt.concept,
+    reviewImages,
+  );
   const sourceUrl = externalSourceUrl(prompt.sourceLink);
   reviewSource.hidden = !sourceUrl;
   if (sourceUrl) reviewSource.href = sourceUrl;

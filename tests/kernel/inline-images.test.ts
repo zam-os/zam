@@ -4,7 +4,10 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
+  confirmCardSplit,
   type Database,
+  ensureCard,
+  getTokenById,
   getTokenMedia,
   inlineImageIssue,
   installKvtTile,
@@ -115,6 +118,39 @@ describe("a tile that ships an image", () => {
       placement: "inline",
       altText: "Zwei parallele Striche",
     });
+  });
+
+  it("drops the inline rows when a split rewrites the question as plain text", async () => {
+    const hash = sha(PNG);
+    await installKvtTile(db, tileWithImage(hash), {
+      media: (wanted) => (wanted === hash ? PNG : null),
+    });
+    const itemId = "01K9TEST000000000000000J11";
+    const token = await getTokenById(db, itemId);
+    if (!token) throw new Error("token missing");
+    await ensureCard(db, itemId, "learner");
+    await confirmCardSplit(
+      db,
+      "learner",
+      token.slug,
+      "block",
+      "Welches Bauteil hat das Schaltzeichen mit zwei Strichen?",
+      token.concept,
+      [
+        {
+          question: "Was speichert ein Kondensator?",
+          concept: "Ladung.",
+          domain: "physik",
+        },
+        {
+          question: "Wovon hängt die Kapazität ab?",
+          concept: "Fläche und Abstand.",
+          domain: "physik",
+        },
+      ],
+    );
+    expect(await getTokenMedia(db, itemId)).toEqual([]);
+    expect((await getTokenById(db, itemId))?.question_segments).toBeNull();
   });
 
   it("refuses a renamed SVG, a wrong hash and an image it does not ship", async () => {

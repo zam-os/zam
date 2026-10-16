@@ -993,6 +993,7 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "cte_proposal",
   "cte_accept",
   "cte_discard",
+  "cte_invalid_formula",
   "material_existing",
   "material_existing_held",
   "material_continuation_heading",

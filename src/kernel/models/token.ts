@@ -1641,11 +1641,22 @@ export async function confirmCardSplit(
       const keepQuestionSegments =
         (originalQuestion || null) === (originalToken.question ?? null);
       const keepConceptSegments = originalConcept === originalToken.concept;
+      // The segments go through the one write path, which also removes the
+      // side's inline images (PR #412 review); the plain text follows.
+      const plainAgain = {
+        ...(!keepQuestionSegments && originalToken.question_segments
+          ? { question: null }
+          : {}),
+        ...(!keepConceptSegments && originalToken.concept_segments
+          ? { concept: null }
+          : {}),
+      };
+      if (Object.keys(plainAgain).length > 0) {
+        await writeCardText(tx, originalToken.id, plainAgain);
+      }
       await tx
         .prepare(
-          `UPDATE tokens SET question = ?, concept = ?, updated_at = ?${
-            keepQuestionSegments ? "" : ", question_segments = NULL"
-          }${keepConceptSegments ? "" : ", concept_segments = NULL"} WHERE id = ?`,
+          "UPDATE tokens SET question = ?, concept = ?, updated_at = ? WHERE id = ?",
         )
         .run(
           originalQuestion || null,

@@ -11,6 +11,7 @@ import {
   fixCardTextViaLLM,
   importCurriculumViaLLM,
   parseTranslatedSegments,
+  requestFormulaSpeechViaLLM,
 } from "../../src/cli/llm/client.js";
 import { buildMaterialInstructions } from "../../src/cli/llm/material-prompt.js";
 import { parseFormulaSpeechReply } from "../../src/cli/llm/speech-prompt.js";
@@ -205,6 +206,36 @@ describe("model replies with formulas", () => {
     expect(bodies).toHaveLength(2);
   });
 
+  it("asks for every missing reading in batches, and a failed batch costs only its own", async () => {
+    const items = Array.from({ length: 130 }, (_, i) => ({
+      tex: `x_{${i}}`,
+      card: "Karte",
+    }));
+    const sizes: number[] = [];
+    global.fetch = async (_url, init) => {
+      if (!init?.body) return new Response("{}");
+      const user = (
+        JSON.parse(String(init.body)) as {
+          messages: Array<{ role: string; content: string }>;
+        }
+      ).messages.find((m) => m.role === "user")?.content as string;
+      const asked = JSON.parse(
+        user.slice(user.indexOf("["), user.lastIndexOf("]") + 1),
+      ) as Array<{ tex: string }>;
+      sizes.push(asked.length);
+      if (sizes.length === 2) return new Response("down", { status: 503 });
+      return chatReply(
+        JSON.stringify(asked.map(({ tex }) => ({ tex, speech: "x Index" }))),
+      );
+    };
+    const speech = await requestFormulaSpeechViaLLM(db, items);
+    expect(sizes).toEqual([60, 60, 10]);
+    expect(speech.size).toBe(70);
+    expect(speech.has("x_{0}")).toBe(true);
+    expect(speech.has("x_{60}")).toBe(false);
+    expect(speech.has("x_{129}")).toBe(true);
+  });
+
   it("varies a segmented question through placeholders, or serves the stored one", async () => {
     const token = await createToken(db, {
       slug: "energie",
@@ -240,6 +271,30 @@ describe("model replies with formulas", () => {
       question: "Wie groß ist W_el = ½CU² bei U = 5 V?",
     });
     expect(fallback?.segments).toBeUndefined();
+  });
+
+  it("reads a dollar formula in a plain question's variation", async () => {
+    const token = await createToken(db, {
+      slug: "quadrat",
+      concept: "Zwei Lösungen",
+      domain: "mathe",
+      question: "Welche Lösungen hat x² = 4?",
+    });
+    global.fetch = async (_url, init) =>
+      init?.body
+        ? chatReply("Welche Zahlen lösen $x^2 = 4$?")
+        : new Response("{}");
+    const varied = await ensureHighQualityQuestion(db, {
+      id: token.id,
+      slug: token.slug,
+      concept: token.concept,
+      domain: token.domain,
+      bloomLevel: 1,
+      question: token.question,
+    });
+    expect(varied?.source).toBe("llm");
+    expect(varied?.question).toBe("Welche Zahlen lösen x² = 4?");
+    expect(varied?.segments?.[1]).toEqual({ type: "math", tex: "x^2 = 4" });
   });
 
   it("the editor's fix asks once for missing speech and refuses a bad formula", async () => {

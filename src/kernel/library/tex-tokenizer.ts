@@ -111,7 +111,9 @@ export type TexIssueCode =
   | "unbalanced-environment"
   | "stray-alignment"
   | "doubled-backslash"
-  | "trailing-backslash";
+  | "trailing-backslash"
+  | "missing-operand"
+  | "invisible-character";
 
 export interface TexIssue {
   code: TexIssueCode;
@@ -126,6 +128,10 @@ export interface TexLexResult {
   tokens: TexToken[];
   issues: TexIssue[];
 }
+
+/** Direction controls and zero-width characters (bidi and spacing tricks). */
+const INVISIBLE =
+  /[\u200B-\u200F\u202A-\u202E\u2060-\u2064\u2066-\u2069\uFEFF]/;
 
 function isLetter(char: string | undefined): boolean {
   return char !== undefined && /[A-Za-z]/.test(char);
@@ -173,6 +179,17 @@ export function tokenizeTex(tex: string): TexLexResult {
         "control-character",
         i,
         `Control character U+${code.toString(16).padStart(4, "0").toUpperCase()} in the formula.`,
+      );
+      i++;
+      continue;
+    }
+    // Direction overrides and zero-width characters have no place in a
+    // formula, and they could make one read differently than it renders.
+    if (INVISIBLE.test(char)) {
+      issue(
+        "invisible-character",
+        i,
+        `Invisible character U+${code.toString(16).padStart(4, "0").toUpperCase()} in the formula.`,
       );
       i++;
       continue;
@@ -349,6 +366,39 @@ export function tokenizeTex(tex: string): TexLexResult {
       open.env,
     );
   }
+  // `x^`, `x_` and `\not` need something to act on (`3 \not \in A`).
+  tokens.forEach((token, index) => {
+    const needsOperand =
+      token.kind === "sup" ||
+      token.kind === "sub" ||
+      (token.kind === "word" && token.name === "not");
+    if (!needsOperand) return;
+    let next = index + 1;
+    while (
+      tokens[next]?.kind === "char" &&
+      /\s/.test((tokens[next] as { char: string }).char)
+    ) {
+      next++;
+    }
+    const operand = tokens[next];
+    if (
+      !operand ||
+      operand.kind === "close" ||
+      operand.kind === "align" ||
+      operand.kind === "end" ||
+      operand.kind === "sup" ||
+      operand.kind === "sub"
+    ) {
+      const written =
+        token.kind === "word" ? "\\not" : token.kind === "sup" ? "^" : "_";
+      issue(
+        "missing-operand",
+        token.offset,
+        `${written} needs something after it.`,
+        written,
+      );
+    }
+  });
   return { tokens, issues };
 }
 

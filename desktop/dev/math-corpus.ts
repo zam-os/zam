@@ -4,7 +4,6 @@
  * renderer and count the ones that keep their plain form. Dev only.
  */
 
-import { liftDollarMath } from "../../src/kernel/library/dollar-lift.js";
 import { texToPlain } from "../../src/kernel/library/tex-plain.js";
 import { texIssues } from "../../src/kernel/library/tex-tokenizer.js";
 import "../src/styles.css";
@@ -25,34 +24,34 @@ interface Formula {
 
 const unique = new Map<string, Formula>();
 let refused = 0;
+
+/**
+ * Every math segment anywhere in an item: the question, concept and sample
+ * solution segments and the fast check's options all hold card text.
+ */
+function collect(value: unknown): void {
+  if (Array.isArray(value)) {
+    for (const entry of value) collect(entry);
+    return;
+  }
+  if (!value || typeof value !== "object") return;
+  const segment = value as { type?: unknown; tex?: unknown; block?: unknown };
+  if (segment.type === "math" && typeof segment.tex === "string") {
+    if (texIssues(segment.tex).length > 0) {
+      refused++;
+      return;
+    }
+    const block = segment.block === true;
+    const key = `${block ? "B" : "I"}${segment.tex}`;
+    if (!unique.has(key)) unique.set(key, { tex: segment.tex, block });
+    return;
+  }
+  for (const entry of Object.values(value)) collect(entry);
+}
+
 for (const tile of Object.values(tiles)) {
   for (const atom of tile.atoms) {
-    for (const item of atom.practice_items) {
-      for (const field of ["question", "concept", "sample_solution"]) {
-        const text = item[field];
-        if (typeof text !== "string") continue;
-        let segments: ReturnType<typeof liftDollarMath>["segments"];
-        try {
-          segments = liftDollarMath(text, "strict").segments;
-        } catch {
-          continue;
-        }
-        for (const segment of segments) {
-          if (segment.type !== "math") continue;
-          if (texIssues(segment.tex).length > 0) {
-            refused++;
-            continue;
-          }
-          const key = `${segment.block ? "B" : "I"}${segment.tex}`;
-          if (!unique.has(key)) {
-            unique.set(key, {
-              tex: segment.tex,
-              block: segment.block === true,
-            });
-          }
-        }
-      }
-    }
+    for (const item of atom.practice_items) collect(item);
   }
 }
 

@@ -125,6 +125,19 @@ describe("tokenizeTex", () => {
     expect(texIssues("a\n+ b")).toEqual([]);
   });
 
+  it("refuses an operator with nothing to act on", () => {
+    for (const tex of ["x \\not", "\\not", "x^", "x_", "{x^}", "a_ ^2"]) {
+      expect(codes(tex)).toContain("missing-operand");
+    }
+    expect(texIssues("3 \\not \\in A")).toEqual([]);
+    expect(texIssues("x^ 2")).toEqual([]);
+  });
+
+  it("refuses direction overrides and zero-width characters", () => {
+    expect(codes("x \u202E= y")).toContain("invisible-character");
+    expect(codes("a\u200Bb")).toContain("invisible-character");
+  });
+
   it("refuses an empty or over-long formula", () => {
     expect(codes("   ")).toEqual(["empty"]);
     expect(codes("x".repeat(MAX_TEX_LENGTH + 1))).toContain("too-long");

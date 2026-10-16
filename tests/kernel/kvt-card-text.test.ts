@@ -178,6 +178,26 @@ describe("tiles with card-text segments (ADR 2026-10-14b, plan Phase 4)", () => 
     ).toMatchObject({ speech: "anders vorgelesen" });
   });
 
+  it("delivers a curated option's new reading on reinstall", async () => {
+    await installKvtTile(db, tile());
+    const next = tile({ version: "2026.10.2" });
+    const distractor = next.atoms[0].practice_items[0].choice_distractors?.[0];
+    const math = distractor?.segments?.[1];
+    if (!math || math.type !== "math") throw new Error("fixture changed");
+    math.speech = "ein viertel so viel";
+    await installKvtTile(db, next);
+    const item = await token(ITEM);
+    const options = await listActiveDistractors(
+      db,
+      ITEM,
+      (await import("../../src/kernel/index.js")).choiceSourceHash(item),
+    );
+    expect(options).toHaveLength(1);
+    expect(options[0].segments?.[1]).toMatchObject({
+      speech: "ein viertel so viel",
+    });
+  });
+
   it("refuses a tile whose plain question disagrees with its segments", async () => {
     await expect(
       installKvtTile(db, tile({ question: "Etwas ganz anderes?" })),
@@ -258,6 +278,19 @@ describe("reconcileInstalledBundledTiles", () => {
       )
       .run(new Date(Date.now() + 1000).toISOString(), bundled.tile_id);
     expect((await reconcileInstalledBundledTiles(db)).reinstalled).toEqual([]);
+  });
+
+  it("leaves a tile whose first install failed to the learner", async () => {
+    await db
+      .prepare(
+        `INSERT INTO installed_tiles (tile_id, version, installed_at, failed_at, last_error)
+         VALUES (?, '', ?, ?, 'boom')`,
+      )
+      .run(bundled.tile_id, "2026-01-01", "2026-01-01");
+    expect(await reconcileInstalledBundledTiles(db)).toMatchObject({
+      installed: 0,
+      reinstalled: [],
+    });
   });
 
   it("refuses a team library, whose administrator publishes", async () => {

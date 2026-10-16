@@ -61,6 +61,9 @@ const GOLDEN: Array<[string, string]> = [
   ["f(x, y)", "f(x, y)"],
   ["h \\rightarrow 0", "h → 0"],
   ["x \\not\\in A", "x ∉ A"],
+  // TeX ignores the space after `\not`; the negation must survive it.
+  ["3 \\not \\in A", "3 ∉ A"],
+  ["a \\not = b", "a ≠ b"],
   ["\\lim_{x \\to \\infty} f(x)", "lim_(x→∞) f(x)"],
   ["\\int f(x) \\,\\mathrm{d}x", "∫f(x) dx"],
   ["\\int_a^b f(x) \\,\\mathrm{d}x", "∫_a^b f(x) dx"],
@@ -98,6 +101,10 @@ describe("texToPlain", () => {
 
   it("returns a refused formula as written instead of throwing", () => {
     expect(texToPlain("\\color{red}{x}")).toBe("\\color{red}{x}");
+    // An operator with nothing after it (PR #412 review, B2).
+    for (const tex of ["x \\not", "\\not", "x^", "x_"]) {
+      expect(() => texToPlain(tex)).not.toThrow();
+    }
   });
 
   it("keeps spaces inside \\text", () => {

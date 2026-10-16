@@ -96,6 +96,8 @@ interface DraftTokenRow {
   domain: string | null;
   bloomLevel: number | null;
   editorialState: string;
+  questionSegments?: CardSegmentPayload[] | null;
+  conceptSegments?: CardSegmentPayload[] | null;
 }
 
 let segment: LearningListSegment = "personal";
@@ -1114,6 +1116,8 @@ export async function loadStudioData(): Promise<void> {
           context: token.context ?? "",
           sourceLink: token.sourceLink,
           question: token.question,
+          questionSegments: token.questionSegments ?? null,
+          conceptSegments: token.conceptSegments ?? null,
           editorialState: token.editorialState,
         });
       });
@@ -1644,6 +1648,11 @@ async function publishDraftCard(): Promise<void> {
     fieldQuestion.focus();
     return;
   }
+  const formulaProblem = cardTextProblem();
+  if (formulaProblem) {
+    alert(formulaProblem);
+    return;
+  }
   if (btnPublishCard) btnPublishCard.disabled = true;
   try {
     const args = [
@@ -1737,6 +1746,11 @@ async function submitReleaseRevision(): Promise<void> {
 
   if (!checkedRadio) return;
 
+  const formulaProblem = cardTextProblem();
+  if (formulaProblem) {
+    alert(formulaProblem);
+    return;
+  }
   const materiality = checkedRadio.value as "cosmetic" | "material";
   const publishedBy = releaseFieldAuthor.value.trim() || undefined;
 
@@ -1815,6 +1829,12 @@ function toggleAdvancedSection(): void {
  * The formula editors' part of a save (ADR 2026-10-14b, D9): segments for a
  * side with formulas, `null` for one that lost them, nothing otherwise.
  */
+/** Why a side cannot be saved yet, shown before anything is sent. */
+function cardTextProblem(): string | null {
+  const problem = questionEditor.problem() ?? conceptEditor.problem();
+  return problem ? `${t("cte_invalid_formula")} ${problem}` : null;
+}
+
 function cardTextArgs(): string[] {
   const args: string[] = [];
   const question = questionEditor.segmentsForSave();
@@ -1841,6 +1861,11 @@ async function saveCard(): Promise<void> {
   if (!concept) {
     alert(t("lbl_err_concept_required"));
     fieldConcept.focus();
+    return;
+  }
+  const formulaProblem = cardTextProblem();
+  if (formulaProblem) {
+    alert(formulaProblem);
     return;
   }
 

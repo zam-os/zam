@@ -339,7 +339,11 @@ export function validateCardText(
         });
       }
       const speech = segment.speech;
-      if (speech === undefined || speech === "") {
+      // Whitespace is no reading: it counts as missing (PR #412 review).
+      if (
+        speech === undefined ||
+        (typeof speech === "string" && !speech.trim())
+      ) {
         if (opts.requireSpeech) {
           issues.push({
             path: `${at}.speech`,

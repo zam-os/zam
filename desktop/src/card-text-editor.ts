@@ -27,6 +27,7 @@ import {
   plainProjection,
   validateCardText,
 } from "../../src/kernel/library/card-text.js";
+import { texAsText } from "../../src/kernel/library/card-text-input.js";
 import { runBridge } from "./bridge-transport.js";
 import { renderCardText } from "./card-text-render.js";
 import { t } from "./i18n.js";
@@ -39,9 +40,11 @@ export interface CardTextEditor {
   /**
    * What the save sends for this side: segments, `null` to turn a side that
    * had formulas back into plain text, or `undefined` to send the plain
-   * text area as before.
+   * text area as before. Ask {@link problem} first.
    */
   segmentsForSave(): CardSegmentPayload[] | null | undefined;
+  /** Why this side cannot be saved yet (a formula the kernel would refuse). */
+  problem(): string | null;
 }
 
 export interface CardTextEditorOptions {
@@ -126,11 +129,19 @@ export function attachCardTextEditor(
   function syncTextarea(): void {
     if (!segments) return;
     const valid = cleaned(segments);
+    // While a formula is unfinished, its readable form stands in for it, so
+    // the text area never looks as if a formula was lost.
     textarea.value =
       valid.length > 0 && validateCardText(valid).length === 0
         ? plainProjection(valid as CardText)
         : valid
-            .map((segment) => (segment.type === "text" ? segment.text : ""))
+            .map((segment) =>
+              segment.type === "text"
+                ? segment.text
+                : segment.type === "math"
+                  ? texAsText(segment.tex)
+                  : segment.alt,
+            )
             .join("");
   }
 
@@ -349,11 +360,23 @@ export function attachCardTextEditor(
     segmentsForSave() {
       if (segments) {
         const valid = cleaned(segments);
-        if (hasFormula(valid)) return valid;
+        if (hasFormula(valid)) {
+          // Saved with formulas: a later save without them must say so
+          // (PR #412 review), even before the card is loaded again.
+          loadedWithSegments = true;
+          return valid;
+        }
         // Every formula removed: the side is plain again.
         return loadedWithSegments ? null : undefined;
       }
       return loadedWithSegments ? null : undefined;
+    },
+    problem() {
+      if (!segments) return null;
+      const valid = cleaned(segments);
+      if (!hasFormula(valid)) return null;
+      const [issue] = validateCardText(valid);
+      return issue ? issue.message : null;
     },
   };
   return editor;

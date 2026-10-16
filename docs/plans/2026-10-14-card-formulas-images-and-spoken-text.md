@@ -609,7 +609,9 @@ Pure functions only. No schema, no surface.
   the version changed or a failure was recorded. A failed install records
   `failed_at`/`last_error` outside the rolled-back transaction, best effort.
 - **`reconcileInstalledBundledTiles`.** A tile counts as installed when it
-  is recorded, or when every one of its atoms and items is present. A single
+  is recorded with a version, or when every one of its atoms and items is
+  present. A first install that failed records no version, so the learner's
+  failed enrolment is not installed behind their back. A single
   shared item is not enough: the Optik tiles share six items, and the first
   version reinstalled all four Optik tiles after one.
   - **Bridge:** `zam bridge bundled-tiles-reconcile --max 5`.
@@ -822,7 +824,8 @@ Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
     `proposals[i].answer[j].speech`.
   - **Built-in path:** asks the answering text model once for missing
     speech (`src/cli/llm/speech-prompt.ts`, injectable as
-    `deps.requestSpeech`). What is still missing stays empty.
+    `deps.requestSpeech`), in requests of at most 60 formulas; a failed
+    request costs only its own formulas. What is still missing stays empty.
   - **Commit:** through `createToken`. **Review list:** renders the
     segments and shows the notes (`material_text_notes`, en/de only).
 - **Beyond the plan: every generated-card path.** The rule reaches the
@@ -1114,6 +1117,34 @@ Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
   measurements and device checks, the math font, and a first look at the
   editor.
 
+### Review fixes (PR #412)
+
+Grok and MiMo reviewed the draft PR; one commit addresses what held up:
+
+- **Temml in built bundles.** Vite 8 (Rolldown) printed Temml's two
+  lone-surrogate string literals as U+FFFD, so every built bundle failed on
+  `\frac` and `\text`. `desktop/vite-temml-surrogates.ts` rewrites them as
+  escapes in Studio, Mobile and the panel; `tests/desktop/temml-bundle.test.ts`
+  builds and runs a bundle.
+- **Tokenizer:** refuses invisible formatting characters (zero-width,
+  bidirectional controls) and a `^`, `_` or `\not` with nothing to act on;
+  `texToPlain` reads `\not \in` with spaces.
+- **Readings:** a reading of only spaces is missing; an import drops a
+  reading that is not plain words instead of refusing the card.
+- **Split:** `confirmCardSplit` clears the original card's segments and
+  inline images through `writeCardText`.
+- **Options:** the panel answers a tapped option with its plain text, and
+  the queue serves option segments only when they project to the stored
+  option. A reinstalled curated distractor updates its presentation.
+- **Studio editor:** an invalid formula blocks saving with its reason;
+  drafts carry their segments.
+- **Mobile:** inline images render in review.
+- **Variation:** a plain question's variation is read like an import, so a
+  `$…$` formula from the model is typeset, not shown raw.
+- **Smaller:** speech requests in batches, whole-number ratings only,
+  failed first tile installs not reinstalled, and the corpus page walks
+  segments.
+
 ### Release notes (for the release PR)
 
 **What's new**
@@ -1166,6 +1197,10 @@ Tools under `scripts/card-text-migration/` (Node, run by hand, not shipped):
   `correct_index` stays valid.
 - **Temml version.** 0.14.0 changes `\prescript` argument order. Keep the
   exact pin, and upgrade only with the corpus render test.
+- **Temml in a Vite bundle.** Rolldown prints Temml's lone-surrogate string
+  literals as U+FFFD, which breaks its lexer only in built output (dev
+  works). The surrogate plugin throws if Temml changes those literals; keep
+  it in every Vite config that bundles Temml.
 - **`throwOnError`.** With `false`, Temml renders the error in red instead of
   throwing, and the plain fallback never triggers.
 - **Backslashes in text.** Windows paths are legitimate card text; only

@@ -81,6 +81,7 @@ import {
   OBSERVER_POLICY_UNSET_HINT,
   pairCommands,
   parseReviewFastCheck,
+  parseStoredCardText,
   prepareSessionSynthesis,
   presentFastCheck,
   publishTokenRevision,
@@ -639,6 +640,13 @@ export interface SubmitReviewParams {
   choiceEvidence?: ChoiceEvidence;
 }
 
+/** A whole rating from 1 to 4; an agent's 2.5 or "3" is not one. */
+const isRating = (value: unknown): value is Rating =>
+  typeof value === "number" &&
+  Number.isInteger(value) &&
+  value >= 1 &&
+  value <= 4;
+
 export async function submitReview(db: Database, params: SubmitReviewParams) {
   const userId = await resolveHandlerUser(db, params.user);
   if (
@@ -721,7 +729,7 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
     };
   }
 
-  if (params.rating == null || params.rating < 1 || params.rating > 4) {
+  if (!isRating(params.rating)) {
     throw new Error("Rating must be between 1 and 4");
   }
   if (
@@ -875,10 +883,7 @@ export async function reviewAction(db: Database, params: ReviewActionParams) {
     };
   }
 
-  if (
-    action === "rate" &&
-    (params.rating == null || params.rating < 1 || params.rating > 4)
-  ) {
+  if (action === "rate" && !isRating(params.rating)) {
     throw new Error("Rating must be between 1 and 4 for action=rate");
   }
 
@@ -2121,6 +2126,9 @@ export async function listDrafts(db: Database, _params: ListDraftsParams = {}) {
     domain: token.domain,
     bloomLevel: token.bloom_level,
     editorialState: token.editorial_state,
+    // Formulas, for the card editor (ADR 2026-10-14b).
+    questionSegments: parseStoredCardText(token.question_segments),
+    conceptSegments: parseStoredCardText(token.concept_segments),
   }));
   return {
     success: true as const,

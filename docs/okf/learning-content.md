@@ -7,7 +7,7 @@ tags:
   - learning-content
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/learning-content.md"
-timestamp: 2026-10-15T08:00:00.000Z
+timestamp: 2026-10-16T01:00:00.000Z
 ---
 
 The Desktop Studio and the shared Studio panel both have a Learning Content page (Lerninhalte). The page opens on **Lern-Karten** (Learning cards). The other area is **Quellen** (Sources).
@@ -41,7 +41,7 @@ Search and the category filter apply to the list that is open. The knowledge-con
 
 A published token in Nicht gewählt can be taken as this learner's card. One token is taken on its own, which creates the card and leaves the token as it is. A source group that has a key is taken together: a card is created for each member the learner lacks, and a card already set aside stays set aside. The Ohne Quelle group has an empty key, so those tokens are taken one by one.
 
-**Formeln** (formulas, [ADR 2026-10-14b](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md), Decision 9). The card editor shows a question or answer that holds formulas as the learner will see it, with each formula's spoken sentence below. The default edit is **Von der KI korrigieren lassen** (Let the AI fix it): one line in the learner's words; the model's correction appears as a preview to accept or discard, and nothing is saved until the card is. **Formel einfügen** (Insert formula) adds an empty formula with a TeX field, a live preview and a speech field. Curators find every formula's TeX and speech, and the text between them, under **Formelquelle** (Formula source). A side without formulas stays a plain text field. Saving sends the segments, or turns a side plain again when its last formula was removed; see [card-text-segments.md](card-text-segments.md).
+**Formeln** (formulas, [ADR 2026-10-14b](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md), Decision 9). The card editor shows a question or answer that holds formulas as the learner will see it, with each formula's spoken sentence below. The default edit is **Von der KI korrigieren lassen** (Let the AI fix it): one line in the learner's words; the model's correction appears as a preview to accept or discard, and nothing is saved until the card is. **Formel einfügen** (Insert formula) adds an empty formula with a TeX field, a live preview and a speech field. Curators find every formula's TeX and speech, and the text between them, under **Formelquelle** (Formula source). A side without formulas stays a plain text field. Saving sends the segments, or turns a side plain again when its last formula was removed; a formula that cannot be stored blocks saving and publishing and says why. See [card-text-segments.md](card-text-segments.md).
 
 # Quellen
 

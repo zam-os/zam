@@ -79,7 +79,7 @@ const FORMULA = "";
 export function dropEmphasis(segments: CardText): CardText {
   const others = segments.filter((s) => s.type !== "text");
   let joined = segments
-    .map((s) => (s.type === "text" ? s.text.replaceAll(FORMULA, "") : FORMULA))
+    .map((s) => (s.type === "text" ? s.text.split(FORMULA).join("") : FORMULA))
     .join("");
   for (let pass = 0; pass < 10; pass++) {
     const spans = findPlainTextMarkup(joined).filter(
@@ -185,6 +185,13 @@ function withoutBareCommands(text: string): string {
   return out;
 }
 
+/** A problem with a formula's reading, not with the formula. */
+const isSpeechIssue = (issue: CardTextIssue) =>
+  /^\[\d+\]\.speech$/.test(issue.path);
+
+/** The segment an issue path (`[2].tex`) points at. */
+const segmentIndex = (path: string) => Number(/^\[(\d+)\]/.exec(path)?.[1]);
+
 /** No space before the first word or after the last. */
 function trimEdges(segments: CardText): CardText {
   const out = segments.map((segment) => ({ ...segment }));
@@ -237,7 +244,9 @@ export function readCardTextInput(
     // Shape first: a list that is not made of segments has nothing to repair.
     const shape = validateCardText(value).filter(
       (issue) =>
-        !issue.code.startsWith("tex-") && !issue.code.startsWith("markup-"),
+        !issue.code.startsWith("tex-") &&
+        !issue.code.startsWith("markup-") &&
+        !isSpeechIssue(issue),
     );
     if (shape.length > 0) return { ok: false, issues: shape };
     segments = value as CardText;
@@ -283,9 +292,7 @@ export function readCardTextInput(
   );
   if (refused.length > 0) {
     if (mode === "agent") return { ok: false, issues: refused };
-    const bad = new Set(
-      refused.map((issue) => Number(/^\[(\d+)\]/.exec(issue.path)?.[1])),
-    );
+    const bad = new Set(refused.map((issue) => segmentIndex(issue.path)));
     segments = normalizeCardText(
       segments.map((segment, index) => {
         if (!bad.has(index) || segment.type !== "math") return segment;
@@ -293,6 +300,19 @@ export function readCardTextInput(
         return { type: "text", text: texAsText(segment.tex) };
       }),
     );
+  }
+
+  // A reading that is not plain words: an agent hears about it; an import
+  // drops just that reading, and the formula is read by its plain form.
+  const badReadings = validateCardText(segments).filter(isSpeechIssue);
+  if (badReadings.length > 0) {
+    if (mode === "agent") return { ok: false, issues: badReadings };
+    const bad = new Set(badReadings.map((issue) => segmentIndex(issue.path)));
+    segments = segments.map((segment, index) => {
+      if (!bad.has(index) || segment.type !== "math") return segment;
+      const { speech: _dropped, ...rest } = segment;
+      return rest;
+    });
   }
 
   segments = trimEdges(segments);
@@ -309,7 +329,9 @@ export function readCardTextInput(
   const hasMath = segments.some((segment) => segment.type === "math");
   const missingSpeech: number[] = [];
   segments.forEach((segment, index) => {
-    if (segment.type === "math" && !segment.speech) missingSpeech.push(index);
+    if (segment.type === "math" && !segment.speech?.trim()) {
+      missingSpeech.push(index);
+    }
   });
   return {
     ok: true,
@@ -332,7 +354,7 @@ export function withSpeech(
   speech: ReadonlyMap<string, string>,
 ): CardText {
   return segments.map((segment) => {
-    if (segment.type !== "math" || segment.speech) return segment;
+    if (segment.type !== "math" || segment.speech?.trim()) return segment;
     const spoken = speech.get(segment.tex)?.trim();
     if (!spoken) return segment;
     const candidate = { ...segment, speech: spoken };
@@ -345,6 +367,6 @@ export function withSpeech(
 /** The formulas in `segments` that still lack speech. */
 export function formulasWithoutSpeech(segments: CardText | null): string[] {
   return (segments ?? [])
-    .filter((s) => s.type === "math" && !s.speech)
+    .filter((s) => s.type === "math" && !s.speech?.trim())
     .map((s) => (s.type === "math" ? s.tex : ""));
 }

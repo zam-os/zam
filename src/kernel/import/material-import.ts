@@ -629,7 +629,7 @@ export function materialSpeechIssues(set: MaterialProposalSet): string[] {
       ["answer", proposal.answerSegments],
     ] as const) {
       (segments ?? []).forEach((segment, at) => {
-        if (segment.type === "math" && !segment.speech) {
+        if (segment.type === "math" && !segment.speech?.trim()) {
           out.push(
             `proposals[${index}].${key}[${at}].speech: required — how "${segment.tex}" is read aloud`,
           );
@@ -651,7 +651,9 @@ export function materialFormulasWithoutSpeech(
       proposal.answerSegments,
     ]) {
       for (const segment of segments ?? []) {
-        if (segment.type === "math" && !segment.speech) out.add(segment.tex);
+        if (segment.type === "math" && !segment.speech?.trim()) {
+          out.add(segment.tex);
+        }
       }
     }
   }

@@ -8,6 +8,8 @@
 import type { Database } from "../db/types.js";
 import {
   type CardText,
+  normalizeCardText,
+  plainProjection,
   spokenProjection,
   validateCardText,
 } from "../library/card-text.js";
@@ -571,7 +573,7 @@ export function parseReviewFastCheck(raw: unknown): ReviewFastCheck | null {
   };
   const optionSegments = parseOptionSegments(
     candidate.option_segments ?? candidate.optionSegments,
-    options.length,
+    options,
   );
   if (optionSegments) parsed.optionSegments = optionSegments;
   return parsed;
@@ -581,20 +583,23 @@ export function parseReviewFastCheck(raw: unknown): ReviewFastCheck | null {
  * Segment options parallel to the plain ones. Anything malformed drops the
  * segments, never the fast check: the plain options still work.
  */
+/**
+ * An option's segments, kept only where they are the option: valid, and
+ * their plain projection is the option's stored text. A pair that drifted
+ * apart shows the plain option, which is what the answer is compared with.
+ */
 function parseOptionSegments(
   raw: unknown,
-  count: number,
+  options: readonly string[],
 ): Array<CardText | null> | null {
-  if (!Array.isArray(raw) || raw.length !== count) return null;
-  const out: Array<CardText | null> = [];
-  for (const entry of raw) {
-    if (entry === null) {
-      out.push(null);
-      continue;
-    }
-    if (validateCardText(entry).length > 0) return null;
-    out.push(entry as CardText);
-  }
+  if (!Array.isArray(raw) || raw.length !== options.length) return null;
+  const out: Array<CardText | null> = raw.map((entry, index) =>
+    entry !== null &&
+    validateCardText(entry).length === 0 &&
+    plainProjection(normalizeCardText(entry as CardText)) === options[index]
+      ? (entry as CardText)
+      : null,
+  );
   return out.some((entry) => entry !== null) ? out : null;
 }
 

@@ -1019,7 +1019,10 @@ async function presentCurrentCard(): Promise<void> {
     option.addEventListener("click", () => {
       if (committed) return;
       tappedOption = true;
-      answer.value = option.textContent ?? "";
+      // The option's plain text, not the button's: once a formula is
+      // typeset, the button holds MathML (PR #412 review).
+      const index = Number(option.dataset.fastCheckIndex);
+      answer.value = card.fastCheck?.options[index] ?? option.textContent ?? "";
       actionBtn.click();
     });
   }

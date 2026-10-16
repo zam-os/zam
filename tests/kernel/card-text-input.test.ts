@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { validateCardText } from "../../src/kernel/library/card-text.js";
 import {
   dropEmphasis,
   formulasWithoutSpeech,
@@ -93,6 +94,37 @@ describe("readCardTextInput (ADR 2026-10-14b Decision 6)", () => {
       "agent",
     );
     expect(value.segments?.[0]).toMatchObject({ tex: repaired });
+  });
+
+  it("drops a reading that is not plain words in an import, names it for an agent", () => {
+    const formula = [
+      { type: "math", tex: "x^2", speech: "x <b>Quadrat</b>" },
+      { type: "math", tex: "y", speech: "y".repeat(700) },
+    ];
+    const imported = read(formula);
+    expect(imported.segments).toEqual([
+      { type: "math", tex: "x^2" },
+      { type: "math", tex: "y" },
+    ]);
+    expect(imported.missingSpeech).toEqual([0, 1]);
+    const agent = readCardTextInput(formula, "agent");
+    expect(agent.ok).toBe(false);
+    if (!agent.ok) {
+      expect(agent.issues.map((issue) => issue.path)).toEqual([
+        "[0].speech",
+        "[1].speech",
+      ]);
+    }
+  });
+
+  it("counts a blank reading as missing", () => {
+    const value = read([{ type: "math", tex: "x", speech: "   " }]);
+    expect(value.missingSpeech).toEqual([0]);
+    expect(
+      validateCardText([{ type: "math", tex: "x", speech: "  " }], {
+        requireSpeech: true,
+      }).map((issue) => issue.code),
+    ).toEqual(["missing-speech"]);
   });
 
   it("refuses images, empty text and other values", () => {

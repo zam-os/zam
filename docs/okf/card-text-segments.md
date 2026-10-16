@@ -9,7 +9,7 @@ tags:
   - accessibility
   - voice
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/card-text-segments.md"
-timestamp: 2026-10-15T08:00:00.000Z
+timestamp: 2026-10-16T01:00:00.000Z
 ---
 
 A card that needs a formula or a small picture stores its text as
@@ -47,9 +47,11 @@ control symbols and the environments `aligned`, `array`, `cases`,
 `pmatrix`. `tokenizeTex` / `texIssues` (`tex-tokenizer.ts`) refuse
 everything else and fail closed: forbidden commands (`\href`, `\def`, …),
 unknown commands, unbalanced braces, comments (`%`), `#`, `$`, control
-characters, a stray `&` outside an environment, and more than 500
-characters. The tokenizer is a trust boundary: every write validates
-through it before anything is stored or rendered.
+characters, invisible formatting characters (zero-width and bidirectional
+controls), a `^`, `_` or `\not` with nothing to act on, a stray `&`
+outside an environment, and more than 500 characters. The tokenizer is a
+trust boundary: every write validates through it before anything is stored
+or rendered.
 
 # The renderer and its output check
 
@@ -65,9 +67,9 @@ allowlist) or the plain form stays. Fonts are the system math fonts
 # Speech and alttext
 
 `speech` is plain words in the card's language: no `\`, `$` or `<`, at most
-600 characters (the bundled corpus's longest is 266). It goes into MathML's
-own `alttext`; `<math>` gets no `aria-label`, so screen readers keep the
-formula's structure. It is required for published content and every
+600 characters (the bundled corpus's longest is 266); a reading of only
+spaces counts as missing. It goes into MathML's own `alttext`; `<math>`
+gets no `aria-label`, so screen readers keep the formula's structure. It is required for published content and every
 model-written card; only a personal import without a model may leave it
 empty, and voice then reads the plain projection.
 
@@ -95,9 +97,13 @@ strip skips `inline` rows (`attachedMedia`).
   (part of `CARD_SHAPE_RULES`). `readCardTextInput` turns a string or a
   segment list into what is stored: it lifts `$…$` the lenient way, drops
   emphasis, repairs backslashes a JSON escape ate, and either names a
-  refused formula (`agent`) or keeps it as readable text (`import`).
+  refused formula (`agent`) or keeps it as readable text (`import`). A
+  reading that is not plain words is named (`agent`) or dropped, so voice
+  reads that formula's plain form (`import`).
 - **Variation and translation** work on `[[n]]` placeholders
-  (`card-text-placeholders.ts`) and splice the stored formulas back.
+  (`card-text-placeholders.ts`) and splice the stored formulas back. A
+  question without formulas is varied as text, and the reply is read like
+  an import, so a `$…$` formula the model wrote is typeset.
 - **Anki imports** lift Anki's math delimiters; see
   [local-card-file-import.md](local-card-file-import.md).
 - **The Studio editor** lets a learner fix a card in words, insert a

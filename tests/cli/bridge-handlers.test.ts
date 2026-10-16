@@ -346,6 +346,15 @@ describe("bridge-handlers unit tests", () => {
         answerFormat: "typed" as never,
       }),
     ).rejects.toThrow("answerFormat must be recall, options or choice");
+    for (const rating of [2.5, "3", 0, 5]) {
+      await expect(
+        submitReview(db, {
+          user: "thomas",
+          cardId: card.id,
+          rating: rating as never,
+        }),
+      ).rejects.toThrow("Rating must be between 1 and 4");
+    }
 
     const result = await submitReview(db, {
       user: "thomas",
