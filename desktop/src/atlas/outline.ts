@@ -9,6 +9,7 @@
  * what is open.
  */
 
+import type { AtlasLensInfoWire } from "../../../src/bridge/protocol.js";
 import {
   type AtlasLayout,
   regionCondition,
@@ -40,6 +41,28 @@ export function conditionWords(
   if (condition) parts.push(deps.t(`condition_${condition}`));
   else parts.push(deps.t("atlas_no_cards"));
   return parts.join(" · ");
+}
+
+/** The lenses every library of their planet has, with translated names. */
+const BUILT_IN_LENSES: ReadonlySet<string> = new Set([
+  "weltwissen",
+  "schule",
+  "leben",
+  "produkte",
+  "unternehmen",
+]);
+
+/**
+ * A lens's label: a built-in lens in the learner's language, a custom lens
+ * under the name its library gave it (Decision 3).
+ */
+export function lensLabel(
+  deps: Pick<OutlineDeps, "t">,
+  lens: Pick<AtlasLensInfoWire, "kind" | "name">,
+): string {
+  return BUILT_IN_LENSES.has(lens.kind)
+    ? deps.t(`atlas_lens_${lens.kind}`)
+    : lens.name;
 }
 
 export function renderOutline(
