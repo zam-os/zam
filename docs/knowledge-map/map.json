@@ -873,6 +873,18 @@
       ]
     },
     {
+      "id": "atlas-custom-lenses",
+      "parent": "atlas-curation",
+      "label": "Custom lenses",
+      "link": "extends to",
+      "text": "A library can add custom lenses on its own planet: more orders over the same units, each with its own level names.",
+      "sources": [
+        "docs/adr/2026-10-13-knowledge-atlas.md",
+        "src/kernel/atlas/curation.ts",
+        "src/kernel/atlas/lenses.ts"
+      ]
+    },
+    {
       "id": "sinnbild-canonical",
       "parent": "surfaces",
       "label": "Sinnbilder",

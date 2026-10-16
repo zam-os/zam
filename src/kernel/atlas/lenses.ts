@@ -18,6 +18,7 @@ import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
 import { hueKeyForDomain } from "./palette.js";
 import {
+  type BuiltInLensKind,
   type LensKind,
   type PlanetKind,
   type UnitKey,
@@ -157,14 +158,96 @@ export const UNTERNEHMEN_LENS: LensDefinition = {
   colourLevel: 2,
 };
 
-/** Every lens ZAM knows, by kind. */
-export const LENSES: Readonly<Record<LensKind, LensDefinition>> = {
+/** Every lens ZAM defines itself, by kind. */
+export const LENSES: Readonly<Record<BuiltInLensKind, LensDefinition>> = {
   weltwissen: WELTWISSEN_LENS,
   schule: SCHULE_LENS,
   leben: LEBEN_LENS,
   produkte: PRODUKTE_LENS,
   unternehmen: UNTERNEHMEN_LENS,
 };
+
+export function isBuiltInLensKind(kind: string): kind is BuiltInLensKind {
+  return Object.hasOwn(LENSES, kind);
+}
+
+/**
+ * The form of a custom lens's kind: a slug that is its permanent id. Built-in
+ * kinds have the same form, so a custom lens never takes one of their names.
+ */
+export const CUSTOM_LENS_KIND = /^[a-z][a-z0-9-]{1,39}$/;
+
+interface LensRowFields {
+  planet: string;
+  kind: string;
+  name: string;
+  level_names: string;
+  colour_level: number;
+}
+
+function customLensFrom(row: LensRowFields): LensDefinition | null {
+  if (row.planet !== "firma" && row.planet !== "privat") return null;
+  let levels: unknown;
+  try {
+    levels = JSON.parse(row.level_names);
+  } catch {
+    return null;
+  }
+  if (
+    !Array.isArray(levels) ||
+    levels.length === 0 ||
+    !levels.every((level) => typeof level === "string")
+  ) {
+    return null;
+  }
+  return {
+    planet: row.planet,
+    kind: row.kind,
+    name: row.name,
+    levels: levels as string[],
+    colourLevel: Math.min(Number(row.colour_level), levels.length - 1),
+  };
+}
+
+/**
+ * The custom lenses a library made on one planet (Decision 3), in the order
+ * they were made. A built-in lens's row is never one of them.
+ */
+export async function loadCustomLenses(
+  db: Database,
+  planet: PlanetKind,
+): Promise<LensDefinition[]> {
+  const rows = (await db
+    .prepare(
+      `SELECT planet, kind, name, level_names, colour_level
+         FROM atlas_lenses WHERE planet = ? ORDER BY created_at, kind`,
+    )
+    .all(planet)) as LensRowFields[];
+  return rows
+    .filter((row) => !isBuiltInLensKind(row.kind))
+    .map(customLensFrom)
+    .filter((lens): lens is LensDefinition => lens !== null);
+}
+
+/**
+ * The lens of a kind: a built-in one, else the custom lens this library made
+ * under that kind, else null. Whether the lens belongs to this library's
+ * planets is the caller's to check.
+ */
+export async function resolveLensKind(
+  db: Database,
+  kind: string,
+): Promise<LensDefinition | null> {
+  if (isBuiltInLensKind(kind)) return LENSES[kind];
+  if (!CUSTOM_LENS_KIND.test(kind)) return null;
+  const row = (await db
+    .prepare(
+      `SELECT planet, kind, name, level_names, colour_level
+         FROM atlas_lenses WHERE kind = ? AND planet IN ('firma', 'privat')`,
+    )
+    .get(kind)) as LensRowFields | undefined;
+  return row ? customLensFrom(row) : null;
+}
 
 /** The island for units no Weltwissen rule covers. */
 export const UNSORTED_KEY = "unsortiert";

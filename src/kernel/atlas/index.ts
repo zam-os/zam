@@ -33,6 +33,7 @@ export {
   unitsHeldByThreads,
 } from "./connections.js";
 export type {
+  CustomLensInput,
   LensCuration,
   LensEdit,
   LensEditErrorCode,
@@ -43,14 +44,17 @@ export type {
 export {
   acceptLensProposal,
   applyLensEdits,
+  createCustomLens,
   LensEditError,
   lensCuration,
   MAX_CURATION_TEXT,
+  MAX_CUSTOM_LENS_LEVELS,
   MAX_LENS_EDITS,
   MAX_PROPOSAL_REGIONS,
   markLensStale,
   normalizeDomainPrefix,
   proposeLensReplacement,
+  removeCustomLens,
   validateLensProposal,
 } from "./curation.js";
 export type { EmblemValidation } from "./emblem.js";
@@ -145,6 +149,7 @@ export type {
   UnitRow,
 } from "./lenses.js";
 export {
+  CUSTOM_LENS_KIND,
   cleanTopic,
   deriveDomainLens,
   deriveLens,
@@ -153,16 +158,19 @@ export {
   ensureLensRow,
   ensureWorldLenses,
   findLensId,
+  isBuiltInLensKind,
   LAST_RANK,
   LEBEN_LENS,
   LENSES,
   lensRowsForRead,
   loadBindings,
+  loadCustomLenses,
   loadLensRows,
   loadUnits,
   OUTSIDE_CURRICULUM_KEY,
   PRODUKTE_LENS,
   prettify,
+  resolveLensKind,
   SCHULE_LENS,
   slugSegment,
   subjectName,
@@ -243,6 +251,7 @@ export {
 export type { TakeResult } from "./take.js";
 export { takeUnits } from "./take.js";
 export type {
+  BuiltInLensKind,
   LensKind,
   OwnPlanet,
   PlanetKind,

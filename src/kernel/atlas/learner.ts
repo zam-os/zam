@@ -8,7 +8,7 @@
 
 import type { Database } from "../db/types.js";
 import { getSetting } from "../models/settings.js";
-import { LENSES, type LensDefinition } from "./lenses.js";
+import { LENSES, type LensDefinition, resolveLensKind } from "./lenses.js";
 import { assertLensOnLibrary, libraryLenses, ownPlanetOf } from "./planets.js";
 import { type AtlasView, readAtlas } from "./read.js";
 import type { LensKind, OwnPlanet, PlanetKind } from "./types.js";
@@ -22,9 +22,10 @@ export function atlasHomeSetting(kind: LensKind): string {
   return `atlas.home.${kind}`;
 }
 
-/** Every lens by kind; a library shows world's and its own planet's. */
+/** Every built-in lens by kind; a library shows world's and its own planet's. */
 export const ATLAS_LENSES: Readonly<Record<string, LensDefinition>> = LENSES;
 
+/** A built-in lens by kind; custom lenses need the library (`libraryLens`). */
 export function atlasLens(kind: string | undefined): LensDefinition {
   const lens = ATLAS_LENSES[kind ?? "weltwissen"];
   if (!lens) {
@@ -36,15 +37,23 @@ export function atlasLens(kind: string | undefined): LensDefinition {
 }
 
 /**
- * A lens of this library: world knowledge's, or one of its own planet's. A
- * lens of the other planet is refused (Decision 2).
+ * A lens of this library: world knowledge's, one of its own planet's, or a
+ * custom lens it made there. A lens of the other planet is refused
+ * (Decision 2).
  */
 export async function libraryLens(
   db: Database,
   kind: string | undefined,
 ): Promise<LensDefinition> {
-  const lens = atlasLens(kind);
-  assertLensOnLibrary(lens, await ownPlanetOf(db));
+  const own = await ownPlanetOf(db);
+  const lens = await resolveLensKind(db, kind ?? "weltwissen");
+  if (!lens) {
+    const known = (await libraryLenses(db, own)).map((l) => l.kind);
+    throw new Error(
+      `Unknown atlas lens "${kind}". Choose ${known.join(", ")}.`,
+    );
+  }
+  assertLensOnLibrary(lens, own);
   return lens;
 }
 

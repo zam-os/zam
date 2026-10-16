@@ -206,8 +206,10 @@ import {
   atlasEmblemDraw,
   atlasEmblemSet,
   atlasLensAccept,
+  atlasLensCreate,
   atlasLensEdit,
   atlasLensPropose,
+  atlasLensRemove,
   atlasLensStale,
   atlasMovePlanet,
   atlasPlace,
@@ -1193,7 +1195,7 @@ bridgeCommand
   )
   .option(
     "--atlas-lens <kind>",
-    "Lens of --atlas-region: weltwissen (default), schule, or the library's own planet's (leben, produkte, unternehmen)",
+    "Lens of --atlas-region: weltwissen (default), schule, or the library's own planet's (leben, produkte, unternehmen, or a custom lens)",
   )
   .option(
     "--atlas-practice-since <iso>",
@@ -1268,7 +1270,7 @@ bridgeCommand
   )
   .option(
     "--atlas-lens <kind>",
-    "Lens of --atlas-region: weltwissen (default), schule, or the library's own planet's (leben, produkte, unternehmen)",
+    "Lens of --atlas-region: weltwissen (default), schule, or the library's own planet's (leben, produkte, unternehmen, or a custom lens)",
   )
   .action(async (opts) => {
     await withDb(async (db) => {
@@ -9882,7 +9884,7 @@ bridgeCommand
   )
   .option(
     "--lens <kind>",
-    "weltwissen, schule, or the own planet's leben, produkte, unternehmen (default: the learner's)",
+    "weltwissen, schule, the own planet's leben, produkte, unternehmen, or a custom lens (default: the learner's)",
   )
   .option(
     "--planet <kind>",
@@ -10195,7 +10197,10 @@ bridgeCommand
   .description(
     "Propose a whole new order for one of the own planet's lenses, from one named source; it waits for a curator (JSON)",
   )
-  .requiredOption("--lens <kind>", "leben, produkte or unternehmen")
+  .requiredOption(
+    "--lens <kind>",
+    "leben, produkte, unternehmen, or a custom lens of the own planet",
+  )
   .requiredOption(
     "--proposal <json>",
     "JSON {source, regions: [{key, name, parent}], aliases?, members?}",
@@ -10219,11 +10224,67 @@ bridgeCommand
   });
 
 bridgeCommand
+  .command("atlas-lens-create")
+  .description(
+    "Make a custom lens on the own planet: its own kind and level names; it starts empty (JSON)",
+  )
+  .requiredOption(
+    "--kind <slug>",
+    "The lens's permanent id: lower-case letters, digits and hyphens, not a built-in lens",
+  )
+  .requiredOption("--name <name>", "The lens's display name")
+  .requiredOption(
+    "--levels <names>",
+    "Level names, the islands first, separated by commas (1 to 5)",
+  )
+  .option(
+    "--colour-level <n>",
+    "0-based level whose regions give the hue (default: the second level, or the only one)",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const colour =
+          opts.colourLevel === undefined ? undefined : Number(opts.colourLevel);
+        jsonOut(
+          await atlasLensCreate(db, {
+            kind: String(opts.kind),
+            name: String(opts.name),
+            levels: String(opts.levels).split(","),
+            colourLevel: colour,
+          }),
+        );
+      } catch (err) {
+        jsonRefusal(err);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-lens-remove")
+  .description(
+    "Remove a custom lens with its regions, aliases, placements and land; its units keep their places elsewhere (JSON)",
+  )
+  .requiredOption("--lens <kind>", "A custom lens of the own planet")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(await atlasLensRemove(db, { lens: String(opts.lens) }));
+      } catch (err) {
+        jsonRefusal(err);
+      }
+    });
+  });
+
+bridgeCommand
   .command("atlas-lens-accept")
   .description(
     "Accept the lens's pending replacement, which replaces its order at once, or reject it with --reject (JSON)",
   )
-  .requiredOption("--lens <kind>", "leben, produkte or unternehmen")
+  .requiredOption(
+    "--lens <kind>",
+    "leben, produkte, unternehmen, or a custom lens",
+  )
   .option("--reject", "Drop the proposal; the lens stays as it is")
   .action(async (opts) => {
     await withDb(async (db) => {

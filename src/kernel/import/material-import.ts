@@ -13,7 +13,11 @@
  */
 
 import { ulid } from "ulid";
-import { ensureLensRow, ensureWorldLenses, LENSES } from "../atlas/lenses.js";
+import {
+  ensureLensRow,
+  ensureWorldLenses,
+  resolveLensKind,
+} from "../atlas/lenses.js";
 import {
   moveUnitsToPlanet,
   type PlacedUnit,
@@ -1463,7 +1467,9 @@ export async function commitMaterialImport(
   };
   // The atlas's lenses must exist before the commit places anything; a
   // transaction cannot open another.
-  const placeLens = set.place ? LENSES[set.place.lens] : null;
+  const placeLens = set.place
+    ? await resolveLensKind(db, set.place.lens)
+    : null;
   // A mixed import (Decision 2): a confirmed kind per card, else the
   // producer's. Either may send a unit to the world planet.
   const kindOf = (rowId: string, proposal: MaterialProposal) =>

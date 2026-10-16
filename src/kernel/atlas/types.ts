@@ -14,13 +14,19 @@ export type PlanetKind = "welt" | "firma" | "privat";
  */
 export type OwnPlanet = Exclude<PlanetKind, "welt">;
 
-/** One order over the same learning units (Decision 3). */
-export type LensKind =
+/** A lens ZAM defines itself (Decision 3). */
+export type BuiltInLensKind =
   | "weltwissen"
   | "schule"
   | "unternehmen"
   | "produkte"
   | "leben";
+
+/**
+ * One order over the same learning units (Decision 3): a lens ZAM defines,
+ * or a custom lens a library made on its own planet, named by its own slug.
+ */
+export type LensKind = BuiltInLensKind | (string & {});
 
 /** Red-thread kinds with UML-style ends (Decision 7). */
 export type ThreadKind =

@@ -684,12 +684,17 @@ describe("MCP stdio server tests", () => {
       region: "klasse-8",
       user: "thomas",
     });
-    // A lens the tool does not know is refused by the schema.
+    // A lens the library does not have is refused, as is a malformed one.
     const wrong = await client.callTool({
       name: "zam_show_atlas",
       arguments: { lens: "everything" },
     });
     expect(wrong.isError).toBe(true);
+    const malformed = await client.callTool({
+      name: "zam_show_atlas",
+      arguments: { lens: "Every Thing" },
+    });
+    expect(malformed.isError).toBe(true);
   });
 
   it("exposes the settings panel as an MCP Apps resource", async () => {

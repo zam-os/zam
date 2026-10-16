@@ -287,6 +287,16 @@ own levels, and the depth may differ.
 | Produkte | Produktlinie › Produkt › Komponente | curated on the team library; the agent proposes, e.g. from the repo knowledge map's C4 model |
 | Leben | Bereich › Thema | the Privat planet of a personal library; the agent sorts from domains |
 
+- **A library may add custom lenses on its own planet.** Beside the built-in
+  lenses, whoever may write knowledge (a curator on a team library, the
+  learner on a personal one) makes a lens with its own kind (a slug that is
+  its permanent id), a name, and one to five level names, for example one
+  island per repository with its projects below, next to Produkte's product
+  landscape and Unternehmen's organisation. It starts empty and is filled
+  like any curated lens: edits, aliases, an accepted proposal. Removing it
+  takes its regions, aliases, placements and land; its units keep their
+  places in every other lens. The world planet takes no custom lens: its
+  lenses come with published content. (Amended 2026-10-16.)
 - **Every lens is shared knowledge, kept by the agent.**
   - Weltwissen and Schule derive from data ZAM already holds.
   - Unternehmen and Produkte are curated on a team library.
@@ -815,6 +825,9 @@ The field test checks the default of *Neue Inhalte zeigen*.
   - land no unit reaches goes back to the sea and an empty island
     disappears, without moving a unit; a world lens removes only regions the
     library made itself;
+  - a custom lens is made on the own planet only, under a kind no built-in
+    lens has, is filled like a curated lens, and its removal leaves every
+    other lens as it was;
   - island drift without overlap, keeping each neighbour's bearing;
   - the Sinnbild validator accepts a tree of plain shapes and rejects
     scripts, styles, images, `use`, `foreignObject`, animation, entities,
@@ -858,3 +871,4 @@ The field test checks the default of *Neue Inhalte zeigen*.
 | 2026-10-13 | Proposed | Owner input after the second Studio check: a Fach's Sinnbild belongs to the subject and shows in every lens (Decision 6); the goal import is offered at a region, for describing missing knowledge rather than class notes (Decision 9). |
 | 2026-10-14 | Partially implemented | PR #407: delivery phases 0 to 3 (the plan's Phases 1 to 9), and of Phase 4 the read-only MCP Apps panel and the outline on Mobile's Fortschritt tab with a region review. The goal import at a region became the topic import ([ADR 2026-10-14](2026-10-14-topic-import-and-source-provenance.md)). Owner decision: the map itself on Mobile moves to its own feature. |
 | 2026-10-15 | Partially implemented | Owner request after a library deleted its legacy cards and kept an empty unsorted island of hundreds of hexes that no edit could remove: land no unit reaches goes back to the sea (Decision 8), and a library removes world regions it made itself (Decision 3). |
+| 2026-10-16 | Partially implemented | Owner request after building a second view of a team library: more orders than the two built-in Firma lenses, as Weltwissen and Schule give the world planet two. A library may make custom lenses on its own planet (Decision 3); `atlas-lens-create` / `atlas-lens-remove` and the `create` / `remove` options of `zam_atlas_lens_edit` make and remove them. |

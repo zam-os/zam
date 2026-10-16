@@ -37,6 +37,8 @@ import { openPostgresDatabase } from "../../src/kernel/db/postgres.js";
 import { applySchemaAndMigrations } from "../../src/kernel/db/provision.js";
 import type { Database } from "../../src/kernel/db/types.js";
 import {
+  applyLensEdits,
+  createCustomLens,
   createToken,
   deleteToken,
   installKvtTile,
@@ -44,6 +46,7 @@ import {
   moveUnitsToPlanet,
   ownPlanetOf,
   PRODUKTE_LENS,
+  removeCustomLens,
   resolveEmblem,
 } from "../../src/kernel/index.js";
 import { listBundledTiles } from "../../src/kernel/library/bundled-cells.js";
@@ -165,6 +168,59 @@ describeWithPostgres("atlas lenses on PostgreSQL (needs POSTGRES_URL)", () => {
       islands: [],
       land: [],
     });
+  });
+
+  it("makes, fills and removes a custom Firma lens", async () => {
+    const db = await setup();
+    const note = await createToken(db, {
+      slug: "boreas-scrum",
+      concept: "boreas-scrum",
+      domain: "scrum/team-boreas",
+    });
+    const lens = await db.transaction((tx) =>
+      createCustomLens(tx, {
+        kind: "repositories",
+        name: "Repositories",
+        levels: ["Repository", "Projekt", "Thema"],
+      }),
+    );
+    expect(lens.planet).toBe("firma");
+    expect((await libraryLenses(db)).map((l) => l.kind)).toContain(
+      "repositories",
+    );
+    await db.transaction((tx) =>
+      applyLensEdits(
+        tx,
+        lens,
+        [
+          { op: "create-region", name: "Boreas" },
+          { op: "create-region", name: "Prozesse", parent: "boreas" },
+          { op: "create-region", name: "Scrum", parent: "boreas.prozesse" },
+          { op: "set-alias", domain: "scrum", region: "boreas.prozesse.scrum" },
+        ],
+        { placedBy: "curator" },
+      ),
+    );
+    expect((await settleLens(db, lens)).landWritten).toBeGreaterThan(0);
+    const placed = await snapshotLens(db, lens);
+    expect(placed?.state.land.find((h) => h.unit)?.unit).toBe(
+      `token:${note.id}`,
+    );
+
+    await db.transaction((tx) => removeCustomLens(tx, "repositories"));
+    expect((await libraryLenses(db)).map((l) => l.kind)).not.toContain(
+      "repositories",
+    );
+    const left = (await db
+      .prepare(
+        `SELECT (SELECT COUNT(*) FROM atlas_regions) AS regions,
+                (SELECT COUNT(*) FROM atlas_land) AS land,
+                (SELECT COUNT(*) FROM atlas_domain_aliases) AS aliases`,
+      )
+      .get()) as { regions: number; land: number; aliases: number };
+    expect(Number(left.regions)).toBe(0);
+    expect(Number(left.land)).toBe(0);
+    expect(Number(left.aliases)).toBe(0);
   });
 
   it("puts a team library's unsorted own units on the Firma planet (Decision 2)", async () => {

@@ -25,6 +25,7 @@ import {
   clearLibraryVariant,
   clearPersonalEmblem,
   clearSharedEmblem,
+  createCustomLens,
   type Database,
   dialectOf,
   type EmblemAuthor,
@@ -67,6 +68,7 @@ import {
   readAtlasPrefs,
   readLearnerAtlas,
   removeConnection,
+  removeCustomLens,
   resolvePlace,
   revalidateEmblems,
   type SettleResult,
@@ -1149,6 +1151,69 @@ export async function atlasLensPropose(
       proposeLensReplacement(tx, lens, opts.proposal, opts.by),
     );
     return { success: true, lens: lens.kind, curation };
+  } catch (error) {
+    lensFailure(error);
+  }
+}
+
+/** A lens as `atlas-lens-create` reports it. */
+export interface AtlasLensCreated {
+  success: true;
+  lens: {
+    kind: LensKind;
+    planet: PlanetKind;
+    name: string;
+    levels: string[];
+    colourLevel: number;
+  };
+}
+
+/**
+ * `atlas-lens-create`: a custom lens on the library's own planet, with its own
+ * kind and level names. It starts empty; edits, aliases or a proposal fill it.
+ * Only who may write knowledge makes one.
+ */
+export async function atlasLensCreate(
+  db: Database,
+  opts: { kind: string; name: string; levels: string[]; colourLevel?: number },
+): Promise<AtlasLensCreated> {
+  if (!(await mayWriteKnowledge(db))) throw new Error(NOT_CURATOR);
+  try {
+    const lens = await db.transaction((tx) =>
+      createCustomLens(tx, {
+        kind: opts.kind,
+        name: opts.name,
+        levels: opts.levels,
+        colourLevel: opts.colourLevel,
+      }),
+    );
+    return {
+      success: true,
+      lens: {
+        kind: lens.kind,
+        planet: lens.planet,
+        name: lens.name,
+        levels: lens.levels,
+        colourLevel: lens.colourLevel,
+      },
+    };
+  } catch (error) {
+    lensFailure(error);
+  }
+}
+
+/**
+ * `atlas-lens-remove`: a custom lens goes with its regions, aliases,
+ * placements and land; its units keep their places in every other lens.
+ */
+export async function atlasLensRemove(
+  db: Database,
+  opts: { lens: string },
+): Promise<{ success: true; removed: LensKind }> {
+  if (!(await mayWriteKnowledge(db))) throw new Error(NOT_CURATOR);
+  try {
+    const lens = await db.transaction((tx) => removeCustomLens(tx, opts.lens));
+    return { success: true, removed: lens.kind };
   } catch (error) {
     lensFailure(error);
   }

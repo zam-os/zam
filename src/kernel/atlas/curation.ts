@@ -25,13 +25,16 @@ import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
 import { directedThreadEnds, newWorldCrossing } from "./connections.js";
 import {
+  CUSTOM_LENS_KIND,
   ensureLensRow,
   findLensId,
+  isBuiltInLensKind,
   type LensDefinition,
   type LensRows,
   loadBindings,
   loadLensRows,
   loadUnits,
+  resolveLensKind,
   slugSegment,
   type UnitRow,
   weltwissenSeedRows,
@@ -81,7 +84,11 @@ export type LensEditErrorCode =
   | "published-alias"
   | "bad-proposal"
   | "no-proposal"
-  | "not-own-planet";
+  | "not-own-planet"
+  | "bad-lens"
+  | "lens-exists"
+  | "unknown-lens"
+  | "not-custom";
 
 export class LensEditError extends Error {
   constructor(
@@ -323,6 +330,111 @@ async function assertNoNewCrossing(
     "held-by-thread",
     `The edit would put ${unit} on the ${after.get(unit)} planet, and a thread or prerequisite between ${a} and ${b} would let world knowledge depend on a Firma or Privat unit.`,
   );
+}
+
+/** Most levels a custom lens may have; the deepest built-in lens has four. */
+export const MAX_CUSTOM_LENS_LEVELS = 5;
+
+export interface CustomLensInput {
+  /** The lens's permanent id: a slug, never a built-in lens's kind. */
+  kind: string;
+  name: string;
+  /** Level names, the islands first. */
+  levels: string[];
+  /** The level whose regions give the hue; defaults to the second, or the only one. */
+  colourLevel?: number;
+}
+
+/**
+ * Make a custom lens on the library's own planet (Decision 3): one more order
+ * over the same units, with its own level names. It starts empty; edits,
+ * aliases or an accepted proposal fill it, and a unit it does not place keeps
+ * its place in every other lens.
+ */
+export async function createCustomLens(
+  db: Database,
+  input: CustomLensInput,
+): Promise<LensDefinition> {
+  const planet = await ownPlanetOf(db);
+  const kind = typeof input.kind === "string" ? input.kind.trim() : "";
+  if (!CUSTOM_LENS_KIND.test(kind)) {
+    throw new LensEditError(
+      "bad-lens",
+      `"${kind}" is no lens kind: a lower-case slug of 2 to 40 letters, digits and hyphens that starts with a letter.`,
+    );
+  }
+  if (isBuiltInLensKind(kind)) {
+    throw new LensEditError(
+      "lens-exists",
+      `"${kind}" is a lens ZAM defines itself; choose another kind.`,
+    );
+  }
+  const name = cleanName(input.name);
+  if (!name) throw new LensEditError("bad-lens", "A lens needs a name.");
+  const rawLevels = Array.isArray(input.levels) ? input.levels : [];
+  const levels = rawLevels.map(cleanName);
+  if (
+    levels.length === 0 ||
+    levels.length > MAX_CUSTOM_LENS_LEVELS ||
+    levels.some((level) => !level)
+  ) {
+    throw new LensEditError(
+      "bad-lens",
+      `A lens needs 1 to ${MAX_CUSTOM_LENS_LEVELS} named levels, the islands first.`,
+    );
+  }
+  const colourLevel = input.colourLevel ?? Math.min(1, levels.length - 1);
+  if (
+    !Number.isInteger(colourLevel) ||
+    colourLevel < 0 ||
+    colourLevel >= levels.length
+  ) {
+    throw new LensEditError(
+      "bad-lens",
+      `The colour level is one of the lens's levels, 0 to ${levels.length - 1}.`,
+    );
+  }
+  if (await findLensId(db, planet, kind)) {
+    throw new LensEditError(
+      "lens-exists",
+      `This library already has a lens "${kind}".`,
+    );
+  }
+  const lens: LensDefinition = { planet, kind, name, levels, colourLevel };
+  await ensureLensRow(db, lens);
+  return lens;
+}
+
+/**
+ * Remove a custom lens with its regions, aliases, placements and land. Its
+ * units keep their places in every other lens. A built-in lens cannot be
+ * removed. Refused like a removed region when a unit would then fall back to
+ * world knowledge across a thread (Decision 2).
+ */
+export async function removeCustomLens(
+  db: Database,
+  kind: string,
+): Promise<LensDefinition> {
+  if (isBuiltInLensKind(kind)) {
+    throw new LensEditError(
+      "not-custom",
+      `"${kind}" is a lens ZAM defines itself; only a custom lens can be removed.`,
+    );
+  }
+  const lens = await resolveLensKind(db, kind);
+  if (!lens) {
+    throw new LensEditError(
+      "unknown-lens",
+      `This library has no lens "${kind}".`,
+    );
+  }
+  assertLensOnLibrary(lens, await ownPlanetOf(db));
+  const before = (await unitPlanetsNow(db)).planets;
+  await db
+    .prepare(`DELETE FROM atlas_lenses WHERE planet = ? AND kind = ?`)
+    .run(lens.planet, lens.kind);
+  await assertNoNewCrossing(db, before);
+  return lens;
 }
 
 /**

@@ -34,6 +34,7 @@ import {
   type LensRows,
   lensRowsForRead,
   loadBindings,
+  loadCustomLenses,
   loadUnits,
   PRODUKTE_LENS,
   SCHULE_LENS,
@@ -93,8 +94,9 @@ export function assertLensOnLibrary(
 }
 
 /**
- * The lenses this library shows: world knowledge's, then the own planet's.
- * Optional lenses (Unternehmen) show once a curator made them.
+ * The lenses this library shows: world knowledge's, then the own planet's,
+ * then the custom lenses it made on its own planet. Optional lenses
+ * (Unternehmen) show once a curator made them.
  */
 export async function libraryLenses(
   db: Database,
@@ -110,6 +112,7 @@ export async function libraryLenses(
       lenses.push(lens);
     }
   }
+  lenses.push(...(await loadCustomLenses(db, planet)));
   return lenses;
 }
 

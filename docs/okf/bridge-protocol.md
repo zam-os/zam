@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-16T07:00:00.000Z
+timestamp: 2026-10-16T09:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -334,6 +334,18 @@ argument takes coordinates: only settle places land.
   placements and land, and the lens follows that source. No history is kept.
 - `atlas-lens-stale --lens <kind> --stale on|off [--note <text>]` records
   whether an own-planet lens still fits its source; a world lens has none.
+- `atlas-lens-create --kind <slug> --name <name> --levels <a,b,…>
+  [--colour-level <n>]` makes a custom lens on the library's own planet: its
+  own kind (a slug of 2 to 40 lower-case letters, digits and hyphens that is
+  no built-in lens's), a name, and one to five level names, the islands
+  first. The colour level defaults to the second level, or the only one. It
+  starts empty and takes edits, aliases and proposals like any own-planet
+  lens, and every `--lens` option then accepts its kind. Refusals:
+  `bad-lens`, `lens-exists`.
+- `atlas-lens-remove --lens <kind>` removes a custom lens with its regions,
+  aliases, placements and land; its units keep their places in every other
+  lens. A built-in lens is refused as `not-custom`, an unknown one as
+  `unknown-lens`.
 - `atlas-read` returns `curation` for the lens: its `source`, `stale` with
   the note, and a pending `proposal`. Curators see both in the Studio.
 - `atlas-revision` returns a fingerprint of what the atlas shows, one
