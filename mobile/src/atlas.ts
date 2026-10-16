@@ -18,6 +18,7 @@ import {
 } from "../../desktop/src/atlas/layout.js";
 import {
   conditionWords,
+  lensLabel,
   renderOutline,
 } from "../../desktop/src/atlas/outline.js";
 import type { Selection } from "../../desktop/src/atlas/render.js";
@@ -102,7 +103,7 @@ export function createMobileAtlas(
     for (const info of view.lenses ?? []) {
       const b = document.createElement("button");
       b.type = "button";
-      b.textContent = t(`atlas_lens_${info.kind}`);
+      b.textContent = lensLabel({ t }, info);
       b.classList.toggle("active", info.kind === view.lens.kind);
       b.setAttribute("aria-pressed", String(info.kind === view.lens.kind));
       b.addEventListener("click", () => {
