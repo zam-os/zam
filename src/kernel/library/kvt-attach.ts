@@ -150,6 +150,13 @@ export interface KvtPracticeItem {
    */
   sample_solution?: string | CardText;
   /**
+   * Where the item's knowledge is taught or practised, stored as the token's
+   * `source_link` (e.g. `https://academy.zam-os.org/uml/#lesson=uc-1-boxes`).
+   * Absent or blank inherits the atom's link. Links that differ only after
+   * `#` form one library topic.
+   */
+  source_link?: string | null;
+  /**
    * How a changed question/answer affects people who already learned it.
    * Absent means `material` — an unannotated content change must never pass
    * silently under a learner's existing stability.
@@ -191,6 +198,8 @@ export interface KvtAtom {
   domain?: string;
   reduction?: string;
   typical_age_min?: number;
+  /** Default `source_link` for practice items that name none. */
+  source_link?: string | null;
   prerequisites?: KvtAtomPrerequisite[];
   alignments?: KvtAlignment[];
   curricula?: KvtCurriculumBinding[];
@@ -542,6 +551,15 @@ function bloomOf(item: KvtPracticeItem): BloomLevel {
     throw new Error(`bloom_level must be 1–5, got ${String(level)}`);
   }
   return level;
+}
+
+/** The item's own link, else its atom's; blank counts as none. */
+function sourceLinkOf(atom: KvtAtom, item: KvtPracticeItem): string | null {
+  for (const raw of [item.source_link, atom.source_link]) {
+    const trimmed = typeof raw === "string" ? raw.trim() : "";
+    if (trimmed) return trimmed;
+  }
+  return null;
 }
 
 /**
@@ -949,6 +967,7 @@ async function installTileInTransaction(
             question_source: "manual",
             domain: atom.domain ?? "",
             bloom_level: bloomOf(item),
+            source_link: sourceLinkOf(atom, item),
             atom_id: atom.id,
             provider: projected?.provider ?? null,
             topic_id: projected?.topic_code ?? null,
@@ -1032,10 +1051,13 @@ async function installTileInTransaction(
         }
 
         // Classification, not substance: never part of a content revision.
+        // A link the tile names replaces the stored one; a tile that names
+        // none keeps a link set elsewhere, so reinstalling an older tile
+        // without links never wipes a curator's link.
         await tx
           .prepare(
             `UPDATE tokens
-                SET atom_id = ?, provider = ?, topic_id = ?, edge_representative = ?
+                SET atom_id = ?, provider = ?, topic_id = ?, edge_representative = ?, source_link = ?
               WHERE id = ?`,
           )
           .run(
@@ -1043,6 +1065,7 @@ async function installTileInTransaction(
             projected?.provider ?? existing.provider,
             projected?.topic_code ?? existing.topic_id,
             item.edge_representative ? 1 : 0,
+            sourceLinkOf(atom, item) ?? existing.source_link,
             item.id,
           );
         // Presentation follows the tile on every install, without a

@@ -700,6 +700,9 @@ import tile227Raw from "../../../tests/fixtures/curriculum/de-by-realschule-opti
 import tile228Raw from "../../../tests/fixtures/curriculum/de-by-realschule-optik-kvt.json" with {
   type: "json",
 };
+import tile229Raw from "../../../tests/fixtures/curriculum/zam-academy-uml-kvt.json" with {
+  type: "json",
+};
 // --- end bundled-tile-imports ---
 
 export interface CurriculumScope {
@@ -1214,6 +1217,8 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile227Raw as unknown as BundledTile,
   [(tile228Raw as unknown as BundledTile).tile_id]:
     tile228Raw as unknown as BundledTile,
+  [(tile229Raw as unknown as BundledTile).tile_id]:
+    tile229Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 
@@ -1319,6 +1324,12 @@ const PILOT_OVERRIDES: Record<string, Partial<BundledCellInfo>> = {
       "01K3X9A7R4B8C1D2E3F4G5A004",
       "01K3X9A7R4B8C1D2E3F4G5A009",
     ],
+  },
+  // A ZAM Academy cell keeps what the hosted training app taught; its stages
+  // are bound as curriculum positions of the `zam-academy` provider, which
+  // the school-grade label below does not describe.
+  "zam-academy:uml": {
+    gradeLabel: "ZAM Academy · UML 2.5.1",
   },
 };
 

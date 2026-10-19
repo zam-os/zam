@@ -9,6 +9,7 @@ import {
   getTokenById,
   installKvtTile,
   type KvtTile,
+  listLibraryTopics,
   materialiseKvtCards,
   openDatabase,
 } from "../../src/kernel/index.js";
@@ -432,6 +433,63 @@ describe("installKvtTile", () => {
     await installKvtTile(db, tile);
     const token = await getTokenById(db, tile.atoms[0].practice_items[0].id);
     expect(token?.slug).toBe("optik-lot-schnellcheck");
+  });
+
+  describe("source links", () => {
+    const APP = "https://academy.zam-os.org/uml/";
+
+    async function linkOf(id: string): Promise<string | null> {
+      return (await getTokenById(db, id))?.source_link ?? null;
+    }
+
+    it("stores the item's link, else its atom's, and treats blank as none", async () => {
+      const tile = loadTile();
+      const [first, second] = tile.atoms[0].practice_items;
+      tile.atoms[0].source_link = `${APP}#lesson=atom`;
+      first.source_link = `  ${APP}#lesson=item  `;
+      second.source_link = "   ";
+
+      await installKvtTile(db, tile);
+
+      expect(await linkOf(first.id)).toBe(`${APP}#lesson=item`);
+      expect(await linkOf(second.id)).toBe(`${APP}#lesson=atom`);
+      expect(await linkOf(tile.atoms[1].practice_items[0].id)).toBeNull();
+    });
+
+    it("moves a link a later release names, and keeps one it does not", async () => {
+      const tile = loadTile();
+      const item = tile.atoms[0].practice_items[0];
+      const curated = tile.atoms[1].practice_items[0];
+      item.source_link = `${APP}#lesson=old`;
+      await installKvtTile(db, tile);
+
+      item.source_link = `${APP}#lesson=new`;
+      await installKvtTile(db, tile);
+      expect(await linkOf(item.id)).toBe(`${APP}#lesson=new`);
+
+      await db
+        .prepare("UPDATE tokens SET source_link = ? WHERE id = ?")
+        .run("https://example.org/notes.md", curated.id);
+      delete item.source_link;
+      await installKvtTile(db, tile);
+      expect(await linkOf(item.id)).toBe(`${APP}#lesson=new`);
+      expect(await linkOf(curated.id)).toBe("https://example.org/notes.md");
+    });
+
+    it("makes one library topic of an app's lessons", async () => {
+      const tile = loadTile();
+      tile.atoms[0].source_link = `${APP}#lesson=uc-1-boxes`;
+      tile.atoms[1].source_link = `${APP}#lesson=cls-1-boxes`;
+      await installKvtTile(db, tile);
+
+      const topics = await listLibraryTopics(db, "learner-a");
+      const app = topics.filter((topic) => topic.key.startsWith(APP));
+      expect(app.map((topic) => topic.key)).toEqual([APP]);
+      expect(app[0].itemCount).toBe(
+        tile.atoms[0].practice_items.length +
+          tile.atoms[1].practice_items.length,
+      );
+    });
   });
 
   // Codex hardening review H2.3: silently ignoring the new value was the worst

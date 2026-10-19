@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-15T08:00:00.000Z
+timestamp: 2026-10-19T12:00:00.000Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -209,6 +209,13 @@ so a fix that is only presentation — `materiality: "cosmetic"`, such as the
 formula migration — reaches every enrolled learner without making anyone
 relearn a card. A team library refuses it: there, tiles change only through
 `zam team reinstall-tiles`, run by the administrator.
+
+A practice item may name a `source_link`; an item without one takes its
+atom's. Installing writes it to the token, so a card cites where its
+knowledge is taught, such as a lesson of a ZAM Academy app
+(`https://academy.zam-os.org/uml/#lesson=uc-1-boxes`). Links that differ
+only after `#` form one library topic. A reinstall moves a link the tile
+names; a tile that names none keeps a link set elsewhere.
 
 A tile may retire practice items. A retired item keeps its cards and review
 history but stops representing its atom: token prerequisites derived from
