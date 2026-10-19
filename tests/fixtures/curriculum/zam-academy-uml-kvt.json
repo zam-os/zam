@@ -1,0 +1,913 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:uml",
+  "version": "2026.10.1",
+  "title": "UML 2.5.1 (ZAM Academy)",
+  "description": "Hält fest, was du in der ZAM Academy zu UML 2.5.1 geübt hast: sechs Etappen vom Anwendungsfall- bis zum Komponentendiagramm. Jede Karte verlinkt die Lektion, in der du das Element gezeichnet hast.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-19T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/uml/",
+      "checked": "2026-10-19",
+      "label": "ZAM Academy – UML 2.5.1 (interaktives Trainingstool, Etappen 1–6)"
+    },
+    {
+      "uri": "https://www.omg.org/spec/UML/2.5.1/",
+      "checked": "2026-10-19",
+      "label": "OMG Unified Modeling Language (UML) Version 2.5.1 Specification"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8M251SYST00000000000A01",
+      "atom_uri": "urn:zam:atom:01K8M251SYST00000000000A01",
+      "namespace": "zam-academy-uml",
+      "slug": "uml-anwendungsfalldiagramm",
+      "title": "Anwendungsfalldiagramm: Systemgrenze, Akteure und «include»/«extend»",
+      "domain": "informatik/uml",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/uml/#lesson=uc-1-boxes",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q169411",
+          "target_label": "Unified Modeling Language",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_uml_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "uml",
+          "topic_code": "stage-1-use-case",
+          "topic_title": "Etappe 1: Ideen abgrenzen & Nutzen zeigen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8M251SYST00000000000K01",
+          "slug": "uml-akteur-ausserhalb-systemgrenze",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=uc-1-boxes",
+          "question": "Wo steht ein Akteur in einem UML-Anwendungsfalldiagramm im Verhältnis zur Systemgrenze?",
+          "concept": "Immer außerhalb der Systemgrenze: Ein Akteur ist eine Rolle außerhalb des Systems, die mit ihm interagiert.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Außerhalb der Systemgrenze",
+              "Innerhalb der Systemgrenze"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Innerhalb der Systemgrenze, neben den Anwendungsfällen, die er nutzt",
+              "reason": "Innerhalb liegt nur, was gebaut wird; der Akteur gehört nicht dazu."
+            },
+            {
+              "text": "Auf der Linie der Systemgrenze, halb innen und halb außen",
+              "reason": "Die Systemgrenze trennt eindeutig; ein Akteur steht vollständig außerhalb."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K02",
+          "slug": "uml-include-bedeutung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=uc-2-connections",
+          "question": "Was drückt ein «include»-Pfeil von „Ticket kaufen“ zu „Bezahlen“ aus?",
+          "concept": "„Bezahlen“ wird bei jedem Ausführen von „Ticket kaufen“ zwingend mit ausgeführt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "„Bezahlen“ läuft jedes Mal zwingend mit",
+              "„Bezahlen“ läuft nur manchmal, unter einer Bedingung"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "„Bezahlen“ kann optional unter einer Bedingung hinzukommen",
+              "reason": "Optionale Erweiterungen modelliert «extend», nicht «include»."
+            },
+            {
+              "text": "„Ticket kaufen“ ist ein Spezialfall von „Bezahlen“",
+              "reason": "Spezialisierung wäre eine Generalisierung mit hohlem Dreieck, kein «include»."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K03",
+          "slug": "uml-extend-pfeilrichtung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=uc-2-connections",
+          "question": "In welche Richtung zeigt der «extend»-Pfeil zwischen einem Basis-Anwendungsfall und seiner optionalen Erweiterung?",
+          "concept": "Von der optionalen Erweiterung zum Basis-Anwendungsfall, z. B. von „Rabattcode einlösen“ zu „Ticket kaufen“.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Von der Erweiterung zum Basis-Anwendungsfall",
+              "Vom Basis-Anwendungsfall zur Erweiterung"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Vom Basis-Anwendungsfall zur optionalen Erweiterung",
+              "reason": "So zeigt «include» (Basis → eingebundener Teil); «extend» zeigt von der Erweiterung zum Basis-Anwendungsfall."
+            },
+            {
+              "text": "In beide Richtungen, als Doppelpfeil",
+              "reason": "UML kennt hier keinen Doppelpfeil; «extend» zeigt genau zum Basis-Anwendungsfall."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K04",
+          "slug": "uml-nachbarsystem-als-akteur",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=uc-1-boxes",
+          "question": "Eine Banking-App lässt jede Überweisung von einem externen Bankserver ausführen. Wie erscheint der Bankserver im Anwendungsfalldiagramm der App?",
+          "concept": "Als Akteur außerhalb der Systemgrenze: Auch ein Nachbarsystem, mit dem das System interagiert, ist ein Akteur.",
+          "choice_distractors": [
+            {
+              "text": "Als Anwendungsfall „Bankserver“ innerhalb der Systemgrenze",
+              "reason": "Der Bankserver wird nicht in der App gebaut; was außerhalb liegt und mitwirkt, ist ein Akteur."
+            },
+            {
+              "text": "Gar nicht, weil Akteure immer Menschen sind",
+              "reason": "Ein Akteur ist eine Rolle; auch ein Nachbarsystem kann sie einnehmen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8M251SYST00000000000A02",
+      "atom_uri": "urn:zam:atom:01K8M251SYST00000000000A02",
+      "namespace": "zam-academy-uml",
+      "slug": "uml-klassendiagramm",
+      "title": "Klassendiagramm: Klassenbox, Sichtbarkeit und Strukturbeziehungen",
+      "domain": "informatik/uml",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/uml/#lesson=cls-1-boxes",
+      "prerequisites": [
+        {
+          "atom_id": "01K8M251SYST00000000000A01",
+          "type": "soft",
+          "rationale": "Lernpfad der ZAM Academy: nach den Anwendungsfällen folgen die Begriffe des Systems."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q169411",
+          "target_label": "Unified Modeling Language",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_uml_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "uml",
+          "topic_code": "stage-2-class",
+          "topic_title": "Etappe 2: Begriffe & Strukturen schärfen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8M251SYST00000000000K05",
+          "slug": "uml-klassenbox-abschnitte",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=cls-1-boxes",
+          "question": "Welche drei Abschnitte hat eine UML-Klassenbox, von oben nach unten?",
+          "concept": "Klassenname\nAttribute\nOperationen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Klassenname, Attribute, Operationen",
+              "Klassenname, Operationen, Attribute"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Klassenname, Operationen, Attribute",
+              "reason": "Attribute stehen im mittleren, Operationen im unteren Abschnitt."
+            },
+            {
+              "text": "Klassenname, Beziehungen, Attribute",
+              "reason": "Beziehungen sind Linien zwischen Klassen, kein Abschnitt der Box."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K06",
+          "slug": "uml-sichtbarkeit-minus",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=cls-1-boxes",
+          "question": "Was bedeutet das Minuszeichen in der Attributzeile „- kontostand : Euro“?",
+          "concept": "Das Attribut ist privat (private): Nur die eigene Klasse greift direkt darauf zu.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Privat (private)",
+              "Öffentlich (public)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das Attribut ist optional",
+              "reason": "Optionalität drückt eine Multiplizität wie [0..1] aus, nicht das Minuszeichen."
+            },
+            {
+              "text": "Das Attribut ist statisch",
+              "reason": "Statische Elemente werden unterstrichen; „-“ ist die Sichtbarkeit private."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K07",
+          "slug": "uml-komposition-existenz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=cls-2-connections",
+          "question": "Was sagt eine Komposition (ausgefüllte Raute ◆) zwischen „Bestellung“ und „Bestellposition“ über die Positionen aus?",
+          "concept": "Die Positionen existieren nur mit ihrer Bestellung: Wird die Bestellung gelöscht, verschwinden auch ihre Positionen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie werden mit der Bestellung gelöscht",
+              "Sie bestehen nach dem Löschen der Bestellung weiter"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Positionen bestehen weiter, wenn die Bestellung gelöscht wird",
+              "reason": "Das beschreibt die Aggregation (leere Raute ◇)."
+            },
+            {
+              "text": "Eine Bestellposition ist eine spezielle Art von Bestellung",
+              "reason": "„Ist-ein“ wäre eine Vererbung mit hohlem Dreieck."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K08",
+          "slug": "uml-raute-am-ganzen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=cls-2-connections",
+          "question": "An welchem Ende der Linie sitzt bei Komposition und Aggregation die Raute?",
+          "concept": "Am Ganzen, z. B. am „Haus“ und nicht am „Raum“.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Am Ganzen",
+              "Am Teil"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Am Teil",
+              "reason": "Die Raute klebt immer am Ganzen, nie am Teil."
+            },
+            {
+              "text": "In der Mitte der Linie",
+              "reason": "Die Raute sitzt an einem Ende, und zwar am Ganzen."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K09",
+          "slug": "uml-vererbung-pfeilrichtung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=cls-2-connections",
+          "question": "Wohin zeigt das hohle Dreieck einer Vererbung (Generalisierung) zwischen „EBook“ und „Buch“?",
+          "concept": "Zur Oberklasse „Buch“: Die durchgezogene Linie führt von „EBook“ zum Dreieck an „Buch“.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zu „Buch“ (Oberklasse)",
+              "Zu „EBook“ (Unterklasse)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zu „EBook“, weil die Unterklasse erbt",
+              "reason": "Das Dreieck zeigt immer zur Oberklasse, von der geerbt wird."
+            },
+            {
+              "text": "Zu beiden Klassen, als Doppelpfeil",
+              "reason": "Eine Generalisierung hat genau eine Spitze, an der Oberklasse."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K10",
+          "slug": "uml-komposition-modellieren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=cls-2-connections",
+          "question": "Ein Haus besteht aus Räumen; ohne das Haus existiert kein Raum weiter. Welche Beziehung modellierst du zwischen „Haus“ und „Raum“?",
+          "concept": "Eine Komposition: ausgefüllte Raute (◆) am „Haus“, die Linie führt zu „Raum“.",
+          "choice_distractors": [
+            {
+              "text": "Eine Aggregation mit leerer Raute am „Haus“",
+              "reason": "Die leere Raute erlaubt Teile, die ohne das Ganze weiterbestehen; hier ist das nicht so."
+            },
+            {
+              "text": "Eine Vererbung von „Raum“ zu „Haus“",
+              "reason": "Ein Raum ist kein Haus; es geht um Teil und Ganzes, nicht um „ist-ein“."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8M251SYST00000000000A03",
+      "atom_uri": "urn:zam:atom:01K8M251SYST00000000000A03",
+      "namespace": "zam-academy-uml",
+      "slug": "uml-aktivitaetsdiagramm",
+      "title": "Aktivitätsdiagramm: Start, Ende, Entscheidungen und Parallelisierung",
+      "domain": "informatik/uml",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/uml/#lesson=act-1-boxes",
+      "prerequisites": [
+        {
+          "atom_id": "01K8M251SYST00000000000A01",
+          "type": "soft",
+          "rationale": "Ein Aktivitätsdiagramm beschreibt den Ablauf eines Anwendungsfalls."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q169411",
+          "target_label": "Unified Modeling Language",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_uml_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "uml",
+          "topic_code": "stage-3-activity",
+          "topic_title": "Etappe 3: Prozesse & Entscheidungen durchdenken"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8M251SYST00000000000K11",
+          "slug": "uml-aktivitaetsende-symbol",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=act-1-boxes",
+          "question": "Woran unterscheidet sich im Aktivitätsdiagramm das Aktivitätsende vom Startknoten?",
+          "concept": "Das Aktivitätsende hat um den ausgefüllten Punkt einen äußeren Ring (◉); der Startknoten ist nur ein ausgefüllter Punkt (●).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Ende hat einen zusätzlichen Ring (◉)",
+              "Der Start hat einen zusätzlichen Ring (◉)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Startknoten hat den äußeren Ring",
+              "reason": "Umgekehrt: Der Ring (Bullauge) markiert das Aktivitätsende."
+            },
+            {
+              "text": "Das Ende ist ein leerer Kreis",
+              "reason": "Das Aktivitätsende ist ein gefüllter Punkt im Ring, kein leerer Kreis."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K12",
+          "slug": "uml-entscheidung-guards",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=act-2-connections",
+          "question": "Was muss an jeder ausgehenden Kante einer Entscheidung (◇) im Aktivitätsdiagramm stehen?",
+          "concept": "Eine Wächterbedingung (Guard) in eckigen Klammern, z. B. [Lagerbestand > 0] und [sonst].",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Wächterbedingung in eckigen Klammern",
+              "Ein Ereignis mit Schrägstrich und Aktion"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Ereignis mit Schrägstrich und Aktion",
+              "reason": "„Ereignis [Guard] / Aktion“ beschriftet Transitionen im Zustandsdiagramm."
+            },
+            {
+              "text": "Nichts, die Raute entscheidet selbst",
+              "reason": "Ohne Guards ist nicht erkennbar, welcher Pfad genommen wird."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K13",
+          "slug": "uml-fork-parallel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=act-2-connections",
+          "question": "Was passiert an einem Parallelisierungsbalken (Fork ▬) mit seinen ausgehenden Pfaden?",
+          "concept": "Alle ausgehenden Pfade starten gleichzeitig (nebenläufig).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Alle starten gleichzeitig",
+              "Genau einer wird gewählt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Genau einer der Pfade wird gewählt",
+              "reason": "Das ist die Entscheidung (◇); der Fork startet alle Pfade."
+            },
+            {
+              "text": "Die Pfade laufen nacheinander von links nach rechts",
+              "reason": "Nach einem Fork laufen die Pfade nebenläufig, nicht nacheinander."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K14",
+          "slug": "uml-fork-modellieren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=act-2-connections",
+          "question": "Nach dem Bezahlen sollen gleichzeitig die Rechnung verschickt und das Paket gepackt werden. Welches Element setzt du im Aktivitätsdiagramm nach „Bezahlen“?",
+          "concept": "Einen Parallelisierungsbalken (Fork ▬), von dem beide Aktionen ausgehen.",
+          "choice_distractors": [
+            {
+              "text": "Eine Entscheidungsraute (◇) mit zwei Guards",
+              "reason": "Eine Entscheidung wählt nur einen Pfad; hier sollen beide laufen."
+            },
+            {
+              "text": "Die beiden Aktionen einfach hintereinander",
+              "reason": "Hintereinander drückt eine Reihenfolge aus, nicht Gleichzeitigkeit."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8M251SYST00000000000A04",
+      "atom_uri": "urn:zam:atom:01K8M251SYST00000000000A04",
+      "namespace": "zam-academy-uml",
+      "slug": "uml-zustandsdiagramm",
+      "title": "Zustandsdiagramm: Zustände, entry-Aktivität und Transitionen",
+      "domain": "informatik/uml",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/uml/#lesson=stm-1-boxes",
+      "prerequisites": [
+        {
+          "atom_id": "01K8M251SYST00000000000A02",
+          "type": "soft",
+          "rationale": "Ein Zustandsdiagramm beschreibt den Lebenszyklus eines Objekts einer Klasse."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q169411",
+          "target_label": "Unified Modeling Language",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_uml_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "uml",
+          "topic_code": "stage-4-state",
+          "topic_title": "Etappe 4: Lebenszyklen & Zustände beherrschen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8M251SYST00000000000K15",
+          "slug": "uml-entry-aktivitaet",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=stm-1-boxes",
+          "question": "Wann wird die interne Aktivität „entry / Tür verriegeln“ eines Zustands ausgeführt?",
+          "concept": "Genau in dem Moment, in dem das Objekt den Zustand betritt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beim Betreten des Zustands",
+              "Beim Verlassen des Zustands"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Beim Verlassen des Zustands",
+              "reason": "Das gilt für „exit /“; „entry /“ läuft beim Eintritt."
+            },
+            {
+              "text": "Die ganze Zeit, solange das Objekt im Zustand ist",
+              "reason": "Das gilt für „do /“; „entry /“ läuft einmal beim Eintritt."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K16",
+          "slug": "uml-transition-syntax",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=stm-2-connections",
+          "question": "In welcher Reihenfolge stehen Ereignis, Wächterbedingung und Aktion in der Beschriftung einer Transition?",
+          "concept": "Ereignis [Wächterbedingung] / Aktion, z. B. bezahlen [Betrag >= Preis] / Ticket drucken.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ereignis [Bedingung] / Aktion",
+              "[Bedingung] Aktion / Ereignis"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "[Bedingung] Aktion / Ereignis",
+              "reason": "Zuerst steht das auslösende Ereignis, die Aktion folgt nach dem Schrägstrich."
+            },
+            {
+              "text": "Aktion / Ereignis [Bedingung]",
+              "reason": "Die Aktion steht am Ende, hinter dem Schrägstrich."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K17",
+          "slug": "uml-transition-feuert",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=stm-2-connections",
+          "question": "Wann findet die Transition „bezahlen [Betrag >= Preis] / Ticket drucken“ statt?",
+          "concept": "Wenn das Ereignis „bezahlen“ eintritt und die Bedingung „Betrag >= Preis“ wahr ist.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bei „bezahlen“, wenn der Betrag reicht",
+              "Sobald der Betrag reicht, auch ohne „bezahlen“"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sobald der Betrag reicht, auch ohne das Ereignis „bezahlen“",
+              "reason": "Die Bedingung wird nur geprüft, wenn das Ereignis eintritt."
+            },
+            {
+              "text": "Bei jedem „bezahlen“, egal wie hoch der Betrag ist",
+              "reason": "Die Wächterbedingung muss wahr sein, sonst bleibt der Zustand."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K18",
+          "slug": "uml-transition-modellieren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=stm-4-capstone",
+          "question": "Ein Paketfach soll nur dann von „Belegt“ nach „Frei“ wechseln, wenn beim Eingeben der richtige Abholcode verwendet wird. Wie beschriftest du die Transition?",
+          "concept": "Mit Ereignis und Wächterbedingung, z. B. codeEingeben [Code korrekt].",
+          "choice_distractors": [
+            {
+              "text": "Nur mit [Code korrekt], ohne Ereignis",
+              "reason": "Ohne Ereignis fehlt der Auslöser; geprüft wird beim Eingeben des Codes."
+            },
+            {
+              "text": "Mit einem eigenen Zustand „Code prüfen“ statt einer Beschriftung",
+              "reason": "Die Bedingung gehört als Guard an die Transition."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8M251SYST00000000000A05",
+      "atom_uri": "urn:zam:atom:01K8M251SYST00000000000A05",
+      "namespace": "zam-academy-uml",
+      "slug": "uml-sequenzdiagramm",
+      "title": "Sequenzdiagramm: Lebenslinien, Zeitachse und Nachrichtenarten",
+      "domain": "informatik/uml",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/uml/#lesson=seq-1-boxes",
+      "prerequisites": [
+        {
+          "atom_id": "01K8M251SYST00000000000A02",
+          "type": "soft",
+          "rationale": "Lebenslinien stehen für Objekte der Klassen aus dem Klassendiagramm."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q169411",
+          "target_label": "Unified Modeling Language",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_uml_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "uml",
+          "topic_code": "stage-5-sequence",
+          "topic_title": "Etappe 5: Zeitliches Zusammenspiel sichtbar machen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8M251SYST00000000000K19",
+          "slug": "uml-sequenz-zeitachse",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=seq-1-boxes",
+          "question": "In welche Richtung verläuft die Zeit in einem UML-Sequenzdiagramm?",
+          "concept": "Von oben nach unten: Je weiter unten eine Nachricht steht, desto später passiert sie.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Von oben nach unten",
+              "Von links nach rechts"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Von links nach rechts",
+              "reason": "Von links nach rechts stehen die Lebenslinien; die Zeit läuft nach unten."
+            },
+            {
+              "text": "In Pfeilrichtung der Nachrichten",
+              "reason": "Die Pfeilrichtung zeigt Sender und Empfänger, nicht die Zeit."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K20",
+          "slug": "uml-synchrone-nachricht",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=seq-2-connections",
+          "question": "Woran erkennt man im Sequenzdiagramm eine synchrone Nachricht, bei der der Aufrufer auf die Antwort wartet?",
+          "concept": "Durchgezogene Linie mit ausgefüllter Dreiecksspitze (──▶).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ausgefüllte Spitze (──▶)",
+              "Offene Spitze (──>)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Durchgezogene Linie mit offener Spitze (──>)",
+              "reason": "Die offene Spitze kennzeichnet eine asynchrone Nachricht."
+            },
+            {
+              "text": "Gestrichelte Linie mit offener Spitze (- - >)",
+              "reason": "Gestrichelt ist die Antwortnachricht."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K21",
+          "slug": "uml-antwortnachricht",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=seq-2-connections",
+          "question": "Wie sieht im Sequenzdiagramm eine Antwortnachricht aus?",
+          "concept": "Gestrichelte Linie mit offener Pfeilspitze (- - >).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gestrichelt mit offener Spitze",
+              "Durchgezogen mit ausgefüllter Spitze"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Durchgezogene Linie mit ausgefüllter Spitze",
+              "reason": "Das ist der synchrone Aufruf, nicht die Antwort."
+            },
+            {
+              "text": "Durchgezogene Linie mit offener Spitze",
+              "reason": "Das ist eine asynchrone Nachricht."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K22",
+          "slug": "uml-synchron-modellieren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=seq-4-capstone",
+          "question": "Der Webshop ruft den Zahlungsdienst auf und darf erst weitermachen, wenn die Zahlung bestätigt ist. Welche Nachrichtenart zeichnest du für den Aufruf?",
+          "concept": "Eine synchrone Nachricht (──▶), weil der Webshop auf die Antwort wartet.",
+          "choice_distractors": [
+            {
+              "text": "Eine asynchrone Nachricht (──>)",
+              "reason": "Asynchron arbeitet der Sender sofort weiter; hier muss er warten."
+            },
+            {
+              "text": "Eine Antwortnachricht (- - >) vom Webshop zum Zahlungsdienst",
+              "reason": "Die Antwort kommt vom Zahlungsdienst zurück; der Aufruf selbst ist synchron."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8M251SYST00000000000A06",
+      "atom_uri": "urn:zam:atom:01K8M251SYST00000000000A06",
+      "namespace": "zam-academy-uml",
+      "slug": "uml-komponentendiagramm",
+      "title": "Komponentendiagramm: angebotene und benötigte Schnittstellen",
+      "domain": "informatik/uml",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/uml/#lesson=cmp-1-boxes",
+      "prerequisites": [
+        {
+          "atom_id": "01K8M251SYST00000000000A02",
+          "type": "hard",
+          "rationale": "Schnittstellen und ihre Realisierung kommen aus dem Klassendiagramm."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q169411",
+          "target_label": "Unified Modeling Language",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_uml_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "uml",
+          "topic_code": "stage-6-component",
+          "topic_title": "Etappe 6: Große Systeme modular schneiden"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8M251SYST00000000000K23",
+          "slug": "uml-lollipop-angeboten",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=cmp-1-boxes",
+          "question": "Was bedeutet das Lollipop-Symbol (Kreis am Stiel ○—) an einer Komponente?",
+          "concept": "Eine angebotene Schnittstelle (Provided Interface), die die Komponente bereitstellt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Angebotene Schnittstelle",
+              "Benötigte Schnittstelle"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine benötigte Schnittstelle",
+              "reason": "Benötigte Schnittstellen zeigt der offene Halbkreis (Socket)."
+            },
+            {
+              "text": "Ein Port für Datenbankzugriffe",
+              "reason": "Der Lollipop steht allgemein für eine angebotene Schnittstelle."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K24",
+          "slug": "uml-socket-benoetigt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=cmp-1-boxes",
+          "question": "Was bedeutet das Socket-Symbol (offener Halbkreis )—) an einer Komponente?",
+          "concept": "Eine benötigte Schnittstelle (Required Interface), die die Komponente von einem Partner braucht.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Benötigte Schnittstelle",
+              "Angebotene Schnittstelle"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine angebotene Schnittstelle",
+              "reason": "Angebotene Schnittstellen zeigt der geschlossene Kreis (Lollipop)."
+            },
+            {
+              "text": "Eine defekte, noch nicht verbundene Komponente",
+              "reason": "Der Socket zeigt einen Bedarf, keinen Fehler."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K25",
+          "slug": "uml-abhaengigkeit-richtung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=cmp-2-connections",
+          "question": "In welche Richtung zeigt der gestrichelte Abhängigkeitspfeil, wenn „BestellService“ die Schnittstelle „IZahlung“ benötigt?",
+          "concept": "Vom benötigenden „BestellService“ zur Schnittstelle „IZahlung“.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Von „BestellService“ zu „IZahlung“",
+              "Von „IZahlung“ zu „BestellService“"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Von „IZahlung“ zu „BestellService“",
+              "reason": "Der Pfeil zeigt vom Abhängigen zu dem, was er benötigt."
+            },
+            {
+              "text": "Von „BestellService“ zum „ZahlungsGateway“, das „IZahlung“ anbietet",
+              "reason": "Der Service hängt von der Schnittstelle ab, nicht von einer bestimmten Implementierung."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000K26",
+          "slug": "uml-ball-and-socket-modellieren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/uml/#lesson=cmp-2-connections",
+          "question": "Der „BestellService“ braucht eine Zahlungsfunktion, die das „ZahlungsGateway“ über „IZahlung“ anbietet. Wie verbindest du beide Komponenten im Komponentendiagramm?",
+          "concept": "Über die Schnittstelle „IZahlung“: Das Gateway bietet sie als Lollipop an, der BestellService greift mit einem Socket hinein (Ball-and-Socket).",
+          "choice_distractors": [
+            {
+              "text": "Mit einer Komposition (◆) vom Gateway zum BestellService",
+              "reason": "Komponenten koppeln über Schnittstellen, nicht als Teil und Ganzes."
+            },
+            {
+              "text": "Mit einer direkten Abhängigkeit vom Gateway zum BestellService",
+              "reason": "Die Richtung stimmt nicht, und die Kopplung soll über „IZahlung“ laufen."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

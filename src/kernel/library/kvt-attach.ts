@@ -150,8 +150,10 @@ export interface KvtPracticeItem {
    */
   sample_solution?: string | CardText;
   /**
-   * Optional deep-link to the learning source or interactive training tool
-   * lesson (e.g. `uml-learning-app/UML-Studio-Academy.html#lesson=1.1`).
+   * Where the item's knowledge is taught or practised, stored as the token's
+   * `source_link` (e.g. `https://academy.zam-os.org/uml/#lesson=uc-1-boxes`).
+   * Absent or blank inherits the atom's link. Links that differ only after
+   * `#` form one library topic.
    */
   source_link?: string | null;
   /**
@@ -196,7 +198,7 @@ export interface KvtAtom {
   domain?: string;
   reduction?: string;
   typical_age_min?: number;
-  /** Optional default source/training-tool link inherited by practice items. */
+  /** Default `source_link` for practice items that name none. */
   source_link?: string | null;
   prerequisites?: KvtAtomPrerequisite[];
   alignments?: KvtAlignment[];
@@ -551,11 +553,13 @@ function bloomOf(item: KvtPracticeItem): BloomLevel {
   return level;
 }
 
+/** The item's own link, else its atom's; blank counts as none. */
 function sourceLinkOf(atom: KvtAtom, item: KvtPracticeItem): string | null {
-  const raw = item.source_link ?? atom.source_link;
-  if (typeof raw !== "string") return null;
-  const trimmed = raw.trim();
-  return trimmed.length > 0 ? trimmed : null;
+  for (const raw of [item.source_link, atom.source_link]) {
+    const trimmed = typeof raw === "string" ? raw.trim() : "";
+    if (trimmed) return trimmed;
+  }
+  return null;
 }
 
 /**
@@ -1047,6 +1051,9 @@ async function installTileInTransaction(
         }
 
         // Classification, not substance: never part of a content revision.
+        // A link the tile names replaces the stored one; a tile that names
+        // none keeps a link set elsewhere, so reinstalling an older tile
+        // without links never wipes a curator's link.
         await tx
           .prepare(
             `UPDATE tokens
