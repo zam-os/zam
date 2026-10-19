@@ -738,6 +738,23 @@ const LOCALIZED_COMPLETENESS: Record<
   ja: { complete: "完全", incomplete: "不完全" },
 };
 
+/** A chat template's special token: `<|im_start|>`, `<|eot_id|>`, … */
+const CHAT_TEMPLATE_TOKEN = /<\|[^|>\n]{1,40}\|>/g;
+
+/**
+ * A line a model leaks when it slips out of its turn: a bare role marker,
+ * sometimes glued to stray characters (`亿博user`), or a line with no letter
+ * or digit at all (`]]`). Feedback never consists of such a line.
+ */
+function isChatTemplateDebris(line: string): boolean {
+  const trimmed = line.trim();
+  if (!trimmed) return false;
+  if (!/[\p{L}\p{N}]/u.test(trimmed)) return true;
+  return /^[^\p{Script=Latin}\p{N}\s]{0,8}\s*(?:user|assistant|system|model|human)\s*:?$/iu.test(
+    trimmed,
+  );
+}
+
 /**
  * Sanitize active-recall evaluation text returned by an LLM or agent harness.
  *
@@ -768,7 +785,13 @@ export function cleanRecallEvaluation(
     new RegExp(`<\\s*(?:${THINKING_TAGS})\\b[^>]*>`, "gi"),
     "",
   );
-  text = text.trim();
+  // Chat-template debris from a model that slipped out of its turn.
+  text = text
+    .replace(CHAT_TEMPLATE_TOKEN, "")
+    .split(/\r?\n/)
+    .filter((line) => !isChatTemplateDebris(line))
+    .join("\n")
+    .trim();
   if (!text) return "";
 
   let prevText = "";
