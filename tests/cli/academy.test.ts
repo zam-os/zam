@@ -208,11 +208,13 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       fetch: academy.fetch,
     });
     expect(list.offline).toBe(false);
+    // Every bundled academy cell plus the catalog-only one, sorted by id.
     expect(list.cells.map((cell) => cell.id)).toEqual([
+      "zam-academy:physik-realschule-9",
       "zam-academy:sql",
       "zam-academy:uml",
     ]);
-    expect(list.cells[1]).toMatchObject({
+    expect(list.cells.find((cell) => cell.id === "zam-academy:uml")).toMatchObject({
       bundled: true,
       held: false,
       version: "2099.1.1",
@@ -232,7 +234,10 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       fetch: offline,
     });
     expect(empty).toMatchObject({ offline: true });
-    expect(empty.cells.map((cell) => cell.id)).toEqual(["zam-academy:uml"]);
+    expect(empty.cells.map((cell) => cell.id)).toEqual([
+      "zam-academy:physik-realschule-9",
+      "zam-academy:uml",
+    ]);
 
     await academyListHandler(db, {
       user: "learner",
@@ -273,7 +278,9 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       user: "learner",
       fetch: fakeAcademy([{ ...UML, version: "2099.1.1" }]).fetch,
     });
-    expect(listed.cells[0]).toMatchObject({ held: true, newer: true });
+    expect(
+      listed.cells.find((cell) => cell.id === "zam-academy:uml"),
+    ).toMatchObject({ held: true, newer: true });
 
     const update = await academyUpdateHandler(db, {
       cellId: "zam-academy:uml",

@@ -1,0 +1,2944 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:physik-realschule-9",
+  "version": "2026.10.1",
+  "title": "Physik 9 Realschule (ZAM Academy)",
+  "description": "Hält fest, was du in der ZAM Academy zu Physik 9 (Realschule Bayern, LehrplanPLUS) geübt hast: Druck in Flüssigkeiten und Gasen, Mechanik und Energie, Wärmelehre, Elektrizitätslehre. Jede Karte verlinkt die Lektion mit Labor und Aufgaben.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-19T18:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/physik-realschule-9/",
+      "checked": "2026-10-19",
+      "label": "ZAM Academy · Physik 9 Realschule (interaktives Labor, Etappen 1–4)"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/physik/wpfg1",
+      "checked": "2026-10-19",
+      "label": "LehrplanPLUS Realschule, Physik 9, Wahlpflichtfächergruppe I"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/physik/wpfg2-3",
+      "checked": "2026-10-19",
+      "label": "LehrplanPLUS Realschule, Physik 9, Wahlpflichtfächergruppen II/III"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8PHYS9RS000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A01",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-druck-kraft-pro-flaeche",
+      "title": "Druck: Kraft pro Fläche, Pascal und bar",
+      "domain": "physik/druck",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-1-druck",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q39552",
+          "target_label": "pressure",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-1-druck",
+          "topic_title": "Etappe 1: Druck in Flüssigkeiten und Gasen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik von Flüssigkeiten und Gasen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik und Energie"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K01",
+          "slug": "ph9-druck-definition",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-1-druck",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man den Druck "
+            },
+            {
+              "type": "math",
+              "tex": "p",
+              "speech": "p"
+            },
+            {
+              "type": "text",
+              "text": " aus der Kraft "
+            },
+            {
+              "type": "math",
+              "tex": "F",
+              "speech": "F"
+            },
+            {
+              "type": "text",
+              "text": " und der Fläche "
+            },
+            {
+              "type": "math",
+              "tex": "A",
+              "speech": "A"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "p = \\frac{F}{A}",
+              "speech": "p gleich F durch A"
+            },
+            {
+              "type": "text",
+              "text": ": Druck ist Kraft pro Fläche."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "p = F / A",
+              "p = F · A"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "p = F · A",
+              "reason": "Kraft mal Fläche würde mit der Fläche wachsen; der Druck wird bei größerer Fläche kleiner."
+            },
+            {
+              "text": "p = A / F",
+              "reason": "Die Fläche steht im Nenner: Je größer die Fläche, desto kleiner der Druck."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K02",
+          "slug": "ph9-druck-einheit-pascal",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-1-druck",
+          "question": "Wie heißt die Einheit des Drucks, und wie hängt sie mit Newton und Quadratmeter zusammen?",
+          "concept": "Pascal: 1 Pa = 1 N/m². 1 bar = 100 000 Pa.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1 Pa = 1 N/m²",
+              "1 Pa = 1 N·m"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Newtonmeter: 1 Pa = 1 N·m",
+              "reason": "Newtonmeter ist die Einheit der Arbeit; Druck ist Kraft geteilt durch Fläche."
+            },
+            {
+              "text": "1 Pa = 1 N/cm²",
+              "reason": "Pascal bezieht die Kraft auf einen Quadratmeter, nicht auf einen Quadratzentimeter."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K03",
+          "slug": "ph9-druck-flaeche-halbiert",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-1-druck",
+          "question": "Eine Person steht erst auf beiden Füßen, dann auf einem. Die Gewichtskraft bleibt gleich. Wie ändert sich der Druck auf den Boden?",
+          "concept": "Er verdoppelt sich: Die Fläche halbiert sich, und p = F / A wird doppelt so groß.",
+          "choice_distractors": [
+            {
+              "text": "Er bleibt gleich, weil die Gewichtskraft gleich bleibt",
+              "reason": "Der Druck hängt auch von der Fläche ab, und die halbiert sich."
+            },
+            {
+              "text": "Er halbiert sich, weil nur noch ein Fuß drückt",
+              "reason": "Weniger Fläche heißt mehr Druck, nicht weniger."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A02",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-hydraulischer-kraftwandler",
+      "title": "Hydraulischer Kraftwandler: Kräfte, Flächen und Wege",
+      "domain": "physik/druck",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-2-hydraulik",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A01",
+          "type": "soft",
+          "rationale": "Der Kraftwandler nutzt, dass der Druck in der Flüssigkeit überall gleich ist."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q39552",
+          "target_label": "pressure",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-1-druck",
+          "topic_title": "Etappe 1: Druck in Flüssigkeiten und Gasen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik von Flüssigkeiten und Gasen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik und Energie"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K04",
+          "slug": "ph9-hydraulik-kraefte-flaechen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-2-hydraulik",
+          "question": "Welcher Zusammenhang gilt zwischen den Kräften und den Kolbenflächen beim hydraulischen Kraftwandler?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\frac{F_1}{A_1} = \\frac{F_2}{A_2}",
+              "speech": "F eins durch A eins gleich F zwei durch A zwei"
+            },
+            {
+              "type": "text",
+              "text": ": Der Druck ist in der Flüssigkeit überall gleich."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "F₁ / A₁ = F₂ / A₂",
+              "F₁ · A₁ = F₂ · A₂"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "F₁ · A₁ = F₂ · A₂",
+              "reason": "Das Produkt aus Kraft und Fläche bleibt nicht gleich; gleich ist der Druck F / A."
+            },
+            {
+              "text": "F₁ = F₂, weil die Flüssigkeit die Kraft weitergibt",
+              "reason": "Die Flüssigkeit gibt den Druck weiter, nicht die Kraft; am größeren Kolben ist die Kraft größer."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K05",
+          "slug": "ph9-hydraulik-weg-grosser-kolben",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-2-hydraulik",
+          "question": "Der große Kolben einer Hebebühne hat die 20-fache Fläche des kleinen. Wie weit bewegt er sich, wenn der kleine Kolben 40 cm zurücklegt?",
+          "concept": "2 cm: Das verschobene Volumen ist auf beiden Seiten gleich (A₁ · s₁ = A₂ · s₂), der Weg wird um den Faktor 20 kleiner.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "2 cm",
+              "800 cm"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "800 cm, weil die Fläche 20-mal größer ist",
+              "reason": "Die Kraft wird 20-mal größer, der Weg 20-mal kleiner."
+            },
+            {
+              "text": "40 cm, genauso weit wie der kleine Kolben",
+              "reason": "Dann wäre das verschobene Volumen am großen Kolben 20-mal größer."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A03",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A03",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-schweredruck-luftdruck",
+      "title": "Schweredruck und Luftdruck",
+      "domain": "physik/druck",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-3-schweredruck",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A01",
+          "type": "soft",
+          "rationale": "Der Schweredruck ist der Druck der Flüssigkeitssäule auf eine Fläche."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q39552",
+          "target_label": "pressure",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-1-druck",
+          "topic_title": "Etappe 1: Druck in Flüssigkeiten und Gasen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik von Flüssigkeiten und Gasen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik und Energie"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K06",
+          "slug": "ph9-schweredruck-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-3-schweredruck",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man den Schweredruck in der Tiefe "
+            },
+            {
+              "type": "math",
+              "tex": "h",
+              "speech": "h"
+            },
+            {
+              "type": "text",
+              "text": " einer Flüssigkeit mit der Dichte "
+            },
+            {
+              "type": "math",
+              "tex": "\\rho",
+              "speech": "rho"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "p = \\rho \\cdot g \\cdot h",
+              "speech": "p gleich rho mal g mal h"
+            },
+            {
+              "type": "text",
+              "text": " mit g = 9,81 N/kg."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "p = ρ · g · h",
+              "p = ρ · g / h"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "p = ρ · g / h",
+              "reason": "Der Druck wächst mit der Tiefe, h steht im Zähler."
+            },
+            {
+              "text": "p = m · g · h",
+              "reason": "Das wäre die Lageenergie; beim Schweredruck zählt die Dichte der Flüssigkeit."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K07",
+          "slug": "ph9-schweredruck-pro-zehn-meter",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-3-schweredruck",
+          "question": "Um wie viel nimmt der Druck im Wasser etwa pro 10 m Tiefe zu?",
+          "concept": "Um etwa 1 bar (100 000 Pa): 1000 kg/m³ · 9,81 N/kg · 10 m ≈ 98 100 Pa.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "um etwa 1 bar",
+              "um etwa 0,1 bar"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Um etwa 0,1 bar",
+              "reason": "Das wäre 1 m Wassertiefe; 10 m Wasser entsprechen rund 1 bar."
+            },
+            {
+              "text": "Um etwa 10 bar",
+              "reason": "10 bar erreicht man erst in rund 100 m Tiefe."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K08",
+          "slug": "ph9-luftdruck-meereshoehe",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-3-schweredruck",
+          "question": "Wie groß ist der mittlere Luftdruck auf Meereshöhe?",
+          "concept": "Etwa 1013 hPa, also rund 1 bar.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "etwa 1013 hPa",
+              "etwa 101,3 hPa"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Etwa 101,3 hPa",
+              "reason": "Das ist um den Faktor 10 zu klein; 1013 hPa sind rund 1 bar."
+            },
+            {
+              "text": "Etwa 10 bar",
+              "reason": "10 bar herrschen erst in rund 90 m Wassertiefe, nicht an der Luft."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K09",
+          "slug": "ph9-hydrostatisches-paradoxon",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-3-schweredruck",
+          "question": "Drei verschieden geformte Gefäße sind gleich hoch mit Wasser gefüllt. Wo ist der Schweredruck am Boden am größten?",
+          "concept": "In allen gleich: Der Schweredruck hängt nur von Tiefe und Dichte ab, nicht von der Gefäßform (hydrostatisches Paradoxon).",
+          "choice_distractors": [
+            {
+              "text": "Im breitesten Gefäß, weil es am meisten Wasser enthält",
+              "reason": "Die Wassermenge spielt keine Rolle, nur die Füllhöhe."
+            },
+            {
+              "text": "Im schmalsten Gefäß, weil sich das Wasser dort staut",
+              "reason": "Druck breitet sich in Flüssigkeiten nach allen Seiten gleich aus; es staut sich nichts."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A04",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A04",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-auftrieb-archimedes",
+      "title": "Auftrieb: Prinzip des Archimedes, Schwimmen, Schweben, Sinken",
+      "domain": "physik/druck",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-4-auftrieb",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A03",
+          "type": "soft",
+          "rationale": "Die Auftriebskraft entsteht aus dem Unterschied des Schweredrucks oben und unten."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q6497624",
+          "target_label": "buoyancy",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-1-druck",
+          "topic_title": "Etappe 1: Druck in Flüssigkeiten und Gasen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik von Flüssigkeiten und Gasen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K10",
+          "slug": "ph9-archimedes-prinzip",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-4-auftrieb",
+          "question": "Was besagt das Prinzip des Archimedes über die Auftriebskraft?",
+          "concept": "Sie ist so groß wie die Gewichtskraft der verdrängten Flüssigkeit.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "gleich der Gewichtskraft der verdrängten Flüssigkeit",
+              "gleich der Gewichtskraft des Körpers"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie ist so groß wie die Gewichtskraft des Körpers",
+              "reason": "Das gilt nur beim Schwimmen oder Schweben; allgemein zählt die verdrängte Flüssigkeit."
+            },
+            {
+              "text": "Sie hängt davon ab, wie tief der Körper eingetaucht ist",
+              "reason": "Der Druckunterschied zwischen Ober- und Unterseite bleibt in jeder Tiefe gleich."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K11",
+          "slug": "ph9-auftriebskraft-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-4-auftrieb",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man die Auftriebskraft auf einen Körper, der das Volumen "
+            },
+            {
+              "type": "math",
+              "tex": "V",
+              "speech": "V"
+            },
+            {
+              "type": "text",
+              "text": " einer Flüssigkeit der Dichte "
+            },
+            {
+              "type": "math",
+              "tex": "\\rho",
+              "speech": "rho"
+            },
+            {
+              "type": "text",
+              "text": " verdrängt?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "F_A = \\rho \\cdot g \\cdot V",
+              "speech": "F A gleich rho mal g mal V"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "F_A = ρ · g · V",
+              "F_A = m · g"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "F_A = m · g mit der Masse des Körpers",
+              "reason": "Das ist die Gewichtskraft des Körpers; der Auftrieb hängt vom verdrängten Volumen ab."
+            },
+            {
+              "text": "F_A = ρ · g · h",
+              "reason": "Das ist der Schweredruck in der Tiefe h, keine Kraft."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K12",
+          "slug": "ph9-schweben-dichte",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-4-auftrieb",
+          "question": "Ein Körper schwebt in Wasser, ohne zu sinken oder aufzusteigen. Was folgt daraus für seine mittlere Dichte?",
+          "concept": "Sie ist gleich der Dichte des Wassers: Schweben heißt F_A = F_G bei vollständigem Eintauchen.",
+          "choice_distractors": [
+            {
+              "text": "Sie ist kleiner als die Dichte des Wassers",
+              "reason": "Dann würde der Körper aufsteigen und schwimmen."
+            },
+            {
+              "text": "Sie ist größer als die Dichte des Wassers",
+              "reason": "Dann würde der Körper sinken."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A05",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A05",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-boyle-mariotte",
+      "title": "Gesetz von Boyle-Mariotte",
+      "domain": "physik/druck",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-5-boyle-mariotte",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A01",
+          "type": "soft",
+          "rationale": "Der Gasdruck ist Kraft pro Fläche durch Teilchenstöße."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11432",
+          "target_label": "gas",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-1-druck",
+          "topic_title": "Etappe 1: Druck in Flüssigkeiten und Gasen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik von Flüssigkeiten und Gasen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K13",
+          "slug": "ph9-boyle-mariotte-gesetz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-5-boyle-mariotte",
+          "question": "Was gilt für Druck und Volumen einer eingeschlossenen Gasmenge bei konstanter Temperatur (Gesetz von Boyle-Mariotte)?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "p_1 \\cdot V_1 = p_2 \\cdot V_2",
+              "speech": "p eins mal V eins gleich p zwei mal V zwei"
+            },
+            {
+              "type": "text",
+              "text": ": Druck und Volumen sind umgekehrt proportional."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "p · V = konstant",
+              "p / V = konstant"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "p / V = konstant",
+              "reason": "Dann würde der Druck mit dem Volumen steigen; er sinkt aber beim Ausdehnen."
+            },
+            {
+              "text": "p + V = konstant",
+              "reason": "Druck und Volumen haben verschiedene Einheiten; ihre Summe hat keine Bedeutung."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K14",
+          "slug": "ph9-boyle-viertel-volumen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=dr-5-boyle-mariotte",
+          "question": "Ein Gas wird bei gleicher Temperatur auf ein Viertel seines Volumens zusammengedrückt. Wie ändert sich sein Druck?",
+          "concept": "Er vervierfacht sich, weil p · V konstant bleibt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "er vervierfacht sich",
+              "er sinkt auf ein Viertel"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er sinkt auf ein Viertel",
+              "reason": "Weniger Raum heißt mehr Stöße pro Fläche: Der Druck steigt."
+            },
+            {
+              "text": "Er verdoppelt sich",
+              "reason": "Ein Viertel des Volumens ergibt den vierfachen, nicht den doppelten Druck."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A06",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A06",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-kraftwandler-goldene-regel",
+      "title": "Kraftwandler: schiefe Ebene, Hebel, Flaschenzug und die goldene Regel",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-1-kraftwandler",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11402",
+          "target_label": "force",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-2-mechanik-energie",
+          "topic_title": "Etappe 2: Mechanik und Energie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik und Energie"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K15",
+          "slug": "ph9-goldene-regel-mechanik",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-1-kraftwandler",
+          "question": "Was besagt die goldene Regel der Mechanik für jeden Kraftwandler?",
+          "concept": "Was an Kraft gespart wird, muss an Weg zugesetzt werden: Die Arbeit F · s bleibt gleich.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kraft sparen heißt Weg zusetzen",
+              "Kraft und Weg werden beide kleiner"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kraftwandler sparen Arbeit",
+              "reason": "Arbeit lässt sich nicht sparen, nur die Kraft bei längerem Weg."
+            },
+            {
+              "text": "Kraft und Weg werden im gleichen Verhältnis kleiner",
+              "reason": "Dann würde die Arbeit sinken; sie bleibt gleich."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K16",
+          "slug": "ph9-hebelgesetz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-1-kraftwandler",
+          "question": "Wie lautet das Hebelgesetz für einen Hebel im Gleichgewicht?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "F_1 \\cdot a_1 = F_2 \\cdot a_2",
+              "speech": "F eins mal a eins gleich F zwei mal a zwei"
+            },
+            {
+              "type": "text",
+              "text": ": Kraft mal Hebelarm ist auf beiden Seiten gleich."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "F₁ · a₁ = F₂ · a₂",
+              "F₁ / a₁ = F₂ / a₂"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "F₁ / a₁ = F₂ / a₂",
+              "reason": "Dann bräuchte man am langen Arm mehr Kraft; es ist umgekehrt."
+            },
+            {
+              "text": "F₁ + a₁ = F₂ + a₂",
+              "reason": "Kraft und Länge kann man nicht addieren."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K17",
+          "slug": "ph9-schiefe-ebene-doppelte-laenge",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-1-kraftwandler",
+          "question": "Du schiebst eine Kiste über eine doppelt so lange Rampe auf dieselbe Höhe. Was ändert sich ohne Reibung an Kraft und Arbeit?",
+          "concept": "Die Kraft halbiert sich, die Arbeit bleibt gleich: F · l = F_G · h.",
+          "choice_distractors": [
+            {
+              "text": "Kraft und Arbeit halbieren sich",
+              "reason": "Die Arbeit m · g · h hängt nur von der Höhe ab."
+            },
+            {
+              "text": "Kraft und Arbeit bleiben gleich",
+              "reason": "Die Kraft entlang der Rampe sinkt mit der Länge: F = F_G · h / l."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A07",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A07",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-arbeit-leistung",
+      "title": "Mechanische Arbeit und Leistung",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-2-arbeit-leistung",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A06",
+          "type": "soft",
+          "rationale": "Die goldene Regel wird mit dem Arbeitsbegriff W = F · s begründet."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q42213",
+          "target_label": "work",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-2-mechanik-energie",
+          "topic_title": "Etappe 2: Mechanik und Energie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik und Energie"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K18",
+          "slug": "ph9-arbeit-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-2-arbeit-leistung",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man die mechanische Arbeit, wenn eine Kraft "
+            },
+            {
+              "type": "math",
+              "tex": "F",
+              "speech": "F"
+            },
+            {
+              "type": "text",
+              "text": " einen Körper längs des Weges "
+            },
+            {
+              "type": "math",
+              "tex": "s",
+              "speech": "s"
+            },
+            {
+              "type": "text",
+              "text": " bewegt?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "W = F \\cdot s",
+              "speech": "W gleich F mal s"
+            },
+            {
+              "type": "text",
+              "text": ", Einheit Joule (1 J = 1 N·m)."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "W = F · s",
+              "W = F / s"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "W = F / s",
+              "reason": "Längerer Weg bei gleicher Kraft bedeutet mehr Arbeit, nicht weniger."
+            },
+            {
+              "text": "W = m · s",
+              "reason": "Arbeit braucht eine Kraft, nicht nur eine Masse."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K19",
+          "slug": "ph9-leistung-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-2-arbeit-leistung",
+          "question": "Wie ist die Leistung definiert, und welche Einheit hat sie?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "P = \\frac{W}{t}",
+              "speech": "P gleich W durch t"
+            },
+            {
+              "type": "text",
+              "text": ", Einheit Watt (1 W = 1 J/s)."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "P = W / t in Watt",
+              "P = W · t in Joule"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "P = W · t",
+              "reason": "Leistung ist Arbeit pro Zeit, nicht mal Zeit."
+            },
+            {
+              "text": "P = F · s",
+              "reason": "Das ist die Arbeit; Leistung bezieht sie auf die Zeit."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K20",
+          "slug": "ph9-arbeit-gleich-leistung-doppelt",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-2-arbeit-leistung",
+          "question": "Anna und Ben tragen gleich schwere Kisten in denselben Stock. Anna braucht 60 s, Ben 120 s. Wer verrichtet mehr Arbeit, wer hat mehr Leistung?",
+          "concept": "Beide verrichten gleich viel Arbeit; Anna hat die doppelte Leistung, weil P = W / t.",
+          "choice_distractors": [
+            {
+              "text": "Anna verrichtet doppelt so viel Arbeit",
+              "reason": "Die Hubarbeit m · g · h ist gleich; nur die Zeit unterscheidet sich."
+            },
+            {
+              "text": "Beide haben die gleiche Leistung",
+              "reason": "Gleiche Arbeit in halber Zeit ist doppelte Leistung."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A08",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A08",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-energieformen-energieerhaltung",
+      "title": "Lageenergie, Bewegungsenergie und Energieerhaltung",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-3-energieerhaltung",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A07",
+          "type": "soft",
+          "rationale": "Energie ist gespeicherte Arbeit; die Lageenergie ist die Hubarbeit."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11379",
+          "target_label": "energy",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-2-mechanik-energie",
+          "topic_title": "Etappe 2: Mechanik und Energie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik und Energie"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K21",
+          "slug": "ph9-lageenergie-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-3-energieerhaltung",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man die Lageenergie eines Körpers der Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m",
+              "speech": "m"
+            },
+            {
+              "type": "text",
+              "text": " in der Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h",
+              "speech": "h"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "E_{\\text{pot}} = m \\cdot g \\cdot h",
+              "speech": "E pot gleich m mal g mal h"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "E_pot = m · g · h",
+              "E_pot = ½ · m · v²"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "E_pot = ½ · m · v²",
+              "reason": "Das ist die Bewegungsenergie."
+            },
+            {
+              "text": "E_pot = m · h",
+              "reason": "Ohne g fehlt die Gewichtskraft; Energie hat die Einheit Joule."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K22",
+          "slug": "ph9-bewegungsenergie-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-3-energieerhaltung",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man die Bewegungsenergie eines Körpers der Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m",
+              "speech": "m"
+            },
+            {
+              "type": "text",
+              "text": " mit der Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v",
+              "speech": "v"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "E_{\\text{kin}} = \\frac{1}{2} \\cdot m \\cdot v^2",
+              "speech": "E kin gleich ein halb mal m mal v Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "E_kin = ½ · m · v²",
+              "E_kin = m · v"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "E_kin = m · v",
+              "reason": "Masse mal Geschwindigkeit ist der Impuls; Energie wächst mit dem Quadrat der Geschwindigkeit."
+            },
+            {
+              "text": "E_kin = ½ · m² · v",
+              "reason": "Die Masse geht einfach ein, die Geschwindigkeit quadratisch."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K23",
+          "slug": "ph9-geschwindigkeit-verdoppelt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-3-energieerhaltung",
+          "question": "Ein Auto fährt doppelt so schnell wie vorher. Wie ändert sich seine Bewegungsenergie?",
+          "concept": "Sie vervierfacht sich, weil die Bewegungsenergie vom Quadrat der Geschwindigkeit abhängt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "sie vervierfacht sich",
+              "sie verdoppelt sich"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie verdoppelt sich",
+              "reason": "v geht quadratisch ein: 2² = 4."
+            },
+            {
+              "text": "Sie bleibt gleich, nur die Masse zählt",
+              "reason": "Bewegungsenergie hängt von Masse und Geschwindigkeit ab."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A09",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A09",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-wirkungsgrad",
+      "title": "Wirkungsgrad",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-4-wirkungsgrad",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A08",
+          "type": "soft",
+          "rationale": "Der Wirkungsgrad vergleicht Energiemengen, die erhalten bleiben, aber entwertet werden."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11379",
+          "target_label": "energy",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-2-mechanik-energie",
+          "topic_title": "Etappe 2: Mechanik und Energie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik und Energie"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K24",
+          "slug": "ph9-wirkungsgrad-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-4-wirkungsgrad",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie ist der Wirkungsgrad "
+            },
+            {
+              "type": "math",
+              "tex": "\\eta",
+              "speech": "eta"
+            },
+            {
+              "type": "text",
+              "text": " einer Maschine definiert?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\eta = \\frac{E_{\\text{nutz}}}{E_{\\text{zu}}}",
+              "speech": "eta gleich E nutz durch E zu"
+            },
+            {
+              "type": "text",
+              "text": ": Nutzenergie geteilt durch zugeführte Energie."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "η = E_nutz / E_zu",
+              "η = E_zu / E_nutz"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "η = E_zu / E_nutz",
+              "reason": "Dann wäre η größer als 1; der Wirkungsgrad ist der Anteil, der ankommt."
+            },
+            {
+              "text": "η = E_zu − E_nutz",
+              "reason": "Die Differenz ist die Verlustenergie, kein Verhältnis."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K25",
+          "slug": "ph9-wirkungsgrad-kleiner-eins",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=me-4-wirkungsgrad",
+          "question": "Kann der Wirkungsgrad einer realen Maschine größer als 1 (100 %) sein?",
+          "concept": "Nein. Ein Teil der Energie wird immer zu Wärme entwertet, also ist η kleiner als 1.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "nein, immer kleiner als 1",
+              "ja, mit guter Übersetzung"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ja, mit einer guten Übersetzung",
+              "reason": "Eine Übersetzung ändert Kraft und Weg, nie die Energiemenge."
+            },
+            {
+              "text": "Ja, wenn die Maschine Energie speichert",
+              "reason": "Gespeicherte Energie wurde vorher zugeführt; sie zählt zu E_zu."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A10",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A10",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-temperatur-innere-energie-kelvin",
+      "title": "Innere Energie, Temperatur und Kelvin-Skala",
+      "domain": "physik/waerme",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-1-temperatur",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11466",
+          "target_label": "temperature",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-3-waermelehre",
+          "topic_title": "Etappe 3: Wärmelehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Wärmelehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb2",
+          "topic_title": "Wärmelehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K26",
+          "slug": "ph9-kelvin-umrechnung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-1-temperatur",
+          "question": "Wie rechnet man eine Temperatur von Grad Celsius in Kelvin um?",
+          "concept": "Kelvinwert = Celsiuswert + 273,15, zum Beispiel 20 °C = 293,15 K.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Celsiuswert plus 273,15",
+              "Celsiuswert minus 273,15"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Celsiuswert minus 273,15",
+              "reason": "Das wäre die Umrechnung von Kelvin nach Celsius."
+            },
+            {
+              "text": "Celsiuswert mal 273,15",
+              "reason": "Die Skalen sind nur verschoben, nicht gestreckt; ein Kelvin ist so groß wie ein Grad Celsius."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K27",
+          "slug": "ph9-absoluter-nullpunkt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-1-temperatur",
+          "question": "Bei welcher Celsius-Temperatur liegt der absolute Nullpunkt?",
+          "concept": "Bei −273,15 °C, das sind 0 K.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "−273,15 °C",
+              "0 °C"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "0 °C",
+              "reason": "0 °C ist der Gefrierpunkt von Wasser, also 273,15 K."
+            },
+            {
+              "text": "−100 °C",
+              "reason": "Bei −100 °C bewegen sich die Teilchen noch deutlich; der Nullpunkt liegt tiefer."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K28",
+          "slug": "ph9-temperatur-vs-innere-energie",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-1-temperatur",
+          "question": "Ein See hat 20 °C, eine Tasse Tee 70 °C. Welcher Körper hat die höhere Temperatur, welcher mehr innere Energie?",
+          "concept": "Der Tee hat die höhere Temperatur, der See mehr innere Energie: Temperatur ist die mittlere Teilchenenergie, innere Energie die Summe über alle Teilchen.",
+          "choice_distractors": [
+            {
+              "text": "Der Tee hat beides, weil er heißer ist",
+              "reason": "Innere Energie zählt alle Teilchen; der See hat ungleich mehr davon."
+            },
+            {
+              "text": "Beide haben gleich viel innere Energie",
+              "reason": "Die Energiemengen unterscheiden sich um viele Größenordnungen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A11",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A11",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-waermekapazitaet-erwaermungsgesetz",
+      "title": "Spezifische Wärmekapazität, Erwärmungsgesetz und Leistung einer Wärmequelle",
+      "domain": "physik/waerme",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-2-waermekapazitaet",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A10",
+          "type": "soft",
+          "rationale": "Das Erwärmungsgesetz verbindet zugeführte Wärme mit der Temperaturänderung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q179388",
+          "target_label": "heat capacity",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-3-waermelehre",
+          "topic_title": "Etappe 3: Wärmelehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Wärmelehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb2",
+          "topic_title": "Wärmelehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K29",
+          "slug": "ph9-erwaermungsgesetz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-2-waermekapazitaet",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man die Wärme "
+            },
+            {
+              "type": "math",
+              "tex": "Q",
+              "speech": "Q"
+            },
+            {
+              "type": "text",
+              "text": ", die einen Körper der Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m",
+              "speech": "m"
+            },
+            {
+              "type": "text",
+              "text": " um "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta\\vartheta",
+              "speech": "Delta theta"
+            },
+            {
+              "type": "text",
+              "text": " erwärmt?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "Q = c \\cdot m \\cdot \\Delta\\vartheta",
+              "speech": "Q gleich c mal m mal Delta theta"
+            },
+            {
+              "type": "text",
+              "text": " mit der spezifischen Wärmekapazität c."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Q = c · m · Δϑ",
+              "Q = c · m / Δϑ"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Q = c · m / Δϑ",
+              "reason": "Mehr Temperaturunterschied braucht mehr Wärme; Δϑ steht im Zähler."
+            },
+            {
+              "text": "Q = m · Δϑ",
+              "reason": "Ohne c fehlt der Stoff: Wasser braucht pro Kilogramm und Kelvin fast zehnmal so viel wie Eisen."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K30",
+          "slug": "ph9-c-wasser",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-2-waermekapazitaet",
+          "question": "Wie groß ist die spezifische Wärmekapazität von Wasser ungefähr?",
+          "concept": "Etwa 4,19 kJ/(kg·K): 1 kg Wasser braucht rund 4,2 kJ für 1 K Erwärmung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "4,19 kJ/(kg·K)",
+              "0,45 kJ/(kg·K)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "0,45 kJ/(kg·K)",
+              "reason": "Das ist der Wert von Eisen; Wasser speichert fast zehnmal so viel."
+            },
+            {
+              "text": "419 kJ/(kg·K)",
+              "reason": "Um den Faktor 100 zu groß; in Joule sind es 4190 J/(kg·K)."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K31",
+          "slug": "ph9-wasserkocher-zeit",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-2-waermekapazitaet",
+          "question": "Ein Wasserkocher mit 2000 W soll 1 kg Wasser um 80 K erwärmen. Wie lange dauert das ohne Verluste (c = 4,19 kJ/(kg·K))?",
+          "concept": "Etwa 168 s, knapp 3 Minuten: Q = 4,19 · 1 · 80 kJ = 335 kJ und t = Q / P = 335 000 J / 2000 W.",
+          "choice_distractors": [
+            {
+              "text": "Etwa 17 s",
+              "reason": "Um den Faktor 10 zu kurz: 335 000 J geteilt durch 2000 W sind 168 s."
+            },
+            {
+              "text": "Etwa 28 min",
+              "reason": "Das wäre bei nur 200 W; mit 2000 W geht es zehnmal schneller."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A12",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A12",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-mischungsgesetz",
+      "title": "Mischungsgesetz und Energiebilanz",
+      "domain": "physik/waerme",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-3-mischung",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A11",
+          "type": "soft",
+          "rationale": "Die Energiebilanz beim Mischen rechnet mit Q = c · m · Δϑ auf beiden Seiten."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11473",
+          "target_label": "thermodynamics",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-3-waermelehre",
+          "topic_title": "Etappe 3: Wärmelehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Wärmelehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K32",
+          "slug": "ph9-mischtemperatur-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-3-mischung",
+          "question": "Wie berechnet man die Mischtemperatur, wenn zwei Wassermengen m₁ (ϑ₁) und m₂ (ϑ₂) gemischt werden?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\vartheta_m = \\frac{m_1 \\cdot \\vartheta_1 + m_2 \\cdot \\vartheta_2}{m_1 + m_2}",
+              "speech": "theta m gleich m eins mal theta eins plus m zwei mal theta zwei, geteilt durch m eins plus m zwei"
+            },
+            {
+              "type": "text",
+              "text": ": das nach den Massen gewichtete Mittel."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "das nach den Massen gewichtete Mittel",
+              "das einfache Mittel der Temperaturen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das einfache Mittel (ϑ₁ + ϑ₂) / 2",
+              "reason": "Das gilt nur bei gleichen Massen; größere Massen ziehen die Mischtemperatur zu sich."
+            },
+            {
+              "text": "Die Summe ϑ₁ + ϑ₂",
+              "reason": "Temperaturen addieren sich nicht; Wärme fließt, bis beide gleich warm sind."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K33",
+          "slug": "ph9-energiebilanz-mischen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-3-mischung",
+          "question": "Welche Energiebilanz gilt beim Mischen zweier Wassermengen ohne Verluste?",
+          "concept": "Die vom warmen Wasser abgegebene Wärme ist gleich der vom kalten aufgenommenen: Q_ab = Q_auf.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Q_ab = Q_auf",
+              "Q_ab > Q_auf"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das warme Wasser gibt mehr ab, als das kalte aufnimmt",
+              "reason": "Ohne Verluste geht keine Energie verloren: Beide Wärmemengen sind gleich."
+            },
+            {
+              "text": "Die Temperaturen addieren sich",
+              "reason": "Energie bleibt erhalten, nicht die Summe der Temperaturen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A13",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A13",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-aggregatzustaende-schmelzen-sieden",
+      "title": "Schmelzen, Sieden, Schmelz- und Verdampfungsenergie",
+      "domain": "physik/waerme",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-4-aggregatzustand",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A11",
+          "type": "soft",
+          "rationale": "Die Erwärmungskurve wechselt zwischen Erwärmen (c) und Umwandeln (q)."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11473",
+          "target_label": "thermodynamics",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-3-waermelehre",
+          "topic_title": "Etappe 3: Wärmelehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Wärmelehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K34",
+          "slug": "ph9-schmelzen-temperatur-konstant",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-4-aggregatzustand",
+          "question": "Wie verhält sich die Temperatur eines Eis-Wasser-Gemischs bei 0 °C, solange Wärme zugeführt wird und noch Eis vorhanden ist?",
+          "concept": "Sie bleibt bei 0 °C: Die Energie schmilzt das Eis (Schmelzenergie), statt die Temperatur zu erhöhen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "sie bleibt bei 0 °C",
+              "sie steigt langsam an"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie steigt langsam an",
+              "reason": "Erst wenn alles Eis geschmolzen ist, steigt die Temperatur."
+            },
+            {
+              "text": "Sie sinkt kurz, weil das Eis kühlt",
+              "reason": "Das Eis hat bereits 0 °C; es kühlt nichts weiter ab."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K35",
+          "slug": "ph9-schmelzenergie-eis",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-4-aggregatzustand",
+          "question": "Wie groß ist die spezifische Schmelzenergie von Eis ungefähr?",
+          "concept": "Etwa 334 kJ/kg: 1 kg Eis braucht rund 334 kJ, um bei 0 °C zu schmelzen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "334 kJ/kg",
+              "2257 kJ/kg"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "2257 kJ/kg",
+              "reason": "Das ist die Verdampfungsenergie von Wasser, fast siebenmal so viel."
+            },
+            {
+              "text": "4,19 kJ/kg",
+              "reason": "4,19 kJ/(kg·K) ist die spezifische Wärmekapazität von Wasser."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K36",
+          "slug": "ph9-dampf-verbruehung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-4-aggregatzustand",
+          "question": "Warum verbrüht man sich an 100 °C heißem Wasserdampf schlimmer als an 100 °C heißem Wasser?",
+          "concept": "Beim Kondensieren gibt der Dampf zusätzlich die Verdampfungsenergie ab, etwa 2257 kJ/kg.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dampf gibt beim Kondensieren zusätzlich Verdampfungsenergie ab",
+              "Dampf ist heißer als 100 °C"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Weil Dampf heißer ist als kochendes Wasser",
+              "reason": "Beide haben 100 °C; der Unterschied ist die frei werdende Verdampfungsenergie."
+            },
+            {
+              "text": "Weil Dampf eine größere Wärmekapazität hat",
+              "reason": "Die Wärmekapazität von Dampf ist sogar kleiner als die von Wasser."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A14",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A14",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-waermetransport-anomalie-wasser",
+      "title": "Wärmetransport und Anomalie des Wassers",
+      "domain": "physik/waerme",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-5-wasseranomalie",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A10",
+          "type": "soft",
+          "rationale": "Wärme fließt wegen eines Temperaturunterschieds; Konvektion braucht Dichteunterschiede."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11473",
+          "target_label": "thermodynamics",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-3-waermelehre",
+          "topic_title": "Etappe 3: Wärmelehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb2",
+          "topic_title": "Wärmelehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K37",
+          "slug": "ph9-anomalie-wasser-vier-grad",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-5-wasseranomalie",
+          "question": "Bei welcher Temperatur hat Wasser seine größte Dichte?",
+          "concept": "Bei etwa 4 °C: Darunter und darüber ist Wasser weniger dicht (Anomalie des Wassers).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "bei 4 °C",
+              "bei 0 °C"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Bei 0 °C, kurz vor dem Gefrieren",
+              "reason": "Zwischen 4 °C und 0 °C dehnt sich Wasser wieder aus."
+            },
+            {
+              "text": "Bei 100 °C",
+              "reason": "Warmes Wasser ist weniger dicht; die größte Dichte liegt bei 4 °C."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K38",
+          "slug": "ph9-waermestrahlung-ohne-stoff",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-5-wasseranomalie",
+          "question": "Welche Art des Wärmetransports braucht keinen Stoff und erreicht uns auch durch das Vakuum?",
+          "concept": "Die Wärmestrahlung (Infrarotstrahlung).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wärmestrahlung",
+              "Wärmeleitung"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wärmeleitung",
+              "reason": "Leitung braucht Teilchen, die ihre Nachbarn anstoßen."
+            },
+            {
+              "text": "Konvektion",
+              "reason": "Konvektion ist die Strömung warmer Flüssigkeit oder warmen Gases, also Stofftransport."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K39",
+          "slug": "ph9-see-friert-von-oben",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-5-wasseranomalie",
+          "question": "Warum friert ein See im Winter von oben zu und nicht vom Grund her?",
+          "concept": "Wasser mit 4 °C ist am dichtesten und sinkt zum Grund; kälteres Wasser bleibt oben und gefriert, und Eis schwimmt.",
+          "choice_distractors": [
+            {
+              "text": "Weil kaltes Wasser immer leichter ist als warmes",
+              "reason": "Nur unter 4 °C ist kälteres Wasser leichter; darüber gilt das Gegenteil."
+            },
+            {
+              "text": "Weil Eis schwerer ist als Wasser",
+              "reason": "Eis ist leichter (917 kg/m³) und schwimmt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A15",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A15",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-allgemeine-gasgleichung",
+      "title": "Ideales Gas und allgemeine Gasgleichung",
+      "domain": "physik/waerme",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-6-gasgleichung",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A10",
+          "type": "soft",
+          "rationale": "Die Gasgleichung braucht die absolute Temperatur in Kelvin."
+        },
+        {
+          "atom_id": "01K8PHYS9RS000000000000A05",
+          "type": "soft",
+          "rationale": "Boyle-Mariotte ist der Sonderfall konstanter Temperatur."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11432",
+          "target_label": "gas",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-3-waermelehre",
+          "topic_title": "Etappe 3: Wärmelehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Wärmelehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K40",
+          "slug": "ph9-gasgleichung-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-6-gasgleichung",
+          "question": "Wie lautet die allgemeine Gasgleichung für eine eingeschlossene Gasmenge?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\frac{p_1 \\cdot V_1}{T_1} = \\frac{p_2 \\cdot V_2}{T_2}",
+              "speech": "p eins mal V eins durch T eins gleich p zwei mal V zwei durch T zwei"
+            },
+            {
+              "type": "text",
+              "text": " mit T in Kelvin."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "p · V / T = konstant",
+              "p · V · T = konstant"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "p · V · T = konstant",
+              "reason": "Erwärmen bei festem Volumen erhöht den Druck; T gehört in den Nenner."
+            },
+            {
+              "text": "p / (V · T) = konstant",
+              "reason": "Beim Zusammendrücken steigt der Druck; V gehört in den Zähler neben p."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K41",
+          "slug": "ph9-gasgleichung-nur-kelvin",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=wl-6-gasgleichung",
+          "question": "Ein abgeschlossenes Gas wird bei konstantem Volumen von 20 °C auf 40 °C erwärmt. Wie ändert sich der Druck?",
+          "concept": "Er steigt um etwa 7 %: In Kelvin steigt T von 293 K auf 313 K, also um den Faktor 313 / 293 ≈ 1,07.",
+          "choice_distractors": [
+            {
+              "text": "Er verdoppelt sich, weil sich die Temperatur verdoppelt",
+              "reason": "Celsius-Werte darf man nicht ins Verhältnis setzen; in Kelvin wächst T nur um 7 %."
+            },
+            {
+              "text": "Er bleibt gleich, weil das Volumen konstant ist",
+              "reason": "Bei konstantem Volumen ist p / T konstant: höhere Temperatur, höherer Druck."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A16",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A16",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-elektromagnetismus",
+      "title": "Elektromagnetismus: Leiter, Spule und Elektromagnet",
+      "domain": "physik/elektrik",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-1-elektromagnet",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11421",
+          "target_label": "magnet",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-4-elektrizitaet",
+          "topic_title": "Etappe 4: Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K42",
+          "slug": "ph9-elektromagnet-pole-tauschen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-1-elektromagnet",
+          "question": "Wie vertauscht man bei einem Elektromagneten Nord- und Südpol?",
+          "concept": "Durch Umkehren der Stromrichtung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Stromrichtung umkehren",
+              "mehr Windungen aufwickeln"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mehr Windungen aufwickeln",
+              "reason": "Windungen verstärken das Feld, drehen es aber nicht um."
+            },
+            {
+              "text": "Den Eisenkern herausziehen",
+              "reason": "Der Kern verstärkt das Feld; die Pole hängen von der Stromrichtung ab."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K43",
+          "slug": "ph9-elektromagnet-staerker",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-1-elektromagnet",
+          "question": "Wodurch wird das Magnetfeld einer stromdurchflossenen Spule stärker?",
+          "concept": "Durch größere Stromstärke, mehr Windungen und einen Eisenkern.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "mehr Strom, mehr Windungen, Eisenkern",
+              "längere Zuleitungen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Durch längere Zuleitungsdrähte",
+              "reason": "Die Zuleitung trägt nichts bei; es zählen Stromstärke, Windungszahl und Kern."
+            },
+            {
+              "text": "Durch einen Kern aus Kupfer",
+              "reason": "Kupfer ist nicht magnetisierbar; Eisen verstärkt das Feld."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A17",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A17",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-lorentzkraft-elektromotor",
+      "title": "Lorentzkraft, UVW-Regel und Elektromotor",
+      "domain": "physik/elektrik",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-2-lorentzkraft-motor",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A16",
+          "type": "soft",
+          "rationale": "Die Kraft auf den Leiter entsteht im Magnetfeld, das Lektion 4.1 beschreibt."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11421",
+          "target_label": "magnet",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-4-elektrizitaet",
+          "topic_title": "Etappe 4: Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K44",
+          "slug": "ph9-uvw-regel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-2-lorentzkraft-motor",
+          "question": "Wofür stehen Daumen, Zeigefinger und Mittelfinger bei der UVW-Regel der linken Hand?",
+          "concept": "Daumen: Ursache (Richtung des Elektronenstroms), Zeigefinger: Vermittlung (Magnetfeld von N nach S), Mittelfinger: Wirkung (Kraft).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ursache, Vermittlung, Wirkung",
+              "Wirkung, Vermittlung, Ursache"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Daumen Kraft, Zeigefinger Strom, Mittelfinger Feld",
+              "reason": "Die Reihenfolge ist U-V-W: Ursache am Daumen, Wirkung am Mittelfinger."
+            },
+            {
+              "text": "Daumen Magnetfeld, Zeigefinger Strom, Mittelfinger Kraft",
+              "reason": "Der Daumen zeigt die Ursache, den Elektronenstrom; das Feld liegt am Zeigefinger."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K45",
+          "slug": "ph9-kommutator-aufgabe",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-2-lorentzkraft-motor",
+          "question": "Welche Aufgabe hat der Kommutator (Polwender) im Gleichstrommotor?",
+          "concept": "Er kehrt nach jeder halben Umdrehung die Stromrichtung in der Spule um, damit die Drehung weitergeht.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "kehrt die Stromrichtung jede halbe Umdrehung um",
+              "erhöht die Spannung"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er erhöht die Spannung für mehr Drehzahl",
+              "reason": "Die Spannung ändert er nicht; er wechselt die Stromrichtung."
+            },
+            {
+              "text": "Er hält die Spule in der Gleichgewichtslage fest",
+              "reason": "Genau das Gegenteil: Ohne Polwender bliebe die Spule dort stehen."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K46",
+          "slug": "ph9-kraft-strom-und-feld-umgekehrt",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-2-lorentzkraft-motor",
+          "question": "Bei einer Leiterschaukel werden gleichzeitig die Stromrichtung und die Magnetpole vertauscht. Was passiert mit der Kraftrichtung?",
+          "concept": "Sie bleibt gleich: Jede Umkehrung allein dreht die Kraft um, beide zusammen heben sich auf.",
+          "choice_distractors": [
+            {
+              "text": "Sie kehrt sich um",
+              "reason": "Zwei Umkehrungen ergeben wieder die ursprüngliche Richtung."
+            },
+            {
+              "text": "Die Kraft verschwindet",
+              "reason": "Ein Strom im Magnetfeld erfährt immer eine Kraft, solange Leiter und Feld quer zueinander stehen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A18",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A18",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-elektrische-energie-leistung",
+      "title": "Spannung, elektrische Energie und Leistung",
+      "domain": "physik/elektrik",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-3-energie-leistung",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q25428",
+          "target_label": "voltage",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-4-elektrizitaet",
+          "topic_title": "Etappe 4: Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K47",
+          "slug": "ph9-elektrische-leistung-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-3-energie-leistung",
+          "question": "Wie berechnet man die elektrische Leistung aus Spannung und Stromstärke?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "P = U \\cdot I",
+              "speech": "P gleich U mal I"
+            },
+            {
+              "type": "text",
+              "text": ", Einheit Watt (1 W = 1 V · A)."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "P = U · I",
+              "P = U / I"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "P = U / I",
+              "reason": "U geteilt durch I ist der Widerstand R."
+            },
+            {
+              "text": "P = U · I · t",
+              "reason": "Das ist die elektrische Energie W; Leistung ist Energie pro Zeit."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K48",
+          "slug": "ph9-kilowattstunde-joule",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-3-energie-leistung",
+          "question": "Wie viel Energie ist eine Kilowattstunde in Joule?",
+          "concept": "3 600 000 J, also 3,6 MJ: 1000 W · 3600 s.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "3,6 MJ",
+              "3,6 kJ"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "3,6 kJ",
+              "reason": "Um den Faktor 1000 zu klein: 1000 W mal 3600 s sind 3,6 Millionen Joule."
+            },
+            {
+              "text": "1000 J",
+              "reason": "1000 J sind eine Kilowattsekunde, nicht eine Kilowattstunde."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K49",
+          "slug": "ph9-stromkosten-wasserkocher",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-3-energie-leistung",
+          "question": "Ein 2000-W-Wasserkocher läuft insgesamt 30 Minuten. Was kostet das bei 35 ct/kWh?",
+          "concept": "35 ct: W = 2 kW · 0,5 h = 1 kWh.",
+          "choice_distractors": [
+            {
+              "text": "3,50 €",
+              "reason": "Um den Faktor 10 zu viel: 2 kW mal 0,5 h ist 1 kWh."
+            },
+            {
+              "text": "70 ct",
+              "reason": "70 ct wären eine ganze Stunde; 30 Minuten ergeben 1 kWh."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A19",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A19",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-kennlinien-widerstand-ohm",
+      "title": "Kennlinien, Widerstand und Gesetz von Ohm",
+      "domain": "physik/elektrik",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-4-kennlinie-ohm",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A18",
+          "type": "soft",
+          "rationale": "Spannung und Stromstärke sind die Achsen der Kennlinie."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q41591",
+          "target_label": "Ohm's law",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-4-elektrizitaet",
+          "topic_title": "Etappe 4: Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K50",
+          "slug": "ph9-widerstand-definition",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-4-kennlinie-ohm",
+          "question": "Wie ist der elektrische Widerstand definiert, und welche Einheit hat er?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "R = \\frac{U}{I}",
+              "speech": "R gleich U durch I"
+            },
+            {
+              "type": "text",
+              "text": ", Einheit Ohm (1 Ω = 1 V/A)."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "R = U / I in Ohm",
+              "R = U · I in Ohm"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "R = U · I",
+              "reason": "U mal I ist die Leistung P."
+            },
+            {
+              "text": "R = I / U",
+              "reason": "I durch U ist der Leitwert G in Siemens."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K51",
+          "slug": "ph9-ohm-gueltigkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-4-kennlinie-ohm",
+          "question": "Für welche Leiter und unter welcher Bedingung gilt das Gesetz von Ohm (Stromstärke proportional zur Spannung)?",
+          "concept": "Für metallische Leiter bei konstanter Temperatur.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "metallische Leiter bei konstanter Temperatur",
+              "alle Bauteile bei jeder Temperatur"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Für alle Bauteile bei jeder Temperatur",
+              "reason": "Eine Glühlampe hält sich nicht daran: Ihr Widerstand steigt mit der Temperatur."
+            },
+            {
+              "text": "Nur für Halbleiter",
+              "reason": "Halbleiterkennlinien sind gekrümmt; Ohm gilt gerade dort nicht."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K52",
+          "slug": "ph9-kennlinie-gluehlampe-flacher",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-4-kennlinie-ohm",
+          "question": "Die U-I-Kennlinie einer Glühlampe wird bei höherer Spannung flacher. Was sagt das über ihren Widerstand?",
+          "concept": "Er nimmt mit der Temperatur zu: Pro Volt kommt weniger Strom dazu, R = U / I wächst.",
+          "choice_distractors": [
+            {
+              "text": "Er nimmt ab, weil mehr Strom fließt",
+              "reason": "Flacher heißt weniger Strom pro Volt, also größerer Widerstand."
+            },
+            {
+              "text": "Er bleibt konstant wie bei jedem Leiter",
+              "reason": "Konstant bleibt er nur bei konstanter Temperatur; der Glühdraht wird heiß."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A20",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A20",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-widerstandsgesetz",
+      "title": "Widerstandsgesetz und Temperaturabhängigkeit des Widerstands",
+      "domain": "physik/elektrik",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-5-widerstandsgesetz",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A19",
+          "type": "soft",
+          "rationale": "Das Widerstandsgesetz erklärt, wovon der Widerstand R = U / I eines Drahtes abhängt."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q25358",
+          "target_label": "electrical resistance",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-4-elektrizitaet",
+          "topic_title": "Etappe 4: Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K53",
+          "slug": "ph9-widerstandsgesetz-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-5-widerstandsgesetz",
+          "question": "Wovon hängt der Widerstand eines Drahtes ab, und wie lautet das Widerstandsgesetz?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "R = \\rho \\cdot \\frac{l}{A}",
+              "speech": "R gleich rho mal l durch A"
+            },
+            {
+              "type": "text",
+              "text": ": spezifischer Widerstand, Länge und Querschnitt."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "R = ρ · l / A",
+              "R = ρ · A / l"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "R = ρ · A / l",
+              "reason": "Ein dicker Draht leitet besser: A gehört in den Nenner."
+            },
+            {
+              "text": "R = l / A ohne Materialgröße",
+              "reason": "Ohne ρ fehlt der Stoff: Kupfer und Konstantan unterscheiden sich um den Faktor 28."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K54",
+          "slug": "ph9-metall-widerstand-temperatur",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-5-widerstandsgesetz",
+          "question": "Wie ändert sich der Widerstand eines Metalldrahtes, wenn er wärmer wird?",
+          "concept": "Er steigt: Metalle sind Kaltleiter.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "er steigt",
+              "er sinkt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er sinkt, weil die Elektronen schneller werden",
+              "reason": "Das gilt für Heißleiter (NTC); bei Metallen stören die schwingenden Atomrümpfe den Stromfluss."
+            },
+            {
+              "text": "Er bleibt gleich",
+              "reason": "Nur Legierungen wie Konstantan ändern sich kaum; reine Metalle werden hochohmiger."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K55",
+          "slug": "ph9-durchmesser-verdoppelt-widerstand",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-5-widerstandsgesetz",
+          "question": "Ein Draht wird durch einen gleich langen Draht aus demselben Material mit doppeltem Durchmesser ersetzt. Wie ändert sich der Widerstand?",
+          "concept": "Er sinkt auf ein Viertel: Der Querschnitt wächst mit dem Quadrat des Durchmessers auf das Vierfache.",
+          "choice_distractors": [
+            {
+              "text": "Er halbiert sich",
+              "reason": "Der Durchmesser verdoppelt sich, der Querschnitt vervierfacht sich."
+            },
+            {
+              "text": "Er verdoppelt sich",
+              "reason": "Mehr Querschnitt heißt weniger Widerstand, nicht mehr."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8PHYS9RS000000000000A21",
+      "atom_uri": "urn:zam:atom:01K8PHYS9RS000000000000A21",
+      "namespace": "zam-academy-physik-realschule-9",
+      "slug": "ph9-halbleiter-bauteile",
+      "title": "Halbleiter: NTC, LDR, Diode, LED und Solarzelle",
+      "domain": "physik/elektrik",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-6-halbleiter",
+      "prerequisites": [
+        {
+          "atom_id": "01K8PHYS9RS000000000000A19",
+          "type": "soft",
+          "rationale": "Halbleiterbauteile erkennt man an ihren gekrümmten Kennlinien."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11650",
+          "target_label": "electronics",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_physik_realschule_9_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-9",
+          "topic_code": "stage-4-elektrizitaet",
+          "topic_title": "Etappe 4: Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "physik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8PHYS9RS000000000000K56",
+          "slug": "ph9-ntc-widerstand-waerme",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-6-halbleiter",
+          "question": "Wie verhält sich der Widerstand eines Heißleiters (NTC), wenn er wärmer wird?",
+          "concept": "Er sinkt: Der NTC leitet warm besser.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "er sinkt",
+              "er steigt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er steigt wie bei einem Metall",
+              "reason": "Wärme setzt im Halbleiter Ladungsträger frei; der Widerstand fällt."
+            },
+            {
+              "text": "Er bleibt gleich",
+              "reason": "Gerade die starke Temperaturabhängigkeit macht den NTC zum Temperaturfühler."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K57",
+          "slug": "ph9-diode-schwellenspannung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-6-halbleiter",
+          "question": "Ab welcher Spannung lässt eine Silizium-Diode in Durchlassrichtung merklich Strom durch?",
+          "concept": "Ab etwa 0,7 V.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ab etwa 0,7 V",
+              "ab etwa 7 V"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ab etwa 7 V",
+              "reason": "Um den Faktor 10 zu hoch; die Schwelle liegt bei rund 0,7 V."
+            },
+            {
+              "text": "Sofort ab 0 V, wie ein Draht",
+              "reason": "Die Sperrschicht am pn-Übergang muss erst abgebaut werden."
+            }
+          ]
+        },
+        {
+          "id": "01K8PHYS9RS000000000000K58",
+          "slug": "ph9-led-vorwiderstand-neun-volt",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-realschule-9/#lesson=el-6-halbleiter",
+          "question": "Eine rote LED (1,8 V, 15 mA) soll an einer 9-V-Batterie leuchten. Welchen Vorwiderstand braucht sie?",
+          "concept": "480 Ω: Am Widerstand fallen 9 V − 1,8 V = 7,2 V ab, und R = 7,2 V / 0,015 A.",
+          "choice_distractors": [
+            {
+              "text": "600 Ω",
+              "reason": "Das wären die ganzen 9 V geteilt durch 15 mA; die LED-Spannung muss abgezogen werden."
+            },
+            {
+              "text": "120 Ω",
+              "reason": "Das ergibt sich mit 1,8 V statt 7,2 V am Widerstand."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
