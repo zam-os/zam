@@ -140,7 +140,8 @@
               "text": "p = A / F",
               "reason": "Die Fläche steht im Nenner: Je größer die Fläche, desto kleiner der Druck."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K02",
@@ -282,7 +283,8 @@
               "text": "F₁ = F₂, weil die Flüssigkeit die Kraft weitergibt",
               "reason": "Die Flüssigkeit gibt den Druck weiter, nicht die Kraft; am größeren Kolben ist die Kraft größer."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K05",
@@ -427,7 +429,8 @@
               "text": "p = m · g · h",
               "reason": "Das wäre die Lageenergie; beim Schweredruck zählt die Dichte der Flüssigkeit."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K07",
@@ -638,7 +641,8 @@
               "text": "F_A = ρ · g · h",
               "reason": "Das ist der Schweredruck in der Tiefe h, keine Kraft."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K12",
@@ -742,7 +746,8 @@
               "text": "p + V = konstant",
               "reason": "Druck und Volumen haben verschiedene Einheiten; ihre Summe hat keine Bedeutung."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K14",
@@ -876,7 +881,8 @@
               "text": "F₁ + a₁ = F₂ + a₂",
               "reason": "Kraft und Länge kann man nicht addieren."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K17",
@@ -1003,7 +1009,8 @@
               "text": "W = m · s",
               "reason": "Arbeit braucht eine Kraft, nicht nur eine Masse."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K19",
@@ -1041,7 +1048,8 @@
               "text": "P = F · s",
               "reason": "Das ist die Arbeit; Leistung bezieht sie auf die Zeit."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K20",
@@ -1168,7 +1176,8 @@
               "text": "E_pot = m · h",
               "reason": "Ohne g fehlt die Gewichtskraft; Energie hat die Einheit Joule."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K22",
@@ -1229,7 +1238,8 @@
               "text": "E_kin = ½ · m² · v",
               "reason": "Die Masse geht einfach ein, die Geschwindigkeit quadratisch."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K23",
@@ -1355,7 +1365,8 @@
               "text": "η = E_zu − E_nutz",
               "reason": "Die Differenz ist die Verlustenergie, kein Verhältnis."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K25",
@@ -1635,7 +1646,8 @@
               "text": "Q = m · Δϑ",
               "reason": "Ohne c fehlt der Stoff: Wasser braucht pro Kilogramm und Kelvin fast zehnmal so viel wie Eisen."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K30",
@@ -1767,7 +1779,8 @@
               "text": "Die Summe ϑ₁ + ϑ₂",
               "reason": "Temperaturen addieren sich nicht; Wärme fließt, bis beide gleich warm sind."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K33",
@@ -2136,7 +2149,8 @@
               "text": "p / (V · T) = konstant",
               "reason": "Beim Zusammendrücken steigt der Druck; V gehört in den Zähler neben p."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K41",
@@ -2482,7 +2496,8 @@
               "text": "P = U · I · t",
               "reason": "Das ist die elektrische Energie W; Leistung ist Energie pro Zeit."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K48",
@@ -2624,7 +2639,8 @@
               "text": "R = I / U",
               "reason": "I durch U ist der Leitwert G in Siemens."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K51",
@@ -2766,7 +2782,8 @@
               "text": "R = l / A ohne Materialgröße",
               "reason": "Ohne ρ fehlt der Stoff: Kupfer und Konstantan unterscheiden sich um den Faktor 28."
             }
-          ]
+          ],
+          "materiality": "material"
         },
         {
           "id": "01K8PHYS9RS000000000000K54",
