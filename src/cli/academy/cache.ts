@@ -14,7 +14,6 @@ import { createHash } from "node:crypto";
 import {
   existsSync,
   mkdirSync,
-  readdirSync,
   readFileSync,
   renameSync,
   writeFileSync,
@@ -25,7 +24,6 @@ import {
   type AcademyCatalog,
   type AcademyCatalogEntry,
   type BundledTile,
-  compareTileVersions,
   parseAcademyCatalog,
 } from "../../kernel/index.js";
 
@@ -98,24 +96,13 @@ export function readCachedCell(
 }
 
 /**
- * The newest cached cell for an id, from any check. Files are written only
- * after their hash matched the catalog of that check.
+ * The cached cell of the version the last catalog lists, with its hash
+ * checked. A build the catalog no longer lists is never resolved, even if
+ * an earlier check cached it.
  */
 export function resolveCachedTile(id: string): BundledTile | undefined {
-  if (!existsSync(cellsDir())) return undefined;
-  const prefix = `${id.replace(":", "_")}@`;
-  let best: { version: string; file: string } | undefined;
-  for (const file of readdirSync(cellsDir())) {
-    if (!file.startsWith(prefix) || !file.endsWith(".json")) continue;
-    const version = file.slice(prefix.length, -".json".length);
-    if (compareTileVersions(version, version) !== 0) continue;
-    if (!best || compareTileVersions(version, best.version) === 1) {
-      best = { version, file };
-    }
-  }
-  if (!best) return undefined;
-  const tile = parseCell(readFileSync(join(cellsDir(), best.file)), id);
-  return tile && String(tile.version) === best.version ? tile : undefined;
+  const entry = readCachedCatalog()?.cells.find((cell) => cell.id === id);
+  return entry ? readCachedCell(entry) : undefined;
 }
 
 /** The cached cell of exactly this version, if a check fetched it. */

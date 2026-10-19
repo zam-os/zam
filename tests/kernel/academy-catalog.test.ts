@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   ACADEMY_ORIGIN,
   academyUrl,
+  bundleStandsIn,
   parseAcademyCatalog,
 } from "../../src/kernel/index.js";
 
@@ -64,5 +65,17 @@ describe("parseAcademyCatalog (ADR 2026-10-19 D2, D4)", () => {
     ).toThrow(/duplicate/);
     expect(() => parseAcademyCatalog({ schema: 2, cells: [] })).toThrow();
     expect(() => parseAcademyCatalog(null)).toThrow();
+  });
+});
+
+describe("bundleStandsIn", () => {
+  const listed = parseAcademyCatalog({ schema: 1, cells: [entry] }).cells[0];
+
+  it("lets a bundle stand in only at the catalog's version or newer", () => {
+    expect(bundleStandsIn(listed, "2026.10.1")).toBe(true);
+    expect(bundleStandsIn(listed, "2026.11.1")).toBe(true);
+    expect(bundleStandsIn(listed, "2026.9.9")).toBe(false);
+    expect(bundleStandsIn(listed, "draft")).toBe(false);
+    expect(bundleStandsIn(listed, undefined)).toBe(false);
   });
 });

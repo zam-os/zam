@@ -130,6 +130,22 @@ describe("academy wiring", () => {
     expect(click.indexOf("setTaken(take)")).toBeLessThan(
       click.indexOf("enrolAcademyCell(cell.id)"),
     );
-    expect(click).toMatch(/\.catch\(\(err\) => \{\s*take\.className/);
+    expect(click).toMatch(/\.catch\(\(err\) => \{\s*setTake\(take\)/);
+  });
+
+  it("puts „Aufnehmen“ back when another version than the row's was saved", () => {
+    const list = file("desktop/src/academy-list.ts");
+    expect(list).toMatch(
+      /result\.version !== cell\.version;\s*if \(other\) setTake\(take\);/,
+    );
+    setCurrentLocale("de");
+    expect(t("academy_taken_other_version")).toContain("{saved}");
+  });
+
+  it("lets an offline update check be tried again", () => {
+    const list = file("desktop/src/academy-list.ts");
+    expect(list).toMatch(
+      /else if \(listing\.offline\) \{[^}]*button\.disabled = false;/,
+    );
   });
 });

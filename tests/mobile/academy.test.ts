@@ -71,7 +71,26 @@ describe("Mobile academy client", () => {
     ]);
     for (const { init } of calls) {
       expect(init).toMatchObject({ redirect: "error", credentials: "omit" });
+      // The timeout also ends a body that stalls halfway.
+      expect(init.signal).toBeInstanceOf(AbortSignal);
     }
+  });
+
+  it("stops reading a body as soon as it passes the cap", async () => {
+    let pulls = 0;
+    const endless = new ReadableStream<Uint8Array>({
+      pull(controller) {
+        pulls++;
+        controller.enqueue(new Uint8Array(64 * 1024));
+      },
+    });
+    const fetchImpl: AcademyFetch = async () =>
+      new Response(endless, { status: 200 });
+    await expect(fetchMobileAcademyCatalog(fetchImpl)).rejects.toThrow(
+      /larger than/,
+    );
+    // The catalog cap is 256 KiB: five 64 KiB chunks, not the whole body.
+    expect(pulls).toBeLessThan(10);
   });
 
   it("fails on a redirect, whether fetch refuses it or reports it", async () => {
@@ -150,5 +169,19 @@ describe("Mobile academy wiring", () => {
   it("installs only on the learner's tap, with the fetched tile", () => {
     const main = file("mobile/src/main.ts");
     expect(main).toContain("resolveTile: (id) => academyTiles.get(id)");
+  });
+
+  it("keeps a cell whose download failed, and fetches it again on the tap", () => {
+    const main = file("mobile/src/main.ts");
+    expect(main).toContain("failed.set(entry.id, errorMessage(error))");
+    expect(main).toContain('tf("academy_cell_failed", { version, error })');
+    expect(main).toMatch(
+      /academyTiles\.set\(id, await fetchMobileAcademyCell\(entry\)\);\s*\} catch \(error\) \{\s*if \(!bundleStandsIn\(entry, BUNDLED_TILES\[id\]\?\.version\)\) throw error;/,
+    );
+  });
+
+  it("fetches the cells in parallel, so one stalled cell cannot hold the screen", () => {
+    const main = file("mobile/src/main.ts");
+    expect(main).toMatch(/await Promise\.all\(\s*entries\.map\(async \(entry\) =>/);
   });
 });

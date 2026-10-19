@@ -109,3 +109,17 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 function text(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }
+
+/**
+ * Whether a bundled tile may stand in when the cell of a catalog entry
+ * cannot be downloaded: only at the same version or newer. A learner who
+ * takes the version the catalog showed never quietly gets an older one.
+ */
+export function bundleStandsIn(
+  entry: AcademyCatalogEntry,
+  bundledVersion: string | number | undefined,
+): boolean {
+  if (bundledVersion === undefined) return false;
+  const order = compareTileVersions(String(bundledVersion), entry.version);
+  return order === 0 || order === 1;
+}

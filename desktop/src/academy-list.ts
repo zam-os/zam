@@ -160,6 +160,12 @@ export function closeAcademyList(): void {
   dialog?.overlay.classList.remove("active");
 }
 
+function setTake(button: HTMLButtonElement): void {
+  button.className = "btn primary-btn btn-sm";
+  button.textContent = t("academy_take");
+  button.disabled = false;
+}
+
 function setTaken(button: HTMLButtonElement): void {
   button.className = "btn secondary-btn btn-sm";
   button.textContent = t("academy_taken");
@@ -215,18 +221,27 @@ export function academyRow(
   if (cell.held) {
     setTaken(take);
   } else {
-    take.className = "btn primary-btn btn-sm";
-    take.textContent = t("academy_take");
+    setTake(take);
     take.addEventListener("click", () => {
       // The click is the decision: show it at once, undo on failure.
       setTaken(take);
       status.textContent = t("academy_taking");
       enrolAcademyCell(cell.id)
         .then((result) => {
-          status.textContent = tf("academy_taken_result", {
-            name: cell.title,
-            count: result.cardsCreated,
-          });
+          // Another version than the row showed is not what was taken: say
+          // which one was saved and let the learner try again.
+          const other = result.version !== null && result.version !== cell.version;
+          if (other) setTake(take);
+          status.textContent = other
+            ? tf("academy_taken_other_version", {
+                name: cell.title,
+                saved: result.version ?? "",
+                version: cell.version,
+              })
+            : tf("academy_taken_result", {
+                name: cell.title,
+                count: result.cardsCreated,
+              });
           if (result.cardsCreated > 0) {
             void Promise.resolve(options.onEnrolled?.()).catch((err) =>
               console.error("academy: refresh after enrol failed", err),
@@ -234,9 +249,7 @@ export function academyRow(
           }
         })
         .catch((err) => {
-          take.className = "btn primary-btn btn-sm";
-          take.textContent = t("academy_take");
-          take.disabled = false;
+          setTake(take);
           status.textContent = academyErrorText(err);
         });
     });
@@ -310,10 +323,12 @@ export function academyUpdateButton(
               version: cell.version,
             });
             button.disabled = false;
+          } else if (listing.offline) {
+            // Offline is not an answer: the same button checks again.
+            button.textContent = t("academy_offline_short");
+            button.disabled = false;
           } else {
-            button.textContent = listing.offline
-              ? t("academy_offline_short")
-              : t("academy_up_to_date");
+            button.textContent = t("academy_up_to_date");
           }
         })
         .catch(() => {

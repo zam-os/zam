@@ -62,6 +62,10 @@ import {
   getBundledCellsWithStatus,
   installedTileVersion,
 } from "../../src/kernel/library/bundled-cells.js";
+import {
+  type AcademyCatalogEntry,
+  bundleStandsIn,
+} from "../../src/kernel/library/academy-catalog.js";
 import { compareTileVersions } from "../../src/kernel/library/tile-version.js";
 import {
   fetchMobileAcademyCatalog,
@@ -4862,18 +4866,24 @@ async function openMobileAcademy(): Promise<void> {
 async function renderAcademyCells(): Promise<void> {
   if (!currentUserId) return;
   setCurriculumStatus(t("academy_loading"));
-  let entries: Awaited<ReturnType<typeof fetchMobileAcademyCatalog>>["cells"] = [];
+  let entries: AcademyCatalogEntry[] = [];
   let offline = false;
+  const failed = new Map<string, string>();
   try {
     entries = (await fetchMobileAcademyCatalog()).cells;
-    for (const entry of entries) {
-      if (academyTiles.get(entry.id)?.version === entry.version) continue;
-      try {
-        academyTiles.set(entry.id, await fetchMobileAcademyCell(entry));
-      } catch {
-        // Listed anyway; „Aufnehmen“ fetches it again.
-      }
-    }
+    // In parallel, each under the client's timeout: one stalled cell cannot
+    // hold the screen.
+    await Promise.all(
+      entries.map(async (entry) => {
+        if (String(academyTiles.get(entry.id)?.version) === entry.version) return;
+        try {
+          academyTiles.set(entry.id, await fetchMobileAcademyCell(entry));
+        } catch (error) {
+          // Listed anyway, with the error; „Aufnehmen“ fetches it again.
+          failed.set(entry.id, errorMessage(error));
+        }
+      }),
+    );
   } catch {
     offline = true;
   }
@@ -4904,27 +4914,41 @@ async function renderAcademyCells(): Promise<void> {
   );
 
   curriculumOptions.replaceChildren();
-  for (const tile of tiles) {
-    const entry = entries.find((cell) => cell.id === tile.tile_id);
-    const status = statuses.find((cell) => cell.id === tile.tile_id);
-    const held = status?.enrolled ?? false;
-    const heldVersion = held ? await installedTileVersion(db, tile.tile_id) : null;
-    const newer =
-      held && compareTileVersions(String(tile.version), heldVersion) === 1;
-    const items = tile.atoms.reduce((n, atom) => n + atom.practice_items.length, 0);
+  for (const id of ids) {
+    const tile = tileOf(id);
+    const entry = entries.find((cell) => cell.id === id);
+    if (!tile && !entry) continue;
+    // A catalog entry whose cell did not arrive keeps its row, from the
+    // catalog: what „Aufnehmen“ fetches is the entry's version.
+    const entryAhead =
+      entry !== undefined &&
+      (!tile || compareTileVersions(entry.version, String(tile.version)) === 1);
+    const version = entryAhead ? entry.version : String(tile?.version);
+    const items = entryAhead
+      ? entry.items
+      : (tile?.atoms.reduce((n, atom) => n + atom.practice_items.length, 0) ?? 0);
+    const heldVersion = await installedTileVersion(db, id);
+    const held = tile
+      ? (statuses.find((cell) => cell.id === id)?.enrolled ?? false)
+      : heldVersion !== null;
+    const newer = held && compareTileVersions(version, heldVersion) === 1;
 
     const card = document.createElement("section");
     card.className = "curriculum-cell-offer stack";
     const title = document.createElement("h3");
     title.className = "t-headline";
-    title.textContent = tile.title ?? tile.tile_id;
+    title.textContent = entry?.title ?? tile?.title ?? id;
     const meta = document.createElement("p");
     meta.className = "t-footnote";
-    meta.textContent = tf("academy_row_meta", {
-      items,
-      version: String(tile.version),
-    });
+    meta.textContent = tf("academy_row_meta", { items, version });
     card.append(title, meta);
+    const error = entryAhead ? failed.get(id) : undefined;
+    if (error) {
+      const note = document.createElement("p");
+      note.className = "t-footnote";
+      note.textContent = tf("academy_cell_failed", { version, error });
+      card.append(note);
+    }
 
     if (entry?.appUrl) {
       const practise = document.createElement("a");
@@ -4941,12 +4965,12 @@ async function renderAcademyCells(): Promise<void> {
     action.className = held && !newer ? "btn" : "btn primary";
     action.disabled = held && !newer;
     action.textContent = newer
-      ? tf("academy_update_to", { version: String(tile.version) })
+      ? tf("academy_update_to", { version })
       : held
         ? t("academy_taken")
         : t("academy_take");
     action.addEventListener("click", () => {
-      void takeAcademyCell(tile, action);
+      void takeAcademyCell(id, entryAhead ? entry : undefined, action);
     });
     card.append(action);
     curriculumOptions.append(card);
@@ -4955,21 +4979,31 @@ async function renderAcademyCells(): Promise<void> {
 }
 
 async function takeAcademyCell(
-  tile: BundledTile,
+  id: string,
+  entry: AcademyCatalogEntry | undefined,
   action: HTMLButtonElement,
 ): Promise<void> {
   if (!currentUserId) return;
   action.disabled = true;
   setCurriculumStatus("…");
   try {
+    // The row showed the entry's version: fetch it now if it did not arrive.
+    // The bundle stands in only if it is that version or newer.
+    if (entry && String(academyTiles.get(id)?.version) !== entry.version) {
+      try {
+        academyTiles.set(id, await fetchMobileAcademyCell(entry));
+      } catch (error) {
+        if (!bundleStandsIn(entry, BUNDLED_TILES[id]?.version)) throw error;
+      }
+    }
     // The tap is „Aufnehmen“ or „Aktualisieren“: the newest version this
     // session fetched is installed, never an older one than the library has.
-    const result = await enrolBundledCell(db, currentUserId, tile.tile_id, {
+    const result = await enrolBundledCell(db, currentUserId, id, {
       resolveTile: (id) => academyTiles.get(id),
     });
     setCurriculumStatus(
       tf("academy_taken_result", {
-        name: tile.title ?? tile.tile_id,
+        name: entry?.title ?? tileTitle(id),
         count: result.cardsCreated,
       }),
     );
@@ -4979,6 +5013,11 @@ async function takeAcademyCell(
     setCurriculumStatus(tf("library_failed", { error: errorMessage(error) }), true);
     action.disabled = false;
   }
+}
+
+function tileTitle(id: string): string {
+  const tile = academyTiles.get(id) ?? BUNDLED_TILES[id];
+  return tile?.title ?? id;
 }
 
 function renderLibrary(entries: LibraryEntry[]): void {

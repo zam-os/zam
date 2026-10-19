@@ -287,6 +287,60 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     });
   });
 
+  it("never takes an older bundle in place of a catalog version it could not download", async () => {
+    const broken = { "/uml/cell.json": { status: 500 } };
+    await expect(
+      academyEnrolHandler(db, {
+        cellId: "zam-academy:uml",
+        user: "learner",
+        fetch: fakeAcademy([{ ...UML, version: "2099.1.1" }], broken).fetch,
+      }),
+    ).rejects.toThrow();
+    expect(await tilesInstalled()).toBe(0);
+
+    // At the catalog's own version, the bundle stands in.
+    rmSync(academyCacheDir(), { recursive: true, force: true });
+    const result = await academyEnrolHandler(db, {
+      cellId: "zam-academy:uml",
+      user: "learner",
+      fetch: fakeAcademy([UML], broken).fetch,
+    });
+    expect(result.version).toBe(String(UML.version));
+  });
+
+  it("lists the version „Aufnehmen“ installs when the bundle is ahead", async () => {
+    const academy = fakeAcademy([{ ...UML, version: "2000.1.1" }]);
+    const list = await academyListHandler(db, {
+      user: "learner",
+      fetch: academy.fetch,
+    });
+    expect(list.cells[0].version).toBe(String(UML.version));
+    const result = await academyEnrolHandler(db, {
+      cellId: "zam-academy:uml",
+      user: "learner",
+      fetch: academy.fetch,
+    });
+    expect(result.version).toBe(list.cells[0].version);
+  });
+
+  it("installs the version the catalog lists, not a build it dropped", async () => {
+    // An earlier check cached 2099; the catalog has since gone back to 2098.
+    await academyListHandler(db, {
+      user: "learner",
+      fetch: fakeAcademy([catalogOnly("2099.1.1")]).fetch,
+    });
+    await academyListHandler(db, {
+      user: "learner",
+      fetch: fakeAcademy([catalogOnly("2098.1.1")]).fetch,
+    });
+    const result = await academyEnrolHandler(db, {
+      cellId: "zam-academy:sql",
+      user: "learner",
+      fetch: offline,
+    });
+    expect(result.version).toBe("2098.1.1");
+  });
+
   it("never lets the agent tools update a held cell or reach the network", async () => {
     await enrolBundledCell(db, "learner", "zam-academy:uml");
     // The learner checked the catalog: a newer version is cached.

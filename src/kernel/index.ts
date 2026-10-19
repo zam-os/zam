@@ -483,6 +483,7 @@ export {
   type AcademyCatalog,
   type AcademyCatalogEntry,
   academyUrl,
+  bundleStandsIn,
   parseAcademyCatalog,
 } from "./library/academy-catalog.js";
 export {

@@ -6395,6 +6395,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     academy_taken: "Taken",
     academy_taking: "Taking the cell …",
     academy_taken_result: "{name}: {count} cards added.",
+    academy_taken_other_version:
+      "{name}: version {saved} was saved, not {version}. Try again to get {version}.",
     academy_check_update: "Check for update",
     academy_update_to: "Update to {version}",
     academy_updating: "Updating …",
@@ -8456,6 +8458,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     academy_taken: "Aufgenommen",
     academy_taking: "Zelle wird aufgenommen …",
     academy_taken_result: "{name}: {count} Karten hinzugefügt.",
+    academy_taken_other_version:
+      "{name}: Gespeichert ist Version {saved}, nicht {version}. Versuche es noch einmal, um {version} zu bekommen.",
     academy_check_update: "Auf Aktualisierung prüfen",
     academy_update_to: "Aktualisieren auf {version}",
     academy_updating: "Wird aktualisiert …",

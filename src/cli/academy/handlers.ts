@@ -14,6 +14,7 @@ import {
   BUNDLED_TILES,
   type BundledTile,
   bundledCellInfoForTile,
+  bundleStandsIn,
   compareTileVersions,
   type Database,
   enrolBundledCell,
@@ -132,13 +133,24 @@ export async function academyListHandler(
     const tile = tileOf(id);
     const held = statuses.get(id)?.enrolled ?? false;
     const heldVersion = held ? await installedTileVersion(db, id) : null;
+    // The row shows what „Aufnehmen“ installs: the newer of catalog and
+    // bundle.
+    const bundled = BUNDLED_TILES[id];
+    const bundleAhead =
+      bundled !== undefined &&
+      (entry === undefined ||
+        compareTileVersions(String(bundled.version), entry.version) === 1);
     cells.push({
       id,
       title: entry?.title ?? tile?.title ?? id,
       description: entry?.description ?? tile?.description ?? "",
       language: entry?.language ?? null,
-      version: entry?.version ?? String(tile?.version ?? ""),
-      items: entry?.items ?? (tile ? itemCount(tile) : 0),
+      version: bundleAhead
+        ? String(bundled.version)
+        : (entry?.version ?? String(tile?.version ?? "")),
+      items: bundleAhead
+        ? itemCount(bundled)
+        : (entry?.items ?? (tile ? itemCount(tile) : 0)),
       appUrl: entry?.appUrl ?? null,
       bundled: Boolean(BUNDLED_TILES[id]),
       held,
@@ -157,8 +169,8 @@ export async function academyListHandler(
   };
 }
 
-/** Makes sure the newest catalog version of a cell is cached, if listed. */
-async function cacheNewestCell(
+/** A cell's catalog entry, from the last check or read now. */
+async function catalogEntry(
   cellId: string,
   fetch: AcademyFetchOptions | undefined,
   refreshCatalog: boolean,
@@ -169,12 +181,17 @@ async function cacheNewestCell(
     writeCachedCatalog(fetched.bytes);
     catalog = fetched.catalog;
   }
-  const entry = catalog.cells.find((cell) => cell.id === cellId);
-  if (entry && !readCachedCell(entry)) {
-    const { bytes } = await fetchAcademyCell(entry, fetch);
-    writeCachedCell(entry, bytes);
-  }
-  return entry;
+  return catalog.cells.find((cell) => cell.id === cellId);
+}
+
+/** Makes sure the cell of exactly this entry is cached. */
+async function cacheEntryCell(
+  entry: AcademyCatalogEntry,
+  fetch: AcademyFetchOptions | undefined,
+): Promise<void> {
+  if (readCachedCell(entry)) return;
+  const { bytes } = await fetchAcademyCell(entry, fetch);
+  writeCachedCell(entry, bytes);
 }
 
 /** „Aufnehmen“: enrols in the newest version known of an academy cell. */
@@ -185,11 +202,22 @@ export async function academyEnrolHandler(
   const cellId = params.cellId?.trim();
   if (!cellId) throw new Error("cellId is required");
   const userId = await resolveHandlerUser(db, params.user);
+  const bundledVersion = BUNDLED_TILES[cellId]?.version;
+  let entry: AcademyCatalogEntry | undefined;
   try {
-    await cacheNewestCell(cellId, params.fetch, false);
+    entry = await catalogEntry(cellId, params.fetch, false);
   } catch (err) {
-    // A bundled cell still enrols without network.
-    if (!BUNDLED_TILES[cellId]) throw err;
+    // Without the catalog, a bundled cell still enrols.
+    if (bundledVersion === undefined) throw err;
+  }
+  if (entry) {
+    try {
+      await cacheEntryCell(entry, params.fetch);
+    } catch (err) {
+      // The learner took the version the catalog showed: the bundle stands
+      // in only if it is that version or newer.
+      if (!bundleStandsIn(entry, bundledVersion)) throw err;
+    }
   }
   const result = await enrolBundledCell(db, userId, cellId, {
     resolveTile: resolveCachedTile,
@@ -207,7 +235,7 @@ export async function academyUpdateHandler(
   const userId = await resolveHandlerUser(db, params.user);
   const from = await installedTileVersion(db, cellId);
   if (!from) throw new Error(`Not enrolled in ${cellId}`);
-  const entry = await cacheNewestCell(cellId, params.fetch, true);
+  const entry = await catalogEntry(cellId, params.fetch, true);
   if (!entry || compareTileVersions(entry.version, from) !== 1) {
     return {
       success: true as const,
@@ -216,6 +244,7 @@ export async function academyUpdateHandler(
       version: from,
     };
   }
+  await cacheEntryCell(entry, params.fetch);
   // Installing the newer tile is a revision like any bundled update, and
   // re-enrolling hands out its new items within the usual budget.
   const result = await enrolBundledCell(db, userId, cellId, {

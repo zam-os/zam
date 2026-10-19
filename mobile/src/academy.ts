@@ -5,7 +5,7 @@
  * under the same rules as the desktop CLI:
  * - only the origin constant;
  * - no redirects (`redirect: "error"`);
- * - size caps;
+ * - size caps, checked while reading, and a 15-second timeout;
  * - a cell must match the SHA-256 in the catalog (`crypto.subtle`), and its
  *   tile id and version must match the entry.
  *
@@ -23,6 +23,7 @@ import type { BundledTile } from "../../src/kernel/library/bundled-cells.js";
 export const ACADEMY_CATALOG_URL = `${ACADEMY_ORIGIN}/catalog.json`;
 const CATALOG_MAX_BYTES = 256 * 1024;
 const CELL_MAX_BYTES = 2 * 1024 * 1024;
+const FETCH_TIMEOUT_MS = 15_000;
 
 export type AcademyFetch = (
   url: string,
@@ -42,12 +43,47 @@ async function fetchBytes(
     credentials: "omit",
     cache: "no-store",
     headers: { Accept: "application/json" },
+    // Also ends a body that stalls halfway.
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
   });
   if (response.redirected) throw new Error(`${url}: redirected`);
   if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
-  const bytes = new Uint8Array(await response.arrayBuffer());
-  if (bytes.byteLength > maxBytes) {
-    throw new Error(`${url}: larger than ${maxBytes} bytes`);
+  return readCapped(response, url, maxBytes);
+}
+
+/** The body, given up as soon as it passes the cap. */
+async function readCapped(
+  response: Response,
+  url: string,
+  maxBytes: number,
+): Promise<Uint8Array<ArrayBuffer>> {
+  const tooLarge = () => new Error(`${url}: larger than ${maxBytes} bytes`);
+  if (Number(response.headers?.get("content-length")) > maxBytes) {
+    throw tooLarge();
+  }
+  const reader = response.body?.getReader();
+  if (!reader) {
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    if (bytes.byteLength > maxBytes) throw tooLarge();
+    return bytes;
+  }
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > maxBytes) {
+      await reader.cancel();
+      throw tooLarge();
+    }
+    chunks.push(value);
+  }
+  const bytes = new Uint8Array(size);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
   }
   return bytes;
 }
