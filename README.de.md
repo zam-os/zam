@@ -78,7 +78,7 @@ Quellcode-Checkout braucht vorher `npm ci && npm run build`; veröffentlichte Pa
 enthalten die Laufzeit bereits. Aufbau und Prüfung stehen unter
 [ZAM Agent Plugin](docs/AGENT_PLUGIN.md).
 
-### 2. ZAM Desktop Studio — *Einrichtung, Inhalte & Graph*
+### 2. ZAM Desktop Studio — *Einrichtung, Inhalte & Atlas*
 
 Eine native App (`zam ui`) für das, worin ein Chatfenster schlecht ist:
 
@@ -90,8 +90,9 @@ Eine native App (`zam ui`) für das, worin ein Chatfenster schlecht ist:
   strukturierten Lehrplan durchgehen; ein geführter Assistent macht daraus
   Wiederholungskarten.
 - **Inhalte bearbeiten** — ein echter Editor für Konzepte, Fragen und Voraussetzungen.
-- **Deinen Wissensgraphen sehen** — Konzepte als lebendige Karte dessen, was worauf
-  aufbaut.
+- **Deinen Wissensatlas sehen** — was du weißt, als Karte aus Inseln: Die Farbe zeigt das
+  Fach, die Textur, wie gut du es behältst, und rote Fäden zeigen, was worauf aufbaut.
+  Zoome vom Fach bis zum einzelnen Begriff und wiederhole von dort einen ganzen Bereich.
 - **Wiederholen** — fokussierte Active-Recall-Runden direkt in der App.
 
 ```bash

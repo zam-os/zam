@@ -71,6 +71,23 @@ describe("material import staging", () => {
     expect(raw).not.toMatch(/base64|data:image/);
   });
 
+  it("refuses an agent's formula without speech, naming it (ADR 2026-10-14b)", async () => {
+    const set = structuredClone(FIXTURE) as Record<string, unknown>;
+    const [first] = set.proposals as Record<string, unknown>[];
+    first.answer = "Es gilt $\\rho = m/V$.";
+    await expect(
+      stageMaterialImport({ set, origin: "harness" }, { dir }),
+    ).rejects.toThrow(/proposals\[0\]\.answer\[1\]\.speech: required/);
+    expect(readdirSync(dir)).toEqual([]);
+    // The Studio's own batch has asked its model already: what is still
+    // missing stays empty, and the batch is staged.
+    const batch = await stageMaterialImport({ set, origin: "studio" }, { dir });
+    expect(batch.set.proposals[0].answerSegments?.[1]).toEqual({
+      type: "math",
+      tex: "\\rho = m/V",
+    });
+  });
+
   it("refuses an invalid set before writing anything", async () => {
     await expect(
       stageMaterialImport({ set: { version: 1 }, origin: "studio" }, { dir }),

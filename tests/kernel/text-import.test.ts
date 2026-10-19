@@ -581,3 +581,82 @@ describe("deterministic text import", () => {
     );
   });
 });
+
+describe("formulas in a text import (ADR 2026-10-14b, plan Phase 7)", () => {
+  const HALF = [
+    { type: "text" as const, text: "Was ist " },
+    { type: "math" as const, tex: "\\frac{1}{2}" },
+    { type: "text" as const, text: "?" },
+  ];
+
+  function formulaCard(
+    overrides: Partial<TextImportDocument["cards"][number]> = {},
+  ): TextImportDocument["cards"][number] {
+    return {
+      externalId: "anki:half:0",
+      question: "ignored: the segments win",
+      answer: "Ein halb",
+      deckPath: "Mathe",
+      questionSegments: HALF,
+      unliftedText: { question: "Was ist \\(\\frac{1}{2}\\)?", answer: "Ein halb" },
+      ...overrides,
+    };
+  }
+
+  async function importCards(cards: TextImportDocument["cards"]) {
+    const input = document(cards);
+    const preview = await previewTextImport(db, "alice", input);
+    await commitTextImport(db, "alice", input, preview.planHash);
+    return preview;
+  }
+
+  async function stored() {
+    return (await db
+      .prepare(
+        "SELECT question, question_segments, content_version, editorial_state FROM tokens",
+      )
+      .get()) as {
+      question: string;
+      question_segments: string | null;
+      content_version: number;
+      editorial_state: string;
+    };
+  }
+
+  it("creates the card with its formulas and their plain projection", async () => {
+    await importCards([formulaCard()]);
+    const token = await stored();
+    expect(token.question).toBe("Was ist ½?");
+    expect(JSON.parse(token.question_segments ?? "null")).toEqual(HALF);
+  });
+
+  it("re-imports a card imported before the lift as a cosmetic update, also when published", async () => {
+    // What an import without the lift stored: the raw delimiters as text.
+    await importCards([
+      {
+        externalId: "anki:half:0",
+        question: "Was ist \\(\\frac{1}{2}\\)?",
+        answer: "Ein halb",
+        deckPath: "Mathe",
+      },
+    ]);
+    const before = await stored();
+    expect(before.editorial_state).toBe("published");
+
+    const preview = await importCards([formulaCard()]);
+    expect(preview.cards[0]).toMatchObject({
+      action: "update",
+      contentChanged: true,
+      formulasOnly: true,
+    });
+    expect(preview.cards[0].warnings).toEqual([]);
+    const after = await stored();
+    expect(after.question).toBe("Was ist ½?");
+    expect(after.question_segments).not.toBeNull();
+    expect(after.content_version).toBe(before.content_version);
+
+    // A third, unchanged import has nothing left to do.
+    const again = await previewTextImport(db, "alice", document([formulaCard()]));
+    expect(again.cards[0].action).toBe("skip");
+  });
+});

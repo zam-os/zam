@@ -3,11 +3,17 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
+  type CardText,
   type Database,
   enrolBundledCell,
   listBundledCells,
   openDatabase,
+  plainProjection,
 } from "../../src/kernel/index.js";
+
+/** A sample solution's plain text, whether stored as text or segments. */
+const plainText = (value: string | CardText | undefined): string =>
+  typeof value === "string" ? value : value ? plainProjection(value) : "";
 
 describe("Gymnasium Klasse 10 Bayern LehrplanPLUS Cells", () => {
   const gym10Cells = [
@@ -59,7 +65,7 @@ describe("Gymnasium Klasse 10 Bayern LehrplanPLUS Cells", () => {
         expect(tier1.fast_check?.type).toBe("binary_choice");
         expect(tier1.fast_check?.options.length).toBe(2);
         expect(tier2.tier).toBe("tier2_synthesis");
-        expect(tier2.sample_solution.length).toBeGreaterThan(50);
+        expect(plainText(tier2.sample_solution).length).toBeGreaterThan(50);
       }
     }
   });

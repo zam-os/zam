@@ -66,9 +66,150 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Definiere den Begriff der geometrischen Kongruenz (Deckungsgleichheit $\\cong$: zwei Figuren stimmen in allen Seitenlängen und Winkelmaßen überein und können durch Kongruenzabbildungen aufeinander abgebildet werden), formuliere die 4 Kongruenzsätze für Dreiecke (1. SSS: drei Seiten, 2. SWS: zwei Seiten und der von ihnen eingeschlossene Winkel, 3. WSW bzw. SWW: eine Seite und zwei Winkel, 4. Ssw: zwei Seiten und der Gegenwinkel der größeren Seite) und begründe, warum 'WWW' (drei Winkel) KEIN Kongruenzsatz ist (sondern nur Ähnlichkeit $\\sim$ garantiert).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Definiere den Begriff der geometrischen Kongruenz (Deckungsgleichheit "
+            },
+            {
+              "type": "math",
+              "tex": "\\cong",
+              "speech": "kongruent zu"
+            },
+            {
+              "type": "text",
+              "text": ": zwei Figuren stimmen in allen Seitenlängen und Winkelmaßen überein und können durch Kongruenzabbildungen aufeinander abgebildet werden), formuliere die 4 Kongruenzsätze für Dreiecke (1. SSS: drei Seiten, 2. SWS: zwei Seiten und der von ihnen eingeschlossene Winkel, 3. WSW bzw. SWW: eine Seite und zwei Winkel, 4. Ssw: zwei Seiten und der Gegenwinkel der größeren Seite) und begründe, warum 'WWW' (drei Winkel) KEIN Kongruenzsatz ist (sondern nur Ähnlichkeit "
+            },
+            {
+              "type": "math",
+              "tex": "\\sim",
+              "speech": "proportional zu"
+            },
+            {
+              "type": "text",
+              "text": " garantiert)."
+            }
+          ],
           "concept": "Kongruenz: Deckungsgleichheit; 4 Sätze: SSS, SWS, WSW, Ssw; WWW ist kein Kongruenzsatz, weil Dreiecke mit identischen Winkeln maßstäblich vergrößert/verkleinert sein können (Ähnlichkeit).",
-          "sample_solution": "1. Definition der Kongruenz (Deckungsgleichheit): - Zwei ebene geometrische Figuren $F_1$ und $F_2$ heißen **kongruent ($F_1 \\cong F_2$)**, wenn sie in Form und Größe exakt übereinstimmen. - Sie können durch **Kongruenzabbildungen (Achsenspiegelung, Punktspiegelung, Drehung, Parallelverschiebung)** lückenlos zur Deckung gebracht werden. 2. Die 4 Kongruenzsätze für Dreiecke: - Zwei Dreiecke $ABC$ und $A'B'C'$ sind zueinander kongruent, wenn sie übereinstimmen in:   * **1. SSS-Satz (Seite-Seite-Seite)**: In allen drei Seitenlängen ($a=a', b=b', c=c'$). Voraussetzung: Dreiecksungleichung $a+b > c$ muss erfüllt sein!   * **2. SWS-Satz (Seite-Winkel-Seite)**: In zwei Seitenlängen und dem **von ihnen eingeschlossenen Zwischenwinkel** (z. B. $a, b$ und $\\gamma$).   * **3. WSW- / SWW-Satz (Winkel-Seite-Winkel)**: In einer Seitenlänge und zwei Winkeln (da der dritte Winkel wegen $\\alpha+\\beta+\\gamma=180^\\circ$ eindeutig festliegt).   * **4. Ssw-Satz (Seite-Seite-Winkel)**: In zwei Seitenlängen und demjenigen Winkel, der der **längeren der beiden Seiten gegenüberliegt** ($a > b$ und $\\alpha$). Liegt der Winkel der kürzeren Seite gegenüber, existieren 2 verschiedene Dreiecke (keine Eindeutigkeit!). 3. Warum ist 'WWW' kein Kongruenzsatz?: - Stimmen zwei Dreiecke in allen 3 Innenwinkeln überein (z. B. $30^\\circ, 60^\\circ, 90^\\circ$), so haben sie zwar dieselbe Gestalt, können aber völlig unterschiedliche Seitenlängen und Flächeninhalte besitzen (z. B. winziges Geodreieck vs. riesiges Wand-Geodreieck). - Dies begründet nur **Ähnlichkeit ($F_1 \\sim F_2$)**, nicht Kongruenz!"
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Definition der Kongruenz (Deckungsgleichheit): - Zwei ebene geometrische Figuren "
+            },
+            {
+              "type": "math",
+              "tex": "F_1"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "F_2"
+            },
+            {
+              "type": "text",
+              "text": " heißen kongruent ("
+            },
+            {
+              "type": "math",
+              "tex": "F_1 \\cong F_2"
+            },
+            {
+              "type": "text",
+              "text": "), wenn sie in Form und Größe exakt übereinstimmen. - Sie können durch Kongruenzabbildungen (Achsenspiegelung, Punktspiegelung, Drehung, Parallelverschiebung) lückenlos zur Deckung gebracht werden. 2. Die 4 Kongruenzsätze für Dreiecke: - Zwei Dreiecke "
+            },
+            {
+              "type": "math",
+              "tex": "ABC"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "A'B'C'"
+            },
+            {
+              "type": "text",
+              "text": " sind zueinander kongruent, wenn sie übereinstimmen in:   * 1. SSS-Satz (Seite-Seite-Seite): In allen drei Seitenlängen ("
+            },
+            {
+              "type": "math",
+              "tex": "a=a', b=b', c=c'"
+            },
+            {
+              "type": "text",
+              "text": "). Voraussetzung: Dreiecksungleichung "
+            },
+            {
+              "type": "math",
+              "tex": "a+b > c"
+            },
+            {
+              "type": "text",
+              "text": " muss erfüllt sein!   * 2. SWS-Satz (Seite-Winkel-Seite): In zwei Seitenlängen und dem von ihnen eingeschlossenen Zwischenwinkel (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "a, b"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\gamma"
+            },
+            {
+              "type": "text",
+              "text": ").   * 3. WSW- / SWW-Satz (Winkel-Seite-Winkel): In einer Seitenlänge und zwei Winkeln (da der dritte Winkel wegen "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha+\\beta+\\gamma=180^\\circ"
+            },
+            {
+              "type": "text",
+              "text": " eindeutig festliegt).   * 4. Ssw-Satz (Seite-Seite-Winkel): In zwei Seitenlängen und demjenigen Winkel, der der längeren der beiden Seiten gegenüberliegt ("
+            },
+            {
+              "type": "math",
+              "tex": "a > b"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha"
+            },
+            {
+              "type": "text",
+              "text": "). Liegt der Winkel der kürzeren Seite gegenüber, existieren 2 verschiedene Dreiecke (keine Eindeutigkeit!). 3. Warum ist 'WWW' kein Kongruenzsatz?: - Stimmen zwei Dreiecke in allen 3 Innenwinkeln überein (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "30^\\circ, 60^\\circ, 90^\\circ"
+            },
+            {
+              "type": "text",
+              "text": "), so haben sie zwar dieselbe Gestalt, können aber völlig unterschiedliche Seitenlängen und Flächeninhalte besitzen (z. B. winziges Geodreieck vs. riesiges Wand-Geodreieck). - Dies begründet nur Ähnlichkeit ("
+            },
+            {
+              "type": "math",
+              "tex": "F_1 \\sim F_2"
+            },
+            {
+              "type": "text",
+              "text": "), nicht Kongruenz!"
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -114,8 +255,41 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "In welchem Schnittpunkt liegt der Mittelpunkt des **Umkreises** (Kreis, der durch alle 3 Eckpunkte $A, B, C$ des Dreiecks verläuft)?",
-          "concept": "Im Schnittpunkt $M_U$ der drei Mittelsenkrechten $m_a, m_b, m_c$",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "In welchem Schnittpunkt liegt der Mittelpunkt des Umkreises (Kreis, der durch alle 3 Eckpunkte "
+            },
+            {
+              "type": "math",
+              "tex": "A, B, C",
+              "speech": "A, B, C"
+            },
+            {
+              "type": "text",
+              "text": " des Dreiecks verläuft)?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Im Schnittpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "M_U",
+              "speech": "M U"
+            },
+            {
+              "type": "text",
+              "text": " der drei Mittelsenkrechten "
+            },
+            {
+              "type": "math",
+              "tex": "m_a, m_b, m_c",
+              "speech": "m a, m b, m c"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -123,16 +297,230 @@
               "Schnittpunkt der Winkelhalbierenden"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K4M7K0000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Charakterisiere die 4 ausgezeichneten Punkte und Transversalen des Dreiecks: 1. **Mittelsenkrechte ($m_a, m_b, m_c$)**: Stehen senkrecht auf den Seitenmitten; ihr Schnittpunkt $U$ ist der Mittelpunkt des **Umkreises** (Radius $r=UA=UB=UC$), 2. **Winkelhalbierende ($w_\\alpha, w_\\beta, w_\\gamma$)**: Halbieren die Innenwinkel; ihr Schnittpunkt $I$ ist der Mittelpunkt des **Inkreises** (berührt alle 3 Dreiecksseiten von innen), 3. **Seitenhalbierende ($s_a, s_b, s_c$)**: Verbinden Eckpunkte mit gegenüberliegenden Seitenmitten; schneiden sich im **Schwerpunkt $S$**, der jede Seitenhalbierende im Verhältnis **$2:1$** (vom Eckpunkt aus) teilt, 4. **Höhen ($h_a, h_b, h_c$)**: Stehen senkrecht auf den Seiten durch den gegenüberliegenden Eckpunkt; schneiden sich im **Höhenschnittpunkt $H$**.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Charakterisiere die 4 ausgezeichneten Punkte und Transversalen des Dreiecks: 1. Mittelsenkrechte ("
+            },
+            {
+              "type": "math",
+              "tex": "m_a, m_b, m_c",
+              "speech": "m a, m b, m c"
+            },
+            {
+              "type": "text",
+              "text": "): Stehen senkrecht auf den Seitenmitten; ihr Schnittpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "U",
+              "speech": "U"
+            },
+            {
+              "type": "text",
+              "text": " ist der Mittelpunkt des Umkreises (Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r=UA=UB=UC",
+              "speech": "r gleich U A gleich U B gleich U C"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Winkelhalbierende ("
+            },
+            {
+              "type": "math",
+              "tex": "w_\\alpha, w_\\beta, w_\\gamma",
+              "speech": "w Alpha, w Beta, w Gamma"
+            },
+            {
+              "type": "text",
+              "text": "): Halbieren die Innenwinkel; ihr Schnittpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "I",
+              "speech": "I"
+            },
+            {
+              "type": "text",
+              "text": " ist der Mittelpunkt des Inkreises (berührt alle 3 Dreiecksseiten von innen), 3. Seitenhalbierende ("
+            },
+            {
+              "type": "math",
+              "tex": "s_a, s_b, s_c",
+              "speech": "s a, s b, s c"
+            },
+            {
+              "type": "text",
+              "text": "): Verbinden Eckpunkte mit gegenüberliegenden Seitenmitten; schneiden sich im Schwerpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "S",
+              "speech": "S"
+            },
+            {
+              "type": "text",
+              "text": ", der jede Seitenhalbierende im Verhältnis "
+            },
+            {
+              "type": "math",
+              "tex": "2:1",
+              "speech": "2 zu 1"
+            },
+            {
+              "type": "text",
+              "text": " (vom Eckpunkt aus) teilt, 4. Höhen ("
+            },
+            {
+              "type": "math",
+              "tex": "h_a, h_b, h_c",
+              "speech": "h a, h b, h c"
+            },
+            {
+              "type": "text",
+              "text": "): Stehen senkrecht auf den Seiten durch den gegenüberliegenden Eckpunkt; schneiden sich im Höhenschnittpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "H",
+              "speech": "H"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
           "concept": "4 Besondere Punkte: Mittelsenkrechte -> Umkreismittelpunkt U; Winkelhalbierende -> Inkreismittelpunkt I; Seitenhalbierende -> Schwerpunkt S (Teilverhältnis 2:1); Höhen -> Höhenschnittpunkt H.",
-          "sample_solution": "1. Die 4 klassischen Transversalen und Schnittpunkte im Dreieck: - **1. Mittelsenkrechten und der Umkreis**:   * **Konstruktion**: Senkrechte Geraden im jeweiligen Mittelpunkt der Dreiecksseiten $a, b, c$.   * **Eigenschaft**: Jeder Punkt auf einer Mittelsenkrechten ist von den beiden Endpunkten der Strecke gleich weit entfernt.   * **Schnittpunkt $U$**: Schnittpunkt aller drei Mittelsenkrechten; bildet das Zentrum des **Umkreises**, der exakt durch alle 3 Ecken $A, B$ und $C$ verläuft (Radius $r_U = |UA| = |UB| = |UC|$). - **2. Winkelhalbierenden und der Inkreis**:   * **Konstruktion**: Halbierungsstrahlen der drei Innenwinkel $\\alpha, \\beta, \\gamma$.   * **Eigenschaft**: Jeder Punkt auf einer Winkelhalbierenden hat zu den beiden anliegenden Dreiecksseiten denselben senkrechten Abstand.   * **Schnittpunkt $I$**: Schnittpunkt aller drei Winkelhalbierenden; bildet das Zentrum des **Inkreises**, der alle drei Seiten $a, b, c$ von innen berührt (Radius $r_I$). - **3. Seitenhalbierenden und der Schwerpunkt**:   * **Konstruktion**: Strecken von einem Eckpunkt zur Mitte der gegenüberliegenden Dreiecksseite.   * **Schnittpunkt $S$ (Schwerpunkt)**: Physikalischer Massenmittelpunkt einer homogenen Dreiecksplatte.   * **Teilungsverhältnis**: Der Schwerpunkt $S$ teilt jede Seitenhalbierende im Verhältnis **$2 : 1$** (der längere Abschnitt liegt stets an der Dreiecksecke: $|AS| : |SM_a| = 2:1$). - **4. Höhen und der Höhenschnittpunkt**:   * **Konstruktion**: Das vom Eckpunkt auf die gegenüberliegende Seite gefällte Lot.   * **Schnittpunkt $H$**: Schnittpunkt aller drei Höhenlinien (liegt bei spitzwinkligen Dreiecken im Inneren, beim rechtwinkligen Dreieck exakt im Scheitel des rechten Winkels, bei stumpfwinkligen Dreiecken außerhalb)."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die 4 klassischen Transversalen und Schnittpunkte im Dreieck: - 1. Mittelsenkrechten und der Umkreis:   * Konstruktion: Senkrechte Geraden im jeweiligen Mittelpunkt der Dreiecksseiten "
+            },
+            {
+              "type": "math",
+              "tex": "a, b, c"
+            },
+            {
+              "type": "text",
+              "text": ".   * Eigenschaft: Jeder Punkt auf einer Mittelsenkrechten ist von den beiden Endpunkten der Strecke gleich weit entfernt.   * Schnittpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "U"
+            },
+            {
+              "type": "text",
+              "text": ": Schnittpunkt aller drei Mittelsenkrechten; bildet das Zentrum des Umkreises, der exakt durch alle 3 Ecken "
+            },
+            {
+              "type": "math",
+              "tex": "A, B"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "C"
+            },
+            {
+              "type": "text",
+              "text": " verläuft (Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r_U = |UA| = |UB| = |UC|"
+            },
+            {
+              "type": "text",
+              "text": "). - 2. Winkelhalbierenden und der Inkreis:   * Konstruktion: Halbierungsstrahlen der drei Innenwinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha, \\beta, \\gamma"
+            },
+            {
+              "type": "text",
+              "text": ".   * Eigenschaft: Jeder Punkt auf einer Winkelhalbierenden hat zu den beiden anliegenden Dreiecksseiten denselben senkrechten Abstand.   * Schnittpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "I"
+            },
+            {
+              "type": "text",
+              "text": ": Schnittpunkt aller drei Winkelhalbierenden; bildet das Zentrum des Inkreises, der alle drei Seiten "
+            },
+            {
+              "type": "math",
+              "tex": "a, b, c"
+            },
+            {
+              "type": "text",
+              "text": " von innen berührt (Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r_I"
+            },
+            {
+              "type": "text",
+              "text": "). - 3. Seitenhalbierenden und der Schwerpunkt:   * Konstruktion: Strecken von einem Eckpunkt zur Mitte der gegenüberliegenden Dreiecksseite.   * Schnittpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "S"
+            },
+            {
+              "type": "text",
+              "text": " (Schwerpunkt): Physikalischer Massenmittelpunkt einer homogenen Dreiecksplatte.   * Teilungsverhältnis: Der Schwerpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "S"
+            },
+            {
+              "type": "text",
+              "text": " teilt jede Seitenhalbierende im Verhältnis "
+            },
+            {
+              "type": "math",
+              "tex": "2 : 1"
+            },
+            {
+              "type": "text",
+              "text": " (der längere Abschnitt liegt stets an der Dreiecksecke: "
+            },
+            {
+              "type": "math",
+              "tex": "|AS| : |SM_a| = 2:1"
+            },
+            {
+              "type": "text",
+              "text": "). - 4. Höhen und der Höhenschnittpunkt:   * Konstruktion: Das vom Eckpunkt auf die gegenüberliegende Seite gefällte Lot.   * Schnittpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "H"
+            },
+            {
+              "type": "text",
+              "text": ": Schnittpunkt aller drei Höhenlinien (liegt bei spitzwinkligen Dreiecken im Inneren, beim rechtwinkligen Dreieck exakt im Scheitel des rechten Winkels, bei stumpfwinkligen Dreiecken außerhalb)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -172,8 +560,46 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie lauten die Koordinaten des Vektors $\\vec{v} = \\vec{AB}$ von Punkt $A(2|1)$ zum Bildpunkt $B(7|4)$ nach der 'Spitze-minus-Schaft'-Regel?",
-          "concept": "$\\vec{AB} = \\begin{pmatrix} 7-2 \\\\ 4-1 \\end{pmatrix} = \\begin{pmatrix} 5 \\\\ 3 \\end{pmatrix}$",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lauten die Koordinaten des Vektors "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{v} = \\vec{AB}",
+              "speech": "Vektor v gleich Vektor A B"
+            },
+            {
+              "type": "text",
+              "text": " von Punkt "
+            },
+            {
+              "type": "math",
+              "tex": "A(2|1)",
+              "speech": "Punkt A mit den Koordinaten 2 und 1"
+            },
+            {
+              "type": "text",
+              "text": " zum Bildpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "B(7|4)",
+              "speech": "Punkt B mit den Koordinaten 7 und 4"
+            },
+            {
+              "type": "text",
+              "text": " nach der 'Spitze-minus-Schaft'-Regel?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\vec{AB} = \\begin{pmatrix} 7-2 \\\\ 4-1 \\end{pmatrix} = \\begin{pmatrix} 5 \\\\ 3 \\end{pmatrix}",
+              "speech": "Vektor A B gleich Spaltenvektor 7 minus 2, 4 minus 1, gleich Spaltenvektor 5, 3"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -181,16 +607,239 @@
               "Vektor (9 | 5)"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K4M7K0000000000000000J06",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre den Vektorbegriff der bayerischen Realschulmathematik: 1. Vektor als Menge aller parallelen, gleich langen und gleich gerichteten Pfeile (Repräsentant einer Parallelverschiebung), 2. Berechnung des Verbindungsvektors zweier Punkte $A(x_A|y_A)$ und $B(x_B|y_B)$ über die Regel **'Spitze minus Schaft'**: $\\vec{AB} = \\begin{pmatrix} x_B - x_A \\\\ y_B - y_A \\end{pmatrix}$, 3. Der **Gegenvektor** $-\\vec{v} = \\begin{pmatrix} -v_x \\\\ -v_y \\end{pmatrix}$ (gleiche Länge und Richtung, entgegengesetzte Orientierung), 4. **Vektoraddition (Hintereinanderausführung)**: $\\vec{u} + \\vec{w} = \\begin{pmatrix} u_x + w_x \\\\ u_y + w_y \\end{pmatrix}$ und berechne für $P(-3|4)$, $\\vec{v} = \\begin{pmatrix} 6 \\\\ -2 \\end{pmatrix}$ und $\\vec{w} = \\begin{pmatrix} -1 \\\\ 5 \\end{pmatrix}$ den Bildpunkt $P'$ nach Verschiebung um $\\vec{v}$ sowie den Summenvektor $\\vec{s} = \\vec{v} + \\vec{w}$.",
-          "concept": "Vektorrechnung: Vektor = Pfeilklasse (Länge, Richtung, Orientierung); Spitze minus Schaft; Gegenvektor kehrt Vorzeichen um; Vektoraddition komponentenweise; $P' = P + \\vec{v} = (-3+6 | 4-2) = (3|2)$; $\\vec{s} = \\vec{v}+\\vec{w} = \\begin{pmatrix} 6-1 \\\\ -2+5 \\end{pmatrix} = \\begin{pmatrix} 5 \\\\ 3 \\end{pmatrix}$.",
-          "sample_solution": "1. Das Vektorkonzept in der 2D-Ebene: - **Definition**: Ein **Vektor $\\vec{v}$** ist die mathematische Beschreibung einer **Parallelverschiebung**. Er fasst alle Pfeile zusammen, die:   * 1. **dieselbe Länge (Betrag)**,   * 2. **dieselbe Richtung (Parallelität)** und   * 3. **dieselbe Orientierung (Pfeilspitze)** besitzen (**Pfeilklasse**). 2. Grundrechenarten mit Vektoren: - **1. Berechnung aus zwei Punkten ('Spitze minus Schaft')**:   * Ein Pfeil startet im Schaft $A(x_A|y_A)$ und endet in der Spitze $B(x_B|y_B)$:   $$\\vec{AB} = \\begin{pmatrix} x_B - x_A \\\\ y_B - y_A \\end{pmatrix}$$ - **2. Der Gegenvektor ($-\\vec{v}$)**:   * Verschiebt exakt um dieselbe Strecke in die entgegengesetzte Richtung:   $$-\\vec{v} = \\begin{pmatrix} -v_x \\\\ -v_y \\end{pmatrix}, \\quad \\vec{BA} = -\\vec{AB}$$ - **3. Vektoraddition (Komponentenweise Addition)**:   * Entspricht der geometrischen Aneinanderreihung zweier Verschiebungen (Schaft des zweiten Pfeils an Spitze des ersten Pfeils):   $$\\vec{u} + \\vec{w} = \\begin{pmatrix} u_x \\\\ u_y \\end{pmatrix} + \\begin{pmatrix} w_x \\\\ w_y \\end{pmatrix} = \\begin{pmatrix} u_x + w_x \\\\ u_y + w_y \\end{pmatrix}$$ 3. Durchrechnung der Aufgabenstellungen: - **Berechnung des verschobenen Bildpunkts $P'$**:   $$\\vec{OP'} = \\vec{OP} \\oplus \\vec{v} = \\begin{pmatrix} -3 \\\\ 4 \\end{pmatrix} + \\begin{pmatrix} 6 \\\\ -2 \\end{pmatrix} = \\begin{pmatrix} -3+6 \\\\ 4-2 \\end{pmatrix} = \\begin{pmatrix} 3 \\\\ 2 \\end{pmatrix} \\implies \\mathbf{P'(3 \\mid 2)}$$ - **Berechnung des Summenvektors $\\vec{s} = \\vec{v} + \\vec{w}$**:   $$\\vec{s} = \\begin{pmatrix} 6 \\\\ -2 \\end{pmatrix} + \\begin{pmatrix} -1 \\\\ 5 \\end{pmatrix} = \\begin{pmatrix} 6 + (-1) \\\\ -2 + 5 \\end{pmatrix} = \\mathbf{\\begin{pmatrix} 5 \\\\ 3 \\end{pmatrix}}$$"
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Erkläre den Vektorbegriff der bayerischen Realschulmathematik: 1. Vektor als Menge aller parallelen, gleich langen und gleich gerichteten Pfeile (Repräsentant einer Parallelverschiebung), 2. Berechnung des Verbindungsvektors zweier Punkte "
+            },
+            {
+              "type": "math",
+              "tex": "A(x_A|y_A)",
+              "speech": "Punkt A mit den Koordinaten x A und y A"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "B(x_B|y_B)",
+              "speech": "Punkt B mit den Koordinaten x B und y B"
+            },
+            {
+              "type": "text",
+              "text": " über die Regel 'Spitze minus Schaft': "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{AB} = \\begin{pmatrix} x_B - x_A \\\\ y_B - y_A \\end{pmatrix}",
+              "speech": "Vektor A B gleich Spaltenvektor x B minus x A, y B minus y A"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Der Gegenvektor "
+            },
+            {
+              "type": "math",
+              "tex": "-\\vec{v} = \\begin{pmatrix} -v_x \\\\ -v_y \\end{pmatrix}",
+              "speech": "minus Vektor v gleich dem Vektor aus minus v x und minus v y"
+            },
+            {
+              "type": "text",
+              "text": " (gleiche Länge und Richtung, entgegengesetzte Orientierung), 4. Vektoraddition (Hintereinanderausführung): "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{u} + \\vec{w} = \\begin{pmatrix} u_x + w_x \\\\ u_y + w_y \\end{pmatrix}",
+              "speech": "Vektor u plus Vektor w gleich Spaltenvektor u x plus w x, u y plus w y"
+            },
+            {
+              "type": "text",
+              "text": " und berechne für "
+            },
+            {
+              "type": "math",
+              "tex": "P(-3|4)",
+              "speech": "Punkt P mit den Koordinaten minus 3 und 4"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{v} = \\begin{pmatrix} 6 \\\\ -2 \\end{pmatrix}",
+              "speech": "Vektor v gleich Spaltenvektor 6, minus 2"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{w} = \\begin{pmatrix} -1 \\\\ 5 \\end{pmatrix}",
+              "speech": "Vektor w gleich Spaltenvektor minus 1, 5"
+            },
+            {
+              "type": "text",
+              "text": " den Bildpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "P'",
+              "speech": "P Strich"
+            },
+            {
+              "type": "text",
+              "text": " nach Verschiebung um "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{v}",
+              "speech": "Vektor v"
+            },
+            {
+              "type": "text",
+              "text": " sowie den Summenvektor "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{s} = \\vec{v} + \\vec{w}",
+              "speech": "Vektor s gleich Vektor v plus Vektor w"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Vektorrechnung: Vektor = Pfeilklasse (Länge, Richtung, Orientierung); Spitze minus Schaft; Gegenvektor kehrt Vorzeichen um; Vektoraddition komponentenweise; "
+            },
+            {
+              "type": "math",
+              "tex": "P' = P + \\vec{v} = (-3+6 | 4-2) = (3|2)",
+              "speech": "P Strich gleich P plus Vektor v gleich Punkt mit den Koordinaten minus 3 plus 6 und 4 minus 2 gleich Punkt mit den Koordinaten 3 und 2"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{s} = \\vec{v}+\\vec{w} = \\begin{pmatrix} 6-1 \\\\ -2+5 \\end{pmatrix} = \\begin{pmatrix} 5 \\\\ 3 \\end{pmatrix}",
+              "speech": "Vektor s gleich Vektor v plus Vektor w gleich Spaltenvektor 6 minus 1, minus 2 plus 5, gleich Spaltenvektor 5, 3"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Das Vektorkonzept in der 2D-Ebene: - Definition: Ein Vektor "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{v}"
+            },
+            {
+              "type": "text",
+              "text": " ist die mathematische Beschreibung einer Parallelverschiebung. Er fasst alle Pfeile zusammen, die:   * 1. dieselbe Länge (Betrag),   * 2. dieselbe Richtung (Parallelität) und   * 3. dieselbe Orientierung (Pfeilspitze) besitzen (Pfeilklasse). 2. Grundrechenarten mit Vektoren: - 1. Berechnung aus zwei Punkten ('Spitze minus Schaft'):   * Ein Pfeil startet im Schaft "
+            },
+            {
+              "type": "math",
+              "tex": "A(x_A|y_A)"
+            },
+            {
+              "type": "text",
+              "text": " und endet in der Spitze "
+            },
+            {
+              "type": "math",
+              "tex": "B(x_B|y_B)"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{AB} = \\begin{pmatrix} x_B - x_A \\\\ y_B - y_A \\end{pmatrix}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 2. Der Gegenvektor ("
+            },
+            {
+              "type": "math",
+              "tex": "-\\vec{v}"
+            },
+            {
+              "type": "text",
+              "text": "):   * Verschiebt exakt um dieselbe Strecke in die entgegengesetzte Richtung:   "
+            },
+            {
+              "type": "math",
+              "tex": "-\\vec{v} = \\begin{pmatrix} -v_x \\\\ -v_y \\end{pmatrix}, \\quad \\vec{BA} = -\\vec{AB}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 3. Vektoraddition (Komponentenweise Addition):   * Entspricht der geometrischen Aneinanderreihung zweier Verschiebungen (Schaft des zweiten Pfeils an Spitze des ersten Pfeils):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{u} + \\vec{w} = \\begin{pmatrix} u_x \\\\ u_y \\end{pmatrix} + \\begin{pmatrix} w_x \\\\ w_y \\end{pmatrix} = \\begin{pmatrix} u_x + w_x \\\\ u_y + w_y \\end{pmatrix}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Durchrechnung der Aufgabenstellungen: - Berechnung des verschobenen Bildpunkts "
+            },
+            {
+              "type": "math",
+              "tex": "P'"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{OP'} = \\vec{OP} \\oplus \\vec{v} = \\begin{pmatrix} -3 \\\\ 4 \\end{pmatrix} + \\begin{pmatrix} 6 \\\\ -2 \\end{pmatrix} = \\begin{pmatrix} -3+6 \\\\ 4-2 \\end{pmatrix} = \\begin{pmatrix} 3 \\\\ 2 \\end{pmatrix} \\implies \\mathbf{P'(3 \\mid 2)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Berechnung des Summenvektors "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{s} = \\vec{v} + \\vec{w}"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{s} = \\begin{pmatrix} 6 \\\\ -2 \\end{pmatrix} + \\begin{pmatrix} -1 \\\\ 5 \\end{pmatrix} = \\begin{pmatrix} 6 + (-1) \\\\ -2 + 5 \\end{pmatrix} = \\mathbf{\\begin{pmatrix} 5 \\\\ 3 \\end{pmatrix}}",
+              "block": true
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

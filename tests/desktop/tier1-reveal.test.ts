@@ -36,7 +36,10 @@ describe("Tier-1 choice reveal on desktop surfaces", () => {
       0,
       showReveal.indexOf("function appendDiscussion("),
     );
-    expect(body).toContain("conceptEl.textContent = concept");
+    // The concept is revealed with its formulas typeset (ADR 2026-10-14b).
+    expect(body).toContain(
+      "void renderCardText(conceptEl, card.conceptSegments, concept)",
+    );
     expect(body).not.toMatch(/if\s*\(.*correct/);
   });
 });

@@ -85,6 +85,13 @@ open a terminal.
   Bonus); nothing of the material is stored — only a source link and file
   fingerprints. PDFs go only to models that declare `file` input. A Bonus
   token is published but has no card until the learner takes it.
+- **Card text** (ADR 2026-10-14b): question, concept and fast-check options
+  may hold segments (text, math, image). Write them only through
+  `writeCardText` (a new token passes them to `createToken`). Never put
+  LaTeX, Markdown or HTML into a text segment or a title. A formula is
+  allowlisted LaTeX (`tokenizeTex`) with `speech`, and an image needs `alt`.
+  Text from a model or an agent goes through `readCardTextInput` (`agent`
+  mode refuses, `import` mode keeps readable text).
 - **Observation without content** (ADR 2026-10-08): every screen surface
   checks `screenObservationGate()` before it captures, reads, spawns or
   analyzes anything; `observation.screen` in `~/.zam/config.json`

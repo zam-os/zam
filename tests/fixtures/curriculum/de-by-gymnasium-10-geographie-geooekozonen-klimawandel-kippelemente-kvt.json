@@ -65,9 +65,155 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die geoökologischen Zonen der Erde, ihre Bodenprofile und Nährstoffdynamiken: 1. **Die Immerfeuchten Tropen (Tropischer Regenwald)**:   * Tageszeitenklima ($T > 25^\\circ\\text{C}$ ganzjährig, Niederschläge $> 2000\\,\\text{mm}$).   * **Ferralsol-Böden (Laterit)**: Stark verwittert, sauer, kaum Kationenaustauschkapazität (Zwei-Schicht-Tonminerale wie Kaolinit), rote Farbe durch Eisen- und Aluminiumoxide.   * **Geschlossener Nährstoffkreislauf**: Nährstoffe kreisen rasch in der Biomasse (Mykorrhiza-Pilze); bei Rodung drohen irreversible Nährstoffauswaschung und Verkrustung (Lateritisierung), 2. **Die Gemäßigte Zone (Laub- und Mischwälder / Steppen)**:   * Ausgeprägtes Jahreszeitenklima; **Braunerden** und fruchtbare **Schwarzerden (Tschernosem)** mit mächtigem Humuskörper (A-Horizont) durch intensive Bioturbation (Regenwürmer) und Lößuntergrund, 3. **Die Boreale Zone (Taiga)**:   * Kurze Sommer, lange frostige Winter; Nadelwaldstreu verrottet sehr langsam $\\implies$ Huminsäuren führen zu starker Auswaschung $\\implies$ **Podsol (Bleicherde)** mit gebleichtem $A_e$-Horizont und verhärtetem Ortstein ($B_s$-Horizont), 4. **Die Polare/Subpolare Zone (Tundra)**:   * Dauerfrostboden (**Permafrost**): Taut im Sommer nur oberflächlich auf (Auftauboden / Mollisol) $\\implies$ Staunässe, Tundrenböden, Frostmusterböden (Gelifluktion).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die geoökologischen Zonen der Erde, ihre Bodenprofile und Nährstoffdynamiken: 1. Die Immerfeuchten Tropen (Tropischer Regenwald):   * Tageszeitenklima ("
+            },
+            {
+              "type": "math",
+              "tex": "T > 25^\\circ\\text{C}",
+              "speech": "T größer als 25 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": " ganzjährig, Niederschläge "
+            },
+            {
+              "type": "math",
+              "tex": "> 2000\\,\\text{mm}",
+              "speech": "größer als 2000 Millimeter"
+            },
+            {
+              "type": "text",
+              "text": ").   * Ferralsol-Böden (Laterit): Stark verwittert, sauer, kaum Kationenaustauschkapazität (Zwei-Schicht-Tonminerale wie Kaolinit), rote Farbe durch Eisen- und Aluminiumoxide.   * Geschlossener Nährstoffkreislauf: Nährstoffe kreisen rasch in der Biomasse (Mykorrhiza-Pilze); bei Rodung drohen irreversible Nährstoffauswaschung und Verkrustung (Lateritisierung), 2. Die Gemäßigte Zone (Laub- und Mischwälder / Steppen):   * Ausgeprägtes Jahreszeitenklima; Braunerden und fruchtbare Schwarzerden (Tschernosem) mit mächtigem Humuskörper (A-Horizont) durch intensive Bioturbation (Regenwürmer) und Lößuntergrund, 3. Die Boreale Zone (Taiga):   * Kurze Sommer, lange frostige Winter; Nadelwaldstreu verrottet sehr langsam "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Huminsäuren führen zu starker Auswaschung "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Podsol (Bleicherde) mit gebleichtem "
+            },
+            {
+              "type": "math",
+              "tex": "A_e",
+              "speech": "A e"
+            },
+            {
+              "type": "text",
+              "text": "-Horizont und verhärtetem Ortstein ("
+            },
+            {
+              "type": "math",
+              "tex": "B_s",
+              "speech": "B s"
+            },
+            {
+              "type": "text",
+              "text": "-Horizont), 4. Die Polare/Subpolare Zone (Tundra):   * Dauerfrostboden (Permafrost): Taut im Sommer nur oberflächlich auf (Auftauboden / Mollisol) "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Staunässe, Tundrenböden, Frostmusterböden (Gelifluktion)."
+            }
+          ],
           "concept": "Geoökologische Zonen: Immerfeuchte Tropen (Ferralsol, geschlossener Nährstoffkreislauf, Mykorrhiza); Gemäßigte Zone (Braunerde, Schwarzerde / Tschernosem); Borealer Nadelwald (Podsol / Bleicherde); Polare Zone (Permafrost, Tundra, Gelifluktion).",
-          "sample_solution": "1. Die Geoökosysteme der Erde im zonenbezogenen Vergleich: - **1. Immerfeuchte Tropen (Tropischer Regenwald)**:   * **Klima**: Hohe Sonneneinstrahlung, ganzjährig hohe Temperaturen ($25-28^\\circ\\text{C}$) mit tagesperiodischen Zenitalregen (**Tageszeitenklima**).   * **Boden (Ferralsol / Roterde)**:     - Intensive chemische Silikatverwitterung reicht bis zu 50 m tief. Durch ständige Auswaschung verarmen die Böden an Nährstoffkationen ($Ca^{2+}, Mg^{2+}, K^+$); es bleiben unlösliche rote Eisen- und Aluminiumhydroxide zurück.   * **Geschlossener kurzgeschlossener Nährstoffkreislauf**:     - Über **$80\\%$ der gesamten Nährstoffe** sind in der oberirdischen **lebenden Biomasse** (Baumkronen, Lianen, Epiphyten) gespeichert.     - Herabfallendes Laub wird durch Wärme und Feuchtigkeit binnen Wochen von Destruenten zersetzt und über ein dichtes Geflecht von **Mykorrhiza-Wurzelpilzen** direkt wieder von den Baumwurzeln aufgenommen.     - *Gefahr*: Nach Brandrodung spülen Starkregen die Aschedüngung binnen weniger Jahre aus $\\implies$ Boden unfruchtbar. - **2. Gemäßigte Zone**:   * **Böden**:     * **Braunerden**: Unter mitteleuropäischen Laub- und Mischwäldern; mäßig sauer, gute Durchlüftung und biologische Aktivität.     * **Schwarzerden (Tschernosem)**: In kontinentalen Steppen (z. B. Ukraine, Magdeburger Börde); mächtiger, humusreicher Oberboden ($A$-Horizont bis 1 m Tiefe) auf feinkörnigem, kalkhaltigem Löss; höchste Bodenfruchtbarkeit der Erde. - **3. Boreale Nadelwaldzone (Taiga)**:   * **Klima**: Kalte, lange Winter mit Permafrost-Inseln; kühle, kurze Sommer.   * **Boden (Podsol / Bleicherde)**:     - Harzige Nadelstreu wird von Bodenorganismen extrem langsam zersetzt $\\implies$ Bildung saurer Rohhumusdecken.     - Versickerndes saures Wasser löst Eisen und Aluminium aus dem oberen Bodenhorizont (**Bleichhorizont $A_e$**, aschgrau) und lagert es tiefer unten als extrem harte Kruste wieder ab (**Ortstein / Anreicherungshorizont $B_s$**). - **4. Polare und Subpolare Kältezoni (Tundra)**:   * **Permafrostböden (Dauerfrostböden)**: Boden bleibt bis in hunderte Meter Tiefe ganzjährig gefroren.   * **Auftauschicht (Mollisol)**: Im kurzen Polarsommer tauen nur die obersten $0{,}5-1{,}5\\text{ m}$ auf. Da das Wasser im gefrorenen Untergrund nicht versickern kann, entstehen weitflächige Moore und Staunässe.   * **Kryoturbation & Solifluktion**: Frosthebung erzeugt typische polygonale Steinmuster und Hangabwärtsfließen von Schlamm."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Geoökosysteme der Erde im zonenbezogenen Vergleich: - 1. Immerfeuchte Tropen (Tropischer Regenwald):   * Klima: Hohe Sonneneinstrahlung, ganzjährig hohe Temperaturen ("
+            },
+            {
+              "type": "math",
+              "tex": "25-28^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": ") mit tagesperiodischen Zenitalregen (Tageszeitenklima).   * Boden (Ferralsol / Roterde):     - Intensive chemische Silikatverwitterung reicht bis zu 50 m tief. Durch ständige Auswaschung verarmen die Böden an Nährstoffkationen ("
+            },
+            {
+              "type": "math",
+              "tex": "Ca^{2+}, Mg^{2+}, K^+"
+            },
+            {
+              "type": "text",
+              "text": "); es bleiben unlösliche rote Eisen- und Aluminiumhydroxide zurück.   * Geschlossener kurzgeschlossener Nährstoffkreislauf:     - Über "
+            },
+            {
+              "type": "math",
+              "tex": "80\\%"
+            },
+            {
+              "type": "text",
+              "text": " der gesamten Nährstoffe sind in der oberirdischen lebenden Biomasse (Baumkronen, Lianen, Epiphyten) gespeichert.     - Herabfallendes Laub wird durch Wärme und Feuchtigkeit binnen Wochen von Destruenten zersetzt und über ein dichtes Geflecht von Mykorrhiza-Wurzelpilzen direkt wieder von den Baumwurzeln aufgenommen.     - Gefahr: Nach Brandrodung spülen Starkregen die Aschedüngung binnen weniger Jahre aus "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Boden unfruchtbar. - 2. Gemäßigte Zone:   * Böden:     * Braunerden: Unter mitteleuropäischen Laub- und Mischwäldern; mäßig sauer, gute Durchlüftung und biologische Aktivität.     * Schwarzerden (Tschernosem): In kontinentalen Steppen (z. B. Ukraine, Magdeburger Börde); mächtiger, humusreicher Oberboden ("
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": "-Horizont bis 1 m Tiefe) auf feinkörnigem, kalkhaltigem Löss; höchste Bodenfruchtbarkeit der Erde. - 3. Boreale Nadelwaldzone (Taiga):   * Klima: Kalte, lange Winter mit Permafrost-Inseln; kühle, kurze Sommer.   * Boden (Podsol / Bleicherde):     - Harzige Nadelstreu wird von Bodenorganismen extrem langsam zersetzt "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Bildung saurer Rohhumusdecken.     - Versickerndes saures Wasser löst Eisen und Aluminium aus dem oberen Bodenhorizont (Bleichhorizont "
+            },
+            {
+              "type": "math",
+              "tex": "A_e"
+            },
+            {
+              "type": "text",
+              "text": ", aschgrau) und lagert es tiefer unten als extrem harte Kruste wieder ab (Ortstein / Anreicherungshorizont "
+            },
+            {
+              "type": "math",
+              "tex": "B_s"
+            },
+            {
+              "type": "text",
+              "text": "). - 4. Polare und Subpolare Kältezoni (Tundra):   * Permafrostböden (Dauerfrostböden): Boden bleibt bis in hunderte Meter Tiefe ganzjährig gefroren.   * Auftauschicht (Mollisol): Im kurzen Polarsommer tauen nur die obersten "
+            },
+            {
+              "type": "math",
+              "tex": "0{,}5-1{,}5\\text{ m}"
+            },
+            {
+              "type": "text",
+              "text": " auf. Da das Wasser im gefrorenen Untergrund nicht versickern kann, entstehen weitflächige Moore und Staunässe.   * Kryoturbation & Solifluktion: Frosthebung erzeugt typische polygonale Steinmuster und Hangabwärtsfließen von Schlamm."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +274,267 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den anthropogenen Treibhauseffekt, die Kippelemente des Erdsystems und globale Lösungsstrategien: 1. **Physikalischer Mechanismus des Treibhauseffekts**:   * Natürlicher Treibhauseffekt (durch Wasserdampf $H_2O$, $CO_2$ $\\implies$ Erwärmung der Erde von $-18^\\circ\\text{C}$ auf lebensfreundliche $+15^\\circ\\text{C}$).   * **Anthropogener Treibhauseffekt**: Verbrennung fossiler Energieträger (Kohle, Öl, Gas), Entwaldung und industrielle Landwirtschaft ($CH_4$ aus Rinderhaltung/Reisanbau, $N_2O$ aus Überdüngung) verstärken die Absorption und Re-Emission langwelliger terrestrischer Infrarotstrahlung $\\implies$ globale Erwärmung, 2. **Zentrale Kippelemente des Erdsystems (Tipping Elements nach Schellnhuber et al.)**:   * **1. Grönländischer Eisschild & Westantarktischer Eisschild**: Schmelzen führt zu Albedo-Rückkopplung (weniger weißes Eis reflektiert weniger Sonnenlicht $\\implies$ noch mehr Erwärmung) und weltweitem Meeresspiegelanstieg um mehrere Meter.   * **2. Auftauen der sibirischen und nordamerikanischen Permafrostböden**: Freisetzung riesiger Mengen mikrobiell erzeugten Methans ($CH_4$) und $CO_2$ $\\implies$ massive autonome Erwärmungsrückkopplung.   * **3. Die Atlantische Meridionale Umwälzzirkulation (AMOC / Golfstromsystem)**: Durch Süßwassereintrag schmelzender grönländischer Gletscher sinkt die Dichte des Meerwassers $\\implies$ Abschwächung oder Kollaps der thermohalinen Tiefenwasserbildung im Nordatlantik.   * **4. Absterben des Amazonas-Regenwaldes**: Übergang von CO2-Senke zu CO2-Quelle und Savannisierung, 3. **Klimapolitik und globale Klimagerechtigkeit**:   * **Pariser Klimaabkommen 2015**: Völkerrechtliches Ziel, die Erderwärmung auf deutlich unter $2^\\circ\\text{C}$, möglichst $1{,}5^\\circ\\text{C}$ gegenüber vorindustriellen Werten zu begrenzen.   * **Mitigation (Klimaschutz/Vermeidung)**: Ausbau erneuerbarer Energien, Dekarbonisierung, Aufforstung.   * **Adaption (Klimaanpassung)**: Deichbau, hitzeresistente Nutzpflanzen, Schwammstadt-Konzepte.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den anthropogenen Treibhauseffekt, die Kippelemente des Erdsystems und globale Lösungsstrategien: 1. Physikalischer Mechanismus des Treibhauseffekts:   * Natürlicher Treibhauseffekt (durch Wasserdampf "
+            },
+            {
+              "type": "math",
+              "tex": "H_2O",
+              "speech": "H zwei O"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "CO_2",
+              "speech": "C O zwei"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Erwärmung der Erde von "
+            },
+            {
+              "type": "math",
+              "tex": "-18^\\circ\\text{C}",
+              "speech": "minus 18 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": " auf lebensfreundliche "
+            },
+            {
+              "type": "math",
+              "tex": "+15^\\circ\\text{C}",
+              "speech": "plus 15 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": ").   * Anthropogener Treibhauseffekt: Verbrennung fossiler Energieträger (Kohle, Öl, Gas), Entwaldung und industrielle Landwirtschaft ("
+            },
+            {
+              "type": "math",
+              "tex": "CH_4",
+              "speech": "C H vier"
+            },
+            {
+              "type": "text",
+              "text": " aus Rinderhaltung/Reisanbau, "
+            },
+            {
+              "type": "math",
+              "tex": "N_2O",
+              "speech": "N zwei O"
+            },
+            {
+              "type": "text",
+              "text": " aus Überdüngung) verstärken die Absorption und Re-Emission langwelliger terrestrischer Infrarotstrahlung "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " globale Erwärmung, 2. Zentrale Kippelemente des Erdsystems (Tipping Elements nach Schellnhuber et al.):   * 1. Grönländischer Eisschild & Westantarktischer Eisschild: Schmelzen führt zu Albedo-Rückkopplung (weniger weißes Eis reflektiert weniger Sonnenlicht "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " noch mehr Erwärmung) und weltweitem Meeresspiegelanstieg um mehrere Meter.   * 2. Auftauen der sibirischen und nordamerikanischen Permafrostböden: Freisetzung riesiger Mengen mikrobiell erzeugten Methans ("
+            },
+            {
+              "type": "math",
+              "tex": "CH_4",
+              "speech": "C H vier"
+            },
+            {
+              "type": "text",
+              "text": ") und "
+            },
+            {
+              "type": "math",
+              "tex": "CO_2",
+              "speech": "C O zwei"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " massive autonome Erwärmungsrückkopplung.   * 3. Die Atlantische Meridionale Umwälzzirkulation (AMOC / Golfstromsystem): Durch Süßwassereintrag schmelzender grönländischer Gletscher sinkt die Dichte des Meerwassers "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Abschwächung oder Kollaps der thermohalinen Tiefenwasserbildung im Nordatlantik.   * 4. Absterben des Amazonas-Regenwaldes: Übergang von CO2-Senke zu CO2-Quelle und Savannisierung, 3. Klimapolitik und globale Klimagerechtigkeit:   * Pariser Klimaabkommen 2015: Völkerrechtliches Ziel, die Erderwärmung auf deutlich unter "
+            },
+            {
+              "type": "math",
+              "tex": "2^\\circ\\text{C}",
+              "speech": "2 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": ", möglichst "
+            },
+            {
+              "type": "math",
+              "tex": "1{,}5^\\circ\\text{C}",
+              "speech": "1,5 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": " gegenüber vorindustriellen Werten zu begrenzen.   * Mitigation (Klimaschutz/Vermeidung): Ausbau erneuerbarer Energien, Dekarbonisierung, Aufforstung.   * Adaption (Klimaanpassung): Deichbau, hitzeresistente Nutzpflanzen, Schwammstadt-Konzepte."
+            }
+          ],
           "concept": "Klimawandel: Natürlicher vs. anthropogener Treibhauseffekt (CO2, CH4, N2O, Infrarotabsorption); Kippelemente (Grönland/Antarktis-Schmelze mit Albedo-Rückkopplung, Permafrost-Methan, AMOC-Golfstromabschwächung, Amazonas-Kipppunkt); Pariser 1,5°C-Ziel; Mitigation vs. Adaption.",
-          "sample_solution": "1. Der physikalische Mechanismus des Treibhauseffekts: - **Strahlungsbilanz**:   * Kurzwellige solare UV- und sichtbare Sonnenstrahlung durchdringt die Erdatmosphäre weitgehend ungehindert und erwärmt die Erdoberfläche.   * Die erwärmte Erde strahlt diese Energie in Form von **langwelliger Infrarotstrahlung (Wärmestrahlung)** wieder in den Weltraum ab.   * **Treibhausgase (Wasserdampf $\\text{H}_2\\text{O}$, Kohlendioxid $\\text{CO}_2$, Methan $\\text{CH}_4$, Distickstoffmonoxid $\\text{N}_2\\text{O}$)** absorbieren bestimmte Wellenlängen dieser Infrarotstrahlung und emittieren sie isotrop – auch zurück zur Erdoberfläche (**atmosphärische Gegenstrahlung**). - **Der anthropogene Zusatztreibhauseffekt**:   * Seit Beginn der Industrialisierung (ca. 1750) stieg die atmosphärische $\\text{CO}_2$-Konzentration von ca. $280\\text{ ppm}$ auf über **$420\\text{ ppm}$**.   * Dies verhindert das Abstrahlen von Wärme in den Weltraum und führt zur fortschreitenden Erwärmung von Ozeanen und Atmosphäre. 2. Die Kippelemente im globalen Erdsystem: - **Definition**: Großräumige Subsysteme der Erde, die eine inhärente Schwelle (*Tipping Point*) besitzen. Wird diese überschritten, setzt eine **nichtlineare, unumkehrbare Kettenreaktion (positive Rückkopplungsschleife)** ein:   * **1. Grönländischer Eisschild**:     - Bei Erwärmung schmilzt die Eisoberfläche und sinkt in tiefere, wärmere Luftschichten ab. Gleichzeitig sinkt die Rückstrahlfähigkeit (**Eis-Albedo-Rückkopplung**) $\\implies$ Unaufhaltsames Abschmelzen (Meeresspiegelanstieg um ca. 7 Meter).   * **2. Auftauen der arktischen Permafrostböden**:     - Enthält schätzungsweise 1.500 Milliarden Tonnen organischen Kohlenstoff (doppelt so viel wie aktuell in der Atmosphäre). Beim Auftauen zersetzen Bakterien das Material anaerob zu hochwirksamem **Methan ($\text{CH}_4$)** $\\implies$ beschleunigt die Erwärmung autonom, selbst bei weltweitem Stopp menschlicher Emissionen.   * **3. Die Atlantische Umwälzzirkulation (AMOC / Golfstrom)**:     - Beruht auf dem Absinken schweren, kalten, salzreichen Wassers im Nordatlantik (*Thermohalines Förderband*). Massiver Einstrom von leichtem Schmelzwasser aus Grönland verdünnt den Salzgehalt $\\implies$ Gefahr des Stillstands $\\implies$ Verschiebung globaler Monsunregenfälle und extremes Abkühlen Nordwesteuropas.   * **4. Das Amazonas-Regenwald-System**:     - Erzeugt über 50 % seiner Niederschläge selbst durch Evapotranspiration. Ab einer Entwaldung von 20–25 % bricht dieser Wasserzyklus zusammen $\\implies$ Versteppung zur Trockensavanne und Freisetzung von Gigatonnen Kohlenstoff. 3. Handlungsstrategien: Mitigation und Adaption: - **Mitigation (Ursachenbekämpfung / Emissionsminderung)**:   * Vollständige Dekarbonisierung der Industrie, Ausbau von Photovoltaik, Windkraft, Elektromobilität, Kreislaufwirtschaft und Schutz natürlicher $\\text{CO}_2$-Senken (Moore, Wälder). - **Adaption (Folgenanpassung)**:   * Errichtung von Hochwasserschutzdeichen, Entsiegelung städtischer Flächen (*Schwammstadt / Sponge City*), Züchtung trockenheitsresistenter Getreidesorten. - **Klimagerechtigkeit**:   * Historische Verursacher (Industrieländer) tragen die ethische und finanzielle Verantwortung, Schwellen- und Entwicklungsländer beim Klimaschutz und bei der Bewältigung von Klimaschäden (*Loss and Damage Fund*) zu unterstützen."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der physikalische Mechanismus des Treibhauseffekts: - Strahlungsbilanz:   * Kurzwellige solare UV- und sichtbare Sonnenstrahlung durchdringt die Erdatmosphäre weitgehend ungehindert und erwärmt die Erdoberfläche.   * Die erwärmte Erde strahlt diese Energie in Form von langwelliger Infrarotstrahlung (Wärmestrahlung) wieder in den Weltraum ab.   * Treibhausgase (Wasserdampf "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{H}_2\\text{O}"
+            },
+            {
+              "type": "text",
+              "text": ", Kohlendioxid "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{CO}_2"
+            },
+            {
+              "type": "text",
+              "text": ", Methan "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{CH}_4"
+            },
+            {
+              "type": "text",
+              "text": ", Distickstoffmonoxid "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{N}_2\\text{O}"
+            },
+            {
+              "type": "text",
+              "text": ") absorbieren bestimmte Wellenlängen dieser Infrarotstrahlung und emittieren sie isotrop – auch zurück zur Erdoberfläche (atmosphärische Gegenstrahlung). - Der anthropogene Zusatztreibhauseffekt:   * Seit Beginn der Industrialisierung (ca. 1750) stieg die atmosphärische "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{CO}_2"
+            },
+            {
+              "type": "text",
+              "text": "-Konzentration von ca. "
+            },
+            {
+              "type": "math",
+              "tex": "280\\text{ ppm}"
+            },
+            {
+              "type": "text",
+              "text": " auf über "
+            },
+            {
+              "type": "math",
+              "tex": "420\\text{ ppm}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Dies verhindert das Abstrahlen von Wärme in den Weltraum und führt zur fortschreitenden Erwärmung von Ozeanen und Atmosphäre. 2. Die Kippelemente im globalen Erdsystem: - Definition: Großräumige Subsysteme der Erde, die eine inhärente Schwelle (Tipping Point) besitzen. Wird diese überschritten, setzt eine nichtlineare, unumkehrbare Kettenreaktion (positive Rückkopplungsschleife) ein:   * 1. Grönländischer Eisschild:     - Bei Erwärmung schmilzt die Eisoberfläche und sinkt in tiefere, wärmere Luftschichten ab. Gleichzeitig sinkt die Rückstrahlfähigkeit (Eis-Albedo-Rückkopplung) "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Unaufhaltsames Abschmelzen (Meeresspiegelanstieg um ca. 7 Meter).   * 2. Auftauen der arktischen Permafrostböden:     - Enthält schätzungsweise 1.500 Milliarden Tonnen organischen Kohlenstoff (doppelt so viel wie aktuell in der Atmosphäre). Beim Auftauen zersetzen Bakterien das Material anaerob zu hochwirksamem Methan ("
+            },
+            {
+              "type": "math",
+              "tex": "\\text{CH}_4"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " beschleunigt die Erwärmung autonom, selbst bei weltweitem Stopp menschlicher Emissionen.   * 3. Die Atlantische Umwälzzirkulation (AMOC / Golfstrom):     - Beruht auf dem Absinken schweren, kalten, salzreichen Wassers im Nordatlantik (Thermohalines Förderband). Massiver Einstrom von leichtem Schmelzwasser aus Grönland verdünnt den Salzgehalt "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Gefahr des Stillstands "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Verschiebung globaler Monsunregenfälle und extremes Abkühlen Nordwesteuropas.   * 4. Das Amazonas-Regenwald-System:     - Erzeugt über 50 % seiner Niederschläge selbst durch Evapotranspiration. Ab einer Entwaldung von 20–25 % bricht dieser Wasserzyklus zusammen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Versteppung zur Trockensavanne und Freisetzung von Gigatonnen Kohlenstoff. 3. Handlungsstrategien: Mitigation und Adaption: - Mitigation (Ursachenbekämpfung / Emissionsminderung):   * Vollständige Dekarbonisierung der Industrie, Ausbau von Photovoltaik, Windkraft, Elektromobilität, Kreislaufwirtschaft und Schutz natürlicher "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{CO}_2"
+            },
+            {
+              "type": "text",
+              "text": "-Senken (Moore, Wälder). - Adaption (Folgenanpassung):   * Errichtung von Hochwasserschutzdeichen, Entsiegelung städtischer Flächen (Schwammstadt / Sponge City), Züchtung trockenheitsresistenter Getreidesorten. - Klimagerechtigkeit:   * Historische Verursacher (Industrieländer) tragen die ethische und finanzielle Verantwortung, Schwellen- und Entwicklungsländer beim Klimaschutz und bei der Bewältigung von Klimaschäden (Loss and Damage Fund) zu unterstützen."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

@@ -65,9 +65,147 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den Bau und die Funktionsweise des menschlichen Auges: 1. **Optischer Apparat**: Hornhaut (Cornea), vordere Augenkammer, Pupille/Iris (Adaptation = Helligkeitsanpassung), elastische Augenlinse, Glaskörper $\\rightarrow$ erzeugt ein verkleinertes, umgekehrtes, reelles Bild auf der Netzhaut, 2. **Akkommodation (Scharfstellung)**:   * *Ferneinstellung*: Ziliarmuskel erschlafft $\\rightarrow$ Zonulafasern spannen sich $\\rightarrow$ Linse wird flach gezogen (geringe Brechkraft).   * *Naheinstellung*: Ziliarmuskel spannt sich an $\\rightarrow$ Zonulafasern erschlaffen $\\rightarrow$ Linse wölbt sich elastisch kugelig (hohe Brechkraft), 3. **Netzhaut (Retina)**: **Zapfen** (ca. 6 Mio., 3 Typen für Farbsehen im Gelben Fleck) vs. **Stäbchen** (ca. 120 Mio., extrem lichtempfindlich für Schwarz-Weiß-Dämmerungssehen); **Blinder Fleck** (Austrittsstelle des Sehnervs ohne Sinneszellen), 4. **Fehlsichtigkeiten**: Kurzsichtigkeit (Augapfel zu lang $\\rightarrow$ Zerstreuungslinse / Konkavlinse nötig) vs. Weitsichtigkeit (Augapfel zu kurz $\\rightarrow$ Sammellinse / Konvexlinse nötig).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den Bau und die Funktionsweise des menschlichen Auges: 1. Optischer Apparat: Hornhaut (Cornea), vordere Augenkammer, Pupille/Iris (Adaptation = Helligkeitsanpassung), elastische Augenlinse, Glaskörper "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " erzeugt ein verkleinertes, umgekehrtes, reelles Bild auf der Netzhaut, 2. Akkommodation (Scharfstellung):   * Ferneinstellung: Ziliarmuskel erschlafft "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Zonulafasern spannen sich "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Linse wird flach gezogen (geringe Brechkraft).   * Naheinstellung: Ziliarmuskel spannt sich an "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Zonulafasern erschlaffen "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Linse wölbt sich elastisch kugelig (hohe Brechkraft), 3. Netzhaut (Retina): Zapfen (ca. 6 Mio., 3 Typen für Farbsehen im Gelben Fleck) vs. Stäbchen (ca. 120 Mio., extrem lichtempfindlich für Schwarz-Weiß-Dämmerungssehen); Blinder Fleck (Austrittsstelle des Sehnervs ohne Sinneszellen), 4. Fehlsichtigkeiten: Kurzsichtigkeit (Augapfel zu lang "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Zerstreuungslinse / Konkavlinse nötig) vs. Weitsichtigkeit (Augapfel zu kurz "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Sammellinse / Konvexlinse nötig)."
+            }
+          ],
           "concept": "Auge: Hornhaut, Iris (Adaptation), Linse (Akkommodation über Ziliarmuskel/Zonulafasern); Netzhaut: Zapfen (Farbe/Gelber Fleck), Stäbchen (Hell-Dunkel), Blinder Fleck (Sehnerv); Kurzsichtigkeit (Konkavlinse) vs. Weitsichtigkeit (Konvexlinse).",
-          "sample_solution": "1. Der Aufbau des dioptrischen Apparates des Auges: - Das Auge funktioniert wie eine hochmoderne biologische Kamera mit einer Gesamtbrechkraft von ca. **60 Dioptrien**:   * **Lederhaut & Hornhaut (Cornea)**: Äußere Schutzhülle; die durchsichtige Hornhaut erbringt mit ca. 43 dpt den größten Teil der Lichtbrechung.   * **Iris (Regenbogenhaut) & Pupille**: Funktioniert als **Lichtblende**. Durch Pupillenreflex (Pupillenerweiterung im Dunkeln / Verengung im Hellen) erfolgt die **Adaptation** an veränderte Lichtstärken.   * **Augenlinse**: Elastische Bikonvexlinse zur Feinjustierung der Bildschärfe.   * **Glaskörper**: Gallertartige Füllung, die den Augapfel stabilisiert. 2. Die Akkommodation (Dynamische Scharfstellung): - Gesteuert durch das Zusammenspiel von **Ziliarmuskel** und **Zonulafasern**:   * **1. Fernakkommodation (ab ca. 6 m)**:     - Ziliarmuskel ist **entspannt (erschlafft)** $\\rightarrow$ Durchmesser des Muskelrings wird größer $\\rightarrow$ Zonulafasern sind **straff gespannt** $\\rightarrow$ Linse wird **flach gezogen** (geringe Wölbung, geringe Brechkraft).   * **2. Nahakkommodation**:     - Ziliarmuskel **kontrahiert (spannt sich an)** $\\rightarrow$ Muskelring verengt sich $\\rightarrow$ Zonulafasern **erschlaffen** $\\rightarrow$ die Linse **wölbt sich durch Eigenelastizität stark kugelig** (hohe Brechkraft). 3. Die Photorezeptoren der Netzhaut (Retina): - **1. Zapfen (ca. 6 Millionen)**:   * Spezialisiert auf das **Farbsehen** und hohe Sehschärfe bei Tageslicht (*photopisches Sehen*).   * Drei Rezeptortypen: Rot-, Grün- und Blau-Zapfen.   * Höchste Dichte im **Gelben Fleck (Fovea centralis)**, dem Ort des schärfsten Sehens. - **2. Stäbchen (ca. 120 Millionen)**:   * Extrem lichtempfindlich für das **Hell-Dunkel- und Dämmerungssehen** (*skotopisches Sehen*); können keine Farben unterscheiden. - **3. Der Blinde Fleck**:   * Die Austrittsstelle des Sehnervs zur Weiterleitung der Signale ans Gehirn; besitzt keinerlei Sinneszellen. 4. Korrektur von Fehlsichtigkeiten: - **Kurzsichtigkeit (Myopie)**: Augapfel ist zu lang (oder Brechkraft zu stark); Brennpunkt liegt *vor* der Netzhaut $\\implies$ Korrektur durch **Zerstreuungslinse (Konkavlinse mit Minus-Dioptrien)**. - **Weitsichtigkeit (Hyperopie)**: Augapfel ist zu kurz; Brennpunkt liegt *hinter* der Netzhaut $\\implies$ Korrektur durch **Sammellinse (Konvexlinse mit Plus-Dioptrien)**."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der Aufbau des dioptrischen Apparates des Auges: - Das Auge funktioniert wie eine hochmoderne biologische Kamera mit einer Gesamtbrechkraft von ca. 60 Dioptrien:   * Lederhaut & Hornhaut (Cornea): Äußere Schutzhülle; die durchsichtige Hornhaut erbringt mit ca. 43 dpt den größten Teil der Lichtbrechung.   * Iris (Regenbogenhaut) & Pupille: Funktioniert als Lichtblende. Durch Pupillenreflex (Pupillenerweiterung im Dunkeln / Verengung im Hellen) erfolgt die Adaptation an veränderte Lichtstärken.   * Augenlinse: Elastische Bikonvexlinse zur Feinjustierung der Bildschärfe.   * Glaskörper: Gallertartige Füllung, die den Augapfel stabilisiert. 2. Die Akkommodation (Dynamische Scharfstellung): - Gesteuert durch das Zusammenspiel von Ziliarmuskel und Zonulafasern:   * 1. Fernakkommodation (ab ca. 6 m):     - Ziliarmuskel ist entspannt (erschlafft) "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Durchmesser des Muskelrings wird größer "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Zonulafasern sind straff gespannt "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Linse wird flach gezogen (geringe Wölbung, geringe Brechkraft).   * 2. Nahakkommodation:     - Ziliarmuskel kontrahiert (spannt sich an) "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Muskelring verengt sich "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Zonulafasern erschlaffen "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " die Linse wölbt sich durch Eigenelastizität stark kugelig (hohe Brechkraft). 3. Die Photorezeptoren der Netzhaut (Retina): - 1. Zapfen (ca. 6 Millionen):   * Spezialisiert auf das Farbsehen und hohe Sehschärfe bei Tageslicht (photopisches Sehen).   * Drei Rezeptortypen: Rot-, Grün- und Blau-Zapfen.   * Höchste Dichte im Gelben Fleck (Fovea centralis), dem Ort des schärfsten Sehens. - 2. Stäbchen (ca. 120 Millionen):   * Extrem lichtempfindlich für das Hell-Dunkel- und Dämmerungssehen (skotopisches Sehen); können keine Farben unterscheiden. - 3. Der Blinde Fleck:   * Die Austrittsstelle des Sehnervs zur Weiterleitung der Signale ans Gehirn; besitzt keinerlei Sinneszellen. 4. Korrektur von Fehlsichtigkeiten: - Kurzsichtigkeit (Myopie): Augapfel ist zu lang (oder Brechkraft zu stark); Brennpunkt liegt vor der Netzhaut "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Korrektur durch Zerstreuungslinse (Konkavlinse mit Minus-Dioptrien). - Weitsichtigkeit (Hyperopie): Augapfel ist zu kurz; Brennpunkt liegt hinter der Netzhaut "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Korrektur durch Sammellinse (Konvexlinse mit Plus-Dioptrien)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +266,163 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre den Hörvorgang, das Gleichgewichtsorgan und den Ablauf eines unwillkürlichen Reflexes: 1. **Schallübertragung im Ohr**:   * **Außenohr**: Ohrmuschel (Schalltrichter) $\\rightarrow$ äußerer Gehörgang $\\rightarrow$ Versetzen des **Trommelfells** in Schwingung.   * **Mittelohr**: Hebelwirkung der Gehörknöchelchen (**Hammer $\\rightarrow$ Amboss $\\rightarrow$ Steigbügel**) $\\rightarrow$ Druckverstärkung am **Ovalen Fenster** (Druckausgleich über die *Eustachische Röhre / Ohrtrompete* zum Rachen).   * **Innenohr**: Flüssigkeitswelle in der **Hörschnecke (Cochlea)** $\\rightarrow$ Abscherung der Haarsinneszellen im *Corti-Organ* $\\rightarrow$ Umwandlung in elektrische Nervenimpulse $\\rightarrow$ Hörnerv $\\rightarrow$ Gehirn, 2. **Gleichgewichtsorgan**: 3 Bogengänge (Drehbeschleunigung) und 2 Vorhofsäckchen mit Otolithen (Lage und Linearbeschleunigung), 3. **Der Reflexbogen (am Beispiel des Kniesehnenreflexes)**: Reiz (Schlag auf Patellasehne) $\\rightarrow$ Muskelspindel (Rezeptor) $\\rightarrow$ sensorische Nervenfaser $\\rightarrow$ **Rückenmark (direkte Umschaltung ohne Gehirnbeteiligung)** $\\rightarrow$ motorische Nervenfaser $\\rightarrow$ Oberschenkelmuskel (Effektor) $\\rightarrow$ ruckartige Streckung des Unterschenkels.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Erkläre den Hörvorgang, das Gleichgewichtsorgan und den Ablauf eines unwillkürlichen Reflexes: 1. Schallübertragung im Ohr:   * Außenohr: Ohrmuschel (Schalltrichter) "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " äußerer Gehörgang "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Versetzen des Trommelfells in Schwingung.   * Mittelohr: Hebelwirkung der Gehörknöchelchen (Hammer "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Amboss "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Steigbügel) "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Druckverstärkung am Ovalen Fenster (Druckausgleich über die Eustachische Röhre / Ohrtrompete zum Rachen).   * Innenohr: Flüssigkeitswelle in der Hörschnecke (Cochlea) "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Abscherung der Haarsinneszellen im Corti-Organ "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Umwandlung in elektrische Nervenimpulse "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Hörnerv "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Gehirn, 2. Gleichgewichtsorgan: 3 Bogengänge (Drehbeschleunigung) und 2 Vorhofsäckchen mit Otolithen (Lage und Linearbeschleunigung), 3. Der Reflexbogen (am Beispiel des Kniesehnenreflexes): Reiz (Schlag auf Patellasehne) "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Muskelspindel (Rezeptor) "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " sensorische Nervenfaser "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Rückenmark (direkte Umschaltung ohne Gehirnbeteiligung) "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " motorische Nervenfaser "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Oberschenkelmuskel (Effektor) "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " ruckartige Streckung des Unterschenkels."
+            }
+          ],
           "concept": "Hörvorgang: Trommelfell -> Gehörknöchelchen (Hammer, Amboss, Steigbügel) -> Ovales Fenster -> Cochlea mit Haarzellen; Gleichgewicht (Bogengänge/Otolithen); Reflexbogen: Rezeptor -> sensorischer Nerv -> Rückenmark -> motorischer Nerv -> Effektor (Schutzfunktion ohne Gehirn).",
-          "sample_solution": "1. Der Weg des Schalls durch die drei Abschnitte des Ohrs: - **1. Außenohr**:   * Die Ohrmuschel fängt Schallwellen (Luftdruckschwankungen) trichterförmig auf und leitet sie durch den äußeren Gehörgang auf das dünne, elastische **Trommelfell**, das in mechanische Schwingung versetzt wird. - **2. Mittelohr (Schallverstärkung)**:   * Das luftgefüllte Mittelohr enthält die drei kleinsten Knochen des menschlichen Körpers: **Hammer**, **Amboss** und **Steigbügel**.   * Durch die mechanische Hebelwirkung der Knöchelchenkette und den Flächenunterschied vom großen Trommelfell zum winzigen **Ovalen Fenster** wird der Schalldruck um das **ca. 20-fache verstärkt**.   * Die **Ohrtrompete (Eustachische Röhre)** verbindet das Mittelohr mit dem Rachenraum und ermöglicht den Druckausgleich beim Schlucken. - **3. Innenohr (Reizumwandlung / Transduktion)**:   * Die Fußplatte des Steigbügels versetzt die Flüssigkeit (Perilymphe/Endolymphe) in der schneckenförmig gewundenen **Cochlea (Hörschnecke)** in Schwingung (Wanderwelle).   * Auf der Basilarmembran sitzen im **Corti-Organ** mikroskopische **Haarsinneszellen**: Die Schwingung biegt die Sinneshärchen ab, wodurch Ionenkanäle geöffnet und elektrische Impulse erzeugt werden.   * Hohe Töne werden an der Schneckenbasis, tiefe Töne an der Schneckenspitze wahrgenommen (*Tonotopie*). 2. Das Gleichgewichtsorgan (Vestibularapparat): - Liegt ebenfalls im Innenohr und besteht aus:   * **Drei Bogengängen**: Stehen rechtwinklig zueinander im Raum und registrieren **Drehbewegungen** des Kopfes.   * **Zwei Vorhofsäckchen (Utriculus und Sacculus)**: Enthalten Kalkkristalle (Otolithen) und messen die **Schwerkraft und lineare Beschleunigung** (z. B. im Aufzug oder Auto). 3. Der monosynaptische Reflexbogen: - Ein **Reflex** ist eine unwillkürliche, extrem schnelle und immer gleich ablaufende automatische Reaktion auf einen Reiz zum Schutz des Körpers:   * **1. Reiz**: Ein leichter Schlag auf die Sehne unterhalb der Kniescheibe dehnt den Oberschenkelstrecker.   * **2. Rezeptor**: Die **Muskelspindel** registriert die plötzliche Dehnung.   * **3. Afferente (sensorische) Nervenfaser**: Leitet das Signal mit hoher Geschwindigkeit ins **Rückenmark**.   * **4. Schaltstelle (Synapse im Rückenmark)**: Direkte synaptische Umschaltung auf das motorische Neuron **ohne vorherige Verarbeitung im Gehirn**.   * **5. Efferente (motorische) Nervenfaser**: Sendet den Kontraktionsbefehl zum Muskel.   * **6. Effektor (Erfolgsorgan)**: Der Oberschenkelmuskel zieht sich zusammen $\\rightarrow$ der Unterschenkel schnellt nach vorne."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der Weg des Schalls durch die drei Abschnitte des Ohrs: - 1. Außenohr:   * Die Ohrmuschel fängt Schallwellen (Luftdruckschwankungen) trichterförmig auf und leitet sie durch den äußeren Gehörgang auf das dünne, elastische Trommelfell, das in mechanische Schwingung versetzt wird. - 2. Mittelohr (Schallverstärkung):   * Das luftgefüllte Mittelohr enthält die drei kleinsten Knochen des menschlichen Körpers: Hammer, Amboss und Steigbügel.   * Durch die mechanische Hebelwirkung der Knöchelchenkette und den Flächenunterschied vom großen Trommelfell zum winzigen Ovalen Fenster wird der Schalldruck um das ca. 20-fache verstärkt.   * Die Ohrtrompete (Eustachische Röhre) verbindet das Mittelohr mit dem Rachenraum und ermöglicht den Druckausgleich beim Schlucken. - 3. Innenohr (Reizumwandlung / Transduktion):   * Die Fußplatte des Steigbügels versetzt die Flüssigkeit (Perilymphe/Endolymphe) in der schneckenförmig gewundenen Cochlea (Hörschnecke) in Schwingung (Wanderwelle).   * Auf der Basilarmembran sitzen im Corti-Organ mikroskopische Haarsinneszellen: Die Schwingung biegt die Sinneshärchen ab, wodurch Ionenkanäle geöffnet und elektrische Impulse erzeugt werden.   * Hohe Töne werden an der Schneckenbasis, tiefe Töne an der Schneckenspitze wahrgenommen (Tonotopie). 2. Das Gleichgewichtsorgan (Vestibularapparat): - Liegt ebenfalls im Innenohr und besteht aus:   * Drei Bogengängen: Stehen rechtwinklig zueinander im Raum und registrieren Drehbewegungen des Kopfes.   * Zwei Vorhofsäckchen (Utriculus und Sacculus): Enthalten Kalkkristalle (Otolithen) und messen die Schwerkraft und lineare Beschleunigung (z. B. im Aufzug oder Auto). 3. Der monosynaptische Reflexbogen: - Ein Reflex ist eine unwillkürliche, extrem schnelle und immer gleich ablaufende automatische Reaktion auf einen Reiz zum Schutz des Körpers:   * 1. Reiz: Ein leichter Schlag auf die Sehne unterhalb der Kniescheibe dehnt den Oberschenkelstrecker.   * 2. Rezeptor: Die Muskelspindel registriert die plötzliche Dehnung.   * 3. Afferente (sensorische) Nervenfaser: Leitet das Signal mit hoher Geschwindigkeit ins Rückenmark.   * 4. Schaltstelle (Synapse im Rückenmark): Direkte synaptische Umschaltung auf das motorische Neuron ohne vorherige Verarbeitung im Gehirn.   * 5. Efferente (motorische) Nervenfaser: Sendet den Kontraktionsbefehl zum Muskel.   * 6. Effektor (Erfolgsorgan): Der Oberschenkelmuskel zieht sich zusammen "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " der Unterschenkel schnellt nach vorne."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

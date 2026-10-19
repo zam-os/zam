@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formel-Korpus</title>
+    <!--
+      Dev-only measurement page (ADR 2026-10-14b, plan Phase 3): renders every
+      formula of the bundled tiles with the Studio's renderer and counts the
+      ones that fall back to their plain form. Not part of the Studio build;
+      open it with `npm --prefix desktop run dev` at /dev/math-corpus.html, in
+      each engine to measure (WebKit: Safari; Chromium: Chrome or Edge).
+    -->
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 1rem;
+        color: #1b1b1f;
+        background: #fff;
+      }
+      #summary { font-size: 1.1rem; margin-bottom: 1rem; }
+      table { border-collapse: collapse; width: 100%; }
+      td { border-top: 1px solid #ddd; padding: 0.35rem 0.5rem; vertical-align: top; }
+      td.tex { font: 12px ui-monospace, monospace; color: #555; max-width: 30rem; overflow-wrap: anywhere; }
+      td.render { font-size: 1.25rem; }
+      tr.fallback td.render { background: #fff0f0; }
+      label { margin-left: 1rem; }
+    </style>
+  </head>
+  <body>
+    <div id="summary">Rendering …</div>
+    <label><input type="checkbox" id="only-fallbacks" /> nur Rückfälle zeigen</label>
+    <table><tbody id="rows"></tbody></table>
+    <script type="module" src="./math-corpus.ts"></script>
+  </body>
+</html>

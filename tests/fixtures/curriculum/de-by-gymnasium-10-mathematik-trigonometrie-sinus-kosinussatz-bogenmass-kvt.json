@@ -49,25 +49,411 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Welche Formel beschreibt den Kosinussatz zur Berechnung der Seite $a$ im allgemeinen Dreieck $\\triangle ABC$ bei gegebenen Seiten $b, c$ und eingeschlossenem Winkel $\\alpha$?",
-          "concept": "a^2 = b^2 + c^2 - 2*b*c*cos(alpha)",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Formel beschreibt den Kosinussatz zur Berechnung der Seite "
+            },
+            {
+              "type": "math",
+              "tex": "a",
+              "speech": "a"
+            },
+            {
+              "type": "text",
+              "text": " im allgemeinen Dreieck "
+            },
+            {
+              "type": "math",
+              "tex": "\\triangle ABC",
+              "speech": "Dreieck A B C"
+            },
+            {
+              "type": "text",
+              "text": " bei gegebenen Seiten "
+            },
+            {
+              "type": "math",
+              "tex": "b, c",
+              "speech": "b, c"
+            },
+            {
+              "type": "text",
+              "text": " und eingeschlossenem Winkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha",
+              "speech": "Alpha"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "a^2 = b^2 + c^2 - 2 \\cdot b \\cdot c \\cdot \\cos(\\alpha)",
+              "speech": "a Quadrat gleich b Quadrat plus c Quadrat minus 2 mal b mal c mal Kosinus von Alpha"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "a^2 = b^2 + c^2 - 2bc * cos(alpha)",
-              "a^2 = b^2 + c^2 + 2bc * cos(alpha)"
+              [
+                {
+                  "type": "math",
+                  "tex": "a^2 = b^2 + c^2 - 2bc \\cdot \\cos(\\alpha)",
+                  "speech": "a Quadrat gleich b Quadrat plus c Quadrat minus 2 b c mal Kosinus von Alpha"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "a^2 = b^2 + c^2 + 2bc \\cdot \\cos(\\alpha)",
+                  "speech": "a Quadrat gleich b Quadrat plus c Quadrat plus 2 b c mal Kosinus von Alpha"
+                }
+              ]
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GA00000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere Sinussatz, Kosinussatz und die trigonometrische Flächenberechnung im allgemeinen Dreieck: 1. **Der Sinussatz**:   * In jedem Dreieck verhalten sich die Seiten wie die Sinuswerte ihrer Gegenwinkel:     $$\\mathbf{\\frac{a}{\\sin \\alpha} = \\frac{b}{\\sin \\beta} = \\frac{c}{\\sin \\gamma} = 2R} \\quad (R = \\text{Umkreisradius})}$$   * Anwendung: Gegeben sind zwei Winkel und eine Seite (WSW/SWW) oder zwei Seiten und der der größeren Seite gegenüberliegende Winkel (Ssw), 2. **Der Kosinussatz (Verallgemeinerung des Satzes von Pythagoras)**:   * $a^2 = b^2 + c^2 - 2bc \\cos \\alpha$, $b^2 = a^2 + c^2 - 2ac \\cos \\beta$, $c^2 = a^2 + b^2 - 2ab \\cos \\gamma$.   * Für $\\gamma = 90^\\circ$ gilt $\\cos 90^\\circ = 0 \\implies c^2 = a^2 + b^2$ (Pythagoras als Spezialfall).   * Anwendung: Gegeben sind drei Seiten (SSS $\\implies \\cos \\alpha = \\frac{b^2 + c^2 - a^2}{2bc}$) oder zwei Seiten und der eingeschlossene Winkel (SWS), 3. **Trigonometrische Flächenformel**: $A = \\frac{1}{2} a b \\sin \\gamma = \\frac{1}{2} b c \\sin \\alpha = \\frac{1}{2} a c \\sin \\beta$, 4. Ein Dreieck hat die Seiten $b = 6\\,\\text{cm}$, $c = 10\\,\\text{cm}$ und den eingeschlossenen Winkel $\\alpha = 60^\\circ$. Berechne die dritte Seite $a$ und die Fläche $A$ (nutze $\\cos 60^\\circ = 0{,}5$ und $\\sin 60^\\circ = \\frac{\\sqrt{3}}{2}$).",
-          "concept": "Trigonometrie im allgemeinen Dreieck: Sinussatz a/sin alpha = b/sin beta = c/sin gamma; Kosinussatz a^2 = b^2 + c^2 - 2bc*cos alpha; Fläche A = 1/2*b*c*sin alpha; Rechnung: a^2 = 36 + 100 - 2*6*10*0,5 = 136 - 60 = 76 -> a = sqrt(76) = 2*sqrt(19) approx 8,72 cm; A = 1/2 * 6 * 10 * sqrt(3)/2 = 15*sqrt(3) approx 25,98 cm^2.",
-          "sample_solution": "1. Trigonometrische Sätze am allgemeinen Dreieck: - **1. Der Sinussatz**:   $$\\mathbf{\\frac{a}{\\sin(\\alpha)} = \\frac{b}{\\sin(\\beta)} = \\frac{c}{\\sin(\\gamma)} = 2R}$$   * **Einsatzbereiche**:     - Kongruenzsatz **WSW / SWW**: Ein Winkel und eine Seite sind bekannt $\\implies$ dritte Seite direkt ermittelbar.     - Kongruenzsatz **Ssw**: Zwei Seiten und der der längeren Seite gegenüberliegende Winkel sind bekannt. - **2. Der Kosinussatz**:   $$\\mathbf{a^2 = b^2 + c^2 - 2bc \\cdot \\cos(\\alpha)}$$   $$\\mathbf{b^2 = a^2 + c^2 - 2ac \\cdot \\cos(\\beta)}$$   $$\\mathbf{c^2 = a^2 + b^2 - 2ab \\cdot \\cos(\\gamma)}$$   * **Einsatzbereiche**:     - Kongruenzsatz **SWS**: Zwei Seiten und der eingeschlossene Winkel gegeben.     - Kongruenzsatz **SSS**: Alle drei Seiten gegeben $\\implies$ Winkelberechnung: $\\cos(\\alpha) = \\frac{b^2 + c^2 - a^2}{2bc}$. - **3. Trigonometrischer Flächeninhalt**:   $$\\mathbf{A = \\frac{1}{2} \\cdot b \\cdot c \\cdot \\sin(\\alpha) = \\frac{1}{2} \\cdot a \\cdot c \\cdot \\sin(\\beta) = \\frac{1}{2} \\cdot a \\cdot b \\cdot \\sin(\\gamma)}$$ 2. Durchrechnung des Beispiels ($b = 6\\,\\text{cm}, c = 10\\,\\text{cm}, \\alpha = 60^\\circ$): - **Schritt 1: Seite $a$ über Kosinussatz**:   $$a^2 = b^2 + c^2 - 2bc \\cdot \\cos(\\alpha)$$   $$a^2 = 6^2 + 10^2 - 2 \\cdot 6 \\cdot 10 \\cdot \\cos(60^\\circ) = 36 + 100 - 120 \\cdot 0{,}5 = 136 - 60 = 76$$   $$\\mathbf{a = \\sqrt{76} = 2\\sqrt{19}\\,\\text{cm}} \\approx 8{,}72\\,\\text{cm}$$ - **Schritt 2: Flächeninhalt $A$**:   $$A = \\frac{1}{2} \\cdot b \\cdot c \\cdot \\sin(\\alpha) = \\frac{1}{2} \\cdot 6 \\cdot 10 \\cdot \\sin(60^\\circ) = 30 \\cdot \\frac{\\sqrt{3}}{2} = \\mathbf{15\\sqrt{3}\\,\\text{cm}^2} \\approx 25{,}98\\,\\text{cm}^2$$."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere Sinussatz, Kosinussatz und die trigonometrische Flächenberechnung im allgemeinen Dreieck: 1. Der Sinussatz:   * In jedem Dreieck verhalten sich die Seiten wie die Sinuswerte ihrer Gegenwinkel:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\frac{a}{\\sin \\alpha} = \\frac{b}{\\sin \\beta} = \\frac{c}{\\sin \\gamma} = 2R} \\quad (R = \\text{Umkreisradius})",
+              "block": true,
+              "speech": "a durch Sinus Alpha gleich b durch Sinus Beta gleich c durch Sinus Gamma gleich 2 R, Klammer auf R gleich Umkreisradius Klammer zu"
+            },
+            {
+              "type": "text",
+              "text": "   * Anwendung: Gegeben sind zwei Winkel und eine Seite (WSW/SWW) oder zwei Seiten und der der größeren Seite gegenüberliegende Winkel (Ssw), 2. Der Kosinussatz (Verallgemeinerung des Satzes von Pythagoras):   * "
+            },
+            {
+              "type": "math",
+              "tex": "a^2 = b^2 + c^2 - 2bc \\cos \\alpha",
+              "speech": "a Quadrat gleich b Quadrat plus c Quadrat minus 2 b c Kosinus Alpha"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "b^2 = a^2 + c^2 - 2ac \\cos \\beta",
+              "speech": "b Quadrat gleich a Quadrat plus c Quadrat minus 2 a c Kosinus Beta"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "c^2 = a^2 + b^2 - 2ab \\cos \\gamma",
+              "speech": "c Quadrat gleich a Quadrat plus b Quadrat minus 2 a b Kosinus Gamma"
+            },
+            {
+              "type": "text",
+              "text": ".   * Für "
+            },
+            {
+              "type": "math",
+              "tex": "\\gamma = 90^\\circ",
+              "speech": "Gamma gleich 90 Grad"
+            },
+            {
+              "type": "text",
+              "text": " gilt "
+            },
+            {
+              "type": "math",
+              "tex": "\\cos 90^\\circ = 0 \\implies c^2 = a^2 + b^2",
+              "speech": "Kosinus 90 Grad gleich 0 daraus folgt c Quadrat gleich a Quadrat plus b Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " (Pythagoras als Spezialfall).   * Anwendung: Gegeben sind drei Seiten (SSS "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies \\cos \\alpha = \\frac{b^2 + c^2 - a^2}{2bc}",
+              "speech": "daraus folgt Kosinus Alpha gleich b Quadrat plus c Quadrat minus a Quadrat, geteilt durch 2 b c"
+            },
+            {
+              "type": "text",
+              "text": ") oder zwei Seiten und der eingeschlossene Winkel (SWS), 3. Trigonometrische Flächenformel: "
+            },
+            {
+              "type": "math",
+              "tex": "A = \\frac{1}{2} a b \\sin \\gamma = \\frac{1}{2} b c \\sin \\alpha = \\frac{1}{2} a c \\sin \\beta",
+              "speech": "A gleich ein halb a b Sinus Gamma gleich ein halb b c Sinus Alpha gleich ein halb a c Sinus Beta"
+            },
+            {
+              "type": "text",
+              "text": ", 4. Ein Dreieck hat die Seiten "
+            },
+            {
+              "type": "math",
+              "tex": "b = 6\\,\\text{cm}",
+              "speech": "b gleich 6 Zentimeter"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "c = 10\\,\\text{cm}",
+              "speech": "c gleich 10 Zentimeter"
+            },
+            {
+              "type": "text",
+              "text": " und den eingeschlossenen Winkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha = 60^\\circ",
+              "speech": "Alpha gleich 60 Grad"
+            },
+            {
+              "type": "text",
+              "text": ". Berechne die dritte Seite "
+            },
+            {
+              "type": "math",
+              "tex": "a",
+              "speech": "a"
+            },
+            {
+              "type": "text",
+              "text": " und die Fläche "
+            },
+            {
+              "type": "math",
+              "tex": "A",
+              "speech": "A"
+            },
+            {
+              "type": "text",
+              "text": " (nutze "
+            },
+            {
+              "type": "math",
+              "tex": "\\cos 60^\\circ = 0{,}5",
+              "speech": "Kosinus 60 Grad gleich 0,5"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin 60^\\circ = \\frac{\\sqrt{3}}{2}",
+              "speech": "Sinus 60 Grad gleich Wurzel aus 3 durch 2"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Trigonometrie im allgemeinen Dreieck: Sinussatz "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{a}{\\sin \\alpha} = \\frac{b}{\\sin \\beta} = \\frac{c}{\\sin \\gamma}",
+              "speech": "a durch Sinus Alpha gleich b durch Sinus Beta gleich c durch Sinus Gamma"
+            },
+            {
+              "type": "text",
+              "text": "; Kosinussatz "
+            },
+            {
+              "type": "math",
+              "tex": "a^2 = b^2 + c^2 - 2bc \\cdot \\cos \\alpha",
+              "speech": "a Quadrat gleich b Quadrat plus c Quadrat minus 2 b c mal Kosinus Alpha"
+            },
+            {
+              "type": "text",
+              "text": "; Fläche "
+            },
+            {
+              "type": "math",
+              "tex": "A = \\frac{1}{2} \\cdot b \\cdot c \\cdot \\sin \\alpha",
+              "speech": "A gleich ein halb mal b mal c mal Sinus Alpha"
+            },
+            {
+              "type": "text",
+              "text": "; Rechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "a^2 = 36 + 100 - 2 \\cdot 6 \\cdot 10 \\cdot 0{,}5 = 136 - 60 = 76 \\Rightarrow a = \\sqrt{76} = 2\\sqrt{19} \\approx 8{,}72\\,\\text{cm}",
+              "speech": "a Quadrat gleich 36 plus 100 minus 2 mal 6 mal 10 mal 0,5 gleich 136 minus 60 gleich 76, daraus folgt a gleich Wurzel aus 76 gleich 2 Wurzel aus 19 ungefähr 8,72 Zentimeter"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "A = \\frac{1}{2} \\cdot 6 \\cdot 10 \\cdot \\frac{\\sqrt{3}}{2} = 15\\sqrt{3} \\approx 25{,}98\\,\\text{cm}^2",
+              "speech": "A gleich ein halb mal 6 mal 10 mal Wurzel aus 3 durch 2 gleich 15 Wurzel aus 3 ungefähr 25,98 Quadratzentimeter"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Trigonometrische Sätze am allgemeinen Dreieck: - 1. Der Sinussatz:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\frac{a}{\\sin(\\alpha)} = \\frac{b}{\\sin(\\beta)} = \\frac{c}{\\sin(\\gamma)} = 2R}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Einsatzbereiche:     - Kongruenzsatz WSW / SWW: Ein Winkel und eine Seite sind bekannt "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " dritte Seite direkt ermittelbar.     - Kongruenzsatz Ssw: Zwei Seiten und der der längeren Seite gegenüberliegende Winkel sind bekannt. - 2. Der Kosinussatz:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{a^2 = b^2 + c^2 - 2bc \\cdot \\cos(\\alpha)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{b^2 = a^2 + c^2 - 2ac \\cdot \\cos(\\beta)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{c^2 = a^2 + b^2 - 2ab \\cdot \\cos(\\gamma)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Einsatzbereiche:     - Kongruenzsatz SWS: Zwei Seiten und der eingeschlossene Winkel gegeben.     - Kongruenzsatz SSS: Alle drei Seiten gegeben "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Winkelberechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "\\cos(\\alpha) = \\frac{b^2 + c^2 - a^2}{2bc}"
+            },
+            {
+              "type": "text",
+              "text": ". - 3. Trigonometrischer Flächeninhalt:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{A = \\frac{1}{2} \\cdot b \\cdot c \\cdot \\sin(\\alpha) = \\frac{1}{2} \\cdot a \\cdot c \\cdot \\sin(\\beta) = \\frac{1}{2} \\cdot a \\cdot b \\cdot \\sin(\\gamma)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Durchrechnung des Beispiels ("
+            },
+            {
+              "type": "math",
+              "tex": "b = 6\\,\\text{cm}, c = 10\\,\\text{cm}, \\alpha = 60^\\circ"
+            },
+            {
+              "type": "text",
+              "text": "): - Schritt 1: Seite "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": " über Kosinussatz:   "
+            },
+            {
+              "type": "math",
+              "tex": "a^2 = b^2 + c^2 - 2bc \\cdot \\cos(\\alpha)",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "a^2 = 6^2 + 10^2 - 2 \\cdot 6 \\cdot 10 \\cdot \\cos(60^\\circ) = 36 + 100 - 120 \\cdot 0{,}5 = 136 - 60 = 76",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{a = \\sqrt{76} = 2\\sqrt{19}\\,\\text{cm}} \\approx 8{,}72\\,\\text{cm}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 2: Flächeninhalt "
+            },
+            {
+              "type": "math",
+              "tex": "A"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "A = \\frac{1}{2} \\cdot b \\cdot c \\cdot \\sin(\\alpha) = \\frac{1}{2} \\cdot 6 \\cdot 10 \\cdot \\sin(60^\\circ) = 30 \\cdot \\frac{\\sqrt{3}}{2} = \\mathbf{15\\sqrt{3}\\,\\text{cm}^2} \\approx 25{,}98\\,\\text{cm}^2",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -112,7 +498,30 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie viel Radiant ($rad$) im Bogenmaß entspricht einem vollen Winkel von $360^\\circ$ am Einheitskreis?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie viel Radiant ("
+            },
+            {
+              "type": "math",
+              "tex": "rad",
+              "speech": "Radiant"
+            },
+            {
+              "type": "text",
+              "text": ") im Bogenmaß entspricht einem vollen Winkel von "
+            },
+            {
+              "type": "math",
+              "tex": "360^\\circ",
+              "speech": "360 Grad"
+            },
+            {
+              "type": "text",
+              "text": " am Einheitskreis?"
+            }
+          ],
           "concept": "2 * pi (ca. 6,283 rad; 180° entspricht pi rad, 90° entspricht pi/2 rad)",
           "fast_check": {
             "type": "binary_choice",
@@ -121,16 +530,465 @@
               "pi / 2"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GA00000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre den Übergang von geometrischen Winkeln zu reellen Winkelfunktionen am Einheitskreis: 1. **Der Einheitskreis ($r = 1$)**:   * Ein Zeiger vom Ursprung $(0|0)$ schließt mit der positiven $x$-Achse den Winkel $\\alpha$ ein.   * Die Koordinaten des Kreis-Endpunktes definieren die Winkelfunktionen: $\\mathbf{P(\\cos \\alpha \\mid \\sin \\alpha)}$.   * Vorzeichen in den 4 Quadranten: Sinus positiv in Q1/Q2, negativ in Q3/Q4; Kosinus positiv in Q1/Q4, negativ in Q2/Q3, 2. **Das Bogenmaß ($x$ in Radiant / rad)**:   * Entspricht der Bogenlänge $b$ auf dem Einheitskreis:     $$\\mathbf{x = \\frac{\\alpha}{180^\\circ} \\cdot \\pi} \\iff \\mathbf{\\alpha = \\frac{x}{\\pi} \\cdot 180^\\circ}$$   * Standardwerte: $0^\\circ = 0$, $30^\\circ = \\frac{\\pi}{6}$, $45^\\circ = \\frac{\\pi}{4}$, $60^\\circ = \\frac{\\pi}{3}$, $90^\\circ = \\frac{\\pi}{2}$, $180^\\circ = \\pi$, $270^\\circ = \\frac{3\\pi}{2}$, $360^\\circ = 2\\pi$, 3. **Die allgemeine Sinusfunktion $f(x) = a \\cdot \\sin(b(x - c)) + d$**:   * $|a|$: Amplitude (Ausschlag).   * $b$: Frequenzfaktor $\\implies$ Periode $p = \\frac{2\\pi}{|b|}$.   * $c$: Phasenverschiebung in $x$-Richtung.   * $d$: Vertikale Verschiebung (Ruhelage).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Erkläre den Übergang von geometrischen Winkeln zu reellen Winkelfunktionen am Einheitskreis: 1. Der Einheitskreis ("
+            },
+            {
+              "type": "math",
+              "tex": "r = 1",
+              "speech": "r gleich 1"
+            },
+            {
+              "type": "text",
+              "text": "):   * Ein Zeiger vom Ursprung "
+            },
+            {
+              "type": "math",
+              "tex": "(0|0)",
+              "speech": "Punkt null, null"
+            },
+            {
+              "type": "text",
+              "text": " schließt mit der positiven "
+            },
+            {
+              "type": "math",
+              "tex": "x",
+              "speech": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Achse den Winkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha",
+              "speech": "Alpha"
+            },
+            {
+              "type": "text",
+              "text": " ein.   * Die Koordinaten des Kreis-Endpunktes definieren die Winkelfunktionen: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{P(\\cos \\alpha \\mid \\sin \\alpha)}",
+              "speech": "Punkt P mit den Koordinaten Kosinus Alpha und Sinus Alpha"
+            },
+            {
+              "type": "text",
+              "text": ".   * Vorzeichen in den 4 Quadranten: Sinus positiv in Q1/Q2, negativ in Q3/Q4; Kosinus positiv in Q1/Q4, negativ in Q2/Q3, 2. Das Bogenmaß ("
+            },
+            {
+              "type": "math",
+              "tex": "x",
+              "speech": "x"
+            },
+            {
+              "type": "text",
+              "text": " in Radiant / rad):   * Entspricht der Bogenlänge "
+            },
+            {
+              "type": "math",
+              "tex": "b",
+              "speech": "b"
+            },
+            {
+              "type": "text",
+              "text": " auf dem Einheitskreis:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{x = \\frac{\\alpha}{180^\\circ} \\cdot \\pi} \\iff \\mathbf{\\alpha = \\frac{x}{\\pi} \\cdot 180^\\circ}",
+              "block": true,
+              "speech": "x gleich Alpha durch 180 Grad mal Pi genau dann, wenn Alpha gleich x durch Pi mal 180 Grad"
+            },
+            {
+              "type": "text",
+              "text": "   * Standardwerte: "
+            },
+            {
+              "type": "math",
+              "tex": "0^\\circ = 0",
+              "speech": "0 Grad gleich 0"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "30^\\circ = \\frac{\\pi}{6}",
+              "speech": "30 Grad gleich Pi durch 6"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "45^\\circ = \\frac{\\pi}{4}",
+              "speech": "45 Grad gleich Pi durch 4"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "60^\\circ = \\frac{\\pi}{3}",
+              "speech": "60 Grad gleich Pi durch 3"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "90^\\circ = \\frac{\\pi}{2}",
+              "speech": "90 Grad gleich Pi durch 2"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "180^\\circ = \\pi",
+              "speech": "180 Grad gleich Pi"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "270^\\circ = \\frac{3\\pi}{2}",
+              "speech": "270 Grad gleich 3 Pi durch 2"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "360^\\circ = 2\\pi",
+              "speech": "360 Grad gleich 2 Pi"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Die allgemeine Sinusfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = a \\cdot \\sin(b(x - c)) + d",
+              "speech": "f von x gleich a mal Sinus von b mal Klammer auf x minus c Klammer zu, plus d"
+            },
+            {
+              "type": "text",
+              "text": ":   * "
+            },
+            {
+              "type": "math",
+              "tex": "|a|",
+              "speech": "Betrag von a"
+            },
+            {
+              "type": "text",
+              "text": ": Amplitude (Ausschlag).   * "
+            },
+            {
+              "type": "math",
+              "tex": "b",
+              "speech": "b"
+            },
+            {
+              "type": "text",
+              "text": ": Frequenzfaktor "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Periode "
+            },
+            {
+              "type": "math",
+              "tex": "p = \\frac{2\\pi}{|b|}",
+              "speech": "p gleich 2 Pi durch Betrag von b"
+            },
+            {
+              "type": "text",
+              "text": ".   * "
+            },
+            {
+              "type": "math",
+              "tex": "c",
+              "speech": "c"
+            },
+            {
+              "type": "text",
+              "text": ": Phasenverschiebung in "
+            },
+            {
+              "type": "math",
+              "tex": "x",
+              "speech": "x"
+            },
+            {
+              "type": "text",
+              "text": "-Richtung.   * "
+            },
+            {
+              "type": "math",
+              "tex": "d",
+              "speech": "d"
+            },
+            {
+              "type": "text",
+              "text": ": Vertikale Verschiebung (Ruhelage)."
+            }
+          ],
           "concept": "Einheitskreis P(cos alpha | sin alpha); Bogenmaß x = alpha*pi/180°; Periodizität p = 2*pi; Allgemeine Sinusfunktion f(x) = a*sin(b(x-c)) + d mit Amplitude a, Periode p = 2pi/b, Phase c, Ruhelage d.",
-          "sample_solution": "1. Der Einheitskreis als Fundament reeller Winkelfunktionen: - Der Einheitskreis ist ein Kreis im kartesischen Koordinatensystem mit dem Mittelpunkt $M(0 \\mid 0)$ und dem Radius $r = 1$ ($x^2 + y^2 = 1$). - Für jeden beliebigen Drehwinkel $\\alpha \\in \\mathbb{R}$ (auch über $360^\\circ$ und negativ) sind Sinus und Kosinus als Koordinaten des Zeigerendpunktes $P$ definiert:   $$\\mathbf{x_P = \\cos(\\alpha)}, \\quad \\mathbf{y_P = \\sin(\\alpha)}, \\quad \\mathbf{\\tan(\\alpha) = \\frac{\\sin(\\alpha)}{\\cos(\\alpha)} = \\frac{y_P}{x_P}}$$ - **Vorzeichenregeln**:   * **Quadrant I ($0^\\circ - 90^\\circ$)**: $\\sin > 0, \\cos > 0$.   * **Quadrant II ($90^\\circ - 180^\\circ$)**: $\\sin > 0, \\cos < 0$.   * **Quadrant III ($180^\\circ - 270^\\circ$)**: $\\sin < 0, \\cos < 0$.   * **Quadrant IV ($270^\\circ - 360^\\circ$)**: $\\sin < 0, \\cos > 0$. 2. Das Bogenmaß (Radiant): - Misst den Winkel als die Länge des Kreisbogens $b$ auf dem Einheitskreis:   $$\\mathbf{x = \\alpha \\cdot \\frac{\\pi}{180^\\circ}} \\quad \\iff \\quad \\mathbf{\\alpha = x \\cdot \\frac{180^\\circ}{\\pi}}$$   * **Wichtige Referenzwinkel**:     $$\\begin{array}{c|c|c|c|c|c|c|c}     \\alpha & 0^\\circ & 30^\\circ & 45^\\circ & 60^\\circ & 90^\\circ & 180^\\circ & 360^\\circ \\\\ \\hline     x & 0 & \\frac{\\pi}{6} & \\frac{\\pi}{4} & \\frac{\\pi}{3} & \\frac{\\pi}{2} & \\pi & 2\\pi     \\end{array}$$ 3. Die allgemeine Sinusfunktion $f(x) = a \\cdot \\sin(b(x - c)) + d$: - **1. Amplitude $|a|$**: Maximaler Ausschlag der Schwingung um die Ruhelage. - **2. Periode $p$ über den Parameter $b$**:   $$\\mathbf{p = \\frac{2\\pi}{b}}$$ - **3. Phasenverschiebung $c$**: Verschiebung nach rechts ($c > 0$) bzw. links ($c < 0$). - **4. Ruhelage $d$**: Vertikale Verschiebung der Schwingungsachse."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der Einheitskreis als Fundament reeller Winkelfunktionen: - Der Einheitskreis ist ein Kreis im kartesischen Koordinatensystem mit dem Mittelpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "M(0 \\mid 0)"
+            },
+            {
+              "type": "text",
+              "text": " und dem Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r = 1"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "x^2 + y^2 = 1"
+            },
+            {
+              "type": "text",
+              "text": "). - Für jeden beliebigen Drehwinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha \\in \\mathbb{R}"
+            },
+            {
+              "type": "text",
+              "text": " (auch über "
+            },
+            {
+              "type": "math",
+              "tex": "360^\\circ"
+            },
+            {
+              "type": "text",
+              "text": " und negativ) sind Sinus und Kosinus als Koordinaten des Zeigerendpunktes "
+            },
+            {
+              "type": "math",
+              "tex": "P"
+            },
+            {
+              "type": "text",
+              "text": " definiert:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{x_P = \\cos(\\alpha)}, \\quad \\mathbf{y_P = \\sin(\\alpha)}, \\quad \\mathbf{\\tan(\\alpha) = \\frac{\\sin(\\alpha)}{\\cos(\\alpha)} = \\frac{y_P}{x_P}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Vorzeichenregeln:   * Quadrant I ("
+            },
+            {
+              "type": "math",
+              "tex": "0^\\circ - 90^\\circ"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin > 0, \\cos > 0"
+            },
+            {
+              "type": "text",
+              "text": ".   * Quadrant II ("
+            },
+            {
+              "type": "math",
+              "tex": "90^\\circ - 180^\\circ"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin > 0, \\cos < 0"
+            },
+            {
+              "type": "text",
+              "text": ".   * Quadrant III ("
+            },
+            {
+              "type": "math",
+              "tex": "180^\\circ - 270^\\circ"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin < 0, \\cos < 0"
+            },
+            {
+              "type": "text",
+              "text": ".   * Quadrant IV ("
+            },
+            {
+              "type": "math",
+              "tex": "270^\\circ - 360^\\circ"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin < 0, \\cos > 0"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Das Bogenmaß (Radiant): - Misst den Winkel als die Länge des Kreisbogens "
+            },
+            {
+              "type": "math",
+              "tex": "b"
+            },
+            {
+              "type": "text",
+              "text": " auf dem Einheitskreis:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{x = \\alpha \\cdot \\frac{\\pi}{180^\\circ}} \\quad \\iff \\quad \\mathbf{\\alpha = x \\cdot \\frac{180^\\circ}{\\pi}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Wichtige Referenzwinkel:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\begin{array}{c|c|c|c|c|c|c|c}     \\alpha & 0^\\circ & 30^\\circ & 45^\\circ & 60^\\circ & 90^\\circ & 180^\\circ & 360^\\circ \\\\ \\hline     x & 0 & \\frac{\\pi}{6} & \\frac{\\pi}{4} & \\frac{\\pi}{3} & \\frac{\\pi}{2} & \\pi & 2\\pi     \\end{array}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Die allgemeine Sinusfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = a \\cdot \\sin(b(x - c)) + d"
+            },
+            {
+              "type": "text",
+              "text": ": - 1. Amplitude "
+            },
+            {
+              "type": "math",
+              "tex": "|a|"
+            },
+            {
+              "type": "text",
+              "text": ": Maximaler Ausschlag der Schwingung um die Ruhelage. - 2. Periode "
+            },
+            {
+              "type": "math",
+              "tex": "p"
+            },
+            {
+              "type": "text",
+              "text": " über den Parameter "
+            },
+            {
+              "type": "math",
+              "tex": "b"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{p = \\frac{2\\pi}{b}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 3. Phasenverschiebung "
+            },
+            {
+              "type": "math",
+              "tex": "c"
+            },
+            {
+              "type": "text",
+              "text": ": Verschiebung nach rechts ("
+            },
+            {
+              "type": "math",
+              "tex": "c > 0"
+            },
+            {
+              "type": "text",
+              "text": ") bzw. links ("
+            },
+            {
+              "type": "math",
+              "tex": "c < 0"
+            },
+            {
+              "type": "text",
+              "text": "). - 4. Ruhelage "
+            },
+            {
+              "type": "math",
+              "tex": "d"
+            },
+            {
+              "type": "text",
+              "text": ": Vertikale Verschiebung der Schwingungsachse."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

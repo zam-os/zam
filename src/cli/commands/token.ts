@@ -10,6 +10,7 @@ import type {
 } from "../../kernel/index.js";
 import {
   addPrerequisite,
+  assertPrerequisitePlanets,
   assignTokenToContext,
   createToken,
   deleteToken,
@@ -26,6 +27,7 @@ import {
   getTokenBySlug,
   getTokenDeleteImpact,
   listTokens,
+  newTokenEditorialState,
   searchTokensHybrid,
   suggestFoundations,
   updateToken,
@@ -104,7 +106,7 @@ tokenCommand
         bloom_level: Number(opts.bloom) as BloomLevel,
         source_link: opts.sourceLink || null,
         question,
-        editorial_state: "draft",
+        editorial_state: await newTokenEditorialState(db),
       });
 
       for (const context of assignedContexts) {
@@ -450,6 +452,7 @@ tokenCommand
         process.exit(1);
       }
 
+      await assertPrerequisitePlanets(db, token.id, requires.id);
       await addPrerequisite(db, token.id, requires.id);
 
       if (opts.quiet) return;

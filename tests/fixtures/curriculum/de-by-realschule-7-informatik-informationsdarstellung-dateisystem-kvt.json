@@ -78,7 +78,7 @@
           "bloom_level": 2,
           "question": "Erkläre das informatische Dreigestirn aus Zeichen/Signal, Daten und Information anhand eines konkreten Praxisbeispiels (z. B. der Zeichenfolge '0815'), definiere den Begriff der Codierung (eindeutige Abbildungsvorschrift nach festen Regeln) und erläutere den Unterschied zwischen Syntax (formale Grammatikregeln) und Semantik (inhaltliche Bedeutung).",
           "concept": "Zeichen/Signal: physikalische Impulse (Bits 0 und 1); Daten: Aneinanderreihung von Zeichen nach syntaktischen Regeln (z. B. '0815'); Information: Bedeutung/Semantik im Kontext (z. B. '08:15 Uhr Unterrichtsbeginn' vs. 'Artikelnummer 0815'); Codierung = eindeutige Übersetzung von Information in Datenstruktur (z. B. Morsecode, ASCII).",
-          "sample_solution": "1. Zeichen, Daten und Information im Vergleich: - Zeichen / Signal: Die kleinste physikalische Einheit bzw. diskrete Symbole (z. B. Strom an/aus, 0 und 1, Lichtimpulse). - Daten: Eine strukturierte Aneinanderreihung von Zeichen nach festgelegten formalen Regeln (Syntax), jedoch noch ohne inhaltliche Interpretation (z. B. die reine Zeichenkette '2412'). - Information: Entsteht, wenn Daten in einen interpretierenden Kontext gesetzt werden und dadurch eine Bedeutung (Semantik) für den Empfänger erhalten (z. B. interpretiert als Datum: '24. Dezember – Heiligabend' oder als Geldbetrag '24,12 €'). Formel: **Information = Daten + Kontext / Bedeutung**. 2. Begriff der Codierung: - Codierung ist die nach einer festen Vorschrift (Code) durchgeführte, umkehrbar eindeutige Umwandlung von Informationen (z. B. Text, Zahlen, Bilder) in eine maschinenlesbare Darstellung (Daten / Binärmuster). - Decodierung ist die Rückübersetzung des Codes in die ursprüngliche Information. 3. Syntax vs. Semantik: - Syntax: Das formale Regelsystem (Grammatik, Format, Schreibweise). Ein Fehler in der Syntax ('Syntax Error') führt dazu, dass das System die Zeichenkette nicht verarbeiten kann. - Semantik: Der semantische Gehalt (Sinn und logische Bedeutung). Eine syntaktisch fehlerfreie Zeichenfolge ('Der Stein schläft schnell') kann semantisch sinnlos oder logisch falsch sein."
+          "sample_solution": "1. Zeichen, Daten und Information im Vergleich: - Zeichen / Signal: Die kleinste physikalische Einheit bzw. diskrete Symbole (z. B. Strom an/aus, 0 und 1, Lichtimpulse). - Daten: Eine strukturierte Aneinanderreihung von Zeichen nach festgelegten formalen Regeln (Syntax), jedoch noch ohne inhaltliche Interpretation (z. B. die reine Zeichenkette '2412'). - Information: Entsteht, wenn Daten in einen interpretierenden Kontext gesetzt werden und dadurch eine Bedeutung (Semantik) für den Empfänger erhalten (z. B. interpretiert als Datum: '24. Dezember – Heiligabend' oder als Geldbetrag '24,12 €'). Formel: Information = Daten + Kontext / Bedeutung. 2. Begriff der Codierung: - Codierung ist die nach einer festen Vorschrift (Code) durchgeführte, umkehrbar eindeutige Umwandlung von Informationen (z. B. Text, Zahlen, Bilder) in eine maschinenlesbare Darstellung (Daten / Binärmuster). - Decodierung ist die Rückübersetzung des Codes in die ursprüngliche Information. 3. Syntax vs. Semantik: - Syntax: Das formale Regelsystem (Grammatik, Format, Schreibweise). Ein Fehler in der Syntax ('Syntax Error') führt dazu, dass das System die Zeichenkette nicht verarbeiten kann. - Semantik: Der semantische Gehalt (Sinn und logische Bedeutung). Eine syntaktisch fehlerfreie Zeichenfolge ('Der Stein schläft schnell') kann semantisch sinnlos oder logisch falsch sein."
         }
       ]
     },
@@ -152,7 +152,7 @@
           "bloom_level": 2,
           "question": "Erkläre das Prinzip eines Stellenwertsystems am Vergleich von Dezimalsystem (Basis 10: 10^0, 10^1, 10^2, ...) und Dualsystem / Binärsystem (Basis 2: 2^0=1, 2^1=2, 2^2=4, 2^3=8, 2^4=16, 2^5=32, 2^6=64, 2^7=128), rechne die Dualzahl 110101_2 in das Dezimalsystem um und wandle die Dezimalzahl 43_10 über das Restwertverfahren (wiederholte Division durch 2 mit Rest) in eine Binärzahl um.",
           "concept": "Stellenwert Dualsystem = Potenzen zur Basis 2; 110101_2 = 1*32 + 1*16 + 0*8 + 1*4 + 0*2 + 1*1 = 32 + 16 + 4 + 1 = 53_10; Restwertverfahren für 43: 43:2=21 R1, 21:2=10 R1, 10:2=5 R0, 5:2=2 R1, 2:2=1 R0, 1:2=0 R1 -> von unten nach oben gelesen: 101011_2.",
-          "sample_solution": "1. Stellenwertsysteme im Vergleich: - Dezimalsystem (Basis 10): Ziffern 0–9. Stellenwerte sind Zehnerpotenzen: ... 10^3 (1000), 10^2 (100), 10^1 (10), 10^0 (1). - Dualsystem / Binärsystem (Basis 2): Verwendet ausschließlich zwei Ziffern: 0 und 1 (technisch: Strom aus / an). Stellenwerte sind Zweierpotenzen: ... 2^7 (128), 2^6 (64), 2^5 (32), 2^4 (16), 2^3 (8), 2^2 (4), 2^1 (2), 2^0 (1). 2. Umrechnung Dualzahl in Dezimalzahl: Dualzahl: 1 1 0 1 0 1_2 - Berechnung über Stellenwerte: 1 · 2^5 (32) + 1 · 2^4 (16) + 0 · 2^3 (0) + 1 · 2^2 (4) + 0 · 2^1 (0) + 1 · 2^0 (1) = 32 + 16 + 4 + 1 = **53_10**. 3. Umrechnung Dezimalzahl in Dualzahl (Restwert-Divisionsverfahren): Dezimalzahl: 43_10 - 43 : 2 = 21  Rest **1** (niederwertigstes Bit LSB) - 21 : 2 = 10  Rest **1** - 10 : 2 = 5   Rest **0** -  5 : 2 = 2   Rest **1** -  2 : 2 = 1   Rest **0** -  1 : 2 = 0   Rest **1** (höchstwertigstes Bit MSB) - Ergebnis (Reste von unten nach oben gelesen): **43_10 = 101011_2** (Probe: 32 + 8 + 2 + 1 = 43)."
+          "sample_solution": "1. Stellenwertsysteme im Vergleich: - Dezimalsystem (Basis 10): Ziffern 0–9. Stellenwerte sind Zehnerpotenzen: ... 10^3 (1000), 10^2 (100), 10^1 (10), 10^0 (1). - Dualsystem / Binärsystem (Basis 2): Verwendet ausschließlich zwei Ziffern: 0 und 1 (technisch: Strom aus / an). Stellenwerte sind Zweierpotenzen: ... 2^7 (128), 2^6 (64), 2^5 (32), 2^4 (16), 2^3 (8), 2^2 (4), 2^1 (2), 2^0 (1). 2. Umrechnung Dualzahl in Dezimalzahl: Dualzahl: 1 1 0 1 0 1_2 - Berechnung über Stellenwerte: 1 · 2^5 (32) + 1 · 2^4 (16) + 0 · 2^3 (0) + 1 · 2^2 (4) + 0 · 2^1 (0) + 1 · 2^0 (1) = 32 + 16 + 4 + 1 = 53_10. 3. Umrechnung Dezimalzahl in Dualzahl (Restwert-Divisionsverfahren): Dezimalzahl: 43_10 - 43 : 2 = 21  Rest 1 (niederwertigstes Bit LSB) - 21 : 2 = 10  Rest 1 - 10 : 2 = 5   Rest 0 -  5 : 2 = 2   Rest 1 -  2 : 2 = 1   Rest 0 -  1 : 2 = 0   Rest 1 (höchstwertigstes Bit MSB) - Ergebnis (Reste von unten nach oben gelesen): 43_10 = 101011_2 (Probe: 32 + 8 + 2 + 1 = 43)."
         }
       ]
     },
@@ -213,11 +213,40 @@
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "256 Zeichen (2^8)",
-              "128 Zeichen (2^7)"
+              [
+                {
+                  "type": "text",
+                  "text": "256 Zeichen ("
+                },
+                {
+                  "type": "math",
+                  "tex": "2^8",
+                  "speech": "2 hoch acht"
+                },
+                {
+                  "type": "text",
+                  "text": ")"
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": "128 Zeichen ("
+                },
+                {
+                  "type": "math",
+                  "tex": "2^7",
+                  "speech": "2 hoch sieben"
+                },
+                {
+                  "type": "text",
+                  "text": ")"
+                }
+              ]
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K4A7D0000000000000000J06",
@@ -226,7 +255,7 @@
           "bloom_level": 2,
           "question": "Definiere die Dateneinheiten Bit, Byte, KiB/KB, MiB/MB, GiB/GB, vergleiche den historischen 7-Bit-ASCII-Code (128 Zeichen, nur englische Schriftzeichen) mit dem modernen Unicode / UTF-8 (variable Byte-Länge, Millionen Schriftzeichen weltweit inkl. Umlaute, Kyrillisch, Arabisch, Emojis) und erkläre, wie der Buchstabe 'A' (ASCII-Dezimalwert 65) als 8-Bit-Binärmuster im Speicher abgelegt wird.",
           "concept": "1 Bit = kleinste Informationseinheit (0/1); 1 Byte = 8 Bit (256 Zustände); Präfixe: 1 KB = 1000 Byte (dezimal) / 1 KiB = 1024 Byte (binär); ASCII = 7 Bit (128 Zeichen, kein ä,ö,ü); UTF-8 = abwärtskompatibel zu ASCII, 1-4 Byte für weltweite Schriftzeichen; 'A' = 65 = 64 + 1 -> Binärmuster 01000001_2.",
-          "sample_solution": "1. Speichereinheiten in der Digitaltechnik: - Bit (Binary Digit): Die kleinste unteilbare Informationseinheit im Computer (Wert 0 oder 1). - Byte: Ein Verbund aus genau 8 Bit. Mit 1 Byte lassen sich 2^8 = 256 verschiedene Zustände (Zahlen von 0 bis 255) codieren. - Größere Speichereinheiten:   * 1 Kilobyte (KB) = 1.000 Byte (SI-Norm) bzw. 1 Kibibyte (KiB) = 1.024 Byte (2^10 Byte).   * 1 Megabyte (MB) = 1.000.000 Byte bzw. 1 Mebibyte (MiB) = 1.024 KiB = 1.048.576 Byte.   * 1 Gigabyte (GB) = 1.000 MB bzw. 1 Gibibyte (GiB) = 1.024 MiB. 2. Zeichensätze: ASCII vs. Unicode / UTF-8: - ASCII (American Standard Code for Information Interchange): 7-Bit-Code (2^7 = 128 Zeichen). Enthält nur das lateinische Grundalphabet (A–Z, a–z), Ziffern 0–9, Satzzeichen und Steuerzeichen. Deutsche Umlaute (ä, ö, ü, ß), Akzente oder andere Schriftsysteme fehlen völlig. - Unicode / UTF-8: Universeller weltweiter Standard. UTF-8 verwendet eine variable Codelänge von 1 bis 4 Byte pro Zeichen. Die ersten 128 Zeichen sind 100 % identisch mit ASCII (1 Byte). Umlaute und Sonderzeichen benötigen 2 Byte, asiatische Schriftzeichen und Emojis bis zu 4 Byte. 3. Speicherabbild des Buchstabens 'A': - Dezimalwert in der ASCII-Tabelle: 'A' = 65_10. - Zerlegung in Zweierpotenzen: 65 = 64 + 1 = 1·2^6 + 1·2^0. - 8-Bit-Binärmuster: **01000001**."
+          "sample_solution": "1. Speichereinheiten in der Digitaltechnik: - Bit (Binary Digit): Die kleinste unteilbare Informationseinheit im Computer (Wert 0 oder 1). - Byte: Ein Verbund aus genau 8 Bit. Mit 1 Byte lassen sich 2^8 = 256 verschiedene Zustände (Zahlen von 0 bis 255) codieren. - Größere Speichereinheiten:   * 1 Kilobyte (KB) = 1.000 Byte (SI-Norm) bzw. 1 Kibibyte (KiB) = 1.024 Byte (2^10 Byte).   * 1 Megabyte (MB) = 1.000.000 Byte bzw. 1 Mebibyte (MiB) = 1.024 KiB = 1.048.576 Byte.   * 1 Gigabyte (GB) = 1.000 MB bzw. 1 Gibibyte (GiB) = 1.024 MiB. 2. Zeichensätze: ASCII vs. Unicode / UTF-8: - ASCII (American Standard Code for Information Interchange): 7-Bit-Code (2^7 = 128 Zeichen). Enthält nur das lateinische Grundalphabet (A–Z, a–z), Ziffern 0–9, Satzzeichen und Steuerzeichen. Deutsche Umlaute (ä, ö, ü, ß), Akzente oder andere Schriftsysteme fehlen völlig. - Unicode / UTF-8: Universeller weltweiter Standard. UTF-8 verwendet eine variable Codelänge von 1 bis 4 Byte pro Zeichen. Die ersten 128 Zeichen sind 100 % identisch mit ASCII (1 Byte). Umlaute und Sonderzeichen benötigen 2 Byte, asiatische Schriftzeichen und Emojis bis zu 4 Byte. 3. Speicherabbild des Buchstabens 'A': - Dezimalwert in der ASCII-Tabelle: 'A' = 65_10. - Zerlegung in Zweierpotenzen: 65 = 64 + 1 = 1·2^6 + 1·2^0. - 8-Bit-Binärmuster: 01000001."
         }
       ]
     },

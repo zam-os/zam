@@ -5,7 +5,7 @@
  * first-run (`onboardingDone` in ~/.zam/config.json, read via desktop-bootstrap).
  * Phase 0 ships only the container and two framing pages (welcome, done); later
  * phases insert their steps into `buildOnboardingSteps()` — persona, model
- * connect, agent connect, workspace, first content, first goal — without
+ * connect, agent connect, workspace, first content, first topic — without
  * touching the container or the routing.
  *
  * The module owns its own DOM (`#onboarding-view`) and persistence (the
@@ -14,8 +14,12 @@
  * to the dashboard after completion.
  */
 
+import type { AtlasLensKindWire } from "../../src/bridge/protocol.js";
 import { runBridge } from "./bridge-transport.js";
 import { t, tf } from "./i18n.js";
+
+/** `MAX_TOPIC_TITLE` of the kernel's topic import; a test keeps them equal. */
+export const TOPIC_TITLE_MAX = 200;
 
 export interface OnboardingStep {
   /** Stable id for tests and later cross-step references. */
@@ -33,6 +37,13 @@ export interface OnboardingStep {
    * page must leave no side effect (ADR 2026-07-24 §7).
    */
   onNext?(): Promise<boolean> | Promise<void> | boolean | undefined;
+  /**
+   * Whether the step belongs to the flow right now; absent means always.
+   * Navigation and the step count skip a step that is not shown: the topic
+   * page follows only when page 6's topic path was chosen (ADR 2026-10-14,
+   * Decision 6).
+   */
+  shown?(): boolean;
 }
 
 /**
@@ -134,8 +145,8 @@ export interface OnboardingController {
   /** Reset to the first step, render, and reveal the flow. */
   start(): void;
   /**
-   * Open the flow directly at a step (e.g. Learning Content's "Goal import"
-   * jumps to the goal page). Falls back to the first step for unknown ids.
+   * Open the flow directly at a step (the dashboard checklist reopens the
+   * page that resolves a row). Falls back to the first step for unknown ids.
    */
   startAt(stepId: string): void;
 }
@@ -199,7 +210,7 @@ export interface OnboardingStepActions {
  * `PersonaDescriptor.defaultImportPath` value. The persona selects which row
  * leads (a default, never a lock); every row stays visible and reachable, and
  * the actions wire the EXISTING entry points (Quellen → Lehrplan,
- * Studio import modal, the goal and agent pages) instead of reimplementing
+ * Studio import modal, the topic and agent pages) instead of reimplementing
  * them.
  */
 export interface ContentPathDescriptor {
@@ -235,11 +246,11 @@ export const CONTENT_PATHS: readonly ContentPathDescriptor[] = [
     action: { kind: "step", step: "agent" },
   },
   {
-    id: "goal-import",
-    labelKey: "onboarding_content_goal_label",
-    bodyKey: "onboarding_content_goal_body",
-    actionLabelKey: "onboarding_content_goal_action",
-    action: { kind: "step", step: "goal" },
+    id: "topic-import",
+    labelKey: "onboarding_content_topic_label",
+    bodyKey: "onboarding_content_topic_body",
+    actionLabelKey: "onboarding_content_topic_action",
+    action: { kind: "step", step: "topic" },
   },
 ];
 
@@ -358,9 +369,12 @@ export function buildOnboardingSteps(
   let embeddingStatus = ctx.embedding;
   // Workspace structure memo, refreshed from each workspace-repair response.
   let workspaceStructure = ctx.workspaceStructure;
-  // Goal-driven import state (Phase 7), kept across Back/forward re-renders
-  // so a half-decomposed goal survives navigating the flow.
-  const goalState: GoalImportState = createGoalImportState();
+  // Topic import state, kept across Back/forward re-renders so a
+  // half-decomposed topic survives navigating the flow.
+  const topicState: TopicImportState = createTopicImportState();
+  // The topic page belongs to the flow only while page 6's topic path is the
+  // one last chosen (ADR 2026-10-14, Decision 6): another path takes it out.
+  let chosenStep: string | null = null;
   // Agent page detection state, probed lazily on first render (detection
   // reads real config files, so it does not ride desktop-bootstrap) and kept
   // across Back/forward re-renders. `report: null` + `error: null` = probing.
@@ -574,12 +588,12 @@ export function buildOnboardingSteps(
         // The default follows the persona chosen on page 2 — read live from
         // this flow's selection so changing the persona re-routes this page.
         const persona = ctx.personas.find((p) => p.id === selectedPersonaId);
-        const defaultPath = persona?.defaultImportPath ?? "goal-import";
+        const defaultPath = persona?.defaultImportPath ?? "topic-import";
         const list = document.createElement("div");
-        list.className = "onboarding-goal-level";
+        list.className = "onboarding-topic-level";
         for (const path of orderContentPaths(defaultPath)) {
           const card = document.createElement("div");
-          card.className = "onboarding-goal-topic onboarding-content-path";
+          card.className = "onboarding-topic-topic onboarding-content-path";
           card.dataset.pathId = path.id;
           const head = document.createElement("div");
           head.className = "onboarding-model-card-head";
@@ -605,8 +619,14 @@ export function buildOnboardingSteps(
           actionBtn.textContent = t(path.actionLabelKey);
           actionBtn.addEventListener("click", () => {
             if (path.action.kind === "entry") {
+              // Leaving the topic path changes the step count shown here.
+              if (chosenStep !== null) {
+                chosenStep = null;
+                actions.goToStep("content");
+              }
               actions.openContentEntry(path.action.entry);
             } else {
+              chosenStep = path.action.step;
               actions.goToStep(path.action.step);
             }
           });
@@ -617,29 +637,29 @@ export function buildOnboardingSteps(
       },
     },
     {
-      id: "goal",
-      titleKey: "onboarding_goal_kicker",
-      // Skippable (ADR §7): goals are the one concept shared across all
-      // personas, but nobody is forced to define one on first run.
+      id: "topic",
+      titleKey: "topic_kicker",
+      // Only for the topic path of page 6; skippable like every content step.
       skippable: true,
+      shown: () => chosenStep === "topic",
       render(container) {
         container.append(
-          heading(t("onboarding_goal_title")),
-          paragraph(t("onboarding_goal_body")),
+          heading(t("topic_title")),
+          paragraph(t("topic_body")),
         );
         const root = document.createElement("div");
-        root.className = "onboarding-goal";
+        root.className = "onboarding-topic";
         container.append(root);
-        renderGoalArea(
+        renderTopicArea(
           root,
           {
             isLeaving: () => actions.isLeaving(),
             openModelSetup: () => actions.goToStep("model"),
           },
-          goalState,
+          topicState,
         );
       },
-      onNext: () => commitGoalStep(goalState),
+      onNext: () => commitTopicStep(topicState),
     },
     // No multi-machine vault step here (ADR 2026-07-30b, revised): the vault
     // is an alpha feature most learners never need, and a page about
@@ -1236,33 +1256,42 @@ function renderExistingAgents(
   return card;
 }
 
-// ── Goal-driven import (ADR 2026-07-24 §3, plan Phase 7) ─────────────────────
+// ── Topic import (ADR 2026-10-14, formerly the goal import of 2026-07-24 §3) ─
 
-interface GoalLevelOption {
+interface SubtopicOption {
   id: string;
   label: string;
   description: string;
+  /** The article the model names for reading the subtopic up (ADR 2026-10-14, D4). */
+  lookupTerm?: string;
+  /**
+   * Why the subtopic is a company's or a person's own knowledge (ADR
+   * 2026-10-14, D5): it cannot be imported here, only from its source.
+   */
+  protectedReason?: string;
   checked: boolean;
 }
 
-export interface GoalCardProposal {
+export interface TopicCardProposal {
   concept: string;
   question: string;
   selected: boolean;
   proposal: Record<string, unknown>;
 }
 
-interface GoalTopic {
+interface Subtopic {
   label: string;
   description: string;
+  /** Its cards keep it as their lookup term for *Nachlesen*. */
+  lookupTerm?: string;
 }
 
-interface GoalTopicFailure extends GoalTopic {
+interface SubtopicFailure extends Subtopic {
   error: string;
 }
 
-/** The goal area on screen, as the draft loop reports to it. */
-export interface GoalAreaView {
+/** The topic area on screen, as the draft loop reports to it. */
+export interface TopicAreaView {
   /**
    * True while this area is attached to the document and shown, and the
    * learner has not asked to leave the flow.
@@ -1272,46 +1301,76 @@ export interface GoalAreaView {
 }
 
 /**
- * What the goal area needs from whoever shows it: the first-run flow, or
- * the standalone goal import dialog in Learning Content (goal-import.ts).
+ * What the topic area needs from whoever shows it: the first-run flow, or
+ * the topic import dialog in Learning Content (topic-import.ts).
  */
-export interface GoalAreaHost {
+export interface TopicAreaHost {
   /** True once the learner has asked to leave, while the area is shown. */
   isLeaving(): boolean;
   /** Without a text model the area links to the place that sets one up. */
   openModelSetup(): void;
 }
 
-export interface GoalImportState {
+/**
+ * A region of the knowledge atlas a topic import starts at (ADR 2026-10-13,
+ * Decision 9): the cards land there, each subtopic as the deepest level.
+ */
+export interface TopicPlace {
+  lens: AtlasLensKindWire;
+  regionKey: string;
+  /** Region names from the island down. */
+  path: string[];
+}
+
+export interface TopicImportState {
+  /** Where the imported cards land on the atlas; null for no place. */
+  place: TopicPlace | null;
+  /** The topic's name, in the learner's words. */
   title: string;
-  description: string;
+  /**
+   * Context, prior knowledge and details (ADR 2026-10-14, Decision 1): what
+   * the topic is needed for and what the learner already knows. The model
+   * builds on it and never turns it into cards of its own.
+   */
+  context: string;
   /** Confirmed drill-down labels (user-driven depth: one level at a time). */
   path: string[];
   /** Cached level stack aligned with `path` — going up never regenerates. */
-  levels: GoalLevelOption[][];
-  cards: GoalCardProposal[] | null;
-  /** Topics whose card request failed — offered for a retry in the preview. */
-  failedTopics: GoalTopicFailure[];
-  /** Progress line while the goal file or card drafts are written. */
+  levels: SubtopicOption[][];
+  cards: TopicCardProposal[] | null;
+  /** Subtopics whose card request failed — offered for a retry in the preview. */
+  failedTopics: SubtopicFailure[];
+  /** Progress line while card drafts are written. */
   busy: string | null;
-  /** One-shot status line for the next render (e.g. a goal-file error). */
+  /** One-shot status line for the next render (e.g. an import error). */
   notice: string | null;
   /**
-   * The latest rendered goal area. Drafting renders progress into it, so
+   * The latest rendered topic area. Drafting renders progress into it, so
    * coming back to the step mid-draft shows live progress, and stops once
-   * no goal area is shown.
+   * no topic area is shown.
    */
-  view: GoalAreaView | null;
+  view: TopicAreaView | null;
+  /**
+   * The `zam-topic:` source row that records this import, made at the first
+   * import attempt and reused by a retry. Going back to the topic's name
+   * drops it. No file is written.
+   */
   sourceId: string | null;
-  goalFile: { slug: string; filePath: string } | null;
-  imported: { created: number; ensured: number } | null;
+  /**
+   * The import's counts; `placeError` when the cards were saved but could
+   * not be put at the atlas place.
+   */
+  imported: { created: number; ensured: number; placeError?: string } | null;
 }
 
-/** A fresh, empty goal: nothing defined, decomposed or imported yet. */
-export function createGoalImportState(): GoalImportState {
+/** A fresh, empty topic: nothing defined, decomposed or imported yet. */
+export function createTopicImportState(
+  place: TopicPlace | null = null,
+): TopicImportState {
   return {
+    place,
     title: "",
-    description: "",
+    context: "",
     path: [],
     levels: [],
     cards: null,
@@ -1320,13 +1379,49 @@ export function createGoalImportState(): GoalImportState {
     notice: null,
     view: null,
     sourceId: null,
-    goalFile: null,
     imported: null,
   };
 }
 
+/**
+ * What the model reads besides the topic: the learner's context, and at an
+ * atlas place that place on a line of its own, so the subtopics and cards
+ * fit where they will land and the place never reads as prior knowledge.
+ */
+export function topicPromptArgs(state: TopicImportState): string[] {
+  return [
+    "--context",
+    state.context.trim(),
+    "--place",
+    JSON.stringify(state.place?.path ?? []),
+  ];
+}
+
+/** Arguments that put a confirmed topic import at its atlas place. */
+export function topicPlaceArgs(state: TopicImportState): string[] {
+  return state.place
+    ? [
+        "--place-region",
+        state.place.regionKey,
+        "--place-lens",
+        state.place.lens,
+      ]
+    : [];
+}
+
+/** A drafted card at a place names its levels below it: topic, then subtopic. */
+export function withTopicPlace(
+  state: TopicImportState,
+  topic: Subtopic,
+  proposals: Array<Record<string, unknown>>,
+): Array<Record<string, unknown>> {
+  if (!state.place) return proposals;
+  const placeBelow = [state.title.trim(), topic.label].filter(Boolean);
+  return proposals.map((proposal) => ({ ...proposal, placeBelow }));
+}
+
 /** The curriculum wizard's readiness gate, shared behavior (ADR §3). */
-async function goalTextLlmReady(): Promise<boolean> {
+async function topicTextLlmReady(): Promise<boolean> {
   try {
     const ensureRes = await runBridge<{ usable?: boolean }>("ensure-llm", [
       "--timeout",
@@ -1343,17 +1438,17 @@ async function goalTextLlmReady(): Promise<boolean> {
 }
 
 /**
- * The inline `Lernziel` flow: define a goal → LLM proposes one decomposition
- * level at a time (confirm/drill/stop — user-driven depth, never "generate
- * 200 cards and hope") → the confirmed breakdown is written into the goal
- * file → the existing source-import pipeline turns it into card proposals →
- * the user picks which become tokens+cards, each citing the goal file as
- * `source_link`. Without a text LLM the page links back to the model page.
+ * The topic import (ADR 2026-10-14): name a topic and explain its context →
+ * the model proposes one level of subtopics at a time (confirm/drill/stop —
+ * user-driven depth, never "generate 200 cards and hope") → cards are drafted
+ * per kept subtopic → the learner picks which become tokens and cards. No
+ * file is written; one `zam-topic:` source row records the import. Without a
+ * text LLM the page links back to the model page.
  */
-export function renderGoalArea(
+export function renderTopicArea(
   root: HTMLElement,
-  host: GoalAreaHost,
-  state: GoalImportState,
+  host: TopicAreaHost,
+  state: TopicImportState,
 ): void {
   root.replaceChildren();
 
@@ -1361,7 +1456,7 @@ export function renderGoalArea(
   status.className = "onboarding-model-status";
   status.setAttribute("aria-live", "polite");
 
-  const rerender = () => renderGoalArea(root, host, state);
+  const rerender = () => renderTopicArea(root, host, state);
   state.view = {
     isLive: () =>
       !host.isLeaving() &&
@@ -1374,72 +1469,113 @@ export function renderGoalArea(
     state.notice = null;
   }
 
+  // Started at an atlas region: say where the cards will land.
+  if (state.place) {
+    const where = paragraph(
+      tf("topic_place_line", { path: state.place.path.join(" › ") }),
+    );
+    where.classList.add("topic-place-line");
+    root.append(where);
+  }
+
   if (state.imported) {
     status.classList.add("ok");
-    status.textContent = t("onboarding_goal_imported")
-      .replace("{count}", String(state.imported.created + state.imported.ensured))
-      .replace("{file}", `goals/${state.goalFile?.slug ?? "goal"}.md`);
+    status.textContent = t("topic_imported").replace(
+      "{count}",
+      String(state.imported.created + state.imported.ensured),
+    );
     root.append(status);
+    // The cards are saved either way; the learner must know they are not
+    // where they asked for them.
+    const placeError = state.imported.placeError;
+    if (placeError && state.place) {
+      root.append(
+        paragraph(
+          tf("topic_place_failed", {
+            path: state.place.path.join(" › "),
+            message: placeError,
+          }),
+        ),
+      );
+    }
     return;
   }
 
   if (state.cards) {
-    renderGoalCardPreview(root, status, state, rerender);
+    renderTopicCardPreview(root, status, state, rerender);
     return;
   }
 
   if (state.levels.length > 0) {
-    renderGoalLevel(root, status, state, rerender);
+    renderSubtopicLevel(root, status, state, rerender);
     return;
   }
 
   // Define phase: title + why, then the first decomposition level.
+  const titleLabel = document.createElement("label");
+  titleLabel.className = "onboarding-topic-label";
+  titleLabel.htmlFor = "onboarding-topic-name";
+  titleLabel.textContent = t("topic_name_label");
   const titleInput = document.createElement("input");
   titleInput.type = "text";
-  titleInput.id = "onboarding-goal-title";
-  titleInput.className = "onboarding-goal-input";
-  titleInput.placeholder = t("onboarding_goal_title_placeholder");
+  titleInput.id = "onboarding-topic-name";
+  titleInput.className = "onboarding-topic-input";
+  titleInput.placeholder = t("topic_name_placeholder");
+  titleInput.maxLength = TOPIC_TITLE_MAX;
   titleInput.value = state.title;
   titleInput.addEventListener("input", () => {
     state.title = titleInput.value;
   });
 
-  const whyInput = document.createElement("textarea");
-  whyInput.id = "onboarding-goal-why";
-  whyInput.className = "onboarding-goal-input";
-  whyInput.rows = 2;
-  whyInput.placeholder = t("onboarding_goal_why_placeholder");
-  whyInput.value = state.description;
-  whyInput.addEventListener("input", () => {
-    state.description = whyInput.value;
+  // Context, prior knowledge and details: the more the learner says, the
+  // better the subtopics fit (ADR 2026-10-14, Decision 1).
+  const contextLabel = document.createElement("label");
+  contextLabel.className = "onboarding-topic-label";
+  contextLabel.htmlFor = "onboarding-topic-context";
+  contextLabel.textContent = t("topic_context_label");
+  const contextInput = document.createElement("textarea");
+  contextInput.id = "onboarding-topic-context";
+  contextInput.className = "onboarding-topic-input";
+  contextInput.rows = 5;
+  contextInput.placeholder = t("topic_context_placeholder");
+  contextInput.value = state.context;
+  contextInput.addEventListener("input", () => {
+    state.context = contextInput.value;
   });
 
   const suggestBtn = document.createElement("button");
   suggestBtn.type = "button";
   suggestBtn.className = "btn primary-btn";
-  suggestBtn.textContent = t("onboarding_goal_suggest");
+  suggestBtn.textContent = t("topic_suggest");
   suggestBtn.addEventListener("click", () => {
     void (async () => {
       if (!state.title.trim()) {
-        status.textContent = t("onboarding_goal_title_missing");
+        status.textContent = t("topic_name_missing");
+        return;
+      }
+      // The import's record holds the name; check it before any model call.
+      if (state.title.replace(/\s+/g, " ").trim().length > TOPIC_TITLE_MAX) {
+        status.textContent = tf("topic_name_too_long", {
+          max: TOPIC_TITLE_MAX,
+        });
         return;
       }
       suggestBtn.disabled = true;
       status.classList.remove("ok");
-      status.textContent = t("onboarding_goal_checking_llm");
-      if (!(await goalTextLlmReady())) {
-        status.textContent = t("onboarding_goal_llm_missing");
+      status.textContent = t("topic_checking_llm");
+      if (!(await topicTextLlmReady())) {
+        status.textContent = t("topic_llm_missing");
         const backBtn = document.createElement("button");
         backBtn.type = "button";
         backBtn.className = "btn secondary-btn btn-sm";
-        backBtn.textContent = t("onboarding_goal_to_model_page");
+        backBtn.textContent = t("topic_to_model_page");
         backBtn.addEventListener("click", () => host.openModelSetup());
         root.append(backBtn);
         suggestBtn.disabled = false;
         return;
       }
-      status.textContent = t("onboarding_goal_generating");
-      const level = await fetchGoalLevel(state, status);
+      status.textContent = t("topic_generating");
+      const level = await fetchSubtopics(state, status);
       suggestBtn.disabled = false;
       if (level) {
         state.levels.push(level);
@@ -1448,37 +1584,53 @@ export function renderGoalArea(
     })();
   });
 
-  root.append(titleInput, whyInput, suggestBtn, status);
+  root.append(
+    titleLabel,
+    titleInput,
+    contextLabel,
+    contextInput,
+    suggestBtn,
+    status,
+  );
 }
 
 /** Fetch one decomposition level; returns null (with status set) on failure. */
-async function fetchGoalLevel(
-  state: GoalImportState,
+async function fetchSubtopics(
+  state: TopicImportState,
   status: HTMLElement,
-): Promise<GoalLevelOption[] | null> {
+): Promise<SubtopicOption[] | null> {
   try {
     const res = await runBridge<{
       success: boolean;
       error?: string;
-      options?: Array<{ id: string; label: string; description: string }>;
-    }>("goal-decompose", [
+      options?: Array<{
+        id: string;
+        label: string;
+        description: string;
+        lookupTerm?: string;
+        protectedReason?: string;
+      }>;
+    }>("topic-outline", [
       "--title",
       state.title.trim(),
-      "--description",
-      state.description.trim(),
+      ...topicPromptArgs(state),
       "--path",
       JSON.stringify(state.path),
     ]);
     if (!res.success || !res.options) {
-      status.textContent = t("onboarding_goal_error").replace(
+      status.textContent = t("topic_error").replace(
         "{message}",
         res.error ?? "unknown",
       );
       return null;
     }
-    return res.options.map((option) => ({ ...option, checked: true }));
+    // A protected subtopic starts unticked and stays so (Decision 5).
+    return res.options.map((option) => ({
+      ...option,
+      checked: !option.protectedReason,
+    }));
   } catch (err) {
-    status.textContent = t("onboarding_goal_error").replace(
+    status.textContent = t("topic_error").replace(
       "{message}",
       bridgeErrorMessage(err),
     );
@@ -1486,28 +1638,29 @@ async function fetchGoalLevel(
   }
 }
 
-function renderGoalLevel(
+function renderSubtopicLevel(
   root: HTMLElement,
   status: HTMLElement,
-  state: GoalImportState,
+  state: TopicImportState,
   rerender: () => void,
 ): void {
   const crumb = document.createElement("p");
-  crumb.className = "onboarding-goal-crumb";
+  crumb.className = "onboarding-topic-crumb";
   crumb.textContent = [state.title, ...state.path].join(" → ");
-  root.append(crumb, paragraph(t("onboarding_goal_level_hint")));
+  root.append(crumb, paragraph(t("topic_level_hint")));
 
   const level = state.levels[state.levels.length - 1];
   const list = document.createElement("div");
-  list.className = "onboarding-goal-level";
+  list.className = "onboarding-topic-level";
   for (const option of level) {
     const row = document.createElement("div");
-    row.className = "onboarding-goal-topic";
+    row.className = "onboarding-topic-topic";
     const label = document.createElement("label");
-    label.className = "onboarding-goal-topic-label";
+    label.className = "onboarding-topic-topic-label";
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = option.checked;
+    checkbox.disabled = Boolean(option.protectedReason);
     checkbox.addEventListener("change", () => {
       option.checked = checkbox.checked;
     });
@@ -1520,14 +1673,14 @@ function renderGoalLevel(
     const deeperBtn = document.createElement("button");
     deeperBtn.type = "button";
     deeperBtn.className = "btn ghost-btn btn-sm";
-    deeperBtn.textContent = t("onboarding_goal_deeper");
+    deeperBtn.textContent = t("topic_deeper");
     deeperBtn.addEventListener("click", () => {
       void (async () => {
         deeperBtn.disabled = true;
         status.classList.remove("ok");
-        status.textContent = t("onboarding_goal_generating");
+        status.textContent = t("topic_generating");
         state.path.push(option.label);
-        const next = await fetchGoalLevel(state, status);
+        const next = await fetchSubtopics(state, status);
         if (next) {
           state.levels.push(next);
           rerender();
@@ -1537,89 +1690,74 @@ function renderGoalLevel(
         }
       })();
     });
-    row.append(label, why, deeperBtn);
+    if (option.protectedReason) {
+      // Decision 5: what a company or a person protects comes from its
+      // source, never from a model.
+      deeperBtn.disabled = true;
+      const note = document.createElement("p");
+      note.className = "onboarding-model-line topic-protected-note";
+      note.textContent = tf("topic_protected", {
+        reason: option.protectedReason,
+      });
+      row.append(label, why, note, deeperBtn);
+    } else {
+      row.append(label, why, deeperBtn);
+    }
     list.append(row);
   }
   root.append(list);
 
   const controls = document.createElement("div");
   controls.className = "onboarding-model-links";
+  const upBtn = document.createElement("button");
+  upBtn.type = "button";
+  upBtn.className = "btn ghost-btn btn-sm";
   if (state.path.length > 0) {
-    const upBtn = document.createElement("button");
-    upBtn.type = "button";
-    upBtn.className = "btn ghost-btn btn-sm";
-    upBtn.textContent = t("onboarding_goal_up");
+    upBtn.textContent = t("topic_up");
     upBtn.addEventListener("click", () => {
       state.path.pop();
       state.levels.pop();
       rerender();
     });
-    controls.append(upBtn);
+  } else {
+    // From the first level back to the topic's name and context, both kept.
+    upBtn.textContent = t("topic_edit");
+    upBtn.addEventListener("click", () => {
+      state.levels = [];
+      // The name may change: the next import records its own source.
+      state.sourceId = null;
+      rerender();
+    });
   }
+  controls.append(upBtn);
   const importBtn = document.createElement("button");
   importBtn.type = "button";
   importBtn.className = "btn primary-btn";
-  importBtn.textContent = t("onboarding_goal_import_topics");
+  importBtn.textContent = t("topic_import_selection");
   importBtn.addEventListener("click", () => {
     void (async () => {
-      const selected: GoalTopic[] = level
+      const selected: Subtopic[] = level
         .filter((option) => option.checked)
         .map((option) => ({
           label: option.label,
           description: option.description,
+          ...(option.lookupTerm ? { lookupTerm: option.lookupTerm } : {}),
         }));
       if (selected.length === 0) {
-        status.textContent = t("onboarding_goal_no_selection");
+        status.textContent = t("topic_no_selection");
         return;
       }
-      // Busy disables the area's buttons: navigating the levels meanwhile
-      // would change the path under the remaining requests.
-      state.busy = t("onboarding_goal_writing_file");
-      rerender();
-      let goalFilePath: string;
-      try {
-        // 1. Write the goal file — the source_link every card will cite.
-        const goal = await runBridge<{
-          success: boolean;
-          slug: string;
-          filePath: string;
-        }>("goal-create", [
-          "--title",
-          state.title.trim(),
-          "--description",
-          state.description.trim(),
-          "--path",
-          JSON.stringify(state.path),
-          "--outline",
-          JSON.stringify(selected),
-        ]);
-        state.goalFile = { slug: goal.slug, filePath: goal.filePath };
-        // 2. Cache it as a source row (same pipeline as file/web imports).
-        const source = await runBridge<{ success: boolean; sourceId: string }>(
-          "personal-source-import",
-          ["--type", "file", "--uri", goal.filePath],
-        );
-        state.sourceId = source.sourceId;
-        goalFilePath = goal.filePath;
-      } catch (err) {
-        state.busy = null;
-        state.notice = t("onboarding_goal_error").replace(
-          "{message}",
-          bridgeErrorMessage(err),
-        );
-        state.view?.rerender();
-        return;
-      }
-      // 3. LLM card proposals, one topic per request — preview only. The
-      // preview opens even when every topic failed, so a retry reuses the
-      // goal file instead of writing a second one.
+      // Card proposals come one subtopic per request, preview only. Drafting
+      // marks the area busy, so navigating the levels meanwhile cannot change
+      // the path under the remaining requests. The preview opens even when
+      // every subtopic failed, so a retry can follow.
       state.cards = [];
-      await draftGoalTopicCards(state, selected, goalFilePath);
+      await draftSubtopicCards(state, selected);
     })();
   });
   controls.append(importBtn);
   root.append(controls, status);
-  applyGoalBusy(root, status, state);
+  applyTopicBusy(root, status, state);
 }
 
 /**
@@ -1629,12 +1767,11 @@ function renderGoalLevel(
  * progress, and a failed topic is kept for a retry instead of sinking the
  * topics that already succeeded.
  */
-export async function draftGoalTopicCards(
-  state: GoalImportState,
-  topics: GoalTopic[],
-  goalFilePath: string,
+export async function draftSubtopicCards(
+  state: TopicImportState,
+  topics: Subtopic[],
 ): Promise<void> {
-  const failed: GoalTopicFailure[] = [];
+  const failed: SubtopicFailure[] = [];
   const path = JSON.stringify(state.path);
   for (const [index, topic] of topics.entries()) {
     // Leaving the step (Back, Finish later, the top navigation) stops the
@@ -1644,12 +1781,12 @@ export async function draftGoalTopicCards(
       failed.push(
         ...topics.slice(index).map((rest) => ({
           ...rest,
-          error: t("onboarding_goal_topic_stopped"),
+          error: t("topic_subtopic_stopped"),
         })),
       );
       break;
     }
-    state.busy = tf("onboarding_goal_generating_topic_cards", {
+    state.busy = tf("topic_generating_cards", {
       index: index + 1,
       total: topics.length,
       topic: topic.label,
@@ -1659,24 +1796,21 @@ export async function draftGoalTopicCards(
       const preview = await runBridge<{
         success: boolean;
         proposals: Array<Record<string, unknown>>;
-      }>("goal-topic-cards", [
+      }>("topic-cards", [
         "--title",
         state.title.trim(),
-        "--description",
-        state.description.trim(),
+        ...topicPromptArgs(state),
         "--path",
         path,
         "--topic",
         JSON.stringify(topic),
-        "--source",
-        goalFilePath,
       ]);
-      const proposals = preview.proposals ?? [];
+      const proposals = withTopicPlace(state, topic, preview.proposals ?? []);
       if (proposals.length === 0) {
         // A valid empty answer would otherwise make the topic vanish.
-        failed.push({ ...topic, error: t("onboarding_goal_topic_empty") });
+        failed.push({ ...topic, error: t("topic_subtopic_empty") });
       } else {
-        state.cards = appendGoalCards(state.cards ?? [], proposals);
+        state.cards = appendTopicCards(state.cards ?? [], proposals);
       }
     } catch (err) {
       failed.push({ ...topic, error: bridgeErrorMessage(err) });
@@ -1687,11 +1821,11 @@ export async function draftGoalTopicCards(
   state.view?.rerender();
 }
 
-/** While work runs, the goal area shows its progress and offers no actions. */
-function applyGoalBusy(
+/** While work runs, the topic area shows its progress and offers no actions. */
+function applyTopicBusy(
   root: HTMLElement,
   status: HTMLElement,
-  state: GoalImportState,
+  state: TopicImportState,
 ): void {
   if (!state.busy) return;
   setButtonsDisabled(root, true);
@@ -1705,10 +1839,10 @@ function setButtonsDisabled(root: HTMLElement, disabled: boolean): void {
 }
 
 /** Add proposals to the preview, skipping any already drafted by a topic. */
-export function appendGoalCards(
-  cards: GoalCardProposal[],
+export function appendTopicCards(
+  cards: TopicCardProposal[],
   proposals: Array<Record<string, unknown>>,
-): GoalCardProposal[] {
+): TopicCardProposal[] {
   const key = (question: string, concept: string) =>
     `${question.trim().toLocaleLowerCase()}\u0000${concept
       .trim()
@@ -1716,7 +1850,7 @@ export function appendGoalCards(
   const seen = new Set(cards.map((card) => key(card.question, card.concept)));
   const next = [...cards];
   for (const proposal of proposals) {
-    const card: GoalCardProposal = {
+    const card: TopicCardProposal = {
       concept: String(proposal.concept ?? ""),
       question: String(proposal.question ?? ""),
       selected: true,
@@ -1730,49 +1864,63 @@ export function appendGoalCards(
   return next;
 }
 
-function selectedGoalProposals(
-  state: GoalImportState,
+function selectedTopicProposals(
+  state: TopicImportState,
 ): Array<Record<string, unknown>> {
   return (state.cards ?? [])
     .filter((card) => card.selected)
     .map((card) => card.proposal);
 }
 
-/** Saves the ticked preview cards as tokens; throws when the bridge fails. */
-export async function importSelectedGoalCards(
-  state: GoalImportState,
+/**
+ * Saves the ticked preview cards as tokens; throws when the bridge fails.
+ * The first attempt records the import as a `zam-topic:` source row, which
+ * a retry reuses.
+ */
+export async function importSelectedTopicCards(
+  state: TopicImportState,
 ): Promise<void> {
-  const selected = selectedGoalProposals(state);
-  if (selected.length === 0 || !state.sourceId) return;
+  const selected = selectedTopicProposals(state);
+  if (selected.length === 0) return;
+  if (!state.sourceId) {
+    const source = await runBridge<{ success: boolean; sourceId: string }>(
+      "topic-source",
+      ["--title", state.title.trim()],
+    );
+    state.sourceId = source.sourceId;
+  }
   const result = await runBridge<{
     success: boolean;
     createdCount: number;
     ensuredCount: number;
+    placeError?: string;
   }>("personal-source-confirm-import", [
     "--sourceId",
     state.sourceId,
     "--proposals",
     JSON.stringify(selected),
+    ...topicPlaceArgs(state),
   ]);
   state.imported = {
     created: result.createdCount,
     ensured: result.ensuredCount,
+    ...(result.placeError ? { placeError: result.placeError } : {}),
   };
 }
 
 /**
- * "Next" on the goal step. Drafted cards exist only in this preview until
+ * "Next" on the topic step. Drafted cards exist only in this preview until
  * they are imported, so leaving with Next must save the ticked ones instead
  * of dropping them. Returns false to stay on the step after a failed save;
  * "Skip" still leaves without importing.
  */
-export async function commitGoalStep(state: GoalImportState): Promise<boolean> {
-  if (state.imported || selectedGoalProposals(state).length === 0) return true;
+export async function commitTopicStep(state: TopicImportState): Promise<boolean> {
+  if (state.imported || selectedTopicProposals(state).length === 0) return true;
   try {
-    await importSelectedGoalCards(state);
+    await importSelectedTopicCards(state);
     return true;
   } catch (err) {
-    state.notice = t("onboarding_goal_error").replace(
+    state.notice = t("topic_error").replace(
       "{message}",
       bridgeErrorMessage(err),
     );
@@ -1781,23 +1929,23 @@ export async function commitGoalStep(state: GoalImportState): Promise<boolean> {
   }
 }
 
-function renderGoalCardPreview(
+function renderTopicCardPreview(
   root: HTMLElement,
   status: HTMLElement,
-  state: GoalImportState,
+  state: TopicImportState,
   rerender: () => void,
 ): void {
   if ((state.cards ?? []).length > 0) {
-    root.append(paragraph(t("onboarding_goal_cards_hint")));
+    root.append(paragraph(t("topic_cards_hint")));
   }
   if (state.failedTopics.length > 0) {
     const failure = document.createElement("p");
     failure.className = "onboarding-model-status";
-    failure.textContent = t("onboarding_goal_topics_failed");
+    failure.textContent = t("topic_subtopics_failed");
     // Each topic keeps its own reason: a timeout and an empty answer ask
     // for different things.
     const reasons = document.createElement("ul");
-    reasons.className = "onboarding-goal-failures";
+    reasons.className = "onboarding-topic-failures";
     for (const topic of state.failedTopics) {
       const item = document.createElement("li");
       item.textContent = `${topic.label} — ${topic.error}`;
@@ -1806,17 +1954,15 @@ function renderGoalCardPreview(
     const retryBtn = document.createElement("button");
     retryBtn.type = "button";
     retryBtn.className = "btn secondary-btn btn-sm";
-    retryBtn.textContent = t("onboarding_goal_retry_topics");
+    retryBtn.textContent = t("topic_retry_subtopics");
     retryBtn.addEventListener("click", () => {
       void (async () => {
-        const goalFilePath = state.goalFile?.filePath;
-        if (!goalFilePath) return;
         const topics = state.failedTopics.map(({ label, description }) => ({
           label,
           description,
         }));
         state.failedTopics = [];
-        await draftGoalTopicCards(state, topics, goalFilePath);
+        await draftSubtopicCards(state, topics);
       })();
     });
     const retryRow = document.createElement("div");
@@ -1825,10 +1971,10 @@ function renderGoalCardPreview(
     root.append(failure, reasons, retryRow);
   }
   const list = document.createElement("div");
-  list.className = "onboarding-goal-level";
+  list.className = "onboarding-topic-level";
   for (const card of state.cards ?? []) {
     const row = document.createElement("label");
-    row.className = "onboarding-goal-topic onboarding-goal-topic-label";
+    row.className = "onboarding-topic-topic onboarding-topic-topic-label";
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = card.selected;
@@ -1847,7 +1993,7 @@ function renderGoalCardPreview(
   const backBtn = document.createElement("button");
   backBtn.type = "button";
   backBtn.className = "btn ghost-btn btn-sm";
-  backBtn.textContent = t("onboarding_goal_back_to_topics");
+  backBtn.textContent = t("topic_back_to_subtopics");
   backBtn.addEventListener("click", () => {
     state.cards = null;
     state.failedTopics = [];
@@ -1856,21 +2002,21 @@ function renderGoalCardPreview(
   const confirmBtn = document.createElement("button");
   confirmBtn.type = "button";
   confirmBtn.className = "btn primary-btn";
-  confirmBtn.textContent = t("onboarding_goal_import_cards");
+  confirmBtn.textContent = t("topic_import_cards");
   confirmBtn.addEventListener("click", () => {
     void (async () => {
-      if (selectedGoalProposals(state).length === 0 || !state.sourceId) {
-        status.textContent = t("onboarding_goal_no_selection");
+      if (selectedTopicProposals(state).length === 0) {
+        status.textContent = t("topic_no_selection");
         return;
       }
       confirmBtn.disabled = true;
       status.classList.remove("ok");
-      status.textContent = t("onboarding_goal_importing");
+      status.textContent = t("topic_importing");
       try {
-        await importSelectedGoalCards(state);
+        await importSelectedTopicCards(state);
         rerender();
       } catch (err) {
-        status.textContent = t("onboarding_goal_error").replace(
+        status.textContent = t("topic_error").replace(
           "{message}",
           bridgeErrorMessage(err),
         );
@@ -1883,7 +2029,7 @@ function renderGoalCardPreview(
   // above is the way forward, not an import of nothing.
   if ((state.cards ?? []).length > 0) controls.append(confirmBtn);
   root.append(controls, status);
-  applyGoalBusy(root, status, state);
+  applyTopicBusy(root, status, state);
 }
 
 /** Unwrap the bridge's `{"error": …}` JSON when present; never echoes keys. */
@@ -1930,7 +2076,7 @@ function requiredElement<T extends HTMLElement>(id: string): T {
 
 /**
  * The flow's exit, shared by Finish and Finish later. It persists completion
- * through the one desktop bridge, which a goal draft can hold for minutes per
+ * through the one desktop bridge, which a topic draft can hold for minutes per
  * topic, so the page stays on screen until that request is done. `leaving`
  * is set before the bridge call: a running draft checks it and queues no
  * further topic ahead of the dashboard load.
@@ -1983,11 +2129,23 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
     deps.onLeave("completed");
   });
 
+  const isShown = (step: OnboardingStep) => step.shown?.() ?? true;
+
+  /** The next shown step from `from` in `direction`, or -1 at either end. */
+  function shownIndex(from: number, direction: 1 | -1): number {
+    for (let i = from; i >= 0 && i < steps.length; i += direction) {
+      if (isShown(steps[i])) return i;
+    }
+    return -1;
+  }
+
   function render(): void {
     const step = steps[index];
     if (!step) return;
-    const total = steps.length;
-    const human = index + 1;
+    // Count only the steps of the path taken (ADR 2026-10-14, Decision 6).
+    const shown = steps.filter(isShown);
+    const total = shown.length;
+    const human = shown.indexOf(step) + 1;
 
     kicker.textContent = t(step.titleKey);
     progress.textContent = t("onboarding_progress")
@@ -2006,9 +2164,9 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
     backBtn.textContent = t("onboarding_back");
     skipBtn.textContent = t("onboarding_skip");
     finishLaterBtn.textContent = t("onboarding_finish_later");
-    backBtn.disabled = index === 0;
+    backBtn.disabled = shownIndex(index - 1, -1) < 0;
     skipBtn.classList.toggle("hidden", !step.skippable);
-    const isLast = index === total - 1;
+    const isLast = shownIndex(index + 1, 1) < 0;
     nextBtn.textContent = isLast
       ? t("onboarding_finish")
       : t("onboarding_next");
@@ -2017,6 +2175,12 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
   function goTo(next: number): void {
     index = Math.max(0, Math.min(steps.length - 1, next));
     render();
+  }
+
+  /** One shown step forward or back; nothing past either end. */
+  function stepBy(direction: 1 | -1): void {
+    const next = shownIndex(index + direction, direction);
+    if (next >= 0) goTo(next);
   }
 
   /**
@@ -2039,7 +2203,7 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
         nextBtn.disabled = false;
       }
     }
-    goTo(index + 1);
+    stepBy(1);
   }
 
   function complete(): void {
@@ -2048,10 +2212,10 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
     void exit.leave();
   }
 
-  backBtn.addEventListener("click", () => goTo(index - 1));
-  skipBtn.addEventListener("click", () => goTo(index + 1));
+  backBtn.addEventListener("click", () => stepBy(-1));
+  skipBtn.addEventListener("click", () => stepBy(1));
   nextBtn.addEventListener("click", () => {
-    if (index === steps.length - 1) {
+    if (shownIndex(index + 1, 1) < 0) {
       complete();
     } else {
       void advance();
@@ -2064,7 +2228,7 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
       openExternal: deps.openExternal,
       openContentEntry: deps.openContentEntry,
       // Degraded modes link back instead of erroring (ADR §7): e.g. the
-      // goal page sends the user to the model page when no text LLM is
+      // topic page sends the user to the model page when no text LLM is
       // connected. Reads `steps` live, so it works for any built flow.
       goToStep: (id) => {
         const target = steps.findIndex((step) => step.id === id);
@@ -2083,7 +2247,8 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
     startAt(stepId: string): void {
       rebuild();
       const target = steps.findIndex((step) => step.id === stepId);
-      index = Math.max(0, target);
+      // A step that is not part of the flow yet starts at the next one.
+      index = Math.max(0, target >= 0 ? shownIndex(target, 1) : 0);
       render();
     },
   };

@@ -31,6 +31,9 @@ const PATH_OR_URL_ARGUMENT =
  * reads take a bundle directory, which D1 confines to trusted folders.
  */
 const READ_ONLY_TOOLS = [
+  // Read the atlas without settling; titles are marked untrusted.
+  "zam_atlas_missing_emblems",
+  "zam_atlas_read",
   "zam_bonus_candidates_list",
   "zam_bundled_cells_list",
   "zam_find_tokens",
@@ -49,6 +52,8 @@ const READ_ONLY_TOOLS = [
   "zam_preconditions_get",
   "zam_progress_stats",
   "zam_pull_forward_candidates",
+  // Opens the atlas panel, whose bridge reads only (plan Phase 10a).
+  "zam_show_atlas",
   "zam_show_graph",
   "zam_status",
   "zam_suggest_foundations",

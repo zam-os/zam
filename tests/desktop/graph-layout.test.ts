@@ -1,10 +1,54 @@
 import { describe, expect, it } from "vitest";
 import {
   graphEdgeEndpoints,
+  graphNodeStyle,
   graphNodeTitle,
   humanizeTokenSlug,
   wrapGraphLabel,
 } from "../../desktop/src/panel/graph-layout.js";
+
+describe("2D graph node style", () => {
+  it("colours by subject and draws the condition as a stroke pattern", () => {
+    const known = graphNodeStyle(
+      { domain: "mathematik/geometrie", condition: "known" },
+      "light",
+    );
+    expect(known.dash).toBeNull();
+    expect(known.opacity).toBe(1);
+    expect(known.fill).toMatch(/^rgba\(/);
+
+    const due = graphNodeStyle(
+      { domain: "mathematik/geometrie", condition: "due" },
+      "light",
+    );
+    expect(due.dash).toBe("2 2");
+    expect(due.stroke).not.toBe(known.stroke);
+
+    expect(
+      graphNodeStyle({ domain: "mathematik", condition: "decaying" }, "light")
+        .dash,
+    ).toBe("7 2 1 2");
+    expect(
+      graphNodeStyle({ domain: "mathematik", condition: "forgotten" }, "dark")
+        .opacity,
+    ).toBe(0.6);
+    expect(
+      graphNodeStyle({ domain: "mathematik", condition: null }, "light").dash,
+    ).toBe("4 3");
+  });
+
+  it("prefers the bridge's hue key over the domain", () => {
+    const byKey = graphNodeStyle(
+      { domain: "irgendwas", hueKey: "chemie", condition: "known" },
+      "light",
+    );
+    const byDomain = graphNodeStyle(
+      { domain: "chemie/stoffe", condition: "known" },
+      "light",
+    );
+    expect(byKey.stroke).toBe(byDomain.stroke);
+  });
+});
 
 describe("2D graph presentation", () => {
   it("prefers an explicit token title", () => {

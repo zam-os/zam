@@ -49,7 +49,30 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Warum verrichtet die reine magnetische Lorentzkraft $\\vec{F}_L = q \\cdot (\\vec{v} \\times \\vec{B})$ an einem geladenen Teilchen physikalisch niemals Arbeit ($W = 0$) und ändert daher nur die Flugrichtung, aber nie den Betrag der Geschwindigkeit?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Warum verrichtet die reine magnetische Lorentzkraft "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}_L = q \\cdot (\\vec{v} \\times \\vec{B})",
+              "speech": "Vektor F L gleich q mal, Vektor v kreuz Vektor B"
+            },
+            {
+              "type": "text",
+              "text": " an einem geladenen Teilchen physikalisch niemals Arbeit ("
+            },
+            {
+              "type": "math",
+              "tex": "W = 0",
+              "speech": "W gleich 0"
+            },
+            {
+              "type": "text",
+              "text": ") und ändert daher nur die Flugrichtung, aber nie den Betrag der Geschwindigkeit?"
+            }
+          ],
           "concept": "Weil die Lorentzkraft zu jedem Zeitpunkt exakt senkrecht zum Geschwindigkeitsvektor v steht (F_L senkrecht v -> dW = F_L * dr = 0)",
           "fast_check": {
             "type": "binary_choice",
@@ -58,16 +81,403 @@
               "Weil Magnetfelder keine Energie enthalten"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GB50000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das magnetische Feld, die Lorentzkraft und die Kreisbahn im Magnetfeld: 1. **Das magnetische Feld & Flussdichte $\\vec{B}$**:   * Homogenes Magnetfeld einer langen Zylinderspule: $\\mathbf{B = \\mu_0 \\cdot \\mu_r \\cdot \\frac{N}{l} \\cdot I}$ (mit $\\mu_0 = 4\\pi \\cdot 10^{-7}\\,\\frac{\\text{V}\\cdot\\text{s}}{\\text{A}\\cdot\\text{m}}$, Einheit: $1\\text{ Tesla [T]} = 1\\,\\frac{\\text{V}\\cdot\\text{s}}{\\text{m}^2} = 1\\,\\frac{\\text{N}}{\\text{A}\\cdot\\text{m}}$), 2. **Die Lorentzkraft (Hendrik Antoon Lorentz)**:   $$\\mathbf{\\vec{F}_L = q \\cdot (\\vec{v} \\times \\vec{B})} \\implies |F_L| = |q| \\cdot v \\cdot B \\cdot \\sin(\\alpha)$$   * Drei-Finger-Regel (Daumen: Ursache $\\vec{v}$, Zeigefinger: Vermittlung $\\vec{B}$, Mittelfinger: Wirkung $\\vec{F}_L$; Rechte Hand für positive Ladungen / Linke Hand für negative Elektronen), 3. **Kreisbewegung im homogenen Magnetfeld**:   * Bei $\\vec{v} \\perp \\vec{B}$ dient die Lorentzkraft als reine Zentripetalkraft:     $$F_L = F_Z \\implies q \\cdot v \\cdot B = m \\cdot \\frac{v^2}{r} \\implies \\mathbf{r = \\frac{m \\cdot v}{q \\cdot B}}$$ 4. Ein Elektron ($m_e = 9{,}109 \\cdot 10^{-31}\\,\\text{kg}, e = 1{,}602 \\cdot 10^{-19}\\,\\text{C}$) tritt mit $v = 2 \\cdot 10^7\\,\\frac{\\text{m}}{\\text{s}}$ senkrecht in ein homogenes Magnetfeld der Stärke $B = 5\\,\\text{mT}$ ein. Berechne den Bahnradius $r$ der Kreisbahn im Fadenstrahlrohr.",
-          "concept": "Magnetfeld: Spulenfeld B = mu0 * N/l * I; Lorentzkraft F_L = q * (v x B); Bahnradius r = m*v / (q*B); Rechnung: r = 9,109*10^-31 * 2*10^7 / (1,602*10^-19 * 5*10^-3) = 1,8218*10^-23 / 8,01*10^-22 = 0,0227 m = 2,27 cm.",
-          "sample_solution": "1. Das Magnetfeld und die magnetische Flussdichte $\\vec{B}$: - **Magnetfeld**: Kraftfeld, das von bewegten Ladungen (elektrischer Strom) oder magnetischen Dipolen hervorgerufen wird und Kräfte auf bewegte Ladungen ausübt. - **Feldstärke in einer schlanken Spule (Länge $l$, Windungszahl $N$)**:   $$\\mathbf{B = \\mu_0 \\cdot \\mu_r \\cdot \\frac{N}{l} \\cdot I}$$   * **Magnetische Feldkonstante**: $\\mathbf{\\mu_0 = 4\\pi \\cdot 10^{-7}\\,\\frac{\\text{T}\\cdot\\text{m}}{\\text{A}} \\approx 1{,}2566 \\cdot 10^{-6}\\,\\frac{\\text{V}\\cdot\\text{s}}{\\text{A}\\cdot\\text{m}}}$. 2. Die Lorentzkraft $\\vec{F}_L$: - **Vektordefinition**:   $$\\mathbf{\\vec{F}_L = q \\cdot (\\vec{v} \\times \\vec{B})}$$ - **Drei-Finger-Regel (Rechte Hand für $q > 0$, Linke Hand für Elektronen $e^-$)**:   * **Daumen**: Richtung der Teilchengeschwindigkeit $\\vec{v}$ (*Ursache*).   * **Zeigefinger**: Richtung der magnetischen Feldlinien $\\vec{B}$ (vom Nord- zum Südpol, *Vermittlung*).   * **Mittelfinger (senkrecht abgespreizt)**: Richtung der Lorentzkraft $\\vec{F}_L$ (*Wirkung*). - **Arbeitslosigkeit der Magnetkraft**:   * Da $\\vec{F}_L$ zu jedem Zeitpunkt senkrecht auf $\\vec{v}$ steht, gilt $\\mathrm{d}W = \\vec{F}_L \\circ \\mathrm{d}\\vec{s} = 0 \\implies$ Das Magnetfeld krümmt die Bahn, ändert aber niemals die kinetische Energie oder den Betrag der Geschwindigkeit. 3. Kreisbahn und Bestimmung der spezifischen Ladung $\\frac{e}{m}$: - **Kräftegleichgewicht bei $\\vec{v} \\perp \\vec{B}$**:   $$F_Z = F_L \\implies m \\cdot \\frac{v^2}{r} = q \\cdot v \\cdot B \\implies \\mathbf{r = \\frac{m \\cdot v}{q \\cdot B}}$$ - **Fadenstrahlrohr (Bestimmung von $\\frac{e}{m_e}$)**:   * Setzt man die Geschwindigkeit aus der Beschleunigungsspannung ein ($v = \\sqrt{\\frac{2eU_B}{m}}$), ergibt sich:     $$\\mathbf{\\frac{e}{m_e} = \\frac{2 U_B}{r^2 B^2}} \\approx 1{,}759 \\cdot 10^{11}\\,\\frac{\\text{C}}{\\text{kg}}$$ 4. Durchrechnung des Beispiels ($v = 2 \\cdot 10^7\\,\\frac{\\text{m}}{\\text{s}}, B = 5\\,\\text{mT} = 5 \\cdot 10^{-3}\\,\\text{T}$): - **Bahnradius $r$**:   $$r = \\frac{m_e \\cdot v}{e \\cdot B} = \\frac{9{,}109 \\cdot 10^{-31}\\,\\text{kg} \\cdot 2 \\cdot 10^7\\,\\frac{\\text{m}}{\\text{s}}}{1{,}602 \\cdot 10^{-19}\\,\\text{C} \\cdot 5 \\cdot 10^{-3}\\,\\text{T}}$$   $$r = \\frac{1{,}8218 \\cdot 10^{-23}}{8{,}010 \\cdot 10^{-22}}\\,\\text{m} \\approx \\mathbf{0{,}02274\\,\\text{m} = 2{,}27\\,\\text{cm}}$$."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das magnetische Feld, die Lorentzkraft und die Kreisbahn im Magnetfeld: 1. Das magnetische Feld & Flussdichte "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{B}",
+              "speech": "Vektor B"
+            },
+            {
+              "type": "text",
+              "text": ":   * Homogenes Magnetfeld einer langen Zylinderspule: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{B = \\mu_0 \\cdot \\mu_r \\cdot \\frac{N}{l} \\cdot I}",
+              "speech": "B gleich My null mal My r mal N durch l mal I"
+            },
+            {
+              "type": "text",
+              "text": " (mit "
+            },
+            {
+              "type": "math",
+              "tex": "\\mu_0 = 4\\pi \\cdot 10^{-7}\\,\\frac{\\text{V}\\cdot\\text{s}}{\\text{A}\\cdot\\text{m}}",
+              "speech": "My null gleich 4 Pi mal 10 hoch minus 7 Voltsekunden pro Amperemeter"
+            },
+            {
+              "type": "text",
+              "text": ", Einheit: "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ Tesla [T]} = 1\\,\\frac{\\text{V}\\cdot\\text{s}}{\\text{m}^2} = 1\\,\\frac{\\text{N}}{\\text{A}\\cdot\\text{m}}",
+              "speech": "1 Tesla gleich 1 Voltsekunde pro Quadratmeter gleich 1 Newton pro Ampere mal Meter"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Die Lorentzkraft (Hendrik Antoon Lorentz):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\vec{F}_L = q \\cdot (\\vec{v} \\times \\vec{B})} \\implies |F_L| = |q| \\cdot v \\cdot B \\cdot \\sin(\\alpha)",
+              "block": true,
+              "speech": "Vektor F L gleich q mal, Vektor v kreuz Vektor B, daraus folgt Betrag von F L gleich Betrag von q mal v mal B mal Sinus von Alpha"
+            },
+            {
+              "type": "text",
+              "text": "   * Drei-Finger-Regel (Daumen: Ursache "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{v}",
+              "speech": "Vektor v"
+            },
+            {
+              "type": "text",
+              "text": ", Zeigefinger: Vermittlung "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{B}",
+              "speech": "Vektor B"
+            },
+            {
+              "type": "text",
+              "text": ", Mittelfinger: Wirkung "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}_L",
+              "speech": "Vektor F L"
+            },
+            {
+              "type": "text",
+              "text": "; Rechte Hand für positive Ladungen / Linke Hand für negative Elektronen), 3. Kreisbewegung im homogenen Magnetfeld:   * Bei "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{v} \\perp \\vec{B}",
+              "speech": "Vektor v senkrecht zu Vektor B"
+            },
+            {
+              "type": "text",
+              "text": " dient die Lorentzkraft als reine Zentripetalkraft:     "
+            },
+            {
+              "type": "math",
+              "tex": "F_L = F_Z \\implies q \\cdot v \\cdot B = m \\cdot \\frac{v^2}{r} \\implies \\mathbf{r = \\frac{m \\cdot v}{q \\cdot B}}",
+              "block": true,
+              "speech": "F L gleich F Z, daraus folgt q mal v mal B gleich m mal v Quadrat durch r, daraus folgt r gleich m mal v, geteilt durch q mal B"
+            },
+            {
+              "type": "text",
+              "text": " 4. Ein Elektron ("
+            },
+            {
+              "type": "math",
+              "tex": "m_e = 9{,}109 \\cdot 10^{-31}\\,\\text{kg}, e = 1{,}602 \\cdot 10^{-19}\\,\\text{C}",
+              "speech": "m e gleich 9,109 mal 10 hoch minus 31 Kilogramm, e gleich 1,602 mal 10 hoch minus 19 Coulomb"
+            },
+            {
+              "type": "text",
+              "text": ") tritt mit "
+            },
+            {
+              "type": "math",
+              "tex": "v = 2 \\cdot 10^7\\,\\frac{\\text{m}}{\\text{s}}",
+              "speech": "v gleich 2 mal 10 hoch 7 Meter pro Sekunde"
+            },
+            {
+              "type": "text",
+              "text": " senkrecht in ein homogenes Magnetfeld der Stärke "
+            },
+            {
+              "type": "math",
+              "tex": "B = 5\\,\\text{mT}",
+              "speech": "B gleich 5 Millitesla"
+            },
+            {
+              "type": "text",
+              "text": " ein. Berechne den Bahnradius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": " der Kreisbahn im Fadenstrahlrohr."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Magnetfeld: Spulenfeld "
+            },
+            {
+              "type": "math",
+              "tex": "B = \\mu_0 \\cdot \\frac{N}{l} \\cdot I",
+              "speech": "B gleich My null mal N durch l mal I"
+            },
+            {
+              "type": "text",
+              "text": "; Lorentzkraft "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}_L = q \\cdot (\\vec{v} \\times \\vec{B})",
+              "speech": "Vektor F L gleich q mal, Vektor v kreuz Vektor B"
+            },
+            {
+              "type": "text",
+              "text": "; Bahnradius "
+            },
+            {
+              "type": "math",
+              "tex": "r = \\frac{m \\cdot v}{q \\cdot B}",
+              "speech": "r gleich m mal v durch q mal B"
+            },
+            {
+              "type": "text",
+              "text": "; Rechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "r = \\frac{9{,}109 \\cdot 10^{-31} \\cdot 2 \\cdot 10^7}{1{,}602 \\cdot 10^{-19} \\cdot 5 \\cdot 10^{-3}} = \\frac{1{,}8218 \\cdot 10^{-23}}{8{,}01 \\cdot 10^{-22}} = 0{,}0227\\,\\text{m} = 2{,}27\\,\\text{cm}",
+              "speech": "r gleich 9,109 mal 10 hoch minus 31 mal 2 mal 10 hoch 7, geteilt durch 1,602 mal 10 hoch minus 19 mal 5 mal 10 hoch minus 3, gleich 1,8218 mal 10 hoch minus 23 durch 8,01 mal 10 hoch minus 22 gleich 0,0227 Meter gleich 2,27 Zentimeter"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Das Magnetfeld und die magnetische Flussdichte "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{B}"
+            },
+            {
+              "type": "text",
+              "text": ": - Magnetfeld: Kraftfeld, das von bewegten Ladungen (elektrischer Strom) oder magnetischen Dipolen hervorgerufen wird und Kräfte auf bewegte Ladungen ausübt. - Feldstärke in einer schlanken Spule (Länge "
+            },
+            {
+              "type": "math",
+              "tex": "l"
+            },
+            {
+              "type": "text",
+              "text": ", Windungszahl "
+            },
+            {
+              "type": "math",
+              "tex": "N"
+            },
+            {
+              "type": "text",
+              "text": "):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{B = \\mu_0 \\cdot \\mu_r \\cdot \\frac{N}{l} \\cdot I}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Magnetische Feldkonstante: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\mu_0 = 4\\pi \\cdot 10^{-7}\\,\\frac{\\text{T}\\cdot\\text{m}}{\\text{A}} \\approx 1{,}2566 \\cdot 10^{-6}\\,\\frac{\\text{V}\\cdot\\text{s}}{\\text{A}\\cdot\\text{m}}}"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Die Lorentzkraft "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}_L"
+            },
+            {
+              "type": "text",
+              "text": ": - Vektordefinition:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\vec{F}_L = q \\cdot (\\vec{v} \\times \\vec{B})}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Drei-Finger-Regel (Rechte Hand für "
+            },
+            {
+              "type": "math",
+              "tex": "q > 0"
+            },
+            {
+              "type": "text",
+              "text": ", Linke Hand für Elektronen "
+            },
+            {
+              "type": "math",
+              "tex": "e^-"
+            },
+            {
+              "type": "text",
+              "text": "):   * Daumen: Richtung der Teilchengeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{v}"
+            },
+            {
+              "type": "text",
+              "text": " (Ursache).   * Zeigefinger: Richtung der magnetischen Feldlinien "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{B}"
+            },
+            {
+              "type": "text",
+              "text": " (vom Nord- zum Südpol, Vermittlung).   * Mittelfinger (senkrecht abgespreizt): Richtung der Lorentzkraft "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}_L"
+            },
+            {
+              "type": "text",
+              "text": " (Wirkung). - Arbeitslosigkeit der Magnetkraft:   * Da "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}_L"
+            },
+            {
+              "type": "text",
+              "text": " zu jedem Zeitpunkt senkrecht auf "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{v}"
+            },
+            {
+              "type": "text",
+              "text": " steht, gilt "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{d}W = \\vec{F}_L \\circ \\mathrm{d}\\vec{s} = 0 \\implies"
+            },
+            {
+              "type": "text",
+              "text": " Das Magnetfeld krümmt die Bahn, ändert aber niemals die kinetische Energie oder den Betrag der Geschwindigkeit. 3. Kreisbahn und Bestimmung der spezifischen Ladung "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{e}{m}"
+            },
+            {
+              "type": "text",
+              "text": ": - Kräftegleichgewicht bei "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{v} \\perp \\vec{B}"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "F_Z = F_L \\implies m \\cdot \\frac{v^2}{r} = q \\cdot v \\cdot B \\implies \\mathbf{r = \\frac{m \\cdot v}{q \\cdot B}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Fadenstrahlrohr (Bestimmung von "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{e}{m_e}"
+            },
+            {
+              "type": "text",
+              "text": "):   * Setzt man die Geschwindigkeit aus der Beschleunigungsspannung ein ("
+            },
+            {
+              "type": "math",
+              "tex": "v = \\sqrt{\\frac{2eU_B}{m}}"
+            },
+            {
+              "type": "text",
+              "text": "), ergibt sich:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\frac{e}{m_e} = \\frac{2 U_B}{r^2 B^2}} \\approx 1{,}759 \\cdot 10^{11}\\,\\frac{\\text{C}}{\\text{kg}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 4. Durchrechnung des Beispiels ("
+            },
+            {
+              "type": "math",
+              "tex": "v = 2 \\cdot 10^7\\,\\frac{\\text{m}}{\\text{s}}, B = 5\\,\\text{mT} = 5 \\cdot 10^{-3}\\,\\text{T}"
+            },
+            {
+              "type": "text",
+              "text": "): - Bahnradius "
+            },
+            {
+              "type": "math",
+              "tex": "r"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "r = \\frac{m_e \\cdot v}{e \\cdot B} = \\frac{9{,}109 \\cdot 10^{-31}\\,\\text{kg} \\cdot 2 \\cdot 10^7\\,\\frac{\\text{m}}{\\text{s}}}{1{,}602 \\cdot 10^{-19}\\,\\text{C} \\cdot 5 \\cdot 10^{-3}\\,\\text{T}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "r = \\frac{1{,}8218 \\cdot 10^{-23}}{8{,}010 \\cdot 10^{-22}}\\,\\text{m} \\approx \\mathbf{0{,}02274\\,\\text{m} = 2{,}27\\,\\text{cm}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -112,7 +522,39 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Welche Bedingung muss die Geschwindigkeit $v$ eines geladenen Teilchens erfüllen, um einen Wien-Geschwindigkeitsfilter mit gekreuztem $E$- und $B$-Feld geradlinig und unabgelenkt zu passieren?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Bedingung muss die Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v",
+              "speech": "v"
+            },
+            {
+              "type": "text",
+              "text": " eines geladenen Teilchens erfüllen, um einen Wien-Geschwindigkeitsfilter mit gekreuztem "
+            },
+            {
+              "type": "math",
+              "tex": "E",
+              "speech": "E"
+            },
+            {
+              "type": "text",
+              "text": "- und "
+            },
+            {
+              "type": "math",
+              "tex": "B",
+              "speech": "B"
+            },
+            {
+              "type": "text",
+              "text": "-Feld geradlinig und unabgelenkt zu passieren?"
+            }
+          ],
           "concept": "v = E / B (elektrische Kraft F_el = q*E und Lorentzkraft F_L = q*v*B heben sich exakt auf)",
           "fast_check": {
             "type": "binary_choice",
@@ -121,16 +563,352 @@
               "v = E * B"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GB50000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere moderne physikalische Messinstrumente und Teilchenbeschleuniger: 1. **Der Wien-Geschwindigkeitsfilter (Wilhelm Wien, 1897)**:   * Gekreuztes elektrisches und magnetisches Feld ($\\vec{E} \\perp \\vec{B} \\perp \\vec{v}$).   * Kräftegleichgewicht für geradeaus fliegende Teilchen: $F_{\\text{el}} = F_L \\implies q \\cdot E = q \\cdot v \\cdot B \\implies \\mathbf{v_0 = \\frac{E}{B}}$ (völlig unabhängig von Ladung und Masse des Teilchens!), 2. **Das Bainbridge-Massenspektrometer (Isotopenanalyse)**:   * Ionenquelle $\\rightarrow$ Wien-Filter ($v_0 = E/B_1$) $\\rightarrow$ Eintritt in zweites Magnetfeld ($B_2$).   * Halbkreisbahn auf Fotoplatte/Detektor mit Radius $r = \\frac{m \\cdot v_0}{q \\cdot B_2} \\implies \\mathbf{m = \\frac{q \\cdot B_1 \\cdot B_2 \\cdot r}{E}}$ $\\implies$ Trennung von Isotopen gleicher Ladung nach ihrer Masse $m$, 3. **Das Zyklotron (Ernest Lawrence, 1930)**:   * Zwei D-förmige Hohl-Elektroden ('Duanten') im Magnetfeld. Wechselhochspannung im Spalt.   * **Zyklotronfrequenz (Isochronie)**: Umlaufzeit $T = \\frac{2\\pi r}{v} = \\frac{2\\pi m}{q \\cdot B}$ ist **unabhängig vom Bahnradius $r$** $\\implies f_Z = \\frac{q \\cdot B}{2\\pi m}$ ist konstant (bis relativistische Massenzunahme einsetzt), 4. **Der Hall-Effekt (Edwin Hall, 1879)**:   * Stromdurchflossener Halbleiter im Magnetfeld $\\implies$ Lorentzkraft lenkt Ladungsträger quer ab $\\implies$ messbare **Hall-Spannung $U_H = R_H \\cdot \\frac{I \\cdot B}{d}$** (Sensor zur berührungslosen Magnetfeldmessung).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere moderne physikalische Messinstrumente und Teilchenbeschleuniger: 1. Der Wien-Geschwindigkeitsfilter (Wilhelm Wien, 1897):   * Gekreuztes elektrisches und magnetisches Feld ("
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{E} \\perp \\vec{B} \\perp \\vec{v}",
+              "speech": "Vektor E senkrecht zu Vektor B senkrecht zu Vektor v"
+            },
+            {
+              "type": "text",
+              "text": ").   * Kräftegleichgewicht für geradeaus fliegende Teilchen: "
+            },
+            {
+              "type": "math",
+              "tex": "F_{\\text{el}} = F_L \\implies q \\cdot E = q \\cdot v \\cdot B \\implies \\mathbf{v_0 = \\frac{E}{B}}",
+              "speech": "F el gleich F L, daraus folgt q mal E gleich q mal v mal B, daraus folgt v null gleich E durch B"
+            },
+            {
+              "type": "text",
+              "text": " (völlig unabhängig von Ladung und Masse des Teilchens!), 2. Das Bainbridge-Massenspektrometer (Isotopenanalyse):   * Ionenquelle "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Wien-Filter ("
+            },
+            {
+              "type": "math",
+              "tex": "v_0 = E/B_1",
+              "speech": "v null gleich E durch B eins"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Eintritt in zweites Magnetfeld ("
+            },
+            {
+              "type": "math",
+              "tex": "B_2",
+              "speech": "B zwei"
+            },
+            {
+              "type": "text",
+              "text": ").   * Halbkreisbahn auf Fotoplatte/Detektor mit Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r = \\frac{m \\cdot v_0}{q \\cdot B_2} \\implies \\mathbf{m = \\frac{q \\cdot B_1 \\cdot B_2 \\cdot r}{E}}",
+              "speech": "r gleich m mal v null durch q mal B zwei, daraus folgt m gleich q mal B eins mal B zwei mal r durch E"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Trennung von Isotopen gleicher Ladung nach ihrer Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m",
+              "speech": "m"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Das Zyklotron (Ernest Lawrence, 1930):   * Zwei D-förmige Hohl-Elektroden ('Duanten') im Magnetfeld. Wechselhochspannung im Spalt.   * Zyklotronfrequenz (Isochronie): Umlaufzeit "
+            },
+            {
+              "type": "math",
+              "tex": "T = \\frac{2\\pi r}{v} = \\frac{2\\pi m}{q \\cdot B}",
+              "speech": "T gleich 2 Pi r durch v gleich 2 Pi m durch q mal B"
+            },
+            {
+              "type": "text",
+              "text": " ist unabhängig vom Bahnradius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies f_Z = \\frac{q \\cdot B}{2\\pi m}",
+              "speech": "daraus folgt f Z gleich q mal B durch 2 Pi m"
+            },
+            {
+              "type": "text",
+              "text": " ist konstant (bis relativistische Massenzunahme einsetzt), 4. Der Hall-Effekt (Edwin Hall, 1879):   * Stromdurchflossener Halbleiter im Magnetfeld "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Lorentzkraft lenkt Ladungsträger quer ab "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " messbare Hall-Spannung "
+            },
+            {
+              "type": "math",
+              "tex": "U_H = R_H \\cdot \\frac{I \\cdot B}{d}",
+              "speech": "U H gleich R H mal I mal B durch d"
+            },
+            {
+              "type": "text",
+              "text": " (Sensor zur berührungslosen Magnetfeldmessung)."
+            }
+          ],
           "concept": "Technische Physik 11: Wien-Filter v = E/B; Massenspektrometer m = q*B1*B2*r / E (Isotopentrennung); Zyklotron (Isochronie T = 2*pi*m / (q*B), Zyklotronfrequenz f_Z); Hall-Effekt (Hall-Spannung U_H zur Magnetfeldmessung).",
-          "sample_solution": "1. Der Wien-Geschwindigkeitsfilter: - **Funktionsprinzip**: Ein elektrostatisches Feld $\\vec{E}$ und ein magnetisches Feld $\\vec{B}$ stehen senkrecht aufeinander und senkrecht zur Einschussrichtung der Ionen. - **Kräftebilanz**:   * Elektrische Kraft: $\\vec{F}_{\\text{el}} = q \\cdot \\vec{E}$ (zeigt nach unten).   * Lorentzkraft: $\\vec{F}_L = q \\cdot (\\vec{v} \\times \\vec{B})$ (zeigt nach oben).   * Nur Teilchen mit der exakten Filtergeschwindigkeit fliegen unabgelenkt durch die Austrittsblende:     $$F_{\\text{el}} = F_L \\implies q \\cdot E = q \\cdot v \\cdot B \\implies \\mathbf{v_0 = \\frac{E}{B}}$$ 2. Das Bainbridge-Massenspektrometer: - **Zweck**: Hochpräzise Bestimmung von Atommassen und Trennung chemischer Isotope (z. B. $^{12}\\text{C}$ vs. $^{14}\\text{C}$). - **Ablauf**:   1. Ionen passieren den Wien-Filter und besitzen alle identische Geschwindigkeit $v_0 = \\frac{E}{B_1}$.   2. Sie treten in ein homogenes Analysatormagnetfeld $B_2$ ein und werden auf Halbkreise abgelenkt:      $$r = \\frac{m \\cdot v_0}{q \\cdot B_2} \\implies \\mathbf{m = \\frac{q \\cdot B_2 \\cdot r}{v_0} = \\frac{q \\cdot B_1 \\cdot B_2}{E} \\cdot r}$$   3. Der Auftreffabstand auf dem Detektor ($2r$) ist direkt proportional zur Masse $m$. 3. Das Zyklotron (Kreisbeschleuniger): - **Aufbau**: Zwei D-förmige metallische Halbdosen (Duanten) in einer Vakuumkammer zwischen den Polen eines riesigen Elektromagneten. An den Duanten liegt eine hochfrequente Wechselspannung. - **Die fundamentale Eigenschaft der Isochronie**:   * Für die Umlaufdauer einer vollen Kreisbahn gilt:     $$T = \\frac{2\\pi r}{v} = \\frac{2\\pi \\cdot \\frac{m v}{q B}}{v} = \\mathbf{\\frac{2\\pi m}{q \\cdot B}}$$   * **Erkenntnis**: Die Umlaufzeit $T$ hängt **nicht von der Geschwindigkeit $v$ oder dem Radius $r$ ab**! Bei steigender Geschwindigkeit wird die Bahnspirale zwar größer, aber die Umlaufzeit bleibt exakt gleich $\\implies$ Die Beschleunigungsspannung muss mit einer **konstanten Zyklotronfrequenz** umgepolt werden:     $$\\mathbf{f_{\\text{Zyklotron}} = \\frac{1}{T} = \\frac{q \\cdot B}{2\\pi m}}$$ 4. Der Hall-Effekt: - Wird ein stromdurchflossener Leiter/Halbleiterstreifen (Dicke $d$) senkrecht von einem Magnetfeld $B$ durchsetzt, drängt die Lorentzkraft die Elektronen an eine Seitenkante. - Es entsteht ein internes transversales elektrisches Gegenfeld $E_H$. Im Gleichgewicht ($F_{\\text{el}} = F_L$) entsteht zwischen den Kanten die **Hall-Spannung**:   $$\\mathbf{U_H = R_H \\cdot \\frac{I \\cdot B}{d}} \\quad (R_H = \\frac{1}{n \\cdot e} = \\text{Hall-Konstante})$$   * *Einsatz*: Hall-Sonden zur Magnetfeldmessung, bürstenlose Elektromotoren, ABS-Raddrehzahlsensoren."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der Wien-Geschwindigkeitsfilter: - Funktionsprinzip: Ein elektrostatisches Feld "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{E}"
+            },
+            {
+              "type": "text",
+              "text": " und ein magnetisches Feld "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{B}"
+            },
+            {
+              "type": "text",
+              "text": " stehen senkrecht aufeinander und senkrecht zur Einschussrichtung der Ionen. - Kräftebilanz:   * Elektrische Kraft: "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}_{\\text{el}} = q \\cdot \\vec{E}"
+            },
+            {
+              "type": "text",
+              "text": " (zeigt nach unten).   * Lorentzkraft: "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}_L = q \\cdot (\\vec{v} \\times \\vec{B})"
+            },
+            {
+              "type": "text",
+              "text": " (zeigt nach oben).   * Nur Teilchen mit der exakten Filtergeschwindigkeit fliegen unabgelenkt durch die Austrittsblende:     "
+            },
+            {
+              "type": "math",
+              "tex": "F_{\\text{el}} = F_L \\implies q \\cdot E = q \\cdot v \\cdot B \\implies \\mathbf{v_0 = \\frac{E}{B}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Das Bainbridge-Massenspektrometer: - Zweck: Hochpräzise Bestimmung von Atommassen und Trennung chemischer Isotope (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "^{12}\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": " vs. "
+            },
+            {
+              "type": "math",
+              "tex": "^{14}\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": "). - Ablauf:   1. Ionen passieren den Wien-Filter und besitzen alle identische Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v_0 = \\frac{E}{B_1}"
+            },
+            {
+              "type": "text",
+              "text": ".   2. Sie treten in ein homogenes Analysatormagnetfeld "
+            },
+            {
+              "type": "math",
+              "tex": "B_2"
+            },
+            {
+              "type": "text",
+              "text": " ein und werden auf Halbkreise abgelenkt:      "
+            },
+            {
+              "type": "math",
+              "tex": "r = \\frac{m \\cdot v_0}{q \\cdot B_2} \\implies \\mathbf{m = \\frac{q \\cdot B_2 \\cdot r}{v_0} = \\frac{q \\cdot B_1 \\cdot B_2}{E} \\cdot r}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   3. Der Auftreffabstand auf dem Detektor ("
+            },
+            {
+              "type": "math",
+              "tex": "2r"
+            },
+            {
+              "type": "text",
+              "text": ") ist direkt proportional zur Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m"
+            },
+            {
+              "type": "text",
+              "text": ". 3. Das Zyklotron (Kreisbeschleuniger): - Aufbau: Zwei D-förmige metallische Halbdosen (Duanten) in einer Vakuumkammer zwischen den Polen eines riesigen Elektromagneten. An den Duanten liegt eine hochfrequente Wechselspannung. - Die fundamentale Eigenschaft der Isochronie:   * Für die Umlaufdauer einer vollen Kreisbahn gilt:     "
+            },
+            {
+              "type": "math",
+              "tex": "T = \\frac{2\\pi r}{v} = \\frac{2\\pi \\cdot \\frac{m v}{q B}}{v} = \\mathbf{\\frac{2\\pi m}{q \\cdot B}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Erkenntnis: Die Umlaufzeit "
+            },
+            {
+              "type": "math",
+              "tex": "T"
+            },
+            {
+              "type": "text",
+              "text": " hängt nicht von der Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v"
+            },
+            {
+              "type": "text",
+              "text": " oder dem Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r"
+            },
+            {
+              "type": "text",
+              "text": " ab! Bei steigender Geschwindigkeit wird die Bahnspirale zwar größer, aber die Umlaufzeit bleibt exakt gleich "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Die Beschleunigungsspannung muss mit einer konstanten Zyklotronfrequenz umgepolt werden:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{f_{\\text{Zyklotron}} = \\frac{1}{T} = \\frac{q \\cdot B}{2\\pi m}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 4. Der Hall-Effekt: - Wird ein stromdurchflossener Leiter/Halbleiterstreifen (Dicke "
+            },
+            {
+              "type": "math",
+              "tex": "d"
+            },
+            {
+              "type": "text",
+              "text": ") senkrecht von einem Magnetfeld "
+            },
+            {
+              "type": "math",
+              "tex": "B"
+            },
+            {
+              "type": "text",
+              "text": " durchsetzt, drängt die Lorentzkraft die Elektronen an eine Seitenkante. - Es entsteht ein internes transversales elektrisches Gegenfeld "
+            },
+            {
+              "type": "math",
+              "tex": "E_H"
+            },
+            {
+              "type": "text",
+              "text": ". Im Gleichgewicht ("
+            },
+            {
+              "type": "math",
+              "tex": "F_{\\text{el}} = F_L"
+            },
+            {
+              "type": "text",
+              "text": ") entsteht zwischen den Kanten die Hall-Spannung:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{U_H = R_H \\cdot \\frac{I \\cdot B}{d}} \\quad (R_H = \\frac{1}{n \\cdot e} = \\text{Hall-Konstante})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Einsatz: Hall-Sonden zur Magnetfeldmessung, bürstenlose Elektromotoren, ABS-Raddrehzahlsensoren."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

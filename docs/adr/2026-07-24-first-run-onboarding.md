@@ -1,6 +1,6 @@
 # First-Run Onboarding: Personas, Goal-Driven Import, Cloud LLM Connect, and Agent Choice
 
-**Status:** Accepted
+**Status:** Accepted — §3 (a goal as an import path) superseded by [2026-10-14](2026-10-14-topic-import-and-source-provenance.md)
 **Date:** 2026-07-24
 **Deciders:** Thomas (project owner)
 **Related:**

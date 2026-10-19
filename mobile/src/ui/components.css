@@ -1104,3 +1104,73 @@ details > summary {
   -webkit-tap-highlight-color: transparent;
   user-select: none;
 }
+
+/* ── Wissensatlas (ADR 2026-10-13): the Studio's outline as grouped rows ── */
+
+.atlas-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-3);
+  margin-top: var(--gap-6);
+}
+
+.atlas-outline ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.atlas-outline > .atlas-outline-list {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-row);
+  overflow: hidden;
+}
+
+.atlas-outline ul ul {
+  padding-left: var(--gap-4);
+}
+
+.atlas-outline-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  min-height: var(--tap);
+  padding: var(--gap-3) var(--gap-4);
+  border: 0;
+  border-top: 0.5px solid var(--separator);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.atlas-outline-list > li:first-child > .atlas-outline-entry {
+  border-top: 0;
+}
+
+.atlas-outline-entry:active,
+.atlas-outline-entry[aria-current="true"] {
+  background: var(--bg-grouped-row-active);
+}
+
+.atlas-outline-entry[aria-expanded="false"] .atlas-outline-name::after {
+  content: " ›";
+  color: var(--label-tertiary);
+}
+
+.atlas-outline-meta,
+.atlas-detail-meta {
+  color: var(--label-secondary);
+  font-size: 13px;
+}
+
+.atlas-outline-unit .atlas-outline-name {
+  font-weight: 400;
+}
+
+.atlas-detail .btn {
+  align-self: flex-start;
+}

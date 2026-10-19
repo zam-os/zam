@@ -10,7 +10,7 @@ tags:
   - offline
   - curriculum
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mobile-standalone-libraries.md"
-timestamp: 2026-10-05T21:20:00.000Z
+timestamp: 2026-10-15T08:00:00.000Z
 ---
 
 ZAM Mobile is a standalone learning app on Android and iOS. An unpaired first
@@ -148,7 +148,32 @@ never call the scheduler or write FSRS state. If the initial evaluation did
 not succeed, the follow-up control stays hidden and ordinary self-rating
 continues to work without AI.
 
+# Formulas and spoken formulas
+
+The review renders a card's question, Tier-1 options and revealed answer
+from its segments with the Studio's renderer
+([card-text-segments.md](card-text-segments.md)); Temml (pinned to 0.13.5)
+loads as a lazy chunk. Voice reads the spoken projections. A card the phone
+generates (curriculum import) is stored as the plain projection: Unicode
+formulas, never raw LaTeX. A formula card cannot be edited as plain text
+on the phone; the kernel's refusal points to the Studio's card editor. The
+app's content-security policy allows its own `blob:`/`data:` images,
+`blob:` audio and local fonts, which the attachment strip and the renderer
+need; an image that is part of the card text is not repeated in the strip.
+
+# Knowledge atlas
+
+The Fortschritt tab shows the knowledge atlas under the statistics, as the
+Studio's outline of one lens: each region with its condition in words and the
+learner's own due counts, and the library's lenses as a segmented control.
+Mobile reads it with the kernel's `readLearnerAtlas` on its own database, the
+read behind the Studio's `atlas-read`, so both open the same lens and count the
+same due cards. It writes nothing: no settle, no stored lens, no thread.
+*Wiederholen* on a region starts the usual review session with that region's
+due cards and no new card. The map itself is not on Mobile yet.
+
 # Citations
+- [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - [ADR 2026-07-06b — Checkpointed Review Dialogue](../adr/2026-07-06b-checkpointed-review-dialogue.md)
 - Tests: `tests/mobile/discuss.test.ts`, `tests/mobile/discussion-wiring.test.ts`, `tests/mobile/learning-mode-wiring.test.ts`, `tests/mobile/review-session.test.ts`, `tests/mobile/voice.test.ts`, `tests/desktop/discussion.test.ts`
@@ -160,6 +185,9 @@ continues to work without AI.
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
 - Tests: `tests/mobile/material-import.test.ts`, `tests/mobile/material-import-wiring.test.ts`, `tests/mobile/vl-import.test.ts`
 - Code: `mobile/src/material-import.ts`, `mobile/src/material-review-view.ts`, `mobile/src/vl-import.ts`, `mobile/src/image-import.ts`, `mobile/src/study-offers.ts`
+- [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md) (Decision 10; plan Phase 10b)
+- Tests: `tests/mobile/atlas-wiring.test.ts`, `tests/mobile/review-session.test.ts`, `tests/kernel/atlas-learner.test.ts`
+- Code: `mobile/src/atlas.ts`, `mobile/src/review-session.ts`, `src/kernel/atlas/learner.ts`, `desktop/src/atlas/outline.ts`
 
 - [ADR 2026-08-08 — ZAM on iPadOS Is a Standalone App, Not a Companion](../adr/2026-08-08-ios-standalone-app.md)
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)

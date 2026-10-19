@@ -25,7 +25,9 @@ import { join } from "node:path";
 import { ulid } from "ulid";
 import {
   type MaterialProposalSet,
+  MaterialProposalSetError,
   type MaterialReviewRow,
+  materialSpeechIssues,
   parseMaterialProposalSet,
 } from "../kernel/index.js";
 
@@ -138,7 +140,15 @@ export async function writeStagedImport(
   await rename(tmp, path);
 }
 
-/** Validate and stage a new batch; returns it with its fresh id. */
+/**
+ * Validate and stage a new batch; returns it with its fresh id.
+ *
+ * An agent's batch (`harness`) is read like any agent write (ADR 2026-10-14b,
+ * Decision 6): a refused formula or a formula without speech is an issue
+ * naming it, and the agent sends the set again. The Studio's own batch has
+ * already asked its model for missing speech; what is still missing stays
+ * empty there, and voice reads the plain text.
+ */
 export async function stageMaterialImport(
   input: {
     set: unknown;
@@ -157,10 +167,21 @@ export async function stageMaterialImport(
     ...(input.harness ? { harness: input.harness } : {}),
     ...(input.readBy ? { readBy: input.readBy } : {}),
     ...(input.sentTo ? { sentTo: input.sentTo } : {}),
-    set: parseMaterialProposalSet(input.set),
+    set: parseHarnessAware(input.set, input.origin),
   };
   await writeStagedImport(batch, opts);
   return batch;
+}
+
+function parseHarnessAware(
+  value: unknown,
+  origin: StagedImportOrigin,
+): MaterialProposalSet {
+  if (origin !== "harness") return parseMaterialProposalSet(value);
+  const set = parseMaterialProposalSet(value, { mode: "agent" });
+  const missing = materialSpeechIssues(set);
+  if (missing.length > 0) throw new MaterialProposalSetError(missing);
+  return set;
 }
 
 /** One batch, or `null` when it is missing, unreadable or expired. */

@@ -12,6 +12,7 @@
  * whole design has refused twice.
  */
 
+import { effectiveVariants } from "../atlas/variants.js";
 import type { Database } from "../db/types.js";
 import { ensureCard } from "../models/card.js";
 
@@ -232,6 +233,13 @@ export async function bonusCandidates(
     )
     .all(userId)) as Array<{ atom_id: string }>;
   const enrolled = new Set(enrolledRows.map((row) => row.atom_id));
+  // A published unit a variant stands in for is not offered (ADR 2026-10-13,
+  // Decision 12): the school teaches the other method.
+  const replaced = new Set(
+    [...(await effectiveVariants(db, userId)).keys()]
+      .filter((key) => key.startsWith("atom:"))
+      .map((key) => key.slice("atom:".length)),
+  );
 
   const requirements = new Map<string, string[]>();
   for (const edge of edges) {
@@ -261,7 +269,12 @@ export async function bonusCandidates(
 
   const candidates: BonusCandidate[] = [];
   for (const atom of atoms) {
-    if (held.has(atom.id) || enrolled.has(atom.id) || inScope.has(atom.id)) {
+    if (
+      held.has(atom.id) ||
+      enrolled.has(atom.id) ||
+      inScope.has(atom.id) ||
+      replaced.has(atom.id)
+    ) {
       continue;
     }
     const needs = requirements.get(atom.id) ?? [];

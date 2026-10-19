@@ -27,6 +27,7 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 
 ## data-model
 
+- [Card Text Segments](card-text-segments.md) — A card's question, answer and fast-check options may be a sequence of text, formula and image segments; the plain string stays as their derived projection, formulas are allowlisted LaTeX rendered to MathML on the device and read aloud by their speech, and one write path keeps both in step.
 - [Prerequisite Graph and Blocking](prerequisite-blocking.md) — Tokens form a directed prerequisite graph; blocking and unblocking of dependent cards is separate from FSRS math and coordinated atomically by the review-action kernel API.
 - [Token and Card Model](token-card-model.md) — ZAM separates learning objectives, alignments, curriculum bindings, shared practice items, and each learner's personal FSRS card state.
 
@@ -34,5 +35,5 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 
 - [Bridge CLI Protocol](bridge-protocol.md) — zam bridge is the machine-facing JSON fallback transport for agents; responses are always JSON, and the protocol types are the stable contract.
 - [Local Card File Import](local-card-file-import.md) — ZAM imports basic, Cloze, image-occlusion, image, and audio cards from local APKG files, plus text cards from CSV and TSV, through a deterministic preview and atomic model-free commit.
-- [Learning Cards from Photos and Files](material-import.md) — A model reads a learner's photos or PDF itself and proposes cards; the learner decides each one as Yes, No or Bonus in one review list, and only a source link and file fingerprints are kept.
+- [Learning Cards from Photos and Files](material-import.md) — A model reads a learner's photos, PDF or typed notes itself and proposes cards; the learner decides each one as Yes, No or Bonus in one review list, and only a source link and file fingerprints are kept. An import can start at a place on the knowledge atlas.
 - [Curated Open-Content Library](open-content-library.md) — ZAM exposes a Studio-first catalog of reviewed open-licensed decks whose pinned artifacts are downloaded, integrity-checked, previewed, and imported through the normal safe card-import contract.

@@ -14,6 +14,7 @@ import {
   getPostgresCredentials,
   openPostgresAdministration,
   type PostgresCredentials,
+  reconcileInstalledBundledTiles,
 } from "../../kernel/index.js";
 import { isEntraLoginRequired } from "../db/entra-cli.js";
 import {
@@ -123,6 +124,40 @@ teamCommand
     console.log(
       "  RLS policies and group roles zam_member / zam_curator applied",
     );
+  });
+
+// ── zam team reinstall-tiles ───────────────────────────────────────────────
+
+teamCommand
+  .command("reinstall-tiles")
+  .description(
+    "Reinstall the bundled tiles the team library holds whose version changed (administrator)",
+  )
+  .option(
+    "--database <name>",
+    "Team library database (default: the configured one)",
+  )
+  .option("--json", "Output as JSON")
+  .action(async (opts: { database?: string; json?: boolean }) => {
+    const json = Boolean(opts.json);
+    const target = adminTarget(opts.database, json);
+    if (!target) return;
+    // On a team library an app update never publishes curriculum; the
+    // administrator does, here (ADR 2026-10-14b Decision 7).
+    const result = await withAdminDb(target, json, (db) =>
+      reconcileInstalledBundledTiles(db, { allowTeamLibrary: true }),
+    );
+    if (!result) return;
+    if (json) {
+      jsonOut({ success: true, ...result });
+      return;
+    }
+    console.log(
+      `Reinstalled ${result.reinstalled.length} of ${result.installed} installed tiles.`,
+    );
+    for (const failure of result.failed) {
+      console.log(`  failed: ${failure.tileId} — ${failure.error}`);
+    }
   });
 
 // ── zam team add-member ────────────────────────────────────────────────────

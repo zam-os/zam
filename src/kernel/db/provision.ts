@@ -15,7 +15,16 @@
  */
 
 import { ulid } from "ulid";
-import { SCHEMA_INDEXES, SCHEMA_TABLES } from "./schema.js";
+import { hueKeyForDomain } from "../atlas/palette.js";
+import {
+  ATLAS_LAND_TABLES,
+  ATLAS_TABLES,
+  ATLAS_VARIANT_TABLES,
+  CONNECTION_TABLES,
+  EMBLEM_TABLES,
+  SCHEMA_INDEXES,
+  SCHEMA_TABLES,
+} from "./schema.js";
 import type { Database } from "./types.js";
 
 /**
@@ -24,7 +33,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 39;
+export const CURRENT_SCHEMA_VERSION = 48;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -997,6 +1006,126 @@ export async function runMigrations(db: Database): Promise<void> {
   const markerM039 = await readSchemaVersion(db);
   if (markerM039 === null || markerM039 < 39) {
     await deleteObservedCommandTexts(db);
+  }
+
+  // M040: knowledge atlas (ADR 2026-10-13, Decisions 2–3) — lenses, regions,
+  // domain aliases and explicit placements. Knowledge only; the lenses and
+  // their seed regions are created on first use (`ensureWorldLenses`).
+  await db.exec(ATLAS_TABLES);
+
+  // M041: stored atlas land (ADR 2026-10-13, Decision 8) — every unit's hex,
+  // assigned once, and each island's place on the sea. Knowledge, written
+  // only by settle and a curator's lens edit.
+  await db.exec(ATLAS_LAND_TABLES);
+
+  // M042: variants (ADR 2026-10-13, Decision 12) — a method that stands in
+  // for a published unit: the library's choice (knowledge) and a learner's
+  // own (learning state, with the cards it detached).
+  await db.exec(ATLAS_VARIANT_TABLES);
+
+  // M043: Sinnbilder (ADR 2026-10-13, Decision 6) — the library's shared
+  // Sinnbild (knowledge) and a learner's own (learning state), both stored in
+  // the validator's canonical form only.
+  await db.exec(EMBLEM_TABLES);
+
+  // M044: a Fach's Sinnbild belongs to the subject, which every lens shares
+  // (`subject:<key>`), not to one lens's region. Rows written under a Fach's
+  // region key move there.
+  await moveFachEmblemsToSubjects(db);
+
+  // M045: red threads beyond prerequisites (ADR 2026-10-13, Decision 7) —
+  // the library's shared threads (knowledge) and a learner's own of any kind
+  // (learning state), which never feed blocking.
+  await db.exec(CONNECTION_TABLES);
+
+  // M046: the term to read a world unit up by (ADR 2026-10-14, Decision 4).
+  // Knowledge, shared, part of the token's revision; never a source link.
+  if (!(await columnsOf(db, "tokens")).includes("lookup_term")) {
+    await db.exec(`ALTER TABLE tokens ADD COLUMN lookup_term TEXT`);
+  }
+
+  // M047: curated lenses (ADR 2026-10-13, Decision 3) — the named source a
+  // lens follows, the agent's "no longer fits it" flag, and one pending
+  // replacement a curator accepts. Each column guarded on its own.
+  const lensCols = await columnsOf(db, "atlas_lenses");
+  for (const column of [
+    "source",
+    "stale_at",
+    "stale_note",
+    "proposal",
+    "proposal_source",
+    "proposed_at",
+    "proposed_by",
+  ]) {
+    if (!lensCols.includes(column)) {
+      await db.exec(`ALTER TABLE atlas_lenses ADD COLUMN ${column} TEXT`);
+    }
+  }
+
+  // M048: card text as typed segments (ADR 2026-10-14b) — the segment
+  // columns beside the plain ones, an image's placement in the card text,
+  // segment options, and the bundled tiles a library holds (Decision 7).
+  const segmentCols = await columnsOf(db, "tokens");
+  for (const column of ["question_segments", "concept_segments"]) {
+    if (!segmentCols.includes(column)) {
+      await db.exec(`ALTER TABLE tokens ADD COLUMN ${column} TEXT`);
+    }
+  }
+  if (!(await columnsOf(db, "token_media")).includes("placement")) {
+    await db.exec(
+      `ALTER TABLE token_media ADD COLUMN placement TEXT NOT NULL DEFAULT 'attached'`,
+    );
+  }
+  if (!(await columnsOf(db, "choice_distractors")).includes("text_segments")) {
+    await db.exec(
+      `ALTER TABLE choice_distractors ADD COLUMN text_segments TEXT`,
+    );
+  }
+  await db.exec(`CREATE TABLE IF NOT EXISTS installed_tiles (
+    tile_id      TEXT PRIMARY KEY,
+    version      TEXT NOT NULL,
+    installed_at TEXT NOT NULL,
+    failed_at    TEXT,
+    last_error   TEXT
+  )`);
+}
+
+/**
+ * M044. A Fach sits on level 1 of the Weltwissen and Schule lenses, so its
+ * region key has two segments (`natur.physik`, `rs-9.mathematik`). Its
+ * subject is the hue key of the second. An existing subject row is kept.
+ */
+async function moveFachEmblemsToSubjects(db: Database): Promise<void> {
+  const fach = /^region:(weltwissen|schule):[^.]+\.([^.]+)$/;
+  for (const table of ["emblems", "learner_emblems"]) {
+    const learner = table === "learner_emblems";
+    const rows = (await db
+      .prepare(
+        `SELECT ${learner ? "user_id, " : ""}subject_key FROM ${table}
+          WHERE subject_key LIKE 'region:%'`,
+      )
+      .all()) as Array<{ user_id?: string; subject_key: string }>;
+    for (const row of rows) {
+      const match = fach.exec(row.subject_key);
+      if (!match) continue;
+      const subject = `subject:${hueKeyForDomain(match[2])}`;
+      const owner = learner ? " AND user_id = ?" : "";
+      const args = learner ? [row.user_id] : [];
+      const taken = await db
+        .prepare(`SELECT 1 FROM ${table} WHERE subject_key = ?${owner}`)
+        .get(subject, ...args);
+      if (taken) {
+        await db
+          .prepare(`DELETE FROM ${table} WHERE subject_key = ?${owner}`)
+          .run(row.subject_key, ...args);
+      } else {
+        await db
+          .prepare(
+            `UPDATE ${table} SET subject_key = ? WHERE subject_key = ?${owner}`,
+          )
+          .run(subject, row.subject_key, ...args);
+      }
+    }
   }
 }
 

@@ -65,9 +65,292 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das Schalenmodell, das PSE und die Entstehung der Ionenbindung: 1. **Das Schalenmodell nach Bohr**: Elektronen bewegen sich auf konzentrischen Schalen ($K, L, M, N...$ bzw. $n = 1, 2, 3...$); maximale Elektronenkapazität pro Schale: $z_{\\max} = 2n^2$ ($K=2, L=8, M=18$), 2. **Das Periodensystem der Elemente (PSE)**:   * **Hauptgruppennummer (I bis VIII)** = Anzahl der **Valenzelektronen (Außenelektronen)** $\\rightarrow$ bestimmt das chemische Reaktionsverhalten.   * **Periodennummer (1 bis 7)** = Anzahl der besetzten **Elektronenschalen**, 3. **Die Edelgasregel (Oktettregel)**: Atome streben durch Elektronenabgabe, -aufnahme oder -teilung die energetisch stabile Edelgaskonfiguration (8 Valenzelektronen) an, 4. **Die Ionenbindung (Salze)**:   * Metallatome geben Valenzelektronen ab $\\rightarrow$ positiv geladene **Kationen** ($M \\rightarrow M^{n+} + n e^-$).   * Nichtmetallatome nehmen Elektronen auf $\\rightarrow$ negativ geladene **Anionen** ($X + m e^- \\rightarrow X^{m-}$).   * Ungerichtete elektrostatische Anziehungskräfte (Coulomb-Kräfte) bilden ein regelmäßiges **Kristallgitter (Salzgitter)** unter Freisetzung von **Gitterenergie** $\\Delta H_G$.",
-          "concept": "Schalenmodell (2n^2); PSE: Hauptgruppe = Valenzelektronen, Periode = Schalen; Oktettregel; Ionenbindung: Metall -> Kation + e-, Nichtmetall + e- -> Anion; Ionengitter (Coulomb-Anziehung, Gitterenergie, hohe Schmelzpunkte, spröde, leiten als Schmelze/Lösung).",
-          "sample_solution": "1. Das Schalenmodell der Atomhülle (Niels Bohr): - Die Elektronen umkreisen den Kern auf diskreten Energiestufen (**Schalen $K, L, M, N$** von innen nach außen). - **Maximale Besetzungszahl**: $z_{\\max} = 2n^2$ (1. Schale $K$: max. 2 $e^-$, 2. Schale $L$: max. 8 $e^-$, 3. Schale $M$: max. 18 $e^-$). 2. Struktur und Systematik des Periodensystems der Elemente (PSE): - Elemente sind nach steigender Kernladungszahl $Z$ (Protonenzahl) angeordnet:   * **Hauptgruppen (senkrechte Spalten I bis VIII)**:     - Alle Elemente einer Hauptgruppe besitzen **dieselbe Anzahl an Valenzelektronen (Außenelektronen)** und zeigen daher sehr ähnliche chemische Eigenschaften (z. B. I. HG: Alkalimetalle mit 1 $e^-$, VII. HG: Halogene mit 7 $e^-$, VIII. HG: Edelgase mit 8 $e^-$ [Helium: 2]).   * **Perioden (waagrechte Zeilen 1 bis 7)**:     - Gibt die Anzahl der **Elektronenschalen** an. 3. Die Oktettregel (Edelgaskonfiguration): - Atome der Hauptgruppenelemente streben den Zustand einer vollbesetzten Außenschale mit **8 Valenzelektronen (Elektronenoktett)** an, da dieser energetisch am stabilsten ist. 4. Die Ionenbindung und der Aufbau von Salzen: - **1. Elektronenübergang (Redoxprozess)**:   * **Metalle** (geringe Rumpfladung, niedrige Ionisierungsenergie) geben ihre wenigen Außenelektronen leicht ab $\\implies$ Bildung positiv geladener **Kationen** (z. B. $\\text{Na} \\rightarrow \\text{Na}^+ + e^-$, $\\text{Mg} \\rightarrow \\text{Mg}^{2+} + 2e^-$).   * **Nichtmetalle** (hohe Kernanziehung, hohe Elektronenaffinität) nehmen Elektronen auf $\\implies$ Bildung negativ geladener **Anionen** (z. B. $\\text{Cl} + e^- \\rightarrow \\text{Cl}^-$, $\\text{O} + 2e^- \\rightarrow \\text{O}^{2-}$). - **2. Das Ionengitter (Salzkristall)**:   * Kationen und Anionen ziehen sich durch ungerichtete elektrostatische **Coulomb-Kräfte** allseitig an und ordnen sich in einem hochgeordneten dreidimensionalen **Ionengitter** an (z. B. Natriumchlorid-Gitter $\\text{NaCl}$).   * Bei der Gitterbildung wird die enorme **Gitterenergie $\\Delta H_G$** frei. - **3. Typische Salzeigenschaften**:   * Sehr hohe Schmelz- und Siedepunkte (starke Gitterbindung).   * Sprödigkeit (Verschiebung der Gitterschichten bringt gleichnamige Ladungen nebeneinander $\\implies$ elektrostatische Abstoßung spaltet Kristall).   * Elektrische Leitfähigkeit: Im festen Zustand Nichtleiter (feste Ionenplätze), in **Schmelze und wässriger Lösung** hervorragende Ionenleiter."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das Schalenmodell, das PSE und die Entstehung der Ionenbindung: 1. Das Schalenmodell nach Bohr: Elektronen bewegen sich auf konzentrischen Schalen ("
+            },
+            {
+              "type": "math",
+              "tex": "K, L, M, N...",
+              "speech": "K, L, M, N und so weiter"
+            },
+            {
+              "type": "text",
+              "text": " bzw. "
+            },
+            {
+              "type": "math",
+              "tex": "n = 1, 2, 3...",
+              "speech": "n gleich 1, 2, 3 und so weiter"
+            },
+            {
+              "type": "text",
+              "text": "); maximale Elektronenkapazität pro Schale: "
+            },
+            {
+              "type": "math",
+              "tex": "z_{\\max} = 2n^2",
+              "speech": "z max gleich 2 n Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "K=2, L=8, M=18",
+              "speech": "K gleich 2, L gleich 8, M gleich 18"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Das Periodensystem der Elemente (PSE):   * Hauptgruppennummer (I bis VIII) = Anzahl der Valenzelektronen (Außenelektronen) "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " bestimmt das chemische Reaktionsverhalten.   * Periodennummer (1 bis 7) = Anzahl der besetzten Elektronenschalen, 3. Die Edelgasregel (Oktettregel): Atome streben durch Elektronenabgabe, -aufnahme oder -teilung die energetisch stabile Edelgaskonfiguration (8 Valenzelektronen) an, 4. Die Ionenbindung (Salze):   * Metallatome geben Valenzelektronen ab "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " positiv geladene Kationen ("
+            },
+            {
+              "type": "math",
+              "tex": "M \\rightarrow M^{n+} + n e^-",
+              "speech": "M reagiert zu M n plus plus n Elektronen"
+            },
+            {
+              "type": "text",
+              "text": ").   * Nichtmetallatome nehmen Elektronen auf "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " negativ geladene Anionen ("
+            },
+            {
+              "type": "math",
+              "tex": "X + m e^- \\rightarrow X^{m-}",
+              "speech": "X plus m Elektronen reagiert zu X m minus"
+            },
+            {
+              "type": "text",
+              "text": ").   * Ungerichtete elektrostatische Anziehungskräfte (Coulomb-Kräfte) bilden ein regelmäßiges Kristallgitter (Salzgitter) unter Freisetzung von Gitterenergie "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta H_G",
+              "speech": "Delta H G"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Schalenmodell ("
+            },
+            {
+              "type": "math",
+              "tex": "2n^2",
+              "speech": "2 n Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "); PSE: Hauptgruppe = Valenzelektronen, Periode = Schalen; Oktettregel; Ionenbindung: Metall -> Kation + e-, Nichtmetall + e- -> Anion; Ionengitter (Coulomb-Anziehung, Gitterenergie, hohe Schmelzpunkte, spröde, leiten als Schmelze/Lösung)."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Das Schalenmodell der Atomhülle (Niels Bohr): - Die Elektronen umkreisen den Kern auf diskreten Energiestufen (Schalen "
+            },
+            {
+              "type": "math",
+              "tex": "K, L, M, N"
+            },
+            {
+              "type": "text",
+              "text": " von innen nach außen). - Maximale Besetzungszahl: "
+            },
+            {
+              "type": "math",
+              "tex": "z_{\\max} = 2n^2"
+            },
+            {
+              "type": "text",
+              "text": " (1. Schale "
+            },
+            {
+              "type": "math",
+              "tex": "K"
+            },
+            {
+              "type": "text",
+              "text": ": max. 2 "
+            },
+            {
+              "type": "math",
+              "tex": "e^-"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Schale "
+            },
+            {
+              "type": "math",
+              "tex": "L"
+            },
+            {
+              "type": "text",
+              "text": ": max. 8 "
+            },
+            {
+              "type": "math",
+              "tex": "e^-"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Schale "
+            },
+            {
+              "type": "math",
+              "tex": "M"
+            },
+            {
+              "type": "text",
+              "text": ": max. 18 "
+            },
+            {
+              "type": "math",
+              "tex": "e^-"
+            },
+            {
+              "type": "text",
+              "text": "). 2. Struktur und Systematik des Periodensystems der Elemente (PSE): - Elemente sind nach steigender Kernladungszahl "
+            },
+            {
+              "type": "math",
+              "tex": "Z"
+            },
+            {
+              "type": "text",
+              "text": " (Protonenzahl) angeordnet:   * Hauptgruppen (senkrechte Spalten I bis VIII):     - Alle Elemente einer Hauptgruppe besitzen dieselbe Anzahl an Valenzelektronen (Außenelektronen) und zeigen daher sehr ähnliche chemische Eigenschaften (z. B. I. HG: Alkalimetalle mit 1 "
+            },
+            {
+              "type": "math",
+              "tex": "e^-"
+            },
+            {
+              "type": "text",
+              "text": ", VII. HG: Halogene mit 7 "
+            },
+            {
+              "type": "math",
+              "tex": "e^-"
+            },
+            {
+              "type": "text",
+              "text": ", VIII. HG: Edelgase mit 8 "
+            },
+            {
+              "type": "math",
+              "tex": "e^-"
+            },
+            {
+              "type": "text",
+              "text": " [Helium: 2]).   * Perioden (waagrechte Zeilen 1 bis 7):     - Gibt die Anzahl der Elektronenschalen an. 3. Die Oktettregel (Edelgaskonfiguration): - Atome der Hauptgruppenelemente streben den Zustand einer vollbesetzten Außenschale mit 8 Valenzelektronen (Elektronenoktett) an, da dieser energetisch am stabilsten ist. 4. Die Ionenbindung und der Aufbau von Salzen: - 1. Elektronenübergang (Redoxprozess):   * Metalle (geringe Rumpfladung, niedrige Ionisierungsenergie) geben ihre wenigen Außenelektronen leicht ab "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Bildung positiv geladener Kationen (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Na} \\rightarrow \\text{Na}^+ + e^-"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Mg} \\rightarrow \\text{Mg}^{2+} + 2e^-"
+            },
+            {
+              "type": "text",
+              "text": ").   * Nichtmetalle (hohe Kernanziehung, hohe Elektronenaffinität) nehmen Elektronen auf "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Bildung negativ geladener Anionen (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Cl} + e^- \\rightarrow \\text{Cl}^-"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{O} + 2e^- \\rightarrow \\text{O}^{2-}"
+            },
+            {
+              "type": "text",
+              "text": "). - 2. Das Ionengitter (Salzkristall):   * Kationen und Anionen ziehen sich durch ungerichtete elektrostatische Coulomb-Kräfte allseitig an und ordnen sich in einem hochgeordneten dreidimensionalen Ionengitter an (z. B. Natriumchlorid-Gitter "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{NaCl}"
+            },
+            {
+              "type": "text",
+              "text": ").   * Bei der Gitterbildung wird die enorme Gitterenergie "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta H_G"
+            },
+            {
+              "type": "text",
+              "text": " frei. - 3. Typische Salzeigenschaften:   * Sehr hohe Schmelz- und Siedepunkte (starke Gitterbindung).   * Sprödigkeit (Verschiebung der Gitterschichten bringt gleichnamige Ladungen nebeneinander "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " elektrostatische Abstoßung spaltet Kristall).   * Elektrische Leitfähigkeit: Im festen Zustand Nichtleiter (feste Ionenplätze), in Schmelze und wässriger Lösung hervorragende Ionenleiter."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -112,7 +395,21 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Welches Element besitzt im gesamten Periodensystem den höchsten Elektronegativitätswert nach Pauling ($EN = 4{,}0$) und zieht bindende Elektronenpaare am stärksten an?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welches Element besitzt im gesamten Periodensystem den höchsten Elektronegativitätswert nach Pauling ("
+            },
+            {
+              "type": "math",
+              "tex": "EN = 4{,}0",
+              "speech": "E N gleich 4,0"
+            },
+            {
+              "type": "text",
+              "text": ") und zieht bindende Elektronenpaare am stärksten an?"
+            }
+          ],
           "concept": "Fluor (F) (liegt rechts oben im PSE vor den Edelgasen)",
           "fast_check": {
             "type": "binary_choice",
@@ -121,16 +418,359 @@
               "Sauerstoff (O, EN = 3,5)"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8G8F0000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Elektronenpaarbindung und polare Moleküle: 1. **Die kovalente Bindung (Elektronenpaarbindung / Atombindung)**:   * Entsteht zwischen **Nichtmetallatomen** durch gemeinsame Nutzung von Elektronenpaaren (Überlappung von Atomorbitalen) zum Erreichen des Oktetts.   * **Lewis-Schreibweise (Elektronenstrichformel)**: Punkte für ungepaarte Valenzelektronen, Striche für bindende oder freie (nichtbindende) Elektronenpaare.   * Einfach-, Doppel- ($O_2: \\text{O}=\\text{O}$) und Dreifachbindungen ($N_2: \\text{N}\\equiv\\text{N}$), 2. **Elektronegativität ($EN$)**: Maß für die Fähigkeit eines gebundenen Atoms, das gemeinsame Elektronenpaar zu sich heranzuziehen (steigt im PSE von links nach rechts und von unten nach oben $\\implies$ Maximum bei Fluor), 3. **Polare Bindung & Dipolmoleküle**:   * **Unpolare Bindung**: $\\Delta EN < 0{,}4$ (symmetrische Ladungsverteilung, z. B. $H_2, Cl_2, CH_4$).   * **Polare Atombindung**: $0{,}4 \\le \\Delta EN \\le 1{,}7$ (Partialladungen $\\delta^+$ und $\\delta^-$).   * **Dipolmolekül**: Liegt vor, wenn polare Bindungen vorhanden sind **UND** die Schwerpunkte der positiven und negativen Partialladungen durch eine asymmetrische Molekülgeometrie **räumlich nicht zusammenfallen** (z. B. gewinkeltes Wassermolekül $H_2O$ ist ein Dipol, lineares Kohlenstoffdioxid $CO_2$ ist kein Dipol).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Elektronenpaarbindung und polare Moleküle: 1. Die kovalente Bindung (Elektronenpaarbindung / Atombindung):   * Entsteht zwischen Nichtmetallatomen durch gemeinsame Nutzung von Elektronenpaaren (Überlappung von Atomorbitalen) zum Erreichen des Oktetts.   * Lewis-Schreibweise (Elektronenstrichformel): Punkte für ungepaarte Valenzelektronen, Striche für bindende oder freie (nichtbindende) Elektronenpaare.   * Einfach-, Doppel- ("
+            },
+            {
+              "type": "math",
+              "tex": "O_2: \\text{O}=\\text{O}",
+              "speech": "O zwei: O doppelt gebunden an O"
+            },
+            {
+              "type": "text",
+              "text": ") und Dreifachbindungen ("
+            },
+            {
+              "type": "math",
+              "tex": "N_2: \\text{N}\\equiv\\text{N}",
+              "speech": "N zwei: N dreifach gebunden an N"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Elektronegativität ("
+            },
+            {
+              "type": "math",
+              "tex": "EN",
+              "speech": "E N"
+            },
+            {
+              "type": "text",
+              "text": "): Maß für die Fähigkeit eines gebundenen Atoms, das gemeinsame Elektronenpaar zu sich heranzuziehen (steigt im PSE von links nach rechts und von unten nach oben "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Maximum bei Fluor), 3. Polare Bindung & Dipolmoleküle:   * Unpolare Bindung: "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta EN < 0{,}4",
+              "speech": "Delta E N kleiner als 0,4"
+            },
+            {
+              "type": "text",
+              "text": " (symmetrische Ladungsverteilung, z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "H_2, Cl_2, CH_4",
+              "speech": "H zwei, C l zwei, C H vier"
+            },
+            {
+              "type": "text",
+              "text": ").   * Polare Atombindung: "
+            },
+            {
+              "type": "math",
+              "tex": "0{,}4 \\le \\Delta EN \\le 1{,}7",
+              "speech": "0,4 kleiner gleich Delta E N kleiner gleich 1,7"
+            },
+            {
+              "type": "text",
+              "text": " (Partialladungen "
+            },
+            {
+              "type": "math",
+              "tex": "\\delta^+",
+              "speech": "Delta plus"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\delta^-",
+              "speech": "Delta minus"
+            },
+            {
+              "type": "text",
+              "text": ").   * Dipolmolekül: Liegt vor, wenn polare Bindungen vorhanden sind UND die Schwerpunkte der positiven und negativen Partialladungen durch eine asymmetrische Molekülgeometrie räumlich nicht zusammenfallen (z. B. gewinkeltes Wassermolekül "
+            },
+            {
+              "type": "math",
+              "tex": "H_2O",
+              "speech": "H zwei O"
+            },
+            {
+              "type": "text",
+              "text": " ist ein Dipol, lineares Kohlenstoffdioxid "
+            },
+            {
+              "type": "math",
+              "tex": "CO_2",
+              "speech": "C O zwei"
+            },
+            {
+              "type": "text",
+              "text": " ist kein Dipol)."
+            }
+          ],
           "concept": "Kovalente Bindung: Lewis-Formel (bindende/freie Paare), Einfach-/Mehrfachbindung, Oktettregel; Elektronegativität EN; Polare Bindung (Delta EN > 0,4) & Dipol-Bedingung (polare Bindung + asymmetrische Raumstruktur wie H2O vs. symmetrisches CO2).",
-          "sample_solution": "1. Die kovalente Bindung (Atombindung): - **Mechanismus**: Da Nichtmetalle alle eine relativ hohe Elektronegativität besitzen, kann kein Partner dem anderen Elektronen vollständig entreißen. Stattdessen teilen sich zwei Atome jeweils ein oder mehrere Außenelektronen (**gemeinsame, bindende Elektronenpaare**), sodass beide Partner formal die Edelgaskonfiguration erreichen. - **Lewis-Schreibweise**:   * Ein Strich zwischen zwei Elementsymbolen symbolisiert ein **bindendes Elektronenpaar** ($2 e^-$).   * Ein Strich an einem Atom symbolisiert ein **freies (nicht-bindendes) Elektronenpaar**.   * *Beispiele*:     - Wasserstoffmolekül ($H_2$): $\\text{H}-\\text{H}$ (Einfachbindung, Duplettregel).     - Sauerstoffmolekül ($O_2$): $|\\overline{\\text{O}}=\\overline{\\text{O}}|$ (Doppelbindung, 4 Bindungselektronen).     - Stickstoffmolekül ($N_2$): $|\\text{N}\\equiv\\text{N}|$ (extrem stabile Dreifachbindung, 6 Bindungselektronen). 2. Das Konzept der Elektronegativität ($EN$ nach Linus Pauling): - Gibt an, wie stark ein Atom in einer chemischen Bindung das gemeinsame Elektronenpaar anzieht:   * **Periodizität im PSE**: Nimmt innerhalb einer Periode von links nach rechts zu (steigende Kernladung) und in einer Hauptgruppe von oben nach unten ab (größerer Schalenabstand).   * Höchste Werte: Fluor ($4{,}0$), Sauerstoff ($3{,}5$), Stickstoff ($3{,}0$), Chlor ($3{,}0$). 3. Polare Bindungen und Dipole: - **1. Unpolare vs. polare Bindung**:   * $\\mathbf{\\Delta EN < 0{,}4}$: Unpolare Bindung (Elektronenwolke liegt exakt symmetrisch in der Mitte).   * $\\mathbf{0{,}4 \\le \\Delta EN \\le 1{,}7}$: **Polare kovalente Bindung** $\\implies$ Das elektronegativere Atom zieht das Elektronenpaar zu sich und erhält eine negative Teilladung (**Partialladung $\\delta^-$**); der Partner wird positiv polarisiert ($\\,\\mathbf{\\delta^+}$).   * $\\Delta EN > 1{,}7$: Vollständiger Elektronenübergang $\\implies$ **Ionenbindung**. - **2. Kriterien für ein Dipolmolekül**:   * Ein Molekül ist genau dann ein **permanenter Dipol**, wenn zwei Bedingungen erfüllt sind:     - 1. Vorhandensein mindestens einer polaren Atombindung.     - 2. **Asymmetrischer räumlicher Bau**: Der Ladungsschwerpunkt der positiven Partialladungen darf **nicht** mit dem Ladungsschwerpunkt der negativen Partialladungen zusammenfallen.   * *Beispiel Wasser ($H_2O$)*: $\\Delta EN(\\text{O-H}) = 3{,}5 - 2{,}1 = 1{,}4$ (stark polar). Da das Molekül durch die zwei freien Elektronenpaare am Sauerstoff **gewinkelt ($ca. 104{,}5^\\circ$)** gebaut ist, fallen die Ladungsschwerpunkte nicht zusammen $\\implies$ **starker Dipol** (hohe Oberflächenspannung, Lösungsmittel für Salze).   * *Gegenbeispiel Kohlenstoffdioxid ($CO_2$)*: Polare $\\text{C}=\\text{O}$-Bindungen ($\\,\\Delta EN = 1{,}0$), aber **linearer Bau ($180^\\circ$)** $\\implies$ Bindungsdipole heben sich vektoriell auf $\\implies$ **kein Dipol**."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die kovalente Bindung (Atombindung): - Mechanismus: Da Nichtmetalle alle eine relativ hohe Elektronegativität besitzen, kann kein Partner dem anderen Elektronen vollständig entreißen. Stattdessen teilen sich zwei Atome jeweils ein oder mehrere Außenelektronen (gemeinsame, bindende Elektronenpaare), sodass beide Partner formal die Edelgaskonfiguration erreichen. - Lewis-Schreibweise:   * Ein Strich zwischen zwei Elementsymbolen symbolisiert ein bindendes Elektronenpaar ("
+            },
+            {
+              "type": "math",
+              "tex": "2 e^-"
+            },
+            {
+              "type": "text",
+              "text": ").   * Ein Strich an einem Atom symbolisiert ein freies (nicht-bindendes) Elektronenpaar.   * Beispiele:     - Wasserstoffmolekül ("
+            },
+            {
+              "type": "math",
+              "tex": "H_2"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{H}-\\text{H}"
+            },
+            {
+              "type": "text",
+              "text": " (Einfachbindung, Duplettregel).     - Sauerstoffmolekül ("
+            },
+            {
+              "type": "math",
+              "tex": "O_2"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "|\\overline{\\text{O}}=\\overline{\\text{O}}|"
+            },
+            {
+              "type": "text",
+              "text": " (Doppelbindung, 4 Bindungselektronen).     - Stickstoffmolekül ("
+            },
+            {
+              "type": "math",
+              "tex": "N_2"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "|\\text{N}\\equiv\\text{N}|"
+            },
+            {
+              "type": "text",
+              "text": " (extrem stabile Dreifachbindung, 6 Bindungselektronen). 2. Das Konzept der Elektronegativität ("
+            },
+            {
+              "type": "math",
+              "tex": "EN"
+            },
+            {
+              "type": "text",
+              "text": " nach Linus Pauling): - Gibt an, wie stark ein Atom in einer chemischen Bindung das gemeinsame Elektronenpaar anzieht:   * Periodizität im PSE: Nimmt innerhalb einer Periode von links nach rechts zu (steigende Kernladung) und in einer Hauptgruppe von oben nach unten ab (größerer Schalenabstand).   * Höchste Werte: Fluor ("
+            },
+            {
+              "type": "math",
+              "tex": "4{,}0"
+            },
+            {
+              "type": "text",
+              "text": "), Sauerstoff ("
+            },
+            {
+              "type": "math",
+              "tex": "3{,}5"
+            },
+            {
+              "type": "text",
+              "text": "), Stickstoff ("
+            },
+            {
+              "type": "math",
+              "tex": "3{,}0"
+            },
+            {
+              "type": "text",
+              "text": "), Chlor ("
+            },
+            {
+              "type": "math",
+              "tex": "3{,}0"
+            },
+            {
+              "type": "text",
+              "text": "). 3. Polare Bindungen und Dipole: - 1. Unpolare vs. polare Bindung:   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\Delta EN < 0{,}4}"
+            },
+            {
+              "type": "text",
+              "text": ": Unpolare Bindung (Elektronenwolke liegt exakt symmetrisch in der Mitte).   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{0{,}4 \\le \\Delta EN \\le 1{,}7}"
+            },
+            {
+              "type": "text",
+              "text": ": Polare kovalente Bindung "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Das elektronegativere Atom zieht das Elektronenpaar zu sich und erhält eine negative Teilladung (Partialladung "
+            },
+            {
+              "type": "math",
+              "tex": "\\delta^-"
+            },
+            {
+              "type": "text",
+              "text": "); der Partner wird positiv polarisiert ("
+            },
+            {
+              "type": "math",
+              "tex": "\\,\\mathbf{\\delta^+}"
+            },
+            {
+              "type": "text",
+              "text": ").   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta EN > 1{,}7"
+            },
+            {
+              "type": "text",
+              "text": ": Vollständiger Elektronenübergang "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Ionenbindung. - 2. Kriterien für ein Dipolmolekül:   * Ein Molekül ist genau dann ein permanenter Dipol, wenn zwei Bedingungen erfüllt sind:     - 1. Vorhandensein mindestens einer polaren Atombindung.     - 2. Asymmetrischer räumlicher Bau: Der Ladungsschwerpunkt der positiven Partialladungen darf nicht mit dem Ladungsschwerpunkt der negativen Partialladungen zusammenfallen.   * Beispiel Wasser ("
+            },
+            {
+              "type": "math",
+              "tex": "H_2O"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta EN(\\text{O-H}) = 3{,}5 - 2{,}1 = 1{,}4"
+            },
+            {
+              "type": "text",
+              "text": " (stark polar). Da das Molekül durch die zwei freien Elektronenpaare am Sauerstoff gewinkelt ("
+            },
+            {
+              "type": "math",
+              "tex": "ca. 104{,}5^\\circ"
+            },
+            {
+              "type": "text",
+              "text": ") gebaut ist, fallen die Ladungsschwerpunkte nicht zusammen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " starker Dipol (hohe Oberflächenspannung, Lösungsmittel für Salze).   * Gegenbeispiel Kohlenstoffdioxid ("
+            },
+            {
+              "type": "math",
+              "tex": "CO_2"
+            },
+            {
+              "type": "text",
+              "text": "): Polare "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{C}=\\text{O}"
+            },
+            {
+              "type": "text",
+              "text": "-Bindungen ("
+            },
+            {
+              "type": "math",
+              "tex": "\\,\\Delta EN = 1{,}0"
+            },
+            {
+              "type": "text",
+              "text": "), aber linearer Bau ("
+            },
+            {
+              "type": "math",
+              "tex": "180^\\circ"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Bindungsdipole heben sich vektoriell auf "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " kein Dipol."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

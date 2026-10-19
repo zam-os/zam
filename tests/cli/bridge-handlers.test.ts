@@ -25,6 +25,7 @@ import {
   commitTextImport,
   endSession as completeSession,
   createToken,
+  DRAFT_FIRST_SETTING,
   enrolBundledCell,
   ensureCard,
   getCard,
@@ -33,6 +34,7 @@ import {
   getTokenBySlug,
   openDatabase,
   previewTextImport,
+  setSetting,
   type TextImportDocument,
   verifySnapshot,
 } from "../../src/kernel/index.js";
@@ -344,6 +346,15 @@ describe("bridge-handlers unit tests", () => {
         answerFormat: "typed" as never,
       }),
     ).rejects.toThrow("answerFormat must be recall, options or choice");
+    for (const rating of [2.5, "3", 0, 5]) {
+      await expect(
+        submitReview(db, {
+          user: "thomas",
+          cardId: card.id,
+          rating: rating as never,
+        }),
+      ).rejects.toThrow("Rating must be between 1 and 4");
+    }
 
     const result = await submitReview(db, {
       user: "thomas",
@@ -598,6 +609,7 @@ describe("bridge-handlers unit tests", () => {
   });
 
   it("keeps drafts out of due lists, admission, and rating", async () => {
+    await setSetting(db, DRAFT_FIRST_SETTING, "true");
     const added = await addToken(db, {
       user: "thomas",
       slug: "draft-only",
@@ -777,10 +789,71 @@ describe("bridge-handlers unit tests", () => {
 
     const token = await getTokenBySlug(db, "agent-authored");
     expect(token?.question_source).toBe("llm");
-    expect(token?.editorial_state).toBe("draft");
+    // Learnable at once: draft-first is a library option, off by default.
+    expect(token?.editorial_state).toBe("published");
+  });
+
+  it("addToken stores segments and names an invalid one (ADR 2026-10-14b)", async () => {
+    await addToken(db, {
+      user: "thomas",
+      slug: "energie-kondensator",
+      domain: "physik",
+      question: "Wie groß ist die Energie im Kondensator?",
+      conceptSegments: [
+        {
+          type: "math",
+          tex: "W_{\\text{el}} = \\frac{1}{2} C U^2",
+          speech: "W el gleich ein halb C U Quadrat",
+        },
+      ],
+    });
+    const token = await getTokenBySlug(db, "energie-kondensator");
+    expect(token?.concept).toBe("W_el = ½CU²");
+    expect(JSON.parse(token?.concept_segments ?? "null")?.[0]?.tex).toBe(
+      "W_{\\text{el}} = \\frac{1}{2} C U^2",
+    );
+
+    await expect(
+      addToken(db, {
+        user: "thomas",
+        slug: "verbotene-formel",
+        domain: "physik",
+        conceptSegments: [
+          { type: "math", tex: "\\href{x}{y}", speech: "Link" },
+        ],
+      }),
+    ).rejects.toThrow(/^conceptSegments: \[0\]\.tex: /);
+    await expect(
+      addToken(db, {
+        user: "thomas",
+        slug: "ohne-sprechtext",
+        domain: "physik",
+        concept: "Es gilt $x^2 = 4$.",
+      }),
+    ).rejects.toThrow(/\[1\]\.speech is required.*conceptSegments/);
+    expect(await getTokenBySlug(db, "verbotene-formel")).toBeUndefined();
+  });
+
+  it("addToken publishes at once unless the library wants drafts first", async () => {
+    const result = await addToken(db, {
+      user: "thomas",
+      slug: "capture-published",
+      concept: "Momentum is mass times velocity.",
+      question: "How is momentum defined?",
+      domain: "physics",
+    });
+    expect(result.token.editorial_state).toBe("published");
+    await db
+      .prepare("UPDATE cards SET due_at = '2000-01-01T00:00:00.000Z'")
+      .run();
+    const queue = await buildReviewQueue(db, { userId: "thomas" });
+    expect(queue.items.some((item) => item.tokenId === result.token.id)).toBe(
+      true,
+    );
   });
 
   it("addToken writes a draft that stays out of the queue until publish", async () => {
+    await setSetting(db, DRAFT_FIRST_SETTING, "true");
     const result = await addToken(db, {
       user: "thomas",
       slug: "capture-draft",

@@ -24,6 +24,12 @@ export interface TokenMedia {
   byteSize: number;
   data: Uint8Array;
   occlusions: ImageOcclusionShape[];
+  /**
+   * `attached` (shown beside the card) or `inline` (an image segment of the
+   * card text, ADR 2026-10-14b Decision 5). The attachment strip skips
+   * inline rows; the card-text renderer looks them up by hash.
+   */
+  placement: "attached" | "inline";
 }
 
 interface TokenMediaRow {
@@ -37,6 +43,7 @@ interface TokenMediaRow {
   byte_size: number | bigint;
   data: Uint8Array;
   occlusion_json: string | null;
+  placement?: string | null;
 }
 
 function validCoordinate(value: unknown): value is number {
@@ -78,7 +85,7 @@ export async function getTokenMedia(
 ): Promise<TokenMedia[]> {
   const sql = `SELECT tm.asset_hash, tm.side, tm.kind, tm.ordinal,
                       tm.original_name, tm.alt_text, tm.occlusion_json,
-                      ma.mime_type, ma.byte_size, ma.data
+                      tm.placement, ma.mime_type, ma.byte_size, ma.data
                  FROM token_media tm
                  JOIN media_assets ma ON ma.hash = tm.asset_hash
                 WHERE tm.token_id = ?${side ? " AND tm.side = ?" : ""}
@@ -98,5 +105,6 @@ export async function getTokenMedia(
     // better-sqlite3 returns Buffer, remote providers return Uint8Array.
     data: Uint8Array.prototype.slice.call(row.data) as Uint8Array,
     occlusions: parseOcclusions(row.occlusion_json),
+    placement: row.placement === "inline" ? "inline" : "attached",
   }));
 }

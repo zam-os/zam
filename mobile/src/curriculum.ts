@@ -27,6 +27,7 @@ import {
   getBundledCellsWithStatus,
 } from "../../src/kernel/library/bundled-cells.js";
 import { cardShapeRuleLines } from "../../src/kernel/library/card-shape.js";
+import { readCardTextInput } from "../../src/kernel/library/card-text-input.js";
 import { slugify } from "../../src/kernel/models/token.js";
 import type { MobileTokenDraft } from "./import.js";
 import { resolveMobileCloudChain } from "./model-registry.js";
@@ -272,11 +273,23 @@ export function parseMobileCurriculumCards(
       throw new Error(`curriculum card ${index + 1} is not an object`);
     }
     const card = value as Record<string, unknown>;
-    for (const field of ["title", "question", "concept", "context"] as const) {
+    for (const field of ["title", "context"] as const) {
       if (typeof card[field] !== "string" || !card[field].trim()) {
         throw new Error(`curriculum card ${index + 1} has no ${field}`);
       }
     }
+    // A string, or segments when the card holds a formula (ADR 2026-10-14b).
+    // The phone stores the plain projection until it renders segments (plan
+    // Phase 8): Unicode formulas, never raw LaTeX.
+    const plain = (field: "question" | "concept"): string => {
+      const result = readCardTextInput(card[field], "import");
+      if (!result.ok) {
+        throw new Error(`curriculum card ${index + 1} has no ${field}`);
+      }
+      return result.value.plain;
+    };
+    const question = plain("question");
+    const concept = plain("concept");
     const bloom = card.bloom_level;
     if (
       typeof bloom !== "number" ||
@@ -297,8 +310,8 @@ export function parseMobileCurriculumCards(
     }
     return {
       title: (card.title as string).trim(),
-      question: (card.question as string).trim(),
-      concept: (card.concept as string).trim(),
+      question,
+      concept,
       context: (card.context as string).trim(),
       bloomLevel: bloom,
       prerequisites: prerequisites.map((entry) => entry.trim()).filter(Boolean),

@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-11T14:30:00.000Z
+timestamp: 2026-10-16T09:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -88,6 +88,7 @@ following terms deliberately select different stored knowledge:
 | User intent | Tool | Surface |
 | --- | --- | --- |
 | “knowledge graph”, “learning graph”, “Wissensgraph” | `zam_show_graph` | Learning tokens and their prerequisite graph |
+| “knowledge atlas”, “Wissensatlas”, a map of what the learner knows | `zam_show_atlas` | The learner's atlas, read only |
 | “knowledge articles”, “Wissensartikel”, “OKFs”, “ADRs” | `zam_okf_visualize` with `view: "graph"` | Repository articles and their cited decisions |
 | due-card review or active recall | `zam_open_recall` | Spoiler-free recall session |
 | learner and model configuration | `zam_open_settings` | Focused settings panel |
@@ -136,15 +137,85 @@ The model-visible learning tools cover:
   of its own work, because confirmed synthesis candidates arrive after
   `zam_session_end`; `recordOnly` with a `reason` logs assisted user work as a
   session step without an FSRS rating and needs an open session;
-- draft review: `zam_add_token` stores a draft that stays out of every queue,
-  due list, admission and rating until `zam_publish_revision`;
-  `zam_list_drafts` lists unpublished captures;
+- source first ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md),
+  Decision 3): `zam_add_token`, like `bridge add-token`, needs `sourceLink`,
+  the source the agent read. That is a file or folder in a trusted folder
+  (an OKF article or another Markdown file, with an optional `#anchor`; the
+  repository root), or an http(s) page on a public host without
+  credentials. ZAM checks the path against the trusted folders and the URL
+  against the `safeFetch` rules, fetches nothing, and refuses the token
+  otherwise. `zam_publish_revision` checks a new `sourceLink` by the same
+  rule and never clears one. A learner's own cards in the Studio need no
+  source. Through the panel bridge, `zam_studio_bridge` cannot tell the
+  panel from the model, so a card write without a source an agent may cite
+  (`personal-card-create`, or a new source in `personal-card-update` or
+  `personal-card-publish-revision`) asks the person through the host's
+  elicitation form; a host without one refuses it;
+- draft review: `zam_add_token` stores a token with the learner's card that
+  is learnable at once. Only when the library switched on draft-first
+  (`content.draft_first`, off by default, a Studio setting) is it a draft
+  that stays out of every queue, due list, admission and rating until
+  `zam_publish_revision`; the same setting governs topic, file, curriculum and
+  foundation imports. `zam_list_drafts` lists unpublished captures;
+- card text with formulas ([ADR 2026-10-14b](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md),
+  Decision 6): question and concept are plain text without LaTeX or
+  Markdown. One that holds a formula goes as segments —
+  `questionSegments` / `conceptSegments` on `zam_add_token` and on each
+  `zam_okf_import` token, a string or a segment list per side on
+  `zam_material_import` — every formula with its `speech`. Agents fail
+  loudly: a `$…$` in a string is lifted, but a formula the tokenizer
+  refuses, or one without speech, returns an error that names the field
+  and the segment, and nothing is written. The card-shape rules every
+  card prompt states include the segment contract with a short example
+  (`CARD_TEXT_RULE`). See [card-text-segments.md](card-text-segments.md);
 - material import: `zam_material_import_context` hands an agent the rules for
   turning a learner's photo or PDF into card proposals, the contract with an
-  example, the learner's areas and the subject codes; `zam_material_import`
-  validates the agent's proposals, stages them and brings the Studio forward,
-  where the learner decides each card. It writes no token or card itself (see
-  [material-import.md](material-import.md));
+  example, the learner's areas and the subject codes; with a `place` (a region
+  of the knowledge atlas) it also names the levels the cards need below it and
+  the learner's units there, marked `untrusted`. `zam_material_import`
+  validates the agent's proposals, with that `place` and, for material that
+  mixes world knowledge with protected knowledge, a `kind` per card; it
+  stages them and brings the Studio forward, where the learner decides each
+  card. It writes no token
+  or card itself (see [material-import.md](material-import.md));
+- Sinnbilder for the knowledge atlas: `zam_atlas_missing_emblems` lists the
+  regions and the learner's units of a lens that have none yet, with the
+  drawing rules; `zam_atlas_set_emblem` stores one for a subject
+  (`atom:<id>`, `token:<id>`, `subject:<fach>` for a Fach in every lens, or
+  `region:<lens>:<key>`). ZAM validates the SVG
+  against an allowlist of plain shapes and text and stores its own
+  re-serialisation. Titles, SVGs and glyphs in both results are marked
+  `untrusted`. Setting one writes, so the host asks each time;
+- the knowledge atlas for agents ([ADR 2026-10-13](../adr/2026-10-13-knowledge-atlas.md),
+  Decision 10). Each acts on the connected library only, takes no library
+  URL and no path, and returns one planet per call:
+  - `zam_atlas_read` reads one lens: its regions, the learner's units with
+    their condition and own due counts, threads, thread ends on the other
+    planet and the lens's curation. It changes nothing, and its result is
+    marked `untrusted`.
+  - `zam_show_atlas` shows the same atlas to the learner as a read-only
+    panel (below), optionally at a `lens` and a `region`.
+  - `zam_atlas_place` sorts the learner's own units into a region by key,
+    never by coordinates. A unit takes the region's planet; published units
+    and a person's placements are skipped. It refuses a unit that does not
+    exist, a variant for the Firma or Privat planet, and a move a thread or
+    prerequisite holds: world knowledge never depends on a Firma or Privat
+    unit.
+  - `zam_atlas_connect` spins a red thread, personal by default, never from
+    world knowledge to company or private units.
+  - `zam_atlas_lens_edit`, for curators, edits a lens (a world lens never
+    moves the published map: it takes additions and removes only regions
+    the library made itself), proposes a whole new order for an own-planet
+    lens (built-in or custom) from one named source, says it no longer fits
+    that source, or makes (`create`) or removes (`remove`) a custom lens on
+    the library's own planet; every atlas tool's `lens` then accepts that
+    lens's kind. Only a curator
+    in the Studio accepts a proposal; no tool does. A batch after which world
+    knowledge would depend on a Firma or Privat unit is refused as a whole,
+    also when a removed region or alias would move a unit there.
+
+  The three writing tools need the right to write knowledge except a
+  personal thread, and none is pre-approved;
 - review progress: `zam_progress_stats` returns the activity series — cards
   reviewed per day/week/month with summed study time, aggregated in SQL over
   the immutable review log. `window` counts **periods, not days**, and each
@@ -244,7 +315,7 @@ agent instructions.
 
 # MCP Apps panels
 
-Six self-contained HTML resources ship under `dist/ui/`:
+Seven self-contained HTML resources ship under `dist/ui/`:
 
 | Opening tool | Resource | Purpose |
 | --- | --- | --- |
@@ -254,6 +325,15 @@ Six self-contained HTML resources ship under `dist/ui/`:
 | `zam_open_settings` | `ui://zam/settings` | Learner and evaluator settings |
 | `zam_okf_visualize` | `ui://zam/okf` | Repository knowledge base |
 | `zam_knowledge_map_show` | `ui://zam/knowledge-map` | Repository knowledge map (alpha) |
+| `zam_show_atlas` | `ui://zam/atlas` | The learner's knowledge atlas, read only |
+
+The atlas panel mounts the Studio's own atlas view in its read-only mode
+(plan Phase 10a of [ADR 2026-10-13](../adr/2026-10-13-knowledge-atlas.md)).
+It reads through `zam_studio_bridge`, where only `atlas-read` and
+`atlas-revision` are allowed, and it offers
+nothing that writes: no thread, Sinnbild, import, move, home or *Neue Inhalte
+zeigen*, and no settle. A lens switch is not stored. A region review happens
+in ZAM Desktop or the app; *Nachlesen* opens through the host.
 
 `npm run build:panel` produces these resources, and next to them
 `knowledge-map-viewer.html`, which is no resource but the page
@@ -511,6 +591,10 @@ none.
   tokens.
 - The scoped listing is also available through repeatable
   `zam bridge list-tokens --source-link-base` arguments.
+- A node is filled with its subject's hue and outlined in its condition, the
+  knowledge atlas's colour language. The stroke repeats the condition's
+  texture (dotted, broken or dashed), and the tooltip names the condition in
+  words beside the Bloom level, so colour never carries it alone.
 
 # Central learning field-test tools and Recall
 
@@ -546,6 +630,7 @@ is painted, so one learner's preference cannot bleed into another's session.
 
 # Citations
 
+- [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [Field-test slice plan](../plans/2026-08-15-central-learning-field-test-slice.md)
@@ -568,6 +653,7 @@ is painted, so one learner's preference cannot bleed into another's session.
 - [ADR 2026-07-17b — OKF Visualizer Panel](../adr/2026-07-17b-okf-visualizer-panel.md)
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
 - [ADR 2026-07-18b — Learning Graph Scope Selectors and the Repo Scope](../adr/2026-07-18b-graph-repo-scope.md)
+- [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md) (Decision 4: hue and condition in every knowledge view)
 - [ADR 2026-07-18c — OKF Import Handoff](../adr/2026-07-18c-okf-import-handoff.md)
 - [ADR 2026-07-29b — OKF Freshness Radar](../adr/2026-07-29b-okf-freshness-radar.md)
 - [ADR 2026-07-30 — OKF Reader Navigation and Mermaid Rendering](../adr/2026-07-30-okf-reader-navigation-and-mermaid.md)
@@ -576,4 +662,4 @@ is painted, so one learner's preference cannot bleed into another's session.
 - [ADR 2026-08-09b — Portable Agent Plugin Package](../adr/2026-08-09b-agent-plugin-package.md)
 - [ADR 2026-10-03 — Repo Knowledge Map](../adr/2026-10-03-repo-knowledge-map.md)
 - Knowledge map code: `src/cli/knowledge-map/model.ts`, `src/cli/knowledge-map/load.ts`, `src/cli/knowledge-map/guide.ts`, `src/cli/commands/knowledge-map.ts`, `docs/knowledge-map/map.schema.json`, `tests/cli/knowledge-map.test.ts`; viewer page and panel: `src/cli/knowledge-map/viewer-page.ts`, `desktop/src/panel/knowledge-map-viewer.html`, `desktop/src/panel/knowledge-map.ts`, `src/vscode-extension/protocol.ts`
-- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/commands/agent.ts`, `src/cli/agent-connect.ts`, `src/cli/agent-harness.ts`, `src/cli/agent-approval.ts`, `src/kernel/system/trusted-paths.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/ui-intent.ts`, `src/kernel/system/install-config.ts`, `src/kernel/analytics/progress.ts`, `src/kernel/analytics/learning-clock.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`, `plugin.json`, `mcp.json`, `skills/zam/SKILL.md`, `package.json`, `tests/cli/agent-plugin.test.ts`, `docs/AGENT_PLUGIN.md`
+- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/commands/agent.ts`, `src/cli/agent-connect.ts`, `src/cli/agent-harness.ts`, `src/cli/agent-approval.ts`, `src/kernel/system/trusted-paths.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/ui-intent.ts`, `src/kernel/system/install-config.ts`, `src/kernel/analytics/progress.ts`, `src/kernel/analytics/learning-clock.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/graph-layout.ts`, `src/kernel/atlas/palette.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`, `plugin.json`, `mcp.json`, `skills/zam/SKILL.md`, `package.json`, `tests/cli/agent-plugin.test.ts`, `docs/AGENT_PLUGIN.md`

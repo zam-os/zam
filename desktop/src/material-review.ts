@@ -11,6 +11,16 @@
  * this app's.
  */
 
+import type {
+  MaterialChoiceWire,
+  MaterialImportAreasResponse,
+  MaterialImportConfirmResponse,
+  MaterialImportFilePreviewResponse,
+  MaterialImportPendingEntry,
+  MaterialImportPendingResponse,
+  MaterialImportReviewResponse,
+  MaterialImportRowWire,
+} from "../../src/bridge/protocol.js";
 import {
   analysisLine,
   COLLAPSE_BONUS_AFTER,
@@ -25,17 +35,8 @@ import {
   type ReviewGroup as SharedReviewGroup,
   startsCollapsed,
 } from "../../src/kernel/import/material-review-state.js";
-import type {
-  MaterialChoiceWire,
-  MaterialImportAreasResponse,
-  MaterialImportConfirmResponse,
-  MaterialImportFilePreviewResponse,
-  MaterialImportPendingEntry,
-  MaterialImportPendingResponse,
-  MaterialImportReviewResponse,
-  MaterialImportRowWire,
-} from "../../src/bridge/protocol.js";
 import { runBridge } from "./bridge-transport.js";
+import { renderCardText } from "./card-text-render.js";
 import { currentLocale, t, tf } from "./i18n.js";
 import {
   initRadioGroupKeyboard,
@@ -82,6 +83,10 @@ export function confirmArgs(
   id: string,
   choices: MaterialChoices,
   editedAreas: Record<string, string>,
+  /** Proposal rows whose "instead of" the learner ticked (ADR 2026-10-13, D12). */
+  variants: readonly string[] = [],
+  /** Proposal row → the kind the learner confirmed (ADR 2026-10-13, D2). */
+  kinds: Readonly<Record<string, string>> = {},
 ): string[] {
   const args = [
     "--id",
@@ -93,7 +98,38 @@ export function confirmArgs(
   if (Object.keys(areas).length > 0) {
     args.push("--areas", JSON.stringify(areas));
   }
+  if (variants.length > 0) {
+    args.push("--variants", JSON.stringify([...variants].sort()));
+  }
+  if (Object.keys(kinds).length > 0) {
+    args.push("--kinds", JSON.stringify(kinds));
+  }
   return args;
+}
+
+/**
+ * The kind per proposal row of a mixed import (ADR 2026-10-13, Decision 2):
+ * only rows whose producer named one get a switch, starting at that kind.
+ */
+export function initialKinds(
+  review: Pick<MaterialImportReviewResponse, "rows" | "proposals">,
+): Map<string, "welt" | "firma" | "privat"> {
+  const kinds = new Map<string, "welt" | "firma" | "privat">();
+  for (const row of review.rows) {
+    if (row.kind !== "proposal") continue;
+    const kind = review.proposals[row.proposalIndex]?.kind;
+    if (kind) kinds.set(row.id, kind);
+  }
+  return kinds;
+}
+
+/** "Kommt nach: Natur › Physik › Optik", when the import has an atlas place. */
+export function reviewPlaceLine(
+  review: Pick<MaterialImportReviewResponse, "place">,
+): string | null {
+  return review.place
+    ? tf("material_review_place", { path: review.place.path.join(" › ") })
+    : null;
 }
 
 export type ReviewGroup = SharedReviewGroup<MaterialImportRowWire>;
@@ -235,6 +271,10 @@ let current: {
   review: MaterialImportReviewResponse;
   choices: MaterialChoices;
   areas: Record<string, string>;
+  /** Proposal rows whose "instead of" is ticked. */
+  variants: Set<string>;
+  /** A mixed import's kind per proposal row, as the learner leaves it. */
+  kinds: Map<string, "welt" | "firma" | "privat">;
   options: MaterialReviewOptions;
 } | null = null;
 
@@ -481,6 +521,21 @@ function rowElement(
   const answerEl = element("div", { fontSize: "0.9rem" });
   answerEl.textContent = answer;
   article.append(questionEl, answerEl);
+  if (row.kind === "proposal") {
+    // Formulas typeset as the learner will see them (ADR 2026-10-14b); the
+    // plain text above stays until the renderer has loaded.
+    const proposal = review.proposals[row.proposalIndex];
+    void renderCardText(questionEl, proposal.questionSegments, question);
+    void renderCardText(answerEl, proposal.answerSegments, answer);
+    const notes = proposal.textNotes ?? [];
+    if (notes.length > 0) {
+      const note = element("div", { fontSize: "0.8rem", opacity: "0.8" });
+      note.textContent = tf("material_text_notes", {
+        items: notes.map((entry) => entry.text).join(" · "),
+      });
+      article.append(note);
+    }
+  }
 
   if (startsCollapsed(row, choices, choosableCount)) {
     answerEl.hidden = true;
@@ -502,7 +557,75 @@ function rowElement(
   } else {
     article.append(choiceControl(parts, row));
   }
+  if (row.kind === "proposal") {
+    const standsFor = review.proposals[row.proposalIndex].standsFor;
+    const title = standsFor ? review.variantTitles?.[standsFor] : undefined;
+    if (standsFor && title) article.append(variantControl(row.id, title));
+    if (current.kinds.has(row.id)) article.append(kindControl(row.id));
+  }
   return article;
+}
+
+/**
+ * Where a card of a mixed import belongs (ADR 2026-10-13, Decision 2): world
+ * knowledge, or the library's own planet because it holds what a company or
+ * a person protects. The agent proposed it; one tap switches it.
+ */
+function kindControl(rowId: string): HTMLElement {
+  const own = current?.review.ownPlanet ?? "privat";
+  const row = element("div", {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    fontSize: "0.9rem",
+  });
+  const label = element("span");
+  label.textContent = t("material_kind_label");
+  const toggle = element("button");
+  toggle.type = "button";
+  toggle.className = "btn secondary-btn btn-sm";
+  toggle.title = t("material_kind_hint");
+  const paint = () => {
+    const kind = current?.kinds.get(rowId) ?? "welt";
+    toggle.textContent = t(
+      kind === "welt" ? "material_kind_welt" : `material_kind_${own}`,
+    );
+    toggle.dataset.kind = kind === "welt" ? "welt" : own;
+  };
+  toggle.addEventListener("click", () => {
+    if (!current) return;
+    const kind = current.kinds.get(rowId) ?? "welt";
+    current.kinds.set(rowId, kind === "welt" ? own : "welt");
+    paint();
+  });
+  paint();
+  row.append(label, toggle);
+  return row;
+}
+
+/**
+ * "Instead of <title>: your school's method" (ADR 2026-10-13, Decision 12).
+ * Unticked by default: the learner decides, and only a Yes makes it so.
+ */
+function variantControl(rowId: string, title: string): HTMLElement {
+  const label = element("label", {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    fontSize: "0.9rem",
+  });
+  const box = element("input");
+  box.type = "checkbox";
+  box.checked = current?.variants.has(rowId) ?? false;
+  box.addEventListener("change", () => {
+    if (!current) return;
+    if (box.checked) current.variants.add(rowId);
+    else current.variants.delete(rowId);
+  });
+  const text = element("span");
+  text.textContent = tf("material_review_instead_of", { title });
+  label.append(box, text);
+  return label;
 }
 
 function areaField(area: string): HTMLElement {
@@ -532,9 +655,13 @@ function renderReview(parts: DialogParts): void {
   parts.title.textContent = review.analysis.title;
   parts.meta.textContent = analysisLine(review.analysis);
   const source = reviewSourceLine(review);
-  parts.intro.textContent = source
-    ? `${source} ${t("material_review_intro")}`
-    : t("material_review_intro");
+  parts.intro.textContent = [
+    source,
+    reviewPlaceLine(review),
+    t("material_review_intro"),
+  ]
+    .filter(Boolean)
+    .join(" ");
   const notice = reimportNotice(review.reimports);
   parts.notice.textContent = notice ?? "";
   parts.notice.hidden = notice === null;
@@ -681,6 +808,8 @@ export async function openMaterialReview(
       review,
       choices: initialChoices(review.rows),
       areas: {},
+      variants: new Set(),
+      kinds: initialKinds(review),
       options,
     };
     renderReview(parts);
@@ -712,7 +841,7 @@ function setControlsDisabled(parts: DialogParts, disabled: boolean): void {
 async function confirmCurrent(): Promise<void> {
   const parts = ensureDialog();
   if (!current || busy) return;
-  const { review, choices, areas, options } = current;
+  const { review, choices, areas, variants, kinds, options } = current;
   busy = true;
   setControlsDisabled(parts, true);
   updateConfirm(parts);
@@ -720,7 +849,13 @@ async function confirmCurrent(): Promise<void> {
   try {
     const result = await runBridge<MaterialImportConfirmResponse>(
       "material-import-confirm",
-      confirmArgs(review.id, choices, areas),
+      confirmArgs(
+        review.id,
+        choices,
+        areas,
+        [...variants],
+        Object.fromEntries(kinds),
+      ),
     );
     if (!result?.success) throw new Error(t("material_review_error"));
     current = null;

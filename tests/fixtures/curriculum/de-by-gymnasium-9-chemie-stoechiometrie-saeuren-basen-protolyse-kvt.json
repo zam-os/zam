@@ -49,25 +49,542 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie viele Teilchen (Atome, Moleküle oder Formeleinheiten) enthält exakt $1\\,\\text{mol}$ eines Reinstoffes (Avogadro-Konstante $N_A$)?",
-          "concept": "N_A ca. 6,022 * 10^23 Teilchen / mol",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie viele Teilchen (Atome, Moleküle oder Formeleinheiten) enthält exakt "
+            },
+            {
+              "type": "math",
+              "tex": "1\\,\\text{mol}",
+              "speech": "1 Mol"
+            },
+            {
+              "type": "text",
+              "text": " eines Reinstoffes (Avogadro-Konstante "
+            },
+            {
+              "type": "math",
+              "tex": "N_A",
+              "speech": "N A"
+            },
+            {
+              "type": "text",
+              "text": ")?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "N_A \\approx 6{,}022 \\cdot 10^{23}",
+              "speech": "N A ungefähr 6,022 mal 10 hoch 23"
+            },
+            {
+              "type": "text",
+              "text": " Teilchen / mol"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "6,022 * 10^23 Teilchen / mol",
-              "6,022 * 10^12 Teilchen / mol"
+              [
+                {
+                  "type": "math",
+                  "tex": "6{,}022 \\cdot 10^{23}",
+                  "speech": "6,022 mal 10 hoch 23"
+                },
+                {
+                  "type": "text",
+                  "text": " Teilchen / mol"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "6{,}022 \\cdot 10^{12}",
+                  "speech": "6,022 mal 10 hoch 12"
+                },
+                {
+                  "type": "text",
+                  "text": " Teilchen / mol"
+                }
+              ]
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8G9E0000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Grundgleichungen der chemischen Stöchiometrie: 1. **Stoffmenge $n$ & Molare Masse $M$**:   $$n = \\frac{m}{M} \\iff m = n \\cdot M$$   ($n = \\text{Stoffmenge in mol}$, $m = \\text{Masse in g}$, $M = \\text{molare Masse in } \\frac{\\text{g}}{\\text{mol}}$, aus PSE als Summe der relativen Atommassen), 2. **Teilchenanzahl $N$ & Avogadro-Konstante $N_A$**: $N = n \\cdot N_A$ ($N_A \\approx 6{,}022 \\cdot 10^{23}\\,\\text{mol}^{-1}$), 3. **Molares Gasvolumen $V_m$**: Bei Normbedingungen ($T = 0^\\circ\\text{C}, p = 1013\\,\\text{hPa}$) nimmt $1\\,\\text{mol}$ jedes idealen Gases das Volumen $V_m = 22{,}4\\,\\frac{\\text{l}}{\\text{mol}}$ ein ($V = n \\cdot V_m$), 4. **Stoffmengenkonzentration $c$**: $c = \\frac{n}{V}$ (in $\\frac{\\text{mol}}{\\text{l}}$), 5. Berechne die Stoffmenge $n$ und die Anzahl der Moleküle $N$ in $36\\,\\text{g}$ reinem Wasser $H_2O$ ($M(H) = 1\\,\\frac{\\text{g}}{\\text{mol}}$, $M(O) = 16\\,\\frac{\\text{g}}{\\text{mol}}$).",
-          "concept": "Stöchiometrie: n = m/M; N = n*N_A; V_m = 22,4 l/mol bei STP; Konzentration c = n/V; Rechnung: M(H2O) = 2*1 + 16 = 18 g/mol; n = 36 g / (18 g/mol) = 2 mol; N = 2 * 6,022*10^23 = 1,2044 * 10^24 Moleküle.",
-          "sample_solution": "1. Grundgrößen und Gleichungen der chemischen Stöchiometrie: - **1. Stoffmenge $n$ (Einheit: Mol [mol])**:   * Die Basiseinheit zur Zählung chemischer Teilchenportionen:     $$\\mathbf{n = \\frac{m}{M}} \\quad \\iff \\quad \\mathbf{m = n \\cdot M}$$   * $m$: Masse der Stoffportion in Gramm [g].   * $M$: **Molare Masse** in $\\frac{\\text{g}}{\\text{mol}}$ (Zahlenwert entspricht exakt der relativen Molekülmasse $u$ aus dem PSE). - **2. Avogadro-Konstante $N_A$**:   * Die Anzahl der Atome in exakt 12 g des Kohlenstoffisotops $^{12}\\text{C}$:     $$\\mathbf{N_A \\approx 6{,}022 \\cdot 10^{23}\\,\\text{mol}^{-1}} \\implies \\mathbf{N = n \\cdot N_A}$$ - **3. Molares Gasvolumen $V_m$ (Satz von Avogadro)**:   * Gleiche Volumina aller Gase enthalten bei gleichem Druck und gleicher Temperatur dieselbe Anzahl von Teilchen:     $$\\mathbf{V = n \\cdot V_m} \\quad (V_{m,\\text{Norm}} = 22{,}4\\,\\frac{\\text{l}}{\\text{mol}} \\text{ bei } 0^\\circ\\text{C}, 1013\\text{ hPa})$$ - **4. Stoffmengenkonzentration $c$ einer Lösung**:   $$\\mathbf{c = \\frac{n}{V} = \\frac{m}{M \\cdot V}} \\quad (\\text{Einheit: } 1\\,\\frac{\\text{mol}}{\\text{l}} = 1\\,\\text{M} \\text{ [molar]})$$ 2. Durchrechnung des Beispiels ($m(\\text{H}_2\\text{O}) = 36\\,\\text{g}$): - **Schritt 1: Molare Masse $M(\\text{H}_2\\text{O})$**:   $$M(\\text{H}_2\\text{O}) = 2 \\cdot M(\\text{H}) + 1 \\cdot M(\\text{O}) = 2 \\cdot 1{,}0\\,\\frac{\\text{g}}{\\text{mol}} + 16{,}0\\,\\frac{\\text{g}}{\\text{mol}} = \\mathbf{18{,}0\\,\\frac{\\text{g}}{\\text{mol}}}$$ - **Schritt 2: Stoffmenge $n$**:   $$n(\\text{H}_2\\text{O}) = \\frac{m}{M} = \\frac{36\\,\\text{g}}{18\\,\\frac{\\text{g}}{\\text{mol}}} = \\mathbf{2{,}0\\,\\text{mol}}$$ - **Schritt 3: Absolute Teilchenanzahl $N$**:   $$N = n \\cdot N_A = 2{,}0\\,\\text{mol} \\cdot 6{,}022 \\cdot 10^{23}\\,\\text{mol}^{-1} = \\mathbf{1{,}2044 \\cdot 10^{24}\\,\\text{Wassermoleküle}}$$."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Grundgleichungen der chemischen Stöchiometrie: 1. Stoffmenge "
+            },
+            {
+              "type": "math",
+              "tex": "n",
+              "speech": "n"
+            },
+            {
+              "type": "text",
+              "text": " & Molare Masse "
+            },
+            {
+              "type": "math",
+              "tex": "M",
+              "speech": "M"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "n = \\frac{m}{M} \\iff m = n \\cdot M",
+              "block": true,
+              "speech": "n gleich m durch M genau dann, wenn m gleich n mal M"
+            },
+            {
+              "type": "text",
+              "text": "   ("
+            },
+            {
+              "type": "math",
+              "tex": "n = \\text{Stoffmenge in mol}",
+              "speech": "n gleich Stoffmenge in Mol"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "m = \\text{Masse in g}",
+              "speech": "m gleich Masse in Gramm"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "M = \\text{molare Masse in } \\frac{\\text{g}}{\\text{mol}}",
+              "speech": "M gleich molare Masse in Gramm pro Mol"
+            },
+            {
+              "type": "text",
+              "text": ", aus PSE als Summe der relativen Atommassen), 2. Teilchenanzahl "
+            },
+            {
+              "type": "math",
+              "tex": "N",
+              "speech": "N"
+            },
+            {
+              "type": "text",
+              "text": " & Avogadro-Konstante "
+            },
+            {
+              "type": "math",
+              "tex": "N_A",
+              "speech": "N A"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "N = n \\cdot N_A",
+              "speech": "N gleich n mal N A"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "N_A \\approx 6{,}022 \\cdot 10^{23}\\,\\text{mol}^{-1}",
+              "speech": "N A ungefähr 6,022 mal 10 hoch 23 pro Mol"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Molares Gasvolumen "
+            },
+            {
+              "type": "math",
+              "tex": "V_m",
+              "speech": "V m"
+            },
+            {
+              "type": "text",
+              "text": ": Bei Normbedingungen ("
+            },
+            {
+              "type": "math",
+              "tex": "T = 0^\\circ\\text{C}, p = 1013\\,\\text{hPa}",
+              "speech": "T gleich 0 Grad Celsius, p gleich 1013 Hektopascal"
+            },
+            {
+              "type": "text",
+              "text": ") nimmt "
+            },
+            {
+              "type": "math",
+              "tex": "1\\,\\text{mol}",
+              "speech": "1 Mol"
+            },
+            {
+              "type": "text",
+              "text": " jedes idealen Gases das Volumen "
+            },
+            {
+              "type": "math",
+              "tex": "V_m = 22{,}4\\,\\frac{\\text{l}}{\\text{mol}}",
+              "speech": "V m gleich 22,4 Liter pro Mol"
+            },
+            {
+              "type": "text",
+              "text": " ein ("
+            },
+            {
+              "type": "math",
+              "tex": "V = n \\cdot V_m",
+              "speech": "V gleich n mal V m"
+            },
+            {
+              "type": "text",
+              "text": "), 4. Stoffmengenkonzentration "
+            },
+            {
+              "type": "math",
+              "tex": "c",
+              "speech": "c"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "c = \\frac{n}{V}",
+              "speech": "c gleich n durch V"
+            },
+            {
+              "type": "text",
+              "text": " (in "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{\\text{mol}}{\\text{l}}",
+              "speech": "Mol pro Liter"
+            },
+            {
+              "type": "text",
+              "text": "), 5. Berechne die Stoffmenge "
+            },
+            {
+              "type": "math",
+              "tex": "n",
+              "speech": "n"
+            },
+            {
+              "type": "text",
+              "text": " und die Anzahl der Moleküle "
+            },
+            {
+              "type": "math",
+              "tex": "N",
+              "speech": "N"
+            },
+            {
+              "type": "text",
+              "text": " in "
+            },
+            {
+              "type": "math",
+              "tex": "36\\,\\text{g}",
+              "speech": "36 Gramm"
+            },
+            {
+              "type": "text",
+              "text": " reinem Wasser "
+            },
+            {
+              "type": "math",
+              "tex": "H_2O",
+              "speech": "H zwei O"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "M(H) = 1\\,\\frac{\\text{g}}{\\text{mol}}",
+              "speech": "M von H gleich 1 Gramm pro Mol"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "M(O) = 16\\,\\frac{\\text{g}}{\\text{mol}}",
+              "speech": "M von O gleich 16 Gramm pro Mol"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Stöchiometrie: "
+            },
+            {
+              "type": "math",
+              "tex": "n = \\frac{m}{M}",
+              "speech": "n gleich m durch M"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "N = n \\cdot N_A",
+              "speech": "N gleich n mal N A"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "V_m = 22{,}4",
+              "speech": "V m gleich 22,4"
+            },
+            {
+              "type": "text",
+              "text": " l/mol bei STP; Konzentration "
+            },
+            {
+              "type": "math",
+              "tex": "c = \\frac{n}{V}",
+              "speech": "c gleich n durch V"
+            },
+            {
+              "type": "text",
+              "text": "; Rechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "M(\\text{H}_2\\text{O}) = 2 \\cdot 1 + 16 = 18",
+              "speech": "M von H zwei O gleich 2 mal 1 plus 16 gleich 18"
+            },
+            {
+              "type": "text",
+              "text": " g/mol; "
+            },
+            {
+              "type": "math",
+              "tex": "n = \\frac{36\\,\\text{g}}{18\\,\\text{g/mol}} = 2",
+              "speech": "n gleich 36 Gramm durch 18 Gramm pro Mol gleich 2"
+            },
+            {
+              "type": "text",
+              "text": " mol; "
+            },
+            {
+              "type": "math",
+              "tex": "N = 2 \\cdot 6{,}022 \\cdot 10^{23} = 1{,}2044 \\cdot 10^{24}",
+              "speech": "N gleich 2 mal 6,022 mal 10 hoch 23 gleich 1,2044 mal 10 hoch 24"
+            },
+            {
+              "type": "text",
+              "text": " Moleküle."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Grundgrößen und Gleichungen der chemischen Stöchiometrie: - 1. Stoffmenge "
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": " (Einheit: Mol [mol]):   * Die Basiseinheit zur Zählung chemischer Teilchenportionen:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{n = \\frac{m}{M}} \\quad \\iff \\quad \\mathbf{m = n \\cdot M}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "m"
+            },
+            {
+              "type": "text",
+              "text": ": Masse der Stoffportion in Gramm [g].   * "
+            },
+            {
+              "type": "math",
+              "tex": "M"
+            },
+            {
+              "type": "text",
+              "text": ": Molare Masse in "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{\\text{g}}{\\text{mol}}"
+            },
+            {
+              "type": "text",
+              "text": " (Zahlenwert entspricht exakt der relativen Molekülmasse "
+            },
+            {
+              "type": "math",
+              "tex": "u"
+            },
+            {
+              "type": "text",
+              "text": " aus dem PSE). - 2. Avogadro-Konstante "
+            },
+            {
+              "type": "math",
+              "tex": "N_A"
+            },
+            {
+              "type": "text",
+              "text": ":   * Die Anzahl der Atome in exakt 12 g des Kohlenstoffisotops "
+            },
+            {
+              "type": "math",
+              "tex": "^{12}\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": ":     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{N_A \\approx 6{,}022 \\cdot 10^{23}\\,\\text{mol}^{-1}} \\implies \\mathbf{N = n \\cdot N_A}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 3. Molares Gasvolumen "
+            },
+            {
+              "type": "math",
+              "tex": "V_m"
+            },
+            {
+              "type": "text",
+              "text": " (Satz von Avogadro):   * Gleiche Volumina aller Gase enthalten bei gleichem Druck und gleicher Temperatur dieselbe Anzahl von Teilchen:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{V = n \\cdot V_m} \\quad (V_{m,\\text{Norm}} = 22{,}4\\,\\frac{\\text{l}}{\\text{mol}} \\text{ bei } 0^\\circ\\text{C}, 1013\\text{ hPa})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 4. Stoffmengenkonzentration "
+            },
+            {
+              "type": "math",
+              "tex": "c"
+            },
+            {
+              "type": "text",
+              "text": " einer Lösung:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{c = \\frac{n}{V} = \\frac{m}{M \\cdot V}} \\quad (\\text{Einheit: } 1\\,\\frac{\\text{mol}}{\\text{l}} = 1\\,\\text{M} \\text{ [molar]})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Durchrechnung des Beispiels ("
+            },
+            {
+              "type": "math",
+              "tex": "m(\\text{H}_2\\text{O}) = 36\\,\\text{g}"
+            },
+            {
+              "type": "text",
+              "text": "): - Schritt 1: Molare Masse "
+            },
+            {
+              "type": "math",
+              "tex": "M(\\text{H}_2\\text{O})"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "M(\\text{H}_2\\text{O}) = 2 \\cdot M(\\text{H}) + 1 \\cdot M(\\text{O}) = 2 \\cdot 1{,}0\\,\\frac{\\text{g}}{\\text{mol}} + 16{,}0\\,\\frac{\\text{g}}{\\text{mol}} = \\mathbf{18{,}0\\,\\frac{\\text{g}}{\\text{mol}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 2: Stoffmenge "
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "n(\\text{H}_2\\text{O}) = \\frac{m}{M} = \\frac{36\\,\\text{g}}{18\\,\\frac{\\text{g}}{\\text{mol}}} = \\mathbf{2{,}0\\,\\text{mol}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 3: Absolute Teilchenanzahl "
+            },
+            {
+              "type": "math",
+              "tex": "N"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "N = n \\cdot N_A = 2{,}0\\,\\text{mol} \\cdot 6{,}022 \\cdot 10^{23}\\,\\text{mol}^{-1} = \\mathbf{1{,}2044 \\cdot 10^{24}\\,\\text{Wassermoleküle}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +645,373 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Brønsted-Theorie, den pH-Wert und die Neutralisation: 1. **Brønsted-Definition (Protolysereaktion)**:   * **Säure**: Protonendonator ($HA \\rightarrow H^+ + A^-$).   * **Base**: Protonenakzeptor ($B + H^+ \\rightarrow HB^+$).   * **Konjugiertes (korrespondierendes) Säure-Base-Paar**: Unterscheidet sich exakt um ein Proton $H^+$ (z. B. $HCl / Cl^-$, $H_3O^+ / H_2O$).   * **Ampholyt (Amphotere Stoffe)**: Kann je nach Reaktionspartner sowohl als Säure als auch als Base reagieren (z. B. Wasser $H_2O$, Hydrogencarbonat $HCO_3^-$), 2. **Autoprotolyse des Wassers & Ionenprodukt**:   $$2\\,H_2O \\rightleftharpoons H_3O^+ + OH^- \\implies K_W = [H_3O^+] \\cdot [OH^-] = 10^{-14}\\,\\frac{\\text{mol}^2}{\\text{l}^2} \\text{ (bei } 25^\\circ\\text{C)}$$ 3. **Der pH-Wert**: $\\mathbf{\\text{pH} = -\\lg[H_3O^+]}$ und $\\text{pOH} = -\\lg[OH^-] \\implies \\mathbf{\\text{pH} + \\text{pOH} = 14}$ (Sauer: $\\text{pH} < 7$, Neutral: $\\text{pH} = 7$, Basisch: $\\text{pH} > 7$), 4. **Neutralisation & Titration**: $H_3O^+ + OH^- \\rightarrow 2\\,H_2O$. Bei der Titration gilt am Äquivalenzpunkt: $c_A \\cdot V_A = c_B \\cdot V_B$.",
-          "concept": "Brønsted: Säure = Protonendonator, Base = Protonenakzeptor; Ampholyte (z. B. H2O); Autoprotolyse K_w = [H3O+]*[OH-] = 10^-14; pH = -lg[H3O+]; pH + pOH = 14; Neutralisation H3O+ + OH- -> 2 H2O; Titration c_A * V_A = c_B * V_B.",
-          "sample_solution": "1. Die Säure-Base-Theorie nach Johannes Nicolaus Brønsted (1923): - **Protolysereaktion**: Eine chemische Reaktion mit Übertragung von Wasserstoffkernen (Protonen $H^+$):   * **Säure (Protonendonator)**: Teilchen, das ein $H^+$ abgeben kann.   * **Base (Protonenakzeptor)**: Teilchen mit mindestens einem freien Elektronenpaar, das ein $H^+$ aufnehmen kann. - **Korrespondierende (konjugierte) Säure-Base-Paare**:   * Jede Säure wird nach Protonenabgabe zu ihrer korrespondierenden Base:     $$\\underbrace{\\text{HCl}}_{\\text{Säure 1}} + \\underbrace{\\text{H}_2\\text{O}}_{\\text{Base 2}} \\rightleftharpoons \\underbrace{\\text{H}_3\\text{O}^+}_{\\text{Säure 2}} + \\underbrace{\\text{Cl}^-}_{\\text{Base 1}}$$ - **Ampholyte (amphotere Verbindungen)**:   * Teilchen, die je nach Reaktionspartner als Säure oder Base wirken können (z. B. **Wasser**: Gegenüber $HCl$ wirkt es als Base, gegenüber Ammoniak $NH_3$ als Säure). 2. Autoprotolyse des Wassers und das Ionenprodukt $K_W$: - Auch reinstes Wasser leitet elektrischen Strom in winzigem Maße durch Eigendissoziation:   $$2\\,\\text{H}_2\\text{O} \\rightleftharpoons \\text{H}_3\\text{O}^+ + \\text{OH}^-$$ - **Ionenprodukt des Wassers** (bei $25^\\circ\\text{C}$):   $$\\mathbf{K_W = [\\text{H}_3\\text{O}^+] \\cdot [\\text{OH}^-] = 10^{-14}\\,\\frac{\\text{mol}^2}{\\text{l}^2}}$$   * In reinem Wasser gilt: $[\\text{H}_3\\text{O}^+] = [\\text{OH}^-] = 10^{-7}\\,\\frac{\\text{mol}}{\\text{l}}$. 3. Der pH-Wert (potentia Hydrogenii): - Der negative dekadische Logarithmus der Oxoniumionen-Konzentration $[\\text{H}_3\\text{O}^+]$:   $$\\mathbf{\\text{pH} = -\\lg[\\text{H}_3\\text{O}^+]} \\quad \\text{und} \\quad \\mathbf{\\text{pOH} = -\\lg[\\text{OH}^-]}$$   $$\\mathbf{\\text{pH} + \\text{pOH} = 14}$$   * **Sauer**: $[\\text{H}_3\\text{O}^+] > 10^{-7}\\,\\frac{\\text{mol}}{\\text{l}} \\implies \\mathbf{\\text{pH} < 7}$.   * **Neutral**: $[\\text{H}_3\\text{O}^+] = 10^{-7}\\,\\frac{\\text{mol}}{\\text{l}} \\implies \\mathbf{\\text{pH} = 7}$.   * **Alkalisch / Basisch**: $[\\text{H}_3\\text{O}^+] < 10^{-7}\\,\\frac{\\text{mol}}{\\text{l}} \\implies \\mathbf{\\text{pH} > 7}$. 4. Neutralisation und Säure-Base-Titration: - **Reaktionsgleichung der Neutralisation**:   $$\\text{H}_3\\text{O}^+ + \\text{OH}^- \\rightarrow 2\\,\\text{H}_2\\text{O} \\quad (\\Delta H < 0, \\text{ stark exotherm})$$ - **Quantitative Titration am Äquivalenzpunkt (Farbumschlag des Indikators)**:   * Es gilt: $\\mathbf{n(\\text{Säure}) = n(\\text{Base})} \\implies \\mathbf{c_{\\text{Säure}} \\cdot V_{\\text{Säure}} = c_{\\text{Base}} \\cdot V_{\\text{Base}}}$.   * Ermöglicht die hochpräzise Bestimmung unbekannter Säure- oder Basenkonzentrationen im Schullabor."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Brønsted-Theorie, den pH-Wert und die Neutralisation: 1. Brønsted-Definition (Protolysereaktion):   * Säure: Protonendonator ("
+            },
+            {
+              "type": "math",
+              "tex": "HA \\rightarrow H^+ + A^-",
+              "speech": "H A reagiert zu H plus plus A minus"
+            },
+            {
+              "type": "text",
+              "text": ").   * Base: Protonenakzeptor ("
+            },
+            {
+              "type": "math",
+              "tex": "B + H^+ \\rightarrow HB^+",
+              "speech": "B plus H plus reagiert zu H B plus"
+            },
+            {
+              "type": "text",
+              "text": ").   * Konjugiertes (korrespondierendes) Säure-Base-Paar: Unterscheidet sich exakt um ein Proton "
+            },
+            {
+              "type": "math",
+              "tex": "H^+",
+              "speech": "H plus"
+            },
+            {
+              "type": "text",
+              "text": " (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "HCl / Cl^-",
+              "speech": "H C l, C l minus"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "H_3O^+ / H_2O",
+              "speech": "H drei O plus, H zwei O"
+            },
+            {
+              "type": "text",
+              "text": ").   * Ampholyt (Amphotere Stoffe): Kann je nach Reaktionspartner sowohl als Säure als auch als Base reagieren (z. B. Wasser "
+            },
+            {
+              "type": "math",
+              "tex": "H_2O",
+              "speech": "H zwei O"
+            },
+            {
+              "type": "text",
+              "text": ", Hydrogencarbonat "
+            },
+            {
+              "type": "math",
+              "tex": "HCO_3^-",
+              "speech": "H C O drei minus"
+            },
+            {
+              "type": "text",
+              "text": "), 2. Autoprotolyse des Wassers & Ionenprodukt:   "
+            },
+            {
+              "type": "math",
+              "tex": "2\\,H_2O \\rightleftharpoons H_3O^+ + OH^- \\implies K_W = [H_3O^+] \\cdot [OH^-] = 10^{-14}\\,\\frac{\\text{mol}^2}{\\text{l}^2} \\text{ (bei } 25^\\circ\\text{C)}",
+              "block": true,
+              "speech": "2 H zwei O im Gleichgewicht mit H drei O plus plus O H minus, daraus folgt K W gleich Konzentration von H drei O plus mal Konzentration von O H minus gleich 10 hoch minus 14 Mol Quadrat pro Liter Quadrat, bei 25 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": " 3. Der pH-Wert: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{pH} = -\\lg[H_3O^+]}",
+              "speech": "pH gleich minus l g der Konzentration von H drei O plus"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{pOH} = -\\lg[OH^-] \\implies \\mathbf{\\text{pH} + \\text{pOH} = 14}",
+              "speech": "pOH gleich minus l g der Konzentration von O H minus, daraus folgt pH plus pOH gleich 14"
+            },
+            {
+              "type": "text",
+              "text": " (Sauer: "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{pH} < 7",
+              "speech": "pH kleiner als 7"
+            },
+            {
+              "type": "text",
+              "text": ", Neutral: "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{pH} = 7",
+              "speech": "pH gleich 7"
+            },
+            {
+              "type": "text",
+              "text": ", Basisch: "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{pH} > 7",
+              "speech": "pH größer als 7"
+            },
+            {
+              "type": "text",
+              "text": "), 4. Neutralisation & Titration: "
+            },
+            {
+              "type": "math",
+              "tex": "H_3O^+ + OH^- \\rightarrow 2\\,H_2O",
+              "speech": "H drei O plus plus O H minus reagiert zu 2 H zwei O"
+            },
+            {
+              "type": "text",
+              "text": ". Bei der Titration gilt am Äquivalenzpunkt: "
+            },
+            {
+              "type": "math",
+              "tex": "c_A \\cdot V_A = c_B \\cdot V_B",
+              "speech": "c A mal V A gleich c B mal V B"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Brønsted: Säure = Protonendonator, Base = Protonenakzeptor; Ampholyte (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{H}_2\\text{O}",
+              "speech": "H zwei O"
+            },
+            {
+              "type": "text",
+              "text": "); Autoprotolyse "
+            },
+            {
+              "type": "math",
+              "tex": "K_w = [\\text{H}_3\\text{O}^+] \\cdot [\\text{OH}^-] = 10^{-14}",
+              "speech": "K w gleich Konzentration von H drei O plus mal Konzentration von O H minus gleich 10 hoch minus 14"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{pH} = -\\lg[\\text{H}_3\\text{O}^+]",
+              "speech": "pH gleich minus l g der Konzentration von H drei O plus"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{pH} + \\text{pOH} = 14",
+              "speech": "pH plus pOH gleich 14"
+            },
+            {
+              "type": "text",
+              "text": "; Neutralisation "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{H}_3\\text{O}^+ + \\text{OH}^- \\rightarrow 2\\,\\text{H}_2\\text{O}",
+              "speech": "H drei O plus plus O H minus reagiert zu 2 H zwei O"
+            },
+            {
+              "type": "text",
+              "text": "; Titration "
+            },
+            {
+              "type": "math",
+              "tex": "c_A \\cdot V_A = c_B \\cdot V_B",
+              "speech": "c A mal V A gleich c B mal V B"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Säure-Base-Theorie nach Johannes Nicolaus Brønsted (1923): - Protolysereaktion: Eine chemische Reaktion mit Übertragung von Wasserstoffkernen (Protonen "
+            },
+            {
+              "type": "math",
+              "tex": "H^+"
+            },
+            {
+              "type": "text",
+              "text": "):   * Säure (Protonendonator): Teilchen, das ein "
+            },
+            {
+              "type": "math",
+              "tex": "H^+"
+            },
+            {
+              "type": "text",
+              "text": " abgeben kann.   * Base (Protonenakzeptor): Teilchen mit mindestens einem freien Elektronenpaar, das ein "
+            },
+            {
+              "type": "math",
+              "tex": "H^+"
+            },
+            {
+              "type": "text",
+              "text": " aufnehmen kann. - Korrespondierende (konjugierte) Säure-Base-Paare:   * Jede Säure wird nach Protonenabgabe zu ihrer korrespondierenden Base:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\underbrace{\\text{HCl}}_{\\text{Säure 1}} + \\underbrace{\\text{H}_2\\text{O}}_{\\text{Base 2}} \\rightleftharpoons \\underbrace{\\text{H}_3\\text{O}^+}_{\\text{Säure 2}} + \\underbrace{\\text{Cl}^-}_{\\text{Base 1}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Ampholyte (amphotere Verbindungen):   * Teilchen, die je nach Reaktionspartner als Säure oder Base wirken können (z. B. Wasser: Gegenüber "
+            },
+            {
+              "type": "math",
+              "tex": "HCl"
+            },
+            {
+              "type": "text",
+              "text": " wirkt es als Base, gegenüber Ammoniak "
+            },
+            {
+              "type": "math",
+              "tex": "NH_3"
+            },
+            {
+              "type": "text",
+              "text": " als Säure). 2. Autoprotolyse des Wassers und das Ionenprodukt "
+            },
+            {
+              "type": "math",
+              "tex": "K_W"
+            },
+            {
+              "type": "text",
+              "text": ": - Auch reinstes Wasser leitet elektrischen Strom in winzigem Maße durch Eigendissoziation:   "
+            },
+            {
+              "type": "math",
+              "tex": "2\\,\\text{H}_2\\text{O} \\rightleftharpoons \\text{H}_3\\text{O}^+ + \\text{OH}^-",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Ionenprodukt des Wassers (bei "
+            },
+            {
+              "type": "math",
+              "tex": "25^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": "):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{K_W = [\\text{H}_3\\text{O}^+] \\cdot [\\text{OH}^-] = 10^{-14}\\,\\frac{\\text{mol}^2}{\\text{l}^2}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * In reinem Wasser gilt: "
+            },
+            {
+              "type": "math",
+              "tex": "[\\text{H}_3\\text{O}^+] = [\\text{OH}^-] = 10^{-7}\\,\\frac{\\text{mol}}{\\text{l}}"
+            },
+            {
+              "type": "text",
+              "text": ". 3. Der pH-Wert (potentia Hydrogenii): - Der negative dekadische Logarithmus der Oxoniumionen-Konzentration "
+            },
+            {
+              "type": "math",
+              "tex": "[\\text{H}_3\\text{O}^+]"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{pH} = -\\lg[\\text{H}_3\\text{O}^+]} \\quad \\text{und} \\quad \\mathbf{\\text{pOH} = -\\lg[\\text{OH}^-]}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{pH} + \\text{pOH} = 14}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Sauer: "
+            },
+            {
+              "type": "math",
+              "tex": "[\\text{H}_3\\text{O}^+] > 10^{-7}\\,\\frac{\\text{mol}}{\\text{l}} \\implies \\mathbf{\\text{pH} < 7}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Neutral: "
+            },
+            {
+              "type": "math",
+              "tex": "[\\text{H}_3\\text{O}^+] = 10^{-7}\\,\\frac{\\text{mol}}{\\text{l}} \\implies \\mathbf{\\text{pH} = 7}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Alkalisch / Basisch: "
+            },
+            {
+              "type": "math",
+              "tex": "[\\text{H}_3\\text{O}^+] < 10^{-7}\\,\\frac{\\text{mol}}{\\text{l}} \\implies \\mathbf{\\text{pH} > 7}"
+            },
+            {
+              "type": "text",
+              "text": ". 4. Neutralisation und Säure-Base-Titration: - Reaktionsgleichung der Neutralisation:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{H}_3\\text{O}^+ + \\text{OH}^- \\rightarrow 2\\,\\text{H}_2\\text{O} \\quad (\\Delta H < 0, \\text{ stark exotherm})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Quantitative Titration am Äquivalenzpunkt (Farbumschlag des Indikators):   * Es gilt: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{n(\\text{Säure}) = n(\\text{Base})} \\implies \\mathbf{c_{\\text{Säure}} \\cdot V_{\\text{Säure}} = c_{\\text{Base}} \\cdot V_{\\text{Base}}}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Ermöglicht die hochpräzise Bestimmung unbekannter Säure- oder Basenkonzentrationen im Schullabor."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

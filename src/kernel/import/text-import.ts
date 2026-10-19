@@ -9,6 +9,13 @@
 
 import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
+import {
+  type CardText,
+  normalizeCardText,
+  plainProjection,
+  validateCardText,
+} from "../library/card-text.js";
+import { writeCardText } from "../library/card-text-store.js";
 import { publishTokenRevisionInTransaction } from "../library/revision.js";
 import { ensureCard, insertCard } from "../models/card.js";
 import type {
@@ -44,6 +51,19 @@ export interface TextImportCardInput {
   cardOrdinal?: number | null;
   media?: TextImportMediaReference[];
   warnings?: TextImportNotice[];
+  /**
+   * Formulas lifted out of the source (ADR 2026-10-14b, plan Phase 7). With
+   * segments, `question`/`answer` are their plain projection. A personal
+   * import without a model: speech may be empty.
+   */
+  questionSegments?: CardText;
+  answerSegments?: CardText;
+  /**
+   * The text as an import without the lift read it. When only the lift
+   * tells a re-import from the last one, the update is cosmetic (Decision
+   * 7): the source did not change, the card only learned to show formulas.
+   */
+  unliftedText?: { question: string; answer: string };
 }
 
 export interface TextImportAssetInput {
@@ -81,6 +101,11 @@ export interface TextImportPreviewCard {
   tokenId: string | null;
   cardAction: "create" | "keep" | "none";
   contentChanged: boolean;
+  /**
+   * The change is only the formula lift (ADR 2026-10-14b, Decision 7): it is
+   * applied as a cosmetic revision, also to published content.
+   */
+  formulasOnly?: boolean;
   mediaCount: number;
   warnings: TextImportNotice[];
 }
@@ -155,7 +180,11 @@ interface NormalizedCard {
   cardOrdinal: number | null;
   warnings: TextImportNotice[];
   media: NormalizedMediaReference[];
+  questionSegments: CardText | null;
+  answerSegments: CardText | null;
   contentHash: string;
+  /** The hash an import without the formula lift would have stored. */
+  unliftedHash: string;
   metadataHash: string;
 }
 
@@ -207,6 +236,25 @@ const ALLOWED_MEDIA_MIME = new Map<string, TokenMediaKind>([
   ["audio/wav", "audio"],
   ["audio/mp4", "audio"],
 ]);
+
+/** A card side's lifted segments, validated; `null` when there are none. */
+function importSegments(
+  externalId: string,
+  side: "question" | "answer",
+  segments: CardText | undefined,
+): CardText | null {
+  if (!segments) return null;
+  const issues = validateCardText(segments);
+  if (issues.length > 0) {
+    throw new Error(
+      `Card ${externalId} ${side}: ${issues.map((issue) => issue.message).join(" ")}`,
+    );
+  }
+  const normalized = normalizeCardText(segments);
+  return normalized.some((segment) => segment.type !== "text")
+    ? normalized
+    : null;
+}
 
 function normalizeText(value: string): string {
   return value.replace(/\r\n?/g, "\n").trim();
@@ -352,8 +400,24 @@ function normalizeDocument(document: TextImportDocument): {
     if (!externalId || externalId.length > MAX_EXTERNAL_ID_LENGTH) {
       throw new Error(`Card ${index + 1} has an invalid external identity`);
     }
-    const question = normalizeText(input.question);
-    const answer = normalizeText(input.answer);
+    const questionSegments = importSegments(
+      externalId,
+      "question",
+      input.questionSegments,
+    );
+    const answerSegments = importSegments(
+      externalId,
+      "answer",
+      input.answerSegments,
+    );
+    // Segments win: the plain text is their projection, as writeCardText
+    // will store it, so the binding's hash matches the token's text.
+    const question = questionSegments
+      ? plainProjection(questionSegments)
+      : normalizeText(input.question);
+    const answer = answerSegments
+      ? plainProjection(answerSegments)
+      : normalizeText(input.answer);
     if (!question || !answer) {
       throw new Error(`Card ${externalId} must have both question and answer`);
     }
@@ -432,10 +496,20 @@ function normalizeDocument(document: TextImportDocument): {
       cardOrdinal,
       warnings: input.warnings ?? [],
       media,
+      questionSegments,
+      answerSegments,
     };
+    const hash = contentHash(card.question, card.answer, card.media);
     return {
       ...card,
-      contentHash: contentHash(card.question, card.answer, card.media),
+      contentHash: hash,
+      unliftedHash: input.unliftedText
+        ? contentHash(
+            normalizeText(input.unliftedText.question),
+            normalizeText(input.unliftedText.answer),
+            card.media,
+          )
+        : hash,
       metadataHash: metadataHash(card),
     };
   });
@@ -591,6 +665,7 @@ export async function previewTextImport(
     let reason: string;
     let tokenId: string | null = binding?.token_id ?? null;
     let contentChanged = false;
+    let formulasOnly = false;
 
     if (normalized.duplicateIds.has(card.externalId)) {
       action = "conflict";
@@ -632,8 +707,11 @@ export async function previewTextImport(
         }
       } else if (sourceContentChanged && !localContentChanged) {
         action = "update";
-        reason = "The source content changed since the previous import.";
         contentChanged = true;
+        formulasOnly = card.unliftedHash === binding.binding_content_hash;
+        reason = formulasOnly
+          ? "The card's formulas can now be shown as formulas."
+          : "The source content changed since the previous import.";
       } else {
         action = "conflict";
         reason =
@@ -648,7 +726,11 @@ export async function previewTextImport(
           ? "keep"
           : "create";
     const warnings = [...card.warnings];
-    if (contentChanged && binding?.editorial_state === "published") {
+    if (
+      contentChanged &&
+      !formulasOnly &&
+      binding?.editorial_state === "published"
+    ) {
       warnings.push({
         code: "published_content_opt_in",
         message:
@@ -665,6 +747,7 @@ export async function previewTextImport(
       tokenId,
       cardAction,
       contentChanged,
+      ...(formulasOnly ? { formulasOnly } : {}),
       mediaCount: card.media.length,
       warnings,
     };
@@ -935,6 +1018,14 @@ export async function commitTextImport(
           source_link: card.source,
           question_source: "template",
         });
+        if (card.questionSegments || card.answerSegments) {
+          await writeCardText(tx, tokenId, {
+            ...(card.questionSegments
+              ? { question: card.questionSegments }
+              : {}),
+            ...(card.answerSegments ? { concept: card.answerSegments } : {}),
+          });
+        }
         await insertBinding(tx, document, card, tokenId, now);
         // A token created a moment ago cannot have media rows to replace, so
         // the delete is skipped for a text-only card — one statement, but one
@@ -951,13 +1042,22 @@ export async function commitTextImport(
             .prepare("SELECT editorial_state FROM tokens WHERE id = ?")
             .get(tokenId)) as { editorial_state: string } | undefined;
           const published = stateRow?.editorial_state === "published";
-          if (!published || options.applyPublishedContentUpdates) {
+          // Only the formula lift: cosmetic, so it reaches published cards
+          // without making anyone relearn them (ADR 2026-10-14b, D7).
+          const formulasOnly = item.formulasOnly === true;
+          if (
+            formulasOnly ||
+            !published ||
+            options.applyPublishedContentUpdates
+          ) {
             await publishTokenRevisionInTransaction(tx, {
               tokenId,
-              materiality: "material",
+              materiality: formulasOnly ? "cosmetic" : "material",
               changes: {
                 question: card.question,
                 concept: card.answer,
+                questionSegments: card.questionSegments,
+                conceptSegments: card.answerSegments,
               },
               publishedBy: "file-import",
             });

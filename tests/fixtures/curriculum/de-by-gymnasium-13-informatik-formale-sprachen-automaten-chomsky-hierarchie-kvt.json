@@ -65,9 +65,501 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere Formale Grammatiken und die Chomsky-Hierarchie: 1. **Definition einer formalen Grammatik**:   * $G = (V, \\Sigma, P, S)$:     - $V$: Nichtterminale / Variablen.     - $\\Sigma$: Terminalsymbole (Alphabet, $V \\cap \\Sigma = \\emptyset$).     - $P$: Endliche Menge von Produktionsregeln $\\alpha \\to \\beta$.     - $S \\in V$: Startsymbol.   * Die von $G$ erzeugte Sprache: $\\mathbf{L(G) = \\{w \\in \\Sigma^* \\mid S \\Rightarrow^* w\\}}$, 2. **Die 4 Stufen der Chomsky-Hierarchie (Noam Chomsky, 1956)**:   * **Typ 0 (Allgemeine / Phrasenstruktur-Grammatiken)**: Keine Einschränkungen für $P$ $\\implies$ Akzeptiert von **Turingmaschinen**.   * **Typ 1 (Kontextsensitive Grammatiken)**: $|\\alpha| \\le |\\beta|$ (Regeln der Form $\\gamma_1 A \\gamma_2 \\to \\gamma_1 \\beta \\gamma_2$) $\\implies$ **Linear beschränkte Automaten (LBA)**.   * **Typ 2 (Kontextfreie Grammatiken)**: Linke Regelseite besteht aus genau einer Variablen ($A \\to \\beta$ mit $A \\in V$) $\\implies$ **Kellerautomaten (PDA)** (z. B. BNF in Compilern).   * **Typ 3 (Reguläre Grammatiken)**: Regeln nur der Form $A \\to a B$ oder $A \\to a$ (rechtslinear) bzw. $A \\to B a$ oder $A \\to a$ (linkslinear) $\\implies$ **Endliche Automaten (DEA/NEA)** / Reguläre Ausdrücke, 3. **Hierarchiebeziehung**:   $$\\mathbf{\\mathcal{L}_3 \\subsetneq \\mathcal{L}_2 \\subsetneq \\mathcal{L}_1 \\subsetneq \\mathcal{L}_0}$$   *(Die Sprache $L = \\{a^n b^n \\mid n \\ge 1\\}$ ist Typ 2, aber nachweislich nicht Typ 3)*.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere Formale Grammatiken und die Chomsky-Hierarchie: 1. Definition einer formalen Grammatik:   * "
+            },
+            {
+              "type": "math",
+              "tex": "G = (V, \\Sigma, P, S)",
+              "speech": "G gleich das Tupel aus V, großes Sigma, P und S"
+            },
+            {
+              "type": "text",
+              "text": ":     - "
+            },
+            {
+              "type": "math",
+              "tex": "V",
+              "speech": "V"
+            },
+            {
+              "type": "text",
+              "text": ": Nichtterminale / Variablen.     - "
+            },
+            {
+              "type": "math",
+              "tex": "\\Sigma",
+              "speech": "großes Sigma"
+            },
+            {
+              "type": "text",
+              "text": ": Terminalsymbole (Alphabet, "
+            },
+            {
+              "type": "math",
+              "tex": "V \\cap \\Sigma = \\emptyset",
+              "speech": "V geschnitten mit großes Sigma gleich leere Menge"
+            },
+            {
+              "type": "text",
+              "text": ").     - "
+            },
+            {
+              "type": "math",
+              "tex": "P",
+              "speech": "P"
+            },
+            {
+              "type": "text",
+              "text": ": Endliche Menge von Produktionsregeln "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha \\to \\beta",
+              "speech": "Alpha wird zu Beta"
+            },
+            {
+              "type": "text",
+              "text": ".     - "
+            },
+            {
+              "type": "math",
+              "tex": "S \\in V",
+              "speech": "S Element von V"
+            },
+            {
+              "type": "text",
+              "text": ": Startsymbol.   * Die von "
+            },
+            {
+              "type": "math",
+              "tex": "G",
+              "speech": "G"
+            },
+            {
+              "type": "text",
+              "text": " erzeugte Sprache: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{L(G) = \\{w \\in \\Sigma^* \\mid S \\Rightarrow^* w\\}}",
+              "speech": "L von G gleich die Menge aller w aus großes Sigma Stern, die aus S ableitbar sind"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Die 4 Stufen der Chomsky-Hierarchie (Noam Chomsky, 1956):   * Typ 0 (Allgemeine / Phrasenstruktur-Grammatiken): Keine Einschränkungen für "
+            },
+            {
+              "type": "math",
+              "tex": "P",
+              "speech": "P"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Akzeptiert von Turingmaschinen.   * Typ 1 (Kontextsensitive Grammatiken): "
+            },
+            {
+              "type": "math",
+              "tex": "|\\alpha| \\le |\\beta|",
+              "speech": "Betrag von Alpha kleiner gleich Betrag von Beta"
+            },
+            {
+              "type": "text",
+              "text": " (Regeln der Form "
+            },
+            {
+              "type": "math",
+              "tex": "\\gamma_1 A \\gamma_2 \\to \\gamma_1 \\beta \\gamma_2",
+              "speech": "Gamma eins A Gamma zwei geht über in Gamma eins Beta Gamma zwei"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Linear beschränkte Automaten (LBA).   * Typ 2 (Kontextfreie Grammatiken): Linke Regelseite besteht aus genau einer Variablen ("
+            },
+            {
+              "type": "math",
+              "tex": "A \\to \\beta",
+              "speech": "groß A wird zu Beta"
+            },
+            {
+              "type": "text",
+              "text": " mit "
+            },
+            {
+              "type": "math",
+              "tex": "A \\in V",
+              "speech": "A Element von V"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Kellerautomaten (PDA) (z. B. BNF in Compilern).   * Typ 3 (Reguläre Grammatiken): Regeln nur der Form "
+            },
+            {
+              "type": "math",
+              "tex": "A \\to a B",
+              "speech": "groß A wird zu klein a groß B"
+            },
+            {
+              "type": "text",
+              "text": " oder "
+            },
+            {
+              "type": "math",
+              "tex": "A \\to a",
+              "speech": "groß A wird zu klein a"
+            },
+            {
+              "type": "text",
+              "text": " (rechtslinear) bzw. "
+            },
+            {
+              "type": "math",
+              "tex": "A \\to B a",
+              "speech": "groß A wird zu groß B klein a"
+            },
+            {
+              "type": "text",
+              "text": " oder "
+            },
+            {
+              "type": "math",
+              "tex": "A \\to a",
+              "speech": "groß A wird zu klein a"
+            },
+            {
+              "type": "text",
+              "text": " (linkslinear) "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Endliche Automaten (DEA/NEA) / Reguläre Ausdrücke, 3. Hierarchiebeziehung:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\mathcal{L}_3 \\subsetneq \\mathcal{L}_2 \\subsetneq \\mathcal{L}_1 \\subsetneq \\mathcal{L}_0}",
+              "block": true,
+              "speech": "L drei echte Teilmenge von L zwei echte Teilmenge von L eins echte Teilmenge von L null"
+            },
+            {
+              "type": "text",
+              "text": "   (Die Sprache "
+            },
+            {
+              "type": "math",
+              "tex": "L = \\{a^n b^n \\mid n \\ge 1\\}",
+              "speech": "L gleich die Menge aller a hoch n b hoch n mit n größer gleich 1"
+            },
+            {
+              "type": "text",
+              "text": " ist Typ 2, aber nachweislich nicht Typ 3)."
+            }
+          ],
           "concept": "Formale Sprachen 13: Grammatik G = (V, Sigma, P, S); 4 Chomsky-Klassen: Typ 0 (Turingmaschine), Typ 1 (kontextsensitiv / LBA), Typ 2 (kontextfrei / PDA), Typ 3 (regulär / DEA); strikte Inklusionskette L3 subset L2 subset L1 subset L0.",
-          "sample_solution": "1. Mathematische Definition Formaler Grammatiken: - Ein 4-Tupel $\\mathbf{G = (V, \\Sigma, P, S)}$ formalisiert die Syntax einer Sprache:   * **Variable (Nichtterminale $V$)**: Platzhalter, die schrittweise ersetzt werden (z. B. $\\{S, A, B\\}$).   * **Terminale (Alphabet $\\Sigma$)**: Die eigentlichen Zeichen der finalen Wörter (z. B. $\\{a, b, 0, 1\\}$).   * **Produktionsregeln $P$**: Ersetzungsregeln der Form $\\alpha \\to \\beta$.   * **Ableitung ($S \\Rightarrow^* w$)**: Sukzessive Anwendung der Regeln ausgehend vom Startsymbol $S$, bis keine Variablen mehr im Wort enthalten sind. 2. Die vier Stufen der Chomsky-Hierarchie: | Stufe | Sprachklasse | Form der Regeln $\\alpha \\to \\beta$ | Äquivalentes Maschinenmodell | Typisches Anwendungsbeispiel | | :--- | :--- | :--- | :--- | :--- | | **Typ 3** | **Reguläre Sprachen** | $A \\to a B$ oder $A \\to a$ (rechtslinear) | **Endlicher Automat (DEA/NEA)** | Lexikalische Analyse / Regex (Scanner, Bezeichner, Zahlenformate) | | **Typ 2** | **Kontextfreie Sprachen** | $A \\to \\beta$ ($A \\in V, \\beta \\in (V \\cup \\Sigma)^*$) | **Nichtdeterministischer Kellerautomat (PDA)** | Syntax von Programmiersprachen (Parser, Klammerstrukturen) | | **Typ 1** | **Kontextsensitive Sprachen** | $\\alpha_1 A \\alpha_2 \\to \\alpha_1 \\beta \\alpha_2$ ($|\\alpha| \\le |\\beta|$) | **Linear beschränkter Automat (LBA)** | Natürliche Sprachen, Typ-Überprüfung | | **Typ 0** | **Rekursiv aufzählbare Sprachen** | Beliebige Regeln $\\alpha \\to \\beta$ (mit $\\alpha \\neq \\varepsilon$) | **Turingmaschine (TM)** | Universelle Algorithmen / Unbeschränkte Berechenbarkeit | 3. Warum $L = \\{a^n b^n \\mid n \\ge 1\\}$ Typ 2, aber nicht Typ 3 ist: - **Typ-2-Grammatik für $L$**:   * $V = \\{S\\}, \\Sigma = \\{a, b\\}$.   * Regeln: $S \\to a S b \\mid a b$.   * Ableitungsbeispiel für $a^3 b^3$: $S \\Rightarrow aSb \\Rightarrow aaSbb \\Rightarrow aaabbb$. - **Warum kein endlicher Automat $L$ erkennen kann**:   * Ein endlicher Automat besitzt nur eine feste, endliche Anzahl an Zuständen $|Z| = k$.   * Um beliebig viele $a$'s zu zählen und mit der exakt gleichen Anzahl an $b$'s abzugleichen ($n > k$), müsste sich der Automat den Zähler $n$ merken können.   * Da ein DEA keinen externen Speicher besitzt, scheitert er (**Pumping-Lemma für reguläre Sprachen**).   * Ein Kellerautomat (Typ 2) speichert die $a$'s hingegen einfach auf seinem unbegrenzten **LIFO-Stack** und poppt bei jedem gelesenen $b$ ein $a$ herunter."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Mathematische Definition Formaler Grammatiken: - Ein 4-Tupel "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{G = (V, \\Sigma, P, S)}"
+            },
+            {
+              "type": "text",
+              "text": " formalisiert die Syntax einer Sprache:   * Variable (Nichtterminale "
+            },
+            {
+              "type": "math",
+              "tex": "V"
+            },
+            {
+              "type": "text",
+              "text": "): Platzhalter, die schrittweise ersetzt werden (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "\\{S, A, B\\}"
+            },
+            {
+              "type": "text",
+              "text": ").   * Terminale (Alphabet "
+            },
+            {
+              "type": "math",
+              "tex": "\\Sigma"
+            },
+            {
+              "type": "text",
+              "text": "): Die eigentlichen Zeichen der finalen Wörter (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "\\{a, b, 0, 1\\}"
+            },
+            {
+              "type": "text",
+              "text": ").   * Produktionsregeln "
+            },
+            {
+              "type": "math",
+              "tex": "P"
+            },
+            {
+              "type": "text",
+              "text": ": Ersetzungsregeln der Form "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha \\to \\beta"
+            },
+            {
+              "type": "text",
+              "text": ".   * Ableitung ("
+            },
+            {
+              "type": "math",
+              "tex": "S \\Rightarrow^* w"
+            },
+            {
+              "type": "text",
+              "text": "): Sukzessive Anwendung der Regeln ausgehend vom Startsymbol "
+            },
+            {
+              "type": "math",
+              "tex": "S"
+            },
+            {
+              "type": "text",
+              "text": ", bis keine Variablen mehr im Wort enthalten sind. 2. Die vier Stufen der Chomsky-Hierarchie: | Stufe | Sprachklasse | Form der Regeln "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha \\to \\beta"
+            },
+            {
+              "type": "text",
+              "text": " | Äquivalentes Maschinenmodell | Typisches Anwendungsbeispiel | | :--- | :--- | :--- | :--- | :--- | | Typ 3 | Reguläre Sprachen | "
+            },
+            {
+              "type": "math",
+              "tex": "A \\to a B"
+            },
+            {
+              "type": "text",
+              "text": " oder "
+            },
+            {
+              "type": "math",
+              "tex": "A \\to a"
+            },
+            {
+              "type": "text",
+              "text": " (rechtslinear) | Endlicher Automat (DEA/NEA) | Lexikalische Analyse / Regex (Scanner, Bezeichner, Zahlenformate) | | Typ 2 | Kontextfreie Sprachen | "
+            },
+            {
+              "type": "math",
+              "tex": "A \\to \\beta"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "A \\in V, \\beta \\in (V \\cup \\Sigma)^*"
+            },
+            {
+              "type": "text",
+              "text": ") | Nichtdeterministischer Kellerautomat (PDA) | Syntax von Programmiersprachen (Parser, Klammerstrukturen) | | Typ 1 | Kontextsensitive Sprachen | "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha_1 A \\alpha_2 \\to \\alpha_1 \\beta \\alpha_2"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "|\\alpha| \\le |\\beta|"
+            },
+            {
+              "type": "text",
+              "text": ") | Linear beschränkter Automat (LBA) | Natürliche Sprachen, Typ-Überprüfung | | Typ 0 | Rekursiv aufzählbare Sprachen | Beliebige Regeln "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha \\to \\beta"
+            },
+            {
+              "type": "text",
+              "text": " (mit "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha \\neq \\varepsilon"
+            },
+            {
+              "type": "text",
+              "text": ") | Turingmaschine (TM) | Universelle Algorithmen / Unbeschränkte Berechenbarkeit | 3. Warum "
+            },
+            {
+              "type": "math",
+              "tex": "L = \\{a^n b^n \\mid n \\ge 1\\}"
+            },
+            {
+              "type": "text",
+              "text": " Typ 2, aber nicht Typ 3 ist: - Typ-2-Grammatik für "
+            },
+            {
+              "type": "math",
+              "tex": "L"
+            },
+            {
+              "type": "text",
+              "text": ":   * "
+            },
+            {
+              "type": "math",
+              "tex": "V = \\{S\\}, \\Sigma = \\{a, b\\}"
+            },
+            {
+              "type": "text",
+              "text": ".   * Regeln: "
+            },
+            {
+              "type": "math",
+              "tex": "S \\to a S b \\mid a b"
+            },
+            {
+              "type": "text",
+              "text": ".   * Ableitungsbeispiel für "
+            },
+            {
+              "type": "math",
+              "tex": "a^3 b^3"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "S \\Rightarrow aSb \\Rightarrow aaSbb \\Rightarrow aaabbb"
+            },
+            {
+              "type": "text",
+              "text": ". - Warum kein endlicher Automat "
+            },
+            {
+              "type": "math",
+              "tex": "L"
+            },
+            {
+              "type": "text",
+              "text": " erkennen kann:   * Ein endlicher Automat besitzt nur eine feste, endliche Anzahl an Zuständen "
+            },
+            {
+              "type": "math",
+              "tex": "|Z| = k"
+            },
+            {
+              "type": "text",
+              "text": ".   * Um beliebig viele "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": "'s zu zählen und mit der exakt gleichen Anzahl an "
+            },
+            {
+              "type": "math",
+              "tex": "b"
+            },
+            {
+              "type": "text",
+              "text": "'s abzugleichen ("
+            },
+            {
+              "type": "math",
+              "tex": "n > k"
+            },
+            {
+              "type": "text",
+              "text": "), müsste sich der Automat den Zähler "
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": " merken können.   * Da ein DEA keinen externen Speicher besitzt, scheitert er (Pumping-Lemma für reguläre Sprachen).   * Ein Kellerautomat (Typ 2) speichert die "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": "'s hingegen einfach auf seinem unbegrenzten LIFO-Stack und poppt bei jedem gelesenen "
+            },
+            {
+              "type": "math",
+              "tex": "b"
+            },
+            {
+              "type": "text",
+              "text": " ein "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": " herunter."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +620,668 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den Deterministischen Endlichen Automaten (DEA), die Potenzmengenkonstruktion und das Pumping-Lemma: 1. **Formale Definition eines DEA**:   * $M = (Z, \\Sigma, \\delta, z_0, F)$ mit:     - $Z$: Endliche Menge von Zuständen.     - $\\Sigma$: Endliches Eingabealphabet.     - $\\delta: Z \\times \\Sigma \\to Z$: Deterministische Übergangsfunktion (jedes Paar aus Zustand und Zeichen führt zu genau einem Folgezustand).     - $z_0 \\in Z$: Startzustand.     - $F \\subseteq Z$: Menge der akzeptierenden Endzustände.   * Wortakzeptanz: Ein Wort $w = a_1 a_2 \\dots a_n$ wird akzeptiert, wenn die erweiterte Übergangsfunktion $\\delta^*(z_0, w) \\in F$ liefert, 2. **NEA und Potenzmengenkonstruktion (Rabin-Scott, Turing-Award 1976)**:   * Bei einem NEA kann $\\delta(z, a)$ eine Menge von Folgezuständen oder $\\varepsilon$-Übergänge enthalten.   * Jeder NEA mit $n$ Zuständen kann äquivalent in einen DEA mit maximal $2^n$ Zuständen (Potenzmenge $\\mathcal{P}(Z)$) transformiert werden $\\implies \\mathbf{\\mathcal{L}(\\text{NEA}) = \\mathcal{L}(\\text{DEA}) = \\text{Reguläre Sprachen}}$, 3. **Das Pumping-Lemma (Schleifensatz) für reguläre Sprachen**:   * Wenn $L$ regulär ist, existiert eine Pumping-Zahl $p \\ge 1$, sodass jedes Wort $w \\in L$ mit $|w| \\ge p$ zerlegt werden kann in $w = x y z$ mit:     - 1. $|y| \\ge 1$ (der aufpumpbare Teil ist nichtleer).     - 2. $|x y| \\le p$.     - 3. $\\mathbf{x y^i z \\in L}$ für alle $i \\in \\mathbb{N}_0$.   * Widerspruchsbeweis: Wenn für ein Wort $w$ das Aufpumpen für ein $i$ aus der Sprache herausführt ($x y^i z \\notin L$), kann die Sprache **nicht regulär** sein!",
-          "concept": "Automaten 13: DEA 5-Tupel (Z, Sigma, delta, z_0, F); NEA Potenzmengenkonstruktion (äquivalente Sprachmächtigkeit L(NEA) = L(DEA)); Pumping-Lemma (w = xyz, |y|>=1, |xy|<=p, xy^i z in L) zum Beweis der Nicht-Regularität.",
-          "sample_solution": "1. Der Deterministische Endliche Automat (DEA / DFA): - **Das 5-Tupel**:   $$\\mathbf{M = (Z, \\Sigma, \\delta, z_0, F)}$$ - **Beispiel eines Paritätsprüfers**:   * Akzeptiert alle Binärwörter mit gerader Anzahl an Einsen:     - $Z = \\{z_{\\text{gerade}}, z_{\\text{ungerade}}\\}$.     - $\\Sigma = \\{0, 1\\}$.     - $z_0 = z_{\\text{gerade}}$.     - $F = \\{z_{\\text{gerade}}\\}$.     - Übergänge: $\\delta(z_{\\text{gerade}}, 0) = z_{\\text{gerade}}$, $\\delta(z_{\\text{gerade}}, 1) = z_{\\text{ungerade}}$, $\\delta(z_{\\text{ungerade}}, 0) = z_{\\text{ungerade}}$, $\\delta(z_{\\text{ungerade}}, 1) = z_{\\text{gerade}}$. 2. Äquivalenz von NEA und DEA (Potenzmengenkonstruktion): - Ein Nichtdeterministischer Endlicher Automat (NEA) erlaubt Verzweigungen und $\\varepsilon$-Spontansprünge. - **Der Algorithmus von Michael Rabin und Dana Scott**:   * Man konstruiert einen DEA, dessen Zustände Mengen von Zuständen des ursprünglichen NEA sind (Elemente der Potenzmenge $\\mathcal{P}(Z)$).   * Hat der NEA $n$ Zustände, besitzt der transformierte DEA im Worst-Case $2^n$ Zustände.   * **Fundamentales Theorem**: Nichtdeterminismus verleiht endlichen Automaten **keine zusätzliche Sprachmächtigkeit**! NEA und DEA akzeptieren exakt dieselbe Sprachklasse (die regulären Sprachen $\\mathcal{L}_3$). 3. Beweis mit dem Pumping-Lemma: $L = \\{a^n b^n \\mid n \\ge 1\\}$ ist nicht regulär: - **Annahme zum Widerspruch**: Sei $L$ eine reguläre Sprache. - Dann existiert nach dem Pumping-Lemma eine Pumping-Zahl $p$. - **Wahl des Testwortes**: Wir wählen das Wort $w = a^p b^p \\in L$. Die Länge ist $|w| = 2p \\ge p$. - **Zerlegung $w = x y z$**:   * Nach Bedingung (2) muss $|x y| \\le p$ gelten $\\implies$ Die Teilsequenz $x y$ besteht ausschließlich aus Buchstaben $a$.   * Da $|y| \\ge 1$, muss $y = a^k$ mit $1 \\le k \\le p$ gelten.   * Die Zerlegung lautet also: $x = a^{p-k-m}, \\; y = a^k, \\; z = a^m b^p$ (wobei $p-k-m + k + m = p$). - **Das Aufpumpen für $i = 2$ ($w' = x y^2 z$)**:   * Wir pumpen $y$ auf:     $$w' = x y^2 z = a^{p-k-m} \\cdot (a^k)^2 \\cdot a^m b^p = a^{p+k} b^p$$   * Da $k \\ge 1$, ist die Anzahl der $a$'s nun $p + k > p$, während die Anzahl der $b$'s unverändert $p$ beträgt.   * Da die Anzahl von $a$'s und $b$'s ungleich ist, gilt:     $$\\mathbf{w' = a^{p+k} b^p \\notin L}$$ - **Schlussfolgerung**:   * Dies widerspricht der Pumping-Lemma-Bedingung $x y^i z \\in L$ für alle $i$.   * Die Annahme ist falsch $\\implies \\mathbf{L = \\{a^n b^n \\mid n \\ge 1\\} \\text{ ist NICHT regulär}}$!"
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den Deterministischen Endlichen Automaten (DEA), die Potenzmengenkonstruktion und das Pumping-Lemma: 1. Formale Definition eines DEA:   * "
+            },
+            {
+              "type": "math",
+              "tex": "M = (Z, \\Sigma, \\delta, z_0, F)",
+              "speech": "M gleich das Tupel aus Z, großes Sigma, Delta, z null und F"
+            },
+            {
+              "type": "text",
+              "text": " mit:     - "
+            },
+            {
+              "type": "math",
+              "tex": "Z",
+              "speech": "Z"
+            },
+            {
+              "type": "text",
+              "text": ": Endliche Menge von Zuständen.     - "
+            },
+            {
+              "type": "math",
+              "tex": "\\Sigma",
+              "speech": "großes Sigma"
+            },
+            {
+              "type": "text",
+              "text": ": Endliches Eingabealphabet.     - "
+            },
+            {
+              "type": "math",
+              "tex": "\\delta: Z \\times \\Sigma \\to Z",
+              "speech": "Delta bildet Z kreuz großes Sigma ab nach Z"
+            },
+            {
+              "type": "text",
+              "text": ": Deterministische Übergangsfunktion (jedes Paar aus Zustand und Zeichen führt zu genau einem Folgezustand).     - "
+            },
+            {
+              "type": "math",
+              "tex": "z_0 \\in Z",
+              "speech": "z null Element von Z"
+            },
+            {
+              "type": "text",
+              "text": ": Startzustand.     - "
+            },
+            {
+              "type": "math",
+              "tex": "F \\subseteq Z",
+              "speech": "F Teilmenge von Z"
+            },
+            {
+              "type": "text",
+              "text": ": Menge der akzeptierenden Endzustände.   * Wortakzeptanz: Ein Wort "
+            },
+            {
+              "type": "math",
+              "tex": "w = a_1 a_2 \\dots a_n",
+              "speech": "w gleich a eins a zwei bis a n"
+            },
+            {
+              "type": "text",
+              "text": " wird akzeptiert, wenn die erweiterte Übergangsfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "\\delta^*(z_0, w) \\in F",
+              "speech": "Delta Stern von z null und w ist Element von F"
+            },
+            {
+              "type": "text",
+              "text": " liefert, 2. NEA und Potenzmengenkonstruktion (Rabin-Scott, Turing-Award 1976):   * Bei einem NEA kann "
+            },
+            {
+              "type": "math",
+              "tex": "\\delta(z, a)",
+              "speech": "Delta von z und a"
+            },
+            {
+              "type": "text",
+              "text": " eine Menge von Folgezuständen oder "
+            },
+            {
+              "type": "math",
+              "tex": "\\varepsilon",
+              "speech": "Epsilon"
+            },
+            {
+              "type": "text",
+              "text": "-Übergänge enthalten.   * Jeder NEA mit "
+            },
+            {
+              "type": "math",
+              "tex": "n",
+              "speech": "n"
+            },
+            {
+              "type": "text",
+              "text": " Zuständen kann äquivalent in einen DEA mit maximal "
+            },
+            {
+              "type": "math",
+              "tex": "2^n",
+              "speech": "2 hoch n"
+            },
+            {
+              "type": "text",
+              "text": " Zuständen (Potenzmenge "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathcal{P}(Z)",
+              "speech": "Potenzmenge von Z"
+            },
+            {
+              "type": "text",
+              "text": ") transformiert werden "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies \\mathbf{\\mathcal{L}(\\text{NEA}) = \\mathcal{L}(\\text{DEA}) = \\text{Reguläre Sprachen}}",
+              "speech": "daraus folgt L von NEA gleich L von DEA gleich reguläre Sprachen"
+            },
+            {
+              "type": "text",
+              "text": ", 3. Das Pumping-Lemma (Schleifensatz) für reguläre Sprachen:   * Wenn "
+            },
+            {
+              "type": "math",
+              "tex": "L",
+              "speech": "L"
+            },
+            {
+              "type": "text",
+              "text": " regulär ist, existiert eine Pumping-Zahl "
+            },
+            {
+              "type": "math",
+              "tex": "p \\ge 1",
+              "speech": "p größer gleich 1"
+            },
+            {
+              "type": "text",
+              "text": ", sodass jedes Wort "
+            },
+            {
+              "type": "math",
+              "tex": "w \\in L",
+              "speech": "w Element von L"
+            },
+            {
+              "type": "text",
+              "text": " mit "
+            },
+            {
+              "type": "math",
+              "tex": "|w| \\ge p",
+              "speech": "Länge von w größer gleich p"
+            },
+            {
+              "type": "text",
+              "text": " zerlegt werden kann in "
+            },
+            {
+              "type": "math",
+              "tex": "w = x y z",
+              "speech": "w gleich x y z"
+            },
+            {
+              "type": "text",
+              "text": " mit:     - 1. "
+            },
+            {
+              "type": "math",
+              "tex": "|y| \\ge 1",
+              "speech": "Länge von y größer gleich 1"
+            },
+            {
+              "type": "text",
+              "text": " (der aufpumpbare Teil ist nichtleer).     - 2. "
+            },
+            {
+              "type": "math",
+              "tex": "|x y| \\le p",
+              "speech": "Länge von x y kleiner gleich p"
+            },
+            {
+              "type": "text",
+              "text": ".     - 3. "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{x y^i z \\in L}",
+              "speech": "x y hoch i z Element von L"
+            },
+            {
+              "type": "text",
+              "text": " für alle "
+            },
+            {
+              "type": "math",
+              "tex": "i \\in \\mathbb{N}_0",
+              "speech": "i Element der natürlichen Zahlen mit 0"
+            },
+            {
+              "type": "text",
+              "text": ".   * Widerspruchsbeweis: Wenn für ein Wort "
+            },
+            {
+              "type": "math",
+              "tex": "w",
+              "speech": "w"
+            },
+            {
+              "type": "text",
+              "text": " das Aufpumpen für ein "
+            },
+            {
+              "type": "math",
+              "tex": "i",
+              "speech": "i"
+            },
+            {
+              "type": "text",
+              "text": " aus der Sprache herausführt ("
+            },
+            {
+              "type": "math",
+              "tex": "x y^i z \\notin L",
+              "speech": "x y hoch i z nicht Element von L"
+            },
+            {
+              "type": "text",
+              "text": "), kann die Sprache nicht regulär sein!"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Automaten 13: DEA 5-Tupel "
+            },
+            {
+              "type": "math",
+              "tex": "(Z, \\Sigma, \\delta, z_0, F)",
+              "speech": "das Tupel Z, großes Sigma, Delta, z null, F"
+            },
+            {
+              "type": "text",
+              "text": "; NEA Potenzmengenkonstruktion (äquivalente Sprachmächtigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "L(\\text{NEA}) = L(\\text{DEA})",
+              "speech": "L von N E A gleich L von D E A"
+            },
+            {
+              "type": "text",
+              "text": "); Pumping-Lemma ("
+            },
+            {
+              "type": "math",
+              "tex": "w = xyz",
+              "speech": "w gleich x y z"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "|y| \\ge 1",
+              "speech": "Länge von y größer gleich 1"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "|xy| \\le p",
+              "speech": "Länge von x y kleiner gleich p"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "xy^i z \\in L",
+              "speech": "x y hoch i z Element von L"
+            },
+            {
+              "type": "text",
+              "text": ") zum Beweis der Nicht-Regularität."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der Deterministische Endliche Automat (DEA / DFA): - Das 5-Tupel:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{M = (Z, \\Sigma, \\delta, z_0, F)}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Beispiel eines Paritätsprüfers:   * Akzeptiert alle Binärwörter mit gerader Anzahl an Einsen:     - "
+            },
+            {
+              "type": "math",
+              "tex": "Z = \\{z_{\\text{gerade}}, z_{\\text{ungerade}}\\}"
+            },
+            {
+              "type": "text",
+              "text": ".     - "
+            },
+            {
+              "type": "math",
+              "tex": "\\Sigma = \\{0, 1\\}"
+            },
+            {
+              "type": "text",
+              "text": ".     - "
+            },
+            {
+              "type": "math",
+              "tex": "z_0 = z_{\\text{gerade}}"
+            },
+            {
+              "type": "text",
+              "text": ".     - "
+            },
+            {
+              "type": "math",
+              "tex": "F = \\{z_{\\text{gerade}}\\}"
+            },
+            {
+              "type": "text",
+              "text": ".     - Übergänge: "
+            },
+            {
+              "type": "math",
+              "tex": "\\delta(z_{\\text{gerade}}, 0) = z_{\\text{gerade}}"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\delta(z_{\\text{gerade}}, 1) = z_{\\text{ungerade}}"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\delta(z_{\\text{ungerade}}, 0) = z_{\\text{ungerade}}"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\delta(z_{\\text{ungerade}}, 1) = z_{\\text{gerade}}"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Äquivalenz von NEA und DEA (Potenzmengenkonstruktion): - Ein Nichtdeterministischer Endlicher Automat (NEA) erlaubt Verzweigungen und "
+            },
+            {
+              "type": "math",
+              "tex": "\\varepsilon"
+            },
+            {
+              "type": "text",
+              "text": "-Spontansprünge. - Der Algorithmus von Michael Rabin und Dana Scott:   * Man konstruiert einen DEA, dessen Zustände Mengen von Zuständen des ursprünglichen NEA sind (Elemente der Potenzmenge "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathcal{P}(Z)"
+            },
+            {
+              "type": "text",
+              "text": ").   * Hat der NEA "
+            },
+            {
+              "type": "math",
+              "tex": "n"
+            },
+            {
+              "type": "text",
+              "text": " Zustände, besitzt der transformierte DEA im Worst-Case "
+            },
+            {
+              "type": "math",
+              "tex": "2^n"
+            },
+            {
+              "type": "text",
+              "text": " Zustände.   * Fundamentales Theorem: Nichtdeterminismus verleiht endlichen Automaten keine zusätzliche Sprachmächtigkeit! NEA und DEA akzeptieren exakt dieselbe Sprachklasse (die regulären Sprachen "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathcal{L}_3"
+            },
+            {
+              "type": "text",
+              "text": "). 3. Beweis mit dem Pumping-Lemma: "
+            },
+            {
+              "type": "math",
+              "tex": "L = \\{a^n b^n \\mid n \\ge 1\\}"
+            },
+            {
+              "type": "text",
+              "text": " ist nicht regulär: - Annahme zum Widerspruch: Sei "
+            },
+            {
+              "type": "math",
+              "tex": "L"
+            },
+            {
+              "type": "text",
+              "text": " eine reguläre Sprache. - Dann existiert nach dem Pumping-Lemma eine Pumping-Zahl "
+            },
+            {
+              "type": "math",
+              "tex": "p"
+            },
+            {
+              "type": "text",
+              "text": ". - Wahl des Testwortes: Wir wählen das Wort "
+            },
+            {
+              "type": "math",
+              "tex": "w = a^p b^p \\in L"
+            },
+            {
+              "type": "text",
+              "text": ". Die Länge ist "
+            },
+            {
+              "type": "math",
+              "tex": "|w| = 2p \\ge p"
+            },
+            {
+              "type": "text",
+              "text": ". - Zerlegung "
+            },
+            {
+              "type": "math",
+              "tex": "w = x y z"
+            },
+            {
+              "type": "text",
+              "text": ":   * Nach Bedingung (2) muss "
+            },
+            {
+              "type": "math",
+              "tex": "|x y| \\le p"
+            },
+            {
+              "type": "text",
+              "text": " gelten "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Die Teilsequenz "
+            },
+            {
+              "type": "math",
+              "tex": "x y"
+            },
+            {
+              "type": "text",
+              "text": " besteht ausschließlich aus Buchstaben "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": ".   * Da "
+            },
+            {
+              "type": "math",
+              "tex": "|y| \\ge 1"
+            },
+            {
+              "type": "text",
+              "text": ", muss "
+            },
+            {
+              "type": "math",
+              "tex": "y = a^k"
+            },
+            {
+              "type": "text",
+              "text": " mit "
+            },
+            {
+              "type": "math",
+              "tex": "1 \\le k \\le p"
+            },
+            {
+              "type": "text",
+              "text": " gelten.   * Die Zerlegung lautet also: "
+            },
+            {
+              "type": "math",
+              "tex": "x = a^{p-k-m}, \\; y = a^k, \\; z = a^m b^p"
+            },
+            {
+              "type": "text",
+              "text": " (wobei "
+            },
+            {
+              "type": "math",
+              "tex": "p-k-m + k + m = p"
+            },
+            {
+              "type": "text",
+              "text": "). - Das Aufpumpen für "
+            },
+            {
+              "type": "math",
+              "tex": "i = 2"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "w' = x y^2 z"
+            },
+            {
+              "type": "text",
+              "text": "):   * Wir pumpen "
+            },
+            {
+              "type": "math",
+              "tex": "y"
+            },
+            {
+              "type": "text",
+              "text": " auf:     "
+            },
+            {
+              "type": "math",
+              "tex": "w' = x y^2 z = a^{p-k-m} \\cdot (a^k)^2 \\cdot a^m b^p = a^{p+k} b^p",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Da "
+            },
+            {
+              "type": "math",
+              "tex": "k \\ge 1"
+            },
+            {
+              "type": "text",
+              "text": ", ist die Anzahl der "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": "'s nun "
+            },
+            {
+              "type": "math",
+              "tex": "p + k > p"
+            },
+            {
+              "type": "text",
+              "text": ", während die Anzahl der "
+            },
+            {
+              "type": "math",
+              "tex": "b"
+            },
+            {
+              "type": "text",
+              "text": "'s unverändert "
+            },
+            {
+              "type": "math",
+              "tex": "p"
+            },
+            {
+              "type": "text",
+              "text": " beträgt.   * Da die Anzahl von "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": "'s und "
+            },
+            {
+              "type": "math",
+              "tex": "b"
+            },
+            {
+              "type": "text",
+              "text": "'s ungleich ist, gilt:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{w' = a^{p+k} b^p \\notin L}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schlussfolgerung:   * Dies widerspricht der Pumping-Lemma-Bedingung "
+            },
+            {
+              "type": "math",
+              "tex": "x y^i z \\in L"
+            },
+            {
+              "type": "text",
+              "text": " für alle "
+            },
+            {
+              "type": "math",
+              "tex": "i"
+            },
+            {
+              "type": "text",
+              "text": ".   * Die Annahme ist falsch "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies \\mathbf{L = \\{a^n b^n \\mid n \\ge 1\\} \\text{ ist NICHT regulär}}"
+            },
+            {
+              "type": "text",
+              "text": "!"
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

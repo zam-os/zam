@@ -1,6 +1,7 @@
 import { resolve } from "node:path";
 import { defineConfig, type Plugin } from "vite";
 import { viteSingleFile } from "vite-plugin-singlefile";
+import { temmlSurrogates } from "./desktop/vite-temml-surrogates.ts";
 
 function isHtmlInvalidCodePoint(value: string): boolean {
   const codePoint = value.codePointAt(0);
@@ -74,6 +75,7 @@ const MODE_TO_INPUT: Record<string, string> = {
   settings: "settings-panel.html",
   okf: "okf-panel.html",
   "knowledge-map": "knowledge-map-panel.html",
+  atlas: "atlas-panel.html",
   // Not an MCP Apps panel: the standalone page `zam knowledge-map view`
   // fills with a repository's map (src/cli/knowledge-map/viewer-page.ts).
   "knowledge-map-viewer": "knowledge-map-viewer.html",
@@ -84,7 +86,12 @@ export default defineConfig(({ mode }) => {
   const isDefaultEntry = input === "studio-panel.html";
   return {
     root: resolve(import.meta.dirname, "desktop/src/panel"),
-    plugins: [escapeInvalidInlineScriptCodePoints(), viteSingleFile()],
+    plugins: [
+      // Temml's lexer survives bundling only with this rewrite (PR #412).
+      temmlSurrogates(),
+      escapeInvalidInlineScriptCodePoints(),
+      viteSingleFile(),
+    ],
     build: {
       outDir: resolve(import.meta.dirname, "dist/ui"),
       // Only the first (default) entry clears dist/ui; later entries append.

@@ -19,7 +19,14 @@
  *    future review sets `due_at = now`.
  */
 
+import { parseStoredTimestampUtc } from "../db/sql.js";
 import type { Database } from "../db/types.js";
+import {
+  cardAllowedForAtom,
+  localLearningDay,
+  occupyingAtomCards,
+  resolvePresentationTimeZone,
+} from "../scheduler/presentation.js";
 import {
   PRECONDITION_BURIED_REASON,
   PRECONDITION_READY_REASON,
@@ -299,4 +306,78 @@ export async function pullForwardCards(
       cardIds: processedCardIds,
     };
   });
+}
+
+export interface PracticeOptions {
+  /** When the run began: a card answered since then has had its turn. */
+  since: Date;
+  now?: Date;
+  /** IANA time zone of the learner's day. */
+  timeZone?: string;
+}
+
+/**
+ * The next card to go through again in a set where nothing is due, such as an
+ * atlas region before a test (ADR 2026-10-13, Decision 10). The caller pulls
+ * it forward and shows it; asking one card at a time means that stopping
+ * half-way leaves at most one card pulled forward.
+ *
+ * - Only cards the learner has practised: never a new one.
+ * - Not blocked, detached, buried or out of review, like the queue.
+ * - None answered since the run began.
+ * - One item per atom per learning day, as the queue admits them.
+ * - The earliest due first.
+ */
+export async function nextPracticeCard(
+  db: Database,
+  userId: string,
+  tokenIds: readonly string[],
+  options: PracticeOptions,
+): Promise<string | null> {
+  if (tokenIds.length === 0) return null;
+  const now = options.now ?? new Date();
+  const rows = (await db
+    .prepare(
+      `SELECT c.id AS card_id, c.due_at, c.last_review_at, c.buried_until,
+              t.atom_id
+         FROM cards c
+         JOIN tokens t ON t.id = c.token_id
+        WHERE c.user_id = ?
+          AND c.blocked = 0
+          AND c.detached_at IS NULL
+          AND c.state IN ('review', 'relearning', 'learning')
+          AND c.last_review_at IS NOT NULL
+          AND t.deprecated_at IS NULL
+          AND t.maintenance_at IS NULL
+          AND t.editorial_state = 'published'
+          AND t.id IN (${tokenIds.map(() => "?").join(", ")})`,
+    )
+    .all(userId, ...tokenIds)) as Array<{
+    card_id: string;
+    due_at: string;
+    last_review_at: string;
+    buried_until: string | null;
+    atom_id: string | null;
+  }>;
+  const timeZone = await resolvePresentationTimeZone(db, options.timeZone);
+  const occupying = await occupyingAtomCards(
+    db,
+    userId,
+    localLearningDay(now, timeZone),
+  );
+  const sinceMs = options.since.getTime();
+  const nowMs = now.getTime();
+  const open = rows
+    .filter(
+      (row) =>
+        parseStoredTimestampUtc(row.last_review_at) < sinceMs &&
+        (row.buried_until === null ||
+          parseStoredTimestampUtc(row.buried_until) <= nowMs) &&
+        cardAllowedForAtom(row.card_id, row.atom_id, occupying),
+    )
+    .sort(
+      (a, b) =>
+        parseStoredTimestampUtc(a.due_at) - parseStoredTimestampUtc(b.due_at),
+    );
+  return open[0]?.card_id ?? null;
 }

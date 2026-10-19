@@ -65,9 +65,331 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere Struktur, Nomenklatur, zwischenmolekulare Kräfte und den Reaktionsmechanismus der Alkane: 1. **Homologe Reihe & IUPAC-Nomenklatur**:   * Methan ($CH_4$), Ethan ($C_2H_6$), Propan ($C_3H_8$), Butan ($C_4H_{10}$), Pentan ($C_5H_{12}$), Hexan, Heptan, Octan, Nonan, Decan ($C_{10}H_{22}$).   * Nomenklaturregeln: Längste Kohlenstoffkette $\\rightarrow$ Nummerierung für kleinste Ziffern der Verzweigungen $\\rightarrow$ alphabetische Vorsätze (z. B. 2,2,4-Trimethylpentan), 2. **Konstitutionsisomerie & Siedeverhalten**:   * Isomere besitzen dieselbe Summenformel, aber unterschiedliche Verknüpfung der Atome (z. B. Butan vs. 2-Methylpropan).   * **Van-der-Waals-Kräfte**: Wachsen mit der Kettenlänge / Oberfläche $\\implies$ unverzweigte Alkane sieden höher als kompakte, kugelförmigere Isomere gleicher Molmasse, 3. **Der Mechanismus der Radikalischen Substitution ($S_R$)**:   * Beispiel: Halogenierung von Methan ($CH_4 + Cl_2 \\xrightarrow{h\\nu} CH_3Cl + HCl$).   * **1. Startreaktion (Kettenstart)**: Homolytische Spaltung von $Cl_2$ durch UV-Licht in zwei Chlorradikale: $Cl_2 \\xrightarrow{h\\nu} 2\\,Cl^\\bullet$.   * **2. Kettenfortpflanzung**:     - $CH_4 + Cl^\\bullet \\rightarrow ^\\bullet CH_3 + HCl$     - $^\\bullet CH_3 + Cl_2 \\rightarrow CH_3Cl + Cl^\\bullet$ (regeneriert das Chlorradikal $\\implies$ Kettenreaktion).   * **3. Kettenabbruch**: Rekombination zweier Radikale (z. B. $2\\,^\\bullet CH_3 \\rightarrow C_2H_6$ oder $^\\bullet CH_3 + Cl^\\bullet \\rightarrow CH_3Cl$).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere Struktur, Nomenklatur, zwischenmolekulare Kräfte und den Reaktionsmechanismus der Alkane: 1. Homologe Reihe & IUPAC-Nomenklatur:   * Methan ("
+            },
+            {
+              "type": "math",
+              "tex": "CH_4",
+              "speech": "C H vier"
+            },
+            {
+              "type": "text",
+              "text": "), Ethan ("
+            },
+            {
+              "type": "math",
+              "tex": "C_2H_6",
+              "speech": "C zwei H sechs"
+            },
+            {
+              "type": "text",
+              "text": "), Propan ("
+            },
+            {
+              "type": "math",
+              "tex": "C_3H_8",
+              "speech": "C drei H acht"
+            },
+            {
+              "type": "text",
+              "text": "), Butan ("
+            },
+            {
+              "type": "math",
+              "tex": "C_4H_{10}",
+              "speech": "C vier H 10"
+            },
+            {
+              "type": "text",
+              "text": "), Pentan ("
+            },
+            {
+              "type": "math",
+              "tex": "C_5H_{12}",
+              "speech": "C fünf H 12"
+            },
+            {
+              "type": "text",
+              "text": "), Hexan, Heptan, Octan, Nonan, Decan ("
+            },
+            {
+              "type": "math",
+              "tex": "C_{10}H_{22}",
+              "speech": "C 10 H 22"
+            },
+            {
+              "type": "text",
+              "text": ").   * Nomenklaturregeln: Längste Kohlenstoffkette "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Nummerierung für kleinste Ziffern der Verzweigungen "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " alphabetische Vorsätze (z. B. 2,2,4-Trimethylpentan), 2. Konstitutionsisomerie & Siedeverhalten:   * Isomere besitzen dieselbe Summenformel, aber unterschiedliche Verknüpfung der Atome (z. B. Butan vs. 2-Methylpropan).   * Van-der-Waals-Kräfte: Wachsen mit der Kettenlänge / Oberfläche "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " unverzweigte Alkane sieden höher als kompakte, kugelförmigere Isomere gleicher Molmasse, 3. Der Mechanismus der Radikalischen Substitution ("
+            },
+            {
+              "type": "math",
+              "tex": "S_R",
+              "speech": "S R"
+            },
+            {
+              "type": "text",
+              "text": "):   * Beispiel: Halogenierung von Methan ("
+            },
+            {
+              "type": "math",
+              "tex": "CH_4 + Cl_2 \\xrightarrow{h\\nu} CH_3Cl + HCl",
+              "speech": "C H vier plus C l zwei reagiert unter Licht zu C H drei C l plus H C l"
+            },
+            {
+              "type": "text",
+              "text": ").   * 1. Startreaktion (Kettenstart): Homolytische Spaltung von "
+            },
+            {
+              "type": "math",
+              "tex": "Cl_2",
+              "speech": "C l zwei"
+            },
+            {
+              "type": "text",
+              "text": " durch UV-Licht in zwei Chlorradikale: "
+            },
+            {
+              "type": "math",
+              "tex": "Cl_2 \\xrightarrow{h\\nu} 2\\,Cl^\\bullet",
+              "speech": "C l zwei reagiert unter Licht zu 2 Chlorradikalen"
+            },
+            {
+              "type": "text",
+              "text": ".   * 2. Kettenfortpflanzung:     - "
+            },
+            {
+              "type": "math",
+              "tex": "CH_4 + Cl^\\bullet \\rightarrow ^\\bullet CH_3 + HCl",
+              "speech": "C H vier plus Chlorradikal reagiert zu Methylradikal plus H C l"
+            },
+            {
+              "type": "text",
+              "text": "     - "
+            },
+            {
+              "type": "math",
+              "tex": "^\\bullet CH_3 + Cl_2 \\rightarrow CH_3Cl + Cl^\\bullet",
+              "speech": "Methylradikal C H drei plus C l zwei reagiert zu C H drei C l plus Chlorradikal"
+            },
+            {
+              "type": "text",
+              "text": " (regeneriert das Chlorradikal "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Kettenreaktion).   * 3. Kettenabbruch: Rekombination zweier Radikale (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "2\\,^\\bullet CH_3 \\rightarrow C_2H_6",
+              "speech": "2 Methylradikale reagieren zu C zwei H sechs"
+            },
+            {
+              "type": "text",
+              "text": " oder "
+            },
+            {
+              "type": "math",
+              "tex": "^\\bullet CH_3 + Cl^\\bullet \\rightarrow CH_3Cl",
+              "speech": "Methylradikal C H drei plus Chlorradikal reagiert zu C H drei C l"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
           "concept": "Alkane: Homologe Reihe C_n H_2n+2; IUPAC-Nomenklatur; Konstitutionsisomerie; Van-der-Waals-Kräfte & Siedepunkte; Mechanismus der Radikalischen Substitution S_R (Start mit UV-Spaltung, Kettenfortpflanzung, Abbruch durch Rekombination).",
-          "sample_solution": "1. Struktur und IUPAC-Nomenklatur der Alkane: - **Gesättigte Kohlenwasserstoffe**: Enthalten ausschließlich Einfachbindungen zwischen Kohlenstoffatomen ($sp^3$-hybridisiert, tetraedrischer Bindungswinkel $\\approx 109{,}5^\\circ$):   $$\\mathbf{\\text{Allgemeine Summenformel: } C_n H_{2n+2}}$$ - **IUPAC-Benennungssystematik**:   1. Bestimmung der **längsten durchgehenden Kohlenstoffkette** (Stammname: Meth-, Eth-, Prop-, But-, Pent-, Hex-, Hept-, Oct-, Non-, Dec-an).   2. Nummerierung der Kette von dem Ende aus, das den Substituenten die **niedrigsten Positionsnummern (Lokanten)** zuweist.   3. Benennung der Seitenketten als Alkylreste (Methyl-, Ethyl-, Propyl-) mit Zählpräfixen (*di-, tri-, tetra-* bei Mehrfachauftreten) in **alphabetischer Reihenfolge**. 2. Konstitutionsisomerie und Siedepunktanalyse: - **Konstitutionsisomere**: Moleküle mit identischer Summenformel, aber unterschiedlicher Verknüpfung der Atome (z. B. Summenformel $C_4H_{10}$: unverzweigtes *n-Butan* [Siedepunkt $-0{,}5^\\circ\\text{C}$] vs. verzweigtes *2-Methylpropan* [Siedepunkt $-11{,}7^\\circ\\text{C}$]). - **Zwischenmolekulare Van-der-Waals-Kräfte (Dispersionskräfte)**:   * Entstehen durch temporäre, induzierte Dipole unpolarer Moleküle.   * **Einflussfaktoren**:     * Je **länger die Kette**, desto größer die Kontaktoberfläche und Polarisierbarkeit $\\implies$ stärkere Van-der-Waals-Kräfte $\\implies$ höherer Siede- und Schmelzpunkt.     * Bei Isomeren gleicher Masse verringert **Verzweigung** die wirksame Oberfläche (Kugelgestalt) $\\implies$ schwächere Anziehung $\\implies$ niedrigerer Siedepunkt. 3. Der Mechanismus der Radikalischen Substitution ($S_R$): - **Typus**: Typische Reaktion gesättigter Kohlenwasserstoffe mit Halogenen ($Cl_2, Br_2$) unter Lichteinwirkung ($h\\nu$):   * **1. Kettenstart (Initiation)**:     - Homolytische Bindungsspaltung des Halogenmoleküls durch Photonenenergie:       $$\\mathbf{Cl_2 \\xrightarrow{h\\nu} 2\\,Cl^\\bullet} \\quad (\\text{zwei hochreaktive Chlorradikale mit ungepaartem Elektron})$$   * **2. Kettenfortpflanzung (Propagation)**:     - Ein Chlorradikal entreißt dem Alkan ein Wasserstoffatom unter Bildung von Chlorwasserstoff:       $$\\mathbf{CH_4 + Cl^\\bullet \\rightarrow ^\\bullet CH_3 + HCl}$$     - Das entstandene Methylradikal greift ein weiteres Chlormolekül an:       $$\\mathbf{^\\bullet CH_3 + Cl_2 \\rightarrow CH_3Cl + Cl^\\bullet}$$     *(Das neu entstandene $Cl^\\bullet$-Radikal treibt den Zyklus hunderte Male weiter)*.   * **3. Kettenabbruch (Termination)**:     - Treffen zwei Radikale aufeinander, rekombinieren sie zu einem stabilen Molekül und beenden die Kette:       $$\\mathbf{Cl^\\bullet + Cl^\\bullet \\rightarrow Cl_2}, \\quad \\mathbf{^\\bullet CH_3 + Cl^\\bullet \\rightarrow CH_3Cl}, \\quad \\mathbf{^\\bullet CH_3 + ^\\bullet CH_3 \\rightarrow C_2H_6}$$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Struktur und IUPAC-Nomenklatur der Alkane: - Gesättigte Kohlenwasserstoffe: Enthalten ausschließlich Einfachbindungen zwischen Kohlenstoffatomen ("
+            },
+            {
+              "type": "math",
+              "tex": "sp^3"
+            },
+            {
+              "type": "text",
+              "text": "-hybridisiert, tetraedrischer Bindungswinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 109{,}5^\\circ"
+            },
+            {
+              "type": "text",
+              "text": "):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Allgemeine Summenformel: } C_n H_{2n+2}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - IUPAC-Benennungssystematik:   1. Bestimmung der längsten durchgehenden Kohlenstoffkette (Stammname: Meth-, Eth-, Prop-, But-, Pent-, Hex-, Hept-, Oct-, Non-, Dec-an).   2. Nummerierung der Kette von dem Ende aus, das den Substituenten die niedrigsten Positionsnummern (Lokanten) zuweist.   3. Benennung der Seitenketten als Alkylreste (Methyl-, Ethyl-, Propyl-) mit Zählpräfixen (di-, tri-, tetra- bei Mehrfachauftreten) in alphabetischer Reihenfolge. 2. Konstitutionsisomerie und Siedepunktanalyse: - Konstitutionsisomere: Moleküle mit identischer Summenformel, aber unterschiedlicher Verknüpfung der Atome (z. B. Summenformel "
+            },
+            {
+              "type": "math",
+              "tex": "C_4H_{10}"
+            },
+            {
+              "type": "text",
+              "text": ": unverzweigtes n-Butan [Siedepunkt "
+            },
+            {
+              "type": "math",
+              "tex": "-0{,}5^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": "] vs. verzweigtes 2-Methylpropan [Siedepunkt "
+            },
+            {
+              "type": "math",
+              "tex": "-11{,}7^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": "]). - Zwischenmolekulare Van-der-Waals-Kräfte (Dispersionskräfte):   * Entstehen durch temporäre, induzierte Dipole unpolarer Moleküle.   * Einflussfaktoren:     * Je länger die Kette, desto größer die Kontaktoberfläche und Polarisierbarkeit "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " stärkere Van-der-Waals-Kräfte "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " höherer Siede- und Schmelzpunkt.     * Bei Isomeren gleicher Masse verringert Verzweigung die wirksame Oberfläche (Kugelgestalt) "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " schwächere Anziehung "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " niedrigerer Siedepunkt. 3. Der Mechanismus der Radikalischen Substitution ("
+            },
+            {
+              "type": "math",
+              "tex": "S_R"
+            },
+            {
+              "type": "text",
+              "text": "): - Typus: Typische Reaktion gesättigter Kohlenwasserstoffe mit Halogenen ("
+            },
+            {
+              "type": "math",
+              "tex": "Cl_2, Br_2"
+            },
+            {
+              "type": "text",
+              "text": ") unter Lichteinwirkung ("
+            },
+            {
+              "type": "math",
+              "tex": "h\\nu"
+            },
+            {
+              "type": "text",
+              "text": "):   * 1. Kettenstart (Initiation):     - Homolytische Bindungsspaltung des Halogenmoleküls durch Photonenenergie:       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{Cl_2 \\xrightarrow{h\\nu} 2\\,Cl^\\bullet} \\quad (\\text{zwei hochreaktive Chlorradikale mit ungepaartem Elektron})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * 2. Kettenfortpflanzung (Propagation):     - Ein Chlorradikal entreißt dem Alkan ein Wasserstoffatom unter Bildung von Chlorwasserstoff:       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{CH_4 + Cl^\\bullet \\rightarrow ^\\bullet CH_3 + HCl}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "     - Das entstandene Methylradikal greift ein weiteres Chlormolekül an:       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{^\\bullet CH_3 + Cl_2 \\rightarrow CH_3Cl + Cl^\\bullet}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "     (Das neu entstandene "
+            },
+            {
+              "type": "math",
+              "tex": "Cl^\\bullet"
+            },
+            {
+              "type": "text",
+              "text": "-Radikal treibt den Zyklus hunderte Male weiter).   * 3. Kettenabbruch (Termination):     - Treffen zwei Radikale aufeinander, rekombinieren sie zu einem stabilen Molekül und beenden die Kette:       "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{Cl^\\bullet + Cl^\\bullet \\rightarrow Cl_2}, \\quad \\mathbf{^\\bullet CH_3 + Cl^\\bullet \\rightarrow CH_3Cl}, \\quad \\mathbf{^\\bullet CH_3 + ^\\bullet CH_3 \\rightarrow C_2H_6}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -112,7 +434,21 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Was geschieht experimentell bei der Bromwasser-Probe zum qualitativen Nachweis einer $C=C$-Doppelbindung bei Alkenen?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Was geschieht experimentell bei der Bromwasser-Probe zum qualitativen Nachweis einer "
+            },
+            {
+              "type": "math",
+              "tex": "C=C",
+              "speech": "C doppelt gebunden an C"
+            },
+            {
+              "type": "text",
+              "text": "-Doppelbindung bei Alkenen?"
+            }
+          ],
           "concept": "Das braune Bromwasser wird schlagartig und ohne Lichteinwirkung entfärbt (durch elektrophile Addition an die Doppelbindung)",
           "fast_check": {
             "type": "binary_choice",
@@ -121,16 +457,482 @@
               "Keine Reaktion / Gemisch bleibt unverändert braun"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GA70000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere Alkene, den Mechanismus der Elektrophilen Addition ($A_E$) und das Phänomen der Aromatizität bei Benzol: 1. **Alkene ($C_n H_{2n}$)**:   * $C=C$-Doppelbindung ($sp^2$-Hybridisierung, planare Geometrie, Bindungswinkel $120^\\circ$).   * Besteht aus einer festen $\\sigma$-Bindung und einer energiereichen, leicht polarisierbaren $\\pi$-Bindung (Elektronenüberhang).   * **Cis-Trans-Isomerie (Stereoisomerie)**: Bedingt durch die starre, nicht frei drehbare Doppelbindung, 2. **Der Mechanismus der Elektrophilen Addition ($A_E$)**:   * Halogenanlagerung (z. B. Ethen + Brom $\\rightarrow$ 1,2-Dibromethan).   * **Schritt 1**: Polarisierung des $Br_2$-Moleküls durch die elektronenreiche $\\pi$-Elektronenwolke $\\rightarrow$ elektrophiler Angriff von $Br^{\\delta+}$ unter Bildung eines cyclischen **Bromonium-Ions** und eines Bromid-Ions ($Br^-$).   * **Schritt 2**: Nukleophiler Rückseitenangriff des $Br^-$ $\\rightarrow$ *anti*-Addition zum gesättigten 1,2-Dibromalkan, 3. **Aromatische Kohlenwasserstoffe (Benzol / Benzen $C_6H_6$)**:   * **Kekulé-Strukturen vs. Mesomerie**: Sechs $sp^2$-hybridisierte C-Atome im planaren Sechseck. Die $6\\,\\pi$-Elektronen sind über den gesamten Ring vollständig **delokalisiert** (Mesomerieenergie $\\approx 150\\,\\text{kJ/mol}$).   * **Hückel-Regel**: Ein planares, cyclisches, durchkonjugiertes System ist aromatisch und extrem stabil, wenn es $\\mathbf{(4n + 2)\\,\\pi\\text{-Elektronen}}$ enthält ($n=1 \\implies 6\\,\\pi$).   * **Reaktionsverhalten**: Reagiert wegen der hohen Aromatizitätsstabilisierung **nicht** durch Addition (wie Alkene), sondern unter Erhalt des Aromatensystems durch **Elektrophile Aromatische Substitution ($S_E$)** mit Katalysator (z. B. $FeBr_3$).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere Alkene, den Mechanismus der Elektrophilen Addition ("
+            },
+            {
+              "type": "math",
+              "tex": "A_E",
+              "speech": "A E"
+            },
+            {
+              "type": "text",
+              "text": ") und das Phänomen der Aromatizität bei Benzol: 1. Alkene ("
+            },
+            {
+              "type": "math",
+              "tex": "C_n H_{2n}",
+              "speech": "C n H zwei n"
+            },
+            {
+              "type": "text",
+              "text": "):   * "
+            },
+            {
+              "type": "math",
+              "tex": "C=C",
+              "speech": "C doppelt gebunden an C"
+            },
+            {
+              "type": "text",
+              "text": "-Doppelbindung ("
+            },
+            {
+              "type": "math",
+              "tex": "sp^2",
+              "speech": "s p zwei"
+            },
+            {
+              "type": "text",
+              "text": "-Hybridisierung, planare Geometrie, Bindungswinkel "
+            },
+            {
+              "type": "math",
+              "tex": "120^\\circ",
+              "speech": "120 Grad"
+            },
+            {
+              "type": "text",
+              "text": ").   * Besteht aus einer festen "
+            },
+            {
+              "type": "math",
+              "tex": "\\sigma",
+              "speech": "Sigma"
+            },
+            {
+              "type": "text",
+              "text": "-Bindung und einer energiereichen, leicht polarisierbaren "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi",
+              "speech": "Pi"
+            },
+            {
+              "type": "text",
+              "text": "-Bindung (Elektronenüberhang).   * Cis-Trans-Isomerie (Stereoisomerie): Bedingt durch die starre, nicht frei drehbare Doppelbindung, 2. Der Mechanismus der Elektrophilen Addition ("
+            },
+            {
+              "type": "math",
+              "tex": "A_E",
+              "speech": "A E"
+            },
+            {
+              "type": "text",
+              "text": "):   * Halogenanlagerung (z. B. Ethen + Brom "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " 1,2-Dibromethan).   * Schritt 1: Polarisierung des "
+            },
+            {
+              "type": "math",
+              "tex": "Br_2",
+              "speech": "B r zwei"
+            },
+            {
+              "type": "text",
+              "text": "-Moleküls durch die elektronenreiche "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi",
+              "speech": "Pi"
+            },
+            {
+              "type": "text",
+              "text": "-Elektronenwolke "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " elektrophiler Angriff von "
+            },
+            {
+              "type": "math",
+              "tex": "Br^{\\delta+}",
+              "speech": "B r Delta plus"
+            },
+            {
+              "type": "text",
+              "text": " unter Bildung eines cyclischen Bromonium-Ions und eines Bromid-Ions ("
+            },
+            {
+              "type": "math",
+              "tex": "Br^-",
+              "speech": "B r minus"
+            },
+            {
+              "type": "text",
+              "text": ").   * Schritt 2: Nukleophiler Rückseitenangriff des "
+            },
+            {
+              "type": "math",
+              "tex": "Br^-",
+              "speech": "B r minus"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " anti-Addition zum gesättigten 1,2-Dibromalkan, 3. Aromatische Kohlenwasserstoffe (Benzol / Benzen "
+            },
+            {
+              "type": "math",
+              "tex": "C_6H_6",
+              "speech": "C sechs H sechs"
+            },
+            {
+              "type": "text",
+              "text": "):   * Kekulé-Strukturen vs. Mesomerie: Sechs "
+            },
+            {
+              "type": "math",
+              "tex": "sp^2",
+              "speech": "s p zwei"
+            },
+            {
+              "type": "text",
+              "text": "-hybridisierte C-Atome im planaren Sechseck. Die "
+            },
+            {
+              "type": "math",
+              "tex": "6\\,\\pi",
+              "speech": "6 Pi"
+            },
+            {
+              "type": "text",
+              "text": "-Elektronen sind über den gesamten Ring vollständig delokalisiert (Mesomerieenergie "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 150\\,\\text{kJ/mol}",
+              "speech": "ungefähr 150 Kilojoule pro Mol"
+            },
+            {
+              "type": "text",
+              "text": ").   * Hückel-Regel: Ein planares, cyclisches, durchkonjugiertes System ist aromatisch und extrem stabil, wenn es "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{(4n + 2)\\,\\pi\\text{-Elektronen}}",
+              "speech": "4 n plus 2 Pi-Elektronen"
+            },
+            {
+              "type": "text",
+              "text": " enthält ("
+            },
+            {
+              "type": "math",
+              "tex": "n=1 \\implies 6\\,\\pi",
+              "speech": "n gleich 1, daraus folgt 6 Pi"
+            },
+            {
+              "type": "text",
+              "text": ").   * Reaktionsverhalten: Reagiert wegen der hohen Aromatizitätsstabilisierung nicht durch Addition (wie Alkene), sondern unter Erhalt des Aromatensystems durch Elektrophile Aromatische Substitution ("
+            },
+            {
+              "type": "math",
+              "tex": "S_E",
+              "speech": "S E"
+            },
+            {
+              "type": "text",
+              "text": ") mit Katalysator (z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "FeBr_3",
+              "speech": "F e B r drei"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
           "concept": "Alkene: C=C-Bindung (sigma + pi), cis/trans-Isomerie; Mechanismus der Elektrophilen Addition A_E (Bromonium-Ion, Rückseitenangriff); Benzol C6H6: Aromatizität, delokalisierte 6 pi-Elektronen, Hückel-Regel (4n+2), Elektrophile Aromatische Substitution S_E.",
-          "sample_solution": "1. Struktur und Reaktivität der Alkene: - **Ungesättigte Kohlenwasserstoffe ($C_n H_{2n}$)**:   * Jedes C-Atom der Doppelbindung ist **$sp^2$-hybridisiert** (planar-trigonale Geometrie, $120^\\circ$-Bindungswinkel).   * Die Doppelbindung besteht aus einer axialen **$\\sigma$-Bindung** und einer ober- und unterhalb der Molekülebene liegenden, exponierten **$\\pi$-Elektronenwolke**. - **Cis/Trans- (E/Z-) Isomerie**:   * Da die $C=C$-Doppelbindung bei Raumtemperatur **nicht frei drehbar** ist, existieren bei zwei verschiedenen Substituenten an beiden C-Atomen zwei Konfigurationsisomere mit unterschiedlichen physikalischen Eigenschaften (z. B. *cis-But-2-en* vs. *trans-But-2-en*). 2. Der Mechanismus der Elektrophilen Addition ($A_E$): - **Schritt 1: Polarisierung und Bildung des Bromonium-Ions**:   * Bei Annäherung eines unpolaren $Br_2$-Moleküls an die elektronenreiche $\\pi$-Bindung wird das Halogen temporär polarisiert ($^{\\delta+}Br-Br^{\\delta-}$).   * Das elektrophile $Br^{\\delta+}$ bindet an die Doppelbindung unter Abspaltung eines Bromid-Ions ($Br^-$) $\\implies$ Entstehung eines gespannten, dreigliedrigen **cyclischen Bromonium-Ions** mit positiver Partialladung:     $$\\text{H}_2\\text{C}=\\text{CH}_2 + \\text{Br}_2 \\rightarrow \\underbrace{[\\text{C}_2\\text{H}_4\\text{Br}]^+}_{\\text{Bromonium-Ion}} + \\text{Br}^-$$ - **Schritt 2: Nukleophiler Rückseitenangriff**:   * Das verbliebene $Br^-$-Ion greift aus sterischen Gründen zwingend von der **Rückseite** an $\\implies$ Ringöffnung zum gesättigten **1,2-Dibromethan** (*Anti-Addition*). 3. Das Phänomen der Aromatizität bei Benzol ($C_6H_6$): - **Struktur**: Planarer Sechserring mit sechs identischen $C-C$-Bindungslängen ($139\\text{ pm}$, exakt zwischen Einfachbindung $154\\text{ pm}$ und Doppelbindung $134\\text{ pm}$). - **Mesomerie & Delokalisierung**:   * Die $6\\,\\pi$-Elektronen der $p_z$-Orbitale gehören nicht einzelnen C-Atomen, sondern bilden ein ober- und unterhalb des Rings verschmiertes, **delokalisiertes Ringsystem**.   * **Mesomere Grenzstrukturen (August Kekulé)**: Symbolisiert durch den Kreis im Sechseck.   * **Hückel-Regel**: Ein cyclisches, durchkonjugiertes Molekül ist besonders stabil (aromatisch), wenn die Zahl der $\\pi$-Elektronen der Formel $\\mathbf{4n + 2}$ ($n \\in \\mathbb{N}_0$) gehorcht (für Benzol: $n = 1 \\implies 6\\,\\pi$-Elektronen). - **Elektrophile Aromatische Substitution ($S_E$)**:   * Eine Additionsreaktion würde das energetisch begünstigte aromatische System zerstören $\\implies$ Benzol geht stattdessen unter Erhalt der Aromatizität eine Substitutionsreaktion ein:     $$\\text{C}_6\\text{H}_6 + \\text{Br}_2 \\xrightarrow{\\text{FeBr}_3} \\mathbf{\\text{C}_6\\text{H}_5\\text{Br} \\text{ (Brombenzol)} + \\text{HBr}}$$"
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Struktur und Reaktivität der Alkene: - Ungesättigte Kohlenwasserstoffe ("
+            },
+            {
+              "type": "math",
+              "tex": "C_n H_{2n}"
+            },
+            {
+              "type": "text",
+              "text": "):   * Jedes C-Atom der Doppelbindung ist "
+            },
+            {
+              "type": "math",
+              "tex": "sp^2"
+            },
+            {
+              "type": "text",
+              "text": "-hybridisiert (planar-trigonale Geometrie, "
+            },
+            {
+              "type": "math",
+              "tex": "120^\\circ"
+            },
+            {
+              "type": "text",
+              "text": "-Bindungswinkel).   * Die Doppelbindung besteht aus einer axialen "
+            },
+            {
+              "type": "math",
+              "tex": "\\sigma"
+            },
+            {
+              "type": "text",
+              "text": "-Bindung und einer ober- und unterhalb der Molekülebene liegenden, exponierten "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi"
+            },
+            {
+              "type": "text",
+              "text": "-Elektronenwolke. - Cis/Trans- (E/Z-) Isomerie:   * Da die "
+            },
+            {
+              "type": "math",
+              "tex": "C=C"
+            },
+            {
+              "type": "text",
+              "text": "-Doppelbindung bei Raumtemperatur nicht frei drehbar ist, existieren bei zwei verschiedenen Substituenten an beiden C-Atomen zwei Konfigurationsisomere mit unterschiedlichen physikalischen Eigenschaften (z. B. cis-But-2-en vs. trans-But-2-en). 2. Der Mechanismus der Elektrophilen Addition ("
+            },
+            {
+              "type": "math",
+              "tex": "A_E"
+            },
+            {
+              "type": "text",
+              "text": "): - Schritt 1: Polarisierung und Bildung des Bromonium-Ions:   * Bei Annäherung eines unpolaren "
+            },
+            {
+              "type": "math",
+              "tex": "Br_2"
+            },
+            {
+              "type": "text",
+              "text": "-Moleküls an die elektronenreiche "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi"
+            },
+            {
+              "type": "text",
+              "text": "-Bindung wird das Halogen temporär polarisiert ("
+            },
+            {
+              "type": "math",
+              "tex": "^{\\delta+}Br-Br^{\\delta-}"
+            },
+            {
+              "type": "text",
+              "text": ").   * Das elektrophile "
+            },
+            {
+              "type": "math",
+              "tex": "Br^{\\delta+}"
+            },
+            {
+              "type": "text",
+              "text": " bindet an die Doppelbindung unter Abspaltung eines Bromid-Ions ("
+            },
+            {
+              "type": "math",
+              "tex": "Br^-"
+            },
+            {
+              "type": "text",
+              "text": ") "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Entstehung eines gespannten, dreigliedrigen cyclischen Bromonium-Ions mit positiver Partialladung:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{H}_2\\text{C}=\\text{CH}_2 + \\text{Br}_2 \\rightarrow \\underbrace{[\\text{C}_2\\text{H}_4\\text{Br}]^+}_{\\text{Bromonium-Ion}} + \\text{Br}^-",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Schritt 2: Nukleophiler Rückseitenangriff:   * Das verbliebene "
+            },
+            {
+              "type": "math",
+              "tex": "Br^-"
+            },
+            {
+              "type": "text",
+              "text": "-Ion greift aus sterischen Gründen zwingend von der Rückseite an "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Ringöffnung zum gesättigten 1,2-Dibromethan (Anti-Addition). 3. Das Phänomen der Aromatizität bei Benzol ("
+            },
+            {
+              "type": "math",
+              "tex": "C_6H_6"
+            },
+            {
+              "type": "text",
+              "text": "): - Struktur: Planarer Sechserring mit sechs identischen "
+            },
+            {
+              "type": "math",
+              "tex": "C-C"
+            },
+            {
+              "type": "text",
+              "text": "-Bindungslängen ("
+            },
+            {
+              "type": "math",
+              "tex": "139\\text{ pm}"
+            },
+            {
+              "type": "text",
+              "text": ", exakt zwischen Einfachbindung "
+            },
+            {
+              "type": "math",
+              "tex": "154\\text{ pm}"
+            },
+            {
+              "type": "text",
+              "text": " und Doppelbindung "
+            },
+            {
+              "type": "math",
+              "tex": "134\\text{ pm}"
+            },
+            {
+              "type": "text",
+              "text": "). - Mesomerie & Delokalisierung:   * Die "
+            },
+            {
+              "type": "math",
+              "tex": "6\\,\\pi"
+            },
+            {
+              "type": "text",
+              "text": "-Elektronen der "
+            },
+            {
+              "type": "math",
+              "tex": "p_z"
+            },
+            {
+              "type": "text",
+              "text": "-Orbitale gehören nicht einzelnen C-Atomen, sondern bilden ein ober- und unterhalb des Rings verschmiertes, delokalisiertes Ringsystem.   * Mesomere Grenzstrukturen (August Kekulé): Symbolisiert durch den Kreis im Sechseck.   * Hückel-Regel: Ein cyclisches, durchkonjugiertes Molekül ist besonders stabil (aromatisch), wenn die Zahl der "
+            },
+            {
+              "type": "math",
+              "tex": "\\pi"
+            },
+            {
+              "type": "text",
+              "text": "-Elektronen der Formel "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{4n + 2}"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "n \\in \\mathbb{N}_0"
+            },
+            {
+              "type": "text",
+              "text": ") gehorcht (für Benzol: "
+            },
+            {
+              "type": "math",
+              "tex": "n = 1 \\implies 6\\,\\pi"
+            },
+            {
+              "type": "text",
+              "text": "-Elektronen). - Elektrophile Aromatische Substitution ("
+            },
+            {
+              "type": "math",
+              "tex": "S_E"
+            },
+            {
+              "type": "text",
+              "text": "):   * Eine Additionsreaktion würde das energetisch begünstigte aromatische System zerstören "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Benzol geht stattdessen unter Erhalt der Aromatizität eine Substitutionsreaktion ein:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{C}_6\\text{H}_6 + \\text{Br}_2 \\xrightarrow{\\text{FeBr}_3} \\mathbf{\\text{C}_6\\text{H}_5\\text{Br} \\text{ (Brombenzol)} + \\text{HBr}}",
+              "block": true
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

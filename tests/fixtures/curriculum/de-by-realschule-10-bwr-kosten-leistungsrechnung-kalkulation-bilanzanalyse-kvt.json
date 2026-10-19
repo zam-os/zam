@@ -68,7 +68,372 @@
           "bloom_level": 2,
           "question": "Führe das vollständige bayerische Vorwärtskalkulationsschema (von Fertigungsmaterial bis Bruttoverkaufspreis) lückenlos vor und berechne den Barverkaufspreis (BVP) bei folgenden Werten: Fertigungsmaterial (FM) = 200,00 €, Materialgemeinkostenzuschlag (MGKZ) = 10 %, Fertigungslöhne (FL) = 300,00 €, Fertigungsgemeinkostenzuschlag (FGKZ) = 150 %, Verwaltungsgemeinkostenzuschlag (VwGKZ) = 15 %, Vertriebsgemeinkostenzuschlag (VtGKZ) = 10 %, Gewinnzuschlag = 20 %.",
           "concept": "Kalkulationsschema: FM (200 €) + MGK 10% (20 €) = MK (220 €); FL (300 €) + FGK 150% (450 €) = FK (750 €); Herstellkosten HK = MK + FK = 970 €; VwGK 15% (145,50 €) + VtGK 10% (97,00 €); Selbstkosten SK = 970 + 145,50 + 97 = 1.212,50 €; Gewinn 20% von SK = 242,50 €; Barverkaufspreis BVP = 1.212,50 + 242,50 = 1.455,00 €.",
-          "sample_solution": "1. Das 11-stufige bayerische Vorwärtskalkulationsschema: 1. Fertigungsmaterial (**FM**) 2. $+$ Materialgemeinkosten (**MGK**) [$= \\text{FM} \\cdot \\text{MGKZ}\\%$] $= \\mathbf{\\text{Materialkosten (MK)}}$ 3. Fertigungslöhne (**FL**) 4. $+$ Fertigungsgemeinkosten (**FGK**) [$= \\text{FL} \\cdot \\text{FGKZ}\\%$] $= \\mathbf{\\text{Fertigungskosten (FK)}}$ 5. $= \\mathbf{\\text{Herstellkosten (HK)}}$ [$= \\text{MK} + \\text{FK}$] 6. $+$ Verwaltungsgemeinkosten (**VwGK**) [$= \\text{HK} \\cdot \\text{VwGKZ}\\%$] 7. $+$ Vertriebsgemeinkosten (**VtGK**) [$= \\text{HK} \\cdot \\text{VtGKZ}\\%$] 8. $= \\mathbf{\\text{Selbstkosten (SK)}}$ [$= \\text{HK} + \\text{VwGK} + \\text{VtGK}$] 9. $+$ Gewinn [$= \\text{SK} \\cdot \\text{Gewinn}\\%$] 10. $= \\mathbf{\\text{Barverkaufspreis (BVP)}}$ 11. $+$ Kundenskonto (im Hundert) $= \\mathbf{\\text{Zielverkaufspreis (ZVP)}}$ $+$ Kundenrabatt (im Hundert) $= \\mathbf{\\text{Listenverkaufspreis (LVP nettopreis)}} + 19\\%\\text{ USt} = \\mathbf{\\text{Bruttoverkaufspreis}}$. 2. Durchrechnung des Beispiels: - 1. Fertigungsmaterial (**FM**): $200,00\\text{ €}$ - 2. $+$ MGK ($10\\% \\text{ von } 200\\text{ €}$): $+ 20,00\\text{ €}$   * $\\rightarrow$ **Materialkosten (MK)**: $220,00\\text{ €}$ - 3. Fertigungslöhne (**FL**): $300,00\\text{ €}$ - 4. $+$ FGK ($150\\% \\text{ von } 300\\text{ €}$): $+ 450,00\\text{ €}$   * $\\rightarrow$ **Fertigungskosten (FK)**: $750,00\\text{ €}$ - 5. $= \\mathbf{\\text{Herstellkosten (HK)}} = 220,00\\text{ €} + 750,00\\text{ €} = \\mathbf{970,00\\text{ €}}$ - 6. $+$ VwGK ($15\\% \\text{ von } 970\\text{ €}$): $+ 145,50\\text{ €}$ - 7. $+$ VtGK ($10\\% \\text{ von } 970\\text{ €}$): $+ 97,00\\text{ €}$ - 8. $= \\mathbf{\\text{Selbstkosten (SK)}} = 970,00 + 145,50 + 97,00 = \\mathbf{1.212,50\\text{ €}}$ - 9. $+$ Gewinn ($20\\% \\text{ von } 1.212,50\\text{ €}$): $+ 242,50\\text{ €}$ - 10. $= \\mathbf{\\text{Barverkaufspreis (BVP)}} = 1.212,50\\text{ €} + 242,50\\text{ €} = \\mathbf{1.455,00\\text{ €}}$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Das 11-stufige bayerische Vorwärtskalkulationsschema: 1. Fertigungsmaterial (FM) 2. "
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": " Materialgemeinkosten (MGK) ["
+            },
+            {
+              "type": "math",
+              "tex": "= \\text{FM} \\cdot \\text{MGKZ}\\%"
+            },
+            {
+              "type": "text",
+              "text": "] "
+            },
+            {
+              "type": "math",
+              "tex": "= \\mathbf{\\text{Materialkosten (MK)}}"
+            },
+            {
+              "type": "text",
+              "text": " 3. Fertigungslöhne (FL) 4. "
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": " Fertigungsgemeinkosten (FGK) ["
+            },
+            {
+              "type": "math",
+              "tex": "= \\text{FL} \\cdot \\text{FGKZ}\\%"
+            },
+            {
+              "type": "text",
+              "text": "] "
+            },
+            {
+              "type": "math",
+              "tex": "= \\mathbf{\\text{Fertigungskosten (FK)}}"
+            },
+            {
+              "type": "text",
+              "text": " 5. "
+            },
+            {
+              "type": "math",
+              "tex": "= \\mathbf{\\text{Herstellkosten (HK)}}"
+            },
+            {
+              "type": "text",
+              "text": " ["
+            },
+            {
+              "type": "math",
+              "tex": "= \\text{MK} + \\text{FK}"
+            },
+            {
+              "type": "text",
+              "text": "] 6. "
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": " Verwaltungsgemeinkosten (VwGK) ["
+            },
+            {
+              "type": "math",
+              "tex": "= \\text{HK} \\cdot \\text{VwGKZ}\\%"
+            },
+            {
+              "type": "text",
+              "text": "] 7. "
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": " Vertriebsgemeinkosten (VtGK) ["
+            },
+            {
+              "type": "math",
+              "tex": "= \\text{HK} \\cdot \\text{VtGKZ}\\%"
+            },
+            {
+              "type": "text",
+              "text": "] 8. "
+            },
+            {
+              "type": "math",
+              "tex": "= \\mathbf{\\text{Selbstkosten (SK)}}"
+            },
+            {
+              "type": "text",
+              "text": " ["
+            },
+            {
+              "type": "math",
+              "tex": "= \\text{HK} + \\text{VwGK} + \\text{VtGK}"
+            },
+            {
+              "type": "text",
+              "text": "] 9. "
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": " Gewinn ["
+            },
+            {
+              "type": "math",
+              "tex": "= \\text{SK} \\cdot \\text{Gewinn}\\%"
+            },
+            {
+              "type": "text",
+              "text": "] 10. "
+            },
+            {
+              "type": "math",
+              "tex": "= \\mathbf{\\text{Barverkaufspreis (BVP)}}"
+            },
+            {
+              "type": "text",
+              "text": " 11. "
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": " Kundenskonto (im Hundert) "
+            },
+            {
+              "type": "math",
+              "tex": "= \\mathbf{\\text{Zielverkaufspreis (ZVP)}}"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": " Kundenrabatt (im Hundert) "
+            },
+            {
+              "type": "math",
+              "tex": "= \\mathbf{\\text{Listenverkaufspreis (LVP nettopreis)}} + 19\\%\\text{ USt} = \\mathbf{\\text{Bruttoverkaufspreis}}"
+            },
+            {
+              "type": "text",
+              "text": ". 2. Durchrechnung des Beispiels: - 1. Fertigungsmaterial (FM): "
+            },
+            {
+              "type": "math",
+              "tex": "200,00\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": " - 2. "
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": " MGK ("
+            },
+            {
+              "type": "math",
+              "tex": "10\\% \\text{ von } 200\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "+ 20,00\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Materialkosten (MK): "
+            },
+            {
+              "type": "math",
+              "tex": "220,00\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": " - 3. Fertigungslöhne (FL): "
+            },
+            {
+              "type": "math",
+              "tex": "300,00\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": " - 4. "
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": " FGK ("
+            },
+            {
+              "type": "math",
+              "tex": "150\\% \\text{ von } 300\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "+ 450,00\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": "   * "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow"
+            },
+            {
+              "type": "text",
+              "text": " Fertigungskosten (FK): "
+            },
+            {
+              "type": "math",
+              "tex": "750,00\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": " - 5. "
+            },
+            {
+              "type": "math",
+              "tex": "= \\mathbf{\\text{Herstellkosten (HK)}} = 220,00\\text{ €} + 750,00\\text{ €} = \\mathbf{970,00\\text{ €}}"
+            },
+            {
+              "type": "text",
+              "text": " - 6. "
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": " VwGK ("
+            },
+            {
+              "type": "math",
+              "tex": "15\\% \\text{ von } 970\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "+ 145,50\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": " - 7. "
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": " VtGK ("
+            },
+            {
+              "type": "math",
+              "tex": "10\\% \\text{ von } 970\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "+ 97,00\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": " - 8. "
+            },
+            {
+              "type": "math",
+              "tex": "= \\mathbf{\\text{Selbstkosten (SK)}} = 970,00 + 145,50 + 97,00 = \\mathbf{1.212,50\\text{ €}}"
+            },
+            {
+              "type": "text",
+              "text": " - 9. "
+            },
+            {
+              "type": "math",
+              "tex": "+"
+            },
+            {
+              "type": "text",
+              "text": " Gewinn ("
+            },
+            {
+              "type": "math",
+              "tex": "20\\% \\text{ von } 1.212,50\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "+ 242,50\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": " - 10. "
+            },
+            {
+              "type": "math",
+              "tex": "= \\mathbf{\\text{Barverkaufspreis (BVP)}} = 1.212,50\\text{ €} + 242,50\\text{ €} = \\mathbf{1.455,00\\text{ €}}"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ]
         }
       ]
     },
@@ -114,8 +479,50 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie berechnet sich der Stückdeckungsbeitrag $db$ eines Produkts aus Verkaufspreis $p$ und variablen Stückkosten $k_v$?",
-          "concept": "$db = p - k_v$ (Stückpreis minus variable Stückkosten)",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet sich der Stückdeckungsbeitrag "
+            },
+            {
+              "type": "math",
+              "tex": "db",
+              "speech": "d b"
+            },
+            {
+              "type": "text",
+              "text": " eines Produkts aus Verkaufspreis "
+            },
+            {
+              "type": "math",
+              "tex": "p",
+              "speech": "p"
+            },
+            {
+              "type": "text",
+              "text": " und variablen Stückkosten "
+            },
+            {
+              "type": "math",
+              "tex": "k_v",
+              "speech": "k v"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "db = p - k_v",
+              "speech": "d b gleich p minus k v"
+            },
+            {
+              "type": "text",
+              "text": " (Stückpreis minus variable Stückkosten)"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -123,16 +530,304 @@
               "db = p + kv"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K4WAK0000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre das Instrument der Deckungsbeitragsrechnung (Teilkostenrechnung): 1. Trennung in **variable Kosten $K_v$** (beschäftigungsabhängig: Material, Fertigungsakkord) und **fixe Kosten $K_f$** (beschäftigungsunabhängig: Miete, Gehälter, zeitabhängige AfA), 2. **Stückdeckungsbeitrag ($db = p - k_v$)** und **Gesamtdeckungsbeitrag ($DB = E - K_v = x \\cdot db$)**, 3. Die **Gewinnschwelle / Break-Even-Point (BEP)**: $x_{\\text{BEP}} = \\frac{K_f}{db}$ (ab dieser Produktionsmenge ist der Gewinn $G = 0$, darüber entsteht Reingewinn $G = DB - K_f$), 4. Entscheidungskriterium für **Zusatzaufträge bei freien Kapazitäten**: Ein Zusatzauftrag lohnt sich, solange der angebotene Sonderpreis $p_{\\text{Sonder}} > k_v$ ist ($db > 0$). Berechne für $K_f = 60.000\\text{ €}$, $k_v = 40\\text{ €}$, $p = 70\\text{ €}$ die Gewinnschwelle $x_{\\text{BEP}}$ und den Betriebsgewinn bei Verkauf von 3.000 Stück.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Erkläre das Instrument der Deckungsbeitragsrechnung (Teilkostenrechnung): 1. Trennung in variable Kosten "
+            },
+            {
+              "type": "math",
+              "tex": "K_v",
+              "speech": "K v"
+            },
+            {
+              "type": "text",
+              "text": " (beschäftigungsabhängig: Material, Fertigungsakkord) und fixe Kosten "
+            },
+            {
+              "type": "math",
+              "tex": "K_f",
+              "speech": "K f"
+            },
+            {
+              "type": "text",
+              "text": " (beschäftigungsunabhängig: Miete, Gehälter, zeitabhängige AfA), 2. Stückdeckungsbeitrag ("
+            },
+            {
+              "type": "math",
+              "tex": "db = p - k_v",
+              "speech": "d b gleich p minus k v"
+            },
+            {
+              "type": "text",
+              "text": ") und Gesamtdeckungsbeitrag ("
+            },
+            {
+              "type": "math",
+              "tex": "DB = E - K_v = x \\cdot db",
+              "speech": "D B gleich E minus K v gleich x mal d b"
+            },
+            {
+              "type": "text",
+              "text": "), 3. Die Gewinnschwelle / Break-Even-Point (BEP): "
+            },
+            {
+              "type": "math",
+              "tex": "x_{\\text{BEP}} = \\frac{K_f}{db}",
+              "speech": "x B E P gleich K f durch d b"
+            },
+            {
+              "type": "text",
+              "text": " (ab dieser Produktionsmenge ist der Gewinn "
+            },
+            {
+              "type": "math",
+              "tex": "G = 0",
+              "speech": "G gleich 0"
+            },
+            {
+              "type": "text",
+              "text": ", darüber entsteht Reingewinn "
+            },
+            {
+              "type": "math",
+              "tex": "G = DB - K_f",
+              "speech": "G gleich D B minus K f"
+            },
+            {
+              "type": "text",
+              "text": "), 4. Entscheidungskriterium für Zusatzaufträge bei freien Kapazitäten: Ein Zusatzauftrag lohnt sich, solange der angebotene Sonderpreis "
+            },
+            {
+              "type": "math",
+              "tex": "p_{\\text{Sonder}} > k_v",
+              "speech": "p Sonder größer als k v"
+            },
+            {
+              "type": "text",
+              "text": " ist ("
+            },
+            {
+              "type": "math",
+              "tex": "db > 0",
+              "speech": "d b größer als 0"
+            },
+            {
+              "type": "text",
+              "text": "). Berechne für "
+            },
+            {
+              "type": "math",
+              "tex": "K_f = 60.000\\text{ €}",
+              "speech": "K f gleich 60.000 Euro"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "k_v = 40\\text{ €}",
+              "speech": "k v gleich 40 Euro"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "p = 70\\text{ €}",
+              "speech": "p gleich 70 Euro"
+            },
+            {
+              "type": "text",
+              "text": " die Gewinnschwelle "
+            },
+            {
+              "type": "math",
+              "tex": "x_{\\text{BEP}}",
+              "speech": "x B E P"
+            },
+            {
+              "type": "text",
+              "text": " und den Betriebsgewinn bei Verkauf von 3.000 Stück."
+            }
+          ],
           "concept": "Deckungsbeitragsrechnung: db = p - kv; Break-Even-Point: x = Kf / db; Zusatzaufträge lohnen sich bei p > kv; Berechnung: db = 70 - 40 = 30 €; x_BEP = 60.000 / 30 = 2.000 Stück; Gewinn bei 3.000 Stück: G = 3.000 * 30 € - 60.000 € = 90.000 € - 60.000 € = 30.000 €.",
-          "sample_solution": "1. Grundbegriffe der Deckungsbeitragsrechnung: - **1. Kostenauflösung**:   * **Variable Kosten ($K_v$)**: Verändern sich proportional mit der produzierten Stückzahl $x$ (z. B. Rohstoffe, Fremdbauteile). $k_v$ sind die variablen Kosten pro Stück.   * **Fixe Kosten ($K_f$)**: Fallen unabhängig von der Produktionsmenge in konstanter Höhe an (z. B. Miete der Fabrikhalle, Festgehälter, Versicherungen). - **2. Der Deckungsbeitrag**:   * **Stückdeckungsbeitrag**:   $$\\mathbf{db = p - k_v}$$     (Der Beitrag, den ein einzelnes verkauftes Stück zur Deckung der fixen Kosten leistet).   * **Gesamtdeckungsbeitrag**:   $$\\mathbf{DB = x \\cdot db = E - K_v}$$   * **Betriebserfolg / Gewinn ($G$)**:   $$\\mathbf{G = DB - K_f = (x \\cdot db) - K_f}$$ 2. Die Gewinnschwelle (Break-Even-Point): - Der **Break-Even-Point ($x_{\\text{BEP}}$)** ist diejenige Absatzmenge, bei der die Erlöse exakt die Gesamtkosten decken ($G = 0 \\implies DB = K_f$):   $$\\mathbf{x_{\\text{BEP}} = \\frac{K_f}{db} = \\frac{K_f}{p - k_v}}$$ 3. Annahme von Zusatzaufträgen bei Unterbeschäftigung: - Hat ein Betrieb freie Maschinenkapazitäten, darf ein Zusatzauftrag auch **unter den regulären Selbstkosten** angenommen werden, solange der gebotene Preis über den variablen Stückkosten liegt ($p_{\\text{Zusatz}} > k_v \\implies db > 0$). Jeder positive Deckungsbeitrag erhöht den Gesamterfolg des Unternehmens! 4. Lösung der Berechnungsaufgabe: - **Gegeben**: $K_f = 60.000\\text{ €}$, $k_v = 40,00\\text{ €}$, $p = 70,00\\text{ €}$. - **1. Stückdeckungsbeitrag**:   $$db = 70,00\\text{ €} - 40,00\\text{ €} = \\mathbf{30,00\\text{ € pro Stück}}$$ - **2. Gewinnschwelle (Break-Even-Point)**:   $$x_{\\text{BEP}} = \\frac{60.000\\text{ €}}{30,00\\text{ €/Stück}} = \\mathbf{2.000\\text{ Stück}}$$   *(Ab dem 2.001. Stück erwirtschaftet der Betrieb echten Gewinn!)* - **3. Betriebsgewinn bei $x = 3.000\\text{ Stück}$**:   $$G = (3.000 \\cdot 30,00\\text{ €}) - 60.000\\text{ €} = 90.000\\text{ €} - 60.000\\text{ €} = \\mathbf{30.000,00\\text{ €}}$$."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Grundbegriffe der Deckungsbeitragsrechnung: - 1. Kostenauflösung:   * Variable Kosten ("
+            },
+            {
+              "type": "math",
+              "tex": "K_v"
+            },
+            {
+              "type": "text",
+              "text": "): Verändern sich proportional mit der produzierten Stückzahl "
+            },
+            {
+              "type": "math",
+              "tex": "x"
+            },
+            {
+              "type": "text",
+              "text": " (z. B. Rohstoffe, Fremdbauteile). "
+            },
+            {
+              "type": "math",
+              "tex": "k_v"
+            },
+            {
+              "type": "text",
+              "text": " sind die variablen Kosten pro Stück.   * Fixe Kosten ("
+            },
+            {
+              "type": "math",
+              "tex": "K_f"
+            },
+            {
+              "type": "text",
+              "text": "): Fallen unabhängig von der Produktionsmenge in konstanter Höhe an (z. B. Miete der Fabrikhalle, Festgehälter, Versicherungen). - 2. Der Deckungsbeitrag:   * Stückdeckungsbeitrag:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{db = p - k_v}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "     (Der Beitrag, den ein einzelnes verkauftes Stück zur Deckung der fixen Kosten leistet).   * Gesamtdeckungsbeitrag:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{DB = x \\cdot db = E - K_v}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Betriebserfolg / Gewinn ("
+            },
+            {
+              "type": "math",
+              "tex": "G"
+            },
+            {
+              "type": "text",
+              "text": "):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{G = DB - K_f = (x \\cdot db) - K_f}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Die Gewinnschwelle (Break-Even-Point): - Der Break-Even-Point ("
+            },
+            {
+              "type": "math",
+              "tex": "x_{\\text{BEP}}"
+            },
+            {
+              "type": "text",
+              "text": ") ist diejenige Absatzmenge, bei der die Erlöse exakt die Gesamtkosten decken ("
+            },
+            {
+              "type": "math",
+              "tex": "G = 0 \\implies DB = K_f"
+            },
+            {
+              "type": "text",
+              "text": "):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{x_{\\text{BEP}} = \\frac{K_f}{db} = \\frac{K_f}{p - k_v}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Annahme von Zusatzaufträgen bei Unterbeschäftigung: - Hat ein Betrieb freie Maschinenkapazitäten, darf ein Zusatzauftrag auch unter den regulären Selbstkosten angenommen werden, solange der gebotene Preis über den variablen Stückkosten liegt ("
+            },
+            {
+              "type": "math",
+              "tex": "p_{\\text{Zusatz}} > k_v \\implies db > 0"
+            },
+            {
+              "type": "text",
+              "text": "). Jeder positive Deckungsbeitrag erhöht den Gesamterfolg des Unternehmens! 4. Lösung der Berechnungsaufgabe: - Gegeben: "
+            },
+            {
+              "type": "math",
+              "tex": "K_f = 60.000\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "k_v = 40,00\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "p = 70,00\\text{ €}"
+            },
+            {
+              "type": "text",
+              "text": ". - 1. Stückdeckungsbeitrag:   "
+            },
+            {
+              "type": "math",
+              "tex": "db = 70,00\\text{ €} - 40,00\\text{ €} = \\mathbf{30,00\\text{ € pro Stück}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 2. Gewinnschwelle (Break-Even-Point):   "
+            },
+            {
+              "type": "math",
+              "tex": "x_{\\text{BEP}} = \\frac{60.000\\text{ €}}{30,00\\text{ €/Stück}} = \\mathbf{2.000\\text{ Stück}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   (Ab dem 2.001. Stück erwirtschaftet der Betrieb echten Gewinn!) - 3. Betriebsgewinn bei "
+            },
+            {
+              "type": "math",
+              "tex": "x = 3.000\\text{ Stück}"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "G = (3.000 \\cdot 30,00\\text{ €}) - 60.000\\text{ €} = 90.000\\text{ €} - 60.000\\text{ €} = \\mathbf{30.000,00\\text{ €}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

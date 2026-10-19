@@ -690,9 +690,10 @@
       "parent": "agents",
       "label": "In-app panels",
       "link": "show",
-      "text": "MCP Apps panels show recall, the learning graph, the knowledge base and a repository's knowledge map inside the agent app.",
+      "text": "MCP Apps panels show recall, the learning graph, the knowledge atlas, the knowledge base and a repository's map inside the agent app.",
       "sources": [
-        "docs/okf/mcp-surfaces.md"
+        "docs/okf/mcp-surfaces.md",
+        "desktop/src/panel/atlas-panel.ts"
       ],
       "c4": {
         "kind": "container",
@@ -848,6 +849,155 @@
       }
     },
     {
+      "id": "knowledge-atlas",
+      "parent": "surfaces",
+      "label": "Knowledge atlas",
+      "link": "include",
+      "text": "The knowledge atlas draws a library as islands of hexes: colour says which subject, texture says how well the learner remembers it.",
+      "sources": [
+        "docs/adr/2026-10-13-knowledge-atlas.md",
+        "desktop/src/atlas/render.ts",
+        "src/kernel/atlas/land.ts"
+      ]
+    },
+    {
+      "id": "atlas-curation",
+      "parent": "knowledge-atlas",
+      "label": "Curated lenses",
+      "link": "is ordered by",
+      "text": "A curator edits an atlas lens or accepts an agent's new order for it; no world-lens edit moves the published map or takes coordinates.",
+      "sources": [
+        "docs/adr/2026-10-13-knowledge-atlas.md",
+        "src/kernel/atlas/curation.ts",
+        "src/cli/atlas.ts"
+      ]
+    },
+    {
+      "id": "atlas-custom-lenses",
+      "parent": "atlas-curation",
+      "label": "Custom lenses",
+      "link": "extends to",
+      "text": "A library can add custom lenses on its own planet: more orders over the same units, each with its own level names.",
+      "sources": [
+        "docs/adr/2026-10-13-knowledge-atlas.md",
+        "src/kernel/atlas/curation.ts",
+        "src/kernel/atlas/lenses.ts"
+      ]
+    },
+    {
+      "id": "sinnbild-canonical",
+      "parent": "surfaces",
+      "label": "Sinnbilder",
+      "link": "include",
+      "text": "A Sinnbild is stored and shown only as the kernel validator's re-serialisation of an allowed SVG tree, and only as an image.",
+      "sources": [
+        "src/kernel/atlas/emblem.ts",
+        "src/kernel/atlas/emblems.ts",
+        "desktop/src/atlas/render.ts"
+      ]
+    },
+    {
+      "id": "atlas-threads",
+      "parent": "knowledge-atlas",
+      "label": "Red threads",
+      "link": "joins units with",
+      "text": "A learner's own red thread is learning state that never feeds blocking; no thread runs from world knowledge to Firma or Privat.",
+      "sources": [
+        "src/kernel/atlas/connections.ts",
+        "src/kernel/atlas/place.ts",
+        "src/kernel/scheduler/blocker.ts",
+        "desktop/src/atlas/render.ts"
+      ]
+    },
+    {
+      "id": "atlas-condition",
+      "parent": "knowledge-atlas",
+      "label": "Condition",
+      "link": "textures units by",
+      "text": "A unit's condition is its weakest card's, in bands set relative to the request retention; it is computed when drawn, never stored.",
+      "sources": [
+        "src/kernel/atlas/condition.ts",
+        "src/kernel/atlas/palette.ts"
+      ]
+    },
+    {
+      "id": "atlas-land",
+      "parent": "knowledge-atlas",
+      "label": "Stable land",
+      "link": "keeps places on",
+      "text": "Settle gives every unit of a library its hex once and never moves it inside its island; islands only drift outward, a little per settle.",
+      "sources": [
+        "src/kernel/atlas/settle.ts",
+        "src/kernel/atlas/land.ts"
+      ]
+    },
+    {
+      "id": "atlas-land-release",
+      "parent": "knowledge-atlas",
+      "label": "Released land",
+      "link": "gives back",
+      "text": "Settle gives land that no unit reaches back to the sea, so an island whose units are all gone disappears from the map.",
+      "sources": [
+        "src/kernel/atlas/land.ts",
+        "src/kernel/atlas/settle.ts"
+      ]
+    },
+    {
+      "id": "atlas-planets",
+      "parent": "knowledge-atlas",
+      "label": "Planets",
+      "link": "sorts units onto",
+      "text": "A unit's kind is the planet of its lens: world, company or private. Only its status, published or own, decides publishing.",
+      "sources": [
+        "docs/adr/2026-10-13-knowledge-atlas.md",
+        "src/kernel/atlas/planets.ts",
+        "src/kernel/atlas/types.ts"
+      ]
+    },
+    {
+      "id": "atlas-variants",
+      "parent": "atlas-land",
+      "label": "Variants",
+      "link": "gives a published unit's hex to",
+      "text": "A variant takes a published unit's hex for a learner and detaches that unit's cards without deleting them; undoing it re-attaches them.",
+      "sources": [
+        "src/kernel/atlas/variants.ts"
+      ]
+    },
+    {
+      "id": "atlas-import-place",
+      "parent": "atlas-land",
+      "label": "Import at a place",
+      "link": "grows through",
+      "text": "An import started at a region places its new units there as own units of that region's planet; settle gives them land next.",
+      "sources": [
+        "src/kernel/atlas/place.ts",
+        "desktop/src/atlas/import.ts"
+      ]
+    },
+    {
+      "id": "atlas-outline",
+      "parent": "knowledge-atlas",
+      "label": "Outline",
+      "link": "is also read as",
+      "text": "Beside the map, the Studio lists the same lens as an outline for keyboard and screen reader, with each region's condition in words.",
+      "sources": [
+        "desktop/src/atlas/outline.ts",
+        "desktop/src/atlas/view.ts"
+      ]
+    },
+    {
+      "id": "atlas-mobile",
+      "parent": "atlas-outline",
+      "label": "Mobile",
+      "link": "is read on",
+      "text": "Mobile shows the atlas outline of one lens on Fortschritt, from the learner's own database; a region's review uses the usual session.",
+      "sources": [
+        "mobile/src/atlas.ts",
+        "src/kernel/atlas/learner.ts"
+      ]
+    },
+    {
       "id": "pairing-optional",
       "parent": "mobile-standalone",
       "label": "Optional pairing",
@@ -982,6 +1132,42 @@
       ]
     },
     {
+      "id": "topic-import",
+      "parent": "content",
+      "label": "Topic import",
+      "link": "drafts from",
+      "text": "A topic import builds on what the learner already knows, keeps to what the topic names, and writes no file.",
+      "sources": [
+        "docs/adr/2026-10-14-topic-import-and-source-provenance.md",
+        "src/kernel/import/topic-import.ts",
+        "src/cli/llm/client.ts"
+      ]
+    },
+    {
+      "id": "agent-source",
+      "parent": "agents",
+      "label": "Source first",
+      "link": "requires",
+      "text": "An agent adds a token only with the source it read: a file or folder in a trusted folder, or a public web page.",
+      "sources": [
+        "docs/adr/2026-10-14-topic-import-and-source-provenance.md",
+        "src/cli/agent-source.ts",
+        "src/cli/commands/mcp.ts"
+      ]
+    },
+    {
+      "id": "read-up",
+      "parent": "content",
+      "label": "Reading up",
+      "link": "opens",
+      "text": "Reading up opens a world unit's web source or a Wikipedia search for its lookup term, on a click; Firma and Privat units have none.",
+      "sources": [
+        "docs/adr/2026-10-14-topic-import-and-source-provenance.md",
+        "src/kernel/atlas/read-up.ts",
+        "desktop/src/read-up.ts"
+      ]
+    },
+    {
       "id": "open-library",
       "parent": "content",
       "label": "Open Library",
@@ -1009,6 +1195,62 @@
       "text": "In a team library, newcomers start by taking topics the library already holds as their own cards.",
       "sources": [
         "docs/adr/2026-10-02-library-topics.md"
+      ]
+    },
+    {
+      "id": "card-text",
+      "parent": "token",
+      "label": "Card text",
+      "link": "may hold",
+      "text": "A token's question and answer may hold formulas and images; the plain text stays as their projection, written by one path.",
+      "sources": [
+        "docs/okf/card-text-segments.md",
+        "src/kernel/library/card-text.ts",
+        "src/kernel/library/card-text-store.ts"
+      ]
+    },
+    {
+      "id": "formula-allowlist",
+      "parent": "card-text",
+      "label": "Formula allowlist",
+      "link": "checked by",
+      "text": "A formula is restricted LaTeX that a fail-closed tokenizer accepts before anything stores or renders it.",
+      "sources": [
+        "src/kernel/library/tex-tokenizer.ts",
+        "src/kernel/library/math-inventory.json"
+      ]
+    },
+    {
+      "id": "formula-rendering",
+      "parent": "card-text",
+      "label": "MathML on the device",
+      "link": "shown as",
+      "text": "Studio, Mobile and the recall panel render formulas as checked MathML on the device and show the plain form until it is ready.",
+      "sources": [
+        "desktop/src/card-text-render.ts",
+        "desktop/src/math-render.ts"
+      ]
+    },
+    {
+      "id": "formula-speech",
+      "parent": "card-text",
+      "label": "Spoken formulas",
+      "link": "read aloud by",
+      "text": "Each formula carries the sentence a teacher would read aloud; voice mode and screen readers use it.",
+      "sources": [
+        "docs/okf/voice-mode.md",
+        "src/kernel/library/card-text.ts"
+      ]
+    },
+    {
+      "id": "formula-editor",
+      "parent": "card-text",
+      "label": "Edit in words",
+      "link": "corrected in",
+      "text": "In the Studio a learner fixes a formula card in their own words or inserts a formula; the TeX stays behind a disclosure for curators.",
+      "sources": [
+        "desktop/src/card-text-editor.ts",
+        "docs/okf/learning-content.md"
       ]
     }
   ],
@@ -1255,6 +1497,18 @@
       "to": "fsrs6",
       "kind": "uses",
       "link": "takes due dates from"
+    },
+    {
+      "from": "knowledge-atlas",
+      "to": "card",
+      "kind": "requires",
+      "link": "colours by"
+    },
+    {
+      "from": "knowledge-atlas",
+      "to": "sinnbild-canonical",
+      "kind": "uses",
+      "link": "marks places with"
     }
   ]
 }

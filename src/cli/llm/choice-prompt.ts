@@ -12,6 +12,7 @@
  * verified one; disputes and retirement remain the quality gate.
  */
 
+import { PLAIN_FORMULA_RULE } from "../../kernel/library/card-shape.js";
 import {
   type CandidateRejection,
   checkCandidate,
@@ -77,7 +78,8 @@ Rules:
 3. Match the correct answer's category, grammatical form and length. A distractor must never be noticeably longer, shorter or more detailed than the correct answer.
 4. Never write "all of the above", "none of the above", a negation of the correct answer, or a paraphrase of it.
 5. For each distractor, give one short sentence in ${language} explaining why it is wrong — addressed to the learner who picked it.
-6. Reply with JSON only, no markdown fence and no prose:
+6. ${PLAIN_FORMULA_RULE}
+7. Reply with JSON only, no markdown fence and no prose:
 [{"text": "...", "reason": "..."}]`;
   const avoid = (item.avoid ?? []).filter((text) => text.trim());
   const user = `Domain: ${item.domain}

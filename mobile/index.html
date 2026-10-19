@@ -615,6 +615,17 @@
             </div>
             <p id="stats-summary" class="t-headline"></p>
             <ul id="stats-rows" class="bars" style="margin-top: var(--gap-4)"></ul>
+            <!-- Wissensatlas (ADR 2026-10-13, Decision 10): read only -->
+            <section class="atlas-section" aria-labelledby="atlas-heading">
+              <h2 id="atlas-heading" class="t-title" data-i18n="atlas_title">Wissensatlas</h2>
+              <p class="t-footnote" data-i18n="atlas_intro">
+                Wie gut du jedes Gebiet kannst, und was dort fällig ist.
+              </p>
+              <div id="atlas-lenses" class="segmented" role="group" hidden></div>
+              <p id="atlas-status" class="t-footnote" aria-live="polite"></p>
+              <div id="atlas-outline" class="atlas-outline"></div>
+              <div id="atlas-detail" class="card atlas-detail" hidden></div>
+            </section>
             <button id="close-stats" class="btn plain" type="button" hidden data-i18n="to_queue">
               Zurück
             </button>

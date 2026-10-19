@@ -66,9 +66,51 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre das System der Erfolgskonten als Unterkonten des Eigenkapitals: 1. **Aufwandskonten** (betrieblicher Werteverzehr/Kosten: Löhne, Gehälter, Büromaterial, Werbung, Mietaufwand $\\rightarrow$ mindern das Eigenkapital $\\rightarrow$ Buchungen immer im **Soll**), 2. **Ertragskonten** (betrieblicher Wertezuwachs: Umsatzerlöse für eigene Erzeugnisse, Provisionserträge, Zinserträge $\\rightarrow$ mehren das Eigenkapital $\\rightarrow$ Buchungen immer im **Haben**), 3. Das **Gewinn- und Verlustkonto (GuV)** als Sammelkonto (Soll: alle Aufwendungen; Haben: alle Erträge), 4. **Erfolgsermittlung und Abschluss über das Eigenkapitalkonto**: Saldo Haben > Soll = **Jahresüberschuss / Reingewinn** (*Buchung: GuV an EK*); Saldo Soll > Haben = **Jahresfehlbetrag / Reinverlust** (*Buchung: EK an GuV*).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Erkläre das System der Erfolgskonten als Unterkonten des Eigenkapitals: 1. Aufwandskonten (betrieblicher Werteverzehr/Kosten: Löhne, Gehälter, Büromaterial, Werbung, Mietaufwand "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " mindern das Eigenkapital "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Buchungen immer im Soll), 2. Ertragskonten (betrieblicher Wertezuwachs: Umsatzerlöse für eigene Erzeugnisse, Provisionserträge, Zinserträge "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " mehren das Eigenkapital "
+            },
+            {
+              "type": "math",
+              "tex": "\\rightarrow",
+              "speech": "führt zu"
+            },
+            {
+              "type": "text",
+              "text": " Buchungen immer im Haben), 3. Das Gewinn- und Verlustkonto (GuV) als Sammelkonto (Soll: alle Aufwendungen; Haben: alle Erträge), 4. Erfolgsermittlung und Abschluss über das Eigenkapitalkonto: Saldo Haben > Soll = Jahresüberschuss / Reingewinn (Buchung: GuV an EK); Saldo Soll > Haben = Jahresfehlbetrag / Reinverlust (Buchung: EK an GuV)."
+            }
+          ],
           "concept": "Erfolgskonten: Aufwand im Soll (mindert EK); Ertrag im Haben (mehrt EK); GuV sammelt Aufwendungen im Soll und Erträge im Haben; Reingewinn steht im Soll des GuV und mehrt das EK (GuV an EK); Reinverlust steht im Haben des GuV und mindert das EK (EK an GuV).",
-          "sample_solution": "1. Wesen der Erfolgskonten (Erfolgswirksame Geschäftsfälle): - Während reine Bestandsbuchungen (Aktiv-/Passivtausch) das Eigenkapital unverändert lassen, verändern **Erfolgsvorgänge das Reinvermögen (Eigenkapital)** des Unternehmens. - Um das Eigenkapitalkonto übersichtlich zu halten, wird es in **zwei Arten von Unterkonten (Erfolgskonten)** aufgelöst:   * **1. Aufwandskonten (Werteverzehr)**:     - Erfassen Güter- und Dienstleistungsverbrauch zur betrieblichen Leistungserstellung (z. B. `6000 AWR` Aufwendungen für Rohstoffe, `6200 L` Löhne, `6300 G` Gehälter, `6700 M` Mietaufwendungen, `6800 BM` Büromaterial, `6870 WE` Werbeaufwand).     - Da Aufwendungen das Eigenkapital **mindern**, werden sie immer im **Soll** gebucht.     - Haben **keinen Anfangsbestand** zu Jahresbeginn.   * **2. Ertragskonten (Wertezuwachs)**:     - Erfassen den Wertezufluss durch Verkauf und Dienstleistungen (z. B. `5000 UEFE` Umsatzerlöse für Fertigerzeugnisse, `5400 EMP` Erlöse aus Vermietung, `5430 ZIE` Zinserträge).     - Da Erträge das Eigenkapital **mehren**, werden sie immer im **Haben** gebucht.     - Haben ebenfalls **keinen Anfangsbestand**. 2. Das Gewinn- und Verlustkonto (GuV) und Jahresabschluss: - Zum Jahresende (31. Dezember) werden alle Erfolgskonten über das zentrale Sammelkonto **GuV** abgeschlossen:   * *Abschluss Aufwandskonten*: **`GuV an Aufwandskonto`**   * *Abschluss Ertragskonten*: **`Ertragskonto an GuV`** - **Erfolgsbilanzierung**:   * **Gewinnfall (Erträge > Aufwendungen)**:     - Die Habenseite des GuV ist größer als die Sollseite. Der Saldo (**Reingewinn**) steht auf der Sollseite des GuV.     - **Abschlussbuchung auf das Eigenkapitalkonto**: **`GuV an EK [Gewinnbetrag]`** (mehrt das Eigenkapital!).   * **Verlustfall (Aufwendungen > Erträge)**:     - Die Sollseite des GuV ist größer als die Habenseite. Der Saldo (**Reinverlust**) steht auf der Habenseite des GuV.     - **Abschlussbuchung**: **`EK an GuV [Verlustbetrag]`** (mindert das Eigenkapital!)."
+          "sample_solution": "1. Wesen der Erfolgskonten (Erfolgswirksame Geschäftsfälle): - Während reine Bestandsbuchungen (Aktiv-/Passivtausch) das Eigenkapital unverändert lassen, verändern Erfolgsvorgänge das Reinvermögen (Eigenkapital) des Unternehmens. - Um das Eigenkapitalkonto übersichtlich zu halten, wird es in zwei Arten von Unterkonten (Erfolgskonten) aufgelöst:   * 1. Aufwandskonten (Werteverzehr):     - Erfassen Güter- und Dienstleistungsverbrauch zur betrieblichen Leistungserstellung (z. B. `6000 AWR` Aufwendungen für Rohstoffe, `6200 L` Löhne, `6300 G` Gehälter, `6700 M` Mietaufwendungen, `6800 BM` Büromaterial, `6870 WE` Werbeaufwand).     - Da Aufwendungen das Eigenkapital mindern, werden sie immer im Soll gebucht.     - Haben keinen Anfangsbestand zu Jahresbeginn.   * 2. Ertragskonten (Wertezuwachs):     - Erfassen den Wertezufluss durch Verkauf und Dienstleistungen (z. B. `5000 UEFE` Umsatzerlöse für Fertigerzeugnisse, `5400 EMP` Erlöse aus Vermietung, `5430 ZIE` Zinserträge).     - Da Erträge das Eigenkapital mehren, werden sie immer im Haben gebucht.     - Haben ebenfalls keinen Anfangsbestand. 2. Das Gewinn- und Verlustkonto (GuV) und Jahresabschluss: - Zum Jahresende (31. Dezember) werden alle Erfolgskonten über das zentrale Sammelkonto GuV abgeschlossen:   * Abschluss Aufwandskonten: `GuV an Aufwandskonto`   * Abschluss Ertragskonten: `Ertragskonto an GuV` - Erfolgsbilanzierung:   * Gewinnfall (Erträge > Aufwendungen):     - Die Habenseite des GuV ist größer als die Sollseite. Der Saldo (Reingewinn) steht auf der Sollseite des GuV.     - Abschlussbuchung auf das Eigenkapitalkonto: `GuV an EK [Gewinnbetrag]` (mehrt das Eigenkapital!).   * Verlustfall (Aufwendungen > Erträge):     - Die Sollseite des GuV ist größer als die Habenseite. Der Saldo (Reinverlust) steht auf der Habenseite des GuV.     - Abschlussbuchung: `EK an GuV [Verlustbetrag]` (mindert das Eigenkapital!).",
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -130,9 +172,29 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Erkläre die buchhalterische Erfassung des Werkstoffeinkaufs: 1. Werkstoffarten (Rohstoffe `AWR` = Hauptbestandteil des Produkts, Fremdbauteile `AWF` = zugekaufte Fertigteile, Hilfsstoffe `AWH` = untergeordnete Stoffe wie Leim/Lack, Betriebsstoffe `AWB` = Verbrauch für Maschinen wie Schmieröl/Strom), 2. **Bezugskosten `BZKR`** (Fracht, Verpackung, Transportversicherung, Zölle; werden als Anschaffungsnebenkosten gesondert im Soll erfasst), 3. Unterscheidung von **Liefererrabatt** (sofortiger Rechnungsabzug) und **Liefererskonto** (nachträglicher Preisnachlass bei schneller Zahlung innerhalb der Skontofrist, z. B. 2 % bei Zahlung binnen 10 Tagen) und bilde die Buchungssätze für: a) Kauf von Rohstoffen 20.000 € und Fremdbauteilen 10.000 € auf Ziel (Rechnung), b) Wir überweisen per Bank Frachtkosten für den Rohstoffeinkauf in Höhe von 600 €.",
+          "question": "Erkläre die buchhalterische Erfassung des Werkstoffeinkaufs: 1. Werkstoffarten (Rohstoffe `AWR` = Hauptbestandteil des Produkts, Fremdbauteile `AWF` = zugekaufte Fertigteile, Hilfsstoffe `AWH` = untergeordnete Stoffe wie Leim/Lack, Betriebsstoffe `AWB` = Verbrauch für Maschinen wie Schmieröl/Strom), 2. Bezugskosten `BZKR` (Fracht, Verpackung, Transportversicherung, Zölle; werden als Anschaffungsnebenkosten gesondert im Soll erfasst), 3. Unterscheidung von Liefererrabatt (sofortiger Rechnungsabzug) und Liefererskonto (nachträglicher Preisnachlass bei schneller Zahlung innerhalb der Skontofrist, z. B. 2 % bei Zahlung binnen 10 Tagen) und bilde die Buchungssätze für: a) Kauf von Rohstoffen 20.000 € und Fremdbauteilen 10.000 € auf Ziel (Rechnung), b) Wir überweisen per Bank Frachtkosten für den Rohstoffeinkauf in Höhe von 600 €.",
           "concept": "Werkstoffeinkauf: AWR/AWF/AWH/AWB; Bezugskosten BZKR im Soll; Rabatt sofort abgezogen; Skonto nachträglich bei Zahlung; a) 'AWR 20.000 € und AWF 10.000 € an VLL 30.000 €'; b) 'BZKR 600 € an BK 600 €'.",
-          "sample_solution": "1. Systematik der Werkstoffe im Industriebetrieb: - **1. Rohstoffe (`6000 AWR`)**: Hauptbestandteil des fertigen Erzeugnisses (z. B. Holz bei Tischen, Stahl bei Maschinen). - **2. Fremdbauteile (`6010 AWF`)**: Zugekaufte montagefertige Komponenten (z. B. Fahrradsättel, Computerchips, Reifen). - **3. Hilfsstoffe (`6020 AWH`)**: Gehen in das Produkt ein, bilden aber nur Nebenbestandteile (z. B. Schrauben, Leim, Nähgarn, Farbe). - **4. Betriebsstoffe (`6030 AWB`)**: Gehen nicht in das Produkt ein, sondern werden beim Betrieb der Maschinen verbraucht (z. B. Strom, Erdgas, Schmieröle, Benzin). 2. Bezugskosten und Preisnachlässe: - **Bezugskosten (`6001 BZKR / BZKF`)**:   * Alle Nebenkosten des Transports vom Lieferanten zu unserem Betrieb (Fracht, Spedition, Rollgeld, Transportversicherung, Leihverpackung, Zölle).   * Werden auf dem gesonderten Unterkonto `BZKR` im **Soll** gebucht und erhöhen den Werkstoffaufwand. - **Liefererrabatt**:   * Wird sofort auf der Rechnung vom Listenpreis abgezogen (*Nettopreis*). Es erfolgt **keine gesonderte Buchung**. - **Liefererskonto**:   * Ein vom Lieferanten gewährter Zins- und Liquiditätsvorteil bei schneller Bezahlung innerhalb der vereinbarten Skontofrist (z. B. *'Zahlung innerhalb von 10 Tagen abzüglich 2 % Skonto'*).   * Wird erst im Zeitpunkt des Bankausgleichs buchhalterisch erfasst. 3. Buchungssätze der Übungsfälle: - **a) Kauf von Rohstoffen 20.000 € und Fremdbauteilen 10.000 € auf Ziel**:   * Zusammengesetzter Buchungssatz:   $$\\mathbf{\\text{6000 AWR } 20.000\\text{ € } \\quad \\& \\quad \\text{6010 AWF } 10.000\\text{ € } \\quad \\text{an} \\quad \\text{4400 VLL } 30.000\\text{ €}}$$ - **b) Banküberweisung von Transport-/Frachtkosten für Rohstoffe 600 €**:   * Einfacher Buchungssatz:   $$\\mathbf{\\text{6001 BZKR } 600\\text{ € } \\quad \\text{an} \\quad \\text{2800 BK } 600\\text{ €}}$$"
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Systematik der Werkstoffe im Industriebetrieb: - 1. Rohstoffe (`6000 AWR`): Hauptbestandteil des fertigen Erzeugnisses (z. B. Holz bei Tischen, Stahl bei Maschinen). - 2. Fremdbauteile (`6010 AWF`): Zugekaufte montagefertige Komponenten (z. B. Fahrradsättel, Computerchips, Reifen). - 3. Hilfsstoffe (`6020 AWH`): Gehen in das Produkt ein, bilden aber nur Nebenbestandteile (z. B. Schrauben, Leim, Nähgarn, Farbe). - 4. Betriebsstoffe (`6030 AWB`): Gehen nicht in das Produkt ein, sondern werden beim Betrieb der Maschinen verbraucht (z. B. Strom, Erdgas, Schmieröle, Benzin). 2. Bezugskosten und Preisnachlässe: - Bezugskosten (`6001 BZKR / BZKF`):   * Alle Nebenkosten des Transports vom Lieferanten zu unserem Betrieb (Fracht, Spedition, Rollgeld, Transportversicherung, Leihverpackung, Zölle).   * Werden auf dem gesonderten Unterkonto `BZKR` im Soll gebucht und erhöhen den Werkstoffaufwand. - Liefererrabatt:   * Wird sofort auf der Rechnung vom Listenpreis abgezogen (Nettopreis). Es erfolgt keine gesonderte Buchung. - Liefererskonto:   * Ein vom Lieferanten gewährter Zins- und Liquiditätsvorteil bei schneller Bezahlung innerhalb der vereinbarten Skontofrist (z. B. 'Zahlung innerhalb von 10 Tagen abzüglich 2 % Skonto').   * Wird erst im Zeitpunkt des Bankausgleichs buchhalterisch erfasst. 3. Buchungssätze der Übungsfälle: - a) Kauf von Rohstoffen 20.000 € und Fremdbauteilen 10.000 € auf Ziel:   * Zusammengesetzter Buchungssatz:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{6000 AWR } 20.000\\text{ € } \\quad \\& \\quad \\text{6010 AWF } 10.000\\text{ € } \\quad \\text{an} \\quad \\text{4400 VLL } 30.000\\text{ €}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - b) Banküberweisung von Transport-/Frachtkosten für Rohstoffe 600 €:   * Einfacher Buchungssatz:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{6001 BZKR } 600\\text{ € } \\quad \\text{an} \\quad \\text{2800 BK } 600\\text{ €}}",
+              "block": true
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

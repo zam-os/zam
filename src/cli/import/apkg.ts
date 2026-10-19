@@ -2,6 +2,7 @@ import { mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, join } from "node:path";
 import type {
+  CardText,
   Database,
   ImageOcclusionShape,
   TextImportAssetInput,
@@ -11,6 +12,11 @@ import type {
   TextImportNotice,
 } from "../../kernel/index.js";
 import { openReadOnlySqliteDatabase } from "../../kernel/index.js";
+import {
+  holdFormulas,
+  keptAsTextNotice,
+  restoreFormulas,
+} from "./formula-lift.js";
 import type { SafeAnkiMediaEntry } from "./safe-zip.js";
 import { selectAnkiCollectionDatabase } from "./safe-zip.js";
 import { sanitizeImportedText } from "./text-sanitizer.js";
@@ -53,6 +59,10 @@ interface MediaLibraryEntry {
 
 interface SanitizedCardSide {
   text: string;
+  /** Lifted formulas (ADR 2026-10-14b); `null` for plain text. */
+  segments: CardText | null;
+  /** The text as an import without the formula lift read it. */
+  unliftedText: string;
   media: TextImportMediaReference[];
   warnings: TextImportNotice[];
 }
@@ -493,10 +503,23 @@ function sanitizeCardSide(
   // Media is rendered separately. Its alt text remains accessibility metadata
   // and must not accidentally reveal an image card's answer as prompt text.
   const sanitized = sanitizeImportedText(html);
-  const textOnly = sanitizeImportedText(
-    html.replace(/<\s*img\b[^>]*>/gi, " ").replace(/\[sound:[^\]]+]/gi, " "),
-  );
-  let text = textOnly.text;
+  const withoutMedia = html
+    .replace(/<\s*img\b[^>]*>/gi, " ")
+    .replace(/\[sound:[^\]]+]/gi, " ");
+  const textOnly = sanitizeImportedText(withoutMedia);
+  // Formulas leave the HTML before it is made inert, and come back as math
+  // segments (ADR 2026-10-14b, plan Phase 7).
+  const held = holdFormulas(withoutMedia);
+  const lifted =
+    held.formulas.length > 0
+      ? restoreFormulas(
+          sanitizeImportedText(held.html).text,
+          held.formulas,
+          textOnly.text,
+        )
+      : restoreFormulas(textOnly.text, [], textOnly.text);
+  let text = lifted.text;
+  const segments = lifted.segments;
   if (!text && collected.media.length > 0) {
     const audioOnly = collected.media.every((item) => item.kind === "audio");
     text =
@@ -508,13 +531,45 @@ function sanitizeCardSide(
   }
   return {
     text,
+    segments: text === lifted.text ? segments : null,
+    unliftedText: textOnly.text,
     media: collected.media,
     warnings: [
       ...sanitized.warnings.filter(
         (notice) => notice.code !== "media-unsupported",
       ),
       ...collected.warnings,
+      ...(lifted.keptAsText > 0 ? [keptAsTextNotice(lifted.keptAsText)] : []),
     ],
+  };
+}
+
+/** The lifted formulas of both sides, for the kernel import. */
+function liftedFields(
+  question: SanitizedCardSide,
+  answer: SanitizedCardSide,
+): Pick<
+  TextImportCardInput,
+  "questionSegments" | "answerSegments" | "unliftedText"
+> {
+  if (!question.segments && !answer.segments) {
+    return question.text === question.unliftedText &&
+      answer.text === answer.unliftedText
+      ? {}
+      : {
+          unliftedText: {
+            question: question.unliftedText,
+            answer: answer.unliftedText,
+          },
+        };
+  }
+  return {
+    ...(question.segments ? { questionSegments: question.segments } : {}),
+    ...(answer.segments ? { answerSegments: answer.segments } : {}),
+    unliftedText: {
+      question: question.unliftedText,
+      answer: answer.unliftedText,
+    },
   };
 }
 
@@ -713,6 +768,7 @@ function parseClozeCard(
       ...commonCardFields(row, fields, externalId, ordinal, deckPath),
       question: question.text,
       answer: answer.text,
+      ...liftedFields(question, answer),
       title: question.text,
       media: [...question.media, ...answer.media],
       warnings: attachContext(
@@ -875,6 +931,7 @@ async function parseCollection(
       ...commonCardFields(row, fields, externalId, ordinal, deckPath),
       question: question.text,
       answer: answer.text,
+      ...liftedFields(question, answer),
       title: question.text,
       media: [...question.media, ...answer.media],
       warnings: attachContext(

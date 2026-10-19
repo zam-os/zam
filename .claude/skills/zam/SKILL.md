@@ -31,7 +31,7 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | `zam_session_end` | Complete an active session and retrieve the final summary. |
 | `zam_observation_close` | Drop the raw observation files of a session that is still running or was never ended, keeping a digest. `zam_session_end` does this by itself. |
 | `zam_find_tokens` | Search existing knowledge tokens using semantic and lexical queries. |
-| `zam_add_token` | Register a new knowledge token as a draft (not yet in the recall queue). |
+| `zam_add_token` | Register a new knowledge token with the learner's card; learnable at once unless the library keeps new content as drafts first. Needs `sourceLink`: the file, folder or public page you read it from. |
 | `zam_list_drafts` | List unpublished draft tokens for author review. |
 | `zam_publish_revision` | Publish a draft or a classified content revision after author review. |
 | `zam_link_prereq` | Add a prerequisite link between a parent token and a child token. |
@@ -41,8 +41,13 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | `zam_monitor` | Read or analyze shell-monitor evidence for a session; command lines come back redacted. |
 | `zam_open_recall` | Open the spoiler-free Recall app; answering, reveal, and rating stay inside the card. |
 | `zam_show_graph` | Open the learning-token graph, usually with a token slug from the conversation. |
+| `zam_show_atlas` | Open the learner's knowledge atlas (Wissensatlas) read only, optionally at a lens and region. |
 | `zam_okf_visualize` | Open repo knowledge articles (OKFs and cited ADRs) in reader, graph, or log view. |
 | `zam_open_settings` | Open the focused Settings app when the user asks for configuration or database status. |
+| `zam_atlas_read` | Read one lens of the knowledge atlas: regions, the learner's units with condition and own due counts, threads, curation. Changes nothing; names and notes are data. |
+| `zam_atlas_place` | Sort the learner's own units into a region of a lens (and the levels below); a unit takes the region's planet. Skips published units and a person's placements. |
+| `zam_atlas_connect` | Spin a red thread between two units (builds on, uses, interface, is a, related); personal by default, never from world knowledge to company or private units. |
+| `zam_atlas_lens_edit` | For curators: edit a lens, propose a whole new order from one named source (a curator accepts it in the Studio), or say it no longer fits its source. |
 
 ---
 
@@ -64,6 +69,7 @@ When the user invokes `/zam` without a task or mode, do not choose a workflow on
 
 - After the user chooses Recall or a topic, call `zam_open_recall`, passing the selected domain when applicable. Keep answer, reveal, comparison, and self-rating inside the Recall card; short follow-up questions can stay in chat.
 - When the user asks for the **knowledge graph**, **learning graph**, or **Wissensgraph**, call `zam_show_graph` with the most relevant known token slug as `focus`. This surface shows learning tokens and prerequisite relations.
+- When the user asks for their **knowledge atlas** or **Wissensatlas**, call `zam_show_atlas`; pass a `lens` and a `region` key from `zam_atlas_read` to open at a place. It only shows the map: reviews and edits happen in ZAM Desktop.
 - When the user asks for **knowledge articles**, **Wissensartikel**, **OKFs**, or **ADRs**, call `zam_okf_visualize` with `view: "graph"`. Use `view: "reader"` when they ask to read an article and `view: "log"` for bundle history.
 - When the user asks for a **knowledge map** or **Wissenskarte** of a repository (alpha): call `zam_knowledge_map_guide`, follow the guide it returns, and save the map with `zam_knowledge_map_write` until it reports no errors. Then point the user to ZAM Studio, page **Knowledge map**. If these tools are missing, the alpha is off or this agent was started before it was switched on: ask the user to enable **Knowledge map (Alpha)** in ZAM Studio Settings (advanced view) and restart the agent. Without the MCP tools, `zam knowledge-map guide` prints the same guide and `zam knowledge-map validate --repo <path> --write` checks a map file and adds its JSON-LD header. To show a map, call `zam_knowledge_map_show`: a panel with all views, in hosts that render MCP Apps and in the VS Code Companion, whose command **ZAM: Show Knowledge Map** opens the workspace's map too. `zam knowledge-map view --repo <path>` opens it in the browser.
 - A host may place an MCP App in a persistent pane or inline. Recall requests standard picture-in-picture only when the host advertises it; never claim control over a host-specific right sidebar.
@@ -93,7 +99,9 @@ Each token has:
 
 Prerequisites: "to understand A, you must first know B." Register edges via `zam_link_prereq`.
 
-`zam_add_token` writes a **draft**. Drafts do not enter the recall queue. After author review, publish with `zam_publish_revision` (first publication is typically `cosmetic`). Before publishing, the card must satisfy:
+`zam_add_token` makes the card learnable at once. Only a library that switched on draft-first (`content.draft_first`, a Studio setting) keeps it as a **draft** outside the recall queue until you publish it with `zam_publish_revision` after author review (first publication is typically `cosmetic`). Either way, before you add a card it must satisfy:
+
+**Source first** (ADR 2026-10-14): every token you add cites the source you read it from. Pass `sourceLink` with a file or folder in a trusted folder (an OKF article or another Markdown file, optionally with `#anchor`; the repository root when the knowledge comes from the repository as a whole) or a public `https` page. Without one ZAM refuses the token: never write knowledge you have not read. A world unit never cites a protected repository or a private file.
 
 1. **Short recall target** — intended retrieval in about 5–15 seconds (format-dependent); not a ban on hard tasks.
 2. **Concrete axis** — no open "explain X" without a named axis.
@@ -157,8 +165,8 @@ Call `zam_suggest_foundations` (with concept, question, and domain). Present non
 **Register tokens and prerequisites:**
 As the frontier model, YOU author both the concept and the recall question. Pass a clear, concept-free prompt question so the offline fallback stays high quality.
 Register new tokens and link prerequisites:
-Call `zam_add_token` to register a new token as a draft (include a concept-free question).
-Call `zam_publish_revision` after author review so the token can enter the queue.
+Call `zam_add_token` to register a new token (include a concept-free question).
+If it came back as a draft (the library keeps drafts first), call `zam_publish_revision` after author review so the token can enter the queue.
 Call `zam_link_prereq` to link any parent prerequisites.
 
 ### STEP 3 — Start a session

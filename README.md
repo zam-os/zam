@@ -76,7 +76,7 @@ the package root to discover the ZAM skill and stdio MCP server together. A sour
 checkout needs `npm ci && npm run build` first; published packages already contain the
 runtime. See [ZAM Agent Plugin](docs/AGENT_PLUGIN.md) for the layout and validation.
 
-### 2. ZAM Desktop Studio — *setup, content & graph*
+### 2. ZAM Desktop Studio — *setup, content & atlas*
 
 A native app (`zam ui`) for the things a chat window isn't good at:
 
@@ -87,7 +87,9 @@ A native app (`zam ui`) for the things a chat window isn't good at:
 - **Import your own material** — paste notes, point ZAM at a source, or walk a structured
   curriculum; a guided wizard turns any of them into review cards.
 - **Edit your content** — a real editor for concepts, questions, and prerequisites.
-- **See your knowledge graph** — your concepts as a living map of what builds on what.
+- **See your knowledge atlas** — what you know as a map of islands: the colour says the
+  subject, the texture how well you remember it, and red threads show what builds on what.
+  Zoom from a subject down to one concept, and review a whole region from there.
 - **Review** — run focused active-recall rounds right in the app.
 
 ```bash

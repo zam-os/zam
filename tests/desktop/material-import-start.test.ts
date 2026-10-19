@@ -7,9 +7,11 @@ import {
   analyzeRefusalKey,
   builtInState,
   connectedHarnesses,
+  elapsedLabel,
   harnessNames,
   harnessRequestText,
   materialFileKind,
+  notesArgs,
 } from "../../desktop/src/material-import-start.js";
 import type { MaterialImportModelsResponse } from "../../src/bridge/protocol.js";
 
@@ -201,5 +203,51 @@ describe("material import start", () => {
     expect(main).toContain('openModelSetup: () => showOnboardingAt("model")');
     expect(studio).toContain("initMaterialImportStart(materialReview);");
     expect(html).not.toContain('value="scan"');
+  });
+});
+
+describe("import at a place (ADR 2026-10-13, Decision 9)", () => {
+  const place = {
+    lens: "weltwissen" as const,
+    regionKey: "natur.physik.optik",
+    path: ["Natur", "Physik", "Licht & Wellen"],
+  };
+
+  it("passes the place to the analysis, for files and for typed notes", () => {
+    expect(analyzeArgs(["/a.jpg"], "", place)).toEqual([
+      "--file",
+      "/a.jpg",
+      "--place-region",
+      "natur.physik.optik",
+      "--place-lens",
+      "weltwissen",
+    ]);
+    expect(analyzeArgs(["/a.jpg"], "")).toEqual(["--file", "/a.jpg"]);
+    expect(notesArgs("  Licht knickt.  ", place)).toEqual([
+      "--text",
+      "Licht knickt.",
+      "--place-region",
+      "natur.physik.optik",
+      "--place-lens",
+      "weltwissen",
+    ]);
+  });
+
+  it("names the place in the harness request, so the agent can pass it on", () => {
+    setCurrentLocale("de");
+    const text = harnessRequestText(["/a.jpg"], place);
+    expect(text).toContain("Natur › Physik › Licht & Wellen");
+    expect(text).toContain("natur.physik.optik");
+    expect(text).toContain("zam_material_import_context");
+    expect(harnessRequestText(["/a.jpg"])).not.toContain("natur.physik");
+  });
+});
+
+describe("while the model reads", () => {
+  it("counts the time in minutes and seconds", () => {
+    expect(elapsedLabel(0, 0)).toBe("0:00");
+    expect(elapsedLabel(0, 42_900)).toBe("0:42");
+    expect(elapsedLabel(0, 125_000)).toBe("2:05");
+    expect(elapsedLabel(10_000, 0)).toBe("0:00");
   });
 });

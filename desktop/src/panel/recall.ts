@@ -26,12 +26,14 @@
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
+import type { CardSegmentPayload } from "../../../src/bridge/protocol.js";
 import { createLearningClock } from "../../../src/kernel/analytics/learning-clock.js";
 import {
   countAnswerPoints,
   shouldShowPointCount,
 } from "../../../src/kernel/library/answer-points.js";
 import { currentLocale, setCurrentLocale, t, tf } from "../i18n.js";
+import { renderCardText } from "../card-text-render.js";
 import { renderQuestionWithTopic } from "../question-topic.js";
 import {
   type BonusOffer,
@@ -132,8 +134,13 @@ interface ReviewCard {
   fastCheck?: {
     type: "binary_choice" | "multiple_choice";
     options: string[];
+    /** An option's formulas (ADR 2026-10-14b), in presented order. */
+    optionSegments?: Array<CardSegmentPayload[] | null>;
     correctIndex: number;
   } | null;
+  /** Card text with formulas (ADR 2026-10-14b); null for plain text. */
+  questionSegments?: CardSegmentPayload[] | null;
+  conceptSegments?: CardSegmentPayload[] | null;
 }
 
 interface AdmitResult {
@@ -944,6 +951,7 @@ async function presentCurrentCard(): Promise<void> {
     question,
     card.domain,
     card.question?.trim() ? card.question : card.slug,
+    card.question?.trim() ? card.questionSegments : null,
   );
   if (isFlash) {
     question.style.cursor = "pointer";
@@ -982,6 +990,11 @@ async function presentCurrentCard(): Promise<void> {
       option.type = "button";
       option.className = "btn secondary-btn";
       option.textContent = label;
+      void renderCardText(
+        option,
+        card.fastCheck.optionSegments?.[optionIndex],
+        label,
+      );
       option.dataset.fastCheckIndex = String(optionIndex);
       fastOptions.appendChild(option);
     }
@@ -1006,7 +1019,10 @@ async function presentCurrentCard(): Promise<void> {
     option.addEventListener("click", () => {
       if (committed) return;
       tappedOption = true;
-      answer.value = option.textContent ?? "";
+      // The option's plain text, not the button's: once a formula is
+      // typeset, the button holds MathML (PR #412 review).
+      const index = Number(option.dataset.fastCheckIndex);
+      answer.value = card.fastCheck?.options[index] ?? option.textContent ?? "";
       actionBtn.click();
     });
   }
@@ -1192,7 +1208,8 @@ async function presentCurrentCard(): Promise<void> {
 
     const conceptEl = document.createElement("div");
     conceptEl.className = "recall-concept";
-    conceptEl.textContent = concept; // first and only time concept hits the DOM
+    // First and only time the concept hits the DOM, formulas typeset.
+    void renderCardText(conceptEl, card.conceptSegments, concept);
     reveal.appendChild(conceptEl);
 
     appendRatings(reveal);
@@ -1328,7 +1345,7 @@ async function presentCurrentCard(): Promise<void> {
     const reference = document.createElement("div");
     reference.className = "recall-concept";
     // Always reveal ZAM's stored concept, not a model-generated replacement.
-    reference.textContent = concept;
+    void renderCardText(reference, card.conceptSegments, concept);
     reveal.append(referenceTitle, reference);
 
     if (app.getHostCapabilities()?.sampling) {

@@ -65,9 +65,344 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere den physikalischen Treibhauseffekt, planetare Rückkopplungsschleifen und zentrale Kippelemente: 1. **Der Strahlungshaushalt der Erde**:   * Kurzwellige Solarstrahlung ($S_0 \\approx 1361\\,\\text{W/m}^2$) trifft auf die Atmosphäre; Teil wird reflektiert (Planetare Albedo $\\approx 30\\,\\%$).   * Die Erdoberfläche erwärmt sich und emittiert **langwellige Infrarot-Wärmestrahlung**.   * Treibhausgase ($H_2O, CO_2, CH_4, N_2O$) absorbieren die Infrarotstrahlung und re-emittieren atmosphärische **Gegenstrahlung** zur Erdoberfläche.   * *Natürlicher Treibhauseffekt*: Hebt die mittlere Temperatur von $-18^\\circ\\text{C}$ auf lebensfreundliche $+15^\\circ\\text{C}$ ($+33\\,\\text{K}$).   * *Anthropogene Verstärkung*: Durch fossile Verbrennung steigt $CO_2$ von $280\\,\\text{ppm}$ (vorindustriell) auf über $425\\,\\text{ppm}$ heute $\\implies$ Strahlungsungleichgewicht (**Radiative Forcing**), 2. **Selbstverstärkende Rückkopplungen (Positive Feedback)**:   * **Eis-Albedo-Rückkopplung**: Schmelzen von Meereis $\\implies$ dunkle Meeresoberfläche absorbiert mehr Sonnenlicht $\\implies$ weitere Erwärmung.   * **Wasserdampf-Rückkopplung**: Wärmere Luft fasst mehr Feuchtigkeit (Clausius-Clapeyron: $+7\\,\\%$ pro Grad) $\\implies$ Wasserdampf wirkt als starkes Treibhausgas, 3. **Zentrale Kippelemente des Erdsystems (PIK)**:   * **1. Grönländischer Eisschild**: Schmelzen senkt die Eishöhe in wärmere Luftschichten $\\implies$ irreversibles Abschmelzen ($+7\\,\\text{m}$ globaler Meeresspiegel).   * **2. Permafrostböden (Sibirien/Kanada)**: Auftauen setzt gigantische Mengen $\\text{CH}_4$ und $\\text{CO}_2$ frei $\\implies$ unkontrollierbare Heißzeit.   * **3. Atlantische thermohaline Zirkulation (AMOC / Golfstrom)**: Süßwassereintrag durch Gletscherschmelze schwächt Dichteantrieb $\\implies$ Kollaps der Umwälzpumpe.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere den physikalischen Treibhauseffekt, planetare Rückkopplungsschleifen und zentrale Kippelemente: 1. Der Strahlungshaushalt der Erde:   * Kurzwellige Solarstrahlung ("
+            },
+            {
+              "type": "math",
+              "tex": "S_0 \\approx 1361\\,\\text{W/m}^2",
+              "speech": "S null ungefähr 1361 Watt pro Quadratmeter"
+            },
+            {
+              "type": "text",
+              "text": ") trifft auf die Atmosphäre; Teil wird reflektiert (Planetare Albedo "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 30\\,\\%",
+              "speech": "ungefähr 30 Prozent"
+            },
+            {
+              "type": "text",
+              "text": ").   * Die Erdoberfläche erwärmt sich und emittiert langwellige Infrarot-Wärmestrahlung.   * Treibhausgase ("
+            },
+            {
+              "type": "math",
+              "tex": "H_2O, CO_2, CH_4, N_2O",
+              "speech": "H zwei O, C O zwei, C H vier, N zwei O"
+            },
+            {
+              "type": "text",
+              "text": ") absorbieren die Infrarotstrahlung und re-emittieren atmosphärische Gegenstrahlung zur Erdoberfläche.   * Natürlicher Treibhauseffekt: Hebt die mittlere Temperatur von "
+            },
+            {
+              "type": "math",
+              "tex": "-18^\\circ\\text{C}",
+              "speech": "minus 18 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": " auf lebensfreundliche "
+            },
+            {
+              "type": "math",
+              "tex": "+15^\\circ\\text{C}",
+              "speech": "plus 15 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "+33\\,\\text{K}",
+              "speech": "plus 33 Kelvin"
+            },
+            {
+              "type": "text",
+              "text": ").   * Anthropogene Verstärkung: Durch fossile Verbrennung steigt "
+            },
+            {
+              "type": "math",
+              "tex": "CO_2",
+              "speech": "C O zwei"
+            },
+            {
+              "type": "text",
+              "text": " von "
+            },
+            {
+              "type": "math",
+              "tex": "280\\,\\text{ppm}",
+              "speech": "280 ppm"
+            },
+            {
+              "type": "text",
+              "text": " (vorindustriell) auf über "
+            },
+            {
+              "type": "math",
+              "tex": "425\\,\\text{ppm}",
+              "speech": "425 ppm"
+            },
+            {
+              "type": "text",
+              "text": " heute "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Strahlungsungleichgewicht (Radiative Forcing), 2. Selbstverstärkende Rückkopplungen (Positive Feedback):   * Eis-Albedo-Rückkopplung: Schmelzen von Meereis "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " dunkle Meeresoberfläche absorbiert mehr Sonnenlicht "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " weitere Erwärmung.   * Wasserdampf-Rückkopplung: Wärmere Luft fasst mehr Feuchtigkeit (Clausius-Clapeyron: "
+            },
+            {
+              "type": "math",
+              "tex": "+7\\,\\%",
+              "speech": "plus 7 Prozent"
+            },
+            {
+              "type": "text",
+              "text": " pro Grad) "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Wasserdampf wirkt als starkes Treibhausgas, 3. Zentrale Kippelemente des Erdsystems (PIK):   * 1. Grönländischer Eisschild: Schmelzen senkt die Eishöhe in wärmere Luftschichten "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " irreversibles Abschmelzen ("
+            },
+            {
+              "type": "math",
+              "tex": "+7\\,\\text{m}",
+              "speech": "plus 7 Meter"
+            },
+            {
+              "type": "text",
+              "text": " globaler Meeresspiegel).   * 2. Permafrostböden (Sibirien/Kanada): Auftauen setzt gigantische Mengen "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{CH}_4",
+              "speech": "C H vier"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{CO}_2",
+              "speech": "C O zwei"
+            },
+            {
+              "type": "text",
+              "text": " frei "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " unkontrollierbare Heißzeit.   * 3. Atlantische thermohaline Zirkulation (AMOC / Golfstrom): Süßwassereintrag durch Gletscherschmelze schwächt Dichteantrieb "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Kollaps der Umwälzpumpe."
+            }
+          ],
           "concept": "Klimasystem 13: Strahlungsbilanz, Gegenstrahlung (+33K Treibhauseffekt, 280 -> 425 ppm CO2); Eis-Albedo & Wasserdampfrückkopplung; Kippelemente (Grönland-Eis, Permafrost-Methanbombe, AMOC-Kollaps, Amazonas-Dieback).",
-          "sample_solution": "1. Der physikalische Mechanismus des Treibhauseffekts: - **Strahlungsbilanz**:   * Die Erde empfängt kurzwellige Sonnenstrahlung ($\\\\lambda < 4\\,\\mu\\text{m}$). Rund $30\\,\\%$ werden durch Wolken, Aerosole und helle Oberflächen (**Albedo**) direkt in den Weltraum reflektiert.   * Die absorbierte Sonnenenergie wird als langwellige Wärmestrahlung (Infrarot, $\\lambda \\approx 4-50\\,\\mu\\text{m}$) abgestrahlt. - **Der Treibhauseffekt**:   * Mehratomige Gasmoleküle mit asymmetrischem Dipolmoment ($\\text{H}_2\\text{O}, \\text{CO}_2, \\text{CH}_4, \\text{N}_2\\text{O}$) absorbieren Infrarotquanten durch Molekülschwingungen und strahlen einen Großteil davon als **atmosphärische Gegenstrahlung** zurück zur Erde.   * Ohne Treibhausgase läge die globale Durchschnittstemperatur bei lebensfeindlichen **$-18^\\circ\\text{C}$**; der natürliche Effekt erwärmt die Erde auf angenehme **$+15^\\circ\\text{C}$**. - **Die anthropogene Störung**:   * Durch die Verbrennung von Kohle, Erdöl und Erdgas sowie Brandrodung stieg die atmosphärische $\\text{CO}_2$-Konzentration von $280\\,\\text{ppm}$ (1850) auf über **$425\\,\\text{ppm}$** (2026, gemessen am Mauna Loa Observatorium / Keeling-Kurve).   * Dies verursacht einen zusätzlichen positiven Strahlungsantrieb (*Radiative Forcing* $\\approx +2{,}8\\,\\text{W/m}^2$), der das Klimasystem kontinuierlich aufheizt ($+1{,}2\\text{ bis } +1{,}5^\\circ\\text{C}$ Erwärmung bereits erreicht). 2. Nichtlineare Dynamik: Kippelemente im Erdsystem: ```mermaid graph TD   GW[Globale Erwärmung] -->|Überschreiten kritischer Schwellenwerte| K1[Grönland-Eisschild: Höhen-Schmelz-Rückkopplung]   GW -->|Überschreiten kritischer Schwellenwerte| K2[Permafrost: Mikrobieller Zerfall setzt CH4/CO2 frei]   GW -->|Überschreiten kritischer Schwellenwerte| K3[AMOC / Golfstrom: Dichteabfall stoppt Tiefenwasserbildung]   K1 & K2 & K3 --> Kaskade[Kaskadeneffekt: Planetare Heißzeit / Hothouse Earth] ``` 3. Die drei gefährlichsten Kippelemente im Detail: - **1. Der Grönländische Eisschild ($+7\\,\\text{m}$ Meeresspiegelanstieg)**:   * Liegt der Schwellenwert bei ca. $1{,}5-2{,}0^\\circ\\text{C}$. Schmilzt die Eisoberfläche ab, sinkt sie in tiefere, wärmere Atmosphärenschichten (*Höhen-Schmelz-Rückkopplung*), was den Schmelzprozess selbst dann unaufhaltsam weiterantreibt, wenn die globale Temperatur stabilisiert würde. - **2. Auftauen der arktischen Permafrostböden (Die Methan-Zeitbombe)**:   * In den gefrorenen Tundraböden ist doppelt so viel organischer Kohlenstoff gebunden wie in der gesamten Atmosphäre. Beim Tauen zersetzen Mikroorganismen das Material unter Sauerstoffausschluss zu **Methan ($\\text{CH}_4$)**, das kurzfristig einen 84-mal stärkeren Treibhauseffekt als $\\text{CO}_2$ besitzt. - **3. Das Golfstromsystem (AMOC - Atlantic Meridional Overturning Circulation)**:   * Warmes, salzreiches Oberflächenwasser fließt nach Norden, kühlt ab, wird schwer und sinkt bei Grönland in die Tiefe (*Nordatlantisches Tiefenwasser*).   * Schmelzwasser aus Grönland verdünnt den Salzgehalt $\\implies$ Dichte sinkt $\\implies$ Die thermohaline 'Pumpe' schwächt sich ab $\\implies$ Risiko eines totalen Strömungsabrisses mit dramatischen Dürren in den Tropen und Extremwettern in Europa."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der physikalische Mechanismus des Treibhauseffekts: - Strahlungsbilanz:   * Die Erde empfängt kurzwellige Sonnenstrahlung ("
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda < 4\\,\\mu\\text{m}"
+            },
+            {
+              "type": "text",
+              "text": "). Rund "
+            },
+            {
+              "type": "math",
+              "tex": "30\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " werden durch Wolken, Aerosole und helle Oberflächen (Albedo) direkt in den Weltraum reflektiert.   * Die absorbierte Sonnenenergie wird als langwellige Wärmestrahlung (Infrarot, "
+            },
+            {
+              "type": "math",
+              "tex": "\\lambda \\approx 4-50\\,\\mu\\text{m}"
+            },
+            {
+              "type": "text",
+              "text": ") abgestrahlt. - Der Treibhauseffekt:   * Mehratomige Gasmoleküle mit asymmetrischem Dipolmoment ("
+            },
+            {
+              "type": "math",
+              "tex": "\\text{H}_2\\text{O}, \\text{CO}_2, \\text{CH}_4, \\text{N}_2\\text{O}"
+            },
+            {
+              "type": "text",
+              "text": ") absorbieren Infrarotquanten durch Molekülschwingungen und strahlen einen Großteil davon als atmosphärische Gegenstrahlung zurück zur Erde.   * Ohne Treibhausgase läge die globale Durchschnittstemperatur bei lebensfeindlichen "
+            },
+            {
+              "type": "math",
+              "tex": "-18^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": "; der natürliche Effekt erwärmt die Erde auf angenehme "
+            },
+            {
+              "type": "math",
+              "tex": "+15^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": ". - Die anthropogene Störung:   * Durch die Verbrennung von Kohle, Erdöl und Erdgas sowie Brandrodung stieg die atmosphärische "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{CO}_2"
+            },
+            {
+              "type": "text",
+              "text": "-Konzentration von "
+            },
+            {
+              "type": "math",
+              "tex": "280\\,\\text{ppm}"
+            },
+            {
+              "type": "text",
+              "text": " (1850) auf über "
+            },
+            {
+              "type": "math",
+              "tex": "425\\,\\text{ppm}"
+            },
+            {
+              "type": "text",
+              "text": " (2026, gemessen am Mauna Loa Observatorium / Keeling-Kurve).   * Dies verursacht einen zusätzlichen positiven Strahlungsantrieb (Radiative Forcing "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx +2{,}8\\,\\text{W/m}^2"
+            },
+            {
+              "type": "text",
+              "text": "), der das Klimasystem kontinuierlich aufheizt ("
+            },
+            {
+              "type": "math",
+              "tex": "+1{,}2\\text{ bis } +1{,}5^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": " Erwärmung bereits erreicht). 2. Nichtlineare Dynamik: Kippelemente im Erdsystem: ```mermaid graph TD   GW[Globale Erwärmung] -->|Überschreiten kritischer Schwellenwerte| K1[Grönland-Eisschild: Höhen-Schmelz-Rückkopplung]   GW -->|Überschreiten kritischer Schwellenwerte| K2[Permafrost: Mikrobieller Zerfall setzt CH4/CO2 frei]   GW -->|Überschreiten kritischer Schwellenwerte| K3[AMOC / Golfstrom: Dichteabfall stoppt Tiefenwasserbildung]   K1 & K2 & K3 --> Kaskade[Kaskadeneffekt: Planetare Heißzeit / Hothouse Earth] ``` 3. Die drei gefährlichsten Kippelemente im Detail: - 1. Der Grönländische Eisschild ("
+            },
+            {
+              "type": "math",
+              "tex": "+7\\,\\text{m}"
+            },
+            {
+              "type": "text",
+              "text": " Meeresspiegelanstieg):   * Liegt der Schwellenwert bei ca. "
+            },
+            {
+              "type": "math",
+              "tex": "1{,}5-2{,}0^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": ". Schmilzt die Eisoberfläche ab, sinkt sie in tiefere, wärmere Atmosphärenschichten (Höhen-Schmelz-Rückkopplung), was den Schmelzprozess selbst dann unaufhaltsam weiterantreibt, wenn die globale Temperatur stabilisiert würde. - 2. Auftauen der arktischen Permafrostböden (Die Methan-Zeitbombe):   * In den gefrorenen Tundraböden ist doppelt so viel organischer Kohlenstoff gebunden wie in der gesamten Atmosphäre. Beim Tauen zersetzen Mikroorganismen das Material unter Sauerstoffausschluss zu Methan ("
+            },
+            {
+              "type": "math",
+              "tex": "\\text{CH}_4"
+            },
+            {
+              "type": "text",
+              "text": "), das kurzfristig einen 84-mal stärkeren Treibhauseffekt als "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{CO}_2"
+            },
+            {
+              "type": "text",
+              "text": " besitzt. - 3. Das Golfstromsystem (AMOC - Atlantic Meridional Overturning Circulation):   * Warmes, salzreiches Oberflächenwasser fließt nach Norden, kühlt ab, wird schwer und sinkt bei Grönland in die Tiefe (Nordatlantisches Tiefenwasser).   * Schmelzwasser aus Grönland verdünnt den Salzgehalt "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Dichte sinkt "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Die thermohaline 'Pumpe' schwächt sich ab "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Risiko eines totalen Strömungsabrisses mit dramatischen Dürren in den Tropen und Extremwettern in Europa."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +463,213 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das Pariser Klimaschutzabkommen, das CO2-Budget und geopolitische Ressourcenkonflikte im 21. Jahrhundert: 1. **Das Pariser Klimaschutzabkommen (2015)**:   * **1,5-Grad- und 2-Grad-Ziel**: Begrenzung der menschengemachten Erderwärmung auf deutlich unter $2^\\circ\\text{C}$, möglichst $1{,}5^\\circ\\text{C}$ gegenüber vorindustriellen Werten.   * **NDCs (Nationally Determined Contributions)**: Freiwillige, alle 5 Jahre nachzuschärfende nationale Klimaschutzpläne (*Ratchet Mechanism*).   * **Drei Säulen**:     - *Mitigation (Minderung)*: Dekarbonisierung der Weltwirtschaft, Treibhausgasneutralität (Netto-Null) bis 2050.     - *Adaptation (Anpassung)*: Deichbau, hitzeresistente Pflanzen, Frühwarnsysteme.     - *Finance / Loss and Damage*: Finanzielle Unterstützung des globalen Südens (Klimaanpassungsfonds, Entschädigung für unumkehrbare Klimaschäden), 2. **Das CO2-Restbudget**:   * Es besteht ein strikt linearer Zusammenhang zwischen kumulierten globalen $\\text{CO}_2$-Emissionen und Temperaturanstieg.   * Zur Einhaltung der $1{,}5^\\circ\\text{C}$-Grenze (mit $50\\,\\%$ Wahrscheinlichkeit) verbleibt ab 2026 nur noch ein weltweites Restbudget von ca. $200-250\\,\\text{Gt CO}_2$ (bei jährlichen Emissionen von $\\approx 40\\,\\text{Gt}$ in weniger als 6 Jahren aufgebraucht!), 3. **Geopolitische Ressourcenkonflikte der Zukunft**:   * **1. Wasserkonflikte (Blue Gold)**: Nil-Konflikt um den Grand-Ethiopian-Renaissance-Staudamm (GERD) zwischen Äthiopien, Sudan und Ägypten; Euphrat-Tigris (GAP-Projekt der Türkei).   * **2. Kritische Rohstoffe für die Energiewende**: Lithium-Dreieck (Chile, Bolivien, Argentinien), Kobalt (Demokratische Republik Kongo), Seltene Erden (Monopol Chinas $\\implies$ Geopolitische Abhängigkeiten).",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das Pariser Klimaschutzabkommen, das CO2-Budget und geopolitische Ressourcenkonflikte im 21. Jahrhundert: 1. Das Pariser Klimaschutzabkommen (2015):   * 1,5-Grad- und 2-Grad-Ziel: Begrenzung der menschengemachten Erderwärmung auf deutlich unter "
+            },
+            {
+              "type": "math",
+              "tex": "2^\\circ\\text{C}",
+              "speech": "2 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": ", möglichst "
+            },
+            {
+              "type": "math",
+              "tex": "1{,}5^\\circ\\text{C}",
+              "speech": "1,5 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": " gegenüber vorindustriellen Werten.   * NDCs (Nationally Determined Contributions): Freiwillige, alle 5 Jahre nachzuschärfende nationale Klimaschutzpläne (Ratchet Mechanism).   * Drei Säulen:     - Mitigation (Minderung): Dekarbonisierung der Weltwirtschaft, Treibhausgasneutralität (Netto-Null) bis 2050.     - Adaptation (Anpassung): Deichbau, hitzeresistente Pflanzen, Frühwarnsysteme.     - Finance / Loss and Damage: Finanzielle Unterstützung des globalen Südens (Klimaanpassungsfonds, Entschädigung für unumkehrbare Klimaschäden), 2. Das CO2-Restbudget:   * Es besteht ein strikt linearer Zusammenhang zwischen kumulierten globalen "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{CO}_2",
+              "speech": "C O zwei"
+            },
+            {
+              "type": "text",
+              "text": "-Emissionen und Temperaturanstieg.   * Zur Einhaltung der "
+            },
+            {
+              "type": "math",
+              "tex": "1{,}5^\\circ\\text{C}",
+              "speech": "1,5 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": "-Grenze (mit "
+            },
+            {
+              "type": "math",
+              "tex": "50\\,\\%",
+              "speech": "50 Prozent"
+            },
+            {
+              "type": "text",
+              "text": " Wahrscheinlichkeit) verbleibt ab 2026 nur noch ein weltweites Restbudget von ca. "
+            },
+            {
+              "type": "math",
+              "tex": "200-250\\,\\text{Gt CO}_2",
+              "speech": "200 bis 250 Gigatonnen C O zwei"
+            },
+            {
+              "type": "text",
+              "text": " (bei jährlichen Emissionen von "
+            },
+            {
+              "type": "math",
+              "tex": "\\approx 40\\,\\text{Gt}",
+              "speech": "ungefähr 40 Gigatonnen"
+            },
+            {
+              "type": "text",
+              "text": " in weniger als 6 Jahren aufgebraucht!), 3. Geopolitische Ressourcenkonflikte der Zukunft:   * 1. Wasserkonflikte (Blue Gold): Nil-Konflikt um den Grand-Ethiopian-Renaissance-Staudamm (GERD) zwischen Äthiopien, Sudan und Ägypten; Euphrat-Tigris (GAP-Projekt der Türkei).   * 2. Kritische Rohstoffe für die Energiewende: Lithium-Dreieck (Chile, Bolivien, Argentinien), Kobalt (Demokratische Republik Kongo), Seltene Erden (Monopol Chinas "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Geopolitische Abhängigkeiten)."
+            }
+          ],
           "concept": "Klimapolitik & Ressourcen 13: Pariser Abkommen 2015 (1,5°C-Ziel, NDCs, Mitigation/Adaptation/Loss&Damage); CO2-Restbudget; Globale Ressourcenkonflikte (Wasserstress Nil/GERD, Seltene Erden & Lithium für Energiewende).",
-          "sample_solution": "1. Die Architektur der internationalen Klimapolitik (Das Pariser Abkommen 2015): - **Völkerrechtlicher Meilenstein**:   * Auf der COP21 in Paris verpflichteten sich 195 Staaten erstmals zu einem universellen, völkerrechtlich verbindlichen Klimavertrag:     $$\\mathbf{\\text{Erwärmung deutlich unter } 2^\\circ\\text{C} \\text{ halten und Anstrengungen für } 1{,}5^\\circ\\text{C} \\text{ verstärken}}$$ - **Das NDC-Prinzip (*Bottom-up-Ansatz*)**:   * Jeder Staat legt eigenständig nationale Minderungsziele (**NDCs - Nationally Determined Contributions**) fest. Alle 5 Jahre müssen diese im Rahmen eines globalen Bestandsaufnahme-Prozesses (*Global Stocktake*) zwingend nachgeschärft werden (*Ambitionssteigerung*). - **Das Konzept der Klimagerechtigkeit (*Loss and Damage*)**:   * Die Industrieländer des globalen Nordens sind historisch für über $70\\,\\%$ der kumulierten Treibhausgase verantwortlich, während der globale Süden (z. B. pazifische Inselstaaten, Subsahara-Afrika) am stärksten unter Meeresspiegelanstieg und Dürren leidet.   * Auf der COP27/COP28 wurde ein internationaler Fonds für **Verluste und Schäden (Loss and Damage)** eingerichtet, um verwundbare Staaten finanziell zu entschädigen. 2. Das CO2-Restbudget und das physikalische Diktat: - Der Weltklimarat (**IPCC - Intergovernmental Panel on Climate Change**) belegt: Jede ausgestoßene Tonne $\\text{CO}_2$ erhöht die Temperatur proportional und irreversibel:   * Um das $1{,}5^\\circ\\text{C}$-Ziel mit $50\\,\\%$ Wahrscheinlichkeit einzuhalten, darf die Menschheit ab 2026 maximal noch ca. **$200\\,\\text{Gigatonnen CO}_2$** freisetzen.   * Bei aktuellen globalen Jahresverbrennungen von ca. $40\\,\\text{Gt CO}_2/\\text{Jahr}$ ist das Budget rechnerisch in wenigen Jahren vollständig aufgebraucht $\\implies$ Erfordert eine weltweite Halbierung der Emissionen bis 2030 und **Netto-Null ($\\\\text{Climate Neutrality}$) bis spätestens 2050**. 3. Geopolitische Ressourcenkonflikte des 21. Jahrhunderts: - **1. Wasserstress und Hydropolitik am Nil**:   * Äthiopien baute den **GERD (Grand Ethiopian Renaissance Dam)** am Blauen Nil zur Stromerzeugung.   * Ägypten ($97\\,\\%$ des Trinkwassers hängen vom Nil ab) fürchtet bei Dürren katastrophale Wassereinbußen $\\implies$ Hochbrisantes militärisches Konfliktpotential im Horn von Afrika. - **2. Die Rohstoff-Geopolitik der Dekarbonisierung**:   * Der globale Wandel hin zu Photovoltaik, Windkraft und Elektromobilität beendet zwar die Abhängigkeit von Ölmonopolen (OPEC), schafft jedoch neue kritische Abhängigkeiten:     - **Lithium**: Konzentriert im südamerikanischen 'Lithium-Dreieck' (Salare in Bolivien/Chile/Argentinien) unter enormem Grundwasserverbrauch.     - **Kobalt**: Über $70\\,\\%$ der Weltförderung stammen aus der politisch instabilen DR Kongo (teils unter menschenunwürdigen Bedingungen im Kleinbergbau).     - **Seltene Erden (Neodym, Dysprosium für Windturbinen-Magnete)**: Werden zu über $60\\,\\%$ in China gefördert und zu $90\\,\\%$ in China verarbeitet $\\implies$ Geopolitisches Erpressungspotenzial bei Handelskriegen."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Architektur der internationalen Klimapolitik (Das Pariser Abkommen 2015): - Völkerrechtlicher Meilenstein:   * Auf der COP21 in Paris verpflichteten sich 195 Staaten erstmals zu einem universellen, völkerrechtlich verbindlichen Klimavertrag:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\text{Erwärmung deutlich unter } 2^\\circ\\text{C} \\text{ halten und Anstrengungen für } 1{,}5^\\circ\\text{C} \\text{ verstärken}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Das NDC-Prinzip (Bottom-up-Ansatz):   * Jeder Staat legt eigenständig nationale Minderungsziele (NDCs - Nationally Determined Contributions) fest. Alle 5 Jahre müssen diese im Rahmen eines globalen Bestandsaufnahme-Prozesses (Global Stocktake) zwingend nachgeschärft werden (Ambitionssteigerung). - Das Konzept der Klimagerechtigkeit (Loss and Damage):   * Die Industrieländer des globalen Nordens sind historisch für über "
+            },
+            {
+              "type": "math",
+              "tex": "70\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " der kumulierten Treibhausgase verantwortlich, während der globale Süden (z. B. pazifische Inselstaaten, Subsahara-Afrika) am stärksten unter Meeresspiegelanstieg und Dürren leidet.   * Auf der COP27/COP28 wurde ein internationaler Fonds für Verluste und Schäden (Loss and Damage) eingerichtet, um verwundbare Staaten finanziell zu entschädigen. 2. Das CO2-Restbudget und das physikalische Diktat: - Der Weltklimarat (IPCC - Intergovernmental Panel on Climate Change) belegt: Jede ausgestoßene Tonne "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{CO}_2"
+            },
+            {
+              "type": "text",
+              "text": " erhöht die Temperatur proportional und irreversibel:   * Um das "
+            },
+            {
+              "type": "math",
+              "tex": "1{,}5^\\circ\\text{C}"
+            },
+            {
+              "type": "text",
+              "text": "-Ziel mit "
+            },
+            {
+              "type": "math",
+              "tex": "50\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " Wahrscheinlichkeit einzuhalten, darf die Menschheit ab 2026 maximal noch ca. "
+            },
+            {
+              "type": "math",
+              "tex": "200\\,\\text{Gigatonnen CO}_2"
+            },
+            {
+              "type": "text",
+              "text": " freisetzen.   * Bei aktuellen globalen Jahresverbrennungen von ca. "
+            },
+            {
+              "type": "math",
+              "tex": "40\\,\\text{Gt CO}_2/\\text{Jahr}"
+            },
+            {
+              "type": "text",
+              "text": " ist das Budget rechnerisch in wenigen Jahren vollständig aufgebraucht "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Erfordert eine weltweite Halbierung der Emissionen bis 2030 und Netto-Null ("
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Climate Neutrality}"
+            },
+            {
+              "type": "text",
+              "text": ") bis spätestens 2050. 3. Geopolitische Ressourcenkonflikte des 21. Jahrhunderts: - 1. Wasserstress und Hydropolitik am Nil:   * Äthiopien baute den GERD (Grand Ethiopian Renaissance Dam) am Blauen Nil zur Stromerzeugung.   * Ägypten ("
+            },
+            {
+              "type": "math",
+              "tex": "97\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " des Trinkwassers hängen vom Nil ab) fürchtet bei Dürren katastrophale Wassereinbußen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Hochbrisantes militärisches Konfliktpotential im Horn von Afrika. - 2. Die Rohstoff-Geopolitik der Dekarbonisierung:   * Der globale Wandel hin zu Photovoltaik, Windkraft und Elektromobilität beendet zwar die Abhängigkeit von Ölmonopolen (OPEC), schafft jedoch neue kritische Abhängigkeiten:     - Lithium: Konzentriert im südamerikanischen 'Lithium-Dreieck' (Salare in Bolivien/Chile/Argentinien) unter enormem Grundwasserverbrauch.     - Kobalt: Über "
+            },
+            {
+              "type": "math",
+              "tex": "70\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " der Weltförderung stammen aus der politisch instabilen DR Kongo (teils unter menschenunwürdigen Bedingungen im Kleinbergbau).     - Seltene Erden (Neodym, Dysprosium für Windturbinen-Magnete): Werden zu über "
+            },
+            {
+              "type": "math",
+              "tex": "60\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " in China gefördert und zu "
+            },
+            {
+              "type": "math",
+              "tex": "90\\,\\%"
+            },
+            {
+              "type": "text",
+              "text": " in China verarbeitet "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Geopolitisches Erpressungspotenzial bei Handelskriegen."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

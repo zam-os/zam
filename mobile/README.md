@@ -29,6 +29,10 @@ not as the entrance.
 - **Multiple devices**: move the whole library onto a Turso database from
   Settings. The local copy stays as a backup.
 - **Statistics**, daily reminders, de/en.
+- **Knowledge atlas** on the Fortschritt tab: the Studio's outline of one
+  lens, with each region's condition in words and the learner's own due
+  counts. It only reads; *Wiederholen* reviews a region's due cards in the
+  usual session.
 
 Not on the device: the OKF reader, the Observer, agent connect, workspaces,
 and the knowledge graph. Those stay desktop.
@@ -48,6 +52,9 @@ and the knowledge graph. Those stay desktop.
   server database (`upgrade.ts`).
 - `src/ai/` — cloud model connect and embeddings.
 - `src/library.ts` — the learner's own cards: search, edit, pause, delete.
+- `src/atlas.ts` — the knowledge atlas outline, on the kernel's
+  `readLearnerAtlas` and the Studio's `desktop/src/atlas/` layout and
+  outline.
 - `src/curriculum.ts` — browser-safe catalog navigation, cell-first position
   resolution and the grounded generic-import fallback shared by iOS and
   Android.

@@ -162,6 +162,33 @@ CREATE POLICY learner_user_settings_policy ON user_settings FOR ALL
   USING (user_id = current_learner_id())
   WITH CHECK (user_id = current_learner_id());
 
+-- learner_variants are a learner's own choice of method (ADR 2026-10-13
+-- Decision 12), with the cards it detached — personal, same policy as cards.
+ALTER TABLE learner_variants ENABLE ROW LEVEL SECURITY;
+ALTER TABLE learner_variants FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_variants_policy ON learner_variants;
+CREATE POLICY learner_variants_policy ON learner_variants FOR ALL
+  USING (user_id = current_learner_id())
+  WITH CHECK (user_id = current_learner_id());
+
+-- learner_emblems are a learner's own Sinnbilder (ADR 2026-10-13 Decision 6),
+-- seen only by them — personal, same policy as user_settings.
+ALTER TABLE learner_emblems ENABLE ROW LEVEL SECURITY;
+ALTER TABLE learner_emblems FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_emblems_policy ON learner_emblems;
+CREATE POLICY learner_emblems_policy ON learner_emblems FOR ALL
+  USING (user_id = current_learner_id())
+  WITH CHECK (user_id = current_learner_id());
+
+-- learner_connections are a learner's own red threads (ADR 2026-10-13
+-- Decision 7), seen only by them — personal, same policy as learner_emblems.
+ALTER TABLE learner_connections ENABLE ROW LEVEL SECURITY;
+ALTER TABLE learner_connections FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_connections_policy ON learner_connections;
+CREATE POLICY learner_connections_policy ON learner_connections FOR ALL
+  USING (user_id = current_learner_id())
+  WITH CHECK (user_id = current_learner_id());
+
 -- choice_exclusions are a learner's disputes of choice options (ADR
 -- 2026-09-27 Decision 7) — personal, same policy as cards.
 ALTER TABLE choice_exclusions ENABLE ROW LEVEL SECURITY;
@@ -217,6 +244,9 @@ export const RLS_PROTECTED_TABLES = [
   "assignments",
   "user_settings",
   "choice_exclusions",
+  "learner_variants",
+  "learner_emblems",
+  "learner_connections",
 ] as const;
 
 /**

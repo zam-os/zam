@@ -4,6 +4,7 @@ import type {
   AnswerFormat,
   AnswerPresentation,
   BloomLevel,
+  CardText,
   ChoiceEvidence,
   Database,
   InstallChannel,
@@ -21,11 +22,13 @@ import {
   addPrerequisite,
   admitPresentation,
   analyzeObservation,
+  assertPrerequisitePlanets,
   assessPrecondition,
   assignTokenToContext,
   BLOOM_VERBS,
   bonusCandidates,
   buildReviewQueue,
+  cardTextFields,
   clearTokenMaintenance,
   closeSessionObservation,
   createAssignment,
@@ -73,29 +76,39 @@ import {
   listTokens,
   monitorLogExists,
   needsGenericCurriculumImport,
+  newTokenEditorialState,
+  nextPracticeCard,
   OBSERVER_POLICY_UNSET_HINT,
   pairCommands,
   parseReviewFastCheck,
+  parseStoredCardText,
   prepareSessionSynthesis,
   presentFastCheck,
   publishTokenRevision,
   publishTokenRevisionInTransaction,
   pullForwardCards,
+  readCardTextInput,
   readMonitorLog,
+  readUpForTokens,
   recordAssistedStep,
   removePrerequisite,
   resetCardsForToken,
   resolveAnswerPresentation,
+  resolveEmblem,
   SCREEN_OBSERVATION_OFF_REASON,
   searchTokensHybrid,
   setTokenMaintenance,
+  spokenProjection,
   startLibraryTopic,
   structuralPublicationChecks,
   sweepObservationFiles,
+  unitKeyFor,
   updateCard,
   updateToken,
+  validateCardText,
   verifySnapshot,
   withdrawAssignment,
+  writeCardText,
 } from "../kernel/index.js";
 import { resolveOperationKnowledgeContexts } from "./knowledge-contexts.js";
 import { ensureHighQualityQuestion } from "./llm/client.js";
@@ -207,6 +220,14 @@ export interface GetReviewParams {
   roots?: readonly string[];
   noDynamicQuestion?: boolean;
   knowledgeContext?: string;
+  /** Only these tokens' due cards, no new ones: a region review (ADR 2026-10-13). */
+  tokenIds?: readonly string[];
+  /**
+   * With `tokenIds`: going through them again although nothing is due. When
+   * no card is due, the next practised card not answered since this moment
+   * is pulled forward, one at a time.
+   */
+  practiceSince?: Date;
   /**
    * Inline the card's media as base64. Opt-in because a rendering surface
    * (Studio) needs the bytes, while an agent reading this JSON would only get
@@ -218,13 +239,26 @@ export interface GetReviewParams {
 
 export async function getReview(db: Database, params: GetReviewParams) {
   const userId = await resolveHandlerUser(db, params.user);
-  const queue = await buildReviewQueue(db, {
-    userId,
-    maxReviews: 1,
-    maxNew: params.maxNew ?? 1,
-    knowledgeContext: params.knowledgeContext || undefined,
-    timeZone: params.timeZone,
-  });
+  const nextQueue = () =>
+    buildReviewQueue(db, {
+      userId,
+      maxReviews: 1,
+      maxNew: params.tokenIds ? 0 : (params.maxNew ?? 1),
+      knowledgeContext: params.knowledgeContext || undefined,
+      timeZone: params.timeZone,
+      tokenIds: params.tokenIds,
+    });
+  let queue = await nextQueue();
+  if (!queue.items[0] && params.tokenIds && params.practiceSince) {
+    const cardId = await nextPracticeCard(db, userId, params.tokenIds, {
+      since: params.practiceSince,
+      timeZone: params.timeZone,
+    });
+    if (cardId) {
+      await pullForwardCards(db, userId, [cardId]);
+      queue = await nextQueue();
+    }
+  }
   const item = queue.items[0];
 
   if (!item) {
@@ -254,13 +288,18 @@ export async function getReview(db: Database, params: GetReviewParams) {
           entry.data.byteLength,
         ).toString("base64"),
         occlusions: entry.occlusions,
+        placement: entry.placement,
       }));
   const isLlmEnabled = (await getSetting(db, "llm.enabled")) === "true";
 
   let resolvedQuestion = item.question;
+  let resolvedSegments = item.questionSegments;
   let questionSource: "llm" | "original" = "original";
   let questionModel: string | undefined;
 
+  // A question with formulas is varied through placeholders: the model
+  // rewords the text, and the stored formulas are spliced back (ADR
+  // 2026-10-14b, Decision 6).
   if (
     isLlmEnabled &&
     params.noDynamicQuestion !== true &&
@@ -275,9 +314,11 @@ export async function getReview(db: Database, params: GetReviewParams) {
         bloomLevel: item.bloomLevel as BloomLevel,
         sourceLink: item.sourceLink,
         question: item.question,
+        questionSegments: item.questionSegments,
       });
-      if (healed) {
+      if (healed && (healed.segments || item.questionSegments === null)) {
         resolvedQuestion = healed.question;
+        resolvedSegments = healed.segments ?? null;
         questionSource = healed.source;
         questionModel = healed.model;
       }
@@ -310,20 +351,49 @@ export async function getReview(db: Database, params: GetReviewParams) {
 
   const fullQueue = await buildReviewQueue(db, {
     userId,
-    maxNew: params.maxNew,
+    maxNew: params.tokenIds ? 0 : params.maxNew,
     knowledgeContext: params.knowledgeContext || undefined,
     timeZone: params.timeZone,
+    tokenIds: params.tokenIds,
   });
+
+  // The unit's Sinnbild (ADR 2026-10-13, Decision 6), for a rendering
+  // surface only, like the media: an image, never markup.
+  const emblem = params.includeMedia
+    ? await resolveEmblem(
+        db,
+        unitKeyFor(item.tokenId, item.atomId),
+        userId,
+      ).catch(() => null)
+    : null;
+  // Reading up on a world unit (ADR 2026-10-14, Decision 4), beside the
+  // revealed answer. Firma and Privat units get none.
+  const readUp = params.includeMedia
+    ? ((await readUpForTokens(db, [item.tokenId]).catch(() => null))?.get(
+        item.tokenId,
+      ) ?? null)
+    : null;
 
   return {
     userId,
     hasReview: true,
-    card: { ...item, media },
+    card: {
+      ...item,
+      ...(resolvedSegments !== item.questionSegments && resolvedSegments
+        ? {
+            questionSegments: resolvedSegments,
+            spokenQuestion: spokenProjection(resolvedSegments),
+          }
+        : {}),
+      media,
+    },
     prompt,
     questionSource,
     questionModel: questionModel ?? null,
     resolvedContext,
     queueSize: fullQueue.items.length,
+    emblem,
+    readUp,
   };
 }
 
@@ -362,6 +432,11 @@ export interface GetReviewsBatchParams {
   /** Optional session-local new-card override when workload rules are used. */
   maxNew?: number;
   timeZone?: string;
+  /**
+   * Only these tokens: an atlas region's due cards (ADR 2026-10-13,
+   * Decision 10). Uses the workload queue with no new cards.
+   */
+  tokenIds?: readonly string[];
 }
 
 export async function getReviewsBatch(
@@ -369,49 +444,51 @@ export async function getReviewsBatch(
   params: GetReviewsBatchParams,
 ) {
   const userId = await resolveHandlerUser(db, params.user);
-  const sourceCards = params.respectWorkload
-    ? (
-        await buildReviewQueue(db, {
-          userId,
-          domain: params.domain,
-          knowledgeContext: params.knowledgeContext,
-          maxNew: params.maxNew,
-          timeZone: params.timeZone,
-        })
-      ).items.map((item) => ({
-        cardId: item.cardId,
-        tokenId: item.tokenId,
-        slug: item.slug,
-        concept: item.concept,
-        domain: item.domain,
-        bloomLevel: item.bloomLevel,
-        state: item.state,
-        dueAt: item.dueAt,
-        atomId: item.atomId,
-        tier: item.tier,
-        fastCheck: item.fastCheck,
-      }))
-    : (
-        await getDueCards(
-          db,
-          userId,
-          undefined,
-          params.domain,
-          params.knowledgeContext,
-        )
-      ).map((card) => ({
-        cardId: card.id,
-        tokenId: card.token_id,
-        slug: card.slug,
-        concept: card.concept,
-        domain: card.domain,
-        bloomLevel: card.bloom_level,
-        state: card.state,
-        dueAt: card.due_at,
-        atomId: null,
-        tier: null,
-        fastCheck: null,
-      }));
+  const sourceCards =
+    params.respectWorkload || params.tokenIds
+      ? (
+          await buildReviewQueue(db, {
+            userId,
+            domain: params.domain,
+            knowledgeContext: params.knowledgeContext,
+            maxNew: params.tokenIds ? 0 : params.maxNew,
+            tokenIds: params.tokenIds,
+            timeZone: params.timeZone,
+          })
+        ).items.map((item) => ({
+          cardId: item.cardId,
+          tokenId: item.tokenId,
+          slug: item.slug,
+          concept: item.concept,
+          domain: item.domain,
+          bloomLevel: item.bloomLevel,
+          state: item.state,
+          dueAt: item.dueAt,
+          atomId: item.atomId,
+          tier: item.tier,
+          fastCheck: item.fastCheck,
+        }))
+      : (
+          await getDueCards(
+            db,
+            userId,
+            undefined,
+            params.domain,
+            params.knowledgeContext,
+          )
+        ).map((card) => ({
+          cardId: card.id,
+          tokenId: card.token_id,
+          slug: card.slug,
+          concept: card.concept,
+          domain: card.domain,
+          bloomLevel: card.bloom_level,
+          state: card.state,
+          dueAt: card.due_at,
+          atomId: null,
+          tier: null,
+          fastCheck: null,
+        }));
 
   const isLlmEnabled = (await getSetting(db, "llm.enabled")) === "true";
 
@@ -451,7 +528,8 @@ export async function getReviewsBatch(
       if (
         isLlmEnabled &&
         params.noDynamicQuestion !== true &&
-        fastCheck === null
+        fastCheck === null &&
+        !token.question_segments
       ) {
         try {
           const healed = await ensureHighQualityQuestion(db, {
@@ -510,6 +588,9 @@ export async function getReviewsBatch(
         atomId: token.atom_id ?? null,
         tier: token.tier ?? null,
         fastCheck,
+        // Card text as segments (ADR 2026-10-14b); a rendering surface
+        // shows these, an agent reads the plain `question`/`concept`.
+        ...cardTextFields(token.question_segments, token.concept_segments),
       });
     } else {
       cards.push({
@@ -558,6 +639,13 @@ export interface SubmitReviewParams {
   /** What a choice showed and what was picked (with `answerFormat: choice`). */
   choiceEvidence?: ChoiceEvidence;
 }
+
+/** A whole rating from 1 to 4; an agent's 2.5 or "3" is not one. */
+const isRating = (value: unknown): value is Rating =>
+  typeof value === "number" &&
+  Number.isInteger(value) &&
+  value >= 1 &&
+  value <= 4;
 
 export async function submitReview(db: Database, params: SubmitReviewParams) {
   const userId = await resolveHandlerUser(db, params.user);
@@ -641,7 +729,7 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
     };
   }
 
-  if (params.rating == null || params.rating < 1 || params.rating > 4) {
+  if (!isRating(params.rating)) {
     throw new Error("Rating must be between 1 and 4");
   }
   if (
@@ -795,10 +883,7 @@ export async function reviewAction(db: Database, params: ReviewActionParams) {
     };
   }
 
-  if (
-    action === "rate" &&
-    (params.rating == null || params.rating < 1 || params.rating > 4)
-  ) {
+  if (action === "rate" && !isRating(params.rating)) {
     throw new Error("Rating must be between 1 and 4 for action=rate");
   }
 
@@ -856,7 +941,16 @@ export async function reviewAction(db: Database, params: ReviewActionParams) {
 export interface AddTokenParams {
   user?: string;
   slug: string;
-  concept: string;
+  /** Plain reference answer; give it or `conceptSegments`. */
+  concept?: string;
+  /**
+   * The answer as card-text segments when it holds a formula (ADR
+   * 2026-10-14b, Decision 6): `{type:"text",text}` and
+   * `{type:"math",tex,speech}`. Wins over `concept`.
+   */
+  conceptSegments?: unknown;
+  /** The question as segments; wins over `question`. */
+  questionSegments?: unknown;
   title?: string;
   domain?: string;
   bloomLevel?: number;
@@ -869,9 +963,53 @@ export interface AddTokenParams {
   prerequisites?: string[];
 }
 
+/**
+ * An agent's question or answer (ADR 2026-10-14b, Decision 6): its segments
+ * when given, else its plain string, read with the agent's temperament.
+ * `$…$` in a string is lifted and Markdown emphasis dropped; a refused
+ * formula, or a formula without speech, is an error that names it, so the
+ * agent can retry.
+ */
+export function agentCardText(
+  field: string,
+  segments: unknown,
+  plain: string | null | undefined,
+): { plain: string; segments: CardText | null } | null {
+  const given = segments !== undefined && segments !== null;
+  const value = given ? segments : plain;
+  if (value === undefined || value === null) return null;
+  const name = given ? `${field}Segments` : field;
+  const result = readCardTextInput(value, "agent");
+  if (!result.ok) {
+    throw new Error(
+      `${name}: ${result.issues.map((issue) => issue.message).join(" ")}`,
+    );
+  }
+  const { segments: read } = result.value;
+  if (read) {
+    const missing = validateCardText(read, { requireSpeech: true });
+    if (missing.length > 0) {
+      throw new Error(
+        `${name}: ${missing.map((issue) => issue.message).join(" ")} Send the ${field} as ${field}Segments, each formula with its speech.`,
+      );
+    }
+  }
+  return { plain: result.value.plain, segments: read };
+}
+
 export async function addToken(db: Database, params: AddTokenParams) {
   const userId = await resolveHandlerUser(db, params.user);
-  if (!params.slug.trim() || !params.concept.trim()) {
+  const concept = agentCardText(
+    "concept",
+    params.conceptSegments,
+    params.concept,
+  );
+  const question = agentCardText(
+    "question",
+    params.questionSegments,
+    params.question,
+  );
+  if (!params.slug.trim() || !concept) {
     throw new Error("slug and concept must be non-empty");
   }
   if (
@@ -884,8 +1022,8 @@ export async function addToken(db: Database, params: AddTokenParams) {
   }
 
   const possibleDuplicates = await findPossibleDuplicates(db, {
-    concept: params.concept,
-    question: params.question ?? null,
+    concept: concept.plain,
+    question: question?.plain ?? null,
     domain: params.domain,
     title: params.title ?? null,
   });
@@ -908,31 +1046,39 @@ export async function addToken(db: Database, params: AddTokenParams) {
     prerequisites.push(prerequisite);
   }
 
-  const token = await createToken(db, {
-    slug: params.slug,
-    title: params.title,
-    concept: params.concept,
-    domain: params.domain,
-    bloom_level: (params.bloomLevel ?? 1) as BloomLevel,
-    context: params.context,
-    symbiosis_mode: params.symbiosisMode,
-    source_link: params.sourceLink ?? null,
-    question: params.question ?? null,
-    // Bridge/MCP callers are agents: their questions are LLM-authored and
-    // stay refreshable. Humans author questions via the token CLI instead.
-    question_source: params.question ? "llm" : undefined,
-    editorial_state: "draft",
+  // Learnable at once, unless the library wants drafts first.
+  const editorialState = await newTokenEditorialState(db);
+  // One write: a prerequisite the planets refuse leaves no token behind.
+  const { token, card } = await db.transaction(async (tx) => {
+    const token = await createToken(tx, {
+      slug: params.slug,
+      title: params.title,
+      concept: concept.plain,
+      concept_segments: concept.segments,
+      domain: params.domain,
+      bloom_level: (params.bloomLevel ?? 1) as BloomLevel,
+      context: params.context,
+      symbiosis_mode: params.symbiosisMode,
+      source_link: params.sourceLink ?? null,
+      question: question?.plain ?? null,
+      question_segments: question?.segments ?? null,
+      // Bridge/MCP callers are agents: their questions are LLM-authored and
+      // stay refreshable. Humans author questions via the token CLI instead.
+      question_source: question ? "llm" : undefined,
+      editorial_state: editorialState,
+    });
+
+    for (const context of assignedContexts) {
+      await assignTokenToContext(tx, token.id, context.id);
+    }
+
+    for (const prerequisite of prerequisites) {
+      await assertPrerequisitePlanets(tx, token.id, prerequisite.id);
+      await addPrerequisite(tx, token.id, prerequisite.id);
+    }
+
+    return { token, card: await ensureCard(tx, token.id, userId) };
   });
-
-  for (const context of assignedContexts) {
-    await assignTokenToContext(db, token.id, context.id);
-  }
-
-  for (const prerequisite of prerequisites) {
-    await addPrerequisite(db, token.id, prerequisite.id);
-  }
-
-  const card = await ensureCard(db, token.id, userId);
 
   try {
     await ensureTokenEmbeddings(db, { limit: 8 });
@@ -968,7 +1114,11 @@ export async function addToken(db: Database, params: AddTokenParams) {
 export interface ImportOkfTokenInput {
   slug: string;
   title?: string;
-  concept: string;
+  /** Plain reference answer; give it or `conceptSegments`. */
+  concept?: string;
+  /** Card text as segments (ADR 2026-10-14b); wins over the plain field. */
+  conceptSegments?: unknown;
+  questionSegments?: unknown;
   bloomLevel?: number;
   domain?: string;
   /** Heading anchor within the article; appended to the source link. */
@@ -1006,11 +1156,30 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
     throw new Error("tokens must be a non-empty array");
   }
   const seen = new Set<string>();
+  // Card text first: a formula without speech names its token and segment.
+  const texts = new Map<
+    string,
+    {
+      concept: { plain: string; segments: CardText | null };
+      question: { plain: string; segments: CardText | null } | null;
+    }
+  >();
   for (const input of params.tokens) {
     const slug = input.slug?.trim();
-    if (!slug || !input.concept?.trim()) {
+    const concept = slug
+      ? agentCardText(`${slug}: concept`, input.conceptSegments, input.concept)
+      : null;
+    if (!slug || !concept) {
       throw new Error("every token needs a non-empty slug and concept");
     }
+    texts.set(input.slug, {
+      concept,
+      question: agentCardText(
+        `${slug}: question`,
+        input.questionSegments,
+        input.question,
+      ),
+    });
     if (seen.has(slug)) throw new Error(`duplicate token slug: ${slug}`);
     seen.add(slug);
     if (
@@ -1065,6 +1234,8 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
     for (const input of params.tokens) {
       const mode = input.mode ?? "new";
       const existing = await getTokenBySlug(tx, input.slug);
+      const text = texts.get(input.slug);
+      if (!text) throw new Error(`token text missing: ${input.slug}`);
 
       if (mode === "new") {
         if (existing) {
@@ -1077,20 +1248,22 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
         const readyToPublish =
           structuralPublicationChecks({
             slug: input.slug,
-            concept: input.concept,
-            question: input.question ?? null,
+            concept: text.concept.plain,
+            question: text.question?.plain ?? null,
             domain: input.domain,
             requireQuestion: true,
           }).filter((check) => check.blocking).length === 0;
         const token = await createToken(tx, {
           slug: input.slug,
           title: input.title,
-          concept: input.concept,
+          concept: text.concept.plain,
+          concept_segments: text.concept.segments,
           domain: input.domain,
           bloom_level: (input.bloomLevel ?? 1) as BloomLevel,
           source_link: sourceLinkFor(input.anchor),
-          question: input.question ?? null,
-          question_source: input.question ? "llm" : undefined,
+          question: text.question?.plain ?? null,
+          question_segments: text.question?.segments ?? null,
+          question_source: text.question ? "llm" : undefined,
           editorial_state: readyToPublish ? "published" : "draft",
         });
         inImport.set(input.slug, token);
@@ -1102,20 +1275,48 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
             `Token '${input.slug}' does not exist — mode "${mode}" requires an existing token.`,
           );
         }
+        // Segmented text goes through writeCardText; plain text through
+        // updateToken, which refuses to drift from stored segments.
         const updates: UpdateTokenInput = {
-          concept: input.concept,
           source_link: sourceLinkFor(input.anchor),
         };
+        if (!text.concept.segments) updates.concept = text.concept.plain;
         if (input.title !== undefined) updates.title = input.title;
         if (input.domain !== undefined) updates.domain = input.domain;
         if (input.bloomLevel !== undefined) {
           updates.bloom_level = input.bloomLevel as BloomLevel;
         }
-        if (input.question !== undefined) {
-          updates.question = input.question;
-          updates.question_source = input.question ? "llm" : undefined;
+        if (input.question !== undefined || input.questionSegments) {
+          if (!text.question?.segments) {
+            updates.question = text.question?.plain ?? null;
+          }
+          updates.question_source = text.question ? "llm" : undefined;
+        }
+        // Plain text for a field that had segments: the import's text is
+        // authoritative, so the segments go first.
+        const plainAgain = {
+          ...(!text.concept.segments && existing.concept_segments
+            ? { concept: null }
+            : {}),
+          ...(updates.question !== undefined && existing.question_segments
+            ? { question: null }
+            : {}),
+        };
+        if (Object.keys(plainAgain).length > 0) {
+          await writeCardText(tx, existing.id, plainAgain);
         }
         let token = await updateToken(tx, input.slug, updates);
+        if (text.concept.segments || text.question?.segments) {
+          await writeCardText(tx, token.id, {
+            ...(text.concept.segments
+              ? { concept: text.concept.segments }
+              : {}),
+            ...(text.question?.segments
+              ? { question: text.question.segments }
+              : {}),
+          });
+          token = (await getTokenBySlug(tx, input.slug)) ?? token;
+        }
         // An explicit update/replace re-confirms the source binding.
         if (existing.maintenance_at) {
           await clearTokenMaintenance(tx, input.slug);
@@ -1491,6 +1692,8 @@ export async function linkPrereq(db: Database, params: LinkPrereqParams) {
     throw new Error(`Prerequisite token not found: ${params.requires}`);
   }
 
+  // World knowledge never depends on a Firma or Privat unit (ADR 2026-10-13).
+  await assertPrerequisitePlanets(db, token.id, requires.id);
   await addPrerequisite(db, token.id, requires.id);
 
   let blockedCardId: string | undefined;
@@ -1800,7 +2003,75 @@ export interface PublishRevisionParams {
     domain?: string;
     bloomLevel?: number;
     sourceLink?: string | null;
+    /** The term to read a world unit up by (ADR 2026-10-14, Decision 4). */
+    lookupTerm?: string | null;
+    /**
+     * Card text as segments (ADR 2026-10-14b); `null` makes the field plain
+     * again. Validated here, with the kernel's message for a refused one.
+     */
+    questionSegments?: unknown;
+    conceptSegments?: unknown;
   };
+}
+
+/**
+ * The Studio editor's card text (ADR 2026-10-14b, Decision 9): segments for
+ * a field with formulas, `null` to make a field plain again. Runs in the
+ * caller's transaction, around its plain `updateToken`:
+ *
+ * - `before` clears the segments of fields turned plain, so the plain write
+ *   that follows passes the kernel's no-drift guard;
+ * - `after` writes the segments, which also set the plain columns.
+ */
+export function editedCardText(edit: {
+  questionSegments?: unknown;
+  conceptSegments?: unknown;
+}): {
+  /** Plain fields the caller must not write itself. */
+  segmented: { question: boolean; concept: boolean };
+  before(tx: Database, token: Token): Promise<void>;
+  after(tx: Database, tokenId: string): Promise<void>;
+} {
+  const question = revisionSegments("questionSegments", edit.questionSegments);
+  const concept = revisionSegments("conceptSegments", edit.conceptSegments);
+  return {
+    segmented: { question: Boolean(question), concept: Boolean(concept) },
+    async before(tx, token) {
+      const plainAgain = {
+        ...(question === null && token.question_segments
+          ? { question: null }
+          : {}),
+        ...(concept === null && token.concept_segments
+          ? { concept: null }
+          : {}),
+      };
+      if (Object.keys(plainAgain).length > 0) {
+        await writeCardText(tx, token.id, plainAgain);
+      }
+    },
+    async after(tx, tokenId) {
+      if (!question && !concept) return;
+      await writeCardText(tx, tokenId, {
+        ...(question ? { question } : {}),
+        ...(concept ? { concept } : {}),
+      });
+    },
+  };
+}
+
+/** Segments from a caller, checked before anything is written. */
+function revisionSegments(
+  name: string,
+  value: unknown,
+): CardText | null | undefined {
+  if (value === undefined || value === null) return value;
+  const issues = validateCardText(value);
+  if (issues.length > 0) {
+    throw new Error(
+      `${name}: ${issues.map((issue) => issue.message).join(" ")}`,
+    );
+  }
+  return value as CardText;
 }
 
 export async function publishRevision(
@@ -1815,11 +2086,20 @@ export async function publishRevision(
   }
   if (!tokenId) throw new Error("tokenId or slug is required");
 
+  const { questionSegments, conceptSegments, ...plain } = params.changes ?? {};
+  const question = revisionSegments("questionSegments", questionSegments);
+  const concept = revisionSegments("conceptSegments", conceptSegments);
   const result = await publishTokenRevision(db, {
     tokenId,
     materiality: params.materiality,
     publishedBy: params.publishedBy,
-    changes: params.changes,
+    changes: params.changes
+      ? {
+          ...plain,
+          ...(question !== undefined ? { questionSegments: question } : {}),
+          ...(concept !== undefined ? { conceptSegments: concept } : {}),
+        }
+      : undefined,
   });
 
   return {
@@ -1846,6 +2126,9 @@ export async function listDrafts(db: Database, _params: ListDraftsParams = {}) {
     domain: token.domain,
     bloomLevel: token.bloom_level,
     editorialState: token.editorial_state,
+    // Formulas, for the card editor (ADR 2026-10-14b).
+    questionSegments: parseStoredCardText(token.question_segments),
+    conceptSegments: parseStoredCardText(token.concept_segments),
   }));
   return {
     success: true as const,

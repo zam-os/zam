@@ -12,6 +12,16 @@
 import { ulid } from "ulid";
 import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
+import {
+  type CardText,
+  normalizeCardText,
+  plainProjection,
+  validateCardText,
+} from "../library/card-text.js";
+import {
+  CardTextError,
+  parseStoredCardText,
+} from "../library/card-text-store.js";
 import type { Token } from "../models/token.js";
 import { decodeEmbedding } from "../models/token-embedding.js";
 import { cosineSimilarity } from "../search/hybrid.js";
@@ -69,6 +79,8 @@ export interface StoredDistractor {
   model: string | null;
   shownCount: number;
   chosenCount: number;
+  /** The option as card-text segments (ADR 2026-10-14b); `null` if plain. */
+  segments: CardText | null;
 }
 
 interface DistractorRow {
@@ -80,6 +92,7 @@ interface DistractorRow {
   model: string | null;
   shown_count: number;
   chosen_count: number;
+  text_segments?: string | null;
 }
 
 function fromRow(row: DistractorRow): StoredDistractor {
@@ -92,6 +105,7 @@ function fromRow(row: DistractorRow): StoredDistractor {
     model: row.model ?? null,
     shownCount: Number(row.shown_count),
     chosenCount: Number(row.chosen_count),
+    segments: parseStoredCardText(row.text_segments),
   };
 }
 
@@ -104,7 +118,7 @@ export async function listActiveDistractors(
   const rows = (await db
     .prepare(
       `SELECT id, token_id, source, text, reason, model, shown_count,
-              chosen_count
+              chosen_count, text_segments
          FROM choice_distractors
         WHERE token_id = ? AND source_hash = ? AND retired_at IS NULL
         ORDER BY created_at, id`,
@@ -115,6 +129,11 @@ export async function listActiveDistractors(
 
 export interface NewDistractor {
   text: string;
+  /**
+   * The option as card-text segments (ADR 2026-10-14b). When given, the
+   * stored text is their plain projection and `text` is ignored.
+   */
+  segments?: CardText | null;
   reason?: string | null;
   /** What the reject filter answered, kept for audit. */
   filterVerdict?: unknown;
@@ -146,7 +165,13 @@ export async function storeDistractors(
   const created = nowIso();
   let written = 0;
   for (const entry of input.entries) {
-    const text = entry.text.trim();
+    let segments: CardText | null = null;
+    if (entry.segments) {
+      const issues = validateCardText(entry.segments);
+      if (issues.length > 0) throw new CardTextError("option", issues);
+      segments = normalizeCardText(entry.segments);
+    }
+    const text = segments ? plainProjection(segments) : entry.text.trim();
     const key = normalizeOption(text);
     if (!key || seen.has(key)) continue;
     seen.add(key);
@@ -154,8 +179,8 @@ export async function storeDistractors(
       .prepare(
         `INSERT INTO choice_distractors (
            id, token_id, source_hash, source, text, reason, model,
-           filter_model, filter_verdict, created_at
-         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+           filter_model, filter_verdict, created_at, text_segments
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .run(
         ulid(),
@@ -170,6 +195,7 @@ export async function storeDistractors(
           ? null
           : JSON.stringify(entry.filterVerdict),
         created,
+        segments ? JSON.stringify(segments) : null,
       );
     written += 1;
   }
@@ -186,18 +212,55 @@ export async function syncCuratedDistractors(
   entries: readonly NewDistractor[],
 ): Promise<void> {
   const sourceHash = choiceSourceHash(token);
-  const wanted = new Set(entries.map((entry) => normalizeOption(entry.text)));
+  const wanted = new Map<
+    string,
+    { text: string; segments: string | null; reason: string | null }
+  >();
+  for (const entry of entries) {
+    let segments: CardText | null = null;
+    if (entry.segments) {
+      const issues = validateCardText(entry.segments);
+      if (issues.length > 0) throw new CardTextError("option", issues);
+      segments = normalizeCardText(entry.segments);
+    }
+    const text = segments ? plainProjection(segments) : entry.text.trim();
+    wanted.set(normalizeOption(text), {
+      text,
+      segments: segments ? JSON.stringify(segments) : null,
+      reason: entry.reason?.trim() || null,
+    });
+  }
   const rows = (await db
     .prepare(
-      `SELECT id, text FROM choice_distractors
+      `SELECT id, text, text_segments, reason FROM choice_distractors
         WHERE token_id = ? AND source = 'curated'`,
     )
-    .all(token.id)) as Array<{ id: string; text: string }>;
+    .all(token.id)) as Array<{
+    id: string;
+    text: string;
+    text_segments: string | null;
+    reason: string | null;
+  }>;
   for (const row of rows) {
-    if (!wanted.has(normalizeOption(row.text))) {
+    const entry = wanted.get(normalizeOption(row.text));
+    if (!entry) {
       await db
         .prepare("DELETE FROM choice_distractors WHERE id = ?")
         .run(row.id);
+      continue;
+    }
+    // Same option, new presentation (a fixed formula or reading, a
+    // reworded reason): the tile's version replaces it (PR #412 review).
+    if (
+      entry.text !== row.text ||
+      entry.segments !== row.text_segments ||
+      entry.reason !== row.reason
+    ) {
+      await db
+        .prepare(
+          "UPDATE choice_distractors SET text = ?, text_segments = ?, reason = ? WHERE id = ?",
+        )
+        .run(entry.text, entry.segments, entry.reason, row.id);
     }
   }
   await storeDistractors(db, {

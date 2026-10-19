@@ -65,9 +65,492 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das Ruhepotential, die Phasen des Aktionspotentials und die saltatorische Erregungsleitung: 1. **Das Ruhepotential (ca. $-70\\,\\text{mV}$)**:   * **Ionenverteilung**: Außen viel $Na^+$ und $Cl^-$; Innen viel $K^+$ und organische Protein-Anionen ($A^-$).   * **Selektive Permeabilität**: Membran ist im Ruhezustand fast nur für $K^+$ durchlässig ($K^+$-Leckkanäle). Kalium diffundiert entlang des Konzentrationsgefälles nach außen, bis das entstehende negative Membranpotential einen elektrochemischen Gleichgewichtszustand erzwingt (Nernst-Gleichung).   * **$Na^+/K^+$-ATPase**: Transportiert aktiv unter Verbrauch von $1\\text{ ATP}$ $3\\,Na^+$ nach außen und $2\\,K^+$ nach innen (stabilisiert das Konzentrationsgefälle gegen Leckströme), 2. **Phasen des Aktionspotentials (Alles-oder-Nichts-Gesetz)**:   * **1. Reizung & Schwellenwert ($-50\\,\\text{mV}$)**: Wird der Schwellenwert am Axonhügel überschritten, feuert das AP in voller Amplitude (keine Zwischenstufen).   * **2. Depolarisation (Aufstrich)**: Spannungsgesteuerte $Na^+$-Kanäle öffnen sich schlagartig $\\implies$ massiver $Na^+$-Einstrom bis zum **Overshoot (+30 mV)**.   * **3. Repolarisation**: $Na^+$-Kanäle schließen durch Inaktivierungstore; verzögerte spannungsgesteuerte $K^+$-Kanäle öffnen sich $\\implies$ massiver $K^+$-Ausstrom stellt negatives Potential wieder her.   * **4. Hyperpolarisation & Refraktärzeit**: Kurzzeitiges Absinken auf $-80\\,\\text{mV}$. **Refraktärzeit**: $Na^+$-Kanäle sind inaktiviert $\\implies$ Membran ist unerregbar (verhindert Rücklaufen des Signals), 3. **Erregungsleitung am Axon**:   * **Kontinuierlich (marklos)**: Langsam (ca. $1\\,\\frac{\\text{m}}{\\text{s}}$); jeder Membranabschnitt muss depolarisiert werden.   * **Saltatorisch (myelinisiert mit Schwannschen Zellen)**: Extrem schnell (bis zu $120\\,\\frac{\\text{m}}{\\text{s}}$); Aktionspotentiale springen von einem **Ranvierschen Schnürring** zum nächsten.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das Ruhepotential, die Phasen des Aktionspotentials und die saltatorische Erregungsleitung: 1. Das Ruhepotential (ca. "
+            },
+            {
+              "type": "math",
+              "tex": "-70\\,\\text{mV}",
+              "speech": "minus 70 Millivolt"
+            },
+            {
+              "type": "text",
+              "text": "):   * Ionenverteilung: Außen viel "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+",
+              "speech": "N a plus"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "Cl^-",
+              "speech": "C l minus"
+            },
+            {
+              "type": "text",
+              "text": "; Innen viel "
+            },
+            {
+              "type": "math",
+              "tex": "K^+",
+              "speech": "K plus"
+            },
+            {
+              "type": "text",
+              "text": " und organische Protein-Anionen ("
+            },
+            {
+              "type": "math",
+              "tex": "A^-",
+              "speech": "A minus"
+            },
+            {
+              "type": "text",
+              "text": ").   * Selektive Permeabilität: Membran ist im Ruhezustand fast nur für "
+            },
+            {
+              "type": "math",
+              "tex": "K^+",
+              "speech": "K plus"
+            },
+            {
+              "type": "text",
+              "text": " durchlässig ("
+            },
+            {
+              "type": "math",
+              "tex": "K^+",
+              "speech": "K plus"
+            },
+            {
+              "type": "text",
+              "text": "-Leckkanäle). Kalium diffundiert entlang des Konzentrationsgefälles nach außen, bis das entstehende negative Membranpotential einen elektrochemischen Gleichgewichtszustand erzwingt (Nernst-Gleichung).   * "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+/K^+",
+              "speech": "N a plus und K plus"
+            },
+            {
+              "type": "text",
+              "text": "-ATPase: Transportiert aktiv unter Verbrauch von "
+            },
+            {
+              "type": "math",
+              "tex": "1\\text{ ATP}",
+              "speech": "1 A T P"
+            },
+            {
+              "type": "text",
+              "text": " "
+            },
+            {
+              "type": "math",
+              "tex": "3\\,Na^+",
+              "speech": "3 N a plus"
+            },
+            {
+              "type": "text",
+              "text": " nach außen und "
+            },
+            {
+              "type": "math",
+              "tex": "2\\,K^+",
+              "speech": "2 K plus"
+            },
+            {
+              "type": "text",
+              "text": " nach innen (stabilisiert das Konzentrationsgefälle gegen Leckströme), 2. Phasen des Aktionspotentials (Alles-oder-Nichts-Gesetz):   * 1. Reizung & Schwellenwert ("
+            },
+            {
+              "type": "math",
+              "tex": "-50\\,\\text{mV}",
+              "speech": "minus 50 Millivolt"
+            },
+            {
+              "type": "text",
+              "text": "): Wird der Schwellenwert am Axonhügel überschritten, feuert das AP in voller Amplitude (keine Zwischenstufen).   * 2. Depolarisation (Aufstrich): Spannungsgesteuerte "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+",
+              "speech": "N a plus"
+            },
+            {
+              "type": "text",
+              "text": "-Kanäle öffnen sich schlagartig "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " massiver "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+",
+              "speech": "N a plus"
+            },
+            {
+              "type": "text",
+              "text": "-Einstrom bis zum Overshoot (+30 mV).   * 3. Repolarisation: "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+",
+              "speech": "N a plus"
+            },
+            {
+              "type": "text",
+              "text": "-Kanäle schließen durch Inaktivierungstore; verzögerte spannungsgesteuerte "
+            },
+            {
+              "type": "math",
+              "tex": "K^+",
+              "speech": "K plus"
+            },
+            {
+              "type": "text",
+              "text": "-Kanäle öffnen sich "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " massiver "
+            },
+            {
+              "type": "math",
+              "tex": "K^+",
+              "speech": "K plus"
+            },
+            {
+              "type": "text",
+              "text": "-Ausstrom stellt negatives Potential wieder her.   * 4. Hyperpolarisation & Refraktärzeit: Kurzzeitiges Absinken auf "
+            },
+            {
+              "type": "math",
+              "tex": "-80\\,\\text{mV}",
+              "speech": "minus 80 Millivolt"
+            },
+            {
+              "type": "text",
+              "text": ". Refraktärzeit: "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+",
+              "speech": "N a plus"
+            },
+            {
+              "type": "text",
+              "text": "-Kanäle sind inaktiviert "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Membran ist unerregbar (verhindert Rücklaufen des Signals), 3. Erregungsleitung am Axon:   * Kontinuierlich (marklos): Langsam (ca. "
+            },
+            {
+              "type": "math",
+              "tex": "1\\,\\frac{\\text{m}}{\\text{s}}",
+              "speech": "1 Meter pro Sekunde"
+            },
+            {
+              "type": "text",
+              "text": "); jeder Membranabschnitt muss depolarisiert werden.   * Saltatorisch (myelinisiert mit Schwannschen Zellen): Extrem schnell (bis zu "
+            },
+            {
+              "type": "math",
+              "tex": "120\\,\\frac{\\text{m}}{\\text{s}}",
+              "speech": "120 Meter pro Sekunde"
+            },
+            {
+              "type": "text",
+              "text": "); Aktionspotentiale springen von einem Ranvierschen Schnürring zum nächsten."
+            }
+          ],
           "concept": "Neurobiologie: Ruhepotential (-70 mV, K+-Leckkanäle, Na+/K+-Pumpe); Phasen des Aktionspotentials (Schwellenwert -50 mV, Na+-Einstrom Depolarisation +30 mV, K+-Ausstrom Repolarisation, Hyperpolarisation, Refraktärzeit); Saltatorische Erregungsleitung (Ranvier-Schnürringe).",
-          "sample_solution": "1. Die Entstehung des Ruhepotentials (ca. $-70\\,\\text{mV}$): - **Ionenkonzentrationen im und außerhalb des Neurons**:   * **Intrazellulär**: Hohe Konzentration an Kalium-Ionen ($K^+$) und großen, impermeablen organischen Protein-Anionen ($A^-$).   * **Extrazellulär**: Hohe Konzentration an Natrium-Ionen ($Na^+$) und Chlorid-Ionen ($Cl^-$). - **Zustandekommen der Potentialdifferenz**:   * In Ruhe ist die Axonmembran dank offener **$K^+$-Hintergrundkanäle (Leckkanäle)** selektiv für $K^+$-Ionen permeabel.   * $K^+$-Ionen diffundieren entlang ihres steilen Konzentrationsgefälles nach außen. Da die negativ geladenen Protein-Anionen $A^-$ nicht folgen können, lädt sich das Zellinnere negativ gegenüber der Außenseite auf.   * **Elektrochemisches Gleichgewicht**: Der Ausstrom stoppt, wenn die elektrische Anziehungskraft des negativen Zellinneren die osmotische Diffusionskraft exakt kompensiert (Gleichgewichtspotential nach Nernst bei ca. $-70\\,\\text{mV}$). - **Die $Na^+/K^+$-Ionenpumpe**:   * Geringe Mengen $Na^+$ diffundieren ständig passiv ins Innere (*Natriumleckstrom*). Die $Na^+/K^+$-ATPase pumpt unter Spaltung von ATP permanent **$3\\,Na^+$-Ionen nach außen und $2\\,K^+$-Ionen nach innen** $\\implies$ Aufrechterhaltung des lebensnotwendigen Ionengradienten. 2. Der Ablauf des Aktionspotentials (Alles-oder-Nichts-Prinzip): ```mermaid graph LR   A[Ruhepotential -70 mV] -->|Depolarisation| B[Schwellenwert -50 mV]   B -->|Na+-Einstrom| C[Overshoot +30 mV]   C -->|K+-Ausstrom| D[Repolarisation]   D -->|verzögertes K+-Schließen| E[Hyperpolarisation -80 mV]   E -->|Na+/K+-Pumpe & Leckkanäle| A ``` - **1. Depolarisation**: Nach Überschreiten von $-50\\,\\text{mV}$ öffnen sich die schnellen spannungsgesteuerten $Na^+$-Kanäle autokatalytisch $\\implies$ lawinenartiger Einstrom positiver Ladungen bis $+30\\,\\text{mV}$. - **2. Repolarisation**: Nach ca. $1\\,\\text{ms}$ schließen die Inaktivierungstore der $Na^+$-Kanäle. Gleichzeitig öffnen sich die verzögerten spannungsgesteuerten $K^+$-Kanäle $\\implies K^+$-Ausstrom bringt die Membranspannung rasch wieder in den negativen Bereich. - **3. Refraktärphase**:   * **Absolute Refraktärzeit**: Die $Na^+$-Kanäle sind inaktiviert und können durch keinen Reiz der Welt geöffnet werden $\\implies$ **Garantie für die Einbahnstraßen-Leitung des Nervenimpulses**.   * **Relative Refraktärzeit**: Erhöhte Reizschwelle bei regenerierenden Kanälen. 3. Kontinuierliche vs. Saltatorische Erregungsleitung: - **Kontinuierlich (marklose Axone, z. B. bei Tintenfischen oder Eingeweidenerven)**: Jeder einzelne Membranabschnitt muss depolarisiert werden $\\implies$ Geschwindigkeit $v \\sim \\sqrt{\\text{Durchmesser}}$ (langsam: ca. $0{,}5-2\\,\\frac{\\text{m}}{\\text{s}}$). - **Saltatorische Leitung (markhaltige, myelinisierte Axone der Wirbeltiere)**:   * Das Axon ist durch **Myelinscheiden (Schwannsche Zellen / Oligodendrozyten)** elektrisch isoliert. Spannungsabhängige Ionenkanäle sitzen hochkonzentriert nur an den freiliegenden **Ranvierschen Schnürringen** (Abstand ca. 1–2 mm).   * Der Ionenstrom breitet sich im myelinisierten Abschnitt elektrotonisch mit Lichtgeschwindigkeit aus $\\implies$ Das Aktionspotential springt (*saltare = springen*) von Schnürring zu Schnürring $\\implies$ Geschwindigkeiten bis **$120\\,\\frac{\\text{m}}{\\text{s}} = 432\\,\\frac{\\text{km}}{\\text{h}}$** bei minimalem ATP-Verbrauch."
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Die Entstehung des Ruhepotentials (ca. "
+            },
+            {
+              "type": "math",
+              "tex": "-70\\,\\text{mV}"
+            },
+            {
+              "type": "text",
+              "text": "): - Ionenkonzentrationen im und außerhalb des Neurons:   * Intrazellulär: Hohe Konzentration an Kalium-Ionen ("
+            },
+            {
+              "type": "math",
+              "tex": "K^+"
+            },
+            {
+              "type": "text",
+              "text": ") und großen, impermeablen organischen Protein-Anionen ("
+            },
+            {
+              "type": "math",
+              "tex": "A^-"
+            },
+            {
+              "type": "text",
+              "text": ").   * Extrazellulär: Hohe Konzentration an Natrium-Ionen ("
+            },
+            {
+              "type": "math",
+              "tex": "Na^+"
+            },
+            {
+              "type": "text",
+              "text": ") und Chlorid-Ionen ("
+            },
+            {
+              "type": "math",
+              "tex": "Cl^-"
+            },
+            {
+              "type": "text",
+              "text": "). - Zustandekommen der Potentialdifferenz:   * In Ruhe ist die Axonmembran dank offener "
+            },
+            {
+              "type": "math",
+              "tex": "K^+"
+            },
+            {
+              "type": "text",
+              "text": "-Hintergrundkanäle (Leckkanäle) selektiv für "
+            },
+            {
+              "type": "math",
+              "tex": "K^+"
+            },
+            {
+              "type": "text",
+              "text": "-Ionen permeabel.   * "
+            },
+            {
+              "type": "math",
+              "tex": "K^+"
+            },
+            {
+              "type": "text",
+              "text": "-Ionen diffundieren entlang ihres steilen Konzentrationsgefälles nach außen. Da die negativ geladenen Protein-Anionen "
+            },
+            {
+              "type": "math",
+              "tex": "A^-"
+            },
+            {
+              "type": "text",
+              "text": " nicht folgen können, lädt sich das Zellinnere negativ gegenüber der Außenseite auf.   * Elektrochemisches Gleichgewicht: Der Ausstrom stoppt, wenn die elektrische Anziehungskraft des negativen Zellinneren die osmotische Diffusionskraft exakt kompensiert (Gleichgewichtspotential nach Nernst bei ca. "
+            },
+            {
+              "type": "math",
+              "tex": "-70\\,\\text{mV}"
+            },
+            {
+              "type": "text",
+              "text": "). - Die "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+/K^+"
+            },
+            {
+              "type": "text",
+              "text": "-Ionenpumpe:   * Geringe Mengen "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+"
+            },
+            {
+              "type": "text",
+              "text": " diffundieren ständig passiv ins Innere (Natriumleckstrom). Die "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+/K^+"
+            },
+            {
+              "type": "text",
+              "text": "-ATPase pumpt unter Spaltung von ATP permanent "
+            },
+            {
+              "type": "math",
+              "tex": "3\\,Na^+"
+            },
+            {
+              "type": "text",
+              "text": "-Ionen nach außen und "
+            },
+            {
+              "type": "math",
+              "tex": "2\\,K^+"
+            },
+            {
+              "type": "text",
+              "text": "-Ionen nach innen "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Aufrechterhaltung des lebensnotwendigen Ionengradienten. 2. Der Ablauf des Aktionspotentials (Alles-oder-Nichts-Prinzip): ```mermaid graph LR   A[Ruhepotential -70 mV] -->|Depolarisation| B[Schwellenwert -50 mV]   B -->|Na+-Einstrom| C[Overshoot +30 mV]   C -->|K+-Ausstrom| D[Repolarisation]   D -->|verzögertes K+-Schließen| E[Hyperpolarisation -80 mV]   E -->|Na+/K+-Pumpe & Leckkanäle| A ``` - 1. Depolarisation: Nach Überschreiten von "
+            },
+            {
+              "type": "math",
+              "tex": "-50\\,\\text{mV}"
+            },
+            {
+              "type": "text",
+              "text": " öffnen sich die schnellen spannungsgesteuerten "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+"
+            },
+            {
+              "type": "text",
+              "text": "-Kanäle autokatalytisch "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " lawinenartiger Einstrom positiver Ladungen bis "
+            },
+            {
+              "type": "math",
+              "tex": "+30\\,\\text{mV}"
+            },
+            {
+              "type": "text",
+              "text": ". - 2. Repolarisation: Nach ca. "
+            },
+            {
+              "type": "math",
+              "tex": "1\\,\\text{ms}"
+            },
+            {
+              "type": "text",
+              "text": " schließen die Inaktivierungstore der "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+"
+            },
+            {
+              "type": "text",
+              "text": "-Kanäle. Gleichzeitig öffnen sich die verzögerten spannungsgesteuerten "
+            },
+            {
+              "type": "math",
+              "tex": "K^+"
+            },
+            {
+              "type": "text",
+              "text": "-Kanäle "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies K^+"
+            },
+            {
+              "type": "text",
+              "text": "-Ausstrom bringt die Membranspannung rasch wieder in den negativen Bereich. - 3. Refraktärphase:   * Absolute Refraktärzeit: Die "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+"
+            },
+            {
+              "type": "text",
+              "text": "-Kanäle sind inaktiviert und können durch keinen Reiz der Welt geöffnet werden "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Garantie für die Einbahnstraßen-Leitung des Nervenimpulses.   * Relative Refraktärzeit: Erhöhte Reizschwelle bei regenerierenden Kanälen. 3. Kontinuierliche vs. Saltatorische Erregungsleitung: - Kontinuierlich (marklose Axone, z. B. bei Tintenfischen oder Eingeweidenerven): Jeder einzelne Membranabschnitt muss depolarisiert werden "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v \\sim \\sqrt{\\text{Durchmesser}}"
+            },
+            {
+              "type": "text",
+              "text": " (langsam: ca. "
+            },
+            {
+              "type": "math",
+              "tex": "0{,}5-2\\,\\frac{\\text{m}}{\\text{s}}"
+            },
+            {
+              "type": "text",
+              "text": "). - Saltatorische Leitung (markhaltige, myelinisierte Axone der Wirbeltiere):   * Das Axon ist durch Myelinscheiden (Schwannsche Zellen / Oligodendrozyten) elektrisch isoliert. Spannungsabhängige Ionenkanäle sitzen hochkonzentriert nur an den freiliegenden Ranvierschen Schnürringen (Abstand ca. 1–2 mm).   * Der Ionenstrom breitet sich im myelinisierten Abschnitt elektrotonisch mit Lichtgeschwindigkeit aus "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Das Aktionspotential springt (saltare = springen) von Schnürring zu Schnürring "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Geschwindigkeiten bis "
+            },
+            {
+              "type": "math",
+              "tex": "120\\,\\frac{\\text{m}}{\\text{s}} = 432\\,\\frac{\\text{km}}{\\text{h}}"
+            },
+            {
+              "type": "text",
+              "text": " bei minimalem ATP-Verbrauch."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -128,9 +611,274 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Signalübertragung an der chemischen Synapse, neuronale Verrechnung und die Wirkungsweise von Neurotoxinen: 1. **Molekularer Ablauf an einer erregenden cholinergen Synapse**:   * **1. Ankunft des AP**: Depolarisation des präsynaptischen Endknöpfchens $\\implies$ Öffnung spannungsgesteuerter **$\\text{Ca}^{2+}$-Kanäle**.   * **2. Exozytose**: $\\text{Ca}^{2+}$-Einstrom bringt synaptische Vesikel zur Verschmelzung mit der präsynaptischen Membran $\\implies$ Ausschüttung von **Acetylcholin (ACh)** in den synaptischen Spalt (ca. 20 nm).   * **3. Postsynaptische Bindung**: ACh bindet an nikotinische Rezeptoren $\\implies$ Öffnung ligandengesteuerter $Na^+$-Kanäle $\\implies Na^+$-Einstrom erzeugt ein **erregendes postsynaptisches Potential (EPSP)**.   * **4. Inaktivierung**: Das Enzym **Acetylcholinesterase (AChE)** spaltet ACh in Cholin und Acetat $\\implies$ Cholin wird per Transporter wieder präsynaptisch aufgenommen, 2. **Neuronale Verrechnung am Axonhügel**:   * **EPSP (Depolarisation)** vs. **IPSP (Hyperpolarisation durch $Cl^-$-Einstrom)**.   * **Räumliche Summation**: Gleichzeitiges Eintreffen von Signalen an verschiedenen Synapsen desselben Neurons.   * **Zeitliche Summation**: Rasche Folge mehrerer Aktionspotentiale an einer einzelnen Synapse, 3. **Wirkung ausgewählter Neurotoxine / Gifte**:   * **Botulinumtoxin (Botox)**: Zerstört SNARE-Proteine $\\implies$ verhindert ACh-Ausschüttung $\\implies$ schlaffe Lähmung.   * **Curare / $\\alpha$-Bungarotoxin**: Blockiert kompetitiv ACh-Rezeptoren $\\implies$ schlaffe Atemlähmung.   * **Sarin / E605 (Alkylphosphate)**: Hemmt irreversibel die Acetylcholinesterase $\\implies$ Dauerdepolarisation und spastische Krämpfe.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Signalübertragung an der chemischen Synapse, neuronale Verrechnung und die Wirkungsweise von Neurotoxinen: 1. Molekularer Ablauf an einer erregenden cholinergen Synapse:   * 1. Ankunft des AP: Depolarisation des präsynaptischen Endknöpfchens "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Öffnung spannungsgesteuerter "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Ca}^{2+}",
+              "speech": "Calcium zwei plus"
+            },
+            {
+              "type": "text",
+              "text": "-Kanäle.   * 2. Exozytose: "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Ca}^{2+}",
+              "speech": "Calcium zwei plus"
+            },
+            {
+              "type": "text",
+              "text": "-Einstrom bringt synaptische Vesikel zur Verschmelzung mit der präsynaptischen Membran "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Ausschüttung von Acetylcholin (ACh) in den synaptischen Spalt (ca. 20 nm).   * 3. Postsynaptische Bindung: ACh bindet an nikotinische Rezeptoren "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Öffnung ligandengesteuerter "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+",
+              "speech": "N a plus"
+            },
+            {
+              "type": "text",
+              "text": "-Kanäle "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies Na^+",
+              "speech": "daraus folgt N a plus"
+            },
+            {
+              "type": "text",
+              "text": "-Einstrom erzeugt ein erregendes postsynaptisches Potential (EPSP).   * 4. Inaktivierung: Das Enzym Acetylcholinesterase (AChE) spaltet ACh in Cholin und Acetat "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Cholin wird per Transporter wieder präsynaptisch aufgenommen, 2. Neuronale Verrechnung am Axonhügel:   * EPSP (Depolarisation) vs. IPSP (Hyperpolarisation durch "
+            },
+            {
+              "type": "math",
+              "tex": "Cl^-",
+              "speech": "C l minus"
+            },
+            {
+              "type": "text",
+              "text": "-Einstrom).   * Räumliche Summation: Gleichzeitiges Eintreffen von Signalen an verschiedenen Synapsen desselben Neurons.   * Zeitliche Summation: Rasche Folge mehrerer Aktionspotentiale an einer einzelnen Synapse, 3. Wirkung ausgewählter Neurotoxine / Gifte:   * Botulinumtoxin (Botox): Zerstört SNARE-Proteine "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " verhindert ACh-Ausschüttung "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " schlaffe Lähmung.   * Curare / "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha",
+              "speech": "Alpha"
+            },
+            {
+              "type": "text",
+              "text": "-Bungarotoxin: Blockiert kompetitiv ACh-Rezeptoren "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " schlaffe Atemlähmung.   * Sarin / E605 (Alkylphosphate): Hemmt irreversibel die Acetylcholinesterase "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Dauerdepolarisation und spastische Krämpfe."
+            }
+          ],
           "concept": "Synapse: Ca2+-Einstrom, ACh-Exozytose, EPSP vs. IPSP; Acetylcholinesterase; Räumliche & zeitliche Summation am Axonhügel; Neurotoxine (Botox hemmt Ausschüttung, Curare blockiert Rezeptor, Sarin hemmt AChE).",
-          "sample_solution": "1. Der molekulare Übertragungsmechanismus an der chemischen Synapse: - **Schritt 1: Präsynaptische Erregung**:   * Ein ankommendes Aktionspotential depolarisiert das präsynaptische Endknöpfchen. - **Schritt 2: $\\text{Ca}^{2+}$-Einstrom**:   * Spannungsgesteuerte Calciumkanäle öffnen sich. Der Einstrom von $\\text{Ca}^{2+}$-Ionen triggert über SNARE-Proteine die **Exozytose**: Synaptische Vesikel verschmelzen mit der Membran und entleeren Neurotransmitter (z. B. **Acetylcholin [ACh]**) in den synaptischen Spalt (ca. $20\\,\\text{nm}$ breit). - **Schritt 3: Bindung an postsynaptische Rezeptoren**:   * ACh diffundiert über den Spalt und bindet nach dem Schlüssel-Schloss-Prinzip an **ligandengesteuerte Ionenkanäle** der postsynaptischen Membran. - **Schritt 4: Postsynaptisches Signal**:   * Durch Öffnung der Kanäle strömen $Na^+$-Ionen ein $\\implies$ lokale, abgestufte Depolarisation (**EPSP = Erregendes Postsynaptisches Potential**). - **Schritt 5: Signalbeendigung durch enzymatischen Abbau**:   * Das Enzym **Acetylcholinesterase** spaltet ACh in Sekundenbruchteilen in Cholin und Acetat, damit die Kanäle wieder schließen. Cholin wird aktiv in die Präsynapse rückresorbiert und resynthetisiert. 2. Neuronale Verrechnung (Integration) am Axonhügel: - Ein einzelnes Neuron empfängt Signale von bis zu $10.000$ Synapsen:   * **EPSP**: Erregend (Depolarisation durch $Na^+$-Einstrom).   * **IPSP**: Hemmend (Hyperpolarisation durch $Cl^-$-Einstrom oder $K^+$-Ausstrom bei Transmittern wie GABA oder Glycin). - **Summation**:   * **1. Räumliche Summation**: Die EPSPs und IPSPs verschiedener Synapsen laufen auf dem Soma zusammen und addieren sich algebraisch.   * **2. Zeitliche Summation**: Mehrere schnell aufeinanderfolgende Aktionspotentiale derselben Synapse schaukeln das EPSP auf.   * **Entscheidung am Axonhügel**: Übersteigt das summierte Gesamtsignal die Reizschwelle von $-50\\,\\text{mV}$, generiert der Axonhügel neue Aktionspotentiale. 3. Wirkungsorte von Synapsengiften (Neurotoxine): | Gift & Herkunft | Angriffsort & molekularer Mechanismus | Physiologische Folge | | :--- | :--- | :--- | | **Botulinumtoxin (Botox)** (Bakterium *Clostridium botulinum*) | Spaltet SNARE-Proteine der Präsynapse $\\implies$ **verhindert Exozytose der ACh-Vesikel** | Keine Signalübertragung $\\implies$ **schlaffe Muskellähmung** (Atemstillstand / kosmetische Faltenglättung) | | **Curare** (Pfeilgift südamerikanischer Lianen) | Besetzt kompetitiv die Bindungsstelle der ACh-Rezeptoren an der Postsynapse ohne Kanalöffnung | $Na^+$-Einstrom blockiert $\\implies$ **schlaffe Lähmung der Skelettmuskulatur** | | **Nervengase (Sarin, Tabun, E605)** | Hemmen irreversibel das Enzym **Acetylcholinesterase** | ACh wird nicht mehr abgebaut $\\implies$ Dauererregung der Muskeln $\\implies$ **starre, spastische Krämpfe** und Herz-/Atemstillstand |"
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Der molekulare Übertragungsmechanismus an der chemischen Synapse: - Schritt 1: Präsynaptische Erregung:   * Ein ankommendes Aktionspotential depolarisiert das präsynaptische Endknöpfchen. - Schritt 2: "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Ca}^{2+}"
+            },
+            {
+              "type": "text",
+              "text": "-Einstrom:   * Spannungsgesteuerte Calciumkanäle öffnen sich. Der Einstrom von "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Ca}^{2+}"
+            },
+            {
+              "type": "text",
+              "text": "-Ionen triggert über SNARE-Proteine die Exozytose: Synaptische Vesikel verschmelzen mit der Membran und entleeren Neurotransmitter (z. B. Acetylcholin [ACh]) in den synaptischen Spalt (ca. "
+            },
+            {
+              "type": "math",
+              "tex": "20\\,\\text{nm}"
+            },
+            {
+              "type": "text",
+              "text": " breit). - Schritt 3: Bindung an postsynaptische Rezeptoren:   * ACh diffundiert über den Spalt und bindet nach dem Schlüssel-Schloss-Prinzip an ligandengesteuerte Ionenkanäle der postsynaptischen Membran. - Schritt 4: Postsynaptisches Signal:   * Durch Öffnung der Kanäle strömen "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+"
+            },
+            {
+              "type": "text",
+              "text": "-Ionen ein "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " lokale, abgestufte Depolarisation (EPSP = Erregendes Postsynaptisches Potential). - Schritt 5: Signalbeendigung durch enzymatischen Abbau:   * Das Enzym Acetylcholinesterase spaltet ACh in Sekundenbruchteilen in Cholin und Acetat, damit die Kanäle wieder schließen. Cholin wird aktiv in die Präsynapse rückresorbiert und resynthetisiert. 2. Neuronale Verrechnung (Integration) am Axonhügel: - Ein einzelnes Neuron empfängt Signale von bis zu "
+            },
+            {
+              "type": "math",
+              "tex": "10.000"
+            },
+            {
+              "type": "text",
+              "text": " Synapsen:   * EPSP: Erregend (Depolarisation durch "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+"
+            },
+            {
+              "type": "text",
+              "text": "-Einstrom).   * IPSP: Hemmend (Hyperpolarisation durch "
+            },
+            {
+              "type": "math",
+              "tex": "Cl^-"
+            },
+            {
+              "type": "text",
+              "text": "-Einstrom oder "
+            },
+            {
+              "type": "math",
+              "tex": "K^+"
+            },
+            {
+              "type": "text",
+              "text": "-Ausstrom bei Transmittern wie GABA oder Glycin). - Summation:   * 1. Räumliche Summation: Die EPSPs und IPSPs verschiedener Synapsen laufen auf dem Soma zusammen und addieren sich algebraisch.   * 2. Zeitliche Summation: Mehrere schnell aufeinanderfolgende Aktionspotentiale derselben Synapse schaukeln das EPSP auf.   * Entscheidung am Axonhügel: Übersteigt das summierte Gesamtsignal die Reizschwelle von "
+            },
+            {
+              "type": "math",
+              "tex": "-50\\,\\text{mV}"
+            },
+            {
+              "type": "text",
+              "text": ", generiert der Axonhügel neue Aktionspotentiale. 3. Wirkungsorte von Synapsengiften (Neurotoxine): | Gift & Herkunft | Angriffsort & molekularer Mechanismus | Physiologische Folge | | :--- | :--- | :--- | | Botulinumtoxin (Botox) (Bakterium Clostridium botulinum) | Spaltet SNARE-Proteine der Präsynapse "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " verhindert Exozytose der ACh-Vesikel | Keine Signalübertragung "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " schlaffe Muskellähmung (Atemstillstand / kosmetische Faltenglättung) | | Curare (Pfeilgift südamerikanischer Lianen) | Besetzt kompetitiv die Bindungsstelle der ACh-Rezeptoren an der Postsynapse ohne Kanalöffnung | "
+            },
+            {
+              "type": "math",
+              "tex": "Na^+"
+            },
+            {
+              "type": "text",
+              "text": "-Einstrom blockiert "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " schlaffe Lähmung der Skelettmuskulatur | | Nervengase (Sarin, Tabun, E605) | Hemmen irreversibel das Enzym Acetylcholinesterase | ACh wird nicht mehr abgebaut "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " Dauererregung der Muskeln "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " starre, spastische Krämpfe und Herz-/Atemstillstand |"
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

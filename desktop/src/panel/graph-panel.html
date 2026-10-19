@@ -28,19 +28,8 @@
         --dependent: #1e40af;
         --dependent-bg: rgba(30, 64, 175, 0.14);
 
-        /* Bloom badge colors — same 5-step scale as desktop/src/styles.css,
-           plus a translucent "-bg" companion per step (same pairing idiom
-           as --danger/--danger-bg above) for node fills. */
-        --bloom-1: hsl(210, 80%, 60%);
-        --bloom-1-bg: hsl(210, 80%, 60%, 0.16);
-        --bloom-2: hsl(145, 75%, 55%);
-        --bloom-2-bg: hsl(145, 75%, 55%, 0.16);
-        --bloom-3: hsl(45, 90%, 55%);
-        --bloom-3-bg: hsl(45, 90%, 55%, 0.16);
-        --bloom-4: hsl(280, 85%, 65%);
-        --bloom-4-bg: hsl(280, 85%, 65%, 0.16);
-        --bloom-5: hsl(340, 85%, 60%);
-        --bloom-5-bg: hsl(340, 85%, 60%, 0.16);
+        /* Node fills and borders come from the shared knowledge palette
+           (src/kernel/atlas/palette.ts): subject hue and condition. */
 
         /* Aliases so any shared markup built against the richer --clr-*
            palette (desktop/src/styles.css) still resolves here. Defined once;

@@ -16,6 +16,7 @@ import { serializeZamPairPayload } from "../../bridge/mobile-pairing.js";
 import type { DiscussionTurn } from "../../bridge/protocol.js";
 import type {
   BloomLevel,
+  CardText,
   ChoiceEvidence,
   Database,
   EditorialState,
@@ -36,6 +37,7 @@ import {
   BUILT_IN_SENSITIVE_MATCHERS,
   buildReviewQueue,
   type CapabilityFlags,
+  ConnectionError,
   checkCredentials,
   clearProviderApiKey,
   clearTursoCredentials,
@@ -47,10 +49,10 @@ import {
   confirmFoundations,
   confirmSourceImport,
   countUserCardsForCurriculumTopic,
-  createGoal,
   createToken,
   credentialsNeedVaultAccess,
   DEFAULT_VOICE_ENGINE_PREFERENCE,
+  DRAFT_FIRST_SETTING,
   decidePostCapture,
   decidePreCapture,
   deleteCardForUser,
@@ -60,7 +62,6 @@ import {
   emptyCapabilityFlags,
   ensureCard,
   ensureMachineAiModelsMigrated,
-  formatGoalBreakdown,
   generateConceptFreeCue,
   generateTokenSlug,
   getActiveWorkspace,
@@ -93,7 +94,6 @@ import {
   getTokenDeleteImpact,
   getTokenNeighborhood,
   getTursoCredentials,
-  goalTopicCurriculumText,
   hasCommand,
   importCurriculumCards,
   inventoryObservationFiles,
@@ -104,8 +104,10 @@ import {
   isScreenObservationEnabled,
   isStudyLearningMode,
   isStudyWorkloadPreset,
+  isTopicImportSource,
   isVoiceEnginePreference,
   keepLibraryAsPrevious,
+  LensEditError,
   listAgentSkills,
   listKnowledgeContexts,
   listMaterialAreaContext,
@@ -121,16 +123,25 @@ import {
   loadStoredCredentials,
   type ModelCapability,
   type ModelEntry,
+  newTokenEditorialState,
+  normalizeTopicTitle,
   openDatabase,
   openDatabaseWithSync,
   PERSONA_DESCRIPTORS,
+  PlanetError,
   pairCommands,
+  parseStoredCardText,
+  plainProjection,
   postgresVaultAccessPending,
   previewTextImport,
   readMonitorLog,
   readSessionDigest,
   readUiObservationLog,
+  readUpForTokens,
+  reconcileInstalledBundledTiles,
+  recordTopicImport,
   redactCommand,
+  regionTokenIds,
   removeTrustedFolder,
   resolveCredentials,
   resolveLearningContentSelection,
@@ -187,7 +198,38 @@ import {
   resolveHarnessExecutable,
 } from "../agent-harness.js";
 import { AGENT_OFFERS } from "../agent-offers.js";
+import { checkAgentSource } from "../agent-source.js";
 import {
+  atlasConnect,
+  atlasDisconnect,
+  atlasEmblemClear,
+  atlasEmblemDraw,
+  atlasEmblemSet,
+  atlasLensAccept,
+  atlasLensCreate,
+  atlasLensEdit,
+  atlasLensPropose,
+  atlasLensRemove,
+  atlasLensStale,
+  atlasMovePlanet,
+  atlasPlace,
+  atlasPlanetInfo,
+  atlasRead,
+  atlasRevision,
+  atlasSettle,
+  atlasTake,
+  atlasVariant,
+  installScopeCells,
+  libraryLens,
+  materialPlace,
+  placeImportedUnits,
+  placeOnWorldPlanet,
+  setAtlasOwnPlanet,
+  setAtlasPrefs,
+  unplacedTokenIds,
+} from "../atlas.js";
+import {
+  editedCardText,
   addToken as handleAddToken,
   admitReview as handleAdmitReview,
   analyzeMonitor as handleAnalyzeMonitor,
@@ -256,6 +298,7 @@ import {
   leaveTeamLibrary,
   restoreLibrary,
 } from "../db/library-switch.js";
+import { graph3dFeature } from "../graph3d-feature.js";
 import { readTextImportFile } from "../import/text-file.js";
 import { performInstallRepair } from "../install-repair.js";
 import {
@@ -275,10 +318,11 @@ import {
   discussReviewViaLLM,
   ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
+  fixCardTextViaLLM,
   generateChoiceOptionsViaLLM,
   generateFoundationsProposalsViaLLM,
-  generateGoalDecompositionViaLLM,
   generateSplitProposalsViaLLM,
+  generateTopicCardsViaLLM,
   getAvailableModels,
   getCloudModelRecommendation,
   getLlmConfig,
@@ -288,10 +332,13 @@ import {
   inferApiFlavor,
   isLlmOnline,
   type LlmRole,
+  proposeSubtopicsViaLLM,
+  translateQuestionSegmentsViaLLM,
   translateQuestionViaLLM,
 } from "../llm/client.js";
 import { connectCloudProvider } from "../llm/cloud-connect.js";
 import { CLOUD_PROVIDERS } from "../llm/cloud-providers.js";
+import { EmblemDrawError } from "../llm/emblem-draw.js";
 import {
   FOUNDRY_DEFAULT_URL,
   type FoundrySetupRole,
@@ -307,8 +354,10 @@ import {
   getLocalVisionStatus,
 } from "../llm/local-vision.js";
 import {
+  analyzeMaterialText,
   analyzeMaterialViaLLM,
   MaterialAnalyzeError,
+  type MaterialAnalyzeResult,
   materialImportModels,
 } from "../llm/material-analyze.js";
 import {
@@ -330,6 +379,8 @@ import {
   listPendingMaterialImports,
   parseMaterialAreas,
   parseMaterialDecisions,
+  parseMaterialKinds,
+  parseMaterialVariants,
   previewMaterialImportFile,
   reviewMaterialImport,
 } from "../material-import.js";
@@ -485,6 +536,26 @@ function jsonError(message: string): never {
     throw new Error(JSON.stringify({ error: msg }));
   }
   console.log(JSON.stringify({ error: msg }, null, 2));
+  process.exit(1);
+}
+
+/**
+ * A refusal with its code beside the message, `{ error, code }`, so a
+ * surface can explain each one; anything else as `jsonError`.
+ */
+function jsonRefusal(err: unknown): never {
+  if (
+    !(
+      err instanceof ConnectionError ||
+      err instanceof LensEditError ||
+      err instanceof PlanetError
+    )
+  ) {
+    jsonError((err as Error).message);
+  }
+  const body = { error: err.message, code: err.code };
+  if (isServeMode) throw new Error(JSON.stringify(body));
+  console.log(JSON.stringify(body, null, 2));
   process.exit(1);
 }
 
@@ -1118,10 +1189,40 @@ bridgeCommand
     "--media",
     "Inline the card's media as base64 (rendering surfaces only)",
   )
+  .option(
+    "--atlas-region <key>",
+    "Only the due cards of this atlas region and below (no new cards)",
+  )
+  .option(
+    "--atlas-lens <kind>",
+    "Lens of --atlas-region: weltwissen (default), schule, or the library's own planet's (leben, produkte, unternehmen, or a custom lens)",
+  )
+  .option(
+    "--atlas-practice-since <iso>",
+    "With --atlas-region: when nothing is due, pull the next practised card not answered since this time forward",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
         const userId = await resolveUser(opts, db, { json: true });
+        const practiceSince =
+          opts.atlasPracticeSince === undefined
+            ? undefined
+            : new Date(String(opts.atlasPracticeSince));
+        if (practiceSince && Number.isNaN(practiceSince.getTime())) {
+          throw new Error("--atlas-practice-since must be an ISO timestamp.");
+        }
+        if (practiceSince && !opts.atlasRegion) {
+          throw new Error("--atlas-practice-since needs --atlas-region.");
+        }
+        const tokenIds = opts.atlasRegion
+          ? await regionTokenIds(
+              db,
+              await libraryLens(db, opts.atlasLens),
+              String(opts.atlasRegion),
+              userId,
+            )
+          : undefined;
         const result = await handleGetReview(db, {
           user: userId,
           maxNew: opts.maxNew === undefined ? undefined : Number(opts.maxNew),
@@ -1130,6 +1231,8 @@ bridgeCommand
           knowledgeContext: opts.knowledgeContext,
           includeMedia: opts.media === true,
           timeZone: opts.timeZone,
+          tokenIds,
+          practiceSince,
         });
         jsonOut(result);
       } catch (err) {
@@ -1161,10 +1264,26 @@ bridgeCommand
     "--time-zone <iana>",
     "Learner IANA time zone for the local learning day",
   )
+  .option(
+    "--atlas-region <key>",
+    "Only the due cards of this atlas region and below (no new cards)",
+  )
+  .option(
+    "--atlas-lens <kind>",
+    "Lens of --atlas-region: weltwissen (default), schule, or the library's own planet's (leben, produkte, unternehmen, or a custom lens)",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
         const userId = await resolveUser(opts, db, { json: true });
+        const tokenIds = opts.atlasRegion
+          ? await regionTokenIds(
+              db,
+              await libraryLens(db, opts.atlasLens),
+              String(opts.atlasRegion),
+              userId,
+            )
+          : undefined;
         const result = await handleGetReviewsBatch(db, {
           user: userId,
           domain: opts.domain,
@@ -1175,6 +1294,7 @@ bridgeCommand
           noResolve: opts.resolve === false,
           noDynamicQuestion: opts.dynamicQuestion === false,
           timeZone: opts.timeZone,
+          tokenIds,
         });
         jsonOut(result);
       } catch (err) {
@@ -1826,7 +1946,10 @@ bridgeCommand
       let data: {
         slug: string;
         title?: string;
-        concept: string;
+        concept?: string;
+        /** Card text as segments (ADR 2026-10-14b); wins over the string. */
+        concept_segments?: unknown;
+        question_segments?: unknown;
         domain?: string;
         bloom_level?: number;
         context?: string;
@@ -1844,8 +1967,17 @@ bridgeCommand
         jsonError("Invalid JSON input");
       }
 
-      if (!data?.slug || !data?.concept) {
-        jsonError("JSON must include 'slug' and 'concept' fields");
+      if (!data?.slug || !(data?.concept || data?.concept_segments)) {
+        jsonError(
+          "JSON must include 'slug' and 'concept' fields ('concept_segments' may stand in for 'concept')",
+        );
+      }
+      // Agents only come this way: a token needs the source it was read
+      // from (ADR 2026-10-14, Decision 3).
+      try {
+        checkAgentSource(data.source_link);
+      } catch (err) {
+        jsonError((err as Error).message);
       }
 
       await withDb(async (db) => {
@@ -1864,6 +1996,8 @@ bridgeCommand
             slug: data.slug,
             title: data.title,
             concept: data.concept,
+            conceptSegments: data.concept_segments,
+            questionSegments: data.question_segments,
             domain: data.domain,
             bloomLevel: data.bloom_level,
             context: data.context,
@@ -3952,6 +4086,9 @@ const UI_WRITABLE_SETTINGS = new Set([
   "llm.vision.enabled",
   "recall.quick_mode",
   "system.locale",
+  // Off by default: new content is learnable at once. On, it waits as a
+  // draft until it is published (a library's editorial step).
+  "content.draft_first",
 ]);
 
 bridgeCommand
@@ -4119,6 +4256,10 @@ bridgeCommand
   .command("translate-question")
   .description("Translate a question dynamically using the local LLM (JSON)")
   .requiredOption("--question <text>", "Question in English to translate")
+  .option(
+    "--segments <json>",
+    "The question's card-text segments, when it holds formulas (ADR 2026-10-14b)",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const isEnabled = (await getSetting(db, "llm.enabled")) === "true";
@@ -4131,6 +4272,27 @@ bridgeCommand
         return;
       }
       try {
+        if (opts.segments) {
+          // Formulas are held back as placeholders and spliced back in; a
+          // reply that lost one keeps the original question.
+          const stored = parseStoredCardText(opts.segments);
+          if (!stored) jsonError("--segments is not valid card text");
+          const segments = await translateQuestionSegmentsViaLLM(db, stored);
+          jsonOut(
+            segments
+              ? {
+                  success: true,
+                  translation: plainProjection(segments),
+                  segments,
+                }
+              : {
+                  success: false,
+                  error: "The translation lost a formula",
+                  translation: opts.question,
+                },
+          );
+          return;
+        }
         const translation = await translateQuestionViaLLM(db, opts.question);
         jsonOut({ success: true, translation });
       } catch (err) {
@@ -4139,6 +4301,46 @@ bridgeCommand
           error: (err as Error).message,
           translation: opts.question,
         });
+      }
+    });
+  });
+
+// ── zam bridge card-text-fix ───────────────────────────────────────────────
+
+bridgeCommand
+  .command("card-text-fix")
+  .description(
+    "Ask the text model to correct one side of a card as the learner says; writes nothing (JSON, ADR 2026-10-14b D9)",
+  )
+  .requiredOption("--side <side>", "question or answer")
+  .requiredOption(
+    "--instruction <text>",
+    "What should change, in the learner's words",
+  )
+  .option("--segments <json>", "The side as card-text segments")
+  .option("--text <text>", "The side as plain text, when it has no segments")
+  .option("--other <text>", "The other side's plain text, for context")
+  .action(async (opts) => {
+    if (opts.side !== "question" && opts.side !== "answer") {
+      jsonError("--side must be question or answer");
+    }
+    await withDb(async (db) => {
+      let current: CardText | string = opts.text ?? "";
+      if (opts.segments) {
+        const stored = parseStoredCardText(opts.segments);
+        if (!stored) jsonError("--segments is not valid card text");
+        current = stored;
+      }
+      try {
+        const fixed = await fixCardTextViaLLM(db, {
+          side: opts.side,
+          current,
+          instruction: opts.instruction,
+          otherSide: opts.other ?? null,
+        });
+        jsonOut({ success: true, ...fixed });
+      } catch (err) {
+        jsonError((err as Error).message);
       }
     });
   });
@@ -4485,41 +4687,69 @@ bridgeCommand
     });
   });
 
-// ── zam bridge goal-decompose / goal-create ──────────────────────────────────
+// ── zam bridge topic-outline / topic-cards / topic-source (ADR 2026-10-14) ───
+// The topic import: a topic in the learner's words with its context. It
+// writes no file; `topic-source` records the import as one source row.
+
+/** A JSON array of strings from an option, or [] for anything else. */
+function stringArrayOption(raw: string): string[] {
+  const parsed = JSON.parse(raw);
+  return Array.isArray(parsed)
+    ? parsed.filter((item): item is string => typeof item === "string")
+    : [];
+}
 
 bridgeCommand
-  .command("goal-decompose")
+  .command("topic-outline")
   .description(
-    "Propose the next decomposition level of a learning goal via the text " +
-      "LLM (JSON). One level at a time, user-confirmed — never bulk " +
-      "generation (ADR 2026-07-24 §3).",
+    "Propose the next level of subtopics for a topic import via the text " +
+      "LLM (JSON). One level at a time, confirmed by the learner — never " +
+      "bulk generation (ADR 2026-10-14).",
   )
-  .requiredOption("--title <title>", "Goal title")
-  .option("--description <text>", "Why the goal matters to the learner", "")
+  .requiredOption("--title <title>", "The topic, in the learner's words")
+  .option(
+    "--context <text>",
+    "Context, prior knowledge and details from the learner",
+    "",
+  )
   .option(
     "--path <json>",
-    "JSON array of already-confirmed sub-topic labels (drill-down path)",
+    "JSON array of already-kept subtopic labels (drill-down path)",
+    "[]",
+  )
+  .option(
+    "--place <json>",
+    "JSON array of the atlas place's region names, root first",
     "[]",
   )
   .action(
-    async (opts: { title: string; description: string; path: string }) => {
+    async (opts: {
+      title: string;
+      context: string;
+      path: string;
+      place: string;
+    }) => {
       await withDb(async (db) => {
         let path: string[] = [];
+        let place: string[] = [];
         try {
-          const parsed = JSON.parse(opts.path);
-          if (Array.isArray(parsed)) {
-            path = parsed.filter(
-              (item): item is string => typeof item === "string",
-            );
-          }
+          path = stringArrayOption(opts.path);
+          place = stringArrayOption(opts.place);
         } catch {
-          jsonError("Invalid --path JSON");
+          jsonError("Invalid --path or --place JSON");
+        }
+        let title = "";
+        try {
+          title = normalizeTopicTitle(opts.title);
+        } catch (err) {
+          jsonError((err as Error).message);
         }
         try {
-          const options = await generateGoalDecompositionViaLLM(db, {
-            title: opts.title,
-            description: opts.description ?? "",
+          const options = await proposeSubtopicsViaLLM(db, {
+            title,
+            context: opts.context ?? "",
             path,
+            place,
           });
           jsonOut({
             success: true,
@@ -4536,43 +4766,52 @@ bridgeCommand
   );
 
 bridgeCommand
-  .command("goal-topic-cards")
+  .command("topic-cards")
   .description(
-    "Draft card proposals for ONE confirmed goal topic via the text LLM " +
-      "(JSON, preview only). The goal flow asks once per selected topic, so " +
-      "each request stays bounded and a failing topic keeps the others " +
-      "(ADR 2026-07-24 §3).",
+    "Draft card proposals for ONE kept subtopic of a topic import via the " +
+      "text LLM (JSON, preview only). The topic import asks once per kept " +
+      "subtopic, so each request stays bounded and a failing subtopic keeps " +
+      "the others (ADR 2026-10-14).",
   )
-  .requiredOption("--title <title>", "Goal title (also the cards' domain)")
-  .option("--description <text>", "Why the goal matters to the learner", "")
+  .requiredOption("--title <title>", "The topic (also the cards' domain)")
+  .option(
+    "--context <text>",
+    "Context, prior knowledge and details from the learner",
+    "",
+  )
   .option(
     "--path <json>",
-    "JSON array of confirmed drill-down labels above the topic",
+    "JSON array of kept drill-down labels above the subtopic",
     "[]",
   )
-  .requiredOption("--topic <json>", "JSON {label, description} of the topic")
+  .option(
+    "--place <json>",
+    "JSON array of the atlas place's region names, root first",
+    "[]",
+  )
   .requiredOption(
-    "--source <path>",
-    "Goal file every proposal cites as source_link",
+    "--topic <json>",
+    "JSON {label, description, lookupTerm?} of the subtopic",
   )
   .action(
     async (opts: {
       title: string;
-      description: string;
+      context: string;
       path: string;
+      place: string;
       topic: string;
-      source: string;
     }) => {
       await withDb(async (db) => {
         let path: string[] = [];
-        let topic: { label: string; description: string } | null = null;
+        let place: string[] = [];
+        let topic: {
+          label: string;
+          description: string;
+          lookupTerm?: string;
+        } | null = null;
         try {
-          const parsedPath = JSON.parse(opts.path);
-          if (Array.isArray(parsedPath)) {
-            path = parsedPath.filter(
-              (item): item is string => typeof item === "string",
-            );
-          }
+          path = stringArrayOption(opts.path);
+          place = stringArrayOption(opts.place);
           const parsedTopic = JSON.parse(opts.topic);
           if (
             parsedTopic &&
@@ -4582,116 +4821,53 @@ bridgeCommand
             topic = {
               label: parsedTopic.label,
               description: parsedTopic.description,
+              ...(typeof parsedTopic.lookupTerm === "string"
+                ? { lookupTerm: parsedTopic.lookupTerm }
+                : {}),
             };
           }
         } catch {
-          jsonError("Invalid --path or --topic JSON");
+          jsonError("Invalid --path, --place or --topic JSON");
         }
         if (!topic) {
           jsonError("--topic must be a JSON {label, description} object");
         }
 
-        const proposals = await importCurriculumViaLLM(
-          db,
-          goalTopicCurriculumText({
-            title: opts.title,
-            description: opts.description ?? "",
-            path,
-            topic,
-          }),
-          opts.title.trim(),
-          opts.source,
-        );
+        const proposals = await generateTopicCardsViaLLM(db, {
+          title: opts.title,
+          context: opts.context ?? "",
+          path,
+          place,
+          topic,
+        });
         jsonOut({ success: true, proposals });
       });
     },
   );
 
 bridgeCommand
-  .command("goal-create")
+  .command("topic-source")
   .description(
-    "Create a goal markdown file (Lernziel) in the goals directory, with the " +
-      "user-confirmed breakdown recorded in its body (JSON). The file is the " +
-      "source_link every imported card cites (ADR 2026-07-24 §3).",
+    "Record a topic import as one source row, zam-topic:<ULID>, with the " +
+      "topic's title, the date and the learner; nothing else is stored " +
+      "(JSON, ADR 2026-10-14).",
   )
-  .requiredOption("--title <title>", "Goal title")
-  .option("--description <text>", "Why the goal matters to the learner", "")
-  .option(
-    "--path <json>",
-    "JSON array of confirmed drill-down labels above the outline",
-    "[]",
-  )
-  .option(
-    "--outline <json>",
-    "JSON array of {label, description} — the confirmed breakdown",
-    "[]",
-  )
-  .action(
-    async (opts: {
-      title: string;
-      description: string;
-      path: string;
-      outline: string;
-    }) => {
-      await withDb(async (db) => {
-        let path: string[] = [];
-        let outline: Array<{ label: string; description: string }> = [];
-        try {
-          const parsedPath = JSON.parse(opts.path);
-          if (Array.isArray(parsedPath)) {
-            path = parsedPath.filter(
-              (item): item is string => typeof item === "string",
-            );
-          }
-          const parsedOutline = JSON.parse(opts.outline);
-          if (Array.isArray(parsedOutline)) {
-            outline = parsedOutline.filter(
-              (item): item is { label: string; description: string } =>
-                Boolean(item) &&
-                typeof item === "object" &&
-                typeof item.label === "string" &&
-                typeof item.description === "string",
-            );
-          }
-        } catch {
-          jsonError("Invalid --path or --outline JSON");
-        }
-
-        // Same resolution as `zam goal`: the explicit setting wins, else the
-        // active workspace's goals/ directory (regenerable infrastructure).
-        const configuredDir = await getSetting(db, "personal.goals_dir");
-        const activeWorkspace = await ensureActiveWorkspace(db);
-        const goalsDir = configuredDir
-          ? resolve(configuredDir)
-          : join(activeWorkspace.path, "goals");
-        mkdirSync(goalsDir, { recursive: true });
-
-        const base = slugify(opts.title) || "goal";
-        let slug = base;
-        for (let n = 2; existsSync(join(goalsDir, `${slug}.md`)); n++) {
-          slug = `${base}-${n}`;
-        }
-
-        const breakdown = formatGoalBreakdown(path, outline);
-
-        try {
-          const goal = createGoal(goalsDir, {
-            slug,
-            title: opts.title,
-            description: `${opts.description ?? ""}${breakdown}`.trim(),
-          });
-          jsonOut({
-            success: true,
-            slug: goal.slug,
-            title: goal.title,
-            filePath: goal.filePath,
-          });
-        } catch (err) {
-          jsonError((err as Error).message);
-        }
-      });
-    },
-  );
+  .requiredOption("--title <title>", "The topic, in the learner's words")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts: { title: string; user?: string }) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      try {
+        const recorded = await recordTopicImport(db, {
+          title: opts.title,
+          userId,
+        });
+        jsonOut({ success: true, ...recorded });
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
 
 // ── zam bridge embedding-status / embedding-enable ───────────────────────────
 
@@ -4753,6 +4929,10 @@ bridgeCommand
           // Absent means on, matching ensureHighQualityQuestion's `!== "false"`.
           dynamicQuestions:
             (await getSetting(db, "llm.dynamic_questions")) !== "false",
+        },
+        content: {
+          // Off unless switched on: new content is learnable at once.
+          draftFirst: (await getSetting(db, DRAFT_FIRST_SETTING)) === "true",
         },
       });
     });
@@ -6018,11 +6198,14 @@ bridgeCommand
         concept: nt.concept,
         domain: nt.domain,
         bloomLevel: nt.bloom_level,
+        hueKey: nt.hue_key,
+        condition: nt.condition,
         knowledgeContexts: contextMap.get(nt.id) ?? [],
         card: nt.card
           ? {
               state: nt.card.state,
               reps: nt.card.reps,
+              lapses: nt.card.lapses,
               stability: nt.card.stability,
               difficulty: nt.card.difficulty,
               blocked: nt.card.blocked,
@@ -6109,10 +6292,16 @@ bridgeCommand
           contextMap.set(mapping.token_id, contexts);
         }
       }
+      // Reading up on world units (ADR 2026-10-14, Decision 4).
+      const readUps = await readUpForTokens(
+        db,
+        cards.map((card) => card.tokenId),
+      );
       jsonOut({
         cards: cards.map((card) => ({
           ...card,
           knowledgeContexts: contextMap.get(card.tokenId) ?? [],
+          readUp: readUps.get(card.tokenId) ?? null,
         })),
       });
     });
@@ -6214,6 +6403,14 @@ bridgeCommand
     },
     [],
   )
+  .option(
+    "--question-segments <json>",
+    "The question as card-text segments (ADR 2026-10-14b)",
+  )
+  .option(
+    "--concept-segments <json>",
+    "The answer as card-text segments (ADR 2026-10-14b)",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
@@ -6221,6 +6418,15 @@ bridgeCommand
         opts.knowledgeContext || [],
       );
       const contexts = await resolveKnowledgeContexts(db, contextNames);
+      let cardText: ReturnType<typeof editedCardText>;
+      try {
+        cardText = editedCardText({
+          questionSegments: parseSegmentsOption(opts.questionSegments),
+          conceptSegments: parseSegmentsOption(opts.conceptSegments),
+        });
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
 
       const bloom = Number(opts.bloom) as BloomLevel;
       if (bloom < 1 || bloom > 5) {
@@ -6244,25 +6450,38 @@ bridgeCommand
         question = generateConceptFreeCue(bloom, slug, opts.domain);
       }
 
-      const { token, card } = await db.transaction(async (tx) => {
-        const createdToken = await createToken(tx, {
-          slug,
-          title: opts.title,
-          concept: opts.concept,
-          domain: opts.domain,
-          bloom_level: bloom,
-          context: opts.context,
-          symbiosis_mode: mode,
-          source_link: opts.sourceLink || null,
-          question,
-          editorial_state: "draft",
+      let created: {
+        token: Awaited<ReturnType<typeof createToken>>;
+        card: Awaited<ReturnType<typeof ensureCard>>;
+      };
+      try {
+        created = await db.transaction(async (tx) => {
+          const insertedToken = await createToken(tx, {
+            slug,
+            title: opts.title,
+            concept: opts.concept,
+            domain: opts.domain,
+            bloom_level: bloom,
+            context: opts.context,
+            symbiosis_mode: mode,
+            source_link: opts.sourceLink || null,
+            question,
+            editorial_state: await newTokenEditorialState(tx),
+          });
+          // Formulas from the editor: the segments set the plain text.
+          await cardText.after(tx, insertedToken.id);
+          const createdToken =
+            (await getTokenBySlug(tx, insertedToken.slug)) ?? insertedToken;
+          for (const context of contexts) {
+            await assignTokenToContext(tx, createdToken.id, context.id);
+          }
+          const createdCard = await ensureCard(tx, createdToken.id, userId);
+          return { token: createdToken, card: createdCard };
         });
-        for (const context of contexts) {
-          await assignTokenToContext(tx, createdToken.id, context.id);
-        }
-        const createdCard = await ensureCard(tx, createdToken.id, userId);
-        return { token: createdToken, card: createdCard };
-      });
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+      const { token, card } = created;
 
       jsonOut({
         success: true,
@@ -6316,9 +6535,26 @@ bridgeCommand
   )
   .option("--source-link <link>", "Updated source link")
   .option("--question <question>", "Updated question text")
+  .option(
+    "--question-segments <json>",
+    "The question as card-text segments (ADR 2026-10-14b); null makes it plain",
+  )
+  .option(
+    "--concept-segments <json>",
+    "The answer as card-text segments; null makes it plain",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
+      let cardText: ReturnType<typeof editedCardText>;
+      try {
+        cardText = editedCardText({
+          questionSegments: parseSegmentsOption(opts.questionSegments),
+          conceptSegments: parseSegmentsOption(opts.conceptSegments),
+        });
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
       const updates: {
         title?: string;
         concept?: string;
@@ -6331,7 +6567,10 @@ bridgeCommand
       } = {};
 
       if (opts.title !== undefined) updates.title = opts.title;
-      if (opts.concept !== undefined) updates.concept = opts.concept;
+      // A segmented field takes its plain text from its segments.
+      if (opts.concept !== undefined && !cardText.segmented.concept) {
+        updates.concept = opts.concept;
+      }
       if (opts.domain !== undefined) updates.domain = opts.domain;
       if (opts.bloom !== undefined) {
         const bloom = Number(opts.bloom) as BloomLevel;
@@ -6344,7 +6583,7 @@ bridgeCommand
       if (opts.sourceLink !== undefined) {
         updates.source_link = opts.sourceLink === "" ? null : opts.sourceLink;
       }
-      if (opts.question !== undefined) {
+      if (opts.question !== undefined && !cardText.segmented.question) {
         updates.question = opts.question === "" ? null : opts.question;
       }
       if (opts.mode !== undefined) {
@@ -6356,19 +6595,27 @@ bridgeCommand
           opts.mode === "none" ? null : (opts.mode as SymbiosisMode);
       }
 
-      const token = await db.transaction(async (tx) => {
-        const existingToken = await getTokenBySlug(tx, opts.slug);
-        if (!existingToken) {
-          throw new Error(`Token not found: ${opts.slug}`);
-        }
-        const card = await getCard(tx, existingToken.id, userId);
-        if (!card) {
-          throw new Error(
-            `Card not found for token ${opts.slug} and user ${userId}`,
-          );
-        }
-        return updateToken(tx, opts.slug, updates);
-      });
+      let token: Awaited<ReturnType<typeof updateToken>>;
+      try {
+        token = await db.transaction(async (tx) => {
+          const existingToken = await getTokenBySlug(tx, opts.slug);
+          if (!existingToken) {
+            throw new Error(`Token not found: ${opts.slug}`);
+          }
+          const card = await getCard(tx, existingToken.id, userId);
+          if (!card) {
+            throw new Error(
+              `Card not found for token ${opts.slug} and user ${userId}`,
+            );
+          }
+          await cardText.before(tx, existingToken);
+          const updated = await updateToken(tx, opts.slug, updates);
+          await cardText.after(tx, updated.id);
+          return (await getTokenBySlug(tx, opts.slug)) ?? updated;
+        });
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
 
       jsonOut({
         success: true,
@@ -6391,6 +6638,16 @@ bridgeCommand
     });
   });
 
+/** A `--…-segments` option: JSON segments, or `null` for plain text. */
+function parseSegmentsOption(raw: string | undefined): unknown {
+  if (raw === undefined) return undefined;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    throw new Error("card-text segments must be JSON");
+  }
+}
+
 // ── zam bridge personal-card-publish-revision ────────────────────────────────
 
 bridgeCommand
@@ -6411,6 +6668,14 @@ bridgeCommand
   .option("--context <context>", "Updated context")
   .option("--source-link <link>", "Updated source link")
   .option("--question <question>", "Updated question text")
+  .option(
+    "--question-segments <json>",
+    "The question as card-text segments (ADR 2026-10-14b); null makes it plain",
+  )
+  .option(
+    "--concept-segments <json>",
+    "The answer as card-text segments; null makes it plain",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const materiality = opts.materiality as "cosmetic" | "material";
@@ -6427,6 +6692,22 @@ bridgeCommand
       if (opts.sourceLink !== undefined)
         changes.sourceLink = opts.sourceLink === "" ? null : opts.sourceLink;
       if (opts.question !== undefined) changes.question = opts.question;
+      // Segments are validated by the kernel's write path, which names the
+      // segment it refuses.
+      for (const [option, key] of [
+        ["questionSegments", "questionSegments"],
+        ["conceptSegments", "conceptSegments"],
+      ] as const) {
+        const raw = opts[option] as string | undefined;
+        if (raw === undefined) continue;
+        try {
+          changes[key] = JSON.parse(raw);
+        } catch {
+          jsonError(
+            `--${option === "questionSegments" ? "question" : "concept"}-segments is not JSON`,
+          );
+        }
+      }
 
       try {
         const result = await handlePublishRevision(db, {
@@ -6862,8 +7143,15 @@ bridgeCommand
 
         const existingToken = await getTokenBySlug(db, baseSlug);
         if (existingToken) {
+          // The existing token's own text: the proposal's segments do not
+          // describe it.
+          const {
+            question_segments: _question,
+            concept_segments: _concept,
+            ...rest
+          } = prop;
           resolvedProposals.push({
-            ...prop,
+            ...rest,
             exists: true,
             slug: existingToken.slug,
             question: existingToken.question || prop.question,
@@ -7117,6 +7405,14 @@ bridgeCommand
     },
     [],
   )
+  .option(
+    "--place-region <key>",
+    "Put the created units at this atlas region; each proposal's placeBelow names the levels below it",
+  )
+  .option(
+    "--place-lens <kind>",
+    "Lens of --place-region (default weltwissen); the units take its planet",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
@@ -7153,10 +7449,65 @@ bridgeCommand
         }
       }
 
+      // An import started at an atlas region (ADR 2026-10-13, Decision 9):
+      // the units it created go there, each with its proposal's names for
+      // the levels below. A failure to place loses none of the cards.
+      let placed: number | undefined;
+      let placeError: string | undefined;
+      // A retry after a failed placement finds its cards already written:
+      // one that no lens has placed yet goes to the place as well. A linked
+      // duplicate with a place of its own keeps it.
+      const unplaced = await unplacedTokenIds(
+        db,
+        (result.items ?? [])
+          .filter((item) => !item.created)
+          .map((item) => item.tokenId),
+      );
+      const toPlace = (item: { created: boolean; tokenId: string }) =>
+        item.created || unplaced.has(item.tokenId);
+      const created = (result.items ?? [])
+        .filter(toPlace)
+        .map((item) => item.tokenId);
+      if (!opts.placeRegion && (await isTopicImportSource(db, opts.sourceId))) {
+        // A topic import writes world knowledge (ADR 2026-10-14, Decision
+        // 5): without a place its units still land on the world planet.
+        try {
+          placed = await placeOnWorldPlanet(db, created);
+        } catch (err) {
+          placed = 0;
+          placeError = (err as Error).message;
+        }
+      }
+      if (opts.placeRegion) {
+        try {
+          placed = await placeImportedUnits(db, {
+            lens: opts.placeLens,
+            region: String(opts.placeRegion),
+            units: (result.items ?? []).flatMap((item, index) =>
+              toPlace(item)
+                ? [
+                    {
+                      tokenId: item.tokenId,
+                      names: Array.isArray(proposals[index]?.placeBelow)
+                        ? (proposals[index].placeBelow as unknown[]).map(String)
+                        : [],
+                    },
+                  ]
+                : [],
+            ),
+          });
+        } catch (err) {
+          placed = 0;
+          placeError = (err as Error).message;
+        }
+      }
+
       jsonOut({
         success: true,
         createdCount: result.createdCount,
         ensuredCount: result.linkedCount,
+        ...(placed !== undefined ? { placed } : {}),
+        ...(placeError ? { placeError } : {}),
       });
     });
   });
@@ -7219,22 +7570,54 @@ bridgeCommand
 bridgeCommand
   .command("material-import-analyze")
   .description(
-    "Read photos or one PDF with the connected model and stage its proposals for review (JSON)",
+    "Read photos, one PDF or typed notes with the connected model and stage its proposals for review (JSON)",
   )
-  .requiredOption("--file <path...>", "Up to 10 photos, or one PDF")
+  .option("--file <path...>", "Up to 10 photos, or one PDF")
   .option("--pages <range>", "Pages of the PDF to use, e.g. 2-4")
+  .option(
+    "--text <notes>",
+    "Typed or pasted notes instead of files; sent to the model, never stored",
+  )
+  .option("--title <name>", "Name of the typed notes in the review list")
+  .option(
+    "--place-region <key>",
+    "Knowledge atlas region the import starts at (ADR 2026-10-13)",
+  )
+  .option(
+    "--place-lens <kind>",
+    "Lens of --place-region (default weltwissen); the units take its planet",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
-        const result = await analyzeMaterialViaLLM(
-          db,
-          opts.file as string[],
-          { pages: opts.pages },
-          {
-            onProgress: (progress) =>
-              progressOut({ type: "material-analyze-progress", ...progress }),
-          },
-        );
+        const files = (opts.file as string[] | undefined) ?? [];
+        if (files.length > 0 === (opts.text !== undefined)) {
+          jsonError("Pass either --file or --text.");
+        }
+        const place = opts.placeRegion
+          ? await materialPlace(db, {
+              userId: await resolveUser(opts, db, { json: true }),
+              lens: opts.placeLens,
+              region: String(opts.placeRegion),
+            })
+          : undefined;
+        const onProgress = (progress: { done: number; total: number }) =>
+          progressOut({ type: "material-analyze-progress", ...progress });
+        const result: MaterialAnalyzeResult =
+          opts.text !== undefined
+            ? await analyzeMaterialText(
+                db,
+                String(opts.text),
+                { place, title: opts.title },
+                { onProgress },
+              )
+            : await analyzeMaterialViaLLM(
+                db,
+                files,
+                { pages: opts.pages, place },
+                { onProgress },
+              );
         const batch = await stageMaterialImport({
           set: result.set,
           origin: "studio",
@@ -7296,6 +7679,14 @@ bridgeCommand
     'Row id → "yes" | "bonus" | "no"; rows without a choice are not saved',
   )
   .option("--areas <json>", "Proposed area → area the learner confirmed")
+  .option(
+    "--variants <json>",
+    "Proposal row ids whose standsFor the learner ticked (ADR 2026-10-13)",
+  )
+  .option(
+    "--kinds <json>",
+    "Proposal row id → welt | firma | privat: the kind the learner confirmed (ADR 2026-10-13, D2)",
+  )
   .option("--user <id>", "User ID (default: whoami)")
   .action(async (opts) => {
     await withDb(async (db) => {
@@ -7303,6 +7694,10 @@ bridgeCommand
         parseJsonOption("decisions", opts.decisions),
       );
       const areas = parseMaterialAreas(parseJsonOption("areas", opts.areas));
+      const variants = parseMaterialVariants(
+        parseJsonOption("variants", opts.variants),
+      );
+      const kinds = parseMaterialKinds(parseJsonOption("kinds", opts.kinds));
       const userId = await resolveUser(opts, db, { json: true });
       const result = await confirmMaterialImport(
         db,
@@ -7310,6 +7705,9 @@ bridgeCommand
         opts.id,
         decisions,
         areas,
+        {},
+        variants,
+        kinds,
       );
       jsonOut({ success: true, ...result });
     });
@@ -7946,6 +8344,8 @@ bridgeCommand
       const proposals = cards.map((card) => ({
         question: card.question,
         concept: card.concept,
+        question_segments: card.question_segments ?? null,
+        concept_segments: card.concept_segments ?? null,
         domain: card.domain,
         title: card.title,
         bloom_level: card.bloom_level,
@@ -8794,7 +9194,7 @@ const SLOW_SERVE_REQUEST_MS = 30_000;
 
 /**
  * The error a command reported inside a successful response — commands such
- * as `goal-decompose` answer `{ success: false, error }` instead of throwing.
+ * as `topic-outline` answer `{ success: false, error }` instead of throwing.
  * A `false` without an `error` string is a status (e.g. `backup-db` on a
  * remote library), not a failure.
  */
@@ -9062,6 +9462,29 @@ bridgeCommand
           user: opts.user,
         });
         jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+// ── zam bridge bundled-tiles-reconcile ─────────────────────────────────────
+
+bridgeCommand
+  .command("bundled-tiles-reconcile")
+  .description(
+    "Reinstall installed bundled tiles whose version changed, a few per call (JSON)",
+  )
+  .option("--max <n>", "Most tiles to reinstall in this call", "5")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        // A personal library only: the kernel refuses a team library, whose
+        // administrator publishes (ADR 2026-10-14b Decision 7).
+        const result = await reconcileInstalledBundledTiles(db, {
+          maxTiles: Math.max(0, Number(opts.max) || 0),
+        });
+        jsonOut({ success: true, ...result });
       } catch (err: unknown) {
         jsonError((err as Error).message || String(err));
       }
@@ -9432,6 +9855,591 @@ bridgeCommand
       enabled: config.enabled === true,
       view: config.view ?? null,
       repoPath: config.repoPath ?? null,
+    });
+  });
+
+// ── Knowledge atlas (ADR 2026-10-13) ─────────────────────────────────────────
+// The atlas is always on; the 3D Wissensnetz it replaced is an alpha.
+// `graph3d-feature` is deliberately absent from STUDIO_BRIDGE_COMMANDS: no
+// tool switches a view on. The Studio's Settings call it through the desktop
+// bridge transport.
+
+bridgeCommand
+  .command("graph3d-feature")
+  .description("Read or set this machine's 3D Wissensnetz alpha switch (JSON)")
+  .option("--enable", "Show the 3D Wissensnetz")
+  .option("--disable", "Hide it")
+  .action((opts) => {
+    try {
+      jsonOut(graph3dFeature(opts));
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+bridgeCommand
+  .command("atlas-read")
+  .description(
+    "Read the knowledge atlas for one learner: regions, land, units, threads (JSON)",
+  )
+  .option(
+    "--lens <kind>",
+    "weltwissen, schule, the own planet's leben, produkte, unternehmen, or a custom lens (default: the learner's)",
+  )
+  .option(
+    "--planet <kind>",
+    "welt or the library's own planet (firma or privat); without --lens, its last or primary lens",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--time-zone <iana>",
+    "Learner IANA time zone for the local learning day",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasRead(db, {
+            userId,
+            lens: opts.lens,
+            planet: opts.planet,
+            timeZone: opts.timeZone,
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-settle")
+  .description(
+    "Store the atlas land of one lens; refuses with not-curator without the rights (JSON)",
+  )
+  .option("--lens <kind>", "A lens of this library (default weltwissen)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(await atlasSettle(db, { lens: opts.lens }));
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-prefs")
+  .description(
+    "Read or set the learner's atlas lens, home region and Neue Inhalte zeigen (JSON)",
+  )
+  .option("--lens <kind>", "Primary lens: one of this library's lenses")
+  .option("--home <regionKey>", "Home region of the lens; empty to clear")
+  .option("--show-new <onOff>", "Show units without a card: on or off")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const prefs = await setAtlasPrefs(db, {
+          lens: opts.lens,
+          home: opts.home,
+          showNew: opts.showNew,
+        });
+        // Turning Neue Inhalte zeigen on installs the year's cells; it
+        // enrols nobody (ADR 2026-08-14, Decision 3).
+        const cellsInstalled =
+          opts.showNew === "on" ? await installScopeCells(db) : [];
+        jsonOut({ success: true, ...prefs, cellsInstalled });
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-place")
+  .description(
+    "What an import at an atlas region needs: its path, missing levels, the learner's units there and the bundled cells (JSON)",
+  )
+  .requiredOption("--region <key>", "Region key")
+  .option("--lens <kind>", "A lens of this library (default weltwissen)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasPlace(db, {
+            userId,
+            lens: opts.lens,
+            region: String(opts.region),
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-take")
+  .description(
+    "Take sketched units in: cards for the named units, or for every unit in reach in a region (JSON)",
+  )
+  .option("--unit <key...>", "Unit keys (atom:<id> or token:<id>)")
+  .option("--region <key>", "Every unit in reach in this region")
+  .option("--lens <kind>", "Lens of --region (default weltwissen)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasTake(db, {
+            userId,
+            units: opts.unit,
+            lens: opts.lens,
+            region: opts.region,
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-variant")
+  .description(
+    "Let a unit stand in for a published one (one goal, one method), undo it, or set it for the library (JSON)",
+  )
+  .requiredOption("--stands-for <key>", "The published unit (atom:<id>)")
+  .option("--variant <key>", "The unit that stands in")
+  .option("--undo", "Undo the learner's variant: re-attach its cards")
+  .option(
+    "--library",
+    "Set (with --variant) or clear the library's variant; curators only",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasVariant(db, {
+            userId,
+            standsFor: String(opts.standsFor),
+            variant: opts.variant,
+            undo: opts.undo === true,
+            library: opts.library === true,
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// Planets (ADR 2026-10-13, Decision 2). Neither command is on the Studio
+// panel bridge: which planet a library is, and a unit's kind, are the
+// library owner's or a curator's to change, never a tool's.
+
+bridgeCommand
+  .command("atlas-planet")
+  .description(
+    "Read or set the library's own planet beside world knowledge: firma or privat (JSON)",
+  )
+  .option(
+    "--own <planet>",
+    "firma or privat; the library's owner or a curator only",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(
+          opts.own === undefined
+            ? { success: true, ...(await atlasPlanetInfo(db)) }
+            : await setAtlasOwnPlanet(db, String(opts.own)),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-move-planet")
+  .description(
+    "Move own units to world knowledge or to the library's own planet; published units stay world knowledge (JSON)",
+  )
+  .requiredOption("--planet <kind>", "welt, or the library's own planet")
+  .option("--unit <key...>", "Unit keys (token:<id>)")
+  .option("--region <key>", "Every unit of this region and below")
+  .option("--lens <kind>", "Lens of --region (default weltwissen)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(
+          await atlasMovePlanet(db, {
+            planet: String(opts.planet),
+            units: opts.unit,
+            lens: opts.lens,
+            region: opts.region,
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// Red threads (ADR 2026-10-13, Decision 7). A learner's own by default; the
+// library's needs the right to write knowledge. Neither command is on the
+// Studio panel bridge.
+
+bridgeCommand
+  .command("atlas-connect")
+  .description(
+    "Spin a red thread between two units: your own, or with --scope shared the library's (JSON)",
+  )
+  .requiredOption(
+    "--from <key>",
+    "The dependent end: it builds on, uses, consumes the interface of, or is a special case of --to",
+  )
+  .requiredOption("--to <key>", "The end depended upon")
+  .requiredOption(
+    "--kind <kind>",
+    "voraussetzung, nutzt, schnittstelle, ist-ein or verbindung",
+  )
+  .option("--note <text>", "Why the two belong together, one short sentence")
+  .option(
+    "--scope <scope>",
+    "personal (default) or shared; a shared Voraussetzung is a prerequisite",
+  )
+  .option("--from-studio", "Written by a person in the Studio, not an agent")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasConnect(db, {
+            userId,
+            from: String(opts.from),
+            to: String(opts.to),
+            kind: String(opts.kind),
+            note: opts.note,
+            scope: opts.scope,
+            author: opts.fromStudio === true ? "curator" : "agent",
+          }),
+        );
+      } catch (err) {
+        jsonRefusal(err);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-disconnect")
+  .description(
+    "Cut a red thread by id: your own, or the library's with the right to write knowledge (JSON)",
+  )
+  .requiredOption("--id <id>", "The thread's id, from atlas-read")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(await atlasDisconnect(db, { userId, id: String(opts.id) }));
+      } catch (err) {
+        jsonRefusal(err);
+      }
+    });
+  });
+
+// Curated lenses (ADR 2026-10-13, Decision 3; plan Phase 9c). None of
+// these is on the Studio panel bridge; each needs the right to write
+// knowledge, and accepting a replacement is the Studio's alone.
+
+/** A JSON option, or a refusal naming the option. */
+function jsonOption(name: string, raw: string): unknown {
+  try {
+    return JSON.parse(raw);
+  } catch {
+    jsonError(`${name} must be JSON`);
+  }
+}
+
+bridgeCommand
+  .command("atlas-lens-edit")
+  .description(
+    "Edit one lens: create, rename, reorder, move or remove regions, set aliases, place units; a world lens takes additions and removes only regions the library made (JSON)",
+  )
+  .requiredOption("--lens <kind>", "A lens of this library")
+  .requiredOption("--edits <json>", "JSON array of edits, applied in order")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(
+          await atlasLensEdit(db, {
+            lens: opts.lens,
+            edits: jsonOption("--edits", String(opts.edits)),
+          }),
+        );
+      } catch (err) {
+        jsonRefusal(err);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-lens-propose")
+  .description(
+    "Propose a whole new order for one of the own planet's lenses, from one named source; it waits for a curator (JSON)",
+  )
+  .requiredOption(
+    "--lens <kind>",
+    "leben, produkte, unternehmen, or a custom lens of the own planet",
+  )
+  .requiredOption(
+    "--proposal <json>",
+    "JSON {source, regions: [{key, name, parent}], aliases?, members?}",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasLensPropose(db, {
+            lens: opts.lens,
+            proposal: jsonOption("--proposal", String(opts.proposal)),
+            by: userId,
+          }),
+        );
+      } catch (err) {
+        jsonRefusal(err);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-lens-create")
+  .description(
+    "Make a custom lens on the own planet: its own kind and level names; it starts empty (JSON)",
+  )
+  .requiredOption(
+    "--kind <slug>",
+    "The lens's permanent id: lower-case letters, digits and hyphens, not a built-in lens",
+  )
+  .requiredOption("--name <name>", "The lens's display name")
+  .requiredOption(
+    "--levels <names>",
+    "Level names, the islands first, separated by commas (1 to 5)",
+  )
+  .option(
+    "--colour-level <n>",
+    "0-based level whose regions give the hue (default: the second level, or the only one)",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const colour =
+          opts.colourLevel === undefined ? undefined : Number(opts.colourLevel);
+        jsonOut(
+          await atlasLensCreate(db, {
+            kind: String(opts.kind),
+            name: String(opts.name),
+            levels: String(opts.levels).split(","),
+            colourLevel: colour,
+          }),
+        );
+      } catch (err) {
+        jsonRefusal(err);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-lens-remove")
+  .description(
+    "Remove a custom lens with its regions, aliases, placements and land; its units keep their places elsewhere (JSON)",
+  )
+  .requiredOption("--lens <kind>", "A custom lens of the own planet")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(await atlasLensRemove(db, { lens: String(opts.lens) }));
+      } catch (err) {
+        jsonRefusal(err);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-lens-accept")
+  .description(
+    "Accept the lens's pending replacement, which replaces its order at once, or reject it with --reject (JSON)",
+  )
+  .requiredOption(
+    "--lens <kind>",
+    "leben, produkte, unternehmen, or a custom lens",
+  )
+  .option("--reject", "Drop the proposal; the lens stays as it is")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(
+          await atlasLensAccept(db, {
+            lens: opts.lens,
+            reject: opts.reject === true,
+          }),
+        );
+      } catch (err) {
+        jsonRefusal(err);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-lens-stale")
+  .description(
+    "Say whether a lens still fits its source: curators see 'this lens no longer fits its source' (JSON)",
+  )
+  .requiredOption("--lens <kind>", "A lens of this library")
+  .requiredOption("--stale <onOff>", "on: no longer fits; off: fits again")
+  .option("--note <text>", "What no longer fits, in a sentence")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        if (opts.stale !== "on" && opts.stale !== "off") {
+          jsonError("--stale must be on or off");
+        }
+        jsonOut(
+          await atlasLensStale(db, {
+            lens: opts.lens,
+            stale: opts.stale === "on",
+            note: opts.note,
+          }),
+        );
+      } catch (err) {
+        jsonRefusal(err);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-revision")
+  .description(
+    "A cheap fingerprint of what the atlas shows; the Studio polls it to follow agent changes (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(await atlasRevision(db, { userId }));
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// Sinnbilder (ADR 2026-10-13, Decision 6). Every path validates and stores
+// the canonical form only; none of these is on the Studio panel bridge.
+
+bridgeCommand
+  .command("atlas-emblem-set")
+  .description(
+    "Set a Sinnbild for a unit or region: an SVG, or a glyph alone (JSON)",
+  )
+  .requiredOption(
+    "--subject <key>",
+    "atom:<id>, token:<id>, subject:<fach> or region:<lens>:<region key>",
+  )
+  .option("--svg <svg>", 'The SVG, viewBox="0 0 64 64"')
+  .option("--glyph <text>", "A formula or sign of at most 16 characters")
+  .option(
+    "--scope <scope>",
+    "auto (default: shared when none exists and you may write knowledge), personal or shared",
+  )
+  .option("--from-studio", "Written by a person in the Studio, not an agent")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasEmblemSet(db, {
+            userId,
+            subject: String(opts.subject),
+            svg: opts.svg,
+            glyph: opts.glyph,
+            scope: opts.scope,
+            author: opts.fromStudio === true ? "curator" : "agent",
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-emblem-clear")
+  .description(
+    "Remove your own Sinnbild of a unit or region, or with --shared the library's (JSON)",
+  )
+  .requiredOption("--subject <key>", "The unit or region")
+  .option(
+    "--shared",
+    "Remove the library's; only with the right to write knowledge",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasEmblemClear(db, {
+            userId,
+            subject: String(opts.subject),
+            shared: opts.shared === true,
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-emblem-draw")
+  .description(
+    "Let the first text model draw a Sinnbild for a unit or region and store it (JSON)",
+  )
+  .requiredOption("--subject <key>", "The unit or region")
+  .option("--scope <scope>", "auto (default), personal or shared")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasEmblemDraw(db, {
+            userId,
+            subject: String(opts.subject),
+            scope: opts.scope,
+          }),
+        );
+      } catch (err) {
+        // A refusal the Studio explains in the learner's language.
+        if (err instanceof EmblemDrawError) {
+          jsonOut({ success: false, code: err.code, message: err.message });
+          return;
+        }
+        jsonError((err as Error).message);
+      }
     });
   });
 

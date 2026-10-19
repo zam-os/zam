@@ -49,7 +49,21 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "In welche Richtung wirkt die Zentripetalkraft $F_Z$, die einen Körper auf einer kreisförmigen Bahn hält?",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "In welche Richtung wirkt die Zentripetalkraft "
+            },
+            {
+              "type": "math",
+              "tex": "F_Z",
+              "speech": "F Z"
+            },
+            {
+              "type": "text",
+              "text": ", die einen Körper auf einer kreisförmigen Bahn hält?"
+            }
+          ],
           "concept": "Stets radial zum Kreismittelpunkt hin (senkrecht zum tangentialen Geschwindigkeitsvektor)",
           "fast_check": {
             "type": "binary_choice",
@@ -58,16 +72,426 @@
               "Tangential in Fahrtrichtung"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GA60000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere die Kinematik und Dynamik der gleichförmigen Kreisbewegung: 1. **Kinematische Grundgrößen**:   * **Umlaufdauer $T$ & Drehfrequenz $f$**: $f = \\frac{1}{T}$ (in $\\text{Hz} = \\text{s}^{-1}$).   * **Winkelgeschwindigkeit $\\omega$**: $\\omega = \\frac{\\Delta \\varphi}{\\Delta t} = \\frac{2\\pi}{T} = 2\\pi f$ (in $\\frac{\\text{rad}}{\\text{s}}$).   * **Bahngeschwindigkeit $v$**: $v = \\frac{2\\pi r}{T} = \\omega \\cdot r$ (stets tangential zur Kreisbahn gerichtet), 2. **Zentripetalbeschleunigung $a_Z$**:   * Obwohl der Betrag $|v|$ konstant ist, ändert sich permanent die Geschwindigkeitsrichtung $\\implies$ Radialbeschleunigung zum Mittelpunkt:     $$\\mathbf{a_Z = \\frac{v^2}{r} = \\omega^2 \\cdot r}$$ 3. **Zentripetalkraft $F_Z$**:   * Die nach Newton ($F = m \\cdot a$) erforderliche Kraft, die den Körper auf der Kreisbahn hält:     $$\\mathbf{F_Z = m \\cdot a_Z = m \\cdot \\frac{v^2}{r} = m \\cdot \\omega^2 \\cdot r}$$   * *Beispiele*: Gravitation bei Planeten, Lorentzkraft bei Elektronen im Magnetfeld, Reibungskraft bei Autokurven, 4. Ein Auto ($m = 1200\\,\\text{kg}$) durchfährt eine Kurve mit dem Radius $r = 50\\,\\text{m}$ mit der Geschwindigkeit $v = 20\\,\\frac{\\text{m}}{\\text{s}}$ ($72\\,\\frac{\\text{km}}{\\text{h}}$). Berechne die erforderliche Zentripetalkraft $F_Z$.",
-          "concept": "Kreisbewegung: omega = 2*pi/T; v = omega * r; a_Z = v^2/r; F_Z = m * v^2 / r; Rechnung: F_Z = 1200 kg * (400 m^2/s^2) / 50 m = 1200 * 8 = 9600 N = 9,6 kN.",
-          "sample_solution": "1. Kinematik der Kreisbewegung: - **1. Winkelgeschwindigkeit $\\omega$**:   * Gibt den überstrichenen Drehwinkel $\\Delta \\varphi$ (im Bogenmaß) pro Zeitintervall $\\Delta t$ an:     $$\\mathbf{\\omega = \\frac{2\\pi}{T} = 2\\pi f} \\quad (\\text{Einheit: } \\text{s}^{-1} = \\frac{\\text{rad}}{\\text{s}})$$ - **2. Bahngeschwindigkeit $v$**:   * Die Translationsgeschwindigkeit eines Punktes im Abstand $r$ von der Drehachse:     $$\\mathbf{v = \\omega \\cdot r = \\frac{2\\pi r}{T}}$$   * Der Geschwindigkeitsvektor $\\vec{v}$ steht zu jedem Zeitpunkt **tangential zur Kreisbahn**. 2. Dynamik: Zentripetalbeschleunigung und Zentripetalkraft: - **Zentripetalbeschleunigung $\\vec{a}_Z$**:   * Bei einer gleichförmigen Kreisbewegung ist der Geschwindigkeitsbetrag konstant, aber der Vektor $\\vec{v}$ ändert fortwährend seine Richtung $\\implies$ permanente Beschleunigung **senkrecht zur Bewegungsrichtung zum Kreismittelpunkt hin**:     $$\\mathbf{a_Z = \\frac{v^2}{r} = \\omega^2 \\cdot r}$$ - **Zentripetalkraft $\\vec{F}_Z$**:   * Nach dem 2. Newtonschen Axiom (Grundgesetz der Dynamik) ist zur Erzeugung dieser Beschleunigung eine nach innen gerichtete Kraft zwingend erforderlich:     $$\\mathbf{F_Z = m \\cdot a_Z = m \\cdot \\frac{v^2}{r} = m \\cdot \\omega^2 \\cdot r}$$   * *Physikalischer Träger der Kraft*: Die Zentripetalkraft ist keine neue fundamentale Kraftart, sondern wird von realen Kräften bereitgestellt (z. B. Haftreibung der Reifen auf dem Asphalt, Seilkraft beim Kettenkarussell, Gravitation bei Satelliten).   * *Trägheitskraft (Zentrifugalkraft)*: Schein- oder Fliehkraft, die nur im mitrotierenden Bezugssystem auftritt ($F_{\\text{Zentrifugal}} = -F_Z$). 3. Durchrechnung des Beispiels ($m = 1200\\,\\text{kg}, r = 50\\,\\text{m}, v = 20\\,\\frac{\\text{m}}{\\text{s}}$): - **Zentripetalkraft $F_Z$**:   $$F_Z = m \\cdot \\frac{v^2}{r} = 1200\\,\\text{kg} \\cdot \\frac{(20\\,\\frac{\\text{m}}{\\text{s}})^2}{50\\,\\text{m}} = 1200 \\cdot \\frac{400}{50}\\,\\text{N} = 1200 \\cdot 8\\,\\text{N} = \\mathbf{9600\\,\\text{N} = 9{,}6\\,\\text{kN}}$$ - **Ergebnis**: Die Haftreibung zwischen Autoreifen und Straße muss eine Querkraft von mindestens $9{,}6\\,\\text{kN}$ übertragen können, damit das Fahrzeug nicht aus der Kurve rutscht."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere die Kinematik und Dynamik der gleichförmigen Kreisbewegung: 1. Kinematische Grundgrößen:   * Umlaufdauer "
+            },
+            {
+              "type": "math",
+              "tex": "T",
+              "speech": "T"
+            },
+            {
+              "type": "text",
+              "text": " & Drehfrequenz "
+            },
+            {
+              "type": "math",
+              "tex": "f",
+              "speech": "f"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "f = \\frac{1}{T}",
+              "speech": "f gleich 1 durch T"
+            },
+            {
+              "type": "text",
+              "text": " (in "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Hz} = \\text{s}^{-1}",
+              "speech": "Hertz gleich 1 pro Sekunde"
+            },
+            {
+              "type": "text",
+              "text": ").   * Winkelgeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "\\omega",
+              "speech": "Omega"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "\\omega = \\frac{\\Delta \\varphi}{\\Delta t} = \\frac{2\\pi}{T} = 2\\pi f",
+              "speech": "Omega gleich Delta Phi durch Delta t gleich 2 Pi durch T gleich 2 Pi f"
+            },
+            {
+              "type": "text",
+              "text": " (in "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{\\text{rad}}{\\text{s}}",
+              "speech": "Radiant pro Sekunde"
+            },
+            {
+              "type": "text",
+              "text": ").   * Bahngeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v",
+              "speech": "v"
+            },
+            {
+              "type": "text",
+              "text": ": "
+            },
+            {
+              "type": "math",
+              "tex": "v = \\frac{2\\pi r}{T} = \\omega \\cdot r",
+              "speech": "v gleich 2 Pi r durch T gleich Omega mal r"
+            },
+            {
+              "type": "text",
+              "text": " (stets tangential zur Kreisbahn gerichtet), 2. Zentripetalbeschleunigung "
+            },
+            {
+              "type": "math",
+              "tex": "a_Z",
+              "speech": "a Z"
+            },
+            {
+              "type": "text",
+              "text": ":   * Obwohl der Betrag "
+            },
+            {
+              "type": "math",
+              "tex": "|v|",
+              "speech": "Betrag von v"
+            },
+            {
+              "type": "text",
+              "text": " konstant ist, ändert sich permanent die Geschwindigkeitsrichtung "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies",
+              "speech": "daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " Radialbeschleunigung zum Mittelpunkt:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{a_Z = \\frac{v^2}{r} = \\omega^2 \\cdot r}",
+              "block": true,
+              "speech": "a Z gleich v Quadrat durch r gleich Omega Quadrat mal r"
+            },
+            {
+              "type": "text",
+              "text": " 3. Zentripetalkraft "
+            },
+            {
+              "type": "math",
+              "tex": "F_Z",
+              "speech": "F Z"
+            },
+            {
+              "type": "text",
+              "text": ":   * Die nach Newton ("
+            },
+            {
+              "type": "math",
+              "tex": "F = m \\cdot a",
+              "speech": "F gleich m mal a"
+            },
+            {
+              "type": "text",
+              "text": ") erforderliche Kraft, die den Körper auf der Kreisbahn hält:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F_Z = m \\cdot a_Z = m \\cdot \\frac{v^2}{r} = m \\cdot \\omega^2 \\cdot r}",
+              "block": true,
+              "speech": "F Z gleich m mal a Z gleich m mal v Quadrat durch r gleich m mal Omega Quadrat mal r"
+            },
+            {
+              "type": "text",
+              "text": "   * Beispiele: Gravitation bei Planeten, Lorentzkraft bei Elektronen im Magnetfeld, Reibungskraft bei Autokurven, 4. Ein Auto ("
+            },
+            {
+              "type": "math",
+              "tex": "m = 1200\\,\\text{kg}",
+              "speech": "m gleich 1200 Kilogramm"
+            },
+            {
+              "type": "text",
+              "text": ") durchfährt eine Kurve mit dem Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r = 50\\,\\text{m}",
+              "speech": "r gleich 50 Meter"
+            },
+            {
+              "type": "text",
+              "text": " mit der Geschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v = 20\\,\\frac{\\text{m}}{\\text{s}}",
+              "speech": "v gleich 20 Meter pro Sekunde"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "72\\,\\frac{\\text{km}}{\\text{h}}",
+              "speech": "72 Kilometer pro Stunde"
+            },
+            {
+              "type": "text",
+              "text": "). Berechne die erforderliche Zentripetalkraft "
+            },
+            {
+              "type": "math",
+              "tex": "F_Z",
+              "speech": "F Z"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Kreisbewegung: "
+            },
+            {
+              "type": "math",
+              "tex": "\\omega = \\frac{2\\pi}{T}",
+              "speech": "Omega gleich 2 Pi durch T"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "v = \\omega \\cdot r",
+              "speech": "v gleich Omega mal r"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "a_Z = \\frac{v^2}{r}",
+              "speech": "a Z gleich v Quadrat durch r"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "F_Z = \\frac{m \\cdot v^2}{r}",
+              "speech": "F Z gleich m mal v Quadrat durch r"
+            },
+            {
+              "type": "text",
+              "text": "; Rechnung: "
+            },
+            {
+              "type": "math",
+              "tex": "F_Z = \\frac{1200\\,\\text{kg} \\cdot 400\\,\\text{m}^2/\\text{s}^2}{50\\,\\text{m}} = 1200 \\cdot 8 = 9600\\,\\text{N} = 9{,}6\\,\\text{kN}",
+              "speech": "F Z gleich 1200 Kilogramm mal 400 Quadratmeter pro Sekunde Quadrat, geteilt durch 50 Meter, gleich 1200 mal 8 gleich 9600 Newton gleich 9,6 Kilonewton"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Kinematik der Kreisbewegung: - 1. Winkelgeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "\\omega"
+            },
+            {
+              "type": "text",
+              "text": ":   * Gibt den überstrichenen Drehwinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta \\varphi"
+            },
+            {
+              "type": "text",
+              "text": " (im Bogenmaß) pro Zeitintervall "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta t"
+            },
+            {
+              "type": "text",
+              "text": " an:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\omega = \\frac{2\\pi}{T} = 2\\pi f} \\quad (\\text{Einheit: } \\text{s}^{-1} = \\frac{\\text{rad}}{\\text{s}})",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 2. Bahngeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v"
+            },
+            {
+              "type": "text",
+              "text": ":   * Die Translationsgeschwindigkeit eines Punktes im Abstand "
+            },
+            {
+              "type": "math",
+              "tex": "r"
+            },
+            {
+              "type": "text",
+              "text": " von der Drehachse:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{v = \\omega \\cdot r = \\frac{2\\pi r}{T}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Der Geschwindigkeitsvektor "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{v}"
+            },
+            {
+              "type": "text",
+              "text": " steht zu jedem Zeitpunkt tangential zur Kreisbahn. 2. Dynamik: Zentripetalbeschleunigung und Zentripetalkraft: - Zentripetalbeschleunigung "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{a}_Z"
+            },
+            {
+              "type": "text",
+              "text": ":   * Bei einer gleichförmigen Kreisbewegung ist der Geschwindigkeitsbetrag konstant, aber der Vektor "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{v}"
+            },
+            {
+              "type": "text",
+              "text": " ändert fortwährend seine Richtung "
+            },
+            {
+              "type": "math",
+              "tex": "\\implies"
+            },
+            {
+              "type": "text",
+              "text": " permanente Beschleunigung senkrecht zur Bewegungsrichtung zum Kreismittelpunkt hin:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{a_Z = \\frac{v^2}{r} = \\omega^2 \\cdot r}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Zentripetalkraft "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{F}_Z"
+            },
+            {
+              "type": "text",
+              "text": ":   * Nach dem 2. Newtonschen Axiom (Grundgesetz der Dynamik) ist zur Erzeugung dieser Beschleunigung eine nach innen gerichtete Kraft zwingend erforderlich:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F_Z = m \\cdot a_Z = m \\cdot \\frac{v^2}{r} = m \\cdot \\omega^2 \\cdot r}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Physikalischer Träger der Kraft: Die Zentripetalkraft ist keine neue fundamentale Kraftart, sondern wird von realen Kräften bereitgestellt (z. B. Haftreibung der Reifen auf dem Asphalt, Seilkraft beim Kettenkarussell, Gravitation bei Satelliten).   * Trägheitskraft (Zentrifugalkraft): Schein- oder Fliehkraft, die nur im mitrotierenden Bezugssystem auftritt ("
+            },
+            {
+              "type": "math",
+              "tex": "F_{\\text{Zentrifugal}} = -F_Z"
+            },
+            {
+              "type": "text",
+              "text": "). 3. Durchrechnung des Beispiels ("
+            },
+            {
+              "type": "math",
+              "tex": "m = 1200\\,\\text{kg}, r = 50\\,\\text{m}, v = 20\\,\\frac{\\text{m}}{\\text{s}}"
+            },
+            {
+              "type": "text",
+              "text": "): - Zentripetalkraft "
+            },
+            {
+              "type": "math",
+              "tex": "F_Z"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "F_Z = m \\cdot \\frac{v^2}{r} = 1200\\,\\text{kg} \\cdot \\frac{(20\\,\\frac{\\text{m}}{\\text{s}})^2}{50\\,\\text{m}} = 1200 \\cdot \\frac{400}{50}\\,\\text{N} = 1200 \\cdot 8\\,\\text{N} = \\mathbf{9600\\,\\text{N} = 9{,}6\\,\\text{kN}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Ergebnis: Die Haftreibung zwischen Autoreifen und Straße muss eine Querkraft von mindestens "
+            },
+            {
+              "type": "math",
+              "tex": "9{,}6\\,\\text{kN}"
+            },
+            {
+              "type": "text",
+              "text": " übertragen können, damit das Fahrzeug nicht aus der Kurve rutscht."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -112,25 +536,380 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Wie lautet das 3. Keplersche Gesetz über das Verhältnis der Umlaufzeiten $T_1, T_2$ zweier Planeten zu den großen Halbachsen $a_1, a_2$ ihrer Bahnellipsen?",
-          "concept": "T_1^2 / T_2^2 = a_1^3 / a_2^3 (Die Quadrate der Umlaufzeiten verhalten sich wie die Kuben der großen Halbachsen: T^2 / a^3 = konstant)",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet das 3. Keplersche Gesetz über das Verhältnis der Umlaufzeiten "
+            },
+            {
+              "type": "math",
+              "tex": "T_1, T_2",
+              "speech": "T eins, T zwei"
+            },
+            {
+              "type": "text",
+              "text": " zweier Planeten zu den großen Halbachsen "
+            },
+            {
+              "type": "math",
+              "tex": "a_1, a_2",
+              "speech": "a eins, a zwei"
+            },
+            {
+              "type": "text",
+              "text": " ihrer Bahnellipsen?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\frac{T_1^2}{T_2^2} = \\frac{a_1^3}{a_2^3}",
+              "speech": "T eins Quadrat durch T zwei Quadrat gleich a eins hoch drei durch a zwei hoch drei"
+            },
+            {
+              "type": "text",
+              "text": " (Die Quadrate der Umlaufzeiten verhalten sich wie die Kuben der großen Halbachsen: "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{T^2}{a^3} = \\text{konstant}",
+              "speech": "T Quadrat durch a hoch drei gleich konstant"
+            },
+            {
+              "type": "text",
+              "text": ")"
+            }
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "T_1^2 / T_2^2 = a_1^3 / a_2^3 (T^2 / a^3 = const)",
+              [
+                {
+                  "type": "math",
+                  "tex": "\\frac{T_1^2}{T_2^2} = \\frac{a_1^3}{a_2^3}",
+                  "speech": "T eins Quadrat durch T zwei Quadrat gleich a eins hoch drei durch a zwei hoch drei"
+                },
+                {
+                  "type": "text",
+                  "text": " ("
+                },
+                {
+                  "type": "math",
+                  "tex": "\\frac{T^2}{a^3} = \\text{const}",
+                  "speech": "T Quadrat durch a hoch drei gleich konstant"
+                },
+                {
+                  "type": "text",
+                  "text": ")"
+                }
+              ],
               "T_1 / T_2 = a_1 / a_2"
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8GA60000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Analysiere das Newtonsche Gravitationsgesetz und die Keplerschen Planetengesetze: 1. **Das Gravitationsgesetz (Isaac Newton, 1687)**:   $$\\mathbf{F_G = G \\cdot \\frac{m_1 \\cdot m_2}{r^2}} \\quad (G \\approx 6{,}674 \\cdot 10^{-11}\\,\\frac{\\text{N}\\cdot\\text{m}^2}{\\text{kg}^2})$$   * Universelle Massenanziehung; $F_G \\sim \\frac{1}{r^2}$.   * Erdbeschleunigung an der Erdoberfläche ($r = R_E, M = M_E$): $g = G \\frac{M_E}{R_E^2} \\approx 9{,}81\\,\\frac{\\text{m}}{\\text{s}^2}$, 2. **Die drei Keplerschen Gesetze (Johannes Kepler, 1609/1619)**:   * **1. Gesetz (Ellipsensatz)**: Die Planeten bewegen sich auf Ellipsenbahnen, in deren einem gemeinsamen Brennpunkt die Sonne steht.   * **2. Gesetz (Flächensatz)**: Der Leitstrahl Sonne-Planet überstreicht in gleichen Zeiten gleiche Flächen ($A_1 = A_2 \\implies$ schnellste Bewegung im Perihel [Sonnennähe], langsamste im Aphel [Sonnenferne] infolge Drehimpulserhaltung).   * **3. Gesetz (Harmonisches Gesetz)**: Die Quadrate der Umlaufzeiten zweier Planeten verhalten sich wie die dritten Potenzen (Kuben) ihrer großen Halbachsen:     $$\\mathbf{\\frac{T_1^2}{T_2^2} = \\frac{a_1^3}{a_2^3} \\iff \\frac{T^2}{a^3} = \\text{konstant}}$$ 3. **Kreisbahn eines Satelliten (1. kosmische Geschwindigkeit)**:   * Gleichsetzen von Gravitationskraft und Zentripetalkraft: $F_G = F_Z \\implies G \\frac{M \\cdot m}{r^2} = m \\frac{v^2}{r} \\implies \\mathbf{v = \\sqrt{\\frac{G \\cdot M}{r}}}$ (bodennah: $v_1 \\approx 7{,}9\\,\\frac{\\text{km}}{\\text{s}}$).",
-          "concept": "Gravitation: F_G = G * m1*m2/r^2; Fallbeschleunigung g = G*M/R^2; 3 Keplersche Gesetze (1. Ellipsen, 2. Flächensatz dA/dt = const, 3. T^2/a^3 = const); Satellitengeschwindigkeit v = sqrt(G*M/r).",
-          "sample_solution": "1. Das universelle Gravitationsgesetz (Sir Isaac Newton): - **Gravitationskraft**: Jede Masse zieht jede andere Masse im Universum mit einer Kraft an, die proportional zum Produkt beider Massen und umgekehrt proportional zum Quadrat ihres Abstands $r$ ist:   $$\\mathbf{F_G = G \\cdot \\frac{m_1 \\cdot m_2}{r^2}}$$   * **Gravitationskonstante**: $\\mathbf{G = 6{,}6743 \\cdot 10^{-11}\\,\\frac{\\text{N}\\cdot\\text{m}^2}{\\text{kg}^2}}$ (experimentell gemessen von Henry Cavendish). - **Zusammenhang mit der Erdbeschleunigung $g$**:   $$F_G = m \\cdot g \\implies g = G \\cdot \\frac{M_E}{R_E^2} \\approx 6{,}674 \\cdot 10^{-11} \\cdot \\frac{5{,}97 \\cdot 10^{24}\\text{ kg}}{(6{,}371 \\cdot 10^6\\text{ m})^2} = \\mathbf{9{,}81\\,\\frac{\\text{m}}{\\text{s}^2}}$$ 2. Die drei Gesetze der Planetenbewegung (Johannes Kepler): - **1. Keplersches Gesetz (Ellipsensatz)**:   * Die Umlaufbahnen aller Planeten sind **Ellipsen**, in deren einem Brennpunkt $F_1$ die Sonne steht (der zweite Brennpunkt $F_2$ ist leer). - **2. Keplersches Gesetz (Flächensatz)**:   * Ein von der Sonne zum Planeten gezogener Fahrstrahl überstreicht in gleichen Zeitintervallen gleiche Flächeninhalte:     $$\\mathbf{\\frac{\\mathrm{d}A}{\\mathrm{d}t} = \\text{konstant}}$$   * *Konsequenz*: In Sonnennähe (**Perihel**) bewegt sich der Planet am schnellsten; in Sonnenferne (**Aphel**) am langsamsten (Folge der **Drehimpulserhaltung** $\\vec{L} = \\vec{r} \\times m\\vec{v} = \\text{konstant}$). - **3. Keplersches Gesetz (Drittes Gesetz)**:   * Für alle Planeten eines Zentralkörpers ist das Verhältnis aus dem Quadrat der Umlaufzeit $T$ und der dritten Potenz der großen Halbachse $a$ konstant:     $$\\mathbf{\\frac{T^2}{a^3} = \\frac{4\\pi^2}{G \\cdot M_{\\text{Sonne}}} = \\text{konstant}} \\iff \\mathbf{\\frac{T_1^2}{T_2^2} = \\frac{a_1^3}{a_2^3}}$$ 3. Satellitenbahnen und kosmische Geschwindigkeiten: - **Bahngeschwindigkeit eines Satelliten auf einer Kreisbahn mit Radius $r$**:   * Die Gravitationskraft dient exakt als Zentripetalkraft:     $$F_G = F_Z \\implies G \\cdot \\frac{M_E \\cdot m}{r^2} = m \\cdot \\frac{v^2}{r} \\implies \\mathbf{v = \\sqrt{\\frac{G \\cdot M_E}{r}}}$$ - **1. Kosmische Geschwindigkeit (Kreisbahngeschwindigkeit an Erdoberfläche $r = R_E$)**:   $$\\mathbf{v_1 = \\sqrt{g \\cdot R_E} = \\sqrt{9{,}81\\,\\frac{\\text{m}}{\\text{s}^2} \\cdot 6{,}371 \\cdot 10^6\\,\\text{m}} \\approx 7{,}9\\,\\frac{\\text{km}}{\\text{s}} = 28.440\\,\\frac{\\text{km}}{\\text{h}}}$$ - **Geostationäre Bahn**:   * Umlaufzeit exakt $T = 24\\,\\text{h} = 86.400\\,\\text{s} \\implies$ Bahnradius $r_{\\text{geo}} \\approx 42.164\\,\\text{km}$ (Höhe ca. $35.786\\,\\text{km}$ über dem Äquator)."
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Analysiere das Newtonsche Gravitationsgesetz und die Keplerschen Planetengesetze: 1. Das Gravitationsgesetz (Isaac Newton, 1687):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F_G = G \\cdot \\frac{m_1 \\cdot m_2}{r^2}} \\quad (G \\approx 6{,}674 \\cdot 10^{-11}\\,\\frac{\\text{N}\\cdot\\text{m}^2}{\\text{kg}^2})",
+              "block": true,
+              "speech": "F G gleich G mal m eins mal m zwei durch r Quadrat, mit G ungefähr 6,674 mal 10 hoch minus 11 Newton Quadratmeter pro Kilogramm Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "   * Universelle Massenanziehung; "
+            },
+            {
+              "type": "math",
+              "tex": "F_G \\sim \\frac{1}{r^2}",
+              "speech": "F G proportional zu 1 durch r Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ".   * Erdbeschleunigung an der Erdoberfläche ("
+            },
+            {
+              "type": "math",
+              "tex": "r = R_E, M = M_E",
+              "speech": "r gleich R E, M gleich M E"
+            },
+            {
+              "type": "text",
+              "text": "): "
+            },
+            {
+              "type": "math",
+              "tex": "g = G \\frac{M_E}{R_E^2} \\approx 9{,}81\\,\\frac{\\text{m}}{\\text{s}^2}",
+              "speech": "g gleich G mal M E durch R E Quadrat ungefähr 9,81 Meter pro Sekunde Quadrat"
+            },
+            {
+              "type": "text",
+              "text": ", 2. Die drei Keplerschen Gesetze (Johannes Kepler, 1609/1619):   * 1. Gesetz (Ellipsensatz): Die Planeten bewegen sich auf Ellipsenbahnen, in deren einem gemeinsamen Brennpunkt die Sonne steht.   * 2. Gesetz (Flächensatz): Der Leitstrahl Sonne-Planet überstreicht in gleichen Zeiten gleiche Flächen ("
+            },
+            {
+              "type": "math",
+              "tex": "A_1 = A_2 \\implies",
+              "speech": "A eins gleich A zwei daraus folgt"
+            },
+            {
+              "type": "text",
+              "text": " schnellste Bewegung im Perihel [Sonnennähe], langsamste im Aphel [Sonnenferne] infolge Drehimpulserhaltung).   * 3. Gesetz (Harmonisches Gesetz): Die Quadrate der Umlaufzeiten zweier Planeten verhalten sich wie die dritten Potenzen (Kuben) ihrer großen Halbachsen:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\frac{T_1^2}{T_2^2} = \\frac{a_1^3}{a_2^3} \\iff \\frac{T^2}{a^3} = \\text{konstant}}",
+              "block": true,
+              "speech": "T eins Quadrat durch T zwei Quadrat gleich a eins hoch drei durch a zwei hoch drei genau dann, wenn T Quadrat durch a hoch drei gleich konstant"
+            },
+            {
+              "type": "text",
+              "text": " 3. Kreisbahn eines Satelliten (1. kosmische Geschwindigkeit):   * Gleichsetzen von Gravitationskraft und Zentripetalkraft: "
+            },
+            {
+              "type": "math",
+              "tex": "F_G = F_Z \\implies G \\frac{M \\cdot m}{r^2} = m \\frac{v^2}{r} \\implies \\mathbf{v = \\sqrt{\\frac{G \\cdot M}{r}}}",
+              "speech": "F G gleich F Z, daraus folgt G mal M mal m durch r Quadrat gleich m mal v Quadrat durch r, daraus folgt v gleich Wurzel aus G mal M durch r"
+            },
+            {
+              "type": "text",
+              "text": " (bodennah: "
+            },
+            {
+              "type": "math",
+              "tex": "v_1 \\approx 7{,}9\\,\\frac{\\text{km}}{\\text{s}}",
+              "speech": "v eins ungefähr 7,9 Kilometer pro Sekunde"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Gravitation: "
+            },
+            {
+              "type": "math",
+              "tex": "F_G = G \\cdot \\frac{m_1 \\cdot m_2}{r^2}",
+              "speech": "F G gleich G mal m eins mal m zwei durch r Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; Fallbeschleunigung "
+            },
+            {
+              "type": "math",
+              "tex": "g = \\frac{G \\cdot M}{R^2}",
+              "speech": "g gleich G mal M durch R Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "; 3 Keplersche Gesetze (1. Ellipsen, 2. Flächensatz "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{dA}{dt} = \\text{const}",
+              "speech": "d A nach d t gleich konstant"
+            },
+            {
+              "type": "text",
+              "text": ", 3. "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{T^2}{a^3} = \\text{const}",
+              "speech": "T Quadrat durch a hoch drei gleich konstant"
+            },
+            {
+              "type": "text",
+              "text": "); Satellitengeschwindigkeit "
+            },
+            {
+              "type": "math",
+              "tex": "v = \\sqrt{\\frac{G \\cdot M}{r}}",
+              "speech": "v gleich Wurzel aus G mal M durch r"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "1. Das universelle Gravitationsgesetz (Sir Isaac Newton): - Gravitationskraft: Jede Masse zieht jede andere Masse im Universum mit einer Kraft an, die proportional zum Produkt beider Massen und umgekehrt proportional zum Quadrat ihres Abstands "
+            },
+            {
+              "type": "math",
+              "tex": "r"
+            },
+            {
+              "type": "text",
+              "text": " ist:   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{F_G = G \\cdot \\frac{m_1 \\cdot m_2}{r^2}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Gravitationskonstante: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{G = 6{,}6743 \\cdot 10^{-11}\\,\\frac{\\text{N}\\cdot\\text{m}^2}{\\text{kg}^2}}"
+            },
+            {
+              "type": "text",
+              "text": " (experimentell gemessen von Henry Cavendish). - Zusammenhang mit der Erdbeschleunigung "
+            },
+            {
+              "type": "math",
+              "tex": "g"
+            },
+            {
+              "type": "text",
+              "text": ":   "
+            },
+            {
+              "type": "math",
+              "tex": "F_G = m \\cdot g \\implies g = G \\cdot \\frac{M_E}{R_E^2} \\approx 6{,}674 \\cdot 10^{-11} \\cdot \\frac{5{,}97 \\cdot 10^{24}\\text{ kg}}{(6{,}371 \\cdot 10^6\\text{ m})^2} = \\mathbf{9{,}81\\,\\frac{\\text{m}}{\\text{s}^2}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 2. Die drei Gesetze der Planetenbewegung (Johannes Kepler): - 1. Keplersches Gesetz (Ellipsensatz):   * Die Umlaufbahnen aller Planeten sind Ellipsen, in deren einem Brennpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "F_1"
+            },
+            {
+              "type": "text",
+              "text": " die Sonne steht (der zweite Brennpunkt "
+            },
+            {
+              "type": "math",
+              "tex": "F_2"
+            },
+            {
+              "type": "text",
+              "text": " ist leer). - 2. Keplersches Gesetz (Flächensatz):   * Ein von der Sonne zum Planeten gezogener Fahrstrahl überstreicht in gleichen Zeitintervallen gleiche Flächeninhalte:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\frac{\\mathrm{d}A}{\\mathrm{d}t} = \\text{konstant}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "   * Konsequenz: In Sonnennähe (Perihel) bewegt sich der Planet am schnellsten; in Sonnenferne (Aphel) am langsamsten (Folge der Drehimpulserhaltung "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{L} = \\vec{r} \\times m\\vec{v} = \\text{konstant}"
+            },
+            {
+              "type": "text",
+              "text": "). - 3. Keplersches Gesetz (Drittes Gesetz):   * Für alle Planeten eines Zentralkörpers ist das Verhältnis aus dem Quadrat der Umlaufzeit "
+            },
+            {
+              "type": "math",
+              "tex": "T"
+            },
+            {
+              "type": "text",
+              "text": " und der dritten Potenz der großen Halbachse "
+            },
+            {
+              "type": "math",
+              "tex": "a"
+            },
+            {
+              "type": "text",
+              "text": " konstant:     "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{\\frac{T^2}{a^3} = \\frac{4\\pi^2}{G \\cdot M_{\\text{Sonne}}} = \\text{konstant}} \\iff \\mathbf{\\frac{T_1^2}{T_2^2} = \\frac{a_1^3}{a_2^3}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " 3. Satellitenbahnen und kosmische Geschwindigkeiten: - Bahngeschwindigkeit eines Satelliten auf einer Kreisbahn mit Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r"
+            },
+            {
+              "type": "text",
+              "text": ":   * Die Gravitationskraft dient exakt als Zentripetalkraft:     "
+            },
+            {
+              "type": "math",
+              "tex": "F_G = F_Z \\implies G \\cdot \\frac{M_E \\cdot m}{r^2} = m \\cdot \\frac{v^2}{r} \\implies \\mathbf{v = \\sqrt{\\frac{G \\cdot M_E}{r}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - 1. Kosmische Geschwindigkeit (Kreisbahngeschwindigkeit an Erdoberfläche "
+            },
+            {
+              "type": "math",
+              "tex": "r = R_E"
+            },
+            {
+              "type": "text",
+              "text": "):   "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbf{v_1 = \\sqrt{g \\cdot R_E} = \\sqrt{9{,}81\\,\\frac{\\text{m}}{\\text{s}^2} \\cdot 6{,}371 \\cdot 10^6\\,\\text{m}} \\approx 7{,}9\\,\\frac{\\text{km}}{\\text{s}} = 28.440\\,\\frac{\\text{km}}{\\text{h}}}",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": " - Geostationäre Bahn:   * Umlaufzeit exakt "
+            },
+            {
+              "type": "math",
+              "tex": "T = 24\\,\\text{h} = 86.400\\,\\text{s} \\implies"
+            },
+            {
+              "type": "text",
+              "text": " Bahnradius "
+            },
+            {
+              "type": "math",
+              "tex": "r_{\\text{geo}} \\approx 42.164\\,\\text{km}"
+            },
+            {
+              "type": "text",
+              "text": " (Höhe ca. "
+            },
+            {
+              "type": "math",
+              "tex": "35.786\\,\\text{km}"
+            },
+            {
+              "type": "text",
+              "text": " über dem Äquator)."
+            }
+          ],
+          "materiality": "cosmetic"
         }
       ]
     }

@@ -27,9 +27,11 @@ import {
   fallbackContextBarState,
   showConnectionNotice as showConnectionNoticeShared,
 } from "./context-bar.js";
+import type { Condition } from "../../../src/kernel/atlas/condition.js";
 import {
   type GraphNodeBounds,
   graphEdgeEndpoints,
+  graphNodeStyle,
   graphNodeTitle,
   wrapGraphLabel,
 } from "./graph-layout.js";
@@ -115,6 +117,9 @@ interface GraphNode {
   concept: string;
   domain: string;
   bloomLevel: number;
+  /** Subject key for the hue; absent from bridges older than atlas phase 2. */
+  hueKey?: string;
+  condition?: Condition | null;
   knowledgeContexts: KnowledgeContextRef[];
   card: GraphCard | null;
 }
@@ -423,6 +428,12 @@ async function bootstrapWithoutFocus(): Promise<void> {
   focusScopeDefault();
 }
 
+function panelTheme(): "light" | "dark" {
+  return window.matchMedia?.("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
 function bloomStep(level: number): number {
   return Math.min(5, Math.max(1, Math.round(level) || 1));
 }
@@ -462,8 +473,12 @@ function createNode(
     `graph-node graph-node-${kind}${node.card ? "" : " graph-node-nocard"}`,
   );
 
+  // The tooltip names the condition in words, so colour never carries it alone.
   const title = document.createElementNS(SVG_NS, "title");
-  title.textContent = node.concept;
+  const condition = node.condition
+    ? t(`condition_${node.condition}`)
+    : t("graph_no_card");
+  title.textContent = `${node.concept}\n${condition} · Bloom ${bloomStep(node.bloomLevel)}`;
   g.appendChild(title);
 
   const text = document.createElementNS(SVG_NS, "text");
@@ -499,7 +514,9 @@ function createNode(
   const contentHeight = labelLines.length * LABEL_LINE_HEIGHT + NODE_PAD_Y * 2;
   const height =
     Math.max(NODE_HEIGHT, contentHeight) * (kind === "center" ? 1.15 : 1);
-  const step = bloomStep(node.bloomLevel);
+  // Subject hue for where, condition for how well (ADR 2026-10-13,
+  // Decision 4); the stroke pattern repeats the condition's texture.
+  const style = graphNodeStyle(node, panelTheme());
 
   const rect = document.createElementNS(SVG_NS, "rect");
   rect.setAttribute("x", String(-width / 2));
@@ -509,8 +526,10 @@ function createNode(
   rect.setAttribute("rx", "10");
   rect.setAttribute("ry", "10");
   rect.setAttribute("class", "graph-node-rect");
-  rect.style.fill = `var(--bloom-${step}-bg)`;
-  rect.style.stroke = `var(--bloom-${step})`;
+  rect.style.fill = style.fill;
+  rect.style.stroke = style.stroke;
+  if (style.dash) rect.style.strokeDasharray = style.dash;
+  if (style.opacity < 1) g.style.opacity = String(style.opacity);
   g.insertBefore(rect, text);
 
   if (node.card?.blocked) {
