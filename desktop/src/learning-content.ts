@@ -8,6 +8,7 @@ import {
 } from "./card-text-editor.js";
 import { runBridge } from "./bridge-transport.js";
 import { currentLocale, t, tf } from "./i18n.js";
+import { webSourceLink } from "./source-link.js";
 import {
   applyLearningContentSourceChrome,
   initLearningContentSources,
@@ -474,6 +475,19 @@ export function setLearningContentGraphOpener(opener: () => void): void {
  * *Nachlesen* (ADR 2026-10-14, Decision 4) opens in the system browser,
  * which only the desktop shell can reach. Without it the button stays away.
  */
+/**
+ * The editor's „Öffnen ↗“ beside the source field: shown while the field
+ * holds a web link that the system browser can open (ADR 2026-10-19 D6).
+ */
+function syncEditorSourceOpen(): void {
+  const button = document.getElementById("btn-editor-open-source");
+  if (!button || !fieldSourceLink) return;
+  const web = webSourceLink(fieldSourceLink.value, t("source_open_lesson"));
+  button.hidden = !web || !externalOpener;
+  button.textContent = t("source_open");
+  button.title = web?.title ?? "";
+}
+
 export function setLearningContentExternalOpener(
   opener: (url: string) => void,
 ): void {
@@ -650,6 +664,14 @@ export function initLearningContentStudio(): void {
   fieldSourceLink = document.getElementById(
     "editor-field-source-link",
   ) as HTMLInputElement;
+  const openSource = document.getElementById("btn-editor-open-source");
+  if (openSource) {
+    fieldSourceLink.addEventListener("input", syncEditorSourceOpen);
+    openSource.addEventListener("click", () => {
+      const web = webSourceLink(fieldSourceLink.value, t("source_open_lesson"));
+      if (web) externalOpener?.(web.href);
+    });
+  }
   fieldContext = document.getElementById(
     "editor-field-context",
   ) as HTMLInputElement;
@@ -1427,6 +1449,7 @@ function selectCard(card: PersonalCard): void {
   fieldTitle.value = card.title || "";
   fieldDomain.value = card.domain || "";
   fieldSourceLink.value = card.sourceLink || "";
+  syncEditorSourceOpen();
   fieldContext.value = card.context || "";
   fieldBloom.value = String(card.bloomLevel || 1);
   fieldMode.value = card.symbiosisMode || "none";
@@ -1479,6 +1502,7 @@ function startCreateNewCard(): void {
   fieldTitle.value = "";
   fieldDomain.value = "";
   fieldSourceLink.value = "";
+  syncEditorSourceOpen();
   fieldContext.value = "";
   fieldBloom.value = "1";
   fieldMode.value = "none";

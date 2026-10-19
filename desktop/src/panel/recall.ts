@@ -35,6 +35,7 @@ import {
 import { currentLocale, setCurrentLocale, t, tf } from "../i18n.js";
 import { renderCardText } from "../card-text-render.js";
 import { renderQuestionWithTopic } from "../question-topic.js";
+import { webSourceLink } from "../source-link.js";
 import {
   type BonusOffer,
   bonusBecause,
@@ -305,6 +306,30 @@ async function changeLearningMode(
         ?.removeAttribute("disabled");
     }
   }
+}
+
+/**
+ * A web source after reveal (ADR 2026-10-19 D6). The host opens it on the
+ * learner's click when it can open links; otherwise the label stays text.
+ */
+function appendSourceLink(
+  host: HTMLElement,
+  sourceLink: string | null | undefined,
+): void {
+  const web = webSourceLink(sourceLink, t("source_open_lesson"));
+  if (!web) return;
+  const canOpen = Boolean(app.getHostCapabilities()?.openLinks);
+  const el = document.createElement(canOpen ? "button" : "span");
+  el.className = canOpen ? "recall-source-link link-btn" : "recall-source-link";
+  el.textContent = web.label;
+  el.title = web.title;
+  if (canOpen && el instanceof HTMLButtonElement) {
+    el.type = "button";
+    el.addEventListener("click", () => {
+      void app.openLink({ url: web.href }).catch(() => undefined);
+    });
+  }
+  host.appendChild(el);
 }
 
 function remaining(): number {
@@ -1211,6 +1236,7 @@ async function presentCurrentCard(): Promise<void> {
     // First and only time the concept hits the DOM, formulas typeset.
     void renderCardText(conceptEl, card.conceptSegments, concept);
     reveal.appendChild(conceptEl);
+    appendSourceLink(reveal, card.sourceLink);
 
     appendRatings(reveal);
     root.appendChild(reveal);

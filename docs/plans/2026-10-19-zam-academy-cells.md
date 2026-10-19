@@ -33,7 +33,7 @@ can pick up the next unchecked phase without any other context.
 
 - [x] **Phase 1** — zam-academy: `uml/cell.json`, `catalog.json`, CI that
   validates the cell (zam-academy#1, live 2026-10-19)
-- [ ] **Phase 2** — ZAM: clickable web source links (D6)
+- [x] **Phase 2** — ZAM: clickable web source links (D6)
 - [x] **Phase 3** — kernel: reconcile never downgrades (D4)
 - [ ] **Phase 4** — CLI and kernel: catalog read, cache, enrol, update (D4)
 - [ ] **Phase 5** — Studio: the Academy list and update on a held cell (D5)

@@ -16,6 +16,7 @@ import {
   renderCardText,
 } from "../../desktop/src/card-text-render.js";
 import { renderQuestionWithTopic } from "../../desktop/src/question-topic.js";
+import { webSourceLink } from "../../desktop/src/source-link.js";
 import {
   beginTurn,
   completeTurn,
@@ -2125,18 +2126,6 @@ async function refreshStats(): Promise<void> {
   }
 }
 
-function externalSourceUrl(value: string | null | undefined): string | null {
-  if (!value) return null;
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" || url.protocol === "http:"
-      ? url.toString()
-      : null;
-  } catch {
-    return null;
-  }
-}
-
 function renderQueue(queue: ReviewQueue): void {
   summary.textContent = tf("queue_summary", {
     count: queue.items.length,
@@ -3181,9 +3170,13 @@ async function renderCurrentReview(message = ""): Promise<void> {
     prompt.concept,
     reviewImages,
   );
-  const sourceUrl = externalSourceUrl(prompt.sourceLink);
-  reviewSource.hidden = !sourceUrl;
-  if (sourceUrl) reviewSource.href = sourceUrl;
+  const source = webSourceLink(prompt.sourceLink, t("source_open_lesson"));
+  reviewSource.hidden = !source;
+  if (source) {
+    reviewSource.href = source.href;
+    reviewSource.textContent = source.label;
+    reviewSource.title = source.title;
+  }
   if (!reviewSession.revealed) clearEvaluationUi();
   else if (currentEvaluation) showEvaluationUi(currentEvaluation);
   for (const button of ratingButtons) {
