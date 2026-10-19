@@ -119,6 +119,11 @@ export interface KvtPracticeItem {
   question: string;
   concept: string;
   /**
+   * Optional deep-link to the learning source or interactive training tool
+   * lesson (e.g. `uml-learning-app/UML-Studio-Academy.html#lesson=1.1`).
+   */
+  source_link?: string | null;
+  /**
    * How a changed question/answer affects people who already learned it.
    * Absent means `material` — an unannotated content change must never pass
    * silently under a learner's existing stability.
@@ -160,6 +165,8 @@ export interface KvtAtom {
   domain?: string;
   reduction?: string;
   typical_age_min?: number;
+  /** Optional default source/training-tool link inherited by practice items. */
+  source_link?: string | null;
   prerequisites?: KvtAtomPrerequisite[];
   alignments?: KvtAlignment[];
   curricula?: KvtCurriculumBinding[];
@@ -363,6 +370,13 @@ function bloomOf(item: KvtPracticeItem): BloomLevel {
     throw new Error(`bloom_level must be 1–5, got ${String(level)}`);
   }
   return level;
+}
+
+function sourceLinkOf(atom: KvtAtom, item: KvtPracticeItem): string | null {
+  const raw = item.source_link ?? atom.source_link;
+  if (typeof raw !== "string") return null;
+  const trimmed = raw.trim();
+  return trimmed.length > 0 ? trimmed : null;
 }
 
 /**
@@ -645,6 +659,7 @@ export async function installKvtTile(
             question_source: "manual",
             domain: atom.domain ?? "",
             bloom_level: bloomOf(item),
+            source_link: sourceLinkOf(atom, item),
             atom_id: atom.id,
             provider: projected?.provider ?? null,
             topic_id: projected?.topic_code ?? null,
@@ -717,7 +732,7 @@ export async function installKvtTile(
         await tx
           .prepare(
             `UPDATE tokens
-                SET atom_id = ?, provider = ?, topic_id = ?, edge_representative = ?
+                SET atom_id = ?, provider = ?, topic_id = ?, edge_representative = ?, source_link = ?
               WHERE id = ?`,
           )
           .run(
@@ -725,6 +740,7 @@ export async function installKvtTile(
             projected?.provider ?? existing.provider,
             projected?.topic_code ?? existing.topic_id,
             item.edge_representative ? 1 : 0,
+            sourceLinkOf(atom, item) ?? existing.source_link,
             item.id,
           );
         await syncCuratedDistractors(tx, item, choiceDistractorsOf(item));

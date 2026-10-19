@@ -1,0 +1,587 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam:uml-2-5-1-systemdenken",
+  "version": "2026.10.1",
+  "title": "UML 2.5.1 & Systemdenken (ZAM Training-Akademie)",
+  "description": "Begleitendes ZAM-Lernthema (KVT-Zelle) zum interaktiven UML-2.5.1-Trainingstool: Nach dem praktischen Aufbau des Systemverständnisses (Etappen 1–6) sichert dieses Lernthema das Wissen langfristig gegen das Vergessen ab (FSRS Spaced Repetition) und verknüpft jede Karte per source_link direkt mit der jeweiligen Übungslektion im Trainingstool — als Blaupause für zweistufiges Lernen (Aufbauen im Trainingstool → Festigen in ZAM), wie auch in Mathematik oder Physik.",
+  "publisher": "ZAM Systems Thinker Academy",
+  "published_at": "2026-10-19T09:00:00Z",
+  "sources": [
+    {
+      "uri": "uml-learning-app/UML-Studio-Academy.html",
+      "checked": "2026-10-19",
+      "label": "UML 2.5.1 Studio & Systems Thinker Academy (Interaktives Trainingstool, Etappen 1–6)"
+    },
+    {
+      "uri": "https://www.omg.org/spec/UML/2.5.1/",
+      "checked": "2026-10-19",
+      "label": "OMG Unified Modeling Language (UML) Version 2.5.1 Specification"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8M251SYST00000000000A01",
+      "atom_uri": "urn:zam:atom:01K8M251SYST00000000000A01",
+      "namespace": "zam-academy-uml",
+      "slug": "uml-etappe-1-grundbausteine-klassen-use-cases",
+      "title": "Etappe 1: UML-Grundbausteine — 3-Kammer-Klassenbox, Sichtbarkeiten (-/+/#) und Systemgrenze im Use-Case-Diagramm",
+      "domain": "informatik/uml-systemdenken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=1.1",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q169411",
+          "target_label": "Unified Modeling Language",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_uml_academy_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "school_type": "interactive-training",
+          "grade": 1,
+          "subject": "uml-2-5-1",
+          "topic_code": "stage-1-foundations",
+          "topic_title": "Etappe 1: Grundbausteine & Systemgrenzen (Klassen & Use Cases)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8M251SYST00000000000J01",
+          "slug": "uml-etappe-1-klassen-sichtbarkeiten-fast",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=1.2",
+          "question": "Was bedeuten in einer UML-2.5.1-Klassenbox die Sichtbarkeitssymbole `-` und `+` vor Attributen und Operationen?",
+          "concept": "- steht für private (nur innerhalb der eigenen Klasse sichtbar, Datenkapselung) und + steht für public (öffentliche Schnittstelle für externe Aufrufer)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "- bedeutet private (gekapselt), + bedeutet public (öffentlich aufrufbar)",
+              "- bedeutet veraltet (deprecated), + bedeutet neu hinzugefügt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "- kennzeichnet Pflichtfelder, + kennzeichnet optionale Attribute",
+              "reason": "Pflichtfelder werden über Multiplizitäten wie [1] oder [0..1] ausgedrückt, nicht über -/+."
+            },
+            {
+              "text": "- steht für statische Klassenattribute, + für Instanzattribute",
+              "reason": "Statische Elemente werden in UML unterstrichen, nicht mit -/+ markiert."
+            },
+            {
+              "text": "- bedeutet schreibgeschützt (read-only), + bedeutet überschreibbar",
+              "reason": "Read-only wird als Eigenschaft {readOnly} notiert; -/+ regeln die Sichtbarkeit."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000J02",
+          "slug": "uml-etappe-1-klassen-und-systemgrenze-synthese",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=1.4",
+          "question": "Grenze den Aufbau einer UML-2.5.1-Klassenbox (3 Kammern) und das Zusammenspiel von Akteur, Systemgrenze und Anwendungsfall (Use Case) ab.",
+          "concept": "1. Klassenbox: Obere Kammer = Klassenname (Substantiv, ggf. Stereotyp «interface»/«abstract»); mittlere Kammer = Attribute (- name: Typ); untere Kammer = Operationen (+ methode(param: Typ): Rückgabetyp). 2. Use-Case-Diagramm: Systemgrenze (Rechteck) trennt das Innere des Systems (Use Cases als Ellipsen = fachliche Ziele) von der Außenwelt (Akteure als Strichmännchen außerhalb der Grenze).",
+          "choice_distractors": [
+            {
+              "text": "Akteure stehen innerhalb der Systemgrenze und Klassenboxen bestehen aus zwei Kammern für Datenbanktabellen und SQL-Abfragen.",
+              "reason": "Akteure liegen immer außerhalb der Systemgrenze; Klassenboxen haben drei Kammern (Name, Attribute, Operationen)."
+            },
+            {
+              "text": "Use Cases beschreiben interne Code-Schleifen und Klassenboxen stellen physische Server-Hardware dar.",
+              "reason": "Use Cases zeigen extern sichtbaren Nutzen für Akteure; physische Server sind Deployment-Knoten."
+            },
+            {
+              "text": "Die mittlere Kammer einer Klasse enthält Methoden und die untere Kammer enthält Attribute.",
+              "reason": "In UML 2.5.1 stehen Attribute immer in der mittleren und Operationen in der unteren Kammer."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8M251SYST00000000000A02",
+      "atom_uri": "urn:zam:atom:01K8M251SYST00000000000A02",
+      "namespace": "zam-academy-uml",
+      "slug": "uml-etappe-2-beziehungen-vererbung-komposition-include-extend",
+      "title": "Etappe 2: UML-Beziehungen — Vererbung vs. Realisierung, Komposition vs. Aggregation sowie «include» vs. «extend»",
+      "domain": "informatik/uml-systemdenken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=2.1",
+      "prerequisites": [
+        {
+          "atom_id": "01K8M251SYST00000000000A01",
+          "type": "hard",
+          "rationale": "Beziehungspfeile verbinden Klassen, Interfaces und Use Cases aus Etappe 1."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q169411",
+          "target_label": "Unified Modeling Language",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_uml_academy_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "school_type": "interactive-training",
+          "grade": 2,
+          "subject": "uml-2-5-1",
+          "topic_code": "stage-2-relationships",
+          "topic_title": "Etappe 2: Beziehungen & Abhängigkeiten (Pfeile meistern)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8M251SYST00000000000J03",
+          "slug": "uml-etappe-2-komposition-vs-aggregation-fast",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=2.2",
+          "question": "Worin unterscheiden sich Komposition (gefüllte Raute ◆) und Aggregation (leere Raute ◇) in UML 2.5.1, und an welchem Ende der Linie sitzt die Raute?",
+          "concept": "Die Raute sitzt immer am Ganzen (Container); bei der Komposition (◆) ist die Existenz der Teile strikt an das Ganze gebunden (Stirbt das Ganze, sterben die Teile), bei der Aggregation (◇) können die Teile unabhängig weiterexistieren.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Raute sitzt am Ganzen; Komposition (◆) = existenzabhängige Teile, Aggregation (◇) = unabhängig überlebende Teile",
+              "Raute sitzt am Einzelteil; Komposition (◆) = lose Sammlung, Aggregation (◇) = Vererbung"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Raute sitzt am Teil-Objekt und zeigt, dass das Teil mehrere Container gleichzeitig besitzen darf.",
+              "reason": "Die Raute sitzt in UML immer auf der Seite des Ganzen (Containers), niemals am Einzelteil."
+            },
+            {
+              "text": "Aggregation (◇) löscht alle Teile automatisch beim Löschen des Ganzen, Komposition (◆) lässt sie bestehen.",
+              "reason": "Genau umgekehrt: Die ausgefüllte Raute der Komposition (◆) erzwingt die gemeinsame Lebensdauer."
+            },
+            {
+              "text": "Komposition und Aggregation werden nur zwischen Akteuren im Use-Case-Diagramm verwendet.",
+              "reason": "Komposition und Aggregation sind Teil-Ganzes-Beziehungen zwischen Klassen im Strukturmodell."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000J04",
+          "slug": "uml-etappe-2-pfeilrichtungen-vererbung-include-extend-synthese",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=2.4",
+          "question": "Erkläre Notation und Pfeilrichtung für (1) Generalisierung vs. Schnittstellen-Realisierung im Klassendiagramm sowie (2) «include» vs. «extend» im Use-Case-Diagramm.",
+          "concept": "1. Generalisierung (Vererbung): durchgezogene Linie mit leerem Dreieck von der Subklasse zur Superklasse. Realisierung: gestrichelte Linie mit leerem Dreieck von der implementierenden Klasse zum «interface». 2. «include»: gestrichelter Pfeil vom Basis-Use-Case zum zwingend eingebundenen Teil-Use-Case. «extend»: gestrichelter Pfeil vom optionalen Erweiterungs-Use-Case zurück zum Basis-Use-Case.",
+          "choice_distractors": [
+            {
+              "text": "Bei «extend» zeigt der Pfeil vom Basis-Use-Case zur optionalen Erweiterung; bei Vererbung zeigt das Dreieck auf die Unterklasse.",
+              "reason": "Klassische Stolperfalle: «extend» zeigt vom Erweiterungs-Use-Case zum Basis-Use-Case, und das Vererbungsdreieck zeigt immer zur Oberklasse."
+            },
+            {
+              "text": "Generalisierung nutzt eine gestrichelte Linie mit offener Pfeilspitze, Realisierung eine durchgezogene Linie mit gefüllter Raute.",
+              "reason": "Generalisierung ist durchgezogen mit leerem Dreieck; Realisierung ist gestrichelt mit leerem Dreieck."
+            },
+            {
+              "text": "«include» ist optional und wird nur bei Fehlern ausgeführt, während «extend» bei jedem Durchlauf Pflicht ist.",
+              "reason": "«include» wird immer verpflichtend mit ausgeführt; «extend» ist bedingt/optional."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8M251SYST00000000000A03",
+      "atom_uri": "urn:zam:atom:01K8M251SYST00000000000A03",
+      "namespace": "zam-academy-uml",
+      "slug": "uml-etappe-3-aktivitaetsdiagramm-guards-fork-join",
+      "title": "Etappe 3: Aktivitätsdiagramm — Aktionen, Entscheidungen mit Guards [Bedingung], Parallelisierung (Fork/Join) und Swimlanes",
+      "domain": "informatik/uml-systemdenken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=3.1",
+      "prerequisites": [
+        {
+          "atom_id": "01K8M251SYST00000000000A02",
+          "type": "hard",
+          "rationale": "Nach Struktur und Use Cases modelliert Etappe 3 den inneren Kontrollfluss eines Prozesses."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q422894",
+          "target_label": "Activity diagram",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "zam_uml_academy_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "school_type": "interactive-training",
+          "grade": 3,
+          "subject": "uml-2-5-1",
+          "topic_code": "stage-3-activities",
+          "topic_title": "Etappe 3: Abläufe & Prozesse (Aktivitätsdiagramm)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8M251SYST00000000000J05",
+          "slug": "uml-etappe-3-entscheidung-vs-fork-join-fast",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=3.3",
+          "question": "Wie unterscheidet das UML-2.5.1-Aktivitätsdiagramm zwischen einer exklusiven Verzweigung (Entweder-oder) und echter Parallelverarbeitung (Gleichzeitig)?",
+          "concept": "Eine Entscheidungsraute (◇) mit sich ausschließenden Guards [Bedingung] wählt genau einen Pfad (XOR); ein schwarzer Synchronisationsbalken (Fork) startet alle ausgehenden Pfade gleichzeitig (nebenläufig) und ein Join-Balken wartet, bis alle parallelen Pfade fertig sind.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Raute (◇) mit [Guards] = exklusives Entweder-oder; schwarzer Balken (Fork/Join) = gleichzeitige Parallelität",
+              "Raute (◇) = gleichzeitige Ausführung aller Pfade; schwarzer Balken = Programmabbruch"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Beide Symbole führen alle ausgehenden Pfade gleichzeitig aus, aber der Balken benötigt Guards.",
+              "reason": "Nur der Fork-Balken spaltet in parallele Pfade; die Entscheidungsraute benötigt Guards für exklusive Auswahl."
+            },
+            {
+              "text": "Ein Join-Balken schaltet weiter, sobald der allererste parallele Pfad eintrifft.",
+              "reason": "Ein Join-Balken synchronisiert (UND-Zusammenführung): Er wartet, bis alle eingehenden parallelen Token vorliegen."
+            },
+            {
+              "text": "Das Bullseye-Symbol (◉) startet parallele Threads, der ausgefüllte Punkt (●) beendet sie.",
+              "reason": "● ist der Startknoten (Initial Node), ◉ (Bullseye) ist der Aktivitätsendknoten (Activity Final Node)."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000J06",
+          "slug": "uml-etappe-3-aktivitaetsdiagramm-elemente-synthese",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=3.4",
+          "question": "Welche Rolle spielen Startknoten (●), Aktion, Entscheidungsraute (◇) mit Guards, Fork/Join-Balken, Aktivitätsende (◉) und Aktivitätsbereiche (Swimlanes) in einem vollständigen Aktivitätsdiagramm?",
+          "concept": "Startknoten (●) erzeugt das initiale Kontroll-Token; Aktionen (abgerundete Rechtecke mit Verb-Objekt-Namen) führen Schritte aus; Entscheidungsrauten (◇) verzweigen anhand disjunkter Guards in eckigen Klammern [x > 0]; Fork-Balken spalten in nebenläufige Pfade, Join-Balken synchronisieren sie wieder; das Bullseye (◉) beendet die Aktivität; Swimlanes ordnen jeden Schritt der verantwortlichen Rolle/Abteilung zu.",
+          "choice_distractors": [
+            {
+              "text": "Ausgehende Pfeile einer Entscheidungsraute brauchen keine Bedingungen, und ein Join-Balken darf durch einen Endknoten ersetzt werden.",
+              "reason": "Ohne disjunkte Guards [Bedingung] an der Entscheidungsraute ist der Ablauf mehrdeutig; parallele Pfade müssen vor dem Abschluss synchronisiert werden."
+            },
+            {
+              "text": "Swimlanes stellen Zeitachsen in Millisekunden dar und Aktionen repräsentieren statische Datenbanktabellen.",
+              "reason": "Swimlanes strukturieren Verantwortlichkeiten (Wer macht was?), nicht Zeitachsen."
+            },
+            {
+              "text": "Der Startknoten ist ein doppelter Kreis (◉) und das Aktivitätsende ein ausgefüllter schwarzer Punkt (●).",
+              "reason": "Startknoten ist ● (ausgefüllter Kreis), Aktivitätsendknoten ist ◉ (Kreis mit Punkt / Bullseye)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8M251SYST00000000000A04",
+      "atom_uri": "urn:zam:atom:01K8M251SYST00000000000A04",
+      "namespace": "zam-academy-uml",
+      "slug": "uml-etappe-4-sequenzdiagramm-lebenslinien-nachrichten-fragmente",
+      "title": "Etappe 4: Sequenzdiagramm — Lebenslinien, synchrone vs. asynchrone Nachrichten, Antworten und kombinierte Fragmente (alt/opt/loop)",
+      "domain": "informatik/uml-systemdenken",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=4.1",
+      "prerequisites": [
+        {
+          "atom_id": "01K8M251SYST00000000000A03",
+          "type": "hard",
+          "rationale": "Das Sequenzdiagramm verfeinert Prozessschritte in den zeitlich geordneten Nachrichtenaustausch zwischen Teilnehmern."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1321996",
+          "target_label": "Sequence diagram",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "zam_uml_academy_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "school_type": "interactive-training",
+          "grade": 4,
+          "subject": "uml-2-5-1",
+          "topic_code": "stage-4-sequences",
+          "topic_title": "Etappe 4: Interaktion über die Zeit (Sequenzdiagramm)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8M251SYST00000000000J07",
+          "slug": "uml-etappe-4-synchron-asynchron-antwort-fast",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=4.2",
+          "question": "Wie unterscheidet man im UML-2.5.1-Sequenzdiagramm einen synchronen Aufruf, eine asynchrone Nachricht und eine Antwortnachricht (Reply)?",
+          "concept": "Synchroner Aufruf (Sender wartet blockierend): durchgezogene Linie mit gefüllter Pfeilspitze (▸); Asynchrone Nachricht (Sender läuft sofort weiter): durchgezogene Linie mit offener Pfeilspitze (>); Antwortnachricht: gestrichelte Linie mit offener Pfeilspitze (<---).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Synchron = durchgezogen + gefüllte Spitze (▸); Asynchron = durchgezogen + offene Spitze (>); Antwort = gestrichelt (<---)",
+              "Synchron = gestrichelt; Asynchron = Linie mit Raute; Antwort = durchgezogen + leeres Dreieck"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Synchrone Aufrufe sind gestrichelt, während Antworten durchgezogene Linien mit gefülltem Dreieck sind.",
+              "reason": "Antwortnachrichten (Reply) sind in UML 2.5.1 immer gestrichelt; synchrone Aufrufe sind durchgezogen mit gefüllter Spitze."
+            },
+            {
+              "text": "Asynchrone Nachrichten blockieren den Sender, bis der Empfänger eine gestrichelte Antwort zurückschickt.",
+              "reason": "Blockierendes Warten ist das Merkmal synchroner Aufrufe; asynchrone Nachrichten (offene Spitze >) blockieren nicht."
+            },
+            {
+              "text": "Die Zeitachse im Sequenzdiagramm verläuft von oben nach unten entlang der horizontalen Pfeile und von links nach rechts entlang der gestrichelten Linie.",
+              "reason": "Lebenslinien verlaufen vertikal (Zeitachse von oben nach unten), Nachrichten verlaufen horizontal zwischen Lebenslinien."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000J08",
+          "slug": "uml-etappe-4-sequenzdiagramm-fragmente-synthese",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=4.4",
+          "question": "Wie liest man die beiden Dimensionen eines UML-Sequenzdiagramms und wozu dienen kombinierte Fragmente mit den Operatoren `alt`, `opt` und `loop`?",
+          "concept": "Horizontal stehen die kommunizierenden Teilnehmer (Lebenslinien `:Objekt` mit vertikaler gestrichelter Linie); vertikal von oben nach unten schreitet die Zeit voran. Kombinierte Fragmente (Rahmen mit Fünfeck-Label oben links) modellieren Kontrolllogik über Nachrichten: `alt` = Fallunterscheidung mit `[else]`-Zweig, `opt` = optionale Ausführung (einzelnes if ohne else), `loop` = wiederholte Ausführung solange die Guard-Bedingung gilt.",
+          "choice_distractors": [
+            {
+              "text": "alt modelliert Endlosschleifen, loop modelliert Fehlerbehandlung und opt steht für optische Benutzeroberflächen.",
+              "reason": "alt = Alternativen (if/else), opt = Optional (if), loop = Schleife (Wiederholung)."
+            },
+            {
+              "text": "Lebenslinien zeigen Vererbungshierarchien von oben nach unten, während Fragmente Datenbanktabellen gruppieren.",
+              "reason": "Lebenslinien repräsentieren Interaktionsteilnehmer über die Zeit, keine Vererbungsbäume."
+            },
+            {
+              "text": "Eine Antwortnachricht darf eine synchrone Anfrage zeitlich oberhalb des Aufrufpfeils beantworten.",
+              "reason": "Da die Zeit von oben nach unten läuft, muss jede Antwort zeitlich unterhalb des auslösenden Aufrufs liegen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8M251SYST00000000000A05",
+      "atom_uri": "urn:zam:atom:01K8M251SYST00000000000A05",
+      "namespace": "zam-academy-uml",
+      "slug": "uml-etappe-5-zustandsdiagramm-lebenszyklus-transitionen",
+      "title": "Etappe 5: Zustandsdiagramm — Zustände, internes Verhalten (entry/do/exit) und Transitionssyntax Ereignis [Guard] / Effekt",
+      "domain": "informatik/uml-systemdenken",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=5.1",
+      "prerequisites": [
+        {
+          "atom_id": "01K8M251SYST00000000000A04",
+          "type": "hard",
+          "rationale": "Eingehende Ereignisse/Nachrichten aus Interaktionen lösen Zustandsübergänge im Lebenszyklus eines Objekts aus."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q654308",
+          "target_label": "UML state machine",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "zam_uml_academy_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "school_type": "interactive-training",
+          "grade": 5,
+          "subject": "uml-2-5-1",
+          "topic_code": "stage-5-states",
+          "topic_title": "Etappe 5: Lebenszyklen & Zustände (Zustandsdiagramm)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8M251SYST00000000000J09",
+          "slug": "uml-etappe-5-transition-syntax-fast",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=5.2",
+          "question": "Wie lautet die offizielle UML-2.5.1-Syntax für die Beschriftung eines Zustandsübergangs (Transition) und wann feuert er?",
+          "concept": "Syntax: Ereignis [Wächterbedingung] / Effekt-Aktion (z. B. bezahlen [Betrag gedeckt] / Rechnung senden). Die Transition feuert nur, wenn das Ereignis eintritt UND die Bedingung in eckigen Klammern wahr ist; dabei wird die Aktion hinter dem Schrägstrich ausgeführt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ereignis [Guard-Bedingung] / Effekt-Aktion — feuert bei Ereignis nur, wenn der Guard wahr ist",
+              "[Ereignis] / Guard : Effekt — feuert automatisch ohne Auslöser in jedem Takt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Aktion / [Ereignis] : Bedingung — die Aktion läuft vor der Prüfung der Bedingung.",
+              "reason": "Erst löst das Ereignis aus, dann wird [Guard] geprüft, und erst beim Feuern wird / Effekt ausgeführt."
+            },
+            {
+              "text": "Zustandsnamen werden als Imperativ-Verben formuliert (z. B. 'Rechnung drucken'), Transitionen als Substantive.",
+              "reason": "Zustände beschreiben beständige Situationen/Phasen (z. B. 'Bezahlt', 'In Prüfung'), nicht einmalige Befehle."
+            },
+            {
+              "text": "Ein Objekt kann vom Endzustand (◉) jederzeit über eine normale Transition in den Startzustand (●) zurückkehren.",
+              "reason": "Der Endzustand (Final State ◉) beendet den Lebenszyklus des Objekts endgültig und hat keine ausgehenden Transitionen."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000J10",
+          "slug": "uml-etappe-5-entry-do-exit-und-transitionen-synthese",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=5.4",
+          "question": "Erkläre den Unterschied zwischen den internen Zustandsaktivitäten `entry / ...`, `do / ...` und `exit / ...` eines UML-Zustands sowie das Zusammenspiel mit ein- und ausgehenden Transitionen.",
+          "concept": "`entry / Aktion` wird genau einmal sofort beim Betreten des Zustands ausgeführt; `do / Aktivität` läuft andauernd, solange das Objekt im Zustand verweilt (unterbrechbar durch ein Ereignis); `exit / Aktion` wird garantiert beim Verlassen des Zustands über eine ausgehende Transition (`Ereignis [Guard] / Effekt`) ausgeführt.",
+          "choice_distractors": [
+            {
+              "text": "entry läuft beim Verlassen des Zustands, do nur einmal beim Start und exit in einer Endlosschleife.",
+              "reason": "entry = beim Eintritt, do = während des Verweilens, exit = beim Austritt."
+            },
+            {
+              "text": "Zustandsdiagramme modellieren den Nachrichtenfluss zwischen zehn verschiedenen Systemen gleichzeitig.",
+              "reason": "Ein Zustandsdiagramm modelliert den Lebenszyklus einer einzelnen Instanz/Klasse über ihre Zustände."
+            },
+            {
+              "text": "Wenn zwei ausgehende Transitionen dasselbe Ereignis tragen, dürfen sie identische Guards besitzen.",
+              "reason": "Identische Guards beim selben Ereignis erzeugen Nichtdeterminismus; Guards müssen sich gegenseitig ausschließen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8M251SYST00000000000A06",
+      "atom_uri": "urn:zam:atom:01K8M251SYST00000000000A06",
+      "namespace": "zam-academy-uml",
+      "slug": "uml-etappe-6-komponenten-schnittstellen-lollipop-socket-deployment",
+      "title": "Etappe 6: Komponenten- & Architekturdiagramm — «component», Provided/Required Interfaces (Lollipop/Socket) und Deployment-Knoten",
+      "domain": "informatik/uml-systemdenken",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=6.1",
+      "prerequisites": [
+        {
+          "atom_id": "01K8M251SYST00000000000A05",
+          "type": "hard",
+          "rationale": "Etappe 6 bündelt Klassen, Prozesse, Interaktionen und Zustände zu austauschbaren Software-Komponenten und Laufzeitknoten."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1139809",
+          "target_label": "Component diagram",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "zam_uml_academy_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "school_type": "interactive-training",
+          "grade": 6,
+          "subject": "uml-2-5-1",
+          "topic_code": "stage-6-architecture",
+          "topic_title": "Etappe 6: Architektur & Komponenten (Komponentendiagramm)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8M251SYST00000000000J11",
+          "slug": "uml-etappe-6-lollipop-vs-socket-fast",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=6.2",
+          "question": "Was bedeuten im UML-2.5.1-Komponentendiagramm das Lollipop-Symbol (geschlossener Kreis ○─) und das Socket-Symbol (offener Halbkreis subset/Greifer ──()?",
+          "concept": "Das Lollipop-Symbol (○─) steht für ein Provided Interface (bereitgestellte Schnittstelle, die eine Komponente anbietet); das Socket-Symbol (──() steht für ein Required Interface (benötigte Schnittstelle, die eine andere Komponente konsumiert).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Lollipop (○─) = bereitgestellte Schnittstelle (Provided); Socket (──() = benötigte Schnittstelle (Required)",
+              "Lollipop (○─) = Startknoten einer Aktivität; Socket (──() = gelöschte Datenbank"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Lollipop (○─) zeigt eine fehlende Abhängigkeit an, während Socket (──() einen Server-Endpunkt bereitstellt.",
+              "reason": "Umgekehrt: Der Anbieter stellt den Lollipop (○─) bereit, der Konsument greift mit dem Socket (──() zu."
+            },
+            {
+              "text": "Komponenten dürfen in UML 2.5.1 nur direkt mit internen privaten Attributen anderer Komponenten verdrahtet werden.",
+              "reason": "Komponenten kapseln ihr Inneres strikt ab und kommunizieren ausschließlich über definierte Schnittstellen (Interfaces) und Ports."
+            },
+            {
+              "text": "Ein «artifact» stellt einen physischen Server-Rechner dar, während ein «node» eine kompilierte .jar-Datei ist.",
+              "reason": "Ein «node» ist die Laufzeit-Ressource (Server/Container), ein «artifact» das darauf deployte Software-Paket (.jar/.zip)."
+            }
+          ]
+        },
+        {
+          "id": "01K8M251SYST00000000000J12",
+          "slug": "uml-etappe-6-architektur-komponenten-deployment-synthese",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "uml-learning-app/UML-Studio-Academy.html#lesson=6.4",
+          "question": "Wie wirken im UML-2.5.1-Architekturmodell «component», Provided/Required Interfaces (Lollipop & Socket), «artifact» und «node» zusammen, um lose gekoppelte Systeme zu beschreiben?",
+          "concept": "Eine «component» ist ein modularer, austauschbarer Systembaustein. Sie bietet ihre Dienste über ein Provided Interface (Lollipop ○─) an und deklariert externe Abhängigkeiten über Required Interfaces (Socket ──(), sodass Implementierungen ohne Änderung der Konsumenten ausgetauscht werden können. Für den Betrieb wird die Komponente in einem «artifact» (z. B. .zip/.jar) gebündelt und auf einem «node» (Laufzeitumgebung/Server) bereitgestellt (deployed).",
+          "choice_distractors": [
+            {
+              "text": "Komponenten greifen ohne Interfaces direkt auf die privaten Felder anderer Komponenten zu, um lose Kopplung zu erreichen.",
+              "reason": "Direkter Zugriff auf Interna erzeugt enge Kopplung; lose Kopplung entsteht erst durch die Trennung über Provided/Required Interfaces."
+            },
+            {
+              "text": "Ein «node» wird innerhalb einer «interface»-Box installiert und enthält ausschließlich Use-Case-Akteure.",
+              "reason": "Ein «node» repräsentiert physische oder virtuelle Infrastruktur, auf der Artefakte und Komponenten laufen."
+            },
+            {
+              "text": "Komponentendiagramme zeigen nur die zeitliche Reihenfolge von Schleifen in einer einzelnen Methode.",
+              "reason": "Komponentendiagramme zeigen die modulare Systemarchitektur und Schnittstellen-Verdrahtung, nicht Methodenschleifen."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- MANDATORY: Declare support for both light and dark themes -->
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      try {
+        document.querySelector('meta[name="color-scheme"]').content =
+          localStorage.getItem("color-scheme") ?? "light dark";
+      } catch {}
+    </script>
+    <title>UML 2.5.1 Studio &amp; Systemdenker-Akademie</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div id="app" class="app-shell">
+      <!-- Top Navigation Bar -->
+      <header class="app-header">
+        <div class="brand-lockup">
+          <div class="brand-emblem" aria-hidden="true">📐</div>
+          <div>
+            <h1 class="brand-title" id="brand-title-text">
+              UML 2.5.1 Studio &amp; Akademie
+            </h1>
+            <p class="brand-subtitle" id="brand-subtitle-text">
+              Systeme verstehen. Ideen grafisch präzise ausdrücken.
+            </p>
+          </div>
+        </div>
+
+        <nav class="main-nav" aria-label="Navigation">
+          <button
+            type="button"
+            class="nav-tab is-active"
+            data-view="path"
+            id="nav-btn-path"
+          >
+            🗺️ Lernpfad
+          </button>
+          <button
+            type="button"
+            class="nav-tab"
+            data-view="lesson"
+            id="nav-btn-lesson"
+          >
+            🎓 Aktuelle Lektion
+          </button>
+          <button
+            type="button"
+            class="nav-tab"
+            data-view="studio"
+            id="nav-btn-studio"
+          >
+            🎨 Freier Editor („Ideen visualisieren“)
+          </button>
+          <button
+            type="button"
+            class="nav-tab"
+            data-view="reference"
+            id="nav-btn-reference"
+          >
+            📖 UML 2.5.1 Spickzettel
+          </button>
+        </nav>
+
+        <div class="header-controls">
+          <!-- Difficulty Level Switcher (Level 1 Guided vs Level 2 System Translation) -->
+          <div
+            class="segmented-control"
+            id="difficulty-switcher"
+            role="group"
+            aria-label="Difficulty Level"
+          >
+            <button
+              type="button"
+              class="seg-btn is-active"
+              data-level="1"
+              id="level-btn-1"
+            >
+              🌱 Level 1: Geführt
+            </button>
+            <button
+              type="button"
+              class="seg-btn"
+              data-level="2"
+              id="level-btn-2"
+            >
+              🦅 Level 2: System-Übersetzung
+            </button>
+          </div>
+
+          <!-- Language Switcher (DE / EN) -->
+          <div
+            class="segmented-control"
+            id="locale-switcher"
+            role="group"
+            aria-label="Language / Sprache"
+          >
+            <button
+              type="button"
+              class="seg-btn is-active"
+              data-locale="de"
+              id="locale-btn-de"
+              title="Deutsch"
+            >
+              🇩🇪 DE
+            </button>
+            <button
+              type="button"
+              class="seg-btn"
+              data-locale="en"
+              id="locale-btn-en"
+              title="English"
+            >
+              🇬🇧 EN
+            </button>
+          </div>
+
+          <div
+            class="header-progress-pill"
+            id="header-progress-summary"
+            title="Dein Gesamtfortschritt im Lernpfad"
+          >
+            <div class="progress-ring-wrapper progress-ring-sm">
+              <progress
+                id="header-progress-ring"
+                value="0"
+                max="100"
+                aria-label="Gesamtfortschritt im Lernpfad"
+                class="progress-ring"
+              ></progress>
+              <div class="progress-ring-content" id="header-progress-text">
+                0%
+              </div>
+            </div>
+            <div class="header-progress-meta">
+              <span class="header-progress-label" id="header-progress-label"
+                >Systemdenker-Pfad</span
+              >
+              <strong id="header-progress-counts">0 / 24 Schritte</strong>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="zam-header-pill-btn"
+            id="zam-consolidate-btn"
+            title="Wissen in ZAM festigen &amp; Vergessen verhindern (Spaced Repetition)"
+          >
+            🧠 <span id="zam-consolidate-btn-label">In ZAM festigen</span>
+          </button>
+
+          <button
+            type="button"
+            class="icon-btn"
+            id="sound-toggle-btn"
+            title="Feier-Klänge ein-/ausschalten"
+            aria-label="Feier-Klänge ein-/ausschalten"
+          >
+            🔊
+          </button>
+
+          <button
+            type="button"
+            class="icon-btn theme-toggle-btn"
+            id="theme-toggle-btn"
+            title="Farbschema umschalten (Hell / Dunkel)"
+          >
+            <span class="theme-option-dark" aria-hidden="true">🌙</span>
+            <span class="theme-option-dark sr-only"
+              >Zu dunklem Farbschema wechseln</span
+            >
+            <span class="theme-option-light" aria-hidden="true">☀️</span>
+            <span class="theme-option-light sr-only"
+              >Zu hellem Farbschema wechseln</span
+            >
+          </button>
+        </div>
+      </header>
+
+      <!-- Main View Host -->
+      <main id="main-view-host" class="main-view-host"></main>
+    </div>
+
+    <!-- Persistent Toast Stack (popover="manual") -->
+    <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

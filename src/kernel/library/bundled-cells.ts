@@ -700,6 +700,9 @@ import tile227Raw from "../../../tests/fixtures/curriculum/de-by-realschule-opti
 import tile228Raw from "../../../tests/fixtures/curriculum/de-by-realschule-optik-kvt.json" with {
   type: "json",
 };
+import tile229Raw from "../../../tests/fixtures/curriculum/zam-uml-2-5-1-systemdenken-kvt.json" with {
+  type: "json",
+};
 // --- end bundled-tile-imports ---
 
 export interface CurriculumScope {
@@ -739,6 +742,8 @@ export interface BundledCellInfo {
   inScopeAtomIds: string[];
   /** Curriculum positions this cell covers, used by every discovery surface. */
   curriculumScopes: CurriculumScope[];
+  /** Optional interactive training tool path/URL that builds up the knowledge consolidated by this cell. */
+  trainingToolUrl?: string;
 }
 
 export interface BundledCellStatus extends BundledCellInfo {
@@ -1214,12 +1219,17 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile227Raw as unknown as BundledTile,
   [(tile228Raw as unknown as BundledTile).tile_id]:
     tile228Raw as unknown as BundledTile,
+  [(tile229Raw as unknown as BundledTile).tile_id]:
+    tile229Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 
 function formatGradeLabel(tile: BundledTile): string {
   const firstCurriculum = tile.atoms[0]?.curricula?.[0];
   if (firstCurriculum) {
+    if (firstCurriculum.provider === "zam-academy") {
+      return "ZAM Training-Akademie · Begleit-Lernpfad (Etappen 1–6)";
+    }
     const school =
       firstCurriculum.school_type === "gymnasium" ? "Gymnasium" : "Realschule";
     const grade = firstCurriculum.grade
@@ -1320,12 +1330,33 @@ const PILOT_OVERRIDES: Record<string, Partial<BundledCellInfo>> = {
       "01K3X9A7R4B8C1D2E3F4G5A009",
     ],
   },
+  "zam:uml-2-5-1-systemdenken": {
+    title: "UML 2.5.1 & Systemdenken (ZAM Training-Akademie)",
+    gradeLabel: "ZAM Training-Akademie · Begleit-Lernpfad (Etappen 1–6)",
+    description:
+      "Langzeit-Festigung (FSRS Spaced Repetition) nach dem interaktiven UML-2.5.1-Training: Klassendiagramme, Use Cases, Aktivitäten, Sequenzen, Zustände und Komponenten — mit direkter Rückverbindung (source_link) in die jeweilige Lektion des UML-Trainingstools.",
+    publisher: "ZAM Systems Thinker Academy",
+    publishedAt: "2026-10-19T09:00:00Z",
+    atomCount: 6,
+    inScopeAtomIds: [
+      "01K8M251SYST00000000000A01",
+      "01K8M251SYST00000000000A02",
+      "01K8M251SYST00000000000A03",
+      "01K8M251SYST00000000000A04",
+      "01K8M251SYST00000000000A05",
+      "01K8M251SYST00000000000A06",
+    ],
+    trainingToolUrl: "uml-learning-app/UML-Studio-Academy.html",
+  },
 };
 
 export const BUNDLED_CELLS: BundledCellInfo[] = Object.values(
   BUNDLED_TILES,
 ).map((tile) => {
   const override = PILOT_OVERRIDES[tile.tile_id];
+  const trainingToolUrl =
+    override?.trainingToolUrl ||
+    tile.sources?.find((s) => s.uri.includes("UML-Studio-Academy.html"))?.uri;
   return {
     id: tile.tile_id,
     title: override?.title || tile.title || tile.tile_id,
@@ -1338,6 +1369,7 @@ export const BUNDLED_CELLS: BundledCellInfo[] = Object.values(
     atomCount: override?.atomCount ?? tile.atoms.length,
     inScopeAtomIds: override?.inScopeAtomIds || tile.atoms.map((a) => a.id),
     curriculumScopes: curriculumScopesForTile(tile),
+    ...(trainingToolUrl ? { trainingToolUrl } : {}),
   };
 });
 
@@ -1352,6 +1384,9 @@ export function listBundledCells(): (BundledCellInfo & {
 })[] {
   return Object.values(BUNDLED_TILES).map((t) => {
     const override = PILOT_OVERRIDES[t.tile_id];
+    const trainingToolUrl =
+      override?.trainingToolUrl ||
+      t.sources?.find((s) => s.uri.includes("UML-Studio-Academy.html"))?.uri;
     return {
       id: t.tile_id,
       tile_id: t.tile_id,
@@ -1366,6 +1401,7 @@ export function listBundledCells(): (BundledCellInfo & {
       atomCount: override?.atomCount ?? t.atoms.length,
       inScopeAtomIds: override?.inScopeAtomIds || t.atoms.map((a) => a.id),
       curriculumScopes: curriculumScopesForTile(t),
+      ...(trainingToolUrl ? { trainingToolUrl } : {}),
       atoms: t.atoms,
     };
   });
