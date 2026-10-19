@@ -269,6 +269,33 @@ jobs:
           projectPath: './desktop'
           args: ${{ matrix.args }}
 
+      # Tauri staples the notarization ticket right after Apple accepts the
+      # app, but the ticket is not always available yet. At v0.54.0 the
+      # notarization came back "Accepted", the verify step below found no
+      # stapled ticket, and a staple a few minutes later worked at once. So
+      # staple here, with retries, before the strict check. The updater
+      # tar.gz is already uploaded by now and stays unstapled; that is fine,
+      # because Gatekeeper checks a notarized app online.
+      - name: Staple the notarization ticket, retrying until Apple serves it (macOS)
+        if: runner.os == 'macOS'
+        working-directory: desktop/src-tauri/target/${{ matrix.target }}/release/bundle/macos
+        run: |
+          if xcrun stapler validate ZAM.app >/dev/null 2>&1; then
+            echo "The ticket is already stapled."
+            exit 0
+          fi
+          for wait in 0 30 60 120 240; do
+            if [ "$wait" -gt 0 ]; then
+              echo "No ticket yet; trying again in ${wait}s."
+              sleep "$wait"
+            fi
+            if xcrun stapler staple ZAM.app; then
+              exit 0
+            fi
+          done
+          echo "::error::Apple did not serve the notarization ticket in time."
+          exit 1
+
       # A single ad-hoc signed Mach-O object anywhere in the bundle makes Apple
       # reject the app, and a new dependency shipping a prebuilt binary is
       # enough to reintroduce that. Fail the release here rather than ship an
