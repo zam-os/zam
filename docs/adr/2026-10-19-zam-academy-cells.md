@@ -3,7 +3,8 @@
 **Status:** Implemented — PR #419 (2026-10-19). Manual checks in the running apps and open questions 1–7 stay open\
 **Date:** 2026-10-19\
 **Deciders:** Thomas (project owner)\
-**Plan:** [2026-10-19 — ZAM Academy cells](../plans/2026-10-19-zam-academy-cells.md)\
+**Plan:** `docs/plans/2026-10-19-zam-academy-cells.md`, removed at release
+0.54.0; read it in the history of zam-os/zam#418 and zam-os/zam#419\
 **Related:**
 [2026-07-17](2026-07-17-okf-knowledge-base.md) (sources that cards cite) ·
 [2026-08-14](2026-08-14-central-learning-atoms-and-identity.md) (Decisions
