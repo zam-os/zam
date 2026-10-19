@@ -54,10 +54,19 @@ import {
   enrolBonusAtom,
 } from "../../src/kernel/library/bonus.js";
 import {
+  BUNDLED_TILES,
   type BundledCellStatus,
+  type BundledTile,
+  bundledCellInfoForTile,
   enrolBundledCell,
   getBundledCellsWithStatus,
+  installedTileVersion,
 } from "../../src/kernel/library/bundled-cells.js";
+import { compareTileVersions } from "../../src/kernel/library/tile-version.js";
+import {
+  fetchMobileAcademyCatalog,
+  fetchMobileAcademyCell,
+} from "./academy.js";
 import {
   assessPrecondition,
   getPreconditionCandidates,
@@ -422,6 +431,7 @@ const bundledCellsStatus = element<HTMLParagraphElement>(
   "bundled-cells-status",
 );
 const openCurriculumButton = element<HTMLButtonElement>("open-curriculum");
+const openAcademyButton = element<HTMLButtonElement>("open-academy");
 const libraryCurriculum = element<HTMLElement>("library-curriculum");
 const curriculumBackButton = element<HTMLButtonElement>("curriculum-back");
 const curriculumBreadcrumb = element<HTMLElement>("curriculum-breadcrumb");
@@ -4832,6 +4842,145 @@ function openMobileCurriculum(): void {
   void renderCurriculumView();
 }
 
+// ── ZAM Academy (ADR 2026-10-19 D4, D5) ─────────────────────────────────────
+// Cells fetched on the learner's tap, for this session.
+const academyTiles = new Map<string, BundledTile>();
+
+async function openMobileAcademy(): Promise<void> {
+  curriculumTrail = [];
+  curriculumView = null;
+  showImport();
+  showLibraryMode("curriculum");
+  renderCurriculumBreadcrumb();
+  curriculumOptions.replaceChildren();
+  curriculumModelSettings.hidden = true;
+  curriculumStepTitle.textContent = t("academy_title");
+  curriculumStepHint.textContent = t("academy_intro");
+  await renderAcademyCells();
+}
+
+async function renderAcademyCells(): Promise<void> {
+  if (!currentUserId) return;
+  setCurriculumStatus(t("academy_loading"));
+  let entries: Awaited<ReturnType<typeof fetchMobileAcademyCatalog>>["cells"] = [];
+  let offline = false;
+  try {
+    entries = (await fetchMobileAcademyCatalog()).cells;
+    for (const entry of entries) {
+      if (academyTiles.get(entry.id)?.version === entry.version) continue;
+      try {
+        academyTiles.set(entry.id, await fetchMobileAcademyCell(entry));
+      } catch {
+        // Listed anyway; „Aufnehmen“ fetches it again.
+      }
+    }
+  } catch {
+    offline = true;
+  }
+
+  const tileOf = (id: string): BundledTile | undefined => {
+    const compiled = BUNDLED_TILES[id];
+    const fetched = academyTiles.get(id);
+    if (!fetched) return compiled;
+    if (!compiled) return fetched;
+    return compareTileVersions(String(fetched.version), String(compiled.version)) === 1
+      ? fetched
+      : compiled;
+  };
+  const ids = [
+    ...new Set([
+      ...Object.keys(BUNDLED_TILES).filter((id) => id.startsWith("zam-academy:")),
+      ...entries.map((entry) => entry.id),
+    ]),
+  ].sort();
+  const tiles = ids
+    .map(tileOf)
+    .filter((tile): tile is BundledTile => tile !== undefined);
+  const statuses = await getBundledCellsWithStatus(
+    db,
+    currentUserId,
+    tiles.map(bundledCellInfoForTile),
+    tileOf,
+  );
+
+  curriculumOptions.replaceChildren();
+  for (const tile of tiles) {
+    const entry = entries.find((cell) => cell.id === tile.tile_id);
+    const status = statuses.find((cell) => cell.id === tile.tile_id);
+    const held = status?.enrolled ?? false;
+    const heldVersion = held ? await installedTileVersion(db, tile.tile_id) : null;
+    const newer =
+      held && compareTileVersions(String(tile.version), heldVersion) === 1;
+    const items = tile.atoms.reduce((n, atom) => n + atom.practice_items.length, 0);
+
+    const card = document.createElement("section");
+    card.className = "curriculum-cell-offer stack";
+    const title = document.createElement("h3");
+    title.className = "t-headline";
+    title.textContent = tile.title ?? tile.tile_id;
+    const meta = document.createElement("p");
+    meta.className = "t-footnote";
+    meta.textContent = tf("academy_row_meta", {
+      items,
+      version: String(tile.version),
+    });
+    card.append(title, meta);
+
+    if (entry?.appUrl) {
+      const practise = document.createElement("a");
+      practise.className = "btn";
+      practise.href = entry.appUrl;
+      practise.target = "_blank";
+      practise.rel = "noreferrer";
+      practise.textContent = t("academy_practise");
+      card.append(practise);
+    }
+
+    const action = document.createElement("button");
+    action.type = "button";
+    action.className = held && !newer ? "btn" : "btn primary";
+    action.disabled = held && !newer;
+    action.textContent = newer
+      ? tf("academy_update_to", { version: String(tile.version) })
+      : held
+        ? t("academy_taken")
+        : t("academy_take");
+    action.addEventListener("click", () => {
+      void takeAcademyCell(tile, action);
+    });
+    card.append(action);
+    curriculumOptions.append(card);
+  }
+  setCurriculumStatus(offline ? t("academy_offline") : "");
+}
+
+async function takeAcademyCell(
+  tile: BundledTile,
+  action: HTMLButtonElement,
+): Promise<void> {
+  if (!currentUserId) return;
+  action.disabled = true;
+  setCurriculumStatus("…");
+  try {
+    // The tap is „Aufnehmen“ or „Aktualisieren“: the newest version this
+    // session fetched is installed, never an older one than the library has.
+    const result = await enrolBundledCell(db, currentUserId, tile.tile_id, {
+      resolveTile: (id) => academyTiles.get(id),
+    });
+    setCurriculumStatus(
+      tf("academy_taken_result", {
+        name: tile.title ?? tile.tile_id,
+        count: result.cardsCreated,
+      }),
+    );
+    await Promise.all([refreshBundledCells(), refresh(currentUserId)]);
+    await renderAcademyCells();
+  } catch (error) {
+    setCurriculumStatus(tf("library_failed", { error: errorMessage(error) }), true);
+    action.disabled = false;
+  }
+}
+
 function renderLibrary(entries: LibraryEntry[]): void {
   libraryList.replaceChildren();
   for (const entry of entries) {
@@ -4976,6 +5125,9 @@ librarySearch.addEventListener("input", () => {
 });
 
 openCurriculumButton.addEventListener("click", openMobileCurriculum);
+openAcademyButton.addEventListener("click", () => {
+  void openMobileAcademy();
+});
 
 curriculumBackButton.addEventListener("click", () => {
   if (curriculumTrail.length === 0) {

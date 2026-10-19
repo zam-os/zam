@@ -38,7 +38,7 @@ can pick up the next unchecked phase without any other context.
 - [x] **Phase 4** — CLI and kernel: catalog read, cache, enrol, update (D4)
 - [x] **Phase 5** — Studio: the Academy list and update on a held cell (D5)
 - [x] **Phase 6** — release flow: sync script, lock file, generic label
-- [ ] **Phase 7** — Mobile: the Academy list (D5)
+- [x] **Phase 7** — Mobile: the Academy list (D5)
 - [ ] **Phase 8** — documentation and handover
 
 **Order.**
