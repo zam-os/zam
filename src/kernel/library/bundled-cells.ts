@@ -7,6 +7,7 @@ import {
   type KvtTile,
   materialiseKvtCards,
 } from "./kvt-attach.js";
+import { compareTileVersions } from "./tile-version.js";
 
 export interface BundledTile extends KvtTile {
   description?: string;
@@ -1790,8 +1791,16 @@ export async function reconcileInstalledBundledTiles(
   const changed = installed.filter((tile) => {
     const row = recorded.get(tile.tile_id);
     if (row?.failed_at && row.failed_at >= PROCESS_STARTED_AT) return false;
+    if (!row) return true;
+    // A library ahead of this build — a newer version installed from the
+    // academy catalog — is never downgraded (ADR 2026-10-19 Decision 4).
+    // Versions that are not dotted numbers keep the old rule: different
+    // means reinstall.
+    const order = compareTileVersions(row.version, String(tile.version));
+    if (order === 1) return false;
     return (
-      !row || row.version !== String(tile.version) || row.failed_at !== null
+      row.failed_at !== null ||
+      (order === null ? row.version !== String(tile.version) : order === -1)
     );
   });
 

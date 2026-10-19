@@ -263,6 +263,30 @@ describe("reconcileInstalledBundledTiles", () => {
     ]);
   });
 
+  // ADR 2026-10-19 Decision 4: a newer version from the academy catalog must
+  // survive the next start of an older build.
+  it("never downgrades a tile recorded ahead of this build", async () => {
+    await installKvtTile(db, bundled);
+    await db
+      .prepare("UPDATE installed_tiles SET version = ? WHERE tile_id = ?")
+      .run("9999.1.1", bundled.tile_id);
+    expect((await reconcileInstalledBundledTiles(db)).reinstalled).toEqual([]);
+    const row = (await db
+      .prepare("SELECT version FROM installed_tiles WHERE tile_id = ?")
+      .get(bundled.tile_id)) as { version: string };
+    expect(row.version).toBe("9999.1.1");
+  });
+
+  it("reinstalls a tile recorded at an older dotted version", async () => {
+    await installKvtTile(db, bundled);
+    await db
+      .prepare("UPDATE installed_tiles SET version = ? WHERE tile_id = ?")
+      .run("0.0.1", bundled.tile_id);
+    expect((await reconcileInstalledBundledTiles(db)).reinstalled).toEqual([
+      bundled.tile_id,
+    ]);
+  });
+
   it("stops at the limit and leaves the rest for the next start", async () => {
     await installKvtTile(db, bundled);
     await db.prepare("DELETE FROM installed_tiles").run();

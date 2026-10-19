@@ -1,7 +1,7 @@
 # ZAM Academy cells — implementation plan
 
-**Status:** ADR proposed 2026-10-19, reviewed by Grok, Gemini and MiMo on
-PR #418; not started.\
+**Status:** ADR merged with this plan in #418 (2026-10-19). Phase 1 is live;
+Phases 2–8 are in progress on `feat/zam-academy-cells`.\
 **Decision:** [ADR 2026-10-19 — ZAM Academy: Cells from academy.zam-os.org,
 One-Click Enrolment, Links Back to the Lesson](../adr/2026-10-19-zam-academy-cells.md).
 Its decisions are cited here as D1–D6. Read the ADR first; this plan does not
@@ -31,10 +31,10 @@ can pick up the next unchecked phase without any other context.
 
 ## Status
 
-- [ ] **Phase 1** — zam-academy: `uml/cell.json`, `catalog.json`, CI that
-  validates the cell
+- [x] **Phase 1** — zam-academy: `uml/cell.json`, `catalog.json`, CI that
+  validates the cell (zam-academy#1, live 2026-10-19)
 - [ ] **Phase 2** — ZAM: clickable web source links (D6)
-- [ ] **Phase 3** — kernel: reconcile never downgrades (D4)
+- [x] **Phase 3** — kernel: reconcile never downgrades (D4)
 - [ ] **Phase 4** — CLI and kernel: catalog read, cache, enrol, update (D4)
 - [ ] **Phase 5** — Studio: the Academy list and update on a held cell (D5)
 - [ ] **Phase 6** — release flow: sync script, lock file, generic label

@@ -518,6 +518,7 @@ export {
   needsGenericCurriculumImport,
   reconcileInstalledBundledTiles,
 } from "./library/bundled-cells.js";
+export { compareTileVersions } from "./library/tile-version.js";
 export {
   CARD_SHAPE_RULES,
   CARD_TEXT_RULE,
