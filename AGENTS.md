@@ -111,6 +111,15 @@ open a terminal.
   tool must change nothing. Secrets go to child processes on stdin or in that
   child's environment, never on a command line. See
   `docs/okf/agent-trust-model.md`.
+- **ZAM Academy cells (ADR 2026-10-19)** are maintained in
+  `zam-os/zam-academy` next to their training apps, never edited here. A
+  release copies them with `npm run academy:sync`, and
+  `tests/kernel/academy-cells-lock.test.ts` fails on a hand edit. Only a
+  learner's action reads `https://academy.zam-os.org` (`zam bridge
+  academy-*`, Mobile's tap). The origin is a constant, redirects fail, and
+  agent tools read only the cache in `~/.zam/academy`. A card's web
+  `source_link` opens in the system browser only on a click, only for
+  http(s) (`desktop/src/source-link.ts`).
 - New kernel API must be re-exported from `src/kernel/index.ts`.
 - **`docs/okf/` is not hand-editable.** It is an OKF knowledge bundle whose
   articles are learning sources (ADR 2026-07-17): write only through the

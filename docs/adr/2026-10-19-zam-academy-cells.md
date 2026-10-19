@@ -1,6 +1,6 @@
 # ZAM Academy: Cells from academy.zam-os.org, One-Click Enrolment, Links Back to the Lesson
 
-**Status:** Proposed\
+**Status:** Implemented — PR #419 (2026-10-19). Manual checks in the running apps and open questions 1–7 stay open\
 **Date:** 2026-10-19\
 **Deciders:** Thomas (project owner)\
 **Plan:** [2026-10-19 — ZAM Academy cells](../plans/2026-10-19-zam-academy-cells.md)\
@@ -390,3 +390,4 @@ and Decision 3 makes it released from that ZAM release on.
     step 7.
   - Decision 6: the label shows host and path, with the host in punycode.
   - The release test checks the recorded copy, not the live catalog.
+- 2026-10-19 — Implemented on `feat/zam-academy-cells` (PR #419): Phases 2–8 of the plan. Phase 1 was zam-os/zam-academy#1.

@@ -1,7 +1,9 @@
 # ZAM Academy cells — implementation plan
 
-**Status:** ADR merged with this plan in #418 (2026-10-19). Phase 1 is live;
-Phases 2–8 are in progress on `feat/zam-academy-cells`.\
+**Status:** All phases built (2026-10-19): Phase 1 in zam-academy#1, Phases
+2–8 in #419. Still open: trying the Academy list, the update check and the
+links in the running Desktop app and on a phone. Delete this plan in the
+release that ships #419.\
 **Decision:** [ADR 2026-10-19 — ZAM Academy: Cells from academy.zam-os.org,
 One-Click Enrolment, Links Back to the Lesson](../adr/2026-10-19-zam-academy-cells.md).
 Its decisions are cited here as D1–D6. Read the ADR first; this plan does not
@@ -39,7 +41,7 @@ can pick up the next unchecked phase without any other context.
 - [x] **Phase 5** — Studio: the Academy list and update on a held cell (D5)
 - [x] **Phase 6** — release flow: sync script, lock file, generic label
 - [x] **Phase 7** — Mobile: the Academy list (D5)
-- [ ] **Phase 8** — documentation and handover
+- [x] **Phase 8** — documentation and handover
 
 **Order.**
 - Phase 1 needs #417 merged.

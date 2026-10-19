@@ -138,6 +138,7 @@ Already in place, and kept: `get-settings` and `model-list` return no keys; `isS
    | `llm.cloud` | `denied`, `allowed` | `denied`: only `local` and `lan` endpoints (D2), and no fallback to a cloud row | `denied` |
    | `llm.endpoints` | host list | Only these model hosts | Only `local` and `lan` endpoints |
    | `sourceLinks.remoteFetch` | `denied`, `allowed` | Content fetches off | `denied` |
+   | `academy.catalog` | `denied`, `allowed` | ZAM Academy catalog off: only bundled academy cells (ADR 2026-10-19 D4) | `denied` |
    | `secrets.bitwarden` | `denied`, `allowed` | Bitwarden backend off | `denied` |
    | `secrets.sessionLifetimeHours` | number | Upper bound for D5 | `0` (not remembered) |
    | `secrets.syncApiKeys` | `denied`, `allowed` | No keys in shared rows | `denied` |

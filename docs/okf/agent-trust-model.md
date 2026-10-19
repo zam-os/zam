@@ -8,7 +8,7 @@ tags:
   - mcp
   - secrets
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/agent-trust-model.md"
-timestamp: 2026-10-15T08:00:00.000Z
+timestamp: 2026-10-19T16:00:00.000Z
 ---
 
 ZAM treats two things as untrusted: the **agent** that calls its tools, and
@@ -69,6 +69,27 @@ It refuses loopback, private, link-local (including the cloud metadata
 address `169.254.169.254`), shared, multicast and unique-local ranges in every
 IPv6 notation; follows at most five redirects, each checked again; sends no
 cookies and no URL credentials; and caps size and time.
+
+**The ZAM Academy catalog** (ADR 2026-10-19) is the one fetch that installs
+content, so it is narrower still.
+
+- **Only the learner's own actions reach it:** opening the Academy list,
+  „Aufnehmen“ and „Aktualisieren“ (`zam bridge academy-*`, and Mobile's tap).
+- **Pinned origin.** `https://academy.zam-os.org` is a constant, and catalog
+  paths resolve against it.
+- **No redirects.** Any redirect fails.
+- **Integrity.** A cell must match the SHA-256, tile id and version in the
+  catalog. The hash binds a cell to its catalog entry; trust in the
+  publisher rests on the pinned origin over TLS.
+- **Agents never fetch.** No MCP tool and no `STUDIO_BRIDGE_COMMANDS` entry
+  reaches the catalog. `zam_bundled_cells_list` and `zam_bundled_cell_enrol`
+  read a machine-local cache (`~/.zam/academy`) of the learner's last check,
+  and the enrol tool never updates a held cell.
+
+**A card's web `source_link`** opens in the system browser only on the
+learner's click, and only for `http:` and `https:`. Its label shows the host
+in punycode, so a look-alike host cannot pass as a known one
+(`desktop/src/source-link.ts`).
 
 Model endpoints are the learner's own choice and may be local, so they follow
 a different rule. A model's locality comes from its parsed host alone:
@@ -170,10 +191,11 @@ before it ships:
    if it changes nothing.
 
 # Citations
+- [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
 - [ADR 2026-10-08 — Observation Without Content](../adr/2026-10-08-skill-learner-observation.md)
 - [ADR 2026-07-30b — Credential Secret Backends](../adr/2026-07-30b-credential-secret-backends.md)
-- Code: `src/kernel/system/trusted-paths.ts`, `src/cli/trusted-folders.ts`, `src/cli/commands/trust.ts`, `src/cli/net/safe-fetch.ts`, `src/cli/adapters/source-reader.ts`, `src/cli/review-context.ts`, `src/kernel/recall/reference-resolver.ts`, `src/cli/okf/io.ts`, `src/cli/okf/bundle.ts`, `src/cli/commands/mcp.ts`, `src/cli/agent-approval.ts`, `src/cli/agent-connect.ts`, `src/copilot-extension/loopback-guard.ts`, `src/kernel/secrets/os-store.ts`, `src/kernel/secrets/backends/os.ts`, `src/kernel/secrets/session-store.ts`, `src/kernel/credentials.ts`, `src/kernel/system/endpoint-confirmation.ts`, `src/cli/llm/model-registry.ts`, `src/cli/llm/client.ts`, `src/cli/llm/capability-probe.ts`, `src/kernel/models/settings.ts`, `desktop/src/mobile-pairing.ts`
-- Tests: `tests/kernel/trusted-paths.test.ts`, `tests/cli/okf-confinement.test.ts`, `tests/cli/trusted-folders.test.ts`, `tests/cli/safe-fetch.test.ts`, `tests/cli/model-endpoint-check.test.ts`, `tests/cli/studio-bridge-review.test.ts`, `tests/cli/agent-approval.test.ts`, `tests/cli/copilot-loopback-guard.test.ts`, `tests/kernel/os-secret-store.test.ts`, `tests/kernel/credentials-os-store.test.ts`, `tests/kernel/bitwarden-session-store.test.ts`, `tests/cli/keys-follow-endpoints.test.ts`, `tests/cli/model-registry.test.ts`, `tests/kernel/secret-masking.test.ts`
+- Code: `src/kernel/system/trusted-paths.ts`, `src/cli/trusted-folders.ts`, `src/cli/commands/trust.ts`, `src/cli/net/safe-fetch.ts`, `src/cli/adapters/source-reader.ts`, `src/cli/review-context.ts`, `src/kernel/recall/reference-resolver.ts`, `src/cli/okf/io.ts`, `src/cli/okf/bundle.ts`, `src/cli/commands/mcp.ts`, `src/cli/agent-approval.ts`, `src/cli/agent-connect.ts`, `src/copilot-extension/loopback-guard.ts`, `src/kernel/secrets/os-store.ts`, `src/kernel/secrets/backends/os.ts`, `src/kernel/secrets/session-store.ts`, `src/kernel/credentials.ts`, `src/kernel/system/endpoint-confirmation.ts`, `src/cli/llm/model-registry.ts`, `src/cli/llm/client.ts`, `src/cli/llm/capability-probe.ts`, `src/kernel/models/settings.ts`, `desktop/src/mobile-pairing.ts`, `src/cli/academy/catalog-client.ts`, `src/cli/academy/cache.ts`, `src/cli/academy/handlers.ts`, `mobile/src/academy.ts`, `desktop/src/source-link.ts`
+- Tests: `tests/kernel/trusted-paths.test.ts`, `tests/cli/okf-confinement.test.ts`, `tests/cli/trusted-folders.test.ts`, `tests/cli/safe-fetch.test.ts`, `tests/cli/model-endpoint-check.test.ts`, `tests/cli/studio-bridge-review.test.ts`, `tests/cli/agent-approval.test.ts`, `tests/cli/copilot-loopback-guard.test.ts`, `tests/kernel/os-secret-store.test.ts`, `tests/kernel/credentials-os-store.test.ts`, `tests/kernel/bitwarden-session-store.test.ts`, `tests/cli/keys-follow-endpoints.test.ts`, `tests/cli/model-registry.test.ts`, `tests/kernel/secret-masking.test.ts`, `tests/cli/academy.test.ts`, `tests/mobile/academy.test.ts`, `tests/desktop/source-link.test.ts`

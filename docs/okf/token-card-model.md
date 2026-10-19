@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-19T12:00:00.000Z
+timestamp: 2026-10-19T16:00:00.000Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -208,7 +208,10 @@ whose version changed (the Studio runs it once per start, a few at a time),
 so a fix that is only presentation — `materiality: "cosmetic"`, such as the
 formula migration — reaches every enrolled learner without making anyone
 relearn a card. A team library refuses it: there, tiles change only through
-`zam team reinstall-tiles`, run by the administrator.
+`zam team reinstall-tiles`, run by the administrator. Reconcile never
+downgrades: versions compare as dotted numbers (`compareTileVersions`), and
+a tile recorded at a newer version — installed from the academy catalog —
+stays.
 
 A practice item may name a `source_link`; an item without one takes its
 atom's. Installing writes it to the token, so a card cites where its
@@ -216,6 +219,24 @@ knowledge is taught, such as a lesson of a ZAM Academy app
 (`https://academy.zam-os.org/uml/#lesson=uc-1-boxes`). Links that differ
 only after `#` form one library topic. A reinstall moves a link the tile
 names; a tile that names none keeps a link set elsewhere.
+
+**ZAM Academy cells** (ADR 2026-10-19) live in `zam-os/zam-academy` next to
+their training apps. They are published at
+`https://academy.zam-os.org/<app>/cell.json` and listed in `/catalog.json`
+with a SHA-256 each.
+
+- **Bundled copies.** A release bundles copies made by `npm run academy:sync`,
+  which a test checks against `zam-academy-cells.lock.json`.
+- **Reading.** Opening „Aus der ZAM Academy“ in Studio or Mobile reads the
+  catalog and writes nothing to the library.
+- **„Aufnehmen“** enrols through `enrolBundledCell`, with the fetched tile as
+  `resolveTile`.
+- **„Aktualisieren“** installs the newer catalog version of one held cell.
+- **No downgrade.** Enrolling never installs an older version than the
+  library holds.
+- **Team libraries** refuse a cell their build does not bundle.
+- **Label.** A curriculum binding with neither school type nor grade (an
+  academy stage) is labelled by the tile's publisher.
 
 A tile may retire practice items. A retired item keeps its cards and review
 history but stops representing its atom: token prerequisites derived from
@@ -232,13 +253,14 @@ exact successor declarations may preserve it, while ambiguous or materially
 changed mappings require real re-retrieval.
 
 # Citations
+- [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
-- Tests: `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`
-- Code: `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/library/topics.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/import/material-import.ts`
+- Tests: `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`, `tests/kernel/academy-catalog.test.ts`, `tests/kernel/academy-cells-lock.test.ts`, `tests/kernel/tile-version.test.ts`, `tests/kernel/zam-academy-uml-cell.test.ts`
+- Code: `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/library/topics.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/import/material-import.ts`, `src/kernel/library/academy-catalog.ts`, `src/kernel/library/tile-version.ts`
 
 - [ADR 2026-03-26 — Personal Workflow Foundations](../adr/2026-03-26-personal-workflow-foundations.md)
 - [ADR 2026-07-04 — Knowledge Contexts](../adr/2026-07-04-knowledge-contexts.md)
