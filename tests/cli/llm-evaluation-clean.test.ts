@@ -224,6 +224,30 @@ Incomplete (1)`;
     );
   });
 
+  it("drops the chat-template debris a model leaks when it slips out of its turn", () => {
+    // Reported from Studio (openai/gpt-6-luna), intermittently.
+    const explanation =
+      "Deine Antwort nennt sowohl Network Contributor als auch das erforderliche Subnetz-Beitrittsrecht und trifft damit den Kern. Die Rolle wird auf dem Node-Subnetz oder dem VNet benötigt, damit die VMSS dem Subnetz beitreten kann.";
+    const raw = `]]\n 亿博user\n\n${explanation}\n\nVollständig`;
+    expect(cleanRecallEvaluation(raw, "de")).toBe(
+      `${explanation}\n\nVollständig`,
+    );
+  });
+
+  it("drops chat-template special tokens and bare role markers", () => {
+    const raw =
+      "<|im_end|>\n<|im_start|>assistant\nDu nennst die Rolle, aber nicht, wo sie zugewiesen wird.\n\nUnvollständig (1)<|im_end|>";
+    expect(cleanRecallEvaluation(raw, "de")).toBe(
+      "Du nennst die Rolle, aber nicht, wo sie zugewiesen wird.\n\nUnvollständig (1)",
+    );
+  });
+
+  it("keeps feedback that only mentions a user or an assistant", () => {
+    const raw =
+      "Der user braucht die Rolle Network Contributor; ein assistant der Pipeline genügt nicht.\n\nVollständig";
+    expect(cleanRecallEvaluation(raw, "de")).toBe(raw);
+  });
+
   it("preserves single-line evaluations unchanged", () => {
     const raw = "Vollständig — Paris ist die Hauptstadt Frankreichs.";
     expect(cleanRecallEvaluation(raw, "de")).toBe(raw);
