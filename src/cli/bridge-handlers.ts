@@ -26,8 +26,11 @@ import {
   assessPrecondition,
   assignTokenToContext,
   BLOOM_VERBS,
+  BUNDLED_CELLS,
+  BUNDLED_TILES,
   bonusCandidates,
   buildReviewQueue,
+  bundledCellInfoForTile,
   cardTextFields,
   clearTokenMaintenance,
   closeSessionObservation,
@@ -63,6 +66,7 @@ import {
   getTokenMedia,
   getTokensBySourceLinkBase,
   getUserStats,
+  installedTileVersion,
   isAnswerFormat,
   isObserverPolicyConfigured,
   isScreenObservationEnabled,
@@ -110,6 +114,11 @@ import {
   withdrawAssignment,
   writeCardText,
 } from "../kernel/index.js";
+import {
+  cachedCatalogTiles,
+  readCachedTileVersion,
+  resolveCachedTile,
+} from "./academy/cache.js";
 import { resolveOperationKnowledgeContexts } from "./knowledge-contexts.js";
 import { ensureHighQualityQuestion } from "./llm/client.js";
 import {
@@ -128,7 +137,7 @@ import {
 import { resolveLearnerId } from "./users/identity.js";
 import { ensureActiveWorkspace } from "./workspaces/active.js";
 
-async function resolveHandlerUser(
+export async function resolveHandlerUser(
   db: Database,
   user?: string,
 ): Promise<string> {
@@ -2258,7 +2267,17 @@ export async function listBundledCellsHandler(
   // before offering the generic wizard, and gets both the covering cells and
   // the verdict, so it cannot read the empty list as "no opinion".
   if (!params.provider) {
-    const cells = await getBundledCellsWithStatus(db, userId);
+    // Academy cells the learner's last catalog check cached are listed too
+    // (ADR 2026-10-19 D4). Nothing here reaches the network.
+    const extra = cachedCatalogTiles().filter(
+      (tile) => !BUNDLED_TILES[tile.tile_id],
+    );
+    const cells = await getBundledCellsWithStatus(
+      db,
+      userId,
+      [...BUNDLED_CELLS, ...extra.map(bundledCellInfoForTile)],
+      (cellId) => BUNDLED_TILES[cellId] ?? resolveCachedTile(cellId),
+    );
     return { success: true as const, cells, scoped: false as const };
   }
 
@@ -2294,7 +2313,15 @@ export async function enrolBundledCellHandler(
     throw new Error("cellId is required");
   }
   const userId = await resolveHandlerUser(db, params.user);
-  const result = await enrolBundledCell(db, userId, params.cellId.trim());
+  const cellId = params.cellId.trim();
+  // An agent may enrol a cell from the learner's last catalog check, but
+  // never update a held one: that is the learner's „Aktualisieren“
+  // (ADR 2026-10-19 D4). So a held cell resolves to its installed version.
+  const installed = await installedTileVersion(db, cellId);
+  const result = await enrolBundledCell(db, userId, cellId, {
+    resolveTile: (id) =>
+      installed ? readCachedTileVersion(id, installed) : resolveCachedTile(id),
+  });
   return result;
 }
 

@@ -1334,9 +1334,11 @@ const PILOT_OVERRIDES: Record<string, Partial<BundledCellInfo>> = {
   },
 };
 
-export const BUNDLED_CELLS: BundledCellInfo[] = Object.values(
-  BUNDLED_TILES,
-).map((tile) => {
+/**
+ * The catalogue entry of a tile: a bundled one, or one installed from the
+ * ZAM Academy catalog (ADR 2026-10-19 D4), which has no override.
+ */
+export function bundledCellInfoForTile(tile: BundledTile): BundledCellInfo {
   const override = PILOT_OVERRIDES[tile.tile_id];
   return {
     id: tile.tile_id,
@@ -1351,7 +1353,11 @@ export const BUNDLED_CELLS: BundledCellInfo[] = Object.values(
     inScopeAtomIds: override?.inScopeAtomIds || tile.atoms.map((a) => a.id),
     curriculumScopes: curriculumScopesForTile(tile),
   };
-});
+}
+
+export const BUNDLED_CELLS: BundledCellInfo[] = Object.values(
+  BUNDLED_TILES,
+).map(bundledCellInfoForTile);
 
 export function listBundledTiles(): BundledTile[] {
   return Object.values(BUNDLED_TILES);
@@ -1601,6 +1607,8 @@ export async function getBundledCellsWithStatus(
   db: Database,
   userId: string,
   requestedCells: readonly BundledCellInfo[] = BUNDLED_CELLS,
+  tileOf: (cellId: string) => BundledTile | undefined = (cellId) =>
+    BUNDLED_TILES[cellId],
 ): Promise<BundledCellStatus[]> {
   if (requestedCells.length === 0) return [];
 
@@ -1610,7 +1618,7 @@ export async function getBundledCellsWithStatus(
   const allItemIds = new Set<string>();
 
   for (const cell of requestedCells) {
-    const tile = BUNDLED_TILES[cell.id];
+    const tile = tileOf(cell.id);
     // No tile means nothing to install, which is never "installed" — the
     // per-cell path returns false here, and an empty `.every()` would not.
     if (!tile) continue;
@@ -1674,29 +1682,71 @@ export async function getBundledCellsWithStatus(
 /**
  * Enrol a learner in a bundled cell.
  */
+export interface EnrolBundledCellOptions {
+  /**
+   * A tile from the ZAM Academy catalog for this id: a cell this build does
+   * not bundle, or a newer version of one it does (ADR 2026-10-19 D4). The
+   * caller supplies it from what the learner fetched; the kernel never does.
+   */
+  resolveTile?: (cellId: string) => BundledTile | undefined;
+}
+
+/** The newer of two tiles for one id; the compiled one when unordered. */
+function newerTile(
+  compiled: BundledTile | undefined,
+  resolved: BundledTile | undefined,
+): BundledTile | undefined {
+  if (!resolved) return compiled;
+  if (!compiled) return resolved;
+  const order = compareTileVersions(
+    String(resolved.version),
+    String(compiled.version),
+  );
+  return order === 1 ? resolved : compiled;
+}
+
+/** The version a library last installed of a tile, if any. */
+export async function installedTileVersion(
+  db: Database,
+  tileId: string,
+): Promise<string | null> {
+  const row = (await db
+    .prepare("SELECT version FROM installed_tiles WHERE tile_id = ?")
+    .get(tileId)) as { version: string | null } | undefined;
+  return row?.version ?? null;
+}
+
 export async function enrolBundledCell(
   db: Database,
   userId: string,
   cellId: string,
+  options: EnrolBundledCellOptions = {},
 ): Promise<BundledCellEnrolResult> {
   if (!userId.trim()) {
     throw new Error("userId is required to enrol in a learning cell");
   }
-  const cell = getBundledCell(cellId);
-  const tile = getBundledCellTile(cellId);
-  if (!cell || !tile) {
+  const compiled = getBundledCellTile(cellId);
+  const tile = newerTile(compiled, options.resolveTile?.(cellId));
+  if (!tile || tile.tile_id !== cellId) {
     throw new Error(`Bundled cell not found: ${cellId}`);
   }
+  if (tile !== compiled && db.dialect === "postgres") {
+    throw new Error(
+      "A team library gets academy cells with ZAM releases: zam team reinstall-tiles",
+    );
+  }
+  const cell = compiled ? getBundledCell(cellId) : undefined;
+  const inScopeAtomIds = (cell ?? bundledCellInfoForTile(tile)).inScopeAtomIds;
 
-  // Step 1: Install content (creates zero cards).
-  await installKvtTile(db, tile);
+  // Step 1: Install content (creates zero cards) — unless the library
+  // already holds a newer version, which enrolling must not downgrade.
+  const installed = await installedTileVersion(db, cellId);
+  if (compareTileVersions(installed, String(tile.version)) !== 1) {
+    await installKvtTile(db, tile);
+  }
 
   // Step 2: Enrol learner for in-scope curriculum atoms.
-  const materialiseRes = await materialiseKvtCards(
-    db,
-    userId,
-    cell.inScopeAtomIds,
-  );
+  const materialiseRes = await materialiseKvtCards(db, userId, inScopeAtomIds);
 
   const alreadyEnrolled =
     materialiseRes.cardsCreated === 0 && materialiseRes.cardsReused > 0;
