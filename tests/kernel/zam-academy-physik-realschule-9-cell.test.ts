@@ -8,12 +8,48 @@ import {
   findBundledCellsForScope,
   getBundledCell,
   getBundledCellTile,
+  getCard,
+  getTokenById,
+  installKvtTile,
+  type KvtTile,
   listLibraryTopics,
+  materialiseKvtCards,
   openDatabase,
 } from "../../src/kernel/index.js";
+import legacyElektrik from "../fixtures/legacy/de-by-realschule-9-physik-elektrik-kvt.json" with {
+  type: "json",
+};
+import legacyFluessigkeiten from "../fixtures/legacy/de-by-realschule-9-physik-fluessigkeiten-gase-kvt.json" with {
+  type: "json",
+};
+import legacyMechanik from "../fixtures/legacy/de-by-realschule-9-physik-mechanik-energie-kvt.json" with {
+  type: "json",
+};
+import legacyWaerme from "../fixtures/legacy/de-by-realschule-9-physik-waermelehre-kvt.json" with {
+  type: "json",
+};
 
 const CELL_ID = "zam-academy:physik-realschule-9";
 const APP = "https://academy.zam-os.org/physik-realschule-9/";
+const ITEMS = 70;
+
+/**
+ * The four de-by Realschule 9 physics cells this cell replaced
+ * (zam-os/zam-academy#4, approved 2026-10-19). They left the bundle; the
+ * migration test installs them from tests/fixtures/legacy.
+ */
+const LEGACY_TILES = [
+  legacyElektrik,
+  legacyFluessigkeiten,
+  legacyMechanik,
+  legacyWaerme,
+] as unknown as KvtTile[];
+const LEGACY_IDS = [
+  "de-by:realschule-9-physik-elektrik",
+  "de-by:realschule-9-physik-fluessigkeiten-gase",
+  "de-by:realschule-9-physik-mechanik-energie",
+  "de-by:realschule-9-physik-waermelehre",
+];
 
 /**
  * The lessons of the Physik-9 app in zam-os/zam-academy, by stage. A card
@@ -70,7 +106,7 @@ describe("ZAM Academy Physik 9 Realschule cell", () => {
     ).toContain(CELL_ID);
   });
 
-  it("is also found at its LehrplanPLUS position, Realschule 9 Physik, for both Zweige", () => {
+  it("is the only cell at its LehrplanPLUS position, Realschule 9 Physik, for both Zweige", () => {
     for (const track of [undefined, "I", "II_III"]) {
       const ids = findBundledCellsForScope({
         provider: "lehrplanplus-bayern",
@@ -79,7 +115,13 @@ describe("ZAM Academy Physik 9 Realschule cell", () => {
         subject: "physik",
         ...(track ? { track } : {}),
       }).map((c) => c.id);
-      expect(ids, `track ${track ?? "any"}`).toContain(CELL_ID);
+      expect(ids, `track ${track ?? "any"}`).toEqual([CELL_ID]);
+    }
+    for (const legacy of LEGACY_IDS) {
+      expect(
+        getBundledCell(legacy),
+        `${legacy} left the bundle`,
+      ).toBeUndefined();
     }
     expect(
       findBundledCellsForScope({
@@ -177,7 +219,7 @@ describe("ZAM Academy Physik 9 Realschule cell", () => {
     it("gives the learner every card, as one library topic", async () => {
       const items =
         tile?.atoms.reduce((n, atom) => n + atom.practice_items.length, 0) ?? 0;
-      expect(items).toBe(58);
+      expect(items).toBe(ITEMS);
       const result = await enrolBundledCell(db, "learner", CELL_ID);
       expect(result.success).toBe(true);
       expect(result.cardsCreated).toBe(items);
@@ -190,6 +232,103 @@ describe("ZAM Academy Physik 9 Realschule cell", () => {
         itemCount: items,
         heldCount: items,
       });
+    });
+
+    /**
+     * ADR 2026-08-14 Decision 9: the approved `replaces` move a learner's card
+     * and review history from the de-by items to their academy successors and
+     * retire the old tokens, so nobody learns the same fact twice. Items with
+     * no successor (the Jahrgangsstufe 7/8 content) stay as they are.
+     */
+    it("moves the cards and history of a learner who held the four de-by cells", async () => {
+      for (const legacy of LEGACY_TILES) {
+        await installKvtTile(db, legacy);
+        await materialiseKvtCards(
+          db,
+          "learner",
+          legacy.atoms.map((atom) => atom.id),
+        );
+      }
+      const replaced = new Map<string, string>();
+      for (const atom of tile?.atoms ?? []) {
+        for (const item of atom.practice_items) {
+          for (const old of item.replaces ?? []) replaced.set(old, item.id);
+        }
+      }
+      expect(replaced.size).toBe(32);
+      const legacyItems = LEGACY_TILES.flatMap((t) =>
+        t.atoms.flatMap((atom) => atom.practice_items.map((item) => item.id)),
+      );
+      expect(legacyItems).toHaveLength(42);
+      for (const old of replaced.keys()) expect(legacyItems).toContain(old);
+
+      // Real history on the absolute-zero card of the de-by Wärmelehre cell.
+      const oldId = "01K4W9P0000000000000000J01";
+      const newId = replaced.get(oldId)!;
+      const card = await getCard(db, oldId, "learner");
+      await db
+        .prepare("UPDATE cards SET reps = 6, stability = 30 WHERE id = ?")
+        .run(card!.id);
+      await db
+        .prepare(
+          `INSERT INTO review_logs
+             (id, card_id, token_id, user_id, rating, reviewed_at, scheduled_at)
+           VALUES ('01K8PHYS9RSLEGACY000000R01', ?, ?, 'learner', 3,
+                   '2026-10-01T10:00:00.000Z', '2026-10-01T09:00:00.000Z')`,
+        )
+        .run(card!.id, oldId);
+
+      const result = await enrolBundledCell(db, "learner", CELL_ID);
+      expect(result.success).toBe(true);
+      // The 32 cards moved over count as held. On an atom where the learner
+      // already holds a card, materialiseKvtCards introduces only one more
+      // new card at a time; atoms without history get all their cards.
+      let expectedNew = 0;
+      for (const atom of tile?.atoms ?? []) {
+        const moved = atom.practice_items.filter(
+          (item) => (item.replaces ?? []).length > 0,
+        ).length;
+        const missing = atom.practice_items.length - moved;
+        expectedNew += moved > 0 ? Math.min(1, missing) : missing;
+      }
+      expect(expectedNew).toBe(32);
+      expect(result.cardsCreated).toBe(expectedNew);
+
+      const moved = await getCard(db, newId, "learner");
+      expect(moved?.id).toBe(card!.id);
+      expect(moved?.reps).toBe(6);
+      expect(moved?.stability).toBe(30);
+      expect(await getCard(db, oldId, "learner")).toBeFalsy();
+      const log = (await db
+        .prepare("SELECT token_id FROM review_logs WHERE id = ?")
+        .get("01K8PHYS9RSLEGACY000000R01")) as { token_id: string };
+      expect(log.token_id).toBe(newId);
+
+      for (const [old, successor] of replaced) {
+        expect(
+          (await getTokenById(db, old))?.deprecated_at,
+          `${old} retired`,
+        ).toBeTruthy();
+        expect(
+          await getCard(db, successor, "learner"),
+          `${successor} held`,
+        ).toBeTruthy();
+      }
+      // A de-by item without successor keeps its card and stays active.
+      const kept = "01K4E9P0000000000000000J01";
+      expect(replaced.has(kept)).toBe(false);
+      expect(await getCard(db, kept, "learner")).toBeTruthy();
+      expect((await getTokenById(db, kept))?.deprecated_at).toBeFalsy();
+
+      // Held now: the moved cards plus the new ones; the rest follows as the
+      // learner progresses, like every other new atom content.
+      const academyCards = (await db
+        .prepare(
+          `SELECT COUNT(*) AS n FROM cards
+            WHERE user_id = 'learner' AND token_id LIKE '01K8PHYS9RS%'`,
+        )
+        .get()) as { n: number };
+      expect(academyCards.n).toBe(32 + expectedNew);
     });
   });
 });
