@@ -37,7 +37,7 @@ can pick up the next unchecked phase without any other context.
 - [x] **Phase 3** — kernel: reconcile never downgrades (D4)
 - [x] **Phase 4** — CLI and kernel: catalog read, cache, enrol, update (D4)
 - [x] **Phase 5** — Studio: the Academy list and update on a held cell (D5)
-- [ ] **Phase 6** — release flow: sync script, lock file, generic label
+- [x] **Phase 6** — release flow: sync script, lock file, generic label
 - [ ] **Phase 7** — Mobile: the Academy list (D5)
 - [ ] **Phase 8** — documentation and handover
 
@@ -330,7 +330,9 @@ The existing Desktop and Mobile render tests are extended for the link.
      where `<app>` is the last segment of `entry.app`;
    - write `tests/fixtures/curriculum/zam-academy-cells.lock.json`
      (`[{ id, version, sha256, file }]`);
-   - run `scripts/update-bundled-cells-imports.mjs`.
+   - for a new cell, append its import as `tile<N+1>Raw` to `bundled-cells.ts`.
+     (The full generator `scripts/update-bundled-cells-imports.mjs` would renumber
+     all imports.)
 2. **Generic label.** In `formatGradeLabel` (`bundled-cells.ts`), a binding
    without `school_type` and `grade` is not a school place, so the label is
    the tile's `publisher`. The `zam-academy:uml` entry in `PILOT_OVERRIDES`

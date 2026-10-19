@@ -16,7 +16,7 @@ export interface BundledTile extends KvtTile {
 }
 
 // --- begin bundled-tile-imports ---
-// --- Fixture Imports (228 tiles) ---
+// --- Fixture Imports (229 tiles) ---
 import tile1Raw from "../../../tests/fixtures/curriculum/de-by-bos-10-optik-kvt.json" with {
   type: "json",
 };
@@ -1225,6 +1225,16 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
 
 function formatGradeLabel(tile: BundledTile): string {
   const firstCurriculum = tile.atoms[0]?.curricula?.[0];
+  // A binding with neither school type nor grade is no school place — a
+  // ZAM Academy stage, for one (ADR 2026-10-19). It is labelled by who
+  // publishes it, so a new academy cell needs no override.
+  if (
+    firstCurriculum &&
+    !firstCurriculum.school_type &&
+    firstCurriculum.grade === undefined
+  ) {
+    return tile.publisher || firstCurriculum.provider;
+  }
   if (firstCurriculum) {
     const school =
       firstCurriculum.school_type === "gymnasium" ? "Gymnasium" : "Realschule";
@@ -1325,12 +1335,6 @@ const PILOT_OVERRIDES: Record<string, Partial<BundledCellInfo>> = {
       "01K3X9A7R4B8C1D2E3F4G5A004",
       "01K3X9A7R4B8C1D2E3F4G5A009",
     ],
-  },
-  // A ZAM Academy cell keeps what the hosted training app taught; its stages
-  // are bound as curriculum positions of the `zam-academy` provider, which
-  // the school-grade label below does not describe.
-  "zam-academy:uml": {
-    gradeLabel: "ZAM Academy · UML 2.5.1",
   },
 };
 
