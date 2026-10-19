@@ -61,22 +61,38 @@ kept apart from its app drifts, as #417 showed.
 **Today's mechanics:**
 
 - **Bundled cells** are fixtures compiled into each release
-  (`src/kernel/library/bundled-cells.ts`). `reconcileInstalledBundledTiles`
-  reinstalls the ones whose version changed. A team library refuses this;
-  there, tiles change only through `zam team reinstall-tiles`.
-- **Studio enrols a cell only through the curriculum wizard,** which walks
-  registered curriculum providers. `zam-academy` is not one, and should not
-  be: it is not a school curriculum. Lern-Karten lists only cells the
-  learner already holds. Agents can enrol any bundled cell
-  (`zam_bundled_cell_enrol`).
-- **Review shows `source_link` as code text** after the answer is revealed
-  (`desktop/src/main.ts`, the reveal rows). The Atlas already opens a web
-  page on the learner's click (ADR 2026-10-14 Decision 4), and MCP Apps
-  panels open links through the host's `openLink`.
+  (`src/kernel/library/bundled-cells.ts`).
+  - `reconcileInstalledBundledTiles` reinstalls an installed tile whenever
+    its recorded version *differs* from the compiled one, by string
+    comparison. Studio runs it shortly after start.
+  - A team library refuses this; there, `zam team reinstall-tiles`
+    reinstalls the compiled tiles.
+  - `enrolBundledCell` knows only compiled tiles and throws for any other
+    id.
+- **Cells are enrolled only for a curriculum place.** That happens in the
+  curriculum wizard, the Atlas import and Mobile.
+  - `zam-academy` is not a curriculum provider, and should not be, because
+    it is not a school curriculum. So an academy cell has no learner path
+    in Studio or Mobile today.
+  - Lern-Karten lists the cells the learner already holds.
+  - Agents can enrol any bundled cell (`zam_bundled_cell_enrol`).
+  - Enrolment creates every card due now, and no command leaves a cell
+    again; setting aside works per card.
+- **How a source link is shown:**
+  - Desktop review shows `source_link` as code text after the answer is
+    revealed (`desktop/src/main.ts`, the reveal rows).
+  - The MCP Apps recall panel stores the link and does not show it.
+  - Mobile's review already opens a web source („Quelle öffnen“).
+  - The Atlas opens a web page on the learner's click (ADR 2026-10-14
+    Decision 4), and the OKF and knowledge-map panels use the host's
+    `openLink`.
 - **The review context fetches http(s) links** through `safeFetch` and turns
-  the HTML into text. For a single-page app that text is little more than
-  the page title. The corporate policy key `sourceLinks.remoteFetch` turns
-  content fetches off.
+  the HTML into text. For a single-page app, that text is little more than
+  the page title.
+  - `safeFetch` follows up to five redirects to any public host.
+  - The corporate policy keys of ADR 2026-10-08b D6 (such as
+    `sourceLinks.remoteFetch`) are proposed only. D1–D5 shipped (#399);
+    no code reads a managed policy file yet.
 
 ## Decisions
 
@@ -121,27 +137,46 @@ with ZAM's own databases.
 - **Before that, anything may change.** Until a cell enters the catalog, it
   may be rebuilt freely, as the UML cell was in PR #417.
 
-### 4. ZAM fetches the catalog only when the learner asks
+### 4. ZAM reads the catalog on the learner's action, and installs only what the learner takes
 
-- **When.** ZAM reads `catalog.json` when the learner opens the Academy list
-  (Decision 5) or asks an agent for an academy cell. There is no background
-  polling. At those moments, a cell the learner holds is updated when the
-  catalog has a newer version. Between them, the bundled copy and its
-  existing reconcile apply.
-- **How.** Through `safeFetch` only, over https, from the host
-  `academy.zam-os.org`. The host is built in; no setting, bridge command or
-  MCP argument can change it.
+- **Reading writes nothing.** Opening the Academy list (Decision 5) reads
+  `catalog.json` and installs nothing. There is no background polling. The
+  read-only agent tool `zam_bundled_cells_list` does not go to the network:
+  it lists bundled cells and those already installed from the catalog.
+- **Two learner actions install:**
+  - **„Aufnehmen“** enrols. On a cell the release does not bundle, that
+    means `installKvtTile` on the fetched tile, then materialising cards for
+    its in-scope atoms. `enrolBundledCell` and `zam_bundled_cell_enrol` keep
+    taking a cell id and resolve an id that is not bundled through the
+    catalog.
+  - **„Aktualisieren“** updates one held cell whose catalog version is
+    newer. Lern-Karten offers it on the cell's row once the learner has
+    checked, either with the row's „Auf Aktualisierung prüfen“ or by opening
+    the Academy list.
+- **Releases still deliver fixes on their own.** Studio's reconcile keeps
+  installing bundled copies, but never downgrades. Versions compare as
+  dotted numbers (`2026.10.10` is newer than `2026.10.9`), and a recorded
+  version ahead of the compiled one stays.
+- **How it fetches:**
+  - Only through `safeFetch`, over https, from `https://academy.zam-os.org`.
+    The origin is built in; no setting, bridge command or MCP argument can
+    change it.
+  - A cell URL in the catalog is a path resolved against that origin.
+  - A redirect that leaves the origin fails, at any hop.
   - The response size is limited.
-  - `cell.json` must match the SHA-256 in the catalog.
-  - The tile passes the same validation and the same `installKvtTile` as a
-    bundled tile, and then enrols as a bundled cell does.
-  - A fetched version replaces the bundled one only when it is newer.
-- **Policy.** A new corporate policy key, `academy.catalog`, takes `denied`
-  or `allowed` and is `denied` in the corporate baseline. Like every policy
-  key, no tool argument may write it (ADR 2026-10-08b). When it is denied,
-  the Academy list shows the bundled cells only.
-- **Team library.** Like any tile change, it refuses the update. The
-  administrator installs academy cells with `zam team reinstall-tiles`.
+  - The SHA-256 in the catalog binds `cell.json` to its catalog entry, so a
+    split or stale fetch fails. It does not authenticate the publisher:
+    trust is the pinned origin over TLS, plus the same tile validation a
+    bundled tile passes.
+- **Policy.** With no policy file, a personal library fetches on the
+  learner's action. `academy.catalog: denied` belongs in the corporate
+  baseline. It takes effect once ADR 2026-10-08b D6's policy reader exists;
+  until then a corporate install cannot switch the catalog off. No tool
+  argument writes the key, and the learner is never sent to edit it.
+- **Team libraries.** They refuse catalog installs and stay on the bundled
+  snapshot of their ZAM build. `zam team reinstall-tiles` installs that
+  snapshot. An administrator command that installs from the catalog is
+  open question 6.
 
 ### 5. Studio enrols an academy cell in one click
 
@@ -151,12 +186,16 @@ with ZAM's own databases.
   - its title and one line of description;
   - „Üben ↗“, which opens the app in the browser;
   - „Aufnehmen“, which enrols the learner.
-- **One click is enough.** „Aufnehmen“ enrols at once, because nothing is
-  lost: a card the learner does not want is set aside as usual.
-- **Afterwards,** the cell appears among the learner's cells in Lern-Karten.
+- **One click is enough.** „Aufnehmen“ enrols at once, as the Atlas
+  import already does.
+  - The row says beforehand how many cards become due, for example „26
+    Karten“.
+  - On click the button turns into „Aufgenommen“ and is disabled.
+- **Afterwards,** the cell appears among the learner's cells in Lern-Karten,
+  with „Aktualisieren“ when a newer version is known (Decision 4).
 - **Unchanged:** the curriculum wizard stays for school curricula, and
-  agents keep `zam_bundled_cells_list` / `zam_bundled_cell_enrol`, which now
-  include catalog cells.
+  agents keep `zam_bundled_cells_list` and `zam_bundled_cell_enrol`. The
+  enrol tool now also takes a catalog id (Decision 4).
 
 The academy apps tell the learner how to get there: open ZAM and ask the
 agent, or use the import menu. A link from the web page straight into
@@ -167,13 +206,18 @@ Studio is open question 1.
 This holds for any card whose `source_link` is an http(s) URL, not only
 academy cards:
 
-- **Where:**
+- **Where:** Desktop and the panel catch up with Mobile, which already does
+  this:
   - Studio's review, after the answer is revealed;
   - the card editor;
-  - the MCP Apps recall panel, through `openLink` when the host offers it;
-  - Mobile's review.
-- **How it looks:** the host plus „öffnen ↗“. For an academy link it reads
-  „Lektion öffnen ↗“.
+  - the MCP Apps recall panel, through `openLink` when the host offers it.
+    It does not show the link at all today.
+  - Mobile's review, whose label follows the same rule.
+- **How it looks:**
+  - The host plus „öffnen ↗“.
+  - „Lektion öffnen ↗“ only when the parsed host is `academy.zam-os.org`.
+  - The full URL stays visible as the link's title (hover) or a second
+    line.
 - **What a click does:** the system browser opens the page.
 - **Never automatic.** Only `http:` and `https:` open, and only on the
   learner's click. A local path keeps today's behaviour: the reader for
@@ -205,14 +249,18 @@ academy cards:
   fixtures.
 - zam-academy's CI depends on the published `zam-core`, so a tile format
   change in ZAM must be released before academy cells use it.
-- Reading the catalog reveals the learner's IP address to GitHub Pages. This
-  happens only on the learner's action, and corporate installs keep it off
-  by default.
+- Reading the catalog reveals the learner's IP address to GitHub Pages, but
+  only on the learner's action.
+- **Corporate installs cannot switch the catalog off** until the D6 policy
+  reader of ADR 2026-10-08b ships.
+- **A learner who never checks gets fixes only with ZAM releases** (through
+  the bundled copy). That is the price of no background polling.
 
 **Unchanged**
 
 - School cells and the curriculum wizard.
-- Bundled reconcile, and the administrator's control of a team library.
+- Bundled reconcile, except that it no longer downgrades, and the
+  administrator's control of a team library.
 - The review context and its policy: it still fetches what a link points
   to. For an academy app page this yields little text, and the card's own
   answer carries the grading (open question 3).
@@ -249,6 +297,11 @@ academy cards:
 5. **School cells in the catalog.** When a LehrplanPLUS cell gets a training
    app, does it move to zam-academy, and does the catalog later outgrow the
    academy name (for example `content.zam-os.org`)?
+6. **Team libraries and the catalog.** Should an administrator command
+   install academy cells from the catalog, or do team libraries wait for
+   ZAM releases?
+7. **Leaving a cell.** No command leaves a cell today; setting aside works
+   per card. Does one-click enrolment need a one-click way out?
 
 ## Delivery
 
@@ -258,18 +311,45 @@ Each step can ship on its own:
    - `uml/cell.json` as the source of the UML cell;
    - `catalog.json` in the Pages build;
    - CI that installs the cell with `zam-core` and checks every cited
-     lesson.
+     lesson;
+   - the README changed to say where the cell now lives.
 2. **ZAM — clickable web links** (Decision 6): Studio review and editor,
-   the MCP Apps panel, Mobile.
-3. **ZAM — catalog fetch** (Decision 4): the fetcher, the hash check, the
-   `academy.catalog` policy key, install and update.
-4. **ZAM — the Academy list in Studio** (Decision 5), with one-click
-   enrolment. The agent tools return catalog cells.
-5. **Release flow:** copy the academy cells into the fixtures, with a test
-   that the bundled copy matches the published version.
+   the MCP Apps panel, Mobile's label.
+3. **ZAM — reconcile never downgrades** (Decision 4): dotted-number version
+   comparison. This is needed before anything installs from the catalog.
+4. **ZAM — catalog read and install** (Decision 4):
+   - the origin-pinned fetcher (every redirect hop), the hash check, and
+     cell paths resolved against the origin;
+   - catalog-only enrolment through `enrolBundledCell`;
+   - „Aktualisieren“ for one held cell;
+   - the refusal in team libraries.
+   - The `academy.catalog` key is only recorded here; it is enforced when
+     D6 lands.
+5. **ZAM — the Academy list in Studio** (Decision 5): one-click enrolment,
+   the card count, and the update check on the held cell's row.
+6. **Release flow:**
+   - Copy the academy cells into `tests/fixtures/curriculum/` as
+     `zam-academy-<app>-kvt.json`, so `scripts/update-bundled-cells-imports.mjs`
+     picks them up like the UML cell.
+   - A test pins the catalog version that was copied, and checks that the
+     bundled copy equals the published file of that version, not the live
+     catalog.
 
 PR #417 can merge before these steps. Its cell is the first bundled copy.
 
 ## Status history
 
 - 2026-10-19 — Proposed.
+- 2026-10-19 — Reviewed by Grok and Gemini on PR #418. Decision 4 was
+  rewritten:
+  - reading installs nothing;
+  - the learner installs with „Aufnehmen“ or „Aktualisieren“;
+  - reconcile never downgrades;
+  - catalog-only enrolment is named;
+  - the origin is pinned across redirects;
+  - the policy key waits for D6;
+  - team libraries stay on the release snapshot.
+
+  Decision 5 shows the card count instead of claiming nothing is lost.
+  Decision 6 keeps the full URL visible and names the panel and Mobile. The
+  Context now matches the code. Open questions 6 and 7 are added.
