@@ -128,7 +128,7 @@ function appendFixtureImport(file) {
 
 if (added) {
   for (const { file } of lock) appendFixtureImport(file);
-  execFileSync("npx", ["biome", "format", "--write", "src/kernel/library/bundled-cells.ts"], {
+  execFileSync("npx", ["biome", "check", "--write", "src/kernel/library/bundled-cells.ts"], {
     cwd: root,
     stdio: "inherit",
   });

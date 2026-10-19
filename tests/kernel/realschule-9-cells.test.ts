@@ -16,15 +16,14 @@ import {
   openDatabase,
 } from "../../src/kernel/index.js";
 
+// The four physics cells of this grade moved to the ZAM Academy cell
+// zam-academy:physik-realschule-9 (zam-os/zam-academy#4), which replaces
+// their items; see tests/kernel/zam-academy-physik-realschule-9-cell.test.ts.
 const RS9_CELL_IDS = [
-  "de-by:realschule-9-physik-elektrik",
-  "de-by:realschule-9-physik-mechanik-energie",
   "de-by:realschule-9-mathematik-pythagoras-trigonometrie",
   "de-by:realschule-9-mathematik-quadratische-funktionen",
   "de-by:realschule-9-mathematik-lineare-gleichungssysteme",
   "de-by:realschule-9-mathematik-kreis-raumgeometrie",
-  "de-by:realschule-9-physik-waermelehre",
-  "de-by:realschule-9-physik-fluessigkeiten-gase",
   "de-by:realschule-9-chemie-atombau-pse",
   "de-by:realschule-9-chemie-chemische-bindung",
   "de-by:realschule-9-biologie-genetik-vererbung",
@@ -57,7 +56,7 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all bundled cells including all 22 Realschule 9 cells", () => {
+  it("lists all bundled cells including all 18 Realschule 9 cells", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(100);
 
@@ -74,7 +73,8 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
       schoolType: "realschule",
       grade: 9,
     });
-    expect(rs9Cells.length).toBeGreaterThanOrEqual(22);
+    // 18 school cells plus the ZAM Academy cell that replaced the four physics cells.
+    expect(rs9Cells.length).toBeGreaterThanOrEqual(19);
     for (const cellId of RS9_CELL_IDS) {
       expect(
         rs9Cells.some((c) => c.id === cellId),
@@ -107,7 +107,7 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
     expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
   });
 
-  it("supports simultaneous enrolment in ALL 22 Grade 9 Realschule cells without conflict", async () => {
+  it("supports simultaneous enrolment in ALL 18 Grade 9 Realschule cells without conflict", async () => {
     const user = "complete-rs9-polymath";
 
     let totalCards = 0;
