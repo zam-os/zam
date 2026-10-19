@@ -323,6 +323,31 @@ const REQUIRED_KEYS = [
 // passed over, so the exhaustive scan below doesn't mask *new* regressions
 // while still not churning unrelated strings.
 const PRE_EXISTING_FALLBACK_KEYS = new Set([
+  // Clickable web sources and the Academy list (ADR 2026-10-19 D5, D6). en/de shipped; es/fr/pt/zh/ja
+  // await native pack review (see i18n pack backlog).
+  "source_open_lesson",
+  "source_open",
+  "academy_menu",
+  "academy_title",
+  "academy_intro",
+  "academy_loading",
+  "academy_offline",
+  "academy_offline_short",
+  "academy_empty",
+  "academy_error",
+  "academy_close",
+  "academy_row_meta",
+  "academy_practise",
+  "academy_take",
+  "academy_taken",
+  "academy_taking",
+  "academy_taken_result",
+  "academy_taken_other_version",
+  "academy_check_update",
+  "academy_update_to",
+  "academy_updating",
+  "academy_updated",
+  "academy_up_to_date",
   // Knowledge atlas alpha (ADR 2026-10-13). en/de shipped; es/fr/pt/zh/ja
   // await native pack review (see i18n pack backlog).
   "nav_atlas",

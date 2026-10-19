@@ -479,6 +479,14 @@ export {
   TOPIC_SOURCE_PREFIX,
 } from "./import/topic-import.js";
 export {
+  ACADEMY_ORIGIN,
+  type AcademyCatalog,
+  type AcademyCatalogEntry,
+  academyUrl,
+  bundleStandsIn,
+  parseAcademyCatalog,
+} from "./library/academy-catalog.js";
+export {
   countAnswerPoints,
   MAX_SCORED_BLOOM_LEVEL,
   parseAnswerPoints,
@@ -507,12 +515,16 @@ export type {
 export {
   BUNDLED_CELLS,
   BUNDLED_TILES,
+  type BundledTile,
+  bundledCellInfoForTile,
+  type EnrolBundledCellOptions,
   enrolBundledCell,
   findBundledCellsForScope,
   getBundledCell,
   getBundledCellEnrolment,
   getBundledCellsWithStatus,
   getBundledCellTile,
+  installedTileVersion,
   isBundledCellInstalled,
   listBundledCells,
   needsGenericCurriculumImport,
@@ -681,6 +693,7 @@ export {
   texIssues,
   tokenizeTex,
 } from "./library/tex-tokenizer.js";
+export { compareTileVersions } from "./library/tile-version.js";
 export type {
   LibraryTopic,
   StartLibraryTopicResult,

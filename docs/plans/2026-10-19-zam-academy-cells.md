@@ -1,7 +1,9 @@
 # ZAM Academy cells — implementation plan
 
-**Status:** ADR proposed 2026-10-19, reviewed by Grok, Gemini and MiMo on
-PR #418; not started.\
+**Status:** All phases built (2026-10-19): Phase 1 in zam-academy#1, Phases
+2–8 in #419. Still open: trying the Academy list, the update check and the
+links in the running Desktop app and on a phone. Delete this plan in the
+release that ships #419.\
 **Decision:** [ADR 2026-10-19 — ZAM Academy: Cells from academy.zam-os.org,
 One-Click Enrolment, Links Back to the Lesson](../adr/2026-10-19-zam-academy-cells.md).
 Its decisions are cited here as D1–D6. Read the ADR first; this plan does not
@@ -31,15 +33,15 @@ can pick up the next unchecked phase without any other context.
 
 ## Status
 
-- [ ] **Phase 1** — zam-academy: `uml/cell.json`, `catalog.json`, CI that
-  validates the cell
-- [ ] **Phase 2** — ZAM: clickable web source links (D6)
-- [ ] **Phase 3** — kernel: reconcile never downgrades (D4)
-- [ ] **Phase 4** — CLI and kernel: catalog read, cache, enrol, update (D4)
-- [ ] **Phase 5** — Studio: the Academy list and update on a held cell (D5)
-- [ ] **Phase 6** — release flow: sync script, lock file, generic label
-- [ ] **Phase 7** — Mobile: the Academy list (D5)
-- [ ] **Phase 8** — documentation and handover
+- [x] **Phase 1** — zam-academy: `uml/cell.json`, `catalog.json`, CI that
+  validates the cell (zam-academy#1, live 2026-10-19)
+- [x] **Phase 2** — ZAM: clickable web source links (D6)
+- [x] **Phase 3** — kernel: reconcile never downgrades (D4)
+- [x] **Phase 4** — CLI and kernel: catalog read, cache, enrol, update (D4)
+- [x] **Phase 5** — Studio: the Academy list and update on a held cell (D5)
+- [x] **Phase 6** — release flow: sync script, lock file, generic label
+- [x] **Phase 7** — Mobile: the Academy list (D5)
+- [x] **Phase 8** — documentation and handover
 
 **Order.**
 - Phase 1 needs #417 merged.
@@ -330,7 +332,9 @@ The existing Desktop and Mobile render tests are extended for the link.
      where `<app>` is the last segment of `entry.app`;
    - write `tests/fixtures/curriculum/zam-academy-cells.lock.json`
      (`[{ id, version, sha256, file }]`);
-   - run `scripts/update-bundled-cells-imports.mjs`.
+   - for a new cell, append its import as `tile<N+1>Raw` to `bundled-cells.ts`.
+     (The full generator `scripts/update-bundled-cells-imports.mjs` would renumber
+     all imports.)
 2. **Generic label.** In `formatGradeLabel` (`bundled-cells.ts`), a binding
    without `school_type` and `grade` is not a school place, so the label is
    the tile's `publisher`. The `zam-academy:uml` entry in `PILOT_OVERRIDES`

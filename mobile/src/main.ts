@@ -16,6 +16,7 @@ import {
   renderCardText,
 } from "../../desktop/src/card-text-render.js";
 import { renderQuestionWithTopic } from "../../desktop/src/question-topic.js";
+import { webSourceLink } from "../../desktop/src/source-link.js";
 import {
   beginTurn,
   completeTurn,
@@ -53,10 +54,23 @@ import {
   enrolBonusAtom,
 } from "../../src/kernel/library/bonus.js";
 import {
+  BUNDLED_TILES,
   type BundledCellStatus,
+  type BundledTile,
+  bundledCellInfoForTile,
   enrolBundledCell,
   getBundledCellsWithStatus,
+  installedTileVersion,
 } from "../../src/kernel/library/bundled-cells.js";
+import {
+  type AcademyCatalogEntry,
+  bundleStandsIn,
+} from "../../src/kernel/library/academy-catalog.js";
+import { compareTileVersions } from "../../src/kernel/library/tile-version.js";
+import {
+  fetchMobileAcademyCatalog,
+  fetchMobileAcademyCell,
+} from "./academy.js";
 import {
   assessPrecondition,
   getPreconditionCandidates,
@@ -421,6 +435,7 @@ const bundledCellsStatus = element<HTMLParagraphElement>(
   "bundled-cells-status",
 );
 const openCurriculumButton = element<HTMLButtonElement>("open-curriculum");
+const openAcademyButton = element<HTMLButtonElement>("open-academy");
 const libraryCurriculum = element<HTMLElement>("library-curriculum");
 const curriculumBackButton = element<HTMLButtonElement>("curriculum-back");
 const curriculumBreadcrumb = element<HTMLElement>("curriculum-breadcrumb");
@@ -2125,18 +2140,6 @@ async function refreshStats(): Promise<void> {
   }
 }
 
-function externalSourceUrl(value: string | null | undefined): string | null {
-  if (!value) return null;
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" || url.protocol === "http:"
-      ? url.toString()
-      : null;
-  } catch {
-    return null;
-  }
-}
-
 function renderQueue(queue: ReviewQueue): void {
   summary.textContent = tf("queue_summary", {
     count: queue.items.length,
@@ -3181,9 +3184,13 @@ async function renderCurrentReview(message = ""): Promise<void> {
     prompt.concept,
     reviewImages,
   );
-  const sourceUrl = externalSourceUrl(prompt.sourceLink);
-  reviewSource.hidden = !sourceUrl;
-  if (sourceUrl) reviewSource.href = sourceUrl;
+  const source = webSourceLink(prompt.sourceLink, t("source_open_lesson"));
+  reviewSource.hidden = !source;
+  if (source) {
+    reviewSource.href = source.href;
+    reviewSource.textContent = source.label;
+    reviewSource.title = source.title;
+  }
   if (!reviewSession.revealed) clearEvaluationUi();
   else if (currentEvaluation) showEvaluationUi(currentEvaluation);
   for (const button of ratingButtons) {
@@ -4839,6 +4846,180 @@ function openMobileCurriculum(): void {
   void renderCurriculumView();
 }
 
+// ── ZAM Academy (ADR 2026-10-19 D4, D5) ─────────────────────────────────────
+// Cells fetched on the learner's tap, for this session.
+const academyTiles = new Map<string, BundledTile>();
+
+async function openMobileAcademy(): Promise<void> {
+  curriculumTrail = [];
+  curriculumView = null;
+  showImport();
+  showLibraryMode("curriculum");
+  renderCurriculumBreadcrumb();
+  curriculumOptions.replaceChildren();
+  curriculumModelSettings.hidden = true;
+  curriculumStepTitle.textContent = t("academy_title");
+  curriculumStepHint.textContent = t("academy_intro");
+  await renderAcademyCells();
+}
+
+async function renderAcademyCells(): Promise<void> {
+  if (!currentUserId) return;
+  setCurriculumStatus(t("academy_loading"));
+  let entries: AcademyCatalogEntry[] = [];
+  let offline = false;
+  const failed = new Map<string, string>();
+  try {
+    entries = (await fetchMobileAcademyCatalog()).cells;
+    // In parallel, each under the client's timeout: one stalled cell cannot
+    // hold the screen.
+    await Promise.all(
+      entries.map(async (entry) => {
+        if (String(academyTiles.get(entry.id)?.version) === entry.version) return;
+        try {
+          academyTiles.set(entry.id, await fetchMobileAcademyCell(entry));
+        } catch (error) {
+          // Listed anyway, with the error; „Aufnehmen“ fetches it again.
+          failed.set(entry.id, errorMessage(error));
+        }
+      }),
+    );
+  } catch {
+    offline = true;
+  }
+
+  const tileOf = (id: string): BundledTile | undefined => {
+    const compiled = BUNDLED_TILES[id];
+    const fetched = academyTiles.get(id);
+    if (!fetched) return compiled;
+    if (!compiled) return fetched;
+    return compareTileVersions(String(fetched.version), String(compiled.version)) === 1
+      ? fetched
+      : compiled;
+  };
+  const ids = [
+    ...new Set([
+      ...Object.keys(BUNDLED_TILES).filter((id) => id.startsWith("zam-academy:")),
+      ...entries.map((entry) => entry.id),
+    ]),
+  ].sort();
+  const tiles = ids
+    .map(tileOf)
+    .filter((tile): tile is BundledTile => tile !== undefined);
+  const statuses = await getBundledCellsWithStatus(
+    db,
+    currentUserId,
+    tiles.map(bundledCellInfoForTile),
+    tileOf,
+  );
+
+  curriculumOptions.replaceChildren();
+  for (const id of ids) {
+    const tile = tileOf(id);
+    const entry = entries.find((cell) => cell.id === id);
+    if (!tile && !entry) continue;
+    // A catalog entry whose cell did not arrive keeps its row, from the
+    // catalog: what „Aufnehmen“ fetches is the entry's version.
+    const entryAhead =
+      entry !== undefined &&
+      (!tile || compareTileVersions(entry.version, String(tile.version)) === 1);
+    const version = entryAhead ? entry.version : String(tile?.version);
+    const items = entryAhead
+      ? entry.items
+      : (tile?.atoms.reduce((n, atom) => n + atom.practice_items.length, 0) ?? 0);
+    const heldVersion = await installedTileVersion(db, id);
+    const held = tile
+      ? (statuses.find((cell) => cell.id === id)?.enrolled ?? false)
+      : heldVersion !== null;
+    const newer = held && compareTileVersions(version, heldVersion) === 1;
+
+    const card = document.createElement("section");
+    card.className = "curriculum-cell-offer stack";
+    const title = document.createElement("h3");
+    title.className = "t-headline";
+    title.textContent = entry?.title ?? tile?.title ?? id;
+    const meta = document.createElement("p");
+    meta.className = "t-footnote";
+    meta.textContent = tf("academy_row_meta", { items, version });
+    card.append(title, meta);
+    const error = entryAhead ? failed.get(id) : undefined;
+    if (error) {
+      const note = document.createElement("p");
+      note.className = "t-footnote";
+      note.textContent = tf("academy_cell_failed", { version, error });
+      card.append(note);
+    }
+
+    if (entry?.appUrl) {
+      const practise = document.createElement("a");
+      practise.className = "btn";
+      practise.href = entry.appUrl;
+      practise.target = "_blank";
+      practise.rel = "noreferrer";
+      practise.textContent = t("academy_practise");
+      card.append(practise);
+    }
+
+    const action = document.createElement("button");
+    action.type = "button";
+    action.className = held && !newer ? "btn" : "btn primary";
+    action.disabled = held && !newer;
+    action.textContent = newer
+      ? tf("academy_update_to", { version })
+      : held
+        ? t("academy_taken")
+        : t("academy_take");
+    action.addEventListener("click", () => {
+      void takeAcademyCell(id, entryAhead ? entry : undefined, action);
+    });
+    card.append(action);
+    curriculumOptions.append(card);
+  }
+  setCurriculumStatus(offline ? t("academy_offline") : "");
+}
+
+async function takeAcademyCell(
+  id: string,
+  entry: AcademyCatalogEntry | undefined,
+  action: HTMLButtonElement,
+): Promise<void> {
+  if (!currentUserId) return;
+  action.disabled = true;
+  setCurriculumStatus("…");
+  try {
+    // The row showed the entry's version: fetch it now if it did not arrive.
+    // The bundle stands in only if it is that version or newer.
+    if (entry && String(academyTiles.get(id)?.version) !== entry.version) {
+      try {
+        academyTiles.set(id, await fetchMobileAcademyCell(entry));
+      } catch (error) {
+        if (!bundleStandsIn(entry, BUNDLED_TILES[id]?.version)) throw error;
+      }
+    }
+    // The tap is „Aufnehmen“ or „Aktualisieren“: the newest version this
+    // session fetched is installed, never an older one than the library has.
+    const result = await enrolBundledCell(db, currentUserId, id, {
+      resolveTile: (id) => academyTiles.get(id),
+    });
+    setCurriculumStatus(
+      tf("academy_taken_result", {
+        name: entry?.title ?? tileTitle(id),
+        count: result.cardsCreated,
+      }),
+    );
+    await Promise.all([refreshBundledCells(), refresh(currentUserId)]);
+    await renderAcademyCells();
+  } catch (error) {
+    setCurriculumStatus(tf("library_failed", { error: errorMessage(error) }), true);
+    action.disabled = false;
+  }
+}
+
+function tileTitle(id: string): string {
+  const tile = academyTiles.get(id) ?? BUNDLED_TILES[id];
+  return tile?.title ?? id;
+}
+
 function renderLibrary(entries: LibraryEntry[]): void {
   libraryList.replaceChildren();
   for (const entry of entries) {
@@ -4983,6 +5164,9 @@ librarySearch.addEventListener("input", () => {
 });
 
 openCurriculumButton.addEventListener("click", openMobileCurriculum);
+openAcademyButton.addEventListener("click", () => {
+  void openMobileAcademy();
+});
 
 curriculumBackButton.addEventListener("click", () => {
   if (curriculumTrail.length === 0) {

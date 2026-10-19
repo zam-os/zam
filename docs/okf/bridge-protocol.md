@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-16T09:00:00.000Z
+timestamp: 2026-10-19T16:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -538,6 +538,24 @@ Structured checks retain the stored editorial question and bypass dynamic
 question generation. Every command still writes stdout only through the
 bridge's JSON helpers.
 
+# ZAM Academy commands
+
+The learner's academy actions (ADR 2026-10-19), called by Studio:
+
+- `academy-list` reads `https://academy.zam-os.org/catalog.json` and caches
+  it and its cells under `~/.zam/academy`. It returns each academy cell with
+  `version`, `items`, `appUrl`, `bundled`, `held`, `heldVersion` and
+  `newer`. Offline it answers from the cache, with `offline: true`. It writes
+  nothing to the library.
+- `academy-enrol <cellId>` enrols in the newest version known, bundled or
+  from the catalog.
+- `academy-update <cellId>` installs the newer catalog version of one held
+  cell, and reports `updated`, `from` and `version`.
+
+None of them is in `STUDIO_BRIDGE_COMMANDS` or behind an MCP tool.
+`bundled-cells-list` also lists the cells cached by the last check, and
+`bundled-cell-enrol` enrols them without fetching.
+
 # Trust and keys
 
 Some commands exist for the desktop's Settings only and are not on the Studio
@@ -558,6 +576,7 @@ whose token sits in a keychain ZAM cannot read fails to open with
 `OS_SECRET_UNAVAILABLE`, distinct from `BITWARDEN_REQUIRED`.
 
 # Citations
+- [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
@@ -567,8 +586,8 @@ whose token sits in a keychain ZAM cannot read fails to open with
 - [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
 - [ADR 2026-10-14 — Topic Import, and Where a Unit's Knowledge Comes From](../adr/2026-10-14-topic-import-and-source-provenance.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
-- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-serve-log.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`, `tests/cli/bridge-library-topics.test.ts`, `tests/cli/bridge-material-import.test.ts`, `tests/cli/capability-refresh.test.ts`, `tests/cli/bridge-model-registry.test.ts`, `tests/cli/topic-outline.test.ts`
-- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-refresh.ts`, `src/kernel/import/topic-import.ts`, `src/kernel/atlas/connections.ts`, `src/kernel/atlas/place.ts`, `desktop/src-tauri/src/lib.rs`
+- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-serve-log.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`, `tests/cli/bridge-library-topics.test.ts`, `tests/cli/bridge-material-import.test.ts`, `tests/cli/capability-refresh.test.ts`, `tests/cli/bridge-model-registry.test.ts`, `tests/cli/topic-outline.test.ts`, `tests/cli/academy.test.ts`
+- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-refresh.ts`, `src/kernel/import/topic-import.ts`, `src/kernel/atlas/connections.ts`, `src/kernel/atlas/place.ts`, `desktop/src-tauri/src/lib.rs`, `src/cli/academy/handlers.ts`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)

@@ -765,6 +765,17 @@
       ]
     },
     {
+      "id": "academy-learner-fetch",
+      "parent": "untrusted-callers",
+      "label": "Academy catalog",
+      "link": "fetch only on a learner's action",
+      "text": "Only a learner's own action reads the academy catalog; agent tools see just the cache that check left.",
+      "sources": [
+        "src/cli/academy/catalog-client.ts",
+        "src/cli/academy/cache.ts"
+      ]
+    },
+    {
       "id": "learner",
       "parent": "agents",
       "label": "Learner",
@@ -1195,6 +1206,17 @@
       "text": "In a team library, newcomers start by taking topics the library already holds as their own cards.",
       "sources": [
         "docs/adr/2026-10-02-library-topics.md"
+      ]
+    },
+    {
+      "id": "academy-cells",
+      "parent": "cells",
+      "label": "ZAM Academy",
+      "link": "include",
+      "text": "ZAM Academy cells keep what an app at academy.zam-os.org taught hands-on, and each card links back to its lesson.",
+      "sources": [
+        "docs/adr/2026-10-19-zam-academy-cells.md",
+        "src/kernel/library/academy-catalog.ts"
       ]
     },
     {

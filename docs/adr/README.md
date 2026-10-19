@@ -89,4 +89,4 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-10-13](2026-10-13-knowledge-atlas.md) | Knowledge Atlas: A Zoomable Map of What You Know | Proposed |
 | [2026-10-14](2026-10-14-topic-import-and-source-provenance.md) | Topic Import, and Where a Unit's Knowledge Comes From | Proposed |
 | [2026-10-14b](2026-10-14b-card-formulas-images-and-spoken-text.md) | Card Text Beyond Plain Strings: Formulas, Images and Spoken Text | Partially implemented — built; owner checks, the math font and SVG rasterising open |
-| [2026-10-19](2026-10-19-zam-academy-cells.md) | ZAM Academy: Cells from academy.zam-os.org, One-Click Enrolment, Links Back to the Lesson | Proposed |
+| [2026-10-19](2026-10-19-zam-academy-cells.md) | ZAM Academy: Cells from academy.zam-os.org, One-Click Enrolment, Links Back to the Lesson | Implemented — PR #419; manual app checks open |

@@ -8,6 +8,7 @@ import {
 } from "./card-text-editor.js";
 import { runBridge } from "./bridge-transport.js";
 import { currentLocale, t, tf } from "./i18n.js";
+import { webSourceLink } from "./source-link.js";
 import {
   applyLearningContentSourceChrome,
   initLearningContentSources,
@@ -15,6 +16,11 @@ import {
   reopenCurriculumBrowserIfSelected,
   selectLearningContentCurriculum,
 } from "./learning-content-sources.js";
+import {
+  academyUpdateButton,
+  initAcademyList,
+  isAcademyCellId,
+} from "./academy-list.js";
 import { initLibraryTopics, startLibraryTopic } from "./library-topics.js";
 import { initMaterialBonus, refreshMaterialBonus } from "./material-bonus.js";
 import { initMaterialImportStart } from "./material-import-start.js";
@@ -474,6 +480,19 @@ export function setLearningContentGraphOpener(opener: () => void): void {
  * *Nachlesen* (ADR 2026-10-14, Decision 4) opens in the system browser,
  * which only the desktop shell can reach. Without it the button stays away.
  */
+/**
+ * The editor's „Öffnen ↗“ beside the source field: shown while the field
+ * holds a web link that the system browser can open (ADR 2026-10-19 D6).
+ */
+function syncEditorSourceOpen(): void {
+  const button = document.getElementById("btn-editor-open-source");
+  if (!button || !fieldSourceLink) return;
+  const web = webSourceLink(fieldSourceLink.value, t("source_open_lesson"));
+  button.hidden = !web || !externalOpener;
+  button.textContent = t("source_open");
+  button.title = web?.title ?? "";
+}
+
 export function setLearningContentExternalOpener(
   opener: (url: string) => void,
 ): void {
@@ -650,6 +669,14 @@ export function initLearningContentStudio(): void {
   fieldSourceLink = document.getElementById(
     "editor-field-source-link",
   ) as HTMLInputElement;
+  const openSource = document.getElementById("btn-editor-open-source");
+  if (openSource) {
+    fieldSourceLink.addEventListener("input", syncEditorSourceOpen);
+    openSource.addEventListener("click", () => {
+      const web = webSourceLink(fieldSourceLink.value, t("source_open_lesson"));
+      if (web) externalOpener?.(web.href);
+    });
+  }
   fieldContext = document.getElementById(
     "editor-field-context",
   ) as HTMLInputElement;
@@ -883,6 +910,12 @@ export function initLearningContentStudio(): void {
   // Library topics (ADR 2026-10-02): the cards a started topic adds show up
   // in the list straight away.
   initLibraryTopics({ onStarted: () => loadStudioData() });
+  // ZAM Academy (ADR 2026-10-19 D5): one click takes a cell; „Üben ↗“ opens
+  // its app in the system browser.
+  initAcademyList({
+    openExternal: (url) => externalOpener?.(url),
+    onEnrolled: () => loadStudioData(),
+  });
   // Material imports (ADR 2026-10-05): a waiting batch shows as a banner,
   // confirmed cards show up in the list straight away, and items kept as
   // Bonus wait behind their own button until the learner takes one.
@@ -1427,6 +1460,7 @@ function selectCard(card: PersonalCard): void {
   fieldTitle.value = card.title || "";
   fieldDomain.value = card.domain || "";
   fieldSourceLink.value = card.sourceLink || "";
+  syncEditorSourceOpen();
   fieldContext.value = card.context || "";
   fieldBloom.value = String(card.bloomLevel || 1);
   fieldMode.value = card.symbiosisMode || "none";
@@ -1479,6 +1513,7 @@ function startCreateNewCard(): void {
   fieldTitle.value = "";
   fieldDomain.value = "";
   fieldSourceLink.value = "";
+  syncEditorSourceOpen();
   fieldContext.value = "";
   fieldBloom.value = "1";
   fieldMode.value = "none";
@@ -3305,7 +3340,16 @@ function renderBundledCells(cells: BundledCellItem[]): void {
     stateBtn.textContent = t("lbl_cell_enrolled");
     stateBtn.disabled = true;
 
-    footer.append(countEl, stateBtn);
+    // A held academy cell is updated only on the learner's click (ADR
+    // 2026-10-19 D4): check the catalog, then „Aktualisieren auf …“.
+    const buttons = document.createElement("span");
+    buttons.style.display = "flex";
+    buttons.style.gap = "6px";
+    if (isAcademyCellId(cell.id)) {
+      buttons.append(academyUpdateButton(cell.id, () => loadBundledCells()));
+    }
+    buttons.append(stateBtn);
+    footer.append(countEl, buttons);
     cardEl.append(header, desc, footer);
     bundledCellsListEl.appendChild(cardEl);
   }

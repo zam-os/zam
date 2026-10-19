@@ -178,6 +178,11 @@ import {
   type WorkspaceKind,
 } from "../../kernel/index.js";
 import {
+  academyEnrolHandler,
+  academyListHandler,
+  academyUpdateHandler,
+} from "../academy/handlers.js";
+import {
   CONTENT_USER_AGENT,
   cleanHtml,
   readImageOCR,
@@ -9462,6 +9467,57 @@ bridgeCommand
           user: opts.user,
         });
         jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+// ── zam bridge academy-list / academy-enrol / academy-update ───────────────
+// The learner's academy actions (ADR 2026-10-19 D4–D5): Studio calls them on
+// a click. They are the only code that fetches academy.zam-os.org, and they
+// are deliberately not in STUDIO_BRIDGE_COMMANDS or behind an MCP tool.
+
+bridgeCommand
+  .command("academy-list")
+  .description(
+    "Read the ZAM Academy catalog and list its cells with enrolment status (JSON)",
+  )
+  .option("--user <userId>", "User ID to check status for")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(await academyListHandler(db, { user: opts.user }));
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+bridgeCommand
+  .command("academy-enrol <cellId>")
+  .description("Enrol in a ZAM Academy cell, newest version known (JSON)")
+  .option("--user <userId>", "User ID to enrol")
+  .action(async (cellId, opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(await academyEnrolHandler(db, { cellId, user: opts.user }));
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+bridgeCommand
+  .command("academy-update <cellId>")
+  .description(
+    "Install the catalog's newer version of one held ZAM Academy cell (JSON)",
+  )
+  .option("--user <userId>", "User ID")
+  .action(async (cellId, opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(await academyUpdateHandler(db, { cellId, user: opts.user }));
       } catch (err: unknown) {
         jsonError((err as Error).message || String(err));
       }

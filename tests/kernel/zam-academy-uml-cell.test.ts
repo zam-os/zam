@@ -65,7 +65,8 @@ describe("ZAM Academy UML cell", () => {
     const cell = getBundledCell(CELL_ID);
     expect(cell?.title).toBe("UML 2.5.1 (ZAM Academy)");
     expect(cell?.publisher).toBe("ZAM Academy");
-    expect(cell?.gradeLabel).toBe("ZAM Academy · UML 2.5.1");
+    // Labelled by its publisher: a stage is no school place.
+    expect(cell?.gradeLabel).toBe("ZAM Academy");
     expect(cell?.atomCount).toBe(6);
     expect(
       findBundledCellsForScope({ provider: "zam-academy", subject: "uml" }).map(

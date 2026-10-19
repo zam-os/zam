@@ -18,6 +18,7 @@ import {
   rgbCss,
 } from "../../src/kernel/atlas/palette.js";
 import { initContentImportMenu } from "./content-import-menu.js";
+import { webSourceLink } from "./source-link.js";
 import {
   applyTopicImportLabels,
   initTopicImportDialog,
@@ -1455,6 +1456,8 @@ function initializeTranslations() {
   if (btnContentTopicImport) btnContentTopicImport.textContent = t("btn_content_topic_import");
   const btnContentLibraryTopics = document.getElementById("btn-content-library-topics");
   if (btnContentLibraryTopics) btnContentLibraryTopics.textContent = t("btn_library_topics");
+  const btnAcademyOpen = document.getElementById("btn-academy-open");
+  if (btnAcademyOpen) btnAcademyOpen.textContent = t("academy_menu");
   const btnDashboardLibraryTopics = document.getElementById("btn-dashboard-library-topics");
   if (btnDashboardLibraryTopics) btnDashboardLibraryTopics.textContent = t("dashboard_library_topics");
   const lblCurriculumWizardTitle = document.getElementById("lbl-curriculum-wizard-title");
@@ -7024,7 +7027,29 @@ function renderReveal(
 
   // 4. Source Reference / Code Context Row (if any)
   if (activeCard.sourceLink) {
-    addRevealRow("source", activeCard.sourceLink, { code: true });
+    // A web source opens in the system browser on the learner's click
+    // (ADR 2026-10-19 D6); a local path stays as code text.
+    const web = webSourceLink(activeCard.sourceLink, t("source_open_lesson"));
+    if (web) {
+      const row = document.createElement("div");
+      row.className = "reveal-item";
+      const label = document.createElement("span");
+      label.className = "reveal-label";
+      label.textContent = `${t("source")}:`;
+      const link = document.createElement("a");
+      link.className = "reveal-val reveal-source-link";
+      link.href = web.href;
+      link.title = web.title;
+      link.textContent = web.label;
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        void openUrl(web.href);
+      });
+      row.append(label, document.createTextNode(" "), link);
+      revealContentList.appendChild(row);
+    } else {
+      addRevealRow("source", activeCard.sourceLink, { code: true });
+    }
 
     if (resolvedContextContent) {
       const codeBox = document.createElement("pre");
