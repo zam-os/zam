@@ -1456,6 +1456,8 @@ function initializeTranslations() {
   if (btnContentTopicImport) btnContentTopicImport.textContent = t("btn_content_topic_import");
   const btnContentLibraryTopics = document.getElementById("btn-content-library-topics");
   if (btnContentLibraryTopics) btnContentLibraryTopics.textContent = t("btn_library_topics");
+  const btnAcademyOpen = document.getElementById("btn-academy-open");
+  if (btnAcademyOpen) btnAcademyOpen.textContent = t("academy_menu");
   const btnDashboardLibraryTopics = document.getElementById("btn-dashboard-library-topics");
   if (btnDashboardLibraryTopics) btnDashboardLibraryTopics.textContent = t("dashboard_library_topics");
   const lblCurriculumWizardTitle = document.getElementById("lbl-curriculum-wizard-title");

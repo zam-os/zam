@@ -36,7 +36,7 @@ can pick up the next unchecked phase without any other context.
 - [x] **Phase 2** — ZAM: clickable web source links (D6)
 - [x] **Phase 3** — kernel: reconcile never downgrades (D4)
 - [x] **Phase 4** — CLI and kernel: catalog read, cache, enrol, update (D4)
-- [ ] **Phase 5** — Studio: the Academy list and update on a held cell (D5)
+- [x] **Phase 5** — Studio: the Academy list and update on a held cell (D5)
 - [ ] **Phase 6** — release flow: sync script, lock file, generic label
 - [ ] **Phase 7** — Mobile: the Academy list (D5)
 - [ ] **Phase 8** — documentation and handover

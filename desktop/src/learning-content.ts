@@ -16,6 +16,11 @@ import {
   reopenCurriculumBrowserIfSelected,
   selectLearningContentCurriculum,
 } from "./learning-content-sources.js";
+import {
+  academyUpdateButton,
+  initAcademyList,
+  isAcademyCellId,
+} from "./academy-list.js";
 import { initLibraryTopics, startLibraryTopic } from "./library-topics.js";
 import { initMaterialBonus, refreshMaterialBonus } from "./material-bonus.js";
 import { initMaterialImportStart } from "./material-import-start.js";
@@ -905,6 +910,12 @@ export function initLearningContentStudio(): void {
   // Library topics (ADR 2026-10-02): the cards a started topic adds show up
   // in the list straight away.
   initLibraryTopics({ onStarted: () => loadStudioData() });
+  // ZAM Academy (ADR 2026-10-19 D5): one click takes a cell; „Üben ↗“ opens
+  // its app in the system browser.
+  initAcademyList({
+    openExternal: (url) => externalOpener?.(url),
+    onEnrolled: () => loadStudioData(),
+  });
   // Material imports (ADR 2026-10-05): a waiting batch shows as a banner,
   // confirmed cards show up in the list straight away, and items kept as
   // Bonus wait behind their own button until the learner takes one.
@@ -3329,7 +3340,16 @@ function renderBundledCells(cells: BundledCellItem[]): void {
     stateBtn.textContent = t("lbl_cell_enrolled");
     stateBtn.disabled = true;
 
-    footer.append(countEl, stateBtn);
+    // A held academy cell is updated only on the learner's click (ADR
+    // 2026-10-19 D4): check the catalog, then „Aktualisieren auf …“.
+    const buttons = document.createElement("span");
+    buttons.style.display = "flex";
+    buttons.style.gap = "6px";
+    if (isAcademyCellId(cell.id)) {
+      buttons.append(academyUpdateButton(cell.id, () => loadBundledCells()));
+    }
+    buttons.append(stateBtn);
+    footer.append(countEl, buttons);
     cardEl.append(header, desc, footer);
     bundledCellsListEl.appendChild(cardEl);
   }
