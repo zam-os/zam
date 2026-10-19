@@ -106,8 +106,9 @@ kept apart from its app drifts, as #417 showed.
 - **That repository's CI checks the join.** It installs `cell.json` into a
   throw-away library with the published `zam-core` (pinned version), the same
   validation a bundled tile passes. It also checks that every card's link
-  names an existing lesson of that app, and that the app's lesson ids match
-  the pinned list.
+  names an existing lesson of that app. Each app's own test pins its lesson
+  ids (for UML, `uml/tests/uml-learning-app.test.ts`), so renaming a lesson
+  fails there first.
 - **ZAM keeps a bundled copy.** Each ZAM release copies the current academy
   cells into its fixtures, so the first run and offline use still work. The
   bundled UML cell from PR #417 becomes that copy.
@@ -127,28 +128,40 @@ public content, versioned in git, contributed through reviewed PRs. Anything
 that needs accounts, writes or learner data is not part of it. That stays
 with ZAM's own databases.
 
-### 3. Publishing a cell there is its release
+### 3. A cell is released by its first publication, in either place
 
-- **Released means stable** (ADR 2026-08-14 Decisions 8–9). A cell in
-  `catalog.json` is released: its item ids, item slugs and the lesson ids
-  its cards cite stay stable.
+- **Released by whichever comes first.** A cell is released the first time
+  it is published: in `catalog.json`, or in a ZAM release that bundles it.
+  From then on, learners may hold review history on its items.
+- **Released means stable** (ADR 2026-08-14 Decisions 8–9). Its item ids,
+  item slugs and the lesson ids its cards cite stay stable.
 - **Changes follow the release rules.** A replaced item names its
-  predecessor with `replaces`, and every change raises the tile version.
-- **Before that, anything may change.** Until a cell enters the catalog, it
-  may be rebuilt freely, as the UML cell was in PR #417.
+  predecessor with `replaces`, so the learner's evidence moves with it, and
+  every change raises the tile version. Mastery never moves across an
+  uncertain match.
+- **Before that, anything may change.** Until its first publication, a cell
+  may be rebuilt freely, as the UML cell was in PR #417. Once #417 is part
+  of a ZAM release, the UML cell is released.
 
 ### 4. ZAM reads the catalog on the learner's action, and installs only what the learner takes
 
 - **Reading writes nothing.** Opening the Academy list (Decision 5) reads
-  `catalog.json` and installs nothing. There is no background polling. The
-  read-only agent tool `zam_bundled_cells_list` does not go to the network:
-  it lists bundled cells and those already installed from the catalog.
+  `catalog.json` and installs nothing. There is no background polling.
+- **Only the learner goes to the network; agents never do.** A tool call
+  is not the learner's action, since an injected agent can make it too
+  (ADR 2026-10-08b).
+  - Studio and the CLI keep the last catalog the learner checked, and the
+    cells fetched with it, in a machine-local cache under `~/.zam`. The
+    cache is not in the library database.
+  - `zam_bundled_cells_list` lists bundled cells and the cached catalog's
+    cells.
+  - `zam_bundled_cell_enrol` enrols any of them, but never fetches.
 - **Two learner actions install:**
-  - **„Aufnehmen“** enrols. On a cell the release does not bundle, that
-    means `installKvtTile` on the fetched tile, then materialising cards for
-    its in-scope atoms. `enrolBundledCell` and `zam_bundled_cell_enrol` keep
-    taking a cell id and resolve an id that is not bundled through the
-    catalog.
+  - **„Aufnehmen“** enrols. On a cell the release does not bundle, Studio
+    first fetches the cell, then runs `installKvtTile` on it and
+    materialises cards for its in-scope atoms. `enrolBundledCell` keeps
+    taking a cell id and resolves an id that is not bundled through the
+    cache.
   - **„Aktualisieren“** updates one held cell whose catalog version is
     newer. Lern-Karten offers it on the cell's row once the learner has
     checked, either with the row's „Auf Aktualisierung prüfen“ or by opening
@@ -189,17 +202,21 @@ with ZAM's own databases.
 - **One click is enough.** „Aufnehmen“ enrols at once, as the Atlas
   import already does.
   - The row says beforehand how many cards become due, for example „26
-    Karten“.
+    Karten“, and which version it installs.
   - On click the button turns into „Aufgenommen“ and is disabled.
 - **Afterwards,** the cell appears among the learner's cells in Lern-Karten,
   with „Aktualisieren“ when a newer version is known (Decision 4).
-- **Unchanged:** the curriculum wizard stays for school curricula, and
-  agents keep `zam_bundled_cells_list` and `zam_bundled_cell_enrol`. The
-  enrol tool now also takes a catalog id (Decision 4).
+- **Unchanged:**
+  - The curriculum wizard, the Atlas import and Mobile keep enrolling for a
+    curriculum place.
+  - Agents keep `zam_bundled_cells_list` and `zam_bundled_cell_enrol`. The
+    enrol tool now also takes a cached catalog id (Decision 4).
+- **Mobile gets the Academy list later** (Delivery step 7).
 
-The academy apps tell the learner how to get there: open ZAM and ask the
-agent, or use the import menu. A link from the web page straight into
-Studio is open question 1.
+The academy apps tell the learner how to get there: use the import menu, or
+open ZAM and ask the agent. For a topic the release does not bundle yet,
+the agent can enrol it only after the learner has opened the Academy list
+once. A link from the web page straight into Studio is open question 1.
 
 ### 6. A web source link is clickable, on every card
 
@@ -214,10 +231,13 @@ academy cards:
     It does not show the link at all today.
   - Mobile's review, whose label follows the same rule.
 - **How it looks:**
-  - The host plus „öffnen ↗“.
+  - The host and the path, shortened if long, plus ↗. For a Wikipedia card,
+    the article name is the useful part.
+  - The host is shown in its ASCII (punycode) form, because the link is
+    untrusted library content and a look-alike host must not pass as a
+    known one.
   - „Lektion öffnen ↗“ only when the parsed host is `academy.zam-os.org`.
-  - The full URL stays visible as the link's title (hover) or a second
-    line.
+  - The full URL stays visible on hover or long-press.
 - **What a click does:** the system browser opens the page.
 - **Never automatic.** Only `http:` and `https:` open, and only on the
   learner's click. A local path keeps today's behaviour: the reader for
@@ -255,6 +275,9 @@ academy cards:
   reader of ADR 2026-10-08b ships.
 - **A learner who never checks gets fixes only with ZAM releases** (through
   the bundled copy). That is the price of no background polling.
+- **An agent cannot reach a brand-new topic on its own.** It can enrol a
+  topic the release does not bundle only after the learner has checked the
+  catalog once.
 
 **Unchanged**
 
@@ -307,7 +330,8 @@ academy cards:
 
 Each step can ship on its own:
 
-1. **zam-academy:**
+1. **zam-academy,** right after #417 merges, so `zam-os/zam` does not stay
+   the cell's de-facto source:
    - `uml/cell.json` as the source of the UML cell;
    - `catalog.json` in the Pages build;
    - CI that installs the cell with `zam-core` and checks every cited
@@ -320,6 +344,7 @@ Each step can ship on its own:
 4. **ZAM — catalog read and install** (Decision 4):
    - the origin-pinned fetcher (every redirect hop), the hash check, and
      cell paths resolved against the origin;
+   - the machine-local catalog cache, and agent tools that read only that;
    - catalog-only enrolment through `enrolBundledCell`;
    - „Aktualisieren“ for one held cell;
    - the refusal in team libraries.
@@ -331,11 +356,13 @@ Each step can ship on its own:
    - Copy the academy cells into `tests/fixtures/curriculum/` as
      `zam-academy-<app>-kvt.json`, so `scripts/update-bundled-cells-imports.mjs`
      picks them up like the UML cell.
-   - A test pins the catalog version that was copied, and checks that the
-     bundled copy equals the published file of that version, not the live
-     catalog.
+   - The copy records the version and SHA-256 it was taken from. A test
+     checks the bundled copy against that record, not against the live
+     catalog, which moves weekly by design.
+7. **Mobile — the Academy list** (Decision 5), on the same catalog rules.
 
-PR #417 can merge before these steps. Its cell is the first bundled copy.
+PR #417 can merge before these steps. Its cell is the first bundled copy,
+and Decision 3 makes it released from that ZAM release on.
 
 ## Status history
 
@@ -353,3 +380,12 @@ PR #417 can merge before these steps. Its cell is the first bundled copy.
   Decision 5 shows the card count instead of claiming nothing is lost.
   Decision 6 keeps the full URL visible and names the panel and Mobile. The
   Context now matches the code. Open questions 6 and 7 are added.
+- 2026-10-19 — Reviewed by MiMo on PR #418.
+  - Decision 3: a cell is released by its first publication, in the catalog
+    or in a ZAM release.
+  - Decision 4: agent tools never go to the network; they read a
+    machine-local cache of the learner's last check.
+  - Decision 5: the row shows the version, and Mobile's list is Delivery
+    step 7.
+  - Decision 6: the label shows host and path, with the host in punycode.
+  - The release test checks the recorded copy, not the live catalog.
