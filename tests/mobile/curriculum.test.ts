@@ -82,7 +82,7 @@ describe("mobile cell precedence", () => {
     );
     expect(position.needsGenericImport).toBe(false);
     expect(position.cells.map((cell) => cell.id)).toContain(
-      "de-by:realschule-9-mathematik-pythagoras-trigonometrie",
+      "zam-academy:mathematik-realschule-9",
     );
     expect(position.topics.length).toBeGreaterThan(0);
   });

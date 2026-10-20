@@ -1,0 +1,5322 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:mathematik-realschule-9",
+  "version": "2026.10.1",
+  "title": "Mathematik 9 Realschule (ZAM Academy)",
+  "description": "Hält fest, was du in der ZAM Academy zu Mathematik 9 (Realschule Bayern, LehrplanPLUS) geübt hast: rechtwinklige Dreiecke und Trigonometrie, Kreis und Körper, Systeme linearer Gleichungen, quadratische Funktionen, Daten und Zufall. Jede Karte verlinkt die Lektion mit Labor und Aufgaben.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-20T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/mathematik-realschule-9/",
+      "checked": "2026-10-20",
+      "label": "ZAM Academy · Mathematik 9 Realschule (interaktives Labor, Etappen 1–5)"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/mathematik/wpfg1",
+      "label": "LehrplanPLUS Realschule, Mathematik 9, Wahlpflichtfächergruppe I (LB 3 bis LB 8)"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/mathematik/wpfg2-3",
+      "label": "LehrplanPLUS Realschule, Mathematik 9, Wahlpflichtfächergruppen II/III (LB 3, LB 4, LB 6, LB 7)"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8MATH9RS000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A01",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-satz-des-pythagoras",
+      "title": "Satz des Pythagoras: Katheten, Hypotenuse, a² + b² = c²",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-1-pythagoras",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-1-dreiecke",
+          "topic_title": "Etappe 1: Rechtwinklige Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K001",
+          "slug": "m9-hypotenuse-lage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-1-pythagoras",
+          "question": "Welche Seite eines rechtwinkligen Dreiecks liegt dem rechten Winkel gegenüber?",
+          "concept": "die Hypotenuse",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die Hypotenuse",
+              "eine Kathete"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "die längere Kathete",
+              "reason": "Die Katheten bilden den rechten Winkel, sie liegen an ihm an."
+            },
+            {
+              "text": "die kürzere Kathete",
+              "reason": "Auch sie liegt am rechten Winkel an."
+            }
+          ],
+          "replaces": [
+            "01K4T9M0000000000000000HH1"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K002",
+          "slug": "m9-pythagoras-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-1-pythagoras",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet der Satz des Pythagoras für die Katheten "
+            },
+            {
+              "type": "math",
+              "tex": "a",
+              "speech": "a"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "b",
+              "speech": "b"
+            },
+            {
+              "type": "text",
+              "text": " und die Hypotenuse "
+            },
+            {
+              "type": "math",
+              "tex": "c",
+              "speech": "c"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "a^2 + b^2 = c^2",
+              "speech": "a Quadrat plus b Quadrat gleich c Quadrat"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Zum Beispiel 3² + 4² = 9 + 16 = 25 = 5².",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "a² + b² = c²",
+              "a + b = c"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "a + b = c",
+              "reason": "Die Seiten werden erst quadriert, dann addiert."
+            },
+            {
+              "text": "a² + c² = b²",
+              "reason": "Die Hypotenuse c steht allein auf einer Seite."
+            }
+          ],
+          "replaces": [
+            "01K4T9M0000000000000000PP1"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K003",
+          "slug": "m9-pythagoras-quadrate",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-1-pythagoras",
+          "question": "Was sagt der Satz des Pythagoras über die Quadrate an den drei Seiten eines rechtwinkligen Dreiecks?",
+          "concept": "Die beiden Kathetenquadrate haben zusammen denselben Flächeninhalt wie das Hypotenusenquadrat.",
+          "materiality": "material",
+          "sample_solution": "Im Puzzle-Beweis bleibt in einem Quadrat der Seite a + b einmal c² frei und einmal a² + b².",
+          "choice_distractors": [
+            {
+              "text": "Jedes der beiden Kathetenquadrate ist genau halb so groß wie das Hypotenusenquadrat.",
+              "reason": "Das gilt nur, wenn beide Katheten gleich lang sind."
+            },
+            {
+              "text": "Das Hypotenusenquadrat ist genau so groß wie das Produkt der beiden Katheten.",
+              "reason": "Gemeint sind die Flächen der Kathetenquadrate, nicht das Produkt a · b."
+            }
+          ],
+          "replaces": [
+            "01K4T9M0000000000000000PP2"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K004",
+          "slug": "m9-pythagoras-lage-b",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-1-pythagoras",
+          "question": "Im Dreieck ABC liegt der rechte Winkel bei B. Wie lautet der Satz des Pythagoras?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "a^2 + c^2 = b^2",
+              "speech": "a Quadrat plus c Quadrat gleich b Quadrat"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "a² + c² = b²",
+              "a² + b² = c²"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "a² + b² = c²",
+              "reason": "Hier ist c eine Kathete; die Hypotenuse liegt B gegenüber, das ist b."
+            },
+            {
+              "text": "b² + c² = a²",
+              "reason": "a liegt A gegenüber, nicht dem rechten Winkel."
+            }
+          ],
+          "replaces": [
+            "01K4T9M0000000000000000PA0"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K005",
+          "slug": "m9-kathete-berechnen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-1-pythagoras",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man die Kathete "
+            },
+            {
+              "type": "math",
+              "tex": "a",
+              "speech": "a"
+            },
+            {
+              "type": "text",
+              "text": " aus der Hypotenuse "
+            },
+            {
+              "type": "math",
+              "tex": "c",
+              "speech": "c"
+            },
+            {
+              "type": "text",
+              "text": " und der Kathete "
+            },
+            {
+              "type": "math",
+              "tex": "b",
+              "speech": "b"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "a = \\sqrt{c^2 - b^2}",
+              "speech": "a gleich Wurzel aus c Quadrat minus b Quadrat"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "a = √(c² − b²)",
+              "a = √(c² + b²)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "a = c − b",
+              "reason": "Subtrahiert werden die Quadrate, nicht die Seiten."
+            },
+            {
+              "text": "a = √(b² − c²)",
+              "reason": "c ist die längste Seite; b² − c² wäre negativ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A02",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-umkehrung-pythagoras",
+      "title": "Umkehrung des Satzes des Pythagoras",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-2-umkehrung",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A01",
+          "type": "soft",
+          "rationale": "Die Umkehrung prüft genau die Gleichung des Satzes des Pythagoras."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-1-dreiecke",
+          "topic_title": "Etappe 1: Rechtwinklige Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K006",
+          "slug": "m9-umkehrung-pruefen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-2-umkehrung",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Ein Dreieck hat die Seiten "
+            },
+            {
+              "type": "math",
+              "tex": "p",
+              "speech": "p"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "q",
+              "speech": "q"
+            },
+            {
+              "type": "text",
+              "text": " und die längste Seite "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": ". Wann ist es rechtwinklig?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "wenn "
+            },
+            {
+              "type": "math",
+              "tex": "p^2 + q^2 = r^2",
+              "speech": "p Quadrat plus q Quadrat gleich r Quadrat"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "p² + q² = r²",
+              "p + q > r"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "wenn p + q = r",
+              "reason": "Verglichen werden die Quadrate; mit p + q = r gäbe es gar kein Dreieck."
+            },
+            {
+              "text": "wenn p² + r² = q²",
+              "reason": "Die längste Seite r muss allein stehen."
+            }
+          ],
+          "replaces": [
+            "01K4T9M0000000000000000VV1"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K007",
+          "slug": "m9-stumpfwinklig",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-2-umkehrung",
+          "question": "Für die Seiten eines Dreiecks gilt p² + q² < r², r ist die längste Seite. Welcher Winkel liegt r gegenüber?",
+          "concept": "ein stumpfer Winkel, größer als 90°",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "stumpf",
+              "spitz"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "ein spitzer Winkel, kleiner als 90°",
+              "reason": "Spitz ist er, wenn p² + q² größer als r² ist."
+            },
+            {
+              "text": "ein rechter Winkel, genau 90°",
+              "reason": "Rechtwinklig ist das Dreieck nur bei p² + q² = r²."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K008",
+          "slug": "m9-tripel-3-4-5",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-2-umkehrung",
+          "question": "Welche drei ganzen Zahlen bilden das kleinste pythagoreische Zahlentripel?",
+          "concept": "3, 4 und 5",
+          "materiality": "material",
+          "sample_solution": "Eine Schnur mit 12 gleichen Abständen, gespannt zu 3 + 4 + 5, ergibt einen rechten Winkel.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "3, 4 und 5",
+              "2, 3 und 4"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "2, 3 und 4",
+              "reason": "4 + 9 = 13 ist nicht 16."
+            },
+            {
+              "text": "5, 12 und 13",
+              "reason": "Das ist auch ein Tripel, aber nicht das kleinste."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A03",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A03",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-hoehensatz-kathetensatz",
+      "title": "Höhensatz, Kathetensatz und Thaleskreis",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-3-hoehe-kathetensatz",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A02",
+          "type": "soft",
+          "rationale": "Höhen- und Kathetensatz gehören wie Pythagoras zur Satzgruppe am rechtwinkligen Dreieck."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-1-dreiecke",
+          "topic_title": "Etappe 1: Rechtwinklige Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K009",
+          "slug": "m9-hoehensatz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-3-hoehe-kathetensatz",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet der Höhensatz für die Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h",
+              "speech": "h"
+            },
+            {
+              "type": "text",
+              "text": " auf die Hypotenuse und die Hypotenusenabschnitte "
+            },
+            {
+              "type": "math",
+              "tex": "p",
+              "speech": "p"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "q",
+              "speech": "q"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "h^2 = p \\cdot q",
+              "speech": "h Quadrat gleich p mal q"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "h² = p · q",
+              "h² = p + q"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "h = p · q",
+              "reason": "Das Quadrat der Höhe ist gleich dem Produkt, nicht die Höhe selbst."
+            },
+            {
+              "text": "h² = p² + q²",
+              "reason": "Das wäre eine Pythagoras-Form; der Höhensatz ist ein Produkt."
+            }
+          ],
+          "replaces": [
+            "01K4T9M0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K010",
+          "slug": "m9-kathetensatz-a",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-3-hoehe-kathetensatz",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet der Kathetensatz für die Kathete "
+            },
+            {
+              "type": "math",
+              "tex": "a",
+              "speech": "a"
+            },
+            {
+              "type": "text",
+              "text": " und den Hypotenusenabschnitt "
+            },
+            {
+              "type": "math",
+              "tex": "p",
+              "speech": "p"
+            },
+            {
+              "type": "text",
+              "text": ", der an "
+            },
+            {
+              "type": "math",
+              "tex": "a",
+              "speech": "a"
+            },
+            {
+              "type": "text",
+              "text": " liegt?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "a^2 = c \\cdot p",
+              "speech": "a Quadrat gleich c mal p"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "a² = c · p",
+              "a² = c · q"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "a² = p · q",
+              "reason": "Das ist die Form des Höhensatzes."
+            },
+            {
+              "text": "a = c · p",
+              "reason": "Die Kathete steht im Quadrat."
+            }
+          ],
+          "replaces": [
+            "01K4T9M0000000000000000KK1"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K011",
+          "slug": "m9-kathetensatz-b",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-3-hoehe-kathetensatz",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet der Kathetensatz für die Kathete "
+            },
+            {
+              "type": "math",
+              "tex": "b",
+              "speech": "b"
+            },
+            {
+              "type": "text",
+              "text": " und den Hypotenusenabschnitt "
+            },
+            {
+              "type": "math",
+              "tex": "q",
+              "speech": "q"
+            },
+            {
+              "type": "text",
+              "text": ", der an "
+            },
+            {
+              "type": "math",
+              "tex": "b",
+              "speech": "b"
+            },
+            {
+              "type": "text",
+              "text": " liegt?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "b^2 = c \\cdot q",
+              "speech": "b Quadrat gleich c mal q"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "b² = c · q",
+              "b² = c · p"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "b² = c · p",
+              "reason": "p liegt an a, nicht an b."
+            },
+            {
+              "text": "b = c · q",
+              "reason": "Die Kathete steht im Quadrat."
+            }
+          ],
+          "replaces": [
+            "01K4T9M0000000000000000KK2"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K012",
+          "slug": "m9-thaleskreis",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-3-hoehe-kathetensatz",
+          "question": "Auf welcher Linie liegen alle Punkte C, für die das Dreieck ABC bei C einen rechten Winkel hat?",
+          "concept": "auf dem Kreis mit dem Durchmesser AB, außer A und B",
+          "materiality": "material",
+          "sample_solution": "Das ist der Thaleskreis; seine Hälften über und unter AB gehören beide dazu.",
+          "choice_distractors": [
+            {
+              "text": "auf der Mittelsenkrechten der Strecke AB",
+              "reason": "Dort ist das Dreieck gleichschenklig, aber nur zwei Punkte haben einen rechten Winkel."
+            },
+            {
+              "text": "auf einer Parallelen zur Strecke AB",
+              "reason": "Auf einer Parallelen ändert sich der Winkel bei C von Punkt zu Punkt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A04",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A04",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-sinus-kosinus",
+      "title": "Sinus und Kosinus am rechtwinkligen Dreieck",
+      "domain": "mathematik/trigonometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-4-sinus-kosinus",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A03",
+          "type": "soft",
+          "rationale": "Sinus und Kosinus sind Seitenverhältnisse im rechtwinkligen Dreieck."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-1-dreiecke",
+          "topic_title": "Etappe 1: Rechtwinklige Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K013",
+          "slug": "m9-sinus-definition",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-4-sinus-kosinus",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welches Seitenverhältnis ist "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin\\alpha",
+              "speech": "Sinus alpha"
+            },
+            {
+              "type": "text",
+              "text": " im rechtwinkligen Dreieck?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\sin\\alpha = \\frac{\\text{Gegenkathete}}{\\text{Hypotenuse}}",
+              "speech": "Sinus alpha gleich Gegenkathete durch Hypotenuse"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gegenkathete : Hypotenuse",
+              "Ankathete : Hypotenuse"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ankathete / Hypotenuse",
+              "reason": "Das ist der Kosinus."
+            },
+            {
+              "text": "Gegenkathete / Ankathete",
+              "reason": "Das ist der Tangens."
+            }
+          ],
+          "replaces": [
+            "01K4T9M0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K014",
+          "slug": "m9-kosinus-definition",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-4-sinus-kosinus",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welches Seitenverhältnis ist "
+            },
+            {
+              "type": "math",
+              "tex": "\\cos\\alpha",
+              "speech": "Kosinus alpha"
+            },
+            {
+              "type": "text",
+              "text": " im rechtwinkligen Dreieck?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\cos\\alpha = \\frac{\\text{Ankathete}}{\\text{Hypotenuse}}",
+              "speech": "Kosinus alpha gleich Ankathete durch Hypotenuse"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ankathete : Hypotenuse",
+              "Gegenkathete : Hypotenuse"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Gegenkathete / Hypotenuse",
+              "reason": "Das ist der Sinus."
+            },
+            {
+              "text": "Ankathete / Gegenkathete",
+              "reason": "Das ist der Kehrwert des Tangens."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K015",
+          "slug": "m9-sinus-kleiner-eins",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-4-sinus-kosinus",
+          "question": "Warum liegt sin α für jeden spitzen Winkel α zwischen 0 und 1?",
+          "concept": "Weil die Gegenkathete immer kürzer ist als die Hypotenuse.",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Weil die Hypotenuse immer kürzer ist als jede Kathete.",
+              "reason": "Umgekehrt: Die Hypotenuse ist die längste Seite."
+            },
+            {
+              "text": "Weil Gegenkathete und Ankathete immer gleich lang sind.",
+              "reason": "Gleich lang sind sie nur bei 45°."
+            }
+          ],
+          "replaces": [
+            "01K4T9M0000000000000000J06"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K016",
+          "slug": "m9-sinus-aehnlich",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-4-sinus-kosinus",
+          "question": "Ein rechtwinkliges Dreieck wird mit denselben Winkeln doppelt so groß gezeichnet. Was passiert mit sin α?",
+          "concept": "Er bleibt gleich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "bleibt gleich",
+              "verdoppelt sich"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er verdoppelt sich.",
+              "reason": "Gegenkathete und Hypotenuse werden beide doppelt so lang, ihr Verhältnis bleibt."
+            },
+            {
+              "text": "Er halbiert sich.",
+              "reason": "Das Verhältnis zweier Seiten hängt nicht von der Größe ab."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K017",
+          "slug": "m9-komplementwinkel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-4-sinus-kosinus",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welcher Kosinuswert ist für jeden spitzen Winkel gleich "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin\\alpha",
+              "speech": "Sinus alpha"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\cos(90^\\circ - \\alpha)",
+              "speech": "Kosinus von neunzig Grad minus alpha"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Die Gegenkathete von α ist die Ankathete des anderen spitzen Winkels β = 90° − α.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "cos(90° − α)",
+              "cos α"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "cos α",
+              "reason": "Gleich sind sin α und cos α nur bei 45°."
+            },
+            {
+              "text": "cos(180° − α)",
+              "reason": "Der zweite spitze Winkel im Dreieck ist 90° − α."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A05",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A05",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-tangens-steigung",
+      "title": "Tangens und Steigung",
+      "domain": "mathematik/trigonometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-5-tangens",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A04",
+          "type": "soft",
+          "rationale": "Der Tangens vergleicht die beiden Katheten, die beim Sinus und Kosinus vorkommen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-1-dreiecke",
+          "topic_title": "Etappe 1: Rechtwinklige Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K018",
+          "slug": "m9-tangens-definition",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-5-tangens",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie ist "
+            },
+            {
+              "type": "math",
+              "tex": "\\tan\\alpha",
+              "speech": "Tangens alpha"
+            },
+            {
+              "type": "text",
+              "text": " im rechtwinkligen Dreieck definiert?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\tan\\alpha = \\frac{\\text{Gegenkathete}}{\\text{Ankathete}}",
+              "speech": "Tangens alpha gleich Gegenkathete durch Ankathete"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gegenkathete : Ankathete",
+              "Ankathete : Gegenkathete"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Gegenkathete / Hypotenuse",
+              "reason": "Das ist der Sinus."
+            },
+            {
+              "text": "Ankathete / Gegenkathete",
+              "reason": "Das ist der Kehrwert des Tangens."
+            }
+          ],
+          "replaces": [
+            "01K4T9M0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K019",
+          "slug": "m9-tangens-sin-cos",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-5-tangens",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie hängt "
+            },
+            {
+              "type": "math",
+              "tex": "\\tan\\alpha",
+              "speech": "Tangens alpha"
+            },
+            {
+              "type": "text",
+              "text": " mit "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin\\alpha",
+              "speech": "Sinus alpha"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\cos\\alpha",
+              "speech": "Kosinus alpha"
+            },
+            {
+              "type": "text",
+              "text": " zusammen?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\tan\\alpha = \\frac{\\sin\\alpha}{\\cos\\alpha}",
+              "speech": "Tangens alpha gleich Sinus alpha durch Kosinus alpha"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Teilt man Gegenkathete und Ankathete jeweils durch die Hypotenuse, entsteht sin α : cos α. Der Tangens ist auch die Steigung m = tan α.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "sin α : cos α",
+              "cos α : sin α"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "tan α = (cos α)/(sin α)",
+              "reason": "Das ist der Kehrwert: Die Gegenkathete steht im Zähler."
+            },
+            {
+              "text": "tan α = sin² α + cos² α",
+              "reason": "Diese Summe ist immer 1 (trigonometrischer Pythagoras)."
+            }
+          ],
+          "replaces": [
+            "01K4T9M0000000000000000J08"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K020",
+          "slug": "m9-steigung-prozent",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-5-tangens",
+          "question": "Was bedeutet ein Straßenschild mit „12 % Steigung“?",
+          "concept": "12 m Höhenunterschied auf 100 m waagrechter Strecke",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "12 m hoch auf 100 m waagrecht",
+              "12° Steigungswinkel"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "ein Steigungswinkel von 12 Grad",
+              "reason": "12 % ist tan α = 0,12, also etwa 6,8°."
+            },
+            {
+              "text": "12 m Höhenunterschied auf 100 m Straße",
+              "reason": "Gemessen wird die waagrechte Strecke, nicht die schräge Straße."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K021",
+          "slug": "m9-hundert-prozent",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-5-tangens",
+          "question": "Welcher Steigungswinkel gehört zu 100 % Steigung?",
+          "concept": "45°",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "45°",
+              "90°"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "90°",
+              "reason": "Eine senkrechte Wand hätte keine Steigung in Prozent."
+            },
+            {
+              "text": "60°",
+              "reason": "tan 60° ≈ 1,73, das wären etwa 173 % Steigung."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K022",
+          "slug": "m9-steigung-tangens",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-5-tangens",
+          "question": "Welche Steigung m hat eine Gerade, die unter dem Winkel α gegen die x-Achse ansteigt?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "m = \\tan\\alpha",
+              "speech": "m gleich Tangens alpha"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Im Steigungsdreieck ist Δy die Gegenkathete und Δx die Ankathete von α: m = Δy : Δx = tan α.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "m = tan α",
+              "m = sin α"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "m = sin α",
+              "reason": "Der Sinus bezieht die Höhe auf die schräge Strecke; die Steigung bezieht sie auf die waagrechte."
+            },
+            {
+              "text": "m = cos α",
+              "reason": "Der Kosinus vergleicht die waagrechte mit der schrägen Strecke, nicht die Höhe."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A06",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A06",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-trig-pythagoras",
+      "title": "Trigonometrischer Pythagoras und besondere Winkel",
+      "domain": "mathematik/trigonometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-6-besondere-winkel",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A05",
+          "type": "soft",
+          "rationale": "Der trigonometrische Pythagoras verbindet Sinus und Kosinus."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-1-dreiecke",
+          "topic_title": "Etappe 1: Rechtwinklige Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K023",
+          "slug": "m9-trig-pythagoras",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-6-besondere-winkel",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welchen Wert hat "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin^2\\alpha + \\cos^2\\alpha",
+              "speech": "Sinus Quadrat alpha plus Kosinus Quadrat alpha"
+            },
+            {
+              "type": "text",
+              "text": " für jeden Winkel?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "1",
+              "speech": "eins"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Im rechtwinkligen Dreieck mit Hypotenuse 1 sind die Katheten sin α und cos α; Pythagoras gibt sin²α + cos²α = 1.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1",
+              "0,5"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "0",
+              "reason": "Beide Quadrate sind nicht negativ und nie beide null."
+            },
+            {
+              "text": "0,5",
+              "reason": "Das ist nur sin² 45° allein."
+            }
+          ],
+          "replaces": [
+            "01K4T9M0000000000000000J09"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K024",
+          "slug": "m9-sin-30",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-6-besondere-winkel",
+          "question": "Welchen exakten Wert hat sin 30°?",
+          "concept": "1/2",
+          "materiality": "material",
+          "sample_solution": "Das halbe gleichseitige Dreieck mit Seite 1 hat die kurze Kathete ½ gegenüber 30°. Ebenso cos 60° = ½, tan 45° = 1.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "½",
+              "½√3"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "√3/2",
+              "reason": "Das ist sin 60°."
+            },
+            {
+              "text": "√2/2",
+              "reason": "Das ist sin 45°."
+            }
+          ],
+          "replaces": [
+            "01K4T9M0000000000000000J10"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K025",
+          "slug": "m9-sin-45",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-6-besondere-winkel",
+          "question": "Welchen exakten Wert hat sin 45°?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\frac{1}{2}\\sqrt{2}",
+              "speech": "ein halb mal Wurzel zwei"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "½√2",
+              "½√3"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "½√3",
+              "reason": "Das ist sin 60°."
+            },
+            {
+              "text": "1",
+              "reason": "Das ist tan 45°."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K026",
+          "slug": "m9-cos-60",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-6-besondere-winkel",
+          "question": "Welchen exakten Wert hat cos 60°?",
+          "concept": "1/2",
+          "materiality": "material",
+          "sample_solution": "Im halben gleichseitigen Dreieck liegt die kurze Kathete ½ an 60° an: cos 60° = sin 30° = ½.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "½",
+              "½√3"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "√3/2",
+              "reason": "Das ist cos 30°."
+            },
+            {
+              "text": "√2/2",
+              "reason": "Das ist cos 45°."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K027",
+          "slug": "m9-tan-45",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-6-besondere-winkel",
+          "question": "Welchen Wert hat tan 45°?",
+          "concept": "1",
+          "materiality": "material",
+          "sample_solution": "Im halben Quadrat sind beide Katheten gleich lang, also Gegenkathete : Ankathete = 1.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1",
+              "½√2"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "½",
+              "reason": "Das ist sin 30° oder cos 60°."
+            },
+            {
+              "text": "0",
+              "reason": "Das ist tan 0°."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K028",
+          "slug": "m9-trig-pythagoras-begruendung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-6-besondere-winkel",
+          "question": "Warum gilt sin²α + cos²α = 1 für jeden spitzen Winkel α?",
+          "concept": "Weil a² + b² = c² gilt; geteilt durch c² ergibt das sin²α + cos²α = 1.",
+          "materiality": "material",
+          "sample_solution": "sin α = a : c und cos α = b : c, also sin²α + cos²α = (a² + b²) : c² = c² : c² = 1.",
+          "choice_distractors": [
+            {
+              "text": "Weil sin α und cos α zusammen für jeden Winkel genau 1 ergeben.",
+              "reason": "Nicht die Werte, ihre Quadrate ergeben zusammen 1: sin 30° + cos 30° ≈ 1,37."
+            },
+            {
+              "text": "Weil Gegenkathete und Ankathete zusammen so lang sind wie die Hypotenuse.",
+              "reason": "Zwei Seiten eines Dreiecks sind zusammen immer länger als die dritte."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K029",
+          "slug": "m9-cos-aus-sin",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-6-besondere-winkel",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man "
+            },
+            {
+              "type": "math",
+              "tex": "\\cos\\alpha",
+              "speech": "Kosinus alpha"
+            },
+            {
+              "type": "text",
+              "text": " eines spitzen Winkels aus "
+            },
+            {
+              "type": "math",
+              "tex": "\\sin\\alpha",
+              "speech": "Sinus alpha"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\cos\\alpha = \\sqrt{1 - \\sin^2\\alpha}",
+              "speech": "Kosinus alpha gleich Wurzel aus eins minus Sinus Quadrat alpha"
+            }
+          ],
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "cos α = √(sin² α − 1)",
+              "reason": "sin²α − 1 ist nie positiv; aus sin²α + cos²α = 1 folgt cos²α = 1 − sin²α."
+            },
+            {
+              "text": "cos α = √(1 − sin α)",
+              "reason": "Unter der Wurzel steht sin²α, nicht sin α."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A07",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A07",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-kreisumfang-pi",
+      "title": "Kreisumfang und Kreiszahl π",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=kr-1-kreiszahl",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-2-kreis-raum",
+          "topic_title": "Etappe 2: Kreis und Körper"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Kreis"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb4",
+          "topic_title": "Kreis"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K030",
+          "slug": "m9-kreisumfang",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=kr-1-kreiszahl",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man den Umfang "
+            },
+            {
+              "type": "math",
+              "tex": "u",
+              "speech": "u"
+            },
+            {
+              "type": "text",
+              "text": " eines Kreises mit dem Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "u = 2\\pi r",
+              "speech": "u gleich zwei pi r"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "u = 2πr",
+              "u = πr²"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "u = πr²",
+              "reason": "Das ist der Flächeninhalt."
+            },
+            {
+              "text": "u = πr",
+              "reason": "Mit dem Radius kommt die 2 dazu: u = π · d = 2πr."
+            }
+          ],
+          "replaces": [
+            "01K4K9M0000000000000000J02"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K031",
+          "slug": "m9-pi-verhaeltnis",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=kr-1-kreiszahl",
+          "question": "Welches Verhältnis ist bei jedem Kreis gleich der Kreiszahl π?",
+          "concept": "Umfang durch Durchmesser",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "u : d",
+              "u : r"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Fläche durch Radius",
+              "reason": "A : r = πr, das hängt vom Radius ab."
+            },
+            {
+              "text": "Umfang durch Radius",
+              "reason": "Das ist 2π."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K032",
+          "slug": "m9-pi-irrational",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=kr-1-kreiszahl",
+          "question": "Was für eine Zahl ist π?",
+          "concept": "eine irrationale Zahl mit unendlich vielen Nachkommastellen ohne Periode",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "eine Bruchzahl, nämlich genau 22/7 mit der Periode 142857",
+              "reason": "22/7 = 3,142857… ist nur eine Näherung."
+            },
+            {
+              "text": "eine abbrechende Dezimalzahl mit genau zwei Stellen: 3,14",
+              "reason": "3,14 ist nur gerundet."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A08",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A08",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-kreisflaeche",
+      "title": "Flächeninhalt von Kreis und Kreisring",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=kr-2-kreisflaeche",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A07",
+          "type": "soft",
+          "rationale": "Die Herleitung der Kreisfläche nutzt den halben Umfang πr."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-2-kreis-raum",
+          "topic_title": "Etappe 2: Kreis und Körper"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Kreis"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb4",
+          "topic_title": "Kreis"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K033",
+          "slug": "m9-kreisflaeche",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=kr-2-kreisflaeche",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man den Flächeninhalt "
+            },
+            {
+              "type": "math",
+              "tex": "A",
+              "speech": "A"
+            },
+            {
+              "type": "text",
+              "text": " eines Kreises mit dem Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "A = \\pi r^2",
+              "speech": "A gleich pi r Quadrat"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A = πr²",
+              "A = 2πr"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "A = 2πr",
+              "reason": "Das ist der Umfang."
+            },
+            {
+              "text": "A = πd²",
+              "reason": "Mit dem Durchmesser wäre es π · (d/2)²."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K034",
+          "slug": "m9-flaeche-verdoppelt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=kr-2-kreisflaeche",
+          "question": "Wie ändert sich der Flächeninhalt eines Kreises, wenn der Radius verdoppelt wird?",
+          "concept": "Er vervierfacht sich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "vervierfacht",
+              "verdoppelt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er verdoppelt sich.",
+              "reason": "Der Radius steht im Quadrat: (2r)² = 4r²."
+            },
+            {
+              "text": "Er verachtfacht sich.",
+              "reason": "Das gilt für das Volumen einer Kugel, nicht für die Kreisfläche."
+            }
+          ],
+          "replaces": [
+            "01K4K9M0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K035",
+          "slug": "m9-kreisring",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=kr-2-kreisflaeche",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man den Flächeninhalt eines Kreisrings mit dem Außenradius "
+            },
+            {
+              "type": "math",
+              "tex": "R",
+              "speech": "groß R"
+            },
+            {
+              "type": "text",
+              "text": " und dem Innenradius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "klein r"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "A = \\pi (R^2 - r^2)",
+              "speech": "A gleich pi mal groß R Quadrat minus klein r Quadrat"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "π(R² − r²)",
+              "π(R − r)²"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "A = π(R − r)²",
+              "reason": "Abgezogen wird die kleine Kreisfläche: R² − r², nicht (R − r)²."
+            },
+            {
+              "text": "A = 2π(R − r)",
+              "reason": "Das ist keine Fläche, sondern eine Länge."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K036",
+          "slug": "m9-kreisflaeche-herleitung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=kr-2-kreisflaeche",
+          "question": "Zu welcher Figur legt man die Stücke eines Kreises um, um A = πr² zu begründen?",
+          "concept": "zu einem fast-Rechteck mit der Breite π · r und der Höhe r",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "zu einem Quadrat mit der Seite r",
+              "reason": "Das hätte nur die Fläche r²."
+            },
+            {
+              "text": "zu einem Dreieck mit der Grundseite 2πr und der Höhe 2r",
+              "reason": "Dessen Fläche wäre 2πr², doppelt so viel."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A09",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A09",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-kreissektor",
+      "title": "Kreisbogen und Kreissektor",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=kr-3-sektor",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A08",
+          "type": "soft",
+          "rationale": "Bogen und Sektor sind Anteile von Umfang und Fläche des ganzen Kreises."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-2-kreis-raum",
+          "topic_title": "Etappe 2: Kreis und Körper"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Kreis"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb4",
+          "topic_title": "Kreis"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K037",
+          "slug": "m9-sektor-anteil",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=kr-3-sektor",
+          "question": "Welchen Anteil des Kreises bildet ein Kreissektor mit dem Mittelpunktswinkel 90°?",
+          "concept": "ein Viertel",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ein Viertel",
+              "ein Drittel"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "ein Drittel",
+              "reason": "Ein Drittel wären 120°."
+            },
+            {
+              "text": "die Hälfte",
+              "reason": "Die Hälfte wären 180°."
+            }
+          ],
+          "replaces": [
+            "01K4K9M0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K038",
+          "slug": "m9-bogenlaenge",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=kr-3-sektor",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man die Länge "
+            },
+            {
+              "type": "math",
+              "tex": "b",
+              "speech": "b"
+            },
+            {
+              "type": "text",
+              "text": " des Kreisbogens zum Mittelpunktswinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha",
+              "speech": "alpha"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "b = 2\\pi r \\cdot \\frac{\\alpha}{360^\\circ}",
+              "speech": "b gleich zwei pi r mal alpha durch dreihundertsechzig Grad"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "2πr · α/360°",
+              "πr² · α/360°"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "b = πr²·α/(360°)",
+              "reason": "Das ist die Sektorfläche."
+            },
+            {
+              "text": "b = 2πr·α/(180°)",
+              "reason": "Der ganze Kreis hat 360°, nicht 180°."
+            }
+          ],
+          "replaces": [
+            "01K4K9M0000000000000000J04"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K039",
+          "slug": "m9-sektorflaeche",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=kr-3-sektor",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man den Flächeninhalt eines Kreissektors mit dem Mittelpunktswinkel "
+            },
+            {
+              "type": "math",
+              "tex": "\\alpha",
+              "speech": "alpha"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "A = \\pi r^2 \\cdot \\frac{\\alpha}{360^\\circ}",
+              "speech": "A gleich pi r Quadrat mal alpha durch dreihundertsechzig Grad"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "πr² · α/360°",
+              "2πr · α/360°"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "A = 2πr·α/(360°)",
+              "reason": "Das ist die Bogenlänge."
+            },
+            {
+              "text": "A = πr²·α/(180°)",
+              "reason": "Der ganze Kreis hat 360°, nicht 180°."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K040",
+          "slug": "m9-radiant",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=kr-3-sektor",
+          "question": "Wie groß ist ungefähr der Mittelpunktswinkel, bei dem der Kreisbogen genau so lang ist wie der Radius?",
+          "concept": "etwa 57,3°",
+          "materiality": "material",
+          "sample_solution": "Dieser Winkel heißt 1 Radiant; ein voller Kreis hat 2π Radiant.",
+          "choice_distractors": [
+            {
+              "text": "genau 60°",
+              "reason": "Bei 60° ist der Bogen schon etwa 1,047 r lang."
+            },
+            {
+              "text": "etwa 45°",
+              "reason": "Bei 45° ist der Bogen nur etwa 0,785 r lang."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A10",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A10",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-zylinder",
+      "title": "Zylinder: Netz, Oberfläche und Volumen",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-1-zylinder",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A09",
+          "type": "soft",
+          "rationale": "Grundfläche und Mantel des Zylinders brauchen Kreisfläche und Kreisumfang."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-2-kreis-raum",
+          "topic_title": "Etappe 2: Kreis und Körper"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Raumgeometrie"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K041",
+          "slug": "m9-zylinder-mantel-rechteck",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-1-zylinder",
+          "question": "Welche Figur entsteht, wenn man den Mantel eines geraden Kreiszylinders abrollt?",
+          "concept": "ein Rechteck mit den Seiten 2πr und h",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ein Rechteck",
+              "ein Kreissektor"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "ein Kreissektor mit dem Radius h",
+              "reason": "Ein Kreissektor entsteht beim Kegelmantel."
+            },
+            {
+              "text": "ein Kreisring mit der Breite h",
+              "reason": "Der Mantel ist eben abgerollt kein Ring."
+            }
+          ],
+          "replaces": [
+            "01K4K9M0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K042",
+          "slug": "m9-zylinder-volumen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-1-zylinder",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man das Volumen eines Zylinders mit dem Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": " und der Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h",
+              "speech": "h"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V = \\pi r^2 h",
+              "speech": "V gleich pi r Quadrat h"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "V = πr²h",
+              "V = 2πrh"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "V = 2πrh",
+              "reason": "Das ist der Mantel."
+            },
+            {
+              "text": "V = ⅓πr²h",
+              "reason": "Das ist der Kegel mit gleicher Grundfläche und Höhe."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K043",
+          "slug": "m9-zylinder-mantel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-1-zylinder",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man die Mantelfläche "
+            },
+            {
+              "type": "math",
+              "tex": "M",
+              "speech": "M"
+            },
+            {
+              "type": "text",
+              "text": " eines Zylinders mit dem Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": " und der Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h",
+              "speech": "h"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "M = 2\\pi r h",
+              "speech": "M gleich zwei pi r h"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "M = 2πrh",
+              "M = πr²h"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "M = πr²h",
+              "reason": "Das ist das Volumen."
+            },
+            {
+              "text": "M = πrh",
+              "reason": "Die eine Rechteckseite ist der ganze Umfang 2πr."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K044",
+          "slug": "m9-zylinder-oberflaeche",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-1-zylinder",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man die Oberfläche eines Zylinders mit dem Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": " und der Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h",
+              "speech": "h"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "O = 2\\pi r^2 + 2\\pi r h",
+              "speech": "O gleich zwei pi r Quadrat plus zwei pi r h"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "V = πr²h, M = 2πrh, O = 2πr² + 2πrh.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "2πr² + 2πrh",
+              "πr² + 2πrh"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "O = πr² + 2πrh",
+              "reason": "Ein Zylinder hat zwei Kreisflächen, Boden und Deckel."
+            },
+            {
+              "text": "O = 2πr² + πrh",
+              "reason": "Der Mantel ist 2πr · h."
+            }
+          ],
+          "replaces": [
+            "01K4K9M0000000000000000J06"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K045",
+          "slug": "m9-liter",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-1-zylinder",
+          "question": "Wie viele Kubikzentimeter sind ein Liter?",
+          "concept": "1000 cm³",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1000 cm³",
+              "100 cm³"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "100 cm³",
+              "reason": "1 l = 1 dm³ = 10 cm · 10 cm · 10 cm."
+            },
+            {
+              "text": "10 000 cm³",
+              "reason": "Das wären 10 Liter."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K046",
+          "slug": "m9-dose-sparsam",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-1-zylinder",
+          "question": "Welche Form hat eine Dose mit festem Volumen, die am wenigsten Blech braucht?",
+          "concept": "Ihre Höhe ist so groß wie ihr Durchmesser.",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ihre Höhe ist so groß wie ihr Radius.",
+              "reason": "Dann ist sie zu flach: Die Deckel kosten zu viel Blech."
+            },
+            {
+              "text": "Ihr Mantel ist ein Quadrat.",
+              "reason": "Dann ist h = 2πr, die Dose ist zu hoch."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A11",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A11",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-kegel-pyramide",
+      "title": "Pyramide und Kegel: Volumen, Mantellinie, Mantel",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-2-kegel-pyramide",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A10",
+          "type": "soft",
+          "rationale": "Spitzkörper haben ein Drittel des Volumens der Säule mit gleicher Grundfläche und Höhe."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-2-kreis-raum",
+          "topic_title": "Etappe 2: Kreis und Körper"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Raumgeometrie"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K047",
+          "slug": "m9-spitzkoerper-drittel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-2-kegel-pyramide",
+          "question": "Welcher Anteil vom Volumen der Säule mit gleicher Grundfläche und Höhe ist das Volumen eines Spitzkörpers (Kegel, Pyramide)?",
+          "concept": "ein Drittel",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ein Drittel",
+              "die Hälfte"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "die Hälfte",
+              "reason": "Dreimal Umschütten füllt die Säule, nicht zweimal."
+            },
+            {
+              "text": "zwei Drittel",
+              "reason": "Zwei Drittel hat die Kugel im passenden Zylinder."
+            }
+          ],
+          "replaces": [
+            "01K4K9M0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K048",
+          "slug": "m9-kegel-volumen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-2-kegel-pyramide",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man das Volumen eines Kegels mit dem Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": " und der Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h",
+              "speech": "h"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V = \\frac{1}{3}\\pi r^2 h",
+              "speech": "V gleich ein Drittel pi r Quadrat h"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "V = ⅓πr²h",
+              "V = πr²h"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "V = πr²h",
+              "reason": "Das ist der Zylinder; der Kegel hat ein Drittel davon."
+            },
+            {
+              "text": "V = ⅓πrh",
+              "reason": "Die Grundfläche ist πr², der Radius steht im Quadrat."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K049",
+          "slug": "m9-mantellinie",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-2-kegel-pyramide",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man die Mantellinie "
+            },
+            {
+              "type": "math",
+              "tex": "s",
+              "speech": "s"
+            },
+            {
+              "type": "text",
+              "text": " eines Kegels mit dem Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": " und der Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h",
+              "speech": "h"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "s = \\sqrt{r^2 + h^2}",
+              "speech": "s gleich Wurzel aus r Quadrat plus h Quadrat"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "s = √(r² + h²), M = πrs, V = ⅓πr²h.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "s = √(r² + h²)",
+              "s = r + h"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "s = r + h",
+              "reason": "Radius, Höhe und Mantellinie bilden ein rechtwinkliges Dreieck: Pythagoras."
+            },
+            {
+              "text": "s = √(h² − r²)",
+              "reason": "s ist die Hypotenuse, also wird addiert."
+            }
+          ],
+          "replaces": [
+            "01K4K9M0000000000000000J08"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K050",
+          "slug": "m9-kegelmantel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-2-kegel-pyramide",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie groß ist die Mantelfläche eines Kegels mit dem Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": " und der Mantellinie "
+            },
+            {
+              "type": "math",
+              "tex": "s",
+              "speech": "s"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "M = \\pi r s",
+              "speech": "M gleich pi r s"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "M = πrs",
+              "M = πrh"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "M = 2πrs",
+              "reason": "Abgewickelt ist der Mantel ein Kreissektor mit Radius s und Bogen 2πr: M = ½ · 2πr · s."
+            },
+            {
+              "text": "M = πrh",
+              "reason": "In der Formel steht die schräge Mantellinie s, nicht die Höhe."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K051",
+          "slug": "m9-pyramide-volumen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-2-kegel-pyramide",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man das Volumen einer quadratischen Pyramide mit der Grundkante "
+            },
+            {
+              "type": "math",
+              "tex": "a",
+              "speech": "a"
+            },
+            {
+              "type": "text",
+              "text": " und der Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h",
+              "speech": "h"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V = \\frac{1}{3} a^2 h",
+              "speech": "V gleich ein Drittel a Quadrat h"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "V = ⅓a²h",
+              "V = a²h"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "V = a²h",
+              "reason": "Das ist das Prisma; die Pyramide hat ein Drittel davon."
+            },
+            {
+              "text": "V = ⅓ah",
+              "reason": "Die Grundfläche ist a²."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A12",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A12",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-kugel",
+      "title": "Kugel: Oberfläche und Volumen",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-3-kugel",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A11",
+          "type": "soft",
+          "rationale": "Die Kugel wird mit dem passenden Zylinder verglichen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-2-kreis-raum",
+          "topic_title": "Etappe 2: Kreis und Körper"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Raumgeometrie"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K052",
+          "slug": "m9-kugel-volumen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-3-kugel",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man das Volumen einer Kugel mit dem Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V = \\frac{4}{3}\\pi r^3",
+              "speech": "V gleich vier Drittel pi r hoch drei"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "V = 4/3 πr³, O = 4πr².",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "V = 4/3 πr³",
+              "V = 4πr²"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "V = 4πr²",
+              "reason": "Das ist die Oberfläche."
+            },
+            {
+              "text": "V = ⅓πr³",
+              "reason": "Der Faktor ist vier Drittel."
+            }
+          ],
+          "replaces": [
+            "01K4K9M0000000000000000J10"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K053",
+          "slug": "m9-kugel-oberflaeche",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-3-kugel",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man die Oberfläche einer Kugel mit dem Radius "
+            },
+            {
+              "type": "math",
+              "tex": "r",
+              "speech": "r"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "O = 4\\pi r^2",
+              "speech": "O gleich vier pi r Quadrat"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "O = 4πr²",
+              "O = πr²"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "O = πr²",
+              "reason": "Das ist ein einziger Großkreis; die Schale bedeckt vier."
+            },
+            {
+              "text": "O = 4/3πr³",
+              "reason": "Das ist das Volumen."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K054",
+          "slug": "m9-kugel-verdoppelt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-3-kugel",
+          "question": "Wie ändert sich das Volumen einer Kugel, wenn der Radius verdoppelt wird?",
+          "concept": "Es verachtfacht sich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "verachtfacht",
+              "vervierfacht"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Es vervierfacht sich.",
+              "reason": "So ändert sich die Oberfläche; im Volumen steht r³."
+            },
+            {
+              "text": "Es verdoppelt sich.",
+              "reason": "(2r)³ = 8r³."
+            }
+          ],
+          "replaces": [
+            "01K4K9M0000000000000000J09"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K055",
+          "slug": "m9-archimedes",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rg-3-kugel",
+          "question": "Welchen Anteil vom Volumen eines Zylinders hat eine Kugel, die genau hineinpasst (gleicher Radius, Höhe 2r)?",
+          "concept": "zwei Drittel",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "die Hälfte",
+              "reason": "4/3 πr³ : 2πr³ = 2/3."
+            },
+            {
+              "text": "ein Drittel",
+              "reason": "Ein Drittel ist das Wasser, das im Zylinder bleibt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A13",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A13",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-lineare-gleichung-zwei-variablen",
+      "title": "Lineare Gleichung mit zwei Variablen",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-1-lineare-gleichung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-3-gleichungssysteme",
+          "topic_title": "Etappe 3: Systeme linearer Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K056",
+          "slug": "m9-loesungsmenge-gerade",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-1-lineare-gleichung",
+          "question": "Welche Form hat die Lösungsmenge einer linearen Gleichung ax + by = c mit b ≠ 0 im Koordinatensystem?",
+          "concept": "eine Gerade",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "eine Gerade",
+              "ein Punkt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "eine Parabel",
+              "reason": "Eine Parabel gehört zu einem quadratischen Term."
+            },
+            {
+              "text": "ein einzelner Punkt",
+              "reason": "Es gibt unendlich viele Lösungspaare."
+            }
+          ],
+          "replaces": [
+            "01K4S9M0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K057",
+          "slug": "m9-nach-y-aufloesen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-1-lineare-gleichung",
+          "question": "Wie lautet 2x − 4y = 8 nach y aufgelöst?",
+          "concept": "y = 0,5x − 2",
+          "materiality": "material",
+          "sample_solution": "−4y = −2x + 8, durch −4: y = 0,5x − 2. Steigung 0,5, y-Achsenabschnitt −2.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "y = 0,5x − 2",
+              "y = −0,5x + 2"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "y = 2x − 8",
+              "reason": "Es fehlt das Teilen durch −4."
+            },
+            {
+              "text": "y = 0,5x + 8",
+              "reason": "Auch die 8 wird durch −4 geteilt."
+            }
+          ],
+          "replaces": [
+            "01K4S9M0000000000000000J02"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K058",
+          "slug": "m9-punktprobe",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-1-lineare-gleichung",
+          "question": "Wie prüft man, ob der Punkt P(x | y) auf der Geraden ax + by = c liegt?",
+          "concept": "Man setzt seine Koordinaten ein; stimmt die Gleichung, liegt P darauf.",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Man prüft, ob die Steigung von P mit der Steigung der Geraden übereinstimmt.",
+              "reason": "Ein Punkt hat keine Steigung; man setzt beide Koordinaten ein."
+            },
+            {
+              "text": "Man setzt nur x ein und vergleicht das Ergebnis mit der Zahl c.",
+              "reason": "Beide Koordinaten gehören in die Gleichung."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A14",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A14",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-gleichsetzen-einsetzen",
+      "title": "Gleichsetzungs- und Einsetzungsverfahren",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-2-gleichsetzen",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A13",
+          "type": "soft",
+          "rationale": "Ein System besteht aus zwei solchen Geraden."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-3-gleichungssysteme",
+          "topic_title": "Etappe 3: Systeme linearer Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K059",
+          "slug": "m9-loesung-schnittpunkt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-2-gleichsetzen",
+          "question": "Was ist die Lösung eines Systems aus zwei linearen Gleichungen mit zwei Variablen geometrisch?",
+          "concept": "der Schnittpunkt der beiden Geraden",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "der Schnittpunkt",
+              "der y-Achsenabschnitt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "der y-Achsenabschnitt der ersten Geraden",
+              "reason": "Er erfüllt im Allgemeinen nur die erste Gleichung."
+            },
+            {
+              "text": "die Steigung der beiden Geraden",
+              "reason": "Die Lösung ist ein Zahlenpaar, keine Steigung."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K060",
+          "slug": "m9-gleichsetzungsverfahren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-2-gleichsetzen",
+          "question": "Wann eignet sich das Gleichsetzungsverfahren besonders?",
+          "concept": "wenn beide Gleichungen nach derselben Variablen aufgelöst sind",
+          "materiality": "material",
+          "sample_solution": "Bei (I) y = 3x − 1 und (II) y = −2x + 9 setzt man die rechten Seiten gleich: y fällt sofort heraus.",
+          "choice_distractors": [
+            {
+              "text": "wenn vor einer Variablen Gegenzahlen stehen",
+              "reason": "Dann ist das Additionsverfahren am kürzesten."
+            },
+            {
+              "text": "wenn beide Gleichungen dieselbe Steigung haben",
+              "reason": "Dann sind die Geraden parallel oder gleich."
+            }
+          ],
+          "replaces": [
+            "01K4S9M0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K061",
+          "slug": "m9-einsetzungsverfahren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-2-gleichsetzen",
+          "question": "Wie geht das Einsetzungsverfahren?",
+          "concept": "Eine Gleichung nach einer Variablen auflösen und diesen Term in die andere Gleichung einsetzen.",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Beide Gleichungen addieren oder subtrahieren, bis eine der beiden Variablen herausfällt.",
+              "reason": "Das ist das Additionsverfahren."
+            },
+            {
+              "text": "Beide Gleichungen nach y auflösen und die Steigungen der zwei Geraden vergleichen.",
+              "reason": "So erkennt man den Lösungsfall, man berechnet aber keine Lösung."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A15",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A15",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-additionsverfahren",
+      "title": "Additionsverfahren",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-3-additionsverfahren",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A14",
+          "type": "soft",
+          "rationale": "Das Additionsverfahren ist ein weiteres Lösungsverfahren für dieselben Systeme."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-3-gleichungssysteme",
+          "topic_title": "Etappe 3: Systeme linearer Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K062",
+          "slug": "m9-gegenzahlen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-3-additionsverfahren",
+          "question": "Wie müssen die Koeffizienten einer Variablen in beiden Gleichungen sein, damit sie beim Addieren herausfällt?",
+          "concept": "Gegenzahlen, zum Beispiel +3 und −3",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gegenzahlen",
+              "gleiche Zahlen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "gleich, zum Beispiel 3 und 3",
+              "reason": "Gleiche Koeffizienten verdoppeln sich beim Addieren."
+            },
+            {
+              "text": "Kehrwerte, zum Beispiel 3 und ⅓",
+              "reason": "Nur Gegenzahlen ergeben zusammen 0."
+            }
+          ],
+          "replaces": [
+            "01K4S9M0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K063",
+          "slug": "m9-additionsverfahren-faktor",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-3-additionsverfahren",
+          "question": "Mit welcher Zahl muss man (II) 4x − y = 10 multiplizieren, damit beim Addieren zu (I) 2x + 3y = 12 das y herausfällt?",
+          "concept": "mit 3",
+          "materiality": "material",
+          "sample_solution": "3 · (II): 12x − 3y = 30. Plus (I): 14x = 42, also x = 3 und y = 2.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "mit 3",
+              "mit 4"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "mit 2",
+              "reason": "Dann stünde 3y − 2y = y da."
+            },
+            {
+              "text": "mit 4",
+              "reason": "Dann stünde 3y − 4y = −y da."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A16",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A16",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-loesungsfaelle",
+      "title": "Lösungsfälle linearer Gleichungssysteme",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-4-loesungsfaelle",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A15",
+          "type": "soft",
+          "rationale": "Die Lösungsfälle zeigen sich beim Lösen mit jedem Verfahren."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-3-gleichungssysteme",
+          "topic_title": "Etappe 3: Systeme linearer Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K064",
+          "slug": "m9-parallel-keine-loesung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-4-loesungsfaelle",
+          "question": "Wie viele Lösungen hat ein lineares Gleichungssystem, dessen Geraden echt parallel sind?",
+          "concept": "keine einzige Lösung",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "keine",
+              "genau eine"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "genau eine Lösung",
+              "reason": "Parallele Geraden haben keinen Schnittpunkt."
+            },
+            {
+              "text": "unendlich viele Lösungen",
+              "reason": "Unendlich viele gibt es nur bei identischen Geraden."
+            }
+          ],
+          "replaces": [
+            "01K4S9M0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K065",
+          "slug": "m9-drei-loesungsfaelle",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-4-loesungsfaelle",
+          "question": "Welche drei Lösungsfälle gibt es bei zwei linearen Gleichungen mit zwei Variablen, und wie liegen die Geraden?",
+          "concept": "genau eine Lösung (Schnittpunkt), keine (echt parallel), unendlich viele (identisch)",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "genau eine (parallel), keine (Schnittpunkt), unendlich viele (identisch)",
+              "reason": "Parallele Geraden haben keinen gemeinsamen Punkt."
+            },
+            {
+              "text": "genau eine (Schnittpunkt), zwei (Berührung), keine (parallel)",
+              "reason": "Zwei verschiedene Geraden schneiden sich höchstens einmal."
+            }
+          ],
+          "replaces": [
+            "01K4S9M0000000000000000J08"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K066",
+          "slug": "m9-widerspruch",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-4-loesungsfaelle",
+          "question": "Beim Lösen eines Gleichungssystems entsteht die Aussage 0 = 5. Was bedeutet das?",
+          "concept": "Das System hat keine Lösung.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "keine Lösung",
+              "unendlich viele Lösungen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das System hat unendlich viele Lösungen.",
+              "reason": "Das bedeutet eine wahre Aussage wie 0 = 0."
+            },
+            {
+              "text": "Die Lösung ist x = 5.",
+              "reason": "Ein Widerspruch liefert keine Zahl."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K067",
+          "slug": "m9-unendlich-viele",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-4-loesungsfaelle",
+          "question": "Woran erkennt man an y = mx + t, dass ein System unendlich viele Lösungen hat?",
+          "concept": "Beide Gleichungen haben dieselbe Steigung und denselben y-Achsenabschnitt.",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Beide Gleichungen haben dieselbe Steigung, aber verschiedene Achsenabschnitte.",
+              "reason": "Dann sind die Geraden echt parallel: keine Lösung."
+            },
+            {
+              "text": "Die beiden Steigungen sind Gegenzahlen, etwa 2 und −2.",
+              "reason": "Dann schneiden sich die Geraden in genau einem Punkt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A17",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A17",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-textaufgaben-lgs",
+      "title": "Textaufgaben mit zwei Unbekannten",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-5-textaufgaben",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A16",
+          "type": "soft",
+          "rationale": "Textaufgaben werden mit den Lösungsverfahren gelöst."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-3-gleichungssysteme",
+          "topic_title": "Etappe 3: Systeme linearer Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K068",
+          "slug": "m9-textaufgabe-gleichungen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-5-textaufgaben",
+          "question": "In einem Käfig sind x Fasane und y Kaninchen mit zusammen 35 Köpfen und 94 Beinen. Welche zwei Gleichungen beschreiben das?",
+          "concept": "x + y = 35 und 2x + 4y = 94",
+          "materiality": "material",
+          "sample_solution": "Jedes Tier hat einen Kopf: x + y = 35. Ein Fasan hat 2 Beine, ein Kaninchen 4: 2x + 4y = 94.",
+          "choice_distractors": [
+            {
+              "text": "x + y = 94 und 2x + 4y = 35",
+              "reason": "Köpfe und Beine sind vertauscht."
+            },
+            {
+              "text": "x + y = 35 und 4x + 2y = 94",
+              "reason": "Ein Fasan hat 2 Beine, ein Kaninchen 4."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K069",
+          "slug": "m9-textaufgabe-probe",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=lg-5-textaufgaben",
+          "question": "Was gehört nach dem Lösen des Gleichungssystems zu einer Textaufgabe noch dazu?",
+          "concept": "die Probe am Text und ein Antwortsatz",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "die Gleichungen noch einmal addieren",
+              "reason": "Addieren ist ein Lösungsschritt, keine Kontrolle."
+            },
+            {
+              "text": "die Lösung in die Steigung einsetzen",
+              "reason": "Geprüft wird an den Angaben des Textes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A18",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A18",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-scheitelform",
+      "title": "Normalparabel und Scheitelform",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-1-scheitelform",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-4-quadratisch",
+          "topic_title": "Etappe 4: Quadratische Funktionen und Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb7",
+          "topic_title": "Quadratische Funktionen und quadratische Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K070",
+          "slug": "m9-scheitelform-scheitel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-1-scheitelform",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welchen Scheitel hat die Parabel "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = (x - d)^2 + e",
+              "speech": "f von x gleich x minus d in Klammern zum Quadrat plus e"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "S(d \\mid e)",
+              "speech": "S von d und e"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "f(x) = (x − 3)² + 5 hat S(3 | 5).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "S(d | e)",
+              "S(−d | e)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "S(e | d)",
+              "reason": "Zuerst steht die x-Koordinate d."
+            },
+            {
+              "text": "S(0 | e)",
+              "reason": "Um d ist die Parabel nach rechts verschoben."
+            }
+          ],
+          "replaces": [
+            "01K4Q9M0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K071",
+          "slug": "m9-verschiebung-vorzeichen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-1-scheitelform",
+          "question": "Wohin verschiebt f(x) = (x + 2)² die Normalparabel?",
+          "concept": "um 2 nach links",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "um 2 nach links",
+              "um 2 nach rechts"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "um 2 nach rechts",
+              "reason": "(x + 2)² = (x − (−2))², der Scheitel liegt bei x = −2."
+            },
+            {
+              "text": "um 2 nach oben",
+              "reason": "Nach oben verschiebt erst ein + e außerhalb der Klammer."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K072",
+          "slug": "m9-normalparabel-schablone",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-1-scheitelform",
+          "question": "Um wie viel steigt die Normalparabel, wenn man vom Scheitel aus 2 nach rechts geht?",
+          "concept": "um 4",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "um 4",
+              "um 2"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "um 2",
+              "reason": "y = x²: bei x = 2 ist y = 4."
+            },
+            {
+              "text": "um 8",
+              "reason": "Das wäre 2³."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A19",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A19",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-streckfaktor",
+      "title": "Streckfaktor a: Öffnung und Form der Parabel",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-2-streckfaktor",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A18",
+          "type": "soft",
+          "rationale": "Der Faktor a erweitert die Scheitelform der Normalparabel."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-4-quadratisch",
+          "topic_title": "Etappe 4: Quadratische Funktionen und Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb7",
+          "topic_title": "Quadratische Funktionen und quadratische Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K073",
+          "slug": "m9-faktor-a",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-2-streckfaktor",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Was bewirkt der Faktor "
+            },
+            {
+              "type": "math",
+              "tex": "a",
+              "speech": "a"
+            },
+            {
+              "type": "text",
+              "text": " in "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = a(x - d)^2 + e",
+              "speech": "f von x gleich a mal x minus d in Klammern zum Quadrat plus e"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "Er streckt oder staucht die Parabel; bei a < 0 ist sie nach unten geöffnet.",
+          "materiality": "material",
+          "sample_solution": "|a| > 1 schmaler, |a| < 1 breiter; d verschiebt nach rechts, e nach oben.",
+          "choice_distractors": [
+            {
+              "text": "Er verschiebt die Parabel um a Einheiten nach rechts entlang der x-Achse.",
+              "reason": "Nach rechts verschiebt d."
+            },
+            {
+              "text": "Er verschiebt die Parabel um a Einheiten nach oben, ohne ihre Form zu ändern.",
+              "reason": "Nach oben verschiebt e."
+            }
+          ],
+          "replaces": [
+            "01K4Q9M0000000000000000J02"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K074",
+          "slug": "m9-a-negativ",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-2-streckfaktor",
+          "question": "Wie ist die Parabel f(x) = a(x − d)² + e geöffnet, wenn a < 0 ist?",
+          "concept": "nach unten",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "nach unten",
+              "nach oben"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "nach oben",
+              "reason": "Nach oben ist sie bei a > 0 geöffnet."
+            },
+            {
+              "text": "nach rechts",
+              "reason": "Parabeln der Form f(x) = … öffnen sich nach oben oder unten."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K075",
+          "slug": "m9-a-aus-punkt",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-2-streckfaktor",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man "
+            },
+            {
+              "type": "math",
+              "tex": "a",
+              "speech": "a"
+            },
+            {
+              "type": "text",
+              "text": ", wenn der Scheitel "
+            },
+            {
+              "type": "math",
+              "tex": "S(d \\mid e)",
+              "speech": "S von d und e"
+            },
+            {
+              "type": "text",
+              "text": " und ein weiterer Punkt "
+            },
+            {
+              "type": "math",
+              "tex": "P(x_P \\mid y_P)",
+              "speech": "P von x P und y P"
+            },
+            {
+              "type": "text",
+              "text": " bekannt sind?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "a = \\frac{y_P - e}{(x_P - d)^2}",
+              "speech": "a gleich y P minus e durch x P minus d zum Quadrat"
+            }
+          ],
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "a = (x_P − d)²/(y_P − e)",
+              "reason": "Das ist der Kehrwert."
+            },
+            {
+              "text": "a = (y_P − d)/(x_P − e)²",
+              "reason": "d gehört zur x-Richtung, e zur y-Richtung."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A20",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A20",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-quadratische-ergaenzung",
+      "title": "Quadratische Ergänzung und Scheitelpunktbestimmung",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-3-quadratische-ergaenzung",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A19",
+          "type": "soft",
+          "rationale": "Die quadratische Ergänzung führt auf die Scheitelform."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-4-quadratisch",
+          "topic_title": "Etappe 4: Quadratische Funktionen und Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb7",
+          "topic_title": "Quadratische Funktionen und quadratische Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K076",
+          "slug": "m9-quadratische-ergaenzung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-3-quadratische-ergaenzung",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Zahl ergänzt "
+            },
+            {
+              "type": "math",
+              "tex": "x^2 + bx",
+              "speech": "x Quadrat plus b x"
+            },
+            {
+              "type": "text",
+              "text": " zu einem vollständigen Quadrat?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\left(\\frac{b}{2}\\right)^2",
+              "speech": "b halbe zum Quadrat"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "x² + 6x + 9 = (x + 3)², denn 6 : 2 = 3 und 3² = 9.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "(b/2)²",
+              "b/2"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "b²/2",
+              "reason": "Erst halbieren, dann quadrieren: (b/2)² = b²/4."
+            },
+            {
+              "text": "(2b)²",
+              "reason": "Ergänzt wird das Quadrat der Hälfte von b, nicht des Doppelten."
+            }
+          ],
+          "replaces": [
+            "01K4Q9M0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K077",
+          "slug": "m9-scheitel-allgemein",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-3-quadratische-ergaenzung",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welchen Scheitel hat "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = x^2 + bx + c",
+              "speech": "f von x gleich x Quadrat plus b x plus c"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "S\\left(-\\frac{b}{2} \\mid c - \\left(\\frac{b}{2}\\right)^2\\right)",
+              "speech": "S von minus b halbe und c minus b halbe zum Quadrat"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "x² − 8x + 10 = (x − 4)² − 6, also S(4 | −6).",
+          "choice_distractors": [
+            {
+              "text": "S(−b/2 | c − b²)",
+              "reason": "Abgezogen wird (b/2)², nicht b²."
+            },
+            {
+              "text": "S(c | −b/2)",
+              "reason": "Die x-Koordinate kommt zuerst."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A21",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A21",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-loesungsformel",
+      "title": "Quadratische Gleichungen: Lösungsformel und Diskriminante",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-4-loesungsformel",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A20",
+          "type": "soft",
+          "rationale": "Die Lösungsformel entsteht aus der quadratischen Ergänzung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-4-quadratisch",
+          "topic_title": "Etappe 4: Quadratische Funktionen und Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb7",
+          "topic_title": "Quadratische Funktionen und quadratische Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K078",
+          "slug": "m9-loesungsformel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-4-loesungsformel",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet die Lösungsformel für "
+            },
+            {
+              "type": "math",
+              "tex": "ax^2 + bx + c = 0",
+              "speech": "a x Quadrat plus b x plus c gleich null"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "x_{1,2} = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}",
+              "speech": "x eins zwei gleich minus b plus minus Wurzel aus b Quadrat minus vier a c durch zwei a"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "D = b² − 4ac: D > 0 zwei, D = 0 eine, D < 0 keine Lösung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "(−b ± √(b² − 4ac)) : (2a)",
+              "(−b ± √(b² − 4ac)) : a"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "x = (−b ± √(b² − 4ac))/a",
+              "reason": "Im Nenner steht 2a."
+            },
+            {
+              "text": "x = (−b ± √(b − 4ac))/(2a)",
+              "reason": "Unter der Wurzel steht b²."
+            }
+          ],
+          "replaces": [
+            "01K4Q9M0000000000000000J06"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K079",
+          "slug": "m9-diskriminante-negativ",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-4-loesungsformel",
+          "question": "Wie viele Lösungen hat ax² + bx + c = 0, wenn die Diskriminante D = b² − 4ac negativ ist?",
+          "concept": "keine Lösung",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "keine",
+              "zwei"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "genau eine Lösung",
+              "reason": "Eine Lösung gibt es bei D = 0."
+            },
+            {
+              "text": "zwei Lösungen",
+              "reason": "Zwei Lösungen gibt es bei D > 0."
+            }
+          ],
+          "replaces": [
+            "01K4Q9M0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K080",
+          "slug": "m9-diskriminante-null",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-4-loesungsformel",
+          "question": "Was gilt für die Parabel y = ax² + bx + c, wenn die Diskriminante D = 0 ist?",
+          "concept": "Sie berührt die x-Achse in genau einem Punkt.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "berührt die x-Achse",
+              "schneidet sie zweimal"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie schneidet die x-Achse in zwei Punkten.",
+              "reason": "Zwei Schnittpunkte gibt es bei D > 0."
+            },
+            {
+              "text": "Sie trifft die x-Achse nicht.",
+              "reason": "Keinen gemeinsamen Punkt gibt es bei D < 0."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K081",
+          "slug": "m9-diskriminante-positiv",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-4-loesungsformel",
+          "question": "Wie viele Lösungen hat ax² + bx + c = 0, wenn die Diskriminante D = b² − 4ac positiv ist?",
+          "concept": "zwei Lösungen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "zwei",
+              "keine"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "genau eine Lösung",
+              "reason": "Eine Lösung gibt es bei D = 0."
+            },
+            {
+              "text": "keine Lösung",
+              "reason": "Keine Lösung gibt es bei D < 0."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A22",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A22",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-linearfaktoren",
+      "title": "Nullstellen und Linearfaktorzerlegung",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-5-linearfaktoren",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A21",
+          "type": "soft",
+          "rationale": "Die Nullstellen liefert die Lösungsformel."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-4-quadratisch",
+          "topic_title": "Etappe 4: Quadratische Funktionen und Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb7",
+          "topic_title": "Quadratische Funktionen und quadratische Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K082",
+          "slug": "m9-nullprodukt",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-5-linearfaktoren",
+          "question": "Was sagt der Satz vom Nullprodukt?",
+          "concept": "Ein Produkt ist genau dann null, wenn mindestens ein Faktor null ist.",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ein Produkt ist genau dann null, wenn alle Faktoren null sind.",
+              "reason": "Ein einziger Faktor null genügt."
+            },
+            {
+              "text": "Eine Summe ist genau dann null, wenn ein Summand null ist.",
+              "reason": "Für Summen gilt das nicht: 2 + 0 ist nicht 0."
+            }
+          ],
+          "replaces": [
+            "01K4Q9M0000000000000000J08"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K083",
+          "slug": "m9-nullstellen-linearfaktoren",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-5-linearfaktoren",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Nullstellen hat "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = a(x - x_1)(x - x_2)",
+              "speech": "f von x gleich a mal x minus x eins mal x minus x zwei"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "x_1 \\text{ und } x_2",
+              "speech": "x eins und x zwei"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "f(x) = (x − 2)(x + 5) hat die Nullstellen 2 und −5.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "x₁ und x₂",
+              "−x₁ und −x₂"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "0 und a",
+              "reason": "a streckt die Parabel nur; die Nullstellen machen die Klammern null."
+            },
+            {
+              "text": "x₁ + x₂ und x₁x₂",
+              "reason": "Summe und Produkt stecken in b und c der allgemeinen Form."
+            }
+          ],
+          "replaces": [
+            "01K4Q9M0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K084",
+          "slug": "m9-scheitel-mitte",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-5-linearfaktoren",
+          "question": "Wo liegt der Scheitel einer Parabel mit den Nullstellen x₁ und x₂ in x-Richtung?",
+          "concept": "genau in der Mitte: x_S = (x₁ + x₂) : 2",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "(x₁ + x₂) : 2",
+              "x₂ − x₁"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "beim Produkt der Nullstellen: x_S = x₁ · x₂",
+              "reason": "Das Produkt ist der Wert c (für a = 1), keine Stelle."
+            },
+            {
+              "text": "beim halben Abstand: x_S = (x₂ − x₁) : 2",
+              "reason": "Das ist der halbe Abstand der Nullstellen, nicht die Stelle der Mitte."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A23",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A23",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-parabel-gerade",
+      "title": "Gemeinsame Punkte von Parabel und Gerade",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-6-parabel-gerade",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A22",
+          "type": "soft",
+          "rationale": "Gleichsetzen führt auf eine quadratische Gleichung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-4-quadratisch",
+          "topic_title": "Etappe 4: Quadratische Funktionen und Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb7",
+          "topic_title": "Quadratische Funktionen und quadratische Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K085",
+          "slug": "m9-tangente",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-6-parabel-gerade",
+          "question": "Wie heißt eine (nicht senkrechte) Gerade, die eine Parabel in genau einem Punkt berührt?",
+          "concept": "Tangente",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Tangente",
+              "Sekante"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sekante",
+              "reason": "Eine Sekante schneidet zweimal."
+            },
+            {
+              "text": "Passante",
+              "reason": "Eine Passante trifft die Parabel nicht."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K086",
+          "slug": "m9-gemeinsame-punkte",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-6-parabel-gerade",
+          "question": "Wie findet man die gemeinsamen Punkte einer Parabel und einer Geraden?",
+          "concept": "Man setzt die beiden Funktionsterme gleich und löst die quadratische Gleichung.",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Man addiert die beiden Funktionsterme und setzt x = 0.",
+              "reason": "x = 0 liefert nur die y-Achsenabschnitte."
+            },
+            {
+              "text": "Man vergleicht nur die y-Achsenabschnitte der beiden Graphen.",
+              "reason": "Gemeinsame Punkte liegen meist nicht auf der y-Achse."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A24",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A24",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-extremwerte",
+      "title": "Extremwerte quadratischer Funktionen",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-7-extremwerte",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A23",
+          "type": "soft",
+          "rationale": "Der Extremwert ist der Scheitel."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-4-quadratisch",
+          "topic_title": "Etappe 4: Quadratische Funktionen und Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb7",
+          "topic_title": "Quadratische Funktionen und quadratische Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K087",
+          "slug": "m9-scheitel-extremwert",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-7-extremwerte",
+          "question": "Wo hat eine nach unten geöffnete Parabel ihren größten Funktionswert?",
+          "concept": "im Scheitelpunkt",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "im Scheitel",
+              "in einer Nullstelle"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "in einer Nullstelle",
+              "reason": "In den Nullstellen ist der Wert 0, nicht am größten."
+            },
+            {
+              "text": "am y-Achsenabschnitt",
+              "reason": "Der höchste Punkt liegt nur zufällig auf der y-Achse."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K088",
+          "slug": "m9-rechteck-maximal",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=qf-7-extremwerte",
+          "question": "Welches Rechteck mit festem Umfang hat den größten Flächeninhalt?",
+          "concept": "das Quadrat mit Seite U/4",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "ein langes, schmales Rechteck",
+              "reason": "Je schmaler, desto kleiner die Fläche."
+            },
+            {
+              "text": "ein Rechteck mit Seiten 2 : 1",
+              "reason": "A(x) = x · (U/2 − x) ist am größten bei x = U/4."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A25",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A25",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-baumdiagramm-pfadregeln",
+      "title": "Mehrstufige Zufallsexperimente: Baumdiagramm und Pfadregeln",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-1-baumdiagramm",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-5-daten-zufall",
+          "topic_title": "Etappe 5: Daten und Zufall"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb8",
+          "topic_title": "Daten und Zufall"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb7",
+          "topic_title": "Daten und Zufall"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K089",
+          "slug": "m9-pfadregel-1",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-1-baumdiagramm",
+          "question": "Wie berechnet man die Wahrscheinlichkeit eines einzelnen Pfades im Baumdiagramm?",
+          "concept": "Man multipliziert die Wahrscheinlichkeiten entlang des Pfades.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "multiplizieren",
+              "addieren"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Man addiert die Wahrscheinlichkeiten entlang des Pfades.",
+              "reason": "Addiert werden verschiedene Pfade, nicht die Äste eines Pfades."
+            },
+            {
+              "text": "Man nimmt die kleinste Wahrscheinlichkeit am Pfad.",
+              "reason": "Jeder Ast zählt mit."
+            }
+          ],
+          "replaces": [
+            "01K4S9P0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K090",
+          "slug": "m9-pfadregel-2",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-1-baumdiagramm",
+          "question": "Wie berechnet man die Wahrscheinlichkeit eines Ereignisses, zu dem mehrere Pfade gehören?",
+          "concept": "Man addiert die Wahrscheinlichkeiten dieser Pfade.",
+          "materiality": "material",
+          "sample_solution": "Urne 3 rot, 2 blau, zwei Kugeln ohne Zurücklegen: P(genau eine rote) = 3/5 · 2/4 + 2/5 · 3/4 = 60 %.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "addieren",
+              "multiplizieren"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Man multipliziert die Wahrscheinlichkeiten dieser Pfade.",
+              "reason": "Multipliziert wird entlang eines Pfades."
+            },
+            {
+              "text": "Man nimmt den wahrscheinlichsten dieser Pfade.",
+              "reason": "Alle Pfade des Ereignisses zählen."
+            }
+          ],
+          "replaces": [
+            "01K4S9P0000000000000000J02"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K091",
+          "slug": "m9-ohne-zuruecklegen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-1-baumdiagramm",
+          "question": "Was ändert sich beim Ziehen ohne Zurücklegen in der zweiten Stufe des Baumdiagramms?",
+          "concept": "Die Wahrscheinlichkeiten, weil eine Kugel weniger in der Urne ist.",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Nichts, die Wahrscheinlichkeiten bleiben wie in der ersten Stufe.",
+              "reason": "Das gilt beim Ziehen mit Zurücklegen."
+            },
+            {
+              "text": "Die Zahl der Äste verdoppelt sich in jeder Stufe.",
+              "reason": "Die Äste hängen von den möglichen Ergebnissen ab, nicht vom Zurücklegen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A26",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A26",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-gegenereignis",
+      "title": "Gegenereignis und „mindestens einmal“",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-2-gegenereignis",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A25",
+          "type": "soft",
+          "rationale": "Das Gegenereignis ist ein einzelner Pfad im Baumdiagramm."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-5-daten-zufall",
+          "topic_title": "Etappe 5: Daten und Zufall"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb8",
+          "topic_title": "Daten und Zufall"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb7",
+          "topic_title": "Daten und Zufall"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K092",
+          "slug": "m9-gegenereignis",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-2-gegenereignis",
+          "question": "Wie berechnet man die Wahrscheinlichkeit des Gegenereignisses Ā?",
+          "concept": "P(Ā) = 1 − P(A)",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1 − P(A)",
+              "P(A) − 1"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "P(Ā) = P(A) − 1",
+              "reason": "Das wäre negativ."
+            },
+            {
+              "text": "P(Ā) = 2 · P(A)",
+              "reason": "Ereignis und Gegenereignis ergeben zusammen 1."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K093",
+          "slug": "m9-mindestens-einmal",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-2-gegenereignis",
+          "question": "Wie berechnet man die Wahrscheinlichkeit für mindestens eine Sechs bei n Würfen?",
+          "concept": "1 − (5/6)ⁿ",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "n · 1/6",
+              "reason": "Man darf die Wahrscheinlichkeiten nicht addieren; bei 6 Würfen wären es sonst 100 %."
+            },
+            {
+              "text": "1 − (1/6)ⁿ",
+              "reason": "Das Gegenereignis ist „keine Sechs“, und die hat je Wurf 5/6."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K094",
+          "slug": "m9-vier-wuerfe",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-2-gegenereignis",
+          "question": "Ab wie vielen Würfen ist mindestens eine Sechs wahrscheinlicher als keine?",
+          "concept": "ab 4 Würfen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ab 4 Würfen",
+              "ab 6 Würfen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "ab 3 Würfen",
+              "reason": "1 − (5/6)³ ≈ 42 %, noch unter 50 %."
+            },
+            {
+              "text": "ab 6 Würfen",
+              "reason": "Schon bei 4 Würfen sind es 1 − (5/6)⁴ ≈ 52 %."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A27",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A27",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-vierfeldertafel",
+      "title": "Vierfeldertafel und bedingte Wahrscheinlichkeit",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-3-vierfeldertafel",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A26",
+          "type": "soft",
+          "rationale": "Vierfeldertafel und Baumdiagramm beschreiben dieselben Situationen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-5-daten-zufall",
+          "topic_title": "Etappe 5: Daten und Zufall"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb8",
+          "topic_title": "Daten und Zufall"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb7",
+          "topic_title": "Daten und Zufall"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K095",
+          "slug": "m9-vierfeldertafel-gesamt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-3-vierfeldertafel",
+          "question": "Was steht in einer Vierfeldertafel mit Anzahlen im Feld ganz unten rechts?",
+          "concept": "die Gesamtzahl aller untersuchten Fälle",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die Gesamtzahl",
+              "die Fälle mit beiden Merkmalen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "die Zahl der Fälle mit beiden Merkmalen",
+              "reason": "Die steht in einem der vier inneren Felder."
+            },
+            {
+              "text": "die Zahl der Fälle ohne beide Merkmale",
+              "reason": "Auch die steht in einem inneren Feld."
+            }
+          ],
+          "replaces": [
+            "01K4S9P0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K096",
+          "slug": "m9-vierfeldertafel-innen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-3-vierfeldertafel",
+          "question": "Was steht in den vier inneren Feldern einer Vierfeldertafel mit Anzahlen?",
+          "concept": "die Anzahlen der vier Merkmalskombinationen",
+          "materiality": "material",
+          "sample_solution": "Zum Beispiel krank und positiv, krank und negativ, gesund und positiv, gesund und negativ; als Mengen A ∩ B, A ∩ B̄, Ā ∩ B, Ā ∩ B̄.",
+          "choice_distractors": [
+            {
+              "text": "die Summen der Zeilen und der Spalten",
+              "reason": "Die Summen stehen am Rand."
+            },
+            {
+              "text": "die bedingten Wahrscheinlichkeiten",
+              "reason": "Die berechnet man erst aus den Feldern."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K097",
+          "slug": "m9-vierfeldertafel-rand",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-3-vierfeldertafel",
+          "question": "Wie erhält man in einer Vierfeldertafel die Zahl am Ende einer Zeile?",
+          "concept": "als Summe der beiden inneren Felder dieser Zeile",
+          "materiality": "material",
+          "sample_solution": "Ebenso ist jede Spaltensumme die Summe ihrer beiden inneren Felder; Zeilen- und Spaltensummen ergeben zusammen jeweils die Gesamtzahl.",
+          "choice_distractors": [
+            {
+              "text": "als Produkt der beiden inneren Felder dieser Zeile",
+              "reason": "Anzahlen von Fällen werden addiert, nicht multipliziert."
+            },
+            {
+              "text": "als Differenz der beiden inneren Felder dieser Zeile",
+              "reason": "Beide Felder gehören zur Zeile, also zählen beide dazu."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K098",
+          "slug": "m9-bedingte-wahrscheinlichkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-3-vierfeldertafel",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man die bedingte Wahrscheinlichkeit "
+            },
+            {
+              "type": "math",
+              "tex": "P_B(A)",
+              "speech": "P von A unter der Bedingung B"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "P_B(A) = \\frac{P(A \\cap B)}{P(B)}",
+              "speech": "P von A unter der Bedingung B gleich P von A geschnitten B durch P von B"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "In der Vierfeldertafel: Anzahl A ∩ B geteilt durch die Summe der Spalte (oder Zeile) B.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "P(A ∩ B) : P(B)",
+              "P(A ∩ B) : P(A)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "P_B(A) = P(A ∩ B)/P(A)",
+              "reason": "Geteilt wird durch die Bedingung B."
+            },
+            {
+              "text": "P_B(A) = P(A) · P(B)",
+              "reason": "Das gilt nur für unabhängige Ereignisse und ist dann P(A ∩ B)."
+            }
+          ],
+          "replaces": [
+            "01K4S9P0000000000000000J04"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K099",
+          "slug": "m9-test-positiv",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-3-vierfeldertafel",
+          "question": "Ein Test erkennt 90 % der Kranken und schlägt bei 10 % der Gesunden fälschlich an. Krank ist nur 1 % der Getesteten. Ist jemand mit positivem Test dann sehr wahrscheinlich krank?",
+          "concept": "Nein, die meisten Positiven sind Gesunde, die falsch positiv getestet wurden.",
+          "materiality": "material",
+          "sample_solution": "Bei 1000 Personen: 10 krank, davon 9 positiv; 990 gesund, davon 99 falsch positiv. P(krank | positiv) = 9 : 108 ≈ 8,3 %.",
+          "choice_distractors": [
+            {
+              "text": "Ja, er ist dann mit 90 % Wahrscheinlichkeit wirklich krank.",
+              "reason": "90 % ist P(positiv | krank), gefragt ist P(krank | positiv)."
+            },
+            {
+              "text": "Ja, zu mindestens 50 %, sonst wäre der Test nutzlos.",
+              "reason": "Bei 1 % Kranken gibt es viel mehr falsch Positive als richtig Positive."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A28",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A28",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-lage-streumasse",
+      "title": "Mittelwert, Median und Quartile",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-4-kenngroessen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-5-daten-zufall",
+          "topic_title": "Etappe 5: Daten und Zufall"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb8",
+          "topic_title": "Daten und Zufall"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb7",
+          "topic_title": "Daten und Zufall"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K100",
+          "slug": "m9-median",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-4-kenngroessen",
+          "question": "Welche Kenngröße teilt eine geordnete Rangliste in zwei gleich große Hälften?",
+          "concept": "der Median",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "der Median",
+              "der Mittelwert"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "der Mittelwert",
+              "reason": "Der Mittelwert ist der Schwerpunkt, er teilt die Werte nicht in zwei gleich große Hälften."
+            },
+            {
+              "text": "der Modalwert",
+              "reason": "Der Modalwert ist der häufigste Wert; er teilt die Liste nicht in Hälften."
+            }
+          ],
+          "replaces": [
+            "01K4S9P0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K101",
+          "slug": "m9-mittelwert",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-4-kenngroessen",
+          "question": "Wie berechnet man das arithmetische Mittel einer Liste von Werten?",
+          "concept": "Summe aller Werte geteilt durch ihre Anzahl",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Summe : Anzahl",
+              "(Max + Min) : 2"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "der Wert in der Mitte der geordneten Liste",
+              "reason": "Das ist der Median."
+            },
+            {
+              "text": "Maximum plus Minimum, geteilt durch 2",
+              "reason": "Das ist die Mitte der Spannweite; die anderen Werte zählen dabei nicht."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K102",
+          "slug": "m9-median-robust",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-4-kenngroessen",
+          "question": "Was verändert ein einzelner, sehr großer Ausreißer stärker: den Mittelwert oder den Median?",
+          "concept": "den Mittelwert; der Median bleibt fast gleich",
+          "materiality": "material",
+          "sample_solution": "2, 3, 5, 7, 8, 9, 15: Mittelwert 7, Median 7. Mit 50 statt 15: Mittelwert 12, Median 7.",
+          "choice_distractors": [
+            {
+              "text": "den Median; der Mittelwert bleibt fast gleich",
+              "reason": "Der Median hängt nur an der Reihenfolge, der Mittelwert an jedem Wert."
+            },
+            {
+              "text": "beide gleich stark, um denselben Betrag",
+              "reason": "Der Median verschiebt sich höchstens um einen Platz."
+            }
+          ],
+          "replaces": [
+            "01K4S9P0000000000000000J06"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K103",
+          "slug": "m9-quartil",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-4-kenngroessen",
+          "question": "Wie bestimmt man das untere Quartil q₁ einer Rangliste?",
+          "concept": "als Median der unteren Hälfte der Rangliste",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "als Mittelwert aller Werte unter dem Median",
+              "reason": "Quartile sind Mediane, keine Mittelwerte."
+            },
+            {
+              "text": "als Wert, der ein Viertel so groß ist wie das Maximum",
+              "reason": "Ein Quartil teilt die Anzahl der Werte, nicht ihre Größe."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8MATH9RS000000000000A29",
+      "atom_uri": "urn:zam:atom:01K8MATH9RS000000000000A29",
+      "namespace": "zam-academy-mathematik-realschule-9",
+      "slug": "m9-boxplot",
+      "title": "Boxplot: Verteilungen darstellen und vergleichen",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-5-boxplot",
+      "prerequisites": [
+        {
+          "atom_id": "01K8MATH9RS000000000000A28",
+          "type": "soft",
+          "rationale": "Der Boxplot zeigt Median und Quartile."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-realschule-9",
+          "topic_code": "stage-5-daten-zufall",
+          "topic_title": "Etappe 5: Daten und Zufall"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "I",
+          "topic_code": "lb8",
+          "topic_title": "Daten und Zufall"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "track": "II_III",
+          "topic_code": "lb7",
+          "topic_title": "Daten und Zufall"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8MATH9RS00000000000K104",
+          "slug": "m9-box-50-prozent",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-5-boxplot",
+          "question": "Wie viel Prozent der Werte liegen im Boxplot ungefähr innerhalb der Box?",
+          "concept": "etwa 50 %",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "50 %",
+              "25 %"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "etwa 25 %",
+              "reason": "Ein Viertel liegt zwischen zwei Kennwerten, die Box umfasst zwei Viertel."
+            },
+            {
+              "text": "etwa 75 %",
+              "reason": "Drei Viertel liegen unter dem oberen Quartil."
+            }
+          ],
+          "replaces": [
+            "01K4S9P0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K105",
+          "slug": "m9-boxplot-fuenf",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-5-boxplot",
+          "question": "Welche fünf Kennwerte zeigt ein Boxplot?",
+          "concept": "Minimum, unteres Quartil, Median, oberes Quartil, Maximum",
+          "materiality": "material",
+          "sample_solution": "Box von q₁ bis q₃ (mittlere 50 %, Breite = Interquartilsabstand), Strich beim Median, Antennen bis Minimum und Maximum.",
+          "choice_distractors": [
+            {
+              "text": "Minimum, Mittelwert, Median, Modalwert, Maximum",
+              "reason": "Mittelwert und Modalwert gehören nicht zum Boxplot."
+            },
+            {
+              "text": "Minimum, unteres Quartil, Mittelwert, oberes Quartil, Spannweite",
+              "reason": "In der Box steht der Median; die Antenne endet am Maximum."
+            }
+          ],
+          "replaces": [
+            "01K4S9P0000000000000000J08"
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K106",
+          "slug": "m9-interquartilsabstand",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-5-boxplot",
+          "question": "Wie berechnet man den Interquartilsabstand, also die Breite der Box im Boxplot?",
+          "concept": "q₃ − q₁",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "q₃ − q₁",
+              "Max − Min"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Max − Min",
+              "reason": "Das ist die Spannweite, sie reicht von Antenne zu Antenne."
+            },
+            {
+              "text": "q₃ − Median",
+              "reason": "Das ist nur der rechte Teil der Box."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K107",
+          "slug": "m9-antennen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-5-boxplot",
+          "question": "Wie weit reichen die Antennen (Whisker) eines Boxplots?",
+          "concept": "von der Box bis zum Minimum und zum Maximum",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "bis Minimum und Maximum",
+              "eine halbe Boxbreite weit"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "vom Median bis zum Minimum und zum Maximum",
+              "reason": "Die Antennen beginnen am Rand der Box, bei q₁ und q₃."
+            },
+            {
+              "text": "je eine halbe Boxbreite über die Box hinaus",
+              "reason": "Sie haben keine feste Länge; sie enden bei den äußersten Werten."
+            }
+          ]
+        },
+        {
+          "id": "01K8MATH9RS00000000000K108",
+          "slug": "m9-boxplot-schief",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-realschule-9/#lesson=dz-5-boxplot",
+          "question": "Woran erkennt man an einem Boxplot, dass eine Verteilung schief ist?",
+          "concept": "Der Median liegt nicht in der Mitte der Box, und die Antennen sind verschieden lang.",
+          "materiality": "material",
+          "sample_solution": "Median links in der Box und lange rechte Antenne: Die Werte streuen nach rechts weit, die Verteilung ist rechtsschief.",
+          "choice_distractors": [
+            {
+              "text": "Die Box ist breiter als jede der beiden Antennen lang ist.",
+              "reason": "Das zeigt, wie dicht die mittlere Hälfte liegt, nicht ob die Verteilung symmetrisch ist."
+            },
+            {
+              "text": "Alle fünf Kennwerte liegen in gleichen Abständen nebeneinander.",
+              "reason": "Gleiche Abstände sind gerade das Bild einer symmetrischen Verteilung."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
