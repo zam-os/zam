@@ -1,0 +1,3602 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:geographie-realschule-9",
+  "version": "2026.10.1",
+  "title": "Geographie 9 Realschule (ZAM Academy)",
+  "description": "Alle sieben Pflicht-Lernbereiche des LehrplanPLUS Bayern: 35 Kernlektionen, acht Karten- und Modellübungen, eigenes Nahraumprojekt. Sieben optionale englische Vertiefungen und drei ergänzende Grundlagen; ein gemeinsamer Pfad für alle Zweige. 91 Karten mit konservativer expliziter Altzuordnung.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-20T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/geographie-realschule-9/",
+      "label": "ZAM Academy: Geographie 9 Realschule"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/geographie",
+      "label": "ISB · LehrplanPLUS Geographie 9 Realschule",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.lfu.bayern.de/geologie/geologie_bayerns/index.htm",
+      "label": "LfU Bayern · Geologie Bayerns",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.lfu.bayern.de/geologie/hydrogeologie_karten_daten/hydrogeologische_raumgliederung/grossraum/doc/grossraum_alpenvorland.pdf",
+      "label": "LfU Bayern · Hydrogeologischer Großraum Alpenvorland",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://pubs.usgs.gov/gip/dynamic/understanding.html",
+      "label": "USGS · This Dynamic Earth: Understanding plate motions",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-countries/",
+      "label": "Natural Earth · vereinfachte Länderumrisse 1:110 Mio., Public Domain",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.umweltbundesamt.de/umweltatlas/umwelt-landwirtschaft/wirtschaftliches-handeln/ressourcenschutz/wie-kann-die-landwirtschaft-den-boden-das",
+      "label": "Umweltbundesamt · Wie Landwirtschaft Boden und Bodenleben schützen kann",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.dwd.de/DE/leistungen/klimastatusbericht/publikationen/ksb_2024.pdf?__blob=publicationFile&v=5",
+      "label": "DWD · Klimastatusbericht 2024 (historischer Jahreswert)",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.dwd.de/DE/leistungen/klimareports/download_report_auflage-4.pdf?__blob=publicationFile&v=2",
+      "label": "DWD · Klima und Wetter: Klimareport Deutschland",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.dwd.de/DE/wetter/thema_des_tages/2021/5/12.html",
+      "label": "DWD · Großwetterlagen und Wetterregime",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.ipcc.ch/site/assets/uploads/2018/03/ar4-wg1-chapter1.pdf",
+      "label": "IPCC · What is the greenhouse effect?",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.ipcc.ch/report/ar6/syr/",
+      "label": "IPCC · Sechster Sachstandsbericht, Synthese 2023",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.umweltbundesamt.de/themen/fragen-antworten-thema-hochwasser",
+      "label": "Umweltbundesamt · Fragen und Antworten zum Hochwasser",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.bbk.bund.de/DE/Warnung-Vorsorge/Warnung-in-Deutschland/warnung-in-deutschland_node.html",
+      "label": "Bundesamt für Bevölkerungsschutz · Warnung in Deutschland",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.umweltbundesamt.de/themen/klima-energie/klimaschutz-energiepolitik-in-deutschland",
+      "label": "Umweltbundesamt · Klimaschutz und Energiepolitik",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.umweltbundesamt.de/daten/umweltzustand-trends/luft/ozon-belastung",
+      "label": "Umweltbundesamt · Ozonbelastung und bodennahe Bildung",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://public.wmo.int/themes/ozone-layer",
+      "label": "WMO · The Ozone Layer",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.umweltbundesamt.de/themen/landwirtschaft/landwirtschaft-umweltfreundlich-gestalten",
+      "label": "Umweltbundesamt · Landwirtschaft umweltfreundlich gestalten",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.umweltbundesamt.de/themen/landwirtschaft/landwirtschaft-umweltfreundlich-gestalten/oekolandbau",
+      "label": "Umweltbundesamt · Ökolandbau",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.umweltbundesamt.de/umwelttipps-fuer-den-alltag/essen-trinken",
+      "label": "Umweltbundesamt · Ernährung und Umwelt",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://agriculture.ec.europa.eu/common-agricultural-policy/cap-overview/cap-glance_de",
+      "label": "EU-Kommission · Die Gemeinsame Agrarpolitik im Überblick",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.fao.org/sustainability",
+      "label": "FAO · Sustainability in food and agriculture",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.fao.org/docrep/013/al936e/al936e00.pdf",
+      "label": "FAO · An Introduction to the Basic Concepts of Food Security",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.wfp.org/ending-hunger",
+      "label": "World Food Programme · Ending hunger",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.fao.org/plant-production-protection/news-and-events/news/news-detail/growing-without-soil--hydroponics-fundamentals--pros-and-cons/",
+      "label": "FAO · Hydroponics fundamentals, pros and cons (2024)",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.fao.org/newsroom/story/no-soil-no-problem/en",
+      "label": "FAO · Hydroponik-Fallbeispiel Grenada (2026)",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.bbsr.bund.de/BBSR/DE/forschung/raumbeobachtung/aktuelles/inkar/inkar.html",
+      "label": "BBSR · INKAR: regionalstatistische Daten und Karten",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://unhabitat.org/wcr/",
+      "label": "UN-Habitat · World Cities Report 2024",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://stadt.muenchen.de/infos/stadtentwicklungsplan-2040.html",
+      "label": "Stadt München · Stadtentwicklungsplan (Ziele und Karten)",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://stadt.muenchen.de/dam/jcr%3Af3659a62-22a3-4e04-a15a-b2cd44a8decf/Muenchen_kompakt_urban_gruen_kl.pdf",
+      "label": "Stadt München · Kompakt, urban, grün (historische Stadt-Umland-Entwicklung)",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://stadt.muenchen.de/infos/wohnungsmarktbeobachtung-muenchen.html",
+      "label": "Stadt München · Wohnungsmarktbeobachtung und Verdrängungsstudie",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://cdn.paris.fr/paris/2020/02/26/8c69e1ba1ff36ecf904c337617eb1868.pdf",
+      "label": "Stadt Paris · Plan local d’urbanisme, räumliche Funktionen",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://unhabitat.org/sites/default/files/download-manager-files/TheStateOfAsianAndPacificCities2015.pdf",
+      "label": "UN-Habitat · The State of Asian and Pacific Cities 2015 (historisches Fallbeispiel)",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://unhabitat.org/sites/default/files/download-manager-files/Urban%20Planning%20for%20City%20Leaders.pdf",
+      "label": "UN-Habitat · Urban Planning for City Leaders",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.destatis.de/DE/Themen/Querschnitt/Demografischer-Wandel/Aspekte/demografie-bevoelkerungsentwicklung.html",
+      "label": "Destatis · Bevölkerungsentwicklung, 16. Vorausberechnung 2025–2070",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.statistik.bayern.de/presse/mitteilungen/2026/pm101/index.html",
+      "label": "Statistik Bayern · Regionalisierte Bevölkerungsvorausberechnung (2026)",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://population.un.org/wpp/",
+      "label": "UN DESA · World Population Prospects",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Wanderungen/_inhalt.html",
+      "label": "Destatis · Wanderungen",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://publications.iom.int/books/international-migration-law-ndeg34-glossary-migration",
+      "label": "IOM · Glossary on Migration (2019)",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.unhcr.org/about-unhcr/who-we-protect/refugees",
+      "label": "UNHCR · Refugees and migrants: definitions",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www8.cao.go.jp/kourei/english/annualreport/2025/pdf/2025.pdf",
+      "label": "Cabinet Office Japan · Annual Report on the Ageing Society 2025 (English)",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://familienportal.de/familienportal/lebenslagen/ausbildung-beruf/vereinbarkeit-familie-und-beruf",
+      "label": "Familienportal des Bundes · Familie und Beruf",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://european-union.europa.eu/principles-countries-history/eu-countries_de",
+      "label": "Europäische Union · Länderprofile und 27 Mitgliedstaaten",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.consilium.europa.eu/en/topics/eu-enlargement/",
+      "label": "Rat der EU · EU enlargement (Statusprüfung 20. Oktober 2026)",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://european-union.europa.eu/principles-countries-history/eu-enlargement_en",
+      "label": "Europäische Union · Erweiterung und historische Beitritte",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.consilium.europa.eu/en/policies/schengen-area/",
+      "label": "Rat der EU · Schengen area",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.airbus.com/en/careers/life-at-airbus/working-here/working-at-airbus-in-germany",
+      "label": "Airbus · Standorte in Deutschland (Unternehmensperspektive)",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.footprintnetwork.org/our-work/ecological-footprint/",
+      "label": "Global Footprint Network · Ecological Footprint: Methode und Grenzen",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.dhm.de/archiv/ausstellungen/wiedervereinigung/beitrittsbeschluss_und_einigungsvertrag.html",
+      "label": "DHM · Deutsche Einheit 1990",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://police.un.org/sites/default/files/past/unipombackgr.html",
+      "label": "UN · Historischer Hintergrund Indien/Pakistan und Kaschmir",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.nationalarchives.gov.uk/education/teaching-resources/indian-independence-part-one/",
+      "label": "UK National Archives · Indian Independence: Quellen von 1947",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://geoportal.bayern.de/bayernatlas/",
+      "label": "Bayerische Vermessungsverwaltung · BayernAtlas",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.noaa.gov/jetstream/global/global-atmospheric-circulations",
+      "label": "NOAA · Global atmospheric circulations",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.fao.org/fileadmin/user_upload/newsroom/docs/FAO-world_soils-report-COMPLETE.pdf",
+      "label": "FAO · Status of the World's Soil Resources (2015)",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.unccd.int/article-1-use-terms",
+      "label": "UNCCD · Article 1: Desertification and land degradation",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.fao.org/4/r4082e/r4082e08.htm",
+      "label": "FAO · Salty soils: salinization, irrigation and drainage",
+      "checked": "2026-10-20"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5DDSGKS4XGPRWXM1678KE9P",
+      "atom_uri": "urn:zam:atom:01M5DDSGKS4XGPRWXM1678KE9P",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-grosslandschaften",
+      "title": "Deutschland von der Küste bis zu den Alpen",
+      "domain": "geographie/lb1",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grosslandschaften",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Landschaft und Naturrisiken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Landschaft und Naturrisiken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grosslandschaften",
+          "materiality": "material",
+          "id": "01M5DDSGKTX96469AH62ZTJX75",
+          "slug": "geo9-grosslandschaften-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Großlandschaft liegt zwischen den Alpen und der Mittelgebirgsschwelle?",
+          "concept": "Das Alpenvorland",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Das Alpenvorland", "Das Küstentiefland"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das Küstentiefland",
+              "reason": "Das Alpenvorland schließt nördlich an die Alpen an. Die Großlandschaften haben unregelmäßige Übergänge."
+            },
+            {
+              "text": "Der Mittelgebirgsraum",
+              "reason": "Das Alpenvorland schließt nördlich an die Alpen an. Die Großlandschaften haben unregelmäßige Übergänge."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grosslandschaften",
+          "materiality": "material",
+          "id": "01M5DDSGKTFW94QJMFZYDDVE29",
+          "slug": "geo9-grosslandschaften-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Beschreibe eine Reise von Hamburg über Erfurt und München nach Oberstdorf mit den vier Großlandschaften.",
+          "concept": "Die Reise beginnt im Norddeutschen Tiefland und führt durch den Mittelgebirgsraum. München liegt im Alpenvorland, Oberstdorf in den Alpen. Die Höhen nehmen dabei nicht an jeder Stelle gleichmäßig zu; Becken und Täler unterbrechen das Relief.",
+          "sample_solution": "Die Reise beginnt im Norddeutschen Tiefland und führt durch den Mittelgebirgsraum. München liegt im Alpenvorland, Oberstdorf in den Alpen. Die Höhen nehmen dabei nicht an jeder Stelle gleichmäßig zu; Becken und Täler unterbrechen das Relief."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKSZ5WC00J9YYKN57TG",
+      "atom_uri": "urn:zam:atom:01M5DDSGKSZ5WC00J9YYKN57TG",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-plattentektonik",
+      "title": "Warum Gebirge entstehen",
+      "domain": "geographie/lb1",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-plattentektonik",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Landschaft und Naturrisiken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Landschaft und Naturrisiken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-plattentektonik",
+          "materiality": "material",
+          "id": "01M5DDSGKTD34S30W8ZJBG8EQJ",
+          "slug": "geo9-plattentektonik-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Vorgang gehört zu den endogenen Kräften?",
+          "concept": "Hebung durch Plattenkollision",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Hebung durch Plattenkollision", "Abtragung durch Flusswasser"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Abtragung durch Flusswasser",
+              "reason": "Endogene Kräfte kommen aus dem Erdinneren. Wasser und Frost verändern die Oberfläche von außen."
+            },
+            {
+              "text": "Zerbrechen durch Frostwechsel",
+              "reason": "Endogene Kräfte kommen aus dem Erdinneren. Wasser und Frost verändern die Oberfläche von außen."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-plattentektonik",
+          "materiality": "material",
+          "id": "01M5DDSGKTMP9G2DN1DJPAZWBW",
+          "slug": "geo9-plattentektonik-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche die Gebirgsbildung von Alpen und Anden.",
+          "concept": "Beide Gebirge hängen mit konvergierenden Platten zusammen. Bei den Alpen spielt die Kollision kontinentaler Bereiche nach der Schließung von Meeresräumen eine zentrale Rolle. Bei den Anden taucht ozeanische Lithosphäre unter Südamerika ab; damit ist dort auch Vulkanismus verbunden.",
+          "sample_solution": "Beide Gebirge hängen mit konvergierenden Platten zusammen. Bei den Alpen spielt die Kollision kontinentaler Bereiche nach der Schließung von Meeresräumen eine zentrale Rolle. Bei den Anden taucht ozeanische Lithosphäre unter Südamerika ab; damit ist dort auch Vulkanismus verbunden."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKSMPKCJFZ4A5RAHDZE",
+      "atom_uri": "urn:zam:atom:01M5DDSGKSMPKCJFZ4A5RAHDZE",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-erdgeschichte",
+      "title": "Landschaften haben ein langes Gedächtnis",
+      "domain": "geographie/lb1",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-erdgeschichte",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKSZ5WC00J9YYKN57TG",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Landschaft und Naturrisiken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Landschaft und Naturrisiken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-erdgeschichte",
+          "materiality": "material",
+          "id": "01M5DDSGKTCN4732M87GQDX1K4",
+          "slug": "geo9-erdgeschichte-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Vorgang formte Teile des Alpenvorlands im Quartär?",
+          "concept": "Gletscher und ihr Schmelzwasser",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Gletscher und ihr Schmelzwasser", "Die erstmalige Entstehung der Erde"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die erstmalige Entstehung der Erde",
+              "reason": "Quartäre Gletscher überprägten eine schon vorhandene Landschaft und hinterließen unter anderem Moränen."
+            },
+            {
+              "text": "Der Beginn der variszischen Faltung",
+              "reason": "Quartäre Gletscher überprägten eine schon vorhandene Landschaft und hinterließen unter anderem Moränen."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-erdgeschichte",
+          "materiality": "material",
+          "id": "01M5DDSGKTWHH9NTV99C18W7VF",
+          "slug": "geo9-erdgeschichte-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre, warum man auf einem hohen Berg Meeresfossilien finden kann.",
+          "concept": "Sedimente wurden zunächst in einem Meer abgelagert und können Fossilien enthalten. Spätere tektonische Hebung und Faltung brachten sie in größere Höhe. Abtragung legte die Schichten frei. Fossilien belegen damit die Entstehungsumgebung des Gesteins, nicht die heutige Höhenlage des damaligen Meeres.",
+          "sample_solution": "Sedimente wurden zunächst in einem Meer abgelagert und können Fossilien enthalten. Spätere tektonische Hebung und Faltung brachten sie in größere Höhe. Abtragung legte die Schichten frei. Fossilien belegen damit die Entstehungsumgebung des Gesteins, nicht die heutige Höhenlage des damaligen Meeres."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKS6ZQ23P2Q8BA8HG7H",
+      "atom_uri": "urn:zam:atom:01M5DDSGKS6ZQ23P2Q8BA8HG7H",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-abtragung",
+      "title": "Vom Fels zum Flusssediment",
+      "domain": "geographie/lb1",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-abtragung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Landschaft und Naturrisiken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Landschaft und Naturrisiken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-abtragung",
+          "materiality": "material",
+          "id": "01M5DDSGKTVAGNEBYFV434V67X",
+          "slug": "geo9-abtragung-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was ist mit Erosion gemeint?",
+          "concept": "Abtragung von Boden oder Gestein",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Abtragung von Boden oder Gestein",
+              "Entstehung neuer Kruste im Erdinneren"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Entstehung neuer Kruste im Erdinneren",
+              "reason": "Erosion entfernt Material. Eine spätere Ablagerung wird Sedimentation genannt."
+            },
+            {
+              "text": "Abkühlung der Luft ohne Materialbewegung",
+              "reason": "Erosion entfernt Material. Eine spätere Ablagerung wird Sedimentation genannt."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-abtragung",
+          "materiality": "material",
+          "id": "01M5DDSGKTW095NTB3WX3811CM",
+          "slug": "geo9-abtragung-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Unterscheide Verwitterung, Erosion und Sedimentation an einem Flussbeispiel.",
+          "concept": "Frost kann ein Gestein am Hang zerlegen: Das ist Verwitterung. Abfließendes Wasser nimmt Teilchen auf und trägt sie ab: Das ist Erosion mit anschließendem Transport. Wo die Strömung nicht mehr ausreicht, lagern sich Teilchen ab: Das ist Sedimentation.",
+          "sample_solution": "Frost kann ein Gestein am Hang zerlegen: Das ist Verwitterung. Abfließendes Wasser nimmt Teilchen auf und trägt sie ab: Das ist Erosion mit anschließendem Transport. Wo die Strömung nicht mehr ausreicht, lagern sich Teilchen ab: Das ist Sedimentation."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKS3R75EZ48PJ87NJCH",
+      "atom_uri": "urn:zam:atom:01M5DDSGKS3R75EZ48PJ87NJCH",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-eingriffe",
+      "title": "Wenn Menschen Flüsse und Landschaften umbauen",
+      "domain": "geographie/lb1",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-eingriffe",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKS6ZQ23P2Q8BA8HG7H",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Landschaft und Naturrisiken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Landschaft und Naturrisiken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-eingriffe",
+          "materiality": "material",
+          "id": "01M5DDSGKTA16HDYZ82G2VFVCD",
+          "slug": "geo9-eingriffe-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Maßnahme kann natürlichen Wasserrückhalt unterstützen?",
+          "concept": "Auen als Überschwemmungsraum erhalten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auen als Überschwemmungsraum erhalten",
+              "Jede Freifläche lückenlos asphaltieren"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Jede Freifläche lückenlos asphaltieren",
+              "reason": "Auen können Wasser zeitweise aufnehmen. Ein vollständiger Schutz vor jedem Hochwasser folgt daraus nicht."
+            },
+            {
+              "text": "Jeden Fluss ohne Rückhalteflächen verkürzen",
+              "reason": "Auen können Wasser zeitweise aufnehmen. Ein vollständiger Schutz vor jedem Hochwasser folgt daraus nicht."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-eingriffe",
+          "materiality": "material",
+          "id": "01M5DDSGKTDY6K71DJTNXBT758",
+          "slug": "geo9-eingriffe-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre zwei mögliche Folgen einer Flussbegradigung und eine Alternative.",
+          "concept": "Ein kürzerer Flusslauf kann Wasser schneller weiterleiten und örtliche Nutzungen erleichtern. Fehlende Auen verringern aber mögliche Rückhalteräume und können die Belastung flussabwärts erhöhen. Wo es räumlich möglich ist, können wieder angeschlossene Auen ergänzend Wasser zurückhalten; ihre konkrete Wirkung muss geprüft werden.",
+          "sample_solution": "Ein kürzerer Flusslauf kann Wasser schneller weiterleiten und örtliche Nutzungen erleichtern. Fehlende Auen verringern aber mögliche Rückhalteräume und können die Belastung flussabwärts erhöhen. Wo es räumlich möglich ist, können wieder angeschlossene Auen ergänzend Wasser zurückhalten; ihre konkrete Wirkung muss geprüft werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKSZR926T8VTX29STVW",
+      "atom_uri": "urn:zam:atom:01M5DDSGKSZR926T8VTX29STVW",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-wetter-klima",
+      "title": "Wetter beobachten, Klima vergleichen",
+      "domain": "geographie/lb2",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-wetter-klima",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Klima und Klimawandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Klima und Klimawandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-wetter-klima",
+          "materiality": "material",
+          "id": "01M5DDSGKVPZB8ME8M2VQ09D5X",
+          "slug": "geo9-wetter-klima-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Angabe beschreibt Klima statt eines einzelnen Wetterereignisses?",
+          "concept": "Monatsmittel über dreißig Jahre",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Monatsmittel über dreißig Jahre", "Ein Gewitter am Dienstagnachmittag"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Gewitter am Dienstagnachmittag",
+              "reason": "Klima bezieht sich auf längerfristige statistische Eigenschaften und umfasst auch Schwankungen."
+            },
+            {
+              "text": "Die Temperatur um acht Uhr heute",
+              "reason": "Klima bezieht sich auf längerfristige statistische Eigenschaften und umfasst auch Schwankungen."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-wetter-klima",
+          "materiality": "material",
+          "id": "01M5DDSGKVDPVA0D9QSGPCYQZK",
+          "slug": "geo9-wetter-klima-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre den Unterschied zwischen Wetter und Klima an einem eigenen Beispiel und ordne den DWD-Wert 2024 ein.",
+          "concept": "Ein kalter Morgen beschreibt Wetter an einem Ort und Zeitpunkt. Klima beschreibt dagegen die längerfristige Verteilung des Wetters. Die 10,9 °C für Deutschland 2024 sind ein Jahres- und Flächenmittel; der Vergleich mit 1961–1990 ergibt 2,7 K Unterschied, aber keine gleiche Erwärmung an jedem Tag.",
+          "sample_solution": "Ein kalter Morgen beschreibt Wetter an einem Ort und Zeitpunkt. Klima beschreibt dagegen die längerfristige Verteilung des Wetters. Die 10,9 °C für Deutschland 2024 sind ein Jahres- und Flächenmittel; der Vergleich mit 1961–1990 ergibt 2,7 K Unterschied, aber keine gleiche Erwärmung an jedem Tag."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKS5JFXXM1ZHC3CDHEY",
+      "atom_uri": "urn:zam:atom:01M5DDSGKS5JFXXM1ZHC3CDHEY",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-grosswetterlagen",
+      "title": "Atlantiktief oder Hoch über Osteuropa?",
+      "domain": "geographie/lb2",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grosswetterlagen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Klima und Klimawandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Klima und Klimawandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grosswetterlagen",
+          "materiality": "material",
+          "id": "01M5DDSGKV1WCTZ4KHVCQAPKE0",
+          "slug": "geo9-grosswetterlagen-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum bedeutet ein Hoch über Osteuropa nicht in jeder Jahreszeit Hitze?",
+          "concept": "Die Herkunft der Luft und die Jahreszeit wirken mit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Herkunft der Luft und die Jahreszeit wirken mit",
+              "Hochdruck verhindert grundsätzlich jede Abkühlung"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Hochdruck verhindert grundsätzlich jede Abkühlung",
+              "reason": "Kontinentale Luft kann im Winter kalt und im Sommer warm sein. Die Drucklage allein bestimmt die Temperatur nicht."
+            },
+            {
+              "text": "Der Luftdruck legt die Temperatur allein fest",
+              "reason": "Kontinentale Luft kann im Winter kalt und im Sommer warm sein. Die Drucklage allein bestimmt die Temperatur nicht."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grosswetterlagen",
+          "materiality": "material",
+          "id": "01M5DDSGKVYANN82D5X2B0HZ51",
+          "slug": "geo9-grosswetterlagen-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche mögliche Folgen einer Atlantik-Westlage und eines länger anhaltenden Sommerhochs.",
+          "concept": "Eine Westlage kann milde, feuchte Atlantikluft und rasch wechselnde Fronten heranführen. Ein blockierendes Sommerhoch kann Niederschläge länger fernhalten und Hitze sowie Trockenheit begünstigen. Die genaue Wirkung hängt von Lage, Dauer und örtlichem Relief ab.",
+          "sample_solution": "Eine Westlage kann milde, feuchte Atlantikluft und rasch wechselnde Fronten heranführen. Ein blockierendes Sommerhoch kann Niederschläge länger fernhalten und Hitze sowie Trockenheit begünstigen. Die genaue Wirkung hängt von Lage, Dauer und örtlichem Relief ab."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT4A0EVAEX39RB70WR",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT4A0EVAEX39RB70WR",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-treibhauseffekt",
+      "title": "Wie Treibhausgase die Energiebilanz verändern",
+      "domain": "geographie/lb2",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-treibhauseffekt",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Klima und Klimawandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Klima und Klimawandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-treibhauseffekt",
+          "materiality": "material",
+          "id": "01M5DDSGKV5G8RSGZ0Y1VH638Q",
+          "slug": "geo9-treibhauseffekt-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Strahlung absorbieren Treibhausgase bei diesem Prozess besonders?",
+          "concept": "Langwellige Infrarotstrahlung der Erde",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Langwellige Infrarotstrahlung der Erde",
+              "Ausschließlich sichtbares grünes Sonnenlicht"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ausschließlich sichtbares grünes Sonnenlicht",
+              "reason": "Treibhausgase absorbieren und emittieren in bestimmten Infrarotbereichen; die Energiebilanz verschiebt sich."
+            },
+            {
+              "text": "Nur Radiowellen von Mobilfunkmasten",
+              "reason": "Treibhausgase absorbieren und emittieren in bestimmten Infrarotbereichen; die Energiebilanz verschiebt sich."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-treibhauseffekt",
+          "materiality": "material",
+          "id": "01M5DDSGKVFVAWT2W8GQ01ZDMM",
+          "slug": "geo9-treibhauseffekt-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre den natürlichen Treibhauseffekt und seine Verstärkung durch menschliche Tätigkeiten.",
+          "concept": "Die Oberfläche nimmt Sonnenenergie auf und gibt langwellige Wärmestrahlung ab. Treibhausgase absorbieren und emittieren einen Teil davon, auch zurück zur Oberfläche. Zusätzliche Treibhausgase aus menschlichen Tätigkeiten verändern die Energiebilanz und verstärken die Erwärmung. Der natürliche Effekt bestand schon vorher.",
+          "sample_solution": "Die Oberfläche nimmt Sonnenenergie auf und gibt langwellige Wärmestrahlung ab. Treibhausgase absorbieren und emittieren einen Teil davon, auch zurück zur Oberfläche. Zusätzliche Treibhausgase aus menschlichen Tätigkeiten verändern die Energiebilanz und verstärken die Erwärmung. Der natürliche Effekt bestand schon vorher."
+        },
+        {
+          "id": "01M5DDSGKW78ZDGVJKJJ44Q9PX",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den anthropogenen Treibhauseffekt (Verbrennung fossiler Energieträger, Erhöhung von CO₂ und Methan, Absorption von langwelliger Wärmestrahlung) und formuliere das Prinzip der Nachhaltigkeit nach dem Drei-Säulen-Modell (Ökologie, Ökonomie, Soziales).",
+          "concept": "Anthropogener Treibhauseffekt: Kurzwellige Sonnenstrahlung dringt ein -> Erdoberfläche erwärmt sich -> sendet langwellige Infrarotstrahlung aus -> Treibhausgase absorbieren & emittieren Gegenstrahlung -> globale Erwärmung; 3-Säulen-Modell: Gleichrangigkeit von ökologischem Schutz, wirtschaftlicher Leistungsfähigkeit und sozialer Gerechtigkeit für künftige Generationen",
+          "sample_solution": "1. Anthropogener Treibhauseffekt: Sonnenstrahlen treffen als kurzwellige Strahlung auf die Erde und erwärmen die Erdoberfläche. Diese strahlt Energie als langwellige Wärmestrahlung (Infrarot) zurück. Treibhausgase (CO₂, CH₄, N₂O), die durch Industrie, Verkehr, Brandrodung und Massentierhaltung in die Atmosphäre gelangen, absorbieren diese Wärmestrahlung und strahlen sie teilweise zur Erde zurück (Gegenstrahlung), was zu globalem Temperaturanstieg und extremen Wetterereignissen führt. 2. Nachhaltigkeit (Drei-Säulen-Modell): Nachhaltige Entwicklung bedeutet, die Bedürfnisse der heutigen Generation so zu befriedigen, dass die Lebensgrundlagen künftiger Generationen nicht gefährdet werden. Dies erfordert den gleichzeitigen Einklang von: a) Ökologie (Schonung von Ressourcen, Artenschutz, CO₂-Reduktion), b) Ökonomie (dauerhaft tragfähiges Wirtschaften) und c) Soziales (soziale Gerechtigkeit, faire Arbeitsbedingungen weltweit).",
+          "slug": "geo9-treibhauseffekt-nachhaltigkeit-gesamt",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-treibhauseffekt",
+          "materiality": "material",
+          "replaces": ["01K4G9R0000000000000000J08"]
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTC0RVS3SMM7N4D2X1",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTC0RVS3SMM7N4D2X1",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-klimafolgen",
+      "title": "Wenn Atmosphäre, Wasser, Eis und Leben zusammenwirken",
+      "domain": "geographie/lb2",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-klimafolgen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKT4A0EVAEX39RB70WR",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Klima und Klimawandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Klima und Klimawandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-klimafolgen",
+          "materiality": "material",
+          "id": "01M5DDSGKVS50KPHAXKZ90EA23",
+          "slug": "geo9-klimafolgen-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was verstärkt die Erwärmung bei der Eis-Albedo-Rückkopplung?",
+          "concept": "Dunklere Flächen nehmen mehr Sonnenenergie auf",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dunklere Flächen nehmen mehr Sonnenenergie auf",
+              "Weniger Eis reflektiert immer mehr Sonnenlicht"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Weniger Eis reflektiert immer mehr Sonnenlicht",
+              "reason": "Dunkles Wasser oder Land reflektiert oft weniger als helles Eis und kann dadurch zusätzliche Energie aufnehmen."
+            },
+            {
+              "text": "Das Verschwinden von Eis beendet jede Verdunstung",
+              "reason": "Dunkles Wasser oder Land reflektiert oft weniger als helles Eis und kann dadurch zusätzliche Energie aufnehmen."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-klimafolgen",
+          "materiality": "material",
+          "id": "01M5DDSGKV4MJFBPECX0Y9WVZ0",
+          "slug": "geo9-klimafolgen-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Beschreibe eine Wirkungskette von Erwärmung über Eisverlust zu einer verstärkenden Rückkopplung.",
+          "concept": "Erwärmung kann helle Eisflächen verkleinern. Die frei werdende dunklere Oberfläche reflektiert weniger Sonnenstrahlung und nimmt mehr Energie auf. Das kann die Erwärmung verstärken und weiteren Eisverlust begünstigen. Das ist eine Rückkopplung, nicht die ursprüngliche Ursache aller Erwärmung.",
+          "sample_solution": "Erwärmung kann helle Eisflächen verkleinern. Die frei werdende dunklere Oberfläche reflektiert weniger Sonnenstrahlung und nimmt mehr Energie auf. Das kann die Erwärmung verstärken und weiteren Eisverlust begünstigen. Das ist eine Rückkopplung, nicht die ursprüngliche Ursache aller Erwärmung."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTAHQEB7QJD029TFHS",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTAHQEB7QJD029TFHS",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-extremereignisse",
+      "title": "Sturm, Dürre und Hochwasser untersuchen",
+      "domain": "geographie/lb2",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-extremereignisse",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Klima und Klimawandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Klima und Klimawandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-extremereignisse",
+          "materiality": "material",
+          "id": "01M5DDSGKVE12KWXF60VTCE65S",
+          "slug": "geo9-extremereignisse-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Angabe beschreibt Exposition gegenüber Hochwasser?",
+          "concept": "Eine Schule liegt im möglichen Überschwemmungsgebiet",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Schule liegt im möglichen Überschwemmungsgebiet",
+              "Die Luft hat heute einen bestimmten Druck"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Luft hat heute einen bestimmten Druck",
+              "reason": "Exposition beschreibt, welche Menschen, Gebäude oder Werte einer Gefahr räumlich ausgesetzt sind."
+            },
+            {
+              "text": "Ein Fluss trägt seit Jahrhunderten denselben Namen",
+              "reason": "Exposition beschreibt, welche Menschen, Gebäude oder Werte einer Gefahr räumlich ausgesetzt sind."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-extremereignisse",
+          "materiality": "material",
+          "id": "01M5DDSGKVZEPPT9TEZ32FJXJH",
+          "slug": "geo9-extremereignisse-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre, warum Starkregen nicht überall dieselben Hochwasserschäden verursacht.",
+          "concept": "Vorfeuchte, Relief, Versiegelung und Gewässer beeinflussen, wie Wasser abfließt. Schäden hängen zusätzlich davon ab, ob Gebäude und Menschen im betroffenen Raum liegen und wie verletzlich sie sind. Rückhalt und Vorsorge können Folgen mindern, garantieren aber keine vollständige Sicherheit.",
+          "sample_solution": "Vorfeuchte, Relief, Versiegelung und Gewässer beeinflussen, wie Wasser abfließt. Schäden hängen zusätzlich davon ab, ob Gebäude und Menschen im betroffenen Raum liegen und wie verletzlich sie sind. Rückhalt und Vorsorge können Folgen mindern, garantieren aber keine vollständige Sicherheit."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTZVMAA453JEZ8MWR5",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTZVMAA453JEZ8MWR5",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-klimaschutz-anpassung",
+      "title": "Klimaschutz und Anpassung abwägen",
+      "domain": "geographie/lb2",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-klimaschutz-anpassung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKTC0RVS3SMM7N4D2X1",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Klima und Klimawandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Klima und Klimawandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-klimaschutz-anpassung",
+          "materiality": "material",
+          "id": "01M5DDSGKV2ZMMEEC4C2CB5DD3",
+          "slug": "geo9-klimaschutz-anpassung-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Maßnahme dient vor allem der Klimaanpassung?",
+          "concept": "Mehr schattige Aufenthaltsorte bei Hitze schaffen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mehr schattige Aufenthaltsorte bei Hitze schaffen",
+              "Fossile Brennstoffe durch erneuerbare Energie ersetzen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Fossile Brennstoffe durch erneuerbare Energie ersetzen",
+              "reason": "Schatten mindert eine Folge von Hitze. Die anderen Beispiele zielen vorrangig auf die Ursachen der Erwärmung."
+            },
+            {
+              "text": "Emissionen einer Fabrik an der Quelle vermeiden",
+              "reason": "Schatten mindert eine Folge von Hitze. Die anderen Beispiele zielen vorrangig auf die Ursachen der Erwärmung."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-klimaschutz-anpassung",
+          "materiality": "material",
+          "id": "01M5DDSGKV679CNTYG2QPA8D8E",
+          "slug": "geo9-klimaschutz-anpassung-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche je eine Maßnahme für Klimaschutz und Anpassung an einer Schule.",
+          "concept": "Eine geeignete Wärmeversorgung mit weniger fossilem Energieverbrauch kann Emissionen senken und dient dem Klimaschutz. Beschattung und ein Hitzekonzept erleichtern den Umgang mit heißen Tagen und dienen der Anpassung. Ich vergleiche Kosten, tatsächliche Wirkung und die Bedürfnisse der besonders betroffenen Schülerinnen und Schüler.",
+          "sample_solution": "Eine geeignete Wärmeversorgung mit weniger fossilem Energieverbrauch kann Emissionen senken und dient dem Klimaschutz. Beschattung und ein Hitzekonzept erleichtern den Umgang mit heißen Tagen und dienen der Anpassung. Ich vergleiche Kosten, tatsächliche Wirkung und die Bedürfnisse der besonders betroffenen Schülerinnen und Schüler."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT39Q53KNYZR0BZRRH",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT39Q53KNYZR0BZRRH",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-ozon",
+      "title": "Ozon: Auf die Höhe kommt es an",
+      "domain": "geographie/lb2",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-ozon",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Klima und Klimawandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Klima und Klimawandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-ozon",
+          "materiality": "material",
+          "id": "01M5DDSGKV6NZD2D60SY9XZDA7",
+          "slug": "geo9-ozon-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Aussage zur stratosphärischen Ozonschicht trifft zu?",
+          "concept": "Sie absorbiert einen Teil der UV-Strahlung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie absorbiert einen Teil der UV-Strahlung",
+              "Sie ist die Hauptquelle des fossilen Kohlendioxids"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie ist die Hauptquelle des fossilen Kohlendioxids",
+              "reason": "Die UV-Absorption der Ozonschicht unterscheidet sich vom infraroten Strahlungseffekt der Treibhausgase."
+            },
+            {
+              "text": "Sie verhindert jede langwellige Ausstrahlung",
+              "reason": "Die UV-Absorption der Ozonschicht unterscheidet sich vom infraroten Strahlungseffekt der Treibhausgase."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-ozon",
+          "materiality": "material",
+          "id": "01M5DDSGKVA1AWF2GAMNX1A0YT",
+          "slug": "geo9-ozon-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre, warum weniger Ozon nicht überall dasselbe Ziel ist.",
+          "concept": "In der Stratosphäre schützt Ozon vor einem Teil der UV-Strahlung, deshalb soll diese Schicht erhalten werden. In Bodennähe kann Ozon als Schadstoff Menschen und Pflanzen belasten; dort soll seine Entstehung aus Vorläuferstoffen begrenzt werden. Höhe und Wirkung sind also entscheidend.",
+          "sample_solution": "In der Stratosphäre schützt Ozon vor einem Teil der UV-Strahlung, deshalb soll diese Schicht erhalten werden. In Bodennähe kann Ozon als Schadstoff Menschen und Pflanzen belasten; dort soll seine Entstehung aus Vorläuferstoffen begrenzt werden. Höhe und Wirkung sind also entscheidend."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTBTB2B4FAN9E9VEDF",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTBTB2B4FAN9E9VEDF",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-landwirtschaft-faktoren",
+      "title": "Was Landwirtschaft an einem Standort braucht",
+      "domain": "geographie/lb3",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-landwirtschaft-faktoren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Landwirtschaft, Ernährung und Boden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Landwirtschaft, Ernährung und Boden",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-landwirtschaft-faktoren",
+          "materiality": "material",
+          "id": "01M5DDSGKV3DBZ6PM9Q78KG5Q5",
+          "slug": "geo9-landwirtschaft-faktoren-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Angabe ist ein wirtschaftlicher statt eines natürlichen Standortfaktors?",
+          "concept": "Die erreichbaren Absatzpreise",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Die erreichbaren Absatzpreise", "Die Hangneigung des Feldes"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Hangneigung des Feldes",
+              "reason": "Preise entstehen in Märkten und beeinflussen Einnahmen. Hangneigung und Vegetationsdauer gehören zu den Naturbedingungen."
+            },
+            {
+              "text": "Die Länge der frostfreien Zeit",
+              "reason": "Preise entstehen in Märkten und beeinflussen Einnahmen. Hangneigung und Vegetationsdauer gehören zu den Naturbedingungen."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-landwirtschaft-faktoren",
+          "materiality": "material",
+          "id": "01M5DDSGKV8S27KT9EX4175R9W",
+          "slug": "geo9-landwirtschaft-faktoren-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre an einem Beispiel, warum gutes Wetter allein keinen erfolgreichen Betrieb garantiert.",
+          "concept": "Ein Betrieb kann trotz günstiger Temperatur wenig verdienen, wenn Böden geschädigt sind, Wasser fehlt oder die Absatzpreise niedrig sind. Die Ernte hängt von Naturbedingungen und Bewirtschaftung ab; das Einkommen zusätzlich von Kosten und Markt. Ich muss beide Ebenen untersuchen.",
+          "sample_solution": "Ein Betrieb kann trotz günstiger Temperatur wenig verdienen, wenn Böden geschädigt sind, Wasser fehlt oder die Absatzpreise niedrig sind. Die Ernte hängt von Naturbedingungen und Bewirtschaftung ab; das Einkommen zusätzlich von Kosten und Markt. Ich muss beide Ebenen untersuchen."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTJ5ANNRW0VXPVAGSH",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTJ5ANNRW0VXPVAGSH",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-konventionell-bio",
+      "title": "Konventionell und ökologisch vergleichen",
+      "domain": "geographie/lb3",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-konventionell-bio",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKTBTB2B4FAN9E9VEDF",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Landwirtschaft, Ernährung und Boden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Landwirtschaft, Ernährung und Boden",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-konventionell-bio",
+          "materiality": "material",
+          "id": "01M5DDSGKVJRXDGMDRA85STAK4",
+          "slug": "geo9-konventionell-bio-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was muss bei einem Umweltvergleich zweier Anbauweisen angegeben werden?",
+          "concept": "Die Bezugsgröße der Umweltbelastung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Die Bezugsgröße der Umweltbelastung", "Nur die Farbe der Verpackung"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur die Farbe der Verpackung",
+              "reason": "Eine Aussage je Fläche kann anders ausfallen als eine Aussage je Produktmenge. Beides muss transparent sein."
+            },
+            {
+              "text": "Ausschließlich der Name des Hofes",
+              "reason": "Eine Aussage je Fläche kann anders ausfallen als eine Aussage je Produktmenge. Beides muss transparent sein."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-konventionell-bio",
+          "materiality": "material",
+          "id": "01M5DDSGKVJXS2DXX66HQ7MJ1J",
+          "slug": "geo9-konventionell-bio-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche zwei Anbauweisen mit zwei Umweltkriterien und einer wirtschaftlichen Frage.",
+          "concept": "Ich vergleiche zum Beispiel Stickstoffverluste und Artenvielfalt auf ähnlich geeigneten Standorten. Zusätzlich prüfe ich Erträge, Aufwand und Verkaufserlöse. Ich gebe an, ob die Umweltwerte je Hektar oder je Produktmenge gelten, und begründe mein Urteil aus diesen Kriterien.",
+          "sample_solution": "Ich vergleiche zum Beispiel Stickstoffverluste und Artenvielfalt auf ähnlich geeigneten Standorten. Zusätzlich prüfe ich Erträge, Aufwand und Verkaufserlöse. Ich gebe an, ob die Umweltwerte je Hektar oder je Produktmenge gelten, und begründe mein Urteil aus diesen Kriterien."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTATZQFV7FFRC1G0FA",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTATZQFV7FFRC1G0FA",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-boden-ernaehrung",
+      "title": "Was auf dem Teller mit dem Boden zu tun hat",
+      "domain": "geographie/lb3",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-boden-ernaehrung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKTBTB2B4FAN9E9VEDF",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Landwirtschaft, Ernährung und Boden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Landwirtschaft, Ernährung und Boden",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-boden-ernaehrung",
+          "materiality": "material",
+          "id": "01M5DDSGKVSD5TQNQ6T1V0V8A3",
+          "slug": "geo9-boden-ernaehrung-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Bewirtschaftung kann Erosion auf einem gefährdeten Acker verringern?",
+          "concept": "Eine möglichst dauerhafte Bodenbedeckung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine möglichst dauerhafte Bodenbedeckung",
+              "Jede Vegetation lange vollständig entfernen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Jede Vegetation lange vollständig entfernen",
+              "reason": "Bodenbedeckung kann Regentropfen abfangen und den Abfluss bremsen. Die konkrete Wirkung bleibt standortabhängig."
+            },
+            {
+              "text": "Abflussrinnen am Hang gezielt offen halten",
+              "reason": "Bodenbedeckung kann Regentropfen abfangen und den Abfluss bremsen. Die konkrete Wirkung bleibt standortabhängig."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-boden-ernaehrung",
+          "materiality": "material",
+          "id": "01M5DDSGKVQY53YZ0WMT8FRPMW",
+          "slug": "geo9-boden-ernaehrung-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Beschreibe eine Wirkungskette von landwirtschaftlicher Nutzung zu einem Umweltproblem und eine Gegenmaßnahme.",
+          "concept": "Ein offener Acker am Hang kann bei Starkregen Boden verlieren. Der Abfluss transportiert Sediment und daran gebundene Nährstoffe in ein Gewässer. Eine geeignete Bodenbedeckung und Pufferstreifen können diesen Weg bremsen; Lage und Bewirtschaftung müssen dafür berücksichtigt werden.",
+          "sample_solution": "Ein offener Acker am Hang kann bei Starkregen Boden verlieren. Der Abfluss transportiert Sediment und daran gebundene Nährstoffe in ein Gewässer. Eine geeignete Bodenbedeckung und Pufferstreifen können diesen Weg bremsen; Lage und Bewirtschaftung müssen dafür berücksichtigt werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT7KQWT4FK9V19E7Y6",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT7KQWT4FK9V19E7Y6",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-agrarhandel",
+      "title": "Vom Weltmarkt zum Einkaufskorb",
+      "domain": "geographie/lb3",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-agrarhandel",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Landwirtschaft, Ernährung und Boden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Landwirtschaft, Ernährung und Boden",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-agrarhandel",
+          "materiality": "material",
+          "id": "01M5DDSGKV9E57E9H8D9M3K379",
+          "slug": "geo9-agrarhandel-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was belegt das Wort regional auf einem Produkt allein noch nicht?",
+          "concept": "Faire Arbeitsbedingungen und geringe Gesamtbelastung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Faire Arbeitsbedingungen und geringe Gesamtbelastung",
+              "Dass eine räumliche Herkunft behauptet wird"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Dass eine räumliche Herkunft behauptet wird",
+              "reason": "Die räumliche Nähe ersetzt keine Angaben über Produktion, soziale Bedingungen oder die gesamte Umweltwirkung."
+            },
+            {
+              "text": "Dass eine Herkunftsangabe geprüft werden sollte",
+              "reason": "Die räumliche Nähe ersetzt keine Angaben über Produktion, soziale Bedingungen oder die gesamte Umweltwirkung."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-agrarhandel",
+          "materiality": "material",
+          "id": "01M5DDSGKVGBTXDDQYMQSKHG67",
+          "slug": "geo9-agrarhandel-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche regional und fair als Einkaufskriterien, ohne sie gleichzusetzen.",
+          "concept": "Regional betrifft die räumliche Herkunft und kann kürzere Wege ermöglichen. Fairer Handel betrifft bestimmte Handels- und Sozialstandards, die ich am jeweiligen Siegel prüfe. Für ein Urteil ergänze ich Saison, Produktionsweise, Preis und Kontrolle; kein einzelnes Kriterium beantwortet alle Fragen.",
+          "sample_solution": "Regional betrifft die räumliche Herkunft und kann kürzere Wege ermöglichen. Fairer Handel betrifft bestimmte Handels- und Sozialstandards, die ich am jeweiligen Siegel prüfe. Für ein Urteil ergänze ich Saison, Produktionsweise, Preis und Kontrolle; kein einzelnes Kriterium beantwortet alle Fragen."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT9K9F92G4CAB066BV",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT9K9F92G4CAB066BV",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-hunger",
+      "title": "Warum vorhandenes Essen nicht alle satt macht",
+      "domain": "geographie/lb3",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-hunger",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Landwirtschaft, Ernährung und Boden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Landwirtschaft, Ernährung und Boden",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-hunger",
+          "materiality": "material",
+          "id": "01M5DDSGKVC16EGX4E4A0RMD1M",
+          "slug": "geo9-hunger-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was fehlt einer Familie, wenn Essen vorhanden, für sie aber unbezahlbar ist?",
+          "concept": "Der wirtschaftliche Zugang zu Nahrung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der wirtschaftliche Zugang zu Nahrung",
+              "Zwingend jede weltweite Nahrungsproduktion"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zwingend jede weltweite Nahrungsproduktion",
+              "reason": "Verfügbarkeit im Markt und bezahlbarer Zugang für Menschen sind verschiedene Dimensionen der Ernährungssicherheit."
+            },
+            {
+              "text": "Ausschließlich ein anderer Monatskalender",
+              "reason": "Verfügbarkeit im Markt und bezahlbarer Zugang für Menschen sind verschiedene Dimensionen der Ernährungssicherheit."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-hunger",
+          "materiality": "material",
+          "id": "01M5DDSGKVF6V8MKYXZ228YSVR",
+          "slug": "geo9-hunger-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre an einem Beispiel, warum mehr Produktion allein Hunger nicht sicher beendet.",
+          "concept": "Auch bei vorhandenen Lebensmitteln kann ein Haushalt hungern, wenn Einkommen oder sichere Wege zum Markt fehlen. Krankheiten und unsauberes Wasser erschweren die Nutzung der Nahrung. Eine Lösung muss daher zusätzlich Zugang, Gesundheit und die Verlässlichkeit der Versorgung verbessern.",
+          "sample_solution": "Auch bei vorhandenen Lebensmitteln kann ein Haushalt hungern, wenn Einkommen oder sichere Wege zum Markt fehlen. Krankheiten und unsauberes Wasser erschweren die Nutzung der Nahrung. Eine Lösung muss daher zusätzlich Zugang, Gesundheit und die Verlässlichkeit der Versorgung verbessern."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT2HYPG09C4D753CKY",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT2HYPG09C4D753CKY",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-hydroponik",
+      "title": "Gemüse ohne Ackerboden?",
+      "domain": "geographie/lb3",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-hydroponik",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Landwirtschaft, Ernährung und Boden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Landwirtschaft, Ernährung und Boden",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-hydroponik",
+          "materiality": "material",
+          "id": "01M5DDSGKVX9DZC2HSJS9BJYSE",
+          "slug": "geo9-hydroponik-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wodurch erhalten Pflanzen in einer Hydroponik ihre Mineralnährstoffe?",
+          "concept": "Durch eine gezielt zusammengesetzte Nährlösung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch eine gezielt zusammengesetzte Nährlösung",
+              "Ausschließlich durch Licht ohne weitere Stoffe"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ausschließlich durch Licht ohne weitere Stoffe",
+              "reason": "Licht liefert Energie; Wasser und gelöste Mineralstoffe müssen passend bereitgestellt werden."
+            },
+            {
+              "text": "Grundsätzlich nur durch ungefiltertes Meerwasser",
+              "reason": "Licht liefert Energie; Wasser und gelöste Mineralstoffe müssen passend bereitgestellt werden."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-hydroponik",
+          "materiality": "material",
+          "id": "01M5DDSGKVJCV2CHBPJ56W323S",
+          "slug": "geo9-hydroponik-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne zwei Chancen und zwei Bedingungen für Hydroponik an einem trockenen Standort.",
+          "concept": "Ein geeigneter Kreislauf kann Wasser wiederverwenden und Anbau auf begrenzter Fläche ermöglichen. Gleichzeitig braucht er verlässliches Nährstoffmanagement, Wissen und finanzierbare Technik; je nach Ausführung kommt Energiebedarf hinzu. Ich vergleiche die tatsächliche Bilanz mit einer realistischen Alternative.",
+          "sample_solution": "Ein geeigneter Kreislauf kann Wasser wiederverwenden und Anbau auf begrenzter Fläche ermöglichen. Gleichzeitig braucht er verlässliches Nährstoffmanagement, Wissen und finanzierbare Technik; je nach Ausführung kommt Energiebedarf hinzu. Ich vergleiche die tatsächliche Bilanz mit einer realistischen Alternative."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTE009AKN8T9M6DQ5H",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTE009AKN8T9M6DQ5H",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-staedtenetz",
+      "title": "Städte auf verschiedenen Karten",
+      "domain": "geographie/lb4",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-staedtenetz",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Städtische Siedlungs- und Lebensräume"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Städtische Siedlungs- und Lebensräume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-staedtenetz",
+          "materiality": "material",
+          "id": "01M5DDSGKVPR5EDC00DVZ087J3",
+          "slug": "geo9-staedtenetz-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum können zwei Angaben zur Einwohnerzahl derselben Stadt verschieden sein?",
+          "concept": "Sie können unterschiedliche räumliche Abgrenzungen verwenden",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie können unterschiedliche räumliche Abgrenzungen verwenden",
+              "Eine Stadt besitzt grundsätzlich keine messbare Bevölkerung"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Stadt besitzt grundsätzlich keine messbare Bevölkerung",
+              "reason": "Gemeinde, zusammenhängendes Siedlungsgebiet und Stadtregion sind verschiedene Bezugsräume."
+            },
+            {
+              "text": "Jede Grenze folgt zwingend dem letzten bebauten Haus",
+              "reason": "Gemeinde, zusammenhängendes Siedlungsgebiet und Stadtregion sind verschiedene Bezugsräume."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-staedtenetz",
+          "materiality": "material",
+          "id": "01M5DDSGKV532AAQ2GVYX7F0W9",
+          "slug": "geo9-staedtenetz-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre, warum du für die Einwohnerzahl und die Pendelverflechtung einer Stadt unterschiedliche Karten brauchst.",
+          "concept": "Die Einwohnerzahl einer Gemeinde bezieht sich auf eine administrative Grenze. Pendelverflechtungen reichen häufig darüber hinaus und verbinden Kernstadt und Umland. Ich brauche deshalb den jeweiligen Zuschnitt, den Datenstand und einen Maßstab, der die untersuchten Beziehungen erkennen lässt.",
+          "sample_solution": "Die Einwohnerzahl einer Gemeinde bezieht sich auf eine administrative Grenze. Pendelverflechtungen reichen häufig darüber hinaus und verbinden Kernstadt und Umland. Ich brauche deshalb den jeweiligen Zuschnitt, den Datenstand und einen Maßstab, der die untersuchten Beziehungen erkennen lässt."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTZQD5C1H63WD878B5",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTZQD5C1H63WD878B5",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-stadtfunktionen",
+      "title": "München, Paris und Mumbai vergleichen",
+      "domain": "geographie/lb4",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-stadtfunktionen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Städtische Siedlungs- und Lebensräume"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Städtische Siedlungs- und Lebensräume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-stadtfunktionen",
+          "materiality": "material",
+          "id": "01M5DDSGKVEE5V7XWT940QMHQC",
+          "slug": "geo9-stadtfunktionen-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Angabe beschreibt eine Stadtfunktion?",
+          "concept": "Hochschulstandort mit Bildungsangeboten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Hochschulstandort mit Bildungsangeboten",
+              "Ausschließlich der Breitengrad des Rathauses"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ausschließlich der Breitengrad des Rathauses",
+              "reason": "Eine Funktion beschreibt eine Aufgabe oder Leistung für Menschen und das Umland, nicht nur eine geometrische Lage."
+            },
+            {
+              "text": "Nur die Farbe eines Kartensymbols",
+              "reason": "Eine Funktion beschreibt eine Aufgabe oder Leistung für Menschen und das Umland, nicht nur eine geometrische Lage."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-stadtfunktionen",
+          "materiality": "material",
+          "id": "01M5DDSGKV0NBRMCN36672W40D",
+          "slug": "geo9-stadtfunktionen-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche München mit Paris oder Mumbai anhand zweier Stadtfunktionen und einer räumlichen Herausforderung.",
+          "concept": "München und Paris verbinden politische Verwaltung mit Dienstleistungen, Forschung und Kultur. Beide brauchen Wohnraum und gute Verkehrsverbindungen, doch Raumgröße und räumliche Struktur unterscheiden sich. Für eine genaue Aussage nutze ich vergleichbare Daten und kommunale beziehungsweise fachliche Quellen statt bloßer Eindrücke.",
+          "sample_solution": "München und Paris verbinden politische Verwaltung mit Dienstleistungen, Forschung und Kultur. Beide brauchen Wohnraum und gute Verkehrsverbindungen, doch Raumgröße und räumliche Struktur unterscheiden sich. Für eine genaue Aussage nutze ich vergleichbare Daten und kommunale beziehungsweise fachliche Quellen statt bloßer Eindrücke."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTAX1H7BY5TE4RXJXQ",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTAX1H7BY5TE4RXJXQ",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-stadtwandel",
+      "title": "Wachsen, ins Umland ziehen, verdrängt werden",
+      "domain": "geographie/lb4",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-stadtwandel",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Städtische Siedlungs- und Lebensräume"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Städtische Siedlungs- und Lebensräume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-stadtwandel",
+          "materiality": "material",
+          "id": "01M5DDSGKV1M38T0B7NCNWFPD9",
+          "slug": "geo9-stadtwandel-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie heißt die Verlagerung von Bevölkerung oder Nutzungen aus der Kernstadt ins Umland?",
+          "concept": "Suburbanisierung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Suburbanisierung", "Atmosphärische Konvektion"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Atmosphärische Konvektion",
+              "reason": "Suburbanisierung beschreibt einen Stadt-Umland-Prozess. Sie ist von allgemeiner Urbanisierung zu unterscheiden."
+            },
+            {
+              "text": "Glaziale Sedimentation",
+              "reason": "Suburbanisierung beschreibt einen Stadt-Umland-Prozess. Sie ist von allgemeiner Urbanisierung zu unterscheiden."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-stadtwandel",
+          "materiality": "material",
+          "id": "01M5DDSGKVJRFS77348G205BNH",
+          "slug": "geo9-stadtwandel-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Unterscheide Suburbanisierung und Gentrifizierung und nenne jeweils eine mögliche Folge.",
+          "concept": "Suburbanisierung verlagert Nutzungen oder Bevölkerung von der Kernstadt ins Umland und kann längere Pendelwege verursachen. Gentrifizierung betrifft die Aufwertung und soziale Veränderung eines Quartiers; steigende Wohnkosten können bisherige Haushalte verdrängen. Beide Prozesse verändern die Stadtregion, aber auf unterschiedliche Weise.",
+          "sample_solution": "Suburbanisierung verlagert Nutzungen oder Bevölkerung von der Kernstadt ins Umland und kann längere Pendelwege verursachen. Gentrifizierung betrifft die Aufwertung und soziale Veränderung eines Quartiers; steigende Wohnkosten können bisherige Haushalte verdrängen. Beide Prozesse verändern die Stadtregion, aber auf unterschiedliche Weise."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTZ0SMR1D00TP127A0",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTZ0SMR1D00TP127A0",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-nachhaltige-stadt",
+      "title": "Eine lebenswerte Stadt aushandeln",
+      "domain": "geographie/lb4",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-nachhaltige-stadt",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKTZQD5C1H63WD878B5",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Städtische Siedlungs- und Lebensräume"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Städtische Siedlungs- und Lebensräume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-nachhaltige-stadt",
+          "materiality": "material",
+          "id": "01M5DDSGKVW076K9A0DWBWDMBP",
+          "slug": "geo9-nachhaltige-stadt-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was gehört zu einer begründeten Entscheidung über Verdichtung?",
+          "concept": "Wohnraum, Erreichbarkeit und Freiraum gemeinsam abwägen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wohnraum, Erreichbarkeit und Freiraum gemeinsam abwägen",
+              "Nur die Zahl neuer Gebäude zählen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur die Zahl neuer Gebäude zählen",
+              "reason": "Fläche erfüllt mehrere Funktionen. Die Entscheidung muss Nutzen, Belastungen und Verteilung berücksichtigen."
+            },
+            {
+              "text": "Alle betroffenen Gruppen grundsätzlich ausschließen",
+              "reason": "Fläche erfüllt mehrere Funktionen. Die Entscheidung muss Nutzen, Belastungen und Verteilung berücksichtigen."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-nachhaltige-stadt",
+          "materiality": "material",
+          "id": "01M5DDSGKVE61E1TG48TSR1H0B",
+          "slug": "geo9-nachhaltige-stadt-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Begründe zwei Ziele für ein neues Quartier und beschreibe einen Zielkonflikt.",
+          "concept": "Bezahlbarer Wohnraum und gute öffentliche Verkehrsverbindungen können Teilhabe und kurze Wege fördern. Zugleich müssen unversiegelte Flächen und Grün für Kühlung und Rückhalt erhalten bleiben. Wenn mehr Gebäude auf derselben Fläche entstehen, braucht es daher eine begründete Abwägung von Dichte, Freiraum und Infrastruktur.",
+          "sample_solution": "Bezahlbarer Wohnraum und gute öffentliche Verkehrsverbindungen können Teilhabe und kurze Wege fördern. Zugleich müssen unversiegelte Flächen und Grün für Kühlung und Rückhalt erhalten bleiben. Wenn mehr Gebäude auf derselben Fläche entstehen, braucht es daher eine begründete Abwägung von Dichte, Freiraum und Infrastruktur."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT9S7Z3Z625KFX923Y",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT9S7Z3Z625KFX923Y",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-altersdiagramme",
+      "title": "Altersaufbau lesen statt Formen raten",
+      "domain": "geographie/lb5",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-altersdiagramme",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Bevölkerung und Bevölkerungspolitik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Bevölkerung und Bevölkerungspolitik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-altersdiagramme",
+          "materiality": "material",
+          "id": "01M5DDSGKVC4PF8BAE4KTFBKZX",
+          "slug": "geo9-altersdiagramme-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was musst du vor dem Vergleich zweier Altersdiagramme prüfen?",
+          "concept": "Bezugsraum, Jahr und Einheit der Werte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bezugsraum, Jahr und Einheit der Werte",
+              "Nur die dekorative Farbe des Hintergrunds"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur die dekorative Farbe des Hintergrunds",
+              "reason": "Absolute Zahlen und Anteile können unterschiedliche Größen zeigen. Raum und Datenstand müssen vergleichbar sein."
+            },
+            {
+              "text": "Ausschließlich die längste Beschriftung",
+              "reason": "Absolute Zahlen und Anteile können unterschiedliche Größen zeigen. Raum und Datenstand müssen vergleichbar sein."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-altersdiagramme",
+          "materiality": "material",
+          "id": "01M5DDSGKV84AA51N5BFV3KBBA",
+          "slug": "geo9-altersdiagramme-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Beschreibe zwei Merkmale eines Altersdiagramms und erkläre, welche Zusatzdaten du für die Ursachen brauchst.",
+          "concept": "Ich beschreibe zum Beispiel den Anteil junger und älterer Menschen sowie auffällige Unterschiede zwischen Jahrgängen. Dazu nenne ich Raum, Jahr und Einheit. Um Ursachen zu erklären, prüfe ich Geburten, Sterbefälle und Wanderungen über die Zeit; aus der Form allein folgt keine eindeutige Geschichte.",
+          "sample_solution": "Ich beschreibe zum Beispiel den Anteil junger und älterer Menschen sowie auffällige Unterschiede zwischen Jahrgängen. Dazu nenne ich Raum, Jahr und Einheit. Um Ursachen zu erklären, prüfe ich Geburten, Sterbefälle und Wanderungen über die Zeit; aus der Form allein folgt keine eindeutige Geschichte."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTW6KFJH9XMGWWHKBM",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTW6KFJH9XMGWWHKBM",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-bevoelkerungsbilanz",
+      "title": "Wie sich eine Bevölkerung verändert",
+      "domain": "geographie/lb5",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-bevoelkerungsbilanz",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Bevölkerung und Bevölkerungspolitik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Bevölkerung und Bevölkerungspolitik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-bevoelkerungsbilanz",
+          "materiality": "material",
+          "id": "01M5DDSGKVJ81JNR6FERE0C0R9",
+          "slug": "geo9-bevoelkerungsbilanz-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Ein Ort hat 10 Geburten, 15 Sterbefälle, 30 Zuzüge und 20 Fortzüge. Wie verändert sich die Zahl?",
+          "concept": "Sie steigt um fünf Personen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Sie steigt um fünf Personen", "Sie sinkt um fünfzehn Personen"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie sinkt um fünfzehn Personen",
+              "reason": "Die natürliche Bilanz ist −5, die Wanderungsbilanz +10. Zusammen ergibt das +5 Personen."
+            },
+            {
+              "text": "Sie bleibt wegen der Sterbefälle unverändert",
+              "reason": "Die natürliche Bilanz ist −5, die Wanderungsbilanz +10. Zusammen ergibt das +5 Personen."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-bevoelkerungsbilanz",
+          "materiality": "material",
+          "id": "01M5DDSGKVXFE0S734XEQTK79G",
+          "slug": "geo9-bevoelkerungsbilanz-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Berechne und erläutere die Veränderung bei 1.000 Anfangsbevölkerung, 10 Geburten, 15 Sterbefällen, 30 Zu- und 20 Fortzügen.",
+          "concept": "Die natürliche Bilanz beträgt 10 minus 15, also −5. Die Wanderungsbilanz beträgt 30 minus 20, also +10. Insgesamt steigt die Bevölkerung um 5 auf 1.005 Menschen. Der positive Wanderungssaldo gleicht das Geburtendefizit mehr als aus.",
+          "sample_solution": "Die natürliche Bilanz beträgt 10 minus 15, also −5. Die Wanderungsbilanz beträgt 30 minus 20, also +10. Insgesamt steigt die Bevölkerung um 5 auf 1.005 Menschen. Der positive Wanderungssaldo gleicht das Geburtendefizit mehr als aus."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTQ45V3NG5DMDFM23Z",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTQ45V3NG5DMDFM23Z",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-szenarien",
+      "title": "Bayern, Deutschland und die Welt vorausdenken",
+      "domain": "geographie/lb5",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-szenarien",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKTW6KFJH9XMGWWHKBM",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Bevölkerung und Bevölkerungspolitik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Bevölkerung und Bevölkerungspolitik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-szenarien",
+          "materiality": "material",
+          "id": "01M5DDSGKVPN0JYZ0DMWCSX7RP",
+          "slug": "geo9-szenarien-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie ist eine Bevölkerungsvorausberechnung zu lesen?",
+          "concept": "Als Entwicklung unter ausdrücklich genannten Annahmen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als Entwicklung unter ausdrücklich genannten Annahmen",
+              "Als unveränderliche Zahl unabhängig von Wanderungen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Als unveränderliche Zahl unabhängig von Wanderungen",
+              "reason": "Annahmen über Geburten, Lebenserwartung und Wanderung wirken auf das Ergebnis; Regionen können sich unterschiedlich entwickeln."
+            },
+            {
+              "text": "Als Beweis, dass jede Gemeinde gleich wachsen wird",
+              "reason": "Annahmen über Geburten, Lebenserwartung und Wanderung wirken auf das Ergebnis; Regionen können sich unterschiedlich entwickeln."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-szenarien",
+          "materiality": "material",
+          "id": "01M5DDSGKVADWEP9E959V0SD8S",
+          "slug": "geo9-szenarien-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre, weshalb eine Gemeinde bei der Schulplanung mehrere Bevölkerungsszenarien nutzen sollte.",
+          "concept": "Geburten und Zu- oder Fortzüge können sich anders entwickeln als angenommen. Für Schulen sind besonders die künftigen Kinderjahrgänge und lokale Wohnbauvorhaben wichtig. Mehrere Szenarien zeigen mögliche Bedarfe; die Gemeinde kann ihre Planung mit neuen Daten überprüfen und anpassen.",
+          "sample_solution": "Geburten und Zu- oder Fortzüge können sich anders entwickeln als angenommen. Für Schulen sind besonders die künftigen Kinderjahrgänge und lokale Wohnbauvorhaben wichtig. Mehrere Szenarien zeigen mögliche Bedarfe; die Gemeinde kann ihre Planung mit neuen Daten überprüfen und anpassen."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTYH2X4BPSXZX1CGZ0",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTYH2X4BPSXZX1CGZ0",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-migration",
+      "title": "Migration erklären, Darstellungen prüfen",
+      "domain": "geographie/lb5",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-migration",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Bevölkerung und Bevölkerungspolitik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Bevölkerung und Bevölkerungspolitik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-migration",
+          "materiality": "material",
+          "id": "01M5DDSGKVGED6Q3J5CSPH5C8F",
+          "slug": "geo9-migration-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was unterscheidet Nettowanderung von Zuwanderung?",
+          "concept": "Nettowanderung zieht Fortzüge von Zuzügen ab",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nettowanderung zieht Fortzüge von Zuzügen ab",
+              "Nettowanderung zählt ausschließlich Geburten"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nettowanderung zählt ausschließlich Geburten",
+              "reason": "Der Saldo kann deutlich kleiner sein als die Zahl der Zuzüge und kann auch negativ werden."
+            },
+            {
+              "text": "Zuwanderung und Nettowanderung sind immer gleich",
+              "reason": "Der Saldo kann deutlich kleiner sein als die Zahl der Zuzüge und kann auch negativ werden."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-migration",
+          "materiality": "material",
+          "id": "01M5DDSGKVV6Z0XJVAE52X4MH9",
+          "slug": "geo9-migration-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Beschreibe je eine mögliche Folge von Migration im Herkunfts- und Zielraum und begrenze deine Aussage.",
+          "concept": "Im Herkunftsraum können Rücküberweisungen Einkommen stützen, zugleich können Arbeitskräfte oder Familienmitglieder fehlen. Im Zielraum können Beschäftigung und kulturelle Beziehungen wachsen, während Wohnraum und Angebote angepasst werden müssen. Die Folgen hängen von Personen, Bedingungen und Zeitraum ab und sind nicht überall gleich.",
+          "sample_solution": "Im Herkunftsraum können Rücküberweisungen Einkommen stützen, zugleich können Arbeitskräfte oder Familienmitglieder fehlen. Im Zielraum können Beschäftigung und kulturelle Beziehungen wachsen, während Wohnraum und Angebote angepasst werden müssen. Die Folgen hängen von Personen, Bedingungen und Zeitraum ab und sind nicht überall gleich."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT836EAWDGN7FETD8S",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT836EAWDGN7FETD8S",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-bevoelkerungspolitik",
+      "title": "Mit dem demographischen Wandel umgehen",
+      "domain": "geographie/lb5",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-bevoelkerungspolitik",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Bevölkerung und Bevölkerungspolitik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Bevölkerung und Bevölkerungspolitik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-bevoelkerungspolitik",
+          "materiality": "material",
+          "id": "01M5DDSGKVCSAWEB6594Z36KAS",
+          "slug": "geo9-bevoelkerungspolitik-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Maßstab gehört zur Bewertung bevölkerungspolitischer Maßnahmen?",
+          "concept": "Selbstbestimmung, Teilhabe und belegbare Wirkung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Selbstbestimmung, Teilhabe und belegbare Wirkung",
+              "Ausschließlich eine möglichst hohe Bevölkerungszahl"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ausschließlich eine möglichst hohe Bevölkerungszahl",
+              "reason": "Ein statistisches Ziel allein rechtfertigt keine Maßnahme. Rechte und gesellschaftliche Folgen sind zentrale Kriterien."
+            },
+            {
+              "text": "Der Verzicht auf jede Betroffenenperspektive",
+              "reason": "Ein statistisches Ziel allein rechtfertigt keine Maßnahme. Rechte und gesellschaftliche Folgen sind zentrale Kriterien."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-bevoelkerungspolitik",
+          "materiality": "material",
+          "id": "01M5DDSGKV8VMH2NH5ST4BYJ0R",
+          "slug": "geo9-bevoelkerungspolitik-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche eine Herausforderung alternder Gesellschaften in Deutschland und Japan und bewerte eine mögliche Reaktion.",
+          "concept": "In beiden Ländern können steigende Anteile älterer Menschen Angebote für Gesundheit, Wohnen und Teilhabe verändern. Altersgerechte, erreichbare Infrastruktur kann Selbstständigkeit fördern. Ich prüfe Finanzierung, Zugang und unterschiedliche regionale Bedingungen; die gemeinsame Herausforderung macht die Länder nicht in allen Punkten gleich.",
+          "sample_solution": "In beiden Ländern können steigende Anteile älterer Menschen Angebote für Gesundheit, Wohnen und Teilhabe verändern. Altersgerechte, erreichbare Infrastruktur kann Selbstständigkeit fördern. Ich prüfe Finanzierung, Zugang und unterschiedliche regionale Bedingungen; die gemeinsame Herausforderung macht die Länder nicht in allen Punkten gleich."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT9R9G90MYAR92QCCQ",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT9R9G90MYAR92QCCQ",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-eu-karte",
+      "title": "Europa ist mehr als die Europäische Union",
+      "domain": "geographie/lb6",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-eu-karte",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb6",
+          "topic_title": "Grenzen im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb6",
+          "topic_title": "Grenzen im Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-eu-karte",
+          "materiality": "material",
+          "id": "01M5DDSGKVHCK7AXXSP7REF37X",
+          "slug": "geo9-eu-karte-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Staat gehört beim Stand 20. Oktober 2026 zur EU?",
+          "concept": "Kroatien",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Kroatien", "Norwegen"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Norwegen",
+              "reason": "Kroatien ist seit 2013 Mitglied. Europa und EU sind nicht deckungsgleich."
+            },
+            {
+              "text": "Island",
+              "reason": "Kroatien ist seit 2013 Mitglied. Europa und EU sind nicht deckungsgleich."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-eu-karte",
+          "materiality": "material",
+          "id": "01M5DDSGKVBV33C9PX7RA3ASDJ",
+          "slug": "geo9-eu-karte-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre mit zwei Staaten, warum Europa und EU nicht gleichbedeutend sind.",
+          "concept": "Deutschland ist ein europäischer Staat und EU-Mitglied. Norwegen liegt ebenfalls in Europa, gehört aber nicht zur EU. Europa beschreibt einen räumlich-historischen Zusammenhang, die EU eine bestimmte politische Mitgliedschaft. Auch Schengenraum und Eurogebiet sind gesondert zu prüfen.",
+          "sample_solution": "Deutschland ist ein europäischer Staat und EU-Mitglied. Norwegen liegt ebenfalls in Europa, gehört aber nicht zur EU. Europa beschreibt einen räumlich-historischen Zusammenhang, die EU eine bestimmte politische Mitgliedschaft. Auch Schengenraum und Eurogebiet sind gesondert zu prüfen."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT5E6ENZ4K0VDRRA6C",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT5E6ENZ4K0VDRRA6C",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-eu-erweiterung",
+      "title": "Wie EU-Erweiterung Räume verändert",
+      "domain": "geographie/lb6",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-eu-erweiterung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKT9R9G90MYAR92QCCQ",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb6",
+          "topic_title": "Grenzen im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb6",
+          "topic_title": "Grenzen im Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-eu-erweiterung",
+          "materiality": "material",
+          "id": "01M5DDSGKVMXRZMKGBG6DS2Y07",
+          "slug": "geo9-eu-erweiterung-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was bedeutet der EU-Kandidatenstatus?",
+          "concept": "Ein Staat ist im Beitrittsprozess, aber noch kein Mitglied",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Staat ist im Beitrittsprozess, aber noch kein Mitglied",
+              "Der Staat erhält automatisch am nächsten Tag Mitgliedschaft"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Staat erhält automatisch am nächsten Tag Mitgliedschaft",
+              "reason": "Beitritt setzt weitere Bedingungen und Entscheidungen voraus. Der Verhandlungsstand ist bei den Kandidaten verschieden."
+            },
+            {
+              "text": "Alle Kandidaten haben bereits dieselben Rechte wie Mitglieder",
+              "reason": "Beitritt setzt weitere Bedingungen und Entscheidungen voraus. Der Verhandlungsstand ist bei den Kandidaten verschieden."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-eu-erweiterung",
+          "materiality": "material",
+          "id": "01M5DDSGKV6Q793RNGMD480PT0",
+          "slug": "geo9-eu-erweiterung-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erläutere eine mögliche Chance und eine Herausforderung einer EU-Erweiterung für den Alltag.",
+          "concept": "Ein größerer gemeinsamer Raum kann Austausch, Lernen und Handel erleichtern. Gleichzeitig müssen Institutionen und Betriebe Regeln umsetzen und unterschiedliche Ausgangsbedingungen berücksichtigen. Ich unterscheide geltende Rechte von möglichen zukünftigen Folgen und berücksichtige verschiedene betroffene Gruppen.",
+          "sample_solution": "Ein größerer gemeinsamer Raum kann Austausch, Lernen und Handel erleichtern. Gleichzeitig müssen Institutionen und Betriebe Regeln umsetzen und unterschiedliche Ausgangsbedingungen berücksichtigen. Ich unterscheide geltende Rechte von möglichen zukünftigen Folgen und berücksichtige verschiedene betroffene Gruppen."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTEXJPHCCGSRMS963F",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTEXJPHCCGSRMS963F",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-globalisierung-bayern",
+      "title": "Von Donauwörth in die Welt",
+      "domain": "geographie/lb6",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-globalisierung-bayern",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb6",
+          "topic_title": "Grenzen im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb6",
+          "topic_title": "Grenzen im Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-globalisierung-bayern",
+          "materiality": "material",
+          "id": "01M5DDSGKV156FVDR05VG4SE7M",
+          "slug": "geo9-globalisierung-bayern-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was zeigt das Beispiel Donauwörth geographisch besonders?",
+          "concept": "Ein bayerischer Standort ist in internationale Beziehungen eingebunden",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein bayerischer Standort ist in internationale Beziehungen eingebunden",
+              "Jedes Bauteil wird sicher im selben Ort hergestellt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Jedes Bauteil wird sicher im selben Ort hergestellt",
+              "reason": "Globale Wertschöpfung und lokale Arbeit sind miteinander verbunden. Die konkrete Lieferkette muss belegt werden."
+            },
+            {
+              "text": "Globalisierung betrifft ausschließlich weit entfernte Hauptstädte",
+              "reason": "Globale Wertschöpfung und lokale Arbeit sind miteinander verbunden. Die konkrete Lieferkette muss belegt werden."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-globalisierung-bayern",
+          "materiality": "material",
+          "id": "01M5DDSGKV9VH9EYAXFHNX5WF0",
+          "slug": "geo9-globalisierung-bayern-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre am Beispiel Donauwörth eine lokale Chance und eine überörtliche Abhängigkeit der Globalisierung.",
+          "concept": "Die Hubschrauberfertigung kann am Standort spezialisierte Arbeitsplätze und Wissen bündeln. Zugleich ist sie von internationalen Zulieferungen, Absatzbedingungen und politischen Regeln abhängig. Ich prüfe die konkrete Beziehung mit Quellen und ergänze die Unternehmenssicht durch andere Perspektiven.",
+          "sample_solution": "Die Hubschrauberfertigung kann am Standort spezialisierte Arbeitsplätze und Wissen bündeln. Zugleich ist sie von internationalen Zulieferungen, Absatzbedingungen und politischen Regeln abhängig. Ich prüfe die konkrete Beziehung mit Quellen und ergänze die Unternehmenssicht durch andere Perspektiven."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT1HYSN16MXJ789X53",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT1HYSN16MXJ789X53",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-fussabdruck",
+      "title": "Was der ökologische Fußabdruck misst",
+      "domain": "geographie/lb6",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-fussabdruck",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb6",
+          "topic_title": "Grenzen im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb6",
+          "topic_title": "Grenzen im Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-fussabdruck",
+          "materiality": "material",
+          "id": "01M5DDSGKV0W47Z9V2Y0D1E56F",
+          "slug": "geo9-fussabdruck-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie heißt der Indikator für den rechnerischen Bedarf an biologisch produktiver Fläche für einen Lebensstil?",
+          "concept": "Der ökologische Fußabdruck",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Der ökologische Fußabdruck", "Die jährliche Niederschlagssumme"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die jährliche Niederschlagssumme",
+              "reason": "Der ökologische Fußabdruck setzt Ressourcenverbrauch und bestimmte Abfälle in einen standardisierten Flächenbezug. Er misst nicht alle Umweltwirkungen."
+            },
+            {
+              "text": "Der Saldo der Binnenwanderung",
+              "reason": "Der ökologische Fußabdruck setzt Ressourcenverbrauch und bestimmte Abfälle in einen standardisierten Flächenbezug. Er misst nicht alle Umweltwirkungen."
+            }
+          ],
+          "replaces": ["01K4G9R0000000000000000J07"]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-fussabdruck",
+          "materiality": "material",
+          "id": "01M5DDSGKVP5WWHVHDW3VS7XD5",
+          "slug": "geo9-fussabdruck-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre den ökologischen Fußabdruck und nenne eine wichtige Aussagegrenze.",
+          "concept": "Der ökologische Fußabdruck schätzt den Bedarf an biologisch produktiver Fläche für Ressourcen und bestimmte Abfälle, insbesondere Kohlendioxid. Er kann mit der Biokapazität verglichen werden. Er bildet jedoch nicht alle Schadstoffe, Artenverluste oder sozialen Bedingungen ab; dafür brauche ich zusätzliche Informationen.",
+          "sample_solution": "Der ökologische Fußabdruck schätzt den Bedarf an biologisch produktiver Fläche für Ressourcen und bestimmte Abfälle, insbesondere Kohlendioxid. Er kann mit der Biokapazität verglichen werden. Er bildet jedoch nicht alle Schadstoffe, Artenverluste oder sozialen Bedingungen ab; dafür brauche ich zusätzliche Informationen."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT23P60GEK4QTMHZEV",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT23P60GEK4QTMHZEV",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-grenzenwandel",
+      "title": "Grenzen entstehen und verlieren Bedeutung",
+      "domain": "geographie/lb6",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grenzenwandel",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb6",
+          "topic_title": "Grenzen im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb6",
+          "topic_title": "Grenzen im Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grenzenwandel",
+          "materiality": "material",
+          "id": "01M5DDSGKVZ7HNB92RJAEDWHGV",
+          "slug": "geo9-grenzenwandel-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was verändert Schengen an einer Binnengrenze grundsätzlich?",
+          "concept": "Die Durchführung regulärer Personengrenzkontrollen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Durchführung regulärer Personengrenzkontrollen",
+              "Die Existenz aller beteiligten Staaten"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Existenz aller beteiligten Staaten",
+              "reason": "Schengen verändert die Grenzpraxis, hebt aber die Staaten und ihre sämtlichen Unterschiede nicht auf."
+            },
+            {
+              "text": "Automatisch jede Sprache und jedes Landesgesetz",
+              "reason": "Schengen verändert die Grenzpraxis, hebt aber die Staaten und ihre sämtlichen Unterschiede nicht auf."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grenzenwandel",
+          "materiality": "material",
+          "id": "01M5DDSGKWZ7YNKQEXT3V95PQA",
+          "slug": "geo9-grenzenwandel-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche den Wandel der innerdeutschen Grenze mit einer Schengen-Binnengrenze.",
+          "concept": "Mit der deutschen Einheit 1990 endete die Staatsgrenzfunktion der innerdeutschen Grenze. Im Schengenraum bestehen Staatsgrenzen weiter, während reguläre Personenkontrollen an den Binnengrenzen grundsätzlich entfallen. Politischer Grenzverlauf und praktische Durchlässigkeit verändern sich also nicht auf dieselbe Weise.",
+          "sample_solution": "Mit der deutschen Einheit 1990 endete die Staatsgrenzfunktion der innerdeutschen Grenze. Im Schengenraum bestehen Staatsgrenzen weiter, während reguläre Personenkontrollen an den Binnengrenzen grundsätzlich entfallen. Politischer Grenzverlauf und praktische Durchlässigkeit verändern sich also nicht auf dieselbe Weise."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTWMHQKKBMS047A8SM",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTWMHQKKBMS047A8SM",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-nahraumfrage",
+      "title": "Ein aktuelles Ereignis vor deiner Haustür",
+      "domain": "geographie/lb7",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-nahraumfrage",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb7",
+          "topic_title": "Aktuelle geographische Fragestellung im Nahraum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb7",
+          "topic_title": "Aktuelle geographische Fragestellung im Nahraum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-nahraumfrage",
+          "materiality": "material",
+          "id": "01M5DDSGKWK9HBVT2JT4TBM986",
+          "slug": "geo9-nahraumfrage-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Frage eignet sich besonders für eine geographische Nahraumuntersuchung?",
+          "concept": "Wie verändert der geplante Radweg die Erreichbarkeit im Ort?",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wie verändert der geplante Radweg die Erreichbarkeit im Ort?",
+              "Welche Farbe gefällt mir ganz ohne Bezug zum Ort?"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Welche Farbe gefällt mir ganz ohne Bezug zum Ort?",
+              "reason": "Die erste Frage verbindet ein konkretes Ereignis mit räumlichen Beziehungen und lässt sich mit Karten und Quellen untersuchen."
+            },
+            {
+              "text": "Ist jede Veränderung überall grundsätzlich gleich?",
+              "reason": "Die erste Frage verbindet ein konkretes Ereignis mit räumlichen Beziehungen und lässt sich mit Karten und Quellen untersuchen."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-nahraumfrage",
+          "materiality": "material",
+          "id": "01M5DDSGKWDC40F0QFWGR1EX8J",
+          "slug": "geo9-nahraumfrage-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Formuliere zu deinem realen Nahraumthema eine räumliche Frage und erkläre ihre Untersuchung.",
+          "concept": "Eine mögliche Struktur lautet: Wie verändert das öffentlich beschriebene Vorhaben die Erreichbarkeit oder Nutzung eines Gebiets? Ich nenne meinen tatsächlichen Ort, das Ereignis mit Datum und geeignete Karten. Dieses Muster muss ich mit meinem eigenen aktuellen Fall ausfüllen; es ist noch keine erledigte Recherche.",
+          "sample_solution": "Eine mögliche Struktur lautet: Wie verändert das öffentlich beschriebene Vorhaben die Erreichbarkeit oder Nutzung eines Gebiets? Ich nenne meinen tatsächlichen Ort, das Ereignis mit Datum und geeignete Karten. Dieses Muster muss ich mit meinem eigenen aktuellen Fall ausfüllen; es ist noch keine erledigte Recherche."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT7QC9ST1G82AR4KMT",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT7QC9ST1G82AR4KMT",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-nahraumbelege",
+      "title": "Karte, Fachquelle und Nachricht zusammenlesen",
+      "domain": "geographie/lb7",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-nahraumbelege",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKTWMHQKKBMS047A8SM",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb7",
+          "topic_title": "Aktuelle geographische Fragestellung im Nahraum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb7",
+          "topic_title": "Aktuelle geographische Fragestellung im Nahraum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-nahraumbelege",
+          "materiality": "material",
+          "id": "01M5DDSGKWPA5XPTG83HVTBJX8",
+          "slug": "geo9-nahraumbelege-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum sind zwei identische übernommene Meldungen keine zwei unabhängigen Belege?",
+          "concept": "Beide können auf derselben ursprünglichen Quelle beruhen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beide können auf derselben ursprünglichen Quelle beruhen",
+              "Jede Veröffentlichung ist automatisch eine eigene Messung"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Jede Veröffentlichung ist automatisch eine eigene Messung",
+              "reason": "Die Herkunftskette muss geprüft werden. Wiederholung ersetzt keine unabhängige Beobachtung oder zusätzliche Perspektive."
+            },
+            {
+              "text": "Ein gleicher Text beweist grundsätzlich mehr räumliche Genauigkeit",
+              "reason": "Die Herkunftskette muss geprüft werden. Wiederholung ersetzt keine unabhängige Beobachtung oder zusätzliche Perspektive."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-nahraumbelege",
+          "materiality": "material",
+          "id": "01M5DDSGKW2KMEHGZ3QY13W9PD",
+          "slug": "geo9-nahraumbelege-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche die beiden Quellen deines Nahraumprojekts mit einer Gemeinsamkeit und einer Grenze.",
+          "concept": "Ich benenne die tatsächlichen Quellen mit Datum und ordne ihre Urheber ein. Dann zeige ich, welche konkrete Aussage beide stützen und worin Perspektive, Raum oder Datenbasis abweichen. Wenn ein Beleg nur eine Planung beschreibt, behandle ich die geplante Wirkung noch nicht als gemessenen Erfolg.",
+          "sample_solution": "Ich benenne die tatsächlichen Quellen mit Datum und ordne ihre Urheber ein. Dann zeige ich, welche konkrete Aussage beide stützen und worin Perspektive, Raum oder Datenbasis abweichen. Wenn ein Beleg nur eine Planung beschreibt, behandle ich die geplante Wirkung noch nicht als gemessenen Erfolg."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT628ZDPZZ5PQGGFR6",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT628ZDPZZ5PQGGFR6",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-nahraumurteil",
+      "title": "Dein Ergebnis zeigen und begründet urteilen",
+      "domain": "geographie/lb7",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-nahraumurteil",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKT7QC9ST1G82AR4KMT",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb7",
+          "topic_title": "Aktuelle geographische Fragestellung im Nahraum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb7",
+          "topic_title": "Aktuelle geographische Fragestellung im Nahraum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-nahraumurteil",
+          "materiality": "material",
+          "id": "01M5DDSGKWVJT7MHWX2HHKCGSB",
+          "slug": "geo9-nahraumurteil-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was macht ein geographisches Urteil nachvollziehbar?",
+          "concept": "Belege, offengelegte Kriterien und eine begründete Abwägung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Belege, offengelegte Kriterien und eine begründete Abwägung",
+              "Nur ein starkes Adjektiv ohne Quelle"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur ein starkes Adjektiv ohne Quelle",
+              "reason": "Andere können das Urteil prüfen, wenn Tatsachen, Maßstäbe und Gewichtung erkennbar sind."
+            },
+            {
+              "text": "Die Behauptung, jede andere Perspektive sei bedeutungslos",
+              "reason": "Andere können das Urteil prüfen, wenn Tatsachen, Maßstäbe und Gewichtung erkennbar sind."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-nahraumurteil",
+          "materiality": "material",
+          "id": "01M5DDSGKW92X6QB6ES81NZ49X",
+          "slug": "geo9-nahraumurteil-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Formuliere zu deinem Nahraumprojekt ein begründetes Urteil mit einem Beleg und einer Grenze.",
+          "concept": "Ich beantworte meine tatsächliche Frage anhand der gesammelten Quellen und benenne meinen wichtigsten Maßstab. Ich wäge einen Vorteil gegen eine Belastung ab und erläutere, warum ich zu meinem Urteil komme. Fehlende Messungen oder noch offene Entscheidungen nenne ich ausdrücklich; ein Textmuster ersetzt diese eigene Arbeit nicht.",
+          "sample_solution": "Ich beantworte meine tatsächliche Frage anhand der gesammelten Quellen und benenne meinen wichtigsten Maßstab. Ich wäge einen Vorteil gegen eine Belastung ab und erläutere, warum ich zu meinem Urteil komme. Fehlende Messungen oder noch offene Entscheidungen nenne ich ausdrücklich; ein Textmuster ersetzt diese eigene Arbeit nicht."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTK5SYFRFHBRFBCJVG",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTK5SYFRFHBRFBCJVG",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-en-landscapes",
+      "title": "Reading landscapes",
+      "domain": "geographie/lb8",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-landscapes",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKS4XGPRWXM1678KE9P",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "en",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-landscapes",
+          "materiality": "material",
+          "id": "01M5DDSGKWJ7DRW60R8WKJVQ1P",
+          "slug": "geo9-en-landscapes-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Which process removes material from a slope?",
+          "concept": "Erosion",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Erosion", "Uplift"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Uplift",
+              "reason": "Check the definition and context. Erosion is the relevant distinction in this example."
+            },
+            {
+              "text": "Condensation",
+              "reason": "Check the definition and context. Erosion is the relevant distinction in this example."
+            }
+          ]
+        },
+        {
+          "language": "en",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-landscapes",
+          "materiality": "material",
+          "id": "01M5DDSGKW4F697G94FZG5TD6K",
+          "slug": "geo9-en-landscapes-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Explain how uplift and erosion can shape the same mountain.",
+          "concept": "Uplift raises rocks over long periods, while weathering loosens material and erosion removes it. These processes may operate at the same time. The current shape therefore reflects both internal forces and surface processes, not just the age of the rock.",
+          "sample_solution": "Uplift raises rocks over long periods, while weathering loosens material and erosion removes it. These processes may operate at the same time. The current shape therefore reflects both internal forces and surface processes, not just the age of the rock."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT5A2225XFNAJC5CMW",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT5A2225XFNAJC5CMW",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-en-climate",
+      "title": "Weather is not climate",
+      "domain": "geographie/lb8",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-climate",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKSZR926T8VTX29STVW",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "en",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-climate",
+          "materiality": "material",
+          "id": "01M5DDSGKW1GJ47R023ZPVYBKW",
+          "slug": "geo9-en-climate-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Which example mainly describes adaptation?",
+          "concept": "Providing shaded places during heat",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Providing shaded places during heat",
+              "Reducing fossil fuel use at its source"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Reducing fossil fuel use at its source",
+              "reason": "Check the definition and context. Providing shaded places during heat is the relevant distinction in this example."
+            },
+            {
+              "text": "Replacing coal with lower-emission energy",
+              "reason": "Check the definition and context. Providing shaded places during heat is the relevant distinction in this example."
+            }
+          ]
+        },
+        {
+          "language": "en",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-climate",
+          "materiality": "material",
+          "id": "01M5DDSGKWM24WE32WDRY7GQBX",
+          "slug": "geo9-en-climate-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Explain why a cold day does not disprove a warming climate.",
+          "concept": "A cold day describes local weather, while a climate trend refers to long-term statistics across a defined period and area. Variability continues in a warming climate. I compare suitable records instead of treating one event as a complete trend.",
+          "sample_solution": "A cold day describes local weather, while a climate trend refers to long-term statistics across a defined period and area. Variability continues in a warming climate. I compare suitable records instead of treating one event as a complete trend."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTZEAK4DQ742V72Y83",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTZEAK4DQ742V72Y83",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-en-food",
+      "title": "Food security and farming choices",
+      "domain": "geographie/lb8",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-food",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKT9K9F92G4CAB066BV",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "en",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-food",
+          "materiality": "material",
+          "id": "01M5DDSGKW8JAERS3PEB328HVZ",
+          "slug": "geo9-en-food-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Food is on sale but a household cannot afford it. What is the main barrier described?",
+          "concept": "Economic access",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Economic access", "Food availability"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Food availability",
+              "reason": "Check the definition and context. Economic access is the relevant distinction in this example."
+            },
+            {
+              "text": "Food utilisation",
+              "reason": "Check the definition and context. Economic access is the relevant distinction in this example."
+            }
+          ]
+        },
+        {
+          "language": "en",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-food",
+          "materiality": "material",
+          "id": "01M5DDSGKWHHNGS3VR1HM6XZ6J",
+          "slug": "geo9-en-food-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Explain why food availability and food access are different.",
+          "concept": "Availability means food is physically present, while access includes people's ability to obtain it. A market may be well supplied but a low-income household can still go hungry. Stable income, safe transport and health conditions can therefore matter alongside production.",
+          "sample_solution": "Availability means food is physically present, while access includes people's ability to obtain it. A market may be well supplied but a low-income household can still go hungry. Stable income, safe transport and health conditions can therefore matter alongside production."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKT8JKQ33251KYZZRWT",
+      "atom_uri": "urn:zam:atom:01M5DDSGKT8JKQ33251KYZZRWT",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-en-cities",
+      "title": "Cities for different people",
+      "domain": "geographie/lb8",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-cities",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKTZ0SMR1D00TP127A0",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "en",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-cities",
+          "materiality": "material",
+          "id": "01M5DDSGKWD6ESVCW85XWVB112",
+          "slug": "geo9-en-cities-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "What does accessibility describe in this context?",
+          "concept": "How easily people can reach places and services",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "How easily people can reach places and services",
+              "Only the maximum height of a building"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Only the maximum height of a building",
+              "reason": "Check the definition and context. How easily people can reach places and services is the relevant distinction in this example."
+            },
+            {
+              "text": "Only the age of a city's oldest monument",
+              "reason": "Check the definition and context. How easily people can reach places and services is the relevant distinction in this example."
+            }
+          ]
+        },
+        {
+          "language": "en",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-cities",
+          "materiality": "material",
+          "id": "01M5DDSGKWK96FXNEHS72F7ZBT",
+          "slug": "geo9-en-cities-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Explain one trade-off in a compact urban development.",
+          "concept": "A compact district can offer more homes and shorter routes to services. If it removes too much open space, heat and runoff may increase and places to meet may disappear. A balanced plan considers housing, mobility, green space and who can afford to stay.",
+          "sample_solution": "A compact district can offer more homes and shorter routes to services. If it removes too much open space, heat and runoff may increase and places to meet may disappear. A balanced plan considers housing, mobility, green space and who can afford to stay."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTATXCAXYP0BN4PTRK",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTATXCAXYP0BN4PTRK",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-en-population",
+      "title": "Population change is a balance",
+      "domain": "geographie/lb8",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-population",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKTW6KFJH9XMGWWHKBM",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "en",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-population",
+          "materiality": "material",
+          "id": "01M5DDSGKW0NJKDAR7H7SPHKMW",
+          "slug": "geo9-en-population-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "What is net migration?",
+          "concept": "Arrivals minus departures",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Arrivals minus departures", "Births plus every resident's age"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Births plus every resident's age",
+              "reason": "Check the definition and context. Arrivals minus departures is the relevant distinction in this example."
+            },
+            {
+              "text": "Deaths minus the number of houses",
+              "reason": "Check the definition and context. Arrivals minus departures is the relevant distinction in this example."
+            }
+          ]
+        },
+        {
+          "language": "en",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-population",
+          "materiality": "material",
+          "id": "01M5DDSGKW2YC4Z0DHX49X5NG3",
+          "slug": "geo9-en-population-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Explain how a population can grow despite more deaths than births.",
+          "concept": "More deaths than births create a negative natural balance. If arrivals exceed departures by a larger amount, the positive migration balance more than offsets that loss. Both balances must refer to the same area and period.",
+          "sample_solution": "More deaths than births create a negative natural balance. If arrivals exceed departures by a larger amount, the positive migration balance more than offsets that loss. Both balances must refer to the same area and period."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTCJVS7QE48FJASK7S",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTCJVS7QE48FJASK7S",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-en-borders",
+      "title": "Europe, the EU and changing borders",
+      "domain": "geographie/lb8",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-borders",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKT9R9G90MYAR92QCCQ",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "en",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-borders",
+          "materiality": "material",
+          "id": "01M5DDSGKWENA21ZC1MK92F8Z4",
+          "slug": "geo9-en-borders-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "What does candidate status mean?",
+          "concept": "A state is in the accession process but is not yet a member",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A state is in the accession process but is not yet a member",
+              "A state automatically joined yesterday"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "A state automatically joined yesterday",
+              "reason": "Check the definition and context. A state is in the accession process but is not yet a member is the relevant distinction in this example."
+            },
+            {
+              "text": "Every candidate already has an identical negotiation status",
+              "reason": "Check the definition and context. A state is in the accession process but is not yet a member is the relevant distinction in this example."
+            }
+          ]
+        },
+        {
+          "language": "en",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-borders",
+          "materiality": "material",
+          "id": "01M5DDSGKW6EF3EX3GA1HCTTXZ",
+          "slug": "geo9-en-borders-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Use an example to distinguish Europe from the EU.",
+          "concept": "Germany is both in Europe and a member of the EU. Norway is a European state outside the EU. Membership is a political status at a stated date, whereas Europe describes a broader geographical and historical space.",
+          "sample_solution": "Germany is both in Europe and a member of the EU. Norway is a European state outside the EU. Membership is a political status at a stated date, whereas Europe describes a broader geographical and historical space."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTYKCQQ1QV4JC6VS5B",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTYKCQQ1QV4JC6VS5B",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-en-local",
+      "title": "Investigating a local geographical issue",
+      "domain": "geographie/lb8",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-local",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DDSGKTWMHQKKBMS047A8SM",
+          "type": "soft",
+          "rationale": "Diese Grundlagen unterstützen die folgende Erklärung; alle Lektionen bleiben in der App frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "en",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-local",
+          "materiality": "material",
+          "id": "01M5DDSGKWEYYDPBRBNHQQHD2G",
+          "slug": "geo9-en-local-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "What makes a local judgement transparent?",
+          "concept": "Evidence, explicit criteria and a reasoned comparison",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Evidence, explicit criteria and a reasoned comparison",
+              "A strong opinion with no location or source"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "A strong opinion with no location or source",
+              "reason": "Check the definition and context. Evidence, explicit criteria and a reasoned comparison is the relevant distinction in this example."
+            },
+            {
+              "text": "Repeating an undated headline without checking it",
+              "reason": "Check the definition and context. Evidence, explicit criteria and a reasoned comparison is the relevant distinction in this example."
+            }
+          ]
+        },
+        {
+          "language": "en",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-en-local",
+          "materiality": "material",
+          "id": "01M5DDSGKWJT0B0YTPJ4QR9WQG",
+          "slug": "geo9-en-local-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Outline a real local investigation and explain the role of two sources.",
+          "concept": "I name my actual local issue, locate it and state an open question. An official or specialist source can explain the plan or data, while a news report may add affected people's perspectives. I compare their dates and limits before drawing a conclusion.",
+          "sample_solution": "I name my actual local issue, locate it and state an open question. An official or specialist source can explain the plan or data, while a news report may add affected people's perspectives. I compare their dates and limits before drawing a conclusion."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTQ71MG1EZ2D70XBJQ",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTQ71MG1EZ2D70XBJQ",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-grundlagen-itc",
+      "title": "Grundlage: ITC und Passate",
+      "domain": "geographie/grundlagen",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grundlagen-itc",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "grundlagen",
+          "topic_title": "Grundlagen auffrischen (ergänzend, kein Lehrplan-Lernbereich)"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grundlagen-itc",
+          "materiality": "material",
+          "id": "01M5DDSGKW470EPQ1E8PP02Y3Q",
+          "slug": "geo9-grundlagen-itc-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie heißt die äquatornahe Tiefdruck- und Konvergenzzone mit häufig aufsteigender feuchtwarmer Luft?",
+          "concept": "Innertropische Konvergenzzone",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Innertropische Konvergenzzone", "Subtropischer Hochdruckgürtel"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Subtropischer Hochdruckgürtel",
+              "reason": "ITC beziehungsweise ITCZ ist derselbe Begriff. Ihre Lage und Ausprägung ändern sich mit Jahreszeit und Region."
+            },
+            {
+              "text": "Subpolare Tiefdruckrinne",
+              "reason": "ITC beziehungsweise ITCZ ist derselbe Begriff. Ihre Lage und Ausprägung ändern sich mit Jahreszeit und Region."
+            }
+          ],
+          "replaces": ["01K4G9R0000000000000000J01"]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grundlagen-itc",
+          "materiality": "material",
+          "id": "01M5DDSGKW1QRE4PW53PTQFXQ1",
+          "slug": "geo9-grundlagen-itc-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre die ITC und nenne zwei Grenzen einer einfachen Zeichnung der Passatzirkulation.",
+          "concept": "In der ITC konvergieren bodennahe Passate; feuchtwarme Luft steigt häufig auf. Ihre Lage verschiebt sich und ist über Kontinenten und Meeren verschieden. Eine einfache Zeichnung zeigt daher weder eine feste Äquatorlinie noch eine Garantie für täglich gleichen Regen an jedem Ort.",
+          "sample_solution": "In der ITC konvergieren bodennahe Passate; feuchtwarme Luft steigt häufig auf. Ihre Lage verschiebt sich und ist über Kontinenten und Meeren verschieden. Eine einfache Zeichnung zeigt daher weder eine feste Äquatorlinie noch eine Garantie für täglich gleichen Regen an jedem Ort."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTH1TCT2AF0CPHFBDP",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTH1TCT2AF0CPHFBDP",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-grundlagen-regenwald",
+      "title": "Grundlage: Regenwald und Nährstoffkreislauf",
+      "domain": "geographie/grundlagen",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grundlagen-regenwald",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "grundlagen",
+          "topic_title": "Grundlagen auffrischen (ergänzend, kein Lehrplan-Lernbereich)"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grundlagen-regenwald",
+          "materiality": "material",
+          "id": "01M5DDSGKW8VKF8JYYVPYMG4VB",
+          "slug": "geo9-grundlagen-regenwald-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum ist die Aussage alle Regenwaldböden sind gleich unfruchtbar ungeeignet?",
+          "concept": "Tropische Böden unterscheiden sich nach Standort und Entstehung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Tropische Böden unterscheiden sich nach Standort und Entstehung",
+              "In den Tropen gibt es grundsätzlich keine Böden"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "In den Tropen gibt es grundsätzlich keine Böden",
+              "reason": "Ausgangsmaterial, Alter, Wasserhaushalt und Nutzung erzeugen unterschiedliche Böden und Nährstoffspeicher."
+            },
+            {
+              "text": "Nährstoffe entstehen ausschließlich durch Brandrodung",
+              "reason": "Ausgangsmaterial, Alter, Wasserhaushalt und Nutzung erzeugen unterschiedliche Böden und Nährstoffspeicher."
+            }
+          ]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grundlagen-regenwald",
+          "materiality": "material",
+          "id": "01M5DDSGKWDS0MMEQG9C47NT6D",
+          "slug": "geo9-grundlagen-regenwald-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre eine mögliche Folge von Rodung für den Nährstoffkreislauf und begrenze sie räumlich.",
+          "concept": "Rodung entfernt lebende Biomasse und verändert Streuzufuhr, Aufnahme und Bodenschutz. Auf stark verwitterten, erosionsgefährdeten Standorten kann die Nährstoffversorgung dadurch beeinträchtigt werden. Die Folgen unterscheiden sich nach Boden und Nutzung; ich behaupte keine gleiche Frist für alle Regenwälder.",
+          "sample_solution": "Rodung entfernt lebende Biomasse und verändert Streuzufuhr, Aufnahme und Bodenschutz. Auf stark verwitterten, erosionsgefährdeten Standorten kann die Nährstoffversorgung dadurch beeinträchtigt werden. Die Folgen unterscheiden sich nach Boden und Nutzung; ich behaupte keine gleiche Frist für alle Regenwälder."
+        }
+      ]
+    },
+    {
+      "id": "01M5DDSGKTV2VTST7K4RXP2Y32",
+      "atom_uri": "urn:zam:atom:01M5DDSGKTV2VTST7K4RXP2Y32",
+      "namespace": "zam-academy-geographie-realschule-9",
+      "slug": "geo9-grundlagen-desertifikation",
+      "title": "Grundlage: Desertifikation und Versalzung",
+      "domain": "geographie/grundlagen",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grundlagen-desertifikation",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-9",
+          "topic_code": "grundlagen",
+          "topic_title": "Grundlagen auffrischen (ergänzend, kein Lehrplan-Lernbereich)"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grundlagen-desertifikation",
+          "materiality": "material",
+          "id": "01M5DDSGKWVGWQ2CGJFY1X73F6",
+          "slug": "geo9-grundlagen-desertifikation-check",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie heißt die Landdegradation in Trockengebieten, zu der etwa Überweidung und ungeeignete Bewässerung beitragen können?",
+          "concept": "Desertifikation (Wüstenbildung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Desertifikation (Wüstenbildung)", "Glaziale Erosion (Eisabtragung)"],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Glaziale Erosion (Eisabtragung)",
+              "reason": "Der Begriff Desertifikation bleibt erhalten. Er meint Landdegradation durch klimatische und menschliche Faktoren, nicht bloß das natürliche Vorrücken einer Wüste."
+            },
+            {
+              "text": "Tektonische Hebung (Gebirgsbildung)",
+              "reason": "Der Begriff Desertifikation bleibt erhalten. Er meint Landdegradation durch klimatische und menschliche Faktoren, nicht bloß das natürliche Vorrücken einer Wüste."
+            }
+          ],
+          "replaces": ["01K4G9R0000000000000000J05"]
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-9/#lesson=geo-grundlagen-desertifikation",
+          "materiality": "material",
+          "id": "01M5DDSGKWTS6AS9XQHVXW6HEX",
+          "slug": "geo9-grundlagen-desertifikation-begruenden",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre Desertifikation und unterscheide sie von Bodenversalzung und Verkarstung.",
+          "concept": "Desertifikation ist Landdegradation in Trockengebieten durch klimatische und menschliche Faktoren. Versalzung kann dazu beitragen, wenn Salze im Boden angereichert werden. Verkarstung bezeichnet dagegen die Lösung geeigneter Gesteine und ist kein Synonym für einen geschädigten trockenen Boden.",
+          "sample_solution": "Desertifikation ist Landdegradation in Trockengebieten durch klimatische und menschliche Faktoren. Versalzung kann dazu beitragen, wenn Salze im Boden angereichert werden. Verkarstung bezeichnet dagegen die Lösung geeigneter Gesteine und ist kein Synonym für einen geschädigten trockenen Boden."
+        }
+      ]
+    }
+  ],
+  "retired_items": [
+    {
+      "id": "01K4G9R0000000000000000J02",
+      "reason": "Die mehrteilige Hadley-Erklärung verengt die ITC auf einen festen Äquatorgürtel und verallgemeinert tägliche Zenitalregen. Die neue Erklärung unterscheidet saisonale und regionale Ausprägungen. Keine Beherrschung des korrigierten Gesamtmodells aus der alten Karte ableiten."
+    },
+    {
+      "id": "01K4G9R0000000000000000J03",
+      "reason": "Die Frage behauptet den überwiegenden Speicher aller Nährstoffe einheitlich für das gesamte tropische Regenwaldökosystem. Boden, Nährstoffelement und Standort sind dafür nicht hinreichend eingegrenzt. Die neue Karte lehrt Bodenvielfalt; kein sicher gleicher Abruf und kein replaces."
+    },
+    {
+      "id": "01K4G9R0000000000000000J04",
+      "reason": "Die alte Gesamtantwort verallgemeinert Ferralsole und eine zwangsläufige Verkrustung und Unfruchtbarkeit nach zwei bis drei Jahren. Die korrigierte Erklärung berücksichtigt Standort, Böden und Folgenutzung. Eine alte Gesamtbeherrschung darf nicht auf neue Teilfragen verteilt werden."
+    },
+    {
+      "id": "01K4G9R0000000000000000J06",
+      "reason": "Die alte Sahel- und Bewässerungsantwort bezeichnet Degradation als Verkarstung und irreversibel und vereinfacht Versalzung sowie ihre Abhilfe. Die neue Erklärung trennt Landdegradation, Salzanreicherung und Gesteinslösung; kein gleicher korrigierter Gesamtumfang."
+    }
+  ]
+}

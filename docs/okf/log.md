@@ -1,5 +1,9 @@
 # Log
 
+## 2026-10-20
+
+- **Update** — [Token and Card Model](token-card-model.md)
+
 ## 2026-10-19
 
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)

@@ -16,7 +16,8 @@ import {
 // zam-academy:physik-realschule-9 (zam-os/zam-academy#4), the database cell
 // to zam-academy:sql (zam-os/zam-academy#8) and the five mathematics cells
 // to zam-academy:mathematik-realschule-9 (zam-os/zam-academy#9), and the
-// two chemistry cells to zam-academy:chemie-realschule-9 (#10). Explicit
+// two chemistry cells to zam-academy:chemie-realschule-9 (#10).
+// Geographie also moved to zam-academy:geographie-realschule-9 (#15). Explicit
 // replacements preserve histories; corrected items are retired without
 // transferring mastery. See tests/kernel/zam-academy-*-cell.test.ts.
 const RS9_CELL_IDS = [
@@ -26,7 +27,6 @@ const RS9_CELL_IDS = [
   "de-by:realschule-9-informatik-algorithmen-strukturen",
   "de-by:realschule-9-geschichte-weimar-ns",
   "de-by:realschule-9-wirtschaft-recht-markt-vertraege",
-  "de-by:realschule-9-geographie-klima-ressourcen",
   "de-by:realschule-9-englisch-grammatik-syntax",
   "de-by:realschule-9-deutsch-argumentation-eroerterung",
   "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",
@@ -36,6 +36,7 @@ const ACADEMY_RS9_IDS = [
   "zam-academy:sql",
   "zam-academy:mathematik-realschule-9",
   "zam-academy:chemie-realschule-9",
+  "zam-academy:geographie-realschule-9",
 ];
 
 describe("Realschule Bayern 9 Curriculum Cells", () => {
@@ -71,8 +72,8 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
       schoolType: "realschule",
       grade: 9,
     });
-    // Ten school cells and the four Academy successors of Physik, SQL,
-    // Mathematik and Chemie.
+    // Nine school cells and the five Academy successors of Physik, SQL,
+    // Mathematik, Chemie and Geographie.
     expect(rs9Cells.length).toBeGreaterThanOrEqual(
       RS9_CELL_IDS.length + ACADEMY_RS9_IDS.length,
     );
