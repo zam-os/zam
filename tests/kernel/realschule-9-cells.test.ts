@@ -17,15 +17,11 @@ import {
 } from "../../src/kernel/index.js";
 
 // The four physics cells of this grade moved to the ZAM Academy cell
-// zam-academy:physik-realschule-9 (zam-os/zam-academy#4) and the database
-// cell to zam-academy:sql (zam-os/zam-academy#8); each replaces the old
-// items. See tests/kernel/zam-academy-physik-realschule-9-cell.test.ts and
-// tests/kernel/zam-academy-sql-cell.test.ts.
+// zam-academy:physik-realschule-9 (zam-os/zam-academy#4), the database cell
+// to zam-academy:sql (zam-os/zam-academy#8) and the five mathematics cells
+// to zam-academy:mathematik-realschule-9 (zam-os/zam-academy#9); each
+// replaces the old items. See tests/kernel/zam-academy-*-cell.test.ts.
 const RS9_CELL_IDS = [
-  "de-by:realschule-9-mathematik-pythagoras-trigonometrie",
-  "de-by:realschule-9-mathematik-quadratische-funktionen",
-  "de-by:realschule-9-mathematik-lineare-gleichungssysteme",
-  "de-by:realschule-9-mathematik-kreis-raumgeometrie",
   "de-by:realschule-9-chemie-atombau-pse",
   "de-by:realschule-9-chemie-chemische-bindung",
   "de-by:realschule-9-biologie-genetik-vererbung",
@@ -37,7 +33,6 @@ const RS9_CELL_IDS = [
   "de-by:realschule-9-geographie-klima-ressourcen",
   "de-by:realschule-9-englisch-grammatik-syntax",
   "de-by:realschule-9-deutsch-argumentation-eroerterung",
-  "de-by:realschule-9-mathematik-stochastik-daten",
   "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",
 ];
 
@@ -57,7 +52,7 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all bundled cells including all 17 Realschule 9 cells", () => {
+  it("lists all bundled cells including all 12 Realschule 9 cells", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(100);
 
@@ -74,9 +69,9 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
       schoolType: "realschule",
       grade: 9,
     });
-    // 17 school cells plus the two ZAM Academy cells that replaced the four
-    // physics cells and the database cell.
-    expect(rs9Cells.length).toBeGreaterThanOrEqual(19);
+    // 12 school cells plus the three ZAM Academy cells that replaced the four
+    // physics cells, the database cell and the five mathematics cells.
+    expect(rs9Cells.length).toBeGreaterThanOrEqual(15);
     for (const cellId of RS9_CELL_IDS) {
       expect(
         rs9Cells.some((c) => c.id === cellId),
@@ -109,7 +104,7 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
     expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
   });
 
-  it("supports simultaneous enrolment in ALL 17 Grade 9 Realschule cells without conflict", async () => {
+  it("supports simultaneous enrolment in ALL 12 Grade 9 Realschule cells without conflict", async () => {
     const user = "complete-rs9-polymath";
 
     let totalCards = 0;

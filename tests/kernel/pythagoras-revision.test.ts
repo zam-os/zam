@@ -16,7 +16,10 @@ import {
   openDatabase,
 } from "../../src/kernel/index.js";
 
-const FIXTURES = resolve(__dirname, "../fixtures/curriculum");
+// The de-by Pythagoras cell left the bundle for zam-academy:mathematik-realschule-9
+// (zam-os/zam-academy#9); this test of the Decision 9 revision mechanics
+// still installs it from tests/fixtures/legacy.
+const FIXTURES = resolve(__dirname, "../fixtures/legacy");
 const TILE_ID = "de-by:realschule-9-mathematik-pythagoras-trigonometrie";
 const P = "01K4T9M0000000000000000A01";
 const H = "01K4T9M0000000000000000AH0";

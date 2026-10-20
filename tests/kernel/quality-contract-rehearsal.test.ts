@@ -25,7 +25,10 @@ import {
   startSession,
 } from "../../src/kernel/index.js";
 
-const FIXTURES = resolve(__dirname, "../fixtures/curriculum");
+// The de-by Pythagoras cell left the bundle for zam-academy:mathematik-realschule-9
+// (zam-os/zam-academy#9); the rehearsal still installs it from
+// tests/fixtures/legacy.
+const FIXTURES = resolve(__dirname, "../fixtures/legacy");
 const H = "01K4T9M0000000000000000AH0";
 const P = "01K4T9M0000000000000000A01";
 const U = "01K4T9M0000000000000000AV0";

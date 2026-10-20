@@ -1,5 +1,11 @@
 [
   {
+    "id": "zam-academy:mathematik-realschule-9",
+    "version": "2026.10.1",
+    "sha256": "cbd22fd777d1bcee467052326b538becf8bca502ab7a493d8078ae8acd48f817",
+    "file": "zam-academy-mathematik-realschule-9-kvt.json"
+  },
+  {
     "id": "zam-academy:physik-realschule-9",
     "version": "2026.10.1",
     "sha256": "f79e169691e8be79cbca480b00bfd2492cd8f92a0b1a1ec2567e885c0698c37b",
