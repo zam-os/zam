@@ -5,7 +5,10 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { installScopeCells } from "../../src/cli/atlas.js";
 import { setLastCurriculumSelection } from "../../src/cli/curriculum/breadcrumb.js";
 import {
+  buildReviewQueue,
   type Database,
+  ensureCard,
+  evaluateRating,
   getBundledCellTile,
   getCard,
   getTokenById,
@@ -14,9 +17,27 @@ import {
   materialiseKvtCards,
   openDatabase,
 } from "../../src/kernel/index.js";
+import legacyAtombau from "../fixtures/legacy/de-by-realschule-9-chemie-atombau-pse-kvt.json" with {
+  type: "json",
+};
+import legacyBindung from "../fixtures/legacy/de-by-realschule-9-chemie-chemische-bindung-kvt.json" with {
+  type: "json",
+};
 import legacyDatenbanken from "../fixtures/legacy/de-by-realschule-9-informatik-datenbanken-sql-kvt.json" with {
   type: "json",
 };
+
+type EvidenceRow = { id: string; token_id: string } & Record<string, unknown>;
+async function evidence(db: Database) {
+  return {
+    cards: (await db
+      .prepare("SELECT * FROM cards ORDER BY id")
+      .all()) as EvidenceRow[],
+    reviews: (await db
+      .prepare("SELECT * FROM review_logs ORDER BY id")
+      .all()) as EvidenceRow[],
+  };
+}
 
 /**
  * *Neue Inhalte zeigen* installs the cells of the learner's year (ADR
@@ -30,7 +51,10 @@ describe("installing the cells of the learner's year", () => {
 
   beforeEach(async () => {
     tempDir = mkdtempSync(join(tmpdir(), "zam-atlas-scope-cells-"));
-    db = await openDatabase({ dbPath: join(tempDir, "test.db") });
+    db = await openDatabase({
+      dbPath: join(tempDir, "test.db"),
+      useConfiguredCloud: false,
+    });
   });
 
   afterEach(async () => {
@@ -82,4 +106,105 @@ describe("installing the cells of the learner's year", () => {
       .get()) as { n: number };
     expect(academy.n).toBe(8);
   });
+
+  it.each(["wpfg1", "wpfg2-3"])(
+    "upgrades Chemie 9 from the wizard's %s position, preserving every review and enrolling nobody",
+    async (track) => {
+      const learner = "chemie-history-learner";
+      const legacy = [legacyAtombau, legacyBindung] as unknown as KvtTile[];
+      const ids = legacy.flatMap((tile) =>
+        tile.atoms.flatMap((atom) =>
+          atom.practice_items.map((item) => item.id),
+        ),
+      );
+      for (const tile of legacy) await installKvtTile(db, tile);
+      for (const [index, tokenId] of ids.entries()) {
+        const card = await ensureCard(db, tokenId, learner);
+        const now = new Date("2026-10-01T10:00:00.000Z");
+        await evaluateRating(db, {
+          cardId: card.id,
+          tokenId,
+          userId: learner,
+          rating: index % 3 === 0 ? 1 : 3,
+          answerFormat: "recall",
+          responseTimeMs: 1000 + index * 300,
+          now,
+        });
+        await evaluateRating(db, {
+          cardId: card.id,
+          tokenId,
+          userId: learner,
+          rating: index % 2 === 0 ? 3 : 4,
+          answerFormat: "recall",
+          responseTimeMs: 1600 + index * 200,
+          now: new Date(now.getTime() + (index + 1) * 86_400_000),
+        });
+      }
+      const before = await evidence(db);
+      expect(before.cards).toHaveLength(16);
+      expect(before.reviews).toHaveLength(32);
+      const academy = getBundledCellTile("zam-academy:chemie-realschule-9")!;
+      const successors = new Map(
+        academy.atoms.flatMap((atom) =>
+          atom.practice_items.flatMap((item) =>
+            (item.replaces ?? []).map((old) => [old, item.id] as const),
+          ),
+        ),
+      );
+      expect(successors.size).toBe(11);
+      const retiredIds = academy.retired_items!.map((item) => item.id);
+      expect(retiredIds).toHaveLength(5);
+      const queueOptions = {
+        userId: learner,
+        tokenIds: retiredIds,
+        maxNew: 0,
+        maxReviews: 100,
+        now: new Date(
+          Math.max(
+            ...before.cards.map((card) => Date.parse(String(card.due_at))),
+          ) + 86_400_000,
+        ),
+        buryNewSiblings: false,
+        buryReviewSiblings: false,
+      };
+      // These cards really were reviewable before the update, so an empty
+      // queue afterwards proves the retirement, not an unrelated filter.
+      expect(
+        (await buildReviewQueue(db, queueOptions)).items
+          .map((item) => item.tokenId)
+          .sort(),
+      ).toEqual([...retiredIds].sort());
+
+      await setLastCurriculumSelection(db, {
+        providerId: "lehrplanplus-bayern",
+        schoolType: "realschule",
+        grade: "9",
+        subject: "chemie",
+        track,
+      });
+      expect(await installScopeCells(db)).toContain(academy.tile_id);
+      const after = await evidence(db);
+      expect(after.cards).toHaveLength(16);
+      expect(after.reviews).toHaveLength(32);
+      for (const card of before.cards)
+        expect(after.cards.find((row) => row.id === card.id)).toEqual({
+          ...card,
+          token_id: successors.get(card.token_id) ?? card.token_id,
+        });
+      for (const review of before.reviews)
+        expect(after.reviews.find((row) => row.id === review.id)).toEqual({
+          ...review,
+          token_id: successors.get(review.token_id) ?? review.token_id,
+        });
+      for (const id of ids)
+        expect((await getTokenById(db, id))?.deprecated_at).toBeTruthy();
+      expect((await buildReviewQueue(db, queueOptions)).items).toEqual([]);
+      for (const id of retiredIds) {
+        expect(await getCard(db, id, learner)).toBeTruthy();
+        expect(successors.has(id)).toBe(false);
+      }
+      expect(await installScopeCells(db)).not.toContain(academy.tile_id);
+      expect(await evidence(db)).toEqual(after);
+    },
+  );
 });

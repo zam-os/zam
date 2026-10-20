@@ -351,11 +351,12 @@ bilingual language variants out of scope.
 ## Phase L / #146 — `lehrplanplus-bayern` (Bayern)
 
 Provider: **LehrplanPLUS (Bayern)** · catalog: `complete` · current
-inventory: **2095 paths / 2095 with topics**
+inventory: **2097 paths / 2097 with topics** (including the two Realschule
+Chemie 9 branches verified on 2026-10-20)
 
 - [x] Complete official taxonomy captured for the active school year.
-- [x] Explicit grade-scoped catalog contains 2095 verified leaves.
-- [x] Every catalog leaf has topics and an exact content URL (2095/2095).
+- [x] Explicit grade-scoped catalog contains 2097 verified leaves.
+- [x] Every catalog leaf has topics and an exact content URL (2097/2097).
 - [x] Provider issue records capture and verification evidence.
 
 ## Phase M / #147 — `rahmenlehrplan-berlin-brandenburg` (Berlin / Brandenburg)

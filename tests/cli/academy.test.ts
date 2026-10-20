@@ -32,7 +32,11 @@ const UML = getBundledCellTile("zam-academy:uml") as BundledTile;
 
 /** The UML cell under an id no bundle has, and a version: a cell only the catalog has. */
 function catalogOnly(version = "2026.10.1"): BundledTile {
-  return { ...structuredClone(UML), tile_id: "zam-academy:nur-katalog", version };
+  return {
+    ...structuredClone(UML),
+    tile_id: "zam-academy:nur-katalog",
+    version,
+  };
 }
 
 function sha(bytes: Buffer): string {
@@ -210,13 +214,16 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     expect(list.offline).toBe(false);
     // Every bundled academy cell plus the catalog-only one, sorted by id.
     expect(list.cells.map((cell) => cell.id)).toEqual([
+      "zam-academy:chemie-realschule-9",
       "zam-academy:mathematik-realschule-9",
       "zam-academy:nur-katalog",
       "zam-academy:physik-realschule-9",
       "zam-academy:sql",
       "zam-academy:uml",
     ]);
-    expect(list.cells.find((cell) => cell.id === "zam-academy:uml")).toMatchObject({
+    expect(
+      list.cells.find((cell) => cell.id === "zam-academy:uml"),
+    ).toMatchObject({
       bundled: true,
       held: false,
       version: "2099.1.1",
@@ -237,6 +244,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     });
     expect(empty).toMatchObject({ offline: true });
     expect(empty.cells.map((cell) => cell.id)).toEqual([
+      "zam-academy:chemie-realschule-9",
       "zam-academy:mathematik-realschule-9",
       "zam-academy:physik-realschule-9",
       "zam-academy:sql",
@@ -251,7 +259,9 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       user: "learner",
       fetch: offline,
     });
-    expect(cached.cells.map((cell) => cell.id)).toContain("zam-academy:nur-katalog");
+    expect(cached.cells.map((cell) => cell.id)).toContain(
+      "zam-academy:nur-katalog",
+    );
   });
 
   it("enrols in a cell only the catalog has", async () => {
@@ -373,14 +383,18 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
 
     // A cell from the learner's check can be enrolled, from the cache alone.
     const listed = await listBundledCellsHandler(db, { user: "learner" });
-    expect(listed.cells.map((cell) => cell.id)).toContain("zam-academy:nur-katalog");
+    expect(listed.cells.map((cell) => cell.id)).toContain(
+      "zam-academy:nur-katalog",
+    );
     const enrolled = await enrolBundledCellHandler(db, {
       cellId: "zam-academy:nur-katalog",
       user: "learner",
     });
     // Its items are the UML items under another id here, so they are reused.
     expect(enrolled.success).toBe(true);
-    expect(await installedTileVersion(db, "zam-academy:nur-katalog")).toBe("2026.10.1");
+    expect(await installedTileVersion(db, "zam-academy:nur-katalog")).toBe(
+      "2026.10.1",
+    );
   });
 
   it("refuses a catalog-only cell in a team library", async () => {
