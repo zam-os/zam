@@ -626,9 +626,6 @@ import tile214Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-ge
 import tile215Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-informatik-algorithmen-strukturen-kvt.json" with {
   type: "json",
 };
-import tile216Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-informatik-datenbanken-sql-kvt.json" with {
-  type: "json",
-};
 import tile217Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-mathematik-kreis-raumgeometrie-kvt.json" with {
   type: "json",
 };
@@ -690,6 +687,9 @@ import tile228Raw from "../../../tests/fixtures/curriculum/de-by-realschule-opti
   type: "json",
 };
 import tile230Raw from "../../../tests/fixtures/curriculum/zam-academy-physik-realschule-9-kvt.json" with {
+  type: "json",
+};
+import tile231Raw from "../../../tests/fixtures/curriculum/zam-academy-sql-kvt.json" with {
   type: "json",
 };
 import tile229Raw from "../../../tests/fixtures/curriculum/zam-academy-uml-kvt.json" with {
@@ -1183,8 +1183,6 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile214Raw as unknown as BundledTile,
   [(tile215Raw as unknown as BundledTile).tile_id]:
     tile215Raw as unknown as BundledTile,
-  [(tile216Raw as unknown as BundledTile).tile_id]:
-    tile216Raw as unknown as BundledTile,
   [(tile217Raw as unknown as BundledTile).tile_id]:
     tile217Raw as unknown as BundledTile,
   [(tile218Raw as unknown as BundledTile).tile_id]:
@@ -1205,6 +1203,8 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile229Raw as unknown as BundledTile,
   [(tile230Raw as unknown as BundledTile).tile_id]:
     tile230Raw as unknown as BundledTile,
+  [(tile231Raw as unknown as BundledTile).tile_id]:
+    tile231Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 

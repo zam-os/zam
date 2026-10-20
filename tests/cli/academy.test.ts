@@ -30,9 +30,9 @@ import {
 
 const UML = getBundledCellTile("zam-academy:uml") as BundledTile;
 
-/** The UML cell under another id and version: a cell only the catalog has. */
+/** The UML cell under an id no bundle has, and a version: a cell only the catalog has. */
 function catalogOnly(version = "2026.10.1"): BundledTile {
-  return { ...structuredClone(UML), tile_id: "zam-academy:sql", version };
+  return { ...structuredClone(UML), tile_id: "zam-academy:nur-katalog", version };
 }
 
 function sha(bytes: Buffer): string {
@@ -107,10 +107,10 @@ describe("ZAM Academy catalog client (ADR 2026-10-19 D4)", () => {
     const academy = fakeAcademy([catalogOnly()]);
     const { catalog } = await fetchAcademyCatalog(academy.fetch);
     const { tile } = await fetchAcademyCell(catalog.cells[0], academy.fetch);
-    expect(tile.tile_id).toBe("zam-academy:sql");
+    expect(tile.tile_id).toBe("zam-academy:nur-katalog");
     expect(academy.requests).toEqual([
       "https://academy.zam-os.org/catalog.json",
-      "https://academy.zam-os.org/sql/cell.json",
+      "https://academy.zam-os.org/nur-katalog/cell.json",
     ]);
   });
 
@@ -128,7 +128,7 @@ describe("ZAM Academy catalog client (ADR 2026-10-19 D4)", () => {
 
   it("fails when a cell's bytes, id or version do not match the catalog", async () => {
     const tampered = fakeAcademy([catalogOnly()], {
-      "/sql/cell.json": {
+      "/nur-katalog/cell.json": {
         body: Buffer.from(JSON.stringify(catalogOnly("2026.10.1")) + " "),
       },
     });
@@ -149,21 +149,21 @@ describe("ZAM Academy catalog client (ADR 2026-10-19 D4)", () => {
             schema: 1,
             cells: [
               {
-                id: "zam-academy:sql",
+                id: "zam-academy:nur-katalog",
                 title: "x",
                 description: "",
                 language: "de",
                 version: "2026.10.1",
                 items: 1,
                 app: "/sql/",
-                cell: "/sql/cell.json",
+                cell: "/nur-katalog/cell.json",
                 sha256: sha(body),
               },
             ],
           }),
         ),
       },
-      "/sql/cell.json": { body },
+      "/nur-katalog/cell.json": { body },
     });
     const listed = await fetchAcademyCatalog(wrong.fetch);
     await expect(
@@ -210,6 +210,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     expect(list.offline).toBe(false);
     // Every bundled academy cell plus the catalog-only one, sorted by id.
     expect(list.cells.map((cell) => cell.id)).toEqual([
+      "zam-academy:nur-katalog",
       "zam-academy:physik-realschule-9",
       "zam-academy:sql",
       "zam-academy:uml",
@@ -225,7 +226,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     // Both cells were cached for a later „Aufnehmen“ or an agent.
     expect(
       readFileSync(join(academyCacheDir(), "catalog.json"), "utf8"),
-    ).toContain("zam-academy:sql");
+    ).toContain("zam-academy:nur-katalog");
   });
 
   it("answers from the cache, or the bundled cells, when offline", async () => {
@@ -236,6 +237,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     expect(empty).toMatchObject({ offline: true });
     expect(empty.cells.map((cell) => cell.id)).toEqual([
       "zam-academy:physik-realschule-9",
+      "zam-academy:sql",
       "zam-academy:uml",
     ]);
 
@@ -247,13 +249,13 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       user: "learner",
       fetch: offline,
     });
-    expect(cached.cells.map((cell) => cell.id)).toContain("zam-academy:sql");
+    expect(cached.cells.map((cell) => cell.id)).toContain("zam-academy:nur-katalog");
   });
 
   it("enrols in a cell only the catalog has", async () => {
     const academy = fakeAcademy([catalogOnly()]);
     const result = await academyEnrolHandler(db, {
-      cellId: "zam-academy:sql",
+      cellId: "zam-academy:nur-katalog",
       user: "learner",
       fetch: academy.fetch,
     });
@@ -343,7 +345,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       fetch: fakeAcademy([catalogOnly("2098.1.1")]).fetch,
     });
     const result = await academyEnrolHandler(db, {
-      cellId: "zam-academy:sql",
+      cellId: "zam-academy:nur-katalog",
       user: "learner",
       fetch: offline,
     });
@@ -369,14 +371,14 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
 
     // A cell from the learner's check can be enrolled, from the cache alone.
     const listed = await listBundledCellsHandler(db, { user: "learner" });
-    expect(listed.cells.map((cell) => cell.id)).toContain("zam-academy:sql");
+    expect(listed.cells.map((cell) => cell.id)).toContain("zam-academy:nur-katalog");
     const enrolled = await enrolBundledCellHandler(db, {
-      cellId: "zam-academy:sql",
+      cellId: "zam-academy:nur-katalog",
       user: "learner",
     });
     // Its items are the UML items under another id here, so they are reused.
     expect(enrolled.success).toBe(true);
-    expect(await installedTileVersion(db, "zam-academy:sql")).toBe("2026.10.1");
+    expect(await installedTileVersion(db, "zam-academy:nur-katalog")).toBe("2026.10.1");
   });
 
   it("refuses a catalog-only cell in a team library", async () => {
@@ -384,7 +386,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       dialect: { value: "postgres" },
     }) as Database;
     await expect(
-      enrolBundledCell(team, "learner", "zam-academy:sql", {
+      enrolBundledCell(team, "learner", "zam-academy:nur-katalog", {
         resolveTile: () => catalogOnly(),
       }),
     ).rejects.toThrow(/team library/);
