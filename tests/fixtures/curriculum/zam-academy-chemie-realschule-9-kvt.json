@@ -1,0 +1,3452 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:chemie-realschule-9",
+  "version": "2026.10.2",
+  "title": "Chemie 9 Realschule (ZAM Academy)",
+  "description": "Chemie 9 nach LehrplanPLUS Bayern: getrennte Lernpfade für Zweig I und II/III, digitale Modelle und Aufgaben. Jede Karte führt zur passenden Lektion zurück.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-20T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/chemie-realschule-9/",
+      "label": "ZAM Academy: Chemie 9 Realschule, sieben Etappen"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/chemie/wpfg1",
+      "checked": "2026-10-20",
+      "label": "LehrplanPLUS Chemie 9 Realschule, Zweig I"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/chemie/wpfg2-3",
+      "checked": "2026-10-20",
+      "label": "LehrplanPLUS Chemie 9 Realschule, Zweig II/III"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5CS47B4M05QJWK5Y3HD261W",
+      "atom_uri": "urn:zam:atom:01M5CS47B4M05QJWK5Y3HD261W",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-sicher-arbeiten",
+      "title": "Sicher arbeiten und genau beobachten",
+      "domain": "chemie/forschen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-sicher-arbeiten",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "forschen",
+          "topic_title": "Sicher forschen und Stoffe unterscheiden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Wie Chemiker denken und arbeiten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb1",
+          "topic_title": "Wie Chemiker denken und arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6FXZB4G1CR20NHX8D",
+          "slug": "c9-sicher-arbeiten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-sicher-arbeiten",
+          "question": "Welche Aussage ist eine Beobachtung?",
+          "concept": "Die Flüssigkeit wird blau.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Flüssigkeit wird blau.",
+              "Die Teilchen werden neu verbunden."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Teilchen werden neu verbunden.",
+              "reason": "Eine sichtbare Farbänderung ist eine Beobachtung; ihre Erklärung ist eine Deutung."
+            },
+            {
+              "text": "Es entstehen neue Teilchenverbände.",
+              "reason": "Eine sichtbare Farbänderung ist eine Beobachtung; ihre Erklärung ist eine Deutung."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B6C746ST7R4KAJFEJZ",
+          "slug": "c9-sicher-arbeiten-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-sicher-arbeiten",
+          "question": "Wodurch unterscheiden sich Beobachtung und Deutung in einem Versuchsprotokoll?",
+          "concept": "Beobachtung beschreibt Messwerte; Deutung erklärt sie mit einem Modell.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beobachtung beschreibt Messwerte; Deutung erklärt sie mit einem Modell.",
+              "Beobachtung nennt die Ursache; Deutung nennt nur die abgelesenen Messwerte."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Beobachtung nennt die Ursache; Deutung nennt nur die abgelesenen Messwerte.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Beobachtung beschreibt Messwerte; Deutung erklärt sie mit einem Modell."
+            },
+            {
+              "text": "Beobachtung und Deutung meinen dasselbe; beide beschreiben nur das Gesehene.",
+              "reason": "Beobachtung und Deutung werden oft vermischt: Die Deutung erklärt das Beobachtete mit einem Modell."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B5V1JN8NAD4GR5CBK8",
+      "atom_uri": "urn:zam:atom:01M5CS47B5V1JN8NAD4GR5CBK8",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-stoffeigenschaften",
+      "title": "Stoffeigenschaften messen",
+      "domain": "chemie/forschen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-stoffeigenschaften",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "forschen",
+          "topic_title": "Sicher forschen und Stoffe unterscheiden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb2",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6Q5MVZCMNC1ZCK8JT",
+          "slug": "c9-stoffeigenschaften-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-stoffeigenschaften",
+          "question": "Ist eine klare Salzlösung ein Reinstoff?",
+          "concept": "Nein, eine klare Salzlösung ist ein homogenes Gemisch.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, eine klare Salzlösung ist ein homogenes Gemisch.",
+              "Ja, eine klare Salzlösung ist stets ein reiner Stoff."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ja, eine klare Salzlösung ist stets ein reiner Stoff.",
+              "reason": "Gelöstes Salz und Wasser sind zwei Stoffe; gleichmäßiges Aussehen macht keinen Reinstoff."
+            },
+            {
+              "text": "Ja, das gelöste Salz wird dabei vollständig zu Wasser.",
+              "reason": "Gelöstes Salz und Wasser sind zwei Stoffe; gleichmäßiges Aussehen macht keinen Reinstoff."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B761Z2YZ381T3ZCZVY",
+          "slug": "c9-stoffeigenschaften-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-stoffeigenschaften",
+          "question": "Ist ein homogenes Gemisch automatisch ein Reinstoff?",
+          "concept": "Nein, es kann mehrere gleichmäßig verteilte Stoffe enthalten.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, es kann mehrere gleichmäßig verteilte Stoffe enthalten.",
+              "Ja, gleichmäßiges Aussehen beweist einen einzigen reinen Stoff."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ja, gleichmäßiges Aussehen beweist einen einzigen reinen Stoff.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Nein, es kann mehrere gleichmäßig verteilte Stoffe enthalten."
+            },
+            {
+              "text": "Ja, jedes homogene Gemisch besteht nur aus einer einzigen Atomsorte.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Nein, es kann mehrere gleichmäßig verteilte Stoffe enthalten."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B5C8CHWA2K2G55E9GB",
+      "atom_uri": "urn:zam:atom:01M5CS47B5C8CHWA2K2G55E9GB",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-teilchenmodell",
+      "title": "Teilchenmodell und Aggregatzustände",
+      "domain": "chemie/forschen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-teilchenmodell",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "forschen",
+          "topic_title": "Sicher forschen und Stoffe unterscheiden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb2",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6CEQ72G1EADNERJ8D",
+          "slug": "c9-teilchenmodell-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-teilchenmodell",
+          "question": "Was ändert sich beim Verdampfen von Wasser?",
+          "concept": "Abstand und Beweglichkeit der Wassermoleküle ändern sich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Abstand und Beweglichkeit der Wassermoleküle ändern sich.",
+              "Die Wassermoleküle zerfallen in Wasserstoff und Sauerstoff."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Wassermoleküle zerfallen in Wasserstoff und Sauerstoff.",
+              "reason": "Häufige Fehlvorstellung: Beim Sieden zerfällt Wasser. Die Moleküle bleiben aber erhalten, nur ihr Abstand ändert sich."
+            },
+            {
+              "text": "Die einzelnen Wassermoleküle dehnen sich aus und werden größer.",
+              "reason": "Die Teilchen selbst werden nicht größer; größer wird der Abstand zwischen ihnen."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B79D3GE0AZGBKS5MBC",
+          "slug": "c9-teilchenmodell-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-teilchenmodell",
+          "question": "Werden Wassermoleküle beim Verdampfen chemisch zerlegt?",
+          "concept": "Nein, die Teilchenart bleibt beim Zustandswechsel erhalten.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, die Teilchenart bleibt beim Zustandswechsel erhalten.",
+              "Ja, jeder Zustandswechsel erzeugt dabei andere Teilchenarten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ja, jeder Zustandswechsel erzeugt dabei andere Teilchenarten.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Nein, die Teilchenart bleibt beim Zustandswechsel erhalten."
+            },
+            {
+              "text": "Ja, die Blasen im kochenden Wasser bestehen aus Wasserstoff und Sauerstoff.",
+              "reason": "Die Blasen sind Wasserdampf; Wasser wird erst durch Elektrolyse in Wasserstoff und Sauerstoff zerlegt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B59GP862N1Z52SNKA2",
+      "atom_uri": "urn:zam:atom:01M5CS47B59GP862N1Z52SNKA2",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-trennverfahren",
+      "title": "Gemische gezielt trennen",
+      "domain": "chemie/forschen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-trennverfahren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "forschen",
+          "topic_title": "Sicher forschen und Stoffe unterscheiden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb2",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6A4XRSHXY1JSP41QP",
+          "slug": "c9-trennverfahren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-trennverfahren",
+          "question": "Lässt sich gelöstes Kochsalz mit gewöhnlichem Filterpapier aus Wasser abtrennen?",
+          "concept": "Nein, gelöstes Salz passiert gewöhnliches Filterpapier.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, gelöstes Salz passiert gewöhnliches Filterpapier.",
+              "Ja, gelöstes Salz wird wie grober Sand zurückgehalten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ja, gelöstes Salz wird wie grober Sand zurückgehalten.",
+              "reason": "Filtration trennt ungelöste Feststoffe, nicht gelöste Ionen."
+            },
+            {
+              "text": "Ja, ein doppelt gefaltetes Filterpapier hält das gelöste Salz zurück.",
+              "reason": "Gelöste Ionen sind viel kleiner als jede Pore im Filterpapier; Faltung ändert daran nichts."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7TYZKADFW1J3QC08M",
+          "slug": "c9-trennverfahren-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-trennverfahren",
+          "question": "Welche Eigenschaft nutzt die Extraktion zur Stofftrennung?",
+          "concept": "Die unterschiedliche Löslichkeit der Bestandteile.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die unterschiedliche Löslichkeit der Bestandteile.",
+              "Die unterschiedliche Siedetemperatur der Bestandteile."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die unterschiedliche Siedetemperatur der Bestandteile.",
+              "reason": "Die Siedetemperatur nutzt die Destillation."
+            },
+            {
+              "text": "Die unterschiedliche Dichte der Bestandteile.",
+              "reason": "Die Dichte nutzen Sedimentieren und Dekantieren."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B5VSQMB7D7K122SAPE",
+      "atom_uri": "urn:zam:atom:01M5CS47B5VSQMB7D7K122SAPE",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-nachweise",
+      "title": "Nachweisreaktionen auswerten",
+      "domain": "chemie/forschen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-nachweise",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "forschen",
+          "topic_title": "Sicher forschen und Stoffe unterscheiden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb2",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6J615SFH5FJ3B2V3A",
+          "slug": "c9-nachweise-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-nachweise",
+          "question": "Welches Gas macht Kalkwasser bei einer positiven Nachweisprobe trüb?",
+          "concept": "Kohlenstoffdioxid",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kohlenstoffdioxid",
+              "Wasserstoffgas"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wasserstoffgas",
+              "reason": "Die Trübung entsteht durch einen schwer löslichen Stoff bei der Reaktion mit Kohlenstoffdioxid."
+            },
+            {
+              "text": "Sauerstoffgas",
+              "reason": "Die Trübung entsteht durch einen schwer löslichen Stoff bei der Reaktion mit Kohlenstoffdioxid."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B70MSGCBR8456ZTT1G",
+          "slug": "c9-nachweise-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-nachweise",
+          "question": "Welches Gas wird durch eine positive Glimmspanprobe nachgewiesen?",
+          "concept": "Sauerstoffgas",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sauerstoffgas",
+              "Wasserstoffgas"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wasserstoffgas",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Sauerstoffgas"
+            },
+            {
+              "text": "Kohlenstoffdioxid",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Sauerstoffgas"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B5DPFBQGYTC048SCVQ",
+      "atom_uri": "urn:zam:atom:01M5CS47B5DPFBQGYTC048SCVQ",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-teilchenverbaende",
+      "title": "Atome, Moleküle und Gitter",
+      "domain": "chemie/reaktionen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-teilchenverbaende",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "reaktionen",
+          "topic_title": "Teilchenverbände und Reaktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Aufbau der Materie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6V1C3ZBKTK863D6SN",
+          "slug": "c9-teilchenverbaende-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-teilchenverbaende",
+          "question": "Beschreibt NaCl ein einzelnes Kochsalzmolekül?",
+          "concept": "Nein, NaCl bezeichnet das kleinste Ionenverhältnis im Gitter.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, NaCl bezeichnet das kleinste Ionenverhältnis im Gitter.",
+              "Ja, NaCl beschreibt immer einzelne abgegrenzte Salzmoleküle."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ja, NaCl beschreibt immer einzelne abgegrenzte Salzmoleküle.",
+              "reason": "Salze bilden Ionengitter; NaCl steht für ein Verhältnis von 1 : 1."
+            },
+            {
+              "text": "Ja, NaCl steht für zwei neutrale Atome ohne Gitterverband.",
+              "reason": "Salze bilden Ionengitter; NaCl steht für ein Verhältnis von 1 : 1."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B75EXWYZG3BMY3HNPX",
+          "slug": "c9-teilchenverbaende-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-teilchenverbaende",
+          "question": "Was nennt die Verhältnisformel einer Ionenverbindung?",
+          "concept": "Das kleinste ganzzahlige Verhältnis ihrer Ionen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das kleinste ganzzahlige Verhältnis ihrer Ionen.",
+              "Die Zahl der Elektronen in einem abgegrenzten Salzmolekül."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Zahl der Elektronen in einem abgegrenzten Salzmolekül.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Das kleinste ganzzahlige Verhältnis ihrer Ionen."
+            },
+            {
+              "text": "Die räumliche Position jedes Ions im gesamten Kristall.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Das kleinste ganzzahlige Verhältnis ihrer Ionen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B5W1Y5H64B2S1NC0P8",
+      "atom_uri": "urn:zam:atom:01M5CS47B5W1Y5H64B2S1NC0P8",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-reaktionsgleichungen",
+      "title": "Reaktionsgleichungen ausgleichen",
+      "domain": "chemie/reaktionen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-reaktionsgleichungen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "reaktionen",
+          "topic_title": "Teilchenverbände und Reaktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B63C0XA7GGSXFNMEKM",
+          "slug": "c9-reaktionsgleichungen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-reaktionsgleichungen",
+          "question": "Was darfst du zum Ausgleichen verändern?",
+          "concept": "Die Koeffizienten vor den Stoffformeln.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Koeffizienten vor den Stoffformeln.",
+              "Die Indizes innerhalb der Stoffformeln."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Indizes innerhalb der Stoffformeln.",
+              "reason": "Andere Indizes würden andere Stoffe bedeuten."
+            },
+            {
+              "text": "Die Elementsymbole innerhalb der Formeln.",
+              "reason": "Andere Indizes würden andere Stoffe bedeuten."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7GM57Y5NSNFMH5JTM",
+          "slug": "c9-reaktionsgleichungen-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-reaktionsgleichungen",
+          "question": "Warum bleiben die Indizes in einer Stoffformel beim Ausgleichen unverändert?",
+          "concept": "Andere Indizes würden einen anderen Stoff beschreiben.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Andere Indizes würden einen anderen Stoff beschreiben.",
+              "Die Indizes geben immer die benötigte Stoffmenge in mol an."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Indizes geben immer die benötigte Stoffmenge in mol an.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Andere Indizes würden einen anderen Stoff beschreiben."
+            },
+            {
+              "text": "Weil man Gleichungen nur auf der Seite der Ausgangsstoffe ausgleichen darf.",
+              "reason": "Ausgeglichen wird auf beiden Seiten; der Grund ist, dass andere Indizes einen anderen Stoff beschreiben."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B577XDM6NSAWZ5E1PW",
+      "atom_uri": "urn:zam:atom:01M5CS47B577XDM6NSAWZ5E1PW",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-energie-katalyse",
+      "title": "Energie und Katalysatoren",
+      "domain": "chemie/reaktionen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-energie-katalyse",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "reaktionen",
+          "topic_title": "Teilchenverbände und Reaktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B62PMGGRK7X0B45YJ8",
+          "slug": "c9-energie-katalyse-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-energie-katalyse",
+          "question": "Welche Größe verändert ein Katalysator?",
+          "concept": "Die Aktivierungsenergie des Reaktionswegs.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Aktivierungsenergie des Reaktionswegs.",
+              "Die Energie der gebildeten Endprodukte."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Energie der gebildeten Endprodukte.",
+              "reason": "Der günstigere Reaktionsweg hat eine kleinere Startbarriere."
+            },
+            {
+              "text": "Die Energie der vorhandenen Ausgangsstoffe.",
+              "reason": "Der günstigere Reaktionsweg hat eine kleinere Startbarriere."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7TRCZYXQT1ZKHJ6TJ",
+          "slug": "c9-energie-katalyse-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-energie-katalyse",
+          "question": "Verändert ein Katalysator die Reaktionsenergiebilanz zwischen denselben Edukten und Produkten?",
+          "concept": "Nein, er verändert den Weg und dessen Aktivierungsenergie.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, er verändert den Weg und dessen Aktivierungsenergie.",
+              "Ja, er macht die Produkte durch seine Anwesenheit energieärmer."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ja, er macht die Produkte durch seine Anwesenheit energieärmer.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Nein, er verändert den Weg und dessen Aktivierungsenergie."
+            },
+            {
+              "text": "Ja, er wird bei der Reaktion verbraucht und liefert dabei Energie.",
+              "reason": "Ein Katalysator liegt nach der Reaktion unverändert vor und liefert keine Energie."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B5K5PB2PMNHFRQBJ2Q",
+      "atom_uri": "urn:zam:atom:01M5CS47B5K5PB2PMNHFRQBJ2Q",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-stoffmenge",
+      "title": "Masse, Stoffmenge und Teilchenzahl",
+      "domain": "chemie/reaktionen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-stoffmenge",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "reaktionen",
+          "topic_title": "Teilchenverbände und Reaktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6SVYXJZB52PJMX2CZ",
+          "slug": "c9-stoffmenge-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-stoffmenge",
+          "question": "Enthalten 1 mol Wasser und 1 mol CO₂ gleich viele Moleküle?",
+          "concept": "Ja, bei verschiedener Masse ist die Molekülzahl gleich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ja, bei verschiedener Masse ist die Molekülzahl gleich.",
+              "Nein, die schwereren Moleküle ergeben weniger Teilchen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nein, die schwereren Moleküle ergeben weniger Teilchen.",
+              "reason": "Das mol ist über die Teilchenzahl definiert."
+            },
+            {
+              "text": "Nein, Wasser enthält pro mol stets doppelt so viele Teilchen.",
+              "reason": "Das mol ist über die Teilchenzahl definiert."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B78CF3NKZEW0FGVJM3",
+          "slug": "c9-stoffmenge-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-stoffmenge",
+          "question": "Wodurch unterscheidet sich die Masse von einem mol verschiedener Stoffe?",
+          "concept": "Durch die jeweils unterschiedliche molare Masse.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch die jeweils unterschiedliche molare Masse.",
+              "Durch eine je Stoff andere Definition der Avogadro-Konstante."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Durch eine je Stoff andere Definition der Avogadro-Konstante.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Durch die jeweils unterschiedliche molare Masse."
+            },
+            {
+              "text": "Durch die unterschiedliche Zahl der Teilchen in einem mol.",
+              "reason": "Ein mol enthält bei jedem Stoff gleich viele Teilchen; verschieden ist ihre Masse."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7027CTZTTXC6Q1BVJ",
+          "slug": "c9-stoffmenge-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-stoffmenge",
+          "question": "Wie berechnet sich die Stoffmenge aus Masse und molarer Masse?",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "n = m / M",
+              "n = m²/M"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "n = m²/M",
+              "reason": "Die Masse wird durch die molare Masse geteilt."
+            },
+            {
+              "text": "n² = m/M",
+              "reason": "Die Masse wird durch die molare Masse geteilt."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "n = \\frac{m}{M}",
+              "speech": "Stoffmenge n gleich Masse m geteilt durch molare Masse M"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B5SX8FMGA40QXY3F9W",
+      "atom_uri": "urn:zam:atom:01M5CS47B5SX8FMGA40QXY3F9W",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-rutherford",
+      "title": "Rutherfords Streuversuch",
+      "domain": "chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-rutherford",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "atombau",
+          "topic_title": "Atombau und Periodensystem"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb5",
+          "topic_title": "Atombau und Periodensystem der Elemente",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6Q6XG9X2Y44P5QCWR",
+          "slug": "c9-rutherford-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-rutherford",
+          "question": "Wo sitzt fast die gesamte Masse eines Atoms?",
+          "concept": "Im kleinen, positiv geladenen Atomkern.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im kleinen, positiv geladenen Atomkern.",
+              "Gleichmäßig in der ausgedehnten Atomhülle."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Gleichmäßig in der ausgedehnten Atomhülle.",
+              "reason": "Protonen und Neutronen sind viel schwerer als Elektronen."
+            },
+            {
+              "text": "Im Raum zwischen benachbarten Atomen.",
+              "reason": "Protonen und Neutronen sind viel schwerer als Elektronen."
+            }
+          ],
+          "replaces": [
+            "01K4C9A0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M5CS47B7WJW2824X1VM3RGBX",
+          "slug": "c9-rutherford-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-rutherford",
+          "question": "Welche Beobachtung im Streuversuch spricht für einen sehr kleinen Kern?",
+          "concept": "Die meisten Alphateilchen passieren nahezu ungehindert.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die meisten Alphateilchen passieren nahezu ungehindert.",
+              "Alle Alphateilchen werden gleich stark seitlich abgelenkt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Alle Alphateilchen werden gleich stark seitlich abgelenkt.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Die meisten Alphateilchen passieren nahezu ungehindert."
+            },
+            {
+              "text": "Sämtliche Alphateilchen bleiben schon an der Atomhülle hängen.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Die meisten Alphateilchen passieren nahezu ungehindert."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B84CK1C1BANRCS32MB",
+          "slug": "c9-legacy-j02-atombau",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-rutherford",
+          "question": "Beschreibe den Rutherfordschen Streuversuch mit Alpha-Teilchen an einer Goldfolie und leite die zwei zentralen Schlussfolgerungen für den Atombau ab.",
+          "concept": "Fast alle Alpha-Teilchen durchdringen Folie ungehindert -> Atom ist größtenteils leerer Raum; wenige Teilchen stark abgelenkt -> winziger, massereicher, positiv geladener Kern",
+          "materiality": "material",
+          "sample_solution": "Beim Rutherford-Streuversuch wurden positiv geladene Alpha-Teilchen auf eine hauchdünne Goldfolie geschossen. Beobachtung: Fast alle Teilchen passierten die Folie geradlinig ohne Ablenkung; nur sehr wenige (ca. 1 von 8000) wurden stark abgelenkt oder zurückgeworfen. Schlussfolgerungen: 1. Das Atom besteht fast vollständig aus leerem Raum (der Atomhülle mit den massearmen Elektronen). 2. Im Zentrum befindet sich ein extrem winziger, aber massereicher und positiv geladener Atomkern (Durchmesser-Verhältnis Kern zu Hülle ca. 1 : 10.000 bis 1 : 100.000).",
+          "replaces": [
+            "01K4C9A0000000000000000J02"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B5KHCXP18F4PSJ7FQK",
+      "atom_uri": "urn:zam:atom:01M5CS47B5KHCXP18F4PSJ7FQK",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-atomteilchen",
+      "title": "Protonen, Neutronen und Elektronen",
+      "domain": "chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-atomteilchen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "atombau",
+          "topic_title": "Atombau und Periodensystem"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb5",
+          "topic_title": "Atombau und Periodensystem der Elemente",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6WPF1R7SXAAT54V1P",
+          "slug": "c9-atomteilchen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-atomteilchen",
+          "question": "Welche Zahl bestimmt das chemische Element?",
+          "concept": "Die Anzahl der Protonen im Kern.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Anzahl der Protonen im Kern.",
+              "Die Anzahl der Neutronen im Kern."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Anzahl der Neutronen im Kern.",
+              "reason": "Andere Neutronenzahlen ergeben Isotope desselben Elements."
+            },
+            {
+              "text": "Die Anzahl der besetzten Schalen.",
+              "reason": "Andere Neutronenzahlen ergeben Isotope desselben Elements."
+            }
+          ],
+          "replaces": [
+            "01K4C9A0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M5CS47B7GSJ7R5CCGJN9QBNE",
+          "slug": "c9-atomteilchen-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-atomteilchen",
+          "question": "Was unterscheidet Isotope desselben Elements?",
+          "concept": "Die Neutronenzahl bei gleicher Protonenzahl.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Neutronenzahl bei gleicher Protonenzahl.",
+              "Die Protonenzahl bei gleicher Neutronenzahl."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Protonenzahl bei gleicher Neutronenzahl.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Die Neutronenzahl bei gleicher Protonenzahl."
+            },
+            {
+              "text": "Die Elektronenzahl bei gleicher Protonenzahl.",
+              "reason": "Eine andere Elektronenzahl bei gleicher Protonenzahl kennzeichnet ein Ion, kein Isotop."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B89DF9C0AQ5GV530AX",
+          "slug": "c9-legacy-j04-atombau",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-atomteilchen",
+          "question": "Charakterisiere Proton, Neutron und Elektron hinsichtlich Ladung, relativer Masse und Aufenthaltsort im Atom und definiere den Begriff Isotop.",
+          "concept": "Proton (p+, +1, 1u, Kern), Neutron (n, 0, 1u, Kern), Elektron (e-, -1, ~1/2000u, Hülle); Isotope = gleiche Protonenzahl, verschiedene Neutronenzahl",
+          "materiality": "material",
+          "sample_solution": "1. Proton (p+): Ladung +1, relative Masse ≈ 1 u, im Atomkern. 2. Neutron (n): ungeladen (Ladung 0), relative Masse ≈ 1 u, im Atomkern. 3. Elektron (e-): Ladung -1, relative Masse ≈ 1/1836 u (vernachlässigbar), in der Atomhülle. In einem elektrisch neutralen Atom gilt: Anzahl Protonen = Anzahl Elektronen = Ordnungszahl Z. Die Massenzahl A = Protonen + Neutronen (N = A - Z). Isotope sind Atome desselben chemischen Elements (gleiche Protonenzahl/Ordnungszahl), die sich in ihrer Neutronenanzahl (und damit Massenzahl) unterscheiden (z. B. C-12 und C-14).",
+          "replaces": [
+            "01K4C9A0000000000000000J04"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B516GY9D73084VYQDZ",
+      "atom_uri": "urn:zam:atom:01M5CS47B516GY9D73084VYQDZ",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-energiestufen",
+      "title": "Energiestufen und Außenelektronen",
+      "domain": "chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-energiestufen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "atombau",
+          "topic_title": "Atombau und Periodensystem"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb5",
+          "topic_title": "Atombau und Periodensystem der Elemente",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6C3KN5K6F6R20744J",
+          "slug": "c9-energiestufen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-energiestufen",
+          "question": "Wie viele Elektronen passen maximal in die K-Schale des Bohr-Modells?",
+          "concept": "Maximal zwei Elektronen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Maximal zwei Elektronen.",
+              "Maximal acht Elektronen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Maximal acht Elektronen.",
+              "reason": "Für n = 1 ergibt 2n² den Wert zwei."
+            },
+            {
+              "text": "Maximal vier Elektronen.",
+              "reason": "Für n = 1 ergibt 2n² den Wert zwei."
+            }
+          ],
+          "replaces": [
+            "01K4C9A0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M5CS47B7MPB3FRYAZFQDKXC7",
+          "slug": "c9-energiestufen-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-energiestufen",
+          "question": "Welche Elektronen heißen Valenzelektronen im einfachen Hauptgruppenmodell?",
+          "concept": "Die Elektronen der äußersten besetzten Energiestufe.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Elektronen der äußersten besetzten Energiestufe.",
+              "Die Elektronen der innersten besetzten Energiestufe."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Elektronen der innersten besetzten Energiestufe.",
+              "reason": "Valenzelektronen liegen auf der äußersten besetzten Stufe, nicht auf der innersten."
+            },
+            {
+              "text": "Alle Elektronen eines Atoms zusammen.",
+              "reason": "Nur die Elektronen der äußersten Stufe zählen als Valenzelektronen."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B75X0JPTW8MWKDBKBS",
+          "slug": "c9-bohr-schalenkapazitaet",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-energiestufen",
+          "question": "Welche Formel nennt die maximale Elektronenzahl der n-ten Schale im Bohr-Modell?",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "2n²",
+              "3n²"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "3n²",
+              "reason": "Die Kapazität wächst im Modell quadratisch mit der Schalennummer."
+            },
+            {
+              "text": "n³",
+              "reason": "Die Kapazität wächst im Modell quadratisch mit der Schalennummer."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "2n^2",
+              "speech": "zwei mal n Quadrat"
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B8WD600A4WS9CQ7TBQ",
+          "slug": "c9-legacy-j06-atombau",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-energiestufen",
+          "question": "Erkläre das Schalenmodell nach Bohr, gib die Formel für die maximale Elektronenbesetzung einer Schale n an und definiere die Bedeutung der Valenzelektronen.",
+          "concept": "Elektronen kreisen auf diskreten Schalen K, L, M... mit max. 2n² Elektronen; Valenzelektronen auf äußerster Schale bestimmen chemische Reaktionsfähigkeit",
+          "materiality": "material",
+          "sample_solution": "Im Bohrschen Schalenmodell bewegen sich die Elektronen auf konzentrischen Schalen (K, L, M, N...) mit diskreten Energieniveaus um den Atomkern. Die maximale Elektronenzahl einer Schale mit Hauptquantenzahl n beträgt Z_max = 2*n² (K-Schale: 2, L-Schale: 8, M-Schale: 18). Die Elektronen auf der äußersten besetzten Schale heißen Valenzelektronen (maximal 8 bei Hauptgruppenelementen). Sie bestimmen das chemische Bindungsverhalten und die Reaktivität des Atoms.",
+          "replaces": [
+            "01K4C9A0000000000000000J06"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B5MSBN2TK5TXJ93VZF",
+      "atom_uri": "urn:zam:atom:01M5CS47B5MSBN2TK5TXJ93VZF",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-periodensystem",
+      "title": "Das Periodensystem lesen",
+      "domain": "chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-periodensystem",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "atombau",
+          "topic_title": "Atombau und Periodensystem"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb5",
+          "topic_title": "Atombau und Periodensystem der Elemente",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6NMPKJWMXZ7WGFM1G",
+          "slug": "c9-periodensystem-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-periodensystem",
+          "question": "Wie viele Außenelektronen hat Helium?",
+          "concept": "Zwei Elektronen in einer besetzten Schale.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwei Elektronen in einer besetzten Schale.",
+              "Acht Elektronen in einer besetzten Schale."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Acht Elektronen in einer besetzten Schale.",
+              "reason": "Seine erste und einzige Schale ist mit zwei Elektronen voll besetzt."
+            },
+            {
+              "text": "Vier Elektronen in zwei besetzten Schalen.",
+              "reason": "Seine erste und einzige Schale ist mit zwei Elektronen voll besetzt."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7Z68HDDEBE0W1W2A2",
+          "slug": "c9-periodensystem-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-periodensystem",
+          "question": "Welcher Sonderfall ist bei Hauptgruppe VIII und der Außenelektronenzahl zu beachten?",
+          "concept": "Helium hat zwei statt acht Außenelektronen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Helium hat zwei statt acht Außenelektronen.",
+              "Neon hat vier statt acht Außenelektronen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Neon hat vier statt acht Außenelektronen.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Helium hat zwei statt acht Außenelektronen."
+            },
+            {
+              "text": "Argon hat sechs statt acht Außenelektronen.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Helium hat zwei statt acht Außenelektronen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B53AWEWCGSDYN4Z3A0",
+      "atom_uri": "urn:zam:atom:01M5CS47B53AWEWCGSDYN4Z3A0",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-kugelwolken",
+      "title": "Kugelwolken und Elektronenpaare",
+      "domain": "chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-kugelwolken",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "atombau",
+          "topic_title": "Atombau und Periodensystem"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb5",
+          "topic_title": "Atombau und Periodensystem der Elemente",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B65VQ429QB9P95E8TC",
+          "slug": "c9-kugelwolken-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-kugelwolken",
+          "question": "Wie werden vier Valenzwolken zunächst mit vier Elektronen besetzt?",
+          "concept": "Jede der vier Wolken erhält ein Elektron.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Jede der vier Wolken erhält ein Elektron.",
+              "Zwei der vier Wolken erhalten je zwei Elektronen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zwei der vier Wolken erhalten je zwei Elektronen.",
+              "reason": "Einfachbesetzung geht im vereinfachten Modell der Paarbildung voraus."
+            },
+            {
+              "text": "Eine Wolke erhält alle vier Elektronen zusammen.",
+              "reason": "Einfachbesetzung geht im vereinfachten Modell der Paarbildung voraus."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B70F28JW83EY5XH9TV",
+          "slug": "c9-kugelwolken-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-kugelwolken",
+          "question": "Wie viele Elektronen fasst eine Wolke im vereinfachten Kugelwolkenmodell höchstens?",
+          "concept": "Zwei Elektronen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwei Elektronen.",
+              "Vier Elektronen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Vier Elektronen.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Zwei Elektronen."
+            },
+            {
+              "text": "Acht Elektronen.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Zwei Elektronen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6HY9SXJGA5HPSDR45",
+      "atom_uri": "urn:zam:atom:01M5CS47B6HY9SXJGA5HPSDR45",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-ionen-salze",
+      "title": "Ionen und Verhältnisformeln",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-ionen-salze",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "bindungen",
+          "topic_title": "Bindungen und Stoffeigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Donator-Akzeptor-Konzept – Elektronenübergänge",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Aufbau der Materie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6GAYYJHKVX2R9XGW3",
+          "slug": "c9-ionen-salze-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-ionen-salze",
+          "question": "Welches Verhältnis passt zu Mg²⁺ und Cl⁻?",
+          "concept": "Ein Magnesiumion zu zwei Chloridionen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Magnesiumion zu zwei Chloridionen.",
+              "Zwei Magnesiumionen zu einem Chloridion."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zwei Magnesiumionen zu einem Chloridion.",
+              "reason": "Eine Ladung +2 wird durch zweimal −1 ausgeglichen."
+            },
+            {
+              "text": "Ein Magnesiumion zu drei Chloridionen.",
+              "reason": "Eine Ladung +2 wird durch zweimal −1 ausgeglichen."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7YY18AKKFTJDZQHF5",
+          "slug": "c9-ionen-salze-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-ionen-salze",
+          "question": "Warum sind viele Salzkristalle spröde?",
+          "concept": "Verschobene Gitterebenen bringen gleichnamige Ladungen nebeneinander.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Verschobene Gitterebenen bringen gleichnamige Ladungen nebeneinander.",
+              "Die Ionenbindung ist schwach und bricht schon bei geringer Kraft."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Ionenbindung ist schwach und bricht schon bei geringer Kraft.",
+              "reason": "Die Ionenbindung ist stark (hohe Schmelztemperatur); spröde wird der Kristall durch abstoßende gleichnamige Ladungen."
+            },
+            {
+              "text": "Die Ionen sind nur durch schwache zwischenmolekulare Kräfte verbunden.",
+              "reason": "Ein Salzkristall besteht aus Ionen mit Ionenbindung, nicht aus Molekülen."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B88AAXJK4K5ZF4PZVV",
+          "slug": "c9-legacy-j02-bindung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-ionen-salze",
+          "question": "Erkläre die Entstehung einer Ionenbindung am Beispiel von Natriumchlorid (NaCl), beschreibe den Aufbau des Ionengitters und begründe die typischen Eigenschaften von Salzen (hohe Schmelztemperatur, Sprödigkeit).",
+          "concept": "Elektronenübertragung (Na -> Na+ + e-, Cl + e- -> Cl-); elektrostatische Anziehung im 3D-Gitter; Sprödigkeit durch Verschiebung gleichnamiger Ladungen (Abstoßung)",
+          "materiality": "material",
+          "sample_solution": "1. Entstehung: Natrium (1 Valenzelektron) gibt ein Elektron ab und wird zum einfach positiv geladenen Kation (Na+). Chlor (7 Valenzelektronen) nimmt dieses Elektron auf und wird zum einfach negativ geladenen Anion (Cl-). Beide Ionen erreichen Edelgaskonfiguration. 2. Ionengitter: Die Ionen ordnen sich durch ungerichtete elektrostatische Coulomb-Kräfte in einem regelmäßigen 3D-Kristallgitter an. 3. Eigenschaften: Hohe Schmelz- und Siedepunkte wegen starker Gitterenergie; Sprödigkeit, weil bei mechanischer Krafteinwirkung Gitterebenen verschoben werden, sodass gleichnamig geladene Ionen nebeneinander zu liegen kommen und sich schlagartig abstoßen.",
+          "replaces": [
+            "01K4C9B0000000000000000J02"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6BFG7BDGPV1XK2JF6",
+      "atom_uri": "urn:zam:atom:01M5CS47B6BFG7BDGPV1XK2JF6",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-metallbindung",
+      "title": "Metallbindung und Leitfähigkeit",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-metallbindung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "bindungen",
+          "topic_title": "Bindungen und Stoffeigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6961GMA2HAT2GJA3G",
+          "slug": "c9-metallbindung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-metallbindung",
+          "question": "Leitet ein fester Kochsalzkristall unter üblichen Bedingungen gut?",
+          "concept": "Nein, die Ionen sind im festen Gitter nicht frei beweglich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, die Ionen sind im festen Gitter nicht frei beweglich.",
+              "Ja, feste Salze enthalten überall frei bewegliche Elektronen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ja, feste Salze enthalten überall frei bewegliche Elektronen.",
+              "reason": "Ladung allein reicht nicht: Die Ladungsträger müssen sich bewegen können."
+            },
+            {
+              "text": "Ja, im festen Salz wandern beide Ionenarten durch das Gitter.",
+              "reason": "Ladung allein reicht nicht: Die Ladungsträger müssen sich bewegen können."
+            }
+          ],
+          "replaces": [
+            "01K4C9B0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M5CS47B7E26XETFQ4161NVPR",
+          "slug": "c9-metallbindung-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-metallbindung",
+          "question": "Welche Teilchen transportieren die elektrische Ladung im festen Metall?",
+          "concept": "Delokalisierte Elektronen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Delokalisierte Elektronen.",
+              "Wandernde Metallkationen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wandernde Metallkationen.",
+              "reason": "Die Metallkationen bleiben an ihren Gitterplätzen; wandernde Ionen leiten erst in Schmelzen und Lösungen."
+            },
+            {
+              "text": "Positive Ladungsträger (Protonen).",
+              "reason": "Protonen sitzen fest im Atomkern; im Metall wandern Elektronen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6SVC1CT77EPTQ8FVK",
+      "atom_uri": "urn:zam:atom:01M5CS47B6SVC1CT77EPTQ8FVK",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-elektronenpaare",
+      "title": "Elektronenpaarbindung und Lewis-Bilder",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-elektronenpaare",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "bindungen",
+          "topic_title": "Bindungen und Stoffeigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6JB0VW3NCJ7TDGD16",
+          "slug": "c9-elektronenpaare-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-elektronenpaare",
+          "question": "Wie viele bindende Elektronenpaare besitzt N₂?",
+          "concept": "Drei bindende Elektronenpaare.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Drei bindende Elektronenpaare.",
+              "Zwei bindende Elektronenpaare."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zwei bindende Elektronenpaare.",
+              "reason": "Die Dreifachbindung enthält drei gemeinsame Elektronenpaare."
+            },
+            {
+              "text": "Ein bindendes Elektronenpaar.",
+              "reason": "Die Dreifachbindung enthält drei gemeinsame Elektronenpaare."
+            }
+          ],
+          "replaces": [
+            "01K4C9B0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M5CS47B7AW48PCV194A1GA31",
+          "slug": "c9-elektronenpaare-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-elektronenpaare",
+          "question": "Was bedeutet ein Bindungsstrich in einem Valenzstrichbild?",
+          "concept": "Ein gemeinsam genutztes Elektronenpaar.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein gemeinsam genutztes Elektronenpaar.",
+              "Ein einzelnes Elektron, das beide Atome teilen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein einzelnes Elektron, das beide Atome teilen.",
+              "reason": "Ein Bindungsstrich steht für zwei Elektronen, ein bindendes Paar."
+            },
+            {
+              "text": "Eine Ionenbindung zwischen zwei geladenen Atomen.",
+              "reason": "Ein Bindungsstrich zeigt eine Elektronenpaarbindung, keine Ionenbindung."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B8BC9KEF88BP9G91QW",
+          "slug": "c9-legacy-j04-bindung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-elektronenpaare",
+          "question": "Erkläre das Prinzip der Elektronenpaarbindung (kovalente Bindung / Atombindung) zwischen Nichtmetallatomen und erstelle die Lewis-Schreibweise für Wasser (H₂O) und Methan (CH₄).",
+          "concept": "Gemeinsame Nutzung von Elektronenpaaren zum Erreichen des Oktetts; H2O hat 2 bindende und 2 freie Paare; CH4 hat 4 bindende Paare",
+          "materiality": "material",
+          "sample_solution": "Bei der Elektronenpaarbindung teilen sich Nichtmetallatome Valenzelektronen so, dass gemeinsame (bindende) Elektronenpaare entstehen, die von beiden Atomkernen angezogen werden, sodass beide Atome Edelgaskonfiguration erreichen. In der Lewis-Schreibweise wird ein Elektronenpaar als Strich symbolisiert: Für H₂O: Das zentrale Sauerstoffatom besitzt 2 bindende Elektronenpaare zu den beiden H-Atomen und 2 freie (nicht-bindende) Elektronenpaare (gewinkelte Struktur). Für CH₄: Das Kohlenstoffatom bildet 4 Einfachbindungen zu vier H-Atomen (tetraedrische Struktur).",
+          "replaces": [
+            "01K4C9B0000000000000000J04"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6P0GAGGAEK980MVST",
+      "atom_uri": "urn:zam:atom:01M5CS47B6P0GAGGAEK980MVST",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-molekuelgestalt",
+      "title": "Die räumliche Gestalt von Molekülen",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-molekuelgestalt",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "bindungen",
+          "topic_title": "Bindungen und Stoffeigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6DHM0QX38SEDA78K1",
+          "slug": "c9-molekuelgestalt-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-molekuelgestalt",
+          "question": "Warum ist Wasser nicht linear?",
+          "concept": "Zwei freie Paare am O beeinflussen die räumliche Anordnung.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwei freie Paare am O beeinflussen die räumliche Anordnung.",
+              "Die beiden Wasserstoffatome ziehen sich gegenseitig an."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die beiden Wasserstoffatome ziehen sich gegenseitig an.",
+              "reason": "Den Winkel bestimmen die vier Elektronenbereiche am Sauerstoff, nicht eine Anziehung zwischen den Wasserstoffatomen."
+            },
+            {
+              "text": "Eine Doppelbindung zwischen O und H erzwingt einen Knick.",
+              "reason": "Wasser hat zwei Einfachbindungen; der Knick kommt von den freien Elektronenpaaren."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7JACE7G1JE9ZW0JZJ",
+          "slug": "c9-molekuelgestalt-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-molekuelgestalt",
+          "question": "Als wie viele Bindungsbereiche zählt eine Doppelbindung beim einfachen Elektronenpaarabstoßungsmodell?",
+          "concept": "Als einen Bindungsbereich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als einen Bindungsbereich.",
+              "Als zwei Bindungsbereiche."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Als zwei Bindungsbereiche.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Als einen Bindungsbereich."
+            },
+            {
+              "text": "Als drei Bindungsbereiche.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Als einen Bindungsbereich."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6PHMDR2SV7TYAY6Y1",
+      "atom_uri": "urn:zam:atom:01M5CS47B6PHMDR2SV7TYAY6Y1",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-polaritaet",
+      "title": "Polare Bindungen und Dipolmoleküle",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-polaritaet",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "bindungen",
+          "topic_title": "Bindungen und Stoffeigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6D7GV29Z4EXQYYM5F",
+          "slug": "c9-polaritaet-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-polaritaet",
+          "question": "Ist ein Wassermolekül ein permanenter Dipol?",
+          "concept": "Ja, polare Bindungen und gewinkelte Form ergeben einen Dipol.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ja, polare Bindungen und gewinkelte Form ergeben einen Dipol.",
+              "Nein, ein insgesamt neutrales Molekül kann kein Dipol sein."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nein, ein insgesamt neutrales Molekül kann kein Dipol sein.",
+              "reason": "Ein neutrales Molekül kann räumlich getrennte Partialladungen haben."
+            },
+            {
+              "text": "Nein, die O–H-Bindungen sind gleichmäßig unpolar aufgebaut.",
+              "reason": "Ein neutrales Molekül kann räumlich getrennte Partialladungen haben."
+            }
+          ],
+          "replaces": [
+            "01K4C9B0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M5CS47B7V318333HJDTZ8VA4",
+          "slug": "c9-polaritaet-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-polaritaet",
+          "question": "Warum besitzt lineares CO₂ trotz polarer Bindungen keinen permanenten Gesamtdipol?",
+          "concept": "Die gleich starken Bindungsdipole heben sich räumlich auf.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die gleich starken Bindungsdipole heben sich räumlich auf.",
+              "Weil Doppelbindungen grundsätzlich unpolar sind."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Weil Doppelbindungen grundsätzlich unpolar sind.",
+              "reason": "Die C=O-Bindung ist polar; nur der lineare Bau hebt die beiden Bindungsdipole auf."
+            },
+            {
+              "text": "Weil CO₂ ein Gas ist und Gase keine Dipole bilden.",
+              "reason": "Auch gasförmige Moleküle können Dipole sein, zum Beispiel HCl."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B676JTCHT9750BK0WP",
+      "atom_uri": "urn:zam:atom:01M5CS47B676JTCHT9750BK0WP",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-zwischenmolekulare-kraefte",
+      "title": "Zwischenmolekulare Kräfte und Wasser",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-zwischenmolekulare-kraefte",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "bindungen",
+          "topic_title": "Bindungen und Stoffeigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B62GN5VKPW9C8EEBFD",
+          "slug": "c9-zwischenmolekulare-kraefte-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-zwischenmolekulare-kraefte",
+          "question": "Welche Wechselwirkung trägt wesentlich zur hohen Siedetemperatur von Wasser bei?",
+          "concept": "Wasserstoffbrücken zwischen Wassermolekülen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wasserstoffbrücken zwischen Wassermolekülen.",
+              "Metallische Bindungen zwischen Wassermolekülen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Metallische Bindungen zwischen Wassermolekülen.",
+              "reason": "Wasserstoffbrücken wirken zwischen den Molekülen, die O–H-Bindungen innerhalb des Moleküls bleiben erhalten."
+            },
+            {
+              "text": "Ionenbindungen zwischen neutralen Wassermolekülen.",
+              "reason": "Wasserstoffbrücken wirken zwischen den Molekülen, die O–H-Bindungen innerhalb des Moleküls bleiben erhalten."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B746V09APNGH5P0KQX",
+          "slug": "c9-zwischenmolekulare-kraefte-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-zwischenmolekulare-kraefte",
+          "question": "Gibt es eine universelle Stärkerangfolge zwischen London-Kräften, Dipolkräften und Wasserstoffbrücken für beliebige Moleküle?",
+          "concept": "Nein, auch Molekülgröße, Polarisierbarkeit und Kontaktfläche zählen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, auch Molekülgröße, Polarisierbarkeit und Kontaktfläche zählen.",
+              "Ja, London-Kräfte sind unabhängig von der Molekülgröße immer schwächer."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ja, London-Kräfte sind unabhängig von der Molekülgröße immer schwächer.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Nein, auch Molekülgröße, Polarisierbarkeit und Kontaktfläche zählen."
+            },
+            {
+              "text": "Ja, Wasserstoffbrücken sind bei jeder Molekülgröße absolut am stärksten.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Nein, auch Molekülgröße, Polarisierbarkeit und Kontaktfläche zählen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6T1PT252DAXTV2QDJ",
+      "atom_uri": "urn:zam:atom:01M5CS47B6T1PT252DAXTV2QDJ",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-kohlenwasserstoffe",
+      "title": "Kohlenwasserstoffe und Isomerie",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-kohlenwasserstoffe",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "bindungen",
+          "topic_title": "Bindungen und Stoffeigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6XAP9H3RDA3JXWJQE",
+          "slug": "c9-kohlenwasserstoffe-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-kohlenwasserstoffe",
+          "question": "Müssen zwei Moleküle mit derselben Summenformel gleich verknüpft sein?",
+          "concept": "Nein, bei gleicher Summenformel können Isomere vorliegen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, bei gleicher Summenformel können Isomere vorliegen.",
+              "Ja, die Summenformel legt sämtliche Bindungen eindeutig fest."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ja, die Summenformel legt sämtliche Bindungen eindeutig fest.",
+              "reason": "Die Summenformel nennt Atomzahlen, nicht alle Verknüpfungen."
+            },
+            {
+              "text": "Ja, eine gleiche Atomzahl erzwingt immer denselben Raumbau.",
+              "reason": "Die Summenformel nennt Atomzahlen, nicht alle Verknüpfungen."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7Q8X0EC7ZM7B19G3F",
+          "slug": "c9-kohlenwasserstoffe-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-kohlenwasserstoffe",
+          "question": "Was unterscheidet Konstitutionsisomere bei gleicher Summenformel?",
+          "concept": "Die unterschiedliche Verknüpfung ihrer Atome.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die unterschiedliche Verknüpfung ihrer Atome.",
+              "Die unterschiedliche Gesamtzahl ihrer Atome je Elementsorte."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die unterschiedliche Gesamtzahl ihrer Atome je Elementsorte.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Die unterschiedliche Verknüpfung ihrer Atome."
+            },
+            {
+              "text": "Die unterschiedliche räumliche Drehung desselben Moleküls.",
+              "reason": "Ein gedrehtes oder anders gezeichnetes Molekül bleibt dasselbe Molekül; Isomere sind anders verknüpft."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B650T8HJQTSQTGEGGV",
+      "atom_uri": "urn:zam:atom:01M5CS47B650T8HJQTSQTGEGGV",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-funktionelle-gruppen",
+      "title": "Funktionelle Gruppen und Nachweise",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-funktionelle-gruppen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "bindungen",
+          "topic_title": "Bindungen und Stoffeigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6DN0AHYP7X8NWVXJ0",
+          "slug": "c9-funktionelle-gruppen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-funktionelle-gruppen",
+          "question": "Welche Gruppe kennzeichnet eine Carbonsäure?",
+          "concept": "Die Carboxygruppe.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Carboxygruppe.",
+              "Die Hydroxygruppe."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Hydroxygruppe.",
+              "reason": "Die Carboxygruppe kann ein Proton abgeben und beeinflusst dadurch das Verhalten in Wasser."
+            },
+            {
+              "text": "Die Aldehydgruppe.",
+              "reason": "Die Carboxygruppe kann ein Proton abgeben und beeinflusst dadurch das Verhalten in Wasser."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B792RTBXEQGHE8DNRS",
+          "slug": "c9-funktionelle-gruppen-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-funktionelle-gruppen",
+          "question": "Was bedeutet amphiphil für den Molekülbau?",
+          "concept": "Das Molekül besitzt hydrophile und hydrophobe Bereiche.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Molekül besitzt hydrophile und hydrophobe Bereiche.",
+              "Das Molekül besitzt ausschließlich gut wasserlösliche Bereiche."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das Molekül besitzt ausschließlich gut wasserlösliche Bereiche.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Das Molekül besitzt hydrophile und hydrophobe Bereiche."
+            },
+            {
+              "text": "Das Molekül löst sich weder in Wasser noch in Fett.",
+              "reason": "Amphiphil heißt, beides zu haben: einen wasserfreundlichen und einen fettfreundlichen Teil."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6HS232EQ9MHA0CY1F",
+      "atom_uri": "urn:zam:atom:01M5CS47B6HS232EQ9MHA0CY1F",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-organik-vertiefung",
+      "title": "Organik vertiefen: Namen und Struktur",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-organik-vertiefung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "bindungen",
+          "topic_title": "Bindungen und Stoffeigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Chemische Bindung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6HKKVNVAKJ3VT4M18",
+          "slug": "c9-organik-vertiefung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-organik-vertiefung",
+          "question": "Welche Gruppe enthält Propanon?",
+          "concept": "Eine Carbonylgruppe innerhalb der Kohlenstoffkette.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Carbonylgruppe innerhalb der Kohlenstoffkette.",
+              "Eine Aldehydgruppe am Ende der Kohlenstoffkette."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Aldehydgruppe am Ende der Kohlenstoffkette.",
+              "reason": "Propanon ist ein Alkanon; die C=O-Gruppe liegt zwischen zwei C-Resten."
+            },
+            {
+              "text": "Eine Hydroxygruppe ohne benachbarte Carbonylgruppe.",
+              "reason": "Propanon ist ein Alkanon; die C=O-Gruppe liegt zwischen zwei C-Resten."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B77XKADPAN7Y3ZH6K2",
+          "slug": "c9-organik-vertiefung-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-organik-vertiefung",
+          "question": "Wie wird ein Alkohol eingeordnet, wenn das OH-tragende C-Atom mit zwei weiteren C-Atomen verbunden ist?",
+          "concept": "Als sekundärer Alkohol.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als sekundärer Alkohol.",
+              "Als primärer Alkohol."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Als primärer Alkohol.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Als sekundärer Alkohol."
+            },
+            {
+              "text": "Als tertiärer Alkohol.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Als sekundärer Alkohol."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6YQY4BESCZK7HQ0CY",
+      "atom_uri": "urn:zam:atom:01M5CS47B6YQY4BESCZK7HQ0CY",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-elektronenuebergang",
+      "title": "Oxidation und Reduktion",
+      "domain": "chemie/redox",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-elektronenuebergang",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "redox",
+          "topic_title": "Elektronenübergänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Donator-Akzeptor-Konzept – Elektronenübergänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6CH8JG93F2R09TBM9",
+          "slug": "c9-elektronenuebergang-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-elektronenuebergang",
+          "question": "Was geschieht bei einer Reduktion?",
+          "concept": "Ein Teilchen nimmt Elektronen auf.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Teilchen nimmt Elektronen auf.",
+              "Ein Teilchen gibt Elektronen ab."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Teilchen gibt Elektronen ab.",
+              "reason": "Aufnahme bedeutet Reduktion; Abgabe bedeutet Oxidation."
+            },
+            {
+              "text": "Ein Teilchen nimmt Sauerstoff auf.",
+              "reason": "Sauerstoffaufnahme war die alte Beschreibung der Oxidation; Reduktion heißt Elektronenaufnahme."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B76RWHGDH4495Y87AQ",
+          "slug": "c9-elektronenuebergang-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-elektronenuebergang",
+          "question": "Welche Rolle hat ein Elektronendonator in einer Redoxreaktion?",
+          "concept": "Er wird selbst oxidiert und wirkt als Reduktionsmittel.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er wird selbst oxidiert und wirkt als Reduktionsmittel.",
+              "Er wird selbst reduziert und wirkt als Oxidationsmittel."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er wird selbst reduziert und wirkt als Oxidationsmittel.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Er wird selbst oxidiert und wirkt als Reduktionsmittel."
+            },
+            {
+              "text": "Er wird selbst oxidiert und wirkt als Oxidationsmittel.",
+              "reason": "Wer selbst oxidiert wird, reduziert den Partner und ist damit das Reduktionsmittel."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B66G544MMPZTNQAZBN",
+      "atom_uri": "urn:zam:atom:01M5CS47B66G544MMPZTNQAZBN",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-oxidationszahlen",
+      "title": "Oxidationszahlen und Molekülionen",
+      "domain": "chemie/redox",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-oxidationszahlen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "redox",
+          "topic_title": "Elektronenübergänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Donator-Akzeptor-Konzept – Elektronenübergänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6QQ7FR1HP7P276MR6",
+          "slug": "c9-oxidationszahlen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-oxidationszahlen",
+          "question": "Welche Oxidationszahl hat O in Wasserstoffperoxid?",
+          "concept": "Minus eins.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Minus eins.",
+              "Minus zwei."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Minus zwei.",
+              "reason": "Peroxide sind eine wichtige Ausnahme zur häufigen Sauerstoffregel."
+            },
+            {
+              "text": "Plus eins.",
+              "reason": "Peroxide sind eine wichtige Ausnahme zur häufigen Sauerstoffregel."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7H9YMEBNNZP8V4V74",
+          "slug": "c9-oxidationszahlen-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-oxidationszahlen",
+          "question": "Welchem Wert entspricht die Summe aller Oxidationszahlen in einem Teilchen?",
+          "concept": "Der Gesamtladungszahl des Teilchens.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Gesamtladungszahl des Teilchens.",
+              "Immer null, auch bei geladenen Ionen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Immer null, auch bei geladenen Ionen.",
+              "reason": "Die Summe ist nur bei neutralen Teilchen null; bei Ionen ergibt sie die Ionenladung."
+            },
+            {
+              "text": "Der Zahl der Valenzelektronen des Teilchens.",
+              "reason": "Die Summe der Oxidationszahlen ergibt die Ladung, nicht die Zahl der Valenzelektronen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6TQ69ED3ZW6Q17BT1",
+      "atom_uri": "urn:zam:atom:01M5CS47B6TQ69ED3ZW6Q17BT1",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-redoxgleichungen",
+      "title": "Teilgleichungen zusammenführen",
+      "domain": "chemie/redox",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-redoxgleichungen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "redox",
+          "topic_title": "Elektronenübergänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Donator-Akzeptor-Konzept – Elektronenübergänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6PT8FYJB8Z2J3C91B",
+          "slug": "c9-redoxgleichungen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-redoxgleichungen",
+          "question": "Warum werden Redoxteilgleichungen vor dem Addieren vervielfacht?",
+          "concept": "Damit gleich viele Elektronen abgegeben und aufgenommen werden.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Damit gleich viele Elektronen abgegeben und aufgenommen werden.",
+              "Damit Oxidation und Reduktion gleich viele Teilchen umsetzen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Damit Oxidation und Reduktion gleich viele Teilchen umsetzen.",
+              "reason": "Gleich sein muss die Zahl der übertragenen Elektronen, nicht die Zahl der umgesetzten Teilchen."
+            },
+            {
+              "text": "Damit die Zahl der Atome jeder Sorte ausgeglichen ist.",
+              "reason": "Das Vervielfachen gleicht die Elektronen aus; die Atomzahlen stimmen in jeder Teilgleichung schon vorher."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B73M8CW9R1SP95D6BP",
+          "slug": "c9-redoxgleichungen-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-redoxgleichungen",
+          "question": "Welche zwei Bilanzen müssen in einer Redoxgesamtgleichung stimmen?",
+          "concept": "Die Atomzahlen und die Gesamtladungen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Atomzahlen und die Gesamtladungen.",
+              "Die Zahl der Moleküle und die Atomzahlen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Zahl der Moleküle und die Atomzahlen.",
+              "reason": "Die Zahl der Moleküle darf sich ändern; erhalten bleiben Atomzahlen und Ladungen."
+            },
+            {
+              "text": "Die Massen der Stoffe und die Zahl der Moleküle.",
+              "reason": "Die Massenerhaltung folgt aus den Atomzahlen; die Zahl der Moleküle muss nicht gleich bleiben."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6EPCJR1G6060GVMR2",
+      "atom_uri": "urn:zam:atom:01M5CS47B6EPCJR1G6060GVMR2",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-salze-loesen",
+      "title": "Salze lösen und hydratisieren",
+      "domain": "chemie/redox",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-salze-loesen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "redox",
+          "topic_title": "Elektronenübergänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Donator-Akzeptor-Konzept – Elektronenübergänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6YEM3EAM7YNQXRE10",
+          "slug": "c9-salze-loesen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-salze-loesen",
+          "question": "Kann das Lösen eines Salzes Wasser abkühlen?",
+          "concept": "Ja, wenn der Gitteraufwand den Hydratationsbetrag übersteigt.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ja, wenn der Gitteraufwand den Hydratationsbetrag übersteigt.",
+              "Nein, die Hydratation liefert bei jedem Salz einen Energieüberschuss."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nein, die Hydratation liefert bei jedem Salz einen Energieüberschuss.",
+              "reason": "Die Bilanz beider Energiebeiträge entscheidet."
+            },
+            {
+              "text": "Nein, Gittertrennen benötigt unter keinen Umständen Energiezufuhr.",
+              "reason": "Die Bilanz beider Energiebeiträge entscheidet."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7V9VWXMTPBT0V59W1",
+          "slug": "c9-salze-loesen-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-salze-loesen",
+          "question": "Welche Seite eines Wassermoleküls orientiert sich in einer Hydrathülle bevorzugt zu einem Kation?",
+          "concept": "Die negativ polarisierte Sauerstoffseite.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die negativ polarisierte Sauerstoffseite.",
+              "Die positiv polarisierte Wasserstoffseite."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die positiv polarisierte Wasserstoffseite.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Die negativ polarisierte Sauerstoffseite."
+            },
+            {
+              "text": "Keine bestimmte Seite; die Moleküle ordnen sich zufällig an.",
+              "reason": "Wasser ist ein Dipol; zum Kation richtet sich die negativ polarisierte Sauerstoffseite aus."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6TWE1GX57SXB692ME",
+      "atom_uri": "urn:zam:atom:01M5CS47B6TWE1GX57SXB692ME",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-batterie-akku",
+      "title": "Batterie und Akkumulator",
+      "domain": "chemie/elektrochemie",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-batterie-akku",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "elektrochemie",
+          "topic_title": "Redoxreaktionen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Redoxanwendungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6WPWF21CTR3G2266D",
+          "slug": "c9-batterie-akku-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-batterie-akku",
+          "question": "Welche Energieumwandlung liefert eine galvanische Zelle?",
+          "concept": "Chemische Energie wird in elektrische Energie umgewandelt.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Chemische Energie wird in elektrische Energie umgewandelt.",
+              "Elektrische Energie wird in chemische Energie umgewandelt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Elektrische Energie wird in chemische Energie umgewandelt.",
+              "reason": "Die freiwillige Redoxreaktion treibt den äußeren Strom."
+            },
+            {
+              "text": "Thermische Energie wird in elektrische Energie umgewandelt.",
+              "reason": "Eine galvanische Zelle wandelt chemische Energie in elektrische um, nicht Wärme."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7G2M6YZ2FYWFXS7SS",
+          "slug": "c9-batterie-akku-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-batterie-akku",
+          "question": "Was bedeutet ein entladener Akku auf Stoffebene?",
+          "concept": "Die für die Entladung geeigneten Stoffanteile sind umgesetzt.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die für die Entladung geeigneten Stoffanteile sind umgesetzt.",
+              "Die gespeicherte Elektrizität ist verbraucht, die Stoffe sind unverändert."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die gespeicherte Elektrizität ist verbraucht, die Stoffe sind unverändert.",
+              "reason": "Ein Akku speichert keine Elektrizität; beim Entladen werden die Elektrodenstoffe umgesetzt."
+            },
+            {
+              "text": "Alle Elektronen haben das Gerät verlassen und fehlen vollständig.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Die für die Entladung geeigneten Stoffanteile sind umgesetzt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6A7JYP3MZ7TYGE1A4",
+      "atom_uri": "urn:zam:atom:01M5CS47B6A7JYP3MZ7TYGE1A4",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-elektrolyse",
+      "title": "Elektrolyse und Galvanisieren",
+      "domain": "chemie/elektrochemie",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-elektrolyse",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "elektrochemie",
+          "topic_title": "Redoxreaktionen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Redoxanwendungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6MQ8Q48292AK3Z02N",
+          "slug": "c9-elektrolyse-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-elektrolyse",
+          "question": "An welchem Pol wird ein Werkstück bei einer galvanischen Metallbeschichtung angeschlossen?",
+          "concept": "An der negativen Kathode der Elektrolyse.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "An der negativen Kathode der Elektrolyse.",
+              "An der positiven Anode der Elektrolyse."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "An der positiven Anode der Elektrolyse.",
+              "reason": "Die Metallionen werden durch Elektronenaufnahme auf dem Werkstück reduziert."
+            },
+            {
+              "text": "Am positiven Pol der galvanischen Entladung.",
+              "reason": "Die Metallionen werden durch Elektronenaufnahme auf dem Werkstück reduziert."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B71BXTQ32YPYX5NCFF",
+          "slug": "c9-elektrolyse-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-elektrolyse",
+          "question": "Wie heißt die Elektrode, an der unabhängig vom Betriebsmodus Reduktion stattfindet?",
+          "concept": "Die Kathode.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Kathode.",
+              "Die Anode."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Anode.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Die Kathode."
+            },
+            {
+              "text": "Der Elektrolyt.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Die Kathode."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B64H0WZQPR2FMRPD1Z",
+      "atom_uri": "urn:zam:atom:01M5CS47B64H0WZQPR2FMRPD1Z",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-korrosion",
+      "title": "Redoxreihe und Korrosionsschutz",
+      "domain": "chemie/elektrochemie",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-korrosion",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "elektrochemie",
+          "topic_title": "Redoxreaktionen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Redoxanwendungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B68EEGQM248SFJGSC0",
+          "slug": "c9-korrosion-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-korrosion",
+          "question": "Welches Metall kann Eisen als Opferanode schützen?",
+          "concept": "Ein geeignetes unedleres Metall, zum Beispiel Zink.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein geeignetes unedleres Metall, zum Beispiel Zink.",
+              "Ein edleres Metall, unabhängig von der Umgebung."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein edleres Metall, unabhängig von der Umgebung.",
+              "reason": "Zink wird bevorzugt oxidiert und liefert Elektronen."
+            },
+            {
+              "text": "Jedes Metall, sofern seine Oberfläche nur glänzt.",
+              "reason": "Zink wird bevorzugt oxidiert und liefert Elektronen."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7ERWHJ6CK1FE46GJ9",
+          "slug": "c9-korrosion-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-korrosion",
+          "question": "Warum wird eine Opferanode während ihrer Schutzwirkung kleiner?",
+          "concept": "Das unedlere Schutzmetall wird selbst oxidiert.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das unedlere Schutzmetall wird selbst oxidiert.",
+              "Das Schutzmetall wird reduziert und löst sich dabei auf."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das Schutzmetall wird reduziert und löst sich dabei auf.",
+              "reason": "Das unedlere Metall gibt Elektronen ab und wird oxidiert, nicht reduziert."
+            },
+            {
+              "text": "Das Wasser trägt das Metall rein mechanisch ab.",
+              "reason": "Die Opferanode löst sich durch Oxidation auf, nicht durch Abrieb."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6SVP19BX2X4VZNSG0",
+      "atom_uri": "urn:zam:atom:01M5CS47B6SVP19BX2X4VZNSG0",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-brennstoffzelle",
+      "title": "Brennstoffzelle und Wasserstoff",
+      "domain": "chemie/elektrochemie",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-brennstoffzelle",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "elektrochemie",
+          "topic_title": "Redoxreaktionen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Redoxanwendungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6DXZSQF74WXKT4409",
+          "slug": "c9-brennstoffzelle-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-brennstoffzelle",
+          "question": "Warum ist Wasserstoff keine kostenlose primäre Energiequelle?",
+          "concept": "Weil seine Herstellung zunächst Energie benötigt.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil seine Herstellung zunächst Energie benötigt.",
+              "Weil bei seiner Verbrennung Kohlenstoffdioxid entsteht."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Weil bei seiner Verbrennung Kohlenstoffdioxid entsteht.",
+              "reason": "Wasserstoff enthält keinen Kohlenstoff; es entsteht Wasser. Der Grund ist der Energieaufwand bei der Herstellung."
+            },
+            {
+              "text": "Weil seine Moleküle keine chemische Energie tragen können.",
+              "reason": "Wasserstoff transportiert zuvor bereitgestellte Energie."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7V4NS0TB6WZQK35GT",
+          "slug": "c9-brennstoffzelle-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-brennstoffzelle",
+          "question": "Welcher Aspekt ist für die Umweltbilanz von Wasserstoff besonders wichtig?",
+          "concept": "Die Herkunft der zu seiner Herstellung eingesetzten Energie.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Herkunft der zu seiner Herstellung eingesetzten Energie.",
+              "Das Kohlenstoffdioxid, das in der Brennstoffzelle entsteht."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das Kohlenstoffdioxid, das in der Brennstoffzelle entsteht.",
+              "reason": "In der Brennstoffzelle entsteht nur Wasser; CO₂ kann bei der Herstellung des Wasserstoffs anfallen."
+            },
+            {
+              "text": "Die Wassermenge, die als Abfallprodukt die Umwelt belastet.",
+              "reason": "Das entstehende Wasser belastet die Umwelt nicht; entscheidend ist die Energiequelle der Herstellung."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6ZBWZRVCKR5VYG1NC",
+      "atom_uri": "urn:zam:atom:01M5CS47B6ZBWZRVCKR5VYG1NC",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-ph-indikator",
+      "title": "Indikatoren und pH-Skala",
+      "domain": "chemie/protonen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-ph-indikator",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "protonen",
+          "topic_title": "Säuren, Basen und Protonenübergänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Donator-Akzeptor-Konzept – Protonenübergänge I",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B66TXB5PMK09QW5G7F",
+          "slug": "c9-ph-indikator-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-ph-indikator",
+          "question": "Wie wird eine wässrige Lösung mit pH 11 bei 25 °C eingeordnet?",
+          "concept": "Alkalisch",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Alkalisch",
+              "Neutral"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Neutral",
+              "reason": "Ein pH-Wert über sieben bedeutet unter diesen Bedingungen alkalisch."
+            },
+            {
+              "text": "Stark sauer",
+              "reason": "Ein pH-Wert über sieben bedeutet unter diesen Bedingungen alkalisch."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7MWSX200G8Z08G3HN",
+          "slug": "c9-ph-indikator-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-ph-indikator",
+          "question": "Enthält eine neutrale wässrige Lösung bei 25 °C überhaupt Oxonium- und Hydroxidionen?",
+          "concept": "Ja, beide Ionenarten liegen in gleicher Konzentration vor.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ja, beide Ionenarten liegen in gleicher Konzentration vor.",
+              "Nein, in einer neutralen Lösung sind überhaupt keine Ionen vorhanden."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nein, in einer neutralen Lösung sind überhaupt keine Ionen vorhanden.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Ja, beide Ionenarten liegen in gleicher Konzentration vor."
+            },
+            {
+              "text": "Nein, sie enthält nur Oxoniumionen, aber keine Hydroxidionen.",
+              "reason": "In neutralem Wasser liegen beide Ionenarten in gleicher, kleiner Konzentration vor."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6KTSMDHW1DNSP720X",
+      "atom_uri": "urn:zam:atom:01M5CS47B6KTSMDHW1DNSP720X",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-protonenuebergang",
+      "title": "Säure und Base nach Brönsted",
+      "domain": "chemie/protonen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-protonenuebergang",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "protonen",
+          "topic_title": "Säuren, Basen und Protonenübergänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Donator-Akzeptor-Konzept – Protonenübergänge I",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6516CAQMVTS7NSS4H",
+          "slug": "c9-protonenuebergang-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-protonenuebergang",
+          "question": "Welche Rolle spielt Wasser gegenüber Ammoniak bei der Protonenübertragung?",
+          "concept": "Wasser kann gegenüber Ammoniak ein Proton abgeben.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wasser kann gegenüber Ammoniak ein Proton abgeben.",
+              "Wasser muss gegenüber Ammoniak ein Elektron abgeben."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wasser muss gegenüber Ammoniak ein Elektron abgeben.",
+              "reason": "NH₃ nimmt hier ein Proton von Wasser auf; es entstehen Ammonium- und Hydroxidionen."
+            },
+            {
+              "text": "Wasser nimmt gegenüber Ammoniak immer ein Proton auf.",
+              "reason": "NH₃ nimmt hier ein Proton von Wasser auf; es entstehen Ammonium- und Hydroxidionen."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7G9402W1EYA7R1Z81",
+          "slug": "c9-protonenuebergang-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-protonenuebergang",
+          "question": "Welche Teilchenrolle kennzeichnet eine Brönsted-Base?",
+          "concept": "Die Aufnahme eines Protons.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Aufnahme eines Protons.",
+              "Die Abgabe eines Protons."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Abgabe eines Protons.",
+              "reason": "Ein Proton abgeben kennzeichnet die Säure; die Base nimmt es auf."
+            },
+            {
+              "text": "Die Abgabe eines Elektrons.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Die Aufnahme eines Protons."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B6T84GD838FQ81Y575",
+      "atom_uri": "urn:zam:atom:01M5CS47B6T84GD838FQ81Y575",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-saeurereste",
+      "title": "Säurereste und Carbonsäuren",
+      "domain": "chemie/protonen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-saeurereste",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "protonen",
+          "topic_title": "Säuren, Basen und Protonenübergänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Donator-Akzeptor-Konzept – Protonenübergänge I",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6YHP30K8JVXVFTM9B",
+          "slug": "c9-saeurereste-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-saeurereste",
+          "question": "Welches Ion bleibt nach Abgabe eines Protons aus Essigsäure?",
+          "concept": "Das einfach negativ geladene Acetation.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das einfach negativ geladene Acetation.",
+              "Das einfach positiv geladene Ammoniumion."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das einfach positiv geladene Ammoniumion.",
+              "reason": "Die Elektronen bleiben beim Säurerest; nur das positive Proton wechselt den Partner."
+            },
+            {
+              "text": "Das zweifach positiv geladene Calciumion.",
+              "reason": "Die Elektronen bleiben beim Säurerest; nur das positive Proton wechselt den Partner."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7CEKN2FQ3F7N8NVW9",
+          "slug": "c9-saeurereste-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-saeurereste",
+          "question": "Wie verändert sich die Ladungszahl eines Teilchens bei Abgabe eines einzelnen Protons?",
+          "concept": "Sie sinkt um eins.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie sinkt um eins.",
+              "Sie steigt um eins."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie steigt um eins.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Sie sinkt um eins."
+            },
+            {
+              "text": "Sie steigt um zwei.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Sie sinkt um eins."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5CS47B62WZ975FAD8M49AM1",
+      "atom_uri": "urn:zam:atom:01M5CS47B62WZ975FAD8M49AM1",
+      "namespace": "zam-academy-chemie-realschule-9",
+      "slug": "c9-oxide-wasser",
+      "title": "Oxide und Wasser",
+      "domain": "chemie/protonen",
+      "reduction": "classical",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-oxide-wasser",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-9",
+          "topic_code": "protonen",
+          "topic_title": "Säuren, Basen und Protonenübergänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Donator-Akzeptor-Konzept – Protonenübergänge I",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5CS47B6CMKJC8C4M3FZ2RYR",
+          "slug": "c9-oxide-wasser-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-oxide-wasser",
+          "question": "Welche Ionen erklären die alkalische Wirkung gelösten Calciumhydroxids?",
+          "concept": "Hydroxidionen in der wässrigen Lösung.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Hydroxidionen in der wässrigen Lösung.",
+              "Oxoniumionen in der wässrigen Lösung."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Oxoniumionen in der wässrigen Lösung.",
+              "reason": "Der gelöste Stoff liefert Hydroxidionen in die Lösung."
+            },
+            {
+              "text": "Neutrale Sauerstoffatome in der Lösung.",
+              "reason": "Der gelöste Stoff liefert Hydroxidionen in die Lösung."
+            }
+          ]
+        },
+        {
+          "id": "01M5CS47B7X7TEFCBBB43K9ZPS",
+          "slug": "c9-oxide-wasser-wissen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-9/#lesson=ch-oxide-wasser",
+          "question": "Warum darf die Bildung saurer Lösungen aus CO₂ nicht als vollständige Umwandlung aller CO₂-Moleküle in Kohlensäure beschrieben werden?",
+          "concept": "Es liegt ein Gleichgewicht mit nur einem kleinen Kohlensäureanteil vor.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es liegt ein Gleichgewicht mit nur einem kleinen Kohlensäureanteil vor.",
+              "Sämtliche CO₂-Moleküle werden ohne Zwischenstufen zu Hydroxidionen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sämtliche CO₂-Moleküle werden ohne Zwischenstufen zu Hydroxidionen.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Es liegt ein Gleichgewicht mit nur einem kleinen Kohlensäureanteil vor."
+            },
+            {
+              "text": "CO₂ und Wasser können überhaupt keine chemischen Vorgänge eingehen.",
+              "reason": "Diese Aussage verwechselt den Zusammenhang. Es liegt ein Gleichgewicht mit nur einem kleinen Kohlensäureanteil vor."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "retired_items": [
+    {
+      "id": "01K4C9A0000000000000000J07",
+      "reason": "Die alte Aussage ordnet jeder Hauptgruppe ausnahmslos die Valenzelektronenzahl zu. Helium in Hauptgruppe VIII besitzt aber zwei Elektronen; die korrigierte Frage ist kein sicher gleicher Abruf."
+    },
+    {
+      "id": "01K4C9A0000000000000000J08",
+      "reason": "Die alte Sammelantwort enthält dieselbe nicht eingeschränkte Hauptgruppenregel. Für den korrigierten Umfang einschließlich der Helium-Ausnahme wird keine Beherrschung übertragen."
+    },
+    {
+      "id": "01K4C9B0000000000000000J06",
+      "reason": "Starre EN-Grenzen werden im alten Inhalt als universelle Klassifikation dargestellt. Die fachlich korrigierte neue Frage hat einen anderen Gültigkeitsbereich."
+    },
+    {
+      "id": "01K4C9B0000000000000000J07",
+      "reason": "Die alte Frage verlangt eine stärkste Wechselwirkung, die neue fragt nur nach einem wesentlichen Beitrag zum Siedeverhalten von Wasser. Der Gültigkeitsanspruch ist verändert; wegen dieser unsicheren Entsprechung wird vorsichtshalber kein Lernstand übertragen."
+    },
+    {
+      "id": "01K4C9B0000000000000000J08",
+      "reason": "Eine universelle Stärkerangfolge der zwischenmolekularen Kräfte ist ohne Molekülgröße und Kontaktfläche nicht gültig. Die korrigierte Aussage erhält einen frischen Lernstand."
+    }
+  ]
+}

@@ -42,7 +42,7 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
   schoolYear: "2026/2027",
   capturedOn: "2026-07-19",
   sourceRevision:
-    "LehrplanPLUS Bayern – including WS/FOS/BOS (2026-07-19); +grundschule/mittelschule/foerderschule (2026-07-19)",
+    "LehrplanPLUS Bayern – including WS/FOS/BOS (2026-07-19); +grundschule/mittelschule/foerderschule (2026-07-19); +Realschule Chemie 9 I/II/III (2026-10-20)",
 
   schoolTypes: [
     {
@@ -1276,6 +1276,17 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       {
         id: "diff_sport",
         label: "Differenzierter Sport",
+      },
+    ],
+    // Chemie 9 branches verified against LehrplanPLUS on 2026-10-20.
+    "realschule|9|chemie": [
+      {
+        id: "wpfg1",
+        label: "Chemie 9 (I)",
+      },
+      {
+        id: "wpfg2-3",
+        label: "Chemie 9 (II/III)",
       },
     ],
     "realschule|9|mathematik": [
@@ -10890,6 +10901,31 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
         label: "BwR9 Ausfall und Bewertung von Forderungen",
         hours: 14,
       },
+    ],
+    // Verified on 2026-10-20 at /fachlehrplan/realschule/9/chemie/<track>.
+    // LB 1 is taught throughout the year; the source gives no separate hours.
+    "realschule|9|chemie|wpfg1": [
+      { id: "lb1", label: "Wie Chemiker denken und arbeiten" },
+      { id: "lb2", label: "Chemische Bindung", hours: 21 },
+      {
+        id: "lb3",
+        label: "Donator-Akzeptor-Konzept – Elektronenübergänge",
+        hours: 14,
+      },
+      { id: "lb4", label: "Redoxanwendungen", hours: 11 },
+      {
+        id: "lb5",
+        label: "Donator-Akzeptor-Konzept – Protonenübergänge I",
+        hours: 10,
+      },
+    ],
+    "realschule|9|chemie|wpfg2-3": [
+      { id: "lb1", label: "Wie Chemiker denken und arbeiten" },
+      { id: "lb2", label: "Stoffe und ihre Eigenschaften", hours: 8 },
+      { id: "lb3", label: "Aufbau der Materie", hours: 10 },
+      { id: "lb4", label: "Chemische Reaktion", hours: 16 },
+      { id: "lb5", label: "Atombau und Periodensystem der Elemente", hours: 5 },
+      { id: "lb6", label: "Chemische Bindung", hours: 17 },
     ],
     "realschule|9|deutsch": [
       {
@@ -62923,6 +62959,10 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/8/fach/wirtschaft-und-recht/inhalt/fachlehrplaene",
     "realschule|9|bwl-rechnungswesen":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/9/fach/bwl-rechnungswesen/inhalt/fachlehrplaene",
+    "realschule|9|chemie|wpfg1":
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/chemie/wpfg1",
+    "realschule|9|chemie|wpfg2-3":
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/chemie/wpfg2-3",
     "realschule|9|deutsch":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/9/fach/deutsch/inhalt/fachlehrplaene",
     "realschule|9|englisch":

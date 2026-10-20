@@ -41,9 +41,17 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     expect(subjects).toContainEqual({ id: "deutsch", label: "Deutsch" });
   });
 
-  it("exposes exactly the 2095 live-captured catalog paths", () => {
+  it("exposes the captured catalog plus the two verified Chemie 9 branches", () => {
     const paths = provider.listCatalogPaths?.() ?? [];
-    expect(paths).toHaveLength(2095);
+    expect(paths).toHaveLength(2097);
+    for (const track of ["wpfg1", "wpfg2-3"]) {
+      expect(paths).toContainEqual({
+        schoolType: "realschule",
+        grade: "9",
+        subject: "chemie",
+        track,
+      });
+    }
     expect(paths).toContainEqual({
       schoolType: "realschule",
       grade: "5",
@@ -82,6 +90,81 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
   it("returns no tracks for a subject with one unified curriculum", () => {
     expect(provider.listTracks("realschule", "9", "deutsch")).toEqual([]);
   });
+
+  it("offers Chemie 9 with both Wahlpflichtfächergruppen and explanatory labels", () => {
+    expect(provider.listSubjects("realschule", "9")).toContainEqual({
+      id: "chemie",
+      label: "Chemie",
+    });
+    expect(provider.listTracks("realschule", "9", "chemie")).toEqual([
+      {
+        id: "wpfg1",
+        label: "Chemie 9 (I)",
+        description: expect.stringContaining("Wahlpflichtfächergruppe I"),
+      },
+      {
+        id: "wpfg2-3",
+        label: "Chemie 9 (II/III)",
+        description: expect.stringContaining(
+          "Wahlpflichtfächergruppen II und III",
+        ),
+      },
+    ]);
+    expect(
+      provider.listTopics({
+        schoolType: "realschule",
+        grade: "9",
+        subject: "chemie",
+      }),
+    ).toEqual([]);
+  });
+
+  it.each([
+    [
+      "wpfg1",
+      [
+        ["Wie Chemiker denken und arbeiten", undefined],
+        ["Chemische Bindung", 21],
+        ["Donator-Akzeptor-Konzept – Elektronenübergänge", 14],
+        ["Redoxanwendungen", 11],
+        ["Donator-Akzeptor-Konzept – Protonenübergänge I", 10],
+      ],
+    ],
+    [
+      "wpfg2-3",
+      [
+        ["Wie Chemiker denken und arbeiten", undefined],
+        ["Stoffe und ihre Eigenschaften", 8],
+        ["Aufbau der Materie", 10],
+        ["Chemische Reaktion", 16],
+        ["Atombau und Periodensystem der Elemente", 5],
+        ["Chemische Bindung", 17],
+      ],
+    ],
+  ] as const)(
+    "lists the verified Chemie 9 Lernbereiche and source for %s",
+    (track, expected) => {
+      const topics = provider.listTopics({
+        schoolType: "realschule",
+        grade: "9",
+        subject: "chemie",
+        track,
+      });
+      expect(topics.map((topic) => [topic.label, topic.hours])).toEqual(
+        expected,
+      );
+      expect(topics.map((topic) => topic.id)).toEqual(
+        expected.map((_, index) => `lb${index + 1}`),
+      );
+      for (const topic of topics) {
+        expect(provider.resolveTopic(topic)).toEqual({
+          provider: "lehrplanplus-bayern",
+          topicId: `realschule|9|chemie|${track}#${topic.id}`,
+          uri: `https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/chemie/${track}`,
+        });
+      }
+    },
+  );
 
   it("lists the eight Lernbereiche of Mathematik 9 (I)", () => {
     const topics = provider.listTopics({

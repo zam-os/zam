@@ -6,12 +6,8 @@ import {
   type Database,
   enrolBundledCell,
   findBundledCellsForScope,
-  getBundledCell,
-  getBundledCellsWithStatus,
   getBundledCellTile,
-  getCard,
   getTokenById,
-  installKvtTile,
   listBundledCells,
   openDatabase,
 } from "../../src/kernel/index.js";
@@ -19,11 +15,11 @@ import {
 // The four physics cells of this grade moved to the ZAM Academy cell
 // zam-academy:physik-realschule-9 (zam-os/zam-academy#4), the database cell
 // to zam-academy:sql (zam-os/zam-academy#8) and the five mathematics cells
-// to zam-academy:mathematik-realschule-9 (zam-os/zam-academy#9); each
-// replaces the old items. See tests/kernel/zam-academy-*-cell.test.ts.
+// to zam-academy:mathematik-realschule-9 (zam-os/zam-academy#9), and the
+// two chemistry cells to zam-academy:chemie-realschule-9 (#10). Explicit
+// replacements preserve histories; corrected items are retired without
+// transferring mastery. See tests/kernel/zam-academy-*-cell.test.ts.
 const RS9_CELL_IDS = [
-  "de-by:realschule-9-chemie-atombau-pse",
-  "de-by:realschule-9-chemie-chemische-bindung",
   "de-by:realschule-9-biologie-genetik-vererbung",
   "de-by:realschule-9-biologie-nervensystem-sinne",
   "de-by:realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer",
@@ -34,6 +30,12 @@ const RS9_CELL_IDS = [
   "de-by:realschule-9-englisch-grammatik-syntax",
   "de-by:realschule-9-deutsch-argumentation-eroerterung",
   "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",
+];
+const ACADEMY_RS9_IDS = [
+  "zam-academy:physik-realschule-9",
+  "zam-academy:sql",
+  "zam-academy:mathematik-realschule-9",
+  "zam-academy:chemie-realschule-9",
 ];
 
 describe("Realschule Bayern 9 Curriculum Cells", () => {
@@ -52,11 +54,11 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all bundled cells including all 12 Realschule 9 cells", () => {
+  it("lists the remaining Realschule 9 school cells and their Academy successors", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(100);
 
-    for (const cellId of RS9_CELL_IDS) {
+    for (const cellId of [...RS9_CELL_IDS, ...ACADEMY_RS9_IDS]) {
       const found = cells.find((c) => c.id === cellId);
       expect(found, `Cell ${cellId} must be present`).toBeDefined();
       expect(found?.atomCount).toBeGreaterThanOrEqual(2);
@@ -69,10 +71,12 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
       schoolType: "realschule",
       grade: 9,
     });
-    // 12 school cells plus the three ZAM Academy cells that replaced the four
-    // physics cells, the database cell and the five mathematics cells.
-    expect(rs9Cells.length).toBeGreaterThanOrEqual(15);
-    for (const cellId of RS9_CELL_IDS) {
+    // Ten school cells and the four Academy successors of Physik, SQL,
+    // Mathematik and Chemie.
+    expect(rs9Cells.length).toBeGreaterThanOrEqual(
+      RS9_CELL_IDS.length + ACADEMY_RS9_IDS.length,
+    );
+    for (const cellId of [...RS9_CELL_IDS, ...ACADEMY_RS9_IDS]) {
       expect(
         rs9Cells.some((c) => c.id === cellId),
         `findBundledCellsForScope should include ${cellId}`,
@@ -104,7 +108,7 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
     expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
   });
 
-  it("supports simultaneous enrolment in ALL 12 Grade 9 Realschule cells without conflict", async () => {
+  it("supports simultaneous enrolment in the remaining Grade 9 school cells without conflict", async () => {
     const user = "complete-rs9-polymath";
 
     let totalCards = 0;
