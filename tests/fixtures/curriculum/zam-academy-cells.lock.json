@@ -6,6 +6,12 @@
     "file": "zam-academy-physik-realschule-9-kvt.json"
   },
   {
+    "id": "zam-academy:sql",
+    "version": "2026.10.1",
+    "sha256": "edb6b698bfd0311a5c68f17445163777a6ef4606112e28780b5e467276eac5f6",
+    "file": "zam-academy-sql-kvt.json"
+  },
+  {
     "id": "zam-academy:uml",
     "version": "2026.10.2",
     "sha256": "f18844b3cfd34c7df4c205b90b8e2016c9799915254f8142b1f9203f50867234",

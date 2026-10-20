@@ -1,0 +1,2796 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:sql",
+  "version": "2026.10.1",
+  "title": "Relationale Datenbanken und SQL (ZAM Academy)",
+  "description": "Hält fest, was du in der ZAM Academy zu relationalen Datenbanken und SQL geübt hast: vier Etappen von Tabelle und Primärschlüssel über Abfragen und Joins bis zu Berichten und Datenpflege, nach den Modulen 2.3.1 und 2.3.2 des LehrplanPLUS Informationstechnologie (Realschule Bayern). Jede Karte verlinkt die Lektion mit der Sandbox, in der du es ausprobiert hast.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-20T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/sql/",
+      "checked": "2026-10-20",
+      "label": "ZAM Academy – Relationale Datenbanken und SQL (Sandbox mit SQLite, Etappen 1–4, Deutsch und Englisch)"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/it",
+      "checked": "2026-10-20",
+      "label": "LehrplanPLUS Realschule, Informationstechnologie: Module 2.3.1 Datenbanksysteme I und 2.3.2 Datenbanksysteme II"
+    },
+    {
+      "uri": "https://www.sqlite.org/lang.html",
+      "checked": "2026-10-20",
+      "label": "SQLite: SQL As Understood By SQLite (der Dialekt der Sandbox)"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8ACADSQ0000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A01",
+      "namespace": "zam-academy-sql",
+      "slug": "db-1-datenbanksystem",
+      "title": "Datenbanksystem: Datenbank, DBMS und die Objekte Tabelle, Abfrage, Formular, Bericht",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=db-1-datenbanksystem",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q192588",
+          "target_label": "Relational database",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-1-tabellen",
+          "topic_title": "Etappe 1: Datenbank und Tabelle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K01",
+          "slug": "sql-dbms-aufgabe",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-1-datenbanksystem",
+          "question": "Wie heißt das Programm, das die Daten einer Datenbank speichert, Regeln prüft und Abfragen beantwortet?",
+          "concept": "Datenbankmanagementsystem (DBMS)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Datenbankmanagementsystem (DBMS)",
+              "Tabellenkalkulation (Excel)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Betriebssystem (Windows, Linux)",
+              "reason": "Das Betriebssystem verwaltet Geräte und Dateien, nicht die Regeln und Abfragen einer Datenbank."
+            },
+            {
+              "text": "Dateiverwaltung (Explorer, Finder)",
+              "reason": "Eine Dateiverwaltung zeigt Dateien an; sie kennt weder Tabellen noch Abfragen."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K02",
+          "slug": "sql-datenbanksystem-bestandteile",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-1-datenbanksystem",
+          "question": "Aus welchen zwei Teilen besteht ein Datenbanksystem?",
+          "concept": "Datenbank und Datenbankmanagementsystem",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Datenbank und DBMS",
+              "Tabelle und Formular"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Datenbankserver und Netzwerk",
+              "reason": "Server und Netzwerk sind Technik, auf der ein Datenbanksystem laufen kann; sie sind nicht seine Bestandteile."
+            },
+            {
+              "text": "Festplatte und Arbeitsspeicher",
+              "reason": "Speicher ist Hardware; das Datenbanksystem besteht aus den Daten und der Software, die sie verwaltet."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K03",
+          "slug": "sql-objekt-formular",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-1-datenbanksystem",
+          "question": "Welches Objekt eines Datenbanksystems prüft Eingaben und speichert sie dann als Datensatz?",
+          "concept": "Das Formular",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Formular",
+              "Bericht"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Bericht",
+              "reason": "Ein Bericht wertet Daten zum Lesen oder Drucken aus; er nimmt keine Eingaben entgegen."
+            },
+            {
+              "text": "Die Abfrage",
+              "reason": "Eine Abfrage holt Daten aus Tabellen; prüfen und speichern von Eingaben ist Aufgabe des Formulars."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K04",
+          "slug": "sql-select-stern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-1-datenbanksystem",
+          "question": "Welche SQL-Anweisung zeigt alle Spalten und alle Zeilen der Tabelle kunden?",
+          "concept": "SELECT * FROM kunden;",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "SELECT * FROM kunden;",
+              "SHOW ALL kunden;"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "SELECT kunden FROM *;",
+              "reason": "Nach SELECT stehen die Spalten (der Stern für alle), nach FROM die Tabelle."
+            },
+            {
+              "text": "SHOW TABLE kunden;",
+              "reason": "SHOW ist kein SQL-Befehl für Abfragen; Daten holt SELECT."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A02",
+      "namespace": "zam-academy-sql",
+      "slug": "db-2-datensatz-datenfeld",
+      "title": "Tabelle, Datensatz und Datenfeld; atomisierte Datenfelder; Spalten auswählen",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=db-2-datensatz-datenfeld",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q192588",
+          "target_label": "Relational database",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-1-tabellen",
+          "topic_title": "Etappe 1: Datenbank und Tabelle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K05",
+          "slug": "sql-datensatz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-2-datensatz-datenfeld",
+          "question": "Wie heißt eine Zeile einer Tabelle, also alle Angaben zu einem Objekt wie einer Kundin?",
+          "concept": "Datensatz",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Datensatz",
+              "Datenfeld"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Datenfeld",
+              "reason": "Ein Datenfeld ist eine Spalte: eine Eigenschaft aller Objekte, nicht alle Angaben zu einem."
+            },
+            {
+              "text": "Relation",
+              "reason": "Relation ist der Fachbegriff für die ganze Tabelle, nicht für eine Zeile."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K06",
+          "slug": "sql-atomisiert",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-2-datensatz-datenfeld",
+          "question": "Was bedeutet es, dass ein Datenfeld atomisiert ist?",
+          "concept": "Es enthält genau eine Information",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau eine Information pro Feld",
+              "Mehrere Angaben in einem Feld"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Es enthält keine leeren Werte",
+              "reason": "Leere Werte verbietet NOT NULL; atomisiert heißt: eine einzige Information, etwa nur der Ort."
+            },
+            {
+              "text": "Es ist der Primärschlüssel der Tabelle",
+              "reason": "Der Primärschlüssel identifiziert Datensätze; atomisiert sein sollen alle Datenfelder."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K07",
+          "slug": "sql-projektion-spalten",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-2-datensatz-datenfeld",
+          "question": "Mit welcher Anweisung zeigst du nur die Spalten vorname und nachname der Tabelle kunden?",
+          "concept": "SELECT vorname, nachname FROM kunden;",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "SELECT vorname, nachname FROM kunden;",
+              "SELECT kunden FROM vorname, nachname;"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "SELECT * FROM kunden WHERE vorname;",
+              "reason": "Der Stern holt alle Spalten; WHERE filtert Zeilen und wählt keine Spalten."
+            },
+            {
+              "text": "SHOW vorname, nachname IN kunden;",
+              "reason": "Spalten wählt SELECT, die Tabelle nennt FROM; SHOW und IN gibt es so nicht."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K08",
+          "slug": "sql-distinct",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-2-datensatz-datenfeld",
+          "question": "Welches Schlüsselwort lässt doppelte Zeilen im Ergebnis weg, sodass jeder Wert nur einmal erscheint?",
+          "concept": "DISTINCT",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "DISTINCT",
+              "UNIQUE"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "ORDER BY",
+              "reason": "ORDER BY sortiert das Ergebnis, lässt aber keine Zeile weg."
+            },
+            {
+              "text": "GROUP BY",
+              "reason": "GROUP BY bildet Gruppen für Aggregatfunktionen; für Werte ohne Wiederholung reicht DISTINCT."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K09",
+          "slug": "sql-grundbegriffe-ueberblick",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-2-datensatz-datenfeld",
+          "question": "Nenne die Begriffe des relationalen Modells für die Tabelle, eine Zeile, eine Spalte und das eindeutige Kennzeichen eines Datensatzes.",
+          "concept": "Relation, Datensatz (Tupel), Attribut (Datenfeld), Primärschlüssel",
+          "choice_distractors": [
+            {
+              "text": "Datenbank (DBMS), Formular (Maske), Bericht (Report), Abfrage",
+              "reason": "Das sind die Objekte eines Datenbanksystems, nicht die Begriffe des relationalen Modells."
+            },
+            {
+              "text": "Entität (Objekt), Beziehung (Verb), Kardinalität (1:n), Fremdschlüssel",
+              "reason": "Das sind Begriffe des ER-Modells vor dem Tabellenentwurf."
+            }
+          ],
+          "sample_solution": "Tabelle = Relation, Zeile = Datensatz oder Tupel, Spalte = Attribut oder Datenfeld, eindeutiges Kennzeichen = Primärschlüssel. Beispiel: Tabelle schueler, Zeile Anna Berg, Spalte nachname, Schlüssel schueler_id.",
+          "replaces": [
+            "01K4D9B0000000000000000J02"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A03",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A03",
+      "namespace": "zam-academy-sql",
+      "slug": "db-3-datentypen",
+      "title": "Datentypen INTEGER, REAL, TEXT; CREATE TABLE und INSERT",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=db-3-datentypen",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q192588",
+          "target_label": "Relational database",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-1-tabellen",
+          "topic_title": "Etappe 1: Datenbank und Tabelle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K10",
+          "slug": "sql-datentyp-plz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-3-datentypen",
+          "question": "Welchen Datentyp bekommt die Postleitzahl, und warum?",
+          "concept": "TEXT: man rechnet nicht damit, führende Nullen bleiben",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "TEXT: nicht rechnen, führende Nullen bleiben",
+              "INTEGER: sie besteht aus Ziffern"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "INTEGER: sie besteht nur aus Ziffern und ist eine Zahl",
+              "reason": "Aus 01069 würde als Zahl 1069; mit Postleitzahlen rechnet niemand."
+            },
+            {
+              "text": "REAL: sie hat fünf Stellen und wird numerisch sortiert",
+              "reason": "REAL ist für Kommazahlen; Sortieren geht mit TEXT genauso."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K11",
+          "slug": "sql-datentyp-kommazahl",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-3-datentypen",
+          "question": "Welchen Datentyp hat eine Spalte für Preise mit Nachkommastellen in SQLite?",
+          "concept": "REAL",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "REAL",
+              "INTEGER"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "TEXT",
+              "reason": "Mit Text kann das DBMS nicht rechnen; Preise werden summiert und verglichen."
+            },
+            {
+              "text": "DATE",
+              "reason": "Ein Datum ist kein Preis; in SQLite wird es ohnehin als Text gespeichert."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K12",
+          "slug": "sql-create-table",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-3-datentypen",
+          "question": "Mit welcher Anweisung legst du eine neue Tabelle mit ihren Spalten und Datentypen an?",
+          "concept": "CREATE TABLE",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "CREATE TABLE",
+              "INSERT INTO"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "ALTER TABLE",
+              "reason": "ALTER TABLE ändert eine vorhandene Tabelle, etwa um eine Spalte zu ergänzen."
+            },
+            {
+              "text": "NEW TABLE",
+              "reason": "Diese Anweisung gibt es in SQL nicht."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K13",
+          "slug": "sql-insert-syntax",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-3-datentypen",
+          "question": "Wie fügst du der Tabelle kunden einen Datensatz mit vorname Mia und nachname Roth hinzu?",
+          "concept": "INSERT INTO kunden (vorname, nachname) VALUES ('Mia', 'Roth');",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "INSERT INTO kunden (vorname, nachname) VALUES ('Mia', 'Roth');",
+              "ADD TO kunden SET vorname = 'Mia', nachname = 'Roth';"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "INSERT kunden VALUES (vorname = 'Mia', nachname = 'Roth');",
+              "reason": "Nach INSERT INTO folgen Tabelle und Spaltenliste, dann VALUES mit den Werten in Klammern."
+            },
+            {
+              "text": "UPDATE kunden SET (vorname, nachname) = ('Mia', 'Roth');",
+              "reason": "UPDATE ändert vorhandene Zeilen; neue Datensätze fügt INSERT ein."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A04",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A04",
+      "namespace": "zam-academy-sql",
+      "slug": "db-4-primaerschluessel",
+      "title": "Primärschlüssel: eindeutig, nie leer, unveränderlich",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=db-4-primaerschluessel",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q192588",
+          "target_label": "Relational database",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-1-tabellen",
+          "topic_title": "Etappe 1: Datenbank und Tabelle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K14",
+          "slug": "sql-primaerschluessel-eigenschaften",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-4-primaerschluessel",
+          "question": "Welche drei Eigenschaften muss ein Primärschlüssel erfüllen?",
+          "concept": "eindeutig, nie leer, unveränderlich",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "eindeutig, nie leer, unveränderlich",
+              "kurz, numerisch, sortiert"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "numerisch, fortlaufend, sichtbar",
+              "reason": "Ein Primärschlüssel muss weder eine Zahl noch fortlaufend sein; er muss eindeutig, gefüllt und stabil sein."
+            },
+            {
+              "text": "eindeutig, kurz, alphabetisch",
+              "reason": "Kürze und Alphabet spielen keine Rolle; nie leer und unveränderlich fehlen."
+            }
+          ],
+          "replaces": [
+            "01K4D9B0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K15",
+          "slug": "sql-kuenstlicher-schluessel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-4-primaerschluessel",
+          "question": "Warum nimmt man als Primärschlüssel meist eine laufende Nummer statt des Nachnamens?",
+          "concept": "Namen sind nicht eindeutig und können sich ändern",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Namen sind nicht eindeutig und ändern sich",
+              "Nummern brauchen weniger Speicherplatz"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zahlen lassen sich schneller sortieren als Text",
+              "reason": "Geschwindigkeit ist nicht der Grund; Namen verletzen Eindeutigkeit und Unveränderlichkeit."
+            },
+            {
+              "text": "Namen enthalten Umlaute und Leerzeichen",
+              "reason": "Umlaute sind für ein DBMS kein Problem; mehrere gleiche Namen sind eines."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K16",
+          "slug": "sql-unique-constraint-failed",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-4-primaerschluessel",
+          "question": "Was passiert, wenn du einen Datensatz mit einer bereits vergebenen kunden_id einfügst?",
+          "concept": "Das DBMS lehnt ihn ab: UNIQUE constraint failed",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das DBMS lehnt ihn ab (UNIQUE constraint failed)",
+              "Der alte Datensatz wird überschrieben"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der alte Datensatz wird stillschweigend überschrieben",
+              "reason": "Ein Primärschlüssel schützt vor Duplikaten; überschrieben wird nur mit einem ausdrücklichen UPDATE."
+            },
+            {
+              "text": "Die Nummer wird automatisch um eins erhöht",
+              "reason": "Automatisch vergibt SQLite eine Nummer nur, wenn du keine angibst; eine angegebene doppelte wird abgelehnt."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K17",
+          "slug": "sql-integer-primary-key-auto",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=db-4-primaerschluessel",
+          "question": "Was tut SQLite, wenn du beim Einfügen keinen Wert für eine Spalte INTEGER PRIMARY KEY angibst?",
+          "concept": "Es vergibt automatisch die nächste freie Nummer",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es vergibt automatisch die nächste freie Nummer",
+              "Es lehnt den Datensatz ab, weil der Schlüssel fehlt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Es lehnt den Datensatz ab, weil der Schlüssel fehlt",
+              "reason": "Gerade das ist der Vorteil einer INTEGER PRIMARY KEY-Spalte: Die Nummer kommt vom DBMS."
+            },
+            {
+              "text": "Es speichert NULL als Schlüsselwert",
+              "reason": "Ein Primärschlüssel darf nie NULL sein; SQLite setzt stattdessen die nächste Nummer ein."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A05",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A05",
+      "namespace": "zam-academy-sql",
+      "slug": "sql-1-where",
+      "title": "Zeilen filtern mit WHERE und Vergleichsoperatoren",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=sql-1-where",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q47607",
+          "target_label": "SQL",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-2-abfragen",
+          "topic_title": "Etappe 2: Abfragen mit SQL"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K18",
+          "slug": "sql-where-klausel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-1-where",
+          "question": "Welche SQL-Klausel filtert die Zeilen einer Abfrage nach einer Bedingung?",
+          "concept": "WHERE",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "WHERE",
+              "ORDER BY"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "HAVING",
+              "reason": "HAVING filtert Gruppen nach dem Gruppieren, nicht einzelne Zeilen."
+            },
+            {
+              "text": "FILTER",
+              "reason": "FILTER ist keine SQL-Klausel für Abfragen."
+            }
+          ],
+          "replaces": [
+            "01K4D9B0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K19",
+          "slug": "sql-text-hochkommas",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-1-where",
+          "question": "Wie schreibst du in einer WHERE-Bedingung einen Textwert wie Ulm und wie eine Zahl wie 20?",
+          "concept": "Text in einfachen Hochkommas wie 'Ulm', Zahlen ohne wie 20",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "'Ulm' in Hochkommas, 20 ohne",
+              "\"Ulm\" in Anführungszeichen, '20' in Hochkommas"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Beides in einfachen Hochkommas, also 'Ulm' und auch '20'",
+              "reason": "'20' wäre Text; mit Text kann das DBMS nicht rechnen oder nach Größe vergleichen."
+            },
+            {
+              "text": "Beides ohne Hochkommas, also Ulm und 20 direkt im Text",
+              "reason": "Ohne Hochkommas hält das DBMS Ulm für einen Spaltennamen."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K20",
+          "slug": "sql-ungleich",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-1-where",
+          "question": "Welche Bedingung findet alle Kunden, die nicht in Ulm wohnen?",
+          "concept": "WHERE ort <> 'Ulm'",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "WHERE ort <> 'Ulm'",
+              "WHERE ort >< 'Ulm'"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "WHERE ort UNLIKE 'Ulm'",
+              "reason": "UNLIKE gibt es in SQL nicht; ungleich schreibt man <>."
+            },
+            {
+              "text": "WHERE ort EXCEPT 'Ulm'",
+              "reason": "EXCEPT verknüpft zwei ganze Abfragen; in einer Bedingung ist es ein Fehler. Ungleich schreibt man <>."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K21",
+          "slug": "sql-klausel-reihenfolge",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-1-where",
+          "question": "In welcher Reihenfolge stehen die drei Grundklauseln einer Abfrage mit Spaltenauswahl, Tabelle und Bedingung?",
+          "concept": "SELECT, dann FROM, dann WHERE",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "SELECT, FROM, WHERE",
+              "FROM, WHERE, SELECT"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "FROM, dann SELECT, dann WHERE",
+              "reason": "Die Spaltenauswahl SELECT steht immer zuerst."
+            },
+            {
+              "text": "WHERE, dann SELECT, dann FROM",
+              "reason": "Die Bedingung kommt zuletzt, nach Spalten und Tabelle."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A06",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A06",
+      "namespace": "zam-academy-sql",
+      "slug": "sql-2-und-oder",
+      "title": "Bedingungen verknüpfen: AND, OR, NOT, BETWEEN, IN",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=sql-2-und-oder",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q47607",
+          "target_label": "SQL",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-2-abfragen",
+          "topic_title": "Etappe 2: Abfragen mit SQL"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K22",
+          "slug": "sql-and",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-2-und-oder",
+          "question": "Bei welchem Verknüpfungswort müssen beide Bedingungen zugleich wahr sein?",
+          "concept": "AND",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "AND",
+              "OR"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "OR",
+              "reason": "Bei OR reicht eine wahre Bedingung."
+            },
+            {
+              "text": "NOT",
+              "reason": "NOT kehrt eine einzelne Bedingung um; es verknüpft nicht zwei."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K23",
+          "slug": "sql-and-widerspruch",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-2-und-oder",
+          "question": "Was liefert die Bedingung ort = 'Ulm' AND ort = 'Augsburg'?",
+          "concept": "Keine Zeile, weil ein Ort nicht beides zugleich sein kann",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Keine Zeile",
+              "Alle Kunden aus Ulm und Augsburg"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Kunden aus Ulm und dazu die aus Augsburg",
+              "reason": "Dafür braucht es OR oder IN; AND verlangt beides zugleich."
+            },
+            {
+              "text": "Einen Syntaxfehler wegen der doppelten Spalte",
+              "reason": "Die Bedingung ist gültig, nur nie wahr."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K24",
+          "slug": "sql-between",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-2-und-oder",
+          "question": "Welche Bedingung findet Produkte mit einem Preis von 10 bis 30 Euro, Grenzen eingeschlossen?",
+          "concept": "WHERE preis BETWEEN 10 AND 30",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "WHERE preis BETWEEN 10 AND 30",
+              "WHERE preis IN (10, 30)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "WHERE preis FROM 10 TO 30",
+              "reason": "FROM und TO bilden keinen Bereich; der Bereich heißt BETWEEN … AND …."
+            },
+            {
+              "text": "WHERE preis IN (10 … 30)",
+              "reason": "IN prüft eine Liste einzelner Werte, keinen Bereich."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K25",
+          "slug": "sql-in-liste",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-2-und-oder",
+          "question": "Welche Bedingung ist eine Abkürzung für ort = 'Ulm' OR ort = 'Augsburg' OR ort = 'München'?",
+          "concept": "WHERE ort IN ('Ulm', 'Augsburg', 'München')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "WHERE ort IN ('Ulm', 'Augsburg', 'München')",
+              "WHERE ort = ('Ulm', 'Augsburg', 'München')"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "WHERE ort BETWEEN ('Ulm', 'München')",
+              "reason": "BETWEEN prüft einen Bereich zwischen zwei Grenzen, keine Liste von Werten."
+            },
+            {
+              "text": "WHERE ort LIKE ('Ulm', 'Augsburg', 'München')",
+              "reason": "LIKE vergleicht mit einem einzigen Muster, nicht mit einer Liste."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A07",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A07",
+      "namespace": "zam-academy-sql",
+      "slug": "sql-3-like",
+      "title": "Muster suchen mit LIKE, % und _",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=sql-3-like",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q47607",
+          "target_label": "SQL",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-2-abfragen",
+          "topic_title": "Etappe 2: Abfragen mit SQL"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K26",
+          "slug": "sql-like-prozent",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-3-like",
+          "question": "Wofür steht das Prozentzeichen in einem LIKE-Muster?",
+          "concept": "Für beliebig viele Zeichen, auch keines",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beliebig viele Zeichen, auch keines",
+              "Genau ein Zeichen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Für genau ein beliebiges Zeichen",
+              "reason": "Genau ein Zeichen ist der Unterstrich."
+            },
+            {
+              "text": "Für eine Zahl zwischen 0 und 100",
+              "reason": "In einem Muster hat das Prozentzeichen nichts mit Prozentrechnung zu tun."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K27",
+          "slug": "sql-like-unterstrich",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-3-like",
+          "question": "Wofür steht der Unterstrich in einem LIKE-Muster?",
+          "concept": "Für genau ein Zeichen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau ein Zeichen",
+              "Beliebig viele Zeichen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Für beliebig viele Zeichen",
+              "reason": "Beliebig viele Zeichen ist das Prozentzeichen."
+            },
+            {
+              "text": "Für ein Leerzeichen",
+              "reason": "Der Unterstrich steht für irgendein Zeichen, nicht speziell für ein Leerzeichen."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K28",
+          "slug": "sql-like-endet-auf",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-3-like",
+          "question": "Welche Bedingung findet alle Nachnamen, die auf mann enden?",
+          "concept": "WHERE nachname LIKE '%mann'",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "LIKE '%mann'",
+              "LIKE 'mann%'"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "WHERE nachname ENDS WITH 'mann'",
+              "reason": "ENDS WITH gibt es in SQL nicht; Muster vergleicht LIKE."
+            },
+            {
+              "text": "WHERE nachname = '%mann'",
+              "reason": "Mit = ist das Prozentzeichen ein normales Zeichen; Platzhalter wirken nur bei LIKE."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A08",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A08",
+      "namespace": "zam-academy-sql",
+      "slug": "sql-4-order-by",
+      "title": "Sortieren mit ORDER BY, ASC/DESC und LIMIT",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=sql-4-order-by",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q47607",
+          "target_label": "SQL",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-2-abfragen",
+          "topic_title": "Etappe 2: Abfragen mit SQL"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K29",
+          "slug": "sql-order-by-desc",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-4-order-by",
+          "question": "Mit welchem Zusatz sortiert ORDER BY absteigend, also vom größten zum kleinsten Wert?",
+          "concept": "DESC",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "DESC",
+              "ASC"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "DOWN",
+              "reason": "DOWN ist kein SQL-Schlüsselwort."
+            },
+            {
+              "text": "REVERSE",
+              "reason": "REVERSE gibt es in ORDER BY nicht; absteigend heißt DESC."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K30",
+          "slug": "sql-order-by-zwei-schluessel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-4-order-by",
+          "question": "Was bewirkt der zweite Sortierschlüssel in ORDER BY ort, nachname?",
+          "concept": "Nur bei gleichem ort: innerhalb eines Orts sortiert er nach nachname",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er entscheidet nur bei gleichem Ort",
+              "Er sortiert zuerst nach Nachname"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er sortiert die ganze Tabelle zuerst nach nachname und dann nach ort",
+              "reason": "Der erste Schlüssel hat Vorrang; der zweite gilt nur bei Gleichstand."
+            },
+            {
+              "text": "Er wird ignoriert, weil nur der erste Sortierschlüssel zählt",
+              "reason": "Mehrere Schlüssel sind erlaubt und entscheiden nacheinander."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K31",
+          "slug": "sql-limit-top-n",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-4-order-by",
+          "question": "Wie bekommst du die drei teuersten Produkte mit SQL?",
+          "concept": "ORDER BY preis DESC LIMIT 3",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ORDER BY preis DESC LIMIT 3",
+              "ORDER BY preis ASC LIMIT 3"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "TOP 3 ORDER BY preis",
+              "reason": "TOP kennt SQLite nicht; die ersten n Zeilen liefert LIMIT nach ORDER BY."
+            },
+            {
+              "text": "LIMIT 3 ORDER BY preis DESC",
+              "reason": "LIMIT steht nach ORDER BY, nicht davor."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K32",
+          "slug": "sql-abfrage-vier-klauseln",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-4-order-by",
+          "question": "Schreibe die Abfrage, die vorname und nachname aller Kunden aus Ulm aufsteigend nach nachname sortiert ausgibt.",
+          "concept": "SELECT vorname, nachname FROM kunden WHERE ort = 'Ulm' ORDER BY nachname ASC;",
+          "choice_distractors": [
+            {
+              "text": "SELECT vorname, nachname FROM kunden ORDER BY nachname ASC WHERE ort = 'Ulm';",
+              "reason": "WHERE steht vor ORDER BY."
+            },
+            {
+              "text": "SELECT vorname, nachname WHERE ort = 'Ulm' FROM kunden ORDER BY nachname;",
+              "reason": "FROM steht direkt nach der Spaltenliste, vor WHERE."
+            }
+          ],
+          "sample_solution": "SELECT wählt die Spalten, FROM die Tabelle, WHERE die Zeilen, ORDER BY sortiert; ASC (aufsteigend) ist die Voreinstellung und darf entfallen.",
+          "replaces": [
+            "01K4D9B0000000000000000J06"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A09",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A09",
+      "namespace": "zam-academy-sql",
+      "slug": "sql-5-berechnen",
+      "title": "Berechnete Spalten, Aliasnamen mit AS, Verketten mit ||, ROUND",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=sql-5-berechnen",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q47607",
+          "target_label": "SQL",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-2-abfragen",
+          "topic_title": "Etappe 2: Abfragen mit SQL"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K33",
+          "slug": "sql-alias-as",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-5-berechnen",
+          "question": "Was bewirkt AS in SELECT preis * lagerbestand AS lagerwert?",
+          "concept": "Es benennt die Ergebnisspalte lagerwert; gespeichert wird nichts",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es benennt die Ergebnisspalte",
+              "Es legt eine neue Tabellenspalte an"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Es legt in der Tabelle dauerhaft eine Spalte lagerwert an",
+              "reason": "Ein Alias gilt nur im Ergebnis dieser Abfrage; die Tabelle bleibt unverändert."
+            },
+            {
+              "text": "Es filtert die Zeilen, die einen Lagerwert haben",
+              "reason": "Zeilen filtert WHERE; AS vergibt nur einen Namen."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K34",
+          "slug": "sql-verketten",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-5-berechnen",
+          "question": "Mit welchem Operator verkettest du in SQL zwei Texte, zum Beispiel Vorname und Nachname?",
+          "concept": "Mit zwei senkrechten Strichen ||",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "||",
+              "+"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mit einem Pluszeichen +",
+              "reason": "Plus addiert Zahlen; in SQLite verkettet es keinen Text."
+            },
+            {
+              "text": "Mit dem Kaufmanns-Und &",
+              "reason": "Das Kaufmanns-Und ist in SQLite ein Bit-Operator, kein Verkettungszeichen."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K35",
+          "slug": "sql-round",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-5-berechnen",
+          "question": "Welche Funktion rundet in SQL einen Wert, zum Beispiel einen Preis auf ganze Euro?",
+          "concept": "ROUND(preis)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ROUND(preis)",
+              "TRUNC(preis)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "ROUNDUP(preis)",
+              "reason": "ROUNDUP ist eine Tabellenkalkulationsfunktion, keine SQL-Funktion."
+            },
+            {
+              "text": "FLOOR(preis)",
+              "reason": "FLOOR würde immer abrunden und ist in SQLite nicht vorhanden; runden heißt ROUND."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A10",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A10",
+      "namespace": "zam-academy-sql",
+      "slug": "sql-6-aggregat",
+      "title": "Aggregatfunktionen COUNT, SUM, AVG, MIN, MAX",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=sql-6-aggregat",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q47607",
+          "target_label": "SQL",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-2-abfragen",
+          "topic_title": "Etappe 2: Abfragen mit SQL"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.1",
+          "topic_title": "IT 2.3.1 Datenbanksysteme I",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K36",
+          "slug": "sql-count-zeilen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-6-aggregat",
+          "question": "Welche Funktion zählt die Zeilen einer Tabelle oder einer Auswahl?",
+          "concept": "COUNT(*)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "COUNT(*)",
+              "SUM(*)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "SUM(*)",
+              "reason": "SUM summiert die Werte einer Spalte; Zeilen zählt COUNT."
+            },
+            {
+              "text": "NUMBER(*)",
+              "reason": "NUMBER ist keine SQL-Funktion."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K37",
+          "slug": "sql-avg-durchschnitt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-6-aggregat",
+          "question": "Welche Funktion berechnet den Durchschnitt einer Spalte?",
+          "concept": "AVG(spalte)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "AVG(spalte)",
+              "MEAN(spalte)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "MEAN(spalte)",
+              "reason": "MEAN gibt es in SQL nicht; der Durchschnitt heißt AVG."
+            },
+            {
+              "text": "MEDIAN(spalte)",
+              "reason": "Der Median ist ein anderer Mittelwert und in SQLite keine Standardfunktion."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K38",
+          "slug": "sql-aggregat-eine-zeile",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=sql-6-aggregat",
+          "question": "Wie viele Zeilen liefert SELECT COUNT(*) FROM kunden WHERE ort = 'Ulm'?",
+          "concept": "Genau eine Zeile mit der Anzahl",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau eine Zeile",
+              "Eine Zeile pro Kunde aus Ulm"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Zeile pro Kunde aus Ulm",
+              "reason": "Eine Aggregatfunktion fasst alle passenden Zeilen zu einem Wert zusammen."
+            },
+            {
+              "text": "Eine Zeile pro Ort in der Tabelle",
+              "reason": "Eine Zeile je Ort gäbe es erst mit GROUP BY ort."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A11",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A11",
+      "namespace": "zam-academy-sql",
+      "slug": "er-1-redundanz",
+      "title": "Redundanz, Anomalien und Inkonsistenzen",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=er-1-redundanz",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q192588",
+          "target_label": "Relational database",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-3-beziehungen",
+          "topic_title": "Etappe 3: Mehrere Tabellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.2",
+          "topic_title": "IT 2.3.2 Datenbanksysteme II",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.2",
+          "topic_title": "IT 2.3.2 Datenbanksysteme II",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K39",
+          "slug": "sql-redundanz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=er-1-redundanz",
+          "question": "Was bedeutet Redundanz in einer Datenbank?",
+          "concept": "Dieselbe Information ist mehrfach gespeichert",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dieselbe Information mehrfach gespeichert",
+              "Eine Tabelle ohne Primärschlüssel"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Tabelle hat keinen Primärschlüssel",
+              "reason": "Ein fehlender Schlüssel ist ein anderer Mangel; Redundanz ist Mehrfachspeicherung."
+            },
+            {
+              "text": "Zwei Tabellen haben gleich viele Zeilen",
+              "reason": "Gleiche Zeilenzahl ist Zufall und kein Problem."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K40",
+          "slug": "sql-aenderungsanomalie",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=er-1-redundanz",
+          "question": "Eine Kundin zieht um; ihr Ort steht in fünf Zeilen, in einer wird die Änderung vergessen. Welche Anomalie ist das?",
+          "concept": "Änderungsanomalie",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Änderungsanomalie",
+              "Löschanomalie"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Löschanomalie",
+              "reason": "Die Löschanomalie betrifft Daten, die beim Löschen einer Zeile ungewollt verloren gehen."
+            },
+            {
+              "text": "Einfügeanomalie",
+              "reason": "Die Einfügeanomalie betrifft Daten, die sich ohne ein anderes Objekt nicht speichern lassen."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K41",
+          "slug": "sql-inkonsistenz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=er-1-redundanz",
+          "question": "Wie nennt man widersprüchliche Angaben zur selben Sache, etwa zwei Orte für eine Kundin?",
+          "concept": "Inkonsistenz",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Inkonsistenz",
+              "Redundanz"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Redundanz",
+              "reason": "Redundanz ist die Mehrfachspeicherung; der Widerspruch, der daraus entsteht, ist die Inkonsistenz."
+            },
+            {
+              "text": "Integrität",
+              "reason": "Integrität ist das Gegenteil: korrekte, widerspruchsfreie Daten."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K42",
+          "slug": "sql-loeschanomalie",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=er-1-redundanz",
+          "question": "Die einzige Bestellung eines Kunden wird gelöscht, und mit ihr verschwindet seine Adresse. Welche Anomalie ist das?",
+          "concept": "Löschanomalie",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Löschanomalie",
+              "Änderungsanomalie"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Änderungsanomalie",
+              "reason": "Die Änderungsanomalie betrifft Werte, die an mehreren Stellen geändert werden müssen."
+            },
+            {
+              "text": "Einfügeanomalie",
+              "reason": "Die Einfügeanomalie betrifft Daten, die sich ohne ein anderes Objekt nicht speichern lassen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A12",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A12",
+      "namespace": "zam-academy-sql",
+      "slug": "er-2-kardinalitaet",
+      "title": "ER-Modell: Entitäten, Beziehungen und Kardinalitäten 1:1, 1:n, n:m",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=er-2-kardinalitaet",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q192588",
+          "target_label": "Relational database",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-3-beziehungen",
+          "topic_title": "Etappe 3: Mehrere Tabellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.2",
+          "topic_title": "IT 2.3.2 Datenbanksysteme II",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.2",
+          "topic_title": "IT 2.3.2 Datenbanksysteme II",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K43",
+          "slug": "sql-kardinalitaet-1-n",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=er-2-kardinalitaet",
+          "question": "Ein Kunde gibt viele Bestellungen auf, jede Bestellung gehört zu einem Kunden. Welche Kardinalität ist das?",
+          "concept": "1:n",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1:n",
+              "n:m"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "n:m",
+              "reason": "n:m hieße, eine Bestellung könnte zu mehreren Kunden gehören."
+            },
+            {
+              "text": "1:1",
+              "reason": "1:1 hieße, jeder Kunde hätte höchstens eine Bestellung."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K44",
+          "slug": "sql-kardinalitaet-n-m",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=er-2-kardinalitaet",
+          "question": "Eine Bestellung enthält mehrere Produkte, ein Produkt steckt in vielen Bestellungen. Welche Kardinalität ist das?",
+          "concept": "n:m",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "n:m",
+              "1:n"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "1:n",
+              "reason": "1:n hieße, ein Produkt käme nur in einer Bestellung vor oder eine Bestellung hätte nur ein Produkt."
+            },
+            {
+              "text": "1:1",
+              "reason": "1:1 hieße, jede Bestellung enthielte genau ein Produkt und jedes Produkt wäre nur einmal bestellt."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K45",
+          "slug": "sql-entitaet",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=er-2-kardinalitaet",
+          "question": "Wie heißt im ER-Modell ein Objekttyp wie Kunde oder Produkt, über den etwas gespeichert wird?",
+          "concept": "Entität",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Entität",
+              "Attribut"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Attribut",
+              "reason": "Ein Attribut ist eine Eigenschaft einer Entität, etwa der Nachname."
+            },
+            {
+              "text": "Beziehung",
+              "reason": "Eine Beziehung verbindet zwei Entitäten und wird mit einem Verb benannt."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K46",
+          "slug": "sql-kardinalitaet-fragen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=er-2-kardinalitaet",
+          "question": "Mit welchen zwei Fragen bestimmst du die Kardinalität einer Beziehung zwischen A und B?",
+          "concept": "Wie viele B gehören zu einem A, und wie viele A zu einem B?",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wie viele B je A, wie viele A je B?",
+              "Wie viele A und B gibt es insgesamt?"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wie viele A und wie viele B gibt es insgesamt in der Datenbank?",
+              "reason": "Die Gesamtzahl sagt nichts über die Beziehung; es zählt die Zuordnung je Objekt."
+            },
+            {
+              "text": "Welche Attribute haben A und B, und welche davon sind Schlüssel?",
+              "reason": "Attribute und Schlüssel beschreiben die Entitäten, nicht die Kardinalität."
+            }
+          ],
+          "sample_solution": "Eins und eins: 1:1. Eins und viele: 1:n. Viele und viele: n:m. Beispiel: Ein Kunde hat viele Bestellungen, eine Bestellung einen Kunden, also 1:n."
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A13",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A13",
+      "namespace": "zam-academy-sql",
+      "slug": "er-3-fremdschluessel",
+      "title": "Abbildungsregeln, Fremdschlüssel und referenzielle Integrität",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=er-3-fremdschluessel",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q192588",
+          "target_label": "Relational database",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-3-beziehungen",
+          "topic_title": "Etappe 3: Mehrere Tabellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.2",
+          "topic_title": "IT 2.3.2 Datenbanksysteme II",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.2",
+          "topic_title": "IT 2.3.2 Datenbanksysteme II",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K47",
+          "slug": "sql-1n-fremdschluessel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=er-3-fremdschluessel",
+          "question": "Wie wird eine 1:n-Beziehung, etwa Kunde zu Bestellung, in Tabellen umgesetzt?",
+          "concept": "Der Primärschlüssel der 1-Seite wird Fremdschlüssel in der Tabelle der n-Seite",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Primärschlüssel der 1-Seite als Fremdschlüssel in die n-Tabelle",
+              "Eine zusätzliche Zwischentabelle"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Primärschlüssel der n-Seite wird Fremdschlüssel in der Tabelle der 1-Seite",
+              "reason": "Dann müsste der Kunde viele Bestellnummern speichern; der Verweis gehört auf die Seite mit vielen Zeilen."
+            },
+            {
+              "text": "Beide Tabellen bekommen eine gemeinsame Zwischentabelle mit zwei Schlüsseln",
+              "reason": "Eine Zwischentabelle braucht erst eine n:m-Beziehung."
+            }
+          ],
+          "replaces": [
+            "01K4D9B0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K48",
+          "slug": "sql-nm-zwischentabelle",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=er-3-fremdschluessel",
+          "question": "Wie wird eine n:m-Beziehung, etwa Bestellung zu Produkt, in Tabellen umgesetzt?",
+          "concept": "Mit einer Zwischentabelle, die beide Primärschlüssel als Fremdschlüssel enthält",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwischentabelle mit zwei Fremdschlüsseln",
+              "Fremdschlüssel in einer der beiden Tabellen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Primärschlüssel der einen Tabelle wandert als Fremdschlüssel in die andere",
+              "reason": "Das genügt nur bei 1:n; bei n:m passt die Beziehung in keine der beiden Tabellen."
+            },
+            {
+              "text": "Beide Tabellen werden zu einer einzigen Tabelle zusammengelegt",
+              "reason": "Zusammenlegen erzeugt genau die Redundanz, die Tabellen vermeiden sollen."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K49",
+          "slug": "sql-referenzielle-integritaet",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=er-3-fremdschluessel",
+          "question": "Was stellt die referenzielle Integrität sicher?",
+          "concept": "Jeder Fremdschlüsselwert zeigt auf einen vorhandenen Primärschlüssel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fremdschlüssel zeigen auf vorhandene Primärschlüssel",
+              "Jede Tabelle hat einen Primärschlüssel"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Jede Tabelle hat genau einen Primärschlüssel und keine Duplikate",
+              "reason": "Das sichert der Primärschlüssel selbst; referenziell heißt: die Verweise zwischen Tabellen stimmen."
+            },
+            {
+              "text": "Alle Spalten einer Tabelle haben denselben Datentyp",
+              "reason": "Datentypen sind je Spalte verschieden und haben mit Verweisen nichts zu tun."
+            }
+          ],
+          "replaces": [
+            "01K4D9B0000000000000000J04"
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K50",
+          "slug": "sql-foreign-key-fehler",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=er-3-fremdschluessel",
+          "question": "Was passiert, wenn du eine Bestellung für eine kunden_id anlegst, die es in kunden nicht gibt?",
+          "concept": "Das DBMS lehnt sie ab: FOREIGN KEY constraint failed",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das DBMS lehnt sie ab",
+              "Der Kunde wird automatisch angelegt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Kunde wird automatisch mit leeren Feldern angelegt",
+              "reason": "Ein DBMS erfindet keine Datensätze; der Verweis muss auf etwas Vorhandenes zeigen."
+            },
+            {
+              "text": "Die Bestellung wird ohne Kunde gespeichert",
+              "reason": "Genau das verhindert die referenzielle Integrität."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A14",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A14",
+      "namespace": "zam-academy-sql",
+      "slug": "join-1-zwei-tabellen",
+      "title": "Zwei Tabellen verknüpfen mit JOIN … ON",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=join-1-zwei-tabellen",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q192588",
+          "target_label": "Relational database",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-3-beziehungen",
+          "topic_title": "Etappe 3: Mehrere Tabellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.2",
+          "topic_title": "IT 2.3.2 Datenbanksysteme II",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.2",
+          "topic_title": "IT 2.3.2 Datenbanksysteme II",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K51",
+          "slug": "sql-join-on",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=join-1-zwei-tabellen",
+          "question": "Welche Klausel verknüpft zwei Tabellen über eine Bedingung wie Fremdschlüssel gleich Primärschlüssel?",
+          "concept": "JOIN … ON",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "JOIN … ON",
+              "GROUP BY"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "GROUP BY",
+              "reason": "GROUP BY bildet Gruppen innerhalb eines Ergebnisses; es verbindet keine Tabellen."
+            },
+            {
+              "text": "UNION … WITH",
+              "reason": "UNION hängt Ergebnisse untereinander; Zeilen zweier Tabellen verbindet JOIN."
+            }
+          ],
+          "replaces": [
+            "01K4D9B0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K52",
+          "slug": "sql-join-on-bedingung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=join-1-zwei-tabellen",
+          "question": "Was steht in der ON-Bedingung eines JOIN zwischen bestellungen und kunden?",
+          "concept": "bestellungen.kunden_id = kunden.kunden_id",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "bestellungen.kunden_id = kunden.kunden_id",
+              "bestellungen.bestell_id = kunden.kunden_id"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "bestellungen.bestell_id = kunden.kunden_id",
+              "reason": "Die Bestellnummer hat mit der Kundennummer nichts zu tun; Fremdschlüssel trifft Primärschlüssel."
+            },
+            {
+              "text": "kunden.nachname = bestellungen.status",
+              "reason": "Name und Status sind keine Schlüssel."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K53",
+          "slug": "sql-spalte-qualifizieren",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=join-1-zwei-tabellen",
+          "question": "Warum schreibt man in einem JOIN kunden.kunden_id statt nur kunden_id?",
+          "concept": "Weil die Spalte in beiden Tabellen vorkommt und sonst mehrdeutig wäre",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Spalte kommt in beiden Tabellen vor",
+              "SQL verlangt immer den Tabellennamen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Weil SQL vor jeder Spalte den Tabellennamen verlangt",
+              "reason": "Nötig ist der Tabellenname nur bei Spalten, die in mehreren Tabellen vorkommen."
+            },
+            {
+              "text": "Weil die Spalte sonst nicht sortiert werden kann",
+              "reason": "Sortieren hat damit nichts zu tun; es geht um Eindeutigkeit."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K54",
+          "slug": "sql-inner-join-ohne-partner",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=join-1-zwei-tabellen",
+          "question": "Erscheint ein Kunde ohne Bestellung im Ergebnis eines INNER JOIN von kunden und bestellungen?",
+          "concept": "Nein, nur Zeilen mit Partner in beiden Tabellen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein",
+              "Ja, mit leeren Bestellspalten"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ja, mit NULL in den Spalten der Bestellung",
+              "reason": "Das wäre ein LEFT JOIN; der INNER JOIN lässt Zeilen ohne Partner weg."
+            },
+            {
+              "text": "Ja, aber nur wenn er den Newsletter bezieht",
+              "reason": "Der Newsletter hat mit dem Join nichts zu tun."
+            }
+          ],
+          "replaces": [
+            "01K4D9B0000000000000000J08"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A15",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A15",
+      "namespace": "zam-academy-sql",
+      "slug": "join-2-drei-tabellen",
+      "title": "Drei und mehr Tabellen über die Zwischentabelle verknüpfen",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=join-2-drei-tabellen",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q192588",
+          "target_label": "Relational database",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-3-beziehungen",
+          "topic_title": "Etappe 3: Mehrere Tabellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.2",
+          "topic_title": "IT 2.3.2 Datenbanksysteme II",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.2",
+          "topic_title": "IT 2.3.2 Datenbanksysteme II",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K55",
+          "slug": "sql-drei-tabellen-zwischentabelle",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=join-2-drei-tabellen",
+          "question": "Warum braucht die Frage, welche Produkte Anna Berg bestellt hat, die Tabelle positionen?",
+          "concept": "positionen verbindet bestellungen und produkte; ohne sie fehlt der Weg",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "positionen verbindet bestellungen und produkte",
+              "In positionen stehen die Kundennamen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "In positionen stehen die Namen der Kunden und der bestellten Produkte",
+              "reason": "positionen enthält nur Schlüssel und die Menge; die Namen stehen in kunden und produkte."
+            },
+            {
+              "text": "Die Tabelle produkte hat keinen eigenen Primärschlüssel für den Join",
+              "reason": "produkte hat produkt_id; positionen wird gebraucht, weil n:m sonst nicht abbildbar ist."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K56",
+          "slug": "sql-join-kette",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=join-2-drei-tabellen",
+          "question": "Wie verbindest du vier Tabellen in einer Abfrage?",
+          "concept": "Mit einem JOIN je Verbindung, jeder mit seiner ON-Bedingung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein JOIN je Verbindung, je mit ON",
+              "Alle Tabellen in FROM, ein gemeinsames ON"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mit einem einzigen JOIN, der alle vier Tabellen nennt",
+              "reason": "Jeder JOIN verbindet genau eine weitere Tabelle über ihre eigene Bedingung."
+            },
+            {
+              "text": "Mit UNION, das die vier Tabellen aneinanderhängt",
+              "reason": "UNION hängt Ergebnisse untereinander; zusammengehörige Zeilen verbindet JOIN."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K57",
+          "slug": "sql-bestellwert",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=join-2-drei-tabellen",
+          "question": "Mit welcher Abfrage berechnest du den Gesamtbetrag der Bestellung 101 aus positionen und produkte?",
+          "concept": "SELECT SUM(p.preis * pos.menge) FROM positionen pos JOIN produkte p ON p.produkt_id = pos.produkt_id WHERE pos.bestell_id = 101;",
+          "choice_distractors": [
+            {
+              "text": "SELECT SUM(p.preis) FROM positionen pos JOIN produkte p ON p.produkt_id = pos.produkt_id WHERE pos.bestell_id = 101;",
+              "reason": "Ohne die Menge zählt jedes Produkt nur einmal, auch wenn drei Stück bestellt wurden."
+            },
+            {
+              "text": "SELECT p.preis * pos.menge FROM positionen pos JOIN produkte p ON p.produkt_id = pos.produkt_id WHERE pos.bestell_id = 101;",
+              "reason": "Das liefert eine Zeile je Position; der Gesamtbetrag braucht SUM."
+            }
+          ],
+          "sample_solution": "Jede Position trägt Preis mal Menge bei; SUM addiert über alle Positionen der Bestellung. Der JOIN holt den Preis aus produkte, WHERE wählt die Bestellung."
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A16",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A16",
+      "namespace": "zam-academy-sql",
+      "slug": "rep-1-group-by",
+      "title": "Berichte je Gruppe: GROUP BY und HAVING",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=rep-1-group-by",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q47607",
+          "target_label": "SQL",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-4-berichte",
+          "topic_title": "Etappe 4: Berichte und Datenpflege"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K58",
+          "slug": "sql-group-by",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=rep-1-group-by",
+          "question": "Welche Klausel liefert eine Ergebniszeile je Gruppe gleicher Werte, etwa je Kategorie?",
+          "concept": "GROUP BY",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "GROUP BY",
+              "ORDER BY"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "ORDER BY",
+              "reason": "ORDER BY sortiert, fasst aber keine Zeilen zusammen."
+            },
+            {
+              "text": "DISTINCT",
+              "reason": "DISTINCT lässt Dubletten weg, erlaubt aber keine Kennzahl je Gruppe."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K59",
+          "slug": "sql-having-vs-where",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=rep-1-group-by",
+          "question": "Worin unterscheiden sich WHERE und HAVING?",
+          "concept": "WHERE filtert Zeilen vor dem Gruppieren, HAVING filtert Gruppen danach",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "WHERE vor dem Gruppieren, HAVING Gruppen danach",
+              "HAVING ist ein anderes Wort für WHERE"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "HAVING filtert Zeilen vor dem Gruppieren, WHERE filtert Gruppen danach",
+              "reason": "Genau umgekehrt: WHERE arbeitet auf Zeilen, HAVING auf den fertigen Gruppen."
+            },
+            {
+              "text": "WHERE gilt für Text, HAVING für Zahlen und Aggregate",
+              "reason": "Beide Klauseln kennen jeden Datentyp; der Unterschied ist der Zeitpunkt."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K60",
+          "slug": "sql-group-by-regel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=rep-1-group-by",
+          "question": "Welche Regel gilt für die Spalten in der SELECT-Liste einer Abfrage mit GROUP BY?",
+          "concept": "Jede Spalte steht in GROUP BY oder in einer Aggregatfunktion",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In GROUP BY oder in einer Aggregatfunktion",
+              "Nur Aggregatfunktionen sind erlaubt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Es dürfen nur Aggregatfunktionen in der Liste stehen",
+              "reason": "Die Gruppenspalte selbst darf und soll erscheinen."
+            },
+            {
+              "text": "Die Spalten müssen in derselben Reihenfolge wie in GROUP BY stehen",
+              "reason": "Die Reihenfolge ist frei; entscheidend ist, dass jede Spalte gruppiert oder aggregiert ist."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A17",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A17",
+      "namespace": "zam-academy-sql",
+      "slug": "rep-2-left-join",
+      "title": "LEFT JOIN, NULL und Zählungen mit 0",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=rep-2-left-join",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q47607",
+          "target_label": "SQL",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-4-berichte",
+          "topic_title": "Etappe 4: Berichte und Datenpflege"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K61",
+          "slug": "sql-left-join",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=rep-2-left-join",
+          "question": "Welcher Join behält alle Zeilen der linken Tabelle, auch ohne Partner rechts?",
+          "concept": "LEFT JOIN",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "LEFT JOIN",
+              "INNER JOIN"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "INNER JOIN",
+              "reason": "Der INNER JOIN liefert nur Zeilen mit Partner in beiden Tabellen."
+            },
+            {
+              "text": "CROSS JOIN",
+              "reason": "Der CROSS JOIN kombiniert jede Zeile mit jeder; er hat mit fehlenden Partnern nichts zu tun."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K62",
+          "slug": "sql-is-null-ohne-partner",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=rep-2-left-join",
+          "question": "Wie findest du mit einem LEFT JOIN von kunden zu bestellungen die Kunden ohne Bestellung?",
+          "concept": "WHERE bestellungen.bestell_id IS NULL",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "WHERE bestellungen.bestell_id IS NULL",
+              "WHERE bestellungen.bestell_id = NULL"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "WHERE bestellungen.bestell_id = 0",
+              "reason": "Fehlende Partner haben NULL, nicht 0; auf NULL prüft nur IS NULL."
+            },
+            {
+              "text": "WHERE bestellungen.bestell_id IS EMPTY",
+              "reason": "IS EMPTY gibt es in SQL nicht."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K63",
+          "slug": "sql-count-spalte-null",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=rep-2-left-join",
+          "question": "Warum zählt man beim LEFT JOIN je Kunde mit COUNT(b.bestell_id) statt mit COUNT(*)?",
+          "concept": "COUNT(spalte) zählt keine NULL-Werte, also 0 für Kunden ohne Bestellung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "COUNT(spalte) zählt keine NULL und ergibt 0",
+              "COUNT(*) ist langsamer"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "COUNT(*) ist bei großen Tabellen deutlich langsamer als COUNT(spalte)",
+              "reason": "Geschwindigkeit ist nicht der Grund; COUNT(*) würde die NULL-Zeile als 1 zählen."
+            },
+            {
+              "text": "COUNT(*) zählt nur die Zeilen der linken Tabelle, nicht die rechte",
+              "reason": "COUNT(*) zählt alle Ergebniszeilen, auch die mit NULL rechts."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01K8ACADSQ0000000000000A18",
+      "atom_uri": "urn:zam:atom:01K8ACADSQ0000000000000A18",
+      "namespace": "zam-academy-sql",
+      "slug": "dml-1-einfuegen-aendern",
+      "title": "UPDATE, DELETE und Integritätsregeln als Validierung",
+      "domain": "informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/sql/#lesson=dml-1-einfuegen-aendern",
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q47607",
+          "target_label": "SQL",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "zam_academy_sql_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "sql",
+          "topic_code": "stage-4-berichte",
+          "topic_title": "Etappe 4: Berichte und Datenpflege"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "it-2.3.2",
+          "topic_title": "IT 2.3.2 Datenbanksysteme II",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "informatik",
+          "topic_code": "it-2.3.2",
+          "topic_title": "IT 2.3.2 Datenbanksysteme II",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8ACADSQ0000000000000K64",
+          "slug": "sql-update-ohne-where",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=dml-1-einfuegen-aendern",
+          "question": "Was passiert bei UPDATE produkte SET preis = 1 ohne WHERE?",
+          "concept": "Jede Zeile der Tabelle bekommt den Preis 1",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Jedes Produkt kostet danach 1",
+              "Nur das erste Produkt kostet 1"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur die erste Zeile der Tabelle bekommt den Preis 1",
+              "reason": "Ohne WHERE gibt es keine Einschränkung; die Änderung trifft alle Zeilen."
+            },
+            {
+              "text": "Das DBMS meldet einen Syntaxfehler",
+              "reason": "Die Anweisung ist gültig, nur gefährlich."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K65",
+          "slug": "sql-delete-reihenfolge",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=dml-1-einfuegen-aendern",
+          "question": "In welcher Reihenfolge löschst du eine Bestellung, auf die noch Positionen verweisen?",
+          "concept": "Erst die Positionen, dann die Bestellung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Erst die Positionen, dann die Bestellung",
+              "Erst die Bestellung, dann die Positionen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Erst die Bestellung, dann die Positionen",
+              "reason": "Solange Positionen auf die Bestellung verweisen, lehnt das DBMS das Löschen ab."
+            },
+            {
+              "text": "Beides gleichzeitig in einer DELETE-Anweisung",
+              "reason": "DELETE löscht aus einer Tabelle; zwei Tabellen brauchen zwei Anweisungen."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K66",
+          "slug": "sql-check-constraint",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=dml-1-einfuegen-aendern",
+          "question": "Welche Integritätsregel verhindert, dass ein negativer Preis gespeichert wird?",
+          "concept": "CHECK (preis >= 0)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "CHECK (preis >= 0)",
+              "NOT NULL"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "UNIQUE (preis)",
+              "reason": "UNIQUE verbietet doppelte Werte, nicht negative."
+            },
+            {
+              "text": "DEFAULT (0)",
+              "reason": "DEFAULT setzt einen Vorgabewert, prüft aber keine Eingabe."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K67",
+          "slug": "sql-formular-aufgaben",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=dml-1-einfuegen-aendern",
+          "question": "Welche zwei Aufgaben hat ein Formular in einem Datenbanksystem?",
+          "concept": "Eingaben validieren und speichern",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Validieren und speichern",
+              "Sortieren und drucken"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Daten sortieren und als Bericht drucken",
+              "reason": "Auswerten und drucken ist Aufgabe des Berichts."
+            },
+            {
+              "text": "Tabellen anlegen und Schlüssel vergeben",
+              "reason": "Tabellen entstehen mit CREATE TABLE, nicht über ein Formular."
+            }
+          ]
+        },
+        {
+          "id": "01K8ACADSQ0000000000000K68",
+          "slug": "sql-not-null",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/sql/#lesson=dml-1-einfuegen-aendern",
+          "question": "Welche Integritätsregel macht ein Feld zum Pflichtfeld, das nie leer bleiben darf?",
+          "concept": "NOT NULL",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "NOT NULL",
+              "UNIQUE"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "UNIQUE",
+              "reason": "UNIQUE verbietet doppelte Werte; leer bleiben dürfte das Feld trotzdem."
+            },
+            {
+              "text": "DEFAULT",
+              "reason": "DEFAULT füllt einen Vorgabewert ein, verbietet leere Eingaben aber nicht."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

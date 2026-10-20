@@ -626,9 +626,6 @@ import tile214Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-ge
 import tile215Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-informatik-algorithmen-strukturen-kvt.json" with {
   type: "json",
 };
-import tile216Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-informatik-datenbanken-sql-kvt.json" with {
-  type: "json",
-};
 import tile217Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-mathematik-kreis-raumgeometrie-kvt.json" with {
   type: "json",
 };
@@ -692,6 +689,9 @@ import tile228Raw from "../../../tests/fixtures/curriculum/de-by-realschule-opti
 import tile230Raw from "../../../tests/fixtures/curriculum/zam-academy-physik-realschule-9-kvt.json" with {
   type: "json",
 };
+import tile231Raw from "../../../tests/fixtures/curriculum/zam-academy-sql-kvt.json" with {
+  type: "json",
+};
 import tile229Raw from "../../../tests/fixtures/curriculum/zam-academy-uml-kvt.json" with {
   type: "json",
 };
@@ -705,20 +705,52 @@ export interface CurriculumScope {
   subject?: string;
 }
 
+/** Lower case, with `_`, `/` and blanks folded to `-`: `II_III` → `ii-iii`. */
+function compactCurriculumCode(code: string): string {
+  return code
+    .trim()
+    .toLowerCase()
+    .replace(/[_\s/]+/g, "-");
+}
+
+/**
+ * A track as the scope lookup compares it. A LehrplanPLUS Realschule
+ * position knows two tracks, `wpfg1` (Wahlpflichtfächergruppe I) and
+ * `wpfg2-3` (II and III); a single group spelled by a cell or a caller
+ * (`II`, `III`, `IIIa`, `IIIb`) belongs to `wpfg2-3`.
+ */
 function canonicalCurriculumTrack(
   provider: string,
   schoolType: string | undefined,
   track: string,
 ): string {
-  const compact = track
-    .trim()
-    .toLowerCase()
-    .replace(/[_\s/]+/g, "-");
+  const compact = compactCurriculumCode(track);
   if (provider === "lehrplanplus-bayern" && schoolType === "realschule") {
     if (compact === "i" || compact === "wpfg1") return "wpfg1";
-    if (compact === "ii-iii" || compact === "ii-3" || compact === "wpfg2-3") {
+    if (/^(ii|iii|iii-?[ab]|ii-iii|ii-3|wpfg2-3)$/.test(compact)) {
       return "wpfg2-3";
     }
+  }
+  return compact;
+}
+
+/**
+ * A subject as the scope lookup compares it. A learner's position carries
+ * the manifest's subject id; for the Realschule that is `it`,
+ * `bwl-rechnungswesen` and `wirtschaft-und-recht`, which older cells spell
+ * `informatik` or `informationstechnologie`, `bwr` and `wirtschaft_und_recht`.
+ */
+function canonicalCurriculumSubject(
+  provider: string,
+  schoolType: string | undefined,
+  subject: string,
+): string {
+  const compact = compactCurriculumCode(subject);
+  if (provider === "lehrplanplus-bayern" && schoolType === "realschule") {
+    if (compact === "informatik" || compact === "informationstechnologie") {
+      return "it";
+    }
+    if (compact === "bwr") return "bwl-rechnungswesen";
   }
   return compact;
 }
@@ -1183,8 +1215,6 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile214Raw as unknown as BundledTile,
   [(tile215Raw as unknown as BundledTile).tile_id]:
     tile215Raw as unknown as BundledTile,
-  [(tile216Raw as unknown as BundledTile).tile_id]:
-    tile216Raw as unknown as BundledTile,
   [(tile217Raw as unknown as BundledTile).tile_id]:
     tile217Raw as unknown as BundledTile,
   [(tile218Raw as unknown as BundledTile).tile_id]:
@@ -1205,6 +1235,8 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile229Raw as unknown as BundledTile,
   [(tile230Raw as unknown as BundledTile).tile_id]:
     tile230Raw as unknown as BundledTile,
+  [(tile231Raw as unknown as BundledTile).tile_id]:
+    tile231Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 
@@ -1438,7 +1470,16 @@ export function findBundledCellsForScope(
           scope.subject !== undefined &&
           binding.subject !== undefined &&
           binding.subject !== "" &&
-          binding.subject !== scope.subject
+          canonicalCurriculumSubject(
+            binding.provider,
+            binding.school_type ?? scope.schoolType,
+            binding.subject,
+          ) !==
+            canonicalCurriculumSubject(
+              scope.provider,
+              scope.schoolType ?? binding.school_type,
+              scope.subject,
+            )
         ) {
           continue;
         }

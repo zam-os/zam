@@ -19,25 +19,26 @@ import {
 /** ADR 2026-10-19 D4, D5: the ZAM Academy on Mobile. */
 
 const UML = getBundledCellTile("zam-academy:uml") as BundledTile;
-const SQL: BundledTile = {
+/** The UML cell under an id no bundle has: a cell only the catalog has. */
+const CATALOG_ONLY: BundledTile = {
   ...structuredClone(UML),
-  tile_id: "zam-academy:sql",
+  tile_id: "zam-academy:nur-katalog",
 };
-const sqlBytes = Buffer.from(JSON.stringify(SQL));
+const catalogOnlyBytes = Buffer.from(JSON.stringify(CATALOG_ONLY));
 
-function catalogFor(body: Buffer, version = String(SQL.version)) {
+function catalogFor(body: Buffer, version = String(CATALOG_ONLY.version)) {
   return JSON.stringify({
     schema: 1,
     cells: [
       {
-        id: "zam-academy:sql",
-        title: "SQL",
+        id: "zam-academy:nur-katalog",
+        title: "Nur im Katalog",
         description: "",
         language: "de",
         version,
         items: 26,
-        app: "/sql/",
-        cell: "/sql/cell.json",
+        app: "/nur-katalog/",
+        cell: "/nur-katalog/cell.json",
         sha256: createHash("sha256").update(body).digest("hex"),
       },
     ],
@@ -59,15 +60,15 @@ function fakeFetch(routes: Record<string, string | Buffer>) {
 describe("Mobile academy client", () => {
   it("reads catalog and cell with no redirects and no cookies", async () => {
     const { fetchImpl, calls } = fakeFetch({
-      "/catalog.json": catalogFor(sqlBytes),
-      "/sql/cell.json": sqlBytes,
+      "/catalog.json": catalogFor(catalogOnlyBytes),
+      "/nur-katalog/cell.json": catalogOnlyBytes,
     });
     const catalog = await fetchMobileAcademyCatalog(fetchImpl);
     const tile = await fetchMobileAcademyCell(catalog.cells[0], fetchImpl);
-    expect(tile.tile_id).toBe("zam-academy:sql");
+    expect(tile.tile_id).toBe("zam-academy:nur-katalog");
     expect(calls.map((call) => call.url)).toEqual([
       "https://academy.zam-os.org/catalog.json",
-      "https://academy.zam-os.org/sql/cell.json",
+      "https://academy.zam-os.org/nur-katalog/cell.json",
     ]);
     for (const { init } of calls) {
       expect(init).toMatchObject({ redirect: "error", credentials: "omit" });
@@ -115,8 +116,8 @@ describe("Mobile academy client", () => {
 
   it("fails when the cell does not match the catalog", async () => {
     const { fetchImpl } = fakeFetch({
-      "/catalog.json": catalogFor(sqlBytes),
-      "/sql/cell.json": Buffer.concat([sqlBytes, Buffer.from(" ")]),
+      "/catalog.json": catalogFor(catalogOnlyBytes),
+      "/nur-katalog/cell.json": Buffer.concat([catalogOnlyBytes, Buffer.from(" ")]),
     });
     const catalog = await fetchMobileAcademyCatalog(fetchImpl);
     await expect(
@@ -126,8 +127,8 @@ describe("Mobile academy client", () => {
 
   it("enrols the learner in a cell fetched from the catalog", async () => {
     const { fetchImpl } = fakeFetch({
-      "/catalog.json": catalogFor(sqlBytes),
-      "/sql/cell.json": sqlBytes,
+      "/catalog.json": catalogFor(catalogOnlyBytes),
+      "/nur-katalog/cell.json": catalogOnlyBytes,
     });
     const catalog = await fetchMobileAcademyCatalog(fetchImpl);
     const tile = await fetchMobileAcademyCell(catalog.cells[0], fetchImpl);
@@ -139,12 +140,12 @@ describe("Mobile academy client", () => {
       useConfiguredCloud: false,
     });
     try {
-      const result = await enrolBundledCell(db, "learner", "zam-academy:sql", {
+      const result = await enrolBundledCell(db, "learner", "zam-academy:nur-katalog", {
         resolveTile: (id) => (id === tile.tile_id ? tile : undefined),
       });
       expect(result.cardsCreated).toBe(26);
-      expect(await installedTileVersion(db, "zam-academy:sql")).toBe(
-        String(SQL.version),
+      expect(await installedTileVersion(db, "zam-academy:nur-katalog")).toBe(
+        String(CATALOG_ONLY.version),
       );
     } finally {
       await db.close();
