@@ -42,7 +42,7 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
   schoolYear: "2026/2027",
   capturedOn: "2026-07-19",
   sourceRevision:
-    "LehrplanPLUS Bayern – including WS/FOS/BOS (2026-07-19); +grundschule/mittelschule/foerderschule (2026-07-19); +Realschule Chemie 9 I/II/III (2026-10-20)",
+    "LehrplanPLUS Bayern – including WS/FOS/BOS (2026-07-19); +grundschule/mittelschule/foerderschule (2026-07-19); +Realschule Chemie 9 I/II/III, Geographie 9 gemeinsam (2026-10-20)",
 
   schoolTypes: [
     {
@@ -62976,7 +62976,7 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
     "realschule|9|franzoesisch":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/9/fach/franzoesisch/inhalt/fachlehrplaene",
     "realschule|9|geographie":
-      "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/9/fach/geographie/inhalt/fachlehrplaene",
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/geographie",
     "realschule|9|geschichte":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/9/fach/geschichte/inhalt/fachlehrplaene",
     "realschule|9|it":

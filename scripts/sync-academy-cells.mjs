@@ -3,6 +3,9 @@
 // a release bundles them (ADR 2026-10-19 Decision 1, plan Phase 6).
 //
 //   npm run academy:sync
+//   npm run academy:sync -- --app geographie-realschule-9
+//
+// --app copies only that app and preserves the other locked versions.
 //
 // - Reads https://academy.zam-os.org/catalog.json. Any redirect fails, like
 //   ZAM's own catalog client.
@@ -33,15 +36,25 @@ const CELL = /^\/[a-z0-9][a-z0-9-]{0,31}\/cell\.json$/;
 const VERSION = /^\d+(\.\d+)*$/;
 
 function fetchBytes(url) {
-  if (new URL(url).origin !== ORIGIN) throw new Error(`Not on ${ORIGIN}: ${url}`);
+  if (new URL(url).origin !== ORIGIN)
+    throw new Error(`Not on ${ORIGIN}: ${url}`);
   return new Promise((resolveBytes, reject) => {
     const request = get(
       url,
-      { headers: { Accept: "application/json", "User-Agent": "zam-academy-sync" } },
+      {
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "zam-academy-sync",
+        },
+      },
       (response) => {
         if (response.statusCode !== 200) {
           response.resume();
-          reject(new Error(`${url}: HTTP ${response.statusCode} (redirects are refused)`));
+          reject(
+            new Error(
+              `${url}: HTTP ${response.statusCode} (redirects are refused)`,
+            ),
+          );
           return;
         }
         const chunks = [];
@@ -49,7 +62,9 @@ function fetchBytes(url) {
         response.on("data", (chunk) => {
           size += chunk.length;
           if (size > MAX_BYTES) {
-            request.destroy(new Error(`${url}: larger than ${MAX_BYTES} bytes`));
+            request.destroy(
+              new Error(`${url}: larger than ${MAX_BYTES} bytes`),
+            );
             return;
           }
           chunks.push(chunk);
@@ -58,44 +73,40 @@ function fetchBytes(url) {
         response.on("error", reject);
       },
     );
-    request.setTimeout(15_000, () => request.destroy(new Error(`${url}: timeout`)));
+    request.setTimeout(15_000, () =>
+      request.destroy(new Error(`${url}: timeout`)),
+    );
     request.on("error", reject);
   });
 }
 
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
-const catalog = JSON.parse((await fetchBytes(`${ORIGIN}/catalog.json`)).toString("utf8"));
-if (catalog?.schema !== 1 || !Array.isArray(catalog.cells)) {
-  throw new Error("catalog.json: expected { schema: 1, cells: [...] }");
+export function parseSyncArgs(args) {
+  if (args.length === 0) return {};
+  if (
+    args.length !== 2 ||
+    args[0] !== "--app" ||
+    !/^[a-z0-9][a-z0-9-]{0,31}$/.test(args[1])
+  ) {
+    throw new Error("Usage: npm run academy:sync [-- --app <app-name>]");
+  }
+  return { app: args[1] };
 }
 
-const lock = [];
-let added = false;
-for (const entry of catalog.cells) {
-  const app = APP.exec(entry.app ?? "")?.[1];
-  if (!app || !CELL.test(entry.cell ?? "") || !VERSION.test(entry.version ?? "")) {
-    throw new Error(`catalog.json: malformed entry ${JSON.stringify(entry.id)}`);
-  }
-  const bytes = await fetchBytes(new URL(entry.cell, ORIGIN).href);
-  const hash = sha256(bytes);
-  if (hash !== entry.sha256) throw new Error(`${entry.id}: hash does not match the catalog`);
-  const tile = JSON.parse(bytes.toString("utf8"));
-  if (tile.tile_id !== entry.id || String(tile.version) !== entry.version) {
-    throw new Error(`${entry.id}: the file is ${tile.tile_id} ${tile.version}, the catalog says ${entry.version}`);
-  }
-  const file = `zam-academy-${app}-kvt.json`;
-  const path = join(fixtures, file);
-  if (!existsSync(path)) added = true;
-  const before = existsSync(path) ? sha256(readFileSync(path)) : null;
-  writeFileSync(path, bytes);
-  lock.push({ id: entry.id, version: entry.version, sha256: hash, file });
-  console.log(`${before === hash ? "same   " : before ? "updated" : "added  "} ${file}  ${entry.id} ${entry.version}`);
+export function selectCatalogEntries(entries, app) {
+  if (!app) return entries;
+  const selected = entries.filter((entry) => entry.app === `/${app}/`);
+  if (selected.length !== 1)
+    throw new Error(`catalog.json: expected exactly one entry for ${app}`);
+  return selected;
 }
 
-lock.sort((a, b) => a.id.localeCompare(b.id));
-writeFileSync(lockFile, `${JSON.stringify(lock, null, 2)}\n`);
-console.log(`Wrote ${lockFile}`);
+export function mergeLockEntries(previous, copied) {
+  const entries = new Map(previous.map((entry) => [entry.id, entry]));
+  for (const entry of copied) entries.set(entry.id, entry);
+  return [...entries.values()].sort((a, b) => a.id.localeCompare(b.id));
+}
 
 // A new cell is appended to the fixture imports, as tile<N+1>Raw. The full
 // generator (scripts/update-bundled-cells-imports.mjs) would renumber all of
@@ -105,7 +116,10 @@ function appendFixtureImport(file) {
   let source = readFileSync(target, "utf8");
   if (source.includes(`/curriculum/${file}"`)) return;
   const next =
-    Math.max(0, ...[...source.matchAll(/tile(\d+)Raw\b/g)].map((m) => Number(m[1]))) + 1;
+    Math.max(
+      0,
+      ...[...source.matchAll(/tile(\d+)Raw\b/g)].map((m) => Number(m[1])),
+    ) + 1;
   const importEnd = "// --- end bundled-tile-imports ---";
   const mapEnd = "};\n// --- end bundled-tile-map ---";
   if (!source.includes(importEnd) || !source.includes(mapEnd)) {
@@ -119,17 +133,82 @@ function appendFixtureImport(file) {
     mapEnd,
     `  [(tile${next}Raw as unknown as BundledTile).tile_id]: tile${next}Raw as unknown as BundledTile,\n${mapEnd}`,
   );
-  source = source.replace(/\/\/ --- Fixture Imports \((\d+) tiles\) ---/, (_, n) =>
-    `// --- Fixture Imports (${Number(n) + 1} tiles) ---`,
+  source = source.replace(
+    /\/\/ --- Fixture Imports \((\d+) tiles\) ---/,
+    (_, n) => `// --- Fixture Imports (${Number(n) + 1} tiles) ---`,
   );
   writeFileSync(target, source);
   console.log(`Added tile${next}Raw for ${file} to bundled-cells.ts`);
 }
+export async function syncAcademyCells(args = process.argv.slice(2)) {
+  const { app } = parseSyncArgs(args);
+  const catalog = JSON.parse(
+    (await fetchBytes(`${ORIGIN}/catalog.json`)).toString("utf8"),
+  );
+  if (catalog?.schema !== 1 || !Array.isArray(catalog.cells)) {
+    throw new Error("catalog.json: expected { schema: 1, cells: [...] }");
+  }
 
-if (added) {
-  for (const { file } of lock) appendFixtureImport(file);
-  execFileSync("npx", ["biome", "check", "--write", "src/kernel/library/bundled-cells.ts"], {
-    cwd: root,
-    stdio: "inherit",
-  });
+  const selected = selectCatalogEntries(catalog.cells, app);
+  const previous =
+    app && existsSync(lockFile)
+      ? JSON.parse(readFileSync(lockFile, "utf8"))
+      : [];
+  const copied = [];
+  let added = false;
+  for (const entry of selected) {
+    const app = APP.exec(entry.app ?? "")?.[1];
+    if (
+      !app ||
+      !CELL.test(entry.cell ?? "") ||
+      entry.cell !== `/${app}/cell.json` ||
+      !VERSION.test(entry.version ?? "")
+    ) {
+      throw new Error(
+        `catalog.json: malformed entry ${JSON.stringify(entry.id)}`,
+      );
+    }
+    const bytes = await fetchBytes(new URL(entry.cell, ORIGIN).href);
+    const hash = sha256(bytes);
+    if (hash !== entry.sha256)
+      throw new Error(`${entry.id}: hash does not match the catalog`);
+    const tile = JSON.parse(bytes.toString("utf8"));
+    if (tile.tile_id !== entry.id || String(tile.version) !== entry.version) {
+      throw new Error(
+        `${entry.id}: the file is ${tile.tile_id} ${tile.version}, the catalog says ${entry.version}`,
+      );
+    }
+    const file = `zam-academy-${app}-kvt.json`;
+    const path = join(fixtures, file);
+    if (!existsSync(path)) added = true;
+    const before = existsSync(path) ? sha256(readFileSync(path)) : null;
+    writeFileSync(path, bytes);
+    copied.push({ id: entry.id, version: entry.version, sha256: hash, file });
+    console.log(
+      `${before === hash ? "same   " : before ? "updated" : "added  "} ${file}  ${entry.id} ${entry.version}`,
+    );
+  }
+
+  const lock = mergeLockEntries(previous, copied);
+  writeFileSync(lockFile, `${JSON.stringify(lock, null, 2)}\n`);
+  console.log(`Wrote ${lockFile}`);
+
+  if (added) {
+    for (const { file } of copied) appendFixtureImport(file);
+    execFileSync(
+      "npx",
+      ["biome", "check", "--write", "src/kernel/library/bundled-cells.ts"],
+      {
+        cwd: root,
+        stdio: "inherit",
+      },
+    );
+  }
+}
+
+if (
+  process.argv[1] &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+) {
+  await syncAcademyCells();
 }

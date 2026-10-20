@@ -166,6 +166,42 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     },
   );
 
+  it("offers the common Geographie 9 curriculum with seven core areas and optional bilingual teaching", () => {
+    expect(provider.listSubjects("realschule", "9")).toContainEqual({
+      id: "geographie",
+      label: "Geographie",
+    });
+    expect(provider.listTracks("realschule", "9", "geographie")).toEqual([]);
+    const topics = provider.listTopics({
+      schoolType: "realschule",
+      grade: "9",
+      subject: "geographie",
+    });
+    expect(topics.map((topic) => [topic.id, topic.label, topic.hours])).toEqual(
+      [
+        ["lb1", "Landschaft und Naturrisiken", 9],
+        ["lb2", "Klima und Klimawandel", 10],
+        ["lb3", "Landwirtschaft, Ernährung und Boden", 10],
+        ["lb4", "Städtische Siedlungs- und Lebensräume", 8],
+        ["lb5", "Bevölkerung und Bevölkerungspolitik", 10],
+        ["lb6", "Grenzen im Wandel", 5],
+        ["lb7", "Aktuelle geographische Fragestellung im Nahraum", 4],
+        ["lb8", "Bilingualer Sachfachunterricht (optional)", undefined],
+      ],
+    );
+    for (const topic of topics)
+      expect(provider.resolveTopic(topic)).toEqual({
+        provider: "lehrplanplus-bayern",
+        topicId: `realschule|9|geographie#${topic.id}`,
+        uri: "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/geographie",
+      });
+    expect(provider.listCatalogPaths?.()).toContainEqual({
+      schoolType: "realschule",
+      grade: "9",
+      subject: "geographie",
+    });
+  });
+
   it("lists the eight Lernbereiche of Mathematik 9 (I)", () => {
     const topics = provider.listTopics({
       schoolType: "realschule",
