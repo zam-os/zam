@@ -53,7 +53,7 @@ import {
   unitsIn,
   unitThreads,
 } from "./layout.js";
-import { conditionWords, renderOutline } from "./outline.js";
+import { conditionWords, lensLabel, renderOutline } from "./outline.js";
 import {
   AtlasMap,
   type MapWords,
@@ -452,10 +452,12 @@ function applyLensLabels(s: ViewState): void {
   )) {
     label.textContent = t(`atlas_planet_${label.dataset.planet ?? "welt"}`);
   }
-  s.els.lensButtons.forEach((b, lens) => {
-    b.textContent = t(`atlas_lens_${lens}`);
-    b.setAttribute("aria-pressed", String(lens === s.lens));
-  });
+  for (const lens of s.lenses) {
+    const b = s.els.lensButtons.get(lens.kind);
+    if (!b) continue;
+    b.textContent = lensLabel({ t }, lens);
+    b.setAttribute("aria-pressed", String(lens.kind === s.lens));
+  }
 }
 
 function applyLabels(s: ViewState): void {
