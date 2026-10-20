@@ -87,11 +87,12 @@ describe("ZAM Academy Relationale Datenbanken und SQL cell", () => {
     ).toContain(CELL_ID);
   });
 
-  it("is the database cell at its LehrplanPLUS position, Realschule 9 Informatik, for Zweig I and II", () => {
+  it("is the database cell at its LehrplanPLUS position, Realschule 9 Informatik, for both Zweig codes", () => {
     // The position has one other cell, IT 2.5/2.6 (Algorithmen, Datennetze),
-    // which is Zweig I only; the de-by database cell is gone.
+    // which is Zweig I only; the de-by database cell is gone. zam codes the
+    // Wahlpflichtfächergruppen II and III as one track, II_III (Physik does too).
     const algorithmen = "de-by:realschule-9-informatik-algorithmen-strukturen";
-    for (const track of [undefined, "I", "II"]) {
+    for (const track of [undefined, "I", "II_III"]) {
       const ids = findBundledCellsForScope({
         provider: "lehrplanplus-bayern",
         schoolType: "realschule",
@@ -100,19 +101,9 @@ describe("ZAM Academy Relationale Datenbanken und SQL cell", () => {
         ...(track ? { track } : {}),
       }).map((c) => c.id);
       expect(ids.sort(), `track ${track ?? "any"}`).toEqual(
-        track === "II" ? [CELL_ID] : [algorithmen, CELL_ID],
+        track === "II_III" ? [CELL_ID] : [algorithmen, CELL_ID],
       );
     }
-    // IT 2.3.1 is compulsory in Wahlpflichtfächergruppen I and II only.
-    expect(
-      findBundledCellsForScope({
-        provider: "lehrplanplus-bayern",
-        schoolType: "realschule",
-        grade: 9,
-        subject: "informatik",
-        track: "III",
-      }).map((c) => c.id),
-    ).not.toContain(CELL_ID);
     expect(getBundledCell(LEGACY_ID), `${LEGACY_ID} left the bundle`).toBeUndefined();
     expect(
       findBundledCellsForScope({
@@ -137,7 +128,7 @@ describe("ZAM Academy Relationale Datenbanken und SQL cell", () => {
           schoolType: "realschule",
           grade: 9,
           subject: "informatik",
-          track: "II",
+          track: "II_III",
         }),
       ]),
     );
@@ -168,7 +159,7 @@ describe("ZAM Academy Relationale Datenbanken und SQL cell", () => {
       }
       expect(lehrplan.map((binding) => binding.track).sort(), atom.slug).toEqual([
         "I",
-        "II",
+        "II_III",
       ]);
       for (const binding of lehrplan) {
         expect(binding.school_type).toBe("realschule");
