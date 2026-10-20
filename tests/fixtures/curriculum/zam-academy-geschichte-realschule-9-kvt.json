@@ -1,0 +1,3325 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:geschichte-realschule-9",
+  "version": "2026.10.1",
+  "title": "Geschichte 9 Realschule (ZAM Academy)",
+  "description": "Geschichte 9 nach LehrplanPLUS Bayern: 35 Kernlektionen, vier optionale englische Vertiefungen, Quellenwerkstatt, Zeitleisten und begründete Urteile. Ein gemeinsamer Lernpfad für alle Zweige; jede Karte führt zur passenden Lektion.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-20T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/geschichte-realschule-9/",
+      "label": "ZAM Academy: Geschichte 9 Realschule"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/geschichte",
+      "label": "ISB · LehrplanPLUS Geschichte 9 Realschule",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/aussenpolitik/kolonialpolitik",
+      "label": "Deutsches Historisches Museum · Kolonialpolitik",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/aussenpolitik/herero-krieg-1904",
+      "label": "DHM · Kolonialkrieg und Völkermord an den Herero",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/aussenpolitik/widerstand-der-nama",
+      "label": "DHM · Widerstand der Nama",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/erster-weltkrieg",
+      "label": "DHM · Erster Weltkrieg",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/weimarer-republik",
+      "label": "DHM · Weimarer Republik",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.dhm.de/bildung/ida/zwanzigstes-jahrhundert/weimar/",
+      "label": "DHM · Keine Chance für die Demokratie?",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/ns-regime",
+      "label": "DHM · NS-Regime",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://encyclopedia.ushmm.org/content/en/article/the-enabling-act",
+      "label": "USHMM · The Enabling Act (Beschluss 23., Veröffentlichung 24. März 1933)",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.kz-gedenkstaette-dachau.de/historischer-ort/kz-dachau-1933-1945/",
+      "label": "KZ-Gedenkstätte Dachau · KZ Dachau 1933–1945",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/zweiter-weltkrieg",
+      "label": "DHM · Zweiter Weltkrieg",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://encyclopedia.ushmm.org/content/en/article/introduction-to-the-holocaust",
+      "label": "United States Holocaust Memorial Museum · Introduction to the Holocaust",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.ghwk.de/de/konferenz",
+      "label": "Haus der Wannsee-Konferenz · Besprechung am 20. Januar 1942",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/weimarer-republik/alltagsleben/wandervogelbewegung",
+      "label": "DHM · Wandervogelbewegung",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/ns-regime/ns-organisationen/jugend",
+      "label": "DHM · Hitler-Jugend",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.un.org/en/about-us/udhr/history-of-the-declaration",
+      "label": "Vereinte Nationen · Entstehung der Menschenrechtserklärung",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.echr.coe.int/en/web/echr/european-convention-on-human-rights",
+      "label": "Europäischer Gerichtshof für Menschenrechte · Konvention",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.gesetze-im-internet.de/gg/art_1.html",
+      "label": "Bundesministerium der Justiz · Grundgesetz Artikel 1",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.iwm.org.uk/sites/default/files/press-release/4_August_1914_Factsheet.pdf",
+      "label": "Imperial War Museums · 4 August 1914",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.nps.gov/subjects/civilrights/modern-civil-rights-movement.htm",
+      "label": "U.S. National Park Service · The Modern Civil Rights Movement",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.nps.gov/semo/learn/historyculture/bloody-sunday.htm",
+      "label": "U.S. National Park Service · Selma and voting rights",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.bundesarchiv.de/themen-entdecken/online-entdecken/geschichtsgalerien/otto-wels-freiheit-und-leben-kann-man-uns-nehmen-die-ehre-nicht/",
+      "label": "Bundesarchiv · Otto Wels und seine Rede vom 23. März 1933",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://lernportal.weimarer-republik.net/lernmodule/die-weimarer-verfassung/artikel-die-vieles-aendern/parlamentarisches-regierungssystem/artikel-1/",
+      "label": "Weimarer Republik e. V. · Originalwortlaut von Artikel 1 der Verfassung 1919",
+      "checked": "2026-10-20"
+    },
+    {
+      "uri": "https://www.bpb.de/shop/zeitschriften/izpb/weimarer-republik-346/333544/zeittafel/",
+      "label": "Bundeszentrale für politische Bildung · Weimarer Republik, Zeittafel und Wahlergebnisse",
+      "checked": "2026-10-20"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+      "atom_uri": "urn:zam:atom:01M5DA6AMKNS8HF5MQV6WMB67G",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-quellen-pruefen",
+      "title": "Wer spricht – und wozu?",
+      "domain": "geschichte/methoden",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-quellen-pruefen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Geschichte untersuchen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMNSTQA90ZGYPYQKDBE",
+          "slug": "g9-quellen-pruefen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-quellen-pruefen",
+          "question": "Welches Material ist eine zeitgenössische Quelle zum Ersten Weltkrieg?",
+          "concept": "Ein Feldpostbrief aus dem Jahr 1916.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Feldpostbrief aus dem Jahr 1916.",
+              "Ein Schulbuchkapitel aus dem Jahr 2020."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Schulbuchkapitel aus dem Jahr 2020.",
+              "reason": "Der Brief entstand während des untersuchten Geschehens. Auch er bleibt eine begrenzte Perspektive."
+            },
+            {
+              "text": "Ein historischer Roman aus dem Jahr 2010.",
+              "reason": "Der Brief entstand während des untersuchten Geschehens. Auch er bleibt eine begrenzte Perspektive."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMN9YAYX09FAKSBXZ6X",
+          "slug": "g9-quellen-pruefen-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-quellen-pruefen",
+          "question": "Ein Soldat schreibt 1916 seiner Familie, es gehe ihm gut. Belegt das einen ungefährlichen Frontalltag? Begründe.",
+          "concept": "Der Brief belegt zunächst, was der Soldat seiner Familie mitteilen wollte. Er könnte sie beruhigen oder unter Zensur geschrieben haben. Für den Frontalltag vergleiche ich ihn etwa mit weiteren Briefen, Tagebüchern und militärischen Unterlagen.",
+          "sample_solution": "Der Brief belegt zunächst, was der Soldat seiner Familie mitteilen wollte. Er könnte sie beruhigen oder unter Zensur geschrieben haben. Für den Frontalltag vergleiche ich ihn etwa mit weiteren Briefen, Tagebüchern und militärischen Unterlagen.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMKR219R70MRHQ3PXQV",
+      "atom_uri": "urn:zam:atom:01M5DA6AMKR219R70MRHQ3PXQV",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-propaganda",
+      "title": "Propaganda erkennen",
+      "domain": "geschichte/methoden",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-propaganda",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Geschichte untersuchen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMNDHMD0AJZXS3060QK",
+          "slug": "g9-propaganda-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-propaganda",
+          "question": "Was lässt sich aus einem Propagandaplakat allein sicher untersuchen?",
+          "concept": "Die vom Absender beabsichtigte Botschaft.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die vom Absender beabsichtigte Botschaft.",
+              "Die tatsächliche Meinung aller Betrachtenden."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die tatsächliche Meinung aller Betrachtenden.",
+              "reason": "Für die tatsächliche Wirkung brauchst du weitere Belege, etwa Reaktionen oder Tagebücher."
+            },
+            {
+              "text": "Die vollständige Lage der gesamten Bevölkerung.",
+              "reason": "Für die tatsächliche Wirkung brauchst du weitere Belege, etwa Reaktionen oder Tagebücher."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMNBN0EMWX8H6PQDMF3",
+          "slug": "g9-propaganda-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-propaganda",
+          "question": "Erkläre an dem Übungstext zwei Mittel der Beeinflussung und eine Grenze deiner Aussage.",
+          "concept": "Das gemeinsame Wir spricht das Bedürfnis nach Zugehörigkeit an. Die fehlenden Gegenargumente lassen die Forderung alternativlos erscheinen. Daraus erschließe ich die beabsichtigte Beeinflussung, kann aber nicht sagen, wie viele Menschen zustimmten.",
+          "sample_solution": "Das gemeinsame Wir spricht das Bedürfnis nach Zugehörigkeit an. Die fehlenden Gegenargumente lassen die Forderung alternativlos erscheinen. Daraus erschließe ich die beabsichtigte Beeinflussung, kann aber nicht sagen, wie viele Menschen zustimmten.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMKBZW6CXY9FSP0S97J",
+      "atom_uri": "urn:zam:atom:01M5DA6AMKBZW6CXY9FSP0S97J",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-zeit-und-daten",
+      "title": "Daten und Zusammenhänge",
+      "domain": "geschichte/methoden",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-zeit-und-daten",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Geschichte untersuchen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMN2CF216JC7G1KRWKD",
+          "slug": "g9-zeit-und-daten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-zeit-und-daten",
+          "question": "Was folgt aus zwei gleichzeitig steigenden Werten allein?",
+          "concept": "Ein Zusammenhang ist zu prüfen, nicht schon bewiesen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Zusammenhang ist zu prüfen, nicht schon bewiesen.",
+              "Der zuerst gezeigte Wert verursacht immer den zweiten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der zuerst gezeigte Wert verursacht immer den zweiten.",
+              "reason": "Korrelation allein ist keine kausale Erklärung."
+            },
+            {
+              "text": "Die zeitliche Nähe beweist eine einzige Ursache.",
+              "reason": "Korrelation allein ist keine kausale Erklärung."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMNP7HEGQ6DGE881Y3G",
+          "slug": "g9-zeit-und-daten-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-zeit-und-daten",
+          "question": "Arbeitslosigkeit und NSDAP-Stimmen steigen in einer Grafik. Welche Aussage ist möglich, welche weitere Prüfung nötig?",
+          "concept": "Die Grafik kann einen zeitlichen Zusammenhang zeigen. Sie beweist nicht, dass jede arbeitslose Person NSDAP wählte. Ich prüfe Quelle, Maßstab, regionale Unterschiede sowie politische Kampagnen und Entscheidungen anderer Akteure.",
+          "sample_solution": "Die Grafik kann einen zeitlichen Zusammenhang zeigen. Sie beweist nicht, dass jede arbeitslose Person NSDAP wählte. Ich prüfe Quelle, Maßstab, regionale Unterschiede sowie politische Kampagnen und Entscheidungen anderer Akteure.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMK438W0CGRGVVADVEB",
+      "atom_uri": "urn:zam:atom:01M5DA6AMK438W0CGRGVVADVEB",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-geschichte-vor-ort",
+      "title": "Geschichte vor deiner Haustür",
+      "domain": "geschichte/methoden",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-geschichte-vor-ort",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Geschichte untersuchen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMNQAX6EWMB07FPPNA0",
+          "slug": "g9-geschichte-vor-ort-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-geschichte-vor-ort",
+          "question": "Welcher erste Schritt macht eine lokale Recherche prüfbar?",
+          "concept": "Eine konkrete Frage und Herkunftsnachweise festhalten.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine konkrete Frage und Herkunftsnachweise festhalten.",
+              "Nur die erste gefundene Internetseite abschreiben."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur die erste gefundene Internetseite abschreiben.",
+              "reason": "So können andere nachvollziehen, worauf deine Darstellung beruht."
+            },
+            {
+              "text": "Eine Vermutung ohne Quellen als Ergebnis darstellen.",
+              "reason": "So können andere nachvollziehen, worauf deine Darstellung beruht."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMNRJRR2BJG43C9RDH8",
+          "slug": "g9-geschichte-vor-ort-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-geschichte-vor-ort",
+          "question": "Plane eine Recherche zu einem Denkmal: Frage, zwei Quellenarten und historischer Zusammenhang.",
+          "concept": "Ich frage, wen ein Denkmal für den Ersten Weltkrieg erinnert. Ich dokumentiere Inschrift und Aufstellungsdatum und suche einen zeitgenössischen Zeitungsbericht im Archiv. Beides ordne ich in Kriegserfahrung und Erinnerung der Weimarer Zeit ein; unbekannte Motive bleiben offene Fragen.",
+          "sample_solution": "Ich frage, wen ein Denkmal für den Ersten Weltkrieg erinnert. Ich dokumentiere Inschrift und Aufstellungsdatum und suche einen zeitgenössischen Zeitungsbericht im Archiv. Beides ordne ich in Kriegserfahrung und Erinnerung der Weimarer Zeit ein; unbekannte Motive bleiben offene Fragen.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMKYM1VSR3QNBC3KF8G",
+      "atom_uri": "urn:zam:atom:01M5DA6AMKYM1VSR3QNBC3KF8G",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-imperialismus",
+      "title": "Warum Kolonien?",
+      "domain": "geschichte/imperialismus-weltkrieg",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-imperialismus",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus & Weltkrieg"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus und Erster Weltkrieg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMNQJ3S75F4WPP89VE7",
+          "slug": "g9-imperialismus-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-imperialismus",
+          "question": "Welcher Begriff bezeichnet die Ausweitung von Herrschaft über andere Länder und Gesellschaften?",
+          "concept": "Imperialismus",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Imperialismus",
+              "Parlamentarismus"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Parlamentarismus",
+              "reason": "Imperialismus verbindet Herrschaftsausweitung mit wirtschaftlichen, politischen und ideologischen Zielen."
+            },
+            {
+              "text": "Isolationismus",
+              "reason": "Imperialismus verbindet Herrschaftsausweitung mit wirtschaftlichen, politischen und ideologischen Zielen."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMNS53A50G7H9639P0C",
+          "slug": "g9-imperialismus-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-imperialismus",
+          "question": "Erkläre zwei Motive des Imperialismus und unterscheide sie von einer Rechtfertigung.",
+          "concept": "Rohstoffe sollten wirtschaftlichen Nutzen bringen, Stützpunkte politischen Einfluss sichern. Rassistische Überlegenheitsbehauptungen dienten dazu, diese Herrschaft als berechtigt erscheinen zu lassen. Sie waren Ideologie und rechtfertigten weder Enteignung noch Gewalt.",
+          "sample_solution": "Rohstoffe sollten wirtschaftlichen Nutzen bringen, Stützpunkte politischen Einfluss sichern. Rassistische Überlegenheitsbehauptungen dienten dazu, diese Herrschaft als berechtigt erscheinen zu lassen. Sie waren Ideologie und rechtfertigten weder Enteignung noch Gewalt.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMK8H7875XVZR8QVCYF",
+      "atom_uri": "urn:zam:atom:01M5DA6AMK8H7875XVZR8QVCYF",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-kolonialherrschaft",
+      "title": "Kolonialherrschaft aus mehreren Perspektiven",
+      "domain": "geschichte/imperialismus-weltkrieg",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-kolonialherrschaft",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMKYM1VSR3QNBC3KF8G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus & Weltkrieg"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus und Erster Weltkrieg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMN40KKKANNTP3GWZBS",
+          "slug": "g9-kolonialherrschaft-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-kolonialherrschaft",
+          "question": "Welche Gruppen wurden im heutigen Namibia Opfer des deutschen kolonialen Völkermords?",
+          "concept": "Herero und Nama",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Herero und Nama",
+              "Buren und Briten"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Buren und Briten",
+              "reason": "Die deutsche Kolonialherrschaft eskalierte gegen Herero und Nama zum Völkermord."
+            },
+            {
+              "text": "Franzosen und Belgier",
+              "reason": "Die deutsche Kolonialherrschaft eskalierte gegen Herero und Nama zum Völkermord."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMN06SEKQ68FGV8RQC6",
+          "slug": "g9-kolonialherrschaft-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-kolonialherrschaft",
+          "question": "Warum reicht eine Karte europäischer Kolonien zur Beurteilung der Kolonialherrschaft nicht aus?",
+          "concept": "Die Karte zeigt vor allem europäische Besitzansprüche. Sie belegt weder Zustimmung der Bevölkerung noch alltägliche Folgen. Überlieferungen der kolonisierten Gesellschaften und weitere Quellen erschließen Enteignung, Gewalt und Widerstand.",
+          "sample_solution": "Die Karte zeigt vor allem europäische Besitzansprüche. Sie belegt weder Zustimmung der Bevölkerung noch alltägliche Folgen. Überlieferungen der kolonisierten Gesellschaften und weitere Quellen erschließen Enteignung, Gewalt und Widerstand.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMKRSPF6EH2KC4XNM3A",
+      "atom_uri": "urn:zam:atom:01M5DA6AMKRSPF6EH2KC4XNM3A",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-julikrise",
+      "title": "Der Weg in den Ersten Weltkrieg",
+      "domain": "geschichte/imperialismus-weltkrieg",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-julikrise",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMK8H7875XVZR8QVCYF",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus & Weltkrieg"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus und Erster Weltkrieg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMNYHQ5V1FBAA0VDKJZ",
+          "slug": "g9-julikrise-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-julikrise",
+          "question": "Wie lässt sich das Attentat von Sarajevo im Verhältnis zum Kriegsausbruch einordnen?",
+          "concept": "Als Anlass innerhalb einer länger entstandenen Konfliktlage.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als Anlass innerhalb einer länger entstandenen Konfliktlage.",
+              "Als alleinige Ursache ohne weitere politische Entscheidungen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Als alleinige Ursache ohne weitere politische Entscheidungen.",
+              "reason": "Eine mehrschichtige Erklärung vermeidet die Vorstellung eines automatischen Kriegsbeginns."
+            },
+            {
+              "text": "Als Folge der bereits abgeschlossenen Friedensverhandlungen.",
+              "reason": "Eine mehrschichtige Erklärung vermeidet die Vorstellung eines automatischen Kriegsbeginns."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMNKW2MH40R945CWQCK",
+          "slug": "g9-julikrise-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-julikrise",
+          "question": "Erkläre den Kriegsausbruch mit je einem Beispiel für Anlass, Bedingung und Entscheidung.",
+          "concept": "Das Attentat von Sarajevo löste die Julikrise aus. Wettrüsten und Rivalitäten hatten Misstrauen verstärkt. Die österreichisch-ungarische Kriegserklärung an Serbien und weitere Regierungsentscheidungen ließen daraus einen europäischen Krieg werden.",
+          "sample_solution": "Das Attentat von Sarajevo löste die Julikrise aus. Wettrüsten und Rivalitäten hatten Misstrauen verstärkt. Die österreichisch-ungarische Kriegserklärung an Serbien und weitere Regierungsentscheidungen ließen daraus einen europäischen Krieg werden.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMK0CMN2M2VM16CFW7Z",
+      "atom_uri": "urn:zam:atom:01M5DA6AMK0CMN2M2VM16CFW7Z",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-materialschlacht",
+      "title": "Ein Krieg der Industriegesellschaft",
+      "domain": "geschichte/imperialismus-weltkrieg",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-materialschlacht",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMKRSPF6EH2KC4XNM3A",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus & Weltkrieg"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus und Erster Weltkrieg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMN0Z9Z6118A8WGKN0P",
+          "slug": "g9-materialschlacht-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-materialschlacht",
+          "question": "Was kennzeichnet den Stellungskrieg an der Westfront?",
+          "concept": "Befestigte Fronten und hohe Verluste bei geringen Geländegewinnen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Befestigte Fronten und hohe Verluste bei geringen Geländegewinnen.",
+              "Schnelle Frontverschiebungen und dauerhaft geringe Verluste."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Schnelle Frontverschiebungen und dauerhaft geringe Verluste.",
+              "reason": "Die Materialmenge und die Verluste standen häufig in keinem Verhältnis zum Geländegewinn."
+            },
+            {
+              "text": "Ein Krieg ohne industrielle Waffen und ohne Nachschubbedarf.",
+              "reason": "Die Materialmenge und die Verluste standen häufig in keinem Verhältnis zum Geländegewinn."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMNGP3K0CZ73CHWB4RS",
+          "slug": "g9-materialschlacht-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-materialschlacht",
+          "question": "Warum ist der Erste Weltkrieg mehr als eine Folge einzelner Schlachten?",
+          "concept": "Industrielle Produktion und Nachschub ermöglichten Materialschlachten. Gleichzeitig beanspruchte der Krieg die Wirtschaft und verknappte Lebensmittel. Hunger, Arbeit und Verlust von Angehörigen betrafen auch Menschen fern der Front.",
+          "sample_solution": "Industrielle Produktion und Nachschub ermöglichten Materialschlachten. Gleichzeitig beanspruchte der Krieg die Wirtschaft und verknappte Lebensmittel. Hunger, Arbeit und Verlust von Angehörigen betrafen auch Menschen fern der Front.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMNV853ZYX7DF3ZFDH",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMNV853ZYX7DF3ZFDH",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-kriegspropaganda",
+      "title": "Kriegsbild und Kriegserfahrung",
+      "domain": "geschichte/imperialismus-weltkrieg",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-kriegspropaganda",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMK0CMN2M2VM16CFW7Z",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus & Weltkrieg"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus und Erster Weltkrieg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMNCMZ0GCGGYG475C7N",
+          "slug": "g9-kriegspropaganda-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-kriegspropaganda",
+          "question": "Welche Methode eignet sich zur Prüfung von Kriegspropaganda?",
+          "concept": "Botschaft, Absender und unabhängige Erfahrungsbelege vergleichen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Botschaft, Absender und unabhängige Erfahrungsbelege vergleichen.",
+              "Häufige Wiederholung als Beweis der Richtigkeit verwenden."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Häufige Wiederholung als Beweis der Richtigkeit verwenden.",
+              "reason": "Der Vergleich erschließt sowohl Absichten als auch verschwiegene Erfahrungen."
+            },
+            {
+              "text": "Nur die Wortwahl prüfen und alle anderen Quellen ausblenden.",
+              "reason": "Der Vergleich erschließt sowohl Absichten als auch verschwiegene Erfahrungen."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMN8DRBQV33T1NJ5MWF",
+          "slug": "g9-kriegspropaganda-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-kriegspropaganda",
+          "question": "Ein öffentlicher Aufruf verspricht baldigen Erfolg, ein Brief berichtet Erschöpfung. Wie wertest du beide aus?",
+          "concept": "Der Aufruf will Unterstützung erzeugen; der Brief zeigt eine persönliche Erfahrung. Ich prüfe Entstehungszeit, Adressaten und Lage beider Texte. Der Gegensatz kann Auslassungen zeigen, beweist aber weder die Wirkung des Aufrufs noch die Erfahrung aller Soldaten.",
+          "sample_solution": "Der Aufruf will Unterstützung erzeugen; der Brief zeigt eine persönliche Erfahrung. Ich prüfe Entstehungszeit, Adressaten und Lage beider Texte. Der Gegensatz kann Auslassungen zeigen, beweist aber weder die Wirkung des Aufrufs noch die Erfahrung aller Soldaten.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMA8H18V31VKN6QDPV",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMA8H18V31VKN6QDPV",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-1917",
+      "title": "1917: Ein Jahr verändert die Welt",
+      "domain": "geschichte/imperialismus-weltkrieg",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-1917",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMNV853ZYX7DF3ZFDH",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus & Weltkrieg"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus und Erster Weltkrieg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMNB29Z025GAM57T3N1",
+          "slug": "g9-1917-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-1917",
+          "question": "Welche Kombination gehört zum Epochenjahr 1917?",
+          "concept": "Kriegseintritt der USA und Russische Revolution.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kriegseintritt der USA und Russische Revolution.",
+              "Versailler Vertrag und deutsche Novemberrevolution."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Versailler Vertrag und deutsche Novemberrevolution.",
+              "reason": "Versailles und Weimarer Verfassung gehören zu 1919, die Novemberrevolution zu 1918 und die Hyperinflation zu 1923."
+            },
+            {
+              "text": "Weimarer Verfassung und deutsche Hyperinflation.",
+              "reason": "Versailles und Weimarer Verfassung gehören zu 1919, die Novemberrevolution zu 1918 und die Hyperinflation zu 1923."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMNJ2R0W89H6BYXAT8H",
+          "slug": "g9-1917-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-1917",
+          "question": "Warum gilt 1917 als Epochenjahr? Nenne die beiden zentralen Entwicklungen und ihre Bedeutung.",
+          "concept": "Die USA stärkten mit ihrem Kriegseintritt die Entente. In Russland beendeten Revolutionen die Zarenherrschaft und brachten die Bolschewiki an die Macht. Damit verschoben sich Kriegsverlauf und politische Ordnung weit über das Jahr hinaus.",
+          "sample_solution": "Die USA stärkten mit ihrem Kriegseintritt die Entente. In Russland beendeten Revolutionen die Zarenherrschaft und brachten die Bolschewiki an die Macht. Damit verschoben sich Kriegsverlauf und politische Ordnung weit über das Jahr hinaus.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMVDMF8JQR46V5KMAT",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMVDMF8JQR46V5KMAT",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-versailles",
+      "title": "Frieden mit schweren Belastungen",
+      "domain": "geschichte/imperialismus-weltkrieg",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-versailles",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMA8H18V31VKN6QDPV",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus & Weltkrieg"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus und Erster Weltkrieg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMN4WFM6EBTFVA0GRWX",
+          "slug": "g9-versailles-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-versailles",
+          "question": "Welcher Vertrag regelte 1919 den Frieden mit Deutschland?",
+          "concept": "Der Vertrag von Versailles.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Vertrag von Versailles.",
+              "Der Frieden von Brest-Litowsk."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Frieden von Brest-Litowsk.",
+              "reason": "Brest-Litowsk regelte 1918 den Frieden mit Russland; das Münchner Abkommen gehört zu 1938."
+            },
+            {
+              "text": "Das Münchner Abkommen.",
+              "reason": "Brest-Litowsk regelte 1918 den Frieden mit Russland; das Münchner Abkommen gehört zu 1938."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMNVZGTX4J467CWHMDX",
+          "slug": "g9-versailles-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-versailles",
+          "question": "Unterscheide zwei Folgen des Vertrags von Versailles von der Dolchstoßlegende.",
+          "concept": "Gebietsverluste und Reparationspflichten waren Vertragsfolgen. Die Dolchstoßlegende war dagegen eine falsche Behauptung, die Niederlage sei durch Verrat demokratischer Kräfte entstanden. Sie wurde gegen die Republik eingesetzt.",
+          "sample_solution": "Gebietsverluste und Reparationspflichten waren Vertragsfolgen. Die Dolchstoßlegende war dagegen eine falsche Behauptung, die Niederlage sei durch Verrat demokratischer Kräfte entstanden. Sie wurde gegen die Republik eingesetzt.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMM6VSJHECQ7JF0M1P9",
+      "atom_uri": "urn:zam:atom:01M5DA6AMM6VSJHECQ7JF0M1P9",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-novemberrevolution",
+      "title": "1918: Monarchien enden, Republiken entstehen",
+      "domain": "geschichte/imperialismus-weltkrieg",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-novemberrevolution",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMVDMF8JQR46V5KMAT",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus & Weltkrieg"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus und Erster Weltkrieg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMN0MMHX2RRRYZRBMEE",
+          "slug": "g9-novemberrevolution-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-novemberrevolution",
+          "question": "Welche grundlegende Veränderung brachte die Novemberrevolution 1918?",
+          "concept": "Das Ende der Monarchie und den Übergang zur Republik.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Ende der Monarchie und den Übergang zur Republik.",
+              "Die Wiederherstellung der absoluten Königsherrschaft."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Wiederherstellung der absoluten Königsherrschaft.",
+              "reason": "Die konkrete Ausgestaltung der Republik war anschließend umkämpft."
+            },
+            {
+              "text": "Den Beginn des Deutschen Kaiserreichs unter Wilhelm I.",
+              "reason": "Die konkrete Ausgestaltung der Republik war anschließend umkämpft."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMNPGKBQF751FY338JY",
+          "slug": "g9-novemberrevolution-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-novemberrevolution",
+          "question": "Verbinde die Novemberrevolution im Reich mit dem bayerischen Beispiel.",
+          "concept": "Im November 1918 führten Protest und revolutionäres Handeln zum Ende der Monarchien. In Bayern erklärte Kurt Eisner den Freistaat; in Berlin wurde die Republik ausgerufen. Welche Form die neue Ordnung haben sollte, blieb politisch umstritten.",
+          "sample_solution": "Im November 1918 führten Protest und revolutionäres Handeln zum Ende der Monarchien. In Bayern erklärte Kurt Eisner den Freistaat; in Berlin wurde die Republik ausgerufen. Welche Form die neue Ordnung haben sollte, blieb politisch umstritten.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMGQA5WYHG6KX5VJDS",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMGQA5WYHG6KX5VJDS",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-weimar-verfassung",
+      "title": "Eine demokratische Verfassung",
+      "domain": "geschichte/weimar",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-weimar-verfassung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Demokratie in Weimar"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Weimarer Republik – die erste deutsche Demokratie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMNTC7SHWMD551A7CJY",
+          "slug": "g9-weimar-verfassung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-weimar-verfassung",
+          "question": "Welche Verbindung kennzeichnet die Weimarer Verfassung?",
+          "concept": "Parlamentarische Demokratie mit einem starken Reichspräsidenten.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Parlamentarische Demokratie mit einem starken Reichspräsidenten.",
+              "Absolute Monarchie mit einem nur beratenden Reichstag."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Absolute Monarchie mit einem nur beratenden Reichstag.",
+              "reason": "Die Verfassung eröffnete Teilhabe, enthielt aber auch starke präsidentielle Befugnisse."
+            },
+            {
+              "text": "Einparteienherrschaft ohne allgemeines Wahlrecht.",
+              "reason": "Die Verfassung eröffnete Teilhabe, enthielt aber auch starke präsidentielle Befugnisse."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMNT865J1PQZ2E7J0Y3",
+          "slug": "g9-weimar-verfassung-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-weimar-verfassung",
+          "question": "Nenne eine Stärke und ein Risiko der Weimarer Verfassungsordnung und erkläre beide.",
+          "concept": "Das allgemeine Wahlrecht ermöglichte breite politische Beteiligung. Die starken Rechte des Reichspräsidenten konnten dagegen in Krisen zur Umgehung parlamentarischer Mehrheiten genutzt werden. Das Ergebnis war nicht allein durch den Verfassungstext vorgegeben.",
+          "sample_solution": "Das allgemeine Wahlrecht ermöglichte breite politische Beteiligung. Die starken Rechte des Reichspräsidenten konnten dagegen in Krisen zur Umgehung parlamentarischer Mehrheiten genutzt werden. Das Ergebnis war nicht allein durch den Verfassungstext vorgegeben.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMDAWKWVB6ERMK8PN7",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMDAWKWVB6ERMK8PN7",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-krisenjahr-1923",
+      "title": "1923: Krisen der jungen Republik",
+      "domain": "geschichte/weimar",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-krisenjahr-1923",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMGQA5WYHG6KX5VJDS",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Demokratie in Weimar"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Weimarer Republik – die erste deutsche Demokratie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMN4TD6YP6YKF413GNH",
+          "slug": "g9-krisenjahr-1923-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-krisenjahr-1923",
+          "question": "Welche Entwicklung gehört zum Krisenjahr 1923?",
+          "concept": "Hyperinflation und Hitler-Ludendorff-Putsch.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Hyperinflation und Hitler-Ludendorff-Putsch.",
+              "Weltwirtschaftskrise und Ernennung Hitlers zum Kanzler."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Weltwirtschaftskrise und Ernennung Hitlers zum Kanzler.",
+              "reason": "Die Weltwirtschaftskrise begann 1929, Hitlers Ernennung folgte 1933."
+            },
+            {
+              "text": "Weimarer Verfassung und Novemberrevolution.",
+              "reason": "Die Weltwirtschaftskrise begann 1929, Hitlers Ernennung folgte 1933."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMNYQMC2D4Y8M95SZPV",
+          "slug": "g9-krisenjahr-1923-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-krisenjahr-1923",
+          "question": "Unterscheide die Krise 1923 von der Weltwirtschaftskrise ab 1929.",
+          "concept": "1923 verlor Geld durch Hyperinflation extrem an Kaufkraft; gleichzeitig bedrohten Putschversuche die Republik. Ab 1929 brach die Wirtschaft in einer internationalen Krise ein und Arbeitslosigkeit stieg stark. Dazwischen lag eine Phase relativer Stabilisierung.",
+          "sample_solution": "1923 verlor Geld durch Hyperinflation extrem an Kaufkraft; gleichzeitig bedrohten Putschversuche die Republik. Ab 1929 brach die Wirtschaft in einer internationalen Krise ein und Arbeitslosigkeit stieg stark. Dazwischen lag eine Phase relativer Stabilisierung.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMD88C4J577RVATR7Y",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMD88C4J577RVATR7Y",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-zwanziger",
+      "title": "Wie golden waren die Zwanziger?",
+      "domain": "geschichte/weimar",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-zwanziger",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMDAWKWVB6ERMK8PN7",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Demokratie in Weimar"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Weimarer Republik – die erste deutsche Demokratie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMNRYNSKCSASN4WC65A",
+          "slug": "g9-zwanziger-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-zwanziger",
+          "question": "Warum muss der Ausdruck Goldene Zwanziger eingegrenzt werden?",
+          "concept": "Lebenschancen und Alltag unterschieden sich stark nach Ort und Gruppe.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Lebenschancen und Alltag unterschieden sich stark nach Ort und Gruppe.",
+              "Alle Menschen lebten ausschließlich in modernen Großstädten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Alle Menschen lebten ausschließlich in modernen Großstädten.",
+              "reason": "Ein kulturelles Schlagwort beschreibt keine einheitliche Lebenslage."
+            },
+            {
+              "text": "Das Frauenwahlrecht beseitigte sofort jede soziale Ungleichheit.",
+              "reason": "Ein kulturelles Schlagwort beschreibt keine einheitliche Lebenslage."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMNBZVX68009FK1ATX0",
+          "slug": "g9-zwanziger-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-zwanziger",
+          "question": "Warum können zwei Menschen die Zwanzigerjahre sehr unterschiedlich erlebt haben?",
+          "concept": "Eine gut verdienende Person in einer Großstadt konnte neue Kulturangebote nutzen. Ein landwirtschaftlicher Haushalt konnte unter anderen wirtschaftlichen Bedingungen leben. Wohnort, Einkommen und Geschlecht beeinflussten die Möglichkeiten; konkrete Erfahrungen brauchen Quellen.",
+          "sample_solution": "Eine gut verdienende Person in einer Großstadt konnte neue Kulturangebote nutzen. Ein landwirtschaftlicher Haushalt konnte unter anderen wirtschaftlichen Bedingungen leben. Wohnort, Einkommen und Geschlecht beeinflussten die Möglichkeiten; konkrete Erfahrungen brauchen Quellen.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMAYVQT6HYWETK50GC",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMAYVQT6HYWETK50GC",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-weltwirtschaftskrise",
+      "title": "1929: Eine internationale Krise",
+      "domain": "geschichte/weimar",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-weltwirtschaftskrise",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMD88C4J577RVATR7Y",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Demokratie in Weimar"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Weimarer Republik – die erste deutsche Demokratie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMN3SKD0VH0N4K2FGHA",
+          "slug": "g9-weltwirtschaftskrise-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-weltwirtschaftskrise",
+          "question": "Welcher weltwirtschaftliche Einschnitt ab 1929 beendete die relative Stabilisierung und führte zu Massenarbeitslosigkeit in Deutschland?",
+          "concept": "Die Weltwirtschaftskrise (Börsencrash 1929)",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Weltwirtschaftskrise (Börsencrash 1929)",
+              "Die Hyperinflation (Geldentwertung 1923)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Hyperinflation (Geldentwertung 1923)",
+              "reason": "Die Weltwirtschaftskrise ab 1929 verschärfte Firmenkrisen und Arbeitslosigkeit. Hyperinflation und Rentenmark gehören dagegen zum Jahr 1923."
+            },
+            {
+              "text": "Die Währungsstabilisierung (Rentenmark 1923)",
+              "reason": "Die Weltwirtschaftskrise ab 1929 verschärfte Firmenkrisen und Arbeitslosigkeit. Hyperinflation und Rentenmark gehören dagegen zum Jahr 1923."
+            }
+          ],
+          "replaces": [
+            "01K4G9H0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M5DA6AMNQ73ERFJ9A7MQXVG4",
+          "slug": "g9-weltwirtschaftskrise-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-weltwirtschaftskrise",
+          "question": "Erkläre eine Wirkungskette von internationalen Krediten zur sozialen Not in Deutschland.",
+          "concept": "Wenn Kredite zurückgezogen werden, geraten darauf angewiesene Betriebe unter Druck. Produktion und Beschäftigung können sinken. Arbeitslosigkeit und Einkommensverluste verstärken die soziale Not; weitere Faktoren wirkten gleichzeitig.",
+          "sample_solution": "Wenn Kredite zurückgezogen werden, geraten darauf angewiesene Betriebe unter Druck. Produktion und Beschäftigung können sinken. Arbeitslosigkeit und Einkommensverluste verstärken die soziale Not; weitere Faktoren wirkten gleichzeitig.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMM053ZRZD4RAHESEH0",
+      "atom_uri": "urn:zam:atom:01M5DA6AMM053ZRZD4RAHESEH0",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-weimar-scheitern",
+      "title": "Wie die Demokratie geschwächt wurde",
+      "domain": "geschichte/weimar",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-weimar-scheitern",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMAYVQT6HYWETK50GC",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Demokratie in Weimar"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Weimarer Republik – die erste deutsche Demokratie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMNA7G7HJ98SFX05G4V",
+          "slug": "g9-weimar-scheitern-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-weimar-scheitern",
+          "question": "Was kennzeichnet die Präsidialkabinette ab 1930?",
+          "concept": "Regieren mit präsidentieller Unterstützung statt stabiler Parlamentsmehrheit.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Regieren mit präsidentieller Unterstützung statt stabiler Parlamentsmehrheit.",
+              "Regieren ausschließlich mit einer dauerhaften Zweidrittelmehrheit im Reichstag."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Regieren ausschließlich mit einer dauerhaften Zweidrittelmehrheit im Reichstag.",
+              "reason": "Der parlamentarische Einfluss wurde durch die politische Praxis geschwächt."
+            },
+            {
+              "text": "Regieren ohne Reichspräsidenten und ohne Notverordnungen.",
+              "reason": "Der parlamentarische Einfluss wurde durch die politische Praxis geschwächt."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMNHJD9N0M5D0T5HKVY",
+          "slug": "g9-weimar-scheitern-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-weimar-scheitern",
+          "question": "Erkläre das Ende Weimars mit mindestens drei miteinander verbundenen Faktoren.",
+          "concept": "Die Weltwirtschaftskrise verschärfte soziale Not. Antidemokratische Kräfte nutzten sie und setzten auch Gewalt ein. Präsidialregieren schwächte das Parlament, und konservative Eliten unterstützten schließlich Hitlers Ernennung. Diese Faktoren wirkten zusammen.",
+          "sample_solution": "Die Weltwirtschaftskrise verschärfte soziale Not. Antidemokratische Kräfte nutzten sie und setzten auch Gewalt ein. Präsidialregieren schwächte das Parlament, und konservative Eliten unterstützten schließlich Hitlers Ernennung. Diese Faktoren wirkten zusammen.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMF3FWR863A6GRNWWF",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMF3FWR863A6GRNWWF",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-30-januar",
+      "title": "30. Januar 1933: Ernennung und Folgen",
+      "domain": "geschichte/nationalsozialismus",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-30-januar",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Die NS-Diktatur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Nationalsozialismus – Ideologie und Politik bis 1939",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMN6PMCNVJCE1K5M6Y0",
+          "slug": "g9-30-januar-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-30-januar",
+          "question": "An welchem Datum ernannte Hindenburg Hitler zum Reichskanzler?",
+          "concept": "30. Januar 1933",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "30. Januar 1933",
+              "9. November 1938"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "9. November 1938",
+              "reason": "Der 30. Januar ist das Datum der Ernennung, nicht der Abschluss aller Schritte zur Diktatur."
+            },
+            {
+              "text": "20. Juli 1944",
+              "reason": "Der 30. Januar ist das Datum der Ernennung, nicht der Abschluss aller Schritte zur Diktatur."
+            }
+          ],
+          "replaces": [
+            "01K4G9H0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M5DA6AMNX0ESGN40BRFB3B3T",
+          "slug": "g9-30-januar-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-30-januar",
+          "question": "Unterscheide Hitlers Ernennung von einer direkten Wahl und vom weiteren Aufbau der Diktatur.",
+          "concept": "Hindenburg ernannte Hitler am 30. Januar 1933 zum Kanzler. Das war keine direkte Wahl zum Regierungschef. Danach zerstörten die Nationalsozialisten durch Terror, Grundrechtseinschränkungen und Entmachtung von Institutionen die demokratische Ordnung.",
+          "sample_solution": "Hindenburg ernannte Hitler am 30. Januar 1933 zum Kanzler. Das war keine direkte Wahl zum Regierungschef. Danach zerstörten die Nationalsozialisten durch Terror, Grundrechtseinschränkungen und Entmachtung von Institutionen die demokratische Ordnung.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMR0NM5CB130J50KBD",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMR0NM5CB130J50KBD",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-demokratie-zerstoerung",
+      "title": "Grundrechte, Parlament und Verbände ausschalten",
+      "domain": "geschichte/nationalsozialismus",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-demokratie-zerstoerung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMF3FWR863A6GRNWWF",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Die NS-Diktatur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Nationalsozialismus – Ideologie und Politik bis 1939",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMNA7AWW13G0W3DW9DG",
+          "slug": "g9-demokratie-zerstoerung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-demokratie-zerstoerung",
+          "question": "Welche Wirkung hatte das Ermächtigungsgesetz 1933?",
+          "concept": "Die Regierung konnte ohne parlamentarische Zustimmung Gesetze erlassen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Regierung konnte ohne parlamentarische Zustimmung Gesetze erlassen.",
+              "Der Reichstag konnte die Regierung nur noch einstimmig kontrollieren."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Reichstag konnte die Regierung nur noch einstimmig kontrollieren.",
+              "reason": "Auch verfassungsabweichende Gesetze wurden möglich; demokratische Kontrolle wurde ausgeschaltet."
+            },
+            {
+              "text": "Die Länder erhielten ein Vetorecht gegen jedes Gesetz der Regierung.",
+              "reason": "Auch verfassungsabweichende Gesetze wurden möglich; demokratische Kontrolle wurde ausgeschaltet."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMPJZJVXFBXEGDH3DGX",
+          "slug": "g9-demokratie-zerstoerung-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-demokratie-zerstoerung",
+          "question": "Erkläre drei Schritte der Zerstörung der Demokratie und ihre unterschiedlichen Wirkungen.",
+          "concept": "Die Reichstagsbrandverordnung hob zentrale Grundrechte auf. Das Ermächtigungsgesetz ermöglichte Regierungsgesetze ohne die bisherige parlamentarische Kontrolle. Die Gleichschaltung beseitigte selbständige Institutionen und Verbände. Verfolgung und Terror erzwangen oder erleichterten diese Schritte.",
+          "sample_solution": "Die Reichstagsbrandverordnung hob zentrale Grundrechte auf. Das Ermächtigungsgesetz ermöglichte Regierungsgesetze ohne die bisherige parlamentarische Kontrolle. Die Gleichschaltung beseitigte selbständige Institutionen und Verbände. Verfolgung und Terror erzwangen oder erleichterten diese Schritte.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMM2NMHERSM6MAZP1AK",
+      "atom_uri": "urn:zam:atom:01M5DA6AMM2NMHERSM6MAZP1AK",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-ns-ideologie",
+      "title": "Eine menschenverachtende Ideologie",
+      "domain": "geschichte/nationalsozialismus",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-ns-ideologie",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMR0NM5CB130J50KBD",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Die NS-Diktatur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Nationalsozialismus – Ideologie und Politik bis 1939",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMPT6CWMZRRZR7K5QPV",
+          "slug": "g9-ns-ideologie-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-ns-ideologie",
+          "question": "Was verdeckt der NS-Begriff Volksgemeinschaft?",
+          "concept": "Die systematische Ausgrenzung und Verfolgung angeblich Nichtzugehöriger.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die systematische Ausgrenzung und Verfolgung angeblich Nichtzugehöriger.",
+              "Die gleiche politische Mitbestimmung aller im Staat lebenden Menschen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die gleiche politische Mitbestimmung aller im Staat lebenden Menschen.",
+              "reason": "Das Zugehörigkeitsversprechen war untrennbar mit rassistischer und politischer Ausgrenzung verbunden."
+            },
+            {
+              "text": "Den Schutz unterschiedlicher Parteien durch eine gemeinsame Verfassung.",
+              "reason": "Das Zugehörigkeitsversprechen war untrennbar mit rassistischer und politischer Ausgrenzung verbunden."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMPFMEBNR89VHK5D8DH",
+          "slug": "g9-ns-ideologie-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-ns-ideologie",
+          "question": "Verbinde zwei Bestandteile der NS-Ideologie mit ihren Folgen für Menschen.",
+          "concept": "Rassistischer Antisemitismus erklärte jüdische Menschen zum Feindbild und bereitete Entrechtung und Verfolgung vor. Das Führerprinzip lehnte demokratische Kontrolle ab und verlangte Gehorsam. Beides beruhte auf menschenverachtenden politischen Vorstellungen, nicht auf berechtigten Wertunterschieden.",
+          "sample_solution": "Rassistischer Antisemitismus erklärte jüdische Menschen zum Feindbild und bereitete Entrechtung und Verfolgung vor. Das Führerprinzip lehnte demokratische Kontrolle ab und verlangte Gehorsam. Beides beruhte auf menschenverachtenden politischen Vorstellungen, nicht auf berechtigten Wertunterschieden.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMVY7KKCFP3N4DZNJ4",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMVY7KKCFP3N4DZNJ4",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-entrechtung",
+      "title": "Von Ausgrenzung zu offener Gewalt",
+      "domain": "geschichte/nationalsozialismus",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-entrechtung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMM2NMHERSM6MAZP1AK",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Die NS-Diktatur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Nationalsozialismus – Ideologie und Politik bis 1939",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMP5AX7S491XKEWXCJ6",
+          "slug": "g9-entrechtung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-entrechtung",
+          "question": "Welche Gesetze von 1935 entzogen jüdischen Menschen volle staatsbürgerliche Rechte und untersagten bestimmte Eheschließungen?",
+          "concept": "Die Nürnberger Gesetze von 1935.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Nürnberger Gesetze von 1935.",
+              "Das Ermächtigungsgesetz von 1933."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das Ermächtigungsgesetz von 1933.",
+              "reason": "Die Nürnberger Gesetze verankerten rassistische Ausgrenzung im Recht."
+            },
+            {
+              "text": "Die Weimarer Verfassung von 1919.",
+              "reason": "Die Nürnberger Gesetze verankerten rassistische Ausgrenzung im Recht."
+            }
+          ],
+          "replaces": [
+            "01K4G9H0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M5DA6AMPYFK7QYMD6EB7GHQ4",
+          "slug": "g9-entrechtung-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-entrechtung",
+          "question": "Erkläre den Zusammenhang zwischen gesetzlichen Regelungen und alltäglicher Verfolgung.",
+          "concept": "Die Nürnberger Gesetze von 1935 verankerten ungleiche Rechte nach rassistischen Kriterien. Berufsverbote, Ausschluss und gesellschaftliche Mitwirkung beschränkten den Alltag. Die Novemberpogrome 1938 zeigten die weitere Eskalation offener Gewalt.",
+          "sample_solution": "Die Nürnberger Gesetze von 1935 verankerten ungleiche Rechte nach rassistischen Kriterien. Berufsverbote, Ausschluss und gesellschaftliche Mitwirkung beschränkten den Alltag. Die Novemberpogrome 1938 zeigten die weitere Eskalation offener Gewalt.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMD3GTWMSGFN8227TX",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMD3GTWMSGFN8227TX",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-ns-alltag-bayern",
+      "title": "Herrschaft im Alltag und in Bayern",
+      "domain": "geschichte/nationalsozialismus",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-ns-alltag-bayern",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMVY7KKCFP3N4DZNJ4",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Die NS-Diktatur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Nationalsozialismus – Ideologie und Politik bis 1939",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMPEXRJ8REC92C1MA8K",
+          "slug": "g9-ns-alltag-bayern-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-ns-alltag-bayern",
+          "question": "Welche Aussage ordnet Dachau richtig ein?",
+          "concept": "Dort entstand 1933 ein frühes Konzentrationslager.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dort entstand 1933 ein frühes Konzentrationslager.",
+              "Dort trat 1919 die Weimarer Verfassung in Kraft."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Dort trat 1919 die Weimarer Verfassung in Kraft.",
+              "reason": "Dachau zeigt, dass Verfolgung und Terror von Beginn der NS-Herrschaft an bestanden."
+            },
+            {
+              "text": "Dort wurde 1942 die Wannsee-Konferenz abgehalten.",
+              "reason": "Dachau zeigt, dass Verfolgung und Terror von Beginn der NS-Herrschaft an bestanden."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMPY75QPPVQMC34MSJN",
+          "slug": "g9-ns-alltag-bayern-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-ns-alltag-bayern",
+          "question": "Erkläre an zwei bayerischen Orten unterschiedliche Seiten der NS-Herrschaft.",
+          "concept": "Nürnberg zeigt mit den Reichsparteitagen die öffentliche Inszenierung und mit den Gesetzen von 1935 die rassistische Entrechtung. Dachau steht als frühes Konzentrationslager für Terror. Beide Seiten waren Teil derselben Herrschaft.",
+          "sample_solution": "Nürnberg zeigt mit den Reichsparteitagen die öffentliche Inszenierung und mit den Gesetzen von 1935 die rassistische Entrechtung. Dachau steht als frühes Konzentrationslager für Terror. Beide Seiten waren Teil derselben Herrschaft.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMRTJ0CRDYGT6919TQ",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMRTJ0CRDYGT6919TQ",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-ns-aussenpolitik",
+      "title": "Außenpolitik auf dem Weg zum Krieg",
+      "domain": "geschichte/nationalsozialismus",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-ns-aussenpolitik",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMD3GTWMSGFN8227TX",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Die NS-Diktatur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Nationalsozialismus – Ideologie und Politik bis 1939",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMP4HSS7SWBC092XSAK",
+          "slug": "g9-ns-aussenpolitik-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-ns-aussenpolitik",
+          "question": "Was regelte das Münchner Abkommen 1938?",
+          "concept": "Die Abtretung des Sudetenlands an Deutschland.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Abtretung des Sudetenlands an Deutschland.",
+              "Die Rückgabe aller deutschen Kolonien nach dem Weltkrieg."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Rückgabe aller deutschen Kolonien nach dem Weltkrieg.",
+              "reason": "Die Tschechoslowakei wurde nicht gleichberechtigt an der Entscheidung beteiligt."
+            },
+            {
+              "text": "Die gemeinsame deutsche und sowjetische Besetzung Polens.",
+              "reason": "Die Tschechoslowakei wurde nicht gleichberechtigt an der Entscheidung beteiligt."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMP6QDNJJ5HTNJ5DVPZ",
+          "slug": "g9-ns-aussenpolitik-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-ns-aussenpolitik",
+          "question": "Warum ist die Besetzung weiterer tschechischer Gebiete 1939 für die Beurteilung der NS-Außenpolitik wichtig?",
+          "concept": "Die Besetzung ging über den behaupteten Schutz deutschsprachiger Bevölkerung hinaus. Sie zeigte, dass territoriale Zugeständnisse die Expansionsziele nicht begrenzten. Die Außenpolitik muss daher im Zusammenhang mit Aufrüstung und Eroberungsabsichten gesehen werden.",
+          "sample_solution": "Die Besetzung ging über den behaupteten Schutz deutschsprachiger Bevölkerung hinaus. Sie zeigte, dass territoriale Zugeständnisse die Expansionsziele nicht begrenzten. Die Außenpolitik muss daher im Zusammenhang mit Aufrüstung und Eroberungsabsichten gesehen werden.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMM25X0B76GKTNMEVE6",
+      "atom_uri": "urn:zam:atom:01M5DA6AMM25X0B76GKTNMEVE6",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-kriegsbeginn-1939",
+      "title": "1939: Der Krieg beginnt in Europa",
+      "domain": "geschichte/weltkrieg-verantwortung",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-kriegsbeginn-1939",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Krieg, Verbrechen, Verantwortung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Nationalsozialismus, Zweiter Weltkrieg und Holocaust – Schuld, Widerstand und Verantwortung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMP6JVZGEKBMJXY4X0M",
+          "slug": "g9-kriegsbeginn-1939-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-kriegsbeginn-1939",
+          "question": "Mit welchem Ereignis am 1. September 1939 begann der Zweite Weltkrieg in Europa?",
+          "concept": "Mit dem deutschen Überfall auf Polen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem deutschen Überfall auf Polen.",
+              "Mit dem japanischen Angriff auf Pearl Harbor."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mit dem japanischen Angriff auf Pearl Harbor.",
+              "reason": "Pearl Harbor und der Überfall auf die Sowjetunion gehören zu 1941."
+            },
+            {
+              "text": "Mit dem deutschen Überfall auf die Sowjetunion.",
+              "reason": "Pearl Harbor und der Überfall auf die Sowjetunion gehören zu 1941."
+            }
+          ],
+          "replaces": [
+            "01K4G9H0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M5DA6AMP1KG5SYVNZMY6955G",
+          "slug": "g9-kriegsbeginn-1939-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-kriegsbeginn-1939",
+          "question": "Ordne den 1. September 1939 ein und erkläre, warum die Formulierung Krieg in Europa präzise ist.",
+          "concept": "Deutschland überfiel am 1. September 1939 Polen und begann damit den Zweiten Weltkrieg in Europa. Der Krieg in Asien hatte bereits früher begonnen. Die räumliche Eingrenzung verhindert, europäische Daten ungeprüft für die gesamte Welt zu übernehmen.",
+          "sample_solution": "Deutschland überfiel am 1. September 1939 Polen und begann damit den Zweiten Weltkrieg in Europa. Der Krieg in Asien hatte bereits früher begonnen. Die räumliche Eingrenzung verhindert, europäische Daten ungeprüft für die gesamte Welt zu übernehmen.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMSAYRKBANM5W7H9BJ",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMSAYRKBANM5W7H9BJ",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-vernichtungskrieg",
+      "title": "Eroberung und Vernichtungskrieg",
+      "domain": "geschichte/weltkrieg-verantwortung",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-vernichtungskrieg",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMM25X0B76GKTNMEVE6",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Krieg, Verbrechen, Verantwortung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Nationalsozialismus, Zweiter Weltkrieg und Holocaust – Schuld, Widerstand und Verantwortung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMPSQ5G9SQ4967B68Z3",
+          "slug": "g9-vernichtungskrieg-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-vernichtungskrieg",
+          "question": "Was unterscheidet einen Vernichtungskrieg von einer rein militärischen Zielbeschreibung?",
+          "concept": "Gezielte rassistische Gewalt gegen Bevölkerung und Kriegsgefangene.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gezielte rassistische Gewalt gegen Bevölkerung und Kriegsgefangene.",
+              "Der ausschließlich beabsichtigte Rückzug aller kämpfenden Truppen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der ausschließlich beabsichtigte Rückzug aller kämpfenden Truppen.",
+              "reason": "Eroberung, rassistische Ideologie und Massenverbrechen waren miteinander verbunden."
+            },
+            {
+              "text": "Der alleinige Schutz ziviler Versorgung vor militärischer Nutzung.",
+              "reason": "Eroberung, rassistische Ideologie und Massenverbrechen waren miteinander verbunden."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMPXS8GRZQXNNJX24B0",
+          "slug": "g9-vernichtungskrieg-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-vernichtungskrieg",
+          "question": "Erkläre den Zusammenhang von NS-Ideologie und Kriegführung im Osten.",
+          "concept": "Die Lebensraumideologie verband Eroberung mit rassistischer Unterwerfung. Daraus folgten nicht nur Kämpfe, sondern systematische Ausbeutung, Hungerpolitik und Massenmord. Der Begriff Vernichtungskrieg benennt diesen verbrecherischen Charakter.",
+          "sample_solution": "Die Lebensraumideologie verband Eroberung mit rassistischer Unterwerfung. Daraus folgten nicht nur Kämpfe, sondern systematische Ausbeutung, Hungerpolitik und Massenmord. Der Begriff Vernichtungskrieg benennt diesen verbrecherischen Charakter.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMRQB3KVSG42VT17B9",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMRQB3KVSG42VT17B9",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-holocaust",
+      "title": "Holocaust, Shoah und weitere NS-Verbrechen",
+      "domain": "geschichte/weltkrieg-verantwortung",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-holocaust",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMSAYRKBANM5W7H9BJ",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Krieg, Verbrechen, Verantwortung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Nationalsozialismus, Zweiter Weltkrieg und Holocaust – Schuld, Widerstand und Verantwortung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMPMGG7ZZGRFKKZRN22",
+          "slug": "g9-holocaust-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-holocaust",
+          "question": "Welche Rolle hatte die Wannsee-Konferenz am 20. Januar 1942?",
+          "concept": "Sie koordinierte Behörden beim bereits begonnenen Völkermord.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie koordinierte Behörden beim bereits begonnenen Völkermord.",
+              "Sie beschloss erstmals den bis dahin noch nicht begonnenen Völkermord."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie beschloss erstmals den bis dahin noch nicht begonnenen Völkermord.",
+              "reason": "Vor der Konferenz hatten Täter bereits Hunderttausende jüdische Menschen ermordet."
+            },
+            {
+              "text": "Sie beendete die bereits begonnenen Deportationen und Massenmorde.",
+              "reason": "Vor der Konferenz hatten Täter bereits Hunderttausende jüdische Menschen ermordet."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMPF35WG45AYZFN3HNV",
+          "slug": "g9-holocaust-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-holocaust",
+          "question": "Erkläre Rolle und Grenze der Wannsee-Konferenz für das Verständnis des Holocaust.",
+          "concept": "Am 20. Januar 1942 koordinierten Behördenvertreter die Beteiligung am Völkermord an den europäischen jüdischen Menschen. Der Massenmord hatte bereits begonnen. Die Konferenz zeigt behördliche Mitwirkung und Verantwortung, war aber weder der erste Beschluss noch der Beginn des Holocaust.",
+          "sample_solution": "Am 20. Januar 1942 koordinierten Behördenvertreter die Beteiligung am Völkermord an den europäischen jüdischen Menschen. Der Massenmord hatte bereits begonnen. Die Konferenz zeigt behördliche Mitwirkung und Verantwortung, war aber weder der erste Beschluss noch der Beginn des Holocaust.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMXE61BMW174Y45M3Q",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMXE61BMW174Y45M3Q",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-widerstand",
+      "title": "Widerstand: Möglichkeiten und Grenzen",
+      "domain": "geschichte/weltkrieg-verantwortung",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-widerstand",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMRQB3KVSG42VT17B9",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Krieg, Verbrechen, Verantwortung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Nationalsozialismus, Zweiter Weltkrieg und Holocaust – Schuld, Widerstand und Verantwortung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMPPK9QFCMV08Q15QR9",
+          "slug": "g9-widerstand-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-widerstand",
+          "question": "Welches Datum steht für den Attentats- und Umsturzversuch aus militärischen und zivilen Widerstandskreisen?",
+          "concept": "20. Juli 1944",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "20. Juli 1944",
+              "9. November 1938"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "9. November 1938",
+              "reason": "Der 20. Juli ist von Elsers Attentat 1939 und den Aktionen der Weißen Rose 1942/43 zu unterscheiden."
+            },
+            {
+              "text": "30. Januar 1933",
+              "reason": "Der 20. Juli ist von Elsers Attentat 1939 und den Aktionen der Weißen Rose 1942/43 zu unterscheiden."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMP5GVXSAKZQH1WC42K",
+          "slug": "g9-widerstand-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-widerstand",
+          "question": "Vergleiche zwei Widerstandsbeispiele nach Mitteln, Ziel und Risiko.",
+          "concept": "Elser versuchte Hitler durch ein Attentat zu töten, die Weiße Rose verbreitete Flugblätter gegen die Diktatur. Beide wollten die NS-Herrschaft bekämpfen, nutzten jedoch verschiedene Mittel. Terror und Verfolgung machten ihr Handeln lebensgefährlich.",
+          "sample_solution": "Elser versuchte Hitler durch ein Attentat zu töten, die Weiße Rose verbreitete Flugblätter gegen die Diktatur. Beide wollten die NS-Herrschaft bekämpfen, nutzten jedoch verschiedene Mittel. Terror und Verfolgung machten ihr Handeln lebensgefährlich.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMM6M1KV57JWXSEZEDB",
+      "atom_uri": "urn:zam:atom:01M5DA6AMM6M1KV57JWXSEZEDB",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-kriegsende",
+      "title": "1945: Kriegsende in Europa und Asien",
+      "domain": "geschichte/weltkrieg-verantwortung",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-kriegsende",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMXE61BMW174Y45M3Q",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Krieg, Verbrechen, Verantwortung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Nationalsozialismus, Zweiter Weltkrieg und Holocaust – Schuld, Widerstand und Verantwortung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMP80QTYA4H9DN2C9ZQ",
+          "slug": "g9-kriegsende-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-kriegsende",
+          "question": "Welche Aussage unterscheidet die Kriegsenden 1945 richtig?",
+          "concept": "Europa: Mai; formelle japanische Kapitulation: September.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Europa: Mai; formelle japanische Kapitulation: September.",
+              "Europa: September; formelle japanische Kapitulation: Mai."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Europa: September; formelle japanische Kapitulation: Mai.",
+              "reason": "Der 8./9. Mai bezeichnet das Kriegsende in Europa, nicht das Ende aller Kriegsschauplätze."
+            },
+            {
+              "text": "Europa und Asien: beide mit derselben Kapitulation im Januar.",
+              "reason": "Der 8./9. Mai bezeichnet das Kriegsende in Europa, nicht das Ende aller Kriegsschauplätze."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMPNSZFZATZ9SBNPKW0",
+          "slug": "g9-kriegsende-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-kriegsende",
+          "question": "Erkläre zwei Gründe, weshalb die Aussage Der ganze Krieg endete am 8. Mai zu ungenau ist.",
+          "concept": "Der 8. Mai bezeichnet die deutsche Kapitulation und das Ende des Krieges in Europa. In Asien dauerte der Krieg bis in den Spätsommer. Außerdem endeten Verfolgungsfolgen, Verlust und Zerstörung nicht automatisch mit einer Kapitulation.",
+          "sample_solution": "Der 8. Mai bezeichnet die deutsche Kapitulation und das Ende des Krieges in Europa. In Asien dauerte der Krieg bis in den Spätsommer. Außerdem endeten Verfolgungsfolgen, Verlust und Zerstörung nicht automatisch mit einer Kapitulation.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMM94WRPH5Q2F9MCZH3",
+      "atom_uri": "urn:zam:atom:01M5DA6AMM94WRPH5Q2F9MCZH3",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-erinnerung",
+      "title": "Erinnern und Verantwortung übernehmen",
+      "domain": "geschichte/weltkrieg-verantwortung",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-erinnerung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMM6M1KV57JWXSEZEDB",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Krieg, Verbrechen, Verantwortung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Nationalsozialismus, Zweiter Weltkrieg und Holocaust – Schuld, Widerstand und Verantwortung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMP2N3SCQH72SSTKMA4",
+          "slug": "g9-erinnerung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-erinnerung",
+          "question": "Wie unterscheiden sich persönliche Schuld und heutige Verantwortung?",
+          "concept": "Schuld betrifft eigene Taten; Verantwortung umfasst auch Erinnerung und Handeln heute.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Schuld betrifft eigene Taten; Verantwortung umfasst auch Erinnerung und Handeln heute.",
+              "Schuld wird vererbt; heutiges Handeln verändert daran grundsätzlich nichts."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Schuld wird vererbt; heutiges Handeln verändert daran grundsätzlich nichts.",
+              "reason": "Historische Genauigkeit und gesellschaftliche Verantwortung bleiben Aufgaben nachfolgender Generationen."
+            },
+            {
+              "text": "Verantwortung endet mit dem Tod aller Menschen, die die Zeit erlebt haben.",
+              "reason": "Historische Genauigkeit und gesellschaftliche Verantwortung bleiben Aufgaben nachfolgender Generationen."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMPVHGJ4SARCBZE96WS",
+          "slug": "g9-erinnerung-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-erinnerung",
+          "question": "Bereite zwei Fragen für einen Gedenkstättenbesuch vor und erläutere ihren Nutzen.",
+          "concept": "Ich frage, welche Biografie ein ausgestelltes Dokument erschließt und welche Grenzen der Überlieferung bestehen. Außerdem frage ich, wann und von wem die Gedenkstätte gestaltet wurde. So verbinde ich individuelles Leben, Quellenprüfung und Geschichte der Erinnerung.",
+          "sample_solution": "Ich frage, welche Biografie ein ausgestelltes Dokument erschließt und welche Grenzen der Überlieferung bestehen. Außerdem frage ich, wann und von wem die Gedenkstätte gestaltet wurde. So verbinde ich individuelles Leben, Quellenprüfung und Geschichte der Erinnerung.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMSSVKPQQG544HRM6Z",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMSSVKPQQG544HRM6Z",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-bildung-laengsschnitt",
+      "title": "Wer durfte lernen – und wozu?",
+      "domain": "geschichte/jugendkultur",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-bildung-laengsschnitt",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb6",
+          "topic_title": "Jung sein im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Jugend und Jugendkultur im Wandel der Zeit (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMPW9STJ3BFT2BEKV27",
+          "slug": "g9-bildung-laengsschnitt-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-bildung-laengsschnitt",
+          "question": "Welche Kriterien ermöglichen einen historischen Vergleich von Bildung?",
+          "concept": "Zugang, Erziehungsziele und Formen von Autorität.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zugang, Erziehungsziele und Formen von Autorität.",
+              "Nur die Länge des Schulwegs ohne jeden gesellschaftlichen Zusammenhang."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur die Länge des Schulwegs ohne jeden gesellschaftlichen Zusammenhang.",
+              "reason": "Vergleichskriterien machen Unterschiede und Gemeinsamkeiten nachvollziehbar."
+            },
+            {
+              "text": "Nur heutige Noten ohne Prüfung der damaligen Lebensbedingungen.",
+              "reason": "Vergleichskriterien machen Unterschiede und Gemeinsamkeiten nachvollziehbar."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMP6HAZWMTWHZ7ED9Q9",
+          "slug": "g9-bildung-laengsschnitt-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-bildung-laengsschnitt",
+          "question": "Vergleiche zwei der behandelten Epochen anhand eines gemeinsamen Kriteriums.",
+          "concept": "Beim Zugang unterscheiden sich die Beispiele: Im antiken Athen begrenzten Status und Geschlecht die Möglichkeiten, während klösterliche Bildung im Mittelalter an bestimmte Institutionen gebunden war. Beide Fälle zeigen ungleichen Zugang, aber verschiedene Strukturen; sie beschreiben nicht alle Bildungswege einer Epoche.",
+          "sample_solution": "Beim Zugang unterscheiden sich die Beispiele: Im antiken Athen begrenzten Status und Geschlecht die Möglichkeiten, während klösterliche Bildung im Mittelalter an bestimmte Institutionen gebunden war. Beide Fälle zeigen ungleichen Zugang, aber verschiedene Strukturen; sie beschreiben nicht alle Bildungswege einer Epoche.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMTKMTF5M254CF9KNS",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMTKMTF5M254CF9KNS",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-jugend-im-ns",
+      "title": "Jugend zwischen Vereinnahmung und Eigensinn",
+      "domain": "geschichte/jugendkultur",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-jugend-im-ns",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMSSVKPQQG544HRM6Z",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb6",
+          "topic_title": "Jung sein im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Jugend und Jugendkultur im Wandel der Zeit (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMPAJN4N8ZXC6H5A8VM",
+          "slug": "g9-jugend-im-ns-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-jugend-im-ns",
+          "question": "Wozu dienten HJ und BDM im NS-Staat?",
+          "concept": "Zur politischen Vereinnahmung und Erziehung im Sinne der NS-Ideologie.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zur politischen Vereinnahmung und Erziehung im Sinne der NS-Ideologie.",
+              "Zum Schutz frei gewählter Jugendverbände vor staatlichem Einfluss."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zum Schutz frei gewählter Jugendverbände vor staatlichem Einfluss.",
+              "reason": "Freizeitangebote waren mit ideologischer Schulung, Rollenbildern und Ausgrenzung verbunden."
+            },
+            {
+              "text": "Zur Sicherung gleicher Beteiligung aller Jugendlichen unabhängig von Herkunft.",
+              "reason": "Freizeitangebote waren mit ideologischer Schulung, Rollenbildern und Ausgrenzung verbunden."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMPNMA1M84M9BBJZMA6",
+          "slug": "g9-jugend-im-ns-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-jugend-im-ns",
+          "question": "Warum ist es unzureichend, HJ oder BDM nur als Freizeitangebote zu beschreiben?",
+          "concept": "Fahrten und Gemeinschaft sollten Jugendliche an die NS-Herrschaft binden. Politische Schulung, Rollenbilder und zunehmender Zwang gehörten dazu. Verfolgte Jugendliche wurden ausgeschlossen. Die Freizeitaktivität war deshalb Teil eines Herrschaftssystems.",
+          "sample_solution": "Fahrten und Gemeinschaft sollten Jugendliche an die NS-Herrschaft binden. Politische Schulung, Rollenbilder und zunehmender Zwang gehörten dazu. Verfolgte Jugendliche wurden ausgeschlossen. Die Freizeitaktivität war deshalb Teil eines Herrschaftssystems.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMNWM3RRNYTP2NSEQ6",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMNWM3RRNYTP2NSEQ6",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-jugendkulturen",
+      "title": "Jugend gestaltet eigene Räume",
+      "domain": "geschichte/jugendkultur",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-jugendkulturen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMTKMTF5M254CF9KNS",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb6",
+          "topic_title": "Jung sein im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Jugend und Jugendkultur im Wandel der Zeit (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMPMEW88BQ00NTY2XE0",
+          "slug": "g9-jugendkulturen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-jugendkulturen",
+          "question": "Was lässt sich aus Kleidung oder Musikgeschmack allein nicht sicher ableiten?",
+          "concept": "Eine einheitliche politische Haltung aller Angehörigen einer Jugendkultur.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine einheitliche politische Haltung aller Angehörigen einer Jugendkultur.",
+              "Dass Stil als Ausdruck von Zugehörigkeit verwendet werden kann."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Dass Stil als Ausdruck von Zugehörigkeit verwendet werden kann.",
+              "reason": "Stil kann ein Hinweis sein; konkrete Haltungen brauchen weitere Belege."
+            },
+            {
+              "text": "Dass Musik und Kleidung zur Abgrenzung beitragen können.",
+              "reason": "Stil kann ein Hinweis sein; konkrete Haltungen brauchen weitere Belege."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMPFCDGC15T31DRXF0Z",
+          "slug": "g9-jugendkulturen-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-jugendkulturen",
+          "question": "Nenne zwei sinnvolle Kriterien, um Wandervogel und eine spätere Jugendkultur zu vergleichen.",
+          "concept": "Ich vergleiche, welche Freiräume Jugendliche beanspruchten und wer dazugehören durfte. Dafür prüfe ich Programme und Erfahrungen. Gemeinsame Abgrenzung von Erwachsenen bedeutet noch nicht gleiche Werte oder gleiche Offenheit.",
+          "sample_solution": "Ich vergleiche, welche Freiräume Jugendliche beanspruchten und wer dazugehören durfte. Dafür prüfe ich Programme und Erfahrungen. Gemeinsame Abgrenzung von Erwachsenen bedeutet noch nicht gleiche Werte oder gleiche Offenheit.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMM4W3B837YMK37Z85D",
+      "atom_uri": "urn:zam:atom:01M5DA6AMM4W3B837YMK37Z85D",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-menschenrechte-entwicklung",
+      "title": "Rechte: Anspruch und Wirklichkeit",
+      "domain": "geschichte/menschenrechte",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-menschenrechte-entwicklung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb7",
+          "topic_title": "Menschenrechte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb7",
+          "topic_title": "Menschenrechte – Rechte für alle Menschen (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMPN1PZC3Z04BA5FP11",
+          "slug": "g9-menschenrechte-entwicklung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-menschenrechte-entwicklung",
+          "question": "Was unterscheidet den Anspruch der Menschenrechte von ständischen Vorrechten?",
+          "concept": "Rechte sollen jedem Menschen zukommen, nicht nur einem bestimmten Stand.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Rechte sollen jedem Menschen zukommen, nicht nur einem bestimmten Stand.",
+              "Rechte sollen ausschließlich den Angehörigen eines erblichen Standes zukommen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Rechte sollen ausschließlich den Angehörigen eines erblichen Standes zukommen.",
+              "reason": "Historische Wirklichkeit blieb häufig hinter dem universellen Anspruch zurück."
+            },
+            {
+              "text": "Rechte sollen nur aufgrund von Eigentum und politischem Einfluss entstehen.",
+              "reason": "Historische Wirklichkeit blieb häufig hinter dem universellen Anspruch zurück."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMPA5HBSK37HGP31YX0",
+          "slug": "g9-menschenrechte-entwicklung-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-menschenrechte-entwicklung",
+          "question": "Erkläre den Unterschied zwischen einem universellen Rechtsanspruch und seiner historischen Verwirklichung.",
+          "concept": "Ein universeller Anspruch richtet sich auf alle Menschen. In der historischen Umsetzung blieben beispielsweise Frauen oder versklavte Menschen ausgeschlossen. Die Erklärungen von 1776 und 1789 sind deshalb wichtige Bezugspunkte, aber kein Beweis bereits erreichter Gleichheit.",
+          "sample_solution": "Ein universeller Anspruch richtet sich auf alle Menschen. In der historischen Umsetzung blieben beispielsweise Frauen oder versklavte Menschen ausgeschlossen. Die Erklärungen von 1776 und 1789 sind deshalb wichtige Bezugspunkte, aber kein Beweis bereits erreichter Gleichheit.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMME3ZNNQTF05EHX9R",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMME3ZNNQTF05EHX9R",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-menschenrechte-schutz",
+      "title": "1948, Grundgesetz und europäischer Schutz",
+      "domain": "geschichte/menschenrechte",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-menschenrechte-schutz",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMM4W3B837YMK37Z85D",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb7",
+          "topic_title": "Menschenrechte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb7",
+          "topic_title": "Menschenrechte – Rechte für alle Menschen (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMPZYV1N7HG67GJP5J0",
+          "slug": "g9-menschenrechte-schutz-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-menschenrechte-schutz",
+          "question": "Zu welchem institutionellen Rahmen gehört die Europäische Menschenrechtskonvention?",
+          "concept": "Zum Europarat und seinem Menschenrechtsschutz.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zum Europarat und seinem Menschenrechtsschutz.",
+              "Ausschließlich zur Europäischen Union und ihrer Handelspolitik."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ausschließlich zur Europäischen Union und ihrer Handelspolitik.",
+              "reason": "Europarat, EU und Vereinte Nationen sind unterschiedliche Organisationen."
+            },
+            {
+              "text": "Zur Generalversammlung der Vereinten Nationen als Weltgericht.",
+              "reason": "Europarat, EU und Vereinte Nationen sind unterschiedliche Organisationen."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMPD9XG8Z6XSRB97J5Z",
+          "slug": "g9-menschenrechte-schutz-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-menschenrechte-schutz",
+          "question": "Unterscheide die Menschenrechtserklärung von einem konkreten Schutzmechanismus.",
+          "concept": "Die Erklärung von 1948 formuliert einen weltweiten Maßstab für Menschenrechte. Ein Schutzmechanismus braucht rechtliche Verpflichtungen und Institutionen. Das Grundgesetz bindet deutsche Staatsgewalt; die EMRK verknüpft Vertragspflichten mit einem europäischen Gerichtshof.",
+          "sample_solution": "Die Erklärung von 1948 formuliert einen weltweiten Maßstab für Menschenrechte. Ein Schutzmechanismus braucht rechtliche Verpflichtungen und Institutionen. Das Grundgesetz bindet deutsche Staatsgewalt; die EMRK verknüpft Vertragspflichten mit einem europäischen Gerichtshof.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMCKJSBHMGF7PB7PR2",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMCKJSBHMGF7PB7PR2",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-menschenrechte-urteilen",
+      "title": "Menschenrechte als Maßstab anwenden",
+      "domain": "geschichte/menschenrechte",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-menschenrechte-urteilen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMME3ZNNQTF05EHX9R",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb7",
+          "topic_title": "Menschenrechte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb7",
+          "topic_title": "Menschenrechte – Rechte für alle Menschen (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMPJM2K1MJED7N5FP7X",
+          "slug": "g9-menschenrechte-urteilen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-menschenrechte-urteilen",
+          "question": "Was trägt ein begründetes menschenrechtliches Urteil?",
+          "concept": "Belege, betroffene Perspektiven und nachvollziehbare Kriterien.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Belege, betroffene Perspektiven und nachvollziehbare Kriterien.",
+              "Nur die Absicht der mächtigsten beteiligten Person."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur die Absicht der mächtigsten beteiligten Person.",
+              "reason": "Ein Urteil ist mehr als Zustimmung oder Ablehnung; seine Begründung muss überprüfbar sein."
+            },
+            {
+              "text": "Nur ein historischer Vergleich ohne Prüfung der Unterschiede.",
+              "reason": "Ein Urteil ist mehr als Zustimmung oder Ablehnung; seine Begründung muss überprüfbar sein."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMP22N0037C962V7FTW",
+          "slug": "g9-menschenrechte-urteilen-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-menschenrechte-urteilen",
+          "question": "Bewerte den erfundenen Bibliotheksfall mit einem Beleg, einer betroffenen Perspektive und einem Kriterium.",
+          "concept": "Die Fallbeschreibung nennt einen Ausschluss allein nach zugeschriebener Herkunft. Betroffene verlieren Zugang zu Information und werden abgewertet. Gemessen an gleichem Zugang und dem Schutz vor willkürlicher Ausgrenzung ist das problematisch. Für einen realen Fall wären weitere Tatsachen und die Rechtslage zu prüfen.",
+          "sample_solution": "Die Fallbeschreibung nennt einen Ausschluss allein nach zugeschriebener Herkunft. Betroffene verlieren Zugang zu Information und werden abgewertet. Gemessen an gleichem Zugang und dem Schutz vor willkürlicher Ausgrenzung ist das problematisch. Für einen realen Fall wären weitere Tatsachen und die Rechtslage zu prüfen.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMM2Q1CB860W92KZ4QY",
+      "atom_uri": "urn:zam:atom:01M5DA6AMM2Q1CB860W92KZ4QY",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-en-empire",
+      "title": "Empire: whose story?",
+      "domain": "geschichte/bilingual",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-en-empire",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb8",
+          "topic_title": "History in English"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMPTP3BCTD4SR2QTP2Q",
+          "slug": "g9-en-empire-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-en-empire",
+          "question": "Which question helps examine an imperial claim of progress?",
+          "concept": "Who controlled decisions, and who carried the costs?",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Who controlled decisions, and who carried the costs?",
+              "How can the ruler's description replace all other evidence?"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "How can the ruler's description replace all other evidence?",
+              "reason": "Infrastructure alone does not establish consent, equality or shared benefits."
+            },
+            {
+              "text": "Why should the existence of a railway prove equal rights?",
+              "reason": "Infrastructure alone does not establish consent, equality or shared benefits."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMP0X5J8HKE6Z4NB5XP",
+          "slug": "g9-en-empire-begruenden",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-en-empire",
+          "question": "Explain why an official report about a railway is not a complete history of empire.",
+          "concept": "The report may highlight the aims and achievements of the colonial administration. It does not by itself show local consent or the distribution of costs. Evidence about land, labour and resistance is needed to examine unequal power.",
+          "sample_solution": "The report may highlight the aims and achievements of the colonial administration. It does not by itself show local consent or the distribution of costs. Evidence about land, labour and resistance is needed to examine unequal power.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMZR2D1PDGV2XTHBRC",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMZR2D1PDGV2XTHBRC",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-en-britain-1914",
+      "title": "Britain and the road to war",
+      "domain": "geschichte/bilingual",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-en-britain-1914",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMM2Q1CB860W92KZ4QY",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb8",
+          "topic_title": "History in English"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMP4Y9XEXH7YWABJG1Q",
+          "slug": "g9-en-britain-1914-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-en-britain-1914",
+          "question": "Which event was central to Britain's entry into the war in August 1914?",
+          "concept": "Germany's invasion of neutral Belgium.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Germany's invasion of neutral Belgium.",
+              "Germany's invasion of the Soviet Union."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Germany's invasion of the Soviet Union.",
+              "reason": "The other events belong to 1941 and 1938, not the July crisis of 1914."
+            },
+            {
+              "text": "Germany's annexation of Austria.",
+              "reason": "The other events belong to 1941 and 1938, not the July crisis of 1914."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMP6X46MYXDH0DWR5DX",
+          "slug": "g9-en-britain-1914-begruenden",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-en-britain-1914",
+          "question": "Explain Britain's entry into the war using a long-term concern and an immediate event.",
+          "concept": "The naval arms race had increased mistrust and Britain was concerned about the balance of power. Germany's invasion of neutral Belgium created an immediate crisis. British leaders decided to enter the war on 4 August 1914.",
+          "sample_solution": "The naval arms race had increased mistrust and Britain was concerned about the balance of power. Germany's invasion of neutral Belgium created an immediate crisis. British leaders decided to enter the war on 4 August 1914.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMMF25A27NWPSZQFYRY",
+      "atom_uri": "urn:zam:atom:01M5DA6AMMF25A27NWPSZQFYRY",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-en-allies",
+      "title": "Britain, the USA and a global war",
+      "domain": "geschichte/bilingual",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-en-allies",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMZR2D1PDGV2XTHBRC",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb8",
+          "topic_title": "History in English"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMPDV57MAYA4T2MJANQ",
+          "slug": "g9-en-allies-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-en-allies",
+          "question": "Which statement places the USA's entry into World War II correctly?",
+          "concept": "The USA entered in December 1941 after the attack on Pearl Harbor.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "The USA entered in December 1941 after the attack on Pearl Harbor.",
+              "The USA entered in September 1939 after the German attack on Poland."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "The USA entered in September 1939 after the German attack on Poland.",
+              "reason": "Britain and the USA entered the war at different times."
+            },
+            {
+              "text": "The USA entered in January 1933 after Hitler became chancellor.",
+              "reason": "Britain and the USA entered the war at different times."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMPAV029QA6PJPMVJS1",
+          "slug": "g9-en-allies-begruenden",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-en-allies",
+          "question": "Compare Britain's and the USA's entry into the war.",
+          "concept": "Britain entered in 1939 after Germany attacked Poland. The USA entered in December 1941 after Pearl Harbor, followed by Germany's declaration of war. Their cooperation became part of a wider Allied coalition.",
+          "sample_solution": "Britain entered in 1939 after Germany attacked Poland. The USA entered in December 1941 after Pearl Harbor, followed by Germany's declaration of war. Their cooperation became part of a wider Allied coalition.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M5DA6AMM63N9ZQ6CG4PZANF9",
+      "atom_uri": "urn:zam:atom:01M5DA6AMM63N9ZQ6CG4PZANF9",
+      "namespace": "zam-academy-geschichte-realschule-9",
+      "slug": "g9-en-civil-rights",
+      "title": "Civil Rights: equality in practice",
+      "domain": "geschichte/bilingual",
+      "reduction": "narrative",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-en-civil-rights",
+      "prerequisites": [
+        {
+          "atom_id": "01M5DA6AMKNS8HF5MQV6WMB67G",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        },
+        {
+          "atom_id": "01M5DA6AMMF25A27NWPSZQFYRY",
+          "type": "soft",
+          "rationale": "Die vorher geübte Quellenarbeit oder der historische Zusammenhang unterstützt diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-9",
+          "topic_code": "lb8",
+          "topic_title": "History in English"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb8",
+          "topic_title": "Bilingualer Sachfachunterricht (optional)",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5DA6AMPEWE5K0ZTS38Z753K",
+          "slug": "g9-en-civil-rights-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-en-civil-rights",
+          "question": "What did the Civil Rights Movement challenge?",
+          "concept": "Racial segregation and barriers to equal participation.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Racial segregation and barriers to equal participation.",
+              "Universal access to voting and equal protection already achieved."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Universal access to voting and equal protection already achieved.",
+              "reason": "Legal promises needed social action and effective enforcement."
+            },
+            {
+              "text": "The existence of all peaceful protest and legal challenges.",
+              "reason": "Legal promises needed social action and effective enforcement."
+            }
+          ]
+        },
+        {
+          "id": "01M5DA6AMPNHB0E5GCPRNWKKQK",
+          "slug": "g9-en-civil-rights-begruenden",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-9/#lesson=g-en-civil-rights",
+          "question": "Explain the difference between a promise of equality and effective civil rights.",
+          "concept": "A promise states that people should have equal rights. Segregation and barriers to voting showed that the promise was not fully realised. Activism and legislation aimed to secure participation and protection in practice, which also required enforcement.",
+          "sample_solution": "A promise states that people should have equal rights. Segregation and barriers to voting showed that the promise was not fully realised. Activism and legislation aimed to secure participation and protection in practice, which also required enforcement.",
+          "materiality": "material"
+        }
+      ]
+    }
+  ],
+  "retired_items": [
+    {
+      "id": "01K4G9H0000000000000000J02",
+      "reason": "Mehrteiliger Alttext mit sachlichen Verkürzungen: Alleinschuld als Vertragsinhalt, Artikel 48 als automatische Parlamentsschwächung und eine zwangsläufige Radikalisierung. Die neue Erklärung unterscheidet Haftung, politische Deutung, Kontrollen und Entscheidungen. Keine Teilbeherrschung auf neue Einzelfragen verteilen."
+    },
+    {
+      "id": "01K4G9H0000000000000000J04",
+      "reason": "Der Alttext verwechselt Beschluss am 23. März mit Veröffentlichung am 24. März 1933 und beschreibt vollständige Gesetzgebungsübertragung sowie Auflösung aller Landesparlamente zu pauschal. Der korrigierte Gesamtumfang ist kein sicher gleicher Abruf."
+    },
+    {
+      "id": "01K4G9H0000000000000000J06",
+      "reason": "Die mehrteilige Ideologiefrage und Kurzantwort decken sich nicht vollständig: Die Kurzantwort lässt die ausdrücklich gefragte Volksgemeinschaft aus. Die neue Bearbeitung verbindet deren Ausgrenzungsfunktion ausdrücklich mit Ideologie und Politik; keine sichere vollständige Gleichwertigkeit."
+    },
+    {
+      "id": "01K4G9H0000000000000000J08",
+      "reason": "Der Alttext vermischt im Holocaust-Begriff jüdische Opfer mit weiteren Opfergruppen und bindet den Völkermord zu eng an industrielle Lagervernichtung und Wannsee. Die neue Erklärung unterscheidet Verbrechen und Opfergruppen, berücksichtigt Massenerschießungen und die Koordination des bereits begonnenen Völkermords. Keine Übernahme auf korrigierte Teilfragen."
+    }
+  ]
+}
