@@ -202,6 +202,46 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     });
   });
 
+  it("offers the common Geschichte 9 curriculum with seven core areas and optional bilingual teaching", () => {
+    expect(provider.listSubjects("realschule", "9")).toContainEqual({
+      id: "geschichte",
+      label: "Geschichte",
+    });
+    expect(provider.listTracks("realschule", "9", "geschichte")).toEqual([]);
+    const topics = provider.listTopics({
+      schoolType: "realschule",
+      grade: "9",
+      subject: "geschichte",
+    });
+    expect(topics.map((topic) => [topic.id, topic.label, topic.hours])).toEqual(
+      [
+        ["lb1", "Methoden und Arbeitstechniken", undefined],
+        ["lb2", "Imperialismus und Erster Weltkrieg", 16],
+        ["lb3", "Weimarer Republik – die erste deutsche Demokratie", 10],
+        ["lb4", "Nationalsozialismus – Ideologie und Politik bis 1939", 10],
+        [
+          "lb5",
+          "Nationalsozialismus, Zweiter Weltkrieg und Holocaust – Schuld, Widerstand und Verantwortung",
+          10,
+        ],
+        ["lb6", "Jugend und Jugendkultur im Wandel der Zeit (Längsschnitt)", 5],
+        ["lb7", "Menschenrechte – Rechte für alle Menschen (Längsschnitt)", 5],
+        ["lb8", "Bilingualer Sachfachunterricht (optional)", undefined],
+      ],
+    );
+    for (const topic of topics)
+      expect(provider.resolveTopic(topic)).toEqual({
+        provider: "lehrplanplus-bayern",
+        topicId: `realschule|9|geschichte#${topic.id}`,
+        uri: "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/geschichte",
+      });
+    expect(provider.listCatalogPaths?.()).toContainEqual({
+      schoolType: "realschule",
+      grade: "9",
+      subject: "geschichte",
+    });
+  });
+
   it("lists the eight Lernbereiche of Mathematik 9 (I)", () => {
     const topics = provider.listTopics({
       schoolType: "realschule",
