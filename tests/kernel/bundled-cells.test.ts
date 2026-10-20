@@ -8,6 +8,7 @@ import {
 } from "../../src/cli/bridge-handlers.js";
 import {
   buildReviewQueue,
+  type CurriculumScope,
   type Database,
   enrolBundledCell,
   findBundledCellsForScope,
@@ -254,6 +255,54 @@ describe("Bundled learning cells (Phase 1)", () => {
           grade: 8,
           track: "II_III",
           subject: "physik",
+        }),
+      ).toBe(false);
+    });
+
+    /**
+     * A learner's position carries the manifest's ids: Realschule subjects
+     * such as `it`, `bwl-rechnungswesen` or `wirtschaft-und-recht`, and the
+     * tracks `wpfg1` / `wpfg2-3`. Cells may spell them `informatik`, `bwr`,
+     * `wirtschaft_und_recht`, or name a single group (`II`, `III`, `IIIa`).
+     */
+    it("finds a cell by the manifest's ids, however the cell spells subject and track", () => {
+      const ids = (scope: Omit<CurriculumScope, "provider" | "schoolType">) =>
+        findBundledCellsForScope({
+          provider: "lehrplanplus-bayern",
+          schoolType: "realschule",
+          ...scope,
+        }).map((cell) => cell.id);
+      expect(ids({ grade: 9, subject: "it" })).toEqual(
+        expect.arrayContaining([
+          "zam-academy:sql",
+          "de-by:realschule-9-informatik-algorithmen-strukturen",
+        ]),
+      );
+      expect(ids({ grade: 7, subject: "it" })).toContain(
+        "de-by:realschule-7-informatik-informationsdarstellung-dateisystem",
+      );
+      expect(
+        ids({ grade: 7, subject: "bwl-rechnungswesen", track: "wpfg2-3" }),
+      ).toContain("de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung");
+      expect(
+        ids({ grade: 7, subject: "bwl-rechnungswesen", track: "wpfg1" }),
+      ).not.toContain(
+        "de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung",
+      );
+      expect(
+        ids({ grade: 10, subject: "wirtschaft-und-recht", track: "wpfg2-3" }),
+      ).toContain(
+        "de-by:realschule-10-wirtschaft-recht-strafrecht-arbeitsrecht-sozialstaat",
+      );
+      expect(ids({ grade: 9, subject: "franzoesisch", track: "wpfg2-3" })).toContain(
+        "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",
+      );
+      expect(
+        needsGenericCurriculumImport({
+          provider: "lehrplanplus-bayern",
+          schoolType: "realschule",
+          grade: 9,
+          subject: "it",
         }),
       ).toBe(false);
     });

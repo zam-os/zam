@@ -14,6 +14,7 @@ import {
   type KvtTile,
   listLibraryTopics,
   materialiseKvtCards,
+  needsGenericCurriculumImport,
   openDatabase,
 } from "../../src/kernel/index.js";
 import legacyDatenbanken from "../fixtures/legacy/de-by-realschule-9-informatik-datenbanken-sql-kvt.json" with {
@@ -87,23 +88,40 @@ describe("ZAM Academy Relationale Datenbanken und SQL cell", () => {
     ).toContain(CELL_ID);
   });
 
-  it("is the database cell at its LehrplanPLUS position, Realschule 9 Informatik, for both Zweig codes", () => {
+  it("is the database cell at its LehrplanPLUS position, Realschule 9 IT, for both Zweig codes", () => {
     // The position has one other cell, IT 2.5/2.6 (Algorithmen, Datennetze),
     // which is Zweig I only; the de-by database cell is gone. zam codes the
     // Wahlpflichtfächergruppen II and III as one track, II_III (Physik does too).
+    // A learner's position carries the manifest's ids (subject `it`, tracks
+    // `wpfg1` / `wpfg2-3`); the cells spell the subject `informatik`, and a
+    // caller may name a single group such as `II`.
     const algorithmen = "de-by:realschule-9-informatik-algorithmen-strukturen";
-    for (const track of [undefined, "I", "II_III"]) {
-      const ids = findBundledCellsForScope({
+    const zweigI = [undefined, "I", "wpfg1"];
+    const zweigII = ["II_III", "wpfg2-3", "II", "IIIa"];
+    for (const subject of ["it", "informatik"]) {
+      for (const track of [...zweigI, ...zweigII]) {
+        const ids = findBundledCellsForScope({
+          provider: "lehrplanplus-bayern",
+          schoolType: "realschule",
+          grade: 9,
+          subject,
+          ...(track ? { track } : {}),
+        }).map((c) => c.id);
+        expect(ids.sort(), `${subject}, track ${track ?? "any"}`).toEqual(
+          track !== undefined && zweigII.includes(track)
+            ? [CELL_ID]
+            : [algorithmen, CELL_ID],
+        );
+      }
+    }
+    expect(
+      needsGenericCurriculumImport({
         provider: "lehrplanplus-bayern",
         schoolType: "realschule",
         grade: 9,
-        subject: "informatik",
-        ...(track ? { track } : {}),
-      }).map((c) => c.id);
-      expect(ids.sort(), `track ${track ?? "any"}`).toEqual(
-        track === "II_III" ? [CELL_ID] : [algorithmen, CELL_ID],
-      );
-    }
+        subject: "it",
+      }),
+    ).toBe(false);
     expect(getBundledCell(LEGACY_ID), `${LEGACY_ID} left the bundle`).toBeUndefined();
     expect(
       findBundledCellsForScope({

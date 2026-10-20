@@ -705,20 +705,52 @@ export interface CurriculumScope {
   subject?: string;
 }
 
+/** Lower case, with `_`, `/` and blanks folded to `-`: `II_III` → `ii-iii`. */
+function compactCurriculumCode(code: string): string {
+  return code
+    .trim()
+    .toLowerCase()
+    .replace(/[_\s/]+/g, "-");
+}
+
+/**
+ * A track as the scope lookup compares it. A LehrplanPLUS Realschule
+ * position knows two tracks, `wpfg1` (Wahlpflichtfächergruppe I) and
+ * `wpfg2-3` (II and III); a single group spelled by a cell or a caller
+ * (`II`, `III`, `IIIa`, `IIIb`) belongs to `wpfg2-3`.
+ */
 function canonicalCurriculumTrack(
   provider: string,
   schoolType: string | undefined,
   track: string,
 ): string {
-  const compact = track
-    .trim()
-    .toLowerCase()
-    .replace(/[_\s/]+/g, "-");
+  const compact = compactCurriculumCode(track);
   if (provider === "lehrplanplus-bayern" && schoolType === "realschule") {
     if (compact === "i" || compact === "wpfg1") return "wpfg1";
-    if (compact === "ii-iii" || compact === "ii-3" || compact === "wpfg2-3") {
+    if (/^(ii|iii|iii-?[ab]|ii-iii|ii-3|wpfg2-3)$/.test(compact)) {
       return "wpfg2-3";
     }
+  }
+  return compact;
+}
+
+/**
+ * A subject as the scope lookup compares it. A learner's position carries
+ * the manifest's subject id; for the Realschule that is `it`,
+ * `bwl-rechnungswesen` and `wirtschaft-und-recht`, which older cells spell
+ * `informatik` or `informationstechnologie`, `bwr` and `wirtschaft_und_recht`.
+ */
+function canonicalCurriculumSubject(
+  provider: string,
+  schoolType: string | undefined,
+  subject: string,
+): string {
+  const compact = compactCurriculumCode(subject);
+  if (provider === "lehrplanplus-bayern" && schoolType === "realschule") {
+    if (compact === "informatik" || compact === "informationstechnologie") {
+      return "it";
+    }
+    if (compact === "bwr") return "bwl-rechnungswesen";
   }
   return compact;
 }
@@ -1438,7 +1470,16 @@ export function findBundledCellsForScope(
           scope.subject !== undefined &&
           binding.subject !== undefined &&
           binding.subject !== "" &&
-          binding.subject !== scope.subject
+          canonicalCurriculumSubject(
+            binding.provider,
+            binding.school_type ?? scope.schoolType,
+            binding.subject,
+          ) !==
+            canonicalCurriculumSubject(
+              scope.provider,
+              scope.schoolType ?? binding.school_type,
+              scope.subject,
+            )
         ) {
           continue;
         }

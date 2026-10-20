@@ -155,7 +155,7 @@ describe("ZAM Academy catalog client (ADR 2026-10-19 D4)", () => {
                 language: "de",
                 version: "2026.10.1",
                 items: 1,
-                app: "/sql/",
+                app: "/nur-katalog/",
                 cell: "/nur-katalog/cell.json",
                 sha256: sha(body),
               },
