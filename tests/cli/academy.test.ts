@@ -321,13 +321,15 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       user: "learner",
       fetch: academy.fetch,
     });
-    expect(list.cells[0].version).toBe(String(UML.version));
+    // By id: more than one academy cell is bundled.
+    const uml = list.cells.find((cell) => cell.id === "zam-academy:uml");
+    expect(uml?.version).toBe(String(UML.version));
     const result = await academyEnrolHandler(db, {
       cellId: "zam-academy:uml",
       user: "learner",
       fetch: academy.fetch,
     });
-    expect(result.version).toBe(list.cells[0].version);
+    expect(result.version).toBe(uml?.version);
   });
 
   it("installs the version the catalog lists, not a build it dropped", async () => {

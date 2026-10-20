@@ -1,7 +1,7 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "zam-academy:uml",
-  "version": "2026.10.1",
+  "version": "2026.10.2",
   "title": "UML 2.5.1 (ZAM Academy)",
   "description": "Hält fest, was du in der ZAM Academy zu UML 2.5.1 geübt hast: sechs Etappen vom Anwendungsfall- bis zum Komponentendiagramm. Jede Karte verlinkt die Lektion, in der du das Element gezeichnet hast.",
   "publisher": "ZAM Academy",
@@ -55,7 +55,7 @@
           "bloom_level": 1,
           "source_link": "https://academy.zam-os.org/uml/#lesson=uc-1-boxes",
           "question": "Wo steht ein Akteur in einem UML-Anwendungsfalldiagramm im Verhältnis zur Systemgrenze?",
-          "concept": "Immer außerhalb der Systemgrenze: Ein Akteur ist eine Rolle außerhalb des Systems, die mit ihm interagiert.",
+          "concept": "Außerhalb der Systemgrenze",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -66,14 +66,16 @@
           },
           "choice_distractors": [
             {
-              "text": "Innerhalb der Systemgrenze, neben den Anwendungsfällen, die er nutzt",
+              "text": "Innerhalb der Systemgrenze",
               "reason": "Innerhalb liegt nur, was gebaut wird; der Akteur gehört nicht dazu."
             },
             {
-              "text": "Auf der Linie der Systemgrenze, halb innen und halb außen",
+              "text": "Auf der Systemgrenze, halb innen",
               "reason": "Die Systemgrenze trennt eindeutig; ein Akteur steht vollständig außerhalb."
             }
-          ]
+          ],
+          "sample_solution": "Immer außerhalb der Systemgrenze: Ein Akteur ist eine Rolle außerhalb des Systems, die mit ihm interagiert.",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K02",
@@ -111,7 +113,7 @@
           "bloom_level": 2,
           "source_link": "https://academy.zam-os.org/uml/#lesson=uc-2-connections",
           "question": "In welche Richtung zeigt der «extend»-Pfeil zwischen einem Basis-Anwendungsfall und seiner optionalen Erweiterung?",
-          "concept": "Von der optionalen Erweiterung zum Basis-Anwendungsfall, z. B. von „Rabattcode einlösen“ zu „Ticket kaufen“.",
+          "concept": "Von der optionalen Erweiterung zum Basis-Anwendungsfall",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -129,7 +131,9 @@
               "text": "In beide Richtungen, als Doppelpfeil",
               "reason": "UML kennt hier keinen Doppelpfeil; «extend» zeigt genau zum Basis-Anwendungsfall."
             }
-          ]
+          ],
+          "sample_solution": "Von der optionalen Erweiterung zum Basis-Anwendungsfall, z. B. von „Rabattcode einlösen“ zu „Ticket kaufen“.",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K04",
@@ -139,7 +143,7 @@
           "bloom_level": 3,
           "source_link": "https://academy.zam-os.org/uml/#lesson=uc-1-boxes",
           "question": "Eine Banking-App lässt jede Überweisung von einem externen Bankserver ausführen. Wie erscheint der Bankserver im Anwendungsfalldiagramm der App?",
-          "concept": "Als Akteur außerhalb der Systemgrenze: Auch ein Nachbarsystem, mit dem das System interagiert, ist ein Akteur.",
+          "concept": "Als Akteur außerhalb der Systemgrenze",
           "choice_distractors": [
             {
               "text": "Als Anwendungsfall „Bankserver“ innerhalb der Systemgrenze",
@@ -149,7 +153,9 @@
               "text": "Gar nicht, weil Akteure immer Menschen sind",
               "reason": "Ein Akteur ist eine Rolle; auch ein Nachbarsystem kann sie einnehmen."
             }
-          ]
+          ],
+          "sample_solution": "Als Akteur außerhalb der Systemgrenze: Auch ein Nachbarsystem, mit dem das System interagiert, ist ein Akteur.",
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -223,7 +229,7 @@
           "bloom_level": 1,
           "source_link": "https://academy.zam-os.org/uml/#lesson=cls-1-boxes",
           "question": "Was bedeutet das Minuszeichen in der Attributzeile „- kontostand : Euro“?",
-          "concept": "Das Attribut ist privat (private): Nur die eigene Klasse greift direkt darauf zu.",
+          "concept": "Das Attribut ist privat",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -241,7 +247,9 @@
               "text": "Das Attribut ist statisch",
               "reason": "Statische Elemente werden unterstrichen; „-“ ist die Sichtbarkeit private."
             }
-          ]
+          ],
+          "sample_solution": "Das Attribut ist privat (private): Nur die eigene Klasse greift direkt darauf zu.",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K07",
@@ -251,7 +259,7 @@
           "bloom_level": 2,
           "source_link": "https://academy.zam-os.org/uml/#lesson=cls-2-connections",
           "question": "Was sagt eine Komposition (ausgefüllte Raute ◆) zwischen „Bestellung“ und „Bestellposition“ über die Positionen aus?",
-          "concept": "Die Positionen existieren nur mit ihrer Bestellung: Wird die Bestellung gelöscht, verschwinden auch ihre Positionen.",
+          "concept": "Sie existieren nur mit ihrer Bestellung",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -262,14 +270,16 @@
           },
           "choice_distractors": [
             {
-              "text": "Die Positionen bestehen weiter, wenn die Bestellung gelöscht wird",
+              "text": "Sie bestehen ohne die Bestellung weiter",
               "reason": "Das beschreibt die Aggregation (leere Raute ◇)."
             },
             {
-              "text": "Eine Bestellposition ist eine spezielle Art von Bestellung",
+              "text": "Sie sind eine spezielle Art von Bestellung",
               "reason": "„Ist-ein“ wäre eine Vererbung mit hohlem Dreieck."
             }
-          ]
+          ],
+          "sample_solution": "Die Positionen existieren nur mit ihrer Bestellung: Wird die Bestellung gelöscht, verschwinden auch ihre Positionen.",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K08",
@@ -279,7 +289,7 @@
           "bloom_level": 1,
           "source_link": "https://academy.zam-os.org/uml/#lesson=cls-2-connections",
           "question": "An welchem Ende der Linie sitzt bei Komposition und Aggregation die Raute?",
-          "concept": "Am Ganzen, z. B. am „Haus“ und nicht am „Raum“.",
+          "concept": "Am Ganzen",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -294,10 +304,12 @@
               "reason": "Die Raute klebt immer am Ganzen, nie am Teil."
             },
             {
-              "text": "In der Mitte der Linie",
+              "text": "In der Mitte",
               "reason": "Die Raute sitzt an einem Ende, und zwar am Ganzen."
             }
-          ]
+          ],
+          "sample_solution": "Am Ganzen, z. B. am „Haus“ und nicht am „Raum“.",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K09",
@@ -307,7 +319,7 @@
           "bloom_level": 2,
           "source_link": "https://academy.zam-os.org/uml/#lesson=cls-2-connections",
           "question": "Wohin zeigt das hohle Dreieck einer Vererbung (Generalisierung) zwischen „EBook“ und „Buch“?",
-          "concept": "Zur Oberklasse „Buch“: Die durchgezogene Linie führt von „EBook“ zum Dreieck an „Buch“.",
+          "concept": "Zur Oberklasse „Buch“",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -318,14 +330,16 @@
           },
           "choice_distractors": [
             {
-              "text": "Zu „EBook“, weil die Unterklasse erbt",
+              "text": "Zur Unterklasse „EBook“",
               "reason": "Das Dreieck zeigt immer zur Oberklasse, von der geerbt wird."
             },
             {
               "text": "Zu beiden Klassen, als Doppelpfeil",
               "reason": "Eine Generalisierung hat genau eine Spitze, an der Oberklasse."
             }
-          ]
+          ],
+          "sample_solution": "Zur Oberklasse „Buch“: Die durchgezogene Linie führt von „EBook“ zum Dreieck an „Buch“.",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K10",
@@ -335,17 +349,19 @@
           "bloom_level": 3,
           "source_link": "https://academy.zam-os.org/uml/#lesson=cls-2-connections",
           "question": "Ein Haus besteht aus Räumen; ohne das Haus existiert kein Raum weiter. Welche Beziehung modellierst du zwischen „Haus“ und „Raum“?",
-          "concept": "Eine Komposition: ausgefüllte Raute (◆) am „Haus“, die Linie führt zu „Raum“.",
+          "concept": "Eine Komposition, ausgefüllte Raute am „Haus“",
           "choice_distractors": [
             {
-              "text": "Eine Aggregation mit leerer Raute am „Haus“",
+              "text": "Eine Aggregation, leere Raute am „Haus“",
               "reason": "Die leere Raute erlaubt Teile, die ohne das Ganze weiterbestehen; hier ist das nicht so."
             },
             {
               "text": "Eine Vererbung von „Raum“ zu „Haus“",
               "reason": "Ein Raum ist kein Haus; es geht um Teil und Ganzes, nicht um „ist-ein“."
             }
-          ]
+          ],
+          "sample_solution": "Eine Komposition: ausgefüllte Raute (◆) am „Haus“, die Linie führt zu „Raum“.",
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -391,7 +407,7 @@
           "bloom_level": 1,
           "source_link": "https://academy.zam-os.org/uml/#lesson=act-1-boxes",
           "question": "Woran unterscheidet sich im Aktivitätsdiagramm das Aktivitätsende vom Startknoten?",
-          "concept": "Das Aktivitätsende hat um den ausgefüllten Punkt einen äußeren Ring (◉); der Startknoten ist nur ein ausgefüllter Punkt (●).",
+          "concept": "Das Ende hat einen äußeren Ring um den Punkt",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -409,7 +425,9 @@
               "text": "Das Ende ist ein leerer Kreis",
               "reason": "Das Aktivitätsende ist ein gefüllter Punkt im Ring, kein leerer Kreis."
             }
-          ]
+          ],
+          "sample_solution": "Das Aktivitätsende hat um den ausgefüllten Punkt einen äußeren Ring (◉); der Startknoten ist nur ein ausgefüllter Punkt (●).",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K12",
@@ -419,7 +437,7 @@
           "bloom_level": 2,
           "source_link": "https://academy.zam-os.org/uml/#lesson=act-2-connections",
           "question": "Was muss an jeder ausgehenden Kante einer Entscheidung (◇) im Aktivitätsdiagramm stehen?",
-          "concept": "Eine Wächterbedingung (Guard) in eckigen Klammern, z. B. [Lagerbestand > 0] und [sonst].",
+          "concept": "Eine Wächterbedingung in eckigen Klammern",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -437,7 +455,9 @@
               "text": "Nichts, die Raute entscheidet selbst",
               "reason": "Ohne Guards ist nicht erkennbar, welcher Pfad genommen wird."
             }
-          ]
+          ],
+          "sample_solution": "Eine Wächterbedingung (Guard) in eckigen Klammern, z. B. [Lagerbestand > 0] und [sonst].",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K13",
@@ -447,7 +467,7 @@
           "bloom_level": 2,
           "source_link": "https://academy.zam-os.org/uml/#lesson=act-2-connections",
           "question": "Was passiert an einem Parallelisierungsbalken (Fork ▬) mit seinen ausgehenden Pfaden?",
-          "concept": "Alle ausgehenden Pfade starten gleichzeitig (nebenläufig).",
+          "concept": "Alle ausgehenden Pfade starten gleichzeitig",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -465,7 +485,9 @@
               "text": "Die Pfade laufen nacheinander von links nach rechts",
               "reason": "Nach einem Fork laufen die Pfade nebenläufig, nicht nacheinander."
             }
-          ]
+          ],
+          "sample_solution": "Alle ausgehenden Pfade starten gleichzeitig (nebenläufig).",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K14",
@@ -475,7 +497,7 @@
           "bloom_level": 3,
           "source_link": "https://academy.zam-os.org/uml/#lesson=act-2-connections",
           "question": "Nach dem Bezahlen sollen gleichzeitig die Rechnung verschickt und das Paket gepackt werden. Welches Element setzt du im Aktivitätsdiagramm nach „Bezahlen“?",
-          "concept": "Einen Parallelisierungsbalken (Fork ▬), von dem beide Aktionen ausgehen.",
+          "concept": "Einen Parallelisierungsbalken (Fork ▬)",
           "choice_distractors": [
             {
               "text": "Eine Entscheidungsraute (◇) mit zwei Guards",
@@ -485,7 +507,9 @@
               "text": "Die beiden Aktionen einfach hintereinander",
               "reason": "Hintereinander drückt eine Reihenfolge aus, nicht Gleichzeitigkeit."
             }
-          ]
+          ],
+          "sample_solution": "Einen Parallelisierungsbalken (Fork ▬), von dem beide Aktionen ausgehen.",
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -531,7 +555,7 @@
           "bloom_level": 1,
           "source_link": "https://academy.zam-os.org/uml/#lesson=stm-1-boxes",
           "question": "Wann wird die interne Aktivität „entry / Tür verriegeln“ eines Zustands ausgeführt?",
-          "concept": "Genau in dem Moment, in dem das Objekt den Zustand betritt.",
+          "concept": "Beim Betreten des Zustands",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -549,7 +573,9 @@
               "text": "Die ganze Zeit, solange das Objekt im Zustand ist",
               "reason": "Das gilt für „do /“; „entry /“ läuft einmal beim Eintritt."
             }
-          ]
+          ],
+          "sample_solution": "Genau in dem Moment, in dem das Objekt den Zustand betritt.",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K16",
@@ -559,7 +585,7 @@
           "bloom_level": 2,
           "source_link": "https://academy.zam-os.org/uml/#lesson=stm-2-connections",
           "question": "In welcher Reihenfolge stehen Ereignis, Wächterbedingung und Aktion in der Beschriftung einer Transition?",
-          "concept": "Ereignis [Wächterbedingung] / Aktion, z. B. bezahlen [Betrag >= Preis] / Ticket drucken.",
+          "concept": "Ereignis [Wächterbedingung] / Aktion",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -577,7 +603,9 @@
               "text": "Aktion / Ereignis [Bedingung]",
               "reason": "Die Aktion steht am Ende, hinter dem Schrägstrich."
             }
-          ]
+          ],
+          "sample_solution": "Ereignis [Wächterbedingung] / Aktion, z. B. bezahlen [Betrag >= Preis] / Ticket drucken.",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K17",
@@ -587,7 +615,7 @@
           "bloom_level": 2,
           "source_link": "https://academy.zam-os.org/uml/#lesson=stm-2-connections",
           "question": "Wann findet die Transition „bezahlen [Betrag >= Preis] / Ticket drucken“ statt?",
-          "concept": "Wenn das Ereignis „bezahlen“ eintritt und die Bedingung „Betrag >= Preis“ wahr ist.",
+          "concept": "Wenn „bezahlen“ eintritt und der Betrag reicht",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -605,7 +633,9 @@
               "text": "Bei jedem „bezahlen“, egal wie hoch der Betrag ist",
               "reason": "Die Wächterbedingung muss wahr sein, sonst bleibt der Zustand."
             }
-          ]
+          ],
+          "sample_solution": "Wenn das Ereignis „bezahlen“ eintritt und die Bedingung „Betrag >= Preis“ wahr ist.",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K18",
@@ -671,7 +701,7 @@
           "bloom_level": 1,
           "source_link": "https://academy.zam-os.org/uml/#lesson=seq-1-boxes",
           "question": "In welche Richtung verläuft die Zeit in einem UML-Sequenzdiagramm?",
-          "concept": "Von oben nach unten: Je weiter unten eine Nachricht steht, desto später passiert sie.",
+          "concept": "Von oben nach unten",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -689,7 +719,9 @@
               "text": "In Pfeilrichtung der Nachrichten",
               "reason": "Die Pfeilrichtung zeigt Sender und Empfänger, nicht die Zeit."
             }
-          ]
+          ],
+          "sample_solution": "Von oben nach unten: Je weiter unten eine Nachricht steht, desto später passiert sie.",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K20",
@@ -727,7 +759,7 @@
           "bloom_level": 1,
           "source_link": "https://academy.zam-os.org/uml/#lesson=seq-2-connections",
           "question": "Wie sieht im Sequenzdiagramm eine Antwortnachricht aus?",
-          "concept": "Gestrichelte Linie mit offener Pfeilspitze (- - >).",
+          "concept": "Gestrichelte Linie mit offener Pfeilspitze",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -745,7 +777,9 @@
               "text": "Durchgezogene Linie mit offener Spitze",
               "reason": "Das ist eine asynchrone Nachricht."
             }
-          ]
+          ],
+          "sample_solution": "Gestrichelte Linie mit offener Pfeilspitze (- - >).",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K22",
@@ -755,17 +789,19 @@
           "bloom_level": 3,
           "source_link": "https://academy.zam-os.org/uml/#lesson=seq-4-capstone",
           "question": "Der Webshop ruft den Zahlungsdienst auf und darf erst weitermachen, wenn die Zahlung bestätigt ist. Welche Nachrichtenart zeichnest du für den Aufruf?",
-          "concept": "Eine synchrone Nachricht (──▶), weil der Webshop auf die Antwort wartet.",
+          "concept": "Eine synchrone Nachricht (──▶)",
           "choice_distractors": [
             {
               "text": "Eine asynchrone Nachricht (──>)",
               "reason": "Asynchron arbeitet der Sender sofort weiter; hier muss er warten."
             },
             {
-              "text": "Eine Antwortnachricht (- - >) vom Webshop zum Zahlungsdienst",
+              "text": "Eine Antwortnachricht (- - >) zum Zahlungsdienst",
               "reason": "Die Antwort kommt vom Zahlungsdienst zurück; der Aufruf selbst ist synchron."
             }
-          ]
+          ],
+          "sample_solution": "Eine synchrone Nachricht (──▶), weil der Webshop auf die Antwort wartet.",
+          "materiality": "cosmetic"
         }
       ]
     },
@@ -811,7 +847,7 @@
           "bloom_level": 1,
           "source_link": "https://academy.zam-os.org/uml/#lesson=cmp-1-boxes",
           "question": "Was bedeutet das Lollipop-Symbol (Kreis am Stiel ○—) an einer Komponente?",
-          "concept": "Eine angebotene Schnittstelle (Provided Interface), die die Komponente bereitstellt.",
+          "concept": "Eine angebotene Schnittstelle",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -829,7 +865,9 @@
               "text": "Ein Port für Datenbankzugriffe",
               "reason": "Der Lollipop steht allgemein für eine angebotene Schnittstelle."
             }
-          ]
+          ],
+          "sample_solution": "Eine angebotene Schnittstelle (Provided Interface), die die Komponente bereitstellt.",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K24",
@@ -839,7 +877,7 @@
           "bloom_level": 1,
           "source_link": "https://academy.zam-os.org/uml/#lesson=cmp-1-boxes",
           "question": "Was bedeutet das Socket-Symbol (offener Halbkreis )—) an einer Komponente?",
-          "concept": "Eine benötigte Schnittstelle (Required Interface), die die Komponente von einem Partner braucht.",
+          "concept": "Eine benötigte Schnittstelle",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -857,7 +895,9 @@
               "text": "Eine defekte, noch nicht verbundene Komponente",
               "reason": "Der Socket zeigt einen Bedarf, keinen Fehler."
             }
-          ]
+          ],
+          "sample_solution": "Eine benötigte Schnittstelle (Required Interface), die die Komponente von einem Partner braucht.",
+          "materiality": "cosmetic"
         },
         {
           "id": "01K8M251SYST00000000000K25",
@@ -895,7 +935,7 @@
           "bloom_level": 3,
           "source_link": "https://academy.zam-os.org/uml/#lesson=cmp-2-connections",
           "question": "Der „BestellService“ braucht eine Zahlungsfunktion, die das „ZahlungsGateway“ über „IZahlung“ anbietet. Wie verbindest du beide Komponenten im Komponentendiagramm?",
-          "concept": "Über die Schnittstelle „IZahlung“: Das Gateway bietet sie als Lollipop an, der BestellService greift mit einem Socket hinein (Ball-and-Socket).",
+          "concept": "Ball-and-Socket über die Schnittstelle „IZahlung“",
           "choice_distractors": [
             {
               "text": "Mit einer Komposition (◆) vom Gateway zum BestellService",
@@ -905,7 +945,9 @@
               "text": "Mit einer direkten Abhängigkeit vom Gateway zum BestellService",
               "reason": "Die Richtung stimmt nicht, und die Kopplung soll über „IZahlung“ laufen."
             }
-          ]
+          ],
+          "sample_solution": "Über die Schnittstelle „IZahlung“: Das Gateway bietet sie als Lollipop an, der BestellService greift mit einem Socket hinein (Ball-and-Socket).",
+          "materiality": "cosmetic"
         }
       ]
     }
