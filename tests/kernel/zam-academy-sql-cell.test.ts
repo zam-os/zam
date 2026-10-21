@@ -89,13 +89,14 @@ describe("ZAM Academy Relationale Datenbanken und SQL cell", () => {
   });
 
   it("is the database cell at its LehrplanPLUS position, Realschule 9 IT, for both Zweig codes", () => {
-    // The position has one other cell, IT 2.5/2.6 (Algorithmen, Datennetze),
-    // which is Zweig I only; the de-by database cell is gone. zam codes the
+    // The position also offers the IT modules Algorithmen (2.6.1) and
+    // Datennetze (2.5.1), which name no grade or track: the school chooses
+    // the year. The de-by database cell is gone. zam codes the
     // Wahlpflichtfächergruppen II and III as one track, II_III (Physik does too).
     // A learner's position carries the manifest's ids (subject `it`, tracks
     // `wpfg1` / `wpfg2-3`); the cells spell the subject `informatik`, and a
     // caller may name a single group such as `II`.
-    const algorithmen = "de-by:realschule-9-informatik-algorithmen-strukturen";
+    const modules = ["zam-academy:algorithmen", "zam-academy:datennetze"];
     const zweigI = [undefined, "I", "wpfg1"];
     const zweigII = ["II_III", "wpfg2-3", "II", "IIIa"];
     for (const subject of ["it", "informatik"]) {
@@ -108,9 +109,7 @@ describe("ZAM Academy Relationale Datenbanken und SQL cell", () => {
           ...(track ? { track } : {}),
         }).map((c) => c.id);
         expect(ids.sort(), `${subject}, track ${track ?? "any"}`).toEqual(
-          track !== undefined && zweigII.includes(track)
-            ? [CELL_ID]
-            : [algorithmen, CELL_ID],
+          [...modules, CELL_ID].sort(),
         );
       }
     }

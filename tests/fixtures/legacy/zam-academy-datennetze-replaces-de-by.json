@@ -1,0 +1,40 @@
+{
+	"schema": 1,
+	"approved": "2026-10-21",
+	"source": "Thomas in diesem Claude-Code-Chat am 2026-10-21 nach dem Review von zam-os/zam-academy#18: „Freigabe erteilt - Migration von Lerndaten ist bei aktuellen Nutzerzahlen nicht relevant. Es kann gemergt werden.“ Die Freigabe gilt dem gemeinsamen IT-Mapping beider Nachfolger (4 A, 1 B, 3 C), einschließlich J04 als B und J07 als A.",
+	"source_repository": "zam-os/zam",
+	"source_commit": "7c83cf07ad7a26b8d5a8f168a43213e43a612764",
+	"authorization": "Thomas hat das zeilenweise IT-Mapping (4 A, 1 B, 3 C) für zam-academy:algorithmen und zam-academy:datennetze am 2026-10-21 nach dem Review von zam-os/zam-academy#18 ausdrücklich freigegeben und den Merge erlaubt. Beide Nachfolger werden gemeinsam veröffentlicht und in ZAM synchronisiert.",
+	"policy": "A: sicher gleicher Einzelabruf. B: vollständiger alter Gesamtabruf auf genau einem Nachfolger. C: korrigierter, geteilter oder unsicherer Abruf ohne Beherrschungsübertrag. Alle persönlichen Karten und Reviews bleiben erhalten.",
+	"joint_migration": {
+		"predecessor": "de-by:realschule-9-informatik-algorithmen-strukturen",
+		"successors": ["zam-academy:algorithmen", "zam-academy:datennetze"],
+		"note": "Beide Nachfolger gemeinsam veröffentlichen und in ZAM synchronisieren, bevor die alte aktive Zelle entfernt wird."
+	},
+	"sources": [
+		{
+			"file": "../tests/fixtures/de-by-realschule-9-informatik-algorithmen-strukturen-kvt.json",
+			"tile_id": "de-by:realschule-9-informatik-algorithmen-strukturen",
+			"version": "2026.08.1",
+			"sha256": "7eb4b02d35be4d8561e41ec4057f41813f9b0ba3ff212dcd789de0d0820e2805"
+		}
+	],
+	"rows": [
+		{
+			"de_by_cell": "de-by:realschule-9-informatik-algorithmen-strukturen",
+			"de_by_id": "01K4A9S0000000000000000J07",
+			"de_by_question": "Welcher Netzwerkdienst übernimmt die automatische Übersetzung von menschenlesbaren Domänennamen (z. B. 'www.schule.bayern.de') in maschinenlesbare IP-Adressen?",
+			"category": "A",
+			"academy_slug": "net-dns-check",
+			"note": "Gleicher Einzelabruf des Namensdienstes DNS, der zu einem Domänennamen eine IP-Adresse ermittelt."
+		},
+		{
+			"de_by_cell": "de-by:realschule-9-informatik-algorithmen-strukturen",
+			"de_by_id": "01K4A9S0000000000000000J08",
+			"de_by_question": "Beschreibe das Client-Server-Modell bei einem Webseitenaufruf (Browser als Client, Webserver, Request/Response), erkläre die Rolle der IP-Adresse und des Domain Name Systems (DNS) sowie die Funktion des Übertragungsprotokolls TCP/IP und HTTPS.",
+			"category": "C",
+			"academy_slug": null,
+			"note": "Der Alttext verspricht eine garantiert fehlerfreie TCP-Übertragung. Der korrigierte Gesamtabruf wird auf Client/Server, DNS, IP, TCP und HTTPS aufgeteilt; keine Beherrschung auf Teilfragen verteilen."
+		}
+	]
+}

@@ -16,7 +16,7 @@ export interface BundledTile extends KvtTile {
 }
 
 // --- begin bundled-tile-imports ---
-// --- Fixture Imports (218 tiles) ---
+// --- Fixture Imports (219 tiles) ---
 import tile1Raw from "../../../tests/fixtures/curriculum/de-by-bos-10-optik-kvt.json" with {
   type: "json",
 };
@@ -605,9 +605,6 @@ import tile211Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-en
 import tile212Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-franzoesisch-imparfait-futur-objektpronomen-kvt.json" with {
   type: "json",
 };
-import tile215Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-informatik-algorithmen-strukturen-kvt.json" with {
-  type: "json",
-};
 import tile226Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-wirtschaft-recht-markt-vertraege-kvt.json" with {
   type: "json",
 };
@@ -644,10 +641,16 @@ import tile227Raw from "../../../tests/fixtures/curriculum/de-by-realschule-opti
 import tile228Raw from "../../../tests/fixtures/curriculum/de-by-realschule-optik-kvt.json" with {
   type: "json",
 };
+import tile238Raw from "../../../tests/fixtures/curriculum/zam-academy-algorithmen-kvt.json" with {
+  type: "json",
+};
 import tile236Raw from "../../../tests/fixtures/curriculum/zam-academy-biologie-realschule-10-kvt.json" with {
   type: "json",
 };
 import tile233Raw from "../../../tests/fixtures/curriculum/zam-academy-chemie-realschule-9-kvt.json" with {
+  type: "json",
+};
+import tile239Raw from "../../../tests/fixtures/curriculum/zam-academy-datennetze-kvt.json" with {
   type: "json",
 };
 import tile234Raw from "../../../tests/fixtures/curriculum/zam-academy-geographie-realschule-9-kvt.json" with {
@@ -1171,8 +1174,6 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile211Raw as unknown as BundledTile,
   [(tile212Raw as unknown as BundledTile).tile_id]:
     tile212Raw as unknown as BundledTile,
-  [(tile215Raw as unknown as BundledTile).tile_id]:
-    tile215Raw as unknown as BundledTile,
   [(tile226Raw as unknown as BundledTile).tile_id]:
     tile226Raw as unknown as BundledTile,
   [(tile227Raw as unknown as BundledTile).tile_id]:
@@ -1197,6 +1198,10 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile236Raw as unknown as BundledTile,
   [(tile237Raw as unknown as BundledTile).tile_id]:
     tile237Raw as unknown as BundledTile,
+  [(tile238Raw as unknown as BundledTile).tile_id]:
+    tile238Raw as unknown as BundledTile,
+  [(tile239Raw as unknown as BundledTile).tile_id]:
+    tile239Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 
@@ -1392,6 +1397,67 @@ export function findBundledCellByPrefix(prefix: string) {
   };
 }
 
+type CurriculumBinding = NonNullable<
+  BundledTile["atoms"][number]["curricula"]
+>[number];
+
+/** Whether one curriculum binding of a cell fits the learner's position. */
+function bindingMatchesScope(
+  binding: CurriculumBinding,
+  scope: CurriculumScope,
+): boolean {
+  if (binding.provider !== scope.provider) return false;
+  if (
+    scope.schoolType !== undefined &&
+    binding.school_type !== undefined &&
+    binding.school_type !== scope.schoolType
+  ) {
+    return false;
+  }
+  if (
+    scope.grade !== undefined &&
+    binding.grade !== undefined &&
+    binding.grade !== scope.grade
+  ) {
+    return false;
+  }
+  if (
+    scope.subject !== undefined &&
+    binding.subject !== undefined &&
+    binding.subject !== "" &&
+    canonicalCurriculumSubject(
+      binding.provider,
+      binding.school_type ?? scope.schoolType,
+      binding.subject,
+    ) !==
+      canonicalCurriculumSubject(
+        scope.provider,
+        scope.schoolType ?? binding.school_type,
+        scope.subject,
+      )
+  ) {
+    return false;
+  }
+  if (
+    scope.track !== undefined &&
+    binding.track !== undefined &&
+    binding.track !== "" &&
+    canonicalCurriculumTrack(
+      binding.provider,
+      binding.school_type ?? scope.schoolType,
+      binding.track,
+    ) !==
+      canonicalCurriculumTrack(
+        scope.provider,
+        scope.schoolType ?? binding.school_type,
+        scope.track,
+      )
+  ) {
+    return false;
+  }
+  return true;
+}
+
 /**
  * Cells that cover a curriculum position, best match first.
  *
@@ -1411,55 +1477,7 @@ export function findBundledCellsForScope(
     let best = -1;
     for (const atom of tile.atoms) {
       for (const binding of atom.curricula ?? []) {
-        if (binding.provider !== scope.provider) continue;
-        if (
-          scope.schoolType !== undefined &&
-          binding.school_type !== undefined &&
-          binding.school_type !== scope.schoolType
-        ) {
-          continue;
-        }
-        if (
-          scope.grade !== undefined &&
-          binding.grade !== undefined &&
-          binding.grade !== scope.grade
-        ) {
-          continue;
-        }
-        if (
-          scope.subject !== undefined &&
-          binding.subject !== undefined &&
-          binding.subject !== "" &&
-          canonicalCurriculumSubject(
-            binding.provider,
-            binding.school_type ?? scope.schoolType,
-            binding.subject,
-          ) !==
-            canonicalCurriculumSubject(
-              scope.provider,
-              scope.schoolType ?? binding.school_type,
-              scope.subject,
-            )
-        ) {
-          continue;
-        }
-        if (
-          scope.track !== undefined &&
-          binding.track !== undefined &&
-          binding.track !== "" &&
-          canonicalCurriculumTrack(
-            binding.provider,
-            binding.school_type ?? scope.schoolType,
-            binding.track,
-          ) !==
-            canonicalCurriculumTrack(
-              scope.provider,
-              scope.schoolType ?? binding.school_type,
-              scope.track,
-            )
-        ) {
-          continue;
-        }
+        if (!bindingMatchesScope(binding, scope)) continue;
 
         const specificity =
           (binding.school_type ? 1 : 0) +
@@ -1485,9 +1503,20 @@ export function findBundledCellsForScope(
  * Whether the generic curriculum importer is still the right tool here.
  *
  * `false` means a cell covers this position and should be offered instead.
+ * A cell that fits a grade only through bindings without one — a module the
+ * school may teach in any year, such as IT 2.5.1 — covers that grade in part,
+ * so the importer stays available beside it.
  */
 export function needsGenericCurriculumImport(scope: CurriculumScope): boolean {
-  return findBundledCellsForScope(scope).length === 0;
+  return !findBundledCellsForScope(scope).some((cell) =>
+    BUNDLED_TILES[cell.id]?.atoms.some((atom) =>
+      (atom.curricula ?? []).some(
+        (binding) =>
+          bindingMatchesScope(binding, scope) &&
+          (scope.grade === undefined || binding.grade !== undefined),
+      ),
+    ),
+  );
 }
 
 /** Get the raw KVT tile definition for a bundled cell. */
