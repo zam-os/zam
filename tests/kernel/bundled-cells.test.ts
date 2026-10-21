@@ -284,7 +284,9 @@ describe("Bundled learning cells (Phase 1)", () => {
       );
       expect(
         ids({ grade: 7, subject: "bwl-rechnungswesen", track: "wpfg2-3" }),
-      ).toContain("de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung");
+      ).toContain(
+        "de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung",
+      );
       expect(
         ids({ grade: 7, subject: "bwl-rechnungswesen", track: "wpfg1" }),
       ).not.toContain(
@@ -295,7 +297,9 @@ describe("Bundled learning cells (Phase 1)", () => {
       ).toContain(
         "de-by:realschule-10-wirtschaft-recht-strafrecht-arbeitsrecht-sozialstaat",
       );
-      expect(ids({ grade: 9, subject: "franzoesisch", track: "wpfg2-3" })).toContain(
+      expect(
+        ids({ grade: 9, subject: "franzoesisch", track: "wpfg2-3" }),
+      ).toContain(
         "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",
       );
       expect(
@@ -306,6 +310,52 @@ describe("Bundled learning cells (Phase 1)", () => {
           subject: "it",
         }),
       ).toBe(false);
+    });
+
+    it("keeps single Realschule groups distinct while matching a shared II/III curriculum", () => {
+      const cells = (subject: string, grade: number, track: string) =>
+        findBundledCellsForScope({
+          provider: "lehrplanplus-bayern",
+          schoolType: "realschule",
+          subject,
+          grade,
+          track,
+        }).map((cell) => cell.id);
+      // BayRSO Anlage 1: BwR is taught in II (7-10) and IIIa (7-8 only).
+      const bwr =
+        "de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung";
+      for (const track of ["II", "wpfg2", "IIIa", "wpfg3a", "III", "wpfg3"])
+        expect(cells("bwr", 7, track)).toContain(bwr);
+      for (const track of ["IIIb", "wpfg3b", "I", "wpfg1"])
+        expect(cells("bwr", 7, track)).not.toContain(bwr);
+      const bwr8 =
+        "de-by:realschule-8-bwr-erfolgskonten-guv-werkstoffe-rabatte";
+      expect(cells("bwr", 8, "IIIa")).toContain(bwr8);
+      expect(cells("bwr", 8, "IIIb")).not.toContain(bwr8);
+      expect(cells("bwr", 9, "II")).toContain("zam-academy:bwr-realschule-9");
+      for (const track of ["IIIa", "wpfg3a", "IIIb", "I"])
+        expect(cells("bwr", 9, track)).not.toContain(
+          "zam-academy:bwr-realschule-9",
+        );
+      const french =
+        "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen";
+      expect(cells("franzoesisch", 9, "IIIa")).toContain(french);
+      expect(cells("franzoesisch", 9, "wpfg3a")).toContain(french);
+      for (const track of ["II", "wpfg2", "IIIb", "wpfg3b"])
+        expect(cells("franzoesisch", 9, track)).not.toContain(french);
+      for (const track of [
+        "II",
+        "wpfg2",
+        "III",
+        "wpfg3",
+        "IIIa",
+        "wpfg3a",
+        "IIIb",
+        "wpfg3b",
+        "II_III",
+        "wpfg2-3",
+      ])
+        expect(cells("physik", 8, track)).toContain("de-by:realschule-optik");
     });
 
     it("keeps the generic importer for a position no cell covers", () => {

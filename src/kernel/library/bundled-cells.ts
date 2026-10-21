@@ -593,9 +593,6 @@ import tile203Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-ph
 import tile204Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-wirtschaft-recht-konsum-geld-jugend-kvt.json" with {
   type: "json",
 };
-import tile207Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer-kvt.json" with {
-  type: "json",
-};
 import tile210Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-deutsch-argumentation-eroerterung-kvt.json" with {
   type: "json",
 };
@@ -647,6 +644,9 @@ import tile238Raw from "../../../tests/fixtures/curriculum/zam-academy-algorithm
 import tile236Raw from "../../../tests/fixtures/curriculum/zam-academy-biologie-realschule-10-kvt.json" with {
   type: "json",
 };
+import tile240Raw from "../../../tests/fixtures/curriculum/zam-academy-bwr-realschule-9-kvt.json" with {
+  type: "json",
+};
 import tile233Raw from "../../../tests/fixtures/curriculum/zam-academy-chemie-realschule-9-kvt.json" with {
   type: "json",
 };
@@ -693,24 +693,26 @@ function compactCurriculumCode(code: string): string {
 }
 
 /**
- * A track as the scope lookup compares it. A LehrplanPLUS Realschule
- * position knows two tracks, `wpfg1` (Wahlpflichtfächergruppe I) and
- * `wpfg2-3` (II and III); a single group spelled by a cell or a caller
- * (`II`, `III`, `IIIa`, `IIIb`) belongs to `wpfg2-3`.
+ * Track membership for scope lookup. A combined II/III binding reaches its
+ * individual branches; a binding for II alone never reaches IIIa or IIIb.
+ * A combined scope is a broad filter, while a learner's exact branch limits
+ * the offer to that branch. Other providers keep literal normalized ids.
  */
-function canonicalCurriculumTrack(
+function curriculumTrackMembers(
   provider: string,
   schoolType: string | undefined,
   track: string,
-): string {
+): string[] {
   const compact = compactCurriculumCode(track);
   if (provider === "lehrplanplus-bayern" && schoolType === "realschule") {
-    if (compact === "i" || compact === "wpfg1") return "wpfg1";
-    if (/^(ii|iii|iii-?[ab]|ii-iii|ii-3|wpfg2-3)$/.test(compact)) {
-      return "wpfg2-3";
-    }
+    if (compact === "i" || compact === "wpfg1") return ["I"];
+    if (compact === "ii" || compact === "wpfg2") return ["II"];
+    if (/^(iii-?a|wpfg3-?a)$/.test(compact)) return ["IIIa"];
+    if (/^(iii-?b|wpfg3-?b)$/.test(compact)) return ["IIIb"];
+    if (compact === "iii" || compact === "wpfg3") return ["IIIa", "IIIb"];
+    if (/^(ii-iii|ii-3|wpfg2-3)$/.test(compact)) return ["II", "IIIa", "IIIb"];
   }
-  return compact;
+  return [compact];
 }
 
 /**
@@ -1166,8 +1168,6 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile203Raw as unknown as BundledTile,
   [(tile204Raw as unknown as BundledTile).tile_id]:
     tile204Raw as unknown as BundledTile,
-  [(tile207Raw as unknown as BundledTile).tile_id]:
-    tile207Raw as unknown as BundledTile,
   [(tile210Raw as unknown as BundledTile).tile_id]:
     tile210Raw as unknown as BundledTile,
   [(tile211Raw as unknown as BundledTile).tile_id]:
@@ -1202,6 +1202,8 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile238Raw as unknown as BundledTile,
   [(tile239Raw as unknown as BundledTile).tile_id]:
     tile239Raw as unknown as BundledTile,
+  [(tile240Raw as unknown as BundledTile).tile_id]:
+    tile240Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 
@@ -1441,19 +1443,20 @@ function bindingMatchesScope(
   if (
     scope.track !== undefined &&
     binding.track !== undefined &&
-    binding.track !== "" &&
-    canonicalCurriculumTrack(
+    binding.track !== ""
+  ) {
+    const bindingTracks = curriculumTrackMembers(
       binding.provider,
       binding.school_type ?? scope.schoolType,
       binding.track,
-    ) !==
-      canonicalCurriculumTrack(
-        scope.provider,
-        scope.schoolType ?? binding.school_type,
-        scope.track,
-      )
-  ) {
-    return false;
+    );
+    const scopeTracks = curriculumTrackMembers(
+      scope.provider,
+      scope.schoolType ?? binding.school_type,
+      scope.track,
+    );
+    if (!bindingTracks.some((track) => scopeTracks.includes(track)))
+      return false;
   }
   return true;
 }

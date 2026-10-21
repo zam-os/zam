@@ -41,9 +41,9 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     expect(subjects).toContainEqual({ id: "deutsch", label: "Deutsch" });
   });
 
-  it("exposes the captured catalog plus the two verified Chemie 9 branches", () => {
+  it("exposes the captured catalog and the verified Realschule branches", () => {
     const paths = provider.listCatalogPaths?.() ?? [];
-    expect(paths).toHaveLength(2097);
+    expect(paths).toHaveLength(2098);
     for (const track of ["wpfg1", "wpfg2-3"]) {
       expect(paths).toContainEqual({
         schoolType: "realschule",
@@ -89,6 +89,50 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
 
   it("returns no tracks for a subject with one unified curriculum", () => {
     expect(provider.listTracks("realschule", "9", "deutsch")).toEqual([]);
+  });
+
+  it("offers BwR 9 only in group II with all five verified areas", () => {
+    expect(
+      provider.listTracks("realschule", "9", "bwl-rechnungswesen"),
+    ).toEqual([
+      {
+        id: "wpfg2",
+        label: "Betriebswirtschaftslehre/Rechnungswesen 9 (II)",
+        description: expect.stringContaining("wirtschaftlicher Zweig"),
+      },
+    ]);
+    const position = {
+      schoolType: "realschule",
+      grade: "9",
+      subject: "bwl-rechnungswesen",
+    };
+    const topics = provider.listTopics({ ...position, track: "wpfg2" });
+    expect(topics.map((topic) => topic.id)).toEqual([
+      "lb1",
+      "lb2",
+      "lb3",
+      "lb4",
+      "lb5",
+    ]);
+    expect(topics.map((topic) => topic.hours)).toEqual([12, 19, 20, 19, 14]);
+    for (const topic of topics)
+      expect(provider.resolveTopic(topic).uri).toBe(
+        "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/bwl-rechnungswesen/wpfg2",
+      );
+    expect(provider.listTopics(position).map((topic) => topic.id)).toEqual(
+      topics.map((topic) => topic.id),
+    );
+    for (const track of ["wpfg1", "wpfg3a", "wpfg3b", "wpfg2-3"]) {
+      expect(provider.listTopics({ ...position, track })).toEqual([]);
+      expect(provider.listCatalogPaths?.()).not.toContainEqual({
+        ...position,
+        track,
+      });
+    }
+    expect(provider.listCatalogPaths?.()).toContainEqual({
+      ...position,
+      track: "wpfg2",
+    });
   });
 
   it("offers Chemie 9 with both Wahlpflichtfächergruppen and explanatory labels", () => {

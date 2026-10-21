@@ -1213,10 +1213,11 @@
       "parent": "cells",
       "label": "ZAM Academy",
       "link": "include",
-      "text": "ZAM Academy cells keep what an app at academy.zam-os.org taught hands-on, and each card links back to its lesson.",
+      "text": "ZAM Academy cells retain app learning with lesson links and respect branch-specific curriculum bindings.",
       "sources": [
         "docs/adr/2026-10-19-zam-academy-cells.md",
-        "src/kernel/library/academy-catalog.ts"
+        "src/kernel/library/academy-catalog.ts",
+        "src/kernel/library/bundled-cells.ts"
       ]
     },
     {

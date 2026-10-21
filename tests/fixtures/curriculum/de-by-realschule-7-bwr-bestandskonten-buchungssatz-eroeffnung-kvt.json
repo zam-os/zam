@@ -1,7 +1,7 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung",
-  "version": "2026.08.1",
+  "version": "2026.10.1",
   "title": "BwR 7: Buchen auf Bestandskonten – Buchungssatz 'Soll an Haben' und Kontenabschluss (Realschule 7 Bayern)",
   "description": "Geerdetes KVT-Paket für Realschule Bayern BwR 7: Auflösung der Bilanz in Bestandskonten (Aktivkonten: AB/Zugänge im Soll, Passivkonten: AB/Zugänge im Haben), Buchungssatzregel 'Soll an Haben', EBK und SBK.",
   "publisher": "ZAM Curriculum Working Group",
@@ -10,7 +10,7 @@
     {
       "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/bwr",
       "checked": "2026-08-15",
-      "label": "Realschule BwR 7 (Wahlpflichtfächergruppe II), Lernbereich Buchen auf Bestandskonten"
+      "label": "Realschule BwR 7 (Wahlpflichtfächergruppen II und IIIa), Lernbereich Buchen auf Bestandskonten"
     }
   ],
   "atoms": [
@@ -38,6 +38,16 @@
           "school_type": "realschule",
           "grade": 7,
           "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Buchen auf Bestandskonten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
           "subject": "bwr",
           "topic_code": "lb3",
           "topic_title": "Buchen auf Bestandskonten",
@@ -104,6 +114,16 @@
           "school_type": "realschule",
           "grade": 7,
           "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Buchen auf Bestandskonten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
           "subject": "bwr",
           "topic_code": "lb3",
           "topic_title": "Buchen auf Bestandskonten",

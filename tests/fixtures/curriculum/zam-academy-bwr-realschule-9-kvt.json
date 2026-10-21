@@ -1,0 +1,3106 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:bwr-realschule-9",
+  "version": "2026.10.1",
+  "title": "BwR 9 Realschule (ZAM Academy)",
+  "description": "Alle fünf Lernbereiche der Realschule Bayern, Wahlpflichtfächergruppe II: Unternehmensführung, Anlagen, Finanzierung, Kapitalanlage und Forderungsbewertung. 44 Kernlektionen und zwei optionale Grundlagenauffrischungen.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-21T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/bwr-realschule-9/",
+      "checked": "2026-10-21",
+      "label": "ZAM Academy · BwR 9"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/bwl-rechnungswesen/wpfg2",
+      "checked": "2026-10-21",
+      "label": "LehrplanPLUS · BwR 9 · II"
+    },
+    {
+      "uri": "https://www.isb.bayern.de/schularten/realschule/faecher/betriebswirtschaftslehre-rechnungswesen/",
+      "checked": "2026-10-21",
+      "label": "ISB · Fachangebot und Kontenplan"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5FKJXZFFRN52ADHGMBC478J",
+      "atom_uri": "urn:zam:atom:01M5FKJXZFFRN52ADHGMBC478J",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-uf-aufgaben",
+      "title": "Ziele setzen und Entscheidungen prüfen",
+      "domain": "bwr/unternehmensfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-aufgaben",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Unternehmensführung und Einkommen des Unternehmers"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Unternehmensführung und Einkommen des Unternehmers",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZGF1HQR8CE4D4XD2W4",
+          "slug": "bwr9-uf-aufgaben-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gehört zur Kontrolle einer Unternehmensentscheidung?",
+          "concept": "Ist-Ergebnisse mit dem gesetzten Ziel vergleichen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-aufgaben",
+          "materiality": "material",
+          "sample_solution": "Kontrolle vergleicht Soll und Ist und liefert Gründe für eine Anpassung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ist-Ergebnisse mit dem gesetzten Ziel vergleichen.",
+              "Nur das ursprüngliche Ziel erneut aufschreiben."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZGGP7BAXJ9QK7TTAZB",
+          "slug": "bwr9-uf-aufgaben-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was macht eine Unternehmensphilosophie im Alltag überprüfbar?",
+          "concept": "Konkrete Entscheidungen und beobachtbare Regeln, die den erklärten Werten entsprechen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-aufgaben",
+          "materiality": "material",
+          "sample_solution": "Die fiktive Werkstatt Isarwerk möchte weniger Ausschuss erzeugen. Sie setzt ein messbares Ziel, verteilt Verantwortung, schult das Team und vergleicht später den Ausschussanteil. Bei Zielkonflikten zwischen Gewinn, Arbeitsbedingungen und Umwelt gibt es keine Kennzahl, die das Urteil ersetzt."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZFTW6DGVFRVJ1KTWRK",
+      "atom_uri": "urn:zam:atom:01M5FKJXZFTW6DGVFRVJ1KTWRK",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-uf-organigramm",
+      "title": "Weisungswege im Organigramm",
+      "domain": "bwr/unternehmensfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-organigramm",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Unternehmensführung und Einkommen des Unternehmers"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Unternehmensführung und Einkommen des Unternehmers",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZG8S217W2K5B3T97WV",
+          "slug": "bwr9-uf-organigramm-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was kennzeichnet das Einliniensystem?",
+          "concept": "Jede Stelle hat genau eine unmittelbar vorgesetzte Stelle.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-organigramm",
+          "materiality": "material",
+          "sample_solution": "Das Organigramm ordnet Stellen und Weisungswege, nicht die persönliche Bedeutung von Menschen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Jede Stelle hat genau eine unmittelbar vorgesetzte Stelle.",
+              "Jede Stelle erhält Weisungen von beliebig vielen Leitungen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZGQVYVB18PP544GABJ",
+          "slug": "bwr9-uf-organigramm-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welches typische Risiko hat ein Mehrliniensystem?",
+          "concept": "Widersprüchliche Weisungen mehrerer fachlicher Vorgesetzter.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-organigramm",
+          "materiality": "material",
+          "sample_solution": "Im Mehrliniensystem können mehrere fachlich zuständige Leitungen derselben Stelle Weisungen geben. Das verkürzt Fachwege, kann aber widersprüchliche Aufträge erzeugen. Eine Stabsstelle berät die Leitung; aus dieser Beratung folgt keine allgemeine Weisungsbefugnis gegenüber den Linien."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZF0Q3XEN2E2JQWX5CV",
+      "atom_uri": "urn:zam:atom:01M5FKJXZF0Q3XEN2E2JQWX5CV",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-uf-fuehrungsstile",
+      "title": "Führung und Zusammenarbeit",
+      "domain": "bwr/unternehmensfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-fuehrungsstile",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Unternehmensführung und Einkommen des Unternehmers"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Unternehmensführung und Einkommen des Unternehmers",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZG82Z4JZPV63TFYVWC",
+          "slug": "bwr9-uf-fuehrungsstile-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist typisch für kooperative Führung?",
+          "concept": "Beschäftigte wirken an der Entscheidungsfindung mit.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-fuehrungsstile",
+          "materiality": "material",
+          "sample_solution": "Beteiligung nutzt Wissen und fördert Akzeptanz; sie benötigt Zeit und klare Entscheidungsrechte.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beschäftigte wirken an der Entscheidungsfindung mit.",
+              "Jede Leitung verzichtet auf ihre Verantwortung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZGHWPWHBE43YTM1V4D",
+          "slug": "bwr9-uf-fuehrungsstile-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist Beteiligung bei Entscheidungen kein Verzicht auf Führung?",
+          "concept": "Die Leitung organisiert Beteiligung, klärt Entscheidungsrechte und verantwortet die Umsetzung.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-fuehrungsstile",
+          "materiality": "material",
+          "sample_solution": "Ein Sicherheitsnotfall erfordert oft eine schnelle klare Anweisung. Bei der Entwicklung eines neuen Schichtplans kann Beteiligung bessere Informationen liefern und die Akzeptanz stärken. Ein Führungsstil ist deshalb anhand von Situation, Fachwissen und Folgen zu beurteilen."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZFSYTS46X8BNA76A64",
+      "atom_uri": "urn:zam:atom:01M5FKJXZFSYTS46X8BNA76A64",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-uf-management",
+      "title": "Führungstechniken unterscheiden",
+      "domain": "bwr/unternehmensfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-management",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZF0Q3XEN2E2JQWX5CV",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Unternehmensführung und Einkommen des Unternehmers"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Unternehmensführung und Einkommen des Unternehmers",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZGRP0AMFNFJMR7T7G8",
+          "slug": "bwr9-uf-management-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Technik lässt die Leitung vor allem bei Grenzüberschreitungen eingreifen?",
+          "concept": "Management by Exception.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-management",
+          "materiality": "material",
+          "sample_solution": "Exception bedeutet Ausnahme; die Grenzen müssen vorher bekannt sein.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Management by Exception.",
+              "Management by Objectives."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZGWV08FKS01MZXSK4Q",
+          "slug": "bwr9-uf-management-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Elemente müssen bei Delegation zusammenpassen?",
+          "concept": "Aufgabe, Entscheidungsbefugnisse und Verantwortung für die Ausführung.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-management",
+          "materiality": "material",
+          "sample_solution": "Bei Management by Exception bearbeitet das Team Routinefälle innerhalb vereinbarter Grenzen selbst; die Leitung greift bei Abweichungen ein. Für alle drei Techniken müssen Ziele, Grenzen und Rückmeldungen verständlich sein. Eine bloße Arbeitsanweisung ohne Befugnisse ist noch keine gelungene Delegation."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZF1VDM0AHCPBSBHFKF",
+      "atom_uri": "urn:zam:atom:01M5FKJXZF1VDM0AHCPBSBHFKF",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-uf-unternehmerlohn",
+      "title": "Unternehmerlohn und Gewinn",
+      "domain": "bwr/unternehmensfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-unternehmerlohn",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Unternehmensführung und Einkommen des Unternehmers"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Unternehmensführung und Einkommen des Unternehmers",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHV4ZNWSV4XDAA836T",
+          "slug": "bwr9-uf-unternehmerlohn-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie wirkt eine Geldentnahme der Einzelunternehmerin auf den buchhalterischen Gewinn?",
+          "concept": "Sie verändert den Gewinn nicht unmittelbar.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-unternehmerlohn",
+          "materiality": "material",
+          "sample_solution": "Privatentnahmen mindern Eigenkapital und Liquidität, sind aber kein Aufwand.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie verändert den Gewinn nicht unmittelbar.",
+              "Sie vermindert den Gewinn wie ein Arbeitnehmerlohn."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHCXP5SV6NEFAWA3MB",
+          "slug": "bwr9-uf-unternehmerlohn-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist der kalkulatorische Unternehmerlohn bei der Preisgestaltung nötig?",
+          "concept": "Auch die Arbeit und Existenzsicherung der Inhaberin müssen durch das Ergebnis getragen werden.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-unternehmerlohn",
+          "materiality": "material",
+          "sample_solution": "Eine Privatentnahme ist eine Verwendung von Vermögen und kein betrieblicher Personalaufwand. Wer Preise so niedrig ansetzt, dass für die eigene Arbeit dauerhaft kein Betrag übrig bleibt, kann trotz ausgeglichener laufender Rechnungen wirtschaftlich scheitern."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZFWG90AG521DGS9EEQ",
+      "atom_uri": "urn:zam:atom:01M5FKJXZFWG90AG521DGS9EEQ",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-uf-privat",
+      "title": "Einlagen und Entnahmen buchen",
+      "domain": "bwr/unternehmensfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-privat",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Unternehmensführung und Einkommen des Unternehmers"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Unternehmensführung und Einkommen des Unternehmers",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHZB85AXYQXZMSRA8Z",
+          "slug": "bwr9-uf-privat-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie wird eine reine Geldentnahme vom Geschäftskonto gebucht?",
+          "concept": "3001 P an 2800 BK.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-privat",
+          "materiality": "material",
+          "sample_solution": "Die Entnahme mindert Bankguthaben und erhöht die Entnahmen im Soll des Privatkontos.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "3001 P an 2800 BK.",
+              "2800 BK an 3001 P."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHQ3A58DF2Z9CVW5RJ",
+          "slug": "bwr9-uf-privat-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie wird eine reine Geldeinlage der Inhaberin auf das Geschäftskonto gebucht?",
+          "concept": "2800 BK an 3001 P.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-privat",
+          "materiality": "material",
+          "sample_solution": "Private Einkommensteuer, Kirchensteuer und private Absicherung sind keine betrieblichen Aufwendungen des Einzelunternehmens. Werden sie vom Geschäftskonto bezahlt, werden sie als Privatentnahme erfasst. Sachentnahmen können Umsatzsteuer auslösen und gehören nicht zu den vereinfachten Geldfällen hier."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZFFPEJQ0RHHRQ8RFW7",
+      "atom_uri": "urn:zam:atom:01M5FKJXZFFPEJQ0RHHRQ8RFW7",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-uf-eigenkapital",
+      "title": "Privatkonto abschließen und Eigenkapital erklären",
+      "domain": "bwr/unternehmensfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-eigenkapital",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZFWG90AG521DGS9EEQ",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb1",
+          "topic_title": "Unternehmensführung und Einkommen des Unternehmers"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Unternehmensführung und Einkommen des Unternehmers",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHN2T8FZQSB0K1PX3T",
+          "slug": "bwr9-uf-eigenkapital-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie wirkt eine Privateinlage auf das Eigenkapital?",
+          "concept": "Sie erhöht das Eigenkapital ohne Gewinn zu erzeugen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-eigenkapital",
+          "materiality": "material",
+          "sample_solution": "Eigenkapitaländerungen enthalten Erfolg und private Kapitalbewegungen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie erhöht das Eigenkapital ohne Gewinn zu erzeugen.",
+              "Sie erhöht Gewinn und Eigenkapital im gleichen Umfang."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZH6PH9F8WS32ECATPD",
+          "slug": "bwr9-uf-eigenkapital-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie lautet die Eigenkapitalgleichung für einen Betrieb ohne Verlust?",
+          "concept": "Endkapital = Anfangskapital + Gewinn + Einlagen − Entnahmen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=uf-eigenkapital",
+          "materiality": "material",
+          "sample_solution": "Überwiegen Entnahmen, hat das Privatkonto einen Sollsaldo. Sein Abschluss lautet 3000 EK an 3001 P. Bei einem Einlagenüberschuss ist die Richtung umgekehrt. Ein positiver Gewinn garantiert kein höheres Endkapital, wenn die Entnahmen größer sind."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZFKB769TZVAE2N6CKJ",
+      "atom_uri": "urn:zam:atom:01M5FKJXZFKB769TZVAE2N6CKJ",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-an-anschaffung",
+      "title": "Anschaffungskosten ermitteln",
+      "domain": "bwr/anlagenbereich",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-anschaffung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHZXM2K3GMM2T0YNCM",
+          "slug": "bwr9-an-anschaffung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Zahlung gehört im einfachen Maschinenkauf zu den Anschaffungskosten?",
+          "concept": "Die notwendige Montage vor der ersten Nutzung.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-anschaffung",
+          "materiality": "material",
+          "sample_solution": "Betriebsbereitschaft und Einzelzuordnung sind entscheidend.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die notwendige Montage vor der ersten Nutzung.",
+              "Die vollständig abziehbare Vorsteuer."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHTJBT31K31X351XC6",
+          "slug": "bwr9-an-anschaffung-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie werden Anschaffungskosten im einfachen Kaufmodell berechnet?",
+          "concept": "Anschaffungspreis − Preisnachlässe + zurechenbare Anschaffungsnebenkosten.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-anschaffung",
+          "materiality": "material",
+          "sample_solution": "Eine Maschine kostet nach Rabatt 18.000 Euro netto. Transport und Montage kosten 1.000 Euro netto. Bei vollständigem Vorsteuerabzug betragen die Anschaffungskosten 19.000 Euro. Regelmäßige Wartung nach der Inbetriebnahme ist in diesem einfachen Fall laufender Aufwand."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZF14JYNAVVQK52VTHZ",
+      "atom_uri": "urn:zam:atom:01M5FKJXZF14JYNAVVQK52VTHZ",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-an-kauf-buchen",
+      "title": "Den Anlagenkauf buchen",
+      "domain": "bwr/anlagenbereich",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-kauf-buchen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZFKB769TZVAE2N6CKJ",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHYASE0QW2PPS4RS6M",
+          "slug": "bwr9-an-kauf-buchen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Auf welchem Konto wird der Nettokauf einer Produktionsmaschine zunächst erfasst?",
+          "concept": "0700 MA im Soll.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-kauf-buchen",
+          "materiality": "material",
+          "sample_solution": "Die Anschaffung schafft einen Vermögensgegenstand; planmäßige Abschreibung folgt später.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "0700 MA im Soll.",
+              "6520 ABSA im Soll."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHWRD6RK0PAFV5PKCC",
+          "slug": "bwr9-an-kauf-buchen-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Angaben braucht eine Anlagenkarte für den Abschreibungsplan?",
+          "concept": "Anschaffungsdatum und Kosten, Nutzungsdauer, Verfahren sowie fortgeschriebene Buchwerte.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-kauf-buchen",
+          "materiality": "material",
+          "sample_solution": "Eine Anlagenkarte hält insbesondere Anschaffungsdatum, Anschaffungskosten, Nutzungsdauer, Abschreibungsverfahren und Buchwerte fest. Sie macht den Werteverzehr eines einzelnen Anlageguts nachvollziehbar. Eine Rechnung allein ersetzt die laufende Fortschreibung nicht."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZFCA28EXD320EXV7K3",
+      "atom_uri": "urn:zam:atom:01M5FKJXZFCA28EXD320EXV7K3",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-an-grundstueck",
+      "title": "Grundstück und Gebäude trennen",
+      "domain": "bwr/anlagenbereich",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-grundstueck",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZH3CFJZTPXVGH7QVV5",
+          "slug": "bwr9-an-grundstueck-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Teil wird im einfachen gemeinsamen Immobilienkauf planmäßig abgeschrieben?",
+          "concept": "Der auf das abnutzbare Gebäude entfallende Wert.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-grundstueck",
+          "materiality": "material",
+          "sample_solution": "Boden und Gebäude werden als verschiedene Vermögensbestandteile behandelt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der auf das abnutzbare Gebäude entfallende Wert.",
+              "Der gesamte Wert einschließlich Grund und Boden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHKFJZG8BNW0C4904C",
+          "slug": "bwr9-an-grundstueck-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nach welchem Maßstab werden gemeinsame Immobilienkaufnebenkosten im Schulfall aufgeteilt?",
+          "concept": "Nach dem vorgegebenen Wertverhältnis von Grundstück und Gebäude.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-grundstueck",
+          "materiality": "material",
+          "sample_solution": "Im Schulfall entfallen 25 Prozent des Kaufpreises auf Grund und Boden und 75 Prozent auf das Gebäude. Gemeinsame Nebenkosten werden im selben Verhältnis zugeteilt. Grund und Boden unterliegt grundsätzlich keiner planmäßigen Abnutzung; das Gebäude wird planmäßig abgeschrieben. Steuer- und Sonderfälle sind hier nicht nachgebildet."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGT8NEBNCCEAKH1FPC",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGT8NEBNCCEAKH1FPC",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-an-wertverlust",
+      "title": "Wertverlust und Abschreibungskreislauf",
+      "domain": "bwr/anlagenbereich",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-wertverlust",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHV58YTBCFNPNX5XH4",
+          "slug": "bwr9-an-wertverlust-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage zum Abschreibungskreislauf ist richtig?",
+          "concept": "Ein Mittelrückfluss setzt verdiente und zugeflossene Erlöse voraus.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-wertverlust",
+          "materiality": "material",
+          "sample_solution": "Abschreibung ist keine Einzahlung; Refinanzierung hängt vom Geschäft und den Zuflüssen ab.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Mittelrückfluss setzt verdiente und zugeflossene Erlöse voraus.",
+              "Die Abschreibungsbuchung überweist sofort Geld an den Betrieb."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHRME4CQYDM1JYBYTR",
+          "slug": "bwr9-an-wertverlust-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was bewirkt die direkte Abschreibungsbuchung zunächst?",
+          "concept": "Sie vermindert Buchwert und Gewinn, ohne selbst eine Auszahlung oder Einzahlung auszulösen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-wertverlust",
+          "materiality": "material",
+          "sample_solution": "Werden die Abschreibungen durch Verkaufserlöse verdient und fließen diese Erlöse tatsächlich zu, kann Kapital für Ersatzinvestitionen zurückfließen. Die Abschreibungsbuchung selbst erzeugt kein Geld. Geringerer steuerpflichtiger Gewinn kann die Steuerbelastung senken; daraus folgt keine vollständige Finanzierung einer neuen Maschine."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGZY81SB7W6XX4VWZP",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGZY81SB7W6XX4VWZP",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-an-linear",
+      "title": "Lineare Abschreibung berechnen",
+      "domain": "bwr/anlagenbereich",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-linear",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGT8NEBNCCEAKH1FPC",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZH5Z572RYGGH1JYS4X",
+          "slug": "bwr9-an-linear-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie hoch ist der jährliche lineare Abschreibungsbetrag für eine Produktionsmaschine mit netto 60.000 Euro Anschaffungskosten und fünf Jahren Nutzungsdauer?",
+          "concept": "12.000 Euro pro Jahr.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-linear",
+          "materiality": "material",
+          "sample_solution": "60.000 geteilt durch 5 ergibt 12.000; der jährliche Satz ist 20 Prozent.",
+          "replaces": [
+            "01K4W9A0000000000000000J03"
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "12.000 Euro pro Jahr.",
+              "10.000 Euro pro Jahr."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHT1YZ7222CN3027M6",
+          "slug": "bwr9-an-linear-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie berechnet man den jährlichen linearen Abschreibungssatz?",
+          "concept": "100 Prozent geteilt durch die Nutzungsdauer in Jahren.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-linear",
+          "materiality": "material",
+          "sample_solution": "Der Restbuchwert ist der fortgeschriebene Buchwert nach Abzug der bisherigen Abschreibungen, kein zugesicherter Verkaufspreis. Eine AfA-Tabelle bietet eine Orientierung zur betriebsgewöhnlichen Nutzungsdauer. Gebäude und steuerliche Sonderverfahren folgen eigenen Regeln; hier werden bewegliche Anlagen linear geübt."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGHYEQ4821DPSD39VT",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGHYEQ4821DPSD39VT",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-an-zeitanteilig",
+      "title": "Im Anschaffungsjahr zeitanteilig abschreiben",
+      "domain": "bwr/anlagenbereich",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-zeitanteilig",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGZY81SB7W6XX4VWZP",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZH84M5WRCD1Y4GDKD6",
+          "slug": "bwr9-an-zeitanteilig-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie viele Monate zählen bei Anschaffung und Betriebsbereitschaft im Oktober im ersten Kalenderjahr?",
+          "concept": "Drei Monate.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-zeitanteilig",
+          "materiality": "material",
+          "sample_solution": "Der Anschaffungsmonat zählt im geübten Schulmodell mit.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Drei Monate.",
+              "Zwei Monate."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHGK693A44QZXY1E74",
+          "slug": "bwr9-an-zeitanteilig-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie wird die AfA im Anschaffungsjahr im monatlichen Schulmodell berechnet?",
+          "concept": "Volle Jahres-AfA × Nutzungsmonate einschließlich Anschaffungsmonat / 12.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-zeitanteilig",
+          "materiality": "material",
+          "sample_solution": "Bei Anschaffungskosten von 24.000 Euro und vier Jahren Nutzungsdauer beträgt die volle Jahres-AfA 6.000 Euro. Bei Betriebsbereitschaft im Oktober sind es im Anschaffungsjahr 1.500 Euro. Weitere volle Jahre folgen; im letzten Kalenderjahr wird nur der verbleibende Betrag abgeschrieben."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZG26KDFG8ZRWTBDTK4",
+      "atom_uri": "urn:zam:atom:01M5FKJXZG26KDFG8ZRWTBDTK4",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-an-abschreibung-buchen",
+      "title": "Abschreibung buchen und Erinnerungswert verstehen",
+      "domain": "bwr/anlagenbereich",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-abschreibung-buchen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGZY81SB7W6XX4VWZP",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHXHA0K0CAXSFS0DRT",
+          "slug": "bwr9-an-abschreibung-buchen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet die direkte Abschreibung einer Maschine?",
+          "concept": "6520 ABSA an 0700 MA.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-abschreibung-buchen",
+          "materiality": "material",
+          "sample_solution": "Aufwand nimmt im Soll zu, der Anlagenbuchwert nimmt im Haben ab.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "6520 ABSA an 0700 MA.",
+              "0700 MA an 6520 ABSA."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHK2AAEVQY0V0101RZ",
+          "slug": "bwr9-an-abschreibung-buchen-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was bedeutet ein Erinnerungswert von einem Euro?",
+          "concept": "Die vollständig abgeschriebene Anlage ist noch im Bestand; der Betrag ist kein Marktwert.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-abschreibung-buchen",
+          "materiality": "material",
+          "sample_solution": "Ist eine voll abgeschriebene Anlage noch in Betrieb, kann ein Erinnerungswert von einem Euro im Anlagenbestand stehen bleiben. Die letzte Abschreibung wird dafür um einen Euro gekürzt. Das ist ein Hinweis auf vorhandenes Vermögen, keine Behauptung über dessen Marktwert."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGJEP4WJ920Y9167J9",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGJEP4WJ920Y9167J9",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-an-gwg",
+      "title": "Kleingüter und GWG einordnen",
+      "domain": "bwr/anlagenbereich",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-gwg",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZFKB769TZVAE2N6CKJ",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZH3FX7N1CNRQTNP5A2",
+          "slug": "bwr9-an-gwg-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie wird ein selbständig nutzbarer Bürostuhl für netto 600 Euro im geübten Schulmodell beim Kauf eingeordnet?",
+          "concept": "0890 GWG, volle Abschreibung am Jahresende.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-gwg",
+          "materiality": "material",
+          "sample_solution": "600 Euro liegen über 250 und nicht über 800 Euro; die sachlichen Voraussetzungen sind erfüllt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "0890 GWG, volle Abschreibung am Jahresende.",
+              "6800 BMK, weil alle Büromöbel sofort Aufwand sind."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHFXFPPXGMHMGZFGWX",
+          "slug": "bwr9-an-gwg-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche sachlichen Voraussetzungen braucht ein Gut für die geübte GWG-Einteilung?",
+          "concept": "Es muss selbständig nutzbar, beweglich und abnutzbar sein.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-gwg",
+          "materiality": "material",
+          "sample_solution": "Die Werte setzen im geübten Fall vollständigen Vorsteuerabzug voraus. Ein nicht selbständig nutzbares Teil wird nicht allein wegen seines niedrigen Preises zum GWG. Das Steuerrecht kennt Wahlrechte und weitere Verfahren; die Schulvereinfachung ist keine vollständige Nachbildung aller steuerlichen Möglichkeiten."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZG9KZ6SQC7G20TM6MZ",
+      "atom_uri": "urn:zam:atom:01M5FKJXZG9KZ6SQC7G20TM6MZ",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-an-laufend",
+      "title": "Reparatur, Miete und Versicherung buchen",
+      "domain": "bwr/anlagenbereich",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-laufend",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHVY09PBJW5Z94Z1YD",
+          "slug": "bwr9-an-laufend-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie wird eine normale Wartungsreparatur ohne Erweiterung behandelt?",
+          "concept": "Als laufender Aufwand auf 6160 FRI.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-laufend",
+          "materiality": "material",
+          "sample_solution": "Die Reparatur erhält die Nutzungsmöglichkeit; sie schafft im geübten Fall keinen neuen Anlagenwert.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als laufender Aufwand auf 6160 FRI.",
+              "Immer als neue Maschine auf 0700 MA."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHTNY6Q8NVMAWDC97W",
+          "slug": "bwr9-an-laufend-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet eine Erhaltungsreparatur von einer wesentlichen Erweiterung?",
+          "concept": "Erhaltung ist im einfachen Fall Aufwand; eine wesentliche Erweiterung muss auf Aktivierung geprüft werden.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-laufend",
+          "materiality": "material",
+          "sample_solution": "Bei einer steuerpflichtigen Reparatur mit berechtigtem Vorsteuerabzug wird 2600 VORST getrennt gebucht. Auf eine Versicherungsrechnung wird nicht einfach 19 Prozent Vorsteuer gerechnet; Versicherungssteuer ist keine abziehbare Umsatzsteuer. Auch bei Miete bestimmt die konkrete Rechnung die Umsatzsteuerbehandlung."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGFJEJE3BBFTKS1AA1",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGFJEJE3BBFTKS1AA1",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-an-kostenvergleich",
+      "title": "Investitionen mit Kosten vergleichen",
+      "domain": "bwr/anlagenbereich",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-kostenvergleich",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHNCK9ZMV38956Q8HM",
+          "slug": "bwr9-an-kostenvergleich-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Grundlage braucht ein sinnvoller Kostenvergleich zweier Maschinen?",
+          "concept": "Vergleichbare Leistung und gleiche Rechenannahmen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-kostenvergleich",
+          "materiality": "material",
+          "sample_solution": "Unterschiedliche Mengen und Kostenbestandteile würden den Vergleich verzerren.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vergleichbare Leistung und gleiche Rechenannahmen.",
+              "Nur den niedrigsten Anschaffungspreis."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZH5EPQWHPG0AW9Q0DX",
+          "slug": "bwr9-an-kostenvergleich-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum entscheidet der niedrigste Anschaffungspreis nicht allein über die günstigere Investition?",
+          "concept": "Nutzungsdauer und laufende Jahreskosten können den Preisvorteil überwiegen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-kostenvergleich",
+          "materiality": "material",
+          "sample_solution": "Maschine A kostet 40.000 Euro, hält fünf Jahre und verursacht jährlich 6.000 Euro laufende Kosten: ohne Zinsen zusammen 14.000 Euro jährlich. Maschine B kostet 50.000 Euro, hält fünf Jahre und verursacht 3.000 Euro: zusammen 13.000 Euro. Qualität, Sicherheit und Umweltfolgen bleiben zusätzlich zu beurteilen."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZG54N2VRDWJHJ871E8",
+      "atom_uri": "urn:zam:atom:01M5FKJXZG54N2VRDWJHJ871E8",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-an-amortisation",
+      "title": "Amortisation und Investitionsziele",
+      "domain": "bwr/anlagenbereich",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-amortisation",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGFJEJE3BBFTKS1AA1",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Anlagenbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHXXR74KYC6CXG2NDX",
+          "slug": "bwr9-an-amortisation-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist im einfachen Amortisationsmodell der Nenner?",
+          "concept": "Der jährliche Rückfluss.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-amortisation",
+          "materiality": "material",
+          "sample_solution": "Die Auszahlung soll durch tatsächlich verfügbare Rückflüsse wiedergewonnen werden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der jährliche Rückfluss.",
+              "Nur der bilanzielle Gewinn nach Abschreibung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHC7XTW8S3VN5W4HFK",
+          "slug": "bwr9-an-amortisation-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie wird aus Gewinn nach Abschreibung der vereinfachte jährliche Rückfluss ermittelt?",
+          "concept": "Gewinn nach Abschreibung plus nicht zahlungswirksame Abschreibung.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=an-amortisation",
+          "materiality": "material",
+          "sample_solution": "30.000 Euro Investition und 10.000 Euro jährlicher Rückfluss ergeben drei Jahre. Das Modell berücksichtigt weder den Zeitwert des Geldes noch wechselnde Rückflüsse oder Erträge nach der Amortisation. Ökonomische Ziele müssen mit sozialen und ökologischen Zielen abgewogen werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZG34GW6HNCJZTF3QNH",
+      "atom_uri": "urn:zam:atom:01M5FKJXZG34GW6HNCJZTF3QNH",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fi-grundlagen",
+      "title": "Eigenkapitalquote und Fristen prüfen",
+      "domain": "bwr/finanzierung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-grundlagen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHH58GFQSBY5AKWKTR",
+          "slug": "bwr9-fi-grundlagen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was fordert die Goldene Finanzierungsregel?",
+          "concept": "Die Kapitalüberlassung soll zur Dauer der Kapitalbindung passen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-grundlagen",
+          "materiality": "material",
+          "sample_solution": "Kurzfristig fällige Finanzierung für langfristige Bindung erhöht das Liquiditätsrisiko.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Kapitalüberlassung soll zur Dauer der Kapitalbindung passen.",
+              "Jede Investition muss ausschließlich aus Bargeld bezahlt werden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZH1FHNH0J72VGDS58Y",
+          "slug": "bwr9-fi-grundlagen-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie lautet die Eigenkapitalquote?",
+          "concept": "Eigenkapital / Gesamtkapital × 100 Prozent.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-grundlagen",
+          "materiality": "material",
+          "sample_solution": "Die Goldene Finanzierungsregel fordert Fristenkongruenz: Langfristig gebundenes Vermögen soll langfristig finanziert werden. Eine über fünf Jahre genutzte Maschine allein mit einem täglich kündbaren Kontokorrentkredit zu finanzieren erzeugt ein Anschlussfinanzierungsrisiko."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGP08JMRCGD1WT5131",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGP08JMRCGD1WT5131",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fi-eigenfinanzierung",
+      "title": "Eigenfinanzierung vergleichen",
+      "domain": "bwr/finanzierung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-eigenfinanzierung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHRKC9JR9B1DWCJ366",
+          "slug": "bwr9-fi-eigenfinanzierung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wann fließt einer Aktiengesellschaft neues Eigenkapital zu?",
+          "concept": "Bei der Ausgabe neuer Aktien gegen Einlagen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-eigenfinanzierung",
+          "materiality": "material",
+          "sample_solution": "Primäre Ausgabe neuer Aktien und Handel vorhandener Aktien sind zu unterscheiden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bei der Ausgabe neuer Aktien gegen Einlagen.",
+              "Bei jedem Börsenverkauf einer bereits vorhandenen Aktie."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZH139Z5JEN9F100757",
+          "slug": "bwr9-fi-eigenfinanzierung-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Gegenleistung kann Eigenkapitalgebern statt fester Kreditzinsen zustehen?",
+          "concept": "Eine Beteiligung am Ergebnis und je nach Beteiligungsform Einflussrechte.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-eigenfinanzierung",
+          "materiality": "material",
+          "sample_solution": "Eine Aktiengesellschaft kann durch die Ausgabe neuer Aktien Eigenkapital beschaffen. Der Kauf bereits umlaufender Aktien an der Börse finanziert dagegen zunächst den Verkäufer und führt der Gesellschaft normalerweise kein neues Geld zu. Neue Beteiligungen können Einfluss- und Gewinnanteile verändern."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGVPPFYV0HG2RD0AMB",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGVPPFYV0HG2RD0AMB",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fi-auszahlung",
+      "title": "Kredit mit Disagio aufnehmen",
+      "domain": "bwr/finanzierung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-auszahlung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZG34GW6HNCJZTF3QNH",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHGJGT7D962F3W8NHV",
+          "slug": "bwr9-fi-auszahlung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie viel wird bei 20.000 Euro Nominalkredit und 2 Prozent Disagio ohne weitere Abzüge ausgezahlt?",
+          "concept": "19.600 Euro.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-auszahlung",
+          "materiality": "material",
+          "sample_solution": "400 Euro werden einbehalten, die Nominalschuld bleibt 20.000 Euro.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "19.600 Euro.",
+              "20.000 Euro."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHFVXR0XFB3M37J1ZN",
+          "slug": "bwr9-fi-auszahlung-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie wird der Auszahlungsbetrag eines Kredits mit Disagio ohne weitere Abzüge berechnet?",
+          "concept": "Nominalbetrag minus Disagio.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-auszahlung",
+          "materiality": "material",
+          "sample_solution": "Im ausdrücklich vereinfachten Schulfall wird das Disagio sofort als Zinsaufwand behandelt: 2800 BK 19.600 und 7510 ZAW 400 an 4250 LBKV 20.000. Eine Verteilung über Rechnungsabgrenzung ist nicht Teil dieser Übung. Gebühren, Laufzeit und spätere Zinsen sind für den Vergleich zusätzlich nötig."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGNAE986VXN8NMZ2MA",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGNAE986VXN8NMZ2MA",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fi-zinsrechnung",
+      "title": "Kreditzinsen berechnen",
+      "domain": "bwr/finanzierung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-zinsrechnung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZH2SY367S4F4JYN1D3",
+          "slug": "bwr9-fi-zinsrechnung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Worauf werden Zinsen nach einer bereits erfolgten Tilgung für die nächste Periode berechnet?",
+          "concept": "Auf die verbleibende Restschuld.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-zinsrechnung",
+          "materiality": "material",
+          "sample_solution": "Tilgung mindert die künftige verzinsliche Schuld.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auf die verbleibende Restschuld.",
+              "Immer unverändert auf die ursprüngliche Schuld."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHT9WTDRXDNMJW91ZH",
+          "slug": "bwr9-fi-zinsrechnung-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie lautet die einfache Tageszinsformel bei 360-Tage-Basis?",
+          "concept": "Zinsen = Kapital × Jahreszinssatz in Prozent × Tage / 36.000.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-zinsrechnung",
+          "materiality": "material",
+          "sample_solution": "Zinsen werden auf die jeweils ausstehende Schuld berechnet. Tilgungen senken diese Basis für folgende Zeiträume. Die hier verwendete 30/360-Schulkonvention ist nicht automatisch die vertragliche Methode eines echten Angebots. Gebühren und Disagio sind im Nominalzinssatz nicht vollständig enthalten."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGJA7338B1EXEK3VTV",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGJA7338B1EXEK3VTV",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fi-darlehensarten",
+      "title": "Drei Darlehensarten im Verlauf",
+      "domain": "bwr/finanzierung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-darlehensarten",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGNAE986VXN8NMZ2MA",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZH6S3JT0Y6MBSTBBSM",
+          "slug": "bwr9-fi-darlehensarten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bleibt beim Abzahlungsdarlehen pro Periode gleich?",
+          "concept": "Der Tilgungsbetrag.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-darlehensarten",
+          "materiality": "material",
+          "sample_solution": "Gleiche Tilgung bei sinkender Restschuld bedeutet sinkende Zinsen und Zahlungen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Tilgungsbetrag.",
+              "Der Zinsbetrag."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZH9RB11G1F34P94T4J",
+          "slug": "bwr9-fi-darlehensarten-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie verändern sich Zins- und Tilgungsanteil einer konstanten Annuität?",
+          "concept": "Der Zinsanteil sinkt und der Tilgungsanteil steigt mit abnehmender Restschuld.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-darlehensarten",
+          "materiality": "material",
+          "sample_solution": "Beim Annuitätendarlehen bleibt die regelmäßige Gesamtzahlung bei unveränderten Konditionen annähernd gleich. Der Zinsanteil sinkt und der Tilgungsanteil steigt. Cent-Rundung kann eine angepasste letzte Zahlung erfordern. Das Modell nimmt jährliche nachschüssige Zahlungen und unveränderten Zinssatz an."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGK7PRVMTYG863NE1E",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGK7PRVMTYG863NE1E",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fi-effektivzins",
+      "title": "Kreditangebote begründet vergleichen",
+      "domain": "bwr/finanzierung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-effektivzins",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGVPPFYV0HG2RD0AMB",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHJ63KQW1BPS1MS4Z1",
+          "slug": "bwr9-fi-effektivzins-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage zur hier verwendeten Effektivzins-Näherung ist richtig?",
+          "concept": "Sie gilt nur für das erklärte einfache Vergleichsmodell.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-effektivzins",
+          "materiality": "material",
+          "sample_solution": "Die Bezugsbasis und die Modellannahmen müssen sichtbar bleiben.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie gilt nur für das erklärte einfache Vergleichsmodell.",
+              "Sie berechnet für jeden beliebigen Kredit exakt den gesetzlichen Effektivzins."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZH92XR89YGB1VDXTTC",
+          "slug": "bwr9-fi-effektivzins-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Größen braucht die einfache Effektivzins-Näherung für einen endfälligen Schulfall?",
+          "concept": "Gesamtkreditkosten, tatsächliche Auszahlung und Laufzeit.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-effektivzins",
+          "materiality": "material",
+          "sample_solution": "Diese Näherung ist nicht der gesetzliche Effektivzins nach Preisangabenrecht und ist für Tilgungsdarlehen mit veränderlicher Restschuld nicht zuverlässig. Ein Angebotsvergleich braucht außerdem Zahlungszeitpunkte, Sondertilgung, Zinsbindung, Sicherheiten und die tatsächliche Leistbarkeit der Raten."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGNPNS588SCW56GR13",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGNPNS588SCW56GR13",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fi-schuldendienst",
+      "title": "Zinsen und Tilgung getrennt buchen",
+      "domain": "bwr/finanzierung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-schuldendienst",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGJA7338B1EXEK3VTV",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHXA7S95S3R5E55MWZ",
+          "slug": "bwr9-fi-schuldendienst-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Teil einer normalen Darlehensrate mindert unmittelbar den Gewinn?",
+          "concept": "Der Zinsaufwand.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-schuldendienst",
+          "materiality": "material",
+          "sample_solution": "Tilgung ist eine Verringerung der Schuld, kein Aufwand.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Zinsaufwand.",
+              "Die reine Tilgung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHRXXHWNPAB11MD8GN",
+          "slug": "bwr9-fi-schuldendienst-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie lautet der Schuldendienst im einfachen Darlehensfall?",
+          "concept": "Tilgung plus Zinsen, gegebenenfalls zuzüglich gesonderter Gebühren.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-schuldendienst",
+          "materiality": "material",
+          "sample_solution": "Bei 1.000 Euro Tilgung und 200 Euro Zinsen lautet der vereinfachte Buchungssatz 4250 LBKV 1.000 und 7510 ZAW 200 an 2800 BK 1.200. Der Gewinn wird nur durch die Zinsen vermindert; die Liquidität durch die gesamte Zahlung."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZG22ADWNBNRNGZ70SW",
+      "atom_uri": "urn:zam:atom:01M5FKJXZG22ADWNBNRNGZ70SW",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fi-lieferantenkredit",
+      "title": "Skonto gegen Kontokorrentzinsen abwägen",
+      "domain": "bwr/finanzierung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-lieferantenkredit",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGNAE986VXN8NMZ2MA",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHB061W051B8F4GNFK",
+          "slug": "bwr9-fi-lieferantenkredit-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Zeitspanne ist beim Vergleich von Skontoverzicht mit einem Kredit entscheidend?",
+          "concept": "Zahlungsziel minus Skontofrist.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-lieferantenkredit",
+          "materiality": "material",
+          "sample_solution": "Der zusätzliche Zahlungsaufschub beginnt nach Ende der Skontofrist.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zahlungsziel minus Skontofrist.",
+              "Immer das gesamte Zahlungsziel ohne Abzug."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZH24KXKGAE7DY2ZSDC",
+          "slug": "bwr9-fi-lieferantenkredit-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum kann ein Lieferantenkredit trotz fehlender gesonderter Zinsrechnung teuer sein?",
+          "concept": "Weil der Verzicht auf Skonto die Kosten des zusätzlichen Zahlungsaufschubs darstellt.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-lieferantenkredit",
+          "materiality": "material",
+          "sample_solution": "Im Nettovergleich mit vollständigem Vorsteuerabzug sind Nettoskonto und die vorgegebenen Zinsen auf den Nettofinanzierungsbetrag zu vergleichen. Der tatsächliche zwischenzeitliche Liquiditätsbedarf kann wegen Umsatzsteuer höher liegen. Das Labor benennt diese Vereinfachung; ein Kontokorrentrahmen ist weder unbegrenzt noch dauerhaft garantiert."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGVM8WNJFNMWVBWR5D",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGVM8WNJFNMWVBWR5D",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fi-alternativen",
+      "title": "Leasing, Factoring und Förderung",
+      "domain": "bwr/finanzierung",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-alternativen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Möglichkeiten der Finanzierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHFEECFC5W0M465VTY",
+          "slug": "bwr9-fi-alternativen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage zu Factoring ist korrekt?",
+          "concept": "Ob Ausfallrisiko übergeht, hängt unter anderem von der vereinbarten Factoringform ab.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-alternativen",
+          "materiality": "material",
+          "sample_solution": "Echtes und unechtes Factoring sowie Vertragsumfang müssen unterschieden werden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ob Ausfallrisiko übergeht, hängt unter anderem von der vereinbarten Factoringform ab.",
+              "Jeder Forderungsverkauf beseitigt automatisch jedes Risiko."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHS9ZTTNHQA0RTD788",
+          "slug": "bwr9-fi-alternativen-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was muss bei einer Leasingentscheidung außer der Monatsrate geprüft werden?",
+          "concept": "Gesamtlaufzeit, zusätzliche Pflichten, Restwert und Rückgabe- oder Kaufbedingungen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fi-alternativen",
+          "materiality": "material",
+          "sample_solution": "Factoring verkauft Forderungen an einen Factor und beschleunigt den Mittelzufluss. Beim echten Factoring kann das vereinbarte Ausfallrisiko übergehen; beim unechten bleibt es im Wesentlichen beim Unternehmen. Gebühren, vertragliche Grenzen und mögliche Auswirkungen auf Kundenbeziehungen müssen berücksichtigt werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGVGT42672QFKCFNV6",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGVGT42672QFKCFNV6",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-ka-anlageformen",
+      "title": "Anlageformen am Bedarf messen",
+      "domain": "bwr/kapitalanlage",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-anlageformen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHWV0H9RE0667CKECY",
+          "slug": "bwr9-ka-anlageformen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Kriterium meint die kurzfristige Verfügbarkeit einer Anlage?",
+          "concept": "Liquidität.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-anlageformen",
+          "materiality": "material",
+          "sample_solution": "Verfügbarkeit ist vom erwarteten Ertrag und vom Risiko zu unterscheiden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Liquidität.",
+              "Rentabilität."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZH8F3VW8C9BBN7XBBS",
+          "slug": "bwr9-ka-anlageformen-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Kriterien umfasst das magische Dreieck der Geldanlage?",
+          "concept": "Sicherheit, Rentabilität und Liquidität.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-anlageformen",
+          "materiality": "material",
+          "sample_solution": "Das magische Dreieck der Geldanlage verbindet Sicherheit, Rentabilität und Liquidität. Ein höherer versprochener Ertrag muss auf Risiken und Bedingungen geprüft werden. Geld für in Kürze fällige Löhne sollte nicht auf einen schwankenden Verkaufskurs angewiesen sein."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZG1FAN57MEMZPCSK48",
+      "atom_uri": "urn:zam:atom:01M5FKJXZG1FAN57MEMZPCSK48",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-ka-nachhaltigkeit",
+      "title": "Streuung und Nachhaltigkeit prüfen",
+      "domain": "bwr/kapitalanlage",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-nachhaltigkeit",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGVGT42672QFKCFNV6",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHCQ80746XFTF598V4",
+          "slug": "bwr9-ka-nachhaltigkeit-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was kann Diversifikation leisten?",
+          "concept": "Einzelrisiken streuen, ohne jedes Marktrisiko zu beseitigen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-nachhaltigkeit",
+          "materiality": "material",
+          "sample_solution": "Streuung mindert Konzentration, ist aber keine Garantie.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einzelrisiken streuen, ohne jedes Marktrisiko zu beseitigen.",
+              "Jeden Verlust sicher ausschließen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHVJ0V5SMT609XJ1KT",
+          "slug": "bwr9-ka-nachhaltigkeit-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist die Zahl der Anlagen allein kein Nachweis guter Diversifikation?",
+          "concept": "Mehrere Anlagen können denselben Branchen-, Länder- oder Marktrisiken unterliegen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-nachhaltigkeit",
+          "materiality": "material",
+          "sample_solution": "Nachhaltige Geldanlage ergänzt finanzielle Kriterien um ökologische, soziale und ethische Gesichtspunkte. Ein grünes Werbewort beweist keine Wirkung. Prüffähige Kriterien, Ausschlüsse, Daten, Gebühren und der Umgang mit Zielkonflikten müssen untersucht werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGN7Z7EBW16QQCTD2C",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGN7Z7EBW16QQCTD2C",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-ka-zinsen-miete",
+      "title": "Zins- und Mieterträge buchen",
+      "domain": "bwr/kapitalanlage",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-zinsen-miete",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZH5DFABQGH4PV7HDPS",
+          "slug": "bwr9-ka-zinsen-miete-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie wird eine einfache Zinsgutschrift ohne Abzüge gebucht?",
+          "concept": "2800 BK an 5710 ZE.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-zinsen-miete",
+          "materiality": "material",
+          "sample_solution": "Bankguthaben und Zinsertrag nehmen zu.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "2800 BK an 5710 ZE.",
+              "5710 ZE an 2800 BK."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHGZ97S6Q4FPDMJEKX",
+          "slug": "bwr9-ka-zinsen-miete-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Auf welchem Konto werden Erträge aus Mieten und Pachten erfasst?",
+          "concept": "5400 EMP.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-zinsen-miete",
+          "materiality": "material",
+          "sample_solution": "Für einfache zeitanteilige Zinsen gelten dieselben Zeit- und Prozentzusammenhänge wie bei Krediten. Zinseszinsen entstehen erst, wenn gutgeschriebene Zinsen in späteren Perioden mitverzinst werden. Im Übungsfall sind diese ausdrücklich ausgeschlossen."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZG5VFK8SSRRV9E2S5K",
+      "atom_uri": "urn:zam:atom:01M5FKJXZG5VFK8SSRRV9E2S5K",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-ka-boerse",
+      "title": "Börse und Indizes lesen",
+      "domain": "bwr/kapitalanlage",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-boerse",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHAM6F53RSDX44JFRP",
+          "slug": "bwr9-ka-boerse-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was zeigt ein Aktienindex grundsätzlich?",
+          "concept": "Die regelgebundene Entwicklung einer ausgewählten Aktiengruppe.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-boerse",
+          "materiality": "material",
+          "sample_solution": "Zusammensetzung und Berechnung bestimmen, was ein Index aussagt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die regelgebundene Entwicklung einer ausgewählten Aktiengruppe.",
+              "Den garantierten Gewinn jeder einzelnen enthaltenen Aktie."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHX6CVQH8TJD3NJ262",
+          "slug": "bwr9-ka-boerse-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist ein Indexanstieg keine Garantie für den Gewinn einer einzelnen Aktie?",
+          "concept": "Ein Index aggregiert verschiedene Titel; einzelne Aktien können sich entgegengesetzt entwickeln.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-boerse",
+          "materiality": "material",
+          "sample_solution": "Ein Aktienindex fasst eine definierte Auswahl von Aktien nach festen Regeln zusammen. DAX und Dow Jones unterscheiden sich unter anderem in Auswahl und Berechnung. Ein Indexstand ist kein Europreis einer einzelnen Aktie; die Wertentwicklung eines Index gilt nicht automatisch für jede enthaltene Aktie."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGN5JZ3J5YV9BBCV07",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGN5JZ3J5YV9BBCV07",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-ka-aktienkauf",
+      "title": "Aktienabrechnungen auswerten",
+      "domain": "bwr/kapitalanlage",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-aktienkauf",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHVFVWJ69YXDSX9ASY",
+          "slug": "bwr9-ka-aktienkauf-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie werden vorgegebene unmittelbare Kaufnebenkosten einer Finanzanlage behandelt?",
+          "concept": "Sie erhöhen deren Anschaffungskosten.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-aktienkauf",
+          "materiality": "material",
+          "sample_solution": "Kaufkosten gehören im geübten Fall zur erworbenen Finanzanlage.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie erhöhen deren Anschaffungskosten.",
+              "Sie mindern stets den Anschaffungswert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHCM4XR23HRHVQHSVC",
+          "slug": "bwr9-ka-aktienkauf-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie lautet die Anschaffungskostenrechnung beim einfachen Aktienkauf?",
+          "concept": "Stückzahl × Stückkurs plus unmittelbare Kaufnebenkosten.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-aktienkauf",
+          "materiality": "material",
+          "sample_solution": "Für langfristig gehaltene Aktien im Anlagevermögen lautet die einfache Buchung 1500 WP an 2800 BK in Höhe der Anschaffungskosten. Die Aufgaben stellen Nebenkosten als Endbeträge ohne gesondert auszuweisende Vorsteuer bereit. Es werden keine echten aktuellen Börsenkurse verwendet."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZG7BHQHMVJWAN58VDA",
+      "atom_uri": "urn:zam:atom:01M5FKJXZG7BHQHMVJWAN58VDA",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-ka-dividende",
+      "title": "Dividende und Depotgebühren",
+      "domain": "bwr/kapitalanlage",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-dividende",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGN5JZ3J5YV9BBCV07",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHYRDBTKQ5Y635A4NT",
+          "slug": "bwr9-ka-dividende-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie wird eine Dividende ohne Steuerabzüge im einfachen Fall gebucht?",
+          "concept": "2800 BK an 5780 DDE.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-dividende",
+          "materiality": "material",
+          "sample_solution": "Eine Ausschüttung ist Ertrag und Geldzufluss, kein zusätzlicher Aktienkauf.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "2800 BK an 5780 DDE.",
+              "1500 WP an 5780 DDE."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHEPJKQJGMZH7J9D03",
+          "slug": "bwr9-ka-dividende-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist eine Dividende kein garantierter Kreditzins?",
+          "concept": "Sie hängt von der Ausschüttungsentscheidung und den wirtschaftlichen Voraussetzungen ab.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-dividende",
+          "materiality": "material",
+          "sample_solution": "Eine Dividende ohne Abzüge wird als 2800 BK an 5780 DDE gebucht. Vorgegebene laufende Depotgebühren werden als 6750 KGV an 2800 BK erfasst. Sie erhöhen nicht nachträglich den Anschaffungswert der vorhandenen Aktien."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZG78WFP1WG8PWDQVWX",
+      "atom_uri": "urn:zam:atom:01M5FKJXZG78WFP1WG8PWDQVWX",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-ka-aktienverkauf",
+      "title": "Aktienverkauf mit Gewinn oder Verlust",
+      "domain": "bwr/kapitalanlage",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-aktienverkauf",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGN5JZ3J5YV9BBCV07",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHZM69YMSQH8NHFDJ2",
+          "slug": "bwr9-ka-aktienverkauf-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie wird der Erfolg eines einfachen Aktienverkaufs ermittelt?",
+          "concept": "Nettoverkaufserlös minus Buchwert der verkauften Aktien.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-aktienverkauf",
+          "materiality": "material",
+          "sample_solution": "Der bereits vorhandene Vermögenswert muss ausgebucht werden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nettoverkaufserlös minus Buchwert der verkauften Aktien.",
+              "Bruttoverkaufserlös plus Buchwert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZH9GG3SHCPEM6CR5XW",
+          "slug": "bwr9-ka-aktienverkauf-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Auf welchem Konto wird ein Verlust aus dem Verkauf von Wertpapieren des Anlagevermögens erfasst?",
+          "concept": "7460 VAWP.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-aktienverkauf",
+          "materiality": "material",
+          "sample_solution": "Bei 2.020 Euro Buchwert und 2.180 Euro Nettoerlös lautet die Schulbuchung 2800 BK 2.180 an 1500 WP 2.020 und 5650 EAWP 160. Bei 1.900 Euro Nettoerlös stehen 2800 BK 1.900 und 7460 VAWP 120 an 1500 WP 2.020. Der Erlös und der Erfolg sind verschieden."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGJGX94EGFXSHAM2AX",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGJGX94EGFXSHAM2AX",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-ka-entscheidung",
+      "title": "Eine Anlageentscheidung begründen",
+      "domain": "bwr/kapitalanlage",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-entscheidung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGVGT42672QFKCFNV6",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Kapitalanlage",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZHFRTHD8XJYQ7FE8CT",
+          "slug": "bwr9-ka-entscheidung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was steht am Anfang einer begründeten Anlageentscheidung?",
+          "concept": "Anlagezweck, Zeitraum und tragbares Risiko klären.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-entscheidung",
+          "materiality": "material",
+          "sample_solution": "Ein Angebot kann nur am tatsächlichen Bedarf gemessen werden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Anlagezweck, Zeitraum und tragbares Risiko klären.",
+              "Das Produkt mit dem höchsten Werbezins sofort wählen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZHM56F9AE55V62S51N",
+          "slug": "bwr9-ka-entscheidung-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum braucht ein aktueller Anlagevergleich datierte Originalinformationen?",
+          "concept": "Bedingungen und Risiken können sich ändern; Werbeaussagen allein sind keine belastbare Grundlage.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=ka-entscheidung",
+          "materiality": "material",
+          "sample_solution": "Die fiktiven Fälle hier sind eigens verfasste Lernmodelle. Ein aktueller Angebotsvergleich braucht datierte Originalinformationen und eine Prüfung ihrer Interessen und Grenzen. Die App trifft keine persönliche Anlageentscheidung und ersetzt keine eigenständige Recherche oder Präsentation."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZG7VJ933NGVPHZTS5T",
+      "atom_uri": "urn:zam:atom:01M5FKJXZG7VJ933NGVPHZTS5T",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fo-insolvenz",
+      "title": "Insolvenz und ihre Folgen verstehen",
+      "domain": "bwr/forderungen",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-insolvenz",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZJ8P9TD4PMDKBAPYKD",
+          "slug": "bwr9-fo-insolvenz-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Ziel hat das Insolvenzverfahren grundsätzlich?",
+          "concept": "Die gemeinschaftliche Befriedigung der Gläubiger nach rechtlichen Regeln.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-insolvenz",
+          "materiality": "material",
+          "sample_solution": "Verwertung und Verteilung oder ein Insolvenzplan sollen die Ansprüche geordnet behandeln.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die gemeinschaftliche Befriedigung der Gläubiger nach rechtlichen Regeln.",
+              "Die garantierte vollständige Zahlung jeder Forderung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZJ0TVX0EJW44KN5C3V",
+          "slug": "bwr9-fo-insolvenz-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum bedeutet Insolvenz nicht in jedem Fall sofortige vollständige Betriebsschließung?",
+          "concept": "Ein geordnetes Verfahren kann neben Verwertung auch einen Insolvenzplan und Fortführung ermöglichen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-insolvenz",
+          "materiality": "material",
+          "sample_solution": "Zahlungsprobleme können Lieferanten, Beschäftigte und Eigentümer treffen. Anmeldung, Prüfung und Verteilung von Ansprüchen folgen rechtlichen Regeln. Eine verspätete Rechnung allein beweist keine eröffnete Insolvenz und noch keinen endgültigen vollständigen Forderungsausfall."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGEX7NT25V6WRWH6RB",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGEX7NT25V6WRWH6RB",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fo-verzug",
+      "title": "Verzug, Mahngebühren und Zinsen",
+      "domain": "bwr/forderungen",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-verzug",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZJFG7M82TH3X1WD7C7",
+          "slug": "bwr9-fo-verzug-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage zur 30-Tage-Regel bei Verbrauchern ist richtig?",
+          "concept": "Die besonderen gesetzlichen Hinweisanforderungen müssen erfüllt sein.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-verzug",
+          "materiality": "material",
+          "sample_solution": "Fälligkeit, Zugang und gesetzliche Voraussetzungen sind zu prüfen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die besonderen gesetzlichen Hinweisanforderungen müssen erfüllt sein.",
+              "Verbraucher geraten immer schon am Rechnungsdatum in Verzug."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZJHWBMKK2BGKWTMJ96",
+          "slug": "bwr9-fo-verzug-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum verwendet eine Lernaufgabe zu Verzugszinsen einen ausdrücklich vorgegebenen Satz?",
+          "concept": "Der maßgebliche Satz und die rechtlichen Voraussetzungen hängen vom Zeitpunkt und Fall ab.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-verzug",
+          "materiality": "material",
+          "sample_solution": "Verzugszinsen und ersatzfähige Mahnkosten werden in den Übungsfällen ausdrücklich vorgegeben; Basiszinssatz und Einzelfall werden nicht live ermittelt. Die Schulrechnung verwendet die genannte 360-Tage-Basis. Vorgegebene Zinsen stehen auf 5710 ZE, Mahnkostenersatz auf 5430 ASBE; echter Schadensersatz wird hier ohne Umsatzsteuer behandelt."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGJ123VHSBHZHXXCV0",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGJ123VHSBHZHXXCV0",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fo-klassifizieren",
+      "title": "Forderungen nach Bonität einordnen",
+      "domain": "bwr/forderungen",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-klassifizieren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZJZN70AS4WPHYKH15S",
+          "slug": "bwr9-fo-klassifizieren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was kennzeichnet eine zweifelhafte Forderung?",
+          "concept": "Ein konkret erkennbares, noch nicht endgültig feststehendes Ausfallrisiko.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-klassifizieren",
+          "materiality": "material",
+          "sample_solution": "Einzelfallrisiko und endgültiger Ausfall sind unterschiedliche Zustände.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein konkret erkennbares, noch nicht endgültig feststehendes Ausfallrisiko.",
+              "Jede Rechnung unmittelbar nach ihrer Ausstellung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZJGG4XVZFYHP80HP6J",
+          "slug": "bwr9-fo-klassifizieren-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Bonitätsklassen werden für Forderungen im Schulmodell unterschieden?",
+          "concept": "Einwandfreie, zweifelhafte und uneinbringliche Forderungen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-klassifizieren",
+          "materiality": "material",
+          "sample_solution": "Die Einordnung stützt sich auf Belege und Informationen zur Bonität. Sie bestimmt Umbuchung, Wertberichtigung oder direkte Abschreibung. Eine Risikoschätzung zum Bilanzstichtag berichtigt noch nicht die Umsatzsteuer; die Uneinbringlichkeit ist gesondert zu beurteilen."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGH5QQDNBRAXVY1YJS",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGH5QQDNBRAXVY1YJS",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fo-umbuchen",
+      "title": "Zweifelhafte Forderungen umbuchen",
+      "domain": "bwr/forderungen",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-umbuchen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGJ123VHSBHZHXXCV0",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZJBQJKFMS8891C8KST",
+          "slug": "bwr9-fo-umbuchen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In welcher Höhe wird eine zweifelhafte Rechnung von 2400 FO auf 2470 ZWFO umgebucht?",
+          "concept": "In voller Bruttohöhe.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-umbuchen",
+          "materiality": "material",
+          "sample_solution": "Die Umbuchung macht die Risikoklasse sichtbar und lässt den Forderungsbetrag unverändert.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In voller Bruttohöhe.",
+              "Nur in Höhe der Umsatzsteuer."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZJA4KDQY249GNJTNBM",
+          "slug": "bwr9-fo-umbuchen-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie lautet die Umbuchung einer zweifelhaften Kundenforderung?",
+          "concept": "2470 ZWFO an 2400 FO in voller Bruttohöhe.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-umbuchen",
+          "materiality": "material",
+          "sample_solution": "Die Umsatzsteuer bleibt bei dieser bloßen Risikoumbuchung unverändert. Eine Wertminderung zum Stichtag oder ein später feststehender Ausfall braucht einen weiteren eigenen Buchungsschritt. Durch Umbuchung wird weder ein Verlust automatisch endgültig noch eine Zahlung erzeugt."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGYAND7N28BAFVZHMJ",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGYAND7N28BAFVZHMJ",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fo-ausfall",
+      "title": "Endgültigen Forderungsausfall buchen",
+      "domain": "bwr/forderungen",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-ausfall",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGH5QQDNBRAXVY1YJS",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZJQTXZJ7V9VQ327B9S",
+          "slug": "bwr9-fo-ausfall-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wann wird im geübten Forderungsfall Umsatzsteuer berichtigt?",
+          "concept": "Bei feststehender Uneinbringlichkeit im entsprechenden Umfang.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-ausfall",
+          "materiality": "material",
+          "sample_solution": "Umsatzsteuerkorrektur und erwartete Wertminderung folgen verschiedenen Voraussetzungen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bei feststehender Uneinbringlichkeit im entsprechenden Umfang.",
+              "Schon bei jeder bloßen Risikoschätzung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZJBHGAKSHXZXCX3BJA",
+          "slug": "bwr9-fo-ausfall-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist bei endgültigem Ausfall einer versteuerten Forderung nicht der ganze Bruttobetrag Verlust?",
+          "concept": "Der Umsatzsteueranteil wird berichtigt; Aufwand ist im einfachen Fall nur der Nettoausfall.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-ausfall",
+          "materiality": "material",
+          "sample_solution": "Bei endgültig ausgefallenen 1.190 Euro aus einer mit 19 Prozent versteuerten Forderung entfallen 1.000 Euro auf Verlust und 190 Euro auf Umsatzsteuerkorrektur. Lautet das Konto zuvor 2470 ZWFO, wird dort ausgebucht; ohne vorherige Umbuchung wäre 2400 FO betroffen."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZG9SFE4MR5H5R989R7",
+      "atom_uri": "urn:zam:atom:01M5FKJXZG9SFE4MR5H5R989R7",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fo-spaetzahlung",
+      "title": "Zahlung nach Abschreibung erfassen",
+      "domain": "bwr/forderungen",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-spaetzahlung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGYAND7N28BAFVZHMJ",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZJ6FXXQDVNYC1EKR91",
+          "slug": "bwr9-fo-spaetzahlung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie wird ein später Zahlungseingang von 595 Euro zu 19 Prozent auf eine vollständig abgeschriebene Forderung zerlegt?",
+          "concept": "500 Euro Ertrag und 95 Euro Umsatzsteuer.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-spaetzahlung",
+          "materiality": "material",
+          "sample_solution": "Die spätere Vereinnahmung führt zur erneuten Umsatzsteuerberichtigung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "500 Euro Ertrag und 95 Euro Umsatzsteuer.",
+              "595 Euro steuerfreier Ertrag."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZJ4JQMED8BMWFH81VC",
+          "slug": "bwr9-fo-spaetzahlung-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie lautet der einfache Buchungssatz für eine nachträgliche Zahlung auf eine abgeschriebene versteuerte Forderung?",
+          "concept": "2800 BK an 5495 EFO und 4800 UST.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-spaetzahlung",
+          "materiality": "material",
+          "sample_solution": "Bei 595 Euro nachträglicher Zahlung auf einen mit 19 Prozent versteuerten und vollständig abgeschriebenen Anspruch ergeben sich 500 Euro Ertrag und 95 Euro Umsatzsteuer. Die vorangegangene Steuerkorrektur wird im Umfang der Zahlung wieder berichtigt."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGG6W4FRHEG425T3TM",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGG6W4FRHEG425T3TM",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fo-ewb",
+      "title": "Einzelwertberichtigung am Stichtag",
+      "domain": "bwr/forderungen",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-ewb",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGJ123VHSBHZHXXCV0",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZJN134FWEDHAHMBBM6",
+          "slug": "bwr9-fo-ewb-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Basis hat die EWB im geübten Fall einer versteuerten zweifelhaften Forderung?",
+          "concept": "Der erwartete Ausfall des Nettobetrags.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-ewb",
+          "materiality": "material",
+          "sample_solution": "Die Umsatzsteuer wird erst bei entsprechender Uneinbringlichkeit berichtigt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der erwartete Ausfall des Nettobetrags.",
+              "Der gesamte Bruttobetrag unabhängig von der Quote."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZJVJQGW9PQXR9TXEBP",
+          "slug": "bwr9-fo-ewb-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie lautet die Neubildung einer EWB ohne vorhandenen Bestand?",
+          "concept": "6950 ABFO an 3670 EWB in Höhe des erwarteten Nettoausfalls.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-ewb",
+          "materiality": "material",
+          "sample_solution": "Ohne vorhandenen EWB-Bestand wird 6950 ABFO an 3670 EWB gebucht. Die Bruttoforderung bleibt auf 2470 ZWFO; die indirekte Wertberichtigung vermindert ihren bilanziellen Wert. Die bloße Erwartung löst keine Umsatzsteuerkorrektur aus. Spätere Anpassungen und Auflösungen sind zusätzliche Vorgänge."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGJRMKP5M67W979GQ1",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGJRMKP5M67W979GQ1",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fo-pwb",
+      "title": "Pauschalwertberichtigung bilden",
+      "domain": "bwr/forderungen",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-pwb",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGG6W4FRHEG425T3TM",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZJF8TNS1AF373D0ZKQ",
+          "slug": "bwr9-fo-pwb-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Forderungen bilden hier die PWB-Basis?",
+          "concept": "Die einwandfreien Forderungen auf Nettobasis.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-pwb",
+          "materiality": "material",
+          "sample_solution": "Einzelrisiko und allgemeines Risiko werden ohne Doppelzählung berücksichtigt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die einwandfreien Forderungen auf Nettobasis.",
+              "Zusätzlich nochmals alle bereits einzeln berichtigten zweifelhaften Forderungen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZJWPQTKZWS89G2YBC2",
+          "slug": "bwr9-fo-pwb-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum werden zweifelhafte Forderungen aus der PWB-Basis ausgeschlossen?",
+          "concept": "Ihr konkretes Einzelrisiko wird gesondert beurteilt und soll nicht doppelt berücksichtigt werden.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-pwb",
+          "materiality": "material",
+          "sample_solution": "Bei einwandfreien Forderungen von 119.000 Euro brutto zu 19 Prozent beträgt die Nettobasis 100.000 Euro. Ein vorgegebener PWB-Satz von 1 Prozent ergibt 1.000 Euro. Ohne Altbestand lautet die Neubildung 6950 ABFO an 3680 PWB. Ein bereits vorhandener Bestand müsste zusätzlich berücksichtigt werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGZSFZPSNKR8BFPS89",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGZSFZPSNKR8BFPS89",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-fo-factoring",
+      "title": "Factoring als Risikosteuerung beurteilen",
+      "domain": "bwr/forderungen",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-factoring",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Ausfall und Bewertung von Forderungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZJV68EXGND36TGQ5FC",
+          "slug": "bwr9-fo-factoring-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage beschreibt echtes Factoring im Rahmen des Vertrags?",
+          "concept": "Das vereinbarte Forderungsausfallrisiko kann auf den Factor übergehen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-factoring",
+          "materiality": "material",
+          "sample_solution": "Der genaue Vertrag bestimmt Risikoübernahme und mögliche Rückgriffe.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das vereinbarte Forderungsausfallrisiko kann auf den Factor übergehen.",
+              "Alle denkbaren Lieferstreitigkeiten verschwinden automatisch."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZJJRXJYJWVKA69CJY9",
+          "slug": "bwr9-fo-factoring-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet echtes von unechtem Factoring im Hinblick auf Ausfallrisiko?",
+          "concept": "Beim echten übernimmt der Factor vereinbartes Ausfallrisiko; beim unechten bleibt ein Rückgriff möglich.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=fo-factoring",
+          "materiality": "material",
+          "sample_solution": "Beim echten Factoring übernimmt der Factor das vertraglich vereinbarte Delkredererisiko; beim unechten Factoring besteht Rückgriff bei Ausfall. Streit über die zugrunde liegende Lieferung und sonstige Risiken sind nicht automatisch abgedeckt. Die Entscheidung verbindet Liquidität, Kosten, Risiko und Kundenbeziehung."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZGJ24QG8X8GJ8CHV0F",
+      "atom_uri": "urn:zam:atom:01M5FKJXZGJ24QG8X8GJ8CHV0F",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-gr-vorsteuer",
+      "title": "Vorsteuer und Umsatzsteuer auffrischen",
+      "domain": "bwr/grundlagen",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=gr-vorsteuer",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "grundlagen",
+          "topic_title": "Optionale Grundlagenauffrischung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZJ3G8FW4X9XCK019ZY",
+          "slug": "bwr9-gr-vorsteuer-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche steuerrechtliche Natur hat das Konto '2600 Vorsteuer' (VORST), auf dem die beim Einkauf bezahlte Umsatzsteuer erfasst wird?",
+          "concept": "Ein aktives Bestandskonto und eine Forderung gegenüber dem Finanzamt.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=gr-vorsteuer",
+          "materiality": "material",
+          "sample_solution": "Berechtigt abziehbare Vorsteuer ist ein Anspruch, keine endgültige Belastung des Unternehmens.",
+          "replaces": [
+            "01K4W9A0000000000000000J01"
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein aktives Bestandskonto und eine Forderung gegenüber dem Finanzamt.",
+              "Ein passives Bestandskonto und eine Schuld gegenüber dem Finanzamt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZJA5R6Q7RF194BV57E",
+          "slug": "bwr9-gr-vorsteuer-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Kontennatur hat 4800 UST im einfachen steuerpflichtigen Verkaufsfall?",
+          "concept": "Ein passives Bestandskonto und eine Verbindlichkeit gegenüber dem Finanzamt.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=gr-vorsteuer",
+          "materiality": "material",
+          "sample_solution": "Die Aufgaben setzen ordnungsgemäße Rechnungen, betriebliche Verwendung und vollständigen Vorsteuerabzug voraus. Das gilt nicht für jede Person und jeden Umsatz. Die Auffrischung ist eine Grundlage aus früheren Jahrgängen und kein zusätzlicher Lernbereich des Klasse-9-Lehrplans."
+        }
+      ]
+    },
+    {
+      "id": "01M5FKJXZG1KR8W2DVGGYK42QA",
+      "atom_uri": "urn:zam:atom:01M5FKJXZG1KR8W2DVGGYK42QA",
+      "namespace": "zam-academy-bwr-realschule-9",
+      "slug": "bwr9-gr-zahllast",
+      "title": "Zahllast und Buchungen auffrischen",
+      "domain": "bwr/grundlagen",
+      "reduction": "formal",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=gr-zahllast",
+      "prerequisites": [
+        {
+          "atom_id": "01M5FKJXZGJ24QG8X8GJ8CHV0F",
+          "type": "hard",
+          "rationale": "Die anschließende Anwendung baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-9",
+          "topic_code": "grundlagen",
+          "topic_title": "Optionale Grundlagenauffrischung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5FKJXZJF3X14PJ33BKFC6AG",
+          "slug": "bwr9-gr-zahllast-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie wird aus 1.190 Euro brutto bei 19 Prozent Umsatzsteuer der Nettobetrag bestimmt?",
+          "concept": "1.190 Euro durch 1,19 teilen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=gr-zahllast",
+          "materiality": "material",
+          "sample_solution": "Der Steuersatz bezieht sich auf Netto, nicht auf Brutto.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1.190 Euro durch 1,19 teilen.",
+              "19 Prozent des Bruttobetrags abziehen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5FKJXZJ1JBVXX24M1MH00F4",
+          "slug": "bwr9-gr-zahllast-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie lautet die einfache Umsatzsteuerzahllast?",
+          "concept": "Umsatzsteuer minus berechtigt abziehbare Vorsteuer.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-9/#lesson=gr-zahllast",
+          "materiality": "material",
+          "sample_solution": "Die einfache Zahllast ist Umsatzsteuer minus abziehbare Vorsteuer. Bei Vorsteuerüberhang besteht ein Erstattungsanspruch. Für die Übung werden 4800 UST und 2600 VORST verrechnet; eine verbleibende Zahllast wird durch 4800 UST an 2800 BK bezahlt. Weitere steuerliche Sonderfälle sind ausgeschlossen."
+        }
+      ]
+    }
+  ],
+  "retired_items": [
+    {
+      "id": "01K4W9A0000000000000000J02",
+      "reason": "Mehrteiliger Abruf von Vorsteuer, Umsatzsteuer, Abrechnung und zwei Buchungssätzen. Neue Teilfragen sind kein identischer Gesamtabruf; Voraussetzungen des Vorsteuerabzugs werden ergänzt und VE statt der alten Abkürzung VLL verwendet. Keine Verteilung einer alten Beherrschung."
+    },
+    {
+      "id": "01K4W9A0000000000000000J04",
+      "reason": "Mehrteiliger Abruf von Ursachen, zwei Formeln, Restbuchwert, Buchung und LKW-Abschreibungsplan. Neue Fragen trennen diese Abrufe; kein einzelner sicher identischer Gesamtnachfolger. Historie bleibt erhalten, neue Teilfragen starten unbewertet."
+    }
+  ]
+}
