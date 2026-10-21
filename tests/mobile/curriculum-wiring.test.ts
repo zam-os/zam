@@ -19,6 +19,11 @@ describe("mobile curriculum wiring", () => {
       expect(html).toContain(`id="${id}"`);
     }
     expect(main).toContain("resolveMobileCurriculumPosition(");
+    // Cells come first whenever they exist; partial coverage keeps the topics.
+    expect(main).toContain(
+      "if (position.cells.length > 0) renderCurriculumCells(position.cells);",
+    );
+    expect(main).toContain('"curriculum_partial_body"');
     expect(main).toContain('invoke<string>("curriculum_source_request"');
     expect(main).toContain("previewMobileCurriculumTopic(db");
   });

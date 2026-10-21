@@ -1,0 +1,1396 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:algorithmen",
+	"version": "2026.10.1",
+	"title": "Algorithmen und Programmieren (ZAM Academy)",
+	"description": "Abläufe modellieren, eigenen Code schreiben, Variablen, Bedingungen, Schleifen, Felder und Funktionen verstehen und mit Testfällen sowie Ablaufspuren Fehler finden. Realschule Bayern, IT 2.6.1, modular ohne feste Jahrgangsstufe.",
+	"publisher": "ZAM Academy",
+	"published_at": "2026-10-21T12:00:00Z",
+	"sources": [
+		{
+			"uri": "https://academy.zam-os.org/algorithmen/",
+			"checked": "2026-10-21",
+			"label": "ZAM Academy · Algorithmen und Programmieren"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/it",
+			"checked": "2026-10-21",
+			"label": "LehrplanPLUS Realschule · Informationstechnologie · IT 2.6.1"
+		},
+		{
+			"uri": "https://tc39.es/ecma262/",
+			"checked": "2026-10-21",
+			"label": "ECMA-262 · JavaScript-Sprachstandard"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M5ETGY42A6D7ETK0R96SR9AB",
+			"atom_uri": "urn:zam:atom:01M5ETGY42A6D7ETK0R96SR9AB",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-eindeutigkeit",
+			"title": "Vom Auftrag zum Algorithmus",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-eindeutigkeit",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-1",
+					"topic_title": "Abläufe und Werte"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY422GATWY1HC4BZXV41",
+					"slug": "algo-eindeutigkeit-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-eindeutigkeit",
+					"question": "Welche Eigenschaft eines Algorithmus besagt, dass jeder Einzelschritt präzise und unmissverständlich formuliert sein muss?",
+					"concept": "Eindeutigkeit",
+					"materiality": "material",
+					"sample_solution": "„Mach den Preis günstiger“ lässt offen, um wie viel. Ein Algorithmus beschreibt Schritte mit klaren Regeln. Beim Rabatt muss feststehen, welcher Ausgangspreis gilt und wie der neue Preis entsteht.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Eindeutigkeit", "Zufälligkeit"],
+						"correct_index": 0
+					},
+					"replaces": ["01K4A9S0000000000000000J01"]
+				},
+				{
+					"id": "01M5ETGY429T0RD66YQGB8G7C6",
+					"slug": "algo-abbruch-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-eindeutigkeit",
+					"question": "Was prüft man bei einer Abbruchbedingung?",
+					"concept": "Ob die Ausführung bei den vorgesehenen Eingaben tatsächlich endet.",
+					"materiality": "material",
+					"sample_solution": "Eindeutigkeit betrifft die präzise Bedeutung jedes Schritts. Davon zu unterscheiden ist die Frage, ob ein Ablauf für jede zulässige Eingabe endet. Programme können absichtlich endlos laufen; eine falsche Abbruchbedingung kann dagegen ein Fehler sein. Hier prüfen wir endende Berechnungen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ob die Ausführung bei den vorgesehenen Eingaben tatsächlich endet.",
+							"Ob jeder Variablenname möglichst kurz geschrieben wird."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY4267DEF2T2ZDJ2XZVS",
+			"atom_uri": "urn:zam:atom:01M5ETGY4267DEF2T2ZDJ2XZVS",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-sequenz",
+			"title": "Die Reihenfolge zählt",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-sequenz",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-1",
+					"topic_title": "Abläufe und Werte"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY422EMBD47ZRQ31C5WS",
+					"slug": "algo-sequenz-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-sequenz",
+					"question": "Was ist eine Sequenz in einem Programm?",
+					"concept": "Eine Folge nacheinander ausgeführter Anweisungen.",
+					"materiality": "material",
+					"sample_solution": "Eine Sequenz ist eine Folge von Anweisungen. Eine spätere Anweisung sieht die Werte, die vorherige Anweisungen hinterlassen haben. Bei einer Bestellung werden erst Nettopreis und Versand addiert; danach wird der Gesamtbetrag ausgegeben.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine Folge nacheinander ausgeführter Anweisungen.",
+							"Eine zufällige Auswahl einer einzigen Anweisung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY42TWJEEZVFCV6PQHM4",
+					"slug": "algo-reihenfolge-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-sequenz",
+					"question": "Warum kann die Reihenfolge von Zuweisungen das Ergebnis ändern?",
+					"concept": "Jede Anweisung arbeitet mit den bisher erreichten Werten.",
+					"materiality": "material",
+					"sample_solution": "Im Beispielprogramm kannst du zwei Rechenwege vergleichen. „Erst 3 addieren, dann verdoppeln“ ergibt bei 5 den Wert 16. „Erst verdoppeln, dann 3 addieren“ ergibt 13. Das Modell hilft dir, die Reihenfolge vor dem Programmieren zu planen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Jede Anweisung arbeitet mit den bisher erreichten Werten.",
+							"Zuweisungen werden stets alphabetisch sortiert."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY42HGMJZZ88MKW9C8H8",
+			"atom_uri": "urn:zam:atom:01M5ETGY42HGMJZZ88MKW9C8H8",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-modelle",
+			"title": "Vom Modell zum Quellcode",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-modelle",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-1",
+					"topic_title": "Abläufe und Werte"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY427J1A4KVN4TT1BR6Q",
+					"slug": "algo-modell-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-modelle",
+					"question": "Wozu dient Pseudocode?",
+					"concept": "Einen Lösungsablauf unabhängig von genauer Programmiersyntax zu beschreiben.",
+					"materiality": "material",
+					"sample_solution": "Ein Programmablaufplan zeigt Schritte als Symbole und verbindet sie mit Pfeilen. In einem Struktogramm stehen Blöcke für Sequenzen, Auswahl und Wiederholung. Pseudocode beschreibt dieselbe Idee in knapper, sprachähnlicher Form.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Einen Lösungsablauf unabhängig von genauer Programmiersyntax zu beschreiben.",
+							"Jeden Programmtext direkt durch den Prozessor ausführen zu lassen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY42XN5ZPZT3VNM9FY3E",
+					"slug": "algo-struktogramm-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-modelle",
+					"question": "Was stellen die Blöcke eines Struktogramms dar?",
+					"concept": "Die Struktur des Ablaufs mit Sequenz, Auswahl und Wiederholung.",
+					"materiality": "material",
+					"sample_solution": "Keine Darstellung ist schon automatisch ausführbarer Quellcode. Entscheidend sind dieselben Bedingungen und dieselbe Reihenfolge im Modell und im Programm. Unser Ablaufstreifen ist eine vereinfachte Lesedarstellung; vollständige Struktogramme oder genormte Ablaufplansymbole zeichnest du ergänzend im Unterricht.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Struktur des Ablaufs mit Sequenz, Auswahl und Wiederholung.",
+							"Die Ordner und Dateinamen einer installierten Entwicklungsumgebung."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY4293WVH1R08SR4938F",
+			"atom_uri": "urn:zam:atom:01M5ETGY4293WVH1R08SR4938F",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-variablen",
+			"title": "Werte unter einem Namen",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-variablen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-1",
+					"topic_title": "Abläufe und Werte"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY42ZEQHRSJVD20SH41C",
+					"slug": "algo-zuweisung-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-variablen",
+					"question": "Wie wirkt die Zuweisung x = x + 1?",
+					"concept": "Sie erhöht den bisherigen Wert von x um 1 und speichert ihn.",
+					"materiality": "material",
+					"sample_solution": "Eine Variable verbindet in JavaScript einen Namen mit einem Wert. let punkte = 4 legt eine veränderbare Bindung an. Später ersetzt punkte = punkte + 1 den alten Wert durch den berechneten neuen Wert.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie erhöht den bisherigen Wert von x um 1 und speichert ihn.",
+							"Sie verlangt, dass der alte und neue Wert von x gleich sind."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY428RRY2VRGQHAWRNFM",
+					"slug": "algo-variablen-synthese",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-variablen",
+					"question": "Was bezeichnet eine mit let angelegte Variable in JavaScript?",
+					"concept": "Eine veränderbare Bindung zwischen einem Namen und einem Wert.",
+					"materiality": "material",
+					"sample_solution": "Das Gleichheitszeichen ist hier eine Zuweisung. Es behauptet keine mathematische Gleichheit zwischen alter und neuer Punktzahl. JavaScript bindet keinen unveränderlichen Datentyp an den Namen: Ein Name kann später auch einen anderen Werttyp erhalten. Für verständliche Programme verwenden wir passende Namen und bleiben bei einer klaren Bedeutung.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine veränderbare Bindung zwischen einem Namen und einem Wert.",
+							"Eine dauerhaft auf einen einzigen Werttyp festgelegte Speicheradresse."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY42RGS95AKVVRYCSDA4",
+			"atom_uri": "urn:zam:atom:01M5ETGY42RGS95AKVVRYCSDA4",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-zahlen",
+			"title": "Zahlen und Texte unterscheiden",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-zahlen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-1",
+					"topic_title": "Abläufe und Werte"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY425DV7V7P2Z1SG6CS3",
+					"slug": "algo-number-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-zahlen",
+					"question": "Welchen JavaScript-Werttyp haben gewöhnliche Zahlen wie 3 und 3.5?",
+					"concept": "Number",
+					"materiality": "material",
+					"sample_solution": "JavaScript verwendet Number für Zahlen wie 3 und 3.5. Anders als manche andere Sprachen besitzt es für gewöhnliche Zahlen keine getrennten Variablentypen Integer und Float. String steht für Text in Anführungszeichen; Boolean für true oder false.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Number", "Boolean"],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY4276PP5YVBCS3V8TZP",
+					"slug": "algo-string-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-zahlen",
+					"question": "Woran erkennt man einen Textwert im Quellcode?",
+					"concept": "Er steht in Anführungszeichen.",
+					"materiality": "material",
+					"sample_solution": "Ein Plus zwischen Zahlen addiert. Ein Plus mit Text verkettet: \"Preis: \" + 12 ergibt den Text Preis: 12. Unser Interpreter unterstützt Number, String, Boolean, null und eindimensionale Felder. Er verweigert Rechnen mit Text an Stellen, die Zahlen benötigen, statt automatische Typumwandlungen zu verstecken.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Er steht in Anführungszeichen.",
+							"Er enthält zwingend nur Buchstaben."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY43R4X0A7C63DJCA5F2",
+			"atom_uri": "urn:zam:atom:01M5ETGY43R4X0A7C63DJCA5F2",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-boolean",
+			"title": "Wahr oder falsch",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-boolean",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-1",
+					"topic_title": "Abläufe und Werte"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY43BBJB7FDMAAG4C5W5",
+					"slug": "algo-boolean-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-boolean",
+					"question": "Welcher Datentyp speichert Wahrheitswerte, die nur die Werte TRUE (wahr) oder FALSE (falsch) annehmen können?",
+					"concept": "Boolean",
+					"materiality": "material",
+					"sample_solution": "Ein Boolean besitzt genau zwei Werte: true und false. Vergleiche wie alter >= 14 erzeugen einen solchen Wert. Dadurch kann ein Programm Regeln prüfen, ohne die Antwort als frei geschriebenen Text zu behandeln.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Boolean", "String"],
+						"correct_index": 0
+					},
+					"replaces": ["01K4A9S0000000000000000J05"]
+				},
+				{
+					"id": "01M5ETGY437VJGPZBCJ01WGDBT",
+					"slug": "algo-vergleich-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-boolean",
+					"question": "Worin unterscheiden sich = und === in JavaScript?",
+					"concept": "= weist zu; === prüft strikte Gleichheit.",
+					"materiality": "material",
+					"sample_solution": "Vergleiche sind keine Zuweisungen. Für strikte Gleichheit schreiben wir ===, für Ungleichheit !==. Die Werkstatt unterstützt keine automatische Typumwandlung bei Vergleichen. Beim Vergleich mehrerer Zahlen helfen Grenzfälle, etwa die exakte Altersgrenze.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"= weist zu; === prüft strikte Gleichheit.",
+							"= prüft Gleichheit; === legt eine Variable an."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY43ACN3E6RNKRZ8CJ92",
+			"atom_uri": "urn:zam:atom:01M5ETGY43ACN3E6RNKRZ8CJ92",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-bedingungen",
+			"title": "Zwei Wege mit if und else",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-bedingungen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-2",
+					"topic_title": "Entscheidungen und Schleifen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY432WZB6KZR23H6GDXW",
+					"slug": "algo-if-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-bedingungen",
+					"question": "Was steuert eine if-else-Verzweigung?",
+					"concept": "Welcher von zwei Blöcken abhängig von einer Bedingung ausgeführt wird.",
+					"materiality": "material",
+					"sample_solution": "Eine bedingte Verzweigung führt abhängig von einer Bedingung einen Weg aus. Bei if wird der erste Block ausgeführt, wenn die Bedingung wahr ist. Ein angehängtes else beschreibt den anderen Fall.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Welcher von zwei Blöcken abhängig von einer Bedingung ausgeführt wird.",
+							"Wie viele Variablen ein Programm insgesamt anlegen darf."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY43JCKRJA80VNSAG5GG",
+					"slug": "algo-grenzfall-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-bedingungen",
+					"question": "Warum testet man bei „mindestens 10“ auch die Eingabe 10?",
+					"concept": "Sie zeigt, ob der Grenzwert korrekt eingeschlossen wird.",
+					"materiality": "material",
+					"sample_solution": "Geschweifte Klammern markieren die zusammengehörigen Anweisungen. In einem if-else-Paar wird genau einer der beiden Blöcke ausgeführt. Plane Tests auf beiden Seiten der Bedingung und direkt an der Grenze.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie zeigt, ob der Grenzwert korrekt eingeschlossen wird.",
+							"Sie ersetzt jeden Test unterhalb und oberhalb der Grenze."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY43BQH9S62GKG57494D",
+			"atom_uri": "urn:zam:atom:01M5ETGY43BQH9S62GKG57494D",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-logik",
+			"title": "Bedingungen verknüpfen",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-logik",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-2",
+					"topic_title": "Entscheidungen und Schleifen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY43S1T844VZVXAAHGG3",
+					"slug": "algo-und-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-logik",
+					"question": "Wann ist eine UND-Verknüpfung zweier Wahrheitswerte wahr?",
+					"concept": "Wenn beide Wahrheitswerte wahr sind.",
+					"materiality": "material",
+					"sample_solution": "Der Operator && verknüpft Bedingungen mit „und“: Beide müssen wahr sein. Bei || genügt mindestens eine wahre Bedingung. ! kehrt einen Wahrheitswert um.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wenn beide Wahrheitswerte wahr sind.",
+							"Wenn genau einer der Wahrheitswerte wahr ist."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY433M9B45NF2X1Q3C0D",
+					"slug": "algo-oder-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-logik",
+					"question": "Wann ist eine ODER-Verknüpfung zweier Wahrheitswerte falsch?",
+					"concept": "Wenn beide Wahrheitswerte falsch sind.",
+					"materiality": "material",
+					"sample_solution": "Eine Badekarte gilt beispielsweise nur, wenn genug Guthaben vorhanden ist und die Karte freigeschaltet ist. Die rechte Seite von && wird nicht mehr ausgewertet, wenn links bereits false steht. Bei || wird rechts ausgelassen, wenn links bereits true ist.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wenn beide Wahrheitswerte falsch sind.",
+							"Wenn mindestens einer der Wahrheitswerte wahr ist."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY43FBA51PT7HDZN05AM",
+			"atom_uri": "urn:zam:atom:01M5ETGY43FBA51PT7HDZN05AM",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-while",
+			"title": "Wiederholen mit while",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-while",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-2",
+					"topic_title": "Entscheidungen und Schleifen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY43D1A1RT0Y92MV0C4R",
+					"slug": "algo-while-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-while",
+					"question": "Wird der Schleifenkörper einer kopfgesteuerten Schleife (WHILE-Schleife) ausgeführt, wenn die Schleifenbedingung bereits zu Beginn FALSE (falsch) ist?",
+					"concept": "Nein, der Schleifenkörper wird kein einziges Mal ausgeführt.",
+					"materiality": "material",
+					"sample_solution": "Eine while-Schleife prüft ihre Bedingung vor jedem Durchlauf. Ist die Bedingung bereits am Anfang false, wird der Körper überhaupt nicht ausgeführt. Das unterscheidet sie von einer fußgesteuerten do-while-Schleife.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein, der Schleifenkörper wird kein einziges Mal ausgeführt.",
+							"Ja, der Schleifenkörper wird mindestens einmal ausgeführt."
+						],
+						"correct_index": 0
+					},
+					"replaces": ["01K4A9S0000000000000000J03"]
+				},
+				{
+					"id": "01M5ETGY436QMH4TMRKCJYP6K0",
+					"slug": "algo-schleifenende-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-while",
+					"question": "Was braucht eine endende Zählschleife außer einer Bedingung?",
+					"concept": "Eine passende Änderung des Zählers in Richtung des Abbruchs.",
+					"materiality": "material",
+					"sample_solution": "Der Körper muss bei endenden Berechnungen dazu beitragen, dass die Bedingung irgendwann falsch wird. Beim Herunterzählen verringert er den Zähler. Bleibt der Zähler unverändert, meldet die Werkstatt nach einer festen Schrittgrenze einen möglichen Schleifenfehler.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine passende Änderung des Zählers in Richtung des Abbruchs.",
+							"Eine Ausgabe, die den Zähler automatisch kleiner macht."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY43V2X2T1Y63VE903DV",
+			"atom_uri": "urn:zam:atom:01M5ETGY43V2X2T1Y63VE903DV",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-for",
+			"title": "Zählwiederholungen mit for",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-for",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-2",
+					"topic_title": "Entscheidungen und Schleifen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY43CCD37T3DPK351A01",
+					"slug": "algo-for-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-for",
+					"question": "Welche drei Teile stehen im Kopf einer for-Zählschleife?",
+					"concept": "Startanweisung, Bedingung und Zählerschritt.",
+					"materiality": "material",
+					"sample_solution": "Bei der hier verwendeten for-Zählschleife stehen Start, Bedingung und Veränderung im Schleifenkopf. for (let i = 0; i < 3; i = i + 1) durchläuft den Körper mit i = 0, 1 und 2.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Startanweisung, Bedingung und Zählerschritt.",
+							"Funktionsname, Rückgabewert und Kommentar."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY43CQMG1WGMXGAKRRJR",
+					"slug": "algo-for-grenze-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-for",
+					"question": "Wie viele Durchläufe hat for (let i = 0; i < 3; i = i + 1)?",
+					"concept": "Drei Durchläufe mit i = 0, 1 und 2.",
+					"materiality": "material",
+					"sample_solution": "Zuerst läuft der Start genau einmal. Vor jedem Durchlauf wird die Bedingung geprüft. Nach dem Körper folgt die Veränderung. Diese Form ist praktisch, wenn der Zählbereich bekannt ist; JavaScript kennt weitere for-Formen, die diese Werkstatt nicht behandelt.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Drei Durchläufe mit i = 0, 1 und 2.",
+							"Vier Durchläufe mit i = 0, 1, 2 und 3."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY43WPWGNAHWDMZQ9DG6",
+			"atom_uri": "urn:zam:atom:01M5ETGY43WPWGNAHWDMZQ9DG6",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-do-while",
+			"title": "Erst handeln, dann prüfen",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-do-while",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-2",
+					"topic_title": "Entscheidungen und Schleifen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY43Q97V0VE1WSEQMKJD",
+					"slug": "algo-do-while-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-do-while",
+					"question": "Wann prüft eine do-while-Schleife die Wiederholungsbedingung?",
+					"concept": "Nach dem Schleifenkörper.",
+					"materiality": "material",
+					"sample_solution": "Eine do-while-Schleife führt ihren Körper aus, bevor sie die Bedingung prüft. Darum findet mindestens ein Durchlauf statt. Das kann etwa passen, wenn erst eine Eingabe verarbeitet und danach über eine Wiederholung entschieden wird.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nach dem Schleifenkörper.",
+							"Vor jedem Schritt des Schleifenkörpers."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY43Z7ST4F9Q3VQ924CE",
+					"slug": "algo-mindestdurchlauf-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-do-while",
+					"question": "Wie oft läuft der Körper einer do-while-Schleife mindestens?",
+					"concept": "Einmal.",
+					"materiality": "material",
+					"sample_solution": "Die Bedingung in while (...) bedeutet auch hier „weiterlaufen, solange wahr“. Verwechsle sie nicht mit „abbrechen, sobald wahr“. In JavaScript gehört hinter das do-while-Konstrukt ein Semikolon.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Einmal.", "Keinmal."],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY43P29DVVJYBR4515JD",
+			"atom_uri": "urn:zam:atom:01M5ETGY43P29DVVJYBR4515JD",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-kontrollstrukturen",
+			"title": "Die passende Ablaufstruktur wählen",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-kontrollstrukturen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-2",
+					"topic_title": "Entscheidungen und Schleifen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY43S1BV5FYMEVA9XGK7",
+					"slug": "algo-kontrollstrukturen-synthese",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-kontrollstrukturen",
+					"question": "Unterscheide die drei Kontrollstrukturen: 1. Sequenz (lineare Folge), 2. Bedingte Verzweigung (IF-THEN-ELSE) und 3. Schleifen (Zählschleife FOR vs. kopfgesteuerte WHILE vs. fußgesteuerte DO-WHILE).",
+					"concept": "Sequenz führt Schritte nacheinander aus; IF-THEN-ELSE wählt einen Weg. Die hier gemeinte FOR-Zählschleife bündelt Start, Prüfung und Zählerschritt. WHILE prüft vor dem Körper und kann nullmal laufen; DO-WHILE prüft nach dem Körper und läuft mindestens einmal.",
+					"materiality": "material",
+					"sample_solution": "Sequenz führt Schritte nacheinander aus; IF-THEN-ELSE wählt einen Weg. Die hier gemeinte FOR-Zählschleife bündelt Start, Prüfung und Zählerschritt. WHILE prüft vor dem Körper und kann nullmal laufen; DO-WHILE prüft nach dem Körper und läuft mindestens einmal.",
+					"replaces": ["01K4A9S0000000000000000J04"]
+				},
+				{
+					"id": "01M5ETGY43QRSH3GPT5Q7PX2KK",
+					"slug": "algo-rest-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-kontrollstrukturen",
+					"question": "Wie prüft man bei einer ganzen Zahl n, ob sie gerade ist?",
+					"concept": "Man prüft, ob n % 2 gleich 0 ist.",
+					"materiality": "material",
+					"sample_solution": "Eine passende Struktur macht die Absicht verständlich. Für alle Messwerte einer festen Liste eignet sich eine Zählschleife. Für eine unbekannte Anzahl von Wiederholungen kann eine while-Schleife passen. Ob der erste Durchlauf auch ohne erfüllte Bedingung nötig ist, entscheidet zwischen Kopf- und Fußsteuerung.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Man prüft, ob n % 2 gleich 0 ist.",
+							"Man prüft, ob n / 2 größer als 0 ist."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY43292R3DRASHRY57VQ",
+			"atom_uri": "urn:zam:atom:01M5ETGY43292R3DRASHRY57VQ",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-felder",
+			"title": "Mehrere Werte in einem Feld",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-felder",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-3",
+					"topic_title": "Felder und Funktionen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY43AQV08T1FAQHYE0R2",
+					"slug": "algo-index-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-felder",
+					"question": "Mit welchem Index beginnt ein JavaScript-Feld?",
+					"concept": "Mit 0.",
+					"materiality": "material",
+					"sample_solution": "Ein Feld speichert mehrere Werte in einer geordneten Folge. let werte = [4, 7, 2] erzeugt hier drei Einträge. Der Index beginnt bei 0: werte[0] ist 4, werte[2] ist 2. werte.length liefert die Anzahl 3.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Mit 0.", "Mit 1."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY4399N1V3N48XVBSY96",
+					"slug": "algo-length-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-felder",
+					"question": "Was liefert werte.length bei einem Feld?",
+					"concept": "Die Anzahl der Einträge.",
+					"materiality": "material",
+					"sample_solution": "Ein Zugriff auf Index 3 wäre bei drei Einträgen bereits außerhalb des Feldes. Die Werkstatt meldet solche Zugriffe ausdrücklich als Fehler. Die echten JavaScript-Regeln sind an dieser Stelle weiter gefasst; für die Übungen arbeiten wir bewusst nur mit vorhandenen Einträgen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Anzahl der Einträge.",
+							"Den Wert des letzten Eintrags."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY43WVQ1P21FN8JY4MKW",
+			"atom_uri": "urn:zam:atom:01M5ETGY43WVQ1P21FN8JY4MKW",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-felder-schleife",
+			"title": "Ein Feld durchlaufen",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-felder-schleife",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-3",
+					"topic_title": "Felder und Funktionen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY437P57TYBCNGYGTQ16",
+					"slug": "algo-felddurchlauf-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-felder-schleife",
+					"question": "Warum verwendet man beim Felddurchlauf i < werte.length?",
+					"concept": "Weil der letzte gültige Index um 1 kleiner als die Länge ist.",
+					"materiality": "material",
+					"sample_solution": "Eine Zählschleife kann jeden Eintrag eines Feldes besuchen. Sie beginnt beim Index 0 und läuft, solange i < werte.length gilt. So wird jeder gültige Index genau einmal verwendet.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Weil der letzte gültige Index um 1 kleiner als die Länge ist.",
+							"Weil das erste Element einen Index größer als die Länge besitzt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY43FZZFBGPJ9VKBF8GC",
+					"slug": "algo-summe-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-felder-schleife",
+					"question": "Mit welchem Startwert beginnt eine Sammelvariable für eine Summe?",
+					"concept": "Mit 0.",
+					"materiality": "material",
+					"sample_solution": "Eine Sammelvariable bewahrt ein Zwischenergebnis auf. Bei einer Summe startet sie mit 0. Nach jedem Durchlauf enthält sie die Summe aller bisher besuchten Werte. Bei einem leeren Feld bleibt sie unverändert 0.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Mit 0.", "Mit der Länge plus 1."],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY43V6PAJ76GKHGCGSXH",
+			"atom_uri": "urn:zam:atom:01M5ETGY43V6PAJ76GKHGCGSXH",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-funktionen",
+			"title": "Eine Aufgabe benennen",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-funktionen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-3",
+					"topic_title": "Felder und Funktionen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY435A1XP52E81Y966N3",
+					"slug": "algo-funktion-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-funktionen",
+					"question": "Was unterscheidet Funktionsdefinition und Funktionsaufruf?",
+					"concept": "Die Definition beschreibt die Aufgabe; der Aufruf führt sie aus.",
+					"materiality": "material",
+					"sample_solution": "Eine Funktion fasst eine zusammengehörige Aufgabe unter einem Namen zusammen. Ihre Definition beschreibt das Verhalten; der Aufruf führt es aus. Eine noch nicht aufgerufene Definition erzeugt keine Ausgabe.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Definition beschreibt die Aufgabe; der Aufruf führt sie aus.",
+							"Beide führen den Funktionskörper automatisch gleich oft aus."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY43XBY84X9MBXPD76BH",
+					"slug": "algo-funktionsname-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-funktionen",
+					"question": "Warum wählt man einen beschreibenden Funktionsnamen?",
+					"concept": "Damit die Aufgabe am Aufruf erkennbar wird.",
+					"materiality": "material",
+					"sample_solution": "Ein guter Name beschreibt die Aufgabe, beispielsweise gruss oder berechnePreis. Funktionen vermeiden kopierte Anweisungsfolgen. Unser Interpreter verlangt die Definition vor dem ersten Aufruf und unterstützt nur Funktionen auf der obersten Programmebene.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Damit die Aufgabe am Aufruf erkennbar wird.",
+							"Damit die Funktion ohne Definition ausgeführt werden kann."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY43MVYTNHCWY9HPBGCR",
+			"atom_uri": "urn:zam:atom:01M5ETGY43MVYTNHCWY9HPBGCR",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-parameter",
+			"title": "Werte an eine Funktion übergeben",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-parameter",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-3",
+					"topic_title": "Felder und Funktionen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY431BD1YP87XV0DV5HB",
+					"slug": "algo-parameter-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-parameter",
+					"question": "Was ist ein Parameter einer Funktion?",
+					"concept": "Ein Name, über den der Funktionskörper einen übergebenen Wert nutzt.",
+					"materiality": "material",
+					"sample_solution": "Parameter sind die Namen in einer Funktionsdefinition. Argumente sind die konkreten Werte beim Aufruf. function zeige(name) bekommt bei zeige(\"Mia\") den Argumentwert Mia unter dem Parameternamen name.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein Name, über den der Funktionskörper einen übergebenen Wert nutzt.",
+							"Ein Kommentar, der ausschließlich nach einem Aufruf steht."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY43DWYQWGDGAD4CWX9T",
+					"slug": "algo-argument-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-parameter",
+					"question": "Was bezeichnet ein Argument beim Funktionsaufruf?",
+					"concept": "Den konkret übergebenen Wert oder Ausdruck.",
+					"materiality": "material",
+					"sample_solution": "Jeder Aufruf besitzt eigene lokale Parameterbindungen. Ein anderer Aufruf kann andere Werte verwenden. Die Anzahl der übergebenen Werte muss in der Werkstatt zur Parameterliste passen; fehlende oder überzählige Argumente werden als Lernfehler angezeigt.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Den konkret übergebenen Wert oder Ausdruck.",
+							"Ausschließlich den Namen der aufgerufenen Funktion."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY43E3THZE42FWPWXGZQ",
+			"atom_uri": "urn:zam:atom:01M5ETGY43E3THZE42FWPWXGZQ",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-rueckgabe",
+			"title": "Mit Ergebnissen weiterarbeiten",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-rueckgabe",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-3",
+					"topic_title": "Felder und Funktionen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY43NSD13SX3T17XEP97",
+					"slug": "algo-return-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-rueckgabe",
+					"question": "Wozu dient return in einer Funktion?",
+					"concept": "Es beendet den Aufruf und liefert einen Wert an die Aufrufstelle.",
+					"materiality": "material",
+					"sample_solution": "Eine Rückgabe liefert einen Wert an die Aufrufstelle. return preis * 2 beendet den aktuellen Funktionsaufruf und gibt das Ergebnis zurück. Die aufrufende Stelle kann es speichern, weiterberechnen oder ausgeben.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es beendet den Aufruf und liefert einen Wert an die Aufrufstelle.",
+							"Es druckt den Quelltext der Funktion in die Ausgabe."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY43JFF7PA67DHSAXTMY",
+					"slug": "algo-lokal-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-rueckgabe",
+					"question": "Was gilt für einen Parameter bei verschiedenen Funktionsaufrufen?",
+					"concept": "Jeder Aufruf besitzt eine eigene lokale Parameterbindung.",
+					"materiality": "material",
+					"sample_solution": "print ist eine sichtbare Ausgabe, return eine Rückgabe zur Weiterverarbeitung. Wenn eine Funktion nur druckt, erhält die aufrufende Stelle dadurch noch kein Rechenergebnis. In dieser Werkstatt liefern Funktionen ohne return den Ersatzwert null; echtes JavaScript liefert undefined.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Jeder Aufruf besitzt eine eigene lokale Parameterbindung.",
+							"Alle Aufrufe müssen denselben Argumentwert verwenden."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY43JBNPJFHYC0VD2FFY",
+			"atom_uri": "urn:zam:atom:01M5ETGY43JBNPJFHYC0VD2FFY",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-syntax-semantik",
+			"title": "Richtig geschrieben ist noch nicht richtig gelöst",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-syntax-semantik",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-4",
+					"topic_title": "Prüfen und verbessern"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY43ZXMW3Q7VJGF4WCBC",
+					"slug": "algo-syntax-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-syntax-semantik",
+					"question": "Was bezeichnet die Syntax einer Programmiersprache?",
+					"concept": "Die Regeln für den Aufbau gültigen Quellcodes.",
+					"materiality": "material",
+					"sample_solution": "Syntax sind die Regeln, nach denen Quellcode aufgebaut ist. Eine fehlende Klammer kann verhindern, dass ein Programm überhaupt gelesen wird. Semantik ist die Bedeutung des Programms: Was tut es für bestimmte Eingaben?",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Regeln für den Aufbau gültigen Quellcodes.",
+							"Die Geschwindigkeit der verwendeten Hardware."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY43WERCYFVPPWCRDV2R",
+					"slug": "algo-semantik-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-syntax-semantik",
+					"question": "Kann ein syntaktisch gültiges Programm ein falsches Ergebnis liefern?",
+					"concept": "Ja, seine Bedeutung kann vom beabsichtigten Verhalten abweichen.",
+					"materiality": "material",
+					"sample_solution": "Ein Programm kann syntaktisch korrekt sein und dennoch das falsche Ergebnis berechnen. Entwicklungsumgebungen helfen mit Hervorhebung, Fehlermeldungen und Debuggern. Diese Werkstatt zeigt Zeilennummern, konkrete Fehlermeldungen und eine Ablaufspur; sie ersetzt keine vollständige Entwicklungsumgebung oder einen Compiler.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ja, seine Bedeutung kann vom beabsichtigten Verhalten abweichen.",
+							"Nein, gültige Syntax beweist die Richtigkeit des Ergebnisses."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY4311K3TXSH3QXC3DGF",
+			"atom_uri": "urn:zam:atom:01M5ETGY4311K3TXSH3QXC3DGF",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-debuggen",
+			"title": "Fehler mit der Ablaufspur eingrenzen",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-debuggen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-4",
+					"topic_title": "Prüfen und verbessern"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY43C9CFR35ZDS27KRYN",
+					"slug": "algo-debuggen-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-debuggen",
+					"question": "Wie hilft das Inspizieren von Variablen bei der Fehlersuche?",
+					"concept": "Man vergleicht tatsächliche Zwischenwerte mit den erwarteten Werten.",
+					"materiality": "material",
+					"sample_solution": "Beim Debuggen formulierst du zuerst eine Erwartung: Welchen Wert sollte die Summe nach dem ersten Durchlauf haben? Dann prüfst du die tatsächlichen Werte. Der erste abweichende Schritt ist häufig hilfreicher als nur die falsche Endausgabe.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Man vergleicht tatsächliche Zwischenwerte mit den erwarteten Werten.",
+							"Man ersetzt jeden Variablennamen durch eine zufällige Zahl."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY438NS9RC49GH9Q4KAE",
+					"slug": "algo-haltepunkt-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-debuggen",
+					"question": "Wozu dient ein Haltepunkt beim Debuggen?",
+					"concept": "Den Ablauf an einer ausgewählten Stelle anzuhalten und den Zustand zu prüfen.",
+					"materiality": "material",
+					"sample_solution": "Die Ablaufspur dieser Werkstatt zeichnet die ersten 250 Zustände einer begrenzten Ausführung auf. Du kannst sie Schritt für Schritt wiedergeben und Zeilen als Haltepunkte markieren. Ein Haltepunkt stoppt hier die Wiedergabe der aufgezeichneten Spur; er ist kein Eingriff in eine laufende JavaScript-Engine.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Den Ablauf an einer ausgewählten Stelle anzuhalten und den Zustand zu prüfen.",
+							"Den Programmcode ohne jede Prüfung dauerhaft zu löschen."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ETGY436WHGCB9QF8KMYD3K",
+			"atom_uri": "urn:zam:atom:01M5ETGY436WHGCB9QF8KMYD3K",
+			"namespace": "zam-academy-algorithmen",
+			"slug": "algo-testen",
+			"title": "Mit Testfällen absichern",
+			"domain": "informatik/algorithmen",
+			"reduction": "axiomatic",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-testen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "algorithmen",
+					"topic_code": "etappe-4",
+					"topic_title": "Prüfen und verbessern"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.6.1",
+					"topic_title": "Modellieren und Codieren von Algorithmen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ETGY437GQEFVH0G7JHXCD8",
+					"slug": "algo-test-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-testen",
+					"question": "Beweist ein einzelner erfolgreicher Test die Korrektheit für alle Eingaben?",
+					"concept": "Nein, er belegt nur das geprüfte Verhalten für diesen Testfall.",
+					"materiality": "material",
+					"sample_solution": "Ein bestandener Test zeigt, dass ein Programm bei einer bestimmten Eingabe das erwartete Ergebnis liefert. Er beweist nicht die Richtigkeit für alle Eingaben. Wähle deshalb normale Fälle, Grenzwerte und besondere Fälle wie eine leere Liste.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein, er belegt nur das geprüfte Verhalten für diesen Testfall.",
+							"Ja, jede andere Eingabe hat zwangsläufig dieselbe Wirkung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ETGY437PBEXD5ASBFZ1BZJ",
+					"slug": "algo-testfaelle-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"source_link": "https://academy.zam-os.org/algorithmen/#lesson=algo-testen",
+					"question": "Welche Testfälle helfen besonders bei einer Grenze „ab 100“?",
+					"concept": "Werte knapp darunter, genau auf der Grenze und knapp darüber.",
+					"materiality": "material",
+					"sample_solution": "Die Werkstatt führt dieselbe Lösung mit mehreren vorgegebenen Eingaben aus. Jeder Test zeigt Erwartung und tatsächliche Ausgabe. Zum Abschluss entwirfst du eine Preisregel mit einer Funktion und testest den Rabattbeginn ausdrücklich. Die Aufgaben bestätigen Übungserfolge, keine vollständige Programmierkompetenz.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Werte knapp darunter, genau auf der Grenze und knapp darüber.",
+							"Nur Werte, die weit oberhalb jeder möglichen Grenze liegen."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		}
+	],
+	"retired_items": [
+		{
+			"id": "01K4A9S0000000000000000J02",
+			"reason": "Der Alttext setzt eine endliche Beschreibung mit garantierter Terminierung gleich. Die korrigierten und aufgeteilten neuen Fragen erhalten keine übertragene Beherrschung."
+		},
+		{
+			"id": "01K4A9S0000000000000000J06",
+			"reason": "Sprachübergreifende Wertarten sind von den konkreten JavaScript-Typen zu trennen: Integer und Float sind dort kein getrenntes Typenpaar. Das alte Speicheradressmodell wird korrigiert; keine Übertragung auf diese oder einzelne neue Teilfragen."
+		}
+	]
+}

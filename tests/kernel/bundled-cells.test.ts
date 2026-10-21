@@ -275,7 +275,8 @@ describe("Bundled learning cells (Phase 1)", () => {
       expect(ids({ grade: 9, subject: "it" })).toEqual(
         expect.arrayContaining([
           "zam-academy:sql",
-          "de-by:realschule-9-informatik-algorithmen-strukturen",
+          "zam-academy:algorithmen",
+          "zam-academy:datennetze",
         ]),
       );
       expect(ids({ grade: 7, subject: "it" })).toContain(

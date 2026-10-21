@@ -119,6 +119,14 @@ describe("cell precedence inside the wizard", () => {
     ).toEqual([cell]);
   });
 
+  it("offers cells that cover the position in part, above the topic list", () => {
+    // IT modules bind no grade: the kernel keeps the generic import open
+    // beside them, and the wizard must still show them.
+    expect(
+      coveringCellsFromResponse({ needsGenericImport: true, cells: [cell] }),
+    ).toEqual([cell]);
+  });
+
   it("stays out of the way when no cell covers the position", () => {
     expect(
       coveringCellsFromResponse({ needsGenericImport: true, cells: [] }),

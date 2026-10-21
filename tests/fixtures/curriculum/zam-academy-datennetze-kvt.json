@@ -1,0 +1,1328 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:datennetze",
+	"version": "2026.10.1",
+	"title": "Datennetze und Internet (ZAM Academy)",
+	"description": "Datennetze I (LehrplanPLUS IT 2.5.1): Netze bauen, adressieren und Webaufrufe verstehen. Mit gekennzeichneter HTTPS-Ergänzung. Jahrgangsübergreifend modular.",
+	"publisher": "ZAM Academy",
+	"published_at": "2026-10-21T15:00:00Z",
+	"sources": [
+		{
+			"uri": "https://academy.zam-os.org/datennetze/",
+			"checked": "2026-10-21",
+			"label": "ZAM Academy · Datennetze und Internet"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/it",
+			"checked": "2026-10-21",
+			"label": "LehrplanPLUS · Informationstechnologie · modular, Jahrgangsstufen 5–10"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M5ET9QQH0VYBJ0D5S2TR8HHQ",
+			"atom_uri": "urn:zam:atom:01M5ET9QQH0VYBJ0D5S2TR8HHQ",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-netzwerk",
+			"title": "Gemeinsam mehr erreichen",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-netzwerk",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage1",
+					"topic_title": "Netze bauen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQHMAQRMPPW2PHA1QAB",
+					"slug": "net-netzwerk-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was macht ein Clientprogramm im Client-Server-Modell?",
+					"concept": "Es fordert einen Dienst bei einem Server an.",
+					"sample_solution": "Beim Webaufruf stellt der Browser eine Anfrage; der Webserver antwortet.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-netzwerk",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es fordert einen Dienst bei einem Server an.",
+							"Es stellt immer nur Speicher für andere bereit."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQHPRWFE7JJ52AX6B7A",
+					"slug": "net-netzwerk-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wodurch zeichnet sich ein Peer-to-Peer-Netz aus?",
+					"concept": "Teilnehmer können gleichberechtigt Dienste anbieten und anfordern.",
+					"sample_solution": "Peer bezeichnet eine gleichberechtigte Rolle, nicht die Abwesenheit von Regeln.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-netzwerk",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Teilnehmer können gleichberechtigt Dienste anbieten und anfordern.",
+							"Alle Anfragen müssen über einen einzigen zentralen Server laufen."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQHAKC2QRNHD1KCJYGT",
+			"atom_uri": "urn:zam:atom:01M5ET9QQHAKC2QRNHD1KCJYGT",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-komponenten",
+			"title": "Switch, Router oder Access Point?",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-komponenten",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage1",
+					"topic_title": "Netze bauen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQH8DEQKSW08E7V32X0",
+					"slug": "net-komponenten-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Nach welcher Adresse leitet ein gewöhnlicher Ethernet-Switch Rahmen im lokalen Netz weiter?",
+					"concept": "Nach der Ziel-MAC-Adresse.",
+					"sample_solution": "Der Switch ordnet gelernte MAC-Adressen seinen Anschlüssen zu.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-komponenten",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nach der Ziel-MAC-Adresse.",
+							"Nach dem Dateinamen der Webseite."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQHJ250967B3BS7PSMG",
+					"slug": "net-komponenten-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Aufgabe hat ein Router?",
+					"concept": "Er leitet IP-Pakete zwischen unterschiedlichen Netzen weiter.",
+					"sample_solution": "Die Weiterleitung richtet sich nach Zieladresse und Routingtabelle.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-komponenten",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Er leitet IP-Pakete zwischen unterschiedlichen Netzen weiter.",
+							"Er ersetzt die IP-Adresse eines Geräts durch einen Domainnamen."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQHGCA53R26N5834NC8",
+			"atom_uri": "urn:zam:atom:01M5ET9QQHGCA53R26N5834NC8",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-medien",
+			"title": "Der Weg für die Signale",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-medien",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage1",
+					"topic_title": "Netze bauen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQHT84GCYQWBKTVQYBR",
+					"slug": "net-medien-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wodurch werden Daten in einer Glasfaser übertragen?",
+					"concept": "Durch Lichtsignale.",
+					"sample_solution": "Glasfaser nutzt optische Sender und Empfänger.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-medien",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Durch Lichtsignale.",
+							"Durch elektrische Spannung im Kupferleiter."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQH5ZDBG6GY3ZMXERCB",
+					"slug": "net-medien-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum kann der tatsächliche WLAN-Durchsatz unter der beworbenen Datenrate liegen?",
+					"concept": "Funkzeit wird geteilt; Entfernung, Störungen und Protokollaufwand wirken mit.",
+					"sample_solution": "Eine feste allgemeine Halbierungsregel gibt es nicht.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-medien",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Funkzeit wird geteilt; Entfernung, Störungen und Protokollaufwand wirken mit.",
+							"WLAN überträgt grundsätzlich immer exakt die Hälfte der Kabelrate."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQHRR0HXEHWJFXW81P3",
+			"atom_uri": "urn:zam:atom:01M5ET9QQHRR0HXEHWJFXW81P3",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-topologien",
+			"title": "Wie die Verbindungen angeordnet sind",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-topologien",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage1",
+					"topic_title": "Netze bauen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQHP29KHQAJ5ZM2X548",
+					"slug": "net-topologien-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was passiert beim Ausfall eines einzelnen Endgerätekabels in einem einfachen Sternnetz?",
+					"concept": "Gewöhnlich verliert nur das betroffene Endgerät diese Verbindung.",
+					"sample_solution": "Der zentrale Switch kann die anderen Anschlüsse weiter bedienen.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-topologien",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Gewöhnlich verliert nur das betroffene Endgerät diese Verbindung.",
+							"Alle Geräte verlieren zwangsläufig jede Verbindung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQH7NQQYQJEKM945K0V",
+					"slug": "net-topologien-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welchen Zweck haben zusätzliche Wege in einer passend geplanten Netzstruktur?",
+					"concept": "Sie können die Verfügbarkeit beim Ausfall eines Weges erhöhen.",
+					"sample_solution": "Redundanz braucht geeignete Weiterleitungsregeln und Komponenten.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-topologien",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie können die Verfügbarkeit beim Ausfall eines Weges erhöhen.",
+							"Sie machen jede Konfiguration und jede Schleifenvermeidung überflüssig."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQH82N8Z5A9401QCGNN",
+			"atom_uri": "urn:zam:atom:01M5ET9QQH82N8Z5A9401QCGNN",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-datenrate",
+			"title": "Bit, Byte und der Flaschenhals",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-datenrate",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage1",
+					"topic_title": "Netze bauen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQH2C1XP0VWVD93HF76",
+					"slug": "net-datenrate-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Rechnung liefert die ideale Übertragungszeit?",
+					"concept": "Datenmenge in Bit geteilt durch Datenrate in Bit pro Sekunde.",
+					"sample_solution": "Die resultierende Einheit ist Sekunde.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-datenrate",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Datenmenge in Bit geteilt durch Datenrate in Bit pro Sekunde.",
+							"Datenrate geteilt durch Datenmenge, ohne Einheiten anzugleichen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQHZZJDP1QF05EXQJWC",
+					"slug": "net-datenrate-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was begrenzt den langfristigen Durchsatz einer Kette von Verbindungen?",
+					"concept": "Der langsamste benötigte Abschnitt.",
+					"sample_solution": "Zusätzlich können Server, geteilte Nutzung und Protokolle begrenzen.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-datenrate",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der langsamste benötigte Abschnitt.",
+							"Die Summe aller aufgedruckten Höchstraten."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQH0T8B5YC2R2X9KPV8",
+			"atom_uri": "urn:zam:atom:01M5ET9QQH0T8B5YC2R2X9KPV8",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-mac-ip",
+			"title": "Zwei Adressen für zwei Aufgaben",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-mac-ip",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage2",
+					"topic_title": "Adressen verstehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQHYZN5MZGJXFHKGZG4",
+					"slug": "net-mac-ip-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wofür wird eine MAC-Adresse im Ethernet verwendet?",
+					"concept": "Für die Zustellung von Rahmen im lokalen Netzabschnitt.",
+					"sample_solution": "Router bilden beim Weiterleiten neue Rahmen für den nächsten Abschnitt.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-mac-ip",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Für die Zustellung von Rahmen im lokalen Netzabschnitt.",
+							"Für die weltweite Auflösung eines Domainnamens."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQHMTDXMDK7JPXJ6J9V",
+					"slug": "net-mac-ip-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Aufgabe hat ARP bei IPv4 im lokalen Netz?",
+					"concept": "Es ermittelt zur lokalen nächsten IP-Adresse die passende MAC-Adresse.",
+					"sample_solution": "Die Namensauflösung übernimmt DNS, nicht ARP.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-mac-ip",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es ermittelt zur lokalen nächsten IP-Adresse die passende MAC-Adresse.",
+							"Es übersetzt einen Domainnamen in eine IPv4-Adresse."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQJAEQSH075WVB9ZM5W",
+			"atom_uri": "urn:zam:atom:01M5ET9QQJAEQSH075WVB9ZM5W",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-ipv4",
+			"title": "IPv4 lesen und prüfen",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-ipv4",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage2",
+					"topic_title": "Adressen verstehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQJR68VY9YEJZ0Q896B",
+					"slug": "net-ipv4-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Aus wie vielen Bit besteht eine IPv4-Adresse?",
+					"concept": "32 Bit.",
+					"sample_solution": "Vier Oktette zu je acht Bit ergeben 32 Bit; IPv6 verwendet 128 Bit.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-ipv4",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["32 Bit.", "128 Bit."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQJ10TX891XG7FWYT28",
+					"slug": "net-ipv4-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum ist 192.168.10.300 keine gültige IPv4-Adresse?",
+					"concept": "Ein einzelnes Oktett darf höchstens 255 sein.",
+					"sample_solution": "Die vier Dezimalwerte repräsentieren jeweils acht Bit.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-ipv4",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein einzelnes Oktett darf höchstens 255 sein.",
+							"IPv4-Adressen dürfen niemals die Zahl 10 enthalten."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQJ5YA664BNGBP5H7TH",
+			"atom_uri": "urn:zam:atom:01M5ET9QQJ5YA664BNGBP5H7TH",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-subnetze",
+			"title": "Das Präfix zieht die Grenze",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-subnetze",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage2",
+					"topic_title": "Adressen verstehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQJ7MNK8ED3RDHRYEJ8",
+					"slug": "net-subnetze-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie viele übliche Hostadressen stehen in einem /24-Broadcast-Subnetz bereit?",
+					"concept": "254",
+					"sample_solution": "2 hoch 8 minus zwei reservierte Adressen ergibt 254.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-subnetze",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["254", "256"],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQJKTA6QZ357JXJNFF3",
+					"slug": "net-subnetze-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was kann ein zu breites Clientpräfix bewirken?",
+					"concept": "Ein eigentlich fernes Ziel wird irrtümlich im lokalen Netz gesucht.",
+					"sample_solution": "Die lokale/entfernte Entscheidung hängt vom Präfix ab.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-subnetze",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein eigentlich fernes Ziel wird irrtümlich im lokalen Netz gesucht.",
+							"Jeder DNS-Name erhält automatisch eine neue IP-Adresse."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQJXCMPJWJ7XWGS375D",
+			"atom_uri": "urn:zam:atom:01M5ET9QQJXCMPJWJ7XWGS375D",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-gateway",
+			"title": "Der Ausgang aus dem eigenen Netz",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-gateway",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage2",
+					"topic_title": "Adressen verstehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQJ85RK39ZEQVYQ9APN",
+					"slug": "net-gateway-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wann nutzt ein Host üblicherweise sein Standardgateway?",
+					"concept": "Wenn für ein entferntes Ziel keine speziellere passende Route vorliegt.",
+					"sample_solution": "DNS und Routing erfüllen verschiedene Aufgaben.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-gateway",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wenn für ein entferntes Ziel keine speziellere passende Route vorliegt.",
+							"Wenn er einen Domainnamen in eine IP-Adresse übersetzen will."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQJYZ5CSPRGN7C3J4EM",
+					"slug": "net-gateway-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum braucht auch der Server eine passende Rückroute?",
+					"concept": "Die Antwort muss den Client ebenfalls erreichen können.",
+					"sample_solution": "Hin- und Rückweg werden unabhängig nach Routinginformationen gewählt.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-gateway",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Antwort muss den Client ebenfalls erreichen können.",
+							"Nur die allererste Anfrage wird überhaupt geroutet."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQJQDYPDJQDCQPRC45K",
+			"atom_uri": "urn:zam:atom:01M5ET9QQJQDYPDJQDCQPRC45K",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-dhcp",
+			"title": "Adressen automatisch beziehen",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-dhcp",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage2",
+					"topic_title": "Adressen verstehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQJK0YXJPC66TVX231T",
+					"slug": "net-dhcp-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was ist eine DHCP-Lease?",
+					"concept": "Eine zeitlich befristet vergebene Netzwerkkonfiguration.",
+					"sample_solution": "Die Zuteilung kann nach Ablauf erneuert oder neu vergeben werden.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-dhcp",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine zeitlich befristet vergebene Netzwerkkonfiguration.",
+							"Ein dauerhafter Eigentumsnachweis für einen Domainnamen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQJB3QCKKM3HCGD7N0N",
+					"slug": "net-dhcp-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Einstellungen kann DHCP typischerweise zusammen liefern?",
+					"concept": "IP-Adresse, Präfix, Standardgateway und DNS-Server.",
+					"sample_solution": "Der genaue Umfang hängt vom eingerichteten DHCP-Dienst ab.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-dhcp",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"IP-Adresse, Präfix, Standardgateway und DNS-Server.",
+							"Nur die MAC-Adressen aller weltweiten Webseiten."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQJ7C0ZXGBS7KWZCGD8",
+			"atom_uri": "urn:zam:atom:01M5ET9QQJ7C0ZXGBS7KWZCGD8",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-dns",
+			"title": "Namen in Adressen auflösen",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-dns",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage2",
+					"topic_title": "Adressen verstehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQJHDY99R8TY7DD8H6S",
+					"slug": "net-dns-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welcher Netzwerkdienst übersetzt Domainnamen in IP-Adressen?",
+					"concept": "DNS, das Domain Name System.",
+					"sample_solution": "Ein DNS-Resolver fragt Namenseinträge ab; DHCP kann seine Adresse verteilen.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-dns",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"DNS, das Domain Name System.",
+							"DHCP, der Dienst zur automatischen Netzwerkkonfiguration."
+						],
+						"correct_index": 0
+					},
+					"replaces": ["01K4A9S0000000000000000J07"]
+				},
+				{
+					"id": "01M5ET9QQJT1QSYDZAW7PGFW1K",
+					"slug": "net-dns-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was ordnet ein DNS-A-Eintrag einem Namen zu?",
+					"concept": "Eine IPv4-Adresse.",
+					"sample_solution": "Für IPv6-Adressen werden AAAA-Einträge verwendet.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-dns",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine IPv4-Adresse.",
+							"Eine lokale Ethernet-MAC-Adresse."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQJ7M234T09R6X0JTC9",
+			"atom_uri": "urn:zam:atom:01M5ET9QQJ7M234T09R6X0JTC9",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-schichten",
+			"title": "Arbeit aufteilen mit Schichten",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-schichten",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage3",
+					"topic_title": "Daten auf die Reise schicken"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQJWS0SBTAERE6PTP5H",
+					"slug": "net-schichten-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was bedeutet Kapselung bei der Datenübertragung?",
+					"concept": "Daten einer höheren Ebene werden mit Informationen darunterliegender Ebenen umgeben.",
+					"sample_solution": "Ein Ethernet-Rahmen kann ein IP-Paket mit TCP- und Anwendungsdaten enthalten.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-schichten",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Daten einer höheren Ebene werden mit Informationen darunterliegender Ebenen umgeben.",
+							"Alle Informationen bis auf den Domainnamen werden gelöscht."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQJTNZY2H4B39E2R0SP",
+					"slug": "net-schichten-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Aufgabe haben Ports im Transportkontext?",
+					"concept": "Sie ordnen Daten den passenden Diensten oder Kommunikationsendpunkten zu.",
+					"sample_solution": "Ein physischer Switchanschluss ist ein anderer Gebrauch des Wortes Port.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-schichten",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie ordnen Daten den passenden Diensten oder Kommunikationsendpunkten zu.",
+							"Sie ersetzen den Netzanteil einer IPv4-Adresse."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQJJ3J7MXF7XM8ZQ8C7",
+			"atom_uri": "urn:zam:atom:01M5ET9QQJJ3J7MXF7XM8ZQ8C7",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-ethernet",
+			"title": "Ein Rahmen für den nächsten Abschnitt",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-ethernet",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage3",
+					"topic_title": "Daten auf die Reise schicken"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQJ8TV92TJFHZFV074N",
+					"slug": "net-ethernet-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Adressen stehen zur lokalen Zustellung im Ethernet-Rahmen?",
+					"concept": "Quell- und Ziel-MAC-Adresse.",
+					"sample_solution": "IP-Adressen liegen gegebenenfalls im enthaltenen IP-Paket.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-ethernet",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Quell- und Ziel-MAC-Adresse.",
+							"Nur der vollständige Name einer Webseite."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQJ06NSQHEPXJ33VZEB",
+					"slug": "net-ethernet-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum beweist ein funktionierender Ethernet-Link noch keinen erfolgreichen Webaufruf?",
+					"concept": "Weitere Ebenen wie IP, DNS, TCP und der Webdienst können fehlschlagen.",
+					"sample_solution": "Fehlersuche prüft die beteiligten Ebenen nacheinander.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-ethernet",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Weitere Ebenen wie IP, DNS, TCP und der Webdienst können fehlschlagen.",
+							"Ethernet ersetzt grundsätzlich alle weiteren Protokolle."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQJ3Y8J61RE6X986PTR",
+			"atom_uri": "urn:zam:atom:01M5ET9QQJ3Y8J61RE6X986PTR",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-tcp-udp",
+			"title": "Transport: zuverlässig oder knapp?",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-tcp-udp",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage3",
+					"topic_title": "Daten auf die Reise schicken"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQJ7X1E939Y1R16M9JD",
+					"slug": "net-tcp-udp-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Transportleistung bietet TCP einer Anwendung?",
+					"concept": "Einen geordneten Bytestrom mit Wiederholung verlorener Daten, solange die Verbindung funktioniert.",
+					"sample_solution": "Abbrüche bleiben möglich; für Vertraulichkeit wird zum Beispiel TLS benötigt.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-tcp-udp",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Einen geordneten Bytestrom mit Wiederholung verlorener Daten, solange die Verbindung funktioniert.",
+							"Eine Garantie, dass Inhalte ehrlich und Verbindungen unfehlbar sind."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQJ3CK7S8469JVZ4XFD",
+					"slug": "net-tcp-udp-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was stellt UDP von sich aus nicht bereit?",
+					"concept": "Zustellgarantie, Reihenfolge und automatische Wiederholung.",
+					"sample_solution": "Anwendungen können zusätzliche Sicherungen selbst umsetzen.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-tcp-udp",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zustellgarantie, Reihenfolge und automatische Wiederholung.",
+							"Die Möglichkeit, einzelne Datagramme zu senden."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQJZVGKMJGPCARMD9HR",
+			"atom_uri": "urn:zam:atom:01M5ET9QQJZVGKMJGPCARMD9HR",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-http",
+			"title": "Der Browser bittet um eine Seite",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-http",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage3",
+					"topic_title": "Daten auf die Reise schicken"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQJF7WDG1R4N4GNA4PV",
+					"slug": "net-http-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Aufgabe erfüllt HTTP beim Webaufruf?",
+					"concept": "Es legt Regeln für Anfragen und Antworten des Webdienstes fest.",
+					"sample_solution": "DHCP vergibt Konfigurationen; HTTP dient dem Abruf oder Austausch von Ressourcen.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-http",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es legt Regeln für Anfragen und Antworten des Webdienstes fest.",
+							"Es vergibt automatisch freie lokale IP-Adressen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQJKYG7680D9VKZKV7V",
+					"slug": "net-http-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was bedeutet HTTP-Status 200 für eine Anfrage?",
+					"concept": "Der Dienst hat diese Anfrage erfolgreich verarbeitet.",
+					"sample_solution": "Technischer Erfolg ist keine Wahrheitsprüfung.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-http",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Dienst hat diese Anfrage erfolgreich verarbeitet.",
+							"Jede Aussage der gelieferten Seite wurde fachlich geprüft."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQJHARTHWR434PTPPNA",
+			"atom_uri": "urn:zam:atom:01M5ET9QQJHARTHWR434PTPPNA",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-smtp",
+			"title": "Eine Nachricht ist keine Webseite",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-smtp",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage3",
+					"topic_title": "Daten auf die Reise schicken"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQJM3YC57GHTCXKF3GM",
+					"slug": "net-smtp-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wofür wird SMTP eingesetzt?",
+					"concept": "Zum Einliefern und Weiterleiten von E-Mail.",
+					"sample_solution": "Postfachabruf und Mailtransport sind verschiedene Aufgaben.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-smtp",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zum Einliefern und Weiterleiten von E-Mail.",
+							"Zum automatischen Konfigurieren der Subnetzmaske."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQJAYG81D9EC9WG4RAY",
+					"slug": "net-smtp-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum beweist ein erreichbarer Maildienst keine erreichbare Webseite desselben Rechners?",
+					"concept": "Die Dienste verwenden unterschiedliche Anwendungsabläufe und Endpunkte.",
+					"sample_solution": "Mehrere Dienste können auf einem Gerät unabhängig voneinander laufen.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-smtp",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Dienste verwenden unterschiedliche Anwendungsabläufe und Endpunkte.",
+							"Ein Rechner kann technisch nur genau einen Dienst anbieten."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQJ6FSJA7QM2RY79Y4F",
+			"atom_uri": "urn:zam:atom:01M5ET9QQJ6FSJA7QM2RY79Y4F",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-webreise",
+			"title": "Die Reise einer Webanfrage",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-webreise",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage3",
+					"topic_title": "Daten auf die Reise schicken"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQJ7KZ666X8H0WJCXMV",
+					"slug": "net-webreise-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Womit beginnt ein erster Webaufruf über einen noch nicht aufgelösten Hostnamen im Modell?",
+					"concept": "Mit der DNS-Namensauflösung.",
+					"sample_solution": "Vorhandene Caches sind im Modell bewusst ausgeblendet.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-webreise",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Mit der DNS-Namensauflösung.",
+							"Mit dem Empfang des vollständigen Webseiteninhalts."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQJP9VC402G2BGE6VGW",
+					"slug": "net-webreise-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was unterscheidet DNS-Antwort und HTTP-Antwort?",
+					"concept": "DNS liefert eine Namenszuordnung; HTTP liefert die Antwort des Webdienstes.",
+					"sample_solution": "Die DNS-Antwort ist ein notwendiger Zwischenschritt bei der hier gezeigten Namensverwendung.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-webreise",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"DNS liefert eine Namenszuordnung; HTTP liefert die Antwort des Webdienstes.",
+							"DNS und HTTP sind nur verschiedene Namen für denselben Dienst."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQJ412ZMDZ5XB482YYR",
+			"atom_uri": "urn:zam:atom:01M5ET9QQJ412ZMDZ5XB482YYR",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-fehlersuche",
+			"title": "Beobachten, eingrenzen, erneut testen",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-fehlersuche",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage4",
+					"topic_title": "Fehler finden und sicher verbinden"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"subject": "it",
+					"topic_code": "it-2.5.1",
+					"topic_title": "Datennetze I"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQJ5G8W58G7TXT61VHW",
+					"slug": "net-fehlersuche-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was beweist ein erfolgreicher Ping im Labor?",
+					"concept": "IP-Pakete und Echoantworten erreichen den jeweiligen Teilnehmer.",
+					"sample_solution": "ICMP-Test und Anwendungstest untersuchen verschiedene Teile des Ablaufs.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-fehlersuche",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"IP-Pakete und Echoantworten erreichen den jeweiligen Teilnehmer.",
+							"Der HTTPS-Dienst und sein Zertifikat sind automatisch korrekt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQJZP30917EAG55R76Z",
+					"slug": "net-fehlersuche-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum sollte nach einer gezielten Änderung derselbe Auftrag erneut getestet werden?",
+					"concept": "Damit die Wirkung der Änderung mit der ursprünglichen Beobachtung vergleichbar ist.",
+					"sample_solution": "Eine nachvollziehbare Folge von Hypothese, Änderung und erneutem Test hilft beim Eingrenzen.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-fehlersuche",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Damit die Wirkung der Änderung mit der ursprünglichen Beobachtung vergleichbar ist.",
+							"Damit ohne Diagnose möglichst viele weitere Einstellungen zufällig wechseln."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "01M5ET9QQJT8RC53HG7331T272",
+			"atom_uri": "urn:zam:atom:01M5ET9QQJT8RC53HG7331T272",
+			"namespace": "zam-academy-datennetze",
+			"slug": "net-https",
+			"title": "HTTPS: geschützt heißt nicht automatisch wahr",
+			"domain": "informatik/datennetze",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-https",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "datennetze",
+					"topic_code": "stage4",
+					"topic_title": "Fehler finden und sicher verbinden"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ET9QQJ3B317GRHQR5ZTMGG",
+					"slug": "net-https-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche drei Schutzziele adressiert TLS beim HTTPS-Transport?",
+					"concept": "Vertraulichkeit, Integrität und Authentisierung der Gegenstelle.",
+					"sample_solution": "Die genaue Sicherheit hängt von korrekter Implementierung, Konfiguration und Prüfung ab.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-https",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Vertraulichkeit, Integrität und Authentisierung der Gegenstelle.",
+							"Wahrheit aller Inhalte, kostenlose Dienste und garantierte Erreichbarkeit."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ET9QQJ6PCWEPBY9W76F22X",
+					"slug": "net-https-kern",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum reicht eine passende Server-IP für eine erfolgreiche TLS-Namensprüfung nicht aus?",
+					"concept": "Das Zertifikat muss zum tatsächlich angesprochenen Hostnamen passen.",
+					"sample_solution": "Mehrere Namen können dieselbe IP nutzen, ohne dass jedes Zertifikat zu jedem Namen passt.",
+					"source_link": "https://academy.zam-os.org/datennetze/#lesson=net-https",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das Zertifikat muss zum tatsächlich angesprochenen Hostnamen passen.",
+							"TLS vergleicht nur die Bildschirmauflösung des Clients."
+						],
+						"correct_index": 0
+					}
+				}
+			]
+		}
+	],
+	"retired_items": [
+		{
+			"id": "01K4A9S0000000000000000J08",
+			"reason": "Der Alttext verspricht eine garantiert fehlerfreie TCP-Übertragung. Der korrigierte Gesamtabruf wird auf Client/Server, DNS, IP, TCP und HTTPS aufgeteilt; keine Beherrschung auf Teilfragen verteilen."
+		}
+	]
+}
