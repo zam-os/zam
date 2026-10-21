@@ -162,6 +162,8 @@ describe("ZAM Academy Biologie 10 Realschule cell", () => {
     for (const source of mapping.sources) {
       expect(getBundledCell(source.tile_id)).toBeUndefined();
       expect(getBundledCellTile(source.tile_id)).toBeUndefined();
+      // `file` is relative to the Academy package (biologie-realschule-10/);
+      // ZAM keeps the same bytes in tests/fixtures/legacy/. The hash decides.
       const file = source.file.replace(/^tests\/fixtures\//, "");
       expect(
         createHash("sha256")
