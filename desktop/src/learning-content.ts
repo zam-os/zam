@@ -335,7 +335,9 @@ function unchangedSegments(
 }
 
 /** The proposal as the confirm command takes it. */
-function confirmedCardText(p: ProposalCardText & { question: string; concept: string }) {
+function confirmedCardText(
+  p: ProposalCardText & { question: string; concept: string },
+) {
   return {
     question_segments: unchangedSegments(
       p.question.trim(),
@@ -508,7 +510,11 @@ function renderEditorReadUp(card: PersonalCard | null): void {
   box.hidden = !readUp || !externalOpener;
   btn.textContent = t("read_up");
   btn.title = readUp
-    ? t(readUp.kind === "source" ? "read_up_source_hint" : "read_up_search_hint")
+    ? t(
+        readUp.kind === "source"
+          ? "read_up_source_hint"
+          : "read_up_search_hint",
+      )
     : "";
   btn.onclick = readUp
     ? () => externalOpener?.(readUpUrl(readUp, currentLocale))
@@ -1126,6 +1132,14 @@ export async function loadStudioData(): Promise<void> {
         );
         if (generation !== loadGeneration) return;
         unchosenMembers = listRes.members ?? [];
+        if (unchosenMembers.length === 0) {
+          openUnchosenKey = null;
+          const groupsRes = await runBridge<{ groups: UnchosenGroupRow[] }>(
+            "unchosen-groups",
+          );
+          if (generation !== loadGeneration) return;
+          unchosenGroups = groupsRes.groups ?? [];
+        }
       }
     } else {
       const [drafts, held] = await Promise.all([
@@ -1398,7 +1412,7 @@ function closeGroup(): void {
   selectedCard = null;
   isCreatingNew = false;
   updateUIForSelection();
-  refreshCardsList();
+  void loadStudioData();
 }
 
 async function startGroup(key: string): Promise<void> {
@@ -1580,7 +1594,8 @@ function updateUIForSelection(): void {
       fieldSlug.value = t("lbl_slug_hint");
       if (reviewNotesEl) reviewNotesEl.innerHTML = "";
     } else if (untaken) {
-      btnDelete.classList.add("hidden");
+      btnDelete.classList.remove("hidden");
+      btnDelete.textContent = t("btn_delete");
       btnSave.classList.add("hidden");
       btnTake.classList.remove("hidden");
       btnPublishRevision?.classList.add("hidden");
@@ -1591,7 +1606,11 @@ function updateUIForSelection(): void {
     } else {
       btnTake.classList.add("hidden");
       btnSave.classList.toggle("hidden", !hasCard);
-      btnDelete.classList.toggle("hidden", !hasCard);
+      btnDelete.classList.remove("hidden");
+      btnDelete.textContent =
+        segment === "unpublished" || !hasCard
+          ? t("btn_delete")
+          : t("btn_remove");
       const draft = isDraftCard(selectedCard);
       btnPublishCard?.classList.toggle("hidden", !draft);
       btnPublishRevision?.classList.toggle("hidden", draft || !hasCard);
@@ -1603,6 +1622,7 @@ function updateUIForSelection(): void {
     formContainer.classList.add("hidden");
     btnCancel.classList.add("hidden");
     btnTake.classList.add("hidden");
+    btnDelete.classList.add("hidden");
     btnSave.classList.remove("hidden");
     setEditorLocked(false);
     btnPublishRevision?.classList.add("hidden");
@@ -2001,6 +2021,15 @@ async function saveCard(): Promise<void> {
 async function handleDeleteClick(): Promise<void> {
   if (!selectedCard) return;
 
+  if (
+    segment === "unchosen" ||
+    segment === "unpublished" ||
+    !selectedCard.cardId
+  ) {
+    await handleDeleteToken(selectedCard);
+    return;
+  }
+
   try {
     // 1. Get the removal preview impact
     const res = await runBridge<{
@@ -2014,6 +2043,28 @@ async function handleDeleteClick(): Promise<void> {
     }
   } catch (err) {
     console.error("Failed to fetch removal preview", err);
+    alert(err instanceof Error ? err.message : String(err));
+  }
+}
+
+async function handleDeleteToken(card: PersonalCard): Promise<void> {
+  try {
+    // Fetch token hard delete impact preview
+    const preview = await runBridge<{
+      success: boolean;
+      impact: {
+        cards: number;
+        review_logs: number;
+        session_steps: number;
+        agent_skills: number;
+      };
+    }>("personal-card-delete", ["--slug", card.slug]);
+
+    if (preview.success) {
+      showGlobalDeleteConfirmation(card, preview.impact);
+    }
+  } catch (err) {
+    console.error("Failed to fetch token delete preview", err);
     alert(err instanceof Error ? err.message : String(err));
   }
 }
@@ -2053,24 +2104,7 @@ function showRemovalConfirmation(
   // Set up confirmed callback for global hard delete
   pendingHardDeleteCallback = async () => {
     hideModal();
-    try {
-      // Fetch token hard delete impact preview
-      const preview = await runBridge<{
-        success: boolean;
-        impact: {
-          cards: number;
-          review_logs: number;
-          session_steps: number;
-          agent_skills: number;
-        };
-      }>("personal-card-delete", ["--slug", card.slug]);
-
-      if (preview.success) {
-        showGlobalDeleteConfirmation(card, preview.impact);
-      }
-    } catch (err) {
-      alert(err instanceof Error ? err.message : String(err));
-    }
+    await handleDeleteToken(card);
   };
 
   modalOverlay.classList.add("active");
