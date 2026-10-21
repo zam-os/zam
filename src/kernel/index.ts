@@ -857,6 +857,7 @@ export type {
   CurriculumCardInput,
   CurriculumTopicCard,
   DeleteTokenResult,
+  DeleteTokensResult,
   EditorialState,
   FoundationProposalInput,
   ImportCurriculumResult,
@@ -882,6 +883,7 @@ export {
   createToken,
   deleteCurriculumCardForUser,
   deleteToken,
+  deleteTokens,
   deprecateToken,
   findTokens,
   generateTokenSlug,
@@ -891,6 +893,7 @@ export {
   getTokenBySlug,
   getTokenDeleteImpact,
   getTokensBySourceLinkBase,
+  getTokensDeleteImpact,
   importCurriculumCards,
   listPersonalCards,
   listTokens,
@@ -901,6 +904,7 @@ export {
   setTokenMaintenance,
   slugify,
   tokenMatchesCurriculumTopicScope,
+  tokenSetFingerprint,
   updateToken,
 } from "./models/token.js";
 export type {

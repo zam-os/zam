@@ -58,6 +58,7 @@ import {
   deleteCardForUser,
   deleteCurriculumCardForUser,
   deleteToken,
+  deleteTokens,
   discoverSkills,
   emptyCapabilityFlags,
   ensureCard,
@@ -93,6 +94,7 @@ import {
   getTokenBySlug,
   getTokenDeleteImpact,
   getTokenNeighborhood,
+  getTokensDeleteImpact,
   getTursoCredentials,
   hasCommand,
   importCurriculumCards,
@@ -168,6 +170,7 @@ import {
   supportsLocalGeneration,
   syncObserverSidecarPolicy,
   takeMaterialBonusItem,
+  tokenSetFingerprint,
   tursoVaultAccessPending,
   uiObservationLogExists,
   unassignTokenFromContext,
@@ -6923,6 +6926,10 @@ bridgeCommand
   )
   .option("--user <id>", "User ID (default: whoami)")
   .option("--confirm", "Perform the deletion instead of a preview")
+  .option(
+    "--expect <fingerprint>",
+    "Fingerprint from the area preview; required with --confirm for an area",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
@@ -7042,21 +7049,14 @@ bridgeCommand
         return;
       }
 
-      // Area / multiple tokens deletion
+      // Area / multiple tokens deletion. The confirm names the set its
+      // preview showed, so an area that changed in between is refused.
+      const fingerprint = tokenSetFingerprint(tokens.map((t) => t.id));
       if (!opts.confirm) {
-        const totalImpact = {
-          cards: 0,
-          review_logs: 0,
-          session_steps: 0,
-          agent_skills: 0,
-        };
-        for (const token of tokens) {
-          const impact = await getTokenDeleteImpact(db, token.slug);
-          totalImpact.cards += impact.cards;
-          totalImpact.review_logs += impact.review_logs;
-          totalImpact.session_steps += impact.session_steps;
-          totalImpact.agent_skills += impact.agent_skills;
-        }
+        const impact = await getTokensDeleteImpact(
+          db,
+          tokens.map((t) => t.slug),
+        );
         jsonOut({
           success: true,
           preview: true,
@@ -7067,36 +7067,29 @@ bridgeCommand
             slug: t.slug,
             title: t.title,
           })),
-          impact: totalImpact,
+          fingerprint,
+          impact,
         });
         return;
       }
 
-      const deletedTokens: Array<{ id: string; slug: string }> = [];
-      const aggregatedImpact = {
-        cards: 0,
-        review_logs: 0,
-        session_steps: 0,
-        agent_skills: 0,
-      };
-
-      for (const token of tokens) {
-        const result = await deleteToken(db, token.slug);
-        deletedTokens.push({
-          id: result.token.id,
-          slug: result.token.slug,
-        });
-        aggregatedImpact.cards += result.impact.cards;
-        aggregatedImpact.review_logs += result.impact.review_logs;
-        aggregatedImpact.session_steps += result.impact.session_steps;
-        aggregatedImpact.agent_skills += result.impact.agent_skills;
+      if (typeof opts.expect !== "string") {
+        jsonError("--expect <fingerprint> from the preview is required");
+      }
+      if (opts.expect !== fingerprint) {
+        jsonError("The area changed since the preview; preview it again");
       }
 
+      // One transaction: either the whole area goes, or nothing does.
+      const result = await deleteTokens(
+        db,
+        tokens.map((t) => t.slug),
+      );
       jsonOut({
         success: true,
-        deletedCount: deletedTokens.length,
-        deletedTokens,
-        impact: aggregatedImpact,
+        deletedCount: result.tokens.length,
+        deletedTokens: result.tokens.map((t) => ({ id: t.id, slug: t.slug })),
+        impact: result.impact,
       });
     });
   });

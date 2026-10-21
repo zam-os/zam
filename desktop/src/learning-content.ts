@@ -2093,6 +2093,7 @@ async function handleDeleteGroup(key: string): Promise<void> {
     const preview = await runBridge<{
       success: boolean;
       tokenCount: number;
+      fingerprint: string;
       impact: {
         cards: number;
         review_logs: number;
@@ -2129,7 +2130,13 @@ async function handleDeleteGroup(key: string): Promise<void> {
         const delRes = await runBridge<{
           success: boolean;
           deletedCount: number;
-        }>("personal-card-delete", ["--group", key, "--confirm"]);
+        }>("personal-card-delete", [
+          "--group",
+          key,
+          "--confirm",
+          "--expect",
+          preview.fingerprint,
+        ]);
         if (delRes.success) {
           alert(
             tf("atlas_region_deleted_toast", {

@@ -1159,8 +1159,9 @@ function regionPanel(
       t("atlas_delete_region"),
     );
     del.title = t("atlas_delete_region");
-    del.addEventListener("click", () =>
-      void promptDeleteRegion(s, layout, key, region.name),
+    del.addEventListener(
+      "click",
+      () => void promptDeleteRegion(s, layout, key, region.name),
     );
     actions.appendChild(del);
   }
@@ -1786,6 +1787,7 @@ async function promptDeleteRegion(
     const preview = await runBridge<{
       success: boolean;
       tokenCount: number;
+      fingerprint: string;
       impact: {
         cards: number;
         review_logs: number;
@@ -1821,6 +1823,8 @@ async function promptDeleteRegion(
             "--lens",
             lens,
             "--confirm",
+            "--expect",
+            preview.fingerprint,
           ]);
           select(s, null);
           await load(s, s.lens ?? undefined);
@@ -1855,6 +1859,7 @@ async function promptDeleteUnit(s: ViewState, key: string): Promise<void> {
     const preview = await runBridge<{
       success: boolean;
       tokenCount: number;
+      fingerprint: string;
       impact: {
         cards: number;
         review_logs: number;
@@ -1881,7 +1886,13 @@ async function promptDeleteUnit(s: ViewState, key: string): Promise<void> {
         try {
           await runBridge<{
             success: boolean;
-          }>("personal-card-delete", ["--unit", key, "--confirm"]);
+          }>("personal-card-delete", [
+            "--unit",
+            key,
+            "--confirm",
+            "--expect",
+            preview.fingerprint,
+          ]);
           select(s, null);
           await load(s, s.lens ?? undefined);
           setStatus(s, t("lbl_card_deleted_toast"));

@@ -181,6 +181,7 @@ describe("zam bridge learning-content lists", () => {
     expect(preview.tokenCount).toBe(1);
     expect(preview.tokens[0].slug).toBe("loose");
     expect(preview.impact.cards).toBe(0);
+    expect(typeof preview.fingerprint).toBe("string");
 
     const deleted = runCliJson([
       "bridge",
@@ -188,6 +189,8 @@ describe("zam bridge learning-content lists", () => {
       "--group",
       "",
       "--confirm",
+      "--expect",
+      preview.fingerprint,
     ]);
     expect(deleted.success).toBe(true);
     expect(deleted.deletedCount).toBe(1);
@@ -220,14 +223,69 @@ describe("zam bridge learning-content lists", () => {
       "--unit",
       `token:${held.tokenId}`,
       "--confirm",
+      "--expect",
+      preview.fingerprint,
     ]);
     expect(deleted.success).toBe(true);
     expect(deleted.deletedCount).toBe(1);
 
     const after = runCliJson(["bridge", "personal-card-list"]);
-    expect(
-      after.cards.map((c: { slug: string }) => c.slug),
-    ).not.toContain("held");
+    expect(after.cards.map((c: { slug: string }) => c.slug)).not.toContain(
+      "held",
+    );
+  });
+
+  it("refuses an area confirm without the preview's fingerprint", () => {
+    const missing = runCliError([
+      "bridge",
+      "personal-card-delete",
+      "--group",
+      "",
+      "--confirm",
+    ]);
+    expect(missing.status).not.toBe(0);
+    expect(missing.body.error).toContain("--expect");
+
+    const groups = runCliJson(["bridge", "unchosen-groups"]);
+    expect(groups.groups).toHaveLength(1);
+  });
+
+  it("refuses an area confirm when the area changed since the preview", async () => {
+    const preview = runCliJson([
+      "bridge",
+      "personal-card-delete",
+      "--group",
+      "",
+    ]);
+    expect(preview.tokenCount).toBe(1);
+
+    const db = await openDatabase({
+      dbPath: join(tempHome, ".zam", "zam.db"),
+      useConfiguredCloud: false,
+    });
+    await createToken(db, {
+      slug: "late",
+      concept: "Published after the preview",
+      domain: "notes",
+    });
+    await db.close();
+
+    const stale = runCliError([
+      "bridge",
+      "personal-card-delete",
+      "--group",
+      "",
+      "--confirm",
+      "--expect",
+      preview.fingerprint,
+    ]);
+    expect(stale.status).not.toBe(0);
+    expect(stale.body.error).toContain("changed since the preview");
+
+    const members = runCliJson(["bridge", "unchosen-members", "--key", ""]);
+    expect(members.members.map((m: { slug: string }) => m.slug).sort()).toEqual(
+      ["late", "loose"],
+    );
   });
 
   it("deletes an unpublished draft token via personal-card-delete", () => {

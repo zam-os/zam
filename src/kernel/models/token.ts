@@ -15,6 +15,7 @@ import {
   parseStoredCardText,
   writeCardText,
 } from "../library/card-text-store.js";
+import { sha256Hex } from "../util/sha256.js";
 import type { CardState } from "./card.js";
 import { deleteCardForUser, ensureCard, getCard } from "./card.js";
 import { DRAFT_FIRST_SETTING, getSetting } from "./settings.js";
@@ -181,6 +182,11 @@ export interface TokenDeleteImpact {
 
 export interface DeleteTokenResult {
   token: Token;
+  impact: TokenDeleteImpact;
+}
+
+export interface DeleteTokensResult {
+  tokens: Token[];
   impact: TokenDeleteImpact;
 }
 
@@ -635,12 +641,79 @@ export async function deleteToken(
   db: Database,
   slug: string,
 ): Promise<DeleteTokenResult> {
-  const token = await getTokenBySlug(db, slug);
-  if (!token) {
-    throw new Error(`Token not found: ${slug}`);
+  const { tokens, impact } = await deleteTokens(db, [slug]);
+  return { token: tokens[0], impact };
+}
+
+/**
+ * Preview the rows deleting several tokens removes or updates, summed. A
+ * session or agent skill that several of them touch counts once.
+ */
+export async function getTokensDeleteImpact(
+  db: Database,
+  slugs: readonly string[],
+): Promise<TokenDeleteImpact> {
+  const total: TokenDeleteImpact = {
+    cards: 0,
+    review_logs: 0,
+    prerequisite_edges_from_token: 0,
+    prerequisite_edges_to_token: 0,
+    session_steps: 0,
+    sessions_touched: 0,
+    agent_skills: 0,
+  };
+  const unique = [...new Set(slugs)];
+  const ids: string[] = [];
+  for (const slug of unique) {
+    const token = await getTokenBySlug(db, slug);
+    if (!token) throw new Error(`Token not found: ${slug}`);
+    ids.push(token.id);
+    const impact = await getTokenDeleteImpact(db, slug);
+    total.cards += impact.cards;
+    total.review_logs += impact.review_logs;
+    total.prerequisite_edges_from_token += impact.prerequisite_edges_from_token;
+    total.prerequisite_edges_to_token += impact.prerequisite_edges_to_token;
+    total.session_steps += impact.session_steps;
   }
 
-  const impact = await getTokenDeleteImpact(db, slug);
+  const sessions = new Set<string>();
+  const sessionStmt = db.prepare(
+    "SELECT DISTINCT session_id FROM session_steps WHERE token_id = ?",
+  );
+  for (const id of ids) {
+    const rows = (await sessionStmt.all(id)) as Array<{ session_id: string }>;
+    for (const row of rows) sessions.add(row.session_id);
+  }
+  total.sessions_touched = sessions.size;
+
+  const doomed = new Set(unique);
+  const skillRows = (await db
+    .prepare("SELECT token_slugs FROM agent_skills")
+    .all()) as Array<{ token_slugs: string }>;
+  total.agent_skills = skillRows.filter((row) =>
+    (JSON.parse(row.token_slugs) as string[]).some((s) => doomed.has(s)),
+  ).length;
+  return total;
+}
+
+/**
+ * Hard-delete several tokens in one transaction: all of them go, or none
+ * does. Cleans up the non-FK references that point at their slugs.
+ */
+export async function deleteTokens(
+  db: Database,
+  slugs: readonly string[],
+): Promise<DeleteTokensResult> {
+  const unique = [...new Set(slugs)];
+  const tokens: Token[] = [];
+  for (const slug of unique) {
+    const token = await getTokenBySlug(db, slug);
+    if (!token) throw new Error(`Token not found: ${slug}`);
+    tokens.push(token);
+  }
+
+  const impact = await getTokensDeleteImpact(db, unique);
+  const doomed = new Set(unique);
 
   await db.transaction(async (tx) => {
     const now = new Date().toISOString();
@@ -653,16 +726,26 @@ export async function deleteToken(
     );
     for (const row of skillRows) {
       const tokenSlugs = JSON.parse(row.token_slugs) as string[];
-      const filtered = tokenSlugs.filter((tokenSlug) => tokenSlug !== slug);
+      const filtered = tokenSlugs.filter((tokenSlug) => !doomed.has(tokenSlug));
       if (filtered.length !== tokenSlugs.length) {
         await skillUpdateStmt.run(JSON.stringify(filtered), now, row.id);
       }
     }
 
-    await tx.prepare("DELETE FROM tokens WHERE id = ?").run(token.id);
+    const deleteStmt = tx.prepare("DELETE FROM tokens WHERE id = ?");
+    for (const token of tokens) await deleteStmt.run(token.id);
   });
 
-  return { token, impact };
+  return { tokens, impact };
+}
+
+/**
+ * A fingerprint of a set of token ids, independent of order. An area delete
+ * confirms the set its preview showed by this value, so a set that changed
+ * in between is refused rather than deleted.
+ */
+export function tokenSetFingerprint(ids: readonly string[]): string {
+  return sha256Hex([...new Set(ids)].sort().join("\n"));
 }
 
 /**
