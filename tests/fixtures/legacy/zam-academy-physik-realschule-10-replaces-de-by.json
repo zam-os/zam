@@ -1,0 +1,153 @@
+{
+  "schema": 1,
+  "approved": "2026-10-21",
+  "source": "Ausdrückliche Freigabe von Thomas im Codex-Chat am 21. Oktober 2026: Die Lernstandsübernahme für Physik 10 ist freigegeben. Bitte PR #17 mergen.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "8bed552d362f843562289d59d655ac39b64f4f7f",
+  "authorization": "Thomas hat die Lernstandsübernahme für Physik 10 und den Merge von Academy-PR #17 am 21. Oktober 2026 ausdrücklich freigegeben. Die sieben A-Zuordnungen und neun C-Stilllegungen in cell.json sind damit zur Veröffentlichung und anschließenden Synchronisierung freigegeben.",
+  "policy": "A: sicher gleicher Einzelabruf, genau ein Nachfolger. C: geteilter, korrigierter oder unsicherer Gesamtabruf; kein replaces. Alle persönlichen Karten und Reviews bleiben erhalten. C-Alttexte werden als deprecated aus aktiver Wiederholung genommen; neue Fragen beginnen ohne Beherrschung.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-10-physik-induktion-wechselstrom-kvt.json",
+      "tile_id": "de-by:realschule-10-physik-induktion-wechselstrom",
+      "version": "2026.08.1",
+      "sha256": "66b32eeb723213449ed53e899cfd6ef451673c27c0cc0adb518944dadc2a55ff"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-10-physik-kernphysik-strahlung-kvt.json",
+      "tile_id": "de-by:realschule-10-physik-kernphysik-strahlung",
+      "version": "2026.08.1",
+      "sha256": "42c696b6e4546e71f8371edd897bb578207227abe6436189bcb0bf94e68c044b"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-10-physik-induktion-wechselstrom",
+      "de_by_id": "01K4J0P0000000000000000J01",
+      "de_by_question": "Unter welcher Bedingung wird an den Enden einer Spule eine elektrische Induktionsspannung erzeugt?",
+      "category": "A",
+      "academy_slug": "ph10-el-induktion-check",
+      "note": "Gleicher einzelner Abruf: zeitliche Änderung des von der Spule umfassten magnetischen Flusses; keine zusätzliche Beherrschung der Flussrechnung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-induktion-wechselstrom",
+      "de_by_id": "01K4J0P0000000000000000J02",
+      "de_by_question": "Erkläre das Phänomen der elektromagnetischen Induktion anhand der Lorentzkraft auf freie Leitungselektronen in einem bewegten Leiterstab im homogenen Magnetfeld und nenne drei Möglichkeiten, wie die Höhe der Induktionsspannung in einer Spule vergrößert werden kann.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Mehrteiliger Gesamtabruf von Lorentzkraft und mehreren Einflussgrößen. Aufgeteilt; keine Beherrschung auf einzelne Teilfragen verteilen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-induktion-wechselstrom",
+      "de_by_id": "01K4J0P0000000000000000J03",
+      "de_by_question": "Was besagt die Lenzsche Regel über die Richtung eines induzierten Stromes?",
+      "category": "A",
+      "academy_slug": "ph10-el-lenz-check",
+      "note": "Gleicher einzelner Abruf der Gegenwirkung auf die Entstehungsursache."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-induktion-wechselstrom",
+      "de_by_id": "01K4J0P0000000000000000J04",
+      "de_by_question": "Begründe, warum die Lenzsche Regel eine direkte Konsequenz des Energieerhaltungssatzes ist (Gedankenexperiment: Was geschähe bei Verstärkung der Ursache?) und erkläre die Funktionsweise der berührungslosen Wirbelstrombremse bei Zügen oder Freifalltürmen.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Mehrteiliger Gesamtabruf von Energieargument und Wirbelstrombremse. Neue atomare Fragen übertragen keine Teilbeherrschung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-induktion-wechselstrom",
+      "de_by_id": "01K4J0P0000000000000000J05",
+      "de_by_question": "Welchen Spitzenwert (Scheitelspannung U_0) hat die sinusförmige 230-V-Netzwechselspannung im europäischen Stromnetz (U_eff = 230 V)?",
+      "category": "A",
+      "academy_slug": "ph10-ex-effektivwert-kern",
+      "note": "Gleiche einzelne Sinusrechnung: 230 V effektiv ergeben etwa 325 V Scheitelwert. Bewusst optionale Zusatzlektion, keine neue Pflichtzuordnung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-induktion-wechselstrom",
+      "de_by_id": "01K4J0P0000000000000000J06",
+      "de_by_question": "Beschreibe die Entstehung einer sinusförmigen Wechselspannung beim Rotieren einer Leiterschleife im homogenen Magnetfeld (Innenpol- vs. Außenpolgenerator), definiere Periodendauer T und Frequenz f (50 Hz) und erkläre die physikalische Bedeutung des Effektivwerts U_eff = U_0 / sqrt(2).",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Gesamtabruf von Generatorbauformen, Sinusform, Frequenz und Effektivwert. Zerlegt; keine eindeutige Identität mit einer neuen Teilfrage."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-induktion-wechselstrom",
+      "de_by_id": "01K4J0P0000000000000000J07",
+      "de_by_question": "Wie verhalten sich die Sekundärspannung U_2 und Primärspannung U_1 beim unbelasteten Transformator zu den jeweiligen Windungszahlen N_2 und N_1?",
+      "category": "A",
+      "academy_slug": "ph10-el-trafo-check",
+      "note": "Gleicher einzelner Abruf des idealen Spannungs-Windungsverhältnisses."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-induktion-wechselstrom",
+      "de_by_id": "01K4J0P0000000000000000J08",
+      "de_by_question": "Erkläre Aufbau und Wirkungsweise des Transformators (Primärspule, gemeinsamer geschlossener Eisenkern, Sekundärspule), leite für den verlustfreien Trafo die Stromübersetzung I_1 / I_2 = N_2 / N_1 aus P_1 = P_2 her und begründe, warum elektrische Energie über weite Strecken mit Hochspannung (bis zu 380 kV) übertragen wird.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Gesamtabruf von Trafoaufbau, Stromübersetzung und Fernleitung. Getrennte neue Fragen; kein Aufteilen des alten Lernstands."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-kernphysik-strahlung",
+      "de_by_id": "01K4N0P0000000000000000J01",
+      "de_by_question": "Aus welchen Teilchen besteht Alphastrahlung (α-Strahlung) und wodurch lässt sie sich bereits vollständig abschirmen?",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Altfrage fordert Teilchenart und vollständige Abschirmung. Neue Teilchenfrage ist enger; Abschirmung hängt von Energie und Situation ab. Kein sicher gleicher Gesamtumfang."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-kernphysik-strahlung",
+      "de_by_id": "01K4N0P0000000000000000J02",
+      "de_by_question": "Vergleiche Alpha-, Beta-Minus- und Gammastrahlung hinsichtlich ihrer physikalischen Natur (Teilchenart/Welle), elektrischen Ladung, ihres Verhaltens im Magnetfeld (Lorentzkraft), ihrer Reichweite in Luft und des erforderlichen Abschirmmaterials.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Alttext nennt Alpha pauschal stark abgelenkt und Gamma durch Blei vollständig abgeschirmt. Ablenkung ist impulsabhängig; Gamma wird abgeschwächt. Fachliche Korrektur, kein Übertrag."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-kernphysik-strahlung",
+      "de_by_id": "01K4N0P0000000000000000J03",
+      "de_by_question": "Wie lautet die physikalische Formel des Zerfallsgesetzes für die Anzahl noch vorhandener radioaktiver Atomkerne N(t) in Abhängigkeit von der Halbwertszeit T_1/2?",
+      "category": "A",
+      "academy_slug": "ph10-ke-zerfallsgesetz-kern",
+      "note": "Unverändertes exponentielles Zerfallsgesetz mit Halbwertszeit. Rechnerische Vertiefung ausdrücklich Zweig I."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-kernphysik-strahlung",
+      "de_by_id": "01K4N0P0000000000000000J04",
+      "de_by_question": "Erkläre das Prinzip der Radiokarbonmethode (C-14-Datierung) zur Altersbestimmung organischer Funde: Bildung von C-14 in der Atmosphäre, Aufnahme durch Fotosynthese/Nahrung, Stopp der Aufnahme beim Tod und Berechnung des Alters einer Holzprobe mit einer gemessenen Restaktivität von 25% bei T_1/2 = 5730 Jahren.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Mehrteilige C14-Datierung mit zu pauschal konstantem Ausgangsverhältnis. Kein sicher unveränderter Gesamtabruf; neue Halbwertszeitfragen starten unbewertet."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-kernphysik-strahlung",
+      "de_by_id": "01K4N0P0000000000000000J05",
+      "de_by_question": "Welche Funktion haben die neutronenabsorbierenden Steuerstäbe (aus Bor oder Cadmium) im Reaktorkern eines Kernkraftwerks?",
+      "category": "A",
+      "academy_slug": "ph10-ke-kettenreaktion-check",
+      "note": "Gleicher einzelner Abruf der Steuerstabfunktion: Neutronen absorbieren und so die Kettenreaktion regeln."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-kernphysik-strahlung",
+      "de_by_id": "01K4N0P0000000000000000J06",
+      "de_by_question": "Beschreibe den Spaltprozess von Uran-235 durch ein thermisches Neutron, erkläre die Entstehung einer unkontrollierten vs. kontrollierten Kettenreaktion und erläutere die Rolle von Moderator (Wasser/Graphit) und Steuerstäben im Kernreaktor.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Mehrteiliger Spaltprozess mit Moderator und Regelung. Neue atomare Fragen decken jeweils nur Teile; keine Verteilung alter Beherrschung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-kernphysik-strahlung",
+      "de_by_id": "01K4N0P0000000000000000J07",
+      "de_by_question": "In welcher Maßeinheit wird die biologisch gewichtete Äquivalentdosis im Strahlenschutz angegeben?",
+      "category": "A",
+      "academy_slug": "ph10-ke-dosis-check",
+      "note": "Gleicher einzelner Abruf der Einheit Sievert beziehungsweise Millisievert für die Äquivalentdosis."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-physik-kernphysik-strahlung",
+      "de_by_id": "01K4N0P0000000000000000J08",
+      "de_by_question": "Unterscheide die physikalischen Dosisgrößen Energiedosis D (in Gray) und Äquivalentdosis H (in Sievert mit biologischem Qualitätsfaktor q) und formuliere die vier zentralen Grundregeln des Strahlenschutzes (Abstand halten, Aufenthaltsdauer minimieren, Abschirmung nutzen, Aufnahme in den Körper/Inkorporation vermeiden).",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Gesamtabruf von zwei Dosisgrößen und Schutzregeln; Abstandsgesetz und Abschirmung werden zu pauschal dargestellt. Korrigierter Umfang, kein Lernstandsübertrag."
+    }
+  ]
+}

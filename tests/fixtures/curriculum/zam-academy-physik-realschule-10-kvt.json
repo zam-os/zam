@@ -1,0 +1,3227 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:physik-realschule-10",
+  "version": "2026.10.1",
+  "title": "Physik 10 Realschule (ZAM Academy)",
+  "description": "Mechanik, Elektrizitätslehre, Atom- und Kernphysik und Energieversorgung für Realschule Bayern. Beide Zweige, mit ausdrücklich markierter Zusatzlektion zum Effektivwert.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-21T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/physik-realschule-10/",
+      "checked": "2026-10-21",
+      "label": "ZAM Academy · Physik 10 Realschule"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/physik/wpfg1",
+      "checked": "2026-10-21",
+      "label": "LehrplanPLUS · Physik 10 · wpfg1"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/physik/wpfg2-3",
+      "checked": "2026-10-21",
+      "label": "LehrplanPLUS · Physik 10 · wpfg2-3"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5EFWCP2GG7CNFTE4M4796TZ",
+      "atom_uri": "urn:zam:atom:01M5EFWCP2GG7CNFTE4M4796TZ",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-me-bewegung",
+      "title": "Bewegung aus Diagrammen lesen",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-bewegung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP2AXWP1TXFRKMBC0BF",
+          "slug": "ph10-me-bewegung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-bewegung",
+          "question": "Was bedeutet eine waagerechte Linie im Zeit-Ort-Diagramm?",
+          "materiality": "material",
+          "sample_solution": "Eine waagerechte Ortskurve hat die Steigung null.",
+          "concept": "Der Ort bleibt gleich; der Körper steht still.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Ort bleibt gleich; der Körper steht still.",
+              "Der Körper bewegt sich mit gleichbleibender Schnelligkeit."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3V6DHKC6M6E975P7Z",
+          "slug": "ph10-me-bewegung-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-bewegung",
+          "question": "Wie erhält man die Momentangeschwindigkeit aus einem Zeit-Ort-Diagramm?",
+          "materiality": "material",
+          "sample_solution": "Eine Sekante beschreibt dagegen einen Mittelwert über ein Zeitintervall.",
+          "concept": "Aus der Steigung der Tangente am betrachteten Zeitpunkt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aus der Steigung der Tangente am betrachteten Zeitpunkt.",
+              "Aus dem Ortswert allein, ohne Zeitinformation."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3BHFPWW3SX05N748G",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3BHFPWW3SX05N748G",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-me-beschleunigung",
+      "title": "Gleichmäßig beschleunigen",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-beschleunigung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP39WDVY6TDCEMQ3WYX",
+          "slug": "ph10-me-beschleunigung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-beschleunigung",
+          "question": "Was kennzeichnet eine gleichmäßig beschleunigte Bewegung?",
+          "materiality": "material",
+          "sample_solution": "Konstant ist die Beschleunigung, nicht die Geschwindigkeit.",
+          "concept": "Die Geschwindigkeit ändert sich in gleichen Zeiten um gleiche Beträge.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Geschwindigkeit ändert sich in gleichen Zeiten um gleiche Beträge.",
+              "Die Strecke nimmt in gleichen Zeiten immer um denselben Betrag zu."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3BJTGG0YH7BNAEZ9X",
+          "slug": "ph10-me-beschleunigung-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-beschleunigung",
+          "question": "Wie lautet die Wegformel bei konstanter Beschleunigung aus der Ruhe mit Startort null?",
+          "materiality": "material",
+          "sample_solution": "Sie gilt nur für konstanten Beschleunigungsbetrag in der betrachteten Richtung.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "s = \\frac{1}{2} a t^2",
+              "speech": "s gleich ein halb mal a mal t zum Quadrat"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "s = \\frac{1}{2} a t^2",
+                  "speech": "s gleich ein halb mal a mal t zum Quadrat"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "s = a t",
+                  "speech": "s gleich a mal t"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP39K1XQ1Y84N6YS8VX",
+      "atom_uri": "urn:zam:atom:01M5EFWCP39K1XQ1Y84N6YS8VX",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-me-freier-fall",
+      "title": "Freier Fall als Modell",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-freier-fall",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3CQC93G6CGFP4CQJ3",
+          "slug": "ph10-me-freier-fall-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-freier-fall",
+          "question": "Was gilt für zwei verschieden schwere Körper im Vakuum bei gleichem Start?",
+          "materiality": "material",
+          "sample_solution": "Gewichtskraft und träge Masse wachsen im gleichen Verhältnis.",
+          "concept": "Sie haben dieselbe Fallbeschleunigung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie haben dieselbe Fallbeschleunigung.",
+              "Der schwerere hat grundsätzlich die größere Fallbeschleunigung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3XAAGS1T19B2ZWNXG",
+          "slug": "ph10-me-freier-fall-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-freier-fall",
+          "question": "Welche näherungsweise Fallbeschleunigung gilt in Erdnähe?",
+          "materiality": "material",
+          "sample_solution": "Lokal kann g etwas abweichen; Luftwiderstand ist eine zusätzliche Kraft.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "g \\approx 9{,}81\\,\\mathrm{m/s^2}",
+              "speech": "g ungefähr neun Komma acht eins Meter pro Sekunde zum Quadrat"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "g \\approx 9{,}81\\,\\mathrm{m/s^2}",
+                  "speech": "g ungefähr neun Komma acht eins Meter pro Sekunde zum Quadrat"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "g \\approx 9{,}81\\,\\mathrm{m/s}",
+                  "speech": "g ungefähr neun Komma acht eins Meter pro Sekunde"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3YKJVGC3V4MJ5RRHV",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3YKJVGC3V4MJ5RRHV",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-me-kraft",
+      "title": "Kraft verändert Bewegung",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-kraft",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3J2YMQACX2R5BDF2M",
+          "slug": "ph10-me-kraft-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-kraft",
+          "question": "Welche Kraft setzt man in F = m · a ein?",
+          "materiality": "material",
+          "sample_solution": "Die Kräfte müssen mit ihren Richtungen zusammengefasst werden.",
+          "concept": "Die resultierende äußere Kraft auf das gewählte System.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die resultierende äußere Kraft auf das gewählte System.",
+              "Immer nur die Antriebskraft ohne weitere Gegenkräfte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3NRAAH5D1M2QD3C1N",
+          "slug": "ph10-me-kraft-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-kraft",
+          "question": "Wie lautet die Grundgleichung der Mechanik?",
+          "materiality": "material",
+          "sample_solution": "Die resultierende äußere Kraft beschleunigt das gewählte System.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "F_{\\mathrm{res}} = m a",
+              "speech": "resultierende Kraft gleich Masse mal Beschleunigung"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "F_{\\mathrm{res}} = m a",
+                  "speech": "resultierende Kraft gleich Masse mal Beschleunigung"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "F = \\frac{m}{a}",
+                  "speech": "Kraft gleich Masse durch Beschleunigung"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3G1TKW7AAQQ6H9CM2",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3G1TKW7AAQQ6H9CM2",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-me-energie",
+      "title": "Bewegungsenergie und Energieerhaltung",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-energie",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP33D2PV6ZV5RW2F40E",
+          "slug": "ph10-me-energie-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-energie",
+          "question": "Wie verändert doppelte Geschwindigkeit bei gleicher Masse die Bewegungsenergie?",
+          "materiality": "material",
+          "sample_solution": "Die Geschwindigkeit geht quadratisch in die kinetische Energie ein.",
+          "concept": "Sie wird viermal so groß.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie wird viermal so groß.",
+              "Sie wird zweimal so groß."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3NCH4V15W7GYBVYN2",
+          "slug": "ph10-me-energie-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-energie",
+          "question": "Wie berechnet man die kinetische Energie eines Körpers?",
+          "materiality": "material",
+          "sample_solution": "Die Einheit ist Joule; v wird in m/s eingesetzt.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "E_{\\mathrm{kin}} = \\frac{1}{2} m v^2",
+              "speech": "kinetische Energie gleich ein halb mal Masse mal Geschwindigkeit zum Quadrat"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "E_{\\mathrm{kin}} = \\frac{1}{2} m v^2",
+                  "speech": "kinetische Energie gleich ein halb mal Masse mal Geschwindigkeit zum Quadrat"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "E_{\\mathrm{kin}} = \\frac{1}{2} m v",
+                  "speech": "kinetische Energie gleich ein halb mal Masse mal Geschwindigkeit"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3S68FN71V9RQ2X11Y",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3S68FN71V9RQ2X11Y",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-me-anhalteweg",
+      "title": "Reaktionsweg und Bremsweg",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-anhalteweg",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP32RZ46DXHRCC1DSWH",
+          "slug": "ph10-me-anhalteweg-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-anhalteweg",
+          "question": "Wie wächst der ideale Bremsweg bei doppelter Geschwindigkeit und gleicher Verzögerung?",
+          "materiality": "material",
+          "sample_solution": "Aus der Bewegungsenergie oder der Bremsgleichung folgt die quadratische Abhängigkeit.",
+          "concept": "Er wird viermal so groß.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er wird viermal so groß.",
+              "Er wird zweimal so groß."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3PGHKT9B6MZ5EEXP1",
+          "slug": "ph10-me-anhalteweg-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-anhalteweg",
+          "question": "Welche zwei Teilwege ergeben zusammen den Anhalteweg?",
+          "materiality": "material",
+          "sample_solution": "Der Reaktionsweg entsteht vor dem Einsetzen der Verzögerung; danach folgt der Bremsweg.",
+          "concept": "Reaktionsweg und Bremsweg.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Reaktionsweg und Bremsweg.",
+              "Reaktionszeit und Bremszeit ohne Berücksichtigung der Geschwindigkeit."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3TY75Z420ZVN5VQ1V",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3TY75Z420ZVN5VQ1V",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-me-impuls",
+      "title": "Impuls als gerichtete Größe",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-impuls",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3Y2R14BJX57DP6KVJ",
+          "slug": "ph10-me-impuls-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-impuls",
+          "question": "Unter welcher Bedingung bleibt der Gesamtimpuls bei einem Stoß erhalten?",
+          "materiality": "material",
+          "sample_solution": "Innere Wechselwirkungskräfte heben sich in der Gesamtbilanz auf.",
+          "concept": "Der äußere Kraftstoß auf das betrachtete System ist vernachlässigbar.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der äußere Kraftstoß auf das betrachtete System ist vernachlässigbar.",
+              "Es wirken überhaupt keine Kräfte zwischen den stoßenden Körpern."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3HM843V8RPHENF8VG",
+          "slug": "ph10-me-impuls-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-impuls",
+          "question": "Wie berechnet man den Impuls eines Körpers?",
+          "materiality": "material",
+          "sample_solution": "In einer Richtung wird das Vorzeichen der Geschwindigkeit übernommen.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "p = m v",
+              "speech": "Impuls gleich Masse mal Geschwindigkeit"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "p = m v",
+                  "speech": "Impuls gleich Masse mal Geschwindigkeit"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "p = \\frac{m}{v}",
+                  "speech": "Impuls gleich Masse durch Geschwindigkeit"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3ECGVSGH9EJBN9EQ0",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3ECGVSGH9EJBN9EQ0",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-me-stoesse",
+      "title": "Elastische und inelastische Stöße",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-stoesse",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EFWCP3TY75Z420ZVN5VQ1V",
+          "type": "hard",
+          "rationale": "Die Endgeschwindigkeit erfordert eine gerichtete Gesamtimpulsbilanz."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3W5KXXYMHS7JG8MKP",
+          "slug": "ph10-me-stoesse-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-stoesse",
+          "question": "Was kennzeichnet einen vollständig inelastischen Stoß?",
+          "materiality": "material",
+          "sample_solution": "Gemeinsame Endgeschwindigkeit folgt zusammen mit der Impulsbilanz.",
+          "concept": "Die Körper bewegen sich unmittelbar danach mit gemeinsamer Geschwindigkeit.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Körper bewegen sich unmittelbar danach mit gemeinsamer Geschwindigkeit.",
+              "Die gesamte kinetische Energie bleibt grundsätzlich erhalten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3V38K13XCKDFCETR9",
+          "slug": "ph10-me-stoesse-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=me-stoesse",
+          "question": "Welche zusätzliche Größe bleibt beim elastischen Stoß neben dem Gesamtimpuls erhalten?",
+          "materiality": "material",
+          "sample_solution": "Bei einem inelastischen Stoß wird ein Teil der kinetischen Energie in andere Energieformen überführt.",
+          "concept": "Die gesamte kinetische Energie.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die gesamte kinetische Energie.",
+              "Die innere Energie jedes einzelnen Körpers."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3NEMMSFVQGWK6KM6P",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3NEMMSFVQGWK6KM6P",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-el-reihe",
+      "title": "Reihenschaltung untersuchen",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-reihe",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3A1ATYJEQCFG7PYAJ",
+          "slug": "ph10-el-reihe-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-reihe",
+          "question": "Welche Größe ist in allen Bauteilen einer einfachen Reihenschaltung gleich?",
+          "materiality": "material",
+          "sample_solution": "An keinem unverzweigten Abschnitt sammelt sich dauerhaft Ladung an.",
+          "concept": "Die Stromstärke.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Stromstärke.",
+              "Die Spannung unabhängig vom jeweiligen Widerstand."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP331J38CJQFYXDP6FN",
+          "slug": "ph10-el-reihe-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-reihe",
+          "question": "Wie berechnet man den Gesamtwiderstand zweier ohmscher Widerstände in Reihe?",
+          "materiality": "material",
+          "sample_solution": "In einem unverzweigten Kreis fließt durch beide derselbe Strom.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "R_{\\mathrm{ges}} = R_1 + R_2",
+              "speech": "Gesamtwiderstand gleich R eins plus R zwei"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "R_{\\mathrm{ges}} = R_1 + R_2",
+                  "speech": "Gesamtwiderstand gleich R eins plus R zwei"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "R_{\\mathrm{ges}} = R_1 R_2",
+                  "speech": "Gesamtwiderstand gleich R eins mal R zwei"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP38NS5EHDFMCJN5M45",
+      "atom_uri": "urn:zam:atom:01M5EFWCP38NS5EHDFMCJN5M45",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-el-parallel",
+      "title": "Parallelschaltung untersuchen",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-parallel",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP353T89KD3N64TVKTY",
+          "slug": "ph10-el-parallel-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-parallel",
+          "question": "Welche Größe ist an parallelen Widerstandszweigen gleich?",
+          "materiality": "material",
+          "sample_solution": "Beide Enden jedes Zweigs liegen jeweils an denselben Knoten.",
+          "concept": "Die Spannung zwischen den gemeinsamen Knoten.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Spannung zwischen den gemeinsamen Knoten.",
+              "Die Stromstärke unabhängig vom Widerstand des Zweigs."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3DQN67W4GRHH4TWVH",
+          "slug": "ph10-el-parallel-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-parallel",
+          "question": "Wie vergleicht sich der Gesamtwiderstand einer Parallelschaltung positiver Widerstände mit dem kleinsten Einzelwiderstand?",
+          "materiality": "material",
+          "sample_solution": "Jeder weitere leitende Zweig erhöht den Gesamtleitwert.",
+          "concept": "Er ist kleiner als der kleinste Einzelwiderstand.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er ist kleiner als der kleinste Einzelwiderstand.",
+              "Er ist größer als der größte Einzelwiderstand."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3T6NR56K5CCHW540A",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3T6NR56K5CCHW540A",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-el-messen",
+      "title": "Messgeräte und Innenwiderstand",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-messen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP31F47M6NXCX6AKPXN",
+          "slug": "ph10-el-messen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-messen",
+          "question": "Wie wird ein Spannungsmessgerät an ein Bauteil angeschlossen?",
+          "materiality": "material",
+          "sample_solution": "Es vergleicht die elektrischen Potenziale an den beiden Anschlüssen.",
+          "concept": "Parallel zum Bauteil.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Parallel zum Bauteil.",
+              "Anstelle des Bauteils als nahezu widerstandsfreier Leiter."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3SZMECCF75F3WPBZA",
+          "slug": "ph10-el-messen-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-messen",
+          "question": "Welche Innenwiderstandsgrenze ist für ein ideales Strommessgerät erwünscht?",
+          "materiality": "material",
+          "sample_solution": "Ein reales Gerät nähert diesen Grenzfall nur an; sein Widerstand liegt in Reihe.",
+          "concept": "Ein Innenwiderstand von null Ohm.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Innenwiderstand von null Ohm.",
+              "Ein unendlich großer Innenwiderstand."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3HG79JVXS4KEXZ0M2",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3HG79JVXS4KEXZ0M2",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-el-messbereich",
+      "title": "Messbereiche erweitern",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-messbereich",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3A743V5J924X4YWNF",
+          "slug": "ph10-el-messbereich-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-messbereich",
+          "question": "Wie erweitert man den Strommessbereich eines Messwerks?",
+          "materiality": "material",
+          "sample_solution": "Ein Shunt übernimmt einen Teil des Gesamtstroms.",
+          "concept": "Mit einem passenden Nebenwiderstand parallel zum Messwerk.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit einem passenden Nebenwiderstand parallel zum Messwerk.",
+              "Mit einem beliebig großen Widerstand in Reihe zum Messwerk."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP334QB2CM1CAP0V5E2",
+          "slug": "ph10-el-messbereich-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-messbereich",
+          "question": "Welche Schaltung erweitert den Spannungsmessbereich eines Messwerks?",
+          "materiality": "material",
+          "sample_solution": "Der Messwerkstrom bleibt beim Endausschlag gleich; die zusätzliche Spannung fällt am Vorwiderstand ab.",
+          "concept": "Ein Vorwiderstand in Reihe zum Messwerk.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Vorwiderstand in Reihe zum Messwerk.",
+              "Ein Vorwiderstand parallel zum Messwerk."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3J4HMMW6D3K4MW7C8",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3J4HMMW6D3K4MW7C8",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-el-induktion",
+      "title": "Wann eine Spannung induziert wird",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-induktion",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3ZC6ET7W46D2EFHVY",
+          "slug": "ph10-el-induktion-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-induktion",
+          "question": "Unter welcher Bedingung entsteht eine Induktionsspannung an einer Spule?",
+          "materiality": "material",
+          "sample_solution": "Auch ein ruhender Aufbau kann durch Änderung des erregenden Stroms induzieren.",
+          "concept": "Wenn sich der magnetische Fluss durch die Spule zeitlich ändert.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn sich der magnetische Fluss durch die Spule zeitlich ändert.",
+              "Sobald ein starkes Magnetfeld zeitlich unverändert vorhanden ist."
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4J0P0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M5EFWCP3Y8TQ7GTVWJZ40DXY",
+          "slug": "ph10-el-induktion-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-induktion",
+          "question": "Wie verändert sich der Induktionsspannungsbetrag bei doppelter Windungszahl und gleicher Flussänderung pro Windung?",
+          "materiality": "material",
+          "sample_solution": "Jede Windung trägt zur gesamten Induktionsspannung bei.",
+          "concept": "Er verdoppelt sich.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er verdoppelt sich.",
+              "Er halbiert sich."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP314C0XQPDA973HT58",
+      "atom_uri": "urn:zam:atom:01M5EFWCP314C0XQPDA973HT58",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-el-uvw",
+      "title": "Elektronenbewegung und UVW-Regel",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-uvw",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3BM5YPYTSJZ13SBZC",
+          "slug": "ph10-el-uvw-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-uvw",
+          "question": "Welche Richtung zeigt der Mittelfinger bei der linken UVW-Regel für Elektronen?",
+          "materiality": "material",
+          "sample_solution": "Daumen: Elektronenbewegung; Zeigefinger: Magnetfeld; Mittelfinger: Kraft.",
+          "concept": "Die Richtung der magnetischen Kraft auf die Elektronen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Richtung der magnetischen Kraft auf die Elektronen.",
+              "Die Richtung des äußeren Magnetfelds."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3XBZ4KYY6Q770JB76",
+          "slug": "ph10-el-uvw-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-uvw",
+          "question": "Wie groß ist die magnetische Lorentzkraft bei Bewegung genau parallel zum Magnetfeld?",
+          "materiality": "material",
+          "sample_solution": "Nur der zur Feldrichtung senkrechte Geschwindigkeitsanteil trägt zur magnetischen Kraft bei.",
+          "concept": "Sie ist null.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie ist null.",
+              "Sie ist bei Parallelbewegung grundsätzlich maximal."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3CJKESPKNMRD9JNGD",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3CJKESPKNMRD9JNGD",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-el-lenz",
+      "title": "Lenz und Wirbelstrombremse",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-lenz",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EFWCP3J4HMMW6D3K4MW7C8",
+          "type": "hard",
+          "rationale": "Lenz bestimmt die Richtung eines Induktionsvorgangs."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP398YP1TYH0R0S3G2N",
+          "slug": "ph10-el-lenz-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-lenz",
+          "question": "Was besagt die Lenzsche Regel über einen induzierten Strom?",
+          "materiality": "material",
+          "sample_solution": "Bei zunehmendem und abnehmendem Fluss ergeben sich unterschiedliche Stromrichtungen.",
+          "concept": "Seine Wirkung ist seiner Entstehungsursache entgegengerichtet.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Seine Wirkung ist seiner Entstehungsursache entgegengerichtet.",
+              "Er verstärkt seine Entstehungsursache ohne Energiezufuhr."
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4J0P0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M5EFWCP3PBFN1KM47C8P8FF9",
+          "slug": "ph10-el-lenz-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-lenz",
+          "question": "In welche Energieform geht beim Wirbelstrombremsen ein Teil der Bewegungsenergie über?",
+          "materiality": "material",
+          "sample_solution": "Die induzierten Ströme verursachen elektrische Erwärmung.",
+          "concept": "In innere Energie des leitenden Materials.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In innere Energie des leitenden Materials.",
+              "Ausschließlich in potenzielle Energie im Schwerefeld."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP33KBJYXCK050TXRHN",
+      "atom_uri": "urn:zam:atom:01M5EFWCP33KBJYXCK050TXRHN",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-el-generator",
+      "title": "Generatoren vergleichen",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-generator",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3HSFV8MN60MYC5JTG",
+          "slug": "ph10-el-generator-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-generator",
+          "question": "Warum benötigt ein belasteter Generator mechanischen Antrieb?",
+          "materiality": "material",
+          "sample_solution": "Lenz erklärt das bremsende Gegenmoment bei Stromabgabe.",
+          "concept": "Seine elektrische Energieabgabe muss durch zugeführte Energie gedeckt werden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Seine elektrische Energieabgabe muss durch zugeführte Energie gedeckt werden.",
+              "Das Magnetfeld erzeugt fortlaufend elektrische Energie aus dem Nichts."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3HW0XT37033WNWGW7",
+          "slug": "ph10-el-generator-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-generator",
+          "question": "Wie hängen Frequenz und Periodendauer einer periodischen Wechselspannung zusammen?",
+          "materiality": "material",
+          "sample_solution": "Eine Periodendauer von 0,02 s entspricht 50 Hz.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f = \\frac{1}{T}",
+              "speech": "Frequenz gleich eins durch Periodendauer"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "f = \\frac{1}{T}",
+                  "speech": "Frequenz gleich eins durch Periodendauer"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "f = T",
+                  "speech": "Frequenz gleich Periodendauer"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP36T87Q6Y7KG03BJK8",
+      "atom_uri": "urn:zam:atom:01M5EFWCP36T87Q6Y7KG03BJK8",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-el-trafo",
+      "title": "Transformator mit und ohne Last",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-trafo",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EFWCP3J4HMMW6D3K4MW7C8",
+          "type": "hard",
+          "rationale": "Die Sekundärspannung wird durch Wechselfluss induziert."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP34TA6B7WVEXWP13MN",
+          "slug": "ph10-el-trafo-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-trafo",
+          "question": "Wie verhalten sich die Spannungen eines idealen Transformators zu den Windungszahlen?",
+          "materiality": "material",
+          "sample_solution": "Mehr Sekundärwindungen liefern bei gleichem Wechselfluss eine größere Sekundärspannung.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\frac{U_2}{U_1} = \\frac{N_2}{N_1}",
+              "speech": "U zwei durch U eins gleich N zwei durch N eins"
+            }
+          ],
+          "replaces": [
+            "01K4J0P0000000000000000J07"
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\frac{U_2}{U_1} = \\frac{N_2}{N_1}",
+                  "speech": "U zwei durch U eins gleich N zwei durch N eins"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "\\frac{U_2}{U_1} = \\frac{N_1}{N_2}",
+                  "speech": "U zwei durch U eins gleich N eins durch N zwei"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3NTDMAH6ZRW3GYHE6",
+          "slug": "ph10-el-trafo-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-trafo",
+          "question": "Welche Stromübersetzung gilt beim idealen belasteten Transformator?",
+          "materiality": "material",
+          "sample_solution": "Das folgt aus gleicher idealer Eingangs- und Ausgangsleistung.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\frac{I_1}{I_2} = \\frac{N_2}{N_1}",
+              "speech": "I eins durch I zwei gleich N zwei durch N eins"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\frac{I_1}{I_2} = \\frac{N_2}{N_1}",
+                  "speech": "I eins durch I zwei gleich N zwei durch N eins"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "\\frac{I_1}{I_2} = \\frac{N_1}{N_2}",
+                  "speech": "I eins durch I zwei gleich N eins durch N zwei"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP343D7K77PS349W6VC",
+      "atom_uri": "urn:zam:atom:01M5EFWCP343D7K77PS349W6VC",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-el-fernleitung",
+      "title": "Energie mit kleinerem Verlust übertragen",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-fernleitung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3DADE4CVG0AN5QKMK",
+          "slug": "ph10-el-fernleitung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-fernleitung",
+          "question": "Wie ändern sich ohmsche Leitungsverluste bei halbem Strom und gleichem Leitungswiderstand?",
+          "materiality": "material",
+          "sample_solution": "Die Verlustleistung ist I² mal Leitungswiderstand.",
+          "concept": "Sie sinken auf ein Viertel.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie sinken auf ein Viertel.",
+              "Sie sinken auf die Hälfte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3JYFZJT5TYE5XD34P",
+          "slug": "ph10-el-fernleitung-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=el-fernleitung",
+          "question": "Wie berechnet man die ohmsche Verlustleistung einer Leitung?",
+          "materiality": "material",
+          "sample_solution": "R_L umfasst im Modell den gesamten betrachteten Leitungsweg.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "P_{\\mathrm{V}} = I^2 R_{\\mathrm{L}}",
+              "speech": "Verlustleistung gleich Strom zum Quadrat mal Leitungswiderstand"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "P_{\\mathrm{V}} = I^2 R_{\\mathrm{L}}",
+                  "speech": "Verlustleistung gleich Strom zum Quadrat mal Leitungswiderstand"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "P_{\\mathrm{V}} = I R_{\\mathrm{L}}^2",
+                  "speech": "Verlustleistung gleich Strom mal Leitungswiderstand zum Quadrat"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3YGFBSYBBHSWFQ5FE",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3YGFBSYBBHSWFQ5FE",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-ke-entdeckung",
+      "title": "Radioaktivität aus Belegen erschließen",
+      "domain": "physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-entdeckung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP30GF8CWZA269QTW5Q",
+          "slug": "ph10-ke-entdeckung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-entdeckung",
+          "question": "Welche Aussage beschreibt die entscheidende Überraschung beim frühen Uran-Nachweis?",
+          "materiality": "material",
+          "sample_solution": "Die Beobachtung forderte eine Erklärung über gespeichertes Sonnenlicht hinaus.",
+          "concept": "Die Wirkung trat auch ohne vorherige Sonnenbestrahlung auf.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Wirkung trat auch ohne vorherige Sonnenbestrahlung auf.",
+              "Die Radioaktivität war nur eine gewöhnliche Spiegelung von Sonnenlicht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3GH11B5ENAAFM4B3B",
+          "slug": "ph10-ke-entdeckung-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-entdeckung",
+          "question": "Wer entdeckte 1896 die spontane Strahlung von Uranverbindungen?",
+          "materiality": "material",
+          "sample_solution": "Die systematischen Arbeiten von Marie und Pierre Curie erweiterten die frühe Forschung zur Radioaktivität.",
+          "concept": "Henri Becquerel.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Henri Becquerel.",
+              "Albert Einstein."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3VF08HXBTE6J0HJKH",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3VF08HXBTE6J0HJKH",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-ke-kern",
+      "title": "Atomkern, Nuklide und Isotope",
+      "domain": "physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-kern",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3MECPGWDPM6DBXJFC",
+          "slug": "ph10-ke-kern-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-kern",
+          "question": "Was ist bei Isotopen desselben Elements gleich?",
+          "materiality": "material",
+          "sample_solution": "Die Protonenzahl legt das Element fest.",
+          "concept": "Die Protonenzahl.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Protonenzahl.",
+              "Die Neutronenzahl unabhängig vom Isotop."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3PP8W4EVJZDMWPNZN",
+          "slug": "ph10-ke-kern-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-kern",
+          "question": "Wie erhält man die Neutronenzahl aus Massenzahl und Protonenzahl?",
+          "materiality": "material",
+          "sample_solution": "Die Massenzahl zählt beide Kernbausteinarten zusammen.",
+          "concept": "Massenzahl minus Protonenzahl.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Massenzahl minus Protonenzahl.",
+              "Massenzahl plus Protonenzahl."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3SYJDWY9RR8YCJ3Z5",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3SYJDWY9RR8YCJ3Z5",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-ke-quarks",
+      "title": "Was im Kernbaustein steckt",
+      "domain": "physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-quarks",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3DQXYP4520X9X67ZT",
+          "slug": "ph10-ke-quarks-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-quarks",
+          "question": "Welche Valenzquarkkombination besitzt ein Proton?",
+          "materiality": "material",
+          "sample_solution": "Die Ladungen addieren sich zu +1 Elementarladung.",
+          "concept": "Zwei Up-Quarks und ein Down-Quark.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwei Up-Quarks und ein Down-Quark.",
+              "Ein Up-Quark und zwei Down-Quarks."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3YY7PVBKJT7D0JFH3",
+          "slug": "ph10-ke-quarks-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-quarks",
+          "question": "Welche Valenzquarkkombination besitzt ein Neutron?",
+          "materiality": "material",
+          "sample_solution": "Die Valenzkombination udd hat insgesamt elektrische Ladung null.",
+          "concept": "Ein Up-Quark und zwei Down-Quarks.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Up-Quark und zwei Down-Quarks.",
+              "Zwei Up-Quarks und ein Down-Quark."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3GQTRZ7AF00DD1V8Y",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3GQTRZ7AF00DD1V8Y",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-ke-strahlung",
+      "title": "Alpha, Beta und Gamma unterscheiden",
+      "domain": "physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-strahlung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP32P05WRPAQAKE5B23",
+          "slug": "ph10-ke-strahlung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-strahlung",
+          "question": "Aus welchen Teilchen besteht Alphastrahlung?",
+          "materiality": "material",
+          "sample_solution": "Ein Alphateilchen enthält zwei Protonen und zwei Neutronen.",
+          "concept": "Helium-4-Atomkerne.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Helium-4-Atomkerne.",
+              "Elektronen aus der Atomhülle."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP373PBCJTNN6EPN9YY",
+          "slug": "ph10-ke-strahlung-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-strahlung",
+          "question": "Welche der drei Strahlungsarten Alpha, Beta-Minus und Gamma wird nicht durch ein Magnetfeld abgelenkt?",
+          "materiality": "material",
+          "sample_solution": "Gammaquanten besitzen keine elektrische Ladung.",
+          "concept": "Gammastrahlung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gammastrahlung.",
+              "Alphastrahlung."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3Q9XM1E4R662YE5P5",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3Q9XM1E4R662YE5P5",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-ke-nachweis",
+      "title": "Nachweise und Zählraten auswerten",
+      "domain": "physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-nachweis",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3P0JB6H3A9ZQPFH26",
+          "slug": "ph10-ke-nachweis-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-nachweis",
+          "question": "Was erfasst ein Geiger-Müller-Zählrohr unmittelbar?",
+          "materiality": "material",
+          "sample_solution": "Detektor, Abstand und Abschirmung beeinflussen die erfassten Impulse.",
+          "concept": "Elektrische Impulse infolge nachgewiesener Ionisationsereignisse.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Elektrische Impulse infolge nachgewiesener Ionisationsereignisse.",
+              "Die persönliche effektive Dosis unabhängig von der Geometrie."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP34KMG7PZ1SC3ESYGR",
+          "slug": "ph10-ke-nachweis-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-nachweis",
+          "question": "Welche Größe muss bei einem Zählvergleich ohne Probe zusätzlich gemessen werden?",
+          "materiality": "material",
+          "sample_solution": "Erfasst werden auch Signale, die nicht von der untersuchten Probe stammen.",
+          "concept": "Der Untergrund beziehungsweise die Hintergrundzählrate.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Untergrund beziehungsweise die Hintergrundzählrate.",
+              "Die elektrische Nutzleistung des Detektors."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3Q8MWSX567Z4S1HHN",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3Q8MWSX567Z4S1HHN",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-ke-zerfall",
+      "title": "Kernumwandlungen bilanzieren",
+      "domain": "physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-zerfall",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EFWCP3VF08HXBTE6J0HJKH",
+          "type": "hard",
+          "rationale": "Zerfallsgleichungen benötigen Protonen- und Massenzahl."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3AKC87EQV30XRHT34",
+          "slug": "ph10-ke-zerfall-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-zerfall",
+          "question": "Wie ändern sich Massenzahl und Protonenzahl bei Gammaemission?",
+          "materiality": "material",
+          "sample_solution": "Der Kern gibt Anregungsenergie ab, ohne seine Nukleonenzusammensetzung zu ändern.",
+          "concept": "Beide bleiben unverändert.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beide bleiben unverändert.",
+              "Beide nehmen jeweils um eins ab."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3H8RBN4EMZW95ZNPN",
+          "slug": "ph10-ke-zerfall-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-zerfall",
+          "question": "Wie ändert sich die Protonenzahl beim Beta-Minus-Zerfall?",
+          "materiality": "material",
+          "sample_solution": "Ein Neutron wird unter Aussendung eines Elektrons und Antineutrinos zum Proton.",
+          "concept": "Sie steigt um eins.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie steigt um eins.",
+              "Sie sinkt um eins."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3QV9PJKD87AB1C12F",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3QV9PJKD87AB1C12F",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-ke-halbwertszeit",
+      "title": "Halbwertszeit und Zufall",
+      "domain": "physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-halbwertszeit",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3H3XQDGH80QCSRTSS",
+          "slug": "ph10-ke-halbwertszeit-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-halbwertszeit",
+          "question": "Welcher Restanteil bleibt im Mittel nach drei Halbwertszeiten?",
+          "materiality": "material",
+          "sample_solution": "Dreimal Halbieren ergibt ½ · ½ · ½ = ⅛.",
+          "concept": "Ein Achtel.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Achtel.",
+              "Ein Drittel."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP39K7J5AYHVKE702GB",
+          "slug": "ph10-ke-halbwertszeit-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-halbwertszeit",
+          "question": "Kann man aus der Halbwertszeit den genauen Zerfallszeitpunkt eines einzelnen Kerns bestimmen?",
+          "materiality": "material",
+          "sample_solution": "Die Halbwertszeit charakterisiert die statistische Verteilung vieler gleicher instabiler Kerne.",
+          "concept": "Nein; der einzelne Zerfallszeitpunkt ist zufällig.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein; der einzelne Zerfallszeitpunkt ist zufällig.",
+              "Ja; jeder einzelne Kern zerfällt exakt nach seiner Halbwertszeit."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3B0RD81YS2BBQ19XX",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3B0RD81YS2BBQ19XX",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-ke-zerfallsgesetz",
+      "title": "Zerfallsgesetz und Aktivität",
+      "domain": "physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-zerfallsgesetz",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EFWCP3QV9PJKD87AB1C12F",
+          "type": "hard",
+          "rationale": "Der Exponent setzt die Bedeutung der Halbwertszeit voraus."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3D0YPA2YH9FJKSWGP",
+          "slug": "ph10-ke-zerfallsgesetz-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-zerfallsgesetz",
+          "question": "Was bedeutet die Einheit Becquerel?",
+          "materiality": "material",
+          "sample_solution": "Aktivität beschreibt die Quelle, nicht unmittelbar die Wirkung im Körper.",
+          "concept": "Ein Kernzerfall pro Sekunde.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Kernzerfall pro Sekunde.",
+              "Ein Joule absorbierte Energie pro Kilogramm."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP32K1AYGTA934E046P",
+          "slug": "ph10-ke-zerfallsgesetz-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-zerfallsgesetz",
+          "question": "Wie lautet das Zerfallsgesetz mit der Halbwertszeit?",
+          "materiality": "material",
+          "sample_solution": "Es beschreibt den Erwartungswert eines einzelnen Radionuklids ohne Nachlieferung.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "N(t) = N_0 \\cdot \\left(\\frac{1}{2}\\right)^{t/T_{1/2}}",
+              "speech": "N von t gleich N null mal ein halb hoch t durch die Halbwertszeit"
+            }
+          ],
+          "replaces": [
+            "01K4N0P0000000000000000J03"
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "N(t) = N_0 \\cdot \\left(\\frac{1}{2}\\right)^{t/T_{1/2}}",
+                  "speech": "N von t gleich N null mal ein halb hoch t durch die Halbwertszeit"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "N(t) = N_0 \\left(1 - \\frac{t}{T_{1/2}}\\right)",
+                  "speech": "N von t gleich N null mal Klammer eins minus t durch Halbwertszeit"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3WZ1BPDAD24RXMGGW",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3WZ1BPDAD24RXMGGW",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-ke-bindung",
+      "title": "Massendefekt und Bindungsenergie",
+      "domain": "physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-bindung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP31J66613W8QN36E1S",
+          "slug": "ph10-ke-bindung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-bindung",
+          "question": "Wie vergleicht sich die Masse eines gebundenen Kerns mit der seiner freien Nukleonen?",
+          "materiality": "material",
+          "sample_solution": "Die kleinere Masse gehört zur niedrigeren Gesamtenergie des gebundenen Systems.",
+          "concept": "Sie ist kleiner als deren Massensumme.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie ist kleiner als deren Massensumme.",
+              "Sie ist immer größer als deren Massensumme."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3MCMCBWBA1H9WB79W",
+          "slug": "ph10-ke-bindung-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-bindung",
+          "question": "Wie hängen Massendefekt und Bindungsenergie zusammen?",
+          "materiality": "material",
+          "sample_solution": "Die Masse muss in Kilogramm eingesetzt werden, wenn das Ergebnis in Joule gesucht ist.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "E_{\\mathrm{B}} = \\Delta m c^2",
+              "speech": "Bindungsenergie gleich Massendefekt mal Lichtgeschwindigkeit zum Quadrat"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "E_{\\mathrm{B}} = \\Delta m c^2",
+                  "speech": "Bindungsenergie gleich Massendefekt mal Lichtgeschwindigkeit zum Quadrat"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "E_{\\mathrm{B}} = \\frac{\\Delta m}{c^2}",
+                  "speech": "Bindungsenergie gleich Massendefekt durch Lichtgeschwindigkeit zum Quadrat"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3VT903074HMVDZ61V",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3VT903074HMVDZ61V",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-ke-kettenreaktion",
+      "title": "Spaltung, Fusion und Kettenreaktion",
+      "domain": "physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-kettenreaktion",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3XQTXHXTVYA7D7ZWR",
+          "slug": "ph10-ke-kettenreaktion-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-kettenreaktion",
+          "question": "Welche Aufgabe haben neutronenabsorbierende Steuerstäbe?",
+          "materiality": "material",
+          "sample_solution": "Neutroneneinfang begrenzt die Anzahl weiterer Spaltungen.",
+          "concept": "Sie regulieren oder stoppen die Kettenreaktion durch Neutroneneinfang.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie regulieren oder stoppen die Kettenreaktion durch Neutroneneinfang.",
+              "Sie erhöhen die Neutronengeschwindigkeit ohne Neutroneneinfang."
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4N0P0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M5EFWCP3THB31TCC3ECY57TH",
+          "slug": "ph10-ke-kettenreaktion-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-kettenreaktion",
+          "question": "Welche Aufgabe erfüllt ein Moderator im thermischen Reaktor?",
+          "materiality": "material",
+          "sample_solution": "Das unterscheidet ihn funktionell von neutronenabsorbierenden Steuerstäben.",
+          "concept": "Er bremst schnelle Neutronen ab.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er bremst schnelle Neutronen ab.",
+              "Er absorbiert alle Neutronen statt sie abzubremsen."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP36CNBX4CSRHA6R6P9",
+      "atom_uri": "urn:zam:atom:01M5EFWCP36CNBX4CSRHA6R6P9",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-ke-dosis",
+      "title": "Aktivität, Energiedosis und Äquivalentdosis",
+      "domain": "physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-dosis",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3DPQAV5H43RD0FGX0",
+          "slug": "ph10-ke-dosis-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-dosis",
+          "question": "In welcher Einheit wird die Äquivalentdosis angegeben?",
+          "materiality": "material",
+          "sample_solution": "Die Gewichtung berücksichtigt die Strahlungsart.",
+          "concept": "Sievert beziehungsweise Millisievert.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sievert beziehungsweise Millisievert.",
+              "Becquerel beziehungsweise Kilobecquerel."
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4N0P0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M5EFWCP3HDM71PTFJXYC02QB",
+          "slug": "ph10-ke-dosis-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-dosis",
+          "question": "Wie lautet die Definition der Energiedosis?",
+          "materiality": "material",
+          "sample_solution": "Die Einheit Gray entspricht Joule pro Kilogramm.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "D = \\frac{E}{m}",
+              "speech": "Energiedosis gleich absorbierte Energie durch Masse"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "D = \\frac{E}{m}",
+                  "speech": "Energiedosis gleich absorbierte Energie durch Masse"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "D = E m",
+                  "speech": "Energiedosis gleich Energie mal Masse"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3Q5WPN4KXG2KQCJPV",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3Q5WPN4KXG2KQCJPV",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-ke-schutz-nutzen",
+      "title": "Nutzen und Gefahren begründet abwägen",
+      "domain": "physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-schutz-nutzen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Atom- und Kernphysik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3CVHXN0Z1Q8XHQBW4",
+          "slug": "ph10-ke-schutz-nutzen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-schutz-nutzen",
+          "question": "Warum kann aufgenommene Alphastrahlung trotz geringer äußerer Reichweite gefährlich sein?",
+          "materiality": "material",
+          "sample_solution": "Äußere Abschirmung und innere Exposition sind verschiedene Situationen.",
+          "concept": "Sie kann ihre Energie auf kurzer Strecke direkt im Gewebe abgeben.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie kann ihre Energie auf kurzer Strecke direkt im Gewebe abgeben.",
+              "Sie hat nach der Aufnahme grundsätzlich keine Wechselwirkung mehr."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP356K0MCPMR4GSDS7X",
+          "slug": "ph10-ke-schutz-nutzen-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ke-schutz-nutzen",
+          "question": "Warum schützt eine Abschirmung außerhalb des Körpers nicht vor bereits aufgenommenen radioaktiven Stoffen?",
+          "materiality": "material",
+          "sample_solution": "Die Exposition hängt vom Aufnahmeweg ab; externe Abschirmbarkeit allein beschreibt das Risiko nicht.",
+          "concept": "Die Strahlungsquelle befindet sich dann bereits im Körper.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Strahlungsquelle befindet sich dann bereits im Körper.",
+              "Weil äußere Abschirmung jede Quelle im Körper vollständig entfernt."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3T4JC1RPQ5BHVWESH",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3T4JC1RPQ5BHVWESH",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-en-kraftwerke",
+      "title": "Kraftwerke als Energieumwandler",
+      "domain": "physik/energieversorgung",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-kraftwerke",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Energieversorgung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Energieversorgung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Energieversorgung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP3T5CW25RC7P04RMEH",
+          "slug": "ph10-en-kraftwerke-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-kraftwerke",
+          "question": "Welche Technik wandelt Sonnenstrahlung ohne Turbine direkt in elektrische Energie um?",
+          "materiality": "material",
+          "sample_solution": "Solarthermie und Photovoltaik nutzen unterschiedliche Umwandlungsketten.",
+          "concept": "Photovoltaik.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Photovoltaik.",
+              "Ein konventionelles Dampfkraftwerk."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3FWBVNFHHWRS1P3JG",
+          "slug": "ph10-en-kraftwerke-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-kraftwerke",
+          "question": "Wie ist der elektrische Wirkungsgrad definiert?",
+          "materiality": "material",
+          "sample_solution": "Leistungen können bei gleicher Betrachtungszeit entsprechend verwendet werden.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\eta_{\\mathrm{el}} = \\frac{E_{\\mathrm{el}}}{E_{\\mathrm{zu}}}",
+              "speech": "elektrischer Wirkungsgrad gleich elektrische Nutzenergie durch zugeführte Energie"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\eta_{\\mathrm{el}} = \\frac{E_{\\mathrm{el}}}{E_{\\mathrm{zu}}}",
+                  "speech": "elektrischer Wirkungsgrad gleich elektrische Nutzenergie durch zugeführte Energie"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "\\eta_{\\mathrm{el}} = \\frac{E_{\\mathrm{zu}}}{E_{\\mathrm{el}}}",
+                  "speech": "elektrischer Wirkungsgrad gleich zugeführte Energie durch elektrische Nutzenergie"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3C049S6K2GZWM8NFW",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3C049S6K2GZWM8NFW",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-en-waermekraftmaschine",
+      "title": "Wärmekraftmaschinen im Alltag",
+      "domain": "physik/energieversorgung",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-waermekraftmaschine",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Energieversorgung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Energieversorgung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP35KCEKTZAD169TBBR",
+          "slug": "ph10-en-waermekraftmaschine-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-waermekraftmaschine",
+          "question": "Wodurch unterscheidet sich die Zündung im Dieselmodell von der im Ottomodell?",
+          "materiality": "material",
+          "sample_solution": "Beim Ottoverfahren wird das vorbereitete Gemisch typischerweise fremdgezündet.",
+          "concept": "Der Dieselkraftstoff entzündet sich an heißer, stark verdichteter Luft.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Dieselkraftstoff entzündet sich an heißer, stark verdichteter Luft.",
+              "Im Dieselmotor muss immer eine Zündkerze das fertige Gemisch zünden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP33CM51Y4DCF1EKYRA",
+          "slug": "ph10-en-waermekraftmaschine-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-waermekraftmaschine",
+          "question": "Welche zweite thermische Seite benötigt eine zyklische Wärmekraftmaschine neben der heißen Quelle?",
+          "materiality": "material",
+          "sample_solution": "Der Kreisprozess kann zugeführte Wärme nicht vollständig allein in Arbeit umwandeln.",
+          "concept": "Eine kältere Seite zur Energieabgabe.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine kältere Seite zur Energieabgabe.",
+              "Eine zweite Seite, die zwingend heißer als die Quelle ist."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3RBW5MGH8YHQKWKCD",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3RBW5MGH8YHQKWKCD",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-en-kwk",
+      "title": "KWK und Gas-und-Dampf-System",
+      "domain": "physik/energieversorgung",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-kwk",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Energieversorgung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Energieversorgung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Energieversorgung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP31S9FCE1GPCQM3FJK",
+          "slug": "ph10-en-kwk-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-kwk",
+          "question": "Wann verbessert Wärmeauskopplung die genutzte Gesamtenergie einer KWK-Anlage?",
+          "materiality": "material",
+          "sample_solution": "Der Bedarf und die erforderliche Temperatur gehören zur Bilanz.",
+          "concept": "Wenn die ausgekoppelte Wärme einen tatsächlichen passenden Wärmebedarf deckt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn die ausgekoppelte Wärme einen tatsächlichen passenden Wärmebedarf deckt.",
+              "Immer vollständig, auch wenn die gesamte Wärme ungenutzt abgeführt wird."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP3KHSSADEKSQ6TFDCS",
+          "slug": "ph10-en-kwk-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-kwk",
+          "question": "Welche zwei Nutzenergieanteile zählt man bei Kraft-Wärme-Kopplung zusammen?",
+          "materiality": "material",
+          "sample_solution": "Die Summe wird auf dieselbe zugeführte Energiemenge bezogen.",
+          "concept": "Elektrische Nutzenergie und tatsächlich genutzte Wärme.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Elektrische Nutzenergie und tatsächlich genutzte Wärme.",
+              "Elektrische Nutzenergie und sämtliche ungenutzte Wärme."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3FEQ9NK4SZSFF53DM",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3FEQ9NK4SZSFF53DM",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-en-speicher",
+      "title": "Speicher und Transport bewerten",
+      "domain": "physik/energieversorgung",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-speicher",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Energieversorgung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Energieversorgung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Energieversorgung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP35BKWWW4XD5H032XH",
+          "slug": "ph10-en-speicher-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-speicher",
+          "question": "Welche Einheit beschreibt die Energiespeicherkapazität?",
+          "materiality": "material",
+          "sample_solution": "Eine kWh ist eine Energiemenge, ein kW eine Leistung.",
+          "concept": "Kilowattstunden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kilowattstunden.",
+              "Kilowatt unabhängig von der Zeit."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP34CMAJMJ6MBMTKDPJ",
+          "slug": "ph10-en-speicher-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-speicher",
+          "question": "Wie berechnet man die ideale Versorgungsdauer aus nutzbarer Energie und konstanter Leistung?",
+          "materiality": "material",
+          "sample_solution": "kWh geteilt durch kW liefert Stunden, sofern die Leistungsgrenze ausreicht.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "t = \\frac{E}{P}",
+              "speech": "Zeit gleich Energie durch Leistung"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "t = \\frac{E}{P}",
+                  "speech": "Zeit gleich Energie durch Leistung"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "t = \\frac{P}{E}",
+                  "speech": "Zeit gleich Leistung durch Energie"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3W8FTQY1WNK1MNPM5",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3W8FTQY1WNK1MNPM5",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-en-urteil",
+      "title": "Eine Energieentscheidung begründen",
+      "domain": "physik/energieversorgung",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-urteil",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Energieversorgung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "I",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Energieversorgung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "physik",
+          "track": "II_III",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Energieversorgung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP38XSGKNXH75V0CDZ5",
+          "slug": "ph10-en-urteil-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-urteil",
+          "question": "Was fehlt für ein belastbares Urteil aus zwei Wirkungsgradzahlen allein?",
+          "materiality": "material",
+          "sample_solution": "Verschiedene Nutzenergiearten sind nicht ohne Weiteres austauschbar.",
+          "concept": "Bedarf, Bilanzgrenzen und weitere Entscheidungskriterien.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bedarf, Bilanzgrenzen und weitere Entscheidungskriterien.",
+              "Nur eine möglichst auffällige Farbe der höheren Zahl."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP39408W454XDKMXH7C",
+          "slug": "ph10-en-urteil-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=en-urteil",
+          "question": "Warum sind zwei Wirkungsgrade ohne gleiche Bilanzgrenze nicht unmittelbar vergleichbar?",
+          "materiality": "material",
+          "sample_solution": "Elektrischer Wirkungsgrad und gesamter Nutzungsgrad einer KWK-Anlage sind beispielsweise verschiedene Kennzahlen.",
+          "concept": "Weil sie unterschiedliche zugeführte oder genutzte Energieanteile beziehen können.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil sie unterschiedliche zugeführte oder genutzte Energieanteile beziehen können.",
+              "Weil jeder Wirkungsgrad unabhängig von Systemgrenzen immer dieselbe Größe beschreibt."
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M5EFWCP3YWF8BH26F86FS4VW",
+      "atom_uri": "urn:zam:atom:01M5EFWCP3YWF8BH26F86FS4VW",
+      "namespace": "zam-academy-physik-realschule-10",
+      "slug": "ph10-ex-effektivwert",
+      "title": "Zusatz: Effektivwert einer Sinusspannung",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ex-effektivwert",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EFWCP311GSNFQW8TCBRH0M",
+          "slug": "ph10-ex-effektivwert-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ex-effektivwert",
+          "question": "Welche Gleichspannung beschreibt den Effektivwert einer Wechselspannung am selben ohmschen Widerstand?",
+          "materiality": "material",
+          "sample_solution": "Die Leistung hängt quadratisch von der Spannung ab.",
+          "concept": "Die Gleichspannung mit derselben mittleren thermischen Leistung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Gleichspannung mit derselben mittleren thermischen Leistung.",
+              "Die Gleichspannung mit demselben vorzeichenbehafteten Spannungsmittelwert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5EFWCP39GM7AQZ6JW417RVT",
+          "slug": "ph10-ex-effektivwert-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-realschule-10/#lesson=ex-effektivwert",
+          "question": "Welchen Scheitelwert besitzt eine sinusförmige Spannung mit 230 V Effektivwert?",
+          "materiality": "material",
+          "sample_solution": "230 mal Wurzel aus zwei ist ungefähr 325; nur die reine Sinusform wird betrachtet.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "U_0 \\approx 325\\,\\mathrm{V}",
+              "speech": "Scheitelspannung ungefähr dreihundertfünfundzwanzig Volt"
+            }
+          ],
+          "replaces": [
+            "01K4J0P0000000000000000J05"
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "U_0 \\approx 325\\,\\mathrm{V}",
+                  "speech": "Scheitelspannung ungefähr dreihundertfünfundzwanzig Volt"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "U_0 = 230\\,\\mathrm{V}",
+                  "speech": "Scheitelspannung gleich zweihundertdreißig Volt"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    }
+  ],
+  "retired_items": [
+    {
+      "id": "01K4J0P0000000000000000J02",
+      "reason": "Mehrteiliger Gesamtabruf von Lorentzkraft und mehreren Einflussgrößen. Aufgeteilt; keine Beherrschung auf einzelne Teilfragen verteilen."
+    },
+    {
+      "id": "01K4J0P0000000000000000J04",
+      "reason": "Mehrteiliger Gesamtabruf von Energieargument und Wirbelstrombremse. Neue atomare Fragen übertragen keine Teilbeherrschung."
+    },
+    {
+      "id": "01K4J0P0000000000000000J06",
+      "reason": "Gesamtabruf von Generatorbauformen, Sinusform, Frequenz und Effektivwert. Zerlegt; keine eindeutige Identität mit einer neuen Teilfrage."
+    },
+    {
+      "id": "01K4J0P0000000000000000J08",
+      "reason": "Gesamtabruf von Trafoaufbau, Stromübersetzung und Fernleitung. Getrennte neue Fragen; kein Aufteilen des alten Lernstands."
+    },
+    {
+      "id": "01K4N0P0000000000000000J01",
+      "reason": "Altfrage fordert Teilchenart und vollständige Abschirmung. Neue Teilchenfrage ist enger; Abschirmung hängt von Energie und Situation ab. Kein sicher gleicher Gesamtumfang."
+    },
+    {
+      "id": "01K4N0P0000000000000000J02",
+      "reason": "Alttext nennt Alpha pauschal stark abgelenkt und Gamma durch Blei vollständig abgeschirmt. Ablenkung ist impulsabhängig; Gamma wird abgeschwächt. Fachliche Korrektur, kein Übertrag."
+    },
+    {
+      "id": "01K4N0P0000000000000000J04",
+      "reason": "Mehrteilige C14-Datierung mit zu pauschal konstantem Ausgangsverhältnis. Kein sicher unveränderter Gesamtabruf; neue Halbwertszeitfragen starten unbewertet."
+    },
+    {
+      "id": "01K4N0P0000000000000000J06",
+      "reason": "Mehrteiliger Spaltprozess mit Moderator und Regelung. Neue atomare Fragen decken jeweils nur Teile; keine Verteilung alter Beherrschung."
+    },
+    {
+      "id": "01K4N0P0000000000000000J08",
+      "reason": "Gesamtabruf von zwei Dosisgrößen und Schutzregeln; Abstandsgesetz und Abschirmung werden zu pauschal dargestellt. Korrigierter Umfang, kein Lernstandsübertrag."
+    }
+  ]
+}
