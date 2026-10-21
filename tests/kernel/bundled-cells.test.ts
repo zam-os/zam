@@ -284,7 +284,9 @@ describe("Bundled learning cells (Phase 1)", () => {
       );
       expect(
         ids({ grade: 7, subject: "bwl-rechnungswesen", track: "wpfg2-3" }),
-      ).toContain("de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung");
+      ).toContain(
+        "de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung",
+      );
       expect(
         ids({ grade: 7, subject: "bwl-rechnungswesen", track: "wpfg1" }),
       ).not.toContain(
@@ -295,7 +297,9 @@ describe("Bundled learning cells (Phase 1)", () => {
       ).toContain(
         "de-by:realschule-10-wirtschaft-recht-strafrecht-arbeitsrecht-sozialstaat",
       );
-      expect(ids({ grade: 9, subject: "franzoesisch", track: "wpfg2-3" })).toContain(
+      expect(
+        ids({ grade: 9, subject: "franzoesisch", track: "wpfg2-3" }),
+      ).toContain(
         "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",
       );
       expect(
@@ -306,6 +310,51 @@ describe("Bundled learning cells (Phase 1)", () => {
           subject: "it",
         }),
       ).toBe(false);
+    });
+
+    it("keeps single Realschule groups distinct while matching a shared II/III curriculum", () => {
+      const cells = (subject: string, grade: number, track: string) =>
+        findBundledCellsForScope({
+          provider: "lehrplanplus-bayern",
+          schoolType: "realschule",
+          subject,
+          grade,
+          track,
+        }).map((cell) => cell.id);
+      const bwr =
+        "de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung";
+      for (const track of ["II", "wpfg2"])
+        expect(cells("bwr", 7, track)).toContain(bwr);
+      for (const track of [
+        "III",
+        "IIIa",
+        "IIIb",
+        "wpfg3",
+        "wpfg3a",
+        "wpfg3b",
+        "I",
+        "wpfg1",
+      ])
+        expect(cells("bwr", 7, track)).not.toContain(bwr);
+      const french =
+        "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen";
+      expect(cells("franzoesisch", 9, "IIIa")).toContain(french);
+      expect(cells("franzoesisch", 9, "wpfg3a")).toContain(french);
+      for (const track of ["II", "wpfg2", "IIIb", "wpfg3b"])
+        expect(cells("franzoesisch", 9, track)).not.toContain(french);
+      for (const track of [
+        "II",
+        "wpfg2",
+        "III",
+        "wpfg3",
+        "IIIa",
+        "wpfg3a",
+        "IIIb",
+        "wpfg3b",
+        "II_III",
+        "wpfg2-3",
+      ])
+        expect(cells("physik", 8, track)).toContain("de-by:realschule-optik");
     });
 
     it("keeps the generic importer for a position no cell covers", () => {

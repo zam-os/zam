@@ -22,11 +22,11 @@ import {
 // cells were mislabelled grade 9 (the Realschule has no Biologie 9); they
 // moved to zam-academy:biologie-realschule-10 (#16). The algorithms and
 // networks cell split into zam-academy:algorithmen and
-// zam-academy:datennetze (#18); both are IT modules for any grade. Explicit
-// replacements preserve histories; corrected items are retired without
-// transferring mastery. See tests/kernel/zam-academy-*-cell.test.ts.
+// zam-academy:datennetze (#18); both are IT modules for any grade. BwR moved
+// to zam-academy:bwr-realschule-9 (#19). Explicit replacements preserve
+// histories; corrected items are retired without transferring mastery.
+// See tests/kernel/zam-academy-*-cell.test.ts.
 const RS9_CELL_IDS = [
-  "de-by:realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer",
   "de-by:realschule-9-wirtschaft-recht-markt-vertraege",
   "de-by:realschule-9-englisch-grammatik-syntax",
   "de-by:realschule-9-deutsch-argumentation-eroerterung",
@@ -41,6 +41,7 @@ const ACADEMY_RS9_IDS = [
   "zam-academy:geschichte-realschule-9",
   "zam-academy:algorithmen",
   "zam-academy:datennetze",
+  "zam-academy:bwr-realschule-9",
 ];
 
 describe("Realschule Bayern 9 Curriculum Cells", () => {
@@ -76,8 +77,7 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
       schoolType: "realschule",
       grade: 9,
     });
-    // Five school cells, the six Academy successors of Physik, SQL,
-    // Mathematik, Chemie, Geographie and Geschichte, and the two IT modules.
+    // Four school cells and the nine Academy entries listed above.
     expect(rs9Cells.length).toBeGreaterThanOrEqual(
       RS9_CELL_IDS.length + ACADEMY_RS9_IDS.length,
     );
@@ -89,16 +89,18 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
     }
   });
 
-  it("installs and enrols cleanly into BwR 9 Umsatzsteuer und AfA", async () => {
+  it("installs and enrols cleanly into the full BwR 9 Academy package", async () => {
     const user = "learner-rs9-bwr";
-    const cellId =
-      "de-by:realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer";
+    const cellId = "zam-academy:bwr-realschule-9";
 
     const result = await enrolBundledCell(db, user, cellId);
     expect(result.success).toBe(true);
-    expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
+    expect(result.cardsCreated).toBe(92);
 
-    const token = await getTokenById(db, "01K4W9A0000000000000000J01");
+    const item = getBundledCellTile(cellId)!
+      .atoms.flatMap((atom) => atom.practice_items)
+      .find((item) => item.slug === "bwr9-gr-vorsteuer-check")!;
+    const token = await getTokenById(db, item.id);
     expect(token).toBeDefined();
     expect(token?.concept).toContain("Forderung");
   });

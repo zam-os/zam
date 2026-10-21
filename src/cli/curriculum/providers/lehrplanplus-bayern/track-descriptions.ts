@@ -71,6 +71,8 @@ function collectRealschule(label: string, parts: string[]): void {
     parts.push(
       "Für die Wahlpflichtfächergruppe I (mathematisch-naturwissenschaftlich-technischer Zweig, u. a. mit vertiefter Mathematik).",
     );
+  } else if (/\(II\)\s*$/.test(label)) {
+    parts.push("Für die Wahlpflichtfächergruppe II (wirtschaftlicher Zweig).");
   } else if (/\(II\/III\)\s*$/.test(label)) {
     parts.push(
       "Für die Wahlpflichtfächergruppen II und III (wirtschaftlicher bzw. fremdsprachlicher, gestalterischer oder sozialer Zweig).",

@@ -1278,6 +1278,10 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
         label: "Differenzierter Sport",
       },
     ],
+    // BwR 9 is offered only in group II; IIIa has Wirtschaft und Recht in 9.
+    "realschule|9|bwl-rechnungswesen": [
+      { id: "wpfg2", label: "Betriebswirtschaftslehre/Rechnungswesen 9 (II)" },
+    ],
     // Chemie 9 branches verified against LehrplanPLUS on 2026-10-20.
     "realschule|9|chemie": [
       {
@@ -10873,6 +10877,22 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       {
         id: "lb6",
         label: "WR8 Bilingualer Sachfachunterricht (optional)",
+      },
+    ],
+    // Keep the unqualified path for older positions; both use the verified II source.
+    "realschule|9|bwl-rechnungswesen|wpfg2": [
+      {
+        id: "lb1",
+        label: "BwR9 Unternehmensführung und Einkommen des Unternehmers",
+        hours: 12,
+      },
+      { id: "lb2", label: "BwR9 Anlagenbereich", hours: 19 },
+      { id: "lb3", label: "BwR9 Möglichkeiten der Finanzierung", hours: 20 },
+      { id: "lb4", label: "BwR9 Kapitalanlage", hours: 19 },
+      {
+        id: "lb5",
+        label: "BwR9 Ausfall und Bewertung von Forderungen",
+        hours: 14,
       },
     ],
     "realschule|9|bwl-rechnungswesen": [
@@ -62958,7 +62978,9 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
     "realschule|8|wirtschaft-und-recht":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/8/fach/wirtschaft-und-recht/inhalt/fachlehrplaene",
     "realschule|9|bwl-rechnungswesen":
-      "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/9/fach/bwl-rechnungswesen/inhalt/fachlehrplaene",
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/bwl-rechnungswesen/wpfg2",
+    "realschule|9|bwl-rechnungswesen|wpfg2":
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/bwl-rechnungswesen/wpfg2",
     "realschule|9|chemie|wpfg1":
       "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/chemie/wpfg1",
     "realschule|9|chemie|wpfg2-3":

@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "approved": "2026-10-21",
+  "source": "Ausdrückliche Freigabe von Thomas im Codex-Chat am 21. Oktober 2026: Die vier Lernstandszuordnungen sind freigegeben. Bitte mach mit der Veröffentlichung des BwR-Pakets und der Integration in ZAM weiter.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "8bed552d362f843562289d59d655ac39b64f4f7f",
+  "authorization": "Thomas hat am 21. Oktober 2026 alle vier Zuordnungen (2 A / 2 C), die Veröffentlichung des BwR-Pakets und die anschließende Integration in ZAM ausdrücklich freigegeben. Die genau benannten replaces und retired_items dürfen veröffentlicht und synchronisiert werden; persönliche Karten und Reviewhistorien bleiben erhalten.",
+  "policy": "A: sicher gleicher Einzelabruf, genau ein Nachfolger. C: geteilter oder korrigierter Gesamtabruf; kein Lernstandsübertrag. Karten und Reviewhistorien bleiben erhalten. Nur temporäre Bibliotheken für die Prüfung verwenden.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer-kvt.json",
+      "tile_id": "de-by:realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer",
+      "version": "2026.08.1",
+      "sha256": "b681fcf65e2e046b4a9f0690f90fa78992e415b790a4aa9c3094d5953fa574fb"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer",
+      "de_by_id": "01K4W9A0000000000000000J01",
+      "de_by_question": "Welche steuerrechtliche Natur hat das Konto '2600 Vorsteuer' (VORST), auf dem die beim Einkauf bezahlte Umsatzsteuer erfasst wird?",
+      "category": "A",
+      "academy_slug": "bwr9-gr-vorsteuer-check",
+      "reason": "Identischer Einzelabruf: 2600 VORST ist ein aktives Bestandskonto und eine Forderung gegenüber dem Finanzamt. Der Nachfolger bleibt eine Auffrischung, keine zusätzliche Klasse-9-Pflichtbindung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer",
+      "de_by_id": "01K4W9A0000000000000000J02",
+      "de_by_question": "Erkläre das Prinzip der Umsatzsteuer als Allphasen-Netto-Mehrwertsteuer mit Vorsteuerabzug: 1. Einkauf (Beschaffung): Das Unternehmen zahlt den Bruttobetrag (119 %) an den Lieferanten; die enthaltene Steuer ist 2600 Vorsteuer (VORST / 19 %) führt zu Forderung gegenüber dem Finanzamt, Buchung im Soll, 2. Verkauf (Absatz): Das Unternehmen stellt dem Kunden den Bruttobetrag in Rechnung; die vereinnahmte Steuer ist 4800 Umsatzsteuer (UST / 19 %) führt zu Verbindlichkeit gegenüber dem Finanzamt, Buchung im Haben, 3. Umsatzsteuerabrechnung am Monatsende: Verrechnung VORST und UST; Saldo UST > VORST = Zahllast (an das Finanzamt zu überweisen: 4800 UST an 2600 VORST und 4800 UST an 2800 BK); Saldo VORST > UST = Vorsteuerüberhang (Erstattung durch das Finanzamt) und bilde die Buchungssätze für: a) Kauf von Rohstoffen netto 10.000 € + 19 % USt auf Ziel, b) Verkauf von Fertigerzeugnissen netto 25.000 € + 19 % USt auf Ziel.",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Mehrteiliger Abruf von Vorsteuer, Umsatzsteuer, Abrechnung und zwei Buchungssätzen. Neue Teilfragen sind kein identischer Gesamtabruf; Voraussetzungen des Vorsteuerabzugs werden ergänzt und VE statt der alten Abkürzung VLL verwendet. Keine Verteilung einer alten Beherrschung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer",
+      "de_by_id": "01K4W9A0000000000000000J03",
+      "de_by_question": "Wie hoch ist der jährliche lineare Abschreibungsbetrag (AfA) für eine Produktionsmaschine mit Anschaffungskosten von netto 60.000 € und einer betriebsgewöhnlichen Nutzungsdauer von 5 Jahren?",
+      "category": "A",
+      "academy_slug": "bwr9-an-linear-check",
+      "reason": "Identischer Einzelabruf mit unveränderten Zahlen und Rechenschritt: 60.000 Euro geteilt durch fünf Jahre ergibt 12.000 Euro Jahres-AfA."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer",
+      "de_by_id": "01K4W9A0000000000000000J04",
+      "de_by_question": "Erkläre das Wesen und die mathematische Ermittlung der linearen Abschreibung (AfA = Absetzung für Abnutzung): 1. Ursachen für den Wertverlust des Anlagevermögens (technischer Verschleiß, Alterung, technischer Fortschritt), 2. Berechnung des jährlichen Abschreibungsbetrags (AfA gleich Anschaffungskosten netto geteilt durch Nutzungsdauer n) bzw. des Abschreibungssatzes (p AfA Prozent gleich 100 Prozent durch n), 3. Restbuchwert (RBW) zum 31.12., 4. Buchungssatz der Abschreibung (`6520 Abschreibungen auf Sachanlagen (ABSA) an Aktivkonto [z. B. 0840 Fuhrpark FP]`) und erstelle den Abschreibungsplan für einen LKW: Anschaffungskosten netto 80.000 €, Nutzungsdauer 4 Jahre.",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Mehrteiliger Abruf von Ursachen, zwei Formeln, Restbuchwert, Buchung und LKW-Abschreibungsplan. Neue Fragen trennen diese Abrufe; kein einzelner sicher identischer Gesamtnachfolger. Historie bleibt erhalten, neue Teilfragen starten unbewertet."
+    }
+  ]
+}
