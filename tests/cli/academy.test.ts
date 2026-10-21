@@ -214,6 +214,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     expect(list.offline).toBe(false);
     // Every bundled academy cell plus the catalog-only one, sorted by id.
     expect(list.cells.map((cell) => cell.id)).toEqual([
+      "zam-academy:biologie-realschule-10",
       "zam-academy:chemie-realschule-9",
       "zam-academy:geographie-realschule-9",
       "zam-academy:geschichte-realschule-9",
@@ -246,6 +247,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     });
     expect(empty).toMatchObject({ offline: true });
     expect(empty.cells.map((cell) => cell.id)).toEqual([
+      "zam-academy:biologie-realschule-10",
       "zam-academy:chemie-realschule-9",
       "zam-academy:geographie-realschule-9",
       "zam-academy:geschichte-realschule-9",

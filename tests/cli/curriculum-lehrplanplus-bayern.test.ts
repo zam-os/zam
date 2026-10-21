@@ -242,6 +242,42 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     });
   });
 
+  it("offers the common Biologie 10 curriculum with four areas", () => {
+    expect(provider.listSubjects("realschule", "10")).toContainEqual({
+      id: "biologie",
+      label: "Biologie",
+    });
+    expect(provider.listTracks("realschule", "10", "biologie")).toEqual([]);
+    const topics = provider.listTopics({
+      schoolType: "realschule",
+      grade: "10",
+      subject: "biologie",
+    });
+    expect(topics.map((topic) => [topic.id, topic.label, topic.hours])).toEqual(
+      [
+        ["lb1", "Prozessbezogene Kompetenzen", undefined],
+        ["lb2", "Genetik", 20],
+        [
+          "lb3",
+          "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen",
+          8,
+        ],
+        ["lb4", "Verantwortungsvolle Elternschaft", 8],
+      ],
+    );
+    for (const topic of topics)
+      expect(provider.resolveTopic(topic)).toEqual({
+        provider: "lehrplanplus-bayern",
+        topicId: `realschule|10|biologie#${topic.id}`,
+        uri: "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/biologie",
+      });
+    expect(provider.listCatalogPaths?.()).toContainEqual({
+      schoolType: "realschule",
+      grade: "10",
+      subject: "biologie",
+    });
+  });
+
   it("lists the eight Lernbereiche of Mathematik 9 (I)", () => {
     const topics = provider.listTopics({
       schoolType: "realschule",

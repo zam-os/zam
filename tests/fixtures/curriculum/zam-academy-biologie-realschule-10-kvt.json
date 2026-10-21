@@ -1,0 +1,3742 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:biologie-realschule-10",
+  "version": "2026.10.1",
+  "title": "Biologie 10 Realschule (ZAM Academy)",
+  "description": "Alle vier Lernbereiche des LehrplanPLUS Bayern: 37 Kernlektionen mit Genetiklabor, Ökosystemuntersuchung und verantwortungsvoller Elternschaft. Neun getrennte Auffrischungen zu Nervensystem und Evolution ohne falsche Klasse-9-/10-Zuordnung. 93 Karten mit ausdrücklicher Altzuordnung.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-21T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/biologie-realschule-10/",
+      "label": "ZAM Academy: Biologie 10 Realschule"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/biologie",
+      "label": "ISB · LehrplanPLUS Biologie 10 Realschule · geprüft 21.10.2026",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/biologie",
+      "label": "ISB · Biologie 7 · Organsysteme und Nervensystem (Vorwissen)",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/biologie",
+      "label": "ISB · Biologie 8 · Evolution (Vorwissen)",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://www.genome.gov/about-genomics/fact-sheets/Deoxyribonucleic-Acid-Fact-Sheet",
+      "label": "NHGRI · DNA: Struktur und Replikation",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://www.genome.gov/about-genomics/fact-sheets/Chromosomes-Fact-Sheet",
+      "label": "NHGRI · Chromosomen",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://medlineplus.gov/genetics/understanding/",
+      "label": "NIH / MedlinePlus Genetics · Genetik verstehen",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://www.medlineplus.gov/genetics/understanding/inheritance/inheritancepatterns/",
+      "label": "NIH / MedlinePlus Genetics · Erbgänge und ihre Grenzen",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://medlineplus.gov/genetics/condition/cystic-fibrosis/",
+      "label": "NIH / MedlinePlus Genetics · Mukoviszidose",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://www.bfn.de/bpbv-oekosystemleistungen",
+      "label": "BfN · Biologische Vielfalt und Ökosystemleistungen",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://www.bfn.de/oekosystemleistungen-0",
+      "label": "BfN · Moore: Kohlenstoff, Wasser und Ökosystemleistungen",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://www.familienplanung.de/schwangerschaft/schwangerschaftsvorsorge-und-begleitung/vorsorge-zur-sicherheit/",
+      "label": "BIÖG / familienplanung.de · Schwangerschaftsvorsorge",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://www.familienplanung.de/schwangerschaft/praenataldiagnostik/",
+      "label": "BIÖG / familienplanung.de · Pränataldiagnostik",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://www.gesetze-im-internet.de/stgb/__218a.html",
+      "label": "Bundesrecht · StGB § 218a, aktuelle Fassung",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://www.gesetze-im-internet.de/eschg/__3a.html",
+      "label": "Bundesrecht · Embryonenschutzgesetz § 3a: PID",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://www.familienplanung.de/kinderwunsch/kinderwunschbehandlung-ist-das-was-fuer-mich/in-vitro-fertilisation/",
+      "label": "BIÖG / familienplanung.de · In-vitro-Fertilisation · Stand 07.01.2026",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://www.familienplanung.de/",
+      "label": "BIÖG / familienplanung.de · Informationen und Beratung",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://humanorigins.si.edu/human-characteristics/walking-upright",
+      "label": "Smithsonian · Belege zum aufrechten Gang",
+      "checked": "2026-10-21"
+    },
+    {
+      "uri": "https://www.nhm.ac.uk/discover/dino-directory/archaeopteryx.html",
+      "label": "Natural History Museum · Archaeopteryx und Mosaikmerkmale",
+      "checked": "2026-10-21"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5EAN6RNZAXJH9NBS1F8TMQE",
+      "atom_uri": "urn:zam:atom:01M5EAN6RNZAXJH9NBS1F8TMQE",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-fragen",
+      "title": "Von einer Beobachtung zur prüfbaren Frage",
+      "domain": "biologie/lb1",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-fragen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RPPHQNGQBM0880AFRK",
+          "slug": "bio10-fragen-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-fragen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was ist eine prüfbare biologische Hypothese?",
+          "concept": "Mehr Licht kann unter gleichen Bedingungen das Algenwachstum erhöhen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mehr Licht kann unter gleichen Bedingungen das Algenwachstum erhöhen.",
+              "Ein grüner Teich ist grundsätzlich immer ein ökologisch schlechter Teich."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein grüner Teich ist grundsätzlich immer ein ökologisch schlechter Teich.",
+              "reason": "Die Hypothese verknüpft veränderbare Bedingungen mit einer beobachtbaren Wirkung."
+            },
+            {
+              "text": "Ein einzelnes Foto beweist bereits, wodurch das Algenwachstum entstand.",
+              "reason": "Die Hypothese verknüpft veränderbare Bedingungen mit einer beobachtbaren Wirkung."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RP4ZTWS7B70SFFCTTP",
+          "slug": "bio10-fragen-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-fragen",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Formuliere für den grünen Teich eine Frage, eine Hypothese und eine mögliche Gegenprüfung.",
+          "concept": "Die Frage lautet, ob mehr Nährstoffe bei gleicher Beleuchtung das Wachstum erhöhen. Meine Hypothese erwartet dann mehr Algen. Ich vergleiche mehrere gleich große, gleich beleuchtete Modellansätze mit unterschiedlichem Nährstoffangebot und prüfe zusätzlich Temperatur und Ausgangsmenge. Eine einzelne grüne Probe entscheidet die Frage nicht.",
+          "sample_solution": "Die Frage lautet, ob mehr Nährstoffe bei gleicher Beleuchtung das Wachstum erhöhen. Meine Hypothese erwartet dann mehr Algen. Ich vergleiche mehrere gleich große, gleich beleuchtete Modellansätze mit unterschiedlichem Nährstoffangebot und prüfe zusätzlich Temperatur und Ausgangsmenge. Eine einzelne grüne Probe entscheidet die Frage nicht."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RNHAF7TEBGABY90VEC",
+      "atom_uri": "urn:zam:atom:01M5EAN6RNHAF7TEBGABY90VEC",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-untersuchung",
+      "title": "Variablen, Kontrolle und Wiederholung",
+      "domain": "biologie/lb1",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-untersuchung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RP8414P6MDD5TY035E",
+          "slug": "bio10-untersuchung-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-untersuchung",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Planung isoliert die Wirkung von Licht am besten?",
+          "concept": "Gleiche Pflanzen und Bedingungen; nur das Licht wird verändert.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gleiche Pflanzen und Bedingungen; nur das Licht wird verändert.",
+              "Andere Pflanzen, andere Erde und anderes Licht werden kombiniert."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Andere Pflanzen, andere Erde und anderes Licht werden kombiniert.",
+              "reason": "Je weniger andere Größen sich unterscheiden, desto besser ist die Lichtwirkung prüfbar."
+            },
+            {
+              "text": "Nur eine Pflanze wird ohne Vergleich ein einziges Mal betrachtet.",
+              "reason": "Je weniger andere Größen sich unterscheiden, desto besser ist die Lichtwirkung prüfbar."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RP2KNZC6CD2DT99Y7W",
+          "slug": "bio10-untersuchung-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-untersuchung",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Plane ein Gedankenexperiment zur Lichtwirkung auf Pflanzenwachstum.",
+          "concept": "Ich verwende gleichartige Pflanzen mit vergleichbarer Ausgangsgröße und variiere nur die Lichtdauer. Erde, Wasser und Temperatur bleiben möglichst gleich. Mehrere Pflanzen pro Gruppe werden über dieselbe Zeit gemessen; die Ergebnisse erhalten Einheit, Streuung und dokumentierte Abweichungen.",
+          "sample_solution": "Ich verwende gleichartige Pflanzen mit vergleichbarer Ausgangsgröße und variiere nur die Lichtdauer. Erde, Wasser und Temperatur bleiben möglichst gleich. Mehrere Pflanzen pro Gruppe werden über dieselbe Zeit gemessen; die Ergebnisse erhalten Einheit, Streuung und dokumentierte Abweichungen."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RNV478NJFYFXP46ZAV",
+      "atom_uri": "urn:zam:atom:01M5EAN6RNV478NJFYFXP46ZAV",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-modelle",
+      "title": "Modelle und der Weg zur DNA-Struktur",
+      "domain": "biologie/lb1",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-modelle",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQ903QDW3SJNM4EZSC",
+          "slug": "bio10-modelle-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-modelle",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was kann ein einfaches DNA-Leitermodell zuverlässig veranschaulichen?",
+          "concept": "Die Zuordnung komplementärer Basen als vereinfachte Beziehung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zuordnung komplementärer Basen als vereinfachte Beziehung.",
+              "Die exakten Abstände sämtlicher Atome im lebenden Zellkern."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die exakten Abstände sämtlicher Atome im lebenden Zellkern.",
+              "reason": "Ein Modell zeigt ausgewählte Beziehungen und ist kein vollständiges Abbild."
+            },
+            {
+              "text": "Die vollständige Geschichte aller beteiligten Forschungsarbeiten.",
+              "reason": "Ein Modell zeigt ausgewählte Beziehungen und ist kein vollständiges Abbild."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQTK4ZV9EG64CRHBGC",
+          "slug": "bio10-modelle-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-modelle",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre zwei Leistungen und zwei Grenzen eines DNA-Modells aus Bausteinen.",
+          "concept": "Das Modell ordnet Basen zu und zeigt zwei zusammengehörende Stränge. Es kann damit eine Kopieridee verständlich machen. Seine Größe und Farben sind künstlich; chemische Einzelheiten und die Bewegung im Zellraum fehlen. Welche Grenze wichtig ist, hängt von der zu beantwortenden Frage ab.",
+          "sample_solution": "Das Modell ordnet Basen zu und zeigt zwei zusammengehörende Stränge. Es kann damit eine Kopieridee verständlich machen. Seine Größe und Farben sind künstlich; chemische Einzelheiten und die Bewegung im Zellraum fehlen. Welche Grenze wichtig ist, hängt von der zu beantwortenden Frage ab."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RN6Y7ERVAF6Y0BD15R",
+      "atom_uri": "urn:zam:atom:01M5EAN6RN6Y7ERVAF6Y0BD15R",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-quellen",
+      "title": "Quellen, Diagramme und verständliche Fachsprache",
+      "domain": "biologie/lb1",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-quellen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQGZN1PDWMHFFBT1W8",
+          "slug": "bio10-quellen-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-quellen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Angabe braucht die Aussage „20 Prozent mehr“ unbedingt?",
+          "concept": "Den Ausgangswert, die Bezugsgruppe und den betrachteten Zeitraum.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Den Ausgangswert, die Bezugsgruppe und den betrachteten Zeitraum.",
+              "Nur eine auffällige Farbe und eine möglichst große Überschrift."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur eine auffällige Farbe und eine möglichst große Überschrift.",
+              "reason": "Ohne Bezug ist die Größenordnung nicht nachvollziehbar."
+            },
+            {
+              "text": "Die Zustimmung möglichst vieler Leser ohne weitere Datengrundlage.",
+              "reason": "Ohne Bezug ist die Größenordnung nicht nachvollziehbar."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQ4YGZWCQBNTYMSG6M",
+          "slug": "bio10-quellen-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-quellen",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Überarbeite die erfundene Meldung „Unser Test erkennt alles zu 99 Prozent“.",
+          "concept": "Die Meldung muss zunächst sagen, welche Eigenschaft getestet wurde und worauf sich die 99 Prozent beziehen. Dazu gehören untersuchte Gruppe, Vergleichsmaßstab, Stichprobengröße und Quelle. Ohne diese Angaben bleiben Fehlerquote und Übertragbarkeit offen; das Wort „alles“ ist nicht belegt.",
+          "sample_solution": "Die Meldung muss zunächst sagen, welche Eigenschaft getestet wurde und worauf sich die 99 Prozent beziehen. Dazu gehören untersuchte Gruppe, Vergleichsmaßstab, Stichprobengröße und Quelle. Ohne diese Angaben bleiben Fehlerquote und Übertragbarkeit offen; das Wort „alles“ ist nicht belegt."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RN35T1NE1X875TY6HE",
+      "atom_uri": "urn:zam:atom:01M5EAN6RN35T1NE1X875TY6HE",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-argumentieren",
+      "title": "Fakten, Werte und begründete Entscheidungen",
+      "domain": "biologie/lb1",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-argumentieren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQ4P0PVW4HSJYCFZV2",
+          "slug": "bio10-argumentieren-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-argumentieren",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Aussage nennt ausdrücklich einen Wertmaßstab?",
+          "concept": "Bei dieser Entscheidung gewichte ich Selbstbestimmung besonders stark.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bei dieser Entscheidung gewichte ich Selbstbestimmung besonders stark.",
+              "Die Messreihe enthält je Gruppe zwanzig dokumentierte Einzelwerte."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Messreihe enthält je Gruppe zwanzig dokumentierte Einzelwerte.",
+              "reason": "Selbstbestimmung ist ein normatives Kriterium, keine Messgröße."
+            },
+            {
+              "text": "Die untersuchte DNA-Sequenz hat im Modell neun aufeinanderfolgende Basen.",
+              "reason": "Selbstbestimmung ist ein normatives Kriterium, keine Messgröße."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQR0PJH8E4150HH1B6",
+          "slug": "bio10-argumentieren-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-argumentieren",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Formuliere ein Argument und ein Gegenargument zu freiwilligen Gentests.",
+          "concept": "Ein Gentest kann Informationen für eine persönliche Entscheidung liefern; das stützt den Wert der Selbstbestimmung. Ein Gegenargument sind unklare Befunde oder ein möglicher Druck durch Dritte. Mein Urteil berücksichtigt deshalb freiwillige Einwilligung, verständliche Aufklärung und den Schutz der Daten, statt Information automatisch mit Nutzen gleichzusetzen.",
+          "sample_solution": "Ein Gentest kann Informationen für eine persönliche Entscheidung liefern; das stützt den Wert der Selbstbestimmung. Ein Gegenargument sind unklare Befunde oder ein möglicher Druck durch Dritte. Mein Urteil berücksichtigt deshalb freiwillige Einwilligung, verständliche Aufklärung und den Schutz der Daten, statt Information automatisch mit Nutzen gleichzusetzen."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RNM0AGESKBCQVJWQRD",
+      "atom_uri": "urn:zam:atom:01M5EAN6RNM0AGESKBCQVJWQRD",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-chromosomen",
+      "title": "Chromosomen lesen: Arbeitsform, Transportform und Karyogramm",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-chromosomen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQFTSQB7XQ3SJ0MMK1",
+          "slug": "bio10-chromosomen-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-chromosomen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Wie viele Chromosomen umfasst der übliche diploide menschliche Chromosomensatz?",
+          "concept": "46 Chromosomen (23 Paare: 44 Autosomen + 2 Gonosomen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "46 Chromosomen (23 Paare: 44 Autosomen + 2 Gonosomen)",
+              "23 Chromosomen (insgesamt nur ein einfacher Chromosomensatz)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "23 Chromosomen (insgesamt nur ein einfacher Chromosomensatz)",
+              "reason": "Die DNA-Verdopplung verändert vor der Trennung die Chromatidenzahl, nicht die Zahl der Chromosomen."
+            },
+            {
+              "text": "92 Chromosomen (nach jeder Verdopplung dauerhaft doppelt so viele)",
+              "reason": "Die DNA-Verdopplung verändert vor der Trennung die Chromatidenzahl, nicht die Zahl der Chromosomen."
+            }
+          ],
+          "replaces": [
+            "01K4B9G0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M5EAN6RQPCX7NJGXY23NEWEA",
+          "slug": "bio10-chromosomen-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-chromosomen",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre, warum ein verdoppeltes menschliches Körperzell-Chromosom nicht zwei verschiedene Chromosomenpaare darstellt.",
+          "concept": "Nach der Replikation hängen zwei Schwesterchromatiden als ein Chromosom zusammen. Das homologe Partnerchromosom ist ein anderer, von der anderen elterlichen Seite stammender Vertreter. In der üblichen diploiden Zelle bleiben es vor der Trennung 46 Chromosomen; die DNA-Menge ist jedoch verdoppelt.",
+          "sample_solution": "Nach der Replikation hängen zwei Schwesterchromatiden als ein Chromosom zusammen. Das homologe Partnerchromosom ist ein anderer, von der anderen elterlichen Seite stammender Vertreter. In der üblichen diploiden Zelle bleiben es vor der Trennung 46 Chromosomen; die DNA-Menge ist jedoch verdoppelt."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RP3NJAAC05MKTJ5MGY",
+      "atom_uri": "urn:zam:atom:01M5EAN6RP3NJAAC05MKTJ5MGY",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-dna-bau",
+      "title": "DNA: Bausteine und komplementäre Paarung",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-dna-bau",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RNM0AGESKBCQVJWQRD",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQAQSRRSCGZCRXCGQC",
+          "slug": "bio10-dna-bau-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-dna-bau",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Base paart in der DNA komplementär mit Guanin?",
+          "concept": "Cytosin (C) über 3 Wasserstoffbrücken",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Cytosin (C) über 3 Wasserstoffbrücken",
+              "Adenin (A) über 2 Wasserstoffbrücken"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Adenin (A) über 2 Wasserstoffbrücken",
+              "reason": "Im DNA-Doppelstrang gehört zu G ein C."
+            },
+            {
+              "text": "Thymin (T) über 3 Wasserstoffbrücken",
+              "reason": "Im DNA-Doppelstrang gehört zu G ein C."
+            }
+          ],
+          "replaces": [
+            "01K4B9G0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M5EAN6RQ19T52CZTMXSWWH1Z",
+          "slug": "bio10-dna-bau-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-dna-bau",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Beschreibe die DNA-Grundstruktur und leite zum Strang 5′–ATGC–3′ den Gegenstrang ab.",
+          "concept": "DNA besteht aus zwei gegenläufigen Nukleotidsträngen mit Zucker-Phosphat-Gerüst. A paart mit T und G mit C. Gegenüber 5′–ATGC–3′ liegt 3′–TACG–5′; bei Angabe beider Stränge in 5′-zu-3′-Richtung muss die Reihenfolge des Gegenstrangs umgekehrt werden.",
+          "sample_solution": "DNA besteht aus zwei gegenläufigen Nukleotidsträngen mit Zucker-Phosphat-Gerüst. A paart mit T und G mit C. Gegenüber 5′–ATGC–3′ liegt 3′–TACG–5′; bei Angabe beider Stränge in 5′-zu-3′-Richtung muss die Reihenfolge des Gegenstrangs umgekehrt werden."
+        },
+        {
+          "id": "01M5EAN6RRMMSADTFWDVJMN95W",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die chemische Grundstruktur der DNA (Desoxyribonukleinsäure) nach dem Watson-Crick-Modell: Bausteine eines Nukleotids, Aufbau des Strangs und komplementäre Basenpaarung.",
+          "concept": "Nukleotid = Phosphatrest + Desoxyribose (Zucker) + organische Base (A, T, G, C); antiparallele Stränge; A-T (2 H-Brücken), G-C (3 H-Brücken)",
+          "sample_solution": "Die DNA ist eine rechtsgängige Doppelhelix aus zwei antiparallelen Einzelsträngen. Die Monomere sind Nukleotide, bestehend aus: 1. einem Phosphatrest, 2. dem Zucker Desoxyribose und 3. einer von vier stickstoffhaltigen Basen: Adenin (A), Thymin (T), Guanin (G) oder Cytosin (C). Das Rückgrat der Stränge bildet eine kovalente Phosphat-Desoxyribose-Kette. Die beiden Stränge werden im Inneren durch komplementäre Wasserstoffbrückenbindungen zwischen den Basenpaaren zusammengehalten: Adenin paart immer mit Thymin (2 H-Brücken, A=T), Guanin immer mit Cytosin (3 H-Brücken, G≡C).",
+          "slug": "bio10-dna-gesamt",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-dna-bau",
+          "materiality": "material",
+          "replaces": [
+            "01K4B9G0000000000000000J04"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RP69AHDQ391D8JH1DT",
+      "atom_uri": "urn:zam:atom:01M5EAN6RP69AHDQ391D8JH1DT",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-replikation",
+      "title": "DNA verdoppeln: semikonservative Replikation",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-replikation",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RP3NJAAC05MKTJ5MGY",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQ8KZ16BHMJQFMZY1Z",
+          "slug": "bio10-replikation-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-replikation",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was kennzeichnet semikonservative Replikation?",
+          "concept": "Jede neue DNA-Doppelhelix besitzt einen alten und einen neuen Strang.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Jede neue DNA-Doppelhelix besitzt einen alten und einen neuen Strang.",
+              "Eine neue DNA-Doppelhelix besteht ausschließlich aus zwei alten Strängen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine neue DNA-Doppelhelix besteht ausschließlich aus zwei alten Strängen.",
+              "reason": "Die beiden ursprünglichen Stränge dienen getrennt als Vorlage."
+            },
+            {
+              "text": "Jede neue DNA-Doppelhelix besitzt nach dem Kopieren nur noch einen Strang.",
+              "reason": "Die beiden ursprünglichen Stränge dienen getrennt als Vorlage."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQQWWDC2JRJC7C2FBN",
+          "slug": "bio10-replikation-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-replikation",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre semikonservativ an einem alten Strang mit der Folge ATGC.",
+          "concept": "Der vorhandene Strang dient als Vorlage für TACG in Gegenrichtung. Auch zum zweiten ursprünglichen Strang wird ein neuer Partner ergänzt. Es entstehen zwei Doppelstränge, die jeweils einen alten und einen neuen Strang tragen. Die DNA-Menge nimmt zu; die Zahl der Chromosomensätze ändert sich dadurch allein nicht.",
+          "sample_solution": "Der vorhandene Strang dient als Vorlage für TACG in Gegenrichtung. Auch zum zweiten ursprünglichen Strang wird ein neuer Partner ergänzt. Es entstehen zwei Doppelstränge, die jeweils einen alten und einen neuen Strang tragen. Die DNA-Menge nimmt zu; die Zahl der Chromosomensätze ändert sich dadurch allein nicht."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPW4XRNCMWPY5H33MA",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPW4XRNCMWPY5H33MA",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-gene-proteine",
+      "title": "Gene, intergenische Bereiche und Proteine",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-gene-proteine",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RP3NJAAC05MKTJ5MGY",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQZAZRWGVJS74AYNV4",
+          "slug": "bio10-gene-proteine-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-gene-proteine",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Aussage über nicht protein-codierende DNA ist angemessen?",
+          "concept": "Einige Abschnitte können zum Beispiel an der Regulation beteiligt sein.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einige Abschnitte können zum Beispiel an der Regulation beteiligt sein.",
+              "Jeder dieser Abschnitte ist sicher funktionslos und bedeutungslos."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Jeder dieser Abschnitte ist sicher funktionslos und bedeutungslos.",
+              "reason": "Die Abwesenheit eines Proteinbauplans ist kein Beleg für Funktionslosigkeit."
+            },
+            {
+              "text": "Alle diese Abschnitte bestehen statt aus DNA aus fertigen Proteinen.",
+              "reason": "Die Abwesenheit eines Proteinbauplans ist kein Beleg für Funktionslosigkeit."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQSNS78Z0RWHNN98MV",
+          "slug": "bio10-gene-proteine-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-gene-proteine",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre, wie ein Gen über ein Protein an einem Merkmal beteiligt sein kann.",
+          "concept": "Die Information eines Gens kann über RNA in eine Aminosäurefolge übersetzt werden. Ein entstehendes Enzym beeinflusst beispielsweise die Bildung eines Farbstoffs. Ob und wie stark die Farbe auftritt, hängt auch von der Genaktivität, weiteren Genen und Umweltbedingungen ab; ein Gen ist nicht einfach das Merkmal selbst.",
+          "sample_solution": "Die Information eines Gens kann über RNA in eine Aminosäurefolge übersetzt werden. Ein entstehendes Enzym beeinflusst beispielsweise die Bildung eines Farbstoffs. Ob und wie stark die Farbe auftritt, hängt auch von der Genaktivität, weiteren Genen und Umweltbedingungen ab; ein Gen ist nicht einfach das Merkmal selbst."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPTE57586T064FX15G",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPTE57586T064FX15G",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-proteinbiosynthese",
+      "title": "Proteinbiosynthese: Information übertragen und übersetzen",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-proteinbiosynthese",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPW4XRNCMWPY5H33MA",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQW932BA11NG36989Q",
+          "slug": "bio10-proteinbiosynthese-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-proteinbiosynthese",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was ist ein Codon im Standardmodell der Translation?",
+          "concept": "Eine Folge aus drei mRNA-Basen mit einer Zuordnungsfunktion.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Folge aus drei mRNA-Basen mit einer Zuordnungsfunktion.",
+              "Eine Folge aus drei fertigen Proteinen im Chromosomengerüst."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Folge aus drei fertigen Proteinen im Chromosomengerüst.",
+              "reason": "Ein Codon wird als Dreiergruppe in der mRNA gelesen."
+            },
+            {
+              "text": "Eine Folge aus drei vollständigen Zellkernen einer Keimzelle.",
+              "reason": "Ein Codon wird als Dreiergruppe in der mRNA gelesen."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQ0FZ0MA0KT5ZF6MG8",
+          "slug": "bio10-proteinbiosynthese-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-proteinbiosynthese",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre den Zusammenhang Gen–mRNA–Protein und das Stoppsignal.",
+          "concept": "Die Transkription liefert zu einem Genabschnitt eine RNA. Das Ribosom liest die mRNA in Codons und verknüpft die zugeordneten Aminosäuren. Ein Stoppcodon beendet die Translation und liefert keine zusätzliche Aminosäure. Das Protein muss anschließend eine passende räumliche Struktur erreichen.",
+          "sample_solution": "Die Transkription liefert zu einem Genabschnitt eine RNA. Das Ribosom liest die mRNA in Codons und verknüpft die zugeordneten Aminosäuren. Ein Stoppcodon beendet die Translation und liefert keine zusätzliche Aminosäure. Das Protein muss anschließend eine passende räumliche Struktur erreichen."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPRFMT9DVNB3SV4NJN",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPRFMT9DVNB3SV4NJN",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-mitose",
+      "title": "Mitose und Zellzyklus",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mitose",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RP69AHDQ391D8JH1DT",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQF3CPDSAQN7CHFRHJ",
+          "slug": "bio10-mitose-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mitose",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was trennt sich bei der Mitose eines verdoppelten Chromosoms?",
+          "concept": "Die beiden Schwesterchromatiden werden auf Tochterkerne verteilt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die beiden Schwesterchromatiden werden auf Tochterkerne verteilt.",
+              "Die beiden homologen Partner werden als ganze Paare gemeinsam entfernt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die beiden homologen Partner werden als ganze Paare gemeinsam entfernt.",
+              "reason": "Vorher wurden die DNA-Kopien hergestellt; jetzt werden sie verteilt."
+            },
+            {
+              "text": "Die Basen A und T werden dauerhaft auf verschiedene Arten verteilt.",
+              "reason": "Vorher wurden die DNA-Kopien hergestellt; jetzt werden sie verteilt."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQ2NVG5T8DBPWHHME2",
+          "slug": "bio10-mitose-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mitose",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erläutere die Bedeutung der Mitose bei der Wundheilung und ihre Voraussetzung.",
+          "concept": "Vor der Mitose wird die DNA kopiert. Die Schwesterchromatiden werden so verteilt, dass die Tochterkerne den Ausgangssatz erhalten. Zusätzliche Zellen können zum Ersatz beschädigten Gewebes beitragen. Das Modell beschreibt die geordnete Verteilung, nicht den gesamten Ablauf der Wundheilung.",
+          "sample_solution": "Vor der Mitose wird die DNA kopiert. Die Schwesterchromatiden werden so verteilt, dass die Tochterkerne den Ausgangssatz erhalten. Zusätzliche Zellen können zum Ersatz beschädigten Gewebes beitragen. Das Modell beschreibt die geordnete Verteilung, nicht den gesamten Ablauf der Wundheilung."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPCAJCD20B4ZSVW454",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPCAJCD20B4ZSVW454",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-meiose",
+      "title": "Meiose und genetische Vielfalt",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-meiose",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPRFMT9DVNB3SV4NJN",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQ74T360AKVFK2TZZ1",
+          "slug": "bio10-meiose-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-meiose",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welchen Chromosomensatz besitzen die Kernprodukte nach vollständiger menschlicher Meiose?",
+          "concept": "Haploid (1n = 23 Chromosomen beim Menschen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Haploid (1n = 23 Chromosomen beim Menschen)",
+              "Diploid (2n = 46 Chromosomen beim Menschen)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Diploid (2n = 46 Chromosomen beim Menschen)",
+              "reason": "Die homologen Sätze wurden in der ersten Teilung getrennt."
+            },
+            {
+              "text": "Tetraploid (4n = 92 Chromosomen beim Menschen)",
+              "reason": "Die homologen Sätze wurden in der ersten Teilung getrennt."
+            }
+          ],
+          "replaces": [
+            "01K4B9G0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M5EAN6RQ8JBD752YBQPG660E",
+          "slug": "bio10-meiose-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-meiose",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche Mitose und Meiose bei diploidem Ausgangsmaterial.",
+          "concept": "Mitose erhält den Satz und liefert im Modell zwei Tochterkerne mit derselben Information. Meiose umfasst nach einer Replikation zwei Kernteilungen und liefert haploide, neu kombinierte Kernprodukte. Sie dient der Fortpflanzung; bei menschlicher Eizellbildung entstehen dabei keine vier gleichwertigen Eizellen.",
+          "sample_solution": "Mitose erhält den Satz und liefert im Modell zwei Tochterkerne mit derselben Information. Meiose umfasst nach einer Replikation zwei Kernteilungen und liefert haploide, neu kombinierte Kernprodukte. Sie dient der Fortpflanzung; bei menschlicher Eizellbildung entstehen dabei keine vier gleichwertigen Eizellen."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPYGZ833DM64K3QFF1",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPYGZ833DM64K3QFF1",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-allele",
+      "title": "Genotyp, Phänotyp und Allele",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-allele",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RNM0AGESKBCQVJWQRD",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQHZSGCEC69ENPD6HN",
+          "slug": "bio10-allele-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-allele",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Allelkombination ist heterozygot?",
+          "concept": "Aa: zwei unterschiedliche Allele am betrachteten Genort.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aa: zwei unterschiedliche Allele am betrachteten Genort.",
+              "AA: zwei gleiche dominante Allele am betrachteten Genort."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "AA: zwei gleiche dominante Allele am betrachteten Genort.",
+              "reason": "Heterozygot bedeutet, dass sich die beiden Allele unterscheiden."
+            },
+            {
+              "text": "aa: zwei gleiche rezessive Allele am betrachteten Genort.",
+              "reason": "Heterozygot bedeutet, dass sich die beiden Allele unterscheiden."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQHY0KDPXEHKDJPHDA",
+          "slug": "bio10-allele-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-allele",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum können AA und Aa bei vollständiger Dominanz gleich aussehen?",
+          "concept": "Im gewählten Modell genügt das A-Allel, damit die dominante Ausprägung entsteht. AA und Aa besitzen damit denselben betrachteten Phänotyp, aber unterschiedliche Genotypen. Die heterozygote Pflanze kann zusätzlich a weitergeben. Die Aussage gilt für dieses Dominanzmodell, nicht für jedes denkbare Merkmal.",
+          "sample_solution": "Im gewählten Modell genügt das A-Allel, damit die dominante Ausprägung entsteht. AA und Aa besitzen damit denselben betrachteten Phänotyp, aber unterschiedliche Genotypen. Die heterozygote Pflanze kann zusätzlich a weitergeben. Die Aussage gilt für dieses Dominanzmodell, nicht für jedes denkbare Merkmal."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RP1Y9SH4X070W178WV",
+      "atom_uri": "urn:zam:atom:01M5EAN6RP1Y9SH4X070W178WV",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-mendel-uniform",
+      "title": "Mendel I: Uniformität der ersten Generation",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mendel-uniform",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPYGZ833DM64K3QFF1",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQG8BE56Z01SFMMP07",
+          "slug": "bio10-mendel-uniform-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mendel-uniform",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Genotypen entstehen im Modell aus AA × aa?",
+          "concept": "Alle Nachkommen sind heterozygot: Aa.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Alle Nachkommen sind heterozygot: Aa.",
+              "Alle Nachkommen sind homozygot dominant: AA."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Alle Nachkommen sind homozygot dominant: AA.",
+              "reason": "Jede Keimzelle der einen Seite bringt A und jede der anderen a mit."
+            },
+            {
+              "text": "Alle Nachkommen sind homozygot rezessiv: aa.",
+              "reason": "Jede Keimzelle der einen Seite bringt A und jede der anderen a mit."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQFM12R6C2MAAZ19B7",
+          "slug": "bio10-mendel-uniform-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mendel-uniform",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Leite die F1 aus AA × aa ab und nenne eine Modellannahme.",
+          "concept": "AA liefert in diesem Modell nur A-Keimzellen und aa nur a-Keimzellen. Jede Kombination ergibt Aa. Bei vollständiger Dominanz erscheint derselbe dominante Phänotyp. Betrachtet wird ein einzelner Genort ohne abweichende Überlebenswahrscheinlichkeiten; die Aussage umfasst nicht alle Eigenschaften der Nachkommen.",
+          "sample_solution": "AA liefert in diesem Modell nur A-Keimzellen und aa nur a-Keimzellen. Jede Kombination ergibt Aa. Bei vollständiger Dominanz erscheint derselbe dominante Phänotyp. Betrachtet wird ein einzelner Genort ohne abweichende Überlebenswahrscheinlichkeiten; die Aussage umfasst nicht alle Eigenschaften der Nachkommen."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPFJ33QZAJ9KF886PC",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPFJ33QZAJ9KF886PC",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-mendel-spaltung",
+      "title": "Mendel II: Spaltung ist eine Wahrscheinlichkeit",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mendel-spaltung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RP1Y9SH4X070W178WV",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQVPDCDVQVCGV45CYE",
+          "slug": "bio10-mendel-spaltung-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mendel-spaltung",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welches phänotypische Verhältnis wird bei Aa × Aa mit vollständiger Dominanz erwartet?",
+          "concept": "3 : 1 (3 dominant : 1 rezessiv)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "3 : 1 (3 dominant : 1 rezessiv)",
+              "1 : 1 (1 dominant : 1 rezessiv)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "1 : 1 (1 dominant : 1 rezessiv)",
+              "reason": "Drei der vier gleich wahrscheinlichen Kombinationen besitzen mindestens ein A."
+            },
+            {
+              "text": "1 : 3 (1 dominant : 3 rezessiv)",
+              "reason": "Drei der vier gleich wahrscheinlichen Kombinationen besitzen mindestens ein A."
+            }
+          ],
+          "replaces": [
+            "01K4B9G0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M5EAN6RQ9QSNJ8RSGQM79GVH",
+          "slug": "bio10-mendel-spaltung-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mendel-spaltung",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre den Unterschied zwischen 1:2:1 und 3:1 beim selben Kreuzungsschema.",
+          "concept": "AA, Aa, Aa und aa ergeben genotypisch ein Verhältnis von eins zu zwei zu eins. Wenn A vollständig dominant wirkt, werden AA und Aa demselben Phänotyp zugeordnet. Dann ergibt sich phänotypisch drei zu eins. Ohne diese Dominanzannahme ist das zweite Verhältnis nicht begründet.",
+          "sample_solution": "AA, Aa, Aa und aa ergeben genotypisch ein Verhältnis von eins zu zwei zu eins. Wenn A vollständig dominant wirkt, werden AA und Aa demselben Phänotyp zugeordnet. Dann ergibt sich phänotypisch drei zu eins. Ohne diese Dominanzannahme ist das zweite Verhältnis nicht begründet."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPMCRCYD1QNJGBVR4S",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPMCRCYD1QNJGBVR4S",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-mendel-unabhaengigkeit",
+      "title": "Mendel III: freie Kombination hat Bedingungen",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mendel-unabhaengigkeit",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPFJ33QZAJ9KF886PC",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQ1MSVKY0KQG8DKWKZ",
+          "slug": "bio10-mendel-unabhaengigkeit-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mendel-unabhaengigkeit",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Bedingung ist für das einfache Verhältnis 9:3:3:1 wesentlich?",
+          "concept": "Die betrachteten Genorte werden unabhängig voneinander verteilt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die betrachteten Genorte werden unabhängig voneinander verteilt.",
+              "Die betrachteten Genorte werden stets eng miteinander gekoppelt vererbt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die betrachteten Genorte werden stets eng miteinander gekoppelt vererbt.",
+              "reason": "Gekoppelte Gene können andere Kombinationshäufigkeiten erzeugen."
+            },
+            {
+              "text": "Die betrachteten Genorte sind beliebig austauschbare Umweltbedingungen.",
+              "reason": "Gekoppelte Gene können andere Kombinationshäufigkeiten erzeugen."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQS46DZTM1SNA8MENH",
+          "slug": "bio10-mendel-unabhaengigkeit-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mendel-unabhaengigkeit",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Leite die vier Phänotypgruppen bei AaBb × AaBb im unabhängigen Modell ab.",
+          "concept": "Mit gleich häufigen Keimzellen AB, Ab, aB und ab gibt es sechzehn gleich wahrscheinliche Kombinationen. Neun haben mindestens ein A und ein B, je drei nur eines der beiden dominanten Merkmale und eine ist aabb. Das setzt Unabhängigkeit und vollständige Dominanz an beiden Genorten voraus.",
+          "sample_solution": "Mit gleich häufigen Keimzellen AB, Ab, aB und ab gibt es sechzehn gleich wahrscheinliche Kombinationen. Neun haben mindestens ein A und ein B, je drei nur eines der beiden dominanten Merkmale und eine ist aabb. Das setzt Unabhängigkeit und vollständige Dominanz an beiden Genorten voraus."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPBVPX6M347S73WHQ6",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPBVPX6M347S73WHQ6",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-stammbaum",
+      "title": "Erbgänge und Stammbaumanalyse",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-stammbaum",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPFJ33QZAJ9KF886PC",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQR0W756VDP8HY3P75",
+          "slug": "bio10-stammbaum-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-stammbaum",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Können zwei nicht erkrankte Aa-Eltern im autosomal-rezessiven Modell ein betroffenes aa-Kind haben?",
+          "concept": "Ja, mit einer Wahrscheinlichkeit von 25% (Genotyp aa)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ja, mit einer Wahrscheinlichkeit von 25% (Genotyp aa)",
+              "Nein, denn nicht erkrankte Eltern geben kein a-Allel weiter"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nein, denn nicht erkrankte Eltern geben kein a-Allel weiter",
+              "reason": "Ein Viertel der gleich wahrscheinlichen Kombinationen ist aa."
+            },
+            {
+              "text": "Ja, aber zwingend bei genau jedem zweiten Kind (50 Prozent)",
+              "reason": "Ein Viertel der gleich wahrscheinlichen Kombinationen ist aa."
+            }
+          ],
+          "replaces": [
+            "01K4B9G0000000000000000J09"
+          ]
+        },
+        {
+          "id": "01M5EAN6RQ5C3SS83HZZF84Y99",
+          "slug": "bio10-stammbaum-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-stammbaum",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre an Aa × Aa die 25-Prozent-Aussage und ihre Grenze.",
+          "concept": "Jede Seite gibt mit gleicher Wahrscheinlichkeit A oder a weiter. Von AA, Aa, Aa und aa ist eine Kombination betroffen, also 25 Prozent pro unabhängigem Fall im Modell. Das garantiert keine feste Verteilung in einer kleinen Familie und berücksichtigt keine weiteren biologischen Besonderheiten.",
+          "sample_solution": "Jede Seite gibt mit gleicher Wahrscheinlichkeit A oder a weiter. Von AA, Aa, Aa und aa ist eine Kombination betroffen, also 25 Prozent pro unabhängigem Fall im Modell. Das garantiert keine feste Verteilung in einer kleinen Familie und berücksichtigt keine weiteren biologischen Besonderheiten."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPJBXP299XDFK9ZJBB",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPJBXP299XDFK9ZJBB",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-mutation",
+      "title": "Mutation, Modifikation und Umwelt",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mutation",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPW4XRNCMWPY5H33MA",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQ0YTCJAA6J7584HDE",
+          "slug": "bio10-mutation-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mutation",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was unterscheidet eine Modifikation von einer Mutation im Schulmodell?",
+          "concept": "Bei der Modifikation ändert sich die Ausprägung ohne Änderung der DNA-Sequenz.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bei der Modifikation ändert sich die Ausprägung ohne Änderung der DNA-Sequenz.",
+              "Bei der Modifikation wird stets die Basenfolge aller Keimzellen neu angeordnet."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Bei der Modifikation wird stets die Basenfolge aller Keimzellen neu angeordnet.",
+              "reason": "Eine phänotypische Änderung allein belegt noch keine DNA-Veränderung."
+            },
+            {
+              "text": "Bei der Modifikation verschwindet dauerhaft jeder Einfluss der Umweltbedingungen.",
+              "reason": "Eine phänotypische Änderung allein belegt noch keine DNA-Veränderung."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQDCTW76YKQYCTWY21",
+          "slug": "bio10-mutation-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-mutation",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche Mutation und Modifikation an zwei geeigneten Beispielen.",
+          "concept": "Eine veränderte Basenfolge in einer Zelllinie ist eine Mutation. Unterschiedliche Wuchshöhe genetisch gleicher Pflanzen unter verschiedenen Lichtbedingungen kann eine Modifikation sein. Ob etwas an Nachkommen gelangt, hängt insbesondere von einer Beteiligung der Keimbahn ab; nicht jede Körperzellveränderung wird vererbt.",
+          "sample_solution": "Eine veränderte Basenfolge in einer Zelllinie ist eine Mutation. Unterschiedliche Wuchshöhe genetisch gleicher Pflanzen unter verschiedenen Lichtbedingungen kann eine Modifikation sein. Ob etwas an Nachkommen gelangt, hängt insbesondere von einer Beteiligung der Keimbahn ab; nicht jede Körperzellveränderung wird vererbt."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RP3NF6Z9KNG3VMNWJJ",
+      "atom_uri": "urn:zam:atom:01M5EAN6RP3NF6Z9KNG3VMNWJJ",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-erbkrankheiten",
+      "title": "Erbliche Krankheiten verstehen und respektvoll besprechen",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-erbkrankheiten",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPBVPX6M347S73WHQ6",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        },
+        {
+          "atom_id": "01M5EAN6RPJBXP299XDFK9ZJBB",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQ2SNZWPSF2DCKWX4A",
+          "slug": "bio10-erbkrankheiten-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-erbkrankheiten",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Aussage zu einer genetisch bedingten Erkrankung ist angemessen?",
+          "concept": "Ursache, Ausprägung und geeignete Unterstützung müssen unterschieden werden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ursache, Ausprägung und geeignete Unterstützung müssen unterschieden werden.",
+              "Eine genetische Ursache erklärt zwangsläufig alle Eigenschaften einer Person."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine genetische Ursache erklärt zwangsläufig alle Eigenschaften einer Person.",
+              "reason": "Eine Variante kann biologisch erklärt werden, ohne einen Menschen darauf zu reduzieren."
+            },
+            {
+              "text": "Eine genetische Ursache macht grundsätzlich jede Form von Hilfe wirkungslos.",
+              "reason": "Eine Variante kann biologisch erklärt werden, ohne einen Menschen darauf zu reduzieren."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQA64KG5FVEEWQT981",
+          "slug": "bio10-erbkrankheiten-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-erbkrankheiten",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Verknüpfe bei Mukoviszidose Gen, Protein, mögliche Folge und Behandlungsebene.",
+          "concept": "Bestimmte CFTR-Varianten können die Funktion eines Transportproteins verändern. Veränderte Salz- und Wasserbewegungen begünstigen zähen Schleim und mögliche Atemwegs- oder Verdauungsprobleme. Unterstützung und Behandlung richten sich nach dem konkreten Befund; eine genetische Ursache schließt wirksame Hilfe nicht aus.",
+          "sample_solution": "Bestimmte CFTR-Varianten können die Funktion eines Transportproteins verändern. Veränderte Salz- und Wasserbewegungen begünstigen zähen Schleim und mögliche Atemwegs- oder Verdauungsprobleme. Unterstützung und Behandlung richten sich nach dem konkreten Befund; eine genetische Ursache schließt wirksame Hilfe nicht aus."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPKN2A74S32TJW4ND0",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPKN2A74S32TJW4ND0",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-pcr",
+      "title": "PCR und Gentests: Nachweisen ist nicht Diagnostizieren",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-pcr",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RP69AHDQ391D8JH1DT",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQD7F0C55A4ZSN9AG2",
+          "slug": "bio10-pcr-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-pcr",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was wird durch PCR unmittelbar vermehrt?",
+          "concept": "Ein durch passende Primer begrenzter Abschnitt von DNA.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein durch passende Primer begrenzter Abschnitt von DNA.",
+              "Ein vollständiger Mensch mit allen persönlichen Eigenschaften."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein vollständiger Mensch mit allen persönlichen Eigenschaften.",
+              "reason": "Die Methode kopiert einen ausgewählten DNA-Bereich."
+            },
+            {
+              "text": "Eine beliebige fertige Eiweißkette ohne genetische Vorlage.",
+              "reason": "Die Methode kopiert einen ausgewählten DNA-Bereich."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQTF0KT7QJJJ7FSWYF",
+          "slug": "bio10-pcr-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-pcr",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre Zielabschnitt, Primer und eine Kontrolle bei PCR.",
+          "concept": "Primer sind kurze DNA-Stücke, die passende Startbereiche begrenzen. Eine Polymerase ergänzt daran neue Stränge; wiederholte Zyklen vervielfältigen den ausgewählten Abschnitt. Eine Negativkontrolle ohne Zielmaterial kann Hinweise auf Verunreinigung geben. Was das Ergebnis biologisch bedeutet, muss zur Fragestellung passen.",
+          "sample_solution": "Primer sind kurze DNA-Stücke, die passende Startbereiche begrenzen. Eine Polymerase ergänzt daran neue Stränge; wiederholte Zyklen vervielfältigen den ausgewählten Abschnitt. Eine Negativkontrolle ohne Zielmaterial kann Hinweise auf Verunreinigung geben. Was das Ergebnis biologisch bedeutet, muss zur Fragestellung passen."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPBSWG4T7FDYFZSFDD",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPBSWG4T7FDYFZSFDD",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-gentechnik",
+      "title": "Gentechnik nach Zweck und Folgen bewerten",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-gentechnik",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPKN2A74S32TJW4ND0",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        },
+        {
+          "atom_id": "01M5EAN6RN35T1NE1X875TY6HE",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQMWB0FPQG5DVTF21E",
+          "slug": "bio10-gentechnik-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-gentechnik",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Frage hilft bei der Bewertung einer gentechnischen Anwendung am meisten?",
+          "concept": "Welchen konkreten Nutzen, welche Folgen und welche Alternativen gibt es?",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Welchen konkreten Nutzen, welche Folgen und welche Alternativen gibt es?",
+              "Welche pauschale Zustimmung lässt sich aus dem Wort gentechnisch ableiten?"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Welche pauschale Zustimmung lässt sich aus dem Wort gentechnisch ableiten?",
+              "reason": "Für eine begründete Bewertung müssen Anwendung und Vergleich benannt werden."
+            },
+            {
+              "text": "Welche pauschale Ablehnung lässt sich ohne Prüfung aller Daten festlegen?",
+              "reason": "Für eine begründete Bewertung müssen Anwendung und Vergleich benannt werden."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQCJB44BK43714MSF4",
+          "slug": "bio10-gentechnik-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-gentechnik",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Bewerte eine erfundene Nutzpflanze mit verbessertem Schutz vor einem Schädling.",
+          "concept": "Ein möglicher Nutzen ist geringerer Schaden am Ertrag. Zu prüfen sind unter anderem Folgen für andere Arten, Resistenzentwicklung und die jeweilige Bewirtschaftung. Ein Urteil vergleicht alternative Schutzmaßnahmen und nennt die Gewichtung von Ertrag, Umweltschutz und Zugänglichkeit. Ohne Daten bleibt es ein begründeter Prüfplan.",
+          "sample_solution": "Ein möglicher Nutzen ist geringerer Schaden am Ertrag. Zu prüfen sind unter anderem Folgen für andere Arten, Resistenzentwicklung und die jeweilige Bewirtschaftung. Ein Urteil vergleicht alternative Schutzmaßnahmen und nennt die Gewichtung von Ertrag, Umweltschutz und Zugänglichkeit. Ohne Daten bleibt es ein begründeter Prüfplan."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPK1MDYJJB723EJVVK",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPK1MDYJJB723EJVVK",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-stammzellen",
+      "title": "Stammzellen und Klonen unterscheiden",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-stammzellen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPRFMT9DVNB3SV4NJN",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQPEY0JBG6DN7R1FX3",
+          "slug": "bio10-stammzellen-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-stammzellen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was kennzeichnet Stammzellen grundsätzlich?",
+          "concept": "Selbsterneuerung und ein je nach Typ unterschiedliches Entwicklungspotenzial.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Selbsterneuerung und ein je nach Typ unterschiedliches Entwicklungspotenzial.",
+              "Vollständiger Verlust jedes genetischen Materials bei jeder neuen Teilung."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Vollständiger Verlust jedes genetischen Materials bei jeder neuen Teilung.",
+              "reason": "Das Entwicklungspotenzial unterscheidet verschiedene Stammzelltypen."
+            },
+            {
+              "text": "Eine garantierte Heilwirkung bei sämtlichen denkbaren Erkrankungen.",
+              "reason": "Das Entwicklungspotenzial unterscheidet verschiedene Stammzelltypen."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQEW115ZTY6YNDF6QE",
+          "slug": "bio10-stammzellen-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-stammzellen",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche eine Stammzelle mit einem Klon, ohne die Begriffe gleichzusetzen.",
+          "concept": "Eine Stammzelle wird über Selbsterneuerung und Entwicklungsmöglichkeiten beschrieben. Ein Klon wird über die genetische Beziehung zu einer Ausgangseinheit beschrieben. Eine Stammzelllinie kann klonal sein, doch daraus folgt weder unbegrenzte Entwicklungsfähigkeit noch eine sichere Therapie oder eine identische Lebensgeschichte.",
+          "sample_solution": "Eine Stammzelle wird über Selbsterneuerung und Entwicklungsmöglichkeiten beschrieben. Ein Klon wird über die genetische Beziehung zu einer Ausgangseinheit beschrieben. Eine Stammzelllinie kann klonal sein, doch daraus folgt weder unbegrenzte Entwicklungsfähigkeit noch eine sichere Therapie oder eine identische Lebensgeschichte."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RP1H9QKN4H056600AH",
+      "atom_uri": "urn:zam:atom:01M5EAN6RP1H9QKN4H056600AH",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-zuechtung",
+      "title": "Züchtung: Variation, Auswahl und Grenzen",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-zuechtung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPYGZ833DM64K3QFF1",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        },
+        {
+          "atom_id": "01M5EAN6RPJBXP299XDFK9ZJBB",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Genetik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQ3N531XJPZZY8CJSB",
+          "slug": "bio10-zuechtung-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-zuechtung",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Voraussetzung benötigt Züchtung durch Auswahl über Generationen?",
+          "concept": "Vererbbare Unterschiede, die für das betrachtete Ziel relevant sind.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vererbbare Unterschiede, die für das betrachtete Ziel relevant sind.",
+              "Nur gleichartige Umweltwirkungen ohne jeden vererbbaren Unterschied."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur gleichartige Umweltwirkungen ohne jeden vererbbaren Unterschied.",
+              "reason": "Ohne vererbbare Variation kann Auswahl keine entsprechende Veränderung festigen."
+            },
+            {
+              "text": "Eine vollständige Abschaffung aller genetischen Unterschiede der Population.",
+              "reason": "Ohne vererbbare Variation kann Auswahl keine entsprechende Veränderung festigen."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQXZQCTYZCNZPMWWD3",
+          "slug": "bio10-zuechtung-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-zuechtung",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre, warum die größte Pflanze eines Bestands nicht immer die beste Zuchtauswahl ist.",
+          "concept": "Ihre Größe kann durch genetische Faktoren, günstige Umweltbedingungen oder deren Zusammenwirken entstanden sein. Züchtung braucht einen vererbbaren Anteil und vergleichbare Prüfbedingungen. Zusätzlich können Ertrag, Widerstandsfähigkeit und Vielfalt gegeneinander abgewogen werden; eine einzelne auffällige Pflanze reicht als Beleg nicht aus.",
+          "sample_solution": "Ihre Größe kann durch genetische Faktoren, günstige Umweltbedingungen oder deren Zusammenwirken entstanden sein. Züchtung braucht einen vererbbaren Anteil und vergleichbare Prüfbedingungen. Zusätzlich können Ertrag, Widerstandsfähigkeit und Vielfalt gegeneinander abgewogen werden; eine einzelne auffällige Pflanze reicht als Beleg nicht aus."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPG0N1DY5FEPPHVKZ2",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPG0N1DY5FEPPHVKZ2",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-oeko-system",
+      "title": "Ökosystem, Biosphäre und Systemgrenzen",
+      "domain": "biologie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-oeko-system",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RQ4DXXG9A4ZTDZHWA8",
+          "slug": "bio10-oeko-system-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-oeko-system",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Beschreibung passt zu einem lokalen Ökosystem?",
+          "concept": "Es tauscht mit seiner Umgebung sowohl Stoffe als auch Energie aus.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es tauscht mit seiner Umgebung sowohl Stoffe als auch Energie aus.",
+              "Es tauscht mit seiner Umgebung grundsätzlich weder Stoffe noch Energie aus."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Es tauscht mit seiner Umgebung grundsätzlich weder Stoffe noch Energie aus.",
+              "reason": "Systemgrenzen sind gedankliche Hilfen, keine vollständigen Abschottungen."
+            },
+            {
+              "text": "Es erzeugt bei Bedarf neue Materie aus dem Nichts und verliert nichts.",
+              "reason": "Systemgrenzen sind gedankliche Hilfen, keine vollständigen Abschottungen."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RQYA7TMV3RVJZ1Q3HQ",
+          "slug": "bio10-oeko-system-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-oeko-system",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche einen Teich und die Biosphäre hinsichtlich Stoffen und Energie.",
+          "concept": "Der Teich ist lokal für Stoffe und Energie offen. Für die Biosphäre wird der Stoffhaushalt im Schulmodell näherungsweise geschlossen betrachtet; viele Stoffe durchlaufen Kreisläufe. Energie wird aufgenommen, umgewandelt und als Wärme abgegeben. Die jeweiligen Grenzen und Vereinfachungen müssen in der Zeichnung stehen.",
+          "sample_solution": "Der Teich ist lokal für Stoffe und Energie offen. Für die Biosphäre wird der Stoffhaushalt im Schulmodell näherungsweise geschlossen betrachtet; viele Stoffe durchlaufen Kreisläufe. Energie wird aufgenommen, umgewandelt und als Wärme abgegeben. Die jeweiligen Grenzen und Vereinfachungen müssen in der Zeichnung stehen."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPS16CTMPFDWCC8XDF",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPS16CTMPFDWCC8XDF",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-stoffkreislauf",
+      "title": "Kohlenstoff und Energie auf unterschiedlichen Wegen",
+      "domain": "biologie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-stoffkreislauf",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPG0N1DY5FEPPHVKZ2",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRVGZBCWRB6AFX9WEZ",
+          "slug": "bio10-stoffkreislauf-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-stoffkreislauf",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was unterscheidet einen Kohlenstoffspeicher von einem Kohlenstofffluss?",
+          "concept": "Ein Speicher ist eine Menge; ein Fluss ist eine Menge pro Zeit.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Speicher ist eine Menge; ein Fluss ist eine Menge pro Zeit.",
+              "Ein Speicher ist ein Temperaturwert; ein Fluss ist ein bloßer Farbton."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Speicher ist ein Temperaturwert; ein Fluss ist ein bloßer Farbton.",
+              "reason": "Die Einheit muss erkennen lassen, ob Bestand oder Veränderung beschrieben wird."
+            },
+            {
+              "text": "Ein Speicher enthält nur Energie; ein Fluss enthält grundsätzlich keine Stoffe.",
+              "reason": "Die Einheit muss erkennen lassen, ob Bestand oder Veränderung beschrieben wird."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RR6NTV810G22MR3MK8",
+          "slug": "bio10-stoffkreislauf-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-stoffkreislauf",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre am Moor den Unterschied zwischen Kohlenstoffspeicherung und Energiefluss.",
+          "concept": "Im Moor kann Kohlenstoff unter geeigneten Bedingungen lange im Torf gespeichert bleiben. Energie gelangt etwa als Licht in das System und wird bei Stoffwechselprozessen umgewandelt und als Wärme abgegeben. Eine Entwässerung verändert Abbaubedingungen und damit Kohlenstoffflüsse; Menge und Zeitraum müssen getrennt angegeben werden.",
+          "sample_solution": "Im Moor kann Kohlenstoff unter geeigneten Bedingungen lange im Torf gespeichert bleiben. Energie gelangt etwa als Licht in das System und wird bei Stoffwechselprozessen umgewandelt und als Wärme abgegeben. Eine Entwässerung verändert Abbaubedingungen und damit Kohlenstoffflüsse; Menge und Zeitraum müssen getrennt angegeben werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RP2DTF4XRDDTDCDH5Y",
+      "atom_uri": "urn:zam:atom:01M5EAN6RP2DTF4XRDDTDCDH5Y",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-kunststoffe",
+      "title": "Stoffströme und zeitverzögerte Folgen",
+      "domain": "biologie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-kunststoffe",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPG0N1DY5FEPPHVKZ2",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRQSVXGA9ABZ4JA6HR",
+          "slug": "bio10-kunststoffe-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-kunststoffe",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Warum folgt auf einen gestoppten Eintrag nicht immer sofort eine vollständige Erholung?",
+          "concept": "Gespeicherte Stoffe und Rückkopplungen können zeitverzögert weiterwirken.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gespeicherte Stoffe und Rückkopplungen können zeitverzögert weiterwirken.",
+              "Gestoppte Einträge müssen grundsätzlich sofort jede frühere Wirkung löschen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Gestoppte Einträge müssen grundsätzlich sofort jede frühere Wirkung löschen.",
+              "reason": "Vergangene Einträge können nachwirken und der Rückweg kann Zeit brauchen."
+            },
+            {
+              "text": "Reale Ökosysteme besitzen niemals Speicher oder voneinander abhängige Prozesse.",
+              "reason": "Vergangene Einträge können nachwirken und der Rückweg kann Zeit brauchen."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RRN9QD91V951X6MGPX",
+          "slug": "bio10-kunststoffe-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-kunststoffe",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Skizziere einen möglichen Weg von Kunststoffteilchen von einer Straße zu einem Gewässer.",
+          "concept": "Abrieb kann durch Niederschlag fortgetragen werden und über Abflüsse in ein Gewässer gelangen. Ein Teil wird zurückgehalten oder sedimentiert, ein anderer weitertransportiert. Auswirkungen hängen unter anderem von Stoffeigenschaften, Menge und Organismen ab. Ohne Messungen bleibt das eine mögliche Stoffbahn, kein Nachweis eines konkreten Schadens.",
+          "sample_solution": "Abrieb kann durch Niederschlag fortgetragen werden und über Abflüsse in ein Gewässer gelangen. Ein Teil wird zurückgehalten oder sedimentiert, ein anderer weitertransportiert. Auswirkungen hängen unter anderem von Stoffeigenschaften, Menge und Organismen ab. Ohne Messungen bleibt das eine mögliche Stoffbahn, kein Nachweis eines konkreten Schadens."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RP3CAVM44W81N7AN4M",
+      "atom_uri": "urn:zam:atom:01M5EAN6RP3CAVM44W81N7AN4M",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-oeko-wandel",
+      "title": "Ein lokales Ökosystem im Wandel untersuchen",
+      "domain": "biologie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-oeko-wandel",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPG0N1DY5FEPPHVKZ2",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        },
+        {
+          "atom_id": "01M5EAN6RNZAXJH9NBS1F8TMQE",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RR30690E69VEAM05XB",
+          "slug": "bio10-oeko-wandel-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-oeko-wandel",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welcher Vergleich untersucht einen historischen Ökosystemwandel am besten?",
+          "concept": "Quellen zum selben Gebiet, deren Zeit und Darstellungsgrenzen bekannt sind.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Quellen zum selben Gebiet, deren Zeit und Darstellungsgrenzen bekannt sind.",
+              "Zwei unbeschriftete Bilder beliebiger Orte ohne bekannte Aufnahmedaten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zwei unbeschriftete Bilder beliebiger Orte ohne bekannte Aufnahmedaten.",
+              "reason": "Ort, Zeitpunkt und Darstellung müssen für einen Vergleich passen."
+            },
+            {
+              "text": "Eine allgemeine Meinung ohne Angaben zum Gebiet und ohne überprüfbare Belege.",
+              "reason": "Ort, Zeitpunkt und Darstellung müssen für einen Vergleich passen."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RRXX6F3PDESBF2HCB7",
+          "slug": "bio10-oeko-wandel-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-oeko-wandel",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Formuliere für einen selbst gewählten öffentlichen Ort eine biologische Veränderungsfrage.",
+          "concept": "Eine mögliche Frage lautet: Wie hat die Umgestaltung des Bachufers seit der älteren dokumentierten Nutzung die Vegetation und den Zugang zur Erholung verändert? Ich benenne den Abschnitt, zwei Vergleichszeitpunkte und überprüfbare Belege. Beobachtungen und mögliche Ursachen werden getrennt festgehalten.",
+          "sample_solution": "Eine mögliche Frage lautet: Wie hat die Umgestaltung des Bachufers seit der älteren dokumentierten Nutzung die Vegetation und den Zugang zur Erholung verändert? Ich benenne den Abschnitt, zwei Vergleichszeitpunkte und überprüfbare Belege. Beobachtungen und mögliche Ursachen werden getrennt festgehalten."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RP2GS7WEFWA4VGNRNK",
+      "atom_uri": "urn:zam:atom:01M5EAN6RP2GS7WEFWA4VGNRNK",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-vielfalt",
+      "title": "Artenvielfalt und vernetzte Lebensgemeinschaften",
+      "domain": "biologie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vielfalt",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RP3CAVM44W81N7AN4M",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRGBWEX4Y3WD5TD7GW",
+          "slug": "bio10-vielfalt-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vielfalt",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Warum kann ein Artenverlust weitere Arten beeinflussen?",
+          "concept": "Nahrungsbeziehungen und andere Wechselwirkungen verbinden die Arten.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nahrungsbeziehungen und andere Wechselwirkungen verbinden die Arten.",
+              "Jede Art lebt grundsätzlich vollständig unabhängig von allen anderen Arten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Jede Art lebt grundsätzlich vollständig unabhängig von allen anderen Arten.",
+              "reason": "Veränderungen können sich durch ein Netzwerk von Beziehungen fortsetzen."
+            },
+            {
+              "text": "Eine sinkende Artenzahl verbessert automatisch jede Leistung des Ökosystems.",
+              "reason": "Veränderungen können sich durch ein Netzwerk von Beziehungen fortsetzen."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RR9355Z1TG3Z4XF78S",
+          "slug": "bio10-vielfalt-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vielfalt",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Verknüpfe einen Eingriff an deinem Untersuchungsort mit zwei möglichen biologischen Folgen.",
+          "concept": "Wenn eine blütenreiche Fläche versiegelt wird, gehen Lebensraum und Nahrungsangebote verloren. Das kann bestäubende Insekten und von ihnen abhängige Pflanzen beeinflussen. Ich brauche konkrete Angaben zur früheren und heutigen Fläche und unterscheide belegte Änderungen von noch nicht untersuchten Artenfolgen.",
+          "sample_solution": "Wenn eine blütenreiche Fläche versiegelt wird, gehen Lebensraum und Nahrungsangebote verloren. Das kann bestäubende Insekten und von ihnen abhängige Pflanzen beeinflussen. Ich brauche konkrete Angaben zur früheren und heutigen Fläche und unterscheide belegte Änderungen von noch nicht untersuchten Artenfolgen."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPHAT3DGE2Y5YFDJBX",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPHAT3DGE2Y5YFDJBX",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-schutz",
+      "title": "Schutzmaßnahmen und Zielkonflikte abwägen",
+      "domain": "biologie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-schutz",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RP2GS7WEFWA4VGNRNK",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        },
+        {
+          "atom_id": "01M5EAN6RN35T1NE1X875TY6HE",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRYNEAP15KA06DVJ4T",
+          "slug": "bio10-schutz-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-schutz",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Begründung prüft eine Schutzmaßnahme angemessen?",
+          "concept": "Sie vergleicht Wirkungen, Nebenfolgen, Aufwand und die Dauer der Wirkung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie vergleicht Wirkungen, Nebenfolgen, Aufwand und die Dauer der Wirkung.",
+              "Sie bewertet nur den ersten sichtbaren Effekt ohne weitere Vergleichskriterien."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie bewertet nur den ersten sichtbaren Effekt ohne weitere Vergleichskriterien.",
+              "reason": "Nachhaltigkeit verlangt einen Blick über den unmittelbaren Einzeleffekt hinaus."
+            },
+            {
+              "text": "Sie erklärt jede technische Maßnahme grundsätzlich für vollständig wirkungslos.",
+              "reason": "Nachhaltigkeit verlangt einen Blick über den unmittelbaren Einzeleffekt hinaus."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RR1WEFHKAED5EJKTKK",
+          "slug": "bio10-schutz-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-schutz",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Formuliere ein begründetes Urteil zu einer Maßnahme an deinem Untersuchungsort.",
+          "concept": "Ich vergleiche eine Uferbegrünung mit dem unveränderten Zustand anhand von Lebensraum, Zugänglichkeit und Aufwand. Quellen stützen, welche Flächen betroffen sind; andere Folgen bleiben noch offen. Mein Urteil empfiehlt eine überprüfbare Maßnahme unter klar benannten Bedingungen und berücksichtigt Einwände anderer Nutzergruppen.",
+          "sample_solution": "Ich vergleiche eine Uferbegrünung mit dem unveränderten Zustand anhand von Lebensraum, Zugänglichkeit und Aufwand. Quellen stützen, welche Flächen betroffen sind; andere Folgen bleiben noch offen. Mein Urteil empfiehlt eine überprüfbare Maßnahme unter klar benannten Bedingungen und berücksichtigt Einwände anderer Nutzergruppen."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RP305RHTHVSV9NKHCT",
+      "atom_uri": "urn:zam:atom:01M5EAN6RP305RHTHVSV9NKHCT",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-oekobilanz",
+      "title": "Konsum, Ökobilanz und eigene Handlungsmöglichkeiten",
+      "domain": "biologie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-oekobilanz",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPS16CTMPFDWCC8XDF",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Lokale und globale Auswirkungen auf Ökosysteme durch Eingriffe des Menschen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRB0VEY8F2WPDCEGKB",
+          "slug": "bio10-oekobilanz-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-oekobilanz",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was braucht ein fairer Ökobilanzvergleich zweier Lebensmittel mindestens?",
+          "concept": "Eine gemeinsame Vergleichseinheit und benannte Systemgrenzen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine gemeinsame Vergleichseinheit und benannte Systemgrenzen.",
+              "Nur die Farbe der Verpackung ohne Angaben zu weiteren Lebenswegschritten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur die Farbe der Verpackung ohne Angaben zu weiteren Lebenswegschritten.",
+              "reason": "Unterschiedliche Leistungen und Grenzen sind nicht direkt vergleichbar."
+            },
+            {
+              "text": "Ausschließlich eine beliebig ausgewählte Transportstrecke ohne Mengenbezug.",
+              "reason": "Unterschiedliche Leistungen und Grenzen sind nicht direkt vergleichbar."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RRJS8BC43AB7EGYZ98",
+          "slug": "bio10-oekobilanz-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-oekobilanz",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche zwei Lebensmittelangebote, ohne allein aus „regional“ auf das Ergebnis zu schließen.",
+          "concept": "Ich lege dieselbe verzehrfähige Menge fest und prüfe Anbau, mögliche Lagerung, Transport, Verluste und Entsorgung. Regionalität kann einen Unterschied machen, entscheidet aber nicht allein über Energiebedarf oder andere Wirkungen. Mein Urteil nennt die verwendeten Daten und verbleibende Unsicherheiten.",
+          "sample_solution": "Ich lege dieselbe verzehrfähige Menge fest und prüfe Anbau, mögliche Lagerung, Transport, Verluste und Entsorgung. Regionalität kann einen Unterschied machen, entscheidet aber nicht allein über Energiebedarf oder andere Wirkungen. Mein Urteil nennt die verwendeten Daten und verbleibende Unsicherheiten."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPVQWA9XRQ3QNBB17H",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPVQWA9XRQ3QNBB17H",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-vorsorge",
+      "title": "Entwicklung und Schwangerschaftsvorsorge",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorsorge",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPCAJCD20B4ZSVW454",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Verantwortungsvolle Elternschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Verantwortungsvolle Elternschaft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRHXXZME0YEZGVZNG3",
+          "slug": "bio10-vorsorge-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorsorge",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Beschreibung der Plazenta ist sachgerecht?",
+          "concept": "Sie ermöglicht Stoffaustausch zwischen getrennten mütterlichen und kindlichen Kreisläufen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie ermöglicht Stoffaustausch zwischen getrennten mütterlichen und kindlichen Kreisläufen.",
+              "Sie vereinigt grundsätzlich das gesamte Blut beider Organismen zu einem einzigen Kreislauf."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie vereinigt grundsätzlich das gesamte Blut beider Organismen zu einem einzigen Kreislauf.",
+              "reason": "Austausch findet statt, obwohl die Kreisläufe getrennt bleiben."
+            },
+            {
+              "text": "Sie verhindert grundsätzlich jede Wirkung äußerer Einflüsse während der Schwangerschaft.",
+              "reason": "Austausch findet statt, obwohl die Kreisläufe getrennt bleiben."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RRBPJRC2P1QGRQAN4S",
+          "slug": "bio10-vorsorge-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorsorge",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre den Zusammenhang von Entwicklung, Plazenta und Vorsorge.",
+          "concept": "Wachstum und Differenzierung führen zur Ausbildung von Geweben und Organen. Über die Plazenta werden unter anderem Stoffe ausgetauscht, während die Blutkreisläufe getrennt bleiben. Vorsorge verfolgt Entwicklung und Gesundheit, kann aber keine lückenlose Garantie für jede spätere Eigenschaft geben.",
+          "sample_solution": "Wachstum und Differenzierung führen zur Ausbildung von Geweben und Organen. Über die Plazenta werden unter anderem Stoffe ausgetauscht, während die Blutkreisläufe getrennt bleiben. Vorsorge verfolgt Entwicklung und Gesundheit, kann aber keine lückenlose Garantie für jede spätere Eigenschaft geben."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPK278HCW3WT2JM591",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPK278HCW3WT2JM591",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-praenatal",
+      "title": "Pränataldiagnostik: Screening und Abklärung",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-praenatal",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPVQWA9XRQ3QNBB17H",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        },
+        {
+          "atom_id": "01M5EAN6RN6Y7ERVAF6Y0BD15R",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Verantwortungsvolle Elternschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Verantwortungsvolle Elternschaft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RR3XNQ3RB0H6CXDT9P",
+          "slug": "bio10-praenatal-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-praenatal",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was bedeutet ein auffälliges Screening zunächst?",
+          "concept": "Ein Hinweis oder eine erhöhte Wahrscheinlichkeit, die eingeordnet werden muss.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Hinweis oder eine erhöhte Wahrscheinlichkeit, die eingeordnet werden muss.",
+              "Eine sichere vollständige Diagnose ohne jeden weiteren Informationsbedarf."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine sichere vollständige Diagnose ohne jeden weiteren Informationsbedarf.",
+              "reason": "Suchtest, Diagnose und persönliche Entscheidung sind verschiedene Schritte."
+            },
+            {
+              "text": "Eine garantierte Vorhersage aller späteren Eigenschaften des Kindes.",
+              "reason": "Suchtest, Diagnose und persönliche Entscheidung sind verschiedene Schritte."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RRNBP0EN0PTZYG5GR4",
+          "slug": "bio10-praenatal-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-praenatal",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre, warum die Trefferquote allein den Anteil tatsächlicher Fälle unter positiven Tests nicht festlegt.",
+          "concept": "Die Trefferquote bezieht sich auf Personen mit der gesuchten Eigenschaft. Unter positiven Ergebnissen können aber auch Personen ohne diese Eigenschaft sein. Wenn die Ausgangshäufigkeit klein ist, können solche falsch positiven Fälle zahlreich sein. Man benötigt deshalb Ausgangshäufigkeit und Fehlerquoten gemeinsam.",
+          "sample_solution": "Die Trefferquote bezieht sich auf Personen mit der gesuchten Eigenschaft. Unter positiven Ergebnissen können aber auch Personen ohne diese Eigenschaft sein. Wenn die Ausgangshäufigkeit klein ist, können solche falsch positiven Fälle zahlreich sein. Man benötigt deshalb Ausgangshäufigkeit und Fehlerquoten gemeinsam."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RP1JAXFQZZDZ6XC8XK",
+      "atom_uri": "urn:zam:atom:01M5EAN6RP1JAXFQZZDZ6XC8XK",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-einfluesse",
+      "title": "Äußere Einflüsse und unterstützende Bedingungen",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-einfluesse",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPVQWA9XRQ3QNBB17H",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Verantwortungsvolle Elternschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Verantwortungsvolle Elternschaft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRW6NPG4ZW9AS75TV8",
+          "slug": "bio10-einfluesse-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-einfluesse",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Schlussfolgerung ist bei äußeren Einflüssen angemessen?",
+          "concept": "Mögliche Wirkungen hängen von mehreren Bedingungen ab und brauchen fachliche Einordnung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mögliche Wirkungen hängen von mehreren Bedingungen ab und brauchen fachliche Einordnung.",
+              "Eine einzelne allgemeine Liste sagt jede individuelle Entwicklungsfolge sicher voraus."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine einzelne allgemeine Liste sagt jede individuelle Entwicklungsfolge sicher voraus.",
+              "reason": "Allgemeine Zusammenhänge sind keine vollständige Einzelfallvorhersage."
+            },
+            {
+              "text": "Jede Belastung erlaubt ohne weitere Informationen eine persönliche Schuldzuweisung.",
+              "reason": "Allgemeine Zusammenhänge sind keine vollständige Einzelfallvorhersage."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RR4FR0YK8BS4W4E7M6",
+          "slug": "bio10-einfluesse-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-einfluesse",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre, warum das gleiche äußere Signal nicht immer dieselbe Entwicklungsfolge vorhersagt.",
+          "concept": "Wirkungen hängen unter anderem vom konkreten Stoff, der Menge, dem Entwicklungszeitpunkt und weiteren Bedingungen ab. Zudem können mehrere Einflüsse zusammenwirken. Aus einer allgemeinen Risikoaussage folgt deshalb keine sichere individuelle Vorhersage; geeignete fachliche Begleitung hilft bei konkreten Entscheidungen.",
+          "sample_solution": "Wirkungen hängen unter anderem vom konkreten Stoff, der Menge, dem Entwicklungszeitpunkt und weiteren Bedingungen ab. Zudem können mehrere Einflüsse zusammenwirken. Aus einer allgemeinen Risikoaussage folgt deshalb keine sichere individuelle Vorhersage; geeignete fachliche Begleitung hilft bei konkreten Entscheidungen."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPAMV2XBKJBDC0TSFN",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPAMV2XBKJBDC0TSFN",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-elternschaft",
+      "title": "Elternschaft: Veränderungen und geteilte Verantwortung",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-elternschaft",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RN35T1NE1X875TY6HE",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Verantwortungsvolle Elternschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Verantwortungsvolle Elternschaft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RR2A5SQXTZ1K9T0NGJ",
+          "slug": "bio10-elternschaft-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-elternschaft",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was gehört zu einer realistischen Vorbereitung auf Elternschaft?",
+          "concept": "Betreuung, Zeit, Ressourcen und verfügbare Unterstützung gemeinsam bedenken.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Betreuung, Zeit, Ressourcen und verfügbare Unterstützung gemeinsam bedenken.",
+              "Nur biologische Verwandtschaft betrachten und alle Alltagsaufgaben ausblenden."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur biologische Verwandtschaft betrachten und alle Alltagsaufgaben ausblenden.",
+              "reason": "Biologische und soziale Verantwortung müssen im Alltag konkret werden."
+            },
+            {
+              "text": "Alle Aufgaben ohne Rücksicht auf Bedürfnisse nach festen Klischees verteilen.",
+              "reason": "Biologische und soziale Verantwortung müssen im Alltag konkret werden."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RRW40RH1XENBX8F9DD",
+          "slug": "bio10-elternschaft-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-elternschaft",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein erfundenes Elternpaar plant beide Vollzeit zu arbeiten. Welche Fragen sind zu klären?",
+          "concept": "Zu klären sind verlässliche Betreuung, verfügbare Zeit, finanzielle Möglichkeiten und faire Aufgabenverteilung. Auch Krankheit, Erholung und Unterstützung durch geeignete Bezugspersonen gehören zur Planung. Maßstab sind die Bedürfnisse des Kindes und ein tragfähiger Alltag, nicht starre Vorstellungen darüber, wer welche Rolle übernehmen muss.",
+          "sample_solution": "Zu klären sind verlässliche Betreuung, verfügbare Zeit, finanzielle Möglichkeiten und faire Aufgabenverteilung. Auch Krankheit, Erholung und Unterstützung durch geeignete Bezugspersonen gehören zur Planung. Maßstab sind die Bedürfnisse des Kindes und ein tragfähiger Alltag, nicht starre Vorstellungen darüber, wer welche Rolle übernehmen muss."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RP38T78EHNQH4QXK0N",
+      "atom_uri": "urn:zam:atom:01M5EAN6RP38T78EHNQH4QXK0N",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-leben-ethik",
+      "title": "Beginn menschlichen Lebens: Biologie, Ethik und Recht",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-leben-ethik",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RN35T1NE1X875TY6HE",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Verantwortungsvolle Elternschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Verantwortungsvolle Elternschaft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RR4PFYV2JTARHB4WMX",
+          "slug": "bio10-leben-ethik-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-leben-ethik",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Aussage ist eine ethische Abwägung und keine reine Entwicklungsbeschreibung?",
+          "concept": "Selbstbestimmung und Schutz werden in einem Konflikt unterschiedlich gewichtet.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Selbstbestimmung und Schutz werden in einem Konflikt unterschiedlich gewichtet.",
+              "Nach der Befruchtung folgen im betrachteten Entwicklungsprozess Zellteilungen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nach der Befruchtung folgen im betrachteten Entwicklungsprozess Zellteilungen.",
+              "reason": "Wertgewichtungen sind offenzulegen und mit respektvollen Argumenten zu diskutieren."
+            },
+            {
+              "text": "Ein Modell beschreibt die zeitliche Abfolge von Differenzierungsvorgängen.",
+              "reason": "Wertgewichtungen sind offenzulegen und mit respektvollen Argumenten zu diskutieren."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RR46HYDRV94VY216MA",
+          "slug": "bio10-leben-ethik-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-leben-ethik",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre an der Debatte zum Schwangerschaftsabbruch die drei Perspektiven.",
+          "concept": "Biologisch lassen sich Entwicklungsprozesse und medizinische Zusammenhänge beschreiben. Ethisch werden etwa Selbstbestimmung, Schutz und Verantwortung abgewogen. Rechtlich gelten konkrete Voraussetzungen für unterschiedliche Fälle. Ein begründeter Beitrag nennt seine Quellen und Kriterien und respektiert, dass eine persönliche Wertgewichtung nicht als Messwert bewiesen wird.",
+          "sample_solution": "Biologisch lassen sich Entwicklungsprozesse und medizinische Zusammenhänge beschreiben. Ethisch werden etwa Selbstbestimmung, Schutz und Verantwortung abgewogen. Rechtlich gelten konkrete Voraussetzungen für unterschiedliche Fälle. Ein begründeter Beitrag nennt seine Quellen und Kriterien und respektiert, dass eine persönliche Wertgewichtung nicht als Messwert bewiesen wird."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPY109P9HKKS3G3CFC",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPY109P9HKKS3G3CFC",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-reproduktionsmedizin",
+      "title": "Reproduktionsmedizin und Präimplantationsdiagnostik",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-reproduktionsmedizin",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPCAJCD20B4ZSVW454",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        },
+        {
+          "atom_id": "01M5EAN6RP38T78EHNQH4QXK0N",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Verantwortungsvolle Elternschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Verantwortungsvolle Elternschaft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RR9KG7E2Q8YBM4QC4E",
+          "slug": "bio10-reproduktionsmedizin-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-reproduktionsmedizin",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Wann findet Präimplantationsdiagnostik statt?",
+          "concept": "Vor dem Transfer eines außerhalb des Körpers entstandenen Embryos.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vor dem Transfer eines außerhalb des Körpers entstandenen Embryos.",
+              "Ausschließlich nach der Geburt als allgemeine Untersuchung des Neugeborenen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ausschließlich nach der Geburt als allgemeine Untersuchung des Neugeborenen.",
+              "reason": "Der Zeitpunkt vor dem Transfer unterscheidet PID von Pränataldiagnostik."
+            },
+            {
+              "text": "Grundsätzlich erst nach dem Ende jeder Schwangerschaft ohne Bezug zur Befruchtung.",
+              "reason": "Der Zeitpunkt vor dem Transfer unterscheidet PID von Pränataldiagnostik."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RR2H4S48TZKATTN5WD",
+          "slug": "bio10-reproduktionsmedizin-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-reproduktionsmedizin",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre die Begriffe IVF und PID und nenne zwei Bewertungskriterien.",
+          "concept": "IVF ermöglicht Befruchtung außerhalb des Körpers. PID untersucht unter engen rechtlichen Bedingungen embryonale Zellen vor dem Transfer und ist kein notwendiger Bestandteil jeder IVF. Bei einer Bewertung zählen beispielsweise mögliche medizinische Vorteile, Belastungen, Selbstbestimmung und die rechtlichen Voraussetzungen; ein Erfolg ist nicht garantiert.",
+          "sample_solution": "IVF ermöglicht Befruchtung außerhalb des Körpers. PID untersucht unter engen rechtlichen Bedingungen embryonale Zellen vor dem Transfer und ist kein notwendiger Bestandteil jeder IVF. Bei einer Bewertung zählen beispielsweise mögliche medizinische Vorteile, Belastungen, Selbstbestimmung und die rechtlichen Voraussetzungen; ein Erfolg ist nicht garantiert."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RP666QV221CXSCDZPQ",
+      "atom_uri": "urn:zam:atom:01M5EAN6RP666QV221CXSCDZPQ",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-beziehung",
+      "title": "Beziehung, Erziehung und vielfältige Familienformen",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-beziehung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPAMV2XBKJBDC0TSFN",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Verantwortungsvolle Elternschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Verantwortungsvolle Elternschaft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRHZ146JJ8HT22CWG8",
+          "slug": "bio10-beziehung-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-beziehung",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welcher Maßstab eignet sich für die Bewertung einer Betreuungssituation?",
+          "concept": "Ob Schutz, verlässliche Beziehung und Bedürfnisse des Kindes berücksichtigt werden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ob Schutz, verlässliche Beziehung und Bedürfnisse des Kindes berücksichtigt werden.",
+              "Ob jede Familie unabhängig von ihrem Alltag genau demselben äußeren Muster folgt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ob jede Familie unabhängig von ihrem Alltag genau demselben äußeren Muster folgt.",
+              "reason": "Konkrete Bedingungen und Handlungen sind entscheidender als ein pauschales Etikett."
+            },
+            {
+              "text": "Ob biologische Abstammung ohne weitere Prüfung automatisch gute Fürsorge beweist.",
+              "reason": "Konkrete Bedingungen und Handlungen sind entscheidender als ein pauschales Etikett."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RRFMTQV5YS16F3W261",
+          "slug": "bio10-beziehung-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-beziehung",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Beschreibe eine gelingende Erziehungspartnerschaft in einem erfundenen Fall.",
+          "concept": "Bezugspersonen und Betreuungseinrichtung verständigen sich über Bedürfnisse, Abläufe und mögliche Belastungen. Sie teilen relevante Informationen respektvoll und planen verlässliche Zuständigkeiten. Maßstab ist das Wohl des Kindes; bei Schwierigkeiten wird passende Hilfe gesucht, statt einer Person oder Familienform pauschal Schuld zuzuweisen.",
+          "sample_solution": "Bezugspersonen und Betreuungseinrichtung verständigen sich über Bedürfnisse, Abläufe und mögliche Belastungen. Sie teilen relevante Informationen respektvoll und planen verlässliche Zuständigkeiten. Maßstab ist das Wohl des Kindes; bei Schwierigkeiten wird passende Hilfe gesucht, statt einer Person oder Familienform pauschal Schuld zuzuweisen."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RP90BEN7GCX2HZHD0N",
+      "atom_uri": "urn:zam:atom:01M5EAN6RP90BEN7GCX2HZHD0N",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-vorwissen-neuron",
+      "title": "Nervenzellen und gerichtete Signalwege",
+      "domain": "biologie/vorwissen-nerven",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-neuron",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "vorwissen-nerven",
+          "topic_title": "Nervensystem: ergänzendes Vorwissen aus Biologie 7"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRBD08FYR8CVAVZRBF",
+          "slug": "bio10-vorwissen-neuron-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-neuron",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Zellfortsätze nehmen im vereinfachten Neuronenmodell vor allem Signale zum Zellkörper hin auf?",
+          "concept": "Dendriten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dendriten",
+              "Endknöpfchen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Endknöpfchen",
+              "reason": "Dendriten vergrößern die mögliche Kontaktfläche der Signalaufnahme."
+            },
+            {
+              "text": "Myelinscheiden",
+              "reason": "Dendriten vergrößern die mögliche Kontaktfläche der Signalaufnahme."
+            }
+          ],
+          "replaces": [
+            "01K4B9N0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M5EAN6RRVNB3VDR9V9DB9XD9",
+          "slug": "bio10-vorwissen-neuron-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-neuron",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre eine typische Signalrichtung durch ein vereinfachtes Neuron und eine Modellgrenze.",
+          "concept": "Viele Eingänge treffen an Dendriten und Zellkörper ein. Unter geeigneten Bedingungen wird Erregung am Axon weitergeleitet und an einer synaptischen Endigung übertragen. Die Darstellung ist vereinfacht: Zelltypen, Kontakte und Myelinisierung sind unterschiedlich, und eine Nervenzelle ist kein passiver Draht.",
+          "sample_solution": "Viele Eingänge treffen an Dendriten und Zellkörper ein. Unter geeigneten Bedingungen wird Erregung am Axon weitergeleitet und an einer synaptischen Endigung übertragen. Die Darstellung ist vereinfacht: Zelltypen, Kontakte und Myelinisierung sind unterschiedlich, und eine Nervenzelle ist kein passiver Draht."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPHYTTDPKKZY06XD5P",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPHYTTDPKKZY06XD5P",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-vorwissen-reflex",
+      "title": "Reiz–Reaktion und unterschiedliche Reflexe",
+      "domain": "biologie/vorwissen-nerven",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-reflex",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RP90BEN7GCX2HZHD0N",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "vorwissen-nerven",
+          "topic_title": "Nervensystem: ergänzendes Vorwissen aus Biologie 7"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRHSDX6F0G0VR6REAF",
+          "slug": "bio10-vorwissen-reflex-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-reflex",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Wie ist das Zurückziehen der Hand nach einem schmerzhaften Hautreiz einzuordnen?",
+          "concept": "Als Fremdreflex, weil Aufnahme und Antwort verschiedene Strukturen betreffen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als Fremdreflex, weil Aufnahme und Antwort verschiedene Strukturen betreffen.",
+              "Als Eigenreflex, weil Haut und reagierender Muskel immer dasselbe Organ sind."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Als Eigenreflex, weil Haut und reagierender Muskel immer dasselbe Organ sind.",
+              "reason": "Die alte Gleichsetzung mit einem Eigenreflex wäre fachlich falsch."
+            },
+            {
+              "text": "Als Beweis, dass grundsätzlich jeder Reflex ausschließlich im Rückenmark entsteht.",
+              "reason": "Die alte Gleichsetzung mit einem Eigenreflex wäre fachlich falsch."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RR8PB4GVNWQV1086TB",
+          "slug": "bio10-vorwissen-reflex-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-reflex",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche Kniesehnenreflex und Rückziehen der Hand im Hinblick auf Eigen- und Fremdreflex.",
+          "concept": "Beim Kniesehnenreflex gehören aufnehmende und reagierende Struktur zum selben Muskel. Beim schmerzbedingten Rückziehen nimmt Haut einen Reiz auf, während Muskeln reagieren. Das ist ein Fremdreflex. Der Verschaltungsort muss gesondert betrachtet werden; nicht jeder Reflex liegt ausschließlich im Rückenmark.",
+          "sample_solution": "Beim Kniesehnenreflex gehören aufnehmende und reagierende Struktur zum selben Muskel. Beim schmerzbedingten Rückziehen nimmt Haut einen Reiz auf, während Muskeln reagieren. Das ist ein Fremdreflex. Der Verschaltungsort muss gesondert betrachtet werden; nicht jeder Reflex liegt ausschließlich im Rückenmark."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPCC64W3DNX4PX8SXY",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPCC64W3DNX4PX8SXY",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-vorwissen-synapse",
+      "title": "Chemische Synapsen differenziert verstehen",
+      "domain": "biologie/vorwissen-nerven",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-synapse",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RP90BEN7GCX2HZHD0N",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "vorwissen-nerven",
+          "topic_title": "Nervensystem: ergänzendes Vorwissen aus Biologie 7"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RR70Z9H69TKBG3AREY",
+          "slug": "bio10-vorwissen-synapse-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-synapse",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Wovon hängt die Wirkung eines chemischen Botenstoffs an einer Synapse wesentlich ab?",
+          "concept": "Vom beteiligten Rezeptor und den dadurch beeinflussten Zellvorgängen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vom beteiligten Rezeptor und den dadurch beeinflussten Zellvorgängen.",
+              "Nur davon, dass jeder Botenstoff grundsätzlich immer ein neues Signal erzwingt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur davon, dass jeder Botenstoff grundsätzlich immer ein neues Signal erzwingt.",
+              "reason": "Die Wirkung ist nicht unabhängig von Rezeptoren und Verschaltung."
+            },
+            {
+              "text": "Davon, dass jede Synapse ausschließlich denselben Botenstoff benutzen muss.",
+              "reason": "Die Wirkung ist nicht unabhängig von Rezeptoren und Verschaltung."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RR4DDP2YKES1GJKB5Y",
+          "slug": "bio10-vorwissen-synapse-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-synapse",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Beschreibe eine chemische Synapse und erkläre, warum nicht immer ein Aktionspotenzial folgt.",
+          "concept": "Freigesetzte Botenstoffe binden an Rezeptoren und verändern Vorgänge in der Folgezelle. Je nach Rezeptor kann die Wirkung erregend oder hemmend sein; mehrere Eingänge wirken zusammen. Erst geeignete Bedingungen führen zu einem neuen Aktionspotenzial. Ein einzelner Kontakt ist kein automatischer Ein-Aus-Schalter.",
+          "sample_solution": "Freigesetzte Botenstoffe binden an Rezeptoren und verändern Vorgänge in der Folgezelle. Je nach Rezeptor kann die Wirkung erregend oder hemmend sein; mehrere Eingänge wirken zusammen. Erst geeignete Bedingungen führen zu einem neuen Aktionspotenzial. Ein einzelner Kontakt ist kein automatischer Ein-Aus-Schalter."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RP8B5QADKCS1VA5NNE",
+      "atom_uri": "urn:zam:atom:01M5EAN6RP8B5QADKCS1VA5NNE",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-vorwissen-nervensystem",
+      "title": "ZNS, PNS und vegetative Steuerung",
+      "domain": "biologie/vorwissen-nerven",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-nervensystem",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RP90BEN7GCX2HZHD0N",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "vorwissen-nerven",
+          "topic_title": "Nervensystem: ergänzendes Vorwissen aus Biologie 7"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRFGSYT4X0G66QQWHK",
+          "slug": "bio10-vorwissen-nervensystem-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-nervensystem",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welcher Teil des vegetativen Nervensystems unterstützt typischerweise Flucht- oder Leistungsbereitschaft?",
+          "concept": "Der Sympathikus (erhöht Herzfrequenz, Blutdruck, erweitert Bronchien)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Sympathikus (erhöht Herzfrequenz, Blutdruck, erweitert Bronchien)",
+              "Der Parasympathikus (senkt typische Leistungsbereitschaft und fördert Verdauung)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Parasympathikus (senkt typische Leistungsbereitschaft und fördert Verdauung)",
+              "reason": "Die typische Zuordnung beschreibt eine Tendenz, nicht alle Einzelreaktionen jedes Organs."
+            },
+            {
+              "text": "Die Darmverdauung allein (ersetzt dabei jede Form nervöser Steuerung)",
+              "reason": "Die typische Zuordnung beschreibt eine Tendenz, nicht alle Einzelreaktionen jedes Organs."
+            }
+          ],
+          "replaces": [
+            "01K4B9N0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M5EAN6RRBCJ3SNR28GGZ577F",
+          "slug": "bio10-vorwissen-nervensystem-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-nervensystem",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Unterscheide ZNS/PNS und somatisch/vegetativ an einem Beispiel.",
+          "concept": "Gehirn und Rückenmark bilden das ZNS; außerhalb liegende Nerven gehören zum PNS. Das ist eine anatomische Einteilung. Die Steuerung der Skelettmuskulatur gehört zur somatischen, viele innere Vorgänge zur vegetativen Funktion. Ein Reflex kann somatisch und dennoch nicht bewusst ausgelöst sein.",
+          "sample_solution": "Gehirn und Rückenmark bilden das ZNS; außerhalb liegende Nerven gehören zum PNS. Das ist eine anatomische Einteilung. Die Steuerung der Skelettmuskulatur gehört zur somatischen, viele innere Vorgänge zur vegetativen Funktion. Ein Reflex kann somatisch und dennoch nicht bewusst ausgelöst sein."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPY8FAVEHYFR303KW6",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPY8FAVEHYFR303KW6",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-vorwissen-selektion",
+      "title": "Variation und natürliche Selektion",
+      "domain": "biologie/vorwissen-evolution",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-selektion",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "vorwissen-evolution",
+          "topic_title": "Evolution: ergänzendes Vorwissen aus Biologie 8"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRGMKT4HFWT1QHDDQ4",
+          "slug": "bio10-vorwissen-selektion-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-selektion",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welcher Mechanismus erklärt die Ausbreitung vorteilhafter vererbbarer Varianten über unterschiedlichen Fortpflanzungserfolg?",
+          "concept": "Natürliche Selektion: unterschiedlicher Fortpflanzungserfolg",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Natürliche Selektion: unterschiedlicher Fortpflanzungserfolg",
+              "Gezielte Veränderung durch den Wunsch einzelner Lebewesen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Gezielte Veränderung durch den Wunsch einzelner Lebewesen",
+              "reason": "Welche Variante vorteilhaft ist, hängt von den jeweiligen Bedingungen ab."
+            },
+            {
+              "text": "Automatische Vererbung jeder im Leben erworbenen Eigenschaft",
+              "reason": "Welche Variante vorteilhaft ist, hängt von den jeweiligen Bedingungen ab."
+            }
+          ],
+          "replaces": [
+            "01K4E0B0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M5EAN6RR7RANWQR18QHF6M1G",
+          "slug": "bio10-vorwissen-selektion-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-selektion",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre natürliche Selektion an einem erfundenen Populationsexempel.",
+          "concept": "In einer Population unterscheiden sich Individuen in einem vererbbaren Merkmal. Bei bestimmten Bedingungen haben manche Varianten höheren Fortpflanzungserfolg. Dann können ihre Anteile in späteren Generationen zunehmen. Das passiert ohne Zielplanung; ein während des Lebens erworbener Vorteil ist nicht automatisch genetisch vererbbar.",
+          "sample_solution": "In einer Population unterscheiden sich Individuen in einem vererbbaren Merkmal. Bei bestimmten Bedingungen haben manche Varianten höheren Fortpflanzungserfolg. Dann können ihre Anteile in späteren Generationen zunehmen. Das passiert ohne Zielplanung; ein während des Lebens erworbener Vorteil ist nicht automatisch genetisch vererbbar."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPHVVFRTQREFT2SYPN",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPHVVFRTQREFT2SYPN",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-vorwissen-homologie",
+      "title": "Homologie und Analogie",
+      "domain": "biologie/vorwissen-evolution",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-homologie",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPY8FAVEHYFR303KW6",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "vorwissen-evolution",
+          "topic_title": "Evolution: ergänzendes Vorwissen aus Biologie 8"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRJE9HSK4EV53PX4NJ",
+          "slug": "bio10-vorwissen-homologie-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-homologie",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Wie heißt die Beziehung zwischen Merkmalen mit gemeinsamem evolutionärem Ursprung trotz unterschiedlicher Funktionen?",
+          "concept": "Homologie (divergente Entwicklung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Homologie (divergente Entwicklung)",
+              "Analogie (konvergente Entwicklung)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Analogie (konvergente Entwicklung)",
+              "reason": "Der Ursprung des Merkmals ist für diese Unterscheidung entscheidend."
+            },
+            {
+              "text": "Zufall ohne jede Abstammungsbeziehung",
+              "reason": "Der Ursprung des Merkmals ist für diese Unterscheidung entscheidend."
+            }
+          ],
+          "replaces": [
+            "01K4E0B0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M5EAN6RR4PXBTGT8SFGWJV37",
+          "slug": "bio10-vorwissen-homologie-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-homologie",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Unterscheide Homologie und Analogie an Aufbau und Aufgabe.",
+          "concept": "Homologe Merkmale gehen auf einen gemeinsamen Ursprung zurück und können unterschiedliche Aufgaben erhalten. Analoge Ähnlichkeiten entstehen unabhängig, etwa als ähnliche Lösung vergleichbarer Anforderungen. Für eine Zuordnung genügt die Funktion nicht; Struktur, Entwicklung und weitere Abstammungsbelege werden geprüft.",
+          "sample_solution": "Homologe Merkmale gehen auf einen gemeinsamen Ursprung zurück und können unterschiedliche Aufgaben erhalten. Analoge Ähnlichkeiten entstehen unabhängig, etwa als ähnliche Lösung vergleichbarer Anforderungen. Für eine Zuordnung genügt die Funktion nicht; Struktur, Entwicklung und weitere Abstammungsbelege werden geprüft."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPXQPG778CWXTP108J",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPXQPG778CWXTP108J",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-vorwissen-fossilien",
+      "title": "Fossilien und Mosaikmerkmale",
+      "domain": "biologie/vorwissen-evolution",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-fossilien",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPHVVFRTQREFT2SYPN",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "vorwissen-evolution",
+          "topic_title": "Evolution: ergänzendes Vorwissen aus Biologie 8"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRQBB6Z95FHGQ9099D",
+          "slug": "bio10-vorwissen-fossilien-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-fossilien",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was macht Mosaikmerkmale eines Fossils für Abstammungsfragen nützlich?",
+          "concept": "Sie verbinden mehrere Merkmalszustände in einem zeitlich einzuordnenden Fund.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie verbinden mehrere Merkmalszustände in einem zeitlich einzuordnenden Fund.",
+              "Sie beweisen unabhängig von jedem Vergleich automatisch jede Einzelhypothese."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie beweisen unabhängig von jedem Vergleich automatisch jede Einzelhypothese.",
+              "reason": "Fund, Zeit und Vergleich müssen gemeinsam interpretiert werden."
+            },
+            {
+              "text": "Sie ersetzen grundsätzlich jede weitere Datierung und jede Prüfung der Erhaltung.",
+              "reason": "Fund, Zeit und Vergleich müssen gemeinsam interpretiert werden."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RRK2W4QBW8VXT0APN3",
+          "slug": "bio10-vorwissen-fossilien-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-fossilien",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erläutere den Wert eines Fossils mit Mosaikmerkmalen und eine Grenze.",
+          "concept": "Die Kombination von Merkmalen kann unterschiedliche Entwicklungszustände verbinden und Abstammungshypothesen stützen. Fundzusammenhang und Zeit geben zusätzlichen Kontext. Erhaltung und Vergleich begrenzen aber, was etwa über Bewegung oder Verhalten gesagt werden kann; ein Fossil ist kein vollständiger Film seines Lebens.",
+          "sample_solution": "Die Kombination von Merkmalen kann unterschiedliche Entwicklungszustände verbinden und Abstammungshypothesen stützen. Fundzusammenhang und Zeit geben zusätzlichen Kontext. Erhaltung und Vergleich begrenzen aber, was etwa über Bewegung oder Verhalten gesagt werden kann; ein Fossil ist kein vollständiger Film seines Lebens."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPX3MVR70Z3HQJ836F",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPX3MVR70Z3HQJ836F",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-vorwissen-bipedie",
+      "title": "Aufrechter Gang und menschliche Evolution",
+      "domain": "biologie/vorwissen-evolution",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-bipedie",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "vorwissen-evolution",
+          "topic_title": "Evolution: ergänzendes Vorwissen aus Biologie 8"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RRM16XKFPAWBTR05SX",
+          "slug": "bio10-vorwissen-bipedie-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-bipedie",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Fortbewegungsweise ist bei frühen Homininen vor starker Gehirnvergrößerung belegt?",
+          "concept": "Aufrechter zweibeiniger Gang: Bipedie",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aufrechter zweibeiniger Gang: Bipedie",
+              "Der ausschließliche dauerhafte Flug mit Flügeln"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der ausschließliche dauerhafte Flug mit Flügeln",
+              "reason": "Mehrere Fossilmerkmale stützen die Rekonstruktion zweibeiniger Fortbewegung."
+            },
+            {
+              "text": "Der vollständige dauerhafte Verzicht auf Bodenbewegung",
+              "reason": "Mehrere Fossilmerkmale stützen die Rekonstruktion zweibeiniger Fortbewegung."
+            }
+          ],
+          "replaces": [
+            "01K4E0B0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M5EAN6RRHBBXHG2FWQTNRZT2",
+          "slug": "bio10-vorwissen-bipedie-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-bipedie",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Erkläre, warum der aufrechte Gang nicht erst mit einem sehr großen Gehirn begann.",
+          "concept": "Fossile Merkmale belegen zweibeinige Fortbewegung bereits bei frühen Homininen mit vergleichsweise kleinem Gehirn. Körpermerkmale und Gehirnvolumen entwickelten sich zeitlich unterschiedlich. Für eine Rekonstruktion werden konkrete Skelett- und gegebenenfalls Spurenbefunde kombiniert, statt eine einheitliche Fortschrittsleiter anzunehmen.",
+          "sample_solution": "Fossile Merkmale belegen zweibeinige Fortbewegung bereits bei frühen Homininen mit vergleichsweise kleinem Gehirn. Körpermerkmale und Gehirnvolumen entwickelten sich zeitlich unterschiedlich. Für eine Rekonstruktion werden konkrete Skelett- und gegebenenfalls Spurenbefunde kombiniert, statt eine einheitliche Fortschrittsleiter anzunehmen."
+        }
+      ]
+    },
+    {
+      "id": "01M5EAN6RPT6GFECVQYW8FZ2ZV",
+      "atom_uri": "urn:zam:atom:01M5EAN6RPT6GFECVQYW8FZ2ZV",
+      "namespace": "zam-academy-biologie-realschule-10",
+      "slug": "bio10-vorwissen-stammgeschichte",
+      "title": "Stammgeschichte als verzweigter Baum",
+      "domain": "biologie/vorwissen-evolution",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-stammgeschichte",
+      "prerequisites": [
+        {
+          "atom_id": "01M5EAN6RPX3MVR70Z3HQJ836F",
+          "type": "soft",
+          "rationale": "Hilfreiches Vorwissen; die Lektion bleibt ohne Sperre zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-10",
+          "topic_code": "vorwissen-evolution",
+          "topic_title": "Evolution: ergänzendes Vorwissen aus Biologie 8"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5EAN6RR3PS3QJZNG53FTZ7X",
+          "slug": "bio10-vorwissen-stammgeschichte-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-stammgeschichte",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Aussage über einen Abstammungsbaum ist korrekt?",
+          "concept": "Ein Verzweigungspunkt steht im Modell für gemeinsame Vorfahren.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Verzweigungspunkt steht im Modell für gemeinsame Vorfahren.",
+              "Ein Verzweigungspunkt beweist automatisch eine Rangordnung heutiger Menschen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Verzweigungspunkt beweist automatisch eine Rangordnung heutiger Menschen.",
+              "reason": "Verzweigungen beschreiben Verwandtschaft und keine Wertordnung."
+            },
+            {
+              "text": "Ein Verzweigungspunkt macht zeitgleiche verwandte Linien grundsätzlich unmöglich.",
+              "reason": "Verzweigungen beschreiben Verwandtschaft und keine Wertordnung."
+            }
+          ]
+        },
+        {
+          "id": "01M5EAN6RRA9VNYBBQV0VDF8MB",
+          "slug": "bio10-vorwissen-stammgeschichte-begrunden",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-10/#lesson=bio-vorwissen-stammgeschichte",
+          "materiality": "material",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Korrigiere eine lineare Darstellung der menschlichen Evolution.",
+          "concept": "Ich ersetze die starre Folge durch eine verzweigte Darstellung mit zeitlichen Überschneidungen und benannten Unsicherheiten. Ein älterer Fund ist nicht automatisch der direkte Vorfahr eines jüngeren. Die Verwandtschaft wird durch mehrere Belegarten gestützt; die Darstellung beschreibt keine Rangordnung heutiger Menschen.",
+          "sample_solution": "Ich ersetze die starre Folge durch eine verzweigte Darstellung mit zeitlichen Überschneidungen und benannten Unsicherheiten. Ein älterer Fund ist nicht automatisch der direkte Vorfahr eines jüngeren. Die Verwandtschaft wird durch mehrere Belegarten gestützt; die Darstellung beschreibt keine Rangordnung heutiger Menschen."
+        }
+      ]
+    }
+  ],
+  "retired_items": [
+    {
+      "id": "01K4B9G0000000000000000J02",
+      "reason": "Kategorische Zuordnung Frau XX / Mann XY ohne Varianten. Die neue Darstellung unterscheidet häufige Kombinationen, Ausnahmen und Grenzen des Karyogramms. Kein sicher unveränderter Gesamtumfang."
+    },
+    {
+      "id": "01K4B9G0000000000000000J06",
+      "reason": "Die Pauschale Mitose liefert diploide Zellen gilt nicht für jeden Ausgangssatz; vier Meioseprodukte sind nicht vier gleichwertige Eizellen. Der korrigierte Vergleich ist kein identischer Gesamtabruf."
+    },
+    {
+      "id": "01K4B9G0000000000000000J08",
+      "reason": "Der mehrteilige Alttext bindet die Spaltungsverhältnisse zu pauschal an Regeln und beschreibt Phänotyp nur als äußeres Erscheinungsbild. Neue Fragen trennen Bedingungen, Kopplung, Zufall und beobachtbare Funktionen; keine Teilbeherrschung verteilen."
+    },
+    {
+      "id": "01K4B9G0000000000000000J10",
+      "reason": "Stammbaummuster werden zu kategorisch als sichere Erkennungsmerkmale formuliert. Neue Varianten, Penetranz und kleine Stammbäume lassen Alternativen zu. Keine Übernahme auf eine korrigierte Diagnoseregel."
+    },
+    {
+      "id": "01K4B9N0000000000000000J02",
+      "reason": "Der Gesamtabruf verallgemeinert Schwann-Zellen auf alle Myelinscheiden und beschreibt unterschiedliche Neuronen zu einheitlich. Der Nachfolger differenziert ZNS/PNS und Modellgrenzen."
+    },
+    {
+      "id": "01K4B9N0000000000000000J03",
+      "reason": "Die Altfrage bezeichnet auch den Rückziehreflex von der heißen Herdplatte als Eigenreflex. Das ist ein Fremdreflex; die korrigierte Frage erhält keine alte Beherrschung."
+    },
+    {
+      "id": "01K4B9N0000000000000000J04",
+      "reason": "Die Gesamtantwort behauptet für Reflexe pauschal Schutzfunktion und Rückenmarkverschaltung. Der neue Umfang unterscheidet Funktionen und Verschaltungsorte; keine sichere Gesamtidentität."
+    },
+    {
+      "id": "01K4B9N0000000000000000J05",
+      "reason": "Die Altfrage lässt den Synapsentyp offen. Der neue Umfang grenzt chemische und elektrische Kontakte sowie Rezeptorwirkungen ausdrücklich ab. Ein unsicherer allgemeiner Abruf wird nicht auf einen präzisierten Teilumfang übertragen."
+    },
+    {
+      "id": "01K4B9N0000000000000000J06",
+      "reason": "Die mehrteilige Synapsenfolge verallgemeinert Na-Einstrom, Erregung und enzymatischen Abbau. Hemmende Wirkungen und andere Inaktivierungswege machen eine fachliche Korrektur nötig."
+    },
+    {
+      "id": "01K4B9N0000000000000000J08",
+      "reason": "Somatisch wird pauschal mit willkürlich gleichgesetzt, obwohl somatische Reflexe dazugehören. Die neue funktionelle und anatomische Gliederung ist ein korrigierter Gesamtabruf."
+    },
+    {
+      "id": "01K4E0B0000000000000000J02",
+      "reason": "Die historische Darwin-Darstellung schreibt ihm Kenntnisse über Mutation, Rekombination und Genpool zu. Historische Theorie und moderne Ergänzung werden im neuen Material getrennt."
+    },
+    {
+      "id": "01K4E0B0000000000000000J04",
+      "reason": "Gemeinsame Homologie wird mit notwendig naher Verwandtschaft und lückenloser Beweislage gleichgesetzt. Der neue Umfang differenziert Abstammung, Merkmalsverteilung und Beleggrenzen."
+    },
+    {
+      "id": "01K4E0B0000000000000000J05",
+      "reason": "Die Frage nach zwei getrennten Wirbeltierklassen verdeckt die Einordnung der Vögel in die theropoden Dinosaurier. Die korrigierte Mosaikmerkmal-Frage ist keine sichere gleiche Identität."
+    },
+    {
+      "id": "01K4E0B0000000000000000J06",
+      "reason": "Der umfassende Archaeopteryx-Alttext enthält zu kategorische Funktions- und Beweisbehauptungen sowie strittige Merkmalszuordnungen. Neue Erklärung trennt Erhaltung, Merkmale und Hypothesen."
+    },
+    {
+      "id": "01K4E0B0000000000000000J08",
+      "reason": "Die Altantwort suggeriert einen linearen Homininen-Stammbaum und sichere Erstleistungen. Die neue Darstellung zeigt verzweigte Linien, zeitliche Überschneidung und Unsicherheit; keine sichere Gesamtidentität."
+    }
+  ]
+}

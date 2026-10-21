@@ -1,5 +1,11 @@
 [
   {
+    "id": "zam-academy:biologie-realschule-10",
+    "version": "2026.10.1",
+    "sha256": "dcf31bd2581a85ec5f874df3551bac43c5911ee91b0f4a517b65271af505da02",
+    "file": "zam-academy-biologie-realschule-10-kvt.json"
+  },
+  {
     "id": "zam-academy:chemie-realschule-9",
     "version": "2026.10.2",
     "sha256": "6928b3f13d853c3208f83779d5c962eb66727dd99d66b69b986a4f06e6c94c78",

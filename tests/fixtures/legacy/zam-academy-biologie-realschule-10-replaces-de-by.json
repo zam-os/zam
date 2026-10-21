@@ -1,0 +1,239 @@
+{
+  "schema": 1,
+  "approved": "2026-10-21",
+  "source": "Thomas in diesem Claude-Code-Chat am 2026-10-21 nach dem Review von zam-os/zam-academy#16: „Freigabe erteilt“. Diese Freigabe gilt dem expliziten Biologie-Mapping (10 A, 1 B, 15 C); Freigaben für Chemie, Geschichte und Geographie gelten nicht für Biologie.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "6c18573df3941a4500097064d32b8363eb727594",
+  "authorization": "Thomas hat dieses zeilenweise Biologie-Mapping (10 A, 1 B, 15 C) am 2026-10-21 nach dem Review von zam-os/zam-academy#16 ausdrücklich freigegeben.",
+  "policy": "A: gleicher einzelner Abruf, genau ein Nachfolger. B: vollständige unveränderte Gesamtfrage. C: korrigierter oder unsicherer Umfang, kein replaces. Karten und Reviews bleiben immer erhalten; C-Alttexte verlassen aktive Wiederholungen. Jahrgangskorrektur allein überträgt keine zusätzliche Beherrschung.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-9-biologie-genetik-vererbung-kvt.json",
+      "tile_id": "de-by:realschule-9-biologie-genetik-vererbung",
+      "version": "2026.08.1",
+      "sha256": "c95ac4b32aed33e4a76665db9d0d6c3afa1cd362f7d82de39334c36cdf8a724a"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-9-biologie-nervensystem-sinne-kvt.json",
+      "tile_id": "de-by:realschule-9-biologie-nervensystem-sinne",
+      "version": "2026.08.1",
+      "sha256": "cc17fa35d30f39e9f9750e1d31e87d72d9d8c637faffb8b3f75bed17788dd30c"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-10-biologie-evolution-abstammung-kvt.json",
+      "tile_id": "de-by:realschule-10-biologie-evolution-abstammung",
+      "version": "2026.08.1",
+      "sha256": "bfbcf4daaead4c5e1cd7f7a5b1be8deef4cf91e47ac0404e950fc91d08a17be1"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-genetik-vererbung",
+      "de_by_id": "01K4B9G0000000000000000J01",
+      "de_by_question": "Wie viele Chromosomen enthält der diploide Chromosomensatz (2n) einer normalen menschlichen Körperzelle?",
+      "category": "A",
+      "academy_slug": "bio10-chromosomen-check",
+      "note": "Gleicher einzelner Abruf: der übliche diploide menschliche Chromosomensatz hat 46 Chromosomen, 23 Paare. Die präzisere Formulierung unterscheidet DNA-Menge und Chromosomenzahl; zusätzliche Deutungen eines Karyogramms werden nicht als gelernt übernommen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-genetik-vererbung",
+      "de_by_id": "01K4B9G0000000000000000J02",
+      "de_by_question": "Beschreibe den Aufbau eines Metaphase-Chromosoms (Chromatiden, Centromer), erkläre den Unterschied zwischen Autosomen und Gonosomen und beschreibe die Geschlechtschromosomen-Kombination von Mann und Frau.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Kategorische Zuordnung Frau XX / Mann XY ohne Varianten. Die neue Darstellung unterscheidet häufige Kombinationen, Ausnahmen und Grenzen des Karyogramms. Kein sicher unveränderter Gesamtumfang."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-genetik-vererbung",
+      "de_by_id": "01K4B9G0000000000000000J03",
+      "de_by_question": "Welche organische Base paart in der DNA komplementär mit Guanin (G)?",
+      "category": "A",
+      "academy_slug": "bio10-dna-bau-check",
+      "note": "Gleicher einzelner Abruf: Guanin paart mit Cytosin, im angegebenen DNA-Modell mit drei Wasserstoffbrücken. Antwortumfang und chemische Aussage bleiben erhalten."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-genetik-vererbung",
+      "de_by_id": "01K4B9G0000000000000000J04",
+      "de_by_question": "Beschreibe die chemische Grundstruktur der DNA (Desoxyribonukleinsäure) nach dem Watson-Crick-Modell: Bausteine eines Nukleotids, Aufbau des Strangs und komplementäre Basenpaarung.",
+      "category": "B",
+      "academy_slug": "bio10-dna-gesamt",
+      "note": "Vollständiger unveränderter Abruf von Nukleotid, Zucker-Phosphat-Gerüst, antiparallelen Strängen und Basenpaarung. Frage, Kurzantwort und Musterlösung bleiben wortgleich auf einer eigenen zusammenhängenden Karte; keine Verteilung auf Teilfragen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-genetik-vererbung",
+      "de_by_id": "01K4B9G0000000000000000J05",
+      "de_by_question": "Welchen Ploidiegrad besitzen die Tochterzellen nach einer vollständigen Meiose (Reifeteilung) zur Bildung von Eizellen oder Spermien?",
+      "category": "A",
+      "academy_slug": "bio10-meiose-check",
+      "note": "Gleicher einzelner Abruf: die Kernprodukte vollständiger Meiose sind haploid, beim üblichen menschlichen Satz mit 23 Chromosomen. Neue Aussagen zur Eizellbildung werden separat neu geübt."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-genetik-vererbung",
+      "de_by_id": "01K4B9G0000000000000000J06",
+      "de_by_question": "Vergleiche Mitose und Meiose tabellarisch hinsichtlich biologischer Funktion, Ort im Körper, Anzahl der Kernteilungen und Ploidiegrad sowie genetischer Identität der Tochterzellen.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Die Pauschale Mitose liefert diploide Zellen gilt nicht für jeden Ausgangssatz; vier Meioseprodukte sind nicht vier gleichwertige Eizellen. Der korrigierte Vergleich ist kein identischer Gesamtabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-genetik-vererbung",
+      "de_by_id": "01K4B9G0000000000000000J07",
+      "de_by_question": "In welchem phänotypischen Zahlenverhältnis spalten die Nachkommen der F2-Generation bei einem dominant-rezessiven monohybriden Erbgang auf?",
+      "category": "A",
+      "academy_slug": "bio10-mendel-spaltung-check",
+      "note": "Gleicher einzelner Abruf des klassischen dominant-rezessiven F2-Verhältnisses 3:1; der Nachfolger nennt die hierfür betrachtete Kreuzung Aa × Aa und vollständige Dominanz ausdrücklich. Keine Übertragung auf andere Erbgänge."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-genetik-vererbung",
+      "de_by_id": "01K4B9G0000000000000000J08",
+      "de_by_question": "Formuliere die drei Mendelschen Regeln (Uniformitätsregel, Spaltungsregel, Unabhängigkeitsregel) und unterscheide die Fachbegriffe Genotyp, Phänotyp, homozygot und heterozygot.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Der mehrteilige Alttext bindet die Spaltungsverhältnisse zu pauschal an Regeln und beschreibt Phänotyp nur als äußeres Erscheinungsbild. Neue Fragen trennen Bedingungen, Kopplung, Zufall und beobachtbare Funktionen; keine Teilbeherrschung verteilen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-genetik-vererbung",
+      "de_by_id": "01K4B9G0000000000000000J09",
+      "de_by_question": "Können zwei gesunde Eltern bei einem autosomal-rezessiven Erbgang (z. B. Mukoviszidose) ein erkranktes Kind bekommen, wenn beide Träger des veränderten Allels (heterozygot Aa) sind?",
+      "category": "A",
+      "academy_slug": "bio10-stammbaum-check",
+      "note": "Gleicher einzelner Abruf: zwei heterozygote Aa-Eltern können im autosomal-rezessiven Modell pro Kind mit 25 Prozent Wahrscheinlichkeit ein aa-Kind haben. Die Antwort bleibt unverändert; keine individuelle Prognose."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-genetik-vererbung",
+      "de_by_id": "01K4B9G0000000000000000J10",
+      "de_by_question": "Erkläre die Erkennungsmerkmale eines autosomal-rezessiven, eines autosomal-dominanten und eines X-chromosomal-rezessiven Erbgangs in einem Stammbaum.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Stammbaummuster werden zu kategorisch als sichere Erkennungsmerkmale formuliert. Neue Varianten, Penetranz und kleine Stammbäume lassen Alternativen zu. Keine Übernahme auf eine korrigierte Diagnoseregel."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-nervensystem-sinne",
+      "de_by_id": "01K4B9N0000000000000000J01",
+      "de_by_question": "Welche Zellfortsätze eines Neurons nehmen elektrische Erregungen von benachbarten Sinneszellen oder Nervenzellen auf und leiten sie zum Zellkörper weiter?",
+      "category": "A",
+      "academy_slug": "bio10-vorwissen-neuron-check",
+      "note": "Gleicher einzelner Abruf der Dendriten als überwiegender Signalaufnahmefortsätze im vereinfachten Neuronenmodell. Aus der falschen Jahrgangsbindung entsteht keine zusätzliche Beherrschung; Inhalt bleibt getrenntes Vorwissen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-nervensystem-sinne",
+      "de_by_id": "01K4B9N0000000000000000J02",
+      "de_by_question": "Beschreibe den anatomischen Bau eines Neurons (Dendriten, Soma/Zellkörper, Axonhügel, Axon/Neurit, Myelinscheide/Schwann-Zellen, Ranvier-Schnürringe, Endknöpfchen) und erkläre die saltatorische Erregungsleitung.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Der Gesamtabruf verallgemeinert Schwann-Zellen auf alle Myelinscheiden und beschreibt unterschiedliche Neuronen zu einheitlich. Der Nachfolger differenziert ZNS/PNS und Modellgrenzen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-nervensystem-sinne",
+      "de_by_id": "01K4B9N0000000000000000J03",
+      "de_by_question": "Wird ein unbedingter Eigenreflex (z. B. der Kniesehnenreflex oder das Zurückziehen der Hand von einer heißen Herdplatte) primär im Gehirn oder direkt im Rückenmark verschaltet?",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Die Altfrage bezeichnet auch den Rückziehreflex von der heißen Herdplatte als Eigenreflex. Das ist ein Fremdreflex; die korrigierte Frage erhält keine alte Beherrschung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-nervensystem-sinne",
+      "de_by_id": "01K4B9N0000000000000000J04",
+      "de_by_question": "Skizziere die vollständige Reiz-Reaktions-Kette (Reiz -> Rezeptor -> afferenter Nerv -> ZNS -> efferenter Nerv -> Effektor -> Reaktion) und erkläre den biologischen Vorteil von Reflexen.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Die Gesamtantwort behauptet für Reflexe pauschal Schutzfunktion und Rückenmarkverschaltung. Der neue Umfang unterscheidet Funktionen und Verschaltungsorte; keine sichere Gesamtidentität."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-nervensystem-sinne",
+      "de_by_id": "01K4B9N0000000000000000J05",
+      "de_by_question": "Wie wird das elektrische Signal (Aktionspotenzial) im synaptischen Spalt zwischen zwei Neuronen übertragen?",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Die Altfrage lässt den Synapsentyp offen. Der neue Umfang grenzt chemische und elektrische Kontakte sowie Rezeptorwirkungen ausdrücklich ab. Ein unsicherer allgemeiner Abruf wird nicht auf einen präzisierten Teilumfang übertragen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-nervensystem-sinne",
+      "de_by_id": "01K4B9N0000000000000000J06",
+      "de_by_question": "Erkläre Schritt für Schritt den Ablauf der Signalübertragung an einer chemischen Synapse: Ankunft des Aktionspotenzials, Calciumeinstrom, Vesikelverschmelzung, Diffusion, Rezeptorbindung, Ionenkanäle und enzymatischer Abbau.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Die mehrteilige Synapsenfolge verallgemeinert Na-Einstrom, Erregung und enzymatischen Abbau. Hemmende Wirkungen und andere Inaktivierungswege machen eine fachliche Korrektur nötig."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-nervensystem-sinne",
+      "de_by_id": "01K4B9N0000000000000000J07",
+      "de_by_question": "Welcher Teil des vegetativen Nervensystems bereitet den Körper auf Flucht, Kampf und hohe körperliche Leistung vor ('Fight or Flight')?",
+      "category": "A",
+      "academy_slug": "bio10-vorwissen-nervensystem-check",
+      "note": "Gleicher einzelner Abruf: Sympathikus und typische Leistungsbereitschaft. Antwort bleibt erhalten; die ausführliche und differenzierte Gliederung des Nervensystems wird als neue Frage behandelt."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-biologie-nervensystem-sinne",
+      "de_by_id": "01K4B9N0000000000000000J08",
+      "de_by_question": "Gliedere das menschliche Nervensystem anatomisch (ZNS vs. PNS) und funktionell (somatisch vs. vegetativ/autonom) und stelle die gegensätzliche Wirkung von Sympathikus und Parasympathikus auf Herz, Atmung und Verdauung dar.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Somatisch wird pauschal mit willkürlich gleichgesetzt, obwohl somatische Reflexe dazugehören. Die neue funktionelle und anatomische Gliederung ist ein korrigierter Gesamtabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-biologie-evolution-abstammung",
+      "de_by_id": "01K4E0B0000000000000000J01",
+      "de_by_question": "Welcher fundamentale Selektionsmechanismus bildet nach Charles Darwin die treibende Kraft der evolutionären Anpassung?",
+      "category": "A",
+      "academy_slug": "bio10-vorwissen-selektion-check",
+      "note": "Gleicher einzelner Abruf der natürlichen Selektion als unterschiedlichem Fortpflanzungserfolg unter Umweltbedingungen. Die moderne Erweiterung und historische Abgrenzung werden nicht automatisch mitübertragen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-biologie-evolution-abstammung",
+      "de_by_id": "01K4E0B0000000000000000J02",
+      "de_by_question": "Vergleiche die Evolutionstheorien von Jean-Baptiste de Lamarck (Vervollkommnungstrieb, Gebrauch/Nichtgebrauch von Organen, Vererbung erworbener Eigenschaften) und Charles Darwin (Überproduktion von Nachkommen, genetische Variabilität, struggle for life, natürliche Auslese) am klassischen Beispiel der Halslänge von Giraffen.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Die historische Darwin-Darstellung schreibt ihm Kenntnisse über Mutation, Rekombination und Genpool zu. Historische Theorie und moderne Ergänzung werden im neuen Material getrennt."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-biologie-evolution-abstammung",
+      "de_by_id": "01K4E0B0000000000000000J03",
+      "de_by_question": "Welche anatomische Beziehung liegt vor, wenn Organe den gleichen grundlegenden Bauplan und gemeinsamen evolutionären Ursprung aufweisen (z. B. Menscharm, Vogelflügel, Walflosse), sich aber an verschiedene Funktionen angepasst haben?",
+      "category": "A",
+      "academy_slug": "bio10-vorwissen-homologie-check",
+      "note": "Gleicher einzelner Abruf: gemeinsamer evolutionärer Ursprung eines Merkmals trotz verschiedener Funktionen heißt Homologie. Keine Übertragung auf die korrigierte Aussage zur Nähe der Verwandtschaft."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-biologie-evolution-abstammung",
+      "de_by_id": "01K4E0B0000000000000000J04",
+      "de_by_question": "Erläutere die drei klassischen Homologiekriterien (Kriterium der Lage, Kriterium der spezifischen Qualität/Struktur, Kriterium der Stetigkeit/Übergangsformen) und grenze Homologie (Divergenz) klar von Analogie (Konvergenz, z. B. Grabbeine von Maulwurf und Maulwurfsgrille oder Stromlinienform von Hai und Delphin) ab.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Gemeinsame Homologie wird mit notwendig naher Verwandtschaft und lückenloser Beweislage gleichgesetzt. Der neue Umfang differenziert Abstammung, Merkmalsverteilung und Beleggrenzen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-biologie-evolution-abstammung",
+      "de_by_id": "01K4E0B0000000000000000J05",
+      "de_by_question": "Zwischen welchen beiden großen Wirbeltierklassen bildet der im Solnhofener Plattenkalk gefundene Urvogel Archaeopteryx ein berühmtes Brückentier (Mosaikform)?",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Die Frage nach zwei getrennten Wirbeltierklassen verdeckt die Einordnung der Vögel in die theropoden Dinosaurier. Die korrigierte Mosaikmerkmal-Frage ist keine sichere gleiche Identität."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-biologie-evolution-abstammung",
+      "de_by_id": "01K4E0B0000000000000000J06",
+      "de_by_question": "Ordne die Merkmale des Urvogels Archaeopteryx tabellarisch den Reptilienmerkmalen (Zähne im Kiefer, lange Schwanzwirbelsäule, Krallen an den Vorderflügeln, kein Brustbeinkamm) und den Vogelmerkmalen (Asymmetrische Schwungfedern, Gabelbein, hohle Knochen, Vogelbecken) zu und begründe seinen Stellenwert als Beleg für die Makroevolution.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Der umfassende Archaeopteryx-Alttext enthält zu kategorische Funktions- und Beweisbehauptungen sowie strittige Merkmalszuordnungen. Neue Erklärung trennt Erhaltung, Merkmale und Hypothesen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-biologie-evolution-abstammung",
+      "de_by_id": "01K4E0B0000000000000000J07",
+      "de_by_question": "Welche anatomische Veränderung war der primäre Schritt in der frühen Stammesgeschichte der Hominini (Vormenschen wie Australopithecus vor ca. 4 Mio. Jahren), noch vor der starken Vergrößerung des Gehirnvolumens?",
+      "category": "A",
+      "academy_slug": "bio10-vorwissen-bipedie-check",
+      "note": "Gleicher einzelner Abruf: zweibeiniger aufrechter Gang war vor der späteren starken Gehirnvergrößerung vorhanden. Der Nachfolger vermeidet eine pauschale Erstschritt-Datierung, ohne den abgefragten Zusammenhang zu erweitern."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-biologie-evolution-abstammung",
+      "de_by_id": "01K4E0B0000000000000000J08",
+      "de_by_question": "Skizziere die wesentlichen Stationen des Homininen-Stammbaums (Australopithecus afarensis 'Lucy', Homo habilis/erectus, Homo neanderthalensis, Homo sapiens) und nenne vier anatomische Anpassungen des menschlichen Skeletts an den aufrechten Gang (Wirbelsäulenform, Beckenform, Fußgewölbe, Lage des Hinterhauptslochs).",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Die Altantwort suggeriert einen linearen Homininen-Stammbaum und sichere Erstleistungen. Die neue Darstellung zeigt verzweigte Linien, zeitliche Überschneidung und Unsicherheit; keine sichere Gesamtidentität."
+    }
+  ]
+}
