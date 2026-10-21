@@ -1127,7 +1127,7 @@
       "parent": "cells",
       "label": "Generic import",
       "link": "fall back to",
-      "text": "Where no cell reaches yet, the manifest-driven curriculum import is the fallback.",
+      "text": "Where no cell reaches yet, or a cell covers a grade only in part, the manifest-driven curriculum import is the fallback.",
       "sources": [
         "CLAUDE.md"
       ]

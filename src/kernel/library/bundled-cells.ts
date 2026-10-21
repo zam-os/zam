@@ -1458,23 +1458,28 @@ function bindingMatchesScope(
   return true;
 }
 
-/**
- * Cells that cover a curriculum position, best match first.
- *
- * **The cell has precedence** (owner decision 2026-08-15). Import goes through
- * a cell whenever one exists for the learner's position; the generic curriculum
- * importer is the fallback for positions no cell covers yet.
- */
-export function findBundledCellsForScope(
-  scope: CurriculumScope,
-): BundledCellInfo[] {
-  const matches: Array<{ cell: BundledCellInfo; specificity: number }> = [];
+/** A cell that fits a position, and whether it covers the position fully. */
+interface ScopeMatch {
+  cell: BundledCellInfo;
+  specificity: number;
+  /**
+   * A binding names the position's grade (or the position names none). A cell
+   * that fits a grade only through grade-less bindings — a module the school
+   * may teach in any year, such as IT 2.5.1 — covers that grade in part.
+   */
+  coversFully: boolean;
+}
+
+/** One pass over the bundle: every fitting cell, best match first. */
+function matchScope(scope: CurriculumScope): ScopeMatch[] {
+  const matches: ScopeMatch[] = [];
 
   for (const cell of BUNDLED_CELLS) {
     const tile = BUNDLED_TILES[cell.id];
     if (!tile) continue;
 
     let best = -1;
+    let coversFully = false;
     for (const atom of tile.atoms) {
       for (const binding of atom.curricula ?? []) {
         if (!bindingMatchesScope(binding, scope)) continue;
@@ -1485,38 +1490,43 @@ export function findBundledCellsForScope(
           (binding.subject ? 1 : 0) +
           (binding.track ? 1 : 0);
         if (specificity > best) best = specificity;
+        if (scope.grade === undefined || binding.grade !== undefined)
+          coversFully = true;
       }
     }
 
-    if (best >= 0) matches.push({ cell, specificity: best });
+    if (best >= 0) matches.push({ cell, specificity: best, coversFully });
   }
 
-  return matches
-    .sort(
-      (a, b) =>
-        b.specificity - a.specificity || a.cell.id.localeCompare(b.cell.id),
-    )
-    .map((entry) => entry.cell);
+  return matches.sort(
+    (a, b) =>
+      b.specificity - a.specificity || a.cell.id.localeCompare(b.cell.id),
+  );
+}
+
+/**
+ * Cells that fit a curriculum position, best match first.
+ *
+ * **The cell has precedence** (owner decision 2026-08-15). Every fitting cell
+ * is offered first. Whether the generic curriculum importer stays available
+ * beside them is decided per binding by `needsGenericCurriculumImport`.
+ */
+export function findBundledCellsForScope(
+  scope: CurriculumScope,
+): BundledCellInfo[] {
+  return matchScope(scope).map((entry) => entry.cell);
 }
 
 /**
  * Whether the generic curriculum importer is still the right tool here.
  *
- * `false` means a cell covers this position and should be offered instead.
- * A cell that fits a grade only through bindings without one — a module the
- * school may teach in any year, such as IT 2.5.1 — covers that grade in part,
- * so the importer stays available beside it.
+ * `false` means a cell covers this position fully and should be offered
+ * instead. `true` means no cell fits, or the fitting cells cover the position
+ * only in part (grade-less module bindings): offer them, and the importer
+ * beside them.
  */
 export function needsGenericCurriculumImport(scope: CurriculumScope): boolean {
-  return !findBundledCellsForScope(scope).some((cell) =>
-    BUNDLED_TILES[cell.id]?.atoms.some((atom) =>
-      (atom.curricula ?? []).some(
-        (binding) =>
-          bindingMatchesScope(binding, scope) &&
-          (scope.grade === undefined || binding.grade !== undefined),
-      ),
-    ),
-  );
+  return !matchScope(scope).some((entry) => entry.coversFully);
 }
 
 /** Get the raw KVT tile definition for a bundled cell. */
