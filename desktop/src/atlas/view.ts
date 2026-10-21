@@ -1153,6 +1153,18 @@ function regionPanel(
     s.lens ?? view.lens.kind,
   ]);
   if (move) actions.appendChild(move);
+  if (units.length > 0) {
+    const del = button(
+      "btn secondary-btn btn-sm danger-btn",
+      t("atlas_delete_region"),
+    );
+    del.title = t("atlas_delete_region");
+    del.addEventListener(
+      "click",
+      () => void promptDeleteRegion(s, layout, key, region.name),
+    );
+    actions.appendChild(del);
+  }
   body.appendChild(actions);
   regionChildren(s, layout, key, body);
 }
@@ -1289,6 +1301,14 @@ function unitPanel(
     );
     const actions = el("div", "atlas-panel-actions");
     actions.appendChild(take);
+    body.appendChild(actions);
+  }
+  if (writes(s)) {
+    const del = button("btn secondary-btn btn-sm danger-btn", t("btn_delete"));
+    del.title = t("btn_delete");
+    del.addEventListener("click", () => void promptDeleteUnit(s, key));
+    const actions = el("div", "atlas-panel-actions");
+    actions.appendChild(del);
     body.appendChild(actions);
   }
   body.appendChild(threadSection(s, layout, key));
@@ -1611,6 +1631,286 @@ async function setHome(s: ViewState, key: string): Promise<void> {
     setStatus(
       s,
       `${t("atlas_home_failed")} ${err instanceof Error ? err.message : String(err)}`,
+    );
+  }
+}
+
+interface DeleteModalParts {
+  overlay: HTMLElement;
+  title: HTMLElement;
+  desc: HTMLElement;
+  impactSection: HTMLElement;
+  impactList: HTMLElement;
+  cancelBtn: HTMLButtonElement;
+  confirmBtn: HTMLButtonElement;
+}
+
+let deleteModalParts: DeleteModalParts | null = null;
+
+function ensureDeleteModal(): DeleteModalParts {
+  if (deleteModalParts?.overlay.isConnected) return deleteModalParts;
+  const overlay = el("div", "modal-overlay");
+  const box = el("div", "modal-box");
+  box.setAttribute("role", "dialog");
+  box.setAttribute("aria-modal", "true");
+  const header = el("div", "modal-header");
+  const title = el("h2", "modal-title");
+  header.appendChild(title);
+
+  const body = el("div", "modal-body");
+  const desc = el("p", "modal-description");
+  const impactSection = el("div", "modal-impact-section");
+  const impactTitle = el("div", "modal-impact-title", t("lbl_delete_impact"));
+  const impactList = el("ul", "modal-impact-list");
+  impactSection.append(impactTitle, impactList);
+  body.append(desc, impactSection);
+
+  const actions = el("div", "modal-actions");
+  const cancelBtn = button("btn secondary-btn btn-sm", t("lbl_cancel_action"));
+  const confirmBtn = button("btn danger-btn btn-sm", t("btn_delete"));
+  actions.append(cancelBtn, confirmBtn);
+
+  box.append(header, body, actions);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) {
+      overlay.classList.remove("active");
+    }
+  });
+
+  deleteModalParts = {
+    overlay,
+    title,
+    desc,
+    impactSection,
+    impactList,
+    cancelBtn,
+    confirmBtn,
+  };
+  return deleteModalParts;
+}
+
+function showAtlasDeleteModal(opts: {
+  title: string;
+  desc: string;
+  impact: {
+    tokens?: number;
+    cards: number;
+    review_logs: number;
+    session_steps: number;
+    agent_skills: number;
+  };
+  onConfirm: () => Promise<void>;
+}): void {
+  const parts = ensureDeleteModal();
+  parts.title.textContent = opts.title;
+  parts.desc.textContent = opts.desc;
+  parts.impactList.replaceChildren();
+
+  if (opts.impact.tokens !== undefined && opts.impact.tokens > 0) {
+    parts.impactList.appendChild(
+      el(
+        "li",
+        undefined,
+        `• ${tf("lbl_impact_tokens", { count: opts.impact.tokens })}`,
+      ),
+    );
+  }
+  if (opts.impact.cards > 0) {
+    parts.impactList.appendChild(
+      el(
+        "li",
+        undefined,
+        `• ${tf("lbl_impact_cards", { count: opts.impact.cards })}`,
+      ),
+    );
+  }
+  if (opts.impact.review_logs > 0) {
+    parts.impactList.appendChild(
+      el(
+        "li",
+        undefined,
+        `• ${tf("lbl_impact_reviews", { count: opts.impact.review_logs })}`,
+      ),
+    );
+  }
+  if (opts.impact.session_steps > 0) {
+    parts.impactList.appendChild(
+      el(
+        "li",
+        undefined,
+        `• ${tf("lbl_impact_steps", { count: opts.impact.session_steps })}`,
+      ),
+    );
+  }
+  if (opts.impact.agent_skills > 0) {
+    parts.impactList.appendChild(
+      el(
+        "li",
+        undefined,
+        `• ${tf("lbl_impact_skills", { count: opts.impact.agent_skills })}`,
+      ),
+    );
+  }
+
+  parts.cancelBtn.onclick = () => {
+    parts.overlay.classList.remove("active");
+  };
+
+  parts.confirmBtn.onclick = async () => {
+    parts.confirmBtn.disabled = true;
+    parts.cancelBtn.disabled = true;
+    try {
+      await opts.onConfirm();
+      parts.overlay.classList.remove("active");
+    } finally {
+      parts.confirmBtn.disabled = false;
+      parts.cancelBtn.disabled = false;
+    }
+  };
+
+  parts.overlay.classList.add("active");
+  parts.cancelBtn.focus();
+}
+
+async function promptDeleteRegion(
+  s: ViewState,
+  layout: AtlasLayout,
+  key: string,
+  name: string,
+): Promise<void> {
+  const lens = s.lens ?? layout.view.lens.kind;
+  setBusy(s, t("atlas_busy_reading"));
+  try {
+    const preview = await runBridge<{
+      success: boolean;
+      tokenCount: number;
+      fingerprint: string;
+      impact: {
+        cards: number;
+        review_logs: number;
+        session_steps: number;
+        agent_skills: number;
+      };
+    }>("personal-card-delete", ["--region", key, "--lens", lens]);
+    setBusy(s, null);
+
+    if (!preview || !preview.success || preview.tokenCount === 0) {
+      setStatus(s, t("atlas_delete_region_empty"));
+      return;
+    }
+
+    showAtlasDeleteModal({
+      title: tf("atlas_confirm_delete_region_title", { name }),
+      desc: tf("atlas_confirm_delete_region_desc", {
+        count: preview.tokenCount,
+      }),
+      impact: {
+        tokens: preview.tokenCount,
+        ...preview.impact,
+      },
+      onConfirm: async () => {
+        setBusy(s, t("atlas_busy_reading"));
+        try {
+          const res = await runBridge<{
+            success: boolean;
+            deletedCount: number;
+          }>("personal-card-delete", [
+            "--region",
+            key,
+            "--lens",
+            lens,
+            "--confirm",
+            "--expect",
+            preview.fingerprint,
+          ]);
+          select(s, null);
+          await load(s, s.lens ?? undefined);
+          setStatus(
+            s,
+            tf("atlas_region_deleted_toast", {
+              count: res.deletedCount ?? preview.tokenCount,
+            }),
+          );
+        } catch (err) {
+          setStatus(
+            s,
+            `${t("lbl_error_saving")}: ${err instanceof Error ? err.message : String(err)}`,
+          );
+        } finally {
+          setBusy(s, null);
+        }
+      },
+    });
+  } catch (err) {
+    setBusy(s, null);
+    setStatus(
+      s,
+      `${t("lbl_error_saving")}: ${err instanceof Error ? err.message : String(err)}`,
+    );
+  }
+}
+
+async function promptDeleteUnit(s: ViewState, key: string): Promise<void> {
+  setBusy(s, t("atlas_busy_reading"));
+  try {
+    const preview = await runBridge<{
+      success: boolean;
+      tokenCount: number;
+      fingerprint: string;
+      impact: {
+        cards: number;
+        review_logs: number;
+        session_steps: number;
+        agent_skills: number;
+      };
+    }>("personal-card-delete", ["--unit", key]);
+    setBusy(s, null);
+
+    if (!preview || !preview.success || preview.tokenCount === 0) {
+      setStatus(s, t("atlas_delete_region_empty"));
+      return;
+    }
+
+    showAtlasDeleteModal({
+      title: t("lbl_confirm_delete_title"),
+      desc: t("lbl_confirm_delete_desc"),
+      impact: {
+        tokens: preview.tokenCount > 1 ? preview.tokenCount : undefined,
+        ...preview.impact,
+      },
+      onConfirm: async () => {
+        setBusy(s, t("atlas_busy_reading"));
+        try {
+          await runBridge<{
+            success: boolean;
+          }>("personal-card-delete", [
+            "--unit",
+            key,
+            "--confirm",
+            "--expect",
+            preview.fingerprint,
+          ]);
+          select(s, null);
+          await load(s, s.lens ?? undefined);
+          setStatus(s, t("lbl_card_deleted_toast"));
+        } catch (err) {
+          setStatus(
+            s,
+            `${t("lbl_error_saving")}: ${err instanceof Error ? err.message : String(err)}`,
+          );
+        } finally {
+          setBusy(s, null);
+        }
+      },
+    });
+  } catch (err) {
+    setBusy(s, null);
+    setStatus(
+      s,
+      `${t("lbl_error_saving")}: ${err instanceof Error ? err.message : String(err)}`,
     );
   }
 }

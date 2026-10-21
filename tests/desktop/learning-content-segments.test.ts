@@ -99,5 +99,13 @@ describe("learning content segments", () => {
     expect(studio).toContain('"list-drafts"');
     expect(studio).toContain('"personal-card-ensure"');
     expect(studio).toContain("startLibraryTopic(key)");
+    expect(studio).toContain('"personal-card-delete"');
+    expect(studio).toContain("handleDeleteToken(");
+    expect(studio).toContain("handleDeleteGroup(");
+
+    const atlas = read("desktop/src/atlas/view.ts");
+    expect(atlas).toContain("promptDeleteRegion(");
+    expect(atlas).toContain("promptDeleteUnit(");
+    expect(atlas).toContain('"personal-card-delete"');
   });
 });

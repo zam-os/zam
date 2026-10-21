@@ -58,6 +58,7 @@ import {
   deleteCardForUser,
   deleteCurriculumCardForUser,
   deleteToken,
+  deleteTokens,
   discoverSkills,
   emptyCapabilityFlags,
   ensureCard,
@@ -93,6 +94,7 @@ import {
   getTokenBySlug,
   getTokenDeleteImpact,
   getTokenNeighborhood,
+  getTokensDeleteImpact,
   getTursoCredentials,
   hasCommand,
   importCurriculumCards,
@@ -168,6 +170,7 @@ import {
   supportsLocalGeneration,
   syncObserverSidecarPolicy,
   takeMaterialBonusItem,
+  tokenSetFingerprint,
   tursoVaultAccessPending,
   uiObservationLogExists,
   unassignTokenFromContext,
@@ -6911,40 +6914,181 @@ bridgeCommand
 
 bridgeCommand
   .command("personal-card-delete")
-  .description("Hard-delete a token and all its dependencies (JSON)")
-  .requiredOption("--slug <slug>", "Token slug")
+  .description("Hard-delete a token or all tokens of an area (JSON)")
+  .option("--slug <slug>", "Token slug")
+  .option("--region <key>", "Delete all units/tokens in this atlas region")
+  .option("--lens <kind>", "Lens of --region (default weltwissen)")
+  .option("--group <key>", "Delete all unchosen tokens in this source group")
+  .option("--domain <domain>", "Delete all tokens in this domain")
+  .option(
+    "--unit <key>",
+    "Delete token(s) of this atlas unit (atom:<id> or token:<id>)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
   .option("--confirm", "Perform the deletion instead of a preview")
+  .option(
+    "--expect <fingerprint>",
+    "Fingerprint from the area preview; required with --confirm for an area",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
-      const token = await getTokenBySlug(db, opts.slug);
-      if (!token) {
-        jsonError(`Token not found: ${opts.slug}`);
+      const userId = await resolveUser(opts, db, { json: true });
+      let tokens: Array<{ id: string; slug: string; title: string }> = [];
+
+      if (opts.slug) {
+        const token = await getTokenBySlug(db, opts.slug);
+        if (!token) {
+          jsonError(`Token not found: ${opts.slug}`);
+        }
+        tokens = [{ id: token.id, slug: token.slug, title: token.title ?? "" }];
+      } else if (opts.unit) {
+        const match = /^(atom|token):(.+)$/.exec(opts.unit);
+        if (!match) {
+          jsonError(`Not a unit key: ${opts.unit}`);
+        }
+        const rows = (await db
+          .prepare(
+            match[1] === "atom"
+              ? "SELECT id, slug, title FROM tokens WHERE atom_id = ?"
+              : "SELECT id, slug, title FROM tokens WHERE id = ?",
+          )
+          .all(match[2])) as Array<{ id: string; slug: string; title: string }>;
+        tokens = rows;
+      } else if (opts.region) {
+        const lens = await libraryLens(db, opts.lens);
+        const tokenIds = await regionTokenIds(
+          db,
+          lens,
+          String(opts.region),
+          userId,
+        );
+        if (tokenIds.length > 0) {
+          const placeholders = tokenIds.map(() => "?").join(",");
+          const rows = (await db
+            .prepare(
+              `SELECT id, slug, title FROM tokens WHERE id IN (${placeholders})`,
+            )
+            .all(...tokenIds)) as Array<{
+            id: string;
+            slug: string;
+            title: string;
+          }>;
+          tokens = rows;
+        }
+      } else if (typeof opts.group === "string") {
+        const members = await listUnchosenMembers(db, userId, opts.group);
+        tokens = members.map((m) => ({
+          id: m.tokenId,
+          slug: m.slug,
+          title: m.title ?? "",
+        }));
+      } else if (opts.domain) {
+        const rows = (await db
+          .prepare(
+            "SELECT id, slug, title FROM tokens WHERE domain = ? AND deprecated_at IS NULL",
+          )
+          .all(opts.domain)) as Array<{
+          id: string;
+          slug: string;
+          title: string;
+        }>;
+        tokens = rows;
+      } else {
+        jsonError(
+          "One of --slug, --region, --group, --domain, or --unit is required",
+        );
       }
 
+      if (tokens.length === 0) {
+        jsonOut({
+          success: true,
+          preview: !opts.confirm,
+          tokenCount: 0,
+          tokens: [],
+          impact: {
+            cards: 0,
+            review_logs: 0,
+            session_steps: 0,
+            agent_skills: 0,
+          },
+        });
+        return;
+      }
+
+      // If single token via --slug, preserve backwards-compatible output format
+      if (opts.slug) {
+        const token = tokens[0];
+        if (!opts.confirm) {
+          const impact = await getTokenDeleteImpact(db, token.slug);
+          jsonOut({
+            success: true,
+            preview: true,
+            requiresConfirmation: true,
+            tokenCount: 1,
+            token: {
+              id: token.id,
+              slug: token.slug,
+              title: token.title,
+              display_title: getDisplayTitle(token),
+            },
+            impact,
+          });
+          return;
+        }
+
+        const result = await deleteToken(db, token.slug);
+        jsonOut({
+          success: true,
+          deletedCount: 1,
+          deletedToken: {
+            id: result.token.id,
+            slug: result.token.slug,
+          },
+          impact: result.impact,
+        });
+        return;
+      }
+
+      // Area / multiple tokens deletion. The confirm names the set its
+      // preview showed, so an area that changed in between is refused.
+      const fingerprint = tokenSetFingerprint(tokens.map((t) => t.id));
       if (!opts.confirm) {
-        const impact = await getTokenDeleteImpact(db, opts.slug);
+        const impact = await getTokensDeleteImpact(
+          db,
+          tokens.map((t) => t.slug),
+        );
         jsonOut({
           success: true,
           preview: true,
           requiresConfirmation: true,
-          token: {
-            id: token.id,
-            slug: token.slug,
-            title: token.title,
-            display_title: getDisplayTitle(token),
-          },
+          tokenCount: tokens.length,
+          tokens: tokens.map((t) => ({
+            id: t.id,
+            slug: t.slug,
+            title: t.title,
+          })),
+          fingerprint,
           impact,
         });
         return;
       }
 
-      const result = await deleteToken(db, opts.slug);
+      if (typeof opts.expect !== "string") {
+        jsonError("--expect <fingerprint> from the preview is required");
+      }
+      if (opts.expect !== fingerprint) {
+        jsonError("The area changed since the preview; preview it again");
+      }
+
+      // One transaction: either the whole area goes, or nothing does.
+      const result = await deleteTokens(
+        db,
+        tokens.map((t) => t.slug),
+      );
       jsonOut({
         success: true,
-        deletedToken: {
-          id: result.token.id,
-          slug: result.token.slug,
-        },
+        deletedCount: result.tokens.length,
+        deletedTokens: result.tokens.map((t) => ({ id: t.id, slug: t.slug })),
         impact: result.impact,
       });
     });

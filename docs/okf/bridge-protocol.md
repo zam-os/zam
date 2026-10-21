@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-19T16:00:00.000Z
+timestamp: 2026-10-21T16:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -104,6 +104,12 @@ explicit `cosmetic` or `material` classification). The destructive pair
 `personal-card-remove` / `personal-card-delete` uses a preview→confirm
 handshake: without `--confirm` it returns an impact preview (affected cards,
 review logs, session steps, agent skills); with `--confirm` it executes.
+`personal-card-delete` deletes one token (`--slug`) or a whole area: an atlas
+region (`--region`, with `--lens`), an atlas unit (`--unit`), an unchosen
+source group (`--group`) or a domain (`--domain`). An area preview also
+returns a `fingerprint` of its token set; the confirm must pass it back as
+`--expect`, is refused when the area changed since the preview, and deletes
+the whole set in one transaction or nothing.
 Assignment create, withdraw, and list commands use the same JSON-only surface;
 `create-assignment` writes the assignment row only — the assignee's card is
 created and bound by the assignee's own next queue build (see

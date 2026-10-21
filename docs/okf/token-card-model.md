@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-21T15:01:51.000Z
+timestamp: 2026-10-21T16:00:00.000Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -124,7 +124,9 @@ exists. On the shared team library this is what row-level security demands
 follows the same rule.
 Removing a card (`personal-card-remove`) clears that user's learning state
 and history but leaves the shared token untouched; deleting a token
-(`personal-card-delete`) removes the concept for everyone.
+(`personal-card-delete`) removes the concept for everyone. The same command
+deletes every token of an area at once (a torn-down project, old
+experiments), in one transaction.
 
 Supporting tables: `imported_card_bindings` (stable file-import identity and
 provenance), `prerequisites` (directed dependency edges between tokens),

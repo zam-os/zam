@@ -238,7 +238,12 @@ export const STUDIO_BRIDGE_COMMANDS: Readonly<
   "library-topics-list": { why: "Reads library topics." },
   "library-topic-start": { why: "Writes only the caller's own cards." },
   "personal-card-remove": { why: "Removes the caller's own card." },
-  "personal-card-delete": { why: "Deletes the caller's own card." },
+  // A hard delete for every learner: one token, or every token of an area
+  // (a torn-down project, old experiments). It reaches only learning state,
+  // and an area confirm must name the fingerprint its preview returned.
+  "personal-card-delete": {
+    why: "Hard-deletes shared tokens and their learning state for every learner, one token or one area, only after a preview; reaches nothing outside the library.",
+  },
   "get-neighborhood": { why: "Reads the learning graph." },
   "list-knowledge-contexts": { why: "Reads knowledge contexts." },
   "get-active-knowledge-context": { why: "Reads a learning preference." },
