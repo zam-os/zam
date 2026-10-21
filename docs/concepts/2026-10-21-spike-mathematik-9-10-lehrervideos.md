@@ -55,7 +55,7 @@ Die 29 Lektionen der ZAM Academy Zelle `zam-academy:mathematik-realschule-9` ([`
 | `lg-1-lineare-gleichung` | Lineare Gleichungen & Punktprobe | Punktprobe bei linearer Funktion (Daniel Jung) | `https://www.youtube.com/watch?v=NtbtAwGJpvs` |
 | `lg-2-gleichsetzen` | Gleichsetzungsverfahren | Gleichsetzungsverfahren Schritt für Schritt (Daniel Jung) | `https://www.youtube.com/watch?v=6BuVmbuxZco` |
 | `lg-3-additionsverfahren` | Additionsverfahren | Additionsverfahren Lineare Gleichungssysteme (Daniel Jung) | `https://www.youtube.com/watch?v=T08IjF7OPf4` |
-| `lg-4-loesungsfaelle` | Lösungsfälle (eindeutig, keine, $\infty$) | LGS zeichnerisch lösen (Schnittpunkt, parallel, identisch) (Daniel Jung) | `https://www.youtube.com/watch?v=SO0VTahpRnk` |
+| `lg-4-loesungsfaelle` | Lösungsfälle (eindeutig, keine, $\infty$) | LGS: eine, keine und unendlich viele Lösungen (Merksatz) | `https://www.youtube.com/watch?v=PAQLNReiI1w` |
 | `lg-5-textaufgaben` | Textaufgaben mit LGS | Lineare Gleichungssysteme Textaufgaben aufstellen (Daniel Jung) | `https://www.youtube.com/watch?v=qo8YmW2pc-E` |
 
 ### Etappe 4: Quadratische Funktionen & Gleichungen
