@@ -1272,7 +1272,21 @@ function membersToolbar(key: string): HTMLElement {
   if (key) {
     bar.append(startTopicButton(key));
   }
+  bar.append(deleteGroupButton(key));
   return bar;
+}
+
+function deleteGroupButton(key: string): HTMLButtonElement {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "btn secondary-btn btn-sm danger-btn";
+  button.textContent = t("content_group_delete");
+  button.title = t("content_group_delete");
+  button.addEventListener("click", (event) => {
+    event.stopPropagation();
+    void handleDeleteGroup(key);
+  });
+  return button;
 }
 
 function startTopicButton(key: string): HTMLButtonElement {
@@ -1297,6 +1311,7 @@ function groupRow(group: UnchosenGroupRow): HTMLElement {
   name.textContent = unchosenGroupLabel(group);
   header.append(name);
   if (group.key) header.append(startTopicButton(group.key));
+  header.append(deleteGroupButton(group.key));
   const meta = document.createElement("div");
   meta.className = "content-list-item-meta";
   const domain = document.createElement("span");
@@ -2065,6 +2080,76 @@ async function handleDeleteToken(card: PersonalCard): Promise<void> {
     }
   } catch (err) {
     console.error("Failed to fetch token delete preview", err);
+    alert(err instanceof Error ? err.message : String(err));
+  }
+}
+
+async function handleDeleteGroup(key: string): Promise<void> {
+  try {
+    const group = unchosenGroups.find((item) => item.key === key);
+    const groupName =
+      (group ? unchosenGroupLabel(group) : key) || t("lbl_no_source_group");
+    // Fetch group delete preview
+    const preview = await runBridge<{
+      success: boolean;
+      tokenCount: number;
+      impact: {
+        cards: number;
+        review_logs: number;
+        session_steps: number;
+        agent_skills: number;
+      };
+    }>("personal-card-delete", ["--group", key]);
+
+    if (!preview || !preview.success || preview.tokenCount === 0) {
+      alert(t("atlas_delete_region_empty"));
+      return;
+    }
+
+    modalTitle.textContent = tf("atlas_confirm_delete_region_title", {
+      name: groupName,
+    });
+    modalDesc.textContent = tf("content_group_delete_desc", {
+      count: String(preview.tokenCount),
+    });
+
+    modalImpactContainer.classList.remove("hidden");
+    modalImpactList.innerHTML = `
+      <li>• ${tf("lbl_impact_tokens", { count: preview.tokenCount })}</li>
+      <li>• ${tf("lbl_impact_cards", { count: preview.impact.cards })}</li>
+      <li>• ${tf("lbl_impact_reviews", { count: preview.impact.review_logs })}</li>
+      <li>• ${tf("lbl_impact_steps", { count: preview.impact.session_steps })}</li>
+      <li>• ${tf("lbl_impact_skills", { count: preview.impact.agent_skills })}</li>
+    `;
+
+    modalDeleteChoice.classList.add("hidden");
+
+    pendingConfirmCallback = async () => {
+      try {
+        const delRes = await runBridge<{
+          success: boolean;
+          deletedCount: number;
+        }>("personal-card-delete", ["--group", key, "--confirm"]);
+        if (delRes.success) {
+          alert(
+            tf("atlas_region_deleted_toast", {
+              count: String(delRes.deletedCount),
+            }),
+          );
+          selectedCard = null;
+          openUnchosenKey = null;
+          await loadStudioData();
+          cancelEdit();
+        }
+      } catch (err) {
+        alert(err instanceof Error ? err.message : String(err));
+      }
+    };
+
+    pendingHardDeleteCallback = null;
+    modalOverlay.classList.add("active");
+  } catch (err) {
+    console.error("Failed to fetch group delete preview", err);
     alert(err instanceof Error ? err.message : String(err));
   }
 }

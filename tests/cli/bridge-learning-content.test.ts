@@ -169,6 +169,67 @@ describe("zam bridge learning-content lists", () => {
     expect(groups.groups).toEqual([]);
   });
 
+  it("deletes an entire unchosen group via personal-card-delete --group", () => {
+    const preview = runCliJson([
+      "bridge",
+      "personal-card-delete",
+      "--group",
+      "",
+    ]);
+    expect(preview.success).toBe(true);
+    expect(preview.preview).toBe(true);
+    expect(preview.tokenCount).toBe(1);
+    expect(preview.tokens[0].slug).toBe("loose");
+    expect(preview.impact.cards).toBe(0);
+
+    const deleted = runCliJson([
+      "bridge",
+      "personal-card-delete",
+      "--group",
+      "",
+      "--confirm",
+    ]);
+    expect(deleted.success).toBe(true);
+    expect(deleted.deletedCount).toBe(1);
+    expect(deleted.deletedTokens[0].slug).toBe("loose");
+
+    const groups = runCliJson(["bridge", "unchosen-groups"]);
+    expect(groups.groups).toEqual([]);
+  });
+
+  it("deletes an atlas unit via personal-card-delete --unit", () => {
+    const list = runCliJson(["bridge", "personal-card-list"]);
+    const held = list.cards.find((c: { slug: string }) => c.slug === "held");
+    expect(held).toBeDefined();
+
+    const preview = runCliJson([
+      "bridge",
+      "personal-card-delete",
+      "--unit",
+      `token:${held.tokenId}`,
+    ]);
+    expect(preview.success).toBe(true);
+    expect(preview.preview).toBe(true);
+    expect(preview.tokenCount).toBe(1);
+    expect(preview.tokens[0].slug).toBe("held");
+    expect(preview.impact.cards).toBe(1);
+
+    const deleted = runCliJson([
+      "bridge",
+      "personal-card-delete",
+      "--unit",
+      `token:${held.tokenId}`,
+      "--confirm",
+    ]);
+    expect(deleted.success).toBe(true);
+    expect(deleted.deletedCount).toBe(1);
+
+    const after = runCliJson(["bridge", "personal-card-list"]);
+    expect(
+      after.cards.map((c: { slug: string }) => c.slug),
+    ).not.toContain("held");
+  });
+
   it("deletes an unpublished draft token via personal-card-delete", () => {
     const preview = runCliJson([
       "bridge",
