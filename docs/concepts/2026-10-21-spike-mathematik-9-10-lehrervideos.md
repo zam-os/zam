@@ -30,53 +30,53 @@ In seinem Vortrag beschreibt Daniel Jung die veränderte Rolle des Erklärvideos
 Die 29 Lektionen der ZAM Academy Zelle `zam-academy:mathematik-realschule-9` ([`tests/fixtures/curriculum/zam-academy-mathematik-realschule-9-kvt.json`](file:///Users/thomas/.gemini/antigravity/worktrees/zam/analyze_talk_improve_zam/tests/fixtures/curriculum/zam-academy-mathematik-realschule-9-kvt.json)) verknüpft mit den exakten Erklärvideos von Daniel Jung:
 
 ### Etappe 1: Rechtwinklige Dreiecke & Trigonometrie
-| Lektions-ID | Thema | Daniel-Jung-Erklärvideo | Direktlink |
+| Lektions-ID | Thema | Erklärvideo & Urheber | Direktlink |
 |---|---|---|---|
-| `rd-1-pythagoras` | Satz des Pythagoras ($a^2 + b^2 = c^2$) | Satz des Pythagoras im rechtwinkligen Dreieck | `https://www.youtube.com/watch?v=cIzM2XBduuY` |
-| `rd-2-umkehrung` | Kehrsatz des Pythagoras | Kehrsatz Satz des Pythagoras prüfen | `https://www.youtube.com/watch?v=XZr9f38NwDo` |
-| `rd-3-hoehe-kathetensatz` | Höhensatz & Kathetensatz (Euklid) | Höhensatz und Kathetensatz des Euklid | `https://www.youtube.com/watch?v=ujUCsWMjH9Y` |
-| `rd-4-sinus-kosinus` | Sinus & Kosinus im rechtwinkligen Dreieck | Sinus, Kosinus im rechtwinkligen Dreieck | `https://www.youtube.com/watch?v=TljGSjLKvqA` |
-| `rd-5-tangens` | Tangens (Gegenkathete / Ankathete) | Tangens im rechtwinkligen Dreieck berechnen | `https://www.youtube.com/watch?v=TljGSjLKvqA` |
-| `rd-6-besondere-winkel` | Besondere Winkel ($30^\circ, 45^\circ, 60^\circ$) | Trigonometrie besondere Winkel ohne Taschenrechner | `https://www.youtube.com/watch?v=N4evtJU-h9w` |
+| `rd-1-pythagoras` | Satz des Pythagoras ($a^2 + b^2 = c^2$) | Satz des Pythagoras für rechtwinklige Dreiecke (Daniel Jung) | `https://www.youtube.com/watch?v=cIzM2XBduuY` |
+| `rd-2-umkehrung` | Kehrsatz des Pythagoras | Umkehrung des Satzes des Pythagoras (Cornelsen Verlag) | `https://www.youtube.com/watch?v=AoV_uEr3ldU` |
+| `rd-3-hoehe-kathetensatz` | Höhensatz & Kathetensatz (Euklid) | Höhensatz und Kathetensatz des Euklid (Daniel Jung) | `https://www.youtube.com/watch?v=ujUCsWMjH9Y` |
+| `rd-4-sinus-kosinus` | Sinus & Kosinus im rechtwinkligen Dreieck | Sinus, Kosinus im rechtwinkligen Dreieck (Daniel Jung) | `https://www.youtube.com/watch?v=TljGSjLKvqA` |
+| `rd-5-tangens` | Tangens (Gegenkathete / Ankathete) | Tangens im rechtwinkligen Dreieck berechnen (Daniel Jung) | `https://www.youtube.com/watch?v=TljGSjLKvqA` |
+| `rd-6-besondere-winkel` | Besondere Winkel & $\sin^2\alpha + \cos^2\alpha = 1$ | $\sin^2\alpha + \cos^2\alpha = 1$ am Einheitskreis mit Pythagoras (Daniel Jung) | `https://www.youtube.com/watch?v=U0fRSsrWRII` |
 
 ### Etappe 2: Kreis & Raumgeometrie
-| Lektions-ID | Thema | Daniel-Jung-Erklärvideo | Direktlink |
+| Lektions-ID | Thema | Erklärvideo & Urheber | Direktlink |
 |---|---|---|---|
-| `kr-1-kreiszahl` | Kreisumfang und Kreiszahl $\pi$ | Kreisumfang berechnen, Kreiszahl Pi | `https://www.youtube.com/watch?v=eASZX0ocAc8` |
-| `kr-2-kreisflaeche` | Kreisfläche ($A = \pi r^2$) | Flächeninhalt Kreis berechnen | `https://www.youtube.com/watch?v=LyZaNUNkNQI` |
-| `kr-3-sektor` | Kreissektor & Bogenlänge | Kreissektor und Bogenlänge berechnen | `https://www.youtube.com/watch?v=lxD29WFIxlM` |
-| `rg-1-zylinder` | Zylinder (Volumen & Oberfläche) | Zylinder, Kegel, Kugel Körperberechnungen | `https://www.youtube.com/watch?v=ZcHfje2Ojo8` |
-| `rg-2-kegel-pyramide` | Kegel und Pyramide | Pyramide Volumen, Oberfläche, Höhe | `https://www.youtube.com/watch?v=0U6DsUbkNqE` |
-| `rg-3-kugel` | Kugel (Volumen & Oberfläche) | Kugel Volumen und Oberflächeninhalt | `https://www.youtube.com/watch?v=ZcHfje2Ojo8` |
+| `kr-1-kreiszahl` | Kreisumfang und Kreiszahl $\pi$ | Kreis - Umfang und Flächeninhalt berechnen (Lehrerschmidt) | `https://www.youtube.com/watch?v=eASZX0ocAc8` |
+| `kr-2-kreisflaeche` | Kreisfläche ($A = \pi r^2$) | Flächeninhalt Kreis berechnen (Daniel Jung) | `https://www.youtube.com/watch?v=LyZaNUNkNQI` |
+| `kr-3-sektor` | Kreissektor & Bogenlänge | Kreissektor und Bogenlänge berechnen (Daniel Jung) | `https://www.youtube.com/watch?v=lxD29WFIxlM` |
+| `rg-1-zylinder` | Zylinder (Volumen & Oberfläche) | Zylinder, Kegel, Kugel Körperberechnungen (Daniel Jung) | `https://www.youtube.com/watch?v=ZcHfje2Ojo8` |
+| `rg-2-kegel-pyramide` | Kegel und Pyramide | Kegel - Oberfläche und Mantellinie berechnen (Lehrerschmidt) | `https://www.youtube.com/watch?v=7KDWxSPxeJ8` |
+| `rg-3-kugel` | Kugel (Volumen & Oberfläche) | Kugel Volumen und Oberflächeninhalt (Daniel Jung) | `https://www.youtube.com/watch?v=ZcHfje2Ojo8` |
 
 ### Etappe 3: Systeme linearer Gleichungen (LGS)
-| Lektions-ID | Thema | Daniel-Jung-Erklärvideo | Direktlink |
+| Lektions-ID | Thema | Erklärvideo & Urheber | Direktlink |
 |---|---|---|---|
-| `lg-1-lineare-gleichung` | Lineare Gleichungen & grafische Lösung | Lineare Gleichungssysteme Einführung | `https://www.youtube.com/watch?v=nWkuF4LH_6o` |
-| `lg-2-gleichsetzen` | Gleichsetzungsverfahren | Gleichsetzungsverfahren Schritt für Schritt | `https://www.youtube.com/watch?v=6BuVmbuxZco` |
-| `lg-3-additionsverfahren` | Additionsverfahren | Additionsverfahren Lineare Gleichungssysteme | `https://www.youtube.com/watch?v=T08IjF7OPf4` |
-| `lg-4-loesungsfaelle` | Lösungsfälle (eindeutig, keine, $\infty$) | LGS Lösungsfälle (keine, unendlich viele Lösungen) | `https://www.youtube.com/watch?v=nWkuF4LH_6o` |
-| `lg-5-textaufgaben` | Textaufgaben mit LGS | Lineare Gleichungssysteme Textaufgaben aufstellen | `https://www.youtube.com/watch?v=qo8YmW2pc-E` |
+| `lg-1-lineare-gleichung` | Lineare Gleichungen & Punktprobe | Punktprobe bei linearer Funktion (Daniel Jung) | `https://www.youtube.com/watch?v=NtbtAwGJpvs` |
+| `lg-2-gleichsetzen` | Gleichsetzungsverfahren | Gleichsetzungsverfahren Schritt für Schritt (Daniel Jung) | `https://www.youtube.com/watch?v=6BuVmbuxZco` |
+| `lg-3-additionsverfahren` | Additionsverfahren | Additionsverfahren Lineare Gleichungssysteme (Daniel Jung) | `https://www.youtube.com/watch?v=T08IjF7OPf4` |
+| `lg-4-loesungsfaelle` | Lösungsfälle (eindeutig, keine, $\infty$) | LGS zeichnerisch lösen (Schnittpunkt, parallel, identisch) (Daniel Jung) | `https://www.youtube.com/watch?v=SO0VTahpRnk` |
+| `lg-5-textaufgaben` | Textaufgaben mit LGS | Lineare Gleichungssysteme Textaufgaben aufstellen (Daniel Jung) | `https://www.youtube.com/watch?v=qo8YmW2pc-E` |
 
 ### Etappe 4: Quadratische Funktionen & Gleichungen
-| Lektions-ID | Thema | Daniel-Jung-Erklärvideo | Direktlink |
+| Lektions-ID | Thema | Erklärvideo & Urheber | Direktlink |
 |---|---|---|---|
-| `qf-1-scheitelform` | Scheitelpunktform ($f(x) = a(x-d)^2 + e$) | Scheitelpunktform quadratische Funktionen | `https://www.youtube.com/watch?v=HDI1kYOIldI` |
-| `qf-2-streckfaktor` | Streckfaktor & Form von Parabeln | Parabel strecken, stauchen, spiegeln | `https://www.youtube.com/watch?v=KEuNUgIiIyI` |
-| `qf-3-quadratische-ergaenzung` | Quadratische Ergänzung | Quadratische Ergänzung Schritt für Schritt | `https://www.youtube.com/watch?v=JLADCKXbeNE` |
-| `qf-4-loesungsformel` | Mitternachtsformel / pq-Formel | Mitternachtsformel (abc-Formel) lösen | `https://www.youtube.com/watch?v=ukEXR0DKMQg` |
-| `qf-5-linearfaktoren` | Linearfaktorzerlegung | Linearfaktorzerlegung Parabel Nullstellen | `https://www.youtube.com/watch?v=wRc6AtV7HmY` |
-| `qf-6-parabel-gerade` | Schnitt Parabel und Gerade | Schnittpunkt Parabel und Gerade berechnen | `https://www.youtube.com/watch?v=o0-FLLT0Heo` |
-| `qf-7-extremwerte` | Extremwertprobleme mit Parabeln | Extremwertaufgaben quadratische Funktionen | `https://www.youtube.com/watch?v=JQPJK2Bvz60` |
+| `qf-1-scheitelform` | Scheitelpunktform ($f(x) = a(x-d)^2 + e$) | Scheitelpunktform quadratischer Funktionen erkennen (Daniel Jung) | `https://www.youtube.com/watch?v=i2WDgLldlJc` |
+| `qf-2-streckfaktor` | Streckfaktor & Form von Parabeln | Parabel strecken, stauchen, spiegeln (Daniel Jung) | `https://www.youtube.com/watch?v=KEuNUgIiIyI` |
+| `qf-3-quadratische-ergaenzung` | Quadratische Ergänzung | Quadratische Ergänzung Schritt für Schritt (Daniel Jung) | `https://www.youtube.com/watch?v=JLADCKXbeNE` |
+| `qf-4-loesungsformel` | Mitternachtsformel / pq-Formel | Mitternachtsformel (abc-Formel) lösen (Daniel Jung) | `https://www.youtube.com/watch?v=ukEXR0DKMQg` |
+| `qf-5-linearfaktoren` | Linearfaktorzerlegung | Linearfaktorzerlegung Parabel Nullstellen (Daniel Jung) | `https://www.youtube.com/watch?v=wRc6AtV7HmY` |
+| `qf-6-parabel-gerade` | Schnitt Parabel und Gerade | Schnittpunkt Parabel und Gerade berechnen (Lehrerschmidt) | `https://www.youtube.com/watch?v=T7wnzYyfc1o` |
+| `qf-7-extremwerte` | Extremwertprobleme ohne Ableitung | Extremwertproblem ohne Ableitung lösen (Daniel Jung) | `https://www.youtube.com/watch?v=G-Y_z65qvnM` |
 
 ### Etappe 5: Daten & Zufall (Stochastik)
-| Lektions-ID | Thema | Daniel-Jung-Erklärvideo | Direktlink |
+| Lektions-ID | Thema | Erklärvideo & Urheber | Direktlink |
 |---|---|---|---|
-| `dz-1-baumdiagramm` | Baumdiagramm & Pfadregeln | Baumdiagramm und Pfadregeln Stochastik | `https://www.youtube.com/watch?v=7B0rKLTUPZ0` |
-| `dz-2-gegenereignis` | Gegenereignis ($P(\bar{E}) = 1 - P(E)$) | Gegenwahrscheinlichkeit Gegenereignis berechnen | `https://www.youtube.com/watch?v=nR7hFCRgp1g` |
-| `dz-3-vierfeldertafel` | Vierfeldertafel | Vierfeldertafel Wahrscheinlichkeitsrechnung | `https://www.youtube.com/watch?v=xslCG8xjGjI` |
-| `dz-4-kenngroessen` | Arithmetisches Mittel, Median & Quartile | Mittelwert, Median und Quartile berechnen | `https://www.youtube.com/watch?v=OM90fGYTj_w` |
-| `dz-5-boxplot` | Boxplot (Fünf-Punkte-Zusammenfassung) | Boxplot zeichnen und verstehen | `https://www.youtube.com/watch?v=HbHoRjIHOTE` |
+| `dz-1-baumdiagramm` | Baumdiagramm & Pfadregeln | Baumdiagramm und Pfadregeln Stochastik (Daniel Jung) | `https://www.youtube.com/watch?v=7B0rKLTUPZ0` |
+| `dz-2-gegenereignis` | Gegenereignis ($P(\bar{E}) = 1 - P(E)$) | Gegenwahrscheinlichkeit Gegenereignis berechnen (Daniel Jung) | `https://www.youtube.com/watch?v=nR7hFCRgp1g` |
+| `dz-3-vierfeldertafel` | Vierfeldertafel | Vierfeldertafel Wahrscheinlichkeitsrechnung (Daniel Jung) | `https://www.youtube.com/watch?v=xslCG8xjGjI` |
+| `dz-4-kenngroessen` | Arithmetisches Mittel & Median | Mittelwert und Median berechnen (Daniel Jung) | `https://www.youtube.com/watch?v=OM90fGYTj_w` |
+| `dz-5-boxplot` | Boxplot (Fünf-Punkte-Zusammenfassung) | Boxplot zeichnen und verstehen (Daniel Jung) | `https://www.youtube.com/watch?v=HbHoRjIHOTE` |
 
 ---
 
