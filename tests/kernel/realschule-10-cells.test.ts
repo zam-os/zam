@@ -16,14 +16,13 @@ import {
 } from "../../src/kernel/index.js";
 
 // The evolution cell moved to the ZAM Academy cell
-// zam-academy:biologie-realschule-10 (zam-os/zam-academy#16), whose items
-// replace or retire it explicitly. See
-// tests/kernel/zam-academy-biologie-realschule-10-cell.test.ts.
+// zam-academy:biologie-realschule-10 (zam-os/zam-academy#16), and the two
+// physics cells to zam-academy:physik-realschule-10 (#17). Their items
+// replace or retire the old ones explicitly. See
+// tests/kernel/zam-academy-*-realschule-10-cell.test.ts.
 const RS10_CELL_IDS = [
   "de-by:realschule-10-mathematik-ebene-vektorgeometrie",
   "de-by:realschule-10-mathematik-exponential-logarithmus",
-  "de-by:realschule-10-physik-kernphysik-strahlung",
-  "de-by:realschule-10-physik-induktion-wechselstrom",
   "de-by:realschule-10-chemie-organik-kohlenwasserstoffe",
   "de-by:realschule-10-chemie-saeuren-basen-neutralisation",
   "de-by:realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse",
@@ -32,7 +31,10 @@ const RS10_CELL_IDS = [
   "de-by:realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel",
   "de-by:realschule-10-englisch-abschlusspruefung-text-production-mediation",
 ];
-const ACADEMY_RS10_IDS = ["zam-academy:biologie-realschule-10"];
+const ACADEMY_RS10_IDS = [
+  "zam-academy:biologie-realschule-10",
+  "zam-academy:physik-realschule-10",
+];
 
 describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
   let tempDir: string;
@@ -50,7 +52,7 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists the 11 Realschule 10 school cells and their Academy successor", () => {
+  it("lists the 9 Realschule 10 school cells and their Academy successors", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(100);
 
@@ -112,7 +114,7 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
     expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
   });
 
-  it("supports simultaneous co-enrolment in the 11 Grade 10 school cells without conflict", async () => {
+  it("supports simultaneous co-enrolment in the 9 Grade 10 school cells without conflict", async () => {
     const user = "complete-rs10-candidate";
 
     let totalCards = 0;
@@ -122,12 +124,12 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
       totalCards += res.cardsCreated;
     }
 
-    // 6 cells * 8 + 5 cells * 4 = 48 + 20 = 68 cards
-    expect(totalCards).toBe(68);
+    // 4 cells * 8 + 5 cells * 4 = 32 + 20 = 52 cards
+    expect(totalCards).toBe(52);
 
     const cards = (await db
       .prepare(`SELECT COUNT(*) as count FROM cards WHERE user_id = ?`)
       .get(user)) as { count: number };
-    expect(cards.count).toBe(68);
+    expect(cards.count).toBe(52);
   });
 });

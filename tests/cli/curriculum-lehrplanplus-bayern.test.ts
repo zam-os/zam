@@ -278,6 +278,46 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     });
   });
 
+  it("offers Physik 10 with both Wahlpflichtfächergruppen and four areas each", () => {
+    expect(provider.listTracks("realschule", "10", "physik")).toEqual([
+      {
+        id: "wpfg1",
+        label: "Physik 10 (I)",
+        description: expect.stringContaining("Wahlpflichtfächergruppe I"),
+      },
+      {
+        id: "wpfg2-3",
+        label: "Physik 10 (II/III)",
+        description: expect.stringContaining(
+          "Wahlpflichtfächergruppen II und III",
+        ),
+      },
+    ]);
+    const hours = { wpfg1: [17, 29, 14, 12], "wpfg2-3": [10, 19, 7, 12] };
+    for (const [track, expected] of Object.entries(hours)) {
+      const topics = provider.listTopics({
+        schoolType: "realschule",
+        grade: "10",
+        subject: "physik",
+        track,
+      });
+      expect(
+        topics.map((topic) => [topic.id, topic.label, topic.hours]),
+      ).toEqual([
+        ["lb1", "Mechanik", expected[0]],
+        ["lb2", "Elektrizitätslehre", expected[1]],
+        ["lb3", "Atom- und Kernphysik", expected[2]],
+        ["lb4", "Energieversorgung", expected[3]],
+      ]);
+      for (const topic of topics)
+        expect(provider.resolveTopic(topic)).toEqual({
+          provider: "lehrplanplus-bayern",
+          topicId: `realschule|10|physik|${track}#${topic.id}`,
+          uri: `https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/physik/${track}`,
+        });
+    }
+  });
+
   it("lists the eight Lernbereiche of Mathematik 9 (I)", () => {
     const topics = provider.listTopics({
       schoolType: "realschule",
