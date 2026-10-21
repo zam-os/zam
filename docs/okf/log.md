@@ -3,6 +3,7 @@
 ## 2026-10-21
 
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [Standalone Mobile Libraries](mobile-standalone-libraries.md)
 - **Update** — [Token and Card Model](token-card-model.md)
 
 ## 2026-10-20

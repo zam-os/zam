@@ -1,5 +1,11 @@
 [
   {
+    "id": "zam-academy:algorithmen",
+    "version": "2026.10.1",
+    "sha256": "86ae162e934ab274f8c854a9e1692ac5a8d0d7a9c899e20f95e35f3874193692",
+    "file": "zam-academy-algorithmen-kvt.json"
+  },
+  {
     "id": "zam-academy:biologie-realschule-10",
     "version": "2026.10.1",
     "sha256": "dcf31bd2581a85ec5f874df3551bac43c5911ee91b0f4a517b65271af505da02",
@@ -10,6 +16,12 @@
     "version": "2026.10.2",
     "sha256": "6928b3f13d853c3208f83779d5c962eb66727dd99d66b69b986a4f06e6c94c78",
     "file": "zam-academy-chemie-realschule-9-kvt.json"
+  },
+  {
+    "id": "zam-academy:datennetze",
+    "version": "2026.10.1",
+    "sha256": "b9d845dcb1eb1ac5ae005b12f1fcd70dbebd32eaba1d33914224878ac4100ed1",
+    "file": "zam-academy-datennetze-kvt.json"
   },
   {
     "id": "zam-academy:geographie-realschule-9",

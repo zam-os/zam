@@ -10,7 +10,7 @@ tags:
   - offline
   - curriculum
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mobile-standalone-libraries.md"
-timestamp: 2026-10-15T08:00:00.000Z
+timestamp: 2026-10-21T15:49:57.000Z
 ---
 
 ZAM Mobile is a standalone learning app on Android and iOS. An unpaired first
@@ -48,10 +48,15 @@ fork into Android or iOS implementations.
 Mobile navigates the same provider registry and manifests as Desktop: country
 or region, school type, grade, subject, optional track, then topic. A completed
 position is resolved against bundled-cell curriculum scopes before any generic
-import is offered. When one or more reviewed cells cover the position, those
-cells are the only curriculum offer. Only a position with no covering cell
-falls back to its provider's topic list. This implements the cell-precedence
-rule at the surface instead of asking a learner to understand the distinction.
+import is offered. Every fitting reviewed cell is offered first. When a cell
+binds the position's grade, the cells are the only curriculum offer. A cell
+that fits only through grade-less module bindings, such as an IT module the
+school may teach in any year, covers the grade in part, so the provider's
+topic list follows below the cells. A position with no covering cell falls
+back to the topic list alone. Mobile takes this verdict from
+`needsGenericCurriculumImport`, as Desktop does. This implements the
+cell-precedence rule at the surface instead of asking a learner to understand
+the distinction.
 
 The ordinary Library screen shows active learning paths and one guided
 curriculum action; it does not render the whole bundled catalog. Cell status is

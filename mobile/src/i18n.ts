@@ -60,6 +60,8 @@ const DE: Messages = {
   curriculum_fallback_title: "Lehrplanthema importieren",
   curriculum_fallback_body:
     "Für diese Position gibt es noch keinen fertigen Lernpfad. Wähle einen Lernbereich.",
+  curriculum_partial_body:
+    "Die Lernpfade oben decken nur einen Teil dieser Position ab. Für den übrigen Stoff wähle einen Lernbereich.",
   curriculum_topic_unavailable: "Quelle noch nicht geprüft",
   curriculum_loading: "Lehrplan wird geladen…",
   curriculum_generating:
@@ -710,6 +712,8 @@ const EN: Messages = {
   curriculum_fallback_title: "Import a curriculum topic",
   curriculum_fallback_body:
     "There is no ready-made learning path for this position yet. Choose a curriculum topic.",
+  curriculum_partial_body:
+    "The learning paths above cover only part of this position. For everything else, choose a curriculum topic.",
   curriculum_topic_unavailable: "Source not reviewed yet",
   curriculum_loading: "Loading curriculum…",
   curriculum_generating: "Checking the source and preparing card drafts…",
