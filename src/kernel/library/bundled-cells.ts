@@ -16,7 +16,7 @@ export interface BundledTile extends KvtTile {
 }
 
 // --- begin bundled-tile-imports ---
-// --- Fixture Imports (221 tiles) ---
+// --- Fixture Imports (219 tiles) ---
 import tile1Raw from "../../../tests/fixtures/curriculum/de-by-bos-10-optik-kvt.json" with {
   type: "json",
 };
@@ -593,12 +593,6 @@ import tile203Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-ph
 import tile204Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-wirtschaft-recht-konsum-geld-jugend-kvt.json" with {
   type: "json",
 };
-import tile205Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-biologie-genetik-vererbung-kvt.json" with {
-  type: "json",
-};
-import tile206Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-biologie-nervensystem-sinne-kvt.json" with {
-  type: "json",
-};
 import tile207Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer-kvt.json" with {
   type: "json",
 };
@@ -615,9 +609,6 @@ import tile215Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-in
   type: "json",
 };
 import tile226Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-wirtschaft-recht-markt-vertraege-kvt.json" with {
-  type: "json",
-};
-import tile140Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-biologie-evolution-abstammung-kvt.json" with {
   type: "json",
 };
 import tile141Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse-kvt.json" with {
@@ -657,6 +648,9 @@ import tile227Raw from "../../../tests/fixtures/curriculum/de-by-realschule-opti
   type: "json",
 };
 import tile228Raw from "../../../tests/fixtures/curriculum/de-by-realschule-optik-kvt.json" with {
+  type: "json",
+};
+import tile236Raw from "../../../tests/fixtures/curriculum/zam-academy-biologie-realschule-10-kvt.json" with {
   type: "json",
 };
 import tile233Raw from "../../../tests/fixtures/curriculum/zam-academy-chemie-realschule-9-kvt.json" with {
@@ -1048,8 +1042,6 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile138Raw as unknown as BundledTile,
   [(tile139Raw as unknown as BundledTile).tile_id]:
     tile139Raw as unknown as BundledTile,
-  [(tile140Raw as unknown as BundledTile).tile_id]:
-    tile140Raw as unknown as BundledTile,
   [(tile141Raw as unknown as BundledTile).tile_id]:
     tile141Raw as unknown as BundledTile,
   [(tile142Raw as unknown as BundledTile).tile_id]:
@@ -1178,10 +1170,6 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile203Raw as unknown as BundledTile,
   [(tile204Raw as unknown as BundledTile).tile_id]:
     tile204Raw as unknown as BundledTile,
-  [(tile205Raw as unknown as BundledTile).tile_id]:
-    tile205Raw as unknown as BundledTile,
-  [(tile206Raw as unknown as BundledTile).tile_id]:
-    tile206Raw as unknown as BundledTile,
   [(tile207Raw as unknown as BundledTile).tile_id]:
     tile207Raw as unknown as BundledTile,
   [(tile210Raw as unknown as BundledTile).tile_id]:
@@ -1212,6 +1200,8 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile234Raw as unknown as BundledTile,
   [(tile235Raw as unknown as BundledTile).tile_id]:
     tile235Raw as unknown as BundledTile,
+  [(tile236Raw as unknown as BundledTile).tile_id]:
+    tile236Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 
