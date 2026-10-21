@@ -87,6 +87,38 @@ describe("mobile cell precedence", () => {
     expect(position.topics.length).toBeGreaterThan(0);
   });
 
+  it("shows module cells and keeps the topic list where they cover a grade only in part", async () => {
+    const it = (grade: string): MobileCurriculumState => ({
+      country: "DE",
+      providerId: "lehrplanplus-bayern",
+      schoolType: "realschule",
+      grade,
+      subject: "it",
+    });
+    const modules = ["zam-academy:algorithmen", "zam-academy:datennetze"];
+    for (const grade of ["5", "10"]) {
+      const position = await resolveMobileCurriculumPosition(
+        db,
+        "student-it",
+        it(grade),
+      );
+      expect(position.needsGenericImport, `grade ${grade}`).toBe(true);
+      expect(position.cells.map((cell) => cell.id)).toEqual(
+        expect.arrayContaining(modules),
+      );
+      expect(position.topics.length).toBeGreaterThan(0);
+    }
+    const nine = await resolveMobileCurriculumPosition(
+      db,
+      "student-it",
+      it("9"),
+    );
+    expect(nine.needsGenericImport).toBe(false);
+    expect(nine.cells.map((cell) => cell.id)).toEqual(
+      expect.arrayContaining([...modules, "zam-academy:sql"]),
+    );
+  });
+
   it("strictly extracts a topic and turns model output into editable drafts", async () => {
     await connectCloudModel(db, "test-key", {
       verify: async () => ({ valid: true }),

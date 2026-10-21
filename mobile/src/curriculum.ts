@@ -25,6 +25,7 @@ import {
   type BundledCellStatus,
   findBundledCellsForScope,
   getBundledCellsWithStatus,
+  needsGenericCurriculumImport,
 } from "../../src/kernel/library/bundled-cells.js";
 import { cardShapeRuleLines } from "../../src/kernel/library/card-shape.js";
 import { readCardTextInput } from "../../src/kernel/library/card-text-input.js";
@@ -169,16 +170,18 @@ export async function resolveMobileCurriculumPosition(
     throw new Error("curriculum position is incomplete");
   }
   const grade = Number.parseInt(state.grade, 10);
-  const covering = findBundledCellsForScope({
+  const scope = {
     provider: provider.id,
     schoolType: state.schoolType,
     ...(Number.isInteger(grade) ? { grade } : {}),
     subject: state.subject,
     ...(state.track ? { track: state.track } : {}),
-  });
+  };
+  const covering = findBundledCellsForScope(scope);
   return {
     cells: await getBundledCellsWithStatus(db, userId, covering),
-    needsGenericImport: covering.length === 0,
+    // Cells may cover the position only in part; the kernel decides.
+    needsGenericImport: needsGenericCurriculumImport(scope),
     topics: provider.listTopics(state),
   };
 }

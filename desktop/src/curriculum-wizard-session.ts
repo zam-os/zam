@@ -87,15 +87,17 @@ export interface BundledCellOffer {
 }
 
 /**
- * Which cells the wizard should offer instead of its own topic list.
+ * Which cells the wizard should offer above its own topic list.
  *
  * ADR 2026-08-14 Decision 10 gives the cell precedence, but only a *verdict*
  * may suppress the generic path. A failed bridge call, an older CLI that does
  * not understand the scope flags, or an unscoped answer all produce an empty
  * list — and reading "empty" as "no cell exists here" would silently hand the
  * learner the weaker import at exactly the moment a reviewed cell was
- * available. So the list counts only when `needsGenericImport` is explicitly
- * false.
+ * available. So the list counts only when the answer carries a verdict.
+ * `needsGenericImport: true` beside cells means they cover the position in
+ * part (an IT module taught in any year): offer them, and the topic list
+ * below stays for the rest.
  */
 export function coveringCellsFromResponse(response: unknown): BundledCellOffer[] {
   if (!response || typeof response !== "object") return [];
@@ -103,7 +105,7 @@ export function coveringCellsFromResponse(response: unknown): BundledCellOffer[]
     needsGenericImport?: unknown;
     cells?: unknown;
   };
-  if (payload.needsGenericImport !== false) return [];
+  if (typeof payload.needsGenericImport !== "boolean") return [];
   if (!Array.isArray(payload.cells)) return [];
   return payload.cells.filter(
     (cell): cell is BundledCellOffer =>

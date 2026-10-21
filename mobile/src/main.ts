@@ -4743,17 +4743,19 @@ async function renderCurriculumPosition(revision: number): Promise<void> {
     curriculumOptions.replaceChildren();
     setCurriculumStatus("");
 
-    if (!position.needsGenericImport) {
-      renderCurriculumCells(position.cells);
-      return;
-    }
+    if (position.cells.length > 0) renderCurriculumCells(position.cells);
+    if (!position.needsGenericImport) return;
 
     const heading = document.createElement("p");
     heading.className = "group-title";
     heading.textContent = t("curriculum_fallback_title");
     const body = document.createElement("p");
     body.className = "t-secondary";
-    body.textContent = t("curriculum_fallback_body");
+    body.textContent = t(
+      position.cells.length > 0
+        ? "curriculum_partial_body"
+        : "curriculum_fallback_body",
+    );
     curriculumOptions.append(heading, body);
 
     const list = document.createElement("div");
