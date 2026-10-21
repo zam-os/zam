@@ -321,21 +321,22 @@ describe("Bundled learning cells (Phase 1)", () => {
           grade,
           track,
         }).map((cell) => cell.id);
+      // BayRSO Anlage 1: BwR is taught in II (7-10) and IIIa (7-8 only).
       const bwr =
         "de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung";
-      for (const track of ["II", "wpfg2"])
+      for (const track of ["II", "wpfg2", "IIIa", "wpfg3a", "III", "wpfg3"])
         expect(cells("bwr", 7, track)).toContain(bwr);
-      for (const track of [
-        "III",
-        "IIIa",
-        "IIIb",
-        "wpfg3",
-        "wpfg3a",
-        "wpfg3b",
-        "I",
-        "wpfg1",
-      ])
+      for (const track of ["IIIb", "wpfg3b", "I", "wpfg1"])
         expect(cells("bwr", 7, track)).not.toContain(bwr);
+      const bwr8 =
+        "de-by:realschule-8-bwr-erfolgskonten-guv-werkstoffe-rabatte";
+      expect(cells("bwr", 8, "IIIa")).toContain(bwr8);
+      expect(cells("bwr", 8, "IIIb")).not.toContain(bwr8);
+      expect(cells("bwr", 9, "II")).toContain("zam-academy:bwr-realschule-9");
+      for (const track of ["IIIa", "wpfg3a", "IIIb", "I"])
+        expect(cells("bwr", 9, track)).not.toContain(
+          "zam-academy:bwr-realschule-9",
+        );
       const french =
         "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen";
       expect(cells("franzoesisch", 9, "IIIa")).toContain(french);

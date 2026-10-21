@@ -1,16 +1,16 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "de-by:realschule-8-bwr-erfolgskonten-guv-werkstoffe-rabatte",
-  "version": "2026.08.1",
+  "version": "2026.10.1",
   "title": "BwR 8: Erfolgskonten (Aufwand/Ertrag), GuV-Konto, Werkstoffeinkauf und Skonti (Realschule 8 Bayern)",
-  "description": "Geerdetes KVT-Paket für Realschule Bayern BwR 8 (Wahlpflichtfächergruppe II): Erfolgskonten (Aufwendungen mindern EK / Soll; Erträge mehren EK / Haben), Gewinn- und Verlustrechnung (GuV), Werkstoffeinkauf, Bezugskosten und Skontoberechnung.",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern BwR 8 (Wahlpflichtfächergruppen II und IIIa): Erfolgskonten (Aufwendungen mindern EK / Soll; Erträge mehren EK / Haben), Gewinn- und Verlustrechnung (GuV), Werkstoffeinkauf, Bezugskosten und Skontoberechnung.",
   "publisher": "ZAM Curriculum Working Group",
   "published_at": "2026-08-15T23:15:00Z",
   "sources": [
     {
       "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/bwr",
       "checked": "2026-08-15",
-      "label": "Realschule BwR 8 (Wahlpflichtfächergruppe II), Lernbereiche Erfolgsvorgänge und Beschaffung"
+      "label": "Realschule BwR 8 (Wahlpflichtfächergruppen II und IIIa), Lernbereiche Erfolgsvorgänge und Beschaffung"
     }
   ],
   "atoms": [
@@ -38,6 +38,16 @@
           "school_type": "realschule",
           "grade": 8,
           "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Erfolgswirksame Geschäftsfälle und GuV",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
           "subject": "bwr",
           "topic_code": "lb1",
           "topic_title": "Erfolgswirksame Geschäftsfälle und GuV",
@@ -144,6 +154,16 @@
           "school_type": "realschule",
           "grade": 8,
           "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Beschaffung und Werkstoffe",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
           "subject": "bwr",
           "topic_code": "lb2",
           "topic_title": "Beschaffung und Werkstoffe",
