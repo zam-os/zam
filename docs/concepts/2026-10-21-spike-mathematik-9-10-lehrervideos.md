@@ -82,17 +82,57 @@ Die 29 Lektionen der ZAM Academy Zelle `zam-academy:mathematik-realschule-9` ([`
 
 ## 3. Zuordnungstabelle: Mathematik 10 (LehrplanPLUS Bayern)
 
-| Thema / Lehrplanbereich | Kerninhalte | Daniel-Jung-Erklärvideo | Direktlink |
+Die 22 Lektionen der Klassenstufe 10 (Realschule Bayern Zweig I und II/III) verknüpft mit den exakten Erklärvideos von Daniel Jung und Fachlehrern:
+
+### Etappe 1: Trigonometrie am Einheitskreis & beliebigen Dreiecken
+| Lektions-ID | Thema | Erklärvideo & Urheber | Direktlink |
 |---|---|---|---|
-| **Trigonometrie am Einheitskreis** | Sinus & Kosinus für beliebige Winkel | Einheitskreis Sinus und Kosinus verstehen | `https://www.youtube.com/watch?v=T8kNcfv8LvY` |
-| **Sinussatz & Kosinussatz** | Beliebige Dreiecke berechnen | Sinussatz und Kosinussatz anwenden | `https://www.youtube.com/watch?v=M1RBX1Nt0Ws` |
-| **Bogenmaß** | Radiant und Gradmaß umrechnen | Bogenmaß und Gradmaß umrechnen | `https://www.youtube.com/watch?v=XTgsWytG7cI` |
-| **Exponentialfunktionen** | $f(x) = b \cdot a^x$, Wachstums- und Zerfallsprozesse | Exponentialfunktionen Wachstum und Zerfall | `https://www.youtube.com/watch?v=juzL4f0Af4k` |
-| **Logarithmus** | Definition $\log_b(y) = x$, Logarithmengesetze | Logarithmus Grundlagen und Gesetze | `https://www.youtube.com/watch?v=3h00zAFRLPY` |
-| **Vektorrechnung (Ebene)** | Vektorbegriff, Pfeilklassen, Gegenvektor, Betrag | Vektoren Einführung Grundlagen | `https://www.youtube.com/watch?v=VqUCX1g2OTc` |
-| **Skalarprodukt** | $\vec{a} \cdot \vec{b}$, Orthogonalitätskriterium, Winkel | Skalarprodukt zweier Vektoren berechnen | `https://www.youtube.com/watch?v=gzwfDNF26eA` |
-| **Ganzrationale Funktionen** | Monotonie, Grenzverhalten, Symmetrie | Ganzrationale Funktionen Verhalten im Unendlichen | `https://www.youtube.com/watch?v=ttUWTu3jusA` |
-| **Einstieg Differentialrechnung** | Differenzenquotient, Tangentensteigung, Ableitung | Ableitung Einführung Differenzenquotient | `https://www.youtube.com/watch?v=_wFfbUgpC4k` |
+| `tr-1-einheitskreis` | Sinus & Kosinus am Einheitskreis ($0^\circ$ bis $360^\circ$) | Sinus-/Kosinusfunktion verdeutlicht mit Einheitskreis (Daniel Jung) | `https://www.youtube.com/watch?v=T8kNcfv8LvY` |
+| `tr-2-sinussatz` | Sinussatz im beliebigen Dreieck ($\frac{a}{\sin \alpha} = \frac{b}{\sin \beta}$) | Sinussatz, Dreieck berechnen (Daniel Jung) | `https://www.youtube.com/watch?v=jl3w0wGoWlY` |
+| `tr-3-kosinussatz` | Kosinussatz im beliebigen Dreieck ($a^2 = b^2 + c^2 - 2bc \cos \alpha$) | Kosinussatz erkennen, aufstellen (Daniel Jung) | `https://www.youtube.com/watch?v=PaF_ClPIc_A` |
+| `tr-4-dreiecksflaeche` | Trigonometrische Dreiecksfläche ($A = \frac{1}{2}ab \sin \gamma$) | Dreiecksfläche mit Sinus berechnen (Daniel Jung) | `https://www.youtube.com/watch?v=uGcc2Ij57R8` |
+| `tr-5-bogenmass` | Bogenmaß und Radiant ($x = \frac{\alpha \cdot \pi}{180^\circ}$) | Bogenmaß und Gradmaß umrechnen (Daniel Jung) | `https://www.youtube.com/watch?v=XTgsWytG7cI` |
+
+### Etappe 2: Ebene Vektorgeometrie & Abbildungen
+| Lektions-ID | Thema | Erklärvideo & Urheber | Direktlink |
+|---|---|---|---|
+| `vg-1-vektorbegriff` | Vektorbegriff, Pfeilklassen, Gegenvektor | Vektoren Definition & ihre Repräsentanten (Daniel Jung) | `https://www.youtube.com/watch?v=9C1OOlLng2Q` |
+| `vg-2-vektorbetrag` | Betrag (Länge) eines Vektors ($|\vec{v}| = \sqrt{v_x^2 + v_y^2}$) | Länge (Betrag) eines Vektors berechnen (Daniel Jung) | `https://www.youtube.com/watch?v=yJLviEtfbFI` |
+| `vg-3-vektorrechnung` | Vektoraddition, Subtraktion & Skalarmultiplikation | Rechnen mit Vektoren, Grundlagen, Basics (Daniel Jung) | `https://www.youtube.com/watch?v=XKr6Qe9_trY` |
+| `vg-4-skalarprodukt` | Skalarprodukt zweier Vektoren ($\vec{a} \cdot \vec{b} = a_x b_x + a_y b_y$) | Skalarprodukt von zwei Vektoren (Daniel Jung) | `https://www.youtube.com/watch?v=gzwfDNF26eA` |
+| `vg-5-orthogonalitaet` | Orthogonalitätskriterium ($\vec{a} \cdot \vec{b} = 0$) & Schnittwinkel | Orthogonaler Vektor, Normalenvektor bestimmen (Daniel Jung) | `https://www.youtube.com/watch?v=CxkJN7ez56E` |
+| `vg-6-determinante` | 2x2-Determinante & Flächeninhalt ($A = \frac{1}{2}|\det(\vec{a}, \vec{b})|$) | Was gibt die Determinante einer Matrix an (Daniel Jung) | `https://www.youtube.com/watch?v=N6vEOowa7Uk` |
+| `vg-7-drehung` | Drehung um den Ursprung & Drehmatrix | Drehmatrix, Drehung um den Ursprung (Daniel Jung) | `https://www.youtube.com/watch?v=X8QDtWIWu6Q` |
+
+### Etappe 3: Potenzen & Potenzfunktionen
+| Lektions-ID | Thema | Erklärvideo & Urheber | Direktlink |
+|---|---|---|---|
+| `pt-1-potenzgesetze` | Rationale & negative Exponenten ($a^{-n}, a^{m/n} = \sqrt[n]{a^m}$) | Wurzel und Potenzen, Grundlagen, Zusammenhänge (Daniel Jung) | `https://www.youtube.com/watch?v=NucUdbvOKIM` |
+| `pt-2-potenzfunktionen` | Potenzfunktionen $f(x) = x^n$ und $f(x) = x^{-n}$ (Graphen & Asymptoten) | Potenzfunktionen Übersicht, Basis, Exponent (Daniel Jung) | `https://www.youtube.com/watch?v=OVWF5UATHVc` |
+| `pt-3-wurzelfunktionen` | Wurzelfunktionen als Umkehrfunktionen ($f(x) = \sqrt{x}$) | Umkehrfunktion bestimmen, Vorgehensweise, Rezept (Daniel Jung) | `https://www.youtube.com/watch?v=X8QDtWIWu6Q` |
+
+### Etappe 4: Exponentialfunktionen & Logarithmen
+| Lektions-ID | Thema | Erklärvideo & Urheber | Direktlink |
+|---|---|---|---|
+| `el-1-exponentialfunktionen` | Exponentialfunktionen $f(x) = b \cdot a^x$ & waagrechte Asymptote | Exponentialfunktionen Grundlagen, Graph und Asymptote (Daniel Jung) | `https://www.youtube.com/watch?v=juzL4f0Af4k` |
+| `el-2-wachstumsmodelle` | Reale Wachstumsmodelle, Halbwertszeit & Verdopplungszeit | Exponentielles Wachstum und Zerfall, Halbwertszeit (Daniel Jung) | `https://www.youtube.com/watch?v=juzL4f0Af4k` |
+| `el-3-logarithmus` | Logarithmusbegriff ($\log_a y = x \iff a^x = y$) | Logarithmus, Grundlagen, Rechengesetze (Daniel Jung) | `https://www.youtube.com/watch?v=3h00zAFRLPY` |
+| `el-4-logarithmengesetze` | Logarithmengesetze (Produkt, Quotient, Potenz, Basiswechsel) | Logarithmusgesetze, Logarithmieren (Daniel Jung) | `https://www.youtube.com/watch?v=3h00zAFRLPY` |
+| `el-5-exponentialgleichungen` | Exponentialgleichungen lösen durch Logarithmieren | Logarithmus, Exponentialgleichungen lösen Teil 1 (Daniel Jung) | `https://www.youtube.com/watch?v=n2P2VkA5v4M` |
+
+### Etappe 5: Raumgeometrie & Quadratische Vertiefung (Abschlussprüfung Zweig II/III)
+| Lektions-ID | Thema | Erklärvideo & Urheber | Direktlink |
+|---|---|---|---|
+| `ap-1-rotationskoerper` | Zusammengesetzte Körper & Rotationskörper (Kegel, Pyramide, Kugel) | Zylinder, Kegel, Kugel Körperberechnungen (Daniel Jung) | `https://www.youtube.com/watch?v=ZcHfje2Ojo8` |
+| `ap-2-parabeln-abschluss` | Parabeln & quadratische Gleichungen in der Abschlussprüfung | Schnittpunkt Parabel und Gerade berechnen (Lehrerschmidt) | `https://www.youtube.com/watch?v=T7wnzYyfc1o` |
+| `ap-3-extremwerte` | Extremwertprobleme in Raumgeometrie und Funktionen | Extremwertproblem ohne Ableitung lösen (Daniel Jung) | `https://www.youtube.com/watch?v=G-Y_z65qvnM` |
+
+### Etappe 6: Daten & Zufall (Stochastik)
+| Lektions-ID | Thema | Erklärvideo & Urheber | Direktlink |
+|---|---|---|---|
+| `dz-1-bedingte-wahrscheinlichkeit` | Bedingte Wahrscheinlichkeit ($P_B(A) = \frac{P(A \cap B)}{P(B)}$) | Bedingte Wahrscheinlichkeit, Einführung, Übersicht (Daniel Jung) | `https://www.youtube.com/watch?v=Lh9PSxafG40` |
+| `dz-2-unabhaengigkeit` | Stochastische Unabhängigkeit ($P(A \cap B) = P(A) \cdot P(B)$) | Stochastische Unabhängigkeit, Einführung und Formel (Daniel Jung) | `https://www.youtube.com/watch?v=vfBMGefSNvA` |
+| `dz-3-vierfeldertafel-vertieft` | Vierfeldertafel, inverses Baumdiagramm & Testverfahren | Vierfeldertafel Wahrscheinlichkeitsrechnung (Daniel Jung) | `https://www.youtube.com/watch?v=xslCG8xjGjI` |
 
 ---
 
