@@ -227,6 +227,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:physik-realschule-9",
       "zam-academy:sql",
       "zam-academy:uml",
+      "zam-academy:wirtschaft-recht-realschule-9",
     ]);
     expect(
       list.cells.find((cell) => cell.id === "zam-academy:uml"),
@@ -263,6 +264,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:physik-realschule-9",
       "zam-academy:sql",
       "zam-academy:uml",
+      "zam-academy:wirtschaft-recht-realschule-9",
     ]);
 
     await academyListHandler(db, {

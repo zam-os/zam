@@ -43,7 +43,7 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
 
   it("exposes the captured catalog and the verified Realschule branches", () => {
     const paths = provider.listCatalogPaths?.() ?? [];
-    expect(paths).toHaveLength(2098);
+    expect(paths).toHaveLength(2100);
     for (const track of ["wpfg1", "wpfg2-3"]) {
       expect(paths).toContainEqual({
         schoolType: "realschule",
@@ -132,6 +132,49 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     expect(provider.listCatalogPaths?.()).toContainEqual({
       ...position,
       track: "wpfg2",
+    });
+  });
+
+  it("offers Wirtschaft und Recht 9 for groups I and III with its four areas and the optional bilingual one", () => {
+    expect(
+      provider.listTracks("realschule", "9", "wirtschaft-und-recht"),
+    ).toEqual([
+      {
+        id: "wpfg1-3",
+        label: "Wirtschaft und Recht 9 (I/III)",
+        description: expect.stringContaining("Gruppe II lernt in diesem Jahr BwR"),
+      },
+    ]);
+    const position = {
+      schoolType: "realschule",
+      grade: "9",
+      subject: "wirtschaft-und-recht",
+    };
+    const topics = provider.listTopics({ ...position, track: "wpfg1-3" });
+    expect(topics.map((topic) => topic.id)).toEqual([
+      "lb1",
+      "lb2",
+      "lb3",
+      "lb4",
+      "lb5",
+    ]);
+    // The four areas add up to the 56 hours of the Fachlehrplan; LB 5 is optional.
+    expect(topics.slice(0, 4).map((topic) => topic.hours)).toEqual([
+      12, 11, 12, 21,
+    ]);
+    expect(topics[4].hours).toBeUndefined();
+    for (const topic of topics)
+      expect(provider.resolveTopic(topic).uri).toBe(
+        "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/wirtschaft-und-recht/wpfg1-3",
+      );
+    expect(provider.listTopics(position).map((topic) => topic.id)).toEqual(
+      topics.map((topic) => topic.id),
+    );
+    for (const track of ["wpfg1", "wpfg2", "wpfg2-3", "wpfg3a", "wpfg3b"])
+      expect(provider.listTopics({ ...position, track })).toEqual([]);
+    expect(provider.listCatalogPaths?.()).toContainEqual({
+      ...position,
+      track: "wpfg1-3",
     });
   });
 

@@ -73,6 +73,10 @@ function collectRealschule(label: string, parts: string[]): void {
     );
   } else if (/\(II\)\s*$/.test(label)) {
     parts.push("Für die Wahlpflichtfächergruppe II (wirtschaftlicher Zweig).");
+  } else if (/\(I\/III\)\s*$/.test(label)) {
+    parts.push(
+      "Für die Wahlpflichtfächergruppen I und III (mathematisch-naturwissenschaftlich-technischer bzw. fremdsprachlicher, gestalterischer oder sozialer Zweig); Gruppe II lernt in diesem Jahr BwR.",
+    );
   } else if (/\(II\/III\)\s*$/.test(label)) {
     parts.push(
       "Für die Wahlpflichtfächergruppen II und III (wirtschaftlicher bzw. fremdsprachlicher, gestalterischer oder sozialer Zweig).",

@@ -70,5 +70,11 @@
     "version": "2026.10.2",
     "sha256": "f18844b3cfd34c7df4c205b90b8e2016c9799915254f8142b1f9203f50867234",
     "file": "zam-academy-uml-kvt.json"
+  },
+  {
+    "id": "zam-academy:wirtschaft-recht-realschule-9",
+    "version": "2026.10.2",
+    "sha256": "c4287b84d02fb72fa70f42a97a3ec0a91fe237c543ccdb4ae104e3a1e7106826",
+    "file": "zam-academy-wirtschaft-recht-realschule-9-kvt.json"
   }
 ]
