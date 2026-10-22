@@ -20,8 +20,8 @@
   ],
   "atoms": [
     {
-      "id": "01M5AKE2Y3VND26JMV7BY2KCDN",
-      "atom_uri": "urn:zam:atom:01M5AKE2Y3VND26JMV7BY2KCDN",
+      "id": "01M5J0XGFG7D7GVJ6PBW921QJ6",
+      "atom_uri": "urn:zam:atom:01M5J0XGFG7D7GVJ6PBW921QJ6",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-ab-arbeit",
       "title": "Arbeit als Lebensgrundlage",
@@ -60,7 +60,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5DF1JK5C2QCZGQV2SNJYZAV",
+          "id": "01M5J0XGFGWY48ESNBR08WXBSP",
           "slug": "wr9-ab-arbeit-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -89,7 +89,7 @@
           ]
         },
         {
-          "id": "01M58RP54Y40H8SCTPM07112T1",
+          "id": "01M5J0XGFGRWD9VW9MH9GDPMKZ",
           "slug": "wr9-ab-arbeit-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -101,7 +101,7 @@
           "sample_solution": "Wenn Herr Weiss die Kinder betreut, kocht und den Haushalt führt, schafft er die Grundlage dafür, dass seine Partnerin arbeiten gehen kann. Müsste man diese Arbeit bei anderen einkaufen, würde sie viel Geld kosten. Sie ist also echte Arbeit, nur ohne Lohn."
         },
         {
-          "id": "01M5KS9AT29TJNRS3KVNFVXVZ1",
+          "id": "01M5J0XGFGCQ88Y26EEPJ4MADC",
           "slug": "wr9-ab-arbeit-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -132,8 +132,8 @@
       ]
     },
     {
-      "id": "01M5FWNZ47WP6PJP91PEWDEK6T",
-      "atom_uri": "urn:zam:atom:01M5FWNZ47WP6PJP91PEWDEK6T",
+      "id": "01M5J0XGFGSQMA90BBX6127YK1",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGSQMA90BBX6127YK1",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-ab-arbeitsmarkt",
       "title": "Der Arbeitsmarkt",
@@ -141,7 +141,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=ab-arbeitsmarkt",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFG7D7GVJ6PBW921QJ6",
+          "type": "soft",
+          "rationale": "Der Arbeitsmarkt baut auf dem Begriff der Arbeit und ihren Einflussgrößen auf."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -172,7 +178,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5MF26CK14X87787A13KXNQ7",
+          "id": "01M5J0XGFGRW6RWJJBBQ9TXYA1",
           "slug": "wr9-ab-arbeitsmarkt-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -201,7 +207,7 @@
           ]
         },
         {
-          "id": "01M5K3PXN5BBZ3G3EJ7HKWDNTF",
+          "id": "01M5J0XGFG79DSEA40ACXTCJR9",
           "slug": "wr9-ab-arbeitsmarkt-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -213,7 +219,7 @@
           "sample_solution": "In einer Kleinstadt sucht eine Softwarefirma Entwickler, während dort viele Menschen mit einer Ausbildung im Einzelhandel Arbeit suchen. Sie können nicht über Nacht umlernen und wollen ihr Zuhause nicht verlassen. Darum bleiben Stellen frei, obwohl Menschen Arbeit suchen."
         },
         {
-          "id": "01M5RJ71EP4R2QAR5NPNNQ9NRK",
+          "id": "01M5J0XGFGZW31ZH6AKC7CS96B",
           "slug": "wr9-ab-arbeitsmarkt-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -244,8 +250,8 @@
       ]
     },
     {
-      "id": "01M5Y0MHZ46JNCD8YJ3Z81E3V8",
-      "atom_uri": "urn:zam:atom:01M5Y0MHZ46JNCD8YJ3Z81E3V8",
+      "id": "01M5J0XGFGHP36R6EHRDMAY4E2",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGHP36R6EHRDMAY4E2",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-ab-arbeitslosigkeit",
       "title": "Formen und Folgen der Arbeitslosigkeit",
@@ -253,7 +259,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=ab-arbeitslosigkeit",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGSQMA90BBX6127YK1",
+          "type": "hard",
+          "rationale": "Arbeitslosigkeit entsteht als Ungleichgewicht auf dem Arbeitsmarkt."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -284,7 +296,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M58YJ8NDQPRG9ZXFFEP5TQEG",
+          "id": "01M5J0XGFG3M3Z8DQZHTPNP2Z9",
           "slug": "wr9-ab-arbeitslosigkeit-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -313,7 +325,7 @@
           ]
         },
         {
-          "id": "01M5HH5PDEM59HSVEH8D48N5A0",
+          "id": "01M5J0XGFGFP4BFDBDW21Z0SEN",
           "slug": "wr9-ab-arbeitslosigkeit-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -325,7 +337,7 @@
           "sample_solution": "Ein Werk verlagert seine Produktion ins Ausland. Ein Investitionsprogramm schafft Aufträge für Bauunternehmen, doch die entlassene Fräserin kann dort ohne Umschulung nicht arbeiten. Erst Weiterbildung und neue Stellen in der Region lösen ihr Problem."
         },
         {
-          "id": "01M5PTYMHN2VVEF2X337TZECF7",
+          "id": "01M5J0XGFGXJ03JTZJR9EYG9GJ",
           "slug": "wr9-ab-arbeitslosigkeit-extra",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -339,8 +351,8 @@
       ]
     },
     {
-      "id": "01M5A62SVH5RBEWF7F0NH9WBW4",
-      "atom_uri": "urn:zam:atom:01M5A62SVH5RBEWF7F0NH9WBW4",
+      "id": "01M5J0XGFGXEGYXFE77G5B25Y1",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGXEGYXFE77G5B25Y1",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-ab-ba",
       "title": "Die Bundesagentur für Arbeit",
@@ -348,7 +360,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=ab-ba",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGHP36R6EHRDMAY4E2",
+          "type": "soft",
+          "rationale": "Die Aufgaben der Bundesagentur antworten auf Arbeitslosigkeit und Berufswahl."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -379,7 +397,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5K2QW635YSEPVJ0W6Z08W0R",
+          "id": "01M5J0XGFGX4GGZA6N0D1CA5TY",
           "slug": "wr9-ab-ba-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -408,7 +426,7 @@
           ]
         },
         {
-          "id": "01M5QW58F5Z8S2T6YPVPQHWKFR",
+          "id": "01M5J0XGFGJP0658N3Z353ZV2K",
           "slug": "wr9-ab-ba-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -420,7 +438,7 @@
           "sample_solution": "Ein Betrieb sucht Auszubildende, und Schüler suchen einen Platz. Die Agentur bringt beide zusammen, so bleibt die Stelle nicht lange leer. Verliert später jemand seine Arbeit, bekommt er Unterstützung und Beratung, bis er wieder etwas findet."
         },
         {
-          "id": "01M5MXPHP42WBMA4NSYCWJH0NE",
+          "id": "01M5J0XGFGXDA86P9TTY3AXZKR",
           "slug": "wr9-ab-ba-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -451,8 +469,8 @@
       ]
     },
     {
-      "id": "01M51FY4Y4Q4D26ETJMRYWK2GB",
-      "atom_uri": "urn:zam:atom:01M51FY4Y4Q4D26ETJMRYWK2GB",
+      "id": "01M5J0XGFGCAJF9VWW63KBD6S3",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGCAJF9VWW63KBD6S3",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-bw-wege",
       "title": "Aus- und Weiterbildungswege",
@@ -491,7 +509,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5TMV89HM1CJSPJ74HRTBP68",
+          "id": "01M5J0XGFG520ZJCP5KZFQC1DJ",
           "slug": "wr9-bw-wege-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -520,7 +538,7 @@
           ]
         },
         {
-          "id": "01M5KTFFQRPRTKKKGTVETV3P9R",
+          "id": "01M5J0XGFGMSEHM1BQXBC3FTCE",
           "slug": "wr9-bw-wege-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -532,7 +550,7 @@
           "sample_solution": "Sven lernt Kfz-Mechatroniker, arbeitet einige Jahre in einer Werkstatt und besucht dann die Meisterschule. Später leitet er die Werkstatt und bildet selbst aus. Seine Ausbildung war also der Anfang und kein Endpunkt."
         },
         {
-          "id": "01M50QJ65CBATBJQCY6G4QCE83",
+          "id": "01M5J0XGFGRKMZP2KAX7V7HRBG",
           "slug": "wr9-bw-wege-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -563,8 +581,8 @@
       ]
     },
     {
-      "id": "01M5FEWR6NDTHJ3Y5ZKCYZEAY6",
-      "atom_uri": "urn:zam:atom:01M5FEWR6NDTHJ3Y5ZKCYZEAY6",
+      "id": "01M5J0XGFGBSSRD1DG4W0J6WQ2",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGBSSRD1DG4W0J6WQ2",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-bw-entscheidung",
       "title": "Berufswahl als Entscheidungsprozess",
@@ -572,7 +590,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=bw-entscheidung",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGCAJF9VWW63KBD6S3",
+          "type": "soft",
+          "rationale": "Die Entscheidung vergleicht die Aus- und Weiterbildungswege."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -603,7 +627,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5RHYAFH9RFGJR6PHPKP547V",
+          "id": "01M5J0XGFGY5VQTZTG7ZCTV8M9",
           "slug": "wr9-bw-entscheidung-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -632,7 +656,7 @@
           ]
         },
         {
-          "id": "01M5XEKGSGNGW5JGV40QKZWHDD",
+          "id": "01M5J0XGFGDS7DQ4QN5Q7NNQPY",
           "slug": "wr9-bw-entscheidung-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -644,7 +668,7 @@
           "sample_solution": "Zwei Freunde bewerten dieselben zwei Berufe mit gleichen Punkten. Für Ida zählt das Interesse dreifach, für Karim das Einkommen. Bei Ida liegt Beruf A vorn, bei Karim Beruf B, obwohl die Punkte je Kriterium gleich sind."
         },
         {
-          "id": "01M52J182EE8NM6TB8Y082JYRQ",
+          "id": "01M5J0XGFGWEDM55QNJHWD589J",
           "slug": "wr9-bw-entscheidung-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -675,8 +699,8 @@
       ]
     },
     {
-      "id": "01M5ZCWQS33EZ2RSRFKBHZA0RX",
-      "atom_uri": "urn:zam:atom:01M5ZCWQS33EZ2RSRFKBHZA0RX",
+      "id": "01M5J0XGFGTYV88GSWRGQNBS52",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGTYV88GSWRGQNBS52",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-bw-bewerbung",
       "title": "Die Bewerbung",
@@ -684,7 +708,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=bw-bewerbung",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGBSSRD1DG4W0J6WQ2",
+          "type": "soft",
+          "rationale": "Eine Bewerbung folgt aus der getroffenen Berufsentscheidung."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -715,7 +745,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M50D7SXV188FGVN1R7F79CKP",
+          "id": "01M5J0XGFG73YXPKD686EWV4BZ",
           "slug": "wr9-bw-bewerbung-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -744,7 +774,7 @@
           ]
         },
         {
-          "id": "01M5HTNQBND6QSN7RSJVTR75XV",
+          "id": "01M5J0XGFG2SG0AKBX3XPN3K4B",
           "slug": "wr9-bw-bewerbung-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -756,7 +786,7 @@
           "sample_solution": "Sofia hat im Schulpraktikum zwei Wochen in einer Kfz-Werkstatt gearbeitet. Sie legt die Bescheinigung bei und schreibt im Anschreiben, dass sie dort selbst einen Reifenwechsel begleitet hat. Der Betrieb sieht, dass sie den Alltag kennt und wirklich Interesse hat."
         },
         {
-          "id": "01M5SXC1AHM7VTS11XKBMEE3YE",
+          "id": "01M5J0XGFGMYZR9Z7SE5R5B4QK",
           "slug": "wr9-bw-bewerbung-extra",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -770,8 +800,8 @@
       ]
     },
     {
-      "id": "01M5B92DDR5Z0PQKR5D0PNVCNX",
-      "atom_uri": "urn:zam:atom:01M5B92DDR5Z0PQKR5D0PNVCNX",
+      "id": "01M5J0XGFGEZK2QM08K8YFWM8N",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGEZK2QM08K8YFWM8N",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-bw-auswahl",
       "title": "Tests, Gespräch und Assessment-Center",
@@ -779,7 +809,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=bw-auswahl",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGTYV88GSWRGQNBS52",
+          "type": "soft",
+          "rationale": "Auswahlverfahren folgen auf die Bewerbung."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -810,7 +846,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5ZP4AQPDFKWN3AASN7JAJQ0",
+          "id": "01M5J0XGFGAGZM7Y5PZYS9W7CD",
           "slug": "wr9-bw-auswahl-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -839,7 +875,7 @@
           ]
         },
         {
-          "id": "01M5WP5G83R39RQQESY0HJ254N",
+          "id": "01M5J0XGFGMK3EZ2H2TNY198H4",
           "slug": "wr9-bw-auswahl-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -851,7 +887,7 @@
           "sample_solution": "Tarek hält sich für sehr teamfähig. Im Rollenspiel rät ihm ein Beobachter, anderen öfter zuzuhören. Tarek erkennt, dass sein Fremdbild abweicht, und übt in der Projektgruppe aktives Zuhören."
         },
         {
-          "id": "01M55NE650D6ZQEE09SV6J108J",
+          "id": "01M5J0XGFGWYJ6XDYGESE01PW4",
           "slug": "wr9-bw-auswahl-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -882,8 +918,8 @@
       ]
     },
     {
-      "id": "01M5PYT71C9TZ0NJ6EQ639N3E5",
-      "atom_uri": "urn:zam:atom:01M5PYT71C9TZ0NJ6EQ639N3E5",
+      "id": "01M5J0XGFGERVV5ZDNDJX7H0DK",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGERVV5ZDNDJX7H0DK",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-bw-ausbildungsvertrag",
       "title": "Der Berufsausbildungsvertrag",
@@ -891,7 +927,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=bw-ausbildungsvertrag",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGEZK2QM08K8YFWM8N",
+          "type": "soft",
+          "rationale": "Der Ausbildungsvertrag schließt das Bewerbungsverfahren ab."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -922,7 +964,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M508E7QGE4HAXPY6ECADZTDM",
+          "id": "01M5J0XGFG3NRGVQHNY20M23KT",
           "slug": "wr9-bw-ausbildungsvertrag-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -951,7 +993,7 @@
           ]
         },
         {
-          "id": "01M5T1PJHG34Z7CPCXN5F0C0QC",
+          "id": "01M5J0XGFGM8KNTW6MG2XD64DZ",
           "slug": "wr9-bw-ausbildungsvertrag-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -963,7 +1005,7 @@
           "sample_solution": "Mara (17) soll nur noch Böden reinigen. Sie bespricht das zuerst mit ihrem Ausbilder und zeigt ihr Berichtsheft. Ändert sich nichts, fragt sie die Ausbildungsberatung der Kammer und, falls es sie im Betrieb gibt, die Jugend- und Auszubildendenvertretung um Rat. Gekündigt wird erst, wenn alles andere nicht hilft, schriftlich und mit Zustimmung ihrer Eltern."
         },
         {
-          "id": "01M5X5M18P2HJ7N6Z36NPNMK69",
+          "id": "01M5J0XGFGRFNEGHKD79FAYCFX",
           "slug": "wr9-bw-ausbildungsvertrag-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -994,8 +1036,8 @@
       ]
     },
     {
-      "id": "01M5NKK8ZA1JF747H0X7365QR7",
-      "atom_uri": "urn:zam:atom:01M5NKK8ZA1JF747H0X7365QR7",
+      "id": "01M5J0XGFG1BTX6CWCRMBE4P3P",
+      "atom_uri": "urn:zam:atom:01M5J0XGFG1BTX6CWCRMBE4P3P",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-bw-jarbschg",
       "title": "Das Jugendarbeitsschutzgesetz",
@@ -1003,7 +1045,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=bw-jarbschg",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGERVV5ZDNDJX7H0DK",
+          "type": "soft",
+          "rationale": "Der Jugendarbeitsschutz gilt für Auszubildende unter 18 Jahren."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -1034,7 +1082,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M52FVR8C4TBTV3ARSTGBQ90Q",
+          "id": "01M5J0XGFG8JFFK0JKPCK6484K",
           "slug": "wr9-bw-jarbschg-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -1063,7 +1111,7 @@
           ]
         },
         {
-          "id": "01M5TH0Q2MF6PD4KJTZS8M9K5H",
+          "id": "01M5J0XGFGK261J79C7NFZ0YTY",
           "slug": "wr9-bw-jarbschg-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -1075,7 +1123,7 @@
           "sample_solution": "Die 16-jährige Auszubildende Kim kennt die Unfallgefahren an einer Maschine noch nicht, wird schneller müde als eine Erwachsene und traut sich kaum zu widersprechen. Darum begrenzt das Gesetz ihre Arbeitszeit und verbietet gefährliche Arbeiten."
         },
         {
-          "id": "01M580AGA1RKB5GTWDPATEWFER",
+          "id": "01M5J0XGFGMEGVZ2NCGX60WZMZ",
           "slug": "wr9-bw-jarbschg-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -1106,8 +1154,8 @@
       ]
     },
     {
-      "id": "01M54WE101VJGSEQ2YA5CZ89B5",
-      "atom_uri": "urn:zam:atom:01M54WE101VJGSEQ2YA5CZ89B5",
+      "id": "01M5J0XGFGE00DM231E8JRBEVY",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGE00DM231E8JRBEVY",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-wh-prinzip",
       "title": "Bedürfnisse, Knappheit und ökonomisches Prinzip",
@@ -1146,7 +1194,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M55VEXJWFVADC30WY92ES13J",
+          "id": "01M5J0XGFG06HXEBW8HK7MTBJ9",
           "slug": "wr9-wh-prinzip-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -1175,7 +1223,7 @@
           ]
         },
         {
-          "id": "01M5NY9S224H3QN877FGGSEB2N",
+          "id": "01M5J0XGFGWAHH47EP4BTWAXSW",
           "slug": "wr9-wh-prinzip-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -1187,7 +1235,7 @@
           "sample_solution": "Mira hat 30 Euro Taschengeld. Das Kino am Abend kostet 16 Euro, ein Eis 6 Euro und der Flohmarkt mit Bus und Snacks 14 Euro, zusammen 36 Euro. Das Geld reicht nicht für alles. Sie streicht das Eis, dann sind es genau 30 Euro, und sie holt mit ihrem festen Budget das Meiste heraus."
         },
         {
-          "id": "01M5Z1CDM6J1VRZXYBS96TSJA8",
+          "id": "01M5J0XGFGZKWRE4Y36N99PF8A",
           "slug": "wr9-wh-prinzip-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -1218,8 +1266,8 @@
       ]
     },
     {
-      "id": "01M5CERAH1AP9CJ5DEWH2RZ7MP",
-      "atom_uri": "urn:zam:atom:01M5CERAH1AP9CJ5DEWH2RZ7MP",
+      "id": "01M5J0XGFGDSX7HN6V8R0S4B97",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGDSX7HN6V8R0S4B97",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-wh-angebot-nachfrage",
       "title": "Einflussfaktoren auf Angebot und Nachfrage",
@@ -1227,7 +1275,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=wh-angebot-nachfrage",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGE00DM231E8JRBEVY",
+          "type": "soft",
+          "rationale": "Angebot und Nachfrage setzen Bedürfnisse und Knappheit voraus."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -1258,7 +1312,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5EBT7G04DHJ566KNBV2GWAA",
+          "id": "01M5J0XGFGKMMWXYEQCYXQ71KG",
           "slug": "wr9-wh-angebot-nachfrage-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -1287,7 +1341,7 @@
           ]
         },
         {
-          "id": "01M5GHCH2ZA56372KHNCRC9EX4",
+          "id": "01M5J0XGFGXF3RDCFRQEP2VVWX",
           "slug": "wr9-wh-angebot-nachfrage-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -1299,7 +1353,7 @@
           "sample_solution": "Auf dem Wochenmarkt steigt der Preis für Erdbeeren von 3 auf 4 Euro je Kilo. Viele Kunden kaufen weniger oder greifen zu Äpfeln, die nachgefragte Menge sinkt. Die Landwirte liefern dagegen mehr, weil sich jede zusätzliche Kiste jetzt mehr lohnt."
         },
         {
-          "id": "01M5355R4S0W1T65XFA0M517RE",
+          "id": "01M5J0XGFGVJNQHWW0EWFMQA3B",
           "slug": "wr9-wh-angebot-nachfrage-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -1330,8 +1384,8 @@
       ]
     },
     {
-      "id": "01M592PD3S9ESMHWJKAT8QG2X1",
-      "atom_uri": "urn:zam:atom:01M592PD3S9ESMHWJKAT8QG2X1",
+      "id": "01M5J0XGFG36GWYZ2G37MKTSHK",
+      "atom_uri": "urn:zam:atom:01M5J0XGFG36GWYZ2G37MKTSHK",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-wh-gleichgewicht",
       "title": "Der Gleichgewichtspreis",
@@ -1339,7 +1393,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=wh-gleichgewicht",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGDSX7HN6V8R0S4B97",
+          "type": "hard",
+          "rationale": "Das Gleichgewicht ist der Schnittpunkt der beiden Kurven."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -1370,7 +1430,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5DV58VWNZWPVJBZ159HWNPC",
+          "id": "01M5J0XGFGP978V7RGSV9BH8NW",
           "slug": "wr9-wh-gleichgewicht-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -1399,7 +1459,7 @@
           ]
         },
         {
-          "id": "01M5J7VH123PF8TQ3GRRJJ78R2",
+          "id": "01M5J0XGFGSMM91GQD4VRP9FSE",
           "slug": "wr9-wh-gleichgewicht-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -1411,7 +1471,7 @@
           "sample_solution": "Auf dem Wochenmarkt kosten Erdbeeren am Morgen 3 Euro je Kilo, doch die Kunden wollen mehr, als die Händler dabeihaben. Die Kunden überbieten sich, und der Preis steigt auf 4 Euro. Manche verzichten, und die Händler holen weitere Kisten vom Feld. Das geht so lange, bis angebotene und nachgefragte Menge übereinstimmen."
         },
         {
-          "id": "01M5PKXR4WS360YBBXCHDCYFNE",
+          "id": "01M5J0XGFG0Y6V5AK0WXQ11WH5",
           "slug": "wr9-wh-gleichgewicht-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -1442,8 +1502,8 @@
       ]
     },
     {
-      "id": "01M5W7FMFESYM9MG3JZCT6RS0A",
-      "atom_uri": "urn:zam:atom:01M5W7FMFESYM9MG3JZCT6RS0A",
+      "id": "01M5J0XGFGNW65EQ8Z7HSA4VGJ",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGNW65EQ8Z7HSA4VGJ",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-wh-verschiebung",
       "title": "Verschiebungen und die Rolle des Gleichgewichtspreises",
@@ -1451,7 +1511,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=wh-verschiebung",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFG36GWYZ2G37MKTSHK",
+          "type": "hard",
+          "rationale": "Eine Verschiebung verändert ein bekanntes Gleichgewicht."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -1482,7 +1548,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5ZN9XDANEEP7HAY5GPSVCB1",
+          "id": "01M5J0XGFGMGPT5DMVMG5YJX3D",
           "slug": "wr9-wh-verschiebung-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -1511,7 +1577,7 @@
           ]
         },
         {
-          "id": "01M5TZHGFXDW6XJ4VVVPC72X5X",
+          "id": "01M5J0XGFGERZWD3T2RM2BPG2D",
           "slug": "wr9-wh-verschiebung-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -1523,7 +1589,7 @@
           "sample_solution": "Nach einem Trend steigt der Preis für Fahrradhelme von 40 auf 55 Euro, die Herstellungskosten bleiben gleich. Die Hersteller verdienen mehr, stellen mehr Helme her und stellen dafür Beschäftigte ein. Der Preis hat so Arbeit und Material zu den gefragten Helmen gelenkt."
         },
         {
-          "id": "01M5PFV2S9SCTNJS7SYW0BBNEZ",
+          "id": "01M5J0XGFGST18KNSZWF81T49B",
           "slug": "wr9-wh-verschiebung-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -1554,8 +1620,8 @@
       ]
     },
     {
-      "id": "01M5JN5KBMRQJCYNRZQCWN1FXG",
-      "atom_uri": "urn:zam:atom:01M5JN5KBMRQJCYNRZQCWN1FXG",
+      "id": "01M5J0XGFGDEAASD2C0PWMG7D4",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGDEAASD2C0PWMG7D4",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-wh-kreislauf",
       "title": "Der einfache Wirtschaftskreislauf",
@@ -1563,7 +1629,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=wh-kreislauf",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGDSX7HN6V8R0S4B97",
+          "type": "soft",
+          "rationale": "Der Kreislauf zeigt die Märkte, auf denen Haushalte und Unternehmen handeln."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -1594,7 +1666,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5A5D0MGVPJQQCN8RDRDNAF4",
+          "id": "01M5J0XGFGQA9FPGEF816T3450",
           "slug": "wr9-wh-kreislauf-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -1623,7 +1695,7 @@
           ]
         },
         {
-          "id": "01M5SW9FFBBCJ64DHA2HGNNVJ8",
+          "id": "01M5J0XGFGNRY63FZ33TZ2R9WA",
           "slug": "wr9-wh-kreislauf-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -1635,7 +1707,7 @@
           "sample_solution": "Alle Haushalte in einer Stadt geben nur noch 80 Prozent ihres Lohns aus. Die Läden nehmen weniger ein und zahlen im nächsten Monat weniger Löhne. Dadurch haben die Haushalte noch weniger Geld, und die Einnahmen der Läden sinken weiter."
         },
         {
-          "id": "01M55RSNZY5SMFY1C06CRG22FS",
+          "id": "01M5J0XGFGCA32VXERT3AE4RX5",
           "slug": "wr9-wh-kreislauf-extra",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -1649,8 +1721,8 @@
       ]
     },
     {
-      "id": "01M5J61C7R9608GG6BPPKD400W",
-      "atom_uri": "urn:zam:atom:01M5J61C7R9608GG6BPPKD400W",
+      "id": "01M5J0XGFGPC970WAX27EGE83A",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGPC970WAX27EGE83A",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-sm-ordnungen",
       "title": "Wirtschaftsordnungen im Vergleich",
@@ -1658,7 +1730,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=sm-ordnungen",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFG36GWYZ2G37MKTSHK",
+          "type": "soft",
+          "rationale": "Wirtschaftsordnungen unterscheiden sich darin, wie Preise entstehen."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -1689,7 +1767,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M544BSZ9HJKX1C2VT4X07JBR",
+          "id": "01M5J0XGFGETF6PC18PE9K2SHB",
           "slug": "wr9-sm-ordnungen-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -1718,7 +1796,7 @@
           ]
         },
         {
-          "id": "01M54P94TEVE4H99AB805W0DP8",
+          "id": "01M5J0XGFGK5XVZCCYR0RKFESR",
           "slug": "wr9-sm-ordnungen-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -1730,7 +1808,7 @@
           "sample_solution": "Herr Brandt verliert seine Stelle. In einer reinen freien Marktwirtschaft bekäme er keine staatliche Hilfe. In der Sozialen Marktwirtschaft erhält er zunächst Arbeitslosengeld und Unterstützung bei der Suche. Außerdem verbietet eine Behörde Preisabsprachen, damit der Wettbewerb erhalten bleibt."
         },
         {
-          "id": "01M5XQKMYE592CCJR2FNAA4G9W",
+          "id": "01M5J0XGFGNWAQX1XWNV6KTH2Y",
           "slug": "wr9-sm-ordnungen-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -1761,8 +1839,8 @@
       ]
     },
     {
-      "id": "01M536KH58DERXH8PN7MTJVD85",
-      "atom_uri": "urn:zam:atom:01M536KH58DERXH8PN7MTJVD85",
+      "id": "01M5J0XGFGY344364SP94EW03H",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGY344364SP94EW03H",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-sm-ziele",
       "title": "Entstehung und Ziele der Sozialen Marktwirtschaft",
@@ -1770,7 +1848,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=sm-ziele",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGPC970WAX27EGE83A",
+          "type": "hard",
+          "rationale": "Die Ziele der Sozialen Marktwirtschaft setzen den Vergleich der Ordnungen voraus."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -1801,7 +1885,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5Z50JCZR7W7VPDP977YCAEG",
+          "id": "01M5J0XGFG4RGPD41Q498Y05PW",
           "slug": "wr9-sm-ziele-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -1830,7 +1914,7 @@
           ]
         },
         {
-          "id": "01M5CETMYFQK40C315VB3NW2SJ",
+          "id": "01M5J0XGFGBM93PBDGD124G1PQ",
           "slug": "wr9-sm-ziele-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -1842,7 +1926,7 @@
           "sample_solution": "Vor 1948 hätte eine Schreinerin für ihre Tische kaum etwas Brauchbares bekommen, weil die Reichsmark nichts wert war. Nach der Währungsreform konnte sie ihre Tische für Mark verkaufen und davon Holz und Lebensmittel kaufen. Es lohnte sich wieder, zu produzieren."
         },
         {
-          "id": "01M5MJV4A0A7WVTDMWXBNYEWFZ",
+          "id": "01M5J0XGFGHEHRPZWCV1YGKA2N",
           "slug": "wr9-sm-ziele-extra",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -1856,8 +1940,8 @@
       ]
     },
     {
-      "id": "01M537V8NC1MZCF448CYAMRXYQ",
-      "atom_uri": "urn:zam:atom:01M537V8NC1MZCF448CYAMRXYQ",
+      "id": "01M5J0XGFGX9SWPCQ60K0NY476",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGX9SWPCQ60K0NY476",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-sm-freiheit",
       "title": "Freiheit, Wettbewerb und Nachhaltigkeit",
@@ -1865,7 +1949,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=sm-freiheit",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGPC970WAX27EGE83A",
+          "type": "hard",
+          "rationale": "Die freiheitlichen Bausteine gehören zur Ordnung, die vorher verglichen wurde."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -1896,7 +1986,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5CZWG1K67A2XNARF15PP650",
+          "id": "01M5J0XGFGNZBF8P4QP3450CW2",
           "slug": "wr9-sm-freiheit-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -1925,7 +2015,7 @@
           ]
         },
         {
-          "id": "01M540BETQGY8PJXRNDH17TV1K",
+          "id": "01M5J0XGFGGDCHSBBZ83HS4QVJ",
           "slug": "wr9-sm-freiheit-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -1937,7 +2027,7 @@
           "sample_solution": "Eine Möbelfabrik fällt jedes Jahr mehr Bäume, als nachwachsen. Nach einigen Jahren fehlt das Holz, die Preise steigen, und die Fabrik muss Beschäftigte entlassen. Pflanzt sie dagegen so viele Bäume nach, wie sie fällt, kann sie dauerhaft produzieren."
         },
         {
-          "id": "01M5Z2P9P0KW9W6QXT22VE1RX2",
+          "id": "01M5J0XGFGPZQ7320QYHZ78ZX1",
           "slug": "wr9-sm-freiheit-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -1968,8 +2058,8 @@
       ]
     },
     {
-      "id": "01M5BGB8XBZDXC40MBJR6G084C",
-      "atom_uri": "urn:zam:atom:01M5BGB8XBZDXC40MBJR6G084C",
+      "id": "01M5J0XGFGTS386TN3C997T4K1",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGTS386TN3C997T4K1",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-sm-sozial",
       "title": "Soziale Sicherung und Sozialversicherung",
@@ -1977,7 +2067,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=sm-sozial",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGY344364SP94EW03H",
+          "type": "soft",
+          "rationale": "Die sozialen Bausteine setzen die Ziele der Sozialen Marktwirtschaft um."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -2008,7 +2104,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5KZJQAKDHARVAE5Z7FNN10K",
+          "id": "01M5J0XGFG0DNGF5KMAQN0380D",
           "slug": "wr9-sm-sozial-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -2037,7 +2133,7 @@
           ]
         },
         {
-          "id": "01M5CBDE8C76BH2J7F6Q42WXPM",
+          "id": "01M5J0XGFGQMPSH314P0YQ2THH",
           "slug": "wr9-sm-sozial-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -2049,7 +2145,7 @@
           "sample_solution": "Wäre die Versicherung freiwillig, könnte ein junger Mann sagen: Ich bin gesund, ich spare mir den Beitrag. Wird er schwer krank, kann er die Behandlung nicht bezahlen. Durch die Pflicht zahlen alle ein, und die Kosten eines Einzelnen verteilen sich auf viele."
         },
         {
-          "id": "01M57MDY9D4W0NCESDD64XDAA8",
+          "id": "01M5J0XGFG811Z6865XS88FKZE",
           "slug": "wr9-sm-sozial-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -2080,8 +2176,8 @@
       ]
     },
     {
-      "id": "01M50Z21JGZ37Y4T13WQTDSX0S",
-      "atom_uri": "urn:zam:atom:01M50Z21JGZ37Y4T13WQTDSX0S",
+      "id": "01M5J0XGFGY73GW2A3RP1YRTJC",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGY73GW2A3RP1YRTJC",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-sm-solidar",
       "title": "Solidarprinzip und Altersvorsorge",
@@ -2089,7 +2185,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=sm-solidar",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGTS386TN3C997T4K1",
+          "type": "hard",
+          "rationale": "Das Solidarprinzip wird am Sozialversicherungssystem erklärt."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -2120,7 +2222,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5TKR0Z9XYTJ7BM87F23QQ7R",
+          "id": "01M5J0XGFG4JK3KA6W025W5015",
           "slug": "wr9-sm-solidar-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -2149,7 +2251,7 @@
           ]
         },
         {
-          "id": "01M52Q3YC38MBS88Z3NDPRXYTC",
+          "id": "01M5J0XGFGZ4F6DEDQX344K6HQ",
           "slug": "wr9-sm-solidar-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -2161,7 +2263,7 @@
           "sample_solution": "In einem erfundenen Land kommen heute 40 Rentner auf 100 Beschäftigte, in dreißig Jahren 60. Bei gleicher Rente müsste jeder Beschäftigte deutlich mehr einzahlen. Weil das an Grenzen stößt, wird über einen späteren Rentenbeginn, höhere Zuschüsse oder niedrigere Renten gestritten."
         },
         {
-          "id": "01M5M072Q47AF8FK2D1ZCJJKD1",
+          "id": "01M5J0XGFGM4YF3CNEYM3307S5",
           "slug": "wr9-sm-solidar-extra",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -2175,8 +2277,8 @@
       ]
     },
     {
-      "id": "01M5DBWM9EH9JB7VDVN13601TD",
-      "atom_uri": "urn:zam:atom:01M5DBWM9EH9JB7VDVN13601TD",
+      "id": "01M5J0XGFGPM1Y1ZY3DSSFT6JW",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGPM1Y1ZY3DSSFT6JW",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-vs-information",
       "title": "Verbraucherinformationen kritisch bewerten",
@@ -2215,7 +2317,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5E8Q436MVG6DDVTK7ECCT7M",
+          "id": "01M5J0XGFG0HQX7EBNPBNH6PJS",
           "slug": "wr9-vs-information-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -2244,7 +2346,7 @@
           ]
         },
         {
-          "id": "01M5NK9780HHFHPZMT4VMFSF1C",
+          "id": "01M5J0XGFGSPMYBPEYFDSMDXSK",
           "slug": "wr9-vs-information-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -2256,7 +2358,7 @@
           "sample_solution": "Bei einem Fahrradhelm erscheinen an einem Tag 30 Bewertungen mit fünf Sternen und dem Text „Top Produkt“. Janis wird misstrauisch, liest stattdessen zwei ausführliche Rezensionen mit Kritik am Verschluss und sucht zusätzlich einen unabhängigen Test."
         },
         {
-          "id": "01M52E87QVKCT98RNV631W56DA",
+          "id": "01M5J0XGFGSTPDEYTXT2TZVC4T",
           "slug": "wr9-vs-information-extra",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -2270,8 +2372,8 @@
       ]
     },
     {
-      "id": "01M5H0QSENPE0D88W2GYYA3KYH",
-      "atom_uri": "urn:zam:atom:01M5H0QSENPE0D88W2GYYA3KYH",
+      "id": "01M5J0XGFGX6BRKCP9G431B598",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGX6BRKCP9G431B598",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-vs-nachhaltig",
       "title": "Nachhaltig konsumieren und Siegel prüfen",
@@ -2279,7 +2381,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=vs-nachhaltig",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGPM1Y1ZY3DSSFT6JW",
+          "type": "soft",
+          "rationale": "Siegel und Aussagen werden mit denselben Prüffragen bewertet."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -2310,7 +2418,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5XYZHC812FG91HVYHKPTHA4",
+          "id": "01M5J0XGFGGRFZ39GZX9QW96E0",
           "slug": "wr9-vs-nachhaltig-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -2339,7 +2447,7 @@
           ]
         },
         {
-          "id": "01M5VG1AW3Y9X3FKYBFFWVC9PP",
+          "id": "01M5J0XGFGW2P3G3QVDW6AYEJA",
           "slug": "wr9-vs-nachhaltig-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -2351,7 +2459,7 @@
           "sample_solution": "Ein Hersteller druckt ein grünes Blatt und das Wort „klimafreundlich“ auf seine Flasche. Es gibt keinen Hinweis, wer das Zeichen vergibt oder nach welchen Kriterien. Merle erkennt: Das ist ein selbst gemachtes Zeichen, vermutlich Greenwashing."
         },
         {
-          "id": "01M5G13QFR1JJA44QRMJK2WEAK",
+          "id": "01M5J0XGFGNG8P5F53VMG1PT23",
           "slug": "wr9-vs-nachhaltig-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -2382,8 +2490,8 @@
       ]
     },
     {
-      "id": "01M59K9FCQP8154Q72CZN62BHP",
-      "atom_uri": "urn:zam:atom:01M59K9FCQP8154Q72CZN62BHP",
+      "id": "01M5J0XGFG6G2GRXG1CT2FMXFE",
+      "atom_uri": "urn:zam:atom:01M5J0XGFG6G2GRXG1CT2FMXFE",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-vs-schutz",
       "title": "Verbraucherschutz: Regeln und Beratungsstellen",
@@ -2391,7 +2499,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=vs-schutz",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGPM1Y1ZY3DSSFT6JW",
+          "type": "soft",
+          "rationale": "Beratungsstellen helfen dort, wo Informationen allein nicht reichen."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -2422,7 +2536,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5MAFYBDW6EMG64S7FXQG21Q",
+          "id": "01M5J0XGFGQ3R65C3PWCRES39R",
           "slug": "wr9-vs-schutz-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -2451,7 +2565,7 @@
           ]
         },
         {
-          "id": "01M5PM0FYXFN175V3VM96Z969P",
+          "id": "01M5J0XGFGGCF4WJ2Y72WNS5XX",
           "slug": "wr9-vs-schutz-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -2463,7 +2577,7 @@
           "sample_solution": "Eine Packung Müsli mit 500 Gramm kostet 3,00 Euro, eine mit 750 Gramm kostet 4,20 Euro. Der Grundpreis zeigt: 6,00 Euro je Kilogramm gegenüber 5,60 Euro je Kilogramm. Die größere Packung ist günstiger."
         },
         {
-          "id": "01M5172VE27PGZJCD1TMZ1RH4Z",
+          "id": "01M5J0XGFGVY3P3GTCXS2G2R5A",
           "slug": "wr9-vs-schutz-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -2494,8 +2608,8 @@
       ]
     },
     {
-      "id": "01M5CSVAYB8JK9TYGW262N248T",
-      "atom_uri": "urn:zam:atom:01M5CSVAYB8JK9TYGW262N248T",
+      "id": "01M5J0XGFGC0PTKTFRVCC0Q8FH",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGC0PTKTFRVCC0Q8FH",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-vs-geldanlage",
       "title": "Geldanlage im Vergleich",
@@ -2534,7 +2648,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5YQDEXWZ48BBJH70EH2VJ03",
+          "id": "01M5J0XGFGM14YXRGTYM9WES0X",
           "slug": "wr9-vs-geldanlage-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -2563,7 +2677,7 @@
           ]
         },
         {
-          "id": "01M58WJ137C0EGZNFQB91QCSX8",
+          "id": "01M5J0XGFG298SRP8562HF0A2A",
           "slug": "wr9-vs-geldanlage-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -2575,7 +2689,7 @@
           "sample_solution": "Tagesgeld ist jederzeit verfügbar und sicher, bringt aber wenig Ertrag. Aktien können mehr Ertrag bringen, schwanken aber im Wert. Wer Geld in einem Jahr braucht, wählt deshalb eher Sicherheit und Verfügbarkeit als hohe Rendite."
         },
         {
-          "id": "01M5J4V2T12J5DW8EPM1TRMEHX",
+          "id": "01M5J0XGFGW72RWBZRZ920R4VX",
           "slug": "wr9-vs-geldanlage-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -2606,8 +2720,8 @@
       ]
     },
     {
-      "id": "01M52NHJ2SZ6YJG228K5CMYRJ0",
-      "atom_uri": "urn:zam:atom:01M52NHJ2SZ6YJG228K5CMYRJ0",
+      "id": "01M5J0XGFGP0FW7FM341EBPZE6",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGP0FW7FM341EBPZE6",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-vs-kredit",
       "title": "Kredite des Alltags im Vergleich",
@@ -2615,7 +2729,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=vs-kredit",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGC0PTKTFRVCC0Q8FH",
+          "type": "soft",
+          "rationale": "Zins und Zinseszins aus der Geldanlage helfen beim Kreditvergleich."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -2646,7 +2766,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M57AF0MMYX8M3GVGZ82XM550",
+          "id": "01M5J0XGFGFJED0KZNEXANBWNQ",
           "slug": "wr9-vs-kredit-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -2675,7 +2795,7 @@
           ]
         },
         {
-          "id": "01M5RE8Q9W7BC720D9CMXAM6TW",
+          "id": "01M5J0XGFGDN3EM7Y05SPY1N06",
           "slug": "wr9-vs-kredit-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -2687,7 +2807,7 @@
           "sample_solution": "Für einen Laptop leiht sich Jonas 1.200 Euro. Über 12 Monate ist die Rate höher, über 36 Monate niedriger. Weil er die Bank länger für das geliehene Geld bezahlt, kostet der Kredit über 36 Monate insgesamt mehr."
         },
         {
-          "id": "01M5FY751PDSE2Y3N064E2XEH5",
+          "id": "01M5J0XGFGSC1XN2RWA3ZMGFWN",
           "slug": "wr9-vs-kredit-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -2718,8 +2838,8 @@
       ]
     },
     {
-      "id": "01M54M76GD66Z6T1Y3KZJ2RK2C",
-      "atom_uri": "urn:zam:atom:01M54M76GD66Z6T1Y3KZJ2RK2C",
+      "id": "01M5J0XGFG8VYB7149TDCW0BS7",
+      "atom_uri": "urn:zam:atom:01M5J0XGFG8VYB7149TDCW0BS7",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-vs-ueberschuldung",
       "title": "Überschuldung: Ursachen, Folgen und Auswege",
@@ -2727,7 +2847,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=vs-ueberschuldung",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGP0FW7FM341EBPZE6",
+          "type": "hard",
+          "rationale": "Überschuldung entsteht meist aus Krediten und Zinsen."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -2758,7 +2884,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5H1QM5FQT2CQYB4XPBQ1065",
+          "id": "01M5J0XGFG965TZ0R00443EBY7",
           "slug": "wr9-vs-ueberschuldung-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -2787,7 +2913,7 @@
           ]
         },
         {
-          "id": "01M5T5B7YKFSGCMF0D1MJ085AR",
+          "id": "01M5J0XGFGH5M3KBEFHB2K3FED",
           "slug": "wr9-vs-ueberschuldung-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -2799,7 +2925,7 @@
           "sample_solution": "Dilara verliert ihre Stelle und kann ihre Rate nicht mehr zahlen. Sie geht schon nach der ersten Mahnung zur Beratung, die mit den Gläubigern Zahlungspläne verabredet, bevor eine Pfändung droht."
         },
         {
-          "id": "01M5HFBWHMXM8249SGQ9TPNYSA",
+          "id": "01M5J0XGFGP9FQW42AS921MPDA",
           "slug": "wr9-vs-ueberschuldung-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -2830,8 +2956,8 @@
       ]
     },
     {
-      "id": "01M5JYYBW928072YX26R9E2CXZ",
-      "atom_uri": "urn:zam:atom:01M5JYYBW928072YX26R9E2CXZ",
+      "id": "01M5J0XGFGAYAD4K3HT8TF7J5V",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGAYAD4K3HT8TF7J5V",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-vs-zahlung",
       "title": "Zahlungsmöglichkeiten situationsgerecht wählen",
@@ -2870,7 +2996,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M50RXD35C7P998XP7HY1GWZ4",
+          "id": "01M5J0XGFGER73FYZA1WS1TYAV",
           "slug": "wr9-vs-zahlung-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -2899,7 +3025,7 @@
           ]
         },
         {
-          "id": "01M5ST0HR8E6PHBVHVPMFXS02M",
+          "id": "01M5J0XGFGSJHHPF0FBP2TKWBH",
           "slug": "wr9-vs-zahlung-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -2911,7 +3037,7 @@
           "sample_solution": "Mia bekommt eine SMS, ihr Konto werde in 24 Stunden gesperrt, und soll über einen Link PIN und TAN eingeben. Sie erkennt die typischen Merkmale, öffnet den Link nicht und fragt über die Bank-App nach."
         },
         {
-          "id": "01M5WB83R9BR1Z4S91AADCM7JS",
+          "id": "01M5J0XGFGBVMWXXQ38NSK1R5W",
           "slug": "wr9-vs-zahlung-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -2942,8 +3068,8 @@
       ]
     },
     {
-      "id": "01M5G1N6KQA420K3BGZMBYMECJ",
-      "atom_uri": "urn:zam:atom:01M5G1N6KQA420K3BGZMBYMECJ",
+      "id": "01M5J0XGFG54A40P5N3432ZXG6",
+      "atom_uri": "urn:zam:atom:01M5J0XGFG54A40P5N3432ZXG6",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-vs-ecommerce",
       "title": "E-Commerce: Chancen und Gefahren",
@@ -2951,7 +3077,18 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=vs-ecommerce",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGAYAD4K3HT8TF7J5V",
+          "type": "soft",
+          "rationale": "Beim Onlinekauf entscheidet die Zahlungsart über das Risiko."
+        },
+        {
+          "atom_id": "01M5J0XGFG6G2GRXG1CT2FMXFE",
+          "type": "soft",
+          "rationale": "Das Widerrufsrecht und die Verbraucherzentralen gelten auch im Netz."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -2982,7 +3119,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5AE8NHJXC2KDJFQ0WZ2TCWT",
+          "id": "01M5J0XGFGSN7PNSEYHZTFBE1N",
           "slug": "wr9-vs-ecommerce-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -3011,7 +3148,7 @@
           ]
         },
         {
-          "id": "01M54SAA20009R1P6H6V06K2WV",
+          "id": "01M5J0XGFGHBTGFRB2SC6628VE",
           "slug": "wr9-vs-ecommerce-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -3023,7 +3160,7 @@
           "sample_solution": "Ein Shop verkauft Markensneaker für ein Viertel des üblichen Preises, nennt keine Anschrift und akzeptiert nur Vorkasse. Emre findet außerhalb des Shops keine Bewertungen und bestellt dort nicht."
         },
         {
-          "id": "01M5FCNQFH4AK6Q179B4SBTRXP",
+          "id": "01M5J0XGFGDP6GCX5N26JTNCQM",
           "slug": "wr9-vs-ecommerce-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -3054,8 +3191,8 @@
       ]
     },
     {
-      "id": "01M54V466DP2SDHFQTMCSPK6FV",
-      "atom_uri": "urn:zam:atom:01M54V466DP2SDHFQTMCSPK6FV",
+      "id": "01M5J0XGFGWYY0RZ09VHHP6VMJ",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGWYY0RZ09VHHP6VMJ",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-vs-socialmedia",
       "title": "Social Media bewerten: Recht, Geld und Daten",
@@ -3063,7 +3200,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=vs-socialmedia",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGPM1Y1ZY3DSSFT6JW",
+          "type": "soft",
+          "rationale": "Angebote im Netz werden mit denselben Prüffragen bewertet."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -3094,7 +3237,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M554X17HQTY79NWH6CR6JDQ9",
+          "id": "01M5J0XGFGXW9R5KVGBJ5KQKWG",
           "slug": "wr9-vs-socialmedia-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -3123,7 +3266,7 @@
           ]
         },
         {
-          "id": "01M5MR3J0MXSAYDTPNMXQKSP3J",
+          "id": "01M5J0XGFGM8BKJE2BBASFVDNF",
           "slug": "wr9-vs-socialmedia-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -3135,7 +3278,7 @@
           "sample_solution": "Ein Netzwerk kostet Kim nichts. Es merkt sich aber, welche Videos sie ansieht, und zeigt ihr dazu passende Werbung. Die Firmen bezahlen das Netzwerk dafür, Kim gezielt zu erreichen."
         },
         {
-          "id": "01M5TP7XAZQZVJXZ6Y87C1GXR7",
+          "id": "01M5J0XGFGBS9RCKEP3R7729H3",
           "slug": "wr9-vs-socialmedia-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -3166,8 +3309,8 @@
       ]
     },
     {
-      "id": "01M50NS9Y0WXCJ6K8K2NHWMTB1",
-      "atom_uri": "urn:zam:atom:01M50NS9Y0WXCJ6K8K2NHWMTB1",
+      "id": "01M5J0XGFGM6S7H8CC6F4G3ATQ",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGM6S7H8CC6F4G3ATQ",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-re-ordnung",
       "title": "Warum es Recht und Gesetze gibt",
@@ -3206,7 +3349,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5A974QF656QYVRFXK6NF5E1",
+          "id": "01M5J0XGFG3M1Z0JKFYSVXA5GT",
           "slug": "wr9-re-ordnung-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -3235,7 +3378,7 @@
           ]
         },
         {
-          "id": "01M5T3PJ9VGFYJFW301V5TCA20",
+          "id": "01M5J0XGFGWMVRCD9PMWVE13J2",
           "slug": "wr9-re-ordnung-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -3247,7 +3390,7 @@
           "sample_solution": "Mia kauft von Jonas ein gebrauchtes Handy: Beide sind gleichberechtigt und schließen einen Vertrag, das ist Privatrecht. Fährt Mia später bei Rot über die Ampel, hat der Staat die Verkehrsregel vorgegeben und setzt sie durch, das ist öffentliches Recht."
         },
         {
-          "id": "01M5MMAWNF1QM533X62TB9RDKA",
+          "id": "01M5J0XGFG32V3MKY1X3A9SN1V",
           "slug": "wr9-re-ordnung-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -3278,8 +3421,8 @@
       ]
     },
     {
-      "id": "01M54RWVZ4ASNSCXAZN049K4PJ",
-      "atom_uri": "urn:zam:atom:01M54RWVZ4ASNSCXAZN049K4PJ",
+      "id": "01M5J0XGFG61CBV3PHTQ0GRFE5",
+      "atom_uri": "urn:zam:atom:01M5J0XGFG61CBV3PHTQ0GRFE5",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-re-lebensalter",
       "title": "Rechtsfähigkeit und Geschäftsfähigkeit",
@@ -3287,7 +3430,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=re-lebensalter",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGM6S7H8CC6F4G3ATQ",
+          "type": "soft",
+          "rationale": "Rechtsfähigkeit und Geschäftsfähigkeit sind Regeln der Rechtsordnung."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -3318,7 +3467,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5ZTW5X8FHJ04JGYDD2V4MGR",
+          "id": "01M5J0XGFGNK4Z0AK1K413498G",
           "slug": "wr9-re-lebensalter-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -3347,7 +3496,7 @@
           ]
         },
         {
-          "id": "01M5HNWMCN77ECBKZ2DTV90WCK",
+          "id": "01M5J0XGFGGDWGPPQZB397TMH6",
           "slug": "wr9-re-lebensalter-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -3359,7 +3508,7 @@
           "sample_solution": "Lena, 15, unterschreibt allein einen Ratenvertrag über ein Tablet. Ihre Eltern wissen nichts davon, der Vertrag hängt in der Schwebe. Genehmigen die Eltern, gilt er von Anfang an; verweigern sie, ist er unwirksam."
         },
         {
-          "id": "01M5G1D0C4CKFTZWXTM686KF34",
+          "id": "01M5J0XGFGBKJCW1T546ES05RY",
           "slug": "wr9-re-lebensalter-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -3390,8 +3539,8 @@
       ]
     },
     {
-      "id": "01M5EK08854QPWFBN8RB0YFWRX",
-      "atom_uri": "urn:zam:atom:01M5EK08854QPWFBN8RB0YFWRX",
+      "id": "01M5J0XGFG6RX0W7MD9D16CMCR",
+      "atom_uri": "urn:zam:atom:01M5J0XGFG6RX0W7MD9D16CMCR",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-re-gesetz",
       "title": "Gesetze lesen und einen Rechtsfall lösen",
@@ -3399,7 +3548,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=re-gesetz",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGM6S7H8CC6F4G3ATQ",
+          "type": "soft",
+          "rationale": "Das Arbeiten mit Gesetzen setzt voraus, was eine Rechtsordnung ist."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -3430,7 +3585,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5J45N07PVK6YDHFYAP59F09",
+          "id": "01M5J0XGFGY3RWM3P365TDVKDD",
           "slug": "wr9-re-gesetz-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -3459,7 +3614,7 @@
           ]
         },
         {
-          "id": "01M58KAV501EMV80M1QXH0DD35",
+          "id": "01M5J0XGFGY30E4SMS9RXDKSTZ",
           "slug": "wr9-re-gesetz-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -3471,7 +3626,7 @@
           "sample_solution": "Frage: Muss Luis das geliehene Zelt zurückgeben? Vorschrift: § 604 Abs. 1 BGB. Das Zelt wurde bis Montag geliehen, die Zeit ist abgelaufen, also passt der Fall zum Tatbestand. Ergebnis: Luis muss es zurückgeben."
         },
         {
-          "id": "01M5QB4GKWXBG4N9BBYF549D4Z",
+          "id": "01M5J0XGFGSEREXEB1XQ2K5SNJ",
           "slug": "wr9-re-gesetz-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -3502,8 +3657,8 @@
       ]
     },
     {
-      "id": "01M5AEHY88EJCNF2BR0GQYF0TM",
-      "atom_uri": "urn:zam:atom:01M5AEHY88EJCNF2BR0GQYF0TM",
+      "id": "01M5J0XGFGC7PT9TP5R6BDRP00",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGC7PT9TP5R6BDRP00",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-re-jugendschutz",
       "title": "Das Jugendschutzgesetz",
@@ -3511,7 +3666,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=re-jugendschutz",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFG61CBV3PHTQ0GRFE5",
+          "type": "soft",
+          "rationale": "Der Jugendschutz knüpft an Altersgrenzen an."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -3542,7 +3703,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M55Q385TXAKGA6461QBG19GD",
+          "id": "01M5J0XGFGN3THG469BZH9FKSP",
           "slug": "wr9-re-jugendschutz-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -3571,7 +3732,7 @@
           ]
         },
         {
-          "id": "01M5GD5Z91HJ1WRKA2QNXYJFPV",
+          "id": "01M5J0XGFG4JGNJR7QS1D3HT48",
           "slug": "wr9-re-jugendschutz-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -3583,7 +3744,7 @@
           "sample_solution": "Die 15-jährige Emma isst um 19 Uhr allein in einer Pizzeria zu Abend, das ist erlaubt. Um 23.30 Uhr möchte sie dort noch bleiben. Jetzt braucht sie die Begleitung ihrer Eltern oder einer erziehungsbeauftragten Person."
         },
         {
-          "id": "01M5QS4CVB5YMK5B6CJY10314F",
+          "id": "01M5J0XGFGTWF751ZTB21RSX0H",
           "slug": "wr9-re-jugendschutz-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -3614,8 +3775,8 @@
       ]
     },
     {
-      "id": "01M51HY2X8DA1AEWKGVK8VWAH5",
-      "atom_uri": "urn:zam:atom:01M51HY2X8DA1AEWKGVK8VWAH5",
+      "id": "01M5J0XGFGMVF72AVFS0KPRXPZ",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGMVF72AVFS0KPRXPZ",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-ve-eigentum",
       "title": "Besitz und Eigentum",
@@ -3654,7 +3815,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5E66H0SZZEJGPMDBAZGWSJ4",
+          "id": "01M5J0XGFGJ7353CEWVEZNSWQQ",
           "slug": "wr9-ve-eigentum-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -3683,7 +3844,7 @@
           ]
         },
         {
-          "id": "01M5V0M6NQTNCTYSMBQVBWQ7RN",
+          "id": "01M5J0XGFG5E8PN45FW0HD9WP4",
           "slug": "wr9-ve-eigentum-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -3695,7 +3856,7 @@
           "sample_solution": "Mira kauft auf dem Flohmarkt ein Rad von einem Unbekannten und ahnt nichts vom Diebstahl. Das Rad gehört weiter Ben, dem es gestohlen wurde. Mira ist nur Besitzerin und muss es auf Verlangen herausgeben."
         },
         {
-          "id": "01M5J5WYYADA3Y0E4DV0EWEK2P",
+          "id": "01M5J0XGFGS18EQKBQNDDJ93TA",
           "slug": "wr9-ve-eigentum-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -3726,8 +3887,8 @@
       ]
     },
     {
-      "id": "01M54BG71H7WZQ99CBEX08AZ3W",
-      "atom_uri": "urn:zam:atom:01M54BG71H7WZQ99CBEX08AZ3W",
+      "id": "01M5J0XGFGQZHPXKQZYKPGJ1V8",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGQZHPXKQZYKPGJ1V8",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-ve-kaufvertrag",
       "title": "Wie ein Kaufvertrag entsteht",
@@ -3735,7 +3896,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=ve-kaufvertrag",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFG61CBV3PHTQ0GRFE5",
+          "type": "hard",
+          "rationale": "Ein wirksamer Kaufvertrag setzt voraus, wer Verträge schließen kann."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -3766,7 +3933,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5A4KV3S8X5SRCA2B8XKXT4P",
+          "id": "01M5J0XGFG1Z7Y1P4B123E6AJS",
           "slug": "wr9-ve-kaufvertrag-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -3795,7 +3962,7 @@
           ]
         },
         {
-          "id": "01M5F0KV9MTMJH2833XNY5S8Y7",
+          "id": "01M5J0XGFGTM5AM0RRPQCNJEQF",
           "slug": "wr9-ve-kaufvertrag-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -3807,7 +3974,7 @@
           "sample_solution": "Anna bietet ihr Fahrrad für 120 Euro an, Ben antwortet: „Ich nehme es für 100 Euro.“ Das ist keine Annahme, sondern ein neuer Antrag. Erst wenn Anna sagt: „Einverstanden“, ist der Vertrag da."
         },
         {
-          "id": "01M5BQNW2NP0T79HZ064YVPFNY",
+          "id": "01M5J0XGFG4CAETPM982T8B0FV",
           "slug": "wr9-ve-kaufvertrag-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -3838,8 +4005,8 @@
       ]
     },
     {
-      "id": "01M5YQHWHKV3CNQPZEPEXVS587",
-      "atom_uri": "urn:zam:atom:01M5YQHWHKV3CNQPZEPEXVS587",
+      "id": "01M5J0XGFGG1N0E8N8YH51P9SJ",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGG1N0E8N8YH51P9SJ",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-ve-erfuellung",
       "title": "Verpflichtung und Erfüllung beim Kauf",
@@ -3847,7 +4014,18 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=ve-erfuellung",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGQZHPXKQZYKPGJ1V8",
+          "type": "hard",
+          "rationale": "Erfüllt wird, was ein Kaufvertrag verspricht."
+        },
+        {
+          "atom_id": "01M5J0XGFGMVF72AVFS0KPRXPZ",
+          "type": "hard",
+          "rationale": "Die Übereignung setzt den Unterschied von Besitz und Eigentum voraus."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -3878,7 +4056,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5362MRGYNZ3K77H4ZCVE73G",
+          "id": "01M5J0XGFGKRQ46VAY80EXDZYS",
           "slug": "wr9-ve-erfuellung-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -3907,7 +4085,7 @@
           ]
         },
         {
-          "id": "01M5SP6DW6MSAA8451DKDVPM35",
+          "id": "01M5J0XGFGSBDWJ61EASKVTW2K",
           "slug": "wr9-ve-erfuellung-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -3919,7 +4097,7 @@
           "sample_solution": "Nina vereinbart mit einem Händler den Kauf eines Tablets für 250 Euro: Das ist der Vertrag, noch gehört das Tablet dem Händler. Am Abholtag übergibt er es, beide sind sich über den Eigentumsübergang einig, und Nina zahlt. Damit sind die Pflichten erfüllt."
         },
         {
-          "id": "01M5T31KMZ0ZQ2T8PYQVFKG15F",
+          "id": "01M5J0XGFGXF2CXFPMY0N73APH",
           "slug": "wr9-ve-erfuellung-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -3950,8 +4128,8 @@
       ]
     },
     {
-      "id": "01M55YSSEW0E07VQZ2THYCE86K",
-      "atom_uri": "urn:zam:atom:01M55YSSEW0E07VQZ2THYCE86K",
+      "id": "01M5J0XGFG3XSWD45RPG4014E5",
+      "atom_uri": "urn:zam:atom:01M5J0XGFG3XSWD45RPG4014E5",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-ve-leistungsort",
       "title": "Leistungsort und Eigentumsvorbehalt",
@@ -3959,7 +4137,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=ve-leistungsort",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGG1N0E8N8YH51P9SJ",
+          "type": "hard",
+          "rationale": "Der Leistungsort bestimmt, wo die Erfüllung geschieht."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -3990,7 +4174,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5BVABQH4EX8725G2K05XBQ4",
+          "id": "01M5J0XGFG41QM931GY9QB3DXF",
           "slug": "wr9-ve-leistungsort-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -4019,7 +4203,7 @@
           ]
         },
         {
-          "id": "01M5ZN51Q6JR6YV5DWFKQDJAKW",
+          "id": "01M5J0XGFGHEMGJCGYAJSRZH3W",
           "slug": "wr9-ve-leistungsort-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -4031,7 +4215,7 @@
           "sample_solution": "Ein Händler überlässt Kim ein Notebook gegen zwölf Monatsraten. Weil er sich das Eigentum vorbehalten hat, gehört das Notebook ihm bis zur letzten Rate. Zahlt Kim nicht mehr, steht der Händler besser da als mit einer bloßen Geldforderung."
         },
         {
-          "id": "01M5BT6DBVXVSESNF087SXR0XC",
+          "id": "01M5J0XGFGMK89MP8D8FXCQBSJ",
           "slug": "wr9-ve-leistungsort-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -4062,8 +4246,8 @@
       ]
     },
     {
-      "id": "01M5DQB8Q9EGP8B32HJ8WH50PB",
-      "atom_uri": "urn:zam:atom:01M5DQB8Q9EGP8B32HJ8WH50PB",
+      "id": "01M5J0XGFGC1QKWNQBVAR7W02N",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGC1QKWNQBVAR7W02N",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-ve-verzug",
       "title": "Zahlungs- und Lieferungsverzug",
@@ -4071,7 +4255,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=ve-verzug",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGQZHPXKQZYKPGJ1V8",
+          "type": "hard",
+          "rationale": "Verzug ist die Verletzung einer Pflicht aus dem Kaufvertrag."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -4102,7 +4292,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5D20SJ0WZ0Y9C74MSAHMHDP",
+          "id": "01M5J0XGFGSFVRCCJ40H0EGWAJ",
           "slug": "wr9-ve-verzug-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -4131,7 +4321,7 @@
           ]
         },
         {
-          "id": "01M5M3J29C394K6BZ4TNTVXZPE",
+          "id": "01M5J0XGFG3851JXQBK6HFKMA9",
           "slug": "wr9-ve-verzug-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -4143,7 +4333,7 @@
           "sample_solution": "Mara soll eine Rechnung bis zum 15. März bezahlen. Weil der Termin im Kalender steht, braucht es keine Mahnung. Zahlt sie am 20. März noch immer nicht, ohne dass etwas sie am Zahlen hindert, ist sie in Verzug."
         },
         {
-          "id": "01M5K042WACBK36GMYMC6PXBC5",
+          "id": "01M5J0XGFGF0B701XP5GXGQAR3",
           "slug": "wr9-ve-verzug-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -4174,8 +4364,8 @@
       ]
     },
     {
-      "id": "01M569BC8HERM0R69QFCVHFEKC",
-      "atom_uri": "urn:zam:atom:01M569BC8HERM0R69QFCVHFEKC",
+      "id": "01M5J0XGFGNG83FANMTWRNG3BN",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGNG83FANMTWRNG3BN",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-ve-sachmangel",
       "title": "Sachmängel beim Kauf",
@@ -4183,7 +4373,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=ve-sachmangel",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGQZHPXKQZYKPGJ1V8",
+          "type": "hard",
+          "rationale": "Ein Mangel verletzt die Pflicht des Verkäufers aus dem Kaufvertrag."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -4214,7 +4410,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5FN04SYT9X6YD18YRP29E24",
+          "id": "01M5J0XGFGHEW9SABA45YP45ZE",
           "slug": "wr9-ve-sachmangel-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -4243,7 +4439,7 @@
           ]
         },
         {
-          "id": "01M57JJJZ5ZM9NR65DQNEEP2P4",
+          "id": "01M5J0XGFG27GTPGSNVR2GSXAC",
           "slug": "wr9-ve-sachmangel-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -4255,7 +4451,7 @@
           "sample_solution": "Ein Händler verkauft einen Fernseher mit Herstellergarantie auf fünf Jahre. Nach 30 Monaten fällt das Gerät aus. Die gesetzliche Gewährleistung gegen den Händler ist dann verjährt, die Garantie läuft noch: Der Käufer wendet sich nach deren Bedingungen an den Hersteller."
         },
         {
-          "id": "01M55DGCFJXHX1K5RKT0JYJTAP",
+          "id": "01M5J0XGFG4D1D8H2ZAXCJKMFD",
           "slug": "wr9-ve-sachmangel-extra",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -4269,8 +4465,8 @@
       ]
     },
     {
-      "id": "01M5CK6YBK2BH3JKEV21FJPXDV",
-      "atom_uri": "urn:zam:atom:01M5CK6YBK2BH3JKEV21FJPXDV",
+      "id": "01M5J0XGFG7GMHWT3JV9WW9F3W",
+      "atom_uri": "urn:zam:atom:01M5J0XGFG7GMHWT3JV9WW9F3W",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-st-strafmonopol",
       "title": "Das Strafmonopol des Staates",
@@ -4309,7 +4505,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5NTVH5EVA139DX4TWS324AE",
+          "id": "01M5J0XGFGSFJBPSVYMNG8KMPN",
           "slug": "wr9-st-strafmonopol-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -4338,7 +4534,7 @@
           ]
         },
         {
-          "id": "01M5RC2KQTEEG356XQQAXV7SXX",
+          "id": "01M5J0XGFGHNKXSJM7HK0QSJBY",
           "slug": "wr9-st-strafmonopol-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -4350,7 +4546,7 @@
           "sample_solution": "Ein Land beschließt im Mai, ein bisher erlaubtes Verhalten unter Strafe zu stellen. Wer im April so gehandelt hat, darf nicht bestraft werden, weil die Strafbarkeit zur Tatzeit noch nicht bestand."
         },
         {
-          "id": "01M5KG57RJYN4YQJ825C2DZ2D3",
+          "id": "01M5J0XGFGWNJSHJZNFVCNW35E",
           "slug": "wr9-st-strafmonopol-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -4381,8 +4577,8 @@
       ]
     },
     {
-      "id": "01M5JVN0F3KCY3GC2Q87JWMBR2",
-      "atom_uri": "urn:zam:atom:01M5JVN0F3KCY3GC2Q87JWMBR2",
+      "id": "01M5J0XGFG1PZ5W6TV86P5AANS",
+      "atom_uri": "urn:zam:atom:01M5J0XGFG1PZ5W6TV86P5AANS",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-st-tatbestand",
       "title": "Voraussetzungen der Strafbarkeit",
@@ -4390,7 +4586,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=st-tatbestand",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFG7GMHWT3JV9WW9F3W",
+          "type": "soft",
+          "rationale": "Die Prüfung der Strafbarkeit setzt das Strafmonopol des Staates voraus."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -4421,7 +4623,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5FFM4H05A91A6X2WJY7J45P",
+          "id": "01M5J0XGFGT1SAX7VBQPR2BXVB",
           "slug": "wr9-st-tatbestand-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -4450,7 +4652,7 @@
           ]
         },
         {
-          "id": "01M5RMQSE7PKDV3X396XVEKPN7",
+          "id": "01M5J0XGFGWV9BWZ6G4VFH8CVY",
           "slug": "wr9-st-tatbestand-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -4462,7 +4664,7 @@
           "sample_solution": "Lara zerkratzt absichtlich das Auto ihres Nachbarn. Tatbestand der Sachbeschädigung: erfüllt. Rechtswidrig: ja, es gibt keinen Rechtfertigungsgrund. Schuld: ja, Lara ist erwachsen und gesund. Ergebnis: strafbar. Wäre Lara zwölf, fehlte die Schuld, und sie bliebe straflos."
         },
         {
-          "id": "01M51PN8A5DYWG5BNY9QTNVZMQ",
+          "id": "01M5J0XGFGST55MQXV134CVPHJ",
           "slug": "wr9-st-tatbestand-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -4493,8 +4695,8 @@
       ]
     },
     {
-      "id": "01M56BWTYS8E42K2YGF6HNG3QS",
-      "atom_uri": "urn:zam:atom:01M56BWTYS8E42K2YGF6HNG3QS",
+      "id": "01M5J0XGFG1TA2N09ZW7ZWCV7M",
+      "atom_uri": "urn:zam:atom:01M5J0XGFG1TA2N09ZW7ZWCV7M",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-st-folgen",
       "title": "Strafen, weitere Rechtsfolgen und ihre Wirkung",
@@ -4502,7 +4704,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=st-folgen",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFG1PZ5W6TV86P5AANS",
+          "type": "hard",
+          "rationale": "Folgen gibt es nur für eine strafbare Tat."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -4533,7 +4741,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M585Q1XPKG87CZ3D8HMSW4F5",
+          "id": "01M5J0XGFGBFWX78D4VTCV1JJT",
           "slug": "wr9-st-folgen-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -4562,7 +4770,7 @@
           ]
         },
         {
-          "id": "01M5RKQ83KX9GW1J1XD198WX9H",
+          "id": "01M5J0XGFGNKJZ0BNA1NA3HG1J",
           "slug": "wr9-st-folgen-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -4574,7 +4782,7 @@
           "sample_solution": "Jakob wird wegen Betrugs zu acht Monaten Freiheitsstrafe verurteilt. Er hat keine Vorstrafen, entschuldigt sich und gleicht den Schaden aus. Das Gericht erwartet, dass er nicht rückfällig wird, und setzt die Strafe für drei Jahre zur Bewährung aus."
         },
         {
-          "id": "01M5QB5BAMGFE94TVNYTRTFT28",
+          "id": "01M5J0XGFG5Q8GV3PMM7FEVAAW",
           "slug": "wr9-st-folgen-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -4605,8 +4813,8 @@
       ]
     },
     {
-      "id": "01M5K8C3F4HAR8YD78PMHBTYMT",
-      "atom_uri": "urn:zam:atom:01M5K8C3F4HAR8YD78PMHBTYMT",
+      "id": "01M5J0XGFGQ6J07E2JNVEMQK8T",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGQ6J07E2JNVEMQK8T",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-st-verfahren",
       "title": "Das Strafverfahren und seine Beteiligten",
@@ -4614,7 +4822,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=st-verfahren",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFG7GMHWT3JV9WW9F3W",
+          "type": "soft",
+          "rationale": "Das Strafverfahren setzt das staatliche Strafen um."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -4645,7 +4859,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5YD9HCDHGCY3N8T99B4HDF8",
+          "id": "01M5J0XGFGSSBP0CEQ0TN9427V",
           "slug": "wr9-st-verfahren-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -4674,7 +4888,7 @@
           ]
         },
         {
-          "id": "01M5QEETB7ND8KY3JWAZEWWV84",
+          "id": "01M5J0XGFGZP10ZN3SD9J0M8MA",
           "slug": "wr9-st-verfahren-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -4686,7 +4900,7 @@
           "sample_solution": "Mia wird beschuldigt, ein Handy gestohlen zu haben, doch die Zeugen widersprechen sich. Weil das Gericht nicht von ihrer Schuld überzeugt ist, wird sie freigesprochen. Sie musste nicht beweisen, dass sie unschuldig ist."
         },
         {
-          "id": "01M5GN56MKXGZV1672EW0BC2TS",
+          "id": "01M5J0XGFGBPCSE941984NB5HA",
           "slug": "wr9-st-verfahren-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -4717,8 +4931,8 @@
       ]
     },
     {
-      "id": "01M5YC4M4HJCW1W1TJQ0DKP719",
-      "atom_uri": "urn:zam:atom:01M5YC4M4HJCW1W1TJQ0DKP719",
+      "id": "01M5J0XGFGTPS2HJVS9X1159ZB",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGTPS2HJVS9X1159ZB",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-st-ordnungswidrigkeit",
       "title": "Straftat oder Ordnungswidrigkeit?",
@@ -4726,7 +4940,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=st-ordnungswidrigkeit",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFG1TA2N09ZW7ZWCV7M",
+          "type": "soft",
+          "rationale": "Die Ordnungswidrigkeit wird an den Folgen einer Straftat abgegrenzt."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -4757,7 +4977,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5RY16PTDJ2ADMWSX0B54NKJ",
+          "id": "01M5J0XGFGVNWJZJ11ETC9FYHX",
           "slug": "wr9-st-ordnungswidrigkeit-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -4786,7 +5006,7 @@
           ]
         },
         {
-          "id": "01M5FS3GK26SQHH6CC16X519BV",
+          "id": "01M5J0XGFG66JB9JCBYM79X7NY",
           "slug": "wr9-st-ordnungswidrigkeit-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -4798,7 +5018,7 @@
           "sample_solution": "Jonas fährt mit dem Rad bei Rot über die Ampel: Er erhält einen Bußgeldbescheid der Behörde, kann zwei Wochen lang Einspruch einlegen und hat keinen Eintrag im Führungszeugnis. Sophie stiehlt ein Fahrrad: Es kommt zur Anklage und zum Strafverfahren vor Gericht, und eine Verurteilung wird eingetragen."
         },
         {
-          "id": "01M598VGHTVPJHH83X3C4HEPY2",
+          "id": "01M5J0XGFG8GJF2D9S1TSYBE97",
           "slug": "wr9-st-ordnungswidrigkeit-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -4829,8 +5049,8 @@
       ]
     },
     {
-      "id": "01M57ABV6KHCHE4JJKC090G6YK",
-      "atom_uri": "urn:zam:atom:01M57ABV6KHCHE4JJKC090G6YK",
+      "id": "01M5J0XGFG6PF4X2K2ZP0D7AQM",
+      "atom_uri": "urn:zam:atom:01M5J0XGFG6PF4X2K2ZP0D7AQM",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-st-zivilfolgen",
       "title": "Zivilrechtliche Folgen einer strafbaren Handlung",
@@ -4838,7 +5058,13 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=st-zivilfolgen",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFG1PZ5W6TV86P5AANS",
+          "type": "soft",
+          "rationale": "Die zivilrechtlichen Folgen knüpfen an dieselbe Tat an."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -4869,7 +5095,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5ZDK3NAXZC35BPH4PYASCD5",
+          "id": "01M5J0XGFGA39VDZETHP2KKP1F",
           "slug": "wr9-st-zivilfolgen-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -4898,7 +5124,7 @@
           ]
         },
         {
-          "id": "01M5YRYVS497480V1059GJY4W2",
+          "id": "01M5J0XGFG5YK5YC3V01TVZQYF",
           "slug": "wr9-st-zivilfolgen-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -4910,7 +5136,7 @@
           "sample_solution": "Die vierjährige Lea spielt stundenlang allein an der Straße mit Steinen, ohne dass ihre Eltern je nach ihr sehen. Sie wirft einen Stein und beschädigt ein parkendes Auto. Die Eltern können nicht nachweisen, dass sie ausreichend aufgepasst haben, und müssen den Schaden ersetzen; Lea selbst haftet unter sieben Jahren nicht."
         },
         {
-          "id": "01M5FBN17G3FBV6XPS8WTYF6YA",
+          "id": "01M5J0XGFG6DF2TZJZRGYV6FMN",
           "slug": "wr9-st-zivilfolgen-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -4941,8 +5167,8 @@
       ]
     },
     {
-      "id": "01M53ZRSKTA0MBPN27MD4AFQ18",
-      "atom_uri": "urn:zam:atom:01M53ZRSKTA0MBPN27MD4AFQ18",
+      "id": "01M5J0XGFGZCHJH4WYCKT6Q83S",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGZCHJH4WYCKT6Q83S",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-st-jugend",
       "title": "Besonderheiten des Jugendstrafrechts",
@@ -4950,7 +5176,18 @@
       "reduction": "formal",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=st-jugend",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFG1PZ5W6TV86P5AANS",
+          "type": "hard",
+          "rationale": "Das Jugendstrafrecht bestimmt die Folgen der Strafbarkeit."
+        },
+        {
+          "atom_id": "01M5J0XGFG61CBV3PHTQ0GRFE5",
+          "type": "soft",
+          "rationale": "Altersgrenzen kennen die Lernenden schon aus der Geschäftsfähigkeit."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -4981,7 +5218,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5QN24R4706YPBJ83Q0ZAXSD",
+          "id": "01M5J0XGFG8BV5HF6H862WPRD5",
           "slug": "wr9-st-jugend-check",
           "language": "de",
           "tier": "tier1_fast",
@@ -5010,7 +5247,7 @@
           ]
         },
         {
-          "id": "01M5XK5TANXD99KQ5C67H4T2FY",
+          "id": "01M5J0XGFG41QZA0EGXM1GQ93J",
           "slug": "wr9-st-jugend-kern",
           "language": "de",
           "tier": "tier2_synthesis",
@@ -5022,7 +5259,7 @@
           "sample_solution": "Leon (16) stiehlt zum ersten Mal in einem Laden. Statt einer Jugendstrafe verpflichtet das Gericht ihn, sich zu entschuldigen und den Schaden wiedergutzumachen. Erst wenn solche Mittel nicht ausreichen oder die Schuld sehr schwer wiegt, käme eine Jugendstrafe in Betracht."
         },
         {
-          "id": "01M5Z5E5AVVY7W86JXQMFSPB94",
+          "id": "01M5J0XGFG6VEYN6TRQNJH5XFP",
           "slug": "wr9-st-jugend-extra",
           "language": "de",
           "tier": "tier1_fast",
@@ -5053,8 +5290,8 @@
       ]
     },
     {
-      "id": "01M5800XJJ6706FCHKNN2XH9HF",
-      "atom_uri": "urn:zam:atom:01M5800XJJ6706FCHKNN2XH9HF",
+      "id": "01M5J0XGFGFCDTQ8G1MKSG6XGE",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGFCDTQ8G1MKSG6XGE",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-en-work-unemployment",
       "title": "Work and unemployment in the EU and the USA",
@@ -5062,7 +5299,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=en-work-unemployment",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGHP36R6EHRDMAY4E2",
+          "type": "soft",
+          "rationale": "Die englische Lektion vertieft Arbeit und Arbeitslosigkeit."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -5073,7 +5316,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5N8S119EABQM6ZHKHGM8PHX",
+          "id": "01M5J0XGFG9S40CVG8Y5F3WT9N",
           "slug": "wr9-en-work-unemployment-check",
           "language": "en",
           "tier": "tier1_fast",
@@ -5102,7 +5345,7 @@
           ]
         },
         {
-          "id": "01M5M39YACATA4RCFWW897WF31",
+          "id": "01M5J0XGFG903HCPZ7FAR73627",
           "slug": "wr9-en-work-unemployment-kern",
           "language": "en",
           "tier": "tier2_synthesis",
@@ -5114,7 +5357,7 @@
           "sample_solution": "A printing works closes because people now read the news online. Its machine operators know only the old machines, while nearby companies look for IT staff. Without retraining, the operators find no match, although other companies are hiring."
         },
         {
-          "id": "01M57DQABFTFBFJ09PREVQ7JW4",
+          "id": "01M5J0XGFGM7SMQB9KJM4KPH1S",
           "slug": "wr9-en-work-unemployment-extra",
           "language": "en",
           "tier": "tier1_fast",
@@ -5145,8 +5388,8 @@
       ]
     },
     {
-      "id": "01M5V98TZXX5TRSBHXA0X6S4W0",
-      "atom_uri": "urn:zam:atom:01M5V98TZXX5TRSBHXA0X6S4W0",
+      "id": "01M5J0XGFG0NY2WQCBGT8G8PGM",
+      "atom_uri": "urn:zam:atom:01M5J0XGFG0NY2WQCBGT8G8PGM",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-en-job-application",
       "title": "Applying for a job in English",
@@ -5154,7 +5397,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=en-job-application",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGTYV88GSWRGQNBS52",
+          "type": "soft",
+          "rationale": "Die englische Lektion vertieft die Bewerbung."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -5165,7 +5414,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5042MC21Z1JAYMA4SC38HTG",
+          "id": "01M5J0XGFGNW6F3H48BSH775K9",
           "slug": "wr9-en-job-application-check",
           "language": "en",
           "tier": "tier1_fast",
@@ -5194,7 +5443,7 @@
           ]
         },
         {
-          "id": "01M5W777E5DAZQ23N8FK9QY1G8",
+          "id": "01M5J0XGFG4QJ2Q03C6TVPZQP4",
           "slug": "wr9-en-job-application-kern",
           "language": "en",
           "tier": "tier2_synthesis",
@@ -5206,7 +5455,7 @@
           "sample_solution": "Mara applies for a job in a bakery. She says: “I am reliable. At my internship I prepared the shelves on my own twice a week, and I never came late.” She names a strength and proves it with a fact."
         },
         {
-          "id": "01M5RDB7VX3V4EJDHFXK63TAB2",
+          "id": "01M5J0XGFGS40J50NCEYZN14Z0",
           "slug": "wr9-en-job-application-extra",
           "language": "en",
           "tier": "tier1_fast",
@@ -5237,8 +5486,8 @@
       ]
     },
     {
-      "id": "01M57XJD969JX72YHSDTM2EMS4",
-      "atom_uri": "urn:zam:atom:01M57XJD969JX72YHSDTM2EMS4",
+      "id": "01M5J0XGFGSMK5MSETJS9Q7ACR",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGSMK5MSETJS9Q7ACR",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-en-supply-demand",
       "title": "Supply, demand and the economic cycle",
@@ -5246,7 +5495,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=en-supply-demand",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFG36GWYZ2G37MKTSHK",
+          "type": "soft",
+          "rationale": "Die englische Lektion vertieft Angebot und Nachfrage."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -5257,7 +5512,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5TER24WMXAPA8YH2NHD0HCZ",
+          "id": "01M5J0XGFGJ1730NZ1ZW05PW54",
           "slug": "wr9-en-supply-demand-check",
           "language": "en",
           "tier": "tier1_fast",
@@ -5286,7 +5541,7 @@
           ]
         },
         {
-          "id": "01M52DRVDY1QZSK388PEYMZAC0",
+          "id": "01M5J0XGFGDG4SYAJTM3D45S9C",
           "slug": "wr9-en-supply-demand-kern",
           "language": "en",
           "tier": "tier2_synthesis",
@@ -5298,7 +5553,7 @@
           "sample_solution": "After the holidays, families in a small town spend much less in the shops. The shop owner sells less, cuts the hours of her two assistants, and they have less money to spend in other shops themselves."
         },
         {
-          "id": "01M52Z6VRRHMZ0YT6K3JZA40A2",
+          "id": "01M5J0XGFGWH8HBG3NN4BJGJEM",
           "slug": "wr9-en-supply-demand-extra",
           "language": "en",
           "tier": "tier1_fast",
@@ -5329,8 +5584,8 @@
       ]
     },
     {
-      "id": "01M5CHGSVQE4JTPR8F6GSK49E5",
-      "atom_uri": "urn:zam:atom:01M5CHGSVQE4JTPR8F6GSK49E5",
+      "id": "01M5J0XGFGNC5ZRW4CG9WYC0PF",
+      "atom_uri": "urn:zam:atom:01M5J0XGFGNC5ZRW4CG9WYC0PF",
       "namespace": "zam-academy-wirtschaft-recht-realschule-9",
       "slug": "wr9-en-social-systems",
       "title": "Social systems in Germany and the USA",
@@ -5338,7 +5593,13 @@
       "reduction": "narrative",
       "typical_age_min": 14,
       "source_link": "https://academy.zam-os.org/wirtschaft-recht-realschule-9/#lesson=en-social-systems",
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "atom_id": "01M5J0XGFGTS386TN3C997T4K1",
+          "type": "soft",
+          "rationale": "Die englische Lektion vertieft die soziale Sicherung."
+        }
+      ],
       "curricula": [
         {
           "provider": "zam-academy",
@@ -5349,7 +5610,7 @@
       ],
       "practice_items": [
         {
-          "id": "01M5N9AZV617SHNSNASH6G9XYW",
+          "id": "01M5J0XGFG1B74JJDF6PJCPHVQ",
           "slug": "wr9-en-social-systems-check",
           "language": "en",
           "tier": "tier1_fast",
@@ -5378,7 +5639,7 @@
           ]
         },
         {
-          "id": "01M5XDGYA8TQHTB56SBT0Z59PK",
+          "id": "01M5J0XGFG585GEQCFNP5CDX1D",
           "slug": "wr9-en-social-systems-kern",
           "language": "en",
           "tier": "tier2_synthesis",
@@ -5390,7 +5651,7 @@
           "sample_solution": "Imagine a town where 100 workers pay for 40 pensioners. Later the same 100 workers must pay for 60 pensioners who also live longer. Each worker must then pay more, or pensions must be lower, or people must retire later."
         },
         {
-          "id": "01M5CZS182S2E3KT29CMXSYHVP",
+          "id": "01M5J0XGFGAFF4CW8SFEQ2VMR0",
           "slug": "wr9-en-social-systems-extra",
           "language": "en",
           "tier": "tier1_fast",
