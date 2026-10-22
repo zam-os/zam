@@ -255,8 +255,9 @@ only an Academy binding. Wirtschaft und Recht 9 is the opposite case: one
 Fachlehrplan serves groups I and III, so its manifest track `wpfg1-3` reaches
 I, IIIa and IIIb, and its Academy cell binds the four grade-9 learning areas
 to `I` and `III` and never to II. Its four optional English lessons carry only
-an Academy binding. The old partial school cell for this grade stays bundled
-until a mapping to the Academy cell is approved.
+an Academy binding. It replaces the old partial school cell of this grade:
+three of that cell's eight cards pass their review history to Academy
+successors, five retire without transferring mastery (approved 2026-10-22).
 
 A tile may retire practice items. A retired item keeps its cards and review
 history but stops representing its atom: token prerequisites derived from

@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "approved": "2026-10-22",
+  "note": "Freigegeben. Die Zelle (Version 2026.10.2) deklariert genau die drei replaces der A-Zeilen und die fünf retired_items der C-Zeilen. Die Zuordnung steht unverändert zur Freigabe vom 22. Oktober 2026.",
+  "source": "Ausdrückliche Freigabe von Thomas im Claude-Code-Chat am 22. Oktober 2026: „Zuordnung freigegeben. Retirement passt. Kann gemergt werden, danach ZAM PR publishen.“",
+  "source_repository": "zam-os/zam",
+  "source_commit": "bbdcc7695b288391362abcae95070f0fa6a9f61c",
+  "authorization": "Thomas hat am 22. Oktober 2026 alle acht Zuordnungen (3 A / 5 C) mit den fünf retired_items J02, J04, J06, J07 und J08, den Merge dieses PR und die anschließende Veröffentlichung des ZAM-PR ausdrücklich freigegeben. Die genau benannten replaces und retired_items dürfen veröffentlicht und synchronisiert werden; persönliche Karten und Reviewhistorien bleiben erhalten.",
+  "policy": "A: sicher gleicher Einzelabruf, genau ein Nachfolger. C: geteilter, korrigierter oder nicht lehrplankonformer Gesamtabruf; kein Lernstandsübertrag. Karten und Reviewhistorien bleiben erhalten. Nur temporäre Bibliotheken für die Prüfung verwenden.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-9-wirtschaft-recht-markt-vertraege-kvt.json",
+      "tile_id": "de-by:realschule-9-wirtschaft-recht-markt-vertraege",
+      "version": "2026.08.1",
+      "sha256": "d1b2418da5725fd690b4f57d406d4f9db2df816d222a14ab0cf5370f208b57d2"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-9-wirtschaft-recht-markt-vertraege",
+      "de_by_id": "01K4W9R0000000000000000J01",
+      "de_by_question": "In welcher Stufe der Geschäftsfähigkeit befindet sich ein 15-jähriger Jugendlicher nach deutschem Zivilrecht (§ 106 BGB)?",
+      "category": "A",
+      "academy_slug": "wr9-re-lebensalter-check",
+      "reason": "Identischer Einzelabruf: Eine 15-Jährige ist beschränkt geschäftsfähig (7 bis 17 Jahre). Frage und Antwort sind inhaltlich gleich; der Nachfolger nennt § 106 BGB nicht, fragt aber dieselbe Stufe."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-wirtschaft-recht-markt-vertraege",
+      "de_by_id": "01K4W9R0000000000000000J02",
+      "de_by_question": "Erkläre die drei Stufen der Geschäftsfähigkeit (geschäftsunfähig 0-6 J., beschränkt geschäftsfähig 7-17 J., voll geschäftsfähig ab 18 J.) und erläutere die Ausnahme des 'Taschengeldparagrafen' (§ 110 BGB).",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Mehrteiliger Abruf: drei Stufen der Geschäftsfähigkeit mit Altersgrenzen und der Taschengeldparagraf. Die neuen Karten fragen diese Punkte einzeln (beschränkte Geschäftsfähigkeit, Schwebezustand, Taschengeld). Kein einzelner Nachfolger deckt denselben Gesamtabruf, daher keine Übertragung einer Beherrschung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-wirtschaft-recht-markt-vertraege",
+      "de_by_id": "01K4W9R0000000000000000J03",
+      "de_by_question": "Ist das Ausstellen einer Ware im Schaufenster oder im Supermarktregal bereits ein rechtsverbindlicher Antrag (Angebot) des Händlers?",
+      "category": "A",
+      "academy_slug": "wr9-ve-kaufvertrag-extra",
+      "reason": "Identischer Einzelabruf: Eine Auslage im Schaufenster ist kein verbindlicher Antrag, sondern eine Aufforderung, selbst ein Angebot abzugeben. Der Nachfolger fragt dasselbe an einem Fahrrad im Schaufenster."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-wirtschaft-recht-markt-vertraege",
+      "de_by_id": "01K4W9R0000000000000000J04",
+      "de_by_question": "Erkläre das Zustandekommen eines Kaufvertrags durch zwei übereinstimmende Willenserklärungen (Antrag/Angebot und Annahme) und nenne die Hauptpflichten von Käufer und Verkäufer nach § 433 BGB.",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Mehrteiliger Abruf: Vertragsschluss durch Antrag und Annahme und die Hauptpflichten beider Seiten nach § 433 BGB. Die neuen Karten trennen Vertragsschluss, Annahme mit Änderung und Verpflichtungs- und Erfüllungsgeschäft. Kein einzelner Nachfolger deckt denselben Gesamtabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-wirtschaft-recht-markt-vertraege",
+      "de_by_id": "01K4W9R0000000000000000J05",
+      "de_by_question": "Was geschieht auf einem vollkommenen Markt mit dem Marktpreis, wenn das Angebot an Gütern bei unveränderter Nachfrage stark steigt (Angebotsüberhang)?",
+      "category": "A",
+      "academy_slug": "wr9-wh-verschiebung-check",
+      "reason": "Identischer Einzelabruf: Steigt das Angebot bei unveränderter Nachfrage stark, sinkt der Preis. Der Nachfolger fragt dieselbe Richtung als Gleichgewichtspreis."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-wirtschaft-recht-markt-vertraege",
+      "de_by_id": "01K4W9R0000000000000000J06",
+      "de_by_question": "Skizziere das Preis-Mengen-Diagramm mit fallender Nachfrage- und steigender Angebotskurve, definiere den Gleichgewichtspreis und erkläre die Folgen eines Angebots- bzw. Nachfrageüberhangs.",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Mehrteiliger Abruf: Diagramm skizzieren, Gleichgewichtspreis definieren und beide Überhänge erklären. Die neuen Karten fragen Gleichgewicht, Überhang und Markträumung einzeln. Kein einzelner Nachfolger deckt denselben Gesamtabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-wirtschaft-recht-markt-vertraege",
+      "de_by_id": "01K4W9R0000000000000000J07",
+      "de_by_question": "Welcher Sektor im Wirtschaftskreislauf vermittelt zwischen den Sparern (Ersparnisse) und den Investoren (Kredite)?",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Der erweiterte Wirtschaftskreislauf mit Banken ist nicht Stoff des Lehrplans Wirtschaft und Recht 9; dort steht der einfache Kreislauf aus Haushalten und Unternehmen. Das Paket nennt Banken nur als Grenze des Modells. Kein Nachfolger mit gleichem Abruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-wirtschaft-recht-markt-vertraege",
+      "de_by_id": "01K4W9R0000000000000000J08",
+      "de_by_question": "Beschreibe den erweiterten Wirtschaftskreislauf mit seinen fünf Sektoren (Private Haushalte, Unternehmen, Staat, Banken, Ausland) und erläutere die gegenläufigen Geld- und Güterströme zwischen Haushalten und Unternehmen.",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Der erweiterte Wirtschaftskreislauf mit fünf Sektoren ist nicht Stoff des Lehrplans Wirtschaft und Recht 9 (dort: einfacher Kreislauf). Kein Nachfolger mit gleichem Abruf."
+    }
+  ]
+}

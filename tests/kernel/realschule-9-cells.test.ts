@@ -25,11 +25,10 @@ import {
 // zam-academy:datennetze (#18); both are IT modules for any grade. BwR moved
 // to zam-academy:bwr-realschule-9 (#19). Explicit replacements preserve
 // histories; corrected items are retired without transferring mastery.
-// Wirtschaft und Recht 9 has an Academy cell (zam-os/zam-academy#27) that
-// does not replace the old partial school cell until its mapping is approved.
+// Wirtschaft und Recht 9 moved to zam-academy:wirtschaft-recht-realschule-9
+// (zam-os/zam-academy#27, #29).
 // See tests/kernel/zam-academy-*-cell.test.ts.
 const RS9_CELL_IDS = [
-  "de-by:realschule-9-wirtschaft-recht-markt-vertraege",
   "de-by:realschule-9-englisch-grammatik-syntax",
   "de-by:realschule-9-deutsch-argumentation-eroerterung",
   "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",

@@ -4,20 +4,48 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
+  buildReviewQueue,
   type Database,
   enrolBundledCell,
+  ensureCard,
+  evaluateRating,
   findBundledCellsForScope,
   getBundledCell,
   getBundledCellTile,
+  getTokenById,
+  installKvtTile,
+  type KvtTile,
   needsGenericCurriculumImport,
   openDatabase,
 } from "../../src/kernel/index.js";
+import legacyRaw from "../fixtures/legacy/de-by-realschule-9-wirtschaft-recht-markt-vertraege-kvt.json" with {
+  type: "json",
+};
+import mapping from "../fixtures/legacy/zam-academy-wirtschaft-recht-realschule-9-replaces-de-by.json" with {
+  type: "json",
+};
 
 const CELL_ID = "zam-academy:wirtschaft-recht-realschule-9";
-const LEGACY_ID = "de-by:realschule-9-wirtschaft-recht-markt-vertraege";
 const APP = "https://academy.zam-os.org/wirtschaft-recht-realschule-9/";
 const tile = getBundledCellTile(CELL_ID)!;
 const items = tile.atoms.flatMap((atom) => atom.practice_items);
+const bySlug = new Map(items.map((item) => [item.slug, item]));
+const legacy = legacyRaw as unknown as KvtTile;
+
+// Thomas approved all eight rows for zam-os/zam-academy#29 on 2026-10-22. The
+// source snapshot and the decision record are copied without changing bytes.
+const REPLACEMENTS: Record<string, string> = {
+  "01K4W9R0000000000000000J01": "wr9-re-lebensalter-check",
+  "01K4W9R0000000000000000J03": "wr9-ve-kaufvertrag-extra",
+  "01K4W9R0000000000000000J05": "wr9-wh-verschiebung-check",
+};
+const RETIRED = [
+  "01K4W9R0000000000000000J02",
+  "01K4W9R0000000000000000J04",
+  "01K4W9R0000000000000000J06",
+  "01K4W9R0000000000000000J07",
+  "01K4W9R0000000000000000J08",
+];
 const CORE_COUNTS: Record<string, number> = {
   lb1: 10,
   lb2: 10,
@@ -34,10 +62,10 @@ const scope = (subject: string, track?: string, grade = 9) => ({
 });
 
 // Wirtschaft und Recht 9 is one Fachlehrplan for the groups I and III; group
-// II learns BwR in this grade (zam-os/zam-academy#27).
+// II learns BwR in this grade (zam-os/zam-academy#27, #29).
 describe("ZAM Academy Wirtschaft und Recht 9 Realschule cell", () => {
-  it("bundles the published bytes and keeps the old partial cell untouched", () => {
-    expect(tile.version).toBe("2026.10.1");
+  it("bundles the published bytes and removes the old partial cell from discovery", () => {
+    expect(tile.version).toBe("2026.10.2");
     expect(getBundledCell(CELL_ID)).toMatchObject({
       title: "Wirtschaft und Recht 9 Realschule (ZAM Academy)",
       publisher: "ZAM Academy",
@@ -45,10 +73,8 @@ describe("ZAM Academy Wirtschaft und Recht 9 Realschule cell", () => {
       atomCount: 50,
     });
     expect(items).toHaveLength(150);
-    // No mapping is approved yet, so nothing is replaced or retired.
-    expect(tile.retired_items).toBeUndefined();
-    for (const item of items) expect(item.replaces).toBeUndefined();
-    expect(getBundledCell(LEGACY_ID)).toBeDefined();
+    expect(getBundledCell(legacy.tile_id)).toBeUndefined();
+    expect(getBundledCellTile(legacy.tile_id)).toBeUndefined();
     const lock = JSON.parse(
       readFileSync(
         join(__dirname, "../fixtures/curriculum/zam-academy-cells.lock.json"),
@@ -60,12 +86,29 @@ describe("ZAM Academy Wirtschaft und Recht 9 Realschule cell", () => {
     expect(
       createHash("sha256")
         .update(
-          readFileSync(
-            join(__dirname, "../fixtures/curriculum", entry.file),
-          ),
+          readFileSync(join(__dirname, "../fixtures/curriculum", entry.file)),
         )
         .digest("hex"),
     ).toBe(entry.sha256);
+    expect(mapping.sources).toHaveLength(1);
+    const source = mapping.sources[0];
+    expect(source).toMatchObject({
+      tile_id: legacy.tile_id,
+      version: legacy.version,
+    });
+    expect(
+      createHash("sha256")
+        .update(
+          readFileSync(
+            join(
+              __dirname,
+              "../fixtures/legacy",
+              source.file.replace(/^tests\/fixtures\//, ""),
+            ),
+          ),
+        )
+        .digest("hex"),
+    ).toBe(source.sha256);
   });
 
   it("is offered to groups I, IIIa and IIIb, never to group II or other grades", () => {
@@ -179,8 +222,45 @@ describe("ZAM Academy Wirtschaft und Recht 9 Realschule cell", () => {
     }
   });
 
-  describe("enrolment", () => {
+  it("pins the three approved atomic successors and retires the five other questions", () => {
+    expect(mapping.approved).toBe("2026-10-22");
+    expect(mapping.source).toContain("Thomas");
+    expect(mapping.rows).toHaveLength(8);
+    expect(
+      Object.fromEntries(
+        mapping.rows
+          .filter((row) => row.category === "A")
+          .map((row) => [row.de_by_id, row.academy_slug]),
+      ),
+    ).toEqual(REPLACEMENTS);
+    expect(
+      mapping.rows
+        .filter((row) => row.category === "C")
+        .map((row) => row.de_by_id)
+        .sort(),
+    ).toEqual([...RETIRED].sort());
+    const declared = items.flatMap((item) =>
+      (item.replaces ?? []).map((id) => [id, item.slug]),
+    );
+    expect(declared).toHaveLength(3);
+    expect(Object.fromEntries(declared)).toEqual(REPLACEMENTS);
+    expect(tile.retired_items?.map((item) => item.id).sort()).toEqual(
+      [...RETIRED].sort(),
+    );
+    expect(
+      mapping.rows.map((row) => [row.de_by_cell, row.de_by_id]).sort(),
+    ).toEqual(
+      legacy.atoms
+        .flatMap((atom) =>
+          atom.practice_items.map((item) => [legacy.tile_id, item.id]),
+        )
+        .sort(),
+    );
+  });
+
+  describe("enrolment and retained review evidence", () => {
     let dir: string, db: Database;
+    const userId = "wr9-learner";
     beforeEach(async () => {
       dir = mkdtempSync(join(tmpdir(), "zam-academy-wr9-"));
       db = await openDatabase({
@@ -192,26 +272,153 @@ describe("ZAM Academy Wirtschaft und Recht 9 Realschule cell", () => {
       await db.close();
       rmSync(dir, { recursive: true, force: true, maxRetries: 10 });
     });
+    async function snapshot() {
+      return {
+        cards: (await db
+          .prepare("SELECT * FROM cards ORDER BY id")
+          .all()) as Array<Record<string, unknown>>,
+        reviews: (await db
+          .prepare("SELECT * FROM review_logs ORDER BY id")
+          .all()) as Array<Record<string, unknown>>,
+      };
+    }
+    const withoutToken = ({ token_id, ...rest }: Record<string, unknown>) =>
+      rest;
+    async function review(tokenId: string, index: number) {
+      const card = await ensureCard(db, tokenId, userId),
+        now = new Date();
+      await evaluateRating(db, {
+        cardId: card.id,
+        tokenId,
+        userId,
+        rating: index % 2 === 0 ? 1 : 3,
+        answerFormat: "recall",
+        responseTimeMs: 1200 + index * 100,
+        now,
+      });
+      await evaluateRating(db, {
+        cardId: card.id,
+        tokenId,
+        userId,
+        rating: index % 3 === 0 ? 2 : 4,
+        answerFormat: "recall",
+        responseTimeMs: 2000 + index * 100,
+        now: new Date(now.getTime() + (index + 1) * 86_400_000),
+      });
+    }
+    const queue = async (tokenIds: string[], now: Date) =>
+      (
+        await buildReviewQueue(db, {
+          userId,
+          tokenIds,
+          now,
+          buryNewSiblings: false,
+          buryReviewSiblings: false,
+        })
+      ).items;
 
-    it("creates one card per item and can sit beside the old partial cell without a conflict", async () => {
-      const legacyCards = getBundledCellTile(LEGACY_ID)!.atoms.reduce(
-        (n, atom) => n + atom.practice_items.length,
-        0,
-      );
-      const old = await enrolBundledCell(db, "wr9-learner", LEGACY_ID);
-      expect(old.success).toBe(true);
-      expect(old.cardsCreated).toBe(legacyCards);
-      const result = await enrolBundledCell(db, "wr9-learner", CELL_ID);
-      expect(result.success).toBe(true);
-      expect(result.cardsCreated).toBe(150);
+    it("enrols all 150 cards as one topic and preserves every schedule on repeat", async () => {
+      const result = await enrolBundledCell(db, userId, CELL_ID);
+      expect(result).toMatchObject({ success: true, cardsCreated: 150 });
       expect(result.alreadyEnrolled).toBe(false);
-      const again = await enrolBundledCell(db, "wr9-learner", CELL_ID);
-      expect(again.alreadyEnrolled).toBe(true);
-      expect(again.cardsCreated).toBe(0);
-      const cards = (await db
-        .prepare("SELECT COUNT(*) AS count FROM cards WHERE user_id = ?")
-        .get("wr9-learner")) as { count: number };
-      expect(cards.count).toBe(legacyCards + 150);
+      const before = await snapshot();
+      expect(await enrolBundledCell(db, userId, CELL_ID)).toMatchObject({
+        cardsCreated: 0,
+        alreadyEnrolled: true,
+      });
+      expect(await snapshot()).toEqual(before);
     });
+
+    it("moves three whole histories, retains five retired histories and starts the other cards unlearned", async () => {
+      await installKvtTile(db, legacy);
+      const originals = legacy.atoms.flatMap((atom) => atom.practice_items);
+      for (const [index, item] of originals.entries())
+        await review(item.id, index);
+      const before = await snapshot();
+      expect(before.cards).toHaveLength(8);
+      expect(before.reviews).toHaveLength(16);
+      const due = new Date(
+        Math.max(
+          ...before.cards.map((card) => Date.parse(String(card.due_at))),
+        ) + 86_400_000,
+      );
+      expect(await queue(RETIRED, due)).toHaveLength(5);
+      const enrolled = await enrolBundledCell(db, userId, CELL_ID);
+      expect(enrolled).toMatchObject({ success: true, cardsReused: 3 });
+      const after = await snapshot();
+      expect(after.reviews).toHaveLength(16);
+      const expected = (id: string) =>
+        REPLACEMENTS[id] ? bySlug.get(REPLACEMENTS[id])!.id : id;
+      for (const card of before.cards) {
+        const next = after.cards.find((candidate) => candidate.id === card.id)!;
+        expect(withoutToken(next)).toEqual(withoutToken(card));
+        expect(next.token_id).toBe(expected(String(card.token_id)));
+      }
+      for (const entry of before.reviews) {
+        const next = after.reviews.find(
+          (candidate) => candidate.id === entry.id,
+        )!;
+        expect(withoutToken(next)).toEqual(withoutToken(entry));
+        expect(next.token_id).toBe(expected(String(entry.token_id)));
+      }
+      for (const original of originals)
+        expect(
+          (await getTokenById(db, original.id))?.deprecated_at,
+        ).toBeTruthy();
+      expect(await queue(RETIRED, due)).toHaveLength(0);
+      const successors = Object.values(REPLACEMENTS).map(
+        (slug) => bySlug.get(slug)!.id,
+      );
+      expect(await queue(successors, due)).toHaveLength(3);
+      // zam-core adds only one more card to an atom on which the learner
+      // already holds a card, per enrolment: the three atoms with a moved
+      // history get their remaining tier 2 card with the next enrolment.
+      const oldCardIds = new Set(before.cards.map((card) => card.id));
+      const fresh = after.cards.filter((card) => !oldCardIds.has(card.id));
+      expect(fresh).toHaveLength(items.length - 3 - 3);
+      expect(enrolled.cardsCreated).toBe(items.length - 3 - 3);
+      const second = await enrolBundledCell(db, userId, CELL_ID);
+      expect(second.cardsCreated).toBe(3);
+      const complete = await snapshot();
+      expect(complete.reviews).toEqual(after.reviews);
+      // Every item of the cell holds a card; the three moved ones are the old
+      // cards, the retired five stay on their old tokens.
+      expect(complete.cards).toHaveLength(items.length + RETIRED.length);
+      for (const card of complete.cards.filter(
+        (candidate) => !oldCardIds.has(candidate.id),
+      ))
+        expect(card).toMatchObject({
+          state: "new",
+          stability: 0,
+          reps: 0,
+          last_review_at: null,
+        });
+      expect(await enrolBundledCell(db, userId, CELL_ID)).toMatchObject({
+        cardsCreated: 0,
+        alreadyEnrolled: true,
+      });
+      expect(await snapshot()).toEqual(complete);
+    });
+
+    it.each(Object.keys(REPLACEMENTS))(
+      "refuses to combine two reviewed histories for %s",
+      async (old) => {
+        // The cell as first published (2026.10.1), before any replaces.
+        const published = structuredClone(tile) as KvtTile;
+        published.version = "2026.10.1";
+        delete published.retired_items;
+        for (const atom of published.atoms)
+          for (const item of atom.practice_items) delete item.replaces;
+        await installKvtTile(db, published);
+        await installKvtTile(db, legacy);
+        await review(old, 1);
+        await review(bySlug.get(REPLACEMENTS[old])!.id, 2);
+        const before = await snapshot();
+        await expect(enrolBundledCell(db, userId, CELL_ID)).rejects.toThrow(
+          /holds a card on both|merge/i,
+        );
+        expect(await snapshot()).toEqual(before);
+      },
+    );
   });
 });

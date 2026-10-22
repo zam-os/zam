@@ -602,9 +602,6 @@ import tile211Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-en
 import tile212Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-franzoesisch-imparfait-futur-objektpronomen-kvt.json" with {
   type: "json",
 };
-import tile226Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-wirtschaft-recht-markt-vertraege-kvt.json" with {
-  type: "json",
-};
 import tile141Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse-kvt.json" with {
   type: "json",
 };
@@ -1179,8 +1176,6 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile211Raw as unknown as BundledTile,
   [(tile212Raw as unknown as BundledTile).tile_id]:
     tile212Raw as unknown as BundledTile,
-  [(tile226Raw as unknown as BundledTile).tile_id]:
-    tile226Raw as unknown as BundledTile,
   [(tile227Raw as unknown as BundledTile).tile_id]:
     tile227Raw as unknown as BundledTile,
   [(tile228Raw as unknown as BundledTile).tile_id]:

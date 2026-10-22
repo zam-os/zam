@@ -1,7 +1,7 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "zam-academy:wirtschaft-recht-realschule-9",
-  "version": "2026.10.1",
+  "version": "2026.10.2",
   "title": "Wirtschaft und Recht 9 Realschule (ZAM Academy)",
   "description": "Alle vier Lernbereiche der Realschule Bayern für die Wahlpflichtfächergruppen I und III: Berufliche Orientierung, Wirtschaften in der Sozialen Marktwirtschaft, Verbraucherschutz und Grundzüge des Rechts. 46 Kernlektionen und 4 optionale englische Lektionen.",
   "publisher": "ZAM Academy",
@@ -1557,6 +1557,9 @@
           "question": "Was geschieht mit dem Gleichgewichtspreis, wenn das Angebot bei unveränderter Nachfrage deutlich zunimmt?",
           "concept": "Der Gleichgewichtspreis sinkt, weil mehr Ware auf dieselbe Nachfrage trifft.",
           "materiality": "material",
+          "replaces": [
+            "01K4W9R0000000000000000J05"
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -3476,6 +3479,9 @@
           "question": "In welcher Stufe der Geschäftsfähigkeit befindet sich eine 15-Jährige?",
           "concept": "Sie ist beschränkt geschäftsfähig, weil sie zwischen 7 und 17 Jahre alt ist.",
           "materiality": "material",
+          "replaces": [
+            "01K4W9R0000000000000000J01"
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -3983,6 +3989,9 @@
           "question": "Wie ist ein Fahrrad mit Preisschild im Schaufenster rechtlich einzuordnen?",
           "concept": "Als unverbindliche Auslage, nicht als Antrag: Die Kunden sollen selbst ein Angebot abgeben.",
           "materiality": "material",
+          "replaces": [
+            "01K4W9R0000000000000000J03"
+          ],
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -5680,6 +5689,28 @@
           ]
         }
       ]
+    }
+  ],
+  "retired_items": [
+    {
+      "id": "01K4W9R0000000000000000J02",
+      "reason": "Mehrteiliger Abruf: drei Stufen der Geschäftsfähigkeit mit Altersgrenzen und der Taschengeldparagraf. Die neuen Karten fragen diese Punkte einzeln (beschränkte Geschäftsfähigkeit, Schwebezustand, Taschengeld). Kein einzelner Nachfolger deckt denselben Gesamtabruf, daher keine Übertragung einer Beherrschung."
+    },
+    {
+      "id": "01K4W9R0000000000000000J04",
+      "reason": "Mehrteiliger Abruf: Vertragsschluss durch Antrag und Annahme und die Hauptpflichten beider Seiten nach § 433 BGB. Die neuen Karten trennen Vertragsschluss, Annahme mit Änderung und Verpflichtungs- und Erfüllungsgeschäft. Kein einzelner Nachfolger deckt denselben Gesamtabruf."
+    },
+    {
+      "id": "01K4W9R0000000000000000J06",
+      "reason": "Mehrteiliger Abruf: Diagramm skizzieren, Gleichgewichtspreis definieren und beide Überhänge erklären. Die neuen Karten fragen Gleichgewicht, Überhang und Markträumung einzeln. Kein einzelner Nachfolger deckt denselben Gesamtabruf."
+    },
+    {
+      "id": "01K4W9R0000000000000000J07",
+      "reason": "Der erweiterte Wirtschaftskreislauf mit Banken ist nicht Stoff des Lehrplans Wirtschaft und Recht 9; dort steht der einfache Kreislauf aus Haushalten und Unternehmen. Das Paket nennt Banken nur als Grenze des Modells. Kein Nachfolger mit gleichem Abruf."
+    },
+    {
+      "id": "01K4W9R0000000000000000J08",
+      "reason": "Der erweiterte Wirtschaftskreislauf mit fünf Sektoren ist nicht Stoff des Lehrplans Wirtschaft und Recht 9 (dort: einfacher Kreislauf). Kein Nachfolger mit gleichem Abruf."
     }
   ]
 }
