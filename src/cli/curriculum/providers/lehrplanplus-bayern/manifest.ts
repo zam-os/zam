@@ -1282,6 +1282,12 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
     "realschule|9|bwl-rechnungswesen": [
       { id: "wpfg2", label: "Betriebswirtschaftslehre/Rechnungswesen 9 (II)" },
     ],
+    // Wirtschaft und Recht 9 is one Fachlehrplan for groups I and III;
+    // group II learns BwR instead. Read from the Internet Archive copy of
+    // 2026-06-09 because lehrplanplus.bayern.de refused the authoring host.
+    "realschule|9|wirtschaft-und-recht": [
+      { id: "wpfg1-3", label: "Wirtschaft und Recht 9 (I/III)" },
+    ],
     // Chemie 9 branches verified against LehrplanPLUS on 2026-10-20.
     "realschule|9|chemie": [
       {
@@ -10878,6 +10884,39 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
         id: "lb6",
         label: "WR8 Bilingualer Sachfachunterricht (optional)",
       },
+    ],
+    // The unqualified path serves older positions; both use the same source.
+    "realschule|9|wirtschaft-und-recht|wpfg1-3": [
+      { id: "lb1", label: "WR9 Berufliche Orientierung", hours: 12 },
+      {
+        id: "lb2",
+        label: "WR9 Wirtschaftliches Handeln in der Sozialen Marktwirtschaft",
+        hours: 11,
+      },
+      {
+        id: "lb3",
+        label:
+          "WR9 Verbraucherschutz und verantwortungsbewusstes Verbraucherverhalten",
+        hours: 12,
+      },
+      { id: "lb4", label: "WR9 Grundzüge des Rechts", hours: 21 },
+      { id: "lb5", label: "WR9 Bilingualer Sachfachunterricht (optional)" },
+    ],
+    "realschule|9|wirtschaft-und-recht": [
+      { id: "lb1", label: "WR9 Berufliche Orientierung", hours: 12 },
+      {
+        id: "lb2",
+        label: "WR9 Wirtschaftliches Handeln in der Sozialen Marktwirtschaft",
+        hours: 11,
+      },
+      {
+        id: "lb3",
+        label:
+          "WR9 Verbraucherschutz und verantwortungsbewusstes Verbraucherverhalten",
+        hours: 12,
+      },
+      { id: "lb4", label: "WR9 Grundzüge des Rechts", hours: 21 },
+      { id: "lb5", label: "WR9 Bilingualer Sachfachunterricht (optional)" },
     ],
     // Keep the unqualified path for older positions; both use the verified II source.
     "realschule|9|bwl-rechnungswesen|wpfg2": [
@@ -62981,6 +63020,10 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/bwl-rechnungswesen/wpfg2",
     "realschule|9|bwl-rechnungswesen|wpfg2":
       "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/bwl-rechnungswesen/wpfg2",
+    "realschule|9|wirtschaft-und-recht":
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/wirtschaft-und-recht/wpfg1-3",
+    "realschule|9|wirtschaft-und-recht|wpfg1-3":
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/wirtschaft-und-recht/wpfg1-3",
     "realschule|9|chemie|wpfg1":
       "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/chemie/wpfg1",
     "realschule|9|chemie|wpfg2-3":

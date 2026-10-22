@@ -16,7 +16,7 @@ export interface BundledTile extends KvtTile {
 }
 
 // --- begin bundled-tile-imports ---
-// --- Fixture Imports (219 tiles) ---
+// --- Fixture Imports (220 tiles) ---
 import tile1Raw from "../../../tests/fixtures/curriculum/de-by-bos-10-optik-kvt.json" with {
   type: "json",
 };
@@ -674,6 +674,9 @@ import tile231Raw from "../../../tests/fixtures/curriculum/zam-academy-sql-kvt.j
 import tile229Raw from "../../../tests/fixtures/curriculum/zam-academy-uml-kvt.json" with {
   type: "json",
 };
+import tile241Raw from "../../../tests/fixtures/curriculum/zam-academy-wirtschaft-recht-realschule-9-kvt.json" with {
+  type: "json",
+};
 // --- end bundled-tile-imports ---
 
 export interface CurriculumScope {
@@ -711,6 +714,8 @@ function curriculumTrackMembers(
     if (/^(iii-?b|wpfg3-?b)$/.test(compact)) return ["IIIb"];
     if (compact === "iii" || compact === "wpfg3") return ["IIIa", "IIIb"];
     if (/^(ii-iii|ii-3|wpfg2-3)$/.test(compact)) return ["II", "IIIa", "IIIb"];
+    // Wirtschaft und Recht 9 is one Fachlehrplan for groups I and III.
+    if (/^(i-iii|i-3|wpfg1-3)$/.test(compact)) return ["I", "IIIa", "IIIb"];
   }
   return [compact];
 }
@@ -1204,6 +1209,8 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile239Raw as unknown as BundledTile,
   [(tile240Raw as unknown as BundledTile).tile_id]:
     tile240Raw as unknown as BundledTile,
+  [(tile241Raw as unknown as BundledTile).tile_id]:
+    tile241Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 

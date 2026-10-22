@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-21T16:48:57Z
+timestamp: 2026-10-22T14:00:00Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -251,7 +251,12 @@ reaches each of those groups; a binding for II alone never matches a learner
 in III, IIIa or IIIb. A combined II/III scope is a broad search filter.
 The BwR 9 manifest offers group II only. Its Academy cell binds the five
 grade-9 learning areas to that group; its two optional VAT refreshers carry
-only an Academy binding.
+only an Academy binding. Wirtschaft und Recht 9 is the opposite case: one
+Fachlehrplan serves groups I and III, so its manifest track `wpfg1-3` reaches
+I, IIIa and IIIb, and its Academy cell binds the four grade-9 learning areas
+to `I` and `III` and never to II. Its four optional English lessons carry only
+an Academy binding. The old partial school cell for this grade stays bundled
+until a mapping to the Academy cell is approved.
 
 A tile may retire practice items. A retired item keeps its cards and review
 history but stops representing its atom: token prerequisites derived from
