@@ -15,15 +15,15 @@ import {
   openDatabase,
 } from "../../src/kernel/index.js";
 
+// Mathematik 8 comes from the ZAM Academy cell
+// zam-academy:mathematik-realschule-8 (zam-academy-mathematik-realschule-8-cell.test.ts);
+// its three school cells were version 1 and are no longer bundled.
 // The two physics cells of this grade moved to the ZAM Academy cell
 // zam-academy:physik-realschule-8 (zam-os/zam-academy#24, #37). Four of their
 // sixteen cards pass their history on, ten retire without transferring
 // mastery, and two (Jahrgangsstufe 9 content) stay active in libraries that
 // hold them. See tests/kernel/zam-academy-physik-realschule-8-cell.test.ts.
 const RS8_CELL_IDS = [
-  "de-by:realschule-8-mathematik-terme-gleichungen",
-  "de-by:realschule-8-mathematik-lineare-funktionen",
-  "de-by:realschule-8-mathematik-ebene-geometrie-vierecke",
   "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
   "de-by:realschule-8-chemie-chemische-reaktion-oxidation",
   "de-by:realschule-8-biologie-atmung-blutkreislauf",
@@ -37,7 +37,10 @@ const RS8_CELL_IDS = [
   "de-by:realschule-8-englisch-grammar-conditional-reported-speech",
   "de-by:realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive",
 ];
-const ACADEMY_RS8_IDS = ["zam-academy:physik-realschule-8"];
+const ACADEMY_RS8_IDS = [
+  "zam-academy:mathematik-realschule-8",
+  "zam-academy:physik-realschule-8",
+];
 
 describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
   let tempDir: string;
@@ -55,7 +58,7 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists the remaining Realschule 8 school cells and their Academy successor", () => {
+  it("lists the remaining Realschule 8 school cells and their Academy successors", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(100);
 
@@ -72,7 +75,7 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
       schoolType: "realschule",
       grade: 8,
     });
-    // Fifteen school cells and the Academy cell listed above.
+    // Twelve school cells and the Academy cells listed above.
     expect(rs8Cells.length).toBeGreaterThanOrEqual(
       RS8_CELL_IDS.length + ACADEMY_RS8_IDS.length,
     );
@@ -127,12 +130,12 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
       totalCards += res.cardsCreated;
     }
 
-    // 10 cells * 8 + 5 cells * 4 = 80 + 20 = 100 cards
-    expect(totalCards).toBe(100);
+    // 7 cells * 8 + 5 cells * 4 = 56 + 20 = 76 cards
+    expect(totalCards).toBe(76);
 
     const cards = (await db
       .prepare(`SELECT COUNT(*) as count FROM cards WHERE user_id = ?`)
       .get(user)) as { count: number };
-    expect(cards.count).toBe(100);
+    expect(cards.count).toBe(76);
   });
 });
