@@ -18,6 +18,7 @@ import {
   needsGenericCurriculumImport,
   openDatabase,
 } from "../../src/kernel/index.js";
+import { weltwissenSeedRows } from "../../src/kernel/atlas/index.js";
 import legacyRaw from "../fixtures/legacy/de-by-realschule-9-deutsch-argumentation-eroerterung-kvt.json" with {
   type: "json",
 };
@@ -62,7 +63,7 @@ const scope = (track?: string, grade = 9) => ({
 // cell's curriculum binding names no track (zam-os/zam-academy#30, #31).
 describe("ZAM Academy Deutsch 9 Realschule cell", () => {
   it("bundles the published bytes and removes the old partial cell from discovery", () => {
-    expect(tile.version).toBe("2026.10.2");
+    expect(tile.version).toBe("2026.10.3");
     expect(getBundledCell(CELL_ID)).toMatchObject({
       title: "Deutsch 9 Realschule (ZAM Academy)",
       publisher: "ZAM Academy",
@@ -168,6 +169,35 @@ describe("ZAM Academy Deutsch 9 Realschule cell", () => {
     for (const atom of tile.atoms)
       for (const binding of atom.curricula ?? [])
         expect(binding).not.toHaveProperty("track");
+  });
+
+  it("files the lessons under the Deutsch areas the Wissensatlas already has, except Sprechen", () => {
+    // The review of this PR asked for domains that land in existing areas instead of opening new ones.
+    const { aliases } = weltwissenSeedRows();
+    const resolve = (domain: string) =>
+      aliases
+        .filter(
+          (alias) =>
+            domain === alias.domainPrefix ||
+            domain.startsWith(`${alias.domainPrefix}/`),
+        )
+        .sort((a, b) => b.domainPrefix.length - a.domainPrefix.length)[0]
+        ?.regionKey;
+    const expected: Record<string, string> = {
+      "deutsch/sprechen": "sprache.deutsch",
+      "deutsch/argumentation": "sprache.deutsch.schreiben",
+      "deutsch/schreiben": "sprache.deutsch.schreiben",
+      "deutsch/literatur": "sprache.deutsch.literatur",
+      "deutsch/medien": "sprache.deutsch.medien",
+      "deutsch/grammatik": "sprache.deutsch.grammatik",
+      "deutsch/rechtschreibung": "sprache.deutsch.rechtschreibung",
+    };
+    for (const atom of tile.atoms)
+      expect(resolve(atom.domain), atom.slug).toBe(expected[atom.domain]);
+    // Only Sprechen und Zuhören resolves to the subject itself and so opens an area of its own.
+    expect(
+      tile.atoms.filter((atom) => resolve(atom.domain) === "sprache.deutsch"),
+    ).toHaveLength(10);
   });
 
   it("links every card to its lesson and keeps three single-point cards per lesson", () => {
