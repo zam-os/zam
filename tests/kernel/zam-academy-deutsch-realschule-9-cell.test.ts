@@ -129,7 +129,7 @@ describe("ZAM Academy Deutsch 9 Realschule cell", () => {
       expect(ids, `Deutsch ${track}`).not.toContain(legacy.tile_id);
       expect(needsGenericCurriculumImport(scope(track))).toBe(false);
     }
-    for (const grade of [8, 10])
+    for (const grade of [7, 8, 10])
       expect(
         findBundledCellsForScope(scope("I", grade)).map((cell) => cell.id),
       ).not.toContain(CELL_ID);

@@ -80,7 +80,7 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
       schoolType: "realschule",
       grade: 9,
     });
-    // Four school cells and the nine Academy entries listed above.
+    // Two school cells and the eleven Academy entries listed above.
     expect(rs9Cells.length).toBeGreaterThanOrEqual(
       RS9_CELL_IDS.length + ACADEMY_RS9_IDS.length,
     );
