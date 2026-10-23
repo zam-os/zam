@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-22T14:00:00Z
+timestamp: 2026-10-23T09:00:00Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -260,8 +260,11 @@ three of that cell's eight cards pass their review history to Academy
 successors, five retire without transferring mastery (approved 2026-10-22).
 Deutsch 9 is a third case: the Realschule has one Fachlehrplan for every group,
 so its Academy cell binds the four learning areas to grade 9 and names no
-track, and the cell is offered to I, II, IIIa and IIIb alike. It sits beside
-the old partial school cell, which stays bundled until a mapping is approved.
+track, and the cell is offered to I, II, IIIa and IIIb alike. Its first
+version sat beside the old partial school cell; version 2026.10.2 retires all
+eight of that cell's cards without transferring mastery (approved
+2026-10-23). The old cell is then no longer bundled, and its review history
+stays.
 
 A tile may retire practice items. A retired item keeps its cards and review
 history but stops representing its atom: token prerequisites derived from

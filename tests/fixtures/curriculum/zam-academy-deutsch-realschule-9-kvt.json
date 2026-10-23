@@ -1,7 +1,7 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "zam-academy:deutsch-realschule-9",
-  "version": "2026.10.1",
+  "version": "2026.10.2",
   "title": "Deutsch 9 Realschule (ZAM Academy)",
   "description": "Alle vier Lernbereiche des Fachlehrplans Deutsch der Realschule Bayern in Jahrgangsstufe 9 für alle Wahlpflichtfächergruppen: Sprechen und Zuhören, Lesen mit Texten und weiteren Medien, Schreiben sowie Sprachgebrauch und Sprache untersuchen. 53 Lektionen.",
   "publisher": "ZAM Academy",
@@ -5674,6 +5674,40 @@
           ]
         }
       ]
+    }
+  ],
+  "retired_items": [
+    {
+      "id": "01K4D9T0000000000000000J01",
+      "reason": "Einzelabruf, aber in anderer Richtung: Die alte Karte fragt, welcher Baustein eines Arguments das Beispiel oder den Beleg liefert. Die neuen Karten de9-kommentar-schreiben-check und de9-argumentieren-rhetorik-extra fragen dagegen, woraus ein Argument besteht. Kein sicher gleicher Abruf, daher kein Übertrag einer Beherrschung."
+    },
+    {
+      "id": "01K4D9T0000000000000000J02",
+      "reason": "Mehrteiliger Abruf: den dreigliedrigen Aufbau eines Arguments erklären und ein eigenes Argument zu einer Streitfrage formulieren. Die neuen Karten fragen den Aufbau einzeln; das Formulieren eigener Argumente üben die Schreibaufgaben. Kein einzelner Nachfolger mit demselben Gesamtabruf."
+    },
+    {
+      "id": "01K4D9T0000000000000000J03",
+      "reason": "Das Sanduhr- und Ping-Pong-Prinzip der dialektischen Erörterung kommt im Fachlehrplan Deutsch 9 nicht vor: 3.2.5 verlangt einen einfachen Kommentar mit einer Argumentationskette. Gegenargumente entwerfen steht erst im Plan der Klasse 10 (3.2). Kein Nachfolger."
+    },
+    {
+      "id": "01K4D9T0000000000000000J04",
+      "reason": "Mehrteiliger Abruf der vollständigen Struktur einer dialektischen Erörterung (Einleitung, Hauptteil nach dem Sanduhr-Prinzip, Schluss). Dieser Aufsatz ist nicht Stoff von Deutsch 9, siehe J03. Kein Nachfolger."
+    },
+    {
+      "id": "01K4D9T0000000000000000J05",
+      "reason": "Die Alliteration steht nicht in der Liste der sprachlichen Mittel von 4.2.4 (Anapher, Hyperbel, Metapher, Vergleich, Interjektion, Neologismus) und wird in der neuen Zelle nicht gefragt. Kein Nachfolger mit gleichem Abruf."
+    },
+    {
+      "id": "01K4D9T0000000000000000J06",
+      "reason": "Mehrteiliger Abruf: fünf Stilmittel (Metapher, Anapher, Hyperbel, rhetorische Frage, Personifikation) mit Definition, Beispiel und Wirkung. Die neuen Karten fragen Metapher und Vergleich, Hyperbel und die Beschreibung der Wirkung einzeln; die Personifikation steht nicht im Lehrplan der Klasse 9. Kein einzelner Nachfolger."
+    },
+    {
+      "id": "01K4D9T0000000000000000J07",
+      "reason": "Einzelabruf (wie ein wörtliches Zitat gekennzeichnet wird), aber ohne identischen Nachfolger: Die neuen Karten zum Zitieren fragen die Auslassung (de9-zitieren-check), den Einbau in einen eigenen Absatz (de9-zitieren-kern) und das sinngemäße Zitat (de9-zitieren-extra). Kein sicher gleicher Abruf, daher kein Übertrag."
+    },
+    {
+      "id": "01K4D9T0000000000000000J08",
+      "reason": "Mehrteiliger Abruf: wörtliches und sinngemäßes Zitat unterscheiden und vier Kriterien der Quellenkritik an Online-Quellen nennen. Die neue Zelle fragt das sinngemäße Zitat einzeln (de9-zitieren-extra); die Quellenkritik an Online-Quellen kommt nicht als eigener Abruf vor. Kein einzelner Nachfolger."
     }
   ]
 }

@@ -27,11 +27,10 @@ import {
 // histories; corrected items are retired without transferring mastery.
 // Wirtschaft und Recht 9 moved to zam-academy:wirtschaft-recht-realschule-9
 // (zam-os/zam-academy#27, #29). Deutsch 9 has an Academy cell
-// (zam-os/zam-academy#30) beside the old partial school cell until a mapping is approved.
+// (zam-os/zam-academy#30, #31) that retires the old partial school cell.
 // See tests/kernel/zam-academy-*-cell.test.ts.
 const RS9_CELL_IDS = [
   "de-by:realschule-9-englisch-grammatik-syntax",
-  "de-by:realschule-9-deutsch-argumentation-eroerterung",
   "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",
 ];
 const ACADEMY_RS9_IDS = [
