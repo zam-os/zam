@@ -16,7 +16,7 @@ export interface BundledTile extends KvtTile {
 }
 
 // --- begin bundled-tile-imports ---
-// --- Fixture Imports (220 tiles) ---
+// --- Fixture Imports (218 tiles) ---
 import tile1Raw from "../../../tests/fixtures/curriculum/de-by-bos-10-optik-kvt.json" with {
   type: "json",
 };
@@ -620,12 +620,6 @@ import tile145Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-e
 import tile146Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung-kvt.json" with {
   type: "json",
 };
-import tile147Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-mathematik-ebene-vektorgeometrie-kvt.json" with {
-  type: "json",
-};
-import tile148Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-mathematik-exponential-logarithmus-kvt.json" with {
-  type: "json",
-};
 import tile151Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-wirtschaft-recht-strafrecht-arbeitsrecht-sozialstaat-kvt.json" with {
   type: "json",
 };
@@ -657,6 +651,9 @@ import tile235Raw from "../../../tests/fixtures/curriculum/zam-academy-geschicht
   type: "json",
 };
 import tile232Raw from "../../../tests/fixtures/curriculum/zam-academy-mathematik-realschule-9-kvt.json" with {
+  type: "json",
+};
+import tile242Raw from "../../../tests/fixtures/curriculum/zam-academy-mathematik-realschule-10-kvt.json" with {
   type: "json",
 };
 import tile230Raw from "../../../tests/fixtures/curriculum/zam-academy-physik-realschule-9-kvt.json" with {
@@ -1058,10 +1055,6 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile145Raw as unknown as BundledTile,
   [(tile146Raw as unknown as BundledTile).tile_id]:
     tile146Raw as unknown as BundledTile,
-  [(tile147Raw as unknown as BundledTile).tile_id]:
-    tile147Raw as unknown as BundledTile,
-  [(tile148Raw as unknown as BundledTile).tile_id]:
-    tile148Raw as unknown as BundledTile,
   [(tile151Raw as unknown as BundledTile).tile_id]:
     tile151Raw as unknown as BundledTile,
   [(tile152Raw as unknown as BundledTile).tile_id]:
@@ -1206,6 +1199,8 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile240Raw as unknown as BundledTile,
   [(tile241Raw as unknown as BundledTile).tile_id]:
     tile241Raw as unknown as BundledTile,
+  [(tile242Raw as unknown as BundledTile).tile_id]:
+    tile242Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 
