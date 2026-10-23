@@ -1,9 +1,18 @@
+import { execFileSync } from "node:child_process";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
 // Importing the release helper must perform no network or file writes.
-const { parseSyncArgs, selectCatalogEntries, mergeLockEntries } = await import(
+const {
+  parseSyncArgs,
+  selectCatalogEntries,
+  mergeLockEntries,
+  biomeFormatCommand,
+} = await import(
   new URL("../../scripts/sync-academy-cells.mjs", import.meta.url).href
 );
+const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
 
 describe("targeted Academy release sync", () => {
   it("keeps the default full sync and accepts a single explicit app", () => {
@@ -63,5 +72,24 @@ describe("targeted Academy release sync", () => {
     expect(mergeLockEntries([physics, oldGeo], [geo])).toEqual([geo, physics]);
     expect(mergeLockEntries([], [physics, geo])).toEqual([geo, physics]);
     expect(oldGeo.sha256).toBe("old");
+  });
+
+  it("formats bundled-cells.ts with the local Biome through Node, so Windows needs no shell", () => {
+    const [command, args] = biomeFormatCommand(repoRoot);
+    // Not `npx`: on Windows that is npx.cmd, which execFileSync cannot start.
+    expect(command).toBe(process.execPath);
+    expect(existsSync(args[0])).toBe(true);
+    expect(args.slice(1)).toEqual([
+      "check",
+      "--write",
+      "src/kernel/library/bundled-cells.ts",
+    ]);
+    // The same launcher starts without a shell on every platform.
+    expect(
+      execFileSync(command, [args[0], "--version"], {
+        cwd: repoRoot,
+        encoding: "utf8",
+      }),
+    ).toMatch(/\d+\.\d+\.\d+/);
   });
 });

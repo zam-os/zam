@@ -108,6 +108,21 @@ export function mergeLockEntries(previous, copied) {
   return [...entries.values()].sort((a, b) => a.id.localeCompare(b.id));
 }
 
+// Biome formats bundled-cells.ts after an append. Its launcher is a Node
+// script, so running it with this Node needs no shell: `npx` alone is
+// `npx.cmd` on Windows, which execFileSync cannot start without one.
+export function biomeFormatCommand(repoRoot = root) {
+  return [
+    process.execPath,
+    [
+      join(repoRoot, "node_modules", "@biomejs", "biome", "bin", "biome"),
+      "check",
+      "--write",
+      "src/kernel/library/bundled-cells.ts",
+    ],
+  ];
+}
+
 // A new cell is appended to the fixture imports, as tile<N+1>Raw. The full
 // generator (scripts/update-bundled-cells-imports.mjs) would renumber all of
 // them and rewrite hundreds of lines for one cell.
@@ -195,14 +210,8 @@ export async function syncAcademyCells(args = process.argv.slice(2)) {
 
   if (added) {
     for (const { file } of copied) appendFixtureImport(file);
-    execFileSync(
-      "npx",
-      ["biome", "check", "--write", "src/kernel/library/bundled-cells.ts"],
-      {
-        cwd: root,
-        stdio: "inherit",
-      },
-    );
+    const [command, commandArgs] = biomeFormatCommand();
+    execFileSync(command, commandArgs, { cwd: root, stdio: "inherit" });
   }
 }
 
