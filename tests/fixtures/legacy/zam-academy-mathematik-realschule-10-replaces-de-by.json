@@ -1,0 +1,154 @@
+{
+  "schema": 1,
+  "approved": "2026-10-22",
+  "source": "Thomas in diesem Claude-Code-Chat am 2026-10-22: zuerst „Freigabe erteilt“ für die Zuordnung nach der Überarbeitung von zam-os/zam-academy#23, dann nach dem zweiten Review die Änderungen „Als B führen, so freigegeben“ (J03 und J05 der Exponential-Zelle als B) und „Korrigieren, B bleibt, so freigegeben“ (fachliche Korrekturen der Nachfolger von J02 und J04). Nach den Korrekturen vor dem Merge (Commit f5a17d2; Zuordnungszeilen unverändert, sechs Karten außerhalb der Zuordnung nur typografisch geändert) bestätigte er im selben Chat: „Ich erteile nochmal die Freigabe“. Die Freigabe gilt der Zuordnung der 16 de-by-Karten in dieser Datei (7 A / 9 B, kein C).",
+  "status": "approved",
+  "source_repository": "zam-os/zam",
+  "source_commit": "370d62282d0b7ae16522da3490c92e05957f20b4",
+  "authorization": "Thomas hat am 22. Oktober 2026 die hier dokumentierten 16 Zuordnungen ausdrücklich freigegeben, einschließlich der Umstufung von J03 und J05 zu B und der fachlichen Korrekturen in den Nachfolgern von J02 und J04, und die Freigabe nach Commit f5a17d2 am selben Tag erneuert. Die genau benannten replaces dürfen mit der ersten Veröffentlichung der Zelle erscheinen; persönliche Karten und Reviewhistorien bleiben erhalten. Ein früherer Eintrag „approved: 2026-10-22“ ohne Beleg (aus dem ersten Entwurf dieses PRs) war keine Freigabe und wurde vorher entfernt.",
+  "policy": "A: sicher gleicher Einzelabruf, genau ein Nachfolger. B: vollständiger alter Gesamtabruf (Frage, Antwort und Musterlösung) auf genau einem eigenen Nachfolger; keine Verteilung einer Historie auf Teilkarten. C: keine. Alle persönlichen Karten und Reviewhistorien bleiben erhalten; die neuen Karten der Lektionen beginnen ohne Beherrschung. Nur temporäre Bibliotheken für die Prüfung verwenden.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-10-mathematik-ebene-vektorgeometrie-kvt.json",
+      "tile_id": "de-by:realschule-10-mathematik-ebene-vektorgeometrie",
+      "version": "2026.08.1",
+      "sha256": "7702f9b887a548fc5ef5f50ba0d5adaedb0091cf3a1cb97282516511c05f00c9"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-10-mathematik-exponential-logarithmus-kvt.json",
+      "tile_id": "de-by:realschule-10-mathematik-exponential-logarithmus",
+      "version": "2026.08.1",
+      "sha256": "ccefe6188c448f4f18bfa085c5f3c864b5ecaa79340c315a354735aad818a94a"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-ebene-vektorgeometrie",
+      "de_by_id": "01K4V0M0000000000000000J01",
+      "de_by_question": "Wie berechnet man den Betrag (die Länge) des zweidimensionalen Vektors v = (3, 4)^T?",
+      "category": "A",
+      "academy_slug": "m10-betrag-vektor",
+      "reason": "Gleicher Einzelabruf: Betrag des Vektors v→ = (3 | 4) mit dem Satz des Pythagoras, |v→| = 5 LE. Der Nachfolger in vk-1-vektoren fragt dasselbe und erwartet dieselbe Antwort."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-ebene-vektorgeometrie",
+      "de_by_id": "01K4V0M0000000000000000J02",
+      "de_by_question": "Definiere den Verbindungsvektor AB zweier Punkte A(x_A | y_A) und B(x_B | y_B) nach der 'Spitze-minus-Schaft'-Regel, bestimme für A(-2 | 3) und B(4 | -5) den Vektor AB sowie dessen Gegenvektor BA und berechne die exakte Länge der Strecke [AB].",
+      "category": "B",
+      "academy_slug": "m10-verbindungsvektor-beispiel",
+      "reason": "Mehrteiliger Gesamtabruf (Spitze minus Schaft, AB→ und Gegenvektor BA→ für A(−2 | 3) und B(4 | −5), Länge 10 LE) bleibt mit Frage, Antwort und Musterlösung vollständig auf genau einem Nachfolger; die neuen Einzelkarten der Lektion beginnen ohne Beherrschung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-ebene-vektorgeometrie",
+      "de_by_id": "01K4V0M0000000000000000J03",
+      "de_by_question": "Welche Bedingung muss für das Skalarprodukt a · b zweier vom Nullvektor verschiedener Vektoren gelten, damit sie zueinander orthogonal (senkrecht) stehen?",
+      "category": "A",
+      "academy_slug": "m10-orthogonal-bedingung",
+      "reason": "Gleicher Einzelabruf: zwei vom Nullvektor verschiedene Vektoren sind genau dann orthogonal, wenn ihr Skalarprodukt 0 ist."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-ebene-vektorgeometrie",
+      "de_by_id": "01K4V0M0000000000000000J04",
+      "de_by_question": "Berechne das Skalarprodukt der Vektoren a = (2, 3)^T und b = (6, -4)^T, folgere daraus ihre geometrische Lagebeziehung und berechne den Schnittwinkel zwischen den Vektoren u = (1, 0)^T und v = (1, 1)^T mit der Kosinusformel cos(alpha) = (u · v) / (|u| · |v|).",
+      "category": "B",
+      "academy_slug": "m10-skalarprodukt-beispiel",
+      "reason": "Mehrteiliger Gesamtabruf (Skalarprodukt von (2 | 3) und (6 | −4), Folgerung orthogonal, Winkel 45° zwischen (1 | 0) und (1 | 1) mit der Kosinusformel) bleibt vollständig auf genau einem Nachfolger."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-ebene-vektorgeometrie",
+      "de_by_id": "01K4V0M0000000000000000J05",
+      "de_by_question": "Wie lautet die Berechnungsformel für den Wert der zweireihigen Determinante det(a, b) = | a_x  b_x | / | a_y  b_y |?",
+      "category": "A",
+      "academy_slug": "m10-determinante-formel",
+      "reason": "Gleicher Einzelabruf: Wert der zweireihigen Determinante a_x · b_y − a_y · b_x. Der Stoff stammt aus M8 (I) und wird in M10 als Werkzeug für Flächeninhalte bei Abbildungen wiederholt."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-ebene-vektorgeometrie",
+      "de_by_id": "01K4V0M0000000000000000J06",
+      "de_by_question": "Erkläre die Flächeninhaltsformel für ein Dreieck ABC im Koordinatensystem mittels Determinante A = 0.5 · |det(AB, AC)| und berechne die Fläche des Dreiecks mit A(1 | 1), B(5 | 2) und C(2 | 6), wobei auf den mathematisch positiven Umlaufsinn (gegen den Uhrzeigersinn) geachtet wird.",
+      "category": "B",
+      "academy_slug": "m10-dreiecksflaeche-beispiel",
+      "reason": "Mehrteiliger Gesamtabruf (Flächenformel mit ½ · det(AB→, AC→) und Berechnung für A(1 | 1), B(5 | 2), C(2 | 6): 9,5 FE) bleibt vollständig auf genau einem Nachfolger."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-ebene-vektorgeometrie",
+      "de_by_id": "01K4V0M0000000000000000J07",
+      "de_by_question": "Welche Koordinaten erhält man, wenn man den Vektor v = (x, y)^T um 90° gegen den Uhrzeigersinn dreht (Orthogonalvektor / Normalenvektor)?",
+      "category": "A",
+      "academy_slug": "m10-drehung-90",
+      "reason": "Gleicher Einzelabruf: die Drehung um 90° gegen den Uhrzeigersinn bildet (x | y) auf (−y | x) ab. Der Stoff stammt aus M8 (I); in M10 ist er ein Sonderfall der Drehmatrix."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-ebene-vektorgeometrie",
+      "de_by_id": "01K4V0M0000000000000000J08",
+      "de_by_question": "Gib die allgemeine Drehmatrix D_phi = [cos(phi) -sin(phi); sin(phi) cos(phi)] für eine Drehung um das Drehzentrum Z(0|0) um den Winkel phi an und berechne den Bildvektor v' bei Drehung von v = (4, 0)^T um phi = 60° gegen den Uhrzeigersinn.",
+      "category": "B",
+      "academy_slug": "m10-drehmatrix-beispiel",
+      "reason": "Mehrteiliger Gesamtabruf (allgemeine Drehmatrix um Z(0 | 0) und Bild von (4 | 0) bei 60°: (2 | 2√3)) bleibt vollständig auf genau einem Nachfolger."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-exponential-logarithmus",
+      "de_by_id": "01K4X0M0000000000000000J01",
+      "de_by_question": "Wie lautet die Gleichung der waagrechten Asymptote der Exponentialfunktion f(x) = 2 · 3^x - 4?",
+      "category": "A",
+      "academy_slug": "m10-asymptote-exponentialfunktion",
+      "reason": "Gleicher Einzelabruf: die waagrechte Asymptote von f(x) = 2 · 3ˣ − 4 ist y = −4 (Zweig I, Form y = k · a^(x − b) + c)."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-exponential-logarithmus",
+      "de_by_id": "01K4X0M0000000000000000J02",
+      "de_by_question": "Analysiere die allgemeine Exponentialfunktion f(x) = a · b^x + c (mit b > 0, b != 1): Erkläre die Bedeutung der Parameter a (Streckfaktor/Anfangswert), b (Wachstumsfaktor: b > 1 Wachstum, 0 < b < 1 Zerfall) und c (vertikale Verschiebung/waagrechte Asymptote y = c) und bestimme den Schnittpunkt des Graphen mit der y-Achse.",
+      "category": "B",
+      "academy_slug": "m10-exponentialfunktion-parameter",
+      "reason": "Mehrteiliger Gesamtabruf (Bedeutung von a, b und c in a · bˣ + c, Wachstum und Abnahme, Asymptote y = c, Schnittpunkt S_y(0 | a + c)) bleibt auf genau einem Nachfolger. Fachlich korrigiert, von Thomas am 22.10.2026 freigegeben: a ist der Streckfaktor und nur für c = 0 der Anfangswert, Steigen und Fallen gelten für a > 0, und statt „streng monoton“ und x → ±∞ steht die Sprache der Realschule."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-exponential-logarithmus",
+      "de_by_id": "01K4X0M0000000000000000J03",
+      "de_by_question": "Welchen exakten Wert hat der dekadische Logarithmus log_10(1000) bzw. log_2(32)?",
+      "category": "B",
+      "academy_slug": "m10-log-exakte-werte",
+      "reason": "Zweiteiliger Gesamtabruf (lg 1000 = 3 und log₂ 32 = 5 aus der Definition des Logarithmus) bleibt vollständig auf genau einem Nachfolger."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-exponential-logarithmus",
+      "de_by_id": "01K4X0M0000000000000000J04",
+      "de_by_question": "Formuliere die drei fundamentalen Logarithmengesetze für Produkte, Quotienten und Potenzen (log(u · v), log(u / v), log(u^r)) und gib die Formel für den Basiswechsel log_b(a) = log_10(a) / log_10(b) an.",
+      "category": "B",
+      "academy_slug": "m10-logarithmensaetze-basiswechsel",
+      "reason": "Mehrteiliger Gesamtabruf (die drei Logarithmensätze für Produkt, Quotient und Potenz sowie der Basiswechsel) bleibt vollständig auf genau einem Nachfolger. Fachlich angepasst, von Thomas am 22.10.2026 freigegeben: Der Basiswechsel steht nur mit lg; die alte Fassung mit ln geht über den Realschul-Lehrplan hinaus."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-exponential-logarithmus",
+      "de_by_id": "01K4X0M0000000000000000J05",
+      "de_by_question": "Wie lautet die exakte Lösung der Exponentialgleichung 5^x = 125 bzw. 3^x = 20?",
+      "category": "B",
+      "academy_slug": "m10-exponentialgleichung-exakt",
+      "reason": "Zweiteiliger Gesamtabruf (5ˣ = 125 ergibt x = 3, 3ˣ = 20 ergibt x = lg 20 : lg 3 ≈ 2,73) bleibt vollständig auf genau einem Nachfolger."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-exponential-logarithmus",
+      "de_by_id": "01K4X0M0000000000000000J06",
+      "de_by_question": "Löse die Exponentialgleichung 4 · 2^(3x - 1) - 12 = 20 schrittweise nach x auf unter Verwendung der Logarithmengesetze und runde das Endergebnis auf zwei Nachkommastellen.",
+      "category": "A",
+      "academy_slug": "m10-exponentialgleichung-schrittweise",
+      "reason": "Gleicher Einzelabruf: dieselbe Gleichung 4 · 2^(3x − 1) − 12 = 20 schrittweise lösen, x = 4/3 ≈ 1,33."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-exponential-logarithmus",
+      "de_by_id": "01K4X0M0000000000000000J07",
+      "de_by_question": "Ein radioaktiver Stoff hat eine Halbwertszeit von T_1/2 = 8 Tagen. Welcher Bruchteil der Ausgangsmenge N_0 ist nach 24 Tagen (3 Halbwertszeiten) noch vorhanden?",
+      "category": "A",
+      "academy_slug": "m10-halbwertszeit-achtel",
+      "reason": "Gleicher Einzelabruf: nach 24 Tagen, also drei Halbwertszeiten von 8 Tagen, ist noch 1/8 = 12,5 % der Ausgangsmenge vorhanden. Der Nachfolger schreibt (½)³ = ⅛ statt der alten Gleichsetzung N(24) = 1/8, die eine Menge mit einem Bruchteil gleichsetzte."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-mathematik-exponential-logarithmus",
+      "de_by_id": "01K4X0M0000000000000000J08",
+      "de_by_question": "Eine Bakterienkultur zählt zu Beginn 500 Exemplare und vermehrt sich stündlich um 15% (b = 1,15). Stelle die Funktionsgleichung N(t) auf, berechne den Bestand nach 10 Stunden und bestimme die Verdopplungszeit T_V der Bakterienkultur durch Logarithmieren.",
+      "category": "B",
+      "academy_slug": "m10-bakterien-verdopplungszeit",
+      "reason": "Mehrteiliger Gesamtabruf (N(t) = 500 · 1,15ᵗ, N(10) ≈ 2023 und Verdopplungszeit ≈ 4,96 h durch Logarithmieren) bleibt vollständig auf genau einem Nachfolger."
+    }
+  ]
+}
