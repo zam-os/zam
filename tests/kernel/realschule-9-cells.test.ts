@@ -26,7 +26,8 @@ import {
 // to zam-academy:bwr-realschule-9 (#19). Explicit replacements preserve
 // histories; corrected items are retired without transferring mastery.
 // Wirtschaft und Recht 9 moved to zam-academy:wirtschaft-recht-realschule-9
-// (zam-os/zam-academy#27, #29).
+// (zam-os/zam-academy#27, #29). Deutsch 9 has an Academy cell
+// (zam-os/zam-academy#30) beside the old partial school cell until a mapping is approved.
 // See tests/kernel/zam-academy-*-cell.test.ts.
 const RS9_CELL_IDS = [
   "de-by:realschule-9-englisch-grammatik-syntax",
@@ -44,6 +45,7 @@ const ACADEMY_RS9_IDS = [
   "zam-academy:datennetze",
   "zam-academy:bwr-realschule-9",
   "zam-academy:wirtschaft-recht-realschule-9",
+  "zam-academy:deutsch-realschule-9",
 ];
 
 describe("Realschule Bayern 9 Curriculum Cells", () => {

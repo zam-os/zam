@@ -258,6 +258,10 @@ to `I` and `III` and never to II. Its four optional English lessons carry only
 an Academy binding. It replaces the old partial school cell of this grade:
 three of that cell's eight cards pass their review history to Academy
 successors, five retire without transferring mastery (approved 2026-10-22).
+Deutsch 9 is a third case: the Realschule has one Fachlehrplan for every group,
+so its Academy cell binds the four learning areas to grade 9 and names no
+track, and the cell is offered to I, II, IIIa and IIIb alike. It sits beside
+the old partial school cell, which stays bundled until a mapping is approved.
 
 A tile may retire practice items. A retired item keeps its cards and review
 history but stops representing its atom: token prerequisites derived from
