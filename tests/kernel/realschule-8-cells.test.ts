@@ -15,12 +15,15 @@ import {
   openDatabase,
 } from "../../src/kernel/index.js";
 
+// The two physics cells of this grade moved to the ZAM Academy cell
+// zam-academy:physik-realschule-8 (zam-os/zam-academy#24, #37). Four of their
+// sixteen cards pass their history on, ten retire without transferring
+// mastery, and two (Jahrgangsstufe 9 content) stay active in libraries that
+// hold them. See tests/kernel/zam-academy-physik-realschule-8-cell.test.ts.
 const RS8_CELL_IDS = [
   "de-by:realschule-8-mathematik-terme-gleichungen",
   "de-by:realschule-8-mathematik-lineare-funktionen",
   "de-by:realschule-8-mathematik-ebene-geometrie-vierecke",
-  "de-by:realschule-8-physik-mechanik-kraft-bewegung",
-  "de-by:realschule-8-physik-elektrik-grundlagen",
   "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
   "de-by:realschule-8-chemie-chemische-reaktion-oxidation",
   "de-by:realschule-8-biologie-atmung-blutkreislauf",
@@ -34,6 +37,7 @@ const RS8_CELL_IDS = [
   "de-by:realschule-8-englisch-grammar-conditional-reported-speech",
   "de-by:realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive",
 ];
+const ACADEMY_RS8_IDS = ["zam-academy:physik-realschule-8"];
 
 describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
   let tempDir: string;
@@ -51,11 +55,11 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all bundled cells including all 17 Realschule 8 cells", () => {
+  it("lists the remaining Realschule 8 school cells and their Academy successor", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(100);
 
-    for (const cellId of RS8_CELL_IDS) {
+    for (const cellId of [...RS8_CELL_IDS, ...ACADEMY_RS8_IDS]) {
       const found = cells.find((c) => c.id === cellId);
       expect(found, `Cell ${cellId} must be present`).toBeDefined();
       expect(found?.atomCount).toBeGreaterThanOrEqual(2);
@@ -68,8 +72,11 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
       schoolType: "realschule",
       grade: 8,
     });
-    expect(rs8Cells.length).toBeGreaterThanOrEqual(17);
-    for (const cellId of RS8_CELL_IDS) {
+    // Fifteen school cells and the Academy cell listed above.
+    expect(rs8Cells.length).toBeGreaterThanOrEqual(
+      RS8_CELL_IDS.length + ACADEMY_RS8_IDS.length,
+    );
+    for (const cellId of [...RS8_CELL_IDS, ...ACADEMY_RS8_IDS]) {
       expect(
         rs8Cells.some((c) => c.id === cellId),
         `findBundledCellsForScope should include ${cellId}`,
@@ -110,7 +117,7 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
     expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
   });
 
-  it("supports simultaneous co-enrolment in ALL 17 Grade 8 cells without conflict", async () => {
+  it("supports simultaneous co-enrolment in the remaining Grade 8 school cells without conflict", async () => {
     const user = "complete-rs8-candidate";
 
     let totalCards = 0;
@@ -120,12 +127,12 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
       totalCards += res.cardsCreated;
     }
 
-    // 12 cells * 8 + 5 cells * 4 = 96 + 20 = 116 cards
-    expect(totalCards).toBe(116);
+    // 10 cells * 8 + 5 cells * 4 = 80 + 20 = 100 cards
+    expect(totalCards).toBe(100);
 
     const cards = (await db
       .prepare(`SELECT COUNT(*) as count FROM cards WHERE user_id = ?`)
       .get(user)) as { count: number };
-    expect(cards.count).toBe(116);
+    expect(cards.count).toBe(100);
   });
 });

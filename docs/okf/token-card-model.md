@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-23T17:50:00Z
+timestamp: 2026-10-23T20:30:00Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -281,10 +281,12 @@ Physik 8 also has two Fachlehrpläne that differ in content: Zweig I learns
 Mechanik und Energie, Wärmelehre and Elektrizitätslehre with an elective area
 of Astronomie or Akustik, Zweig II/III Mechanik, Optik and Magnetismus und
 Elektrizitätslehre. Its Academy cell binds each lesson to `I`, to `II_III` or
-to both, and the two elective areas to `lb4.1` and `lb4.2` of `I`. The two
-older school cells of the grade stay bundled beside it: no mapping of their
-cards is approved, so the Academy cell declares no `replaces` and no retired
-items, and enrolling in it moves no review history.
+to both, and the two elective areas to `lb4.1` and `lb4.2` of `I`. It replaces
+the two old school cells of the grade, which held sixteen cards: four pass their
+review history to Academy successors, ten retire without transferring mastery,
+and two cards of Jahrgangsstufe 9 content stay active unchanged (approved
+2026-10-23). The old cells are then no longer bundled, and their review history
+stays.
 
 A tile may retire practice items. A retired item keeps its cards and review
 history but stops representing its atom: token prerequisites derived from
