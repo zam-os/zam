@@ -42,7 +42,7 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
   schoolYear: "2026/2027",
   capturedOn: "2026-07-19",
   sourceRevision:
-    "LehrplanPLUS Bayern – including WS/FOS/BOS (2026-07-19); +grundschule/mittelschule/foerderschule (2026-07-19); +Realschule Chemie 9 I/II/III, Geographie 9 und Geschichte 9 gemeinsam (2026-10-20); +Realschule Biologie 10 gemeinsam (2026-10-21); +Realschule Physik 10 I/II/III (2026-10-21)",
+    "LehrplanPLUS Bayern – including WS/FOS/BOS (2026-07-19); +grundschule/mittelschule/foerderschule (2026-07-19); +Realschule Chemie 9 I/II/III, Geographie 9 und Geschichte 9 gemeinsam (2026-10-20); +Realschule Biologie 10 gemeinsam (2026-10-21); +Realschule Physik 10 I/II/III (2026-10-21); +Realschule Physik 8 I/II/III (2026-10-23)",
 
   schoolTypes: [
     {
@@ -62993,9 +62993,9 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
     "realschule|8|mathematik|wpfg2-3":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/8/fach/mathematik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=wpfg2-3",
     "realschule|8|physik|wpfg1":
-      "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/8/fach/physik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=wpfg1",
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/physik/wpfg1",
     "realschule|8|physik|wpfg2-3":
-      "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/8/fach/physik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=wpfg2-3",
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/physik/wpfg2-3",
     "realschule|8|musik":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/8/fach/musik/inhalt/fachlehrplaene",
     "realschule|8|or":

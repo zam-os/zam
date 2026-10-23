@@ -78,6 +78,12 @@
     "file": "zam-academy-physik-realschule-10-kvt.json"
   },
   {
+    "id": "zam-academy:physik-realschule-8",
+    "version": "2026.10.4",
+    "sha256": "c1552c8cd7c79dd372abf7124f0a1b2a4826fc777e37bd5650d1fde48605c7b1",
+    "file": "zam-academy-physik-realschule-8-kvt.json"
+  },
+  {
     "id": "zam-academy:physik-realschule-9",
     "version": "2026.10.1",
     "sha256": "f79e169691e8be79cbca480b00bfd2492cd8f92a0b1a1ec2567e885c0698c37b",

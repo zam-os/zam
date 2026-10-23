@@ -1,0 +1,170 @@
+{
+  "schema": 1,
+  "approved": "2026-10-23",
+  "status": "approved",
+  "approval_note": "Freigegeben durch Thomas. Die Zelle deklariert genau diese Zeilen: vier replaces (A) und zehn retired_items (C, retire); die zwei C-Zeilen der Jahrgangsstufe 9 bleiben unverändert aktiv. Alle persönlichen Karten und Reviews bleiben in jedem Fall erhalten.",
+  "source": "Ausdrückliche Freigabe von Thomas im Claude-Code-Chat am 23. Oktober 2026: „ich gebe das Mapping frei - der Draft kann publiziert werden“. Die Freigabe gilt der Zuordnung der 16 de-by-Karten in dieser Datei (4 A, 0 B, 12 C: 10 ausscheiden, 2 bleiben aktiv).",
+  "source_repository": "zam-os/zam",
+  "source_commit": "3ff6ee18389b6b2ac602a7265a2ecd695f395107",
+  "policy": "A: sicher gleicher Einzelabruf, genau ein Nachfolger mit replaces. C mit action retire: mehrteiliger, geteilter oder korrigierter Abruf, kein replaces; die Alttexte verlassen die aktive Wiederholung, neue Fragen beginnen ohne übertragene Beherrschung. C mit action keep: kein Lehrplaninhalt von Physik 8, kein Nachfolger, die Karte bleibt unverändert aktiv. Alle persönlichen Karten und Reviews bleiben in jedem Fall erhalten.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-8-physik-elektrik-grundlagen-kvt.json",
+      "tile_id": "de-by:realschule-8-physik-elektrik-grundlagen",
+      "version": "2026.08.1",
+      "sha256": "72c26f5705af4b8caa67d2ee5e6c2970db766e9026008e31df96af4a14738364"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-8-physik-mechanik-kraft-bewegung-kvt.json",
+      "tile_id": "de-by:realschule-8-physik-mechanik-kraft-bewegung",
+      "version": "2026.08.1",
+      "sha256": "f6a2dc1113f8fab2adfd50bfda31601a29bf7629cce0e166dfbb1a79b22c669e"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-8-physik-elektrik-grundlagen",
+      "de_by_id": "01K4P8E0000000000000000J01",
+      "de_by_question": "Welche Teilchen sind in metallischen Leitern (z. B. Kupfer, Aluminium) für den gerichteten Ladungstransport verantwortlich?",
+      "category": "A",
+      "academy_slug": "ph8-leitungselektronen-ladungstransport",
+      "action": "replace",
+      "note": "Gleicher einzelner Abruf: frei bewegliche Leitungselektronen. Neue Karte in Lektion 5.6."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-elektrik-grundlagen",
+      "de_by_id": "01K4P8E0000000000000000J02",
+      "de_by_question": "Beschreibe die notwendigen Bestandteile eines geschlossenen elektrischen Stromkreises (Quelle, Verbraucher, Hin- und Rückleiter, Schalter), erkläre den Unterschied zwischen Leitern (Metalle, Graphit, Salzlösungen) und Isolatoren (Kunststoffe, Glas, Luft) auf atomarer Ebene und unterscheide die physikalische Elektronenflussrichtung von der historischen/technischen Stromrichtung.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "note": "Mehrteiliger Gesamtabruf. Aufgeteilt in die Karten zu Stromkreis, Leiter und Isolatoren (5.7) und technischer Stromrichtung (5.6); keine Beherrschung auf Teilfragen verteilen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-elektrik-grundlagen",
+      "de_by_id": "01K4P8E0000000000000000J03",
+      "de_by_question": "Welche Wirkung des elektrischen Stroms tritt ausnahmslos bei JEDEM stromdurchflossenen Leiter auf?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "note": "Die Aussage „ausnahmslos jeder Leiter“ ist nicht lehrplanfest (Supraleiter zeigen keine Wärmewirkung). Die Stromwirkungen werden in Lektion 5.10 einzeln und ohne Ausnahmebehauptung gefragt."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-elektrik-grundlagen",
+      "de_by_id": "01K4P8E0000000000000000J04",
+      "de_by_question": "Nenne und erläutere die vier fundamentalen Wirkungen des elektrischen Stroms (Wärmewirkung, Lichtwirkung, magnetische Wirkung, chemische Wirkung) und ordne jeder Wirkung je ein technisches Alltagsgerät sowie das physikalische Prinzip zu.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "note": "Mehrteiliger Gesamtabruf von vier Wirkungen mit Geräten und Prinzipien. Neue atomare Fragen übertragen keine Teilbeherrschung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-elektrik-grundlagen",
+      "de_by_id": "01K4P8E0000000000000000J05",
+      "de_by_question": "Wie wird ein Strommessgerät (Amperemeter) und wie ein Spannungsmessgerät (Voltmeter) im Stromkreis angeschlossen?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "note": "Zwei Geräte in einer Frage: Das Amperemeter gehört zu Physik 8 (Karte in 5.8), das Voltmeter zu Physik 9 (dort bereits eine eigene Karte). Aufgeteilt."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-elektrik-grundlagen",
+      "de_by_id": "01K4P8E0000000000000000J06",
+      "de_by_question": "Definiere die elektrische Stromstärke I = Q / t (Einheit Ampere [A]) und die elektrische Spannung U (Antrieb des Stroms / Potenzialdifferenz, Einheit Volt [V]), begründe anhand der Innenwiderstände, warum ein Amperemeter niederohmig und ein Voltmeter hochohmig sein muss, und erkläre die Gefahren eines Kurzschlusses.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "note": "Mehrteiliger Gesamtabruf aus Stromstärke, Spannung, Innenwiderständen und Kurzschluss; Spannung und Innenwiderstände liegen nicht im Lehrplan 8. Die Stromstärke (5.6) und der Kurzschluss (5.8) werden eigenständig gefragt."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-elektrik-grundlagen",
+      "de_by_id": "01K4P8E0000000000000000J07",
+      "de_by_question": "Welche Kennlinie im U-I-Diagramm kennzeichnet einen ohmschen Widerstand (konstanter Widerstand bei gleichbleibender Temperatur)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep",
+      "note": "Stoff der Jahrgangsstufe 9 (Kennlinien, Gesetz von Ohm), kein Lehrplaninhalt von Physik 8 und ohne Nachfolger in dieser Zelle. Die Karte bleibt bei denen, die sie halten."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-elektrik-grundlagen",
+      "de_by_id": "01K4P8E0000000000000000J08",
+      "de_by_question": "Formuliere das Ohmsche Gesetz R = U / I (Einheit Ohm [Ω]), berechne den Widerstand eines Verbrauchers, an dem bei U = 230 V ein Strom von I = 4,6 A gemessen wird, und erkläre, warum eine Glühlampe mit Wolframwendel kein idealer ohmscher Widerstand ist (Kaltleiter-Verhalten).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep",
+      "note": "Stoff der Jahrgangsstufe 9 (Gesetz von Ohm, Widerstand), kein Lehrplaninhalt von Physik 8 und ohne Nachfolger in dieser Zelle. Die Karte bleibt bei denen, die sie halten."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-mechanik-kraft-bewegung",
+      "de_by_id": "01K4P8M0000000000000000J01",
+      "de_by_question": "Wie lautet die SI-Einheit der Kraft F und welche physikalische Größe bleibt im Gegensatz zur Gewichtskraft auf Erde und Mond unverändert?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "note": "Zwei Fakten in einer Frage (Einheit der Kraft, ortsunabhängige Masse). Aufgeteilt in zwei eigene Karten in 1.3 und 1.6."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-mechanik-kraft-bewegung",
+      "de_by_id": "01K4P8M0000000000000000J02",
+      "de_by_question": "Erkläre den Unterschied zwischen träger Masse m und ortsabhängiger Gewichtskraft F_G = m · g (mit g_Erde ≈ 9,81 N/kg vs. g_Mond ≈ 1,62 N/kg), formuliere das Hookesche Gesetz für Schraubenfedern (F = D · s) und berechne die Dehnung s einer Feder mit Federkonstante D = 50 N/m bei Anhängen eines Körpers der Masse m = 200 g.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "note": "Mehrteiliger Gesamtabruf von Masse, Gewichtskraft, Hookeschem Gesetz und Rechnung. Aufgeteilt auf die Karten in 1.5 und 1.6."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-mechanik-kraft-bewegung",
+      "de_by_id": "01K4P8M0000000000000000J03",
+      "de_by_question": "In welche beiden senkrecht aufeinander stehenden Kraftkomponenten wird die Gewichtskraft F_G eines Körpers auf einer schiefen Ebene zerlegt?",
+      "category": "A",
+      "academy_slug": "ph8-gewichtskraft-zerlegung",
+      "action": "replace",
+      "note": "Gleicher einzelner Abruf: Hangabtriebskraft und Normalkraft. Neue Karte in Lektion 3.1."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-mechanik-kraft-bewegung",
+      "de_by_id": "01K4P8M0000000000000000J04",
+      "de_by_question": "Erläutere die vektorielle Natur einer Kraft (Angriffspunkt, Betrag, Richtung), konstruiere die resultierende Gesamtkraft F_res zweier am selben Punkt unter 90° angreifender Kräfte F_1 = 30 N und F_2 = 40 N und berechne rechnerisch F_res sowie die Hangabtriebskraft F_H eines Wagens (m = 50 kg) auf einer Rampe mit Neigungswinkel alpha = 30°.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "note": "Mehrteiliger Gesamtabruf mit Kräfteparallelogramm, Satz des Pythagoras und Sinus; Winkelfunktionen und Pythagoras gehören nicht zu Physik 8. Die Bestimmungsstücke einer Kraft (1.3) und die Zerlegung auf der schiefen Ebene (3.1) werden einzeln gefragt."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-mechanik-kraft-bewegung",
+      "de_by_id": "01K4P8M0000000000000000J05",
+      "de_by_question": "Welche Bedingung muss für das Drehmomentengleichgewicht an einem zweiseitigen Hebel erfüllt sein?",
+      "category": "A",
+      "academy_slug": "ph8-hebelgesetz",
+      "action": "replace",
+      "note": "Gleicher einzelner Abruf: Kraft mal Kraftarm gleich Last mal Lastarm. Neue Karte in Lektion 3.2."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-mechanik-kraft-bewegung",
+      "de_by_id": "01K4P8M0000000000000000J06",
+      "de_by_question": "Definiere den Begriff des Drehmoments M = F · a (mit Einheit N·m), unterscheide einseitige Hebel (z. B. Schubkarre, Flaschenöffner) von zweiseitigen Hebeln (z. B. Wippe, Schere, Brecheisen) und berechne die erforderliche Handkraft F_1, um mit einer Brechstange (Gesamtlänge 1,50 m, Drehpunkt 10 cm von der Last entfernt) einen Stein mit Gewichtskraft F_2 = 2800 N anzuheben.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "note": "Mehrteiliger Gesamtabruf von Drehmoment, Hebelarten und Rechnung. Aufgeteilt in die Karten zu Hebelarten und Brechstange in 3.2."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-mechanik-kraft-bewegung",
+      "de_by_id": "01K4P8M0000000000000000J07",
+      "de_by_question": "Wie lautet die fundamentale 'Goldene Regel der Mechanik' nach Galileo Galilei?",
+      "category": "A",
+      "academy_slug": "ph8-goldene-regel",
+      "action": "replace",
+      "note": "Gleicher einzelner Abruf: Was man an Kraft spart, muss man an Weg zusetzen. Neue Karte in Lektion 3.1."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-physik-mechanik-kraft-bewegung",
+      "de_by_id": "01K4P8M0000000000000000J08",
+      "de_by_question": "Vergleiche die Wirkungsweise einer festen Rolle (Kraftumlenkung) mit einer losen Rolle (Krafthalbierung), erkläre die Funktion eines Flaschenzugs mit n tragenden Seilstücken (F_Z = F_L / n; s_Z = n · s_L) und berechne die Zugkraft F_Z sowie die Seillänge s_Z beim Anheben einer Last von 1200 N um eine Höhe von h = 3 m mit einem Flaschenzug aus 4 tragenden Seilen.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "note": "Mehrteiliger Gesamtabruf von Rollen, Flaschenzugformeln und Rechnung. Aufgeteilt in die Karten in 3.3."
+    }
+  ]
+}
