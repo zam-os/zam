@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "approved": "2026-10-23",
+  "note": "Freigegeben. Die Zelle (Version 2026.10.2) deklariert die acht retired_items der C-Zeilen und kein replaces: Keine alte Karte hat in der neuen Zelle einen sicher gleichen Einzelabruf. Die Zuordnung steht unverändert zur Freigabe vom 23. Oktober 2026.",
+  "source": "Ausdrückliche Freigabe von Thomas im Claude-Code-Chat am 23. Oktober 2026: „Mapping Freigabe ist auch erteilt“. Auf die Rückfrage, welche der acht alten Karten stillgelegt werden, wählte er „Alle acht“.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "4ca430dd146de311fda3614264edf550a31e25a1",
+  "authorization": "Thomas hat am 23. Oktober 2026 die Zuordnung (8 × C, kein replaces) freigegeben und alle acht Karten als retired_items bestätigt (J01 bis J08). Die genau benannten retired_items dürfen veröffentlicht und synchronisiert werden; persönliche Karten und Reviewhistorien bleiben erhalten. Merge dieses PR und Veröffentlichung des ZAM-PR sind damit nicht freigegeben.",
+  "policy": "C: geteilter, korrigierter oder nicht lehrplankonformer Gesamtabruf; kein Lernstandsübertrag, die alte Karte wird stillgelegt. Karten und Reviewhistorien bleiben erhalten. Nur temporäre Bibliotheken für die Prüfung verwenden.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-9-deutsch-argumentation-eroerterung-kvt.json",
+      "tile_id": "de-by:realschule-9-deutsch-argumentation-eroerterung",
+      "version": "2026.08.1",
+      "sha256": "77734aac15cf57c4d6f514a31993cf42c6f80057c8a1d1ff66f71e7e4441ecdc"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-9-deutsch-argumentation-eroerterung",
+      "de_by_id": "01K4D9T0000000000000000J01",
+      "de_by_question": "Welcher Baustein eines vollständigen Arguments untermauert die logische Begründung durch ein konkretes Beispiel, eine Statistik oder ein Zitat?",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Einzelabruf, aber in anderer Richtung: Die alte Karte fragt, welcher Baustein eines Arguments das Beispiel oder den Beleg liefert. Die neuen Karten de9-kommentar-schreiben-check und de9-argumentieren-rhetorik-extra fragen dagegen, woraus ein Argument besteht. Kein sicher gleicher Abruf, daher kein Übertrag einer Beherrschung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-deutsch-argumentation-eroerterung",
+      "de_by_id": "01K4D9T0000000000000000J02",
+      "de_by_question": "Erläutere den dreigliedrigen Aufbau eines überzeugenden Arguments (3-B-Schema: Behauptung/These, Begründung/Warum-Frage, Beleg/Beispiel/Beweis) und formuliere ein vollständiges Argument zur Frage, ob Smartphones im Unterricht als Lernmedium genutzt werden sollten.",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Mehrteiliger Abruf: den dreigliedrigen Aufbau eines Arguments erklären und ein eigenes Argument zu einer Streitfrage formulieren. Die neuen Karten fragen den Aufbau einzeln; das Formulieren eigener Argumente üben die Schreibaufgaben. Kein einzelner Nachfolger mit demselben Gesamtabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-deutsch-argumentation-eroerterung",
+      "de_by_id": "01K4D9T0000000000000000J03",
+      "de_by_question": "Nach welchem Steigerungsprinzip werden Argumente im Hauptteil einer dialektischen Erörterung nach dem Sanduhr-Modell angeordnet?",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Das Sanduhr- und Ping-Pong-Prinzip der dialektischen Erörterung kommt im Fachlehrplan Deutsch 9 nicht vor: 3.2.5 verlangt einen einfachen Kommentar mit einer Argumentationskette. Gegenargumente entwerfen steht erst im Plan der Klasse 10 (3.2). Kein Nachfolger."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-deutsch-argumentation-eroerterung",
+      "de_by_id": "01K4D9T0000000000000000J04",
+      "de_by_question": "Beschreibe die vollständige Struktur einer dialektischen Erörterung: Einleitung (Aufhänger, Themafrage), Hauptteil nach dem Sanduhr-Prinzip (These, Gegenthese, Antithese, Steigerungslogik, Synthese) und Schluss (persönliches Fazit, Ausblick).",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Mehrteiliger Abruf der vollständigen Struktur einer dialektischen Erörterung (Einleitung, Hauptteil nach dem Sanduhr-Prinzip, Schluss). Dieser Aufsatz ist nicht Stoff von Deutsch 9, siehe J03. Kein Nachfolger."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-deutsch-argumentation-eroerterung",
+      "de_by_id": "01K4D9T0000000000000000J05",
+      "de_by_question": "Welches Stilmittel liegt vor, wenn aufeinanderfolgende Wörter mit demselben Anlaut/Konsonanten beginnen (z. B. 'Milch macht müde Männer munter')?",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Die Alliteration steht nicht in der Liste der sprachlichen Mittel von 4.2.4 (Anapher, Hyperbel, Metapher, Vergleich, Interjektion, Neologismus) und wird in der neuen Zelle nicht gefragt. Kein Nachfolger mit gleichem Abruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-deutsch-argumentation-eroerterung",
+      "de_by_id": "01K4D9T0000000000000000J06",
+      "de_by_question": "Definiere und nenne je ein typisches Beispiel sowie die beabsichtigte Leserwirkung für die folgenden fünf rhetorischen Stilmittel: 1. Metapher, 2. Anapher, 3. Hyperbel, 4. Rhetorische Frage und 5. Personifikation.",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Mehrteiliger Abruf: fünf Stilmittel (Metapher, Anapher, Hyperbel, rhetorische Frage, Personifikation) mit Definition, Beispiel und Wirkung. Die neuen Karten fragen Metapher und Vergleich, Hyperbel und die Beschreibung der Wirkung einzeln; die Personifikation steht nicht im Lehrplan der Klasse 9. Kein einzelner Nachfolger."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-deutsch-argumentation-eroerterung",
+      "de_by_id": "01K4D9T0000000000000000J07",
+      "de_by_question": "Wie muss ein wörtliches (direktes) Zitat in einem Fließtext korrekt gekennzeichnet werden?",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Einzelabruf (wie ein wörtliches Zitat gekennzeichnet wird), aber ohne identischen Nachfolger: Die neuen Karten zum Zitieren fragen die Auslassung (de9-zitieren-check), den Einbau in einen eigenen Absatz (de9-zitieren-kern) und das sinngemäße Zitat (de9-zitieren-extra). Kein sicher gleicher Abruf, daher kein Übertrag."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-deutsch-argumentation-eroerterung",
+      "de_by_id": "01K4D9T0000000000000000J08",
+      "de_by_question": "Unterscheide das wörtliche Zitat vom sinngemäßen Zitat (Paraphrase) und erläutere vier Kriterien zur kritischen Prüfung von Online-Quellen (Autor/Expertise, Aktualität, Objektivität/Interessen und Überprüfbarkeit durch Primärbelege).",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Mehrteiliger Abruf: wörtliches und sinngemäßes Zitat unterscheiden und vier Kriterien der Quellenkritik an Online-Quellen nennen. Die neue Zelle fragt das sinngemäße Zitat einzeln (de9-zitieren-extra); die Quellenkritik an Online-Quellen kommt nicht als eigener Abruf vor. Kein einzelner Nachfolger."
+    }
+  ]
+}

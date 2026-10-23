@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-23T11:30:00Z
+timestamp: 2026-10-23T12:30:00Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -258,6 +258,13 @@ to `I` and `III` and never to II. Its four optional English lessons carry only
 an Academy binding. It replaces the old partial school cell of this grade:
 three of that cell's eight cards pass their review history to Academy
 successors, five retire without transferring mastery (approved 2026-10-22).
+Deutsch 9 is a third case: the Realschule has one Fachlehrplan for every group,
+so its Academy cell binds the four learning areas to grade 9 and names no
+track, and the cell is offered to I, II, IIIa and IIIb alike. Its first
+version sat beside the old partial school cell; version 2026.10.2 retires all
+eight of that cell's cards without transferring mastery (approved
+2026-10-23). The old cell is then no longer bundled, and its review history
+stays.
 
 Mathematik 10 has two Fachlehrpläne that differ in content, not only in
 depth: Zweig I learns Abbildungen and Logarithmusfunktionen, Zweig II/III

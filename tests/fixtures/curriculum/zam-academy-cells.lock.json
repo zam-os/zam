@@ -30,6 +30,12 @@
     "file": "zam-academy-datennetze-kvt.json"
   },
   {
+    "id": "zam-academy:deutsch-realschule-9",
+    "version": "2026.10.3",
+    "sha256": "2794857390d885f8759a63f355da1512149600dfa5c5425cc5f2910a6bb5077b",
+    "file": "zam-academy-deutsch-realschule-9-kvt.json"
+  },
+  {
     "id": "zam-academy:geographie-realschule-9",
     "version": "2026.10.1",
     "sha256": "3e93946ab8254d090eb971375f1530d4ccfa171c9cacf054fb5e0246a787bfff",
