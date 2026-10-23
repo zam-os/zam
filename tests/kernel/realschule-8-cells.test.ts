@@ -15,10 +15,10 @@ import {
   openDatabase,
 } from "../../src/kernel/index.js";
 
+// Mathematik 8 comes from the ZAM Academy cell
+// (zam-academy-mathematik-realschule-8-cell.test.ts); its three school cells
+// were version 1 and are no longer bundled.
 const RS8_CELL_IDS = [
-  "de-by:realschule-8-mathematik-terme-gleichungen",
-  "de-by:realschule-8-mathematik-lineare-funktionen",
-  "de-by:realschule-8-mathematik-ebene-geometrie-vierecke",
   "de-by:realschule-8-physik-mechanik-kraft-bewegung",
   "de-by:realschule-8-physik-elektrik-grundlagen",
   "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
@@ -51,7 +51,7 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all bundled cells including all 17 Realschule 8 cells", () => {
+  it("lists all bundled cells including all 14 Realschule 8 school cells", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(100);
 
@@ -68,7 +68,7 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
       schoolType: "realschule",
       grade: 8,
     });
-    expect(rs8Cells.length).toBeGreaterThanOrEqual(17);
+    expect(rs8Cells.length).toBeGreaterThanOrEqual(14);
     for (const cellId of RS8_CELL_IDS) {
       expect(
         rs8Cells.some((c) => c.id === cellId),
@@ -110,7 +110,7 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
     expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
   });
 
-  it("supports simultaneous co-enrolment in ALL 17 Grade 8 cells without conflict", async () => {
+  it("supports simultaneous co-enrolment in ALL 14 Grade 8 school cells without conflict", async () => {
     const user = "complete-rs8-candidate";
 
     let totalCards = 0;
@@ -120,12 +120,12 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
       totalCards += res.cardsCreated;
     }
 
-    // 12 cells * 8 + 5 cells * 4 = 96 + 20 = 116 cards
-    expect(totalCards).toBe(116);
+    // 9 cells * 8 + 5 cells * 4 = 72 + 20 = 92 cards
+    expect(totalCards).toBe(92);
 
     const cards = (await db
       .prepare(`SELECT COUNT(*) as count FROM cards WHERE user_id = ?`)
       .get(user)) as { count: number };
-    expect(cards.count).toBe(116);
+    expect(cards.count).toBe(92);
   });
 });
