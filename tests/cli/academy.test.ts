@@ -223,6 +223,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:geographie-realschule-9",
       "zam-academy:geschichte-realschule-9",
       "zam-academy:mathematik-realschule-10",
+      "zam-academy:mathematik-realschule-7",
       "zam-academy:mathematik-realschule-9",
       "zam-academy:nur-katalog",
       "zam-academy:physik-realschule-10",
@@ -239,6 +240,16 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       version: "2099.1.1",
       items: 26,
       appUrl: "https://academy.zam-os.org/uml/",
+    });
+    expect(
+      list.cells.find(
+        (cell) => cell.id === "zam-academy:mathematik-realschule-7",
+      ),
+    ).toMatchObject({
+      bundled: true,
+      held: false,
+      version: "2026.10.1",
+      items: 126,
     });
     expect(await tilesInstalled()).toBe(0);
     // Both cells were cached for a later „Aufnehmen“ or an agent.
@@ -263,6 +274,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:geographie-realschule-9",
       "zam-academy:geschichte-realschule-9",
       "zam-academy:mathematik-realschule-10",
+      "zam-academy:mathematik-realschule-7",
       "zam-academy:mathematik-realschule-9",
       "zam-academy:physik-realschule-10",
       "zam-academy:physik-realschule-9",
