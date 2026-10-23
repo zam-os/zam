@@ -54,6 +54,12 @@
     "file": "zam-academy-mathematik-realschule-10-kvt.json"
   },
   {
+    "id": "zam-academy:mathematik-realschule-7",
+    "version": "2026.10.1",
+    "sha256": "8143b1e0dc807b5dfd798c4bd88271d6e8a94e7c3d41ce2d6b4714b6fb2104ec",
+    "file": "zam-academy-mathematik-realschule-7-kvt.json"
+  },
+  {
     "id": "zam-academy:mathematik-realschule-8",
     "version": "2026.10.1",
     "sha256": "02d052000401fb21cb972dddb7a0c613e6736e9a55df770ce68cf7ed3aee601b",

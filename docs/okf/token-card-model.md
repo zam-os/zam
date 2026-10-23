@@ -277,6 +277,21 @@ the old card had one, so its history moves with the same `replaces` as an A
 row; the approval also covered two B
 successors that correct inaccurate details of the old answer.
 
+Mathematik 7 is bundled as an additional Academy cell, version 2026.10.1,
+with 42 lessons and 126 practice items. Its bindings cover all 42 lessons in
+the eight learning areas of Zweig I, and 31 lessons in the six learning
+areas of II/III; the latter binding reaches II, IIIa and IIIb. Every card
+links to its lesson in the training app. Curriculum discovery offers the
+cell as a whole: taking the Academy cell enrols all 126 cards, rather than
+filtering them to the learner's branch.
+
+The four earlier Mathematik-7 school cells remain bundled. The published
+Academy cell declares neither `replaces` nor `retired_items`; its mapping
+proposal has not been approved. Installing or enrolling it leaves all 30
+old cards and their review histories untouched and creates the Academy
+cards unlearned. Repeating enrolment creates no duplicates and changes no
+schedule or review history.
+
 Mathematik 8 has two Fachlehrpläne as well: Zweig I learns the Drehung, space
 coordinates, Ungleichungen and lines y = mx + t, Zweig II/III triangles and
 Schrägbilder, which Zweig I learnt in grade 7. Its Academy cell binds each
@@ -307,7 +322,7 @@ changed mappings require real re-retrieval.
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
-- Tests: `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`, `tests/kernel/academy-catalog.test.ts`, `tests/kernel/academy-cells-lock.test.ts`, `tests/kernel/tile-version.test.ts`, `tests/kernel/zam-academy-uml-cell.test.ts`, `tests/kernel/zam-academy-geographie-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-it-cells.test.ts`, `tests/kernel/zam-academy-bwr-realschule-9-cell.test.ts`, `tests/cli/curriculum-lehrplanplus-bayern.test.ts`, `tests/cli/academy-sync-script.test.ts`
+- Tests: `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`, `tests/kernel/academy-catalog.test.ts`, `tests/kernel/academy-cells-lock.test.ts`, `tests/kernel/tile-version.test.ts`, `tests/kernel/zam-academy-uml-cell.test.ts`, `tests/kernel/zam-academy-geographie-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-7-cell.test.ts`, `tests/kernel/zam-academy-it-cells.test.ts`, `tests/kernel/zam-academy-bwr-realschule-9-cell.test.ts`, `tests/cli/curriculum-lehrplanplus-bayern.test.ts`, `tests/cli/academy-sync-script.test.ts`
 - Code: `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/library/topics.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/import/material-import.ts`, `src/kernel/library/academy-catalog.ts`, `src/kernel/library/tile-version.ts`, `scripts/sync-academy-cells.mjs`, `src/cli/curriculum/providers/lehrplanplus-bayern/manifest.ts`
 
 - [ADR 2026-03-26 — Personal Workflow Foundations](../adr/2026-03-26-personal-workflow-foundations.md)

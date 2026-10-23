@@ -16,7 +16,7 @@ export interface BundledTile extends KvtTile {
 }
 
 // --- begin bundled-tile-imports ---
-// --- Fixture Imports (216 tiles) ---
+// --- Fixture Imports (217 tiles) ---
 import tile1Raw from "../../../tests/fixtures/curriculum/de-by-bos-10-optik-kvt.json" with {
   type: "json",
 };
@@ -641,7 +641,10 @@ import tile234Raw from "../../../tests/fixtures/curriculum/zam-academy-geographi
 import tile235Raw from "../../../tests/fixtures/curriculum/zam-academy-geschichte-realschule-9-kvt.json" with {
   type: "json",
 };
-import tile244Raw from "../../../tests/fixtures/curriculum/zam-academy-mathematik-realschule-8-kvt.json" with {
+import tile244Raw from "../../../tests/fixtures/curriculum/zam-academy-mathematik-realschule-7-kvt.json" with {
+  type: "json",
+};
+import tile245Raw from "../../../tests/fixtures/curriculum/zam-academy-mathematik-realschule-8-kvt.json" with {
   type: "json",
 };
 import tile232Raw from "../../../tests/fixtures/curriculum/zam-academy-mathematik-realschule-9-kvt.json" with {
@@ -1191,6 +1194,8 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile243Raw as unknown as BundledTile,
   [(tile244Raw as unknown as BundledTile).tile_id]:
     tile244Raw as unknown as BundledTile,
+  [(tile245Raw as unknown as BundledTile).tile_id]:
+    tile245Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 
