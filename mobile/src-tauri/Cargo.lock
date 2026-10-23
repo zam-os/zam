@@ -5693,7 +5693,7 @@ dependencies = [
 
 [[package]]
 name = "zam-mobile"
-version = "0.57.0"
+version = "0.58.0"
 dependencies = [
  "base64 0.22.1",
  "hyper-rustls 0.25.0",
