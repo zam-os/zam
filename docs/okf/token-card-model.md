@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-23T09:00:00Z
+timestamp: 2026-10-23T11:30:00Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -265,8 +265,9 @@ Raumgeometrie and quadratische Funktionen. Its Academy cell therefore binds
 each lesson to `I`, to `II_III` or to both, with that branch's own learning
 area. It replaces both old school cells of the grade with seven A and nine B
 rows and retires nothing (approved 2026-10-22). A B successor keeps the whole
-old multi-part question, its answer and its sample solution, so its history
-moves with the same `replaces` as an A row; the approval also covered two B
+old multi-part question and its whole answer, with the sample solution where
+the old card had one, so its history moves with the same `replaces` as an A
+row; the approval also covered two B
 successors that correct inaccurate details of the old answer.
 
 A tile may retire practice items. A retired item keeps its cards and review
