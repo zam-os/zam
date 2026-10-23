@@ -1,7 +1,7 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "zam-academy:physik-realschule-8",
-  "version": "2026.10.2",
+  "version": "2026.10.3",
   "title": "Physik 8 Realschule (ZAM Academy)",
   "description": "Hält fest, was du in der ZAM Academy zu Physik 8 (Realschule Bayern, LehrplanPLUS) geübt hast: Mechanik, Optik, Magnetismus und Elektrizität für Zweig II/III, Mechanik und Energie, Wärmelehre und Elektrizität für Zweig I, dazu Akustik und Astronomie als Wahl. Jede Karte verlinkt die Lektion mit Labor und Aufgaben.",
   "publisher": "ZAM Academy",
@@ -5400,7 +5400,7 @@
           "tier": "tier2_synthesis",
           "bloom_level": 3,
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-7-stromkreis",
-          "question": "Zwei Schalter sind parallel zu einer Lampe geschaltet. Wann leuchtet die Lampe?",
+          "question": "Zwei Schalter liegen parallel zueinander und zusammen in Reihe mit der Lampe. Wann leuchtet die Lampe?",
           "concept": "Wenn mindestens ein Schalter geschlossen ist.",
           "materiality": "material",
           "sample_solution": "Das ist eine ODER-Schaltung. In Reihe müssten beide Schalter geschlossen sein (UND).",
