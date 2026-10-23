@@ -405,6 +405,55 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     }
   });
 
+  it("offers Physik 8 with both Wahlpflichtfächergruppen, read from the Fachlehrplan pages", () => {
+    expect(provider.listTracks("realschule", "8", "physik")).toEqual([
+      {
+        id: "wpfg1",
+        label: "Physik 8 (I)",
+        description: expect.stringContaining("Wahlpflichtfächergruppe I"),
+      },
+      {
+        id: "wpfg2-3",
+        label: "Physik 8 (II/III)",
+        description: expect.stringContaining(
+          "Wahlpflichtfächergruppen II und III",
+        ),
+      },
+    ]);
+    // Zweig I: three areas and the elective 4 (Astronomie oder Akustik);
+    // Zweig II/III: three areas. Hours as printed on the pages on 2026-10-23.
+    const areas = {
+      wpfg1: [
+        ["lb1", "Mechanik und Energie", 20],
+        ["lb2", "Wärmelehre", 15],
+        ["lb3", "Elektrizitätslehre", 15],
+        ["lb4", "Wahlbereich: Astronomie oder Akustik", 6],
+      ],
+      "wpfg2-3": [
+        ["lb1", "Mechanik", 22],
+        ["lb2", "Optik", 14],
+        ["lb3", "Magnetismus und Elektrizitätslehre", 20],
+      ],
+    };
+    for (const [track, expected] of Object.entries(areas)) {
+      const topics = provider.listTopics({
+        schoolType: "realschule",
+        grade: "8",
+        subject: "physik",
+        track,
+      });
+      expect(
+        topics.map((topic) => [topic.id, topic.label, topic.hours]),
+      ).toEqual(expected);
+      for (const topic of topics)
+        expect(provider.resolveTopic(topic)).toEqual({
+          provider: "lehrplanplus-bayern",
+          topicId: `realschule|8|physik|${track}#${topic.id}`,
+          uri: `https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/physik/${track}`,
+        });
+    }
+  });
+
   it("lists the eight Lernbereiche of Mathematik 9 (I)", () => {
     const topics = provider.listTopics({
       schoolType: "realschule",
