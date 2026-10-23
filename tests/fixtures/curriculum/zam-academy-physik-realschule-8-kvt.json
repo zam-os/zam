@@ -1,7 +1,7 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "zam-academy:physik-realschule-8",
-  "version": "2026.10.1",
+  "version": "2026.10.2",
   "title": "Physik 8 Realschule (ZAM Academy)",
   "description": "Hält fest, was du in der ZAM Academy zu Physik 8 (Realschule Bayern, LehrplanPLUS) geübt hast: Mechanik, Optik, Magnetismus und Elektrizität für Zweig II/III, Mechanik und Energie, Wärmelehre und Elektrizität für Zweig I, dazu Akustik und Astronomie als Wahl. Jede Karte verlinkt die Lektion mit Labor und Aufgaben.",
   "publisher": "ZAM Academy",
@@ -63,6 +63,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-1-messen",
           "question": "Wie groß ist beim Ablesen einer Skala etwa der Ablesefehler?",
           "concept": "Etwa die halbe Skalenteilung.",
+          "materiality": "material",
           "sample_solution": "Zwischen zwei Strichen kann man noch etwa auf die Hälfte schätzen. Bei einem Lineal mit Millimeterteilung beträgt der Ablesefehler etwa 0,5 mm.",
           "fast_check": {
             "type": "binary_choice",
@@ -92,6 +93,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-1-messen",
           "question": "Wie verbessert man ein Messergebnis, das durch zufällige Abweichungen schwankt?",
           "concept": "Mehrfach messen und den Mittelwert bilden.",
+          "materiality": "material",
           "sample_solution": "Zufällige Fehler gleichen sich im Mittelwert teilweise aus. Systematische Fehler (verschobener Nullpunkt) bleiben dagegen bestehen.",
           "fast_check": {
             "type": "binary_choice",
@@ -121,6 +123,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-1-messen",
           "question": "Wie dick ist ein Blatt Papier, wenn 500 Blatt zusammen 5,0 cm hoch sind?",
           "concept": "0,1 mm",
+          "materiality": "material",
           "sample_solution": "5,0 cm sind 50 mm. Geteilt durch 500 Blatt ergibt das 0,1 mm je Blatt. Man misst viele Blätter zusammen, weil ein einzelnes Blatt mit dem Lineal nicht genau genug zu messen ist.",
           "choice_distractors": [
             {
@@ -218,6 +221,7 @@
               "speech": "v gleich s durch t"
             }
           ],
+          "materiality": "material",
           "sample_solution": "Die Geschwindigkeit ist der Quotient aus Weg und Zeit. Umgestellt gilt s = v · t und t = s / v.",
           "fast_check": {
             "type": "binary_choice",
@@ -247,6 +251,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-2-geschwindigkeit",
           "question": "Wie rechnet man eine Geschwindigkeit von m/s in km/h um?",
           "concept": "Mal 3,6 nehmen.",
+          "materiality": "material",
           "sample_solution": "1 m/s sind 3600 m in 3600 s, also 3,6 km in einer Stunde. Von km/h nach m/s teilt man deshalb durch 3,6.",
           "fast_check": {
             "type": "binary_choice",
@@ -276,6 +281,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-2-geschwindigkeit",
           "question": "Welche Linie ergibt eine gleichförmige Bewegung im Weg-Zeit-Diagramm, und was bedeutet das?",
           "concept": "Eine Ursprungsgerade: Weg und Zeit sind direkt proportional.",
+          "materiality": "material",
           "sample_solution": "Gleiche Zeiten bringen gleiche Wege. Die Steigung der Geraden ist die Geschwindigkeit.",
           "choice_distractors": [
             {
@@ -335,6 +341,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-3-kraft",
           "question": "Welche beiden Arten von Kraftwirkungen unterscheidet man?",
           "concept": "Verformung und Änderung des Bewegungszustands.",
+          "materiality": "material",
           "sample_solution": "Die Verformung heißt statische, die Änderung der Geschwindigkeit oder Richtung dynamische Kraftwirkung.",
           "fast_check": {
             "type": "binary_choice",
@@ -364,6 +371,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-3-kraft",
           "question": "Durch welche drei Bestimmungsstücke ist eine Kraft festgelegt?",
           "concept": "Betrag, Richtung und Angriffspunkt.",
+          "materiality": "material",
           "sample_solution": "Man zeichnet sie als Kraftpfeil: Er beginnt am Angriffspunkt, zeigt in die Richtung und ist im Maßstab so lang wie der Betrag.",
           "fast_check": {
             "type": "binary_choice",
@@ -393,6 +401,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-3-kraft",
           "question": "Wie heißt die Einheit der Kraft?",
           "concept": "Newton (N).",
+          "materiality": "material",
           "sample_solution": "1 N entspricht ungefähr der Gewichtskraft einer 100-g-Tafel Schokolade.",
           "fast_check": {
             "type": "binary_choice",
@@ -460,6 +469,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-4-wechselwirkung",
           "question": "Was besagt das Wechselwirkungsprinzip?",
           "concept": "Zwei Körper wirken mit gleich großen, entgegengesetzten Kräften aufeinander.",
+          "materiality": "material",
           "sample_solution": "Die beiden Kräfte greifen an verschiedenen Körpern an. Deshalb heben sie sich nicht auf.",
           "fast_check": {
             "type": "binary_choice",
@@ -489,6 +499,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-4-wechselwirkung",
           "question": "Welche Bedingung muss für ein Kräftegleichgewicht an einem Körper gelten?",
           "concept": "Gleich große, entgegengesetzte Kräfte am selben Körper.",
+          "materiality": "material",
           "sample_solution": "Im Gleichgewicht ist die Summe der Kräfte null: Der Körper bleibt in Ruhe oder bewegt sich gleichförmig geradeaus.",
           "fast_check": {
             "type": "binary_choice",
@@ -518,6 +529,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-4-wechselwirkung",
           "question": "Ein Buch liegt auf dem Tisch. Welche Kraft bildet mit der Gewichtskraft des Buches ein Wechselwirkungspaar?",
           "concept": "Die Kraft, mit der das Buch die Erde anzieht.",
+          "materiality": "material",
           "sample_solution": "Wechselwirkungskräfte greifen an verschiedenen Körpern an. Die Gewichtskraft wirkt auf das Buch, ihr Partner wirkt auf die Erde.",
           "choice_distractors": [
             {
@@ -587,6 +599,7 @@
               "speech": "F gleich D mal s"
             }
           ],
+          "materiality": "material",
           "sample_solution": "Das gilt nur im elastischen Bereich. D ist die Federkonstante, ein Maß für die Härte der Feder.",
           "fast_check": {
             "type": "binary_choice",
@@ -616,6 +629,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-5-hooke",
           "question": "Was geschieht, wenn man eine Feder über ihre Elastizitätsgrenze hinaus dehnt?",
           "concept": "Sie bleibt dauerhaft verformt, und das Gesetz von Hooke gilt nicht mehr.",
+          "materiality": "material",
           "sample_solution": "Man nennt das plastische Verformung. Ein Federkraftmesser darf deshalb nie über seinen Messbereich belastet werden.",
           "fast_check": {
             "type": "binary_choice",
@@ -645,6 +659,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-5-hooke",
           "question": "Eine Feder wird mit 2,0 N um 5,0 cm gedehnt. Wie groß ist ihre Federkonstante?",
           "concept": "40 N/m",
+          "materiality": "material",
           "sample_solution": "D = F / s = 2,0 N / 0,050 m = 40 N/m. Die Dehnung muss in Meter umgerechnet werden.",
           "choice_distractors": [
             {
@@ -704,6 +719,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-6-masse-gewicht",
           "question": "Wie unterscheiden sich Masse und Gewichtskraft eines Körpers auf Erde und Mond?",
           "concept": "Die Masse bleibt gleich, die Gewichtskraft ist auf dem Mond kleiner.",
+          "materiality": "material",
           "sample_solution": "Die Masse ist ortsunabhängig. Die Gewichtskraft F_G = m · g hängt vom Ortsfaktor ab: auf dem Mond 1,62 N/kg, auf der Erde 9,81 N/kg.",
           "fast_check": {
             "type": "binary_choice",
@@ -771,6 +787,7 @@
               "speech": "F G gleich m mal g"
             }
           ],
+          "materiality": "material",
           "sample_solution": "Auf der Erde ist g = 9,81 N/kg, also wiegen 100 g etwa 1 N.",
           "fast_check": {
             "type": "binary_choice",
@@ -800,6 +817,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-6-masse-gewicht",
           "question": "Ein Astronaut hat 80 kg Masse. Wie groß ist seine Gewichtskraft auf dem Mond (g = 1,62 N/kg)?",
           "concept": "etwa 130 N",
+          "materiality": "material",
           "sample_solution": "F_G = m · g = 80 kg · 1,62 N/kg = 129,6 N.",
           "choice_distractors": [
             {
@@ -853,6 +871,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-7-teilchenmodell",
           "question": "Wie sind die Teilchen in einem Gas angeordnet und wie bewegen sie sich?",
           "concept": "Weit voneinander entfernt und frei beweglich.",
+          "materiality": "material",
           "sample_solution": "Deshalb füllt ein Gas jeden Behälter vollständig aus und lässt sich zusammendrücken.",
           "fast_check": {
             "type": "binary_choice",
@@ -882,6 +901,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-7-teilchenmodell",
           "question": "Was kennzeichnet die Teilchen einer Flüssigkeit im Teilchenmodell?",
           "concept": "Sie sind dicht, aber gegeneinander verschiebbar.",
+          "materiality": "material",
           "sample_solution": "Deshalb hat eine Flüssigkeit ein festes Volumen, aber keine feste Form.",
           "fast_check": {
             "type": "binary_choice",
@@ -911,6 +931,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-7-teilchenmodell",
           "question": "Ein Ölfleck der Fläche 0,06 m² hat ein Volumen von 0,12 mm³ Öl. Wie dick ist die einlagige Schicht?",
           "concept": "2 nm",
+          "materiality": "material",
           "sample_solution": "d = V / A. Ölvolumen in mm³ geteilt durch Fläche in m² gibt die Dicke in nm: 0,12 / 0,06 = 2 nm. Das ist etwa der Moleküldurchmesser.",
           "choice_distractors": [
             {
@@ -1008,6 +1029,7 @@
               "speech": "rho gleich m durch V"
             }
           ],
+          "materiality": "material",
           "sample_solution": "Die Dichte ist eine Stoffeigenschaft. Umgestellt gilt m = ρ · V und V = m / ρ.",
           "fast_check": {
             "type": "binary_choice",
@@ -1037,6 +1059,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-8-dichte",
           "question": "Wie viel Kilogramm pro Kubikmeter sind 1 g/cm³?",
           "concept": "1000 kg/m³",
+          "materiality": "material",
           "sample_solution": "1 g/cm³ = 1000 kg/m³. Wasser hat die Dichte 1 g/cm³ und damit 1000 kg/m³.",
           "fast_check": {
             "type": "binary_choice",
@@ -1066,6 +1089,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-8-dichte",
           "question": "Ein Körper hat 270 g Masse und 100 cm³ Volumen. Aus welchem Stoff besteht er?",
           "concept": "Aluminium, ρ = 2,7 g/cm³",
+          "materiality": "material",
           "sample_solution": "ρ = m / V = 270 g / 100 cm³ = 2,7 g/cm³. Das ist die Dichte von Aluminium.",
           "choice_distractors": [
             {
@@ -1125,6 +1149,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-9-reibung",
           "question": "In welcher Reihenfolge sind Haft-, Gleit- und Rollreibung bei gleicher Anpresskraft geordnet?",
           "concept": "Haftreibung ist am größten, Rollreibung am kleinsten.",
+          "materiality": "material",
           "sample_solution": "Der Höchstwert der Haftreibung liegt über der Gleitreibung, und die Rollreibung ist meist viel kleiner als die Gleitreibung.",
           "fast_check": {
             "type": "binary_choice",
@@ -1154,6 +1179,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-9-reibung",
           "question": "Wie erklärt das Teilchenmodell die Reibung zwischen zwei Flächen?",
           "concept": "Raue Flächen verhaken sich, und die Teilchen ziehen einander an.",
+          "materiality": "material",
           "sample_solution": "Auch glatte Flächen sind mikroskopisch rau. Je stärker sie aufeinandergedrückt werden, desto größer die Reibungskraft.",
           "fast_check": {
             "type": "binary_choice",
@@ -1183,6 +1209,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=kr-9-reibung",
           "question": "Ein Schlitten mit 20 kg Last wird bei 30 N gleichförmig gezogen. Welche Zugkraft braucht man bei 60 kg Last auf demselben Schnee?",
           "concept": "90 N",
+          "materiality": "material",
           "sample_solution": "Die Reibungskraft ist proportional zur Anpresskraft. Dreifache Last bedeutet dreifache Reibung, also 3 · 30 N = 90 N.",
           "choice_distractors": [
             {
@@ -1236,6 +1263,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-1-lichtausbreitung",
           "question": "Warum sehen wir einen nicht selbstleuchtenden Gegenstand?",
           "concept": "Weil Licht von ihm in unser Auge gelangt.",
+          "materiality": "material",
           "sample_solution": "Das Auge ist nur Empfänger. Der Gegenstand streut das Licht einer Lichtquelle in alle Richtungen, ein Teil trifft unser Auge.",
           "fast_check": {
             "type": "binary_choice",
@@ -1265,6 +1293,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-1-lichtausbreitung",
           "question": "Wie groß ist die Lichtgeschwindigkeit im Vakuum ungefähr?",
           "concept": "300 000 km/s",
+          "materiality": "material",
           "sample_solution": "Das Licht der Sonne braucht damit etwa 8 min 20 s zur Erde.",
           "fast_check": {
             "type": "binary_choice",
@@ -1294,6 +1323,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-1-lichtausbreitung",
           "question": "Wie lange braucht Licht vom Mond (384 400 km) zur Erde?",
           "concept": "etwa 1,3 s",
+          "materiality": "material",
           "sample_solution": "t = s / c = 384 400 km / 300 000 km/s = 1,28 s.",
           "choice_distractors": [
             {
@@ -1353,6 +1383,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-2-schatten",
           "question": "Warum entstehen hinter einem undurchsichtigen Körper Schatten?",
           "concept": "Weil sich Licht geradlinig ausbreitet.",
+          "materiality": "material",
           "sample_solution": "Das Licht kann nicht um den Körper herumlaufen. Der Schatten liegt dort, wohin kein Strahl der Lichtquelle gelangt.",
           "fast_check": {
             "type": "binary_choice",
@@ -1382,6 +1413,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-2-schatten",
           "question": "Wodurch entsteht neben dem Kernschatten ein Halbschatten?",
           "concept": "Durch eine ausgedehnte Lichtquelle.",
+          "materiality": "material",
           "sample_solution": "Von einem Teil der Lichtquelle fällt noch Licht in den Halbschatten, vom ganzen Rest nicht. Eine punktförmige Quelle gibt nur einen scharfen Schatten.",
           "fast_check": {
             "type": "binary_choice",
@@ -1411,6 +1443,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-2-schatten",
           "question": "Ein Baum (12 m hoch) steht 30 m vor einer 15 cm tiefen Lochkamera. Wie hoch ist sein Bild?",
           "concept": "6 cm",
+          "materiality": "material",
           "sample_solution": "B / G = b / g, also B = 12 m · 15 cm / 30 m = 6 cm. Das Bild steht auf dem Kopf.",
           "choice_distractors": [
             {
@@ -1470,6 +1503,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-3-finsternisse",
           "question": "Welche Stellung haben Sonne, Mond und Erde bei einer Sonnenfinsternis?",
           "concept": "Der Mond steht zwischen Sonne und Erde.",
+          "materiality": "material",
           "sample_solution": "Das geschieht bei Neumond. Der Schatten des Mondes trifft die Erde.",
           "fast_check": {
             "type": "binary_choice",
@@ -1499,6 +1533,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-3-finsternisse",
           "question": "Warum sehen wir den Mond in verschiedenen Phasen?",
           "concept": "Wir sehen je nach Stellung mehr oder weniger von seiner beleuchteten Hälfte.",
+          "materiality": "material",
           "sample_solution": "Immer die der Sonne zugewandte Hälfte ist beleuchtet. Von Neumond zu Neumond vergehen etwa 29,5 Tage.",
           "fast_check": {
             "type": "binary_choice",
@@ -1528,6 +1563,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-3-finsternisse",
           "question": "Warum gibt es nicht bei jedem Neumond eine Sonnenfinsternis?",
           "concept": "Die Mondbahn ist gegen die Erdbahn um etwa 5° geneigt.",
+          "materiality": "material",
           "sample_solution": "Meist zieht der Mond bei Neumond über oder unter der Verbindungslinie von Sonne und Erde vorbei.",
           "choice_distractors": [
             {
@@ -1587,6 +1623,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-4-reflexion",
           "question": "Wie lautet das Reflexionsgesetz?",
           "concept": "Einfallswinkel gleich Reflexionswinkel, beide zum Lot gemessen.",
+          "materiality": "material",
           "sample_solution": "Einfallender Strahl, Lot und reflektierter Strahl liegen in einer Ebene.",
           "fast_check": {
             "type": "binary_choice",
@@ -1616,6 +1653,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-4-reflexion",
           "question": "Wo liegt das Spiegelbild eines Gegenstands vor einem ebenen Spiegel?",
           "concept": "Genauso weit hinter dem Spiegel, wie der Gegenstand davor steht.",
+          "materiality": "material",
           "sample_solution": "Das Bild ist virtuell, aufrecht, gleich groß und seitenvertauscht.",
           "fast_check": {
             "type": "binary_choice",
@@ -1645,6 +1683,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-4-reflexion",
           "question": "Warum sehen wir eine raue Wand aus jeder Richtung?",
           "concept": "Sie reflektiert das Licht diffus in alle Richtungen.",
+          "materiality": "material",
           "sample_solution": "Jeder Strahl folgt dem Reflexionsgesetz, aber die Lote der rauen Fläche zeigen in alle Richtungen.",
           "fast_check": {
             "type": "binary_choice",
@@ -1712,6 +1751,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-5-brechung",
           "question": "Warum wird Licht beim Übergang von Luft in Wasser gebrochen?",
           "concept": "Weil die Lichtgeschwindigkeit im Wasser kleiner ist.",
+          "materiality": "material",
           "sample_solution": "In Wasser breitet sich Licht mit etwa 225 000 km/s aus, in Luft mit etwa 300 000 km/s.",
           "fast_check": {
             "type": "binary_choice",
@@ -1741,6 +1781,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-5-brechung",
           "question": "In welche Richtung wird ein Lichtstrahl beim Übergang von Luft in Glas gebrochen?",
           "concept": "Zum Lot hin.",
+          "materiality": "material",
           "sample_solution": "Im optisch dichteren Stoff ist das Licht langsamer, der Strahl knickt zum Lot hin. Beim Austritt wird er vom Lot weg gebrochen.",
           "fast_check": {
             "type": "binary_choice",
@@ -1770,6 +1811,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-5-brechung",
           "question": "Ein See ist 2,0 m tief. Wie tief erscheint er beim senkrechten Hineinschauen (n = 1,33)?",
           "concept": "etwa 1,5 m",
+          "materiality": "material",
           "sample_solution": "Die scheinbare Tiefe ist d / n = 2,0 m / 1,33 = 1,5 m, also etwa drei Viertel der wirklichen Tiefe.",
           "choice_distractors": [
             {
@@ -1829,6 +1871,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-6-totalreflexion",
           "question": "Unter welchen Bedingungen tritt Totalreflexion auf?",
           "concept": "Vom optisch dichteren in den dünneren Stoff, mit Einfallswinkel über dem Grenzwinkel.",
+          "materiality": "material",
           "sample_solution": "Beispiel: Licht läuft in Glas oder Wasser zur Grenzfläche zu Luft. Von Luft in Wasser gibt es nie Totalreflexion.",
           "fast_check": {
             "type": "binary_choice",
@@ -1858,6 +1901,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-6-totalreflexion",
           "question": "Was bedeutet der Grenzwinkel bei der Totalreflexion?",
           "concept": "Ab diesem Einfallswinkel tritt kein Licht mehr aus dem Stoff aus.",
+          "materiality": "material",
           "sample_solution": "Beim Grenzwinkel streift der austretende Strahl die Grenzfläche. Für Wasser beträgt er 48,8°, für Glas etwa 42°.",
           "fast_check": {
             "type": "binary_choice",
@@ -1887,6 +1931,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-6-totalreflexion",
           "question": "Warum bleibt Licht in einer Glasfaser auch in Kurven gefangen?",
           "concept": "An der Faserwand wird es immer wieder total reflektiert.",
+          "materiality": "material",
           "sample_solution": "Der Einfallswinkel an der Wand liegt über dem Grenzwinkel. Deshalb eignen sich Glasfasern für Daten und Endoskope.",
           "fast_check": {
             "type": "binary_choice",
@@ -1954,6 +1999,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-7-sammellinse",
           "question": "Was bewirkt eine Sammellinse mit parallel einfallendem Licht?",
           "concept": "Sie bündelt die Strahlen im Brennpunkt.",
+          "materiality": "material",
           "sample_solution": "Der Abstand von der Linse zum Brennpunkt ist die Brennweite. Eine Zerstreuungslinse lässt die Strahlen dagegen auseinanderlaufen.",
           "fast_check": {
             "type": "binary_choice",
@@ -2012,6 +2058,7 @@
               "speech": "D gleich eins durch f"
             }
           ],
+          "materiality": "material",
           "sample_solution": "Die Einheit ist die Dioptrie: 1 dpt = 1/m. Eine kurze Brennweite bedeutet eine große Brechkraft.",
           "fast_check": {
             "type": "binary_choice",
@@ -2041,6 +2088,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-7-sammellinse",
           "question": "Welche Brechkraft hat eine Sammellinse mit der Brennweite 25 cm?",
           "concept": "4 dpt",
+          "materiality": "material",
           "sample_solution": "D = 1 / f = 1 / 0,25 m = 4 dpt. Die Brennweite muss in Meter umgerechnet werden.",
           "choice_distractors": [
             {
@@ -2100,6 +2148,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-8-abbildung",
           "question": "Welches Bild entsteht bei einer Sammellinse, wenn der Gegenstand näher als die Brennweite steht?",
           "concept": "Ein virtuelles, aufrechtes, vergrößertes Bild.",
+          "materiality": "material",
           "sample_solution": "So arbeitet die Lupe. Das virtuelle Bild liegt vor der Linse und lässt sich nicht auf einem Schirm auffangen.",
           "fast_check": {
             "type": "binary_choice",
@@ -2129,6 +2178,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-8-abbildung",
           "question": "Was unterscheidet ein reelles von einem virtuellen Bild?",
           "concept": "Ein reelles Bild kann man auf einem Schirm auffangen.",
+          "materiality": "material",
           "sample_solution": "Beim reellen Bild schneiden sich die Lichtstrahlen wirklich. Beim virtuellen Bild scheinen sie nur von dort zu kommen.",
           "fast_check": {
             "type": "binary_choice",
@@ -2158,6 +2208,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-8-abbildung",
           "question": "Welches Bild erzeugt das Objektiv eines Fotoapparats auf dem Sensor, wenn der Gegenstand weit entfernt ist?",
           "concept": "Ein reelles, umgekehrtes, verkleinertes Bild.",
+          "materiality": "material",
           "sample_solution": "Der Gegenstand steht weiter als die doppelte Brennweite entfernt. Der Sensor fängt das reelle Bild auf.",
           "choice_distractors": [
             {
@@ -2217,6 +2268,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-9-geraete",
           "question": "Mit welcher Linse korrigiert man Kurzsichtigkeit?",
           "concept": "Mit einer Zerstreuungslinse.",
+          "materiality": "material",
           "sample_solution": "Beim kurzsichtigen Auge liegt das scharfe Bild vor der Netzhaut. Die Zerstreuungslinse schwächt die Brechkraft und schiebt das Bild zurück.",
           "fast_check": {
             "type": "binary_choice",
@@ -2246,6 +2298,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-9-geraete",
           "question": "Warum braucht ein weitsichtiger Mensch eine Sammellinse?",
           "concept": "Das scharfe Bild läge hinter der Netzhaut, die Sammellinse verlegt es nach vorn.",
+          "materiality": "material",
           "sample_solution": "Die Sammellinse verstärkt die Brechkraft, sodass sich die Strahlen auf der Netzhaut treffen.",
           "fast_check": {
             "type": "binary_choice",
@@ -2275,6 +2328,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=op-9-geraete",
           "question": "Ein Fernrohr hat ein Objektiv mit 800 mm und ein Okular mit 20 mm Brennweite. Wie stark vergrößert es?",
           "concept": "40-fach",
+          "materiality": "material",
           "sample_solution": "V = f(Objektiv) / f(Okular) = 800 mm / 20 mm = 40.",
           "choice_distractors": [
             {
@@ -2328,6 +2382,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-1-schiefe-ebene",
           "question": "In welche beiden senkrecht aufeinander stehenden Kraftkomponenten wird die Gewichtskraft eines Körpers auf einer schiefen Ebene zerlegt?",
           "concept": "Hangabtriebskraft (parallel zur Ebene) und Normalkraft (senkrecht dazu).",
+          "materiality": "material",
           "sample_solution": "Die Hangabtriebskraft F_H zieht den Körper den Hang hinunter, die Normalkraft F_N drückt ihn auf die Unterlage. Es gilt F_H = F_G · h / l.",
           "fast_check": {
             "type": "binary_choice",
@@ -2357,6 +2412,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-1-schiefe-ebene",
           "question": "Wie lautet die Goldene Regel der Mechanik?",
           "concept": "Was man an Kraft spart, muss man an Weg zusetzen.",
+          "materiality": "material",
           "sample_solution": "Die mechanische Arbeit W = F · s bleibt bei Kraftwandlern gleich (ohne Reibung); Reibung macht sie sogar größer.",
           "fast_check": {
             "type": "binary_choice",
@@ -2386,6 +2442,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-1-schiefe-ebene",
           "question": "Eine Kiste (100 kg) wird über eine 8 m lange Rampe auf 2 m Höhe geschoben. Wie groß ist die nötige Kraft längs der Rampe (ohne Reibung)?",
           "concept": "etwa 245 N",
+          "materiality": "material",
           "sample_solution": "F = F_G · h / l = 981 N · 2 m / 8 m = 245 N.",
           "choice_distractors": [
             {
@@ -2455,6 +2512,7 @@
               "speech": "F eins mal a eins gleich F zwei mal a zwei"
             }
           ],
+          "materiality": "material",
           "sample_solution": "Die Drehmomente links und rechts sind gleich. Wer einen langen Hebelarm nutzt, braucht eine kleine Kraft.",
           "fast_check": {
             "type": "binary_choice",
@@ -2484,6 +2542,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-2-hebel",
           "question": "Wodurch unterscheiden sich ein einseitiger und ein zweiseitiger Hebel?",
           "concept": "Beim zweiseitigen liegt der Drehpunkt zwischen den Kräften, beim einseitigen nicht.",
+          "materiality": "material",
           "sample_solution": "Zweiseitig: Wippe, Schere, Zange. Einseitig: Schubkarre, Flaschenöffner, Nussknacker.",
           "fast_check": {
             "type": "binary_choice",
@@ -2513,6 +2572,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-2-hebel",
           "question": "Mit einer 1,50 m langen Brechstange (Drehpunkt 10 cm vom Stein) soll ein Stein mit 2800 N angehoben werden. Welche Kraft braucht man am anderen Ende?",
           "concept": "200 N",
+          "materiality": "material",
           "sample_solution": "Kraftarm 1,40 m, Lastarm 0,10 m: F = 2800 N · 0,10 m / 1,40 m = 200 N.",
           "choice_distractors": [
             {
@@ -2572,6 +2632,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-3-flaschenzug",
           "question": "Wie unterscheiden sich feste und lose Rolle in ihrer Wirkung?",
           "concept": "Die feste Rolle lenkt nur die Kraft um, die lose Rolle halbiert sie.",
+          "materiality": "material",
           "sample_solution": "Bei der losen Rolle trägt das Seil von zwei Seiten, dafür muss man doppelt so viel Seil einziehen.",
           "fast_check": {
             "type": "binary_choice",
@@ -2601,6 +2662,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-3-flaschenzug",
           "question": "Wie ändern sich Zugkraft und Seilweg bei einem Flaschenzug mit n tragenden Seilstücken?",
           "concept": "Die Kraft wird n-mal kleiner, der Seilweg n-mal länger.",
+          "materiality": "material",
           "sample_solution": "Die Arbeit W = F · s bleibt gleich: Goldene Regel der Mechanik.",
           "fast_check": {
             "type": "binary_choice",
@@ -2630,6 +2692,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-3-flaschenzug",
           "question": "Eine Last von 1200 N wird mit einem Flaschenzug aus 4 tragenden Seilstücken 3 m hoch gehoben. Welche Zugkraft und welcher Seilweg?",
           "concept": "300 N und 12 m",
+          "materiality": "material",
           "sample_solution": "F = 1200 N / 4 = 300 N und s = 4 · 3 m = 12 m. Die Arbeit 300 N · 12 m = 3600 J ist so groß wie 1200 N · 3 m.",
           "choice_distractors": [
             {
@@ -2727,6 +2790,7 @@
               "speech": "W gleich F mal s"
             }
           ],
+          "materiality": "material",
           "sample_solution": "Die Einheit ist das Joule: 1 J = 1 N · m. Beim Heben ist F die Gewichtskraft, also W = m · g · h.",
           "fast_check": {
             "type": "binary_choice",
@@ -2756,6 +2820,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-4-arbeit",
           "question": "Wie heißt die Einheit der Arbeit?",
           "concept": "Joule (J).",
+          "materiality": "material",
           "sample_solution": "1 J = 1 N · m. Arbeit und Energie haben dieselbe Einheit.",
           "fast_check": {
             "type": "binary_choice",
@@ -2785,6 +2850,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-4-arbeit",
           "question": "Du trägst einen Koffer von 100 N 20 m weit waagerecht. Welche Hubarbeit verrichtest du?",
           "concept": "0 J, denn die Kraft steht senkrecht zum Weg.",
+          "materiality": "material",
           "sample_solution": "Ohne Weg in Kraftrichtung wird keine Hubarbeit verrichtet. Den Koffer nur zu halten, kostet physikalisch keine Arbeit.",
           "choice_distractors": [
             {
@@ -2882,6 +2948,7 @@
               "speech": "P gleich W durch t"
             }
           ],
+          "materiality": "material",
           "sample_solution": "Gleiche Arbeit in kürzerer Zeit bedeutet größere Leistung. Umgestellt gilt W = P · t.",
           "fast_check": {
             "type": "binary_choice",
@@ -2911,6 +2978,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-5-leistung",
           "question": "Wie ist die Einheit Watt aus Joule und Sekunde abgeleitet?",
           "concept": "Joule pro Sekunde.",
+          "materiality": "material",
           "sample_solution": "1 W = 1 J/s. Ein Kilowatt sind 1000 W.",
           "fast_check": {
             "type": "binary_choice",
@@ -2940,6 +3008,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-5-leistung",
           "question": "Ein Schüler (60 kg) läuft in 8 s eine 4 m hohe Treppe hinauf. Welche mittlere Leistung bringt er auf?",
           "concept": "etwa 290 W",
+          "materiality": "material",
           "sample_solution": "W = m · g · h = 60 kg · 9,81 N/kg · 4 m = 2354 J, P = W / t = 2354 J / 8 s = 294 W.",
           "choice_distractors": [
             {
@@ -3037,6 +3106,7 @@
               "speech": "E pot gleich m mal g mal h"
             }
           ],
+          "materiality": "material",
           "sample_solution": "Die Lageenergie ist die gespeicherte Hubarbeit. Auf der Erde ist g = 9,81 N/kg.",
           "fast_check": {
             "type": "binary_choice",
@@ -3104,6 +3174,7 @@
               "speech": "E kin gleich ein halb m mal v Quadrat"
             }
           ],
+          "materiality": "material",
           "sample_solution": "Doppelte Geschwindigkeit bedeutet vierfache Bewegungsenergie.",
           "fast_check": {
             "type": "binary_choice",
@@ -3133,6 +3204,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-6-energieformen",
           "question": "Ein Radfahrer fährt doppelt so schnell. Wie ändert sich seine Bewegungsenergie?",
           "concept": "Sie vervierfacht sich.",
+          "materiality": "material",
           "sample_solution": "E_kin = ½ · m · v² hängt vom Quadrat der Geschwindigkeit ab: 2² = 4.",
           "choice_distractors": [
             {
@@ -3154,6 +3226,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-6-energieformen",
           "question": "Wie unterscheiden sich Energie und Arbeit?",
           "concept": "Energie ist eine Speichergröße, Arbeit eine Übertragungsgröße.",
+          "materiality": "material",
           "sample_solution": "Ein Körper hat Energie, aber nicht „Arbeit“. Arbeit überträgt Energie von einem Körper auf einen anderen.",
           "fast_check": {
             "type": "binary_choice",
@@ -3221,6 +3294,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-7-energieerhaltung",
           "question": "Was besagt das Prinzip der Energieerhaltung?",
           "concept": "Die Gesamtenergie eines abgeschlossenen Systems bleibt konstant.",
+          "materiality": "material",
           "sample_solution": "Energie wird nur umgewandelt oder übertragen, nie erzeugt oder vernichtet.",
           "fast_check": {
             "type": "binary_choice",
@@ -3250,6 +3324,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-7-energieerhaltung",
           "question": "Was geschieht mit der Bewegungsenergie eines Wagens, der durch Reibung zum Stillstand kommt?",
           "concept": "Sie wird zu innerer Energie, die Körper werden wärmer.",
+          "materiality": "material",
           "sample_solution": "Die Energie geht nicht verloren, aber sie lässt sich kaum noch nutzen: Sie ist entwertet.",
           "fast_check": {
             "type": "binary_choice",
@@ -3279,6 +3354,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-7-energieerhaltung",
           "question": "Ein Stein fällt reibungsfrei aus 5,0 m Höhe. Mit welcher Geschwindigkeit schlägt er auf?",
           "concept": "etwa 9,9 m/s",
+          "materiality": "material",
           "sample_solution": "m · g · h = ½ · m · v² ergibt v = √(2 · g · h) = √(2 · 9,81 · 5,0) m/s = 9,9 m/s. Die Masse kürzt sich heraus.",
           "choice_distractors": [
             {
@@ -3358,6 +3434,7 @@
               "speech": "eta gleich E nutz durch E zu"
             }
           ],
+          "materiality": "material",
           "sample_solution": "Der Wirkungsgrad hat keine Einheit und ist immer kleiner als 1 oder 100 %.",
           "fast_check": {
             "type": "binary_choice",
@@ -3387,6 +3464,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-8-wirkungsgrad",
           "question": "Warum ist der Wirkungsgrad einer Maschine immer kleiner als 100 %?",
           "concept": "Ein Teil der Energie geht als nicht nutzbare Wärme verloren.",
+          "materiality": "material",
           "sample_solution": "Die Verluste bleiben Energie, aber sie verteilen sich in der Umgebung und sind entwertet.",
           "fast_check": {
             "type": "binary_choice",
@@ -3416,6 +3494,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=en-8-wirkungsgrad",
           "question": "Eine Maschine nimmt 200 kJ auf und gibt 50 kJ Nutzenergie ab. Wie groß ist ihr Wirkungsgrad?",
           "concept": "25 %",
+          "materiality": "material",
           "sample_solution": "η = E_nutz / E_zu = 50 kJ / 200 kJ = 0,25 = 25 %.",
           "choice_distractors": [
             {
@@ -3469,6 +3548,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-1-innere-energie",
           "question": "Was versteht man unter der inneren Energie eines Körpers?",
           "concept": "Die Summe der kinetischen und potenziellen Energien aller seiner Teilchen.",
+          "materiality": "material",
           "sample_solution": "Die innere Energie ist eine Zustandsgröße des Körpers. Sie lässt sich durch Arbeit oder durch Wärme erhöhen.",
           "fast_check": {
             "type": "binary_choice",
@@ -3498,6 +3578,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-1-innere-energie",
           "question": "Was ist Wärme im physikalischen Sinn?",
           "concept": "Energie, die wegen eines Temperaturunterschieds vom wärmeren zum kälteren Körper übergeht.",
+          "materiality": "material",
           "sample_solution": "Wärme ist eine Übertragungsgröße, so wie die Arbeit. Ein Körper hat innere Energie, aber keine Wärme.",
           "fast_check": {
             "type": "binary_choice",
@@ -3527,6 +3608,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-1-innere-energie",
           "question": "Ein Mixer (150 W) rührt 60 s in einem Becher und der Becher gibt dabei 3 kJ Wärme ab. Wie ändert sich die innere Energie der Flüssigkeit?",
           "concept": "Sie steigt um 6 kJ.",
+          "materiality": "material",
           "sample_solution": "Die Rührarbeit beträgt 150 W · 60 s = 9 kJ. ΔU = W + Q = 9 kJ − 3 kJ = 6 kJ.",
           "choice_distractors": [
             {
@@ -3586,6 +3668,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-2-temperatur",
           "question": "Was gibt die Temperatur eines Körpers an?",
           "concept": "Die mittlere Bewegungsenergie seiner Teilchen.",
+          "materiality": "material",
           "sample_solution": "Die Temperatur ist nicht die Wärme: Ein großer Topf Wasser von 50 °C hat mehr innere Energie als ein Tropfen von 80 °C.",
           "fast_check": {
             "type": "binary_choice",
@@ -3615,6 +3698,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-2-temperatur",
           "question": "Wie rechnet man eine Temperatur von Grad Celsius in Kelvin um?",
           "concept": "Man addiert 273,15.",
+          "materiality": "material",
           "sample_solution": "T = θ + 273,15. Temperaturunterschiede sind in K und °C gleich groß.",
           "fast_check": {
             "type": "binary_choice",
@@ -3644,6 +3728,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-2-temperatur",
           "question": "Bei welcher Temperatur liegt der absolute Nullpunkt?",
           "concept": "0 K, das sind −273,15 °C.",
+          "materiality": "material",
           "sample_solution": "Dort hätten die Teilchen die kleinste mögliche Bewegungsenergie. Tiefer geht es nicht.",
           "fast_check": {
             "type": "binary_choice",
@@ -3711,6 +3796,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-3-aggregatzustaende",
           "question": "Warum bleibt die Temperatur beim Schmelzen trotz Energiezufuhr konstant?",
           "concept": "Die Energie erhöht die potenzielle Energie der Teilchen, nicht ihre Bewegungsenergie.",
+          "materiality": "material",
           "sample_solution": "Die Teilchen müssen die Kohäsionskräfte überwinden und sich voneinander lösen. Das braucht Energie, aber die mittlere Bewegungsenergie bleibt gleich.",
           "fast_check": {
             "type": "binary_choice",
@@ -3740,6 +3826,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-3-aggregatzustaende",
           "question": "Wie bewegen sich die Teilchen in Festkörper, Flüssigkeit und Gas?",
           "concept": "Fest: Schwingen um feste Plätze; flüssig: zusätzlich Platzwechsel; gasförmig: freies Fliegen.",
+          "materiality": "material",
           "sample_solution": "Beim Schmelzen und Verdampfen kommen jeweils Bewegungsmöglichkeiten hinzu, und die Teilchen entfernen sich voneinander.",
           "fast_check": {
             "type": "binary_choice",
@@ -3769,6 +3856,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-3-aggregatzustaende",
           "question": "Auf einer Herdplatte siedet Wasser. Wie ändert sich die Temperatur, wenn man die Platte höher stellt?",
           "concept": "Sie bleibt bei 100 °C, das Wasser verdampft nur schneller.",
+          "materiality": "material",
           "sample_solution": "Die zusätzliche Energie macht das Wasser nicht heißer, sondern wandelt es schneller in Dampf um.",
           "choice_distractors": [
             {
@@ -3828,6 +3916,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-4-ausdehnung",
           "question": "Wovon hängt die Längenänderung eines festen Stabes bei Erwärmung ab?",
           "concept": "Von der Anfangslänge, der Temperaturänderung und dem Stoff.",
+          "materiality": "material",
           "sample_solution": "Die Längenänderung ist proportional zur Anfangslänge und zur Temperaturänderung. Aluminium dehnt sich stärker aus als Stahl oder Glas.",
           "fast_check": {
             "type": "binary_choice",
@@ -3857,6 +3946,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-4-ausdehnung",
           "question": "Warum haben Brücken und Schienen Dehnungsfugen?",
           "concept": "Weil sich Metall im Sommer ausdehnt und sonst verspannen würde.",
+          "materiality": "material",
           "sample_solution": "Eine 100 m lange Stahlbrücke wächst bei 50 K Erwärmung um etwa 6 cm.",
           "fast_check": {
             "type": "binary_choice",
@@ -3886,6 +3976,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-4-ausdehnung",
           "question": "Ein 2 m langer Stab dehnt sich bei 40 K Erwärmung um 1,0 mm. Um wie viel dehnt sich ein 6 m langer Stab desselben Stoffes bei 80 K?",
           "concept": "6 mm",
+          "materiality": "material",
           "sample_solution": "Die Länge wird mit 3, die Erwärmung mit 2 multipliziert. Die Dehnung wächst um den Faktor 3 · 2 = 6.",
           "choice_distractors": [
             {
@@ -3945,6 +4036,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-5-wasseranomalie",
           "question": "Bei welcher Temperatur hat flüssiges Wasser die größte Dichte?",
           "concept": "Bei etwa 4 °C.",
+          "materiality": "material",
           "sample_solution": "Kühlt man Wasser unter 4 °C weiter ab, dehnt es sich wieder aus: Das ist die Anomalie des Wassers.",
           "fast_check": {
             "type": "binary_choice",
@@ -3974,6 +4066,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-5-wasseranomalie",
           "question": "Warum schwimmt Eis auf Wasser?",
           "concept": "Eis hat eine kleinere Dichte als Wasser, es dehnt sich beim Gefrieren aus.",
+          "materiality": "material",
           "sample_solution": "Beim Gefrieren nimmt das Volumen um etwa 9 % zu. Deshalb können Flaschen und Leitungen platzen.",
           "fast_check": {
             "type": "binary_choice",
@@ -4003,6 +4096,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-5-wasseranomalie",
           "question": "Wie warm ist das Wasser am Grund eines zugefrorenen Sees?",
           "concept": "Etwa 4 °C.",
+          "materiality": "material",
           "sample_solution": "Wasser von 4 °C ist am dichtesten und sinkt ab. Kälteres, leichteres Wasser und das Eis liegen darüber.",
           "choice_distractors": [
             {
@@ -4062,6 +4156,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-6-waermeleitung",
           "question": "Wie wird Energie bei der Wärmeleitung übertragen?",
           "concept": "Durch Stöße der Teilchen, ohne dass der Stoff mitströmt.",
+          "materiality": "material",
           "sample_solution": "Schnellere Teilchen stoßen langsamere an. Metalle leiten gut, weil zusätzlich freie Elektronen Energie transportieren.",
           "fast_check": {
             "type": "binary_choice",
@@ -4091,6 +4186,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-6-waermeleitung",
           "question": "Warum fühlt sich Metall kälter an als Holz gleicher Temperatur?",
           "concept": "Metall leitet die Wärme der Hand schneller ab.",
+          "materiality": "material",
           "sample_solution": "Beide haben dieselbe Temperatur. Das Gefühl „kalt“ entsteht, weil dem Körper schnell Energie entzogen wird.",
           "fast_check": {
             "type": "binary_choice",
@@ -4120,6 +4216,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-6-waermeleitung",
           "question": "Die Dämmschicht einer Wand wird doppelt so dick. Wie ändert sich der Wärmeverlust?",
           "concept": "Er halbiert sich.",
+          "materiality": "material",
           "sample_solution": "Der Wärmestrom ist umgekehrt proportional zur Dicke der Dämmschicht.",
           "choice_distractors": [
             {
@@ -4179,6 +4276,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-7-konvektion-strahlung",
           "question": "Wodurch kommt es zur Konvektion in einer erwärmten Flüssigkeit?",
           "concept": "Warme Flüssigkeit hat eine kleinere Dichte und steigt auf, kalte sinkt ab.",
+          "materiality": "material",
           "sample_solution": "So entsteht eine Strömung, die Energie mit dem Stoff transportiert: Heizkörper im Raum, Meeresströmungen, Thermik.",
           "fast_check": {
             "type": "binary_choice",
@@ -4208,6 +4306,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-7-konvektion-strahlung",
           "question": "Wie gelangt Energie von der Sonne zur Erde?",
           "concept": "Durch Wärmestrahlung, die keinen Stoff braucht.",
+          "materiality": "material",
           "sample_solution": "Zwischen Sonne und Erde ist fast ein Vakuum. Dort gibt es weder Leitung noch Konvektion.",
           "fast_check": {
             "type": "binary_choice",
@@ -4237,6 +4336,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=wl-7-konvektion-strahlung",
           "question": "Welche Aufgabe haben Vakuum und Verspiegelung einer Thermoskanne?",
           "concept": "Das Vakuum hemmt Leitung und Konvektion, die Spiegelschicht die Strahlung.",
+          "materiality": "material",
           "sample_solution": "Der Stopfen verhindert zusätzlich die Konvektion und Verdunstung an der Öffnung.",
           "choice_distractors": [
             {
@@ -4290,6 +4390,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-1-magnete",
           "question": "Wie wirken zwei Magnetpole aufeinander?",
           "concept": "Gleichnamige Pole stoßen sich ab, ungleichnamige ziehen sich an.",
+          "materiality": "material",
           "sample_solution": "Nord- und Südpol gibt es nur paarweise. Mit Kompass und Magneten kann man das Polgesetz selbst prüfen.",
           "fast_check": {
             "type": "binary_choice",
@@ -4319,6 +4420,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-1-magnete",
           "question": "Was entsteht, wenn man einen Stabmagneten in der Mitte durchbricht?",
           "concept": "Zwei kleinere Magnete mit je einem Nord- und Südpol.",
+          "materiality": "material",
           "sample_solution": "Im Modell der Elementarmagnete sind alle Elementarmagnete ausgerichtet. An jeder Bruchstelle entstehen zwei neue Pole.",
           "fast_check": {
             "type": "binary_choice",
@@ -4348,6 +4450,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-1-magnete",
           "question": "Warum verliert ein Nagel aus weichem Eisen seinen Magnetismus, wenn der Magnet entfernt wird?",
           "concept": "Seine Elementarmagnete geraten wieder durcheinander.",
+          "materiality": "material",
           "sample_solution": "Das nennt man temporären Magnetismus. Bei Stahl bleiben die Elementarmagnete großteils ausgerichtet (permanenter Magnetismus).",
           "fast_check": {
             "type": "binary_choice",
@@ -4415,6 +4518,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-2-magnetfeld",
           "question": "In welche Richtung zeigen Magnetfeldlinien außerhalb eines Magneten?",
           "concept": "Vom Nordpol zum Südpol.",
+          "materiality": "material",
           "sample_solution": "Die Nordspitze einer Kompassnadel zeigt in Feldrichtung. Im Inneren des Magneten schließen sich die Linien.",
           "fast_check": {
             "type": "binary_choice",
@@ -4444,6 +4548,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-2-magnetfeld",
           "question": "Welcher magnetische Pol der Erde liegt in der Nähe des geografischen Nordpols?",
           "concept": "Der magnetische Südpol.",
+          "materiality": "material",
           "sample_solution": "Die Nordspitze der Kompassnadel wird von ihm angezogen, denn ungleichnamige Pole ziehen sich an.",
           "fast_check": {
             "type": "binary_choice",
@@ -4473,6 +4578,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-2-magnetfeld",
           "question": "Was gilt für das Magnetfeld genau in der Mitte zwischen zwei gleichnamigen Polen?",
           "concept": "Die Felder heben sich auf, dort ist das Feld nahezu null.",
+          "materiality": "material",
           "sample_solution": "Die Feldlinien beider Pole weichen einander aus. In der Mitte zeigen die Felder in entgegengesetzte Richtungen.",
           "choice_distractors": [
             {
@@ -4536,6 +4642,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-3-ladung",
           "question": "Wodurch wird ein Körper positiv geladen?",
           "concept": "Durch Elektronenmangel.",
+          "materiality": "material",
           "sample_solution": "Nur Elektronen sind beweglich. Ein Körper mit Überschuss an Elektronen ist negativ, einer mit Mangel positiv.",
           "fast_check": {
             "type": "binary_choice",
@@ -4565,6 +4672,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-3-ladung",
           "question": "Wie groß ist die Elementarladung?",
           "concept": "e = 1,6 · 10⁻¹⁹ C",
+          "materiality": "material",
           "sample_solution": "Jede Ladung ist ein Vielfaches der Elementarladung: Q = N · e. 1 nC entspricht etwa 6,25 Milliarden Elementarladungen.",
           "fast_check": {
             "type": "binary_choice",
@@ -4594,6 +4702,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-3-ladung",
           "question": "Wie ist ein Atom nach dem Kern-Hülle-Modell aufgebaut?",
           "concept": "Positiver Kern aus Protonen und Neutronen, negative Elektronen in der Hülle.",
+          "materiality": "material",
           "sample_solution": "Ein neutrales Atom hat gleich viele Protonen und Elektronen.",
           "fast_check": {
             "type": "binary_choice",
@@ -4623,6 +4732,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-3-ladung",
           "question": "Ein Körper trägt 3,2 nC Überschussladung. Wie viele Elektronen sind das (e = 1,6 · 10⁻¹⁹ C)?",
           "concept": "2 · 10¹⁰",
+          "materiality": "material",
           "sample_solution": "N = Q / e = 3,2 · 10⁻⁹ C / (1,6 · 10⁻¹⁹ C) = 2 · 10¹⁰.",
           "choice_distractors": [
             {
@@ -4692,6 +4802,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-4-elektrisches-feld",
           "question": "Wie verlaufen elektrische Feldlinien?",
           "concept": "Von positiven zu negativen Ladungen.",
+          "materiality": "material",
           "sample_solution": "Die Richtung gibt die Kraft auf eine positive Probeladung an. Je dichter die Linien, desto stärker das Feld.",
           "fast_check": {
             "type": "binary_choice",
@@ -4721,6 +4832,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-4-elektrisches-feld",
           "question": "Was geschieht bei der Influenz in einem Leiter im elektrischen Feld?",
           "concept": "Frei bewegliche Elektronen verschieben sich, die Ladungen trennen sich.",
+          "materiality": "material",
           "sample_solution": "Der Leiter bleibt insgesamt neutral. Die dem Stab zugewandte Seite erhält die entgegengesetzte Ladung des Stabes.",
           "fast_check": {
             "type": "binary_choice",
@@ -4750,6 +4862,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-4-elektrisches-feld",
           "question": "Ein positiver Stab nähert sich einer neutralen Metallkugel. Welche Ladung hat die dem Stab zugewandte Seite?",
           "concept": "Negativ.",
+          "materiality": "material",
           "sample_solution": "Die Elektronen werden vom positiven Stab angezogen und sammeln sich auf der zugewandten Seite. Die abgewandte Seite wird positiv.",
           "choice_distractors": [
             {
@@ -4771,6 +4884,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-4-elektrisches-feld",
           "question": "Zwei gleich große Metallkugeln mit +8 nC und 0 nC werden berührt und wieder getrennt. Welche Ladung hat danach jede Kugel?",
           "concept": "+4 nC",
+          "materiality": "material",
           "sample_solution": "Bei gleich großen Kugeln teilt sich die Gesamtladung zur Hälfte: (8 nC + 0 nC) / 2 = 4 nC.",
           "choice_distractors": [
             {
@@ -4840,6 +4954,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-5-elektrostatik-anwendung",
           "question": "Wie scheidet ein Elektrofilter Staub aus Rauchgas ab?",
           "concept": "Der Staub wird aufgeladen und im elektrischen Feld zu den Platten gezogen.",
+          "materiality": "material",
           "sample_solution": "Die Platten werden abgeklopft, der Staub fällt in einen Behälter. Je stärker das Feld und je langsamer das Gas strömt, desto besser.",
           "fast_check": {
             "type": "binary_choice",
@@ -4869,6 +4984,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-5-elektrostatik-anwendung",
           "question": "Wie entsteht beim Fotokopierer das Bild auf der Trommel?",
           "concept": "Belichtete Stellen werden entladen, geladene Stellen ziehen Toner an.",
+          "materiality": "material",
           "sample_solution": "Die geladenen Tonerteilchen haften an den noch geladenen Stellen, werden auf das Papier übertragen und festgeschmolzen.",
           "fast_check": {
             "type": "binary_choice",
@@ -4898,6 +5014,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-5-elektrostatik-anwendung",
           "question": "Ein Elektrofilter hat 99 % Abscheidegrad. Das Rohgas enthält 20 g/m³ Staub. Wie viel bleibt im Reingas?",
           "concept": "0,2 g/m³",
+          "materiality": "material",
           "sample_solution": "Es bleibt 1 % übrig: 20 g/m³ · 0,01 = 0,2 g/m³.",
           "choice_distractors": [
             {
@@ -4967,6 +5084,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-6-strom",
           "question": "Welche Teilchen sind in metallischen Leitern für den gerichteten Ladungstransport verantwortlich?",
           "concept": "Frei bewegliche Leitungselektronen.",
+          "materiality": "material",
           "sample_solution": "Die Atomrümpfe sitzen fest im Gitter. Die Leitungselektronen bewegen sich im elektrischen Feld gerichtet vom Minuspol zum Pluspol.",
           "fast_check": {
             "type": "binary_choice",
@@ -5034,6 +5152,7 @@
               "speech": "I gleich Q durch t"
             }
           ],
+          "materiality": "material",
           "sample_solution": "Einheit: 1 Ampere = 1 Coulomb pro Sekunde.",
           "fast_check": {
             "type": "binary_choice",
@@ -5063,6 +5182,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-6-strom",
           "question": "Wie ist die Einheit Ampere festgelegt?",
           "concept": "Ein Coulomb pro Sekunde.",
+          "materiality": "material",
           "sample_solution": "Bei 1 A fließen pro Sekunde 6,25 · 10¹⁸ Elementarladungen durch den Querschnitt.",
           "fast_check": {
             "type": "binary_choice",
@@ -5092,6 +5212,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-6-strom",
           "question": "In welche Richtung legt man die technische Stromrichtung fest?",
           "concept": "Vom Pluspol zum Minuspol.",
+          "materiality": "material",
           "sample_solution": "Die Elektronen wandern in Wirklichkeit entgegengesetzt, vom Minus- zum Pluspol.",
           "fast_check": {
             "type": "binary_choice",
@@ -5121,6 +5242,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-6-strom",
           "question": "Durch einen Draht fließen 2 s lang 5 A. Welche Ladung wird dabei transportiert?",
           "concept": "10 C",
+          "materiality": "material",
           "sample_solution": "Q = I · t = 5 A · 2 s = 10 C.",
           "choice_distractors": [
             {
@@ -5190,6 +5312,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-7-stromkreis",
           "question": "Aus welchen Teilen besteht ein einfacher Stromkreis?",
           "concept": "Quelle, Leitungen, Verbraucher und meist ein Schalter.",
+          "materiality": "material",
           "sample_solution": "Strom fließt nur im geschlossenen Kreis. Ein offener Schalter oder ein Isolator unterbricht ihn.",
           "fast_check": {
             "type": "binary_choice",
@@ -5219,6 +5342,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-7-stromkreis",
           "question": "Wodurch unterscheiden sich Leiter und Isolatoren?",
           "concept": "Leiter haben frei bewegliche Ladungsträger, Isolatoren haben keine.",
+          "materiality": "material",
           "sample_solution": "Leiter: Metalle (Elektronen), Graphit, Salzlösungen (Ionen). Isolatoren: Kunststoff, Glas, Gummi, Holz, destilliertes Wasser.",
           "fast_check": {
             "type": "binary_choice",
@@ -5248,6 +5372,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-7-stromkreis",
           "question": "Was geschieht in einer Reihenschaltung von Lampen, wenn eine ausfällt?",
           "concept": "Der Stromkreis ist unterbrochen, alle Lampen gehen aus.",
+          "materiality": "material",
           "sample_solution": "In der Parallelschaltung arbeitet jede Lampe unabhängig, deshalb ist sie im Haushalt üblich.",
           "fast_check": {
             "type": "binary_choice",
@@ -5277,6 +5402,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-7-stromkreis",
           "question": "Zwei Schalter sind parallel zu einer Lampe geschaltet. Wann leuchtet die Lampe?",
           "concept": "Wenn mindestens ein Schalter geschlossen ist.",
+          "materiality": "material",
           "sample_solution": "Das ist eine ODER-Schaltung. In Reihe müssten beide Schalter geschlossen sein (UND).",
           "choice_distractors": [
             {
@@ -5336,6 +5462,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-8-stromstaerke-messen",
           "question": "Wie wird ein Strommessgerät (Amperemeter) in den Stromkreis eingebaut?",
           "concept": "In Reihe: Der Stromkreis wird aufgetrennt und das Gerät eingefügt.",
+          "materiality": "material",
           "sample_solution": "Der gesamte Strom muss durch das Messgerät fließen. Ein Voltmeter wird dagegen parallel angeschlossen.",
           "fast_check": {
             "type": "binary_choice",
@@ -5365,6 +5492,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-8-stromstaerke-messen",
           "question": "Mit welchem Messbereich beginnt man, wenn die Stromstärke unbekannt ist?",
           "concept": "Mit dem größten Messbereich.",
+          "materiality": "material",
           "sample_solution": "Dann kann das Gerät nicht überlastet werden. Danach schaltet man herunter, bis der Zeiger gut ablesbar ist.",
           "fast_check": {
             "type": "binary_choice",
@@ -5394,6 +5522,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-8-stromstaerke-messen",
           "question": "Was geschieht, wenn man ein Amperemeter parallel zu einer Lampe anschließt?",
           "concept": "Es entsteht ein Kurzschluss, ein sehr großer Strom fließt durch das Gerät.",
+          "materiality": "material",
           "sample_solution": "Das Amperemeter hat einen sehr kleinen Innenwiderstand. Es kann dadurch zerstört werden.",
           "fast_check": {
             "type": "binary_choice",
@@ -5461,6 +5590,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-9-stromfluss-fluessigkeit-gas",
           "question": "Welche Teilchen transportieren in einer Salzlösung den Strom?",
           "concept": "Positive und negative Ionen.",
+          "materiality": "material",
           "sample_solution": "Im Wasser zerfällt das Salz in Ionen, zum Beispiel Na⁺ und Cl⁻. Reines Wasser leitet kaum.",
           "fast_check": {
             "type": "binary_choice",
@@ -5490,6 +5620,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-9-stromfluss-fluessigkeit-gas",
           "question": "In welche Richtung wandern in einer Salzlösung die positiven Ionen?",
           "concept": "Zum Minuspol.",
+          "materiality": "material",
           "sample_solution": "Ungleichnamige Ladungen ziehen sich an: Positive Ionen wandern zum Minuspol, negative zum Pluspol.",
           "fast_check": {
             "type": "binary_choice",
@@ -5519,6 +5650,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-9-stromfluss-fluessigkeit-gas",
           "question": "Wann leitet ein Gas wie Luft den Strom?",
           "concept": "Wenn ein starkes Feld es ionisiert, es leuchtet dabei.",
+          "materiality": "material",
           "sample_solution": "Beispiele sind Blitz, Leuchtstoffröhre und Neonlicht. Ohne starkes Feld ist Luft ein Isolator.",
           "fast_check": {
             "type": "binary_choice",
@@ -5596,6 +5728,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-10-gefahren-schutz",
           "question": "Welche Wirkungen des elektrischen Stroms unterscheidet man?",
           "concept": "Wärme-, Licht-, magnetische und chemische Wirkung.",
+          "materiality": "material",
           "sample_solution": "Zusätzlich wirkt Strom auf Lebewesen. Beispiele: Heizdraht, Lampe, Elektromagnet, Elektrolyse.",
           "fast_check": {
             "type": "binary_choice",
@@ -5625,6 +5758,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-10-gefahren-schutz",
           "question": "Ab welcher Stärke des Körperstroms wird der Strom lebensgefährlich?",
           "concept": "Ab etwa 50 mA.",
+          "materiality": "material",
           "sample_solution": "Ab etwa 0,5 mA spürt man ihn, bei 10 bis 15 mA verkrampfen die Muskeln, ab etwa 50 bis 100 mA droht Herzkammerflimmern.",
           "fast_check": {
             "type": "binary_choice",
@@ -5654,6 +5788,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-10-gefahren-schutz",
           "question": "Wie arbeitet ein FI-Schutzschalter?",
           "concept": "Er schaltet ab, wenn Hin- und Rückstrom um etwa 30 mA voneinander abweichen.",
+          "materiality": "material",
           "sample_solution": "Ein Fehlerstrom über einen Körper oder die Erde fehlt im Rückleiter. Der FI schaltet in Bruchteilen einer Sekunde ab.",
           "fast_check": {
             "type": "binary_choice",
@@ -5683,6 +5818,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=el-10-gefahren-schutz",
           "question": "Welche Aufgabe hat der Schutzleiter bei einem Gerät mit Metallgehäuse?",
           "concept": "Bei einem Defekt fließt der Strom zur Erde ab, die Sicherung löst aus.",
+          "materiality": "material",
           "sample_solution": "Das Gehäuse bleibt dadurch nicht unter gefährlicher Spannung. Geräte mit Schutzisolierung brauchen keinen Schutzleiter.",
           "fast_check": {
             "type": "binary_choice",
@@ -5744,6 +5880,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=ak-1-schall",
           "question": "Wovon hängt die Tonhöhe ab?",
           "concept": "Von der Frequenz der Schwingung.",
+          "materiality": "material",
           "sample_solution": "Hohe Frequenz bedeutet hoher Ton. Die Einheit ist das Hertz (Hz), 1 Hz = 1/s.",
           "fast_check": {
             "type": "binary_choice",
@@ -5773,6 +5910,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=ak-1-schall",
           "question": "Wovon hängt die Lautstärke ab?",
           "concept": "Von der Amplitude der Schwingung.",
+          "materiality": "material",
           "sample_solution": "Eine größere Auslenkung bedeutet einen lauteren Ton.",
           "fast_check": {
             "type": "binary_choice",
@@ -5802,6 +5940,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=ak-1-schall",
           "question": "In welchem Frequenzbereich hört der Mensch?",
           "concept": "Etwa 16 Hz bis 20 000 Hz.",
+          "materiality": "material",
           "sample_solution": "Darunter spricht man von Infraschall, darüber von Ultraschall. Viele Tiere hören höhere Frequenzen.",
           "fast_check": {
             "type": "binary_choice",
@@ -5831,6 +5970,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=ak-1-schall",
           "question": "Eine Stimmgabel schwingt in 2 s genau 880-mal. Welche Frequenz hat sie?",
           "concept": "440 Hz",
+          "materiality": "material",
           "sample_solution": "f = n / t = 880 / 2 s = 440 Hz. Das ist der Kammerton a'.",
           "choice_distractors": [
             {
@@ -5890,6 +6030,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=ak-2-ausbreitung",
           "question": "Warum gibt es im Vakuum keinen Schall?",
           "concept": "Schall braucht Teilchen, die sich gegenseitig anstoßen.",
+          "materiality": "material",
           "sample_solution": "Schall ist eine Folge von Verdichtungen und Verdünnungen des Stoffes. Ohne Stoff gibt es keine Schallwelle.",
           "fast_check": {
             "type": "binary_choice",
@@ -5919,6 +6060,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=ak-2-ausbreitung",
           "question": "Wie groß ist die Schallgeschwindigkeit in Luft bei 20 °C ungefähr?",
           "concept": "Etwa 343 m/s.",
+          "materiality": "material",
           "sample_solution": "Das sind etwa 1235 km/h. In Wasser ist Schall mit etwa 1480 m/s deutlich schneller.",
           "fast_check": {
             "type": "binary_choice",
@@ -5948,6 +6090,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=ak-2-ausbreitung",
           "question": "Ein Echolot empfängt das Echo nach 0,8 s. Wie tief ist das Wasser (Schallgeschwindigkeit 1480 m/s)?",
           "concept": "592 m",
+          "materiality": "material",
           "sample_solution": "Der Schall läuft hin und zurück: s = v · t / 2 = 1480 m/s · 0,8 s / 2 = 592 m.",
           "choice_distractors": [
             {
@@ -5969,6 +6112,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=ak-2-ausbreitung",
           "question": "Zwischen Blitz und Donner liegen 6 s. Wie weit ist das Gewitter entfernt?",
           "concept": "etwa 2 km",
+          "materiality": "material",
           "sample_solution": "s = v · t = 343 m/s · 6 s = 2058 m. Faustregel: drei Sekunden entsprechen etwa einem Kilometer.",
           "choice_distractors": [
             {
@@ -6022,6 +6166,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=as-1-weltbilder",
           "question": "Was kennzeichnet das heliozentrische Weltbild?",
           "concept": "Die Sonne steht im Mittelpunkt, die Erde ist ein Planet.",
+          "materiality": "material",
           "sample_solution": "Kopernikus stellte es 1543 vor. Galilei fand mit dem Fernrohr Beobachtungen, die es stützten.",
           "fast_check": {
             "type": "binary_choice",
@@ -6051,6 +6196,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=as-1-weltbilder",
           "question": "Wie erklärt das heliozentrische Weltbild die Planetenschleifen von Mars?",
           "concept": "Die schnellere Erde überholt den äußeren Planeten.",
+          "materiality": "material",
           "sample_solution": "Von der Erde aus scheint Mars dann zeitweise rückwärts zu laufen, wie ein langsameres Auto, das man überholt.",
           "fast_check": {
             "type": "binary_choice",
@@ -6080,6 +6226,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=as-1-weltbilder",
           "question": "Wie bestimmte Eratosthenes den Erdumfang?",
           "concept": "Aus dem Schattenwinkel von 7,2° und dem Abstand zweier Orte von 800 km.",
+          "materiality": "material",
           "sample_solution": "7,2° ist der 50. Teil von 360°, also ist der Erdumfang 50 · 800 km = 40 000 km.",
           "choice_distractors": [
             {
@@ -6101,6 +6248,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=as-1-weltbilder",
           "question": "Um wie viel Grad dreht sich die Himmelskugel scheinbar pro Stunde?",
           "concept": "Um 15°.",
+          "materiality": "material",
           "sample_solution": "360° in 24 h ergeben 15° pro Stunde.",
           "fast_check": {
             "type": "binary_choice",
@@ -6168,6 +6316,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=as-2-sonnensystem",
           "question": "Wie groß ist eine Astronomische Einheit (AE)?",
           "concept": "Der mittlere Abstand Erde–Sonne, etwa 150 Millionen km.",
+          "materiality": "material",
           "sample_solution": "Das Licht braucht dafür etwa 8,3 Minuten. Neptun ist rund 30 AE von der Sonne entfernt.",
           "fast_check": {
             "type": "binary_choice",
@@ -6197,6 +6346,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=as-2-sonnensystem",
           "question": "Wie lange braucht das Licht von der Sonne zur Erde?",
           "concept": "Etwa 8,3 Minuten.",
+          "materiality": "material",
           "sample_solution": "t = s / c = 150 Millionen km / 300 000 km/s = 500 s.",
           "fast_check": {
             "type": "binary_choice",
@@ -6226,6 +6376,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=as-2-sonnensystem",
           "question": "Was ist die Milchstraße?",
           "concept": "Unsere Galaxie aus etwa 100 bis 300 Milliarden Sternen.",
+          "materiality": "material",
           "sample_solution": "Die Sonne ist einer dieser Sterne. Die Milchstraße hat etwa 100 000 Lichtjahre Durchmesser.",
           "fast_check": {
             "type": "binary_choice",
@@ -6255,6 +6406,7 @@
           "source_link": "https://academy.zam-os.org/physik-realschule-8/#lesson=as-2-sonnensystem",
           "question": "Im Planetenweg entspricht 1 AE einem Meter. Wie weit steht Neptun (30 AE) von der Sonne?",
           "concept": "30 m",
+          "materiality": "material",
           "sample_solution": "Modellabstand = 30 AE · 1 m pro AE = 30 m. Die Erde steht nur 1 m von der Sonne entfernt.",
           "choice_distractors": [
             {
