@@ -95,23 +95,81 @@ const LESSONS: Record<string, string[]> = {
 const ALL_LESSONS = Object.values(LESSONS).flat();
 
 /**
- * Where each stage sits in the two Fachlehrpläne of LehrplanPLUS Realschule 8
- * Physik (read on 2026-10-23). Zweig I (wpfg1): LB 1 Mechanik und Energie,
- * LB 2 Wärmelehre, LB 3 Elektrizitätslehre, LB 4 Wahlbereich with 4.1
- * Astronomie and 4.2 Akustik. Zweig II/III (wpfg2-3): LB 1 Mechanik, LB 2
- * Optik, LB 3 Magnetismus und Elektrizitätslehre.
+ * The Lernbereich of each lesson in the two Fachlehrpläne of LehrplanPLUS
+ * Realschule 8 Physik, per Wahlpflichtfächergruppe (read on 2026-10-23, as the
+ * Academy's coverage.json records it). Zweig I (`I`, wpfg1): LB 1 Mechanik und
+ * Energie, LB 2 Wärmelehre, LB 3 Elektrizitätslehre, LB 4 Wahlbereich with 4.1
+ * Astronomie and 4.2 Akustik. Zweig II/III (`II_III`, wpfg2-3): LB 1 Mechanik,
+ * LB 2 Optik, LB 3 Magnetismus und Elektrizitätslehre. A lesson of both Zweige
+ * carries one binding each; the elective lessons sit in `I` only, and the
+ * coverage file's coarse LB 4 is refined here to `lb4.1` / `lb4.2`.
  */
-const STAGE_AREAS: Record<string, Array<[track: string, topic: string]>> = {
-  "stage-1-mechanik": [["II_III", "lb1"]],
-  "stage-2-optik": [["II_III", "lb2"]],
-  "stage-3-energie": [["I", "lb1"]],
-  "stage-4-waerme": [["I", "lb2"]],
-  "stage-5-elektrizitaet": [
+const LESSON_AREAS: Record<string, Array<[track: string, topic: string]>> = {
+  "kr-1-messen": [["II_III", "lb1"]],
+  "kr-2-geschwindigkeit": [["II_III", "lb1"]],
+  "kr-3-kraft": [["II_III", "lb1"]],
+  "kr-4-wechselwirkung": [["II_III", "lb1"]],
+  "kr-5-hooke": [["II_III", "lb1"]],
+  "kr-6-masse-gewicht": [["II_III", "lb1"]],
+  "kr-7-teilchenmodell": [["II_III", "lb1"]],
+  "kr-8-dichte": [["II_III", "lb1"]],
+  "kr-9-reibung": [["II_III", "lb1"]],
+  "op-1-lichtausbreitung": [["II_III", "lb2"]],
+  "op-2-schatten": [["II_III", "lb2"]],
+  "op-3-finsternisse": [["II_III", "lb2"]],
+  "op-4-reflexion": [["II_III", "lb2"]],
+  "op-5-brechung": [["II_III", "lb2"]],
+  "op-6-totalreflexion": [["II_III", "lb2"]],
+  "op-7-sammellinse": [["II_III", "lb2"]],
+  "op-8-abbildung": [["II_III", "lb2"]],
+  "op-9-geraete": [["II_III", "lb2"]],
+  "en-1-schiefe-ebene": [["I", "lb1"]],
+  "en-2-hebel": [["I", "lb1"]],
+  "en-3-flaschenzug": [["I", "lb1"]],
+  "en-4-arbeit": [["I", "lb1"]],
+  "en-5-leistung": [["I", "lb1"]],
+  "en-6-energieformen": [["I", "lb1"]],
+  "en-7-energieerhaltung": [["I", "lb1"]],
+  "en-8-wirkungsgrad": [["I", "lb1"]],
+  "wl-1-innere-energie": [["I", "lb2"]],
+  "wl-2-temperatur": [["I", "lb2"]],
+  "wl-3-aggregatzustaende": [["I", "lb2"]],
+  "wl-4-ausdehnung": [["I", "lb2"]],
+  "wl-5-wasseranomalie": [["I", "lb2"]],
+  "wl-6-waermeleitung": [["I", "lb2"]],
+  "wl-7-konvektion-strahlung": [["I", "lb2"]],
+  "el-1-magnete": [["II_III", "lb3"]],
+  "el-2-magnetfeld": [["II_III", "lb3"]],
+  "el-3-ladung": [
     ["I", "lb3"],
     ["II_III", "lb3"],
   ],
-  "stage-6-akustik": [["I", "lb4.2"]],
-  "stage-7-astronomie": [["I", "lb4.1"]],
+  "el-4-elektrisches-feld": [
+    ["I", "lb3"],
+    ["II_III", "lb3"],
+  ],
+  "el-5-elektrostatik-anwendung": [
+    ["I", "lb3"],
+    ["II_III", "lb3"],
+  ],
+  "el-6-strom": [
+    ["I", "lb3"],
+    ["II_III", "lb3"],
+  ],
+  "el-7-stromkreis": [
+    ["I", "lb3"],
+    ["II_III", "lb3"],
+  ],
+  "el-8-stromstaerke-messen": [["I", "lb3"]],
+  "el-9-stromfluss-fluessigkeit-gas": [["I", "lb3"]],
+  "el-10-gefahren-schutz": [
+    ["I", "lb3"],
+    ["II_III", "lb3"],
+  ],
+  "ak-1-schall": [["I", "lb4.2"]],
+  "ak-2-ausbreitung": [["I", "lb4.2"]],
+  "as-1-weltbilder": [["I", "lb4.1"]],
+  "as-2-sonnensystem": [["I", "lb4.1"]],
 };
 
 const POSITION = {
@@ -225,43 +283,31 @@ describe("ZAM Academy Physik 8 Realschule cell", () => {
     }
   });
 
-  it("binds every lesson to its Lernbereich in the right Wahlpflichtfächergruppe", () => {
+  it("binds every lesson to its Lernbereich in exactly the right Wahlpflichtfächergruppen", () => {
+    expect(Object.keys(LESSON_AREAS)).toEqual(ALL_LESSONS);
     for (const atom of tile?.atoms ?? []) {
-      const stage = atom.curricula?.[0]?.topic_code ?? "";
-      const lehrplan = atom.curricula?.filter(
+      const lesson = (atom.source_link ?? "").slice(`${APP}#lesson=`.length);
+      const lehrplan = (atom.curricula ?? []).filter(
         (binding) => binding.provider === "lehrplanplus-bayern",
       );
-      expect(lehrplan?.length, atom.slug).toBeGreaterThan(0);
-      for (const binding of lehrplan ?? []) {
-        expect(binding.school_type, atom.slug).toBe("realschule");
-        expect(binding.grade, atom.slug).toBe(8);
-        expect(binding.subject, atom.slug).toBe("physik");
-        expect(
-          STAGE_AREAS[stage].map(([track, topic]) => `${track} ${topic}`),
-          `${atom.slug}: ${binding.track} ${binding.topic_code}`,
-        ).toContain(`${binding.track} ${binding.topic_code}`);
+      for (const binding of lehrplan) {
+        expect(binding.school_type, lesson).toBe("realschule");
+        expect(binding.grade, lesson).toBe(8);
+        expect(binding.subject, lesson).toBe("physik");
       }
+      // Exactly the expected pairs: a swapped, missing, extra or duplicated
+      // binding changes this list.
+      expect(
+        lehrplan
+          .map((binding) => `${binding.track} ${binding.topic_code}`)
+          .sort(),
+        lesson,
+      ).toEqual(
+        LESSON_AREAS[lesson]
+          .map(([track, topic]) => `${track} ${topic}`)
+          .sort(),
+      );
     }
-    // Zweig I has the elective LB 4 (Astronomie and Akustik, two lessons
-    // each); Zweig II/III has no fourth area.
-    const bindings = (tile?.atoms ?? []).flatMap((atom) =>
-      (atom.curricula ?? []).filter(
-        (binding) => binding.provider === "lehrplanplus-bayern",
-      ),
-    );
-    const areas = new Set(
-      bindings.map((binding) => `${binding.track} ${binding.topic_code}`),
-    );
-    expect([...areas].sort()).toEqual([
-      "I lb1",
-      "I lb2",
-      "I lb3",
-      "I lb4.1",
-      "I lb4.2",
-      "II_III lb1",
-      "II_III lb2",
-      "II_III lb3",
-    ]);
   });
 
   it("links every card to a lesson of its own stage", () => {
