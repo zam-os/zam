@@ -19,12 +19,6 @@ import {
   needsGenericCurriculumImport,
   openDatabase,
 } from "../../src/kernel/index.js";
-import legacyElektrikRaw from "../fixtures/legacy/de-by-realschule-8-physik-elektrik-grundlagen-kvt.json" with {
-  type: "json",
-};
-import legacyMechanikRaw from "../fixtures/legacy/de-by-realschule-8-physik-mechanik-kraft-bewegung-kvt.json" with {
-  type: "json",
-};
 import mapping from "../fixtures/legacy/zam-academy-physik-realschule-8-replaces-de-by.json" with {
   type: "json",
 };
@@ -38,15 +32,18 @@ const ITEMS = 152;
  * approved the mapping of their sixteen cards in zam-os/zam-academy#37 on
  * 2026-10-23: four cards pass their review history to an Academy successor
  * (`replaces`), ten retire without transferring mastery (`retired_items`), and
- * two (Jahrgangsstufe 9, Ohmsches Gesetz) stay active unchanged. The cells
- * left the bundle; the migration tests install them from tests/fixtures/legacy,
- * where the snapshots and the decision record are copied without changing
- * bytes.
+ * two (Jahrgangsstufe 9, Ohmsches Gesetz) stay active unchanged. The cells left
+ * the bundle, and their snapshots left this repository (they are in the git
+ * history, e.g. at 3d37ff4a; the Academy keeps them byte for byte with their
+ * SHA-256 under physik-realschule-8/tests/fixtures and checks the migration
+ * against them in scripts/validate-migration.mjs). tests/fixtures/legacy holds
+ * only the decision record, a copy of the Academy's file without changing
+ * bytes. The migration tests below therefore install stand-ins that carry
+ * nothing but the sixteen approved ids.
  */
-const legacyElektrik = legacyElektrikRaw as unknown as KvtTile;
-const legacyMechanik = legacyMechanikRaw as unknown as KvtTile;
-const LEGACY_TILES = [legacyElektrik, legacyMechanik];
-const OLD_IDS = LEGACY_TILES.map((legacy) => legacy.tile_id);
+const ELEKTRIK_ID = "de-by:realschule-8-physik-elektrik-grundlagen";
+const MECHANIK_ID = "de-by:realschule-8-physik-mechanik-kraft-bewegung";
+const OLD_IDS = [ELEKTRIK_ID, MECHANIK_ID];
 const REPLACEMENTS: Record<string, string> = {
   "01K4P8M0000000000000000J03": "ph8-gewichtskraft-zerlegung",
   "01K4P8M0000000000000000J05": "ph8-hebelgesetz",
@@ -66,6 +63,45 @@ const RETIRED = [
   "01K4P8M0000000000000000J08",
 ];
 const KEPT = ["01K4P8E0000000000000000J07", "01K4P8E0000000000000000J08"];
+const OLD_CARDS = [...Object.keys(REPLACEMENTS), ...RETIRED, ...KEPT].sort();
+
+/**
+ * A stand-in for an old cell: the real tile id and version, and one atom that
+ * holds exactly the cards of that cell named by the approved mapping. The
+ * Elektrik ids start with 01K4P8E, the Mechanik ids with 01K4P8M.
+ */
+function standIn(tileId: string, prefix: string): KvtTile {
+  const letter = tileId === ELEKTRIK_ID ? "E" : "M";
+  return {
+    tile_id: tileId,
+    version: "2026.08.1",
+    title: tileId,
+    publisher: "stand-in",
+    atoms: [
+      {
+        id: `${prefix}A01`,
+        namespace: "physik-8-stand-in",
+        slug: `stand-in-${letter.toLowerCase()}`,
+        title: `Stand-in ${tileId}`,
+        domain: "physik",
+        practice_items: OLD_CARDS.filter((id) =>
+          id.startsWith(`01K4P8${letter}`),
+        ).map((id) => ({
+          id,
+          language: "de",
+          tier: "tier1_fast",
+          bloom_level: 1,
+          question: `Alte Frage ${id}`,
+          concept: `Alte Antwort ${id}`,
+        })),
+      },
+    ],
+  };
+}
+const LEGACY_TILES = [
+  standIn(ELEKTRIK_ID, "01K4P8E0000000000000000"),
+  standIn(MECHANIK_ID, "01K4P8M0000000000000000"),
+];
 
 /**
  * The lessons of the Physik-8 app in zam-os/zam-academy, by stage. A card
@@ -253,25 +289,12 @@ describe("ZAM Academy Physik 8 Realschule cell", () => {
       expect(getBundledCell(id), `${id} left the bundle`).toBeUndefined();
       expect(getBundledCellTile(id), id).toBeUndefined();
     }
-    // The decision record names the snapshots it was made on, by hash.
-    expect(mapping.sources).toHaveLength(2);
-    for (const source of mapping.sources) {
-      expect(OLD_IDS).toContain(source.tile_id);
-      expect(
-        createHash("sha256")
-          .update(
-            readFileSync(
-              join(
-                __dirname,
-                "../fixtures/legacy",
-                source.file.replace(/^tests\/fixtures\//, ""),
-              ),
-            ),
-          )
-          .digest("hex"),
-        source.tile_id,
-      ).toBe(source.sha256);
-    }
+    // The decision record names the two cells it was made on. Their
+    // snapshots are no longer here, so their hashes are not checked in this
+    // repository (the Academy checks them).
+    expect(mapping.sources.map((source) => source.tile_id).sort()).toEqual(
+      [...OLD_IDS].sort(),
+    );
   });
 
   it("is offered at Realschule 8 Physik to every Wahlpflichtfächergruppe, as the only physics cell", () => {
@@ -360,16 +383,14 @@ describe("ZAM Academy Physik 8 Realschule cell", () => {
       expect(RETIRED, id).not.toContain(id);
     }
 
-    // The sixteen rows are exactly the sixteen cards of the two old cells.
-    expect(
-      mapping.rows.map((row) => [row.de_by_cell, row.de_by_id]).sort(),
-    ).toEqual(
-      LEGACY_TILES.flatMap((legacy) =>
-        legacy.atoms.flatMap((atom) =>
-          atom.practice_items.map((item) => [legacy.tile_id, item.id]),
-        ),
-      ).sort(),
-    );
+    // The sixteen rows are exactly the sixteen approved ids, each under the
+    // cell its id belongs to.
+    expect(new Set(OLD_CARDS).size).toBe(16);
+    expect(mapping.rows.map((row) => row.de_by_id).sort()).toEqual(OLD_CARDS);
+    for (const row of mapping.rows)
+      expect(row.de_by_cell, row.de_by_id).toBe(
+        row.de_by_id.startsWith("01K4P8E") ? ELEKTRIK_ID : MECHANIK_ID,
+      );
   });
 
   it("has one atom per lesson, in the app's order, each bound first to its stage", () => {
