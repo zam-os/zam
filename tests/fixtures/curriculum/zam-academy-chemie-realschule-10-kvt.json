@@ -1,0 +1,4839 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:chemie-realschule-10",
+  "version": "2026.10.2",
+  "title": "Chemie 10 Realschule (ZAM Academy)",
+  "description": "Chemie 10 nach LehrplanPLUS Bayern: getrennte Lernpfade für Zweig I und II/III, digitale Modelle und Aufgaben. Jede Karte führt zur passenden Lektion zurück.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-24T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/chemie-realschule-10/",
+      "label": "ZAM Academy: Chemie 10 Realschule, acht Etappen"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/chemie/wpfg1",
+      "checked": "2026-10-24",
+      "label": "LehrplanPLUS Chemie 10 Realschule, Zweig I"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/chemie/wpfg2-3",
+      "checked": "2026-10-24",
+      "label": "LehrplanPLUS Chemie 10 Realschule, Zweig II/III"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F5Y",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F5Y",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-gefahrstoffe",
+      "title": "Gefahrstoffe und Entsorgung",
+      "domain": "chemie/forschen",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-gefahrstoffe",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "arbeiten",
+          "topic_title": "Wie Chemiker denken und arbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Wie Chemiker denken und arbeiten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb1",
+          "topic_title": "Wie Chemiker denken und arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F76",
+          "slug": "c10-gefahrstoffe-flamme",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-gefahrstoffe",
+          "question": "Was bedeutet das GHS-Piktogramm Flamme?",
+          "concept": "Der Stoff ist entzündbar.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Stoff ist entzündbar.",
+              "Der Stoff ist ätzend."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Stoff ist ätzend.",
+              "reason": "Ätzwirkung zeigt ein eigenes Piktogramm mit tropfenden Reagenzgläsern."
+            },
+            {
+              "text": "Der Stoff ist giftig.",
+              "reason": "Giftigkeit zeigt der Totenkopf, nicht die Flamme."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F77",
+          "slug": "c10-gefahrstoffe-entsorgung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-gefahrstoffe",
+          "question": "Wohin gehören Reste einer Kupfer(II)-sulfat-Lösung?",
+          "concept": "In den Sammelbehälter für Schwermetallsalze.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In den Sammelbehälter für Schwermetallsalze.",
+              "Mit viel Wasser in den Ausguss."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mit viel Wasser in den Ausguss.",
+              "reason": "Schwermetallionen schädigen Gewässer auch verdünnt."
+            },
+            {
+              "text": "In die Restmülltonne des Chemieraums.",
+              "reason": "Gefahrstoffreste werden getrennt gesammelt und fachgerecht entsorgt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F5Z",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F5Z",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-versuche-planen",
+      "title": "Fragen, Hypothesen und Protokolle",
+      "domain": "chemie/forschen",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-versuche-planen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "arbeiten",
+          "topic_title": "Wie Chemiker denken und arbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Wie Chemiker denken und arbeiten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb1",
+          "topic_title": "Wie Chemiker denken und arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F78",
+          "slug": "c10-versuche-hypothese",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-versuche-planen",
+          "question": "Was ist eine Hypothese?",
+          "concept": "Eine prüfbare, begründete Vermutung.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine prüfbare, begründete Vermutung.",
+              "Eine Beschreibung dessen, was man sieht."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Beschreibung dessen, was man sieht.",
+              "reason": "Das ist eine Beobachtung."
+            },
+            {
+              "text": "Die Erklärung eines Ergebnisses nach dem Versuch.",
+              "reason": "Das ist die Deutung."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F79",
+          "slug": "c10-versuche-variable",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-versuche-planen",
+          "question": "Wie viele Größen verändert man in einem fairen Versuch gleichzeitig?",
+          "concept": "Nur eine; alle anderen bleiben gleich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur eine; alle anderen bleiben gleich.",
+              "Alle Größen gleichzeitig, um Zeit zu sparen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Alle Größen gleichzeitig, um Zeit zu sparen.",
+              "reason": "Dann lässt sich die Ursache eines Effekts nicht zuordnen."
+            },
+            {
+              "text": "Keine; man beobachtet nur.",
+              "reason": "Ein Versuch prüft eine Hypothese durch gezielte Veränderung."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F60",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F60",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-ionenbildung",
+      "title": "Ionenbildung aus den Elementen",
+      "domain": "chemie/redox",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-ionenbildung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "elektronen",
+          "topic_title": "Elektronenübergänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb2",
+          "topic_title": "Donator-Akzeptor-Konzept – Elektronenübergänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7A",
+          "slug": "c10-ionenbildung-metall",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-ionenbildung",
+          "question": "Was geschieht mit Metallatomen bei der Salzbildung?",
+          "concept": "Sie geben Elektronen ab und werden zu Kationen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie geben Elektronen ab und werden zu Kationen.",
+              "Sie nehmen Elektronen auf und werden zu Anionen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie nehmen Elektronen auf und werden zu Anionen.",
+              "reason": "Metallatome sind Elektronendonatoren."
+            },
+            {
+              "text": "Sie teilen sich Elektronenpaare mit dem Nichtmetall.",
+              "reason": "Elektronenpaarbindungen bilden Nichtmetalle untereinander."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7B",
+          "slug": "c10-ionenbildung-akzeptor",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-ionenbildung",
+          "question": "Wie nennt man ein Teilchen, das Elektronen aufnimmt?",
+          "concept": "Elektronenakzeptor",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Elektronenakzeptor",
+              "Elektronendonator"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Elektronendonator",
+              "reason": "Ein Donator gibt Elektronen ab."
+            },
+            {
+              "text": "Protonenakzeptor",
+              "reason": "Protonen sind keine Elektronen; das ist das Säure/Base-Konzept."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F61",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F61",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-redox-teilgleichungen",
+      "title": "Redoxreaktionen in Teilgleichungen",
+      "domain": "chemie/redox",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-redox-teilgleichungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F60",
+          "type": "soft",
+          "rationale": "Die Lektion „Ionenbildung aus den Elementen“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "elektronen",
+          "topic_title": "Elektronenübergänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb2",
+          "topic_title": "Donator-Akzeptor-Konzept – Elektronenübergänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7C",
+          "slug": "c10-redox-oxidation",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-redox-teilgleichungen",
+          "question": "Was ist eine Oxidation im Donator-Akzeptor-Konzept?",
+          "concept": "Eine Elektronenabgabe.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Elektronenabgabe.",
+              "Eine Elektronenaufnahme."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Elektronenaufnahme.",
+              "reason": "Elektronenaufnahme ist die Reduktion."
+            },
+            {
+              "text": "Eine Protonenabgabe.",
+              "reason": "Protonenabgabe beschreibt eine Säure."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7D",
+          "slug": "c10-redox-oz-element",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-redox-teilgleichungen",
+          "question": "Welche Oxidationszahl hat ein Atom in einem Element?",
+          "concept": "Die Oxidationszahl 0.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Oxidationszahl 0.",
+              "Seine Hauptgruppennummer."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Seine Hauptgruppennummer.",
+              "reason": "Die Hauptgruppe nennt die Valenzelektronen, nicht die Oxidationszahl eines Elements."
+            },
+            {
+              "text": "Seine Elektronenzahl.",
+              "reason": "Oxidationszahlen sind gedachte Ladungen; im Element ist keine Ladung verschoben."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7E",
+          "slug": "c10-redox-gesamtgleichung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-redox-teilgleichungen",
+          "question": "Formuliere für die Reaktion von Magnesium mit Sauerstoff die beiden Teilgleichungen und die Gesamtgleichung und gib die Oxidationszahlen an.",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Oxidation: "
+            },
+            {
+              "type": "math",
+              "tex": "2\\,\\mathrm{Mg} \\rightarrow 2\\,\\mathrm{Mg^{2+}} + 4\\,\\mathrm{e^-}",
+              "speech": "zwei M G reagiert zu zwei M G zwei plus plus vier Elektronen"
+            },
+            {
+              "type": "text",
+              "text": "; Reduktion: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{O_2} + 4\\,\\mathrm{e^-} \\rightarrow 2\\,\\mathrm{O^{2-}}",
+              "speech": "O zwei plus vier Elektronen reagiert zu zwei O zwei minus"
+            },
+            {
+              "type": "text",
+              "text": "; gesamt: "
+            },
+            {
+              "type": "math",
+              "tex": "2\\,\\mathrm{Mg} + \\mathrm{O_2} \\rightarrow 2\\,\\mathrm{MgO}",
+              "speech": "zwei M G plus O zwei reagiert zu zwei M G O"
+            },
+            {
+              "type": "text",
+              "text": "; Mg 0 → +II, O 0 → −II"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Magnesium gibt je Atom zwei Elektronen ab (Oxidation), ein Sauerstoffmolekül nimmt vier Elektronen auf (Reduktion). Damit gleich viele Elektronen abgegeben und aufgenommen werden, verdoppelt man die Oxidation: 2 Mg → 2 Mg²⁺ + 4 e⁻ und O₂ + 4 e⁻ → 2 O²⁻. Addiert ergibt sich 2 Mg + O₂ → 2 MgO. Die Oxidationszahl von Magnesium steigt von 0 auf +II, die von Sauerstoff sinkt von 0 auf −II."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F62",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F62",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-salzformeln",
+      "title": "Verhältnisformeln und Salznamen",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-salzformeln",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F60",
+          "type": "soft",
+          "rationale": "Die Lektion „Ionenbildung aus den Elementen“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "elektronen",
+          "topic_title": "Elektronenübergänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb2",
+          "topic_title": "Donator-Akzeptor-Konzept – Elektronenübergänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7F",
+          "slug": "c10-salzformeln-al2o3",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-salzformeln",
+          "question": "Welche Verhältnisformel hat Aluminiumoxid?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{Al_2O_3}",
+              "speech": "A L zwei O drei"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Al₂O₃",
+              "Al₃O₂"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Al₃O₂",
+              "reason": "Al³⁺ und O²⁻ gleichen sich erst im Verhältnis 2 : 3 aus."
+            },
+            {
+              "text": "AlO",
+              "reason": "Ein Al³⁺ und ein O²⁻ ergeben keine neutrale Formeleinheit."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7G",
+          "slug": "c10-salzformeln-verhaeltnis",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-salzformeln",
+          "question": "Was gibt die Verhältnisformel eines Salzes an?",
+          "concept": "Das kleinste ganzzahlige Zahlenverhältnis der Ionen im Gitter.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das kleinste ganzzahlige Zahlenverhältnis der Ionen im Gitter.",
+              "Die Atome eines einzelnen Salzmoleküls mit seinen Bindungen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Atome eines einzelnen Salzmoleküls mit seinen Bindungen.",
+              "reason": "Salze bestehen nicht aus Molekülen, sondern aus Ionen im Gitter."
+            },
+            {
+              "text": "Die Zahl der Salzkristalle in einem Gramm des Stoffes.",
+              "reason": "Eine Formel gibt Teilchenverhältnisse an, keine Kristallzahl."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7H",
+          "slug": "c10-salzformeln-name-formel",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-salzformeln",
+          "question": "Gib die Formeln von Eisen(III)-chlorid und Calciumnitrat an und begründe sie mit den Ionenladungen.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{FeCl_3}",
+              "speech": "F E C L drei"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Fe^{3+}}",
+              "speech": "F E drei plus"
+            },
+            {
+              "type": "text",
+              "text": ", 3 "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Cl^-}",
+              "speech": "C L minus"
+            },
+            {
+              "type": "text",
+              "text": "); "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Ca(NO_3)_2}",
+              "speech": "C A Klammer auf N O drei Klammer zu zwei"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Ca^{2+}}",
+              "speech": "C A zwei plus"
+            },
+            {
+              "type": "text",
+              "text": ", 2 "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{NO_3^-}",
+              "speech": "N O drei minus"
+            },
+            {
+              "type": "text",
+              "text": ")"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Eisen(III) bedeutet Fe³⁺; drei Chloridionen Cl⁻ gleichen die Ladung aus: FeCl₃. Calcium bildet Ca²⁺; das Nitration NO₃⁻ ist einfach negativ, also sind zwei nötig. Weil Nitrat ein mehratomiges Ion ist, steht es in Klammern: Ca(NO₃)₂."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F63",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F63",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-gitterenergie",
+      "title": "Ionengitter und Gitterenergie",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-gitterenergie",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F60",
+          "type": "soft",
+          "rationale": "Die Lektion „Ionenbildung aus den Elementen“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "elektronen",
+          "topic_title": "Elektronenübergänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb2",
+          "topic_title": "Donator-Akzeptor-Konzept – Elektronenübergänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7J",
+          "slug": "c10-gitter-groesse",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-gitterenergie",
+          "question": "Wovon hängt die Größe der Gitterenergie vor allem ab?",
+          "concept": "Von Ionenladung und Ionenabstand.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Von Ionenladung und Ionenabstand.",
+              "Von der Farbe und Form der Kristalle."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Von der Farbe und Form der Kristalle.",
+              "reason": "Die Farbe sagt nichts über die Anziehung der Ionen aus."
+            },
+            {
+              "text": "Nur von der Masse der beteiligten Ionen.",
+              "reason": "Die elektrostatische Anziehung hängt von Ladung und Abstand ab, nicht von der Masse."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7K",
+          "slug": "c10-gitter-schmelzen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-gitterenergie",
+          "question": "Warum schmilzt MgO viel höher als NaCl?",
+          "concept": "Doppelt geladene Ionen: viel größere Gitterenergie.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Doppelt geladene Ionen: viel größere Gitterenergie.",
+              "MgO besteht aus Molekülen mit starken Bindungen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "MgO besteht aus Molekülen mit starken Bindungen.",
+              "reason": "MgO ist ein Ionengitter wie NaCl."
+            },
+            {
+              "text": "MgO enthält mehr Elektronen pro Formeleinheit.",
+              "reason": "Entscheidend ist die Anziehung der Ionenladungen, nicht die Elektronenzahl."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F64",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F64",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-hydratation",
+      "title": "Salze lösen: Hydrathülle",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-hydratation",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F63",
+          "type": "soft",
+          "rationale": "Die Lektion „Ionengitter und Gitterenergie“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "elektronen",
+          "topic_title": "Elektronenübergänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb2",
+          "topic_title": "Donator-Akzeptor-Konzept – Elektronenübergänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7M",
+          "slug": "c10-hydratation-huelle",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-hydratation",
+          "question": "Was ist eine Hydrathülle?",
+          "concept": "Eine Hülle aus Wassermolekülen um ein gelöstes Ion.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Hülle aus Wassermolekülen um ein gelöstes Ion.",
+              "Eine Schutzschicht aus Salz um ein Wassermolekül."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Schutzschicht aus Salz um ein Wassermolekül.",
+              "reason": "Die Ionen werden von Wasser umgeben, nicht umgekehrt."
+            },
+            {
+              "text": "Eine Schicht aus Wasserstoffatomen auf dem Kristall.",
+              "reason": "Ganze polare Wassermoleküle lagern sich an."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7N",
+          "slug": "c10-hydratation-kalt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-hydratation",
+          "question": "Eine Salzlösung kühlt beim Lösen ab. Welche Energie ist größer?",
+          "concept": "Die Gitterenergie.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Gitterenergie.",
+              "Die Hydratationsenergie."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Hydratationsenergie.",
+              "reason": "Überwiegt die Hydratationsenergie, erwärmt sich die Lösung."
+            },
+            {
+              "text": "Beide sind null.",
+              "reason": "Beim Lösen werden immer beide Energien umgesetzt."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7P",
+          "slug": "c10-hydratation-loesevorgang",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-hydratation",
+          "question": "Beschreibe den Lösungsvorgang von Natriumchlorid in Wasser auf Teilchenebene und erkläre, wovon es abhängt, ob sich die Lösung erwärmt oder abkühlt.",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Wasserdipole lagern sich an die Ionen an (δ−-O zu "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Na^+}",
+              "speech": "N A plus"
+            },
+            {
+              "type": "text",
+              "text": ", δ+-H zu "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Cl^-}",
+              "speech": "C L minus"
+            },
+            {
+              "type": "text",
+              "text": "), lösen sie aus dem Gitter und bilden Hydrathüllen; Gitterenergie wird aufgewendet, Hydratationsenergie wird frei; die größere bestimmt die Temperaturänderung."
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Polare Wassermoleküle richten sich an der Kristalloberfläche aus: mit dem negativ teilgeladenen Sauerstoffatom zu den Na⁺-Ionen, mit den positiv teilgeladenen Wasserstoffatomen zu den Cl⁻-Ionen. Sie lösen die Ionen aus dem Gitter; jedes Ion wird von einer Hydrathülle umgeben. Zum Zerlegen des Gitters muss die Gitterenergie aufgewendet werden, beim Bilden der Hydrathüllen wird Hydratationsenergie frei. Ist sie größer, erwärmt sich die Lösung, ist sie kleiner, kühlt sie ab. Bei Natriumchlorid sind beide fast gleich groß."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F65",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F65",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-saure-alkalische-loesungen",
+      "title": "Saure und alkalische Lösungen",
+      "domain": "chemie/protonen",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-saure-alkalische-loesungen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "protonen",
+          "topic_title": "Säuren, Basen und Neutralisation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Donator-Akzeptor-Konzept – Protonenübergänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7Q",
+          "slug": "c10-loesungen-ph-sauer",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-saure-alkalische-loesungen",
+          "question": "Wie ist eine Lösung mit pH 3 bei 25 °C einzuordnen?",
+          "concept": "sauer: der pH liegt unter 7",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "sauer: der pH liegt unter 7",
+              "alkalisch: der pH liegt unter 7"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "alkalisch: der pH liegt unter 7",
+              "reason": "Alkalisch sind Lösungen mit pH über 7."
+            },
+            {
+              "text": "neutral: der pH liegt nahe 7",
+              "reason": "Neutral ist bei 25 °C nur pH 7; 3 ist weit davon entfernt."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7R",
+          "slug": "c10-loesungen-btb",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-saure-alkalische-loesungen",
+          "question": "Welche Farbe hat Bromthymolblau in einer alkalischen Lösung?",
+          "concept": "blau",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "blau",
+              "gelb"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "gelb",
+              "reason": "Gelb zeigt Bromthymolblau in sauren Lösungen."
+            },
+            {
+              "text": "farblos",
+              "reason": "Farblos ist Phenolphthalein im Sauren, nicht Bromthymolblau."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F66",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F66",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-broensted",
+      "title": "Säure und Base nach Brönsted",
+      "domain": "chemie/protonen",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-broensted",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F65",
+          "type": "soft",
+          "rationale": "Die Lektion „Saure und alkalische Lösungen“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "protonen",
+          "topic_title": "Säuren, Basen und Neutralisation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Donator-Akzeptor-Konzept – Protonenübergänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7S",
+          "slug": "c10-broensted-saeure",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-broensted",
+          "question": "Wie ist eine Säure nach Brönsted definiert?",
+          "concept": "Als Protonendonator: ein Teilchen, das Protonen abgibt.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als Protonendonator: ein Teilchen, das Protonen abgibt.",
+              "Als Protonenakzeptor: ein Teilchen, das Protonen aufnimmt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Als Protonenakzeptor: ein Teilchen, das Protonen aufnimmt.",
+              "reason": "Protonenakzeptoren sind Brönsted-Basen."
+            },
+            {
+              "text": "Als Lösung, deren pH-Wert bei 25 °C unter 7 liegt.",
+              "reason": "Das beschreibt eine saure Lösung (Stoffebene), nicht die Säure als Teilchen."
+            }
+          ],
+          "replaces": [
+            "01K4S0C0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7T",
+          "slug": "c10-broensted-hcl",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-broensted",
+          "question": "Welche Ionen entstehen, wenn Chlorwasserstoff mit Wasser reagiert?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Oxoniumionen "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{H_3O^+}",
+              "speech": "H drei O plus"
+            },
+            {
+              "type": "text",
+              "text": " und Chloridionen "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Cl^-}",
+              "speech": "C L minus"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Oxoniumionen H₃O⁺ und Chloridionen Cl⁻.",
+              "Wasserstoffionen H⁻ und Chlorionen Cl⁺."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wasserstoffionen H⁻ und Chlorionen Cl⁺.",
+              "reason": "Das Proton ist positiv und geht auf Wasser über; Chlor behält die Elektronen."
+            },
+            {
+              "text": "Hydroxidionen OH⁻ und Chloridionen Cl⁻.",
+              "reason": "Hydroxidionen entstehen, wenn Wasser ein Proton abgibt, z. B. an Ammoniak."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7V",
+          "slug": "c10-broensted-ammoniak",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-broensted",
+          "question": "Erkläre mithilfe des Säure/Base-Konzepts nach Brönsted, warum eine Ammoniaklösung alkalisch ist und den Strom leitet. Unterscheide dabei Base und alkalische Lösung.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{NH_3} + \\mathrm{H_2O} \\rightleftharpoons \\mathrm{NH_4^+} + \\mathrm{OH^-}",
+              "speech": "N H drei plus H zwei O im Gleichgewicht mit N H vier plus plus O H minus"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{NH_3}",
+              "speech": "N H drei"
+            },
+            {
+              "type": "text",
+              "text": " ist Protonenakzeptor (Base), "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{H_2O}",
+              "speech": "H zwei O"
+            },
+            {
+              "type": "text",
+              "text": " Protonendonator (Säure); "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{OH^-}",
+              "speech": "O H minus"
+            },
+            {
+              "type": "text",
+              "text": "-Ionen bewirken die alkalische Eigenschaft, die Ionen die Leitfähigkeit; die Base ist ein Teilchen, die alkalische Lösung das Stoffgemisch."
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Ein Ammoniakmolekül nimmt mit seinem freien Elektronenpaar ein Proton von einem Wassermolekül auf: NH₃ + H₂O ⇌ NH₄⁺ + OH⁻. Ammoniak ist dabei Brönsted-Base (Protonenakzeptor), Wasser Brönsted-Säure (Protonendonator). Die entstehenden Hydroxidionen machen die Lösung alkalisch; die beweglichen Ammonium- und Hydroxidionen leiten den Strom. ‚Base‘ bezeichnet das Teilchen NH₃, ‚alkalische Lösung‘ das Gemisch im Glas."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F67",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F67",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-protolyse-saeurereste",
+      "title": "Protolysen und Säurerestionen",
+      "domain": "chemie/protonen",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-protolyse-saeurereste",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F66",
+          "type": "soft",
+          "rationale": "Die Lektion „Säure und Base nach Brönsted“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "protonen",
+          "topic_title": "Säuren, Basen und Neutralisation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Donator-Akzeptor-Konzept – Protonenübergänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7W",
+          "slug": "c10-saeurereste-sulfat",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-protolyse-saeurereste",
+          "question": "Welches Säurerestion bleibt, wenn Schwefelsäure beide Protonen abgegeben hat?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Das Sulfation "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{SO_4^{2-}}",
+              "speech": "S O vier zwei minus"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Sulfation SO₄²⁻.",
+              "Das Sulfidion S²⁻."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das Sulfidion S²⁻.",
+              "reason": "Sulfid ist das Anion des Schwefels ohne Sauerstoff."
+            },
+            {
+              "text": "Das Hydrogensulfation HSO₄⁻.",
+              "reason": "Hydrogensulfat bleibt nach der ersten Protolysestufe."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7X",
+          "slug": "c10-saeurereste-acetat",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-protolyse-saeurereste",
+          "question": "Wie heißt das Säurerestion der Ethansäure (Essigsäure)?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Acetation "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{CH_3COO^-}",
+              "speech": "C H drei C O O minus"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Acetation CH₃COO⁻",
+              "Ethanolation CH₃CH₂O⁻"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ethanolation CH₃CH₂O⁻",
+              "reason": "Das wäre ein Rest des Alkohols Ethanol."
+            },
+            {
+              "text": "Carbonation CO₃²⁻",
+              "reason": "Carbonat ist das Säurerestion der Kohlensäure."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F68",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F68",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-ph-oxonium",
+      "title": "pH-Wert und Oxoniumionen",
+      "domain": "chemie/protonen",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-ph-oxonium",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "protonen",
+          "topic_title": "Säuren, Basen und Neutralisation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Donator-Akzeptor-Konzept – Protonenübergänge II",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7Y",
+          "slug": "c10-ph-faktor",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-ph-oxonium",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Um welchen Faktor ändert sich "
+            },
+            {
+              "type": "math",
+              "tex": "c(\\mathrm{H_3O^+})",
+              "speech": "c von H drei O plus"
+            },
+            {
+              "type": "text",
+              "text": ", wenn der pH-Wert einer sauren Lösung von 3 auf 5 steigt?"
+            }
+          ],
+          "concept": "Sie sinkt auf ein Hundertstel.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie sinkt auf ein Hundertstel.",
+              "Sie sinkt auf die Hälfte."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie sinkt auf die Hälfte.",
+              "reason": "Der pH-Wert ist keine lineare Skala; je Einheit ändert sich c um den Faktor 10."
+            },
+            {
+              "text": "Sie steigt auf das Hundertfache.",
+              "reason": "Ein höherer pH-Wert bedeutet weniger Oxoniumionen."
+            }
+          ],
+          "replaces": [
+            "01K4S0C0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F7Z",
+          "slug": "c10-ph-verduennung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-ph-oxonium",
+          "question": "Salzsäure mit pH 1 wird 1 : 10 mit Wasser verdünnt. Welchen pH-Wert hat sie danach?",
+          "concept": "pH 2",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "pH 2",
+              "pH 10"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "pH 10",
+              "reason": "Verdünnen 1 : 10 erhöht den pH um eine Einheit, nicht um den Verdünnungsfaktor."
+            },
+            {
+              "text": "pH 0,1",
+              "reason": "Hier wurde der pH-Wert durch 10 geteilt statt c(H₃O⁺); verdünnen erhöht den pH-Wert."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F69",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F69",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-neutralisation",
+      "title": "Neutralisation",
+      "domain": "chemie/protonen",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-neutralisation",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "protonen",
+          "topic_title": "Säuren, Basen und Neutralisation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Donator-Akzeptor-Konzept – Protonenübergänge II",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Donator-Akzeptor-Konzept – Protonenübergänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F80",
+          "slug": "c10-neutralisation-ionen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-neutralisation",
+          "question": "Welche Teilchenreaktion ist allen Neutralisationen saurer und alkalischer Lösungen gemeinsam?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{H_3O^+} + \\mathrm{OH^-} \\rightarrow 2\\,\\mathrm{H_2O}",
+              "speech": "H drei O plus plus O H minus reagiert zu zwei H zwei O"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "H₃O⁺ + OH⁻ → 2 H₂O",
+              "Na⁺ + Cl⁻ → NaCl"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Na⁺ + Cl⁻ → NaCl",
+              "reason": "Natrium- und Chloridionen bleiben gelöst; sie reagieren nicht."
+            },
+            {
+              "text": "H₂ + O₂ → H₂O₂",
+              "reason": "Bei der Neutralisation entsteht Wasser aus Ionen, nicht aus Gasen."
+            }
+          ],
+          "replaces": [
+            "01K4S0C0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F81",
+          "slug": "c10-neutralisation-salz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-neutralisation",
+          "question": "Welches Salz bleibt nach der Neutralisation von Salzsäure mit Kalilauge beim Eindampfen zurück?",
+          "concept": "Kaliumchlorid",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kaliumchlorid",
+              "Kaliumhydroxid"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kaliumhydroxid",
+              "reason": "Die Hydroxidionen der Kalilauge wurden zu Wasser."
+            },
+            {
+              "text": "Natriumchlorid",
+              "reason": "Natrium ist an dieser Reaktion nicht beteiligt."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F82",
+          "slug": "c10-neutralisation-legacy-synthese",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-neutralisation",
+          "question": "Formuliere die vollständige Stoff- und Ionenreaktionsgleichung für die Neutralisation von Salzsäure mit Natronlauge sowie von Schwefelsäure mit Kalilauge und erkläre den Farbumschlag des Säure-Base-Indikators Bromthymolblau am Äquivalenzpunkt.",
+          "concept": "HCl + NaOH -> NaCl + H2O (H3O+ + Cl- + Na+ + OH- -> Na+ + Cl- + 2 H2O); H2SO4 + 2 KOH -> K2SO4 + 2 H2O; Bromthymolblau: gelb im Sauren (pH < 6), grün am Neutralpunkt (pH 7), blau im Basischen (pH > 7,6)",
+          "materiality": "material",
+          "sample_solution": "1. Neutralisationsreaktionen: - Salzsäure + Natronlauge: HCl (aq) + NaOH (aq) -> NaCl (aq) + H₂O (l); Netto-Ionengleichung: H₃O⁺ + OH⁻ -> 2 H₂O (die Ionen Na⁺ und Cl⁻ bleiben als gelöstes Kochsalz hydratisiert im Wasser). - Schwefelsäure + Kalilauge (zweiprotonig): H₂SO₄ + 2 KOH -> K₂SO₄ + 2 H₂O (bildet Kaliumsulfat). 2. Säure-Base-Indikator Bromthymolblau: Indikatoren sind schwache organische Säuren/Basen, deren protonierte und deprotonierte Form unterschiedliche Lichtwellenlängen absorbieren: Im sauren Milieu (pH < 6,0) ist die Lösung gelb, im neutralen Übergangsbereich um pH 7,0 grün, und im alkalischen Bereich (pH > 7,6) intensiv blau. Der Umschlag nach Grün zeigt das Erreichen des Äquivalenzpunktes an.",
+          "replaces": [
+            "01K4S0C0000000000000000J06"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6A",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6A",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-titration",
+      "title": "Titration",
+      "domain": "chemie/protonen",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-titration",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F69",
+          "type": "soft",
+          "rationale": "Die Lektion „Neutralisation“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "protonen",
+          "topic_title": "Säuren, Basen und Neutralisation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Donator-Akzeptor-Konzept – Protonenübergänge II",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F83",
+          "slug": "c10-titration-aequivalenz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-titration",
+          "question": "Welche Beziehung gilt am Äquivalenzpunkt der Titration einer einprotonigen Säure mit Natronlauge (c_S, V_S: Säure; c_L, V_L: Lauge)?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "c_S \\cdot V_S = c_L \\cdot V_L",
+              "speech": "c Säure mal V Säure gleich c Lauge mal V Lauge"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "c_S · V_S = c_L · V_L",
+              "c_S·V_L = c_L·V_S"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "c_S·V_L = c_L·V_S",
+              "reason": "Konzentration und Volumen derselben Lösung gehören zusammen."
+            },
+            {
+              "text": "c_S·c_L = V_S·V_L",
+              "reason": "Die Stoffmenge ist Konzentration mal Volumen derselben Lösung."
+            }
+          ],
+          "replaces": [
+            "01K4S0C0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F84",
+          "slug": "c10-titration-buerette",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-titration",
+          "question": "In welchem Gerät befindet sich bei der Titration die Maßlösung bekannter Konzentration?",
+          "concept": "In der Bürette.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In der Bürette.",
+              "Im Erlenmeyerkolben."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Im Erlenmeyerkolben.",
+              "reason": "Im Kolben liegt die Probelösung mit dem Indikator vor."
+            },
+            {
+              "text": "Im Becherglas mit Skala.",
+              "reason": "Ein Becherglas ist zu ungenau; das Volumen muss genau ablesbar sein."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F85",
+          "slug": "c10-titration-legacy-synthese",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-titration",
+          "question": "Beschreibe den Versuchsaufbau einer Säure-Base-Titration (Bürette mit Maßlösung, Erlenmeyerkolben mit Probelösung und Indikator, Magnetrührer) und berechne die Stoffmengenkonzentration c(HCl) einer Salzsäureprobe, wenn zur Neutralisation von V_S = 20,0 ml Salzsäure genau V_B = 15,0 ml Natronlauge der Konzentration c(NaOH) = 0,10 mol/l verbraucht wurden.",
+          "concept": "Versuchsaufbau: Bürette, Erlenmeyerkolben, Rührfisch, Farbindikator; Rechnung: n(HCl) = n(NaOH) = c_B * V_B = 0,10 mol/l * 0,015 l = 0,0015 mol; c(HCl) = n / V_S = 0,0015 mol / 0,020 l = 0,075 mol/l",
+          "materiality": "material",
+          "sample_solution": "1. Versuchsaufbau und Durchführung: In einem Erlenmeyerkolben wird ein genau abgemessenes Volumen der Probelösung (z. B. 20 ml Salzsäure) mit einer Vollpipette vorgelegt und mit wenigen Tropfen Indikator (z. B. Bromthymolblau) versetzt. Aus einer kalibrierten Bürette wird unter ständigem Rühren tropfenweise Maßlösung bekannter Konzentration (z. B. 0,10 mol/l NaOH) zugegeben, bis der Indikator exakt umschlägt (Äquivalenzpunkt). An der Bürettenskala wird das verbrauchte Volumen V_B abgelesen. 2. Quantitative Konzentrationsberechnung: - Am Äquivalenzpunkt gilt: n(HCl) = n(NaOH) <=> c(HCl) · V(HCl) = c(NaOH) · V(NaOH). - Stoffmengenkonzentration der Salzsäure: c(HCl) = (c(NaOH) · V(NaOH)) / V(HCl) = (0,10 mol/l · 15,0 ml) / 20,0 ml = 1,5 / 20,0 mol/l = 0,075 mol/l.",
+          "replaces": [
+            "01K4S0C0000000000000000J08"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6B",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6B",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-carbonate-metalle",
+      "title": "Saure Lösungen, Kalk und Metalle",
+      "domain": "chemie/protonen",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-carbonate-metalle",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "protonen",
+          "topic_title": "Säuren, Basen und Neutralisation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Donator-Akzeptor-Konzept – Protonenübergänge II",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb3",
+          "topic_title": "Donator-Akzeptor-Konzept – Protonenübergänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F86",
+          "slug": "c10-carbonate-gas",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-carbonate-metalle",
+          "question": "Welches Gas entsteht, wenn eine saure Lösung mit Kalk reagiert?",
+          "concept": "Kohlenstoffdioxid",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kohlenstoffdioxid",
+              "Kohlenstoffmonoxid"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kohlenstoffmonoxid",
+              "reason": "CO entsteht bei unvollständiger Verbrennung, nicht aus Carbonaten."
+            },
+            {
+              "text": "Chlorwasserstoff",
+              "reason": "HCl ist in der Salzsäure gelöst; es ist kein Produkt der Kalkreaktion."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F87",
+          "slug": "c10-carbonate-metall",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-carbonate-metalle",
+          "question": "Welches Metall reagiert nicht mit verdünnter Salzsäure?",
+          "concept": "Kupfer",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kupfer",
+              "Zink"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zink",
+              "reason": "Zink ist unedel und bildet Wasserstoff."
+            },
+            {
+              "text": "Magnesium",
+              "reason": "Magnesium reagiert heftig unter Wasserstoffbildung."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F88",
+          "slug": "c10-carbonate-entkalken",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-carbonate-metalle",
+          "question": "Erkläre, warum Essig einen verkalkten Wasserkocher reinigt. Nenne das Gas, seinen Nachweis und das entstehende Salz und formuliere die Reaktionsgleichung.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{CaCO_3} + 2\\,\\mathrm{CH_3COOH} \\rightarrow \\mathrm{Ca(CH_3COO)_2} + \\mathrm{H_2O} + \\mathrm{CO_2}",
+              "speech": "C A C O drei plus zwei C H drei C O O H reagiert zu C A Klammer auf C H drei C O O Klammer zu zwei plus H zwei O plus C O zwei"
+            },
+            {
+              "type": "text",
+              "text": "; Gas: Kohlenstoffdioxid (Kalkwasser trüb); Salz: Calciumacetat, löslich"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Kalk ist Calciumcarbonat. Die Essigsäure gibt Protonen an die Carbonationen ab; es entstehen Wasser und Kohlenstoffdioxid, das als Gas entweicht und Kalkwasser trübt. Zurück bleibt das lösliche Salz Calciumacetat: CaCO₃ + 2 CH₃COOH → Ca(CH₃COO)₂ + H₂O + CO₂. Der feste Belag wird so in gelöste Ionen umgewandelt und ausgespült."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6C",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6C",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-kohlenstoff-nachweis",
+      "title": "Kohlenstoff als Grundbaustein",
+      "domain": "chemie/organik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-kohlenstoff-nachweis",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "fotosynthese",
+          "topic_title": "Herkunft organischer Verbindungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Herkunft organischer Verbindungen im Überblick – grundlegende Reaktion Fotosynthese",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb4",
+          "topic_title": "Herkunft organischer Verbindungen im Überblick – grundlegende Reaktion Fotosynthese",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F89",
+          "slug": "c10-kohlenstoff-verkohlung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-kohlenstoff-nachweis",
+          "question": "Was zeigt ein schwarzer Rückstand beim starken Erhitzen eines organischen Stoffes wie Zucker?",
+          "concept": "Der Stoff enthält Kohlenstoff.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Stoff enthält Kohlenstoff.",
+              "Der Stoff enthält Eisen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Stoff enthält Eisen.",
+              "reason": "Eisen hinterlässt beim Erhitzen keinen schwarzen Kohlenstoffrückstand."
+            },
+            {
+              "text": "Der Stoff ist ein Salz.",
+              "reason": "Salze wie Kochsalz verkohlen nicht."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F8A",
+          "slug": "c10-kohlenstoff-kalkwasser",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-kohlenstoff-nachweis",
+          "question": "Welches Gas weist man mit Kalkwasser nach?",
+          "concept": "Kohlenstoffdioxid",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kohlenstoffdioxid",
+              "Kohlenstoffmonoxid"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kohlenstoffmonoxid",
+              "reason": "CO reagiert nicht mit Calciumhydroxid; Kalkwasser bleibt klar."
+            },
+            {
+              "text": "Chlorwasserstoff",
+              "reason": "HCl weist man mit feuchtem Indikatorpapier nach (rot)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6D",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6D",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-fotosynthese",
+      "title": "Fotosynthese",
+      "domain": "chemie/organik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-fotosynthese",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6C",
+          "type": "soft",
+          "rationale": "Die Lektion „Kohlenstoff als Grundbaustein“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "fotosynthese",
+          "topic_title": "Herkunft organischer Verbindungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Herkunft organischer Verbindungen im Überblick – grundlegende Reaktion Fotosynthese",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb4",
+          "topic_title": "Herkunft organischer Verbindungen im Überblick – grundlegende Reaktion Fotosynthese",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F8B",
+          "slug": "c10-fotosynthese-gleichung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-fotosynthese",
+          "question": "Welche Bruttogleichung beschreibt die Fotosynthese?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "6\\,\\mathrm{CO_2} + 6\\,\\mathrm{H_2O} \\rightarrow \\mathrm{C_6H_{12}O_6} + 6\\,\\mathrm{O_2}",
+              "speech": "sechs C O zwei plus sechs H zwei O reagiert zu C sechs H zwölf O sechs plus sechs O zwei"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "6 CO₂ + 6 H₂O → C₆H₁₂O₆ + 6 O₂",
+              "C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O",
+              "reason": "Das ist die Zellatmung, die Umkehrung der Fotosynthese."
+            },
+            {
+              "text": "6 CO₂ + 6 O₂ → C₆H₁₂O₆ + 6 H₂O",
+              "reason": "Sauerstoff ist Produkt, nicht Ausgangsstoff der Fotosynthese."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F8C",
+          "slug": "c10-fotosynthese-energie",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-fotosynthese",
+          "question": "In welche Energieform wandelt die Fotosynthese Lichtenergie um?",
+          "concept": "In chemische Energie, gespeichert in Glucose.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In chemische Energie, gespeichert in Glucose.",
+              "In elektrische Energie."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "In elektrische Energie.",
+              "reason": "Elektrische Energie liefern galvanische Zellen, nicht Blätter."
+            },
+            {
+              "text": "In Wärme, die sofort abgegeben wird.",
+              "reason": "Die Energie bleibt in der Biomasse gespeichert."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F8D",
+          "slug": "c10-fotosynthese-biomasse",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-fotosynthese",
+          "question": "Erläutere die Bedeutung der Fotosynthese für Lebewesen und für fossile und nichtfossile Energieträger.",
+          "concept": "Fotosynthese bildet Glucose, daraus Stärke, Cellulose, Fette und (mit N) Eiweiße als Bau- und Betriebsstoffe; Biomasse wie Holz, Stärke, Cellulose ist nichtfossiler Energieträger; aus früherer Biomasse entstanden Kohle, Erdöl, Erdgas.",
+          "materiality": "material",
+          "sample_solution": "Bei der Fotosynthese wird Lichtenergie in der Glucose als chemische Energie gespeichert. Pflanzen bauen daraus Stärke (Speicher), Cellulose (Gerüst), Fette und mit Stickstoffverbindungen Eiweiße auf. Diese Stoffe dienen allen Lebewesen über die Nahrungskette als Bau- und Betriebsstoffe. Holz, Stärke und Cellulose sind nichtfossile Energieträger. Aus Biomasse früherer Erdzeitalter entstanden unter Luftabschluss Kohle, Erdöl und Erdgas; auch ihre Energie stammt letztlich aus der Fotosynthese."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6E",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6E",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-energiegehalt",
+      "title": "Energiegehalt organischer Stoffe",
+      "domain": "chemie/organik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-energiegehalt",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6D",
+          "type": "soft",
+          "rationale": "Die Lektion „Fotosynthese“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "fotosynthese",
+          "topic_title": "Herkunft organischer Verbindungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Herkunft organischer Verbindungen im Überblick – grundlegende Reaktion Fotosynthese",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb4",
+          "topic_title": "Herkunft organischer Verbindungen im Überblick – grundlegende Reaktion Fotosynthese",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F8E",
+          "slug": "c10-energie-waerme",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-energiegehalt",
+          "question": "Mit welcher Formel berechnet man die vom Wasser aufgenommene Wärme?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "Q = c \\cdot m \\cdot \\Delta T",
+              "speech": "Q gleich c mal m mal Delta T"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Q = c · m · ΔT",
+              "Q = m·g·h"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Q = m·g·h",
+              "reason": "Das ist die Lageenergie aus der Physik, nicht die aufgenommene Wärme."
+            },
+            {
+              "text": "Q = ½·m·v²",
+              "reason": "Das ist die Bewegungsenergie, nicht die aufgenommene Wärme."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F8F",
+          "slug": "c10-energie-fett",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-energiegehalt",
+          "question": "Welcher Nährstoff liefert pro Gramm am meisten Energie?",
+          "concept": "Fett (rund 37 kJ/g)",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fett (rund 37 kJ/g)",
+              "Zucker (rund 17 kJ/g)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zucker (rund 17 kJ/g)",
+              "reason": "Kohlenhydrate liefern etwa halb so viel Energie wie Fette."
+            },
+            {
+              "text": "Eiweiß (rund 17 kJ/g)",
+              "reason": "Eiweiß liefert etwa so viel Energie wie Kohlenhydrate, halb so viel wie Fett."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F8G",
+          "slug": "c10-energie-versuch",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-energiegehalt",
+          "question": "Ein Erdnussstück von 1,0 g erwärmt beim Verbrennen 200 g Wasser um 15 K. Berechne den Energiegehalt und erkläre, warum er kleiner ist als der Tabellenwert von 25 kJ/g.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "Q = c \\cdot m \\cdot \\Delta T",
+              "speech": "Q gleich c mal m mal Delta T"
+            },
+            {
+              "type": "text",
+              "text": " = 4,19 J/(g·K) · 200 g · 15 K ≈ 12 570 J ≈ 12,6 kJ → 12,6 kJ/g; Wärmeverluste an Luft und Gefäß"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Q = c · m · ΔT = 4,19 J/(g·K) · 200 g · 15 K = 12 570 J ≈ 12,6 kJ. Bezogen auf 1,0 g Erdnuss ergibt das etwa 12,6 kJ/g. Der Wert ist kleiner als 25 kJ/g, weil im offenen Aufbau ein großer Teil der Wärme an die Luft und an das Gefäß abgegeben wird und die Erdnuss oft nicht vollständig verbrennt."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6F",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6F",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-rohstoffe",
+      "title": "Fossile und nachwachsende Rohstoffe",
+      "domain": "chemie/organik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-rohstoffe",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6D",
+          "type": "soft",
+          "rationale": "Die Lektion „Fotosynthese“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "fotosynthese",
+          "topic_title": "Herkunft organischer Verbindungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Herkunft organischer Verbindungen im Überblick – grundlegende Reaktion Fotosynthese",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb4",
+          "topic_title": "Herkunft organischer Verbindungen im Überblick – grundlegende Reaktion Fotosynthese",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F8H",
+          "slug": "c10-rohstoffe-fossil",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-rohstoffe",
+          "question": "Welche drei fossilen Energieträger nennt der Lehrplan?",
+          "concept": "Kohle, Erdöl und Erdgas",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kohle, Erdöl und Erdgas",
+              "Holz, Stärke und Cellulose"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Holz, Stärke und Cellulose",
+              "reason": "Das sind nachwachsende, nichtfossile Energieträger."
+            },
+            {
+              "text": "Wind, Sonne und Wasser",
+              "reason": "Das sind regenerative Energiequellen ohne Biomasse."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F8J",
+          "slug": "c10-rohstoffe-treibhaus",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-rohstoffe",
+          "question": "Warum verstärkt die Verbrennung fossiler Brennstoffe den Treibhauseffekt?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Sie setzt lange gebundenen Kohlenstoff zusätzlich als "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{CO_2}",
+              "speech": "C O zwei"
+            },
+            {
+              "type": "text",
+              "text": " frei."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie setzt lange gebundenen Kohlenstoff zusätzlich als CO₂ frei.",
+              "Sie verbraucht das CO₂ der Luft und kühlt dadurch die Erde ab."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie verbraucht das CO₂ der Luft und kühlt dadurch die Erde ab.",
+              "reason": "Bei Verbrennungen entsteht CO₂, es wird nicht verbraucht."
+            },
+            {
+              "text": "Sie setzt Sauerstoff frei, der in der Luft Wärme speichert.",
+              "reason": "Sauerstoff wird bei Verbrennungen verbraucht und ist kein bedeutendes Treibhausgas."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6G",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6G",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-addition",
+      "title": "Bromwasserprobe und Addition",
+      "domain": "chemie/organik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-addition",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "organik",
+          "topic_title": "Reaktionen organischer Moleküle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Grundlegende Reaktionen organischer Moleküle",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb5",
+          "topic_title": "Grundlegende Reaktionen organischer Moleküle",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F8K",
+          "slug": "c10-addition-bromwasser",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-addition",
+          "question": "Was zeigt die Entfärbung von Bromwasser durch einen Kohlenwasserstoff im Dunkeln?",
+          "concept": "Eine C=C-Doppelbindung.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine C=C-Doppelbindung.",
+              "Eine Hydroxygruppe."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Hydroxygruppe.",
+              "reason": "OH-Gruppen addieren kein Brom."
+            },
+            {
+              "text": "Ein gesättigtes Alkan.",
+              "reason": "Alkane reagieren im Dunkeln nicht mit Brom."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520RFV7QVQ465GAK0F8M",
+          "slug": "c10-addition-produkt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-addition",
+          "question": "Welches Produkt entsteht bei der Addition von Brom an Ethen?",
+          "concept": "1,2-Dibromethan",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1,2-Dibromethan",
+              "Bromethan und Bromwasserstoff"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Bromethan und Bromwasserstoff",
+              "reason": "Das wäre das Ergebnis einer Substitution an Ethan."
+            },
+            {
+              "text": "1,1-Dibromethen",
+              "reason": "Die Doppelbindung wird aufgelöst; je ein Bromatom bindet an jedes C-Atom."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB53S",
+          "slug": "c10-addition-mechanismus",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-addition",
+          "question": "Beschreibe den Mechanismus der Addition von Brom an Ethen (Zweig I) mit Strukturformeln in Worten.",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Polarisierung von "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Br_2}",
+              "speech": "B R zwei"
+            },
+            {
+              "type": "text",
+              "text": " durch die Doppelbindung (Brδ+–Brδ−); das positivierte Br bindet an ein C-Atom, es entstehen ein positiv geladenes Zwischenteilchen und "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Br^-}",
+              "speech": "B R minus"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Br^-}",
+              "speech": "B R minus"
+            },
+            {
+              "type": "text",
+              "text": " bindet an das positive C-Atom: 1,2-Dibromethan"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Das Brommolekül nähert sich der elektronenreichen C=C-Doppelbindung und wird polarisiert: Brδ+–Brδ−. Die Elektronen der Doppelbindung binden das positivierte Bromatom an ein C-Atom; die Br–Br-Bindung bricht, es entstehen ein Bromidion Br⁻ und ein positiv geladenes Zwischenteilchen (vereinfacht ein Carbokation). Im zweiten Schritt bindet das Bromidion an das positiv geladene C-Atom. Produkt ist CH₂Br–CH₂Br (1,2-Dibromethan); es entsteht kein Nebenprodukt."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6H",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6H",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-substitution",
+      "title": "Radikalische Substitution",
+      "domain": "chemie/organik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-substitution",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "organik",
+          "topic_title": "Reaktionen organischer Moleküle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Grundlegende Reaktionen organischer Moleküle",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB53T",
+          "slug": "c10-substitution-start",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-substitution",
+          "question": "Was geschieht bei der Startreaktion der radikalischen Substitution von Methan mit Brom?",
+          "concept": "Licht spaltet Brommoleküle in zwei Bromradikale.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Licht spaltet Brommoleküle in zwei Bromradikale.",
+              "Methan spaltet sich in Kohlenstoff und Wasserstoff."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Methan spaltet sich in Kohlenstoff und Wasserstoff.",
+              "reason": "Methan reagiert erst im Kettenschritt mit einem Radikal."
+            },
+            {
+              "text": "Brom addiert an die Doppelbindung des Methans.",
+              "reason": "Methan hat keine Doppelbindung."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB53V",
+          "slug": "c10-substitution-nebenprodukt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-substitution",
+          "question": "Welches Nebenprodukt entsteht bei der Bromierung von Methan im Licht?",
+          "concept": "Bromwasserstoff",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bromwasserstoff",
+              "Kohlenstoffdioxid"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kohlenstoffdioxid",
+              "reason": "Ohne Sauerstoff entsteht kein CO₂."
+            },
+            {
+              "text": "Brommethan",
+              "reason": "Brommethan ist das Hauptprodukt, nicht das Nebenprodukt."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB53W",
+          "slug": "c10-substitution-kette",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-substitution",
+          "question": "Formuliere die Radikal-Kettenreaktion von Methan mit Brom mit Start, zwei Kettenschritten und einer Abbruchreaktion.",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Start: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Br_2} \\rightarrow 2\\,\\mathrm{Br·}",
+              "speech": "B R zwei reagiert zu zwei Brom-Radikalen"
+            },
+            {
+              "type": "text",
+              "text": " (Licht); Kette: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Br·}",
+              "speech": "Brom-Radikal"
+            },
+            {
+              "type": "text",
+              "text": " + "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{CH_4} \\rightarrow \\mathrm{HBr} + \\mathrm{·CH_3}",
+              "speech": "C H vier reagiert zu H B R plus Methyl-Radikal"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{·CH_3} + \\mathrm{Br_2} \\rightarrow \\mathrm{CH_3Br} + \\mathrm{Br·}",
+              "speech": "Methyl-Radikal plus B R zwei reagiert zu C H drei B R plus Brom-Radikal"
+            },
+            {
+              "type": "text",
+              "text": "; Abbruch: z. B. "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Br·}",
+              "speech": "Brom-Radikal"
+            },
+            {
+              "type": "text",
+              "text": " + "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{·CH_3} \\rightarrow \\mathrm{CH_3Br}",
+              "speech": "Methyl-Radikal reagiert zu C H drei B R"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Start: Licht spaltet ein Brommolekül in zwei Bromradikale: Br₂ → 2 Br·. Kettenschritt 1: Ein Bromradikal entreißt Methan ein H-Atom: Br· + CH₄ → HBr + ·CH₃. Kettenschritt 2: Das Methylradikal reagiert mit einem Brommolekül: ·CH₃ + Br₂ → CH₃Br + Br·. Das neue Bromradikal setzt die Kette fort. Abbruch: Zwei Radikale verbinden sich, z. B. Br· + ·CH₃ → CH₃Br, Br· + Br· → Br₂ oder ·CH₃ + ·CH₃ → C₂H₆."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6J",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6J",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-oxidationszahlen-organisch",
+      "title": "Oxidationszahlen in organischen Molekülen",
+      "domain": "chemie/organik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-oxidationszahlen-organisch",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "organik",
+          "topic_title": "Reaktionen organischer Moleküle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Grundlegende Reaktionen organischer Moleküle",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb5",
+          "topic_title": "Grundlegende Reaktionen organischer Moleküle",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB53X",
+          "slug": "c10-oz-methanol",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-oxidationszahlen-organisch",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Oxidationszahl hat das C-Atom im Methanol "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{CH_3\\text{–}OH}",
+              "speech": "C H drei, O H"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "−II",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "−II",
+              "+IV"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "+IV",
+              "reason": "+IV hat Kohlenstoff im CO₂ mit vier Bindungen zu O."
+            },
+            {
+              "text": "0",
+              "reason": "0 hat das C-Atom im Methanal mit zwei H und einer Doppelbindung zu O."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB53Y",
+          "slug": "c10-oz-regel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-oxidationszahlen-organisch",
+          "question": "Wie zählt eine Bindung zwischen zwei C-Atomen bei der Bestimmung der Oxidationszahl?",
+          "concept": "Gar nicht: Sie zählt 0.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gar nicht: Sie zählt 0.",
+              "Wie eine Bindung zu O: +1."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wie eine Bindung zu O: +1.",
+              "reason": "Nur der elektronegativere Partner erhält die Elektronen; bei gleichen Atomen keiner."
+            },
+            {
+              "text": "Wie ein H-Atom: −1.",
+              "reason": "C–C-Bindungen verschieben keine Elektronen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6K",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6K",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-alkanole-oxidation",
+      "title": "Vom Alkanol zur Alkansäure",
+      "domain": "chemie/organik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-alkanole-oxidation",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6J",
+          "type": "soft",
+          "rationale": "Die Lektion „Oxidationszahlen in organischen Molekülen“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "organik",
+          "topic_title": "Reaktionen organischer Moleküle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Grundlegende Reaktionen organischer Moleküle",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb5",
+          "topic_title": "Grundlegende Reaktionen organischer Moleküle",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB53Z",
+          "slug": "c10-alkanole-ethanal",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-alkanole-oxidation",
+          "question": "Welcher Stoff entsteht bei der ersten Oxidation von Ethanol?",
+          "concept": "Ethanal",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ethanal",
+              "Ethansäure"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ethansäure",
+              "reason": "Ethansäure entsteht erst bei der zweiten Oxidation."
+            },
+            {
+              "text": "Ethen",
+              "reason": "Ethen entsteht durch Wasserabspaltung, nicht durch Oxidation."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB540",
+          "slug": "c10-alkanole-gruppen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-alkanole-oxidation",
+          "question": "Welche funktionellen Gruppen durchläuft ein primäres Alkanol bei vollständiger Oxidation?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{–}\\mathrm{OH} \\rightarrow \\text{–}\\mathrm{CHO} \\rightarrow \\text{–}\\mathrm{COOH}",
+              "speech": "O H-Gruppe wird zu C H O-Gruppe, dann zu C O O H-Gruppe"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "–OH → –CHO → –COOH",
+              "–COOH → –CHO → –OH"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "–COOH → –CHO → –OH",
+              "reason": "Das ist die Richtung einer Reduktion."
+            },
+            {
+              "text": "–OH → –CO– → –COOH",
+              "reason": "Die Ketogruppe entsteht aus sekundären Alkanolen."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB541",
+          "slug": "c10-alkanole-redox",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-alkanole-oxidation",
+          "question": "Erkläre die Reaktion von Ethanol mit heißem Kupfer(II)-oxid als Redoxreaktion mithilfe von Oxidationszahlen.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{CH_3\\text{–}CH_2\\text{–}OH} + \\mathrm{CuO} \\rightarrow \\mathrm{CH_3\\text{–}CHO} + \\mathrm{Cu} + \\mathrm{H_2O}",
+              "speech": "C H drei, C H zwei, O H plus C U O reagiert zu C H drei, C H O plus C U plus H zwei O"
+            },
+            {
+              "type": "text",
+              "text": "; C1: −I → +I (Oxidation); Cu: +II → 0 (Reduktion); CuO ist Oxidationsmittel"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Das schwarze Kupfer(II)-oxid wird zu rotem Kupfer, Ethanol wird zu Ethanal: CH₃–CH₂–OH + CuO → CH₃–CHO + Cu + H₂O. Die Oxidationszahl des C1-Atoms steigt von −I (zwei H, eine Bindung zu O) auf +I (ein H, Doppelbindung zu O): Oxidation. Die Oxidationszahl des Kupfers sinkt von +II auf 0: Reduktion. Kupfer(II)-oxid ist das Oxidationsmittel, Ethanol das Reduktionsmittel."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6M",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6M",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-alkanone",
+      "title": "Sekundäre Alkanole und Alkanone",
+      "domain": "chemie/organik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-alkanone",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6K",
+          "type": "soft",
+          "rationale": "Die Lektion „Vom Alkanol zur Alkansäure“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "organik",
+          "topic_title": "Reaktionen organischer Moleküle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Grundlegende Reaktionen organischer Moleküle",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB542",
+          "slug": "c10-alkanone-propanon",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-alkanone",
+          "question": "Welches Produkt entsteht bei der Oxidation von Propan-2-ol?",
+          "concept": "Propanon",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Propanon",
+              "Propanal"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Propanal",
+              "reason": "Propanal entsteht aus dem primären Propan-1-ol."
+            },
+            {
+              "text": "Propansäure",
+              "reason": "Ein sekundäres Alkanol liefert keine Alkansäure."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB543",
+          "slug": "c10-alkanone-weiter",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-alkanone",
+          "question": "Warum wird ein Alkanon unter Schulbedingungen nicht weiter oxidiert?",
+          "concept": "Am C-Atom der Ketogruppe sitzt kein H-Atom mehr.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Am C-Atom der Ketogruppe sitzt kein H-Atom mehr.",
+              "Weil Alkanone keinen Sauerstoff enthalten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Weil Alkanone keinen Sauerstoff enthalten.",
+              "reason": "Alkanone haben die C=O-Gruppe."
+            },
+            {
+              "text": "Weil Alkanone Salze sind.",
+              "reason": "Alkanone sind Moleküle."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6N",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6N",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-estersynthese",
+      "title": "Estersynthese",
+      "domain": "chemie/organik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-estersynthese",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "organik",
+          "topic_title": "Reaktionen organischer Moleküle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Grundlegende Reaktionen organischer Moleküle",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb5",
+          "topic_title": "Grundlegende Reaktionen organischer Moleküle",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB544",
+          "slug": "c10-ester-produkte",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-estersynthese",
+          "question": "Welche Produkte entstehen bei der Veresterung einer Alkansäure mit einem Alkanol?",
+          "concept": "Ein Ester und Wasser.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Ester und Wasser.",
+              "Ein Alkan und Kohlenstoffdioxid."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Alkan und Kohlenstoffdioxid.",
+              "reason": "Bei der Veresterung bleibt das Kohlenstoffgerüst erhalten; CO₂ entsteht nicht."
+            },
+            {
+              "text": "Ein Salz und Wasser.",
+              "reason": "Salz und Wasser entstehen bei der Neutralisation."
+            }
+          ],
+          "replaces": [
+            "01K4H0C0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB545",
+          "slug": "c10-ester-name",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-estersynthese",
+          "question": "Wie heißt der Ester aus Ethansäure und Methanol?",
+          "concept": "Ethansäuremethylester",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ethansäuremethylester",
+              "Methansäureethylester"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Methansäureethylester",
+              "reason": "Der Säureteil steht vorne, der Alkylrest des Alkanols dahinter."
+            },
+            {
+              "text": "Ethanolmethansäure",
+              "reason": "Ester werden aus Säure, Alkylrest und ‚ester‘ benannt."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB546",
+          "slug": "c10-ester-gleichung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-estersynthese",
+          "question": "Formuliere die Estersynthese aus Ethansäure und Ethanol mit Halbstrukturformeln, nenne den Reaktionstyp und erkläre den Doppelpfeil.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{CH_3\\text{–}COOH} + \\mathrm{HO\\text{–}CH_2\\text{–}CH_3} \\rightleftharpoons \\mathrm{CH_3\\text{–}COO\\text{–}CH_2\\text{–}CH_3} + \\mathrm{H_2O}",
+              "speech": "C H drei, C O O H plus H O, C H zwei, C H drei im Gleichgewicht mit C H drei, C O O, C H zwei, C H drei plus H zwei O"
+            },
+            {
+              "type": "text",
+              "text": "; Kondensation; umkehrbar (Esterspaltung)"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Ethansäure und Ethanol reagieren mit konzentrierter Schwefelsäure als Katalysator: CH₃–COOH + HO–CH₂–CH₃ ⇌ CH₃–COO–CH₂–CH₃ + H₂O. Es entsteht Ethansäureethylester. Weil sich zwei Moleküle unter Abspaltung von Wasser verbinden, ist es eine Kondensation. Der Doppelpfeil zeigt, dass die Reaktion umkehrbar ist: Wasser kann den Ester wieder in Säure und Alkohol spalten."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6P",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6P",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-ester-eigenschaften",
+      "title": "Eigenschaften der Ester",
+      "domain": "chemie/organik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-ester-eigenschaften",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6N",
+          "type": "soft",
+          "rationale": "Die Lektion „Estersynthese“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "organik",
+          "topic_title": "Reaktionen organischer Moleküle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Grundlegende Reaktionen organischer Moleküle",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb5",
+          "topic_title": "Grundlegende Reaktionen organischer Moleküle",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB547",
+          "slug": "c10-ester-sieden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-ester-eigenschaften",
+          "question": "Warum siedet ein Ester tiefer als eine Alkansäure gleicher Molekülmasse?",
+          "concept": "Zwischen Estermolekülen gibt es keine H-Brücken.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwischen Estermolekülen gibt es keine H-Brücken.",
+              "Estermoleküle sind deutlich schwerer als Säuremoleküle."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Estermoleküle sind deutlich schwerer als Säuremoleküle.",
+              "reason": "Bei gleicher Molekülmasse entscheiden die zwischenmolekularen Kräfte."
+            },
+            {
+              "text": "Ester bestehen aus Ionen statt aus Molekülen.",
+              "reason": "Ionenverbindungen hätten sehr hohe Siedetemperaturen."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB548",
+          "slug": "c10-ester-geruch",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-ester-eigenschaften",
+          "question": "Wonach riecht Butansäureethylester?",
+          "concept": "Nach Ananas",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nach Ananas",
+              "Nach faulen Eiern"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nach faulen Eiern",
+              "reason": "Faulig riechen Schwefelverbindungen wie Schwefelwasserstoff."
+            },
+            {
+              "text": "Nach Chlor",
+              "reason": "Ester sind Fruchtaromen, keine Halogene."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6Q",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6Q",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-aminosaeuren",
+      "title": "Aminosäuren",
+      "domain": "chemie/biomolekuele",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-aminosaeuren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "biomolekuele",
+          "topic_title": "Biomoleküle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Biomoleküle",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Wahlbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB549",
+          "slug": "c10-aminosaeure-gruppen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-aminosaeuren",
+          "question": "Welche funktionellen Gruppen hat jede Aminosäure?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Eine Aminogruppe –"
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{NH_2}",
+              "speech": "N H zwei"
+            },
+            {
+              "type": "text",
+              "text": " und eine Carboxygruppe –COOH."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Aminogruppe –NH₂ und eine Carboxygruppe –COOH.",
+              "Eine Hydroxygruppe und eine Aldehydgruppe."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Hydroxygruppe und eine Aldehydgruppe.",
+              "reason": "Das sind Gruppen der Zucker."
+            },
+            {
+              "text": "Eine Estergruppe und eine Doppelbindung C=C.",
+              "reason": "Estergruppen haben Fette; Aminosäuren tragen Amino- und Carboxygruppe."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54A",
+          "slug": "c10-aminosaeure-nachweis",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-aminosaeuren",
+          "question": "Wie zeigt man den Stickstoff der Aminogruppe in Glycin?",
+          "concept": "Trocken erhitzen: angefeuchtetes Indikatorpapier wird blau.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Trocken erhitzen: angefeuchtetes Indikatorpapier wird blau.",
+              "Mit Bromwasser schütteln: die Lösung wird entfärbt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mit Bromwasser schütteln: die Lösung wird entfärbt.",
+              "reason": "Bromwasser zeigt Doppelbindungen, keinen Stickstoff."
+            },
+            {
+              "text": "Glycin verbrennen: das Abgas trübt Kalkwasser.",
+              "reason": "Kalkwasser zeigt CO₂ aus Kohlenstoff, nicht Stickstoff."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6R",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6R",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-peptide",
+      "title": "Peptidbindung und Primärstruktur",
+      "domain": "chemie/biomolekuele",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-peptide",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6Q",
+          "type": "soft",
+          "rationale": "Die Lektion „Aminosäuren“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "biomolekuele",
+          "topic_title": "Biomoleküle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Biomoleküle",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Wahlbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54B",
+          "slug": "c10-peptid-bindung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-peptide",
+          "question": "Wie heißt die Bindung zwischen zwei Aminosäuren in einem Protein?",
+          "concept": "Peptidbindung –CO–NH–",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Peptidbindung –CO–NH–",
+              "Esterbindung –COO–"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Esterbindung –COO–",
+              "reason": "Esterbindungen verknüpfen Säuren mit Alkoholen."
+            },
+            {
+              "text": "Wasserstoffbrücke",
+              "reason": "Wasserstoffbrücken falten die Kette, sie verknüpfen nicht die Bausteine."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54C",
+          "slug": "c10-peptid-primaer",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-peptide",
+          "question": "Was versteht man unter der Primärstruktur eines Proteins?",
+          "concept": "Die Reihenfolge der Aminosäuren.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Reihenfolge der Aminosäuren.",
+              "Die Faltung der Kette zur α-Helix."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Faltung der Kette zur α-Helix.",
+              "reason": "Helix und Faltblatt sind Sekundärstruktur."
+            },
+            {
+              "text": "Die Zahl der Peptidbindungen.",
+              "reason": "Die Primärstruktur beschreibt die Sequenz, nicht nur die Kettenlänge."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54D",
+          "slug": "c10-peptid-bildung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-peptide",
+          "question": "Beschreibe die Bildung eines Tripeptids aus drei Aminosäuren und gib an, wie viele Peptidbindungen und Wassermoleküle entstehen. Nenne einen Nachweis für Proteine.",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Kondensation: COOH der einen + "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{NH_2}",
+              "speech": "N H zwei"
+            },
+            {
+              "type": "text",
+              "text": " der nächsten → "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{–}\\mathrm{CO}\\text{–}\\mathrm{NH}\\text{–}",
+              "speech": "C O, N H"
+            },
+            {
+              "type": "text",
+              "text": " + "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{H_2O}",
+              "speech": "H zwei O"
+            },
+            {
+              "type": "text",
+              "text": "; Tripeptid: 2 Peptidbindungen, 2 "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{H_2O}",
+              "speech": "H zwei O"
+            },
+            {
+              "type": "text",
+              "text": "; Biuret-Probe violett"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Die Carboxygruppe der ersten Aminosäure reagiert mit der Aminogruppe der zweiten unter Abspaltung eines Wassermoleküls; es entsteht eine Peptidbindung –CO–NH–. Die freie Carboxygruppe des Dipeptids reagiert ebenso mit einer dritten Aminosäure. Ein Tripeptid hat also zwei Peptidbindungen, zwei Wassermoleküle wurden abgespalten. Proteine weist man mit der Biuret-Probe nach: Mit Natronlauge und wenig Kupfer(II)-sulfat-Lösung färbt sich die Lösung violett (ab zwei Peptidbindungen)."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6S",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6S",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-proteinstruktur",
+      "title": "Sekundärstruktur und Denaturierung",
+      "domain": "chemie/biomolekuele",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-proteinstruktur",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6R",
+          "type": "soft",
+          "rationale": "Die Lektion „Peptidbindung und Primärstruktur“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "biomolekuele",
+          "topic_title": "Biomoleküle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Biomoleküle",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Wahlbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54E",
+          "slug": "c10-protein-sekundaer",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-proteinstruktur",
+          "question": "Welche Wechselwirkung stabilisiert α-Helix und β-Faltblatt?",
+          "concept": "Wasserstoffbrücken zwischen den Peptidbindungen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wasserstoffbrücken zwischen den Peptidbindungen.",
+              "Ionenbindungen zwischen Metallionen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ionenbindungen zwischen Metallionen.",
+              "reason": "Die Sekundärstruktur entsteht aus der Peptidkette selbst."
+            },
+            {
+              "text": "Kovalente Bindungen zwischen den Windungen.",
+              "reason": "Kovalent verknüpft sind die Aminosäuren in der Kette, nicht die Windungen."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54F",
+          "slug": "c10-protein-denaturierung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-proteinstruktur",
+          "question": "Was bleibt bei der Denaturierung eines Proteins erhalten?",
+          "concept": "Die Reihenfolge der Aminosäuren.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Reihenfolge der Aminosäuren.",
+              "Die α-Helix und das β-Faltblatt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die α-Helix und das β-Faltblatt.",
+              "reason": "Die Sekundärstruktur geht bei der Denaturierung verloren."
+            },
+            {
+              "text": "Die biologische Funktion des Proteins.",
+              "reason": "Ohne Raumstruktur verlieren Proteine meist ihre Funktion."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6T",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6T",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-glucose-fructose",
+      "title": "Glucose und Fructose",
+      "domain": "chemie/biomolekuele",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-glucose-fructose",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "biomolekuele",
+          "topic_title": "Biomoleküle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Biomoleküle",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Wahlbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54G",
+          "slug": "c10-zucker-seliwanow",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-glucose-fructose",
+          "question": "Welcher Zucker färbt sich bei der Seliwanow-Reaktion schnell rot?",
+          "concept": "Fructose",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fructose",
+              "Glucose"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Glucose",
+              "reason": "Glucose reagiert in derselben Zeit nicht."
+            },
+            {
+              "text": "Stärke",
+              "reason": "Stärke weist man mit Iod-Kaliumiodid nach."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54H",
+          "slug": "c10-zucker-ring",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-glucose-fructose",
+          "question": "Welcher Ring kennzeichnet Glucose in der Haworth-Projektion?",
+          "concept": "Ein Sechsring aus fünf C-Atomen und einem O-Atom.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Sechsring aus fünf C-Atomen und einem O-Atom.",
+              "Ein Fünfring aus vier C-Atomen und einem O-Atom."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Fünfring aus vier C-Atomen und einem O-Atom.",
+              "reason": "Den Fünfring bildet Fructose."
+            },
+            {
+              "text": "Ein Sechsring nur aus C-Atomen.",
+              "reason": "Der Ring-Sauerstoff gehört zum Ring."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6V",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6V",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-saccharose-polysaccharide",
+      "title": "Saccharose, Stärke und Cellulose",
+      "domain": "chemie/biomolekuele",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-saccharose-polysaccharide",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6T",
+          "type": "soft",
+          "rationale": "Die Lektion „Glucose und Fructose“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "biomolekuele",
+          "topic_title": "Biomoleküle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Biomoleküle",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Wahlbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54J",
+          "slug": "c10-saccharose-bausteine",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-saccharose-polysaccharide",
+          "question": "Aus welchen Bausteinen besteht Saccharose?",
+          "concept": "Aus Glucose und Fructose.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aus Glucose und Fructose.",
+              "Aus zwei Glucosebausteinen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Aus zwei Glucosebausteinen.",
+              "reason": "Zwei Glucosebausteine bilden andere Disaccharide wie Maltose."
+            },
+            {
+              "text": "Aus Glycerin und Fettsäuren.",
+              "reason": "Das sind die Bausteine der Fette."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54K",
+          "slug": "c10-staerke-nachweis",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-saccharose-polysaccharide",
+          "question": "Wie weist man Amylose (Stärke) nach?",
+          "concept": "Iod-Kaliumiodid färbt sich blau-violett.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Iod-Kaliumiodid färbt sich blau-violett.",
+              "Bromwasser wird beim Schütteln entfärbt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Bromwasser wird beim Schütteln entfärbt.",
+              "reason": "Bromwasser zeigt C=C-Doppelbindungen."
+            },
+            {
+              "text": "Die Biuret-Probe färbt sich violett.",
+              "reason": "Die Biuret-Probe zeigt Proteine."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54M",
+          "slug": "c10-polysaccharide-vergleich",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-saccharose-polysaccharide",
+          "question": "Vergleiche Amylose und Cellulose in Bau, Nachweis und biologischer Bedeutung.",
+          "concept": "Beide aus Glucose durch Polykondensation; Amylose: schraubenförmige Kette, Iod-Kaliumiodid blau-violett, Energiespeicher; Cellulose: gestreckte, über H-Brücken gebündelte Ketten, Chlorzinkiod blau-violett, Gerüst- und Ballaststoff",
+          "materiality": "material",
+          "sample_solution": "Amylose und Cellulose entstehen beide durch Polykondensation vieler Glucosemoleküle; die Bausteine sind verschieden verknüpft. Amylose bildet eine schraubenförmige Kette, in die sich Iod einlagert: Iod-Kaliumiodid-Lösung färbt sich blau-violett. Sie ist Teil der Stärke, des Energiespeichers der Pflanze, und für uns Nahrung. Cellulose bildet gestreckte Ketten, die über Wasserstoffbrücken zu reißfesten Fasern gebündelt sind; Chlorzinkiod-Lösung färbt sie blau-violett. Sie ist Gerüststoff der Zellwand und für den Menschen unverdaulicher Ballaststoff."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6W",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6W",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-glycerin",
+      "title": "Glycerin",
+      "domain": "chemie/biomolekuele",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-glycerin",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "biomolekuele",
+          "topic_title": "Biomoleküle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Biomoleküle",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Wahlbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54N",
+          "slug": "c10-glycerin-oh",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-glycerin",
+          "question": "Wie viele Hydroxygruppen hat ein Glycerinmolekül?",
+          "concept": "Drei",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Drei",
+              "Eine"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine",
+              "reason": "Ein Alkohol mit nur einer OH-Gruppe wäre z. B. Propan-1-ol."
+            },
+            {
+              "text": "Sechs",
+              "reason": "Glycerin hat drei C-Atome mit je einer OH-Gruppe."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54P",
+          "slug": "c10-glycerin-viskos",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-glycerin",
+          "question": "Warum ist Glycerin zähflüssig und siedet hoch?",
+          "concept": "Drei OH-Gruppen bilden viele Wasserstoffbrücken.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Drei OH-Gruppen bilden viele Wasserstoffbrücken.",
+              "Glycerin ist ein Salz mit festem Ionengitter."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Glycerin ist ein Salz mit festem Ionengitter.",
+              "reason": "Glycerin besteht aus Molekülen, nicht aus Ionen."
+            },
+            {
+              "text": "Glycerin hat eine sehr große Molekülmasse.",
+              "reason": "Mit 92 u ist das Molekül klein; entscheidend sind die H-Brücken."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6X",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6X",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-fette",
+      "title": "Fette und fette Öle",
+      "domain": "chemie/biomolekuele",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-fette",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6W",
+          "type": "soft",
+          "rationale": "Die Lektion „Glycerin“ bildet die Grundlage."
+        },
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6N",
+          "type": "soft",
+          "rationale": "Die Lektion „Estersynthese“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "biomolekuele",
+          "topic_title": "Biomoleküle"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Biomoleküle",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Wahlbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54Q",
+          "slug": "c10-fette-bau",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-fette",
+          "question": "Wie ist ein Fettmolekül aufgebaut?",
+          "concept": "Als Ester aus Glycerin und drei Fettsäuren.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als Ester aus Glycerin und drei Fettsäuren.",
+              "Als Polymer aus vielen Glucosebausteinen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Als Polymer aus vielen Glucosebausteinen.",
+              "reason": "Das beschreibt Stärke oder Cellulose."
+            },
+            {
+              "text": "Als Kette aus Aminosäuren.",
+              "reason": "Das beschreibt Proteine."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54R",
+          "slug": "c10-fette-oel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-fette",
+          "question": "Warum sind fette Öle bei Raumtemperatur flüssig?",
+          "concept": "Geknickte ungesättigte Ketten lagern sich lockerer.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Geknickte ungesättigte Ketten lagern sich lockerer.",
+              "Sie enthalten Wasser zwischen den Molekülen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie enthalten Wasser zwischen den Molekülen.",
+              "reason": "Öle sind unpolar und nehmen kaum Wasser auf."
+            },
+            {
+              "text": "Ihre Moleküle sind viel kleiner als die fester Fette.",
+              "reason": "Fette und Öle haben ähnlich große Moleküle; die Form der Ketten entscheidet."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54S",
+          "slug": "c10-fette-eigenschaften",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-fette",
+          "question": "Erkläre mit dem Bau der Fettmoleküle, warum Fette sich nicht in Wasser lösen, brennbar sind und warum manche fest, andere flüssig sind. Wie unterscheidet man sie im Versuch?",
+          "concept": "Trifettsäureglycerinester mit langen unpolaren Ketten: unlöslich in Wasser, löslich in Heptan, brennbar (energiereich); gesättigte Reste → dicht gepackt, fest; mehrere ungesättigte Reste (C=C, Knick) → locker, flüssig; Bromwasserprobe",
+          "materiality": "material",
+          "sample_solution": "Ein Fettmolekül ist ein Ester aus Glycerin und drei Fettsäuren. Die langen Kohlenwasserstoffketten sind unpolar; deshalb löst sich Fett nicht in Wasser, aber in unpolaren Lösungsmitteln wie Heptan. Die vielen C–H- und C–C-Bindungen machen Fette energiereich und brennbar. Gesättigte Fettsäurereste sind gestreckt und lagern sich dicht aneinander: starke Van-der-Waals-Kräfte, das Fett ist fest. Ungesättigte Reste haben C=C-Doppelbindungen mit Knick; sie lagern sich lockerer, das Öl ist flüssig. Ungesättigte Fette entfärben Bromwasser, gesättigte nicht."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6Y",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6Y",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-polymerisation",
+      "title": "Radikalische Polymerisation",
+      "domain": "chemie/werkstoffe",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-polymerisation",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6G",
+          "type": "soft",
+          "rationale": "Die Lektion „Bromwasserprobe und Addition“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "werkstoffe",
+          "topic_title": "Kunststoffe und Silikone"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb6",
+          "topic_title": "Moderne Werkstoffe – Kunststoffe und Silikone",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Wahlbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54T",
+          "slug": "c10-polymerisation-monomer",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-polymerisation",
+          "question": "Welche Voraussetzung muss ein Monomer für die Polymerisation erfüllen?",
+          "concept": "Es braucht eine C=C-Doppelbindung.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es braucht eine C=C-Doppelbindung.",
+              "Es braucht zwei Carboxygruppen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Es braucht zwei Carboxygruppen.",
+              "reason": "Zwei funktionelle Gruppen braucht die Polykondensation."
+            },
+            {
+              "text": "Es muss ein Salz sein.",
+              "reason": "Kunststoffmonomere sind Moleküle."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54V",
+          "slug": "c10-polymerisation-pvc",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-polymerisation",
+          "question": "Aus welchem Monomer entsteht PVC?",
+          "concept": "Chlorethen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Chlorethen",
+              "Tetrafluorethen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Tetrafluorethen",
+              "reason": "Aus Tetrafluorethen entsteht PTFE (Teflon)."
+            },
+            {
+              "text": "Phenylethen",
+              "reason": "Aus Phenylethen (Styrol) entsteht Polystyrol."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54W",
+          "slug": "c10-polymerisation-mechanismus",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-polymerisation",
+          "question": "Beschreibe die radikalische Polymerisation von Ethen mit Start, Kettenwachstum und Abbruch und gib die Wiederholungseinheit an.",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Start: Starter zerfällt in Radikale R·; R· öffnet C=C: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{R\\text{–}CH_2\\text{–}CH_2·}",
+              "speech": "R, C H zwei, C H zwei Radikal"
+            },
+            {
+              "type": "text",
+              "text": "; Wachstum: Radikal addiert weitere Ethenmoleküle; Abbruch: zwei Radikale verbinden sich; "
+            },
+            {
+              "type": "math",
+              "tex": "[\\text{–}\\mathrm{CH_2}\\text{–}\\mathrm{CH_2}\\text{–}]_n",
+              "speech": "C H zwei, C H zwei, n-mal wiederholt"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Start: Ein Starter zerfällt in Radikale R·. Ein Radikal öffnet die Doppelbindung eines Ethenmoleküls und bindet an ein C-Atom: R–CH₂–CH₂·. Kettenwachstum: Das Radikal am Kettenende öffnet die Doppelbindung des nächsten Ethenmoleküls; die Kette wird jeweils um zwei C-Atome länger, das Radikal wandert ans Ende. Abbruch: Zwei Radikalenden verbinden sich. Die Wiederholungseinheit des Polyethens ist [–CH₂–CH₂–]ₙ; es entsteht kein Nebenprodukt."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F6Z",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F6Z",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-polykondensation",
+      "title": "Polykondensation",
+      "domain": "chemie/werkstoffe",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-polykondensation",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6N",
+          "type": "soft",
+          "rationale": "Die Lektion „Estersynthese“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "werkstoffe",
+          "topic_title": "Kunststoffe und Silikone"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb6",
+          "topic_title": "Moderne Werkstoffe – Kunststoffe und Silikone",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Wahlbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54X",
+          "slug": "c10-polykondensation-gruppen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-polykondensation",
+          "question": "Wie viele funktionelle Gruppen braucht ein Monomer für die Polykondensation mindestens?",
+          "concept": "Zwei funktionelle Gruppen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwei funktionelle Gruppen.",
+              "Eine funktionelle Gruppe."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine funktionelle Gruppe.",
+              "reason": "Mit nur einer Gruppe endet die Kette nach der ersten Verknüpfung."
+            },
+            {
+              "text": "Eine C=C-Doppelbindung.",
+              "reason": "Doppelbindungen braucht die Polymerisation."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54Y",
+          "slug": "c10-polykondensation-polyester",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-polykondensation",
+          "question": "Welche Monomere bilden einen Polyester?",
+          "concept": "Ein Diol und eine Dicarbonsäure.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Diol und eine Dicarbonsäure.",
+              "Ein Diamin und eine Dicarbonsäure."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Diamin und eine Dicarbonsäure.",
+              "reason": "Diamin und Dicarbonsäure bilden ein Polyamid."
+            },
+            {
+              "text": "Viele Ethenmoleküle.",
+              "reason": "Ethen polymerisiert zu Polyethen, ohne Esterbindungen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F70",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F70",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-kunststoffklassen",
+      "title": "Thermoplaste, Duroplaste, Elastomere",
+      "domain": "chemie/werkstoffe",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-kunststoffklassen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6Y",
+          "type": "soft",
+          "rationale": "Die Lektion „Radikalische Polymerisation“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "werkstoffe",
+          "topic_title": "Kunststoffe und Silikone"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb6",
+          "topic_title": "Moderne Werkstoffe – Kunststoffe und Silikone",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Wahlbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB54Z",
+          "slug": "c10-klassen-thermoplast",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-kunststoffklassen",
+          "question": "Wie sind die Ketten eines Thermoplasten gebaut?",
+          "concept": "Unvernetzte Ketten.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Unvernetzte Ketten.",
+              "Engmaschig vernetzt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Engmaschig vernetzt.",
+              "reason": "Engmaschig vernetzt sind Duroplaste."
+            },
+            {
+              "text": "Weitmaschig vernetzt.",
+              "reason": "Weitmaschig vernetzt sind Elastomere."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB550",
+          "slug": "c10-klassen-duroplast",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-kunststoffklassen",
+          "question": "Warum erweicht ein Duroplast beim Erhitzen nicht?",
+          "concept": "Seine Ketten sind engmaschig vernetzt.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Seine Ketten sind engmaschig vernetzt.",
+              "Er enthält gar keine Polymerketten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er enthält gar keine Polymerketten.",
+              "reason": "Auch Duroplaste bestehen aus Riesenmolekülen."
+            },
+            {
+              "text": "Seine Ketten haften nur schwach aneinander.",
+              "reason": "Das trifft auf Thermoplaste zu, die deshalb erweichen."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB551",
+          "slug": "c10-klassen-vergleich",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-kunststoffklassen",
+          "question": "Erkläre den Zusammenhang zwischen Vernetzung und Wärmeverhalten bei Thermoplasten, Elastomeren und Duroplasten und nenne je ein Beispiel.",
+          "concept": "Thermoplast: unvernetzt, erweicht beim Erwärmen, formbar, schweiß- und recycelbar (PE, PET); Elastomer: weitmaschig vernetzt, elastisch, schmilzt nicht (Gummi); Duroplast: engmaschig vernetzt, hart, erweicht nicht, zersetzt sich bei starker Hitze (Steckdose)",
+          "materiality": "material",
+          "sample_solution": "Thermoplaste bestehen aus unvernetzten Ketten, die nur durch zwischenmolekulare Kräfte zusammenhalten. Beim Erwärmen werden diese überwunden; der Kunststoff wird weich und formbar und lässt sich einschmelzen (z. B. PE, PET). Elastomere sind weitmaschig vernetzt: Die Ketten lassen sich strecken, die Vernetzungsstellen ziehen sie zurück; sie schmelzen nicht (z. B. Gummi). Duroplaste sind engmaschig vernetzt; sie sind hart, erweichen beim Erhitzen nicht und zersetzen sich bei starker Hitze (z. B. Steckdosengehäuse)."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F71",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F71",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-silikone",
+      "title": "Silikone",
+      "domain": "chemie/werkstoffe",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-silikone",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F70",
+          "type": "soft",
+          "rationale": "Die Lektion „Thermoplaste, Duroplaste, Elastomere“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "werkstoffe",
+          "topic_title": "Kunststoffe und Silikone"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb6",
+          "topic_title": "Moderne Werkstoffe – Kunststoffe und Silikone",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB552",
+          "slug": "c10-silikone-geruest",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-silikone",
+          "question": "Welches Gerüst haben Silikone?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Abwechselnd Si- und O-Atome mit "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{CH_3}",
+              "speech": "C H drei"
+            },
+            {
+              "type": "text",
+              "text": "-Gruppen."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Abwechselnd Si- und O-Atome mit CH₃-Gruppen.",
+              "Eine Kette nur aus Kohlenstoffatomen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Kette nur aus Kohlenstoffatomen.",
+              "reason": "Kohlenstoffketten haben die organischen Kunststoffe wie PE."
+            },
+            {
+              "text": "Ein Ionengitter aus Si⁴⁺- und O²⁻-Ionen.",
+              "reason": "Das wäre eher ein Salz; Silikone sind Polymere aus Molekülketten."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB553",
+          "slug": "c10-silikone-vernetzer",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-silikone",
+          "question": "Welcher Baustein vernetzt bei der Silikonherstellung die Ketten?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{CH_3SiCl_3}",
+              "speech": "C H drei S I C L drei"
+            },
+            {
+              "type": "text",
+              "text": " mit drei Cl-Atomen."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "CH₃SiCl₃ mit drei Cl-Atomen.",
+              "(CH₃)₃SiCl mit einem Cl-Atom."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "(CH₃)₃SiCl mit einem Cl-Atom.",
+              "reason": "Er bildet nur ein Kettenende."
+            },
+            {
+              "text": "(CH₃)₂SiCl₂ mit zwei Cl-Atomen.",
+              "reason": "Er bildet Kettenglieder ohne Verzweigung."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB554",
+          "slug": "c10-silikone-einteilung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-silikone",
+          "question": "Beschreibe die Herstellung von Silikonen aus Chlormethylsilanen und erkläre die Einteilung in Silikonöle, -elastomere und -harze sowie die Sonderstellung der Silikonöle.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{Si\\text{–}Cl} + \\mathrm{H_2O} \\rightarrow \\mathrm{Si\\text{–}OH} + \\mathrm{HCl}",
+              "speech": "S I, C L plus H zwei O reagiert zu S I, O H plus H C L"
+            },
+            {
+              "type": "text",
+              "text": "; "
+            },
+            {
+              "type": "math",
+              "tex": "2\\,\\mathrm{Si\\text{–}OH} \\rightarrow \\mathrm{Si\\text{–}O\\text{–}Si} + \\mathrm{H_2O}",
+              "speech": "zwei S I, O H reagiert zu S I, O, S I plus H zwei O"
+            },
+            {
+              "type": "text",
+              "text": "; Öl: unvernetzte Ketten (flüssig); Elastomer: weitmaschig vernetzt; Harz: engmaschig vernetzt; Silikonöle sind flüssig und passen nicht in die Einteilung fester Kunststoffe"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Chlormethylsilane reagieren mit Wasser: Jede Si–Cl-Bindung wird zu Si–OH, Chlorwasserstoff entsteht. Zwei Si–OH-Gruppen verknüpfen sich unter Wasserabspaltung zu Si–O–Si (Kondensation). (CH₃)₂SiCl₂ bildet Kettenglieder, (CH₃)₃SiCl Kettenenden, CH₃SiCl₃ Verzweigungen. Ohne Vernetzer entstehen unvernetzte Ketten: Silikonöle. Wenige Vernetzungsstellen ergeben gummiartige Silikonelastomere, viele ergeben harte Silikonharze. Silikonöle nehmen eine Sonderstellung ein: Sie sind unvernetzt, aber flüssig und keine Thermoplaste."
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F72",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F72",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-kunststoffabfall",
+      "title": "Kunststoffabfälle verwerten",
+      "domain": "chemie/werkstoffe",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-kunststoffabfall",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F70",
+          "type": "soft",
+          "rationale": "Die Lektion „Thermoplaste, Duroplaste, Elastomere“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "werkstoffe",
+          "topic_title": "Kunststoffe und Silikone"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb6",
+          "topic_title": "Moderne Werkstoffe – Kunststoffe und Silikone",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Wahlbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB555",
+          "slug": "c10-abfall-pyrolyse",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-kunststoffabfall",
+          "question": "Was geschieht bei der Pyrolyse von Kunststoffabfällen?",
+          "concept": "Die Polymerketten zerfallen unter Luftausschluss in Öle und Gase.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Polymerketten zerfallen unter Luftausschluss in Öle und Gase.",
+              "Die Kunststoffe werden zu neuem Granulat eingeschmolzen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Kunststoffe werden zu neuem Granulat eingeschmolzen.",
+              "reason": "Das ist werkstoffliches Recycling, bei dem die Ketten erhalten bleiben."
+            },
+            {
+              "text": "Die Kunststoffe verbrennen zu CO₂ und Wasser.",
+              "reason": "Das ist energetische Verwertung mit Sauerstoff."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB556",
+          "slug": "c10-abfall-werkstofflich",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-kunststoffabfall",
+          "question": "Welche Kunststoffe lassen sich werkstofflich recyceln?",
+          "concept": "Sortenreine Thermoplaste.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sortenreine Thermoplaste.",
+              "Vernetzte Duroplaste."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Vernetzte Duroplaste.",
+              "reason": "Duroplaste lassen sich nicht einschmelzen."
+            },
+            {
+              "text": "Alle Kunststoffe gemischt.",
+              "reason": "Gemischte Kunststoffe ergeben minderwertige Werkstoffe."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F73",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F73",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-biokunststoff-oekobilanz",
+      "title": "Biogene Kunststoffe und Ökobilanz",
+      "domain": "chemie/werkstoffe",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-biokunststoff-oekobilanz",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F6Z",
+          "type": "soft",
+          "rationale": "Die Lektion „Polykondensation“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "werkstoffe",
+          "topic_title": "Kunststoffe und Silikone"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb6",
+          "topic_title": "Moderne Werkstoffe – Kunststoffe und Silikone",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB557",
+          "slug": "c10-bio-pla",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-biokunststoff-oekobilanz",
+          "question": "Woraus wird Polymilchsäure (PLA) hergestellt?",
+          "concept": "Aus Stärke über Glucose und Milchsäure.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aus Stärke über Glucose und Milchsäure.",
+              "Aus Erdöl über Ethen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Aus Erdöl über Ethen.",
+              "reason": "Aus Erdöl über Ethen entsteht Polyethen."
+            },
+            {
+              "text": "Aus Quarzsand über Silicium.",
+              "reason": "Aus Quarzsand werden Silikone hergestellt."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB558",
+          "slug": "c10-bio-oekobilanz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-biokunststoff-oekobilanz",
+          "question": "Was vergleicht eine vereinfachte Ökobilanz?",
+          "concept": "Umweltwirkungen vom Rohstoff bis zur Entsorgung.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Umweltwirkungen vom Rohstoff bis zur Entsorgung.",
+              "Nur den Verkaufspreis des fertigen Produkts."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur den Verkaufspreis des fertigen Produkts.",
+              "reason": "Der Preis ist ein ökonomischer, kein ökologischer Aspekt."
+            },
+            {
+              "text": "Nur die CO₂-Abgabe beim späteren Verbrennen.",
+              "reason": "Eine Ökobilanz betrachtet alle Lebensphasen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F74",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F74",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-batterie-akku",
+      "title": "Batterie, Akku und Elektrolyse",
+      "domain": "chemie/elektrochemie",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-batterie-akku",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "redoxanwendungen",
+          "topic_title": "Redoxanwendungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Wahlbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB559",
+          "slug": "c10-akku-laden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-batterie-akku",
+          "question": "Welche Art von Redoxreaktion läuft beim Laden eines Akkus ab?",
+          "concept": "Eine erzwungene Redoxreaktion (Elektrolyse).",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine erzwungene Redoxreaktion (Elektrolyse).",
+              "Eine freiwillige Redoxreaktion (Batterie)."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine freiwillige Redoxreaktion (Batterie).",
+              "reason": "Freiwillig läuft die Reaktion beim Entladen ab."
+            },
+            {
+              "text": "Eine Neutralisation von Säure und Lauge.",
+              "reason": "Beim Laden werden Elektronen übertragen, keine Protonen."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB55A",
+          "slug": "c10-akku-zink",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-batterie-akku",
+          "question": "Was geschieht beim Entladen der Zink-Iod-Batterie an der Zinkelektrode?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Zink wird oxidiert: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Zn} \\rightarrow \\mathrm{Zn^{2+}} + 2\\,\\mathrm{e^-}",
+              "speech": "Z N reagiert zu Z N zwei plus plus zwei Elektronen"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zink wird oxidiert: Zn → Zn²⁺ + 2 e⁻.",
+              "Zinkionen werden reduziert: Zn²⁺ + 2 e⁻ → Zn."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zinkionen werden reduziert: Zn²⁺ + 2 e⁻ → Zn.",
+              "reason": "Das geschieht beim Laden."
+            },
+            {
+              "text": "Iod wird an der Zinkelektrode gebildet.",
+              "reason": "Iod wird beim Entladen reduziert, an der anderen Elektrode."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Q8520RFV7QVQ465GAK0F75",
+      "atom_uri": "urn:zam:atom:01M5Q8520RFV7QVQ465GAK0F75",
+      "namespace": "zam-academy-chemie-realschule-10",
+      "slug": "c10-brennstoffzelle",
+      "title": "Wasserstoff/Sauerstoff-Brennstoffzelle",
+      "domain": "chemie/elektrochemie",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-brennstoffzelle",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Q8520RFV7QVQ465GAK0F74",
+          "type": "soft",
+          "rationale": "Die Lektion „Batterie, Akku und Elektrolyse“ bildet die Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-10",
+          "topic_code": "redoxanwendungen",
+          "topic_title": "Redoxanwendungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "chemie",
+          "track": "II_III",
+          "topic_code": "lb6",
+          "topic_title": "Wahlbereich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB55B",
+          "slug": "c10-brennstoff-produkt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-brennstoffzelle",
+          "question": "Welches Reaktionsprodukt verlässt eine Wasserstoff/Sauerstoff-Brennstoffzelle?",
+          "concept": "Wasser",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wasser",
+              "Methan"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Methan",
+              "reason": "Methan ist ein Brennstoff; im Wasserstoff ist kein Kohlenstoff."
+            },
+            {
+              "text": "Ozon",
+              "reason": "Sauerstoff wird zu Wasser reduziert, nicht zu Ozon O₃."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB55C",
+          "slug": "c10-brennstoff-gruen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-brennstoffzelle",
+          "question": "Wann ist Wasserstoff ein regenerativ gewonnener Energieträger?",
+          "concept": "Bei Elektrolyse mit Strom aus Wind oder Sonne.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bei Elektrolyse mit Strom aus Wind oder Sonne.",
+              "Bei Gewinnung aus Erdgas durch Dampfreformierung."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Bei Gewinnung aus Erdgas durch Dampfreformierung.",
+              "reason": "Dabei entsteht CO₂ aus fossilem Kohlenstoff."
+            },
+            {
+              "text": "Immer, weil Wasserstoff im Wasser vorkommt.",
+              "reason": "Entscheidend ist die Energiequelle der Herstellung."
+            }
+          ]
+        },
+        {
+          "id": "01M5Q8520SZ8M8W305Z39AB55D",
+          "slug": "c10-brennstoff-funktion",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-10/#lesson=ch-brennstoffzelle",
+          "question": "Erkläre Aufbau und Funktion der Wasserstoff/Sauerstoff-Brennstoffzelle mit Teilgleichungen und bewerte ihren ökologischen Nutzen.",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Minuspol: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{H_2} \\rightarrow 2\\,\\mathrm{H^+} + 2\\,\\mathrm{e^-}",
+              "speech": "H zwei reagiert zu zwei H plus plus zwei Elektronen"
+            },
+            {
+              "type": "text",
+              "text": "; Pluspol: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{O_2} + 4\\,\\mathrm{H^+} + 4\\,\\mathrm{e^-} \\rightarrow 2\\,\\mathrm{H_2O}",
+              "speech": "O zwei plus vier H plus plus vier Elektronen reagiert zu zwei H zwei O"
+            },
+            {
+              "type": "text",
+              "text": "; Membran trennt Gase, lässt "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{H^+}",
+              "speech": "H plus"
+            },
+            {
+              "type": "text",
+              "text": " durch; Elektronen über äußeren Stromkreis; nur Wasser als Abgas; ökologisch nur mit regenerativ erzeugtem Wasserstoff"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Wasserstoff wird am Minuspol oxidiert: H₂ → 2 H⁺ + 2 e⁻. Die Elektronen fließen über den äußeren Stromkreis zum Pluspol, wo Sauerstoff reduziert wird: O₂ + 4 H⁺ + 4 e⁻ → 2 H₂O. Eine Membran trennt die Gase und lässt nur die H⁺-Ionen hindurch. Gesamt: 2 H₂ + O₂ → 2 H₂O; chemische Energie wird direkt in elektrische Energie umgewandelt. Die Zelle gibt nur Wasser ab. Ökologisch sinnvoll ist sie, wenn der Wasserstoff durch Elektrolyse mit Strom aus erneuerbaren Quellen gewonnen wird; Wasserstoff aus Erdgas verursacht CO₂, und Speicherung und Umwandlungen kosten Energie."
+        }
+      ]
+    }
+  ]
+}

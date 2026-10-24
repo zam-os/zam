@@ -16,7 +16,7 @@ export interface BundledTile extends KvtTile {
 }
 
 // --- begin bundled-tile-imports ---
-// --- Fixture Imports (217 tiles) ---
+// --- Fixture Imports (216 tiles) ---
 import tile1Raw from "../../../tests/fixtures/curriculum/de-by-bos-10-optik-kvt.json" with {
   type: "json",
 };
@@ -581,12 +581,6 @@ import tile204Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-wi
 import tile141Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse-kvt.json" with {
   type: "json",
 };
-import tile142Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-chemie-organik-kohlenwasserstoffe-kvt.json" with {
-  type: "json",
-};
-import tile143Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-chemie-saeuren-basen-neutralisation-kvt.json" with {
-  type: "json",
-};
 import tile144Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel-kvt.json" with {
   type: "json",
 };
@@ -615,6 +609,9 @@ import tile240Raw from "../../../tests/fixtures/curriculum/zam-academy-bwr-reals
   type: "json",
 };
 import tile233Raw from "../../../tests/fixtures/curriculum/zam-academy-chemie-realschule-9-kvt.json" with {
+  type: "json",
+};
+import tile249Raw from "../../../tests/fixtures/curriculum/zam-academy-chemie-realschule-10-kvt.json" with {
   type: "json",
 };
 import tile239Raw from "../../../tests/fixtures/curriculum/zam-academy-datennetze-kvt.json" with {
@@ -1039,10 +1036,6 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile139Raw as unknown as BundledTile,
   [(tile141Raw as unknown as BundledTile).tile_id]:
     tile141Raw as unknown as BundledTile,
-  [(tile142Raw as unknown as BundledTile).tile_id]:
-    tile142Raw as unknown as BundledTile,
-  [(tile143Raw as unknown as BundledTile).tile_id]:
-    tile143Raw as unknown as BundledTile,
   [(tile144Raw as unknown as BundledTile).tile_id]:
     tile144Raw as unknown as BundledTile,
   [(tile145Raw as unknown as BundledTile).tile_id]:
@@ -1191,6 +1184,8 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile247Raw as unknown as BundledTile,
   [(tile248Raw as unknown as BundledTile).tile_id]:
     tile248Raw as unknown as BundledTile,
+  [(tile249Raw as unknown as BundledTile).tile_id]:
+    tile249Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 
