@@ -230,8 +230,8 @@ describe("curriculum topic coverage audit", () => {
       (p) => p.providerId === "lehrplanplus-bayern",
     );
     expect(bayern).toBeDefined();
-    expect(bayern!.total).toBe(2100);
-    expect(bayern!.covered).toBe(2100);
+    expect(bayern!.total).toBe(2102);
+    expect(bayern!.covered).toBe(2102);
     expect(bayern!.gaps).toBe(0);
     expect(bayern!.catalogComplete).toBe(true);
     expect(bayern!.coverageRatio).toBe(1);

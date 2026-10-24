@@ -20,10 +20,9 @@ import {
 // physics cells to zam-academy:physik-realschule-10 (#17) and the two
 // mathematics cells to zam-academy:mathematik-realschule-10 (#23). Their
 // items replace or retire the old ones explicitly. See
-// tests/kernel/zam-academy-*-realschule-10-cell.test.ts.
+// tests/kernel/zam-academy-*-realschule-10-cell.test.ts. The two chemistry
+// cells moved to zam-academy:chemie-realschule-10 (#43).
 const RS10_CELL_IDS = [
-  "de-by:realschule-10-chemie-organik-kohlenwasserstoffe",
-  "de-by:realschule-10-chemie-saeuren-basen-neutralisation",
   "de-by:realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse",
   "de-by:realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung",
   "de-by:realschule-10-wirtschaft-recht-strafrecht-arbeitsrecht-sozialstaat",
@@ -32,6 +31,7 @@ const RS10_CELL_IDS = [
 ];
 const ACADEMY_RS10_IDS = [
   "zam-academy:biologie-realschule-10",
+  "zam-academy:chemie-realschule-10",
   "zam-academy:mathematik-realschule-10",
   "zam-academy:physik-realschule-10",
 ];
@@ -52,7 +52,7 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists the 7 Realschule 10 school cells and their Academy successors", () => {
+  it("lists the 5 Realschule 10 school cells and their Academy successors", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(100);
 
@@ -114,7 +114,7 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
     expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
   });
 
-  it("supports simultaneous co-enrolment in the 7 Grade 10 school cells without conflict", async () => {
+  it("supports simultaneous co-enrolment in the 5 Grade 10 school cells without conflict", async () => {
     const user = "complete-rs10-candidate";
 
     let totalCards = 0;
@@ -124,12 +124,12 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
       totalCards += res.cardsCreated;
     }
 
-    // 2 cells * 8 + 5 cells * 4 = 16 + 20 = 36 cards
-    expect(totalCards).toBe(36);
+    // 5 cells * 4 = 20 cards
+    expect(totalCards).toBe(20);
 
     const cards = (await db
       .prepare(`SELECT COUNT(*) as count FROM cards WHERE user_id = ?`)
       .get(user)) as { count: number };
-    expect(cards.count).toBe(36);
+    expect(cards.count).toBe(20);
   });
 });

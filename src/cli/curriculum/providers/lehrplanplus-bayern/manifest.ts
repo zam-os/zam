@@ -42,7 +42,7 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
   schoolYear: "2026/2027",
   capturedOn: "2026-07-19",
   sourceRevision:
-    "LehrplanPLUS Bayern – including WS/FOS/BOS (2026-07-19); +grundschule/mittelschule/foerderschule (2026-07-19); +Realschule Chemie 9 I/II/III, Geographie 9 und Geschichte 9 gemeinsam (2026-10-20); +Realschule Biologie 10 gemeinsam (2026-10-21); +Realschule Physik 10 I/II/III (2026-10-21); +Realschule Physik 8 I/II/III (2026-10-23)",
+    "LehrplanPLUS Bayern – including WS/FOS/BOS (2026-07-19); +grundschule/mittelschule/foerderschule (2026-07-19); +Realschule Chemie 9 I/II/III, Geographie 9 und Geschichte 9 gemeinsam (2026-10-20); +Realschule Biologie 10 gemeinsam (2026-10-21); +Realschule Physik 10 I/II/III (2026-10-21); +Realschule Physik 8 I/II/III (2026-10-23); +Realschule Chemie 10 I/II/III (2026-10-24)",
 
   schoolTypes: [
     {
@@ -1327,6 +1327,17 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       {
         id: "diff_sport",
         label: "Differenzierter Sport",
+      },
+    ],
+    // Chemie 10 branches verified against LehrplanPLUS on 2026-10-24.
+    "realschule|10|chemie": [
+      {
+        id: "wpfg1",
+        label: "Chemie 10 (I)",
+      },
+      {
+        id: "wpfg2-3",
+        label: "Chemie 10 (II/III)",
       },
     ],
     "realschule|10|mathematik": [
@@ -12049,6 +12060,60 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
         label: "Angewandte Kunst",
         hours: 20,
       },
+    ],
+    // Verified on 2026-10-24 at /fachlehrplan/realschule/10/chemie/<track>.
+    // LB 1 is taught throughout the year; the source gives no separate hours.
+    // II/III LB 6 is a Wahlbereich: two of 6.1 Redoxanwendungen, 6.2 Proteine,
+    // 6.3 Kohlenhydrate, 6.4 Fette, 6.5 Kunststoffe.
+    "realschule|10|chemie|wpfg1": [
+      { id: "lb1", label: "Wie Chemiker denken und arbeiten" },
+      {
+        id: "lb2",
+        label: "Donator-Akzeptor-Konzept – Protonenübergänge II",
+        hours: 7,
+      },
+      {
+        id: "lb3",
+        label:
+          "Herkunft organischer Verbindungen im Überblick – grundlegende Reaktion Fotosynthese",
+        hours: 5,
+      },
+      {
+        id: "lb4",
+        label: "Grundlegende Reaktionen organischer Moleküle",
+        hours: 12,
+      },
+      { id: "lb5", label: "Biomoleküle", hours: 12 },
+      {
+        id: "lb6",
+        label: "Moderne Werkstoffe – Kunststoffe und Silikone",
+        hours: 12,
+      },
+    ],
+    "realschule|10|chemie|wpfg2-3": [
+      { id: "lb1", label: "Wie Chemiker denken und arbeiten" },
+      {
+        id: "lb2",
+        label: "Donator-Akzeptor-Konzept – Elektronenübergänge",
+        hours: 12,
+      },
+      {
+        id: "lb3",
+        label: "Donator-Akzeptor-Konzept – Protonenübergänge",
+        hours: 10,
+      },
+      {
+        id: "lb4",
+        label:
+          "Herkunft organischer Verbindungen im Überblick – grundlegende Reaktion Fotosynthese",
+        hours: 5,
+      },
+      {
+        id: "lb5",
+        label: "Grundlegende Reaktionen organischer Moleküle",
+        hours: 9,
+      },
+      { id: "lb6", label: "Wahlbereich", hours: 12 },
     ],
     "realschule|10|mathematik|wpfg1": [
       {
@@ -63112,6 +63177,10 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/10/fach/mathematik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=wpfg1",
     "realschule|10|mathematik|wpfg2-3":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/10/fach/mathematik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=wpfg2-3",
+    "realschule|10|chemie|wpfg1":
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/chemie/wpfg1",
+    "realschule|10|chemie|wpfg2-3":
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/chemie/wpfg2-3",
     "realschule|10|physik|wpfg1":
       "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/physik/wpfg1",
     "realschule|10|physik|wpfg2-3":

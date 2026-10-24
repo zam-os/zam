@@ -43,7 +43,7 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
 
   it("exposes the captured catalog and the verified Realschule branches", () => {
     const paths = provider.listCatalogPaths?.() ?? [];
-    expect(paths).toHaveLength(2100);
+    expect(paths).toHaveLength(2102);
     for (const track of ["wpfg1", "wpfg2-3"]) {
       expect(paths).toContainEqual({
         schoolType: "realschule",
@@ -450,6 +450,66 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
           provider: "lehrplanplus-bayern",
           topicId: `realschule|8|physik|${track}#${topic.id}`,
           uri: `https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/physik/${track}`,
+        });
+    }
+  });
+
+  it("offers Chemie 10 with both Wahlpflichtfächergruppen and their own Lernbereiche", () => {
+    expect(provider.listTracks("realschule", "10", "chemie")).toEqual([
+      {
+        id: "wpfg1",
+        label: "Chemie 10 (I)",
+        description: expect.stringContaining("Wahlpflichtfächergruppe I"),
+      },
+      {
+        id: "wpfg2-3",
+        label: "Chemie 10 (II/III)",
+        description: expect.stringContaining(
+          "Wahlpflichtfächergruppen II und III",
+        ),
+      },
+    ]);
+    const expected = {
+      wpfg1: [
+        ["lb1", "Wie Chemiker denken und arbeiten", undefined],
+        ["lb2", "Donator-Akzeptor-Konzept – Protonenübergänge II", 7],
+        [
+          "lb3",
+          "Herkunft organischer Verbindungen im Überblick – grundlegende Reaktion Fotosynthese",
+          5,
+        ],
+        ["lb4", "Grundlegende Reaktionen organischer Moleküle", 12],
+        ["lb5", "Biomoleküle", 12],
+        ["lb6", "Moderne Werkstoffe – Kunststoffe und Silikone", 12],
+      ],
+      "wpfg2-3": [
+        ["lb1", "Wie Chemiker denken und arbeiten", undefined],
+        ["lb2", "Donator-Akzeptor-Konzept – Elektronenübergänge", 12],
+        ["lb3", "Donator-Akzeptor-Konzept – Protonenübergänge", 10],
+        [
+          "lb4",
+          "Herkunft organischer Verbindungen im Überblick – grundlegende Reaktion Fotosynthese",
+          5,
+        ],
+        ["lb5", "Grundlegende Reaktionen organischer Moleküle", 9],
+        ["lb6", "Wahlbereich", 12],
+      ],
+    };
+    for (const [track, topicsExpected] of Object.entries(expected)) {
+      const topics = provider.listTopics({
+        schoolType: "realschule",
+        grade: "10",
+        subject: "chemie",
+        track,
+      });
+      expect(
+        topics.map((topic) => [topic.id, topic.label, topic.hours]),
+      ).toEqual(topicsExpected);
+      for (const topic of topics)
+        expect(provider.resolveTopic(topic)).toEqual({
+          provider: "lehrplanplus-bayern",
+          topicId: `realschule|10|chemie|${track}#${topic.id}`,
+          uri: `https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/chemie/${track}`,
         });
     }
   });
