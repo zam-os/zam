@@ -1,0 +1,174 @@
+{
+  "schema": 1,
+  "approved": "2026-10-24",
+  "status": "approved",
+  "source": "Thomas in diesem Claude-Code-Chat am 2026-10-24, nach den Reviews zu zam-os/zam-academy#43 und der Überarbeitung in Commit a9263b9: „Kartenzuordnung freigegeben. Du darfst dann mergen“. Die Freigabe gilt der Zuordnung der 16 de-by-Karten in dieser Datei (5 A, 2 B, 9 C; alle C-Karten bleiben aktiv).",
+  "source_repository": "zam-os/zam",
+  "source_commit": "87a708b43bb380f75827b5c589ee58cc9679c744",
+  "authorization": "Thomas hat am 24. Oktober 2026 die hier dokumentierten 16 Zuordnungen ausdrücklich freigegeben. Die sieben genannten replaces (5 A, 2 B) erscheinen mit der ersten Veröffentlichung der Zelle; keine Karte wird stillgelegt, persönliche Karten und Reviewhistorien bleiben erhalten.",
+  "policy": "A: same atomic retrieval, one successor declares replaces. B: original whole multi-part prompt, answer and sample solution retained on one dedicated successor. C: content of another grade or school type, or a split demand; no replaces, no mastery transfer; the old card stays active unless a row says otherwise.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-10-chemie-organik-kohlenwasserstoffe-kvt.json",
+      "sha256": "5444d4980a679a4b832c8182a270e871216f7594b4a10f8e1201f3f8bc5598ce",
+      "tile_id": "de-by:realschule-10-chemie-organik-kohlenwasserstoffe"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-10-chemie-saeuren-basen-neutralisation-kvt.json",
+      "sha256": "d7fcca336b05694fbe55191c18f95ba75c2eb9491b1beeb48a1e00a2cb8d86fc",
+      "tile_id": "de-by:realschule-10-chemie-saeuren-basen-neutralisation"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-organik-kohlenwasserstoffe",
+      "de_by_id": "01K4H0C0000000000000000J01",
+      "de_by_question": "Wie lautet die allgemeine Summenformel der unverzweigten Alkane (gesättigte Kohlenwasserstoffe)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Allgemeine Summenformel der Alkane. Gehört zu Chemie 9 (LehrplanPLUS C9, Kohlenwasserstoffe und funktionelle Gruppen, beide Zweige; Lektionen ch-kohlenwasserstoffe/ch-funktionelle-gruppen der Zelle zam-academy:chemie-realschule-9). Chemie 10 lehrt das nicht neu, deshalb kein Nachfolger in dieser Zelle; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-organik-kohlenwasserstoffe",
+      "de_by_id": "01K4H0C0000000000000000J02",
+      "de_by_question": "Nenne die ersten sechs Glieder der homologen Reihe der Alkane (Methan bis Hexan) mit Summen- und Halbstrukturformel und formuliere die Reaktionsgleichung für die vollständige Verbrennung von Propan (C3H8) zu Kohlendioxid und Wasser.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Homologe Reihe und Verbrennung von Propan. Gehört zu Chemie 9 (LehrplanPLUS C9, Kohlenwasserstoffe und funktionelle Gruppen, beide Zweige; Lektionen ch-kohlenwasserstoffe/ch-funktionelle-gruppen der Zelle zam-academy:chemie-realschule-9). Chemie 10 lehrt das nicht neu, deshalb kein Nachfolger in dieser Zelle; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-organik-kohlenwasserstoffe",
+      "de_by_id": "01K4H0C0000000000000000J03",
+      "de_by_question": "Wie bezeichnet man Moleküle mit identischer Summenformel, aber unterschiedlicher Verknüpfung der Atome (unterschiedlicher Strukturformel)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Konstitutionsisomerie. Gehört zu Chemie 9 (LehrplanPLUS C9, Kohlenwasserstoffe und funktionelle Gruppen, beide Zweige; Lektionen ch-kohlenwasserstoffe/ch-funktionelle-gruppen der Zelle zam-academy:chemie-realschule-9). Chemie 10 lehrt das nicht neu, deshalb kein Nachfolger in dieser Zelle; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-organik-kohlenwasserstoffe",
+      "de_by_id": "01K4H0C0000000000000000J04",
+      "de_by_question": "Zeichne und benenne die beiden Strukturisomere von Butan (C4H10: n-Butan vs. 2-Methylpropan/Isobutan) und begründe, warum n-Butan (Siedepunkt -0,5 °C) einen höheren Siedepunkt besitzt als das verzweigte 2-Methylpropan (-11,7 °C).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Butan-Isomere und Van-der-Waals-Kräfte. Gehört zu Chemie 9 (LehrplanPLUS C9, Kohlenwasserstoffe und funktionelle Gruppen, beide Zweige; Lektionen ch-kohlenwasserstoffe/ch-funktionelle-gruppen der Zelle zam-academy:chemie-realschule-9). Chemie 10 lehrt das nicht neu, deshalb kein Nachfolger in dieser Zelle; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-organik-kohlenwasserstoffe",
+      "de_by_id": "01K4H0C0000000000000000J05",
+      "de_by_question": "Welche funktionelle Gruppe ist charakteristisch für die Stoffklasse der Alkohole (Alkanole)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Hydroxygruppe der Alkohole. Gehört zu Chemie 9 (LehrplanPLUS C9, Kohlenwasserstoffe und funktionelle Gruppen, beide Zweige; Lektionen ch-kohlenwasserstoffe/ch-funktionelle-gruppen der Zelle zam-academy:chemie-realschule-9). Chemie 10 lehrt das nicht neu, deshalb kein Nachfolger in dieser Zelle; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-organik-kohlenwasserstoffe",
+      "de_by_id": "01K4H0C0000000000000000J06",
+      "de_by_question": "Erkläre, warum Ethanol (C2H5OH, Siedepunkt 78 °C) bei Raumtemperatur flüssig ist, während das massegleiche Ethan (C2H6, Siedepunkt -89 °C) gasförmig ist, und erläutere die Löslichkeit kurzkettiger (Methanol, Ethanol) vs. langkettiger Alkohole (Octanol) in Wasser und Benzin.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Siedetemperatur und Löslichkeit von Ethanol. Gehört zu Chemie 9 (LehrplanPLUS C9, Kohlenwasserstoffe und funktionelle Gruppen, beide Zweige; Lektionen ch-kohlenwasserstoffe/ch-funktionelle-gruppen der Zelle zam-academy:chemie-realschule-9). Chemie 10 lehrt das nicht neu, deshalb kein Nachfolger in dieser Zelle; die Karte bleibt aktiv. Verwandt: die C10-Karte zu Ester-Siedetemperaturen nutzt dasselbe Argument (Wasserstoffbrücken), fragt aber etwas anderes ab.",
+      "related_new_slugs": [
+        "c10-ester-sieden"
+      ]
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-organik-kohlenwasserstoffe",
+      "de_by_id": "01K4H0C0000000000000000J07",
+      "de_by_question": "Welche Produkte entstehen bei der säurekatalysierten Veresterung einer Carbonsäure mit einem Alkohol?",
+      "category": "A",
+      "academy_slug": "c10-ester-produkte",
+      "reason": "Gleicher atomarer Abruf: Produkte der Veresterung (Ester und Wasser). Die neue Karte sagt ‚Alkansäure‘ und ‚Alkanol‘ wie der LehrplanPLUS; die Abrufanforderung bleibt gleich."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-organik-kohlenwasserstoffe",
+      "de_by_id": "01K4H0C0000000000000000J08",
+      "de_by_question": "Beschreibe den sauren Charakter der Carboxylgruppe (-COOH) am Beispiel von Ethansäure (Essigsäure) in wässriger Lösung (Protolyse zu Acetat-Anion und Oxonium-Ion) und formuliere die Reaktionsgleichung für die Synthese von Essigsäureethylester (Ethylethanoat) aus Essigsäure und Ethanol.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Zweiteilige Synthese: Protolyse der Essigsäure mit Mesomeriestabilisierung des Acetations (nicht im LehrplanPLUS Realschule) und Estersynthese. Ein B-Nachfolger würde die Mesomerie in die Realschulzelle tragen; die beiden Teile fragen getrennte Karten ab. Fachlich nicht falsch, deshalb keine Stilllegung vorgeschlagen.",
+      "related_new_slugs": [
+        "c10-saeurereste-acetat",
+        "c10-ester-gleichung"
+      ]
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-saeuren-basen-neutralisation",
+      "de_by_id": "01K4S0C0000000000000000J01",
+      "de_by_question": "Wie wird eine Säure nach der Brönstedschen Definition charakterisiert?",
+      "category": "A",
+      "academy_slug": "c10-broensted-saeure",
+      "reason": "Gleicher atomarer Abruf: Säure nach Brönsted = Protonendonator. Hinweis: Die Nachfolgelektion ist in C10 nur an Zweig II/III gebunden (Zweig I lernt Brönsted in C9); die Historie zieht trotzdem unverändert um."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-saeuren-basen-neutralisation",
+      "de_by_id": "01K4S0C0000000000000000J02",
+      "de_by_question": "Definiere Säuren und Basen nach Johannes Nicolaus Brönsted, erkläre den Begriff Ampholyt (amphoteres Teilchen) am Beispiel des Wassermoleküls und bestimme die korrespondierenden (konjugierten) Säure-Base-Paare in der Reaktion von gasförmigem Chlorwasserstoff (HCl) mit Wasser.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Ampholyt und korrespondierende Säure-Base-Paare stehen nicht im LehrplanPLUS Chemie 10 Realschule; die Synthese verlangt mehr als die C10-Karten. Inhalt fachlich richtig, Karte bleibt aktiv.",
+      "related_new_slugs": [
+        "c10-broensted-ammoniak"
+      ]
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-saeuren-basen-neutralisation",
+      "de_by_id": "01K4S0C0000000000000000J03",
+      "de_by_question": "Um welchen Faktor ändert sich die Konzentration der Oxonium-Ionen c(H3O+), wenn der pH-Wert einer sauren Lösung von pH 3 auf pH 5 ansteigt (Verdünnung)?",
+      "category": "A",
+      "academy_slug": "c10-ph-faktor",
+      "reason": "Gleicher atomarer Abruf mit denselben Zahlen (pH 3 → 5, Faktor 100). Nachfolgelektion ch-ph-oxonium ist an Zweig I LB 2 gebunden."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-saeuren-basen-neutralisation",
+      "de_by_id": "01K4S0C0000000000000000J04",
+      "de_by_question": "Erkläre die Autoprotolyse des reinen Wassers, formuliere das Ionenprodukt K_w = c(H3O+) · c(OH-) = 10^-14 mol^2/l^2 bei 25 °C, definiere die mathematische Formel des pH-Wertes (pH = -lg c(H3O+)) und begründe, warum eine neutrale Lösung exakt den pH-Wert 7 aufweist.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Autoprotolyse, Ionenprodukt K_w und pH = −lg c(H₃O⁺) sind Gymnasialstoff, nicht LehrplanPLUS Realschule 10. Inhalt fachlich richtig, kein Nachfolger in dieser Zelle; Karte bleibt aktiv.",
+      "related_new_slugs": [
+        "c10-ph-faktor"
+      ]
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-saeuren-basen-neutralisation",
+      "de_by_id": "01K4S0C0000000000000000J05",
+      "de_by_question": "Welche Ionenreaktion stellt das chemische Wesen jeder Neutralisation in wässriger Lösung dar?",
+      "category": "A",
+      "academy_slug": "c10-neutralisation-ionen",
+      "reason": "Gleicher atomarer Abruf: H₃O⁺ + OH⁻ → 2 H₂O als Teilchenreaktion jeder Neutralisation."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-saeuren-basen-neutralisation",
+      "de_by_id": "01K4S0C0000000000000000J06",
+      "de_by_question": "Formuliere die vollständige Stoff- und Ionenreaktionsgleichung für die Neutralisation von Salzsäure mit Natronlauge sowie von Schwefelsäure mit Kalilauge und erkläre den Farbumschlag des Säure-Base-Indikators Bromthymolblau am Äquivalenzpunkt.",
+      "category": "B",
+      "academy_slug": "c10-neutralisation-legacy-synthese",
+      "reason": "Die ganze mehrteilige Frage (Stoff- und Ionengleichungen HCl/NaOH und H₂SO₄/KOH, Bromthymolblau am Äquivalenzpunkt) bleibt mit Antwort und Musterlösung wortgleich auf einer eigenen Karte; der Inhalt liegt im LehrplanPLUS C10 (Neutralisation, Indikatoren)."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-saeuren-basen-neutralisation",
+      "de_by_id": "01K4S0C0000000000000000J07",
+      "de_by_question": "Welche fundamentale Stoffmengenbeziehung gilt am Äquivalenzpunkt bei der Titration einer einprotonigen Säure (HCl) mit einer einwertigen Base (NaOH)?",
+      "category": "A",
+      "academy_slug": "c10-titration-aequivalenz",
+      "reason": "Gleicher atomarer Abruf: c(Säure) · V(Säure) = c(Lauge) · V(Lauge) am Äquivalenzpunkt; die neue Karte schreibt die Formel als gesprochenes Mathematiksegment."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-chemie-saeuren-basen-neutralisation",
+      "de_by_id": "01K4S0C0000000000000000J08",
+      "de_by_question": "Beschreibe den Versuchsaufbau einer Säure-Base-Titration (Bürette mit Maßlösung, Erlenmeyerkolben mit Probelösung und Indikator, Magnetrührer) und berechne die Stoffmengenkonzentration c(HCl) einer Salzsäureprobe, wenn zur Neutralisation von V_S = 20,0 ml Salzsäure genau V_B = 15,0 ml Natronlauge der Konzentration c(NaOH) = 0,10 mol/l verbraucht wurden.",
+      "category": "B",
+      "academy_slug": "c10-titration-legacy-synthese",
+      "reason": "Die ganze Synthese (Versuchsaufbau der Titration und Berechnung c(HCl) = 0,075 mol/l) bleibt mit Antwort und Musterlösung wortgleich auf einer eigenen Karte; Titration ist C10 Zweig I LB 2, die Stoffmenge kennt Zweig I aus C8."
+    }
+  ]
+}

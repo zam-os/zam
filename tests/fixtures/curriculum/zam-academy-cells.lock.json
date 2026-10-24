@@ -18,6 +18,12 @@
     "file": "zam-academy-bwr-realschule-9-kvt.json"
   },
   {
+    "id": "zam-academy:chemie-realschule-10",
+    "version": "2026.10.2",
+    "sha256": "a610ff4f389499f9021930f7d3214ddaa59561548937e89d2e7c67def4fbc354",
+    "file": "zam-academy-chemie-realschule-10-kvt.json"
+  },
+  {
     "id": "zam-academy:chemie-realschule-9",
     "version": "2026.10.2",
     "sha256": "6928b3f13d853c3208f83779d5c962eb66727dd99d66b69b986a4f06e6c94c78",

@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-24T18:03:26Z
+timestamp: 2026-10-24T20:21:43Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -316,6 +316,17 @@ the old card had one, so its history moves with the same `replaces` as an A
 row; the approval also covered two B
 successors that correct inaccurate details of the old answer.
 
+Chemie 10 also has two Fachlehrpläne with different content: only Zweig I
+learns pH and Oxonium concentration, titration, substitution, alkanones and
+silicones; only II/III learns electron transfer, Brönsted and the
+Redoxanwendungen. Its Academy cell, version 2026.10.1, binds 30 lessons to
+`I` and 34 to `II_III`, each with that branch's learning area, and offers
+every elective subarea. It replaces both old school cells of the grade with
+five A and two B rows (approved 2026-10-24). The nine C rows get no
+successor and are not retired: six ask grade-9 content and three
+Gymnasium content, so those cards stay active in the libraries that hold
+them. The old cells are no longer bundled.
+
 Mathematik 7 is bundled as an additional Academy cell, version 2026.10.1,
 with 42 lessons and 126 practice items. Its bindings cover all 42 lessons in
 the eight learning areas of Zweig I, and 31 lessons in the six learning
@@ -372,7 +383,7 @@ changed mappings require real re-retrieval.
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
-- Tests: `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`, `tests/kernel/academy-catalog.test.ts`, `tests/kernel/academy-cells-lock.test.ts`, `tests/kernel/tile-version.test.ts`, `tests/kernel/zam-academy-uml-cell.test.ts`, `tests/kernel/zam-academy-geographie-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-7-cell.test.ts`, `tests/kernel/zam-academy-it-cells.test.ts`, `tests/kernel/zam-academy-informatik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-9-cell.test.ts`, `tests/cli/curriculum-lehrplanplus-bayern.test.ts`, `tests/cli/academy-sync-script.test.ts`
+- Tests: `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`, `tests/kernel/academy-catalog.test.ts`, `tests/kernel/academy-cells-lock.test.ts`, `tests/kernel/tile-version.test.ts`, `tests/kernel/zam-academy-uml-cell.test.ts`, `tests/kernel/zam-academy-geographie-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-chemie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-7-cell.test.ts`, `tests/kernel/zam-academy-it-cells.test.ts`, `tests/kernel/zam-academy-informatik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-9-cell.test.ts`, `tests/cli/curriculum-lehrplanplus-bayern.test.ts`, `tests/cli/academy-sync-script.test.ts`
 - Code: `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/library/topics.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/import/material-import.ts`, `src/kernel/library/academy-catalog.ts`, `src/kernel/library/tile-version.ts`, `scripts/sync-academy-cells.mjs`, `src/cli/curriculum/providers/lehrplanplus-bayern/manifest.ts`
 
 - [ADR 2026-03-26 — Personal Workflow Foundations](../adr/2026-03-26-personal-workflow-foundations.md)
