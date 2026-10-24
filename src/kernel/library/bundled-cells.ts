@@ -16,7 +16,7 @@ export interface BundledTile extends KvtTile {
 }
 
 // --- begin bundled-tile-imports ---
-// --- Fixture Imports (216 tiles) ---
+// --- Fixture Imports (217 tiles) ---
 import tile1Raw from "../../../tests/fixtures/curriculum/de-by-bos-10-optik-kvt.json" with {
   type: "json",
 };
@@ -578,9 +578,6 @@ import tile198Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-in
 import tile204Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-wirtschaft-recht-konsum-geld-jugend-kvt.json" with {
   type: "json",
 };
-import tile212Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-franzoesisch-imparfait-futur-objektpronomen-kvt.json" with {
-  type: "json",
-};
 import tile141Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse-kvt.json" with {
   type: "json",
 };
@@ -627,6 +624,9 @@ import tile243Raw from "../../../tests/fixtures/curriculum/zam-academy-deutsch-r
   type: "json",
 };
 import tile247Raw from "../../../tests/fixtures/curriculum/zam-academy-englisch-realschule-9-kvt.json" with {
+  type: "json",
+};
+import tile248Raw from "../../../tests/fixtures/curriculum/zam-academy-franzoesisch-realschule-9-kvt.json" with {
   type: "json",
 };
 import tile234Raw from "../../../tests/fixtures/curriculum/zam-academy-geographie-realschule-9-kvt.json" with {
@@ -1147,8 +1147,6 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile198Raw as unknown as BundledTile,
   [(tile204Raw as unknown as BundledTile).tile_id]:
     tile204Raw as unknown as BundledTile,
-  [(tile212Raw as unknown as BundledTile).tile_id]:
-    tile212Raw as unknown as BundledTile,
   [(tile227Raw as unknown as BundledTile).tile_id]:
     tile227Raw as unknown as BundledTile,
   [(tile228Raw as unknown as BundledTile).tile_id]:
@@ -1191,6 +1189,8 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile246Raw as unknown as BundledTile,
   [(tile247Raw as unknown as BundledTile).tile_id]:
     tile247Raw as unknown as BundledTile,
+  [(tile248Raw as unknown as BundledTile).tile_id]:
+    tile248Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 

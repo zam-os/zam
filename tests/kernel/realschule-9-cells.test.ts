@@ -31,9 +31,9 @@ import {
 // Englisch 9 moved to zam-academy:englisch-realschule-9 (#38): three
 // histories move to equal recalls, five old cards retire with their history.
 // See tests/kernel/zam-academy-*-cell.test.ts.
-const RS9_CELL_IDS = [
-  "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",
-];
+// Französisch 9 moved to zam-academy:franzoesisch-realschule-9 (zam-os/zam-academy#41):
+// the four old cards retire with their history. No Realschule 9 school cell is left.
+const RS9_CELL_IDS: string[] = [];
 const ACADEMY_RS9_IDS = [
   "zam-academy:physik-realschule-9",
   "zam-academy:sql",
@@ -47,6 +47,7 @@ const ACADEMY_RS9_IDS = [
   "zam-academy:wirtschaft-recht-realschule-9",
   "zam-academy:deutsch-realschule-9",
   "zam-academy:englisch-realschule-9",
+  "zam-academy:franzoesisch-realschule-9",
 ];
 
 describe("Realschule Bayern 9 Curriculum Cells", () => {
@@ -82,7 +83,7 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
       schoolType: "realschule",
       grade: 9,
     });
-    // One school cell and the twelve Academy entries listed above.
+    // The thirteen Academy entries listed above.
     expect(rs9Cells.length).toBeGreaterThanOrEqual(
       RS9_CELL_IDS.length + ACADEMY_RS9_IDS.length,
     );
@@ -110,36 +111,38 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
     expect(token?.concept).toContain("Forderung");
   });
 
-  it("installs and enrols cleanly into Französisch 9 Imparfait und Objektpronomen", async () => {
+  it("installs and enrols cleanly into the Französisch 9 Academy package", async () => {
     const user = "learner-rs9-fra";
-    const cellId =
-      "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen";
+    const cellId = "zam-academy:franzoesisch-realschule-9";
 
     const result = await enrolBundledCell(db, user, cellId);
     expect(result.success).toBe(true);
-    expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
+    expect(result.cardsCreated).toBe(168);
   });
 
-  it("supports simultaneous enrolment in the remaining Grade 9 school cells without conflict", async () => {
+  it("enrols the Academy successors of all Grade 9 school cells without conflict", async () => {
     const user = "complete-rs9-polymath";
 
     let totalCards = 0;
-    for (const cellId of RS9_CELL_IDS) {
+    for (const cellId of [...RS9_CELL_IDS, ...ACADEMY_RS9_IDS]) {
       const res = await enrolBundledCell(db, user, cellId);
       expect(res.success).toBe(true);
       totalCards += res.cardsCreated;
     }
 
-    const expected = RS9_CELL_IDS.reduce((count, cellId) => {
-      const tile = getBundledCellTile(cellId);
-      return (
-        count +
-        (tile?.atoms.reduce(
-          (items, atom) => items + atom.practice_items.length,
-          0,
-        ) ?? 0)
-      );
-    }, 0);
+    const expected = [...RS9_CELL_IDS, ...ACADEMY_RS9_IDS].reduce(
+      (count, cellId) => {
+        const tile = getBundledCellTile(cellId);
+        return (
+          count +
+          (tile?.atoms.reduce(
+            (items, atom) => items + atom.practice_items.length,
+            0,
+          ) ?? 0)
+        );
+      },
+      0,
+    );
     expect(totalCards).toBe(expected);
 
     const cards = (await db

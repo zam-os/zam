@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "approved": "2026-10-24",
+  "note": "Freigegeben. Die Zelle (Version 2026.10.2) deklariert die vier retired_items der C-Zeilen und kein replaces: Keine alte Karte hat in der neuen Zelle einen sicher gleichen Einzelabruf. Die Zuordnung steht unverändert zur Freigabe vom 24. Oktober 2026.",
+  "source": "Ausdrückliche Freigabe von Thomas im Claude-Code-Chat am 24. Oktober 2026: „Ja, alle vier stilllegen (J01 bis J04, ohne Lernstandübertrag), Mapping freigegeben.“ Davor hatte er gebeten, sauber von den alten Zellen auf die Academy-basierten Zellen zu wechseln.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "0dd65c8f58b7ece3edcf6aff1d5eced099b74e6c",
+  "authorization": "Thomas hat am 24. Oktober 2026 die Zuordnung (4 × C, kein replaces) freigegeben und alle vier Karten als retired_items bestätigt (J01 bis J04). Die genau benannten retired_items dürfen veröffentlicht und synchronisiert werden; persönliche Karten und Reviewhistorien bleiben erhalten. Merge der PRs und Veröffentlichung sind damit nicht freigegeben.",
+  "policy": "C: geteilter, korrigierter oder nicht lehrplankonformer Gesamtabruf; kein Lernstandsübertrag, die alte Karte wird stillgelegt. Karten und Reviewhistorien bleiben erhalten. Nur temporäre Bibliotheken für die Prüfung verwenden.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-9-franzoesisch-imparfait-futur-objektpronomen-kvt.json",
+      "tile_id": "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",
+      "version": "2026.08.1",
+      "sha256": "bb11c43e238059b978c3e6e8442763a549d4617e42f7cc9f1d5bd14cb11493ff"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",
+      "de_by_id": "01K4F9M0000000000000000J01",
+      "de_by_question": "Aus welchem Stamm werden die regelmäßigen Formen des Imparfait im Französischen für alle Verben abgeleitet?",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Der alte Einzelabruf fragt nur nach dem Stamm des imparfait. Die neuen Karten fragen die Bildung samt Ausnahme être (fr9-imparfait-formes-kern) und einzelne Formen (fr9-imparfait-formes-check, -extra). Kein sicher gleicher Abruf, deshalb kein Übertrag einer Beherrschung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",
+      "de_by_id": "01K4F9M0000000000000000J02",
+      "de_by_question": "Erkläre Bildung und Kontrastierung der beiden französischen Vergangenheitszeiten: 1. Bildung des Imparfait: Stamm der nous-Form im Présent + feste Endungen: -ais, -ais, -ait, -ions, -iez, -aient (einzige Ausnahme: être -> ét- [j'étais]), 2. Wann Imparfait?: Für andauernde Zustände, Beschreibungen von Wetter/Personen/Landschaften, Gewohnheiten in der Vergangenheit (tous les jours, souvent), Hintergrundhandlungen (pendant que...), 3. Wann Passé composé?: Für einmalige, abgeschlossene Handlungen, Handlungsketten (d'abord, puis, ensuite) und neu eintretende, plötzliche Ereignisse (tout à coup), die die Hintergrundhandlung unterbrechen und übersetze: 'Als ich klein war [Zustand], spielte ich jeden Tag im Garten [Gewohnheit], aber gestern ging ich ins Kino [einmalige Handlung].'",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Der alte Gesamtabruf verlangt Bildung des imparfait, seinen Gebrauch, das passé composé und eine Übersetzung in einer Antwort. Die neue Zelle trennt das in drei Lektionen mit eigenen Karten (fr9-imparfait-formes-kern, fr9-imparfait-emploi-kern, fr9-imparfait-pc-kern). Keine Karte hat denselben Gesamtumfang, daher kein Übertrag."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",
+      "de_by_id": "01K4F9M0000000000000000J03",
+      "de_by_question": "An welcher Position stehen französische Objektpronomen (z. B. 'me, te, le, la, lui, leur') im bejahten und verneinten Aussagesatz?",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Objektpronomen und ihre Stellung sind Vorwissen aus Klasse 7 und 8 und kommen unter den Kompetenzerwartungen von Französisch 9 nicht vor. Die neue Zelle hat dazu keine Karte, nur zur Stellung von y und en (fr9-pronom-y-extra). Kein Nachfolger."
+    },
+    {
+      "de_by_cell": "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",
+      "de_by_id": "01K4F9M0000000000000000J04",
+      "de_by_question": "Differenziere die beiden Klassen persönlicher Objektpronomen im Französischen: 1. Direkte Objektpronomen (COD / Akkusativ: wen oder was?): me, te, le / la / l', nous, vous, les (ersetzen Nomen ohne Präposition, z. B. 'Je regarde le film' -> 'Je le regarde'), 2. Indirekte Objektpronomen (COI / Dativ: wem?): me, te, lui (ihm/ihr), nous, vous, leur (ihnen) (ersetzen Personen mit Präposition à, z. B. 'Je téléphone à Paul' -> 'Je lui téléphone'), 3. Stellung im Satz (immer vor dem finiten Verb, bei Verneinung: Subjekt + ne + Pronomen + Verb + pas; bei 2 Verben wie aller + Infinitiv vor dem Infinitiv!) und übersetze: a) 'Ich sehe ihn.' b) 'Ich antworte ihr nicht.' c) 'Wir werden sie (die Freunde) einladen.'",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Die Unterscheidung von direkten und indirekten Objektpronomen (COD und COI) gehört zu Klasse 8 und ist kein Lerngegenstand von Französisch 9. Die neue Zelle hat dazu keine Karte. Kein Nachfolger."
+    }
+  ]
+}
