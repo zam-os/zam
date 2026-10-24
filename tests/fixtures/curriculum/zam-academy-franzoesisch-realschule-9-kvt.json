@@ -1,7 +1,7 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "zam-academy:franzoesisch-realschule-9",
-  "version": "2026.10.1",
+  "version": "2026.10.2",
   "title": "Französisch 9 Realschule (ZAM Academy)",
   "description": "Der Fachlehrplan Französisch der Realschule Bayern in Jahrgangsstufe 9 für Wahlpflichtfächergruppe IIIa (zweite Fremdsprache, drittes Lernjahr): kommunikative Fertigkeiten, Grammatik, Wortschatz und Aussprache, Frankreich erleben, Texte und Medien, Lernstrategien und Themengebiete. 56 Lektionen.",
   "publisher": "ZAM Academy",
@@ -5892,6 +5892,24 @@
           ]
         }
       ]
+    }
+  ],
+  "retired_items": [
+    {
+      "id": "01K4F9M0000000000000000J01",
+      "reason": "Der alte Einzelabruf fragt nur nach dem Stamm des imparfait. Die neuen Karten fragen die Bildung samt Ausnahme être (fr9-imparfait-formes-kern) und einzelne Formen (fr9-imparfait-formes-check, -extra). Kein sicher gleicher Abruf, deshalb kein Übertrag einer Beherrschung."
+    },
+    {
+      "id": "01K4F9M0000000000000000J02",
+      "reason": "Der alte Gesamtabruf verlangt Bildung des imparfait, seinen Gebrauch, das passé composé und eine Übersetzung in einer Antwort. Die neue Zelle trennt das in drei Lektionen mit eigenen Karten (fr9-imparfait-formes-kern, fr9-imparfait-emploi-kern, fr9-imparfait-pc-kern). Keine Karte hat denselben Gesamtumfang, daher kein Übertrag."
+    },
+    {
+      "id": "01K4F9M0000000000000000J03",
+      "reason": "Objektpronomen und ihre Stellung sind Vorwissen aus Klasse 7 und 8 und kommen unter den Kompetenzerwartungen von Französisch 9 nicht vor. Die neue Zelle hat dazu keine Karte, nur zur Stellung von y und en (fr9-pronom-y-extra). Kein Nachfolger."
+    },
+    {
+      "id": "01K4F9M0000000000000000J04",
+      "reason": "Die Unterscheidung von direkten und indirekten Objektpronomen (COD und COI) gehört zu Klasse 8 und ist kein Lerngegenstand von Französisch 9. Die neue Zelle hat dazu keine Karte. Kein Nachfolger."
     }
   ]
 }

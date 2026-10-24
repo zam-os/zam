@@ -281,10 +281,11 @@ IIIa teaches in this grade (groups I, II and IIIb have no French), so its
 Academy cell binds all 56 lessons to grade 9 and track `IIIa` and is offered
 to IIIa and to a learner who has not chosen a group, never to I, II or IIIb.
 Its 168 French practice items link to their lessons in the training app. The
-first version, 2026.10.1, sits beside the old four-card partial school cell
-and replaces nothing: the mapping with four C rows is a proposal, so the cell
-declares neither `replaces` nor `retired_items`, and the old cards, personal
-card states and review histories stay active and unchanged.
+old four-card partial school cell has no safely equal single retrieval in the
+new cell, so version 2026.10.2 retires all four cards as `retired_items`
+without any mastery transfer and declares no `replaces` (approved 2026-10-24).
+The old cell is no longer bundled; all four personal card states and review
+histories remain intact.
 
 Mathematik 10 has two Fachlehrpläne that differ in content, not only in
 depth: Zweig I learns Abbildungen and Logarithmusfunktionen, Zweig II/III

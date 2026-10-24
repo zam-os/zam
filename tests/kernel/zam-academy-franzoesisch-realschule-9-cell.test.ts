@@ -4,24 +4,35 @@ import { join } from "node:path";
 import { ulid } from "ulid";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
+  buildReviewQueue,
   type Database,
   enrolBundledCell,
+  ensureCard,
   evaluateRating,
   findBundledCellsForScope,
   getBundledCell,
   getBundledCellTile,
   getTokenById,
   installKvtTile,
+  type KvtTile,
   listLibraryTopics,
   needsGenericCurriculumImport,
   openDatabase,
 } from "../../src/kernel/index.js";
+
+import legacyRaw from "../fixtures/legacy/de-by-realschule-9-franzoesisch-imparfait-futur-objektpronomen-kvt.json" with {
+  type: "json",
+};
+import mapping from "../fixtures/legacy/zam-academy-franzoesisch-realschule-9-replaces-de-by.json" with {
+  type: "json",
+};
 
 const CELL_ID = "zam-academy:franzoesisch-realschule-9";
 const APP = "https://academy.zam-os.org/franzoesisch-realschule-9/";
 const LEGACY_ID =
   "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen";
 const tile = getBundledCellTile(CELL_ID)!;
+const legacy = legacyRaw as unknown as KvtTile;
 const scope = (track?: string, grade = 9) => ({
   provider: "lehrplanplus-bayern",
   schoolType: "realschule",
@@ -33,8 +44,8 @@ const ids = (track?: string, grade = 9) =>
   findBundledCellsForScope(scope(track, grade)).map((cell) => cell.id);
 
 describe("ZAM Academy Französisch 9 Realschule cell", () => {
-  it("bundles the published cell beside the old partial cell without approving a history transfer", () => {
-    expect(tile.version).toBe("2026.10.1");
+  it("bundles the published cell without the old partial cell, which stays archived", () => {
+    expect(tile.version).toBe("2026.10.2");
     expect(getBundledCell(CELL_ID)).toMatchObject({
       title: "Französisch 9 Realschule (ZAM Academy)",
       publisher: "ZAM Academy",
@@ -42,19 +53,35 @@ describe("ZAM Academy Französisch 9 Realschule cell", () => {
       atomCount: 56,
     });
     expect(tile.atoms.flatMap((atom) => atom.practice_items)).toHaveLength(168);
-    expect(tile.retired_items ?? []).toEqual([]);
+    expect(getBundledCell(LEGACY_ID)).toBeUndefined();
+    expect(getBundledCellTile(LEGACY_ID)).toBeUndefined();
+  });
+
+  it("declares exactly the four approved retirements and moves no history", () => {
+    // Thomas approved the four category C rows on 2026-10-24 (zam-os/zam-academy#41).
+    expect(mapping.approved).toBe("2026-10-24");
+    expect(mapping.rows.map((row) => row.category)).toEqual([
+      "C",
+      "C",
+      "C",
+      "C",
+    ]);
+    expect(tile.retired_items?.map((entry) => entry.id)).toEqual(
+      mapping.rows.map((row) => row.de_by_id),
+    );
+    expect(tile.retired_items?.map((entry) => entry.id)).toEqual(
+      legacy.atoms.flatMap((atom) =>
+        atom.practice_items.map((item) => item.id),
+      ),
+    );
     for (const atom of tile.atoms)
       for (const item of atom.practice_items)
         expect(item.replaces ?? [], item.id).toEqual([]);
-    expect(getBundledCell(LEGACY_ID)).toBeDefined();
-    expect(getBundledCellTile(LEGACY_ID)).toBeDefined();
   });
 
   it("is offered for Wahlpflichtfächergruppe IIIa and without a chosen group, never for groups without Französisch", () => {
     for (const track of [undefined, "IIIa"]) {
-      expect(new Set(ids(track)), String(track)).toEqual(
-        new Set([CELL_ID, LEGACY_ID]),
-      );
+      expect(new Set(ids(track)), String(track)).toEqual(new Set([CELL_ID]));
       const cell = findBundledCellsForScope(scope(track)).find(
         (entry) => entry.id === CELL_ID,
       )!;
@@ -153,15 +180,15 @@ describe("ZAM Academy Französisch 9 Realschule cell", () => {
       expect(await snapshot()).toEqual(before);
     });
 
-    it("leaves all 4 old cards and 8 reviews intact and starts the 168 Academy cards unlearned", async () => {
-      await enrolBundledCell(db, userId, LEGACY_ID);
-      const originals = (await snapshot()).cards;
-      expect(originals).toHaveLength(4);
-      for (const [index, card] of originals.entries()) {
+    it("retires the four old cards with all 4 card states and 8 reviews intact and starts the 168 Academy cards unlearned", async () => {
+      await installKvtTile(db, legacy);
+      const oldTokenIds = tile.retired_items!.map((entry) => entry.id);
+      for (const [index, tokenId] of oldTokenIds.entries()) {
+        const card = await ensureCard(db, tokenId, userId);
         const now = new Date("2026-10-01T10:00:00.000Z");
         const rating = {
-          cardId: String(card.id),
-          tokenId: String(card.token_id),
+          cardId: card.id,
+          tokenId,
           userId,
           answerFormat: "recall" as const,
           responseTimeMs: 1200 + index * 100,
@@ -174,11 +201,17 @@ describe("ZAM Academy Französisch 9 Realschule cell", () => {
         });
       }
       const before = await snapshot();
+      expect(before.cards).toHaveLength(4);
       expect(before.reviews).toHaveLength(8);
-      const oldIds = new Set(before.cards.map((card) => card.id));
-      const oldTokens = await Promise.all(
-        originals.map((card) => getTokenById(db, String(card.token_id))),
-      );
+      const queue = (now: string) =>
+        buildReviewQueue(db, {
+          userId,
+          tokenIds: oldTokenIds,
+          now: new Date(now),
+          buryNewSiblings: false,
+          buryReviewSiblings: false,
+        });
+      expect((await queue("2030-01-01T00:00:00Z")).items).toHaveLength(4);
 
       expect(await enrolBundledCell(db, userId, CELL_ID)).toMatchObject({
         success: true,
@@ -187,19 +220,20 @@ describe("ZAM Academy Französisch 9 Realschule cell", () => {
       });
       const after = await snapshot();
       expect(after.cards).toHaveLength(172);
-      expect(after.cards.filter((card) => oldIds.has(card.id))).toEqual(
-        before.cards,
-      );
-      expect(after.reviews).toEqual(before.reviews);
       expect(
-        await Promise.all(
-          originals.map((card) => getTokenById(db, String(card.token_id))),
+        after.cards.filter((card) =>
+          oldTokenIds.includes(String(card.token_id)),
         ),
-      ).toEqual(oldTokens);
-      for (const token of oldTokens) {
-        expect(token).toBeDefined();
-        expect(token?.deprecated_at).toBeNull();
+      ).toEqual(before.cards);
+      expect(after.reviews).toEqual(before.reviews);
+      for (const id of oldTokenIds) {
+        const token = await getTokenById(db, id);
+        expect(token, id).toBeDefined();
+        expect(token?.deprecated_at, id).not.toBeNull();
+        expect(token?.editorial_state, id).toBe("deprecated");
       }
+      expect((await queue("2030-01-01T00:00:00Z")).items).toHaveLength(0);
+      const oldIds = new Set(before.cards.map((card) => card.id));
       for (const card of after.cards.filter((entry) => !oldIds.has(entry.id)))
         expect(card).toMatchObject({
           state: "new",

@@ -299,9 +299,7 @@ describe("Bundled learning cells (Phase 1)", () => {
       );
       expect(
         ids({ grade: 9, subject: "franzoesisch", track: "wpfg2-3" }),
-      ).toContain(
-        "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen",
-      );
+      ).toContain("zam-academy:franzoesisch-realschule-9");
       expect(
         needsGenericCurriculumImport({
           provider: "lehrplanplus-bayern",
@@ -337,8 +335,7 @@ describe("Bundled learning cells (Phase 1)", () => {
         expect(cells("bwr", 9, track)).not.toContain(
           "zam-academy:bwr-realschule-9",
         );
-      const french =
-        "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen";
+      const french = "zam-academy:franzoesisch-realschule-9";
       expect(cells("franzoesisch", 9, "IIIa")).toContain(french);
       expect(cells("franzoesisch", 9, "wpfg3a")).toContain(french);
       for (const track of ["II", "wpfg2", "IIIb", "wpfg3b"])
