@@ -60,6 +60,12 @@
     "file": "zam-academy-geschichte-realschule-9-kvt.json"
   },
   {
+    "id": "zam-academy:informatik-realschule-10",
+    "version": "2026.10.1",
+    "sha256": "f7b93c334660c109c77fa72d5578a6ee53ba4545d301fe4654ae92e6bdf49c24",
+    "file": "zam-academy-informatik-realschule-10-kvt.json"
+  },
+  {
     "id": "zam-academy:mathematik-realschule-10",
     "version": "2026.10.1",
     "sha256": "869d1ca86992a19be6bbd0777238ebd5108927b5f0866d472f71f6681ab0d224",

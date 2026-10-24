@@ -89,14 +89,18 @@ describe("ZAM Academy Relationale Datenbanken und SQL cell", () => {
   });
 
   it("is the database cell at its LehrplanPLUS position, Realschule 9 IT, for both Zweig codes", () => {
-    // The position also offers the IT modules Algorithmen (2.6.1) and
-    // Datennetze (2.5.1), which name no grade or track: the school chooses
-    // the year. The de-by database cell is gone. zam codes the
+    // The position also offers Algorithmen (2.6.1), Datennetze (2.5.1)
+    // and the Informatik-10 elective modules, which name no grade or track:
+    // the school chooses the year. The de-by database cell is gone. zam codes the
     // Wahlpflichtfächergruppen II and III as one track, II_III (Physik does too).
     // A learner's position carries the manifest's ids (subject `it`, tracks
     // `wpfg1` / `wpfg2-3`); the cells spell the subject `informatik`, and a
     // caller may name a single group such as `II`.
-    const modules = ["zam-academy:algorithmen", "zam-academy:datennetze"];
+    const modules = [
+      "zam-academy:algorithmen",
+      "zam-academy:datennetze",
+      "zam-academy:informatik-realschule-10",
+    ];
     const zweigI = [undefined, "I", "wpfg1"];
     const zweigII = ["II_III", "wpfg2-3", "II", "IIIa"];
     for (const subject of ["it", "informatik"]) {
@@ -121,7 +125,10 @@ describe("ZAM Academy Relationale Datenbanken und SQL cell", () => {
         subject: "it",
       }),
     ).toBe(false);
-    expect(getBundledCell(LEGACY_ID), `${LEGACY_ID} left the bundle`).toBeUndefined();
+    expect(
+      getBundledCell(LEGACY_ID),
+      `${LEGACY_ID} left the bundle`,
+    ).toBeUndefined();
     expect(
       findBundledCellsForScope({
         provider: "lehrplanplus-bayern",
@@ -171,13 +178,15 @@ describe("ZAM Academy Relationale Datenbanken und SQL cell", () => {
           (binding) => binding.provider === "lehrplanplus-bayern",
         ) ?? [];
       if (EXTRA_LESSONS.includes(atom.slug)) {
-        expect(lehrplan, `${atom.slug} is beyond the curriculum`).toHaveLength(0);
+        expect(lehrplan, `${atom.slug} is beyond the curriculum`).toHaveLength(
+          0,
+        );
         continue;
       }
-      expect(lehrplan.map((binding) => binding.track).sort(), atom.slug).toEqual([
-        "I",
-        "II_III",
-      ]);
+      expect(
+        lehrplan.map((binding) => binding.track).sort(),
+        atom.slug,
+      ).toEqual(["I", "II_III"]);
       for (const binding of lehrplan) {
         expect(binding.school_type).toBe("realschule");
         expect(binding.grade).toBe(9);
