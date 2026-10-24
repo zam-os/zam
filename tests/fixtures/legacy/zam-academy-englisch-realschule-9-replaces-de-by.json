@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "proposed": "2026-10-24",
+  "approved": "2026-10-24",
+  "description": "Freigegebene Zuordnung: drei gleiche Einzelabrufe (A) mit erhaltenem Lernverlauf; fünf korrigierte oder mehrteilige Abrufe (C) verlassen die aktive Wiederholung ohne Übertragung ihrer Beherrschung.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-9-englisch-grammatik-syntax-kvt.json",
+      "tile_id": "de-by:realschule-9-englisch-grammatik-syntax",
+      "version": "2026.08.1",
+      "sha256": "fa3ffe181fbb2dd5060551ee7bf9177db89cfa9cf35ca6840e541836d691485c",
+      "source_repository": "https://github.com/zam-os/zam",
+      "source_commit": "4ca430dd146de311fda3614264edf550a31e25a1"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_id": "01K4E9G0000000000000000J01",
+      "de_by_atom": "01K4E9G0000000000000000A01",
+      "de_by_question": "Which verb form correctly completes the Type III conditional sentence: 'If she had studied harder, she ___ the exam'?",
+      "category": "A",
+      "academy_slug": "e9-conditionals-check",
+      "reason": "Gleicher einzelner Lückensatz und gleiche Typ-III-Ergebnisform: would have passed. Der verlangte Abruf bleibt unverändert."
+    },
+    {
+      "de_by_id": "01K4E9G0000000000000000J02",
+      "de_by_atom": "01K4E9G0000000000000000A01",
+      "de_by_question": "Explain the rules and differences of all three Conditional Clause types (Type I real present/future, Type II unreal present, Type III unreal past) and provide one example sentence for each.",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Alter Sammelabruf zu drei Bedingungstypen und je einem Beispiel. Neue Karten sind Einzelabrufe; kein sicher gleicher Gesamtumfang auf einer Karte."
+    },
+    {
+      "de_by_id": "01K4E9G0000000000000000J03",
+      "de_by_atom": "01K4E9G0000000000000000A02",
+      "de_by_question": "What is the correct passive transformation of: 'Shakespeare wrote Romeo and Juliet'?",
+      "category": "A",
+      "academy_slug": "e9-passive-check",
+      "reason": "Gleiche Aktiv-Passiv-Umformung desselben Shakespeare-Satzes im simple past; keine Änderung des verlangten Abrufs."
+    },
+    {
+      "de_by_id": "01K4E9G0000000000000000J04",
+      "de_by_atom": "01K4E9G0000000000000000A02",
+      "de_by_question": "Explain how the Passive Voice is formed in English (form of 'to be' + past participle/3rd form) and transform the sentence 'The engineers are building a new bridge' into: a) Present Continuous Passive, b) Simple Past Passive, and c) Present Perfect Passive.",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Alte Musterlösung vertauscht Subjekt/Objekt und vermischt reine Passivumformung mit Wechsel von Zeitform und Aspekt. Korrigierter Umfang ohne sicheren Beherrschungsübertrag."
+    },
+    {
+      "de_by_id": "01K4E9G0000000000000000J05",
+      "de_by_atom": "01K4E9G0000000000000000A03",
+      "de_by_question": "How does 'I have lost my key' shift in reported speech introduced by a past tense verb: 'Tom said that he ___ his key'?",
+      "category": "A",
+      "academy_slug": "e9-reported-statements-check",
+      "reason": "Gleicher Tom-Satz, ausdrücklich verlangter Backshift von have lost zu had lost; gleicher Einzelabruf."
+    },
+    {
+      "de_by_id": "01K4E9G0000000000000000J06",
+      "de_by_atom": "01K4E9G0000000000000000A03",
+      "de_by_question": "Explain the rules of Backshift in Reported Speech when the introductory clause is in the past (said/told). Detail the shift for tenses, pronouns, and time/place expressions (today, yesterday, tomorrow, here).",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Sammelabruf mehrerer Zeit-, Personen- und Ortswechsel; Korrektur mechanischer Ersetzungsregeln. Neue Einzelkarten bilden keinen sicheren Gesamtnachfolger."
+    },
+    {
+      "de_by_id": "01K4E9G0000000000000000J07",
+      "de_by_atom": "01K4E9G0000000000000000A04",
+      "de_by_question": "Can the relative pronoun 'that' be used in non-defining relative clauses (extra information set in commas)?",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Alte Antwort only who or which ist fachlich unvollständig: whose, when und where sind ebenfalls möglich. Korrigierte Regel übernimmt keine Beherrschung."
+    },
+    {
+      "de_by_id": "01K4E9G0000000000000000J08",
+      "de_by_atom": "01K4E9G0000000000000000A04",
+      "de_by_question": "Contrast defining (identifying) and non-defining (extra information) relative clauses regarding meaning, punctuation (commas), pronoun choices ('who', 'which', 'that', 'whose'), and explain when a contact clause (omission of the relative pronoun) is permissible.",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Alter Sammelabruf und teils falsche Musterlösung (only who or which); neue Einzelabrufe zu Funktion, Besitz, Kommas und Auslassung sind kein sicher gleicher Gesamtumfang."
+    }
+  ],
+  "status": "approved",
+  "source_repository": "https://github.com/zam-os/zam",
+  "source_commit": "4ca430dd146de311fda3614264edf550a31e25a1",
+  "source": "Thomas im Codex-Chat zu zam-os/zam-academy#38 am 24. Oktober 2026, nach der Prüfung der PR-Reviews und der besprochenen Zuordnung 3 A / 5 C: „Freigabe erteile ich“.",
+  "authorization": "Die Freigabe gilt den acht hier dokumentierten Zeilen: drei A-Übertragungen auf jeweils einen gleichen Einzelabruf und fünf C-Ablösungen ohne Beherrschungsübertrag. Die Zelle darf diese replaces und retired_items mit der Academy-Veröffentlichung ausliefern. Persönliche Bibliotheken werden in diesem PR nicht geöffnet; die Prüfung nutzt ausschließlich Wegwerfbibliotheken."
+}
