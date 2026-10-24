@@ -1,0 +1,2471 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:informatik-realschule-10",
+  "version": "2026.10.1",
+  "title": "Informatik 10 Realschule · IT-Vertiefungen (ZAM Academy)",
+  "description": "36 Lektionen und 72 Karten zu fünf wählbaren Modulen: Datennetze II, objektorientierte Softwareentwicklung, logische Schaltungen, Robotik und KI. Jahrgangsübergreifender IT-Aufbauunterricht nach LehrplanPLUS Bayern; keine vollständige Klasse-10-Fachabdeckung und keine Altstandsübernahme.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-24T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/informatik-realschule-10/",
+      "label": "ZAM Academy: Informatik 10 · IT-Vertiefungen"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/it",
+      "label": "ISB · LehrplanPLUS Informationstechnologie Realschule 5–10 · Module 2.5.2, 2.6.2 und 2.7.1–3 · geprüft 24.10.2026",
+      "checked": "2026-10-24"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachprofil/realschule/it",
+      "label": "ISB · Fachprofil IT · modularer Aufbau und Wahlpflichtfächergruppen",
+      "checked": "2026-10-24"
+    },
+    {
+      "uri": "https://home.cern/science/computing/the-birth-of-the-web",
+      "label": "CERN · The birth of the Web",
+      "checked": "2026-10-24"
+    },
+    {
+      "uri": "https://www.bfdi.bund.de/SharedDocs/Downloads/DE/Broschueren/INFO1.pdf?__blob=publicationFile&v=61",
+      "label": "BfDI · Info 1 · DSGVO und BDSG · Grundprinzipien und Rechtsgrundlagen",
+      "checked": "2026-10-24"
+    },
+    {
+      "uri": "https://www.gesetze-im-internet.de/kunsturhg/__22.html",
+      "label": "Bundesrecht · KunstUrhG § 22 · Bildnisse",
+      "checked": "2026-10-24"
+    },
+    {
+      "uri": "https://www.gesetze-im-internet.de/urhg/__51.html",
+      "label": "Bundesrecht · UrhG § 51 · Zitate",
+      "checked": "2026-10-24"
+    },
+    {
+      "uri": "https://csrc.nist.gov/pubs/sp/800/41/r1/final",
+      "label": "NIST · SP 800-41 Rev. 1 · Firewalls and Firewall Policy",
+      "checked": "2026-10-24"
+    },
+    {
+      "uri": "https://www.rfc-editor.org/rfc/rfc8446.html",
+      "label": "IETF · RFC 8446 · TLS 1.3",
+      "checked": "2026-10-24"
+    },
+    {
+      "uri": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_classes",
+      "label": "MDN · JavaScript Guide · Using classes",
+      "checked": "2026-10-24"
+    },
+    {
+      "uri": "https://developers.google.com/machine-learning/crash-course/overfitting/dividing-datasets",
+      "label": "Google · Machine Learning Crash Course · Training, validation and test sets",
+      "checked": "2026-10-24"
+    },
+    {
+      "uri": "https://developers.google.com/machine-learning/decision-forests/decision-trees",
+      "label": "Google · Decision forests · Decision trees",
+      "checked": "2026-10-24"
+    },
+    {
+      "uri": "https://academy.zam-os.org/uml/",
+      "label": "ZAM Academy · vorhandene UML-Zeichenwerkstatt",
+      "checked": "2026-10-24"
+    },
+    {
+      "uri": "https://developers.google.com/machine-learning/glossary/df#gini-impurity",
+      "label": "Google · Decision Forests Glossary · Gini-Unreinheit",
+      "checked": "2026-10-24"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5PZ9FVFBMMK0EV6A8F8XJRV",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVFBMMK0EV6A8F8XJRV",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-internet",
+      "title": "Internet und Web unterscheiden",
+      "domain": "informatik/netze",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-internet",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-internet",
+          "materiality": "material",
+          "id": "01M5PZ9FVFAXA0XJYP61GCHKHT",
+          "slug": "it10-internet-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage beschreibt das Verhältnis von Web und Internet?",
+          "concept": "Das Web ist ein Dienst, der die Infrastruktur des Internets nutzt.",
+          "sample_solution": "Das Web ist ein Dienst, der die Infrastruktur des Internets nutzt. Das Web bietet Webseiten über die Infrastruktur des Internets an; daneben gibt es etwa E-Mail. Eine Webseite ist ein einzelner Inhalt und nicht das gesamte Netz. Deshalb sind Internet und Web keine austauschbaren Begriffe.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Web ist ein Dienst, der die Infrastruktur des Internets nutzt.",
+              "Das Internet ist eine einzelne Webseite mit vielen Unterseiten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-internet",
+          "materiality": "material",
+          "id": "01M5PZ9FVFSZV0FWF4QYF2XZ8S",
+          "slug": "it10-internet-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Eine Schule behauptet: Weil das Web offen ist, können alle Menschen gleich gut teilnehmen. Prüfe die Aussage anhand zweier Hürden.",
+          "concept": "Offene Webstandards ermöglichen unterschiedliche Browser und eigene Veröffentlichungen. Teilnahme hängt zusätzlich von Netzanschluss, geeigneten Geräten, barrierefreier Gestaltung und Fähigkeiten ab. Offenheit allein beseitigt diese Hürden nicht.",
+          "sample_solution": "Offene Webstandards ermöglichen unterschiedliche Browser und eigene Veröffentlichungen. Teilnahme hängt zusätzlich von Netzanschluss, geeigneten Geräten, barrierefreier Gestaltung und Fähigkeiten ab. Offenheit allein beseitigt diese Hürden nicht."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVGXASRPDQV3BMC8CT7",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVGXASRPDQV3BMC8CT7",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-kommunikation",
+      "title": "Kommunikation bewusst gestalten",
+      "domain": "informatik/netze",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-kommunikation",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-kommunikation",
+          "materiality": "material",
+          "id": "01M5PZ9FVGFK7M32KDRW0E185T",
+          "slug": "it10-kommunikation-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Vereinbarung verringert vermeidbaren Erreichbarkeitsdruck?",
+          "concept": "Für nicht dringende Aufgaben feste Antwortzeiten vereinbaren.",
+          "sample_solution": "Für nicht dringende Aufgaben feste Antwortzeiten vereinbaren. Vereinbarte Antwortzeiten machen deutlich, wann du mit einer Reaktion rechnen kannst. Sofortige Antworten auch nachts erhöhen den Druck; viele Nachrichten allein sagen nichts über die Qualität der Zusammenarbeit aus.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für nicht dringende Aufgaben feste Antwortzeiten vereinbaren.",
+              "Jede Nachricht muss auch nachts sofort beantwortet werden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-kommunikation",
+          "materiality": "material",
+          "id": "01M5PZ9FVGEYQN1EKQQDC528K2",
+          "slug": "it10-kommunikation-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Betrieb plant eine öffentliche Rangliste der schnellsten Chatantworten. Beurteile die Idee und schlage eine bessere Messgröße vor.",
+          "concept": "Antwortgeschwindigkeit allein belohnt ständige Erreichbarkeit und kurze statt hilfreicher Antworten. Das kann Druck erzeugen. Für die Zusammenarbeit eignen sich gemeinsam vereinbarte Fristen und Rückmeldungen dazu, ob Fragen vollständig geklärt wurden.",
+          "sample_solution": "Antwortgeschwindigkeit allein belohnt ständige Erreichbarkeit und kurze statt hilfreicher Antworten. Das kann Druck erzeugen. Für die Zusammenarbeit eignen sich gemeinsam vereinbarte Fristen und Rückmeldungen dazu, ob Fragen vollständig geklärt wurden."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVGJR29TZRCHXDK2WKT",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVGJR29TZRCHXDK2WKT",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-datenspuren",
+      "title": "Datenspuren und vermeintliche Anonymität",
+      "domain": "informatik/netze",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-datenspuren",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVGXASRPDQV3BMC8CT7",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Kommunikation bewusst gestalten“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-datenspuren",
+          "materiality": "material",
+          "id": "01M5PZ9FVGD4GGMZP2K39XYWVB",
+          "slug": "it10-datenspuren-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was leistet ein Pseudonym allein?",
+          "concept": "Es ersetzt den sichtbaren Namen, verhindert aber nicht jede Zuordnung.",
+          "sample_solution": "Es ersetzt den sichtbaren Namen, verhindert aber nicht jede Zuordnung. Ein Pseudonym verändert den sichtbaren Namen. Verbindungsdaten oder Angaben im Inhalt können trotzdem eine Zuordnung ermöglichen; sie werden durch den anderen Namen nicht automatisch gelöscht.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es ersetzt den sichtbaren Namen, verhindert aber nicht jede Zuordnung.",
+              "Es entfernt automatisch alle Verbindungsdaten des Dienstes."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-datenspuren",
+          "materiality": "material",
+          "id": "01M5PZ9FVG8BZJKSZYJ4WM1X9F",
+          "slug": "it10-datenspuren-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Eine App will genaue Standortverläufe speichern, um einen Stundenplan anzuzeigen. Begründe eine datensparsamere Lösung.",
+          "concept": "Ein gewöhnlicher Stundenplan benötigt keine genauen Bewegungsprofile. Die ausgewählte Schule oder ein lokal eingetragener Plan genügt. Die Standorterfassung sollte für diesen Zweck entfallen; eine zusätzliche Funktion müsste gesondert begründet und geprüft werden.",
+          "sample_solution": "Ein gewöhnlicher Stundenplan benötigt keine genauen Bewegungsprofile. Die ausgewählte Schule oder ein lokal eingetragener Plan genügt. Die Standorterfassung sollte für diesen Zweck entfallen; eine zusätzliche Funktion müsste gesondert begründet und geprüft werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVGDMGM2SVPV33QS6B1",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVGDMGM2SVPV33QS6B1",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-rechte",
+      "title": "Fotos, Quellen und personenbezogene Daten",
+      "domain": "informatik/netze",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-rechte",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVGJR29TZRCHXDK2WKT",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Datenspuren und vermeintliche Anonymität“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-rechte",
+          "materiality": "material",
+          "id": "01M5PZ9FVG85VTFFA4DPB8D45N",
+          "slug": "it10-rechte-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Weshalb genügt bei einem fremden Personenfoto die Quellenangabe allein nicht?",
+          "concept": "Nutzungsrechte und Rechte der abgebildeten Person müssen zusätzlich geklärt sein.",
+          "sample_solution": "Nutzungsrechte und Rechte der abgebildeten Person müssen zusätzlich geklärt sein. Die Quelle nennt die Herkunft, überträgt aber keine Nutzungsrechte. Bei einem Personenfoto sind außerdem die Rechte der erkennbaren Personen zu prüfen; öffentlich sichtbar bedeutet nicht frei verwendbar.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nutzungsrechte und Rechte der abgebildeten Person müssen zusätzlich geklärt sein.",
+              "Eine Quellenangabe überträgt automatisch sämtliche Rechte am Foto."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-rechte",
+          "materiality": "material",
+          "id": "01M5PZ9FVGWT99VGNB9ZSEMSS4",
+          "slug": "it10-rechte-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Eine Schülerin meint: Mit einer Quellenangabe darf ich jedes Bild als Zitat benutzen. Widerlege die Begründung ohne eine pauschale Regel für alle Einzelfälle zu erfinden.",
+          "concept": "Eine Quellenangabe macht eine beliebige Bildübernahme nicht zum zulässigen Zitat. Dafür braucht es einen eigenen Zitatzweck und einen dadurch gerechtfertigten Umfang; weitere Voraussetzungen sind zu prüfen. Eine passende Lizenz oder eine eigene Darstellung kann stattdessen die Nutzung ermöglichen.",
+          "sample_solution": "Eine Quellenangabe macht eine beliebige Bildübernahme nicht zum zulässigen Zitat. Dafür braucht es einen eigenen Zitatzweck und einen dadurch gerechtfertigten Umfang; weitere Voraussetzungen sind zu prüfen. Eine passende Lizenz oder eine eigene Darstellung kann stattdessen die Nutzung ermöglichen."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVGWJW4PSQNWB5D76HZ",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVGWJW4PSQNWB5D76HZ",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-firewall",
+      "title": "Filterregeln statt Alles-oder-nichts",
+      "domain": "informatik/netze",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-firewall",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-firewall",
+          "materiality": "material",
+          "id": "01M5PZ9FVG4QF868PA0ZNGWFPP",
+          "slug": "it10-firewall-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Regel entscheidet im Modell bei mehreren passenden Filterregeln?",
+          "concept": "Die erste passende Regel in der geordneten Liste.",
+          "sample_solution": "Die erste passende Regel in der geordneten Liste. Der Filter arbeitet die Liste von oben nach unten ab und endet beim ersten Treffer. Eine spätere Freigabe hebt eine frühere passende Sperre deshalb nicht auf; ohne Treffer gilt die Standardaktion.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die erste passende Regel in der geordneten Liste.",
+              "Immer die letzte Regel, unabhängig von ihrer Position."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-firewall",
+          "materiality": "material",
+          "id": "01M5PZ9FVGYV0YFN15AWKKRT9H",
+          "slug": "it10-firewall-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Entwirf eine lokale Filterstrategie, die nur ausgehendes TCP 443 und UDP 53 zulässt. Nenne zwei Gegenproben und eine Grenze des Modells.",
+          "concept": "Ich erlaube ausgehend TCP mit Zielport 443 und UDP mit Zielport 53. Der Standardfall ist Abweisen. Als Gegenproben müssen eingehendes TCP 443 und ausgehendes TCP 80 scheitern. Das zustandslose Modell behandelt Rückpakete separat und prüft keine tatsächlichen Webinhalte.",
+          "sample_solution": "Ich erlaube ausgehend TCP mit Zielport 443 und UDP mit Zielport 53. Der Standardfall ist Abweisen. Als Gegenproben müssen eingehendes TCP 443 und ausgehendes TCP 80 scheitern. Das zustandslose Modell behandelt Rückpakete separat und prüft keine tatsächlichen Webinhalte."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVGN7MTBZX3RGM2NNVT",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVGN7MTBZX3RGM2NNVT",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-schluessel",
+      "title": "Verschlüsseln und Schlüssel unterscheiden",
+      "domain": "informatik/netze",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-schluessel",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-schluessel",
+          "materiality": "material",
+          "id": "01M5PZ9FVGZR2WNK2H7YRG43TY",
+          "slug": "it10-schluessel-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Teil eines asymmetrischen Schlüsselpaars muss geheim bleiben?",
+          "concept": "Der private Schlüssel.",
+          "sample_solution": "Der private Schlüssel. Der private Schlüssel bleibt geheim, weil er nur seinem vorgesehenen Besitzer zur Verfügung stehen soll. Der öffentliche Schlüssel darf verteilt werden; die Sicherheit soll nicht davon abhängen, dass das Verfahren unbekannt bleibt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der private Schlüssel.",
+              "Der öffentlich verteilbare Schlüssel."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-schluessel",
+          "materiality": "material",
+          "id": "01M5PZ9FVGGPJ9TC009D85RXA1",
+          "slug": "it10-schluessel-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Eine Nachricht ist digital signiert, aber nicht verschlüsselt. Erkläre zwei mögliche Schutzaussagen und eine fehlende Eigenschaft.",
+          "concept": "Eine erfolgreich und vertrauenswürdig geprüfte Signatur kann die Herkunft vom zugehörigen Schlüssel und die Unverändertheit der signierten Nachricht belegen. Der Klartext bleibt lesbar; Vertraulichkeit entsteht dadurch nicht. Ob der Inhalt wahr ist, entscheidet die Signatur ebenfalls nicht.",
+          "sample_solution": "Eine erfolgreich und vertrauenswürdig geprüfte Signatur kann die Herkunft vom zugehörigen Schlüssel und die Unverändertheit der signierten Nachricht belegen. Der Klartext bleibt lesbar; Vertraulichkeit entsteht dadurch nicht. Ob der Inhalt wahr ist, entscheidet die Signatur ebenfalls nicht."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVGD9WD37YQPTR1NMSD",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVGD9WD37YQPTR1NMSD",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-https",
+      "title": "HTTPS und WLAN-Schutz einordnen",
+      "domain": "informatik/netze",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-https",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVGN7MTBZX3RGM2NNVT",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Verschlüsseln und Schlüssel unterscheiden“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-https",
+          "materiality": "material",
+          "id": "01M5PZ9FVGEC2BPQTQTHJG4JHQ",
+          "slug": "it10-https-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was folgt aus einem erfolgreichen HTTPS-Verbindungsaufbau allein?",
+          "concept": "Die Übertragung zur geprüften Gegenstelle ist geschützt, der Inhalt kann trotzdem täuschen.",
+          "sample_solution": "Die Übertragung zur geprüften Gegenstelle ist geschützt, der Inhalt kann trotzdem täuschen. HTTPS schützt die Übertragung zur geprüften Gegenstelle. Eine Zertifikatsprüfung bewertet weder das Warenangebot noch die Wahrheit des Inhalts und verhindert nicht, dass die Seite personenbezogene Daten verarbeitet.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Übertragung zur geprüften Gegenstelle ist geschützt, der Inhalt kann trotzdem täuschen.",
+              "Jeder angebotene Artikel wurde von der Zertifizierungsstelle geprüft."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-https",
+          "materiality": "material",
+          "id": "01M5PZ9FVG2ZM87VBFZNYYF4T6",
+          "slug": "it10-https-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Im geschützten Schul-WLAN wird eine unverschlüsselte HTTP-Seite geöffnet. Welche Strecken sind geschützt und welche Aussage wäre zu weitgehend?",
+          "concept": "Der WLAN-Schutz betrifft die Funkstrecke zwischen Gerät und WLAN-Zugangspunkt. Er schützt nicht automatisch den weiteren Weg zum HTTP-Server. Die Aussage, alle Internetinhalte seien durch das WLAN vollständig verschlüsselt, wäre deshalb falsch.",
+          "sample_solution": "Der WLAN-Schutz betrifft die Funkstrecke zwischen Gerät und WLAN-Zugangspunkt. Er schützt nicht automatisch den weiteren Weg zum HTTP-Server. Die Aussage, alle Internetinhalte seien durch das WLAN vollständig verschlüsselt, wäre deshalb falsch."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVGTBM2P0BRH3C1CNH9",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVGTBM2P0BRH3C1CNH9",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-sicherheitskonzept",
+      "title": "Ein Sicherheitskonzept prüfen",
+      "domain": "informatik/netze",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-sicherheitskonzept",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVGWJW4PSQNWB5D76HZ",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Filterregeln statt Alles-oder-nichts“ auf."
+        },
+        {
+          "atom_id": "01M5PZ9FVGD9WD37YQPTR1NMSD",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „HTTPS und WLAN-Schutz einordnen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.5.2",
+          "topic_title": "Datennetze II"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-sicherheitskonzept",
+          "materiality": "material",
+          "id": "01M5PZ9FVG8QZFT4NS7CCQ75GQ",
+          "slug": "it10-sicherheitskonzept-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Prüfung ergänzt einen erfolgreichen Webaufruf sinnvoll?",
+          "concept": "Auch unerlaubte Zugriffe und fehlgeschlagene Zertifikatsprüfungen testen.",
+          "sample_solution": "Auch unerlaubte Zugriffe und fehlgeschlagene Zertifikatsprüfungen testen. Ein erfolgreicher erlaubter Aufruf prüft nur den gewünschten Fall. Unerlaubte Zugriffe und fehlerhafte Zertifikate sind zusätzliche Gegenproben; bloßes Wiederholen desselben Erfolgs oder Abschalten von Warnungen prüft sie nicht.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auch unerlaubte Zugriffe und fehlgeschlagene Zertifikatsprüfungen testen.",
+              "Nur denselben erfolgreichen Aufruf mehrfach wiederholen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-sicherheitskonzept",
+          "materiality": "material",
+          "id": "01M5PZ9FVGVTKE25DTJ1P1JTFY",
+          "slug": "it10-sicherheitskonzept-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Team meldet nach sieben erfolgreichen Modelltests: Unser echter Server ist jetzt vollständig sicher. Beurteile diese Aussage.",
+          "concept": "Die Modelltests belegen nur das geprüfte Verhalten des vereinfachten Filters und der Modell-Zertifikatsprüfung. Softwarefehler, echte Schlüsselverwaltung, Benutzerrechte und weitere Angriffe sind damit nicht überprüft. Der Bericht sollte die Testfälle und ihre Reichweite nennen und zusätzliche Prüfungen für den realen Betrieb planen.",
+          "sample_solution": "Die Modelltests belegen nur das geprüfte Verhalten des vereinfachten Filters und der Modell-Zertifikatsprüfung. Softwarefehler, echte Schlüsselverwaltung, Benutzerrechte und weitere Angriffe sind damit nicht überprüft. Der Bericht sollte die Testfälle und ihre Reichweite nennen und zusätzliche Prüfungen für den realen Betrieb planen."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVG2K7JWXJ03AJYPFW4",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVG2K7JWXJ03AJYPFW4",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-analyse",
+      "title": "Vom Auftrag zum überprüfbaren Modell",
+      "domain": "informatik/objekte",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-analyse",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.6.2",
+          "topic_title": "Objektorientierte Softwareentwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.6.2",
+          "topic_title": "Objektorientierte Softwareentwicklung"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-analyse",
+          "materiality": "material",
+          "id": "01M5PZ9FVG4F3SJNN204TT7C27",
+          "slug": "it10-analyse-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was macht eine Anforderung gut überprüfbar?",
+          "concept": "Ein konkreter Ausgangszustand, eine Aktion und ein erwartetes Ergebnis.",
+          "sample_solution": "Ein konkreter Ausgangszustand, eine Aktion und ein erwartetes Ergebnis. Ausgangszustand, Aktion und erwartetes Ergebnis lassen sich in einem Test gegenüberstellen. Allgemeine Qualitätswünsche oder bloße Fachwörter liefern noch kein beobachtbares Kriterium dafür, ob die Anforderung erfüllt ist.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein konkreter Ausgangszustand, eine Aktion und ein erwartetes Ergebnis.",
+              "Möglichst viele Fachwörter ohne ein beobachtbares Ergebnis."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-analyse",
+          "materiality": "material",
+          "id": "01M5PZ9FVGS09ZSFWYECBKPCQC",
+          "slug": "it10-analyse-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Team implementiert bereits eine Konto-App, obwohl Überziehen vielleicht erlaubt ist. Erkläre, welche Entscheidung vor den Tests geklärt werden muss.",
+          "concept": "Vor der Implementierung der Abheberegel muss feststehen, ob ein negativer Kontostand zulässig ist und welche Beträge gültig sind. Daraus entstehen unterschiedliche Tests, etwa für eine Abhebung über dem Guthaben. Ohne diese Anforderung kann derselbe Ablauf je nach Erwartung richtig oder falsch erscheinen.",
+          "sample_solution": "Vor der Implementierung der Abheberegel muss feststehen, ob ein negativer Kontostand zulässig ist und welche Beträge gültig sind. Daraus entstehen unterschiedliche Tests, etwa für eine Abhebung über dem Guthaben. Ohne diese Anforderung kann derselbe Ablauf je nach Erwartung richtig oder falsch erscheinen."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVGJ7CZZGV5R243A7ZQ",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVGJ7CZZGV5R243A7ZQ",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-klasse",
+      "title": "Klasse und Objekt auseinanderhalten",
+      "domain": "informatik/objekte",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-klasse",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVG2K7JWXJ03AJYPFW4",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Vom Auftrag zum überprüfbaren Modell“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.6.2",
+          "topic_title": "Objektorientierte Softwareentwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.6.2",
+          "topic_title": "Objektorientierte Softwareentwicklung"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-klasse",
+          "materiality": "material",
+          "id": "01M5PZ9FVGY9Z99SGTFG2FCXFZ",
+          "slug": "it10-klasse-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist die Instanz einer Klasse?",
+          "concept": "Ein konkretes Objekt mit eigenem Zustand.",
+          "sample_solution": "Ein konkretes Objekt mit eigenem Zustand. Eine Instanz ist ein bestimmtes Objekt, dessen Attribute konkrete Werte besitzen. Die Klassendefinition beschreibt den gemeinsamen Typ; sie ist weder eine Liste aller Klassennamen noch ein Ersatz für den Zustand einzelner Objekte.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein konkretes Objekt mit eigenem Zustand.",
+              "Die Liste aller möglichen Klassennamen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-klasse",
+          "materiality": "material",
+          "id": "01M5PZ9FVGX2HPJ2Q790XZAZQX",
+          "slug": "it10-klasse-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Eine Schülerin zeichnet Zaehler mit dem Attribut wert und daneben schulkasse mit wert gleich 20. Welche Darstellung beschreibt einen Typ und welche eine Instanz?",
+          "concept": "Zaehler mit Attributdefinition beschreibt die Klasse und damit den Typ. schulkasse mit dem konkreten Wert 20 beschreibt eine Instanz zu einem Zeitpunkt. Im Klassendiagramm gehören zusätzlich die Methoden zum Typ; konkrete Momentwerte gehören in die Objektdarstellung.",
+          "sample_solution": "Zaehler mit Attributdefinition beschreibt die Klasse und damit den Typ. schulkasse mit dem konkreten Wert 20 beschreibt eine Instanz zu einem Zeitpunkt. Im Klassendiagramm gehören zusätzlich die Methoden zum Typ; konkrete Momentwerte gehören in die Objektdarstellung."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVGHZDJTDNYXR2MM75W",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVGHZDJTDNYXR2MM75W",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-methoden",
+      "title": "Methoden verändern einen Zustand",
+      "domain": "informatik/objekte",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-methoden",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVGJ7CZZGV5R243A7ZQ",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Klasse und Objekt auseinanderhalten“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.6.2",
+          "topic_title": "Objektorientierte Softwareentwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.6.2",
+          "topic_title": "Objektorientierte Softwareentwicklung"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-methoden",
+          "materiality": "material",
+          "id": "01M5PZ9FVGBNPPQ0CW54AJJJHT",
+          "slug": "it10-methoden-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet this.wert im Methodenaufruf unserer Zählerklasse?",
+          "concept": "Das Attribut wert der gerade angesprochenen Instanz.",
+          "sample_solution": "Das Attribut wert der gerade angesprochenen Instanz. this bezeichnet im Aufruf die angesprochene Instanz; this.wert ist deren Attribut. Der Parameter schritt liefert dagegen ein Argument für diesen Aufruf und ist kein gemeinsamer Speicher für alle Zähler.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Attribut wert der gerade angesprochenen Instanz.",
+              "Immer den Parameter schritt des letzten beliebigen Aufrufs."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-methoden",
+          "materiality": "material",
+          "id": "01M5PZ9FVGR1E8Z50BMZFJ2ZPX",
+          "slug": "it10-methoden-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Eine Methode soll eine Summe liefern, während der Originalzähler unverändert bleibt. Wie unterscheidet sich dieser Vertrag von addiere?",
+          "concept": "Eine reine Abfragemethode berechnet aus this.wert und dem Argument einen Rückgabewert und weist this.wert nichts Neues zu. Die verändernde Methode addiere aktualisiert dagegen den Attributwert. Die Tests müssen deshalb sowohl Rückgabe als auch unveränderten oder veränderten Zustand prüfen.",
+          "sample_solution": "Eine reine Abfragemethode berechnet aus this.wert und dem Argument einen Rückgabewert und weist this.wert nichts Neues zu. Die verändernde Methode addiere aktualisiert dagegen den Attributwert. Die Tests müssen deshalb sowohl Rückgabe als auch unveränderten oder veränderten Zustand prüfen."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVG9HQ664TPR7RKCM88",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVG9HQ664TPR7RKCM88",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-invarianten",
+      "title": "Gültige Zustände erhalten",
+      "domain": "informatik/objekte",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-invarianten",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVGHZDJTDNYXR2MM75W",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Methoden verändern einen Zustand“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.6.2",
+          "topic_title": "Objektorientierte Softwareentwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.6.2",
+          "topic_title": "Objektorientierte Softwareentwicklung"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-invarianten",
+          "materiality": "material",
+          "id": "01M5PZ9FVG4ZH9NBTWX7EWBEEC",
+          "slug": "it10-invarianten-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Bedingung passt zum Lernkonto vor einer Abhebung?",
+          "concept": "Der Betrag ist positiv und höchstens so groß wie das Guthaben.",
+          "sample_solution": "Der Betrag ist positiv und höchstens so groß wie das Guthaben. Ein positiver Betrag bis einschließlich des aktuellen Guthabens erhält den vereinbarten Kontozustand. Ein zu großer Betrag würde ihn negativ machen; eine negative Abhebung würde ihn beim Subtrahieren unzulässig erhöhen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Betrag ist positiv und höchstens so groß wie das Guthaben.",
+              "Jeder negative Betrag ist automatisch eine gültige Abhebung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-invarianten",
+          "materiality": "material",
+          "id": "01M5PZ9FVGG70EB4YGPC3BXY5E",
+          "slug": "it10-invarianten-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Konto startet bei 100. Entwirf Tests für eine normale Abhebung und drei Grenzen der erlaubten Eingabe.",
+          "concept": "Für 30 erwarte ich 70. Für 100 erwarte ich 0. Für 101 bleibt der Wert 100. Für 0 oder einen negativen Betrag bleibt er ebenfalls 100. Diese Fälle prüfen normale Nutzung, Randwert und ungültige Eingaben, beweisen aber nicht die vollständige Korrektheit aller möglichen Aufrufe.",
+          "sample_solution": "Für 30 erwarte ich 70. Für 100 erwarte ich 0. Für 101 bleibt der Wert 100. Für 0 oder einen negativen Betrag bleibt er ebenfalls 100. Diese Fälle prüfen normale Nutzung, Randwert und ungültige Eingaben, beweisen aber nicht die vollständige Korrektheit aller möglichen Aufrufe."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVGRJ7W3CGHRHN5ZEEZ",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVGRJ7W3CGHRHN5ZEEZ",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-modellstruktur",
+      "title": "Modelle sinnvoll zerlegen",
+      "domain": "informatik/objekte",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-modellstruktur",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVGJ7CZZGV5R243A7ZQ",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Klasse und Objekt auseinanderhalten“ auf."
+        },
+        {
+          "atom_id": "01M5PZ9FVG9HQ664TPR7RKCM88",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Gültige Zustände erhalten“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.6.2",
+          "topic_title": "Objektorientierte Softwareentwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.6.2",
+          "topic_title": "Objektorientierte Softwareentwicklung"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-modellstruktur",
+          "materiality": "material",
+          "id": "01M5PZ9FVGV6K8AB5X0A0AGVPG",
+          "slug": "it10-modellstruktur-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist ein sinnvoller Grund für eine zusätzliche Klasse?",
+          "concept": "Sie bündelt für den Auftrag eigene Zustände und zusammengehöriges Verhalten.",
+          "sample_solution": "Sie bündelt für den Auftrag eigene Zustände und zusammengehöriges Verhalten. Eine Klasse bündelt zusammengehörige Zustände und Verhalten für den konkreten Systemzweck. Ein Substantiv im Auftrag ist nur ein Hinweis, kein Beweis für eine eigene Klasse; einzelne Zahlen brauchen ebenfalls nicht automatisch eigene Klassen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie bündelt für den Auftrag eigene Zustände und zusammengehöriges Verhalten.",
+              "Ihr Name kommt als Substantiv im Auftrag vor, unabhängig vom Zweck."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-modellstruktur",
+          "materiality": "material",
+          "id": "01M5PZ9FVGMG3AR48AF3MKEJMW",
+          "slug": "it10-modellstruktur-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Eine Klasse zeichnet die Oberfläche und berechnet zugleich sämtliche Abheberegeln. Schlage eine Zerlegung mit einer Schnittstelle vor.",
+          "concept": "Die Fachklasse Konto verwaltet das Guthaben und prüft Abhebungen. Die Oberfläche zeigt den Zustand an und übergibt gewünschte Beträge über eine Methode. So kann die Oberfläche verändert werden, ohne die Abheberegeln neu zu schreiben; Fachtests prüfen die Regel getrennt von der Darstellung.",
+          "sample_solution": "Die Fachklasse Konto verwaltet das Guthaben und prüft Abhebungen. Die Oberfläche zeigt den Zustand an und übergibt gewünschte Beträge über eine Methode. So kann die Oberfläche verändert werden, ohne die Abheberegeln neu zu schreiben; Fachtests prüfen die Regel getrennt von der Darstellung."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVGCQR64J45SKM3WH1W",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVGCQR64J45SKM3WH1W",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-bruch",
+      "title": "Einen Bruch als Objekt modellieren",
+      "domain": "informatik/objekte",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-bruch",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVGHZDJTDNYXR2MM75W",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Methoden verändern einen Zustand“ auf."
+        },
+        {
+          "atom_id": "01M5PZ9FVG9HQ664TPR7RKCM88",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Gültige Zustände erhalten“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.6.2",
+          "topic_title": "Objektorientierte Softwareentwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.6.2",
+          "topic_title": "Objektorientierte Softwareentwicklung"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-bruch",
+          "materiality": "material",
+          "id": "01M5PZ9FVGVA0JK14QYB3T3FGN",
+          "slug": "it10-bruch-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet der Zähler der Summe von a/b und c/d beim gemeinsamen Nenner b mal d?",
+          "concept": "a mal d plus c mal b.",
+          "sample_solution": "a mal d plus c mal b. Beim Erweitern auf den gemeinsamen Nenner b · d werden die Zähler zu a · d und c · b. Deren Summe ist der neue Zähler; bloßes Addieren der alten Zähler oder der Nenner berücksichtigt die unterschiedlichen Bruchteile nicht.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "a mal d plus c mal b.",
+              "a plus c, unabhängig von den Nennern."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-bruch",
+          "materiality": "material",
+          "id": "01M5PZ9FVG10RXKRR6R26EFC56",
+          "slug": "it10-bruch-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Für zwei Viertel plus ein Viertel liefert eine Methode sechs Achtel und verändert keinen Eingang. Ist das beim Werkstattvertrag korrekt? Begründe und nenne eine zusätzliche mögliche Anforderung.",
+          "concept": "Sechs Achtel ist wertgleich zu drei Vierteln. Da der Auftrag nur den korrekten Summenwert in einem neuen Objekt und unveränderte Eingänge verlangt, ist das zulässig. Eine zusätzliche Anforderung könnte die vollständig gekürzte Darstellung mit positivem Nenner sein; dafür wären weitere Implementierung und Tests nötig.",
+          "sample_solution": "Sechs Achtel ist wertgleich zu drei Vierteln. Da der Auftrag nur den korrekten Summenwert in einem neuen Objekt und unveränderte Eingänge verlangt, ist das zulässig. Eine zusätzliche Anforderung könnte die vollständig gekürzte Darstellung mit positivem Nenner sein; dafür wären weitere Implementierung und Tests nötig."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVHZRJ11ZSNQPXRWRYR",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVHZRJ11ZSNQPXRWRYR",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-testen",
+      "title": "Testen, verbessern und warten",
+      "domain": "informatik/objekte",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-testen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVGCQR64J45SKM3WH1W",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Einen Bruch als Objekt modellieren“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.6.2",
+          "topic_title": "Objektorientierte Softwareentwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.6.2",
+          "topic_title": "Objektorientierte Softwareentwicklung"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-testen",
+          "materiality": "material",
+          "id": "01M5PZ9FVHMR7T79MRHESEKTKW",
+          "slug": "it10-testen-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet ein bestandener Satz von Beispieltests?",
+          "concept": "Für diese Eingaben wurde das erwartete Verhalten beobachtet.",
+          "sample_solution": "Für diese Eingaben wurde das erwartete Verhalten beobachtet. Die Tests belegen das beobachtete Verhalten für die tatsächlich geprüften Eingaben. Sie beweisen nicht automatisch alle anderen Fälle; nach einer Änderung können auch zuvor bestandene Fälle wieder fehlschlagen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für diese Eingaben wurde das erwartete Verhalten beobachtet.",
+              "Alle möglichen Programmeingaben sind damit mathematisch bewiesen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-testen",
+          "materiality": "material",
+          "id": "01M5PZ9FVHSE5CG11P1CR8JBT0",
+          "slug": "it10-testen-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nach einer Optimierung addiert eine Bruchmethode richtig, verändert aber den linken Eingangsbruch. Warum ist das trotz richtiger Zahl ein Fehler?",
+          "concept": "Der Vertrag fordert einen neuen Ergebnisbruch und unveränderte Eingänge. Der Zahlenwert allein deckt nur einen Teil davon ab. Ein Regressionstest vergleicht deshalb beide Ausgangsobjekte vor und nach dem Aufruf und prüft, dass das Ergebnis eine neue Instanz ist.",
+          "sample_solution": "Der Vertrag fordert einen neuen Ergebnisbruch und unveränderte Eingänge. Der Zahlenwert allein deckt nur einen Teil davon ab. Ein Regressionstest vergleicht deshalb beide Ausgangsobjekte vor und nach dem Aufruf und prüft, dass das Ergebnis eine neue Instanz ist."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVHXAGCMNY1C58SR8DM",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVHXAGCMNY1C58SR8DM",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-bits",
+      "title": "Binäre Zustände und digitale Modelle",
+      "domain": "informatik/logik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-bits",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.1",
+          "topic_title": "Logische Schaltungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.1",
+          "topic_title": "Logische Schaltungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-bits",
+          "materiality": "material",
+          "id": "01M5PZ9FVHPQ5ZWRK3EATHGJZF",
+          "slug": "it10-bits-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welchen Dezimalwert hat die binäre Zahl 101?",
+          "concept": "5.",
+          "sample_solution": "5. Die Stellenwerte von 101 sind 4, 2 und 1: 1 · 4 + 0 · 2 + 1 · 1 = 5. 101 wäre das Ergebnis bei dezimaler Lesart; 3 entsteht nicht aus diesen binären Stellenwerten.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "5.",
+              "101."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-bits",
+          "materiality": "material",
+          "id": "01M5PZ9FVH4YP9E135AR05PT49",
+          "slug": "it10-bits-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Sensor liefert 1. Darf daraus ohne weitere Information geschlossen werden, dass eine Tür geschlossen ist? Begründe.",
+          "concept": "Nein. Erst die vereinbarte Codierung legt fest, ob 1 für geschlossen oder offen steht. Auch die elektrische Auswertung und mögliche Fehler sind im realen System zu beachten. Die Zahl allein bestimmt die Bedeutung nicht.",
+          "sample_solution": "Nein. Erst die vereinbarte Codierung legt fest, ob 1 für geschlossen oder offen steht. Auch die elektrische Auswertung und mögliche Fehler sind im realen System zu beachten. Die Zahl allein bestimmt die Bedeutung nicht."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVH18QPAGR7BXJ35DS8",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVH18QPAGR7BXJ35DS8",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-gatter",
+      "title": "UND, ODER und NICHT",
+      "domain": "informatik/logik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-gatter",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVHXAGCMNY1C58SR8DM",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Binäre Zustände und digitale Modelle“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.1",
+          "topic_title": "Logische Schaltungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.1",
+          "topic_title": "Logische Schaltungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-gatter",
+          "materiality": "material",
+          "id": "01M5PZ9FVHD1712PRZP3VP37WF",
+          "slug": "it10-gatter-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wann liefert ein ODER-Gatter den Ausgang 1?",
+          "concept": "Wenn mindestens ein Eingang 1 ist, auch wenn beide 1 sind.",
+          "sample_solution": "Wenn mindestens ein Eingang 1 ist, auch wenn beide 1 sind. ODER liefert bei 01, 10 und 11 den Ausgang 1. Nur bei 00 ist der Ausgang 0; die Einschränkung auf genau einen wahren Eingang gehört zu XOR.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn mindestens ein Eingang 1 ist, auch wenn beide 1 sind.",
+              "Nur wenn genau ein Eingang 1 ist."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-gatter",
+          "materiality": "material",
+          "id": "01M5PZ9FVHTV1ZSA9QX7FA1AZJ",
+          "slug": "it10-gatter-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Motor soll nur bei aktivem Startsignal und geschlossener Tür laufen. Der Türsensor meldet 1 bei offener Tür. Begründe den passenden Term und zwei Testfälle.",
+          "concept": "Der Term ist A UND NICHT B. Bei Start 1 und offener Tür 1 bleibt der Motor 0. Bei Start 1 und geschlossener Tür (Sensor B = 0) wird der Ausgang 1. Das invertierte Türsignal übersetzt die Sensorkodierung in die erlaubte Bedingung.",
+          "sample_solution": "Der Term ist A UND NICHT B. Bei Start 1 und offener Tür 1 bleibt der Motor 0. Bei Start 1 und geschlossener Tür (Sensor B = 0) wird der Ausgang 1. Das invertierte Türsignal übersetzt die Sensorkodierung in die erlaubte Bedingung."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVHW24SD7PQKHC571DJ",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVHW24SD7PQKHC571DJ",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-wertetabelle",
+      "title": "Vom Term zur vollständigen Wertetabelle",
+      "domain": "informatik/logik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-wertetabelle",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVH18QPAGR7BXJ35DS8",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „UND, ODER und NICHT“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.1",
+          "topic_title": "Logische Schaltungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.1",
+          "topic_title": "Logische Schaltungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-wertetabelle",
+          "materiality": "material",
+          "id": "01M5PZ9FVHR93S38WC44YS90V4",
+          "slug": "it10-wertetabelle-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie viele Eingangskombinationen müssen bei drei unabhängigen Bits geprüft werden?",
+          "concept": "8.",
+          "sample_solution": "8. Jeder der drei Eingänge kann unabhängig 0 oder 1 sein. Deshalb gibt es 2 · 2 · 2 = 8 Kombinationen; weder die Anzahl der Eingänge noch ihre Verdopplung zählt alle Möglichkeiten.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "8.",
+              "3."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-wertetabelle",
+          "materiality": "material",
+          "id": "01M5PZ9FVHVBTNJ7JC0J8CPTEZ",
+          "slug": "it10-wertetabelle-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche A ODER (B UND C) mit (A ODER B) UND C an einer Belegung, die verschiedene Ergebnisse liefert.",
+          "concept": "Bei A gleich 1, B gleich 0 und C gleich 0 liefert der erste Term 1: A genügt für ODER. Der zweite Term liefert 0, weil das äußere UND C verlangt. Die Klammerung verändert also die Schaltungsfunktion.",
+          "sample_solution": "Bei A gleich 1, B gleich 0 und C gleich 0 liefert der erste Term 1: A genügt für ODER. Der zweite Term liefert 0, weil das äußere UND C verlangt. Die Klammerung verändert also die Schaltungsfunktion."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVHHT57WYSB3QR89MMW",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVHHT57WYSB3QR89MMW",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-xor",
+      "title": "Antivalenz, Äquivalenz, NAND und NOR",
+      "domain": "informatik/logik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-xor",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVHW24SD7PQKHC571DJ",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Vom Term zur vollständigen Wertetabelle“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.1",
+          "topic_title": "Logische Schaltungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.1",
+          "topic_title": "Logische Schaltungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-xor",
+          "materiality": "material",
+          "id": "01M5PZ9FVHQCYF14V56F3BJV46",
+          "slug": "it10-xor-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wann liefert XOR bei zwei Eingängen 1?",
+          "concept": "Wenn die Eingänge verschieden sind.",
+          "sample_solution": "Wenn die Eingänge verschieden sind. XOR ist bei 01 und 10 wahr, weil die Eingänge verschieden sind. Bei 00 und 11 ist es falsch; gleiche Eingänge gehören zum wahren Fall von XNOR.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn die Eingänge verschieden sind.",
+              "Wenn beide Eingänge 1 sind."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-xor",
+          "materiality": "material",
+          "id": "01M5PZ9FVHXN8QFYBDRG42Q862",
+          "slug": "it10-xor-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Formuliere XOR allein mit UND, ODER und NICHT und begründe die beiden erlaubten Fälle.",
+          "concept": "XOR lässt sich als (A UND NICHT B) ODER (NICHT A UND B) schreiben. Der erste Teil erfasst 10, der zweite 01. Bei 00 und 11 sind beide Teile falsch, sodass der Ausgang 0 bleibt.",
+          "sample_solution": "XOR lässt sich als (A UND NICHT B) ODER (NICHT A UND B) schreiben. Der erste Teil erfasst 10, der zweite 01. Bei 00 und 11 sind beide Teile falsch, sodass der Ausgang 0 bleibt."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVHWDP37Q0YDH2WG32P",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVHWDP37Q0YDH2WG32P",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-addierer",
+      "title": "Halbaddierer und Volladdierer",
+      "domain": "informatik/logik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-addierer",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVHHT57WYSB3QR89MMW",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Antivalenz, Äquivalenz, NAND und NOR“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.1",
+          "topic_title": "Logische Schaltungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.1",
+          "topic_title": "Logische Schaltungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-addierer",
+          "materiality": "material",
+          "id": "01M5PZ9FVH18AKWV785HT4X0QB",
+          "slug": "it10-addierer-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Ausgänge hat ein Volladdierer bei A gleich 1, B gleich 1 und C gleich 1?",
+          "concept": "Summenbit 1 und Ausgangsübertrag 1.",
+          "sample_solution": "Summenbit 1 und Ausgangsübertrag 1. Drei eingehende Einsen ergeben die Zahl 3. Das Paar aus Summenbit 1 und Übertrag 1 codiert 1 + 2 · 1 = 3; ohne Übertrag wäre nur die Zahl 1 dargestellt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Summenbit 1 und Ausgangsübertrag 1.",
+              "Summenbit 0 und Ausgangsübertrag 0."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-addierer",
+          "materiality": "material",
+          "id": "01M5PZ9FVH1W8FNJGVFJQEE0XS",
+          "slug": "it10-addierer-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Volladdierer verwendet für den Übertrag nur A UND B. Finde eine Gegenprobe und erkläre eine Korrektur.",
+          "concept": "Bei A gleich 1, B gleich 0 und C gleich 1 beträgt die Summe 2. Es ist ein Übertrag nötig, aber A UND B liefert 0. Ein passender Term ist (A UND B) ODER (C UND (A XOR B)); er berücksichtigt auch den Übertrag aus C und genau einem der anderen Eingänge.",
+          "sample_solution": "Bei A gleich 1, B gleich 0 und C gleich 1 beträgt die Summe 2. Es ist ein Übertrag nötig, aber A UND B liefert 0. Ein passender Term ist (A UND B) ODER (C UND (A XOR B)); er berücksichtigt auch den Übertrag aus C und genau einem der anderen Eingänge."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVHQAQJD0N7JDDPY26T",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVHQAQJD0N7JDDPY26T",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-speicher",
+      "title": "Zustand im RS-Speicher",
+      "domain": "informatik/logik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-speicher",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVH18QPAGR7BXJ35DS8",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „UND, ODER und NICHT“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.1",
+          "topic_title": "Logische Schaltungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.1",
+          "topic_title": "Logische Schaltungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-speicher",
+          "materiality": "material",
+          "id": "01M5PZ9FVHBAYYBKJX3C6HZZY3",
+          "slug": "it10-speicher-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was passiert beim NOR-RS-Speicher bei S gleich 0 und R gleich 0?",
+          "concept": "Der zuvor gespeicherte Zustand bleibt erhalten.",
+          "sample_solution": "Der zuvor gespeicherte Zustand bleibt erhalten. Bei 00 ist weder Setzen noch Rücksetzen aktiv. Ein bekannter vorheriger Zustand bleibt deshalb erhalten; ohne seine Vorgeschichte lässt sich nicht pauschal 0 oder 1 angeben.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der zuvor gespeicherte Zustand bleibt erhalten.",
+              "Der Ausgang wird unabhängig von vorher immer 0."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-speicher",
+          "materiality": "material",
+          "id": "01M5PZ9FVHE767969B08TJP8Q1",
+          "slug": "it10-speicher-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum sollte eine Simulation bei S und R gleich 1 nicht einfach den letzten gültigen Ausgang als sichere Antwort ausgeben?",
+          "concept": "Diese Eingabe ist beim NOR-RS-Speicher verboten. Sie kann die normale komplementäre Beziehung der Ausgänge verletzen; nach gleichzeitigem Loslassen ist der Folgezustand nicht festgelegt. Ein stillschweigend übernommener Wert würde eine nicht vorhandene Zuverlässigkeit vortäuschen.",
+          "sample_solution": "Diese Eingabe ist beim NOR-RS-Speicher verboten. Sie kann die normale komplementäre Beziehung der Ausgänge verletzen; nach gleichzeitigem Loslassen ist der Folgezustand nicht festgelegt. Ein stillschweigend übernommener Wert würde eine nicht vorhandene Zuverlässigkeit vortäuschen."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVH2MKV6FM7807Z6VD1",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVH2MKV6FM7807Z6VD1",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-schaltungstest",
+      "title": "Schaltungen systematisch prüfen",
+      "domain": "informatik/logik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-schaltungstest",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVHWDP37Q0YDH2WG32P",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Halbaddierer und Volladdierer“ auf."
+        },
+        {
+          "atom_id": "01M5PZ9FVHQAQJD0N7JDDPY26T",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Zustand im RS-Speicher“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.1",
+          "topic_title": "Logische Schaltungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.1",
+          "topic_title": "Logische Schaltungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-schaltungstest",
+          "materiality": "material",
+          "id": "01M5PZ9FVHFWTP9DZBN8N1CMM4",
+          "slug": "it10-schaltungstest-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran erkennt man im idealen binären Modell zwei funktionsgleiche kombinatorische Schaltungen?",
+          "concept": "Ihre Ausgänge stimmen für jede mögliche Eingangsbelegung überein.",
+          "sample_solution": "Ihre Ausgänge stimmen für jede mögliche Eingangsbelegung überein. Kombinatorische Schaltungen sind im Bitmodell funktionsgleich, wenn jede mögliche Eingabe dieselben Ausgänge liefert. Gleiche Termlänge oder eine einzelne passende Tabellenzeile reichen dafür nicht aus.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ihre Ausgänge stimmen für jede mögliche Eingangsbelegung überein.",
+              "Ihre Terme enthalten gleich viele Buchstaben."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-schaltungstest",
+          "materiality": "material",
+          "id": "01M5PZ9FVHZ9VDBYPA58NZHVC2",
+          "slug": "it10-schaltungstest-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein digitaler Schutzschalter besteht alle Tabellenfälle. Weshalb reicht das nicht als Freigabe für eine echte gefährliche Maschine?",
+          "concept": "Die Tabelle prüft nur das idealisierte logische Verhalten. Reale Sensorfehler, Verzögerungen, Leitungsunterbrechungen und weitere technische Sicherheitsanforderungen sind damit nicht untersucht. Die praktische Freigabe braucht dafür geeignete zusätzliche Prüfungen und verantwortliche Fachleute.",
+          "sample_solution": "Die Tabelle prüft nur das idealisierte logische Verhalten. Reale Sensorfehler, Verzögerungen, Leitungsunterbrechungen und weitere technische Sicherheitsanforderungen sind damit nicht untersucht. Die praktische Freigabe braucht dafür geeignete zusätzliche Prüfungen und verantwortliche Fachleute."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVHDBG3ZGTTBS87ZJBB",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVHDBG3ZGTTBS87ZJBB",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-roboter",
+      "title": "Roboter und eingebettete Systeme",
+      "domain": "informatik/robotik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-roboter",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.2",
+          "topic_title": "Robotik und eingebettete Systeme"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.2",
+          "topic_title": "Robotik und eingebettete Systeme"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-roboter",
+          "materiality": "material",
+          "id": "01M5PZ9FVHNHCNRYKRFN35JS9T",
+          "slug": "it10-roboter-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Komponente führt eine physische Wirkung wie eine Motorbewegung aus?",
+          "concept": "Ein Aktor.",
+          "sample_solution": "Ein Aktor. Ein Aktor wirkt auf die physische Umgebung, etwa durch die Drehung eines Motors. Ein Sensor liefert eine Messung und eine Anleitung beschreibt einen Ablauf; beides führt für sich noch keine Motorbewegung aus.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Aktor.",
+              "Ein Sensor als bloßer Messwertgeber."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-roboter",
+          "materiality": "material",
+          "id": "01M5PZ9FVHPJ4XPFS36NA6AY49",
+          "slug": "it10-roboter-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Eine Gruppe möchte einen Linienfolger bauen und kauft nur einen Motor. Welche beiden Arten von Ergänzung fehlen für eine situationsabhängige Reaktion?",
+          "concept": "Es fehlen geeignete Sensoren zum Erkennen der Linie sowie eine Verarbeitungseinheit mit einem passenden Programm. Der Motor allein erzeugt Bewegung, kennt aber die Umgebung nicht und trifft keine aufgabenbezogene Entscheidung.",
+          "sample_solution": "Es fehlen geeignete Sensoren zum Erkennen der Linie sowie eine Verarbeitungseinheit mit einem passenden Programm. Der Motor allein erzeugt Bewegung, kennt aber die Umgebung nicht und trifft keine aufgabenbezogene Entscheidung."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVHQBMKX5RPCBEXMEB3",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVHQBMKX5RPCBEXMEB3",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-sensoren",
+      "title": "Messwerte passend auswerten",
+      "domain": "informatik/robotik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-sensoren",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVHDBG3ZGTTBS87ZJBB",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Roboter und eingebettete Systeme“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.2",
+          "topic_title": "Robotik und eingebettete Systeme"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.2",
+          "topic_title": "Robotik und eingebettete Systeme"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-sensoren",
+          "materiality": "material",
+          "id": "01M5PZ9FVHVZXPN16J2XMNVV4R",
+          "slug": "it10-sensoren-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wann sollte der Hofroboter seine Prüfung auf ein Hindernis verwenden?",
+          "concept": "Vor dem jeweiligen Vorwärtsschritt.",
+          "sample_solution": "Vor dem jeweiligen Vorwärtsschritt. Vor jedem Vorwärtsschritt sind Position und Blickrichtung möglicherweise anders als zuvor. Eine Messung nur am Start kann deshalb veraltet sein; eine Prüfung nach der Kollision kann die schon ausgeführte Bewegung nicht verhindern.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vor dem jeweiligen Vorwärtsschritt.",
+              "Nur einmal beim Programmstart, unabhängig von späteren Positionen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-sensoren",
+          "materiality": "material",
+          "id": "01M5PZ9FVH2872BPYC7WV9PHGR",
+          "slug": "it10-sensoren-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein echter Abstandssensor schwankt um eine Schaltschwelle. Welche zwei Maßnahmen könnten hektische Wechsel verringern, und was muss zusätzlich getestet werden?",
+          "concept": "Eine geeignete Filterung mehrerer Messwerte und getrennte Ein- und Ausschaltschwellen können hektische Wechsel verringern. Dabei entsteht möglicherweise Verzögerung. Reaktionszeit und sichere Abstände müssen deshalb unter realen Bedingungen zusätzlich geprüft werden.",
+          "sample_solution": "Eine geeignete Filterung mehrerer Messwerte und getrennte Ein- und Ausschaltschwellen können hektische Wechsel verringern. Dabei entsteht möglicherweise Verzögerung. Reaktionszeit und sichere Abstände müssen deshalb unter realen Bedingungen zusätzlich geprüft werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVH0NA0983QP47M21MR",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVH0NA0983QP47M21MR",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-zustaende",
+      "title": "Verhalten als Zustandsmodell planen",
+      "domain": "informatik/robotik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-zustaende",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVHQBMKX5RPCBEXMEB3",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Messwerte passend auswerten“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.2",
+          "topic_title": "Robotik und eingebettete Systeme"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.2",
+          "topic_title": "Robotik und eingebettete Systeme"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-zustaende",
+          "materiality": "material",
+          "id": "01M5PZ9FVH8ADKZSDZHVDYMN7T",
+          "slug": "it10-zustaende-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gehört zu einem nachvollziehbaren Zustandsübergang?",
+          "concept": "Ausgangszustand, Bedingung oder Ereignis und Zielzustand.",
+          "sample_solution": "Ausgangszustand, Bedingung oder Ereignis und Zielzustand. Ein Übergang beschreibt, von welchem Zustand das System unter welcher Bedingung in welchen Zielzustand wechselt. Ein Messwert oder eine bloße Aktionsfolge ohne diese Zuordnung beschreibt den Übergang noch nicht vollständig.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ausgangszustand, Bedingung oder Ereignis und Zielzustand.",
+              "Nur der aktuelle Messwert ohne Ausgangszustand."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-zustaende",
+          "materiality": "material",
+          "id": "01M5PZ9FVHYJ3DF4CGPNXF3G3J",
+          "slug": "it10-zustaende-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Gleichzeitig liegen Startsignal und Stoppsignal vor. Warum braucht das Modell eine ausdrückliche Regel statt zweier unverbundener Aktionen?",
+          "concept": "Ohne Priorität könnten Starten und Stoppen gleichzeitig oder je nach Ausführungsreihenfolge wirken. Für den vereinbarten Sicherheitsfall erhält Stoppen Vorrang. Der Test mit beiden Signalen prüft, ob das Programm diese Modellentscheidung tatsächlich umsetzt.",
+          "sample_solution": "Ohne Priorität könnten Starten und Stoppen gleichzeitig oder je nach Ausführungsreihenfolge wirken. Für den vereinbarten Sicherheitsfall erhält Stoppen Vorrang. Der Test mit beiden Signalen prüft, ob das Programm diese Modellentscheidung tatsächlich umsetzt."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVHPC3FW3FXKSB7MGKK",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVHPC3FW3FXKSB7MGKK",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-regelung",
+      "title": "Steuern und Regeln unterscheiden",
+      "domain": "informatik/robotik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-regelung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVH0NA0983QP47M21MR",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Verhalten als Zustandsmodell planen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.2",
+          "topic_title": "Robotik und eingebettete Systeme"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.2",
+          "topic_title": "Robotik und eingebettete Systeme"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-regelung",
+          "materiality": "material",
+          "id": "01M5PZ9FVH1YFK39B47BSG6BBJ",
+          "slug": "it10-regelung-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Merkmal kennzeichnet eine Regelung?",
+          "concept": "Der gemessene Istwert fließt in die weitere Entscheidung zurück.",
+          "sample_solution": "Der gemessene Istwert fließt in die weitere Entscheidung zurück. Die Rückführung des gemessenen Istwerts beeinflusst die nächste Entscheidung. Ein fester Zeitablauf ohne Rückmeldung steuert dagegen nur eine Aktion und prüft nicht, ob der gewünschte Zustand erreicht wurde.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der gemessene Istwert fließt in die weitere Entscheidung zurück.",
+              "Es gibt grundsätzlich keine Messwerte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-regelung",
+          "materiality": "material",
+          "id": "01M5PZ9FVH5PMGEAYTKYEV1KVH",
+          "slug": "it10-regelung-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Modellthermostat hat Sollwert 20 und Band 1. Bei Temperatur 20 bleibt eine eingeschaltete Heizung an, eine ausgeschaltete aus. Ist das widersprüchlich?",
+          "concept": "Nein. Zwischen 19 und 21 behält der Zweipunktregler seinen bisherigen Zustand. Genau diese Abhängigkeit von der Vorgeschichte ist die Hysterese. Erst unter 19 wird eingeschaltet und über 21 ausgeschaltet; die Grenzen sind eine hier festgelegte Modellkonvention.",
+          "sample_solution": "Nein. Zwischen 19 und 21 behält der Zweipunktregler seinen bisherigen Zustand. Genau diese Abhängigkeit von der Vorgeschichte ist die Hysterese. Erst unter 19 wird eingeschaltet und über 21 ausgeschaltet; die Grenzen sind eine hier festgelegte Modellkonvention."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVHT1PSHCDQFPA0V55Y",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVHT1PSHCDQFPA0V55Y",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-roboterprogramm",
+      "title": "Ein Programm auf mehreren Höfen testen",
+      "domain": "informatik/robotik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-roboterprogramm",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVHQBMKX5RPCBEXMEB3",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Messwerte passend auswerten“ auf."
+        },
+        {
+          "atom_id": "01M5PZ9FVH0NA0983QP47M21MR",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Verhalten als Zustandsmodell planen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.2",
+          "topic_title": "Robotik und eingebettete Systeme"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.2",
+          "topic_title": "Robotik und eingebettete Systeme"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-roboterprogramm",
+          "materiality": "material",
+          "id": "01M5PZ9FVHQ2Y23K2NK1Y0BSWR",
+          "slug": "it10-roboterprogramm-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum wird dasselbe Programm auf mehreren Höfen geprüft?",
+          "concept": "Um Abhängigkeiten vom einzelnen Beispielweg und Fehler bei veränderter Umgebung zu finden.",
+          "sample_solution": "Um Abhängigkeiten vom einzelnen Beispielweg und Fehler bei veränderter Umgebung zu finden. Veränderte Höfe prüfen, ob das Programm an seinem ersten Beispielweg hängt. Ein einzelner Erfolg ist kein Beleg für beliebige Umgebungen; die Ziele bleiben während jedes Tests fest.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Um Abhängigkeiten vom einzelnen Beispielweg und Fehler bei veränderter Umgebung zu finden.",
+              "Weil ein Erfolg auf einem Hof bereits jede weitere Umgebung beweist."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-roboterprogramm",
+          "materiality": "material",
+          "id": "01M5PZ9FVHGTFKMPD571G5JZK9",
+          "slug": "it10-roboterprogramm-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Alle drei Werkstatthöfe sind geschafft. Welche Aussage über andere Labyrinthe ist zulässig und wie würdest du weiter testen?",
+          "concept": "Das Programm löst die drei geprüften Höfe. Für andere Labyrinthe folgt daraus keine allgemeine Garantie; eine reine Rechtsdrehstrategie kann etwa in einer Schleife bleiben. Weitere Tests könnten Sackgassen, anders liegende Ziele und andere Startausrichtungen enthalten.",
+          "sample_solution": "Das Programm löst die drei geprüften Höfe. Für andere Labyrinthe folgt daraus keine allgemeine Garantie; eine reine Rechtsdrehstrategie kann etwa in einer Schleife bleiben. Weitere Tests könnten Sackgassen, anders liegende Ziele und andere Startausrichtungen enthalten."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVH9S557PGWXXBTCA95",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVH9S557PGWXXBTCA95",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-robotertest",
+      "title": "Simulation und reale Erprobung verbinden",
+      "domain": "informatik/robotik",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-robotertest",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVHT1PSHCDQFPA0V55Y",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Ein Programm auf mehreren Höfen testen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.2",
+          "topic_title": "Robotik und eingebettete Systeme"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.2",
+          "topic_title": "Robotik und eingebettete Systeme"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-robotertest",
+          "materiality": "material",
+          "id": "01M5PZ9FVHAF7ZP5YTZ8YG99QK",
+          "slug": "it10-robotertest-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage beschreibt die Grenze des digitalen Hofmodells?",
+          "concept": "Es prüft Rasterbewegungen, aber nicht reale Sensorstreuung oder Radschlupf.",
+          "sample_solution": "Es prüft Rasterbewegungen, aber nicht reale Sensorstreuung oder Radschlupf. Der Rasterlauf überprüft nur die modellierten Positionen und idealen Messungen. Sensorstreuung, Radschlupf und Akkuzustand werden nicht real gemessen; dafür brauchst du zusätzliche Hardwareversuche.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es prüft Rasterbewegungen, aber nicht reale Sensorstreuung oder Radschlupf.",
+              "Ein Erfolg ersetzt jede Montage und jede reale Sicherheitsprüfung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-robotertest",
+          "materiality": "material",
+          "id": "01M5PZ9FVHE6GN6SCQPC28D9DF",
+          "slug": "it10-robotertest-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nach einem erfolgreichen Simulationslauf fährt der echte Roboter an einer Kurve vorbei. Nenne zwei plausible Modelllücken und passende Prüfungen.",
+          "concept": "Räder könnten rutschen und der Sensor könnte die Linie verzögert erkennen. Ich prüfe die Fahrt bei geringerer Geschwindigkeit sowie wiederholte Sensormessungen an der Kurve. Die Ergebnisse werden mit dem Modell verglichen; eine erfolgreiche Rasterfahrt allein entscheidet die reale Aufgabe nicht.",
+          "sample_solution": "Räder könnten rutschen und der Sensor könnte die Linie verzögert erkennen. Ich prüfe die Fahrt bei geringerer Geschwindigkeit sowie wiederholte Sensormessungen an der Kurve. Die Ergebnisse werden mit dem Modell verglichen; eine erfolgreiche Rasterfahrt allein entscheidet die reale Aufgabe nicht."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVHRTXEXPCRMN8G23BM",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVHRTXEXPCRMN8G23BM",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-ki-beispiele",
+      "title": "KI an Aufgaben erkennen",
+      "domain": "informatik/ki",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-ki-beispiele",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-ki-beispiele",
+          "materiality": "material",
+          "id": "01M5PZ9FVH991E9PPCVYCPW0CG",
+          "slug": "it10-ki-beispiele-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Frage untersucht die Arbeitsweise eines KI-Systems am treffendsten?",
+          "concept": "Welche Eingaben verarbeitet es nach welchem Ansatz zu welchen Ausgaben?",
+          "sample_solution": "Welche Eingaben verarbeitet es nach welchem Ansatz zu welchen Ausgaben? Eingaben, Ansatz und Ausgaben zeigen, welche Aufgabe das System wie löst. Schnelle Datenverarbeitung allein belegt keinen KI-Ansatz; auch ein KI-System muss seine Regeln nicht bei jeder Nutzung neu lernen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Welche Eingaben verarbeitet es nach welchem Ansatz zu welchen Ausgaben?",
+              "Kann es viele Daten speichern und feste Befehle schnell abarbeiten?"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-ki-beispiele",
+          "materiality": "material",
+          "id": "01M5PZ9FVH15VPM4GR1VZYN32E",
+          "slug": "it10-ki-beispiele-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Textgenerator liefert eine flüssige, aber falsche Erklärung. Weshalb ist die flüssige Form kein ausreichender Qualitätsnachweis?",
+          "concept": "Die Form zeigt, dass ein plausibler Text erzeugt wurde. Sie belegt nicht, dass jede Aussage fachlich geprüft oder wahr ist. Zentrale Behauptungen müssen anhand geeigneter unabhängiger Quellen und nachvollziehbarer Belege kontrolliert werden.",
+          "sample_solution": "Die Form zeigt, dass ein plausibler Text erzeugt wurde. Sie belegt nicht, dass jede Aussage fachlich geprüft oder wahr ist. Zentrale Behauptungen müssen anhand geeigneter unabhängiger Quellen und nachvollziehbarer Belege kontrolliert werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVHQDTK5CK3292BTZ1Y",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVHQDTK5CK3292BTZ1Y",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-wissensregeln",
+      "title": "Wissensbasierte Regeln untersuchen",
+      "domain": "informatik/ki",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-wissensregeln",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVHRTXEXPCRMN8G23BM",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „KI an Aufgaben erkennen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-wissensregeln",
+          "materiality": "material",
+          "id": "01M5PZ9FVJ5QM74N91B501E35G",
+          "slug": "it10-wissensregeln-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was unterscheidet eine vorgegebene Wissensregel von einer gelernten Baumregel?",
+          "concept": "Ob die Entscheidungsregel ausdrücklich vorgegeben oder aus Trainingsbeispielen ermittelt wurde.",
+          "sample_solution": "Ob die Entscheidungsregel ausdrücklich vorgegeben oder aus Trainingsbeispielen ermittelt wurde. Eine Fachperson kann die Regel ausdrücklich vorgeben, während ein Lernverfahren sie aus Trainingsbeispielen ermittelt. Ausgabeformat und Internetzugang unterscheiden diese Entstehungswege nicht.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ob die Entscheidungsregel ausdrücklich vorgegeben oder aus Trainingsbeispielen ermittelt wurde.",
+              "Ob das Ergebnis als Zahl oder als Wort angezeigt wird."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-wissensregeln",
+          "materiality": "material",
+          "id": "01M5PZ9FVJ9C6NF27QGNRJ29MJ",
+          "slug": "it10-wissensregeln-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Eine Fachregel ist leicht erklärbar, liefert bei Sonderfällen aber falsche Ergebnisse. Vergleiche eine manuelle Regeländerung mit einem erneuten Training.",
+          "concept": "Bei der Wissensregel prüfen Fachpersonen die Begründung und ändern oder ergänzen die ausdrücklichen Bedingungen. Beim lernenden Modell werden passende beschriftete Daten geprüft und das Trainingsverfahren erneut angewendet. Beide Wege brauchen unabhängige Prüfung der Ergebnisse und können neue Fehler erzeugen.",
+          "sample_solution": "Bei der Wissensregel prüfen Fachpersonen die Begründung und ändern oder ergänzen die ausdrücklichen Bedingungen. Beim lernenden Modell werden passende beschriftete Daten geprüft und das Trainingsverfahren erneut angewendet. Beide Wege brauchen unabhängige Prüfung der Ergebnisse und können neue Fehler erzeugen."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVJEM8NV4J2RTAPN1EM",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVJEM8NV4J2RTAPN1EM",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-lernarten",
+      "title": "Lernarten an ihren Rückmeldungen unterscheiden",
+      "domain": "informatik/ki",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-lernarten",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVHQDTK5CK3292BTZ1Y",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Wissensbasierte Regeln untersuchen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-lernarten",
+          "materiality": "material",
+          "id": "01M5PZ9FVJCV4CJMEQMVH0KTR0",
+          "slug": "it10-lernarten-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Daten passen zum überwachten Lernen einer Klassifikation?",
+          "concept": "Beispiele mit Merkmalen und zugehörigen Zielklassen.",
+          "sample_solution": "Beispiele mit Merkmalen und zugehörigen Zielklassen. Beim überwachten Lernen geben die Zielklassen an, welche Zuordnung gelernt werden soll. Unbeschriftete Beispiele kennzeichnen eine unüberwachte Aufgabe; eine Belohnung nach Aktionen ist eine andere Rückmeldungsart.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beispiele mit Merkmalen und zugehörigen Zielklassen.",
+              "Nur eine Belohnung nach einer Aktionsfolge ohne Zielklasse pro Beispiel."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-lernarten",
+          "materiality": "material",
+          "id": "01M5PZ9FVJ4E4ZZ9NBB6CVASFG",
+          "slug": "it10-lernarten-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Eine Firma nennt jede automatische Gruppierung überwachtes Lernen. Welche Information müsstest du prüfen, bevor du zustimmst?",
+          "concept": "Ich prüfe, ob beim Training gewünschte Zielgrößen oder Klassen für die Beispiele vorlagen. Ohne solche Zielvorgaben kann eine reine Gruppensuche unüberwacht sein. Das automatische Ausführen allein entscheidet die Lernart nicht.",
+          "sample_solution": "Ich prüfe, ob beim Training gewünschte Zielgrößen oder Klassen für die Beispiele vorlagen. Ohne solche Zielvorgaben kann eine reine Gruppensuche unüberwacht sein. Das automatische Ausführen allein entscheidet die Lernart nicht."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVJ11E8EH50K1NFQ25D",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVJ11E8EH50K1NFQ25D",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-merkmale",
+      "title": "Merkmale, Labels und Datenauswahl",
+      "domain": "informatik/ki",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-merkmale",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVJEM8NV4J2RTAPN1EM",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Lernarten an ihren Rückmeldungen unterscheiden“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-merkmale",
+          "materiality": "material",
+          "id": "01M5PZ9FVJ3EZ2JTK4DRC49SCT",
+          "slug": "it10-merkmale-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist in einer überwachten Klassifikation das Label?",
+          "concept": "Die vorgegebene Zielklasse eines Trainingsbeispiels.",
+          "sample_solution": "Die vorgegebene Zielklasse eines Trainingsbeispiels. Das Label ist die Zielklasse, an der das überwachte Verfahren seine Zuordnung lernt. Ein Merkmal wie die Masse ist dagegen Eingabe; eine Modellvorhersage ist nicht automatisch ein korrektes Trainingslabel.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die vorgegebene Zielklasse eines Trainingsbeispiels.",
+              "Ein Eingabewert wie der Massewert des Objekts."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-merkmale",
+          "materiality": "material",
+          "id": "01M5PZ9FVJDYJXVYX841R6507D",
+          "slug": "it10-merkmale-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Für ein Modell werden nur leichte Objekte aufgenommen, eingesetzt werden soll es später auch für schwere. Welche Lücke entsteht?",
+          "concept": "Die Trainingsauswahl bildet den späteren Einsatzbereich nicht vollständig ab. Für schwere Objekte fehlt passende Erfahrung, sodass Vorhersagen dort besonders unsicher sein können. Es werden repräsentative zusätzliche Beispiele und eine getrennte Prüfung dieses Bereichs benötigt.",
+          "sample_solution": "Die Trainingsauswahl bildet den späteren Einsatzbereich nicht vollständig ab. Für schwere Objekte fehlt passende Erfahrung, sodass Vorhersagen dort besonders unsicher sein können. Es werden repräsentative zusätzliche Beispiele und eine getrennte Prüfung dieses Bereichs benötigt."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVJRPT0SPZA275J8GZJ",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVJRPT0SPZA275J8GZJ",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-baum",
+      "title": "Einen Entscheidungsbaum aus Beispielen lernen",
+      "domain": "informatik/ki",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-baum",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVJ11E8EH50K1NFQ25D",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Merkmale, Labels und Datenauswahl“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-baum",
+          "materiality": "material",
+          "id": "01M5PZ9FVJQ64KQSRTBV5P67DJ",
+          "slug": "it10-baum-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was beschreibt ein Blatt unseres Klassifikationsbaums?",
+          "concept": "Die vorhergesagte Klasse für die dort ankommenden Beispiele.",
+          "sample_solution": "Die vorhergesagte Klasse für die dort ankommenden Beispiele. Ein Blatt liefert die Klasse für den bereits durchlaufenen Pfad. Trennfragen gehören zu inneren Knoten; die Trainingsliste allein ist noch keine Vorhersage für ein neues Objekt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die vorhergesagte Klasse für die dort ankommenden Beispiele.",
+              "Eine Trennfrage, die Eingaben an weitere Knoten verteilt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-baum",
+          "materiality": "material",
+          "id": "01M5PZ9FVJ1W26Z78KG09GKV2E",
+          "slug": "it10-baum-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein möglicher Split trennt zwölf Beispiele in zwei Gruppen mit je nur einer Klasse. Ein anderer lässt beide Gruppen gemischt. Welchen bevorzugt das Werkstattverfahren bei sonst gleichen Voraussetzungen?",
+          "concept": "Es bevorzugt den Split mit den reinen Gruppen, weil deren gewichtete Gini-Unreinheit 0 ist. Die gemischten Gruppen haben einen höheren Wert. Das ist ein Trainingskriterium; es garantiert noch keine guten Vorhersagen auf neuen Daten.",
+          "sample_solution": "Es bevorzugt den Split mit den reinen Gruppen, weil deren gewichtete Gini-Unreinheit 0 ist. Die gemischten Gruppen haben einen höheren Wert. Das ist ein Trainingskriterium; es garantiert noch keine guten Vorhersagen auf neuen Daten."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVJXVGVAKNJVE9R09R8",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVJXVGVAKNJVE9R09R8",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-testdaten",
+      "title": "Trainieren und unabhängig prüfen",
+      "domain": "informatik/ki",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-testdaten",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVJRPT0SPZA275J8GZJ",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Einen Entscheidungsbaum aus Beispielen lernen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-testdaten",
+          "materiality": "material",
+          "id": "01M5PZ9FVJRF6ZYVGT84KMXY8K",
+          "slug": "it10-testdaten-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Weshalb reicht die Trefferquote auf den Trainingsdaten nicht zur Bewertung neuer Fälle?",
+          "concept": "Das Modell wurde gerade an diese Beispiele angepasst.",
+          "sample_solution": "Das Modell wurde gerade an diese Beispiele angepasst. Die Regeln wurden anhand der Trainingsbeispiele ausgewählt und können gerade deren Besonderheiten ausnutzen. Gute Trainingstreffer zeigen deshalb noch nicht, wie gut passende neue Beispiele eingeordnet werden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Modell wurde gerade an diese Beispiele angepasst.",
+              "Trainingsdaten enthalten grundsätzlich niemals Zielklassen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-testdaten",
+          "materiality": "material",
+          "id": "01M5PZ9FVJ9FMS45DDVHM1Y6KT",
+          "slug": "it10-testdaten-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Team wählt nach zwanzig Versuchen das Modell mit dem besten Ergebnis auf demselben Testsatz. Ist dieser Satz noch eine unabhängige Abschlussprüfung? Begründe.",
+          "concept": "Nein. Die Ergebnisse haben die Auswahl des Modells beeinflusst. Damit wurde indirekt an diesen Satz angepasst. Er dient nun der Validierung; für eine unabhängige Abschlussbewertung braucht es neue, bisher nicht für Entscheidungen verwendete Testdaten.",
+          "sample_solution": "Nein. Die Ergebnisse haben die Auswahl des Modells beeinflusst. Damit wurde indirekt an diesen Satz angepasst. Er dient nun der Validierung; für eine unabhängige Abschlussbewertung braucht es neue, bisher nicht für Entscheidungen verwendete Testdaten."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVJKV005G7F9C6WXFB7",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVJKV005G7F9C6WXFB7",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-bias",
+      "title": "Bias und Überanpassung sichtbar machen",
+      "domain": "informatik/ki",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-bias",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVJXVGVAKNJVE9R09R8",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Trainieren und unabhängig prüfen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-bias",
+          "materiality": "material",
+          "id": "01M5PZ9FVJKTB1S6Q1GZ11D2P7",
+          "slug": "it10-bias-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Befund kann auf Überanpassung hinweisen?",
+          "concept": "Sehr gutes Trainingsergebnis bei deutlich schwächerem Ergebnis auf passenden neuen Beispielen.",
+          "sample_solution": "Sehr gutes Trainingsergebnis bei deutlich schwächerem Ergebnis auf passenden neuen Beispielen. Eine große Lücke zwischen Training und passenden neuen Fällen kann auf Überanpassung hinweisen. Die Tiefe allein entscheidet das nicht: Ein größerer Baum kann auch sinnvoll sein, wenn sich die getrennten Ergebnisse verbessern.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sehr gutes Trainingsergebnis bei deutlich schwächerem Ergebnis auf passenden neuen Beispielen.",
+              "Jede Verbesserung auf neuen Beispielen ist automatisch ein Fehler."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-bias",
+          "materiality": "material",
+          "id": "01M5PZ9FVJMASRA8ZA3VREDD56",
+          "slug": "it10-bias-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "In der Werkstatt mit allen zwölf Trainingsbeispielen und beiden Merkmalen: Ein Baum mit Tiefe 4 erreicht 12 von 12 im Training, aber 5 von 6 im Vergleich; ein Baum mit Tiefe 1 erreicht 11 von 12 und 6 von 6. Was lässt sich daraus folgern und was bleibt offen?",
+          "concept": "Für diese kleine Vergleichsmenge generalisiert der flache Baum besser, während der tiefe stärker an die Trainingsdaten angepasst ist. Das passt zu Überanpassung. Sechs Vergleichsfälle reichen aber nicht für eine allgemeine Qualitätsgarantie; eine größere passende unabhängige Prüfung bleibt nötig.",
+          "sample_solution": "Für diese kleine Vergleichsmenge generalisiert der flache Baum besser, während der tiefe stärker an die Trainingsdaten angepasst ist. Das passt zu Überanpassung. Sechs Vergleichsfälle reichen aber nicht für eine allgemeine Qualitätsgarantie; eine größere passende unabhängige Prüfung bleibt nötig."
+        }
+      ]
+    },
+    {
+      "id": "01M5PZ9FVJXAS8VXS1AK22WAWX",
+      "atom_uri": "urn:zam:atom:01M5PZ9FVJXAS8VXS1AK22WAWX",
+      "namespace": "zam-academy-informatik-realschule-10",
+      "slug": "it10-ki-verantwortung",
+      "title": "KI-Ergebnisse verantwortlich verwenden",
+      "domain": "informatik/ki",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-ki-verantwortung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5PZ9FVJKV005G7F9C6WXFB7",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf „Bias und Überanpassung sichtbar machen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-10",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "subject": "it",
+          "topic_code": "it-2.7.3",
+          "topic_title": "Künstliche Intelligenz"
+        }
+      ],
+      "practice_items": [
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-ki-verantwortung",
+          "materiality": "material",
+          "id": "01M5PZ9FVJM5JXXEJR0521MEE0",
+          "slug": "it10-ki-verantwortung-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ersetzt eine hohe technische Trefferquote nicht?",
+          "concept": "Die Prüfung von Einsatzkontext, Folgen, Betroffenen und menschlicher Verantwortung.",
+          "sample_solution": "Die Prüfung von Einsatzkontext, Folgen, Betroffenen und menschlicher Verantwortung. Eine Trefferquote misst Ergebnisse für die geprüften Fälle, nicht die Folgen jeder möglichen Nutzung. Einsatzkontext, betroffene Menschen und Zuständigkeiten brauchen deshalb zusätzlich eine begründete Prüfung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Prüfung von Einsatzkontext, Folgen, Betroffenen und menschlicher Verantwortung.",
+              "Die Berechnung der bereits gemessenen richtigen Ergebnisse."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/informatik-realschule-10/#lesson=it10-ki-verantwortung",
+          "materiality": "material",
+          "id": "01M5PZ9FVJCHE9KSHW85M26WPC",
+          "slug": "it10-ki-verantwortung-transfer",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Eine Gruppe will eine überzeugende KI-Erklärung ungeprüft in einer Projektpräsentation übernehmen. Entwirf einen kurzen Prüfablauf.",
+          "concept": "Die Gruppe markiert zuerst überprüfbare Kernaussagen. Sie sucht dazu verlässliche unabhängige Quellen und vergleicht deren tatsächliche Belege. Nicht belegte oder widersprüchliche Aussagen werden korrigiert oder als offen benannt. Anschließend dokumentiert sie Quellen und den Einsatz der Unterstützung für die Präsentation.",
+          "sample_solution": "Die Gruppe markiert zuerst überprüfbare Kernaussagen. Sie sucht dazu verlässliche unabhängige Quellen und vergleicht deren tatsächliche Belege. Nicht belegte oder widersprüchliche Aussagen werden korrigiert oder als offen benannt. Anschließend dokumentiert sie Quellen und den Einsatz der Unterstützung für die Präsentation."
+        }
+      ]
+    }
+  ]
+}
