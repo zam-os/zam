@@ -42,6 +42,12 @@
     "file": "zam-academy-englisch-realschule-9-kvt.json"
   },
   {
+    "id": "zam-academy:franzoesisch-realschule-9",
+    "version": "2026.10.1",
+    "sha256": "5ed4b9023c80852a9936e9df3955e9388aa145cf575c78c9689d6b2c45287d8d",
+    "file": "zam-academy-franzoesisch-realschule-9-kvt.json"
+  },
+  {
     "id": "zam-academy:geographie-realschule-9",
     "version": "2026.10.1",
     "sha256": "3e93946ab8254d090eb971375f1530d4ccfa171c9cacf054fb5e0246a787bfff",

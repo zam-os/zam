@@ -47,6 +47,7 @@ const ACADEMY_RS9_IDS = [
   "zam-academy:wirtschaft-recht-realschule-9",
   "zam-academy:deutsch-realschule-9",
   "zam-academy:englisch-realschule-9",
+  "zam-academy:franzoesisch-realschule-9",
 ];
 
 describe("Realschule Bayern 9 Curriculum Cells", () => {
@@ -82,7 +83,7 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
       schoolType: "realschule",
       grade: 9,
     });
-    // One school cell and the twelve Academy entries listed above.
+    // One school cell and the thirteen Academy entries listed above.
     expect(rs9Cells.length).toBeGreaterThanOrEqual(
       RS9_CELL_IDS.length + ACADEMY_RS9_IDS.length,
     );

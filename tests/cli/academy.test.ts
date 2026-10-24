@@ -221,6 +221,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:datennetze",
       "zam-academy:deutsch-realschule-9",
       "zam-academy:englisch-realschule-9",
+      "zam-academy:franzoesisch-realschule-9",
       "zam-academy:geographie-realschule-9",
       "zam-academy:geschichte-realschule-9",
       "zam-academy:mathematik-realschule-10",
@@ -264,6 +265,16 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       version: "2026.10.2",
       items: 80,
     });
+    expect(
+      list.cells.find(
+        (cell) => cell.id === "zam-academy:franzoesisch-realschule-9",
+      ),
+    ).toMatchObject({
+      bundled: true,
+      held: false,
+      version: "2026.10.1",
+      items: 168,
+    });
     expect(await tilesInstalled()).toBe(0);
     // Both cells were cached for a later „Aufnehmen“ or an agent.
     expect(
@@ -285,6 +296,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:datennetze",
       "zam-academy:deutsch-realschule-9",
       "zam-academy:englisch-realschule-9",
+      "zam-academy:franzoesisch-realschule-9",
       "zam-academy:geographie-realschule-9",
       "zam-academy:geschichte-realschule-9",
       "zam-academy:mathematik-realschule-10",
