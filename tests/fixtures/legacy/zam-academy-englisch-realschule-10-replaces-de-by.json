@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "status": "proposal-only",
+  "approved": null,
+  "note": "Bestandsabgleich ohne Freigabe: Neue Zelle enthält keine replaces oder retired_items. Die vier bisherigen Karten bleiben aktiv; eine Änderung an Lernverläufen erfordert eine ausdrückliche Entscheidung von Thomas.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "cd1a71b5e8a91aa3eec601b5db06095844d024e3",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-10-englisch-abschlusspruefung-text-production-mediation-kvt.json",
+      "sha256": "fc48472264e3643261f801122344062f6280ab72315a92f38ca1803fe9a13d91",
+      "tile_id": "de-by:realschule-10-englisch-abschlusspruefung-text-production-mediation",
+      "version": "2026.08.1"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-10-englisch-abschlusspruefung-text-production-mediation",
+      "de_by_id": "01K4EAM0000000000000000J01",
+      "de_by_question": "Welche verbindliche Grundstruktur muss ein englischer Comment (Opinion Essay) in der Realschul-Abschlussprüfung aufweisen?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die Altfrage setzt eine verbindliche Comment-Grundstruktur voraus. Das neue Paket übt adressaten- und auftragsbezogene Texte in verschiedenen Formen; kein freigegebener identischer Einzelabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-englisch-abschlusspruefung-text-production-mediation",
+      "de_by_id": "01K4EAM0000000000000000J02",
+      "de_by_question": "Erkläre die Kriterien für einen erfolgreichen englischen 'Comment' (Abschlussprüfungsformat): 1. Introduction: Aktueller Einstieg, Vermeidung von Phrasen wie 'I want to write about...', prägnante Problemstellung, 2. Body Paragraphs: Jeder Absatz beginnt mit einem Topic Sentence (Hauptgedanke), gefolgt von Begründung und Beispielen; Verbindung durch Linking Words (Furthermore, in addition, on the one hand / on the other hand, nevertheless, consequently), 3. Conclusion: Abrundung ohne neue Argumente, Zusammenfassung der Hauptpunkte und begründetes Fazit (In conclusion, all things considered), 4. Register: Gehobener, formaler Schreibstil (keine Kurzformen wie don't, can't!).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Altfrage mit pauschalem strengem Kurzformenverbot. Neue Aufgaben behandeln Register situationsbezogen; keine Übertragung auf einen korrigierten oder aufgeteilten Abruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-englisch-abschlusspruefung-text-production-mediation",
+      "de_by_id": "01K4EAM0000000000000000J03",
+      "de_by_question": "Was ist das wichtigste Grundprinzip einer gelungenen Mediation (Sprachmittlung) im Gegensatz zu einer wörtlichen Übersetzung (Translation)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Thematische Nähe zu Sprachmittlung, aber neue englischsprachige Einzelabrufe unterscheiden Bedingungen, Informationslücken und Adressaten. Keine bestätigte Eins-zu-eins-Zuordnung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-englisch-abschlusspruefung-text-production-mediation",
+      "de_by_id": "01K4EAM0000000000000000J04",
+      "de_by_question": "Erkläre die verbindlichen Regeln für das Prüfungsformat 'Mediation' (Sprachmittlung): 1. Aufgabenanalyse: Wer ist der Adressat (Freund, Austauschschüler, Hotelier, Tourist)?, Welches Textformat ist gefordert (E-Mail, Blogpost, Flyer, Infotext)?, Welche konkreten Informationen werden gesucht?, 2. Selektives Lesen: Nur die für den Arbeitsauftrag relevanten Fakten aus dem Ausgangstext filtern; irrelevante Details weglassen, 3. Sinngemäße Formulierung: Niemals Wort für Wort übersetzen; deutsche Redewendungen und spezifische Begriffe verständlich umschreiben (Paraphrasing), 4. Textsortenkonventionen: Passende Anrede und Grußformel bei E-Mails ('Dear Tom, ... Best wishes').",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die breite Altfrage verbindet Aufgabenanalyse, Auswahl, Paraphrase und Textformat. Neue Einzelkarten erhalten diesen Gesamtabruf nicht auf einem Nachfolger."
+    }
+  ]
+}
