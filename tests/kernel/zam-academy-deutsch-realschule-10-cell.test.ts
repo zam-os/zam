@@ -1,7 +1,9 @@
-import { mkdtempSync, rmSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { weltwissenSeedRows } from "../../src/kernel/atlas/index.js";
 import {
   type Database,
   enrolBundledCell,
@@ -12,10 +14,14 @@ import {
   getBundledCellTile,
   getTokenById,
   installKvtTile,
+  kvtItemPlainTexts,
   listLibraryTopics,
   needsGenericCurriculumImport,
   openDatabase,
 } from "../../src/kernel/index.js";
+import mapping from "../fixtures/legacy/zam-academy-deutsch-realschule-10-replaces-de-by.json" with {
+  type: "json",
+};
 
 const CELL_ID = "zam-academy:deutsch-realschule-10";
 const LEGACY_ID =
@@ -44,7 +50,8 @@ describe("ZAM Academy Deutsch 10 Realschule cell", () => {
       gradeLabel: "ZAM Academy",
       atomCount: 30,
     });
-    expect(tile.version).toBe("2026.10.1");
+    expect(tile.version).toBe("2026.10.2");
+    expect(getBundledCell(CELL_ID)?.publishedAt).toBe(tile.published_at);
     expect(items).toHaveLength(60);
     expect(itemIds.size).toBe(60);
     expect(new Set(tile.atoms.map((atom) => atom.slug)).size).toBe(30);
@@ -105,8 +112,80 @@ describe("ZAM Academy Deutsch 10 Realschule cell", () => {
         school_type: "realschule",
         grade: 10,
         subject: "deutsch",
+        exam_relevant: true,
       });
       expect(binding.track).toBeUndefined();
+    }
+  });
+
+  it("uses the established German atlas areas for reading and language", () => {
+    const { aliases } = weltwissenSeedRows();
+    const expected = new Map([
+      ["deutsch/sprechen", "sprache.deutsch"],
+      ["deutsch/schreiben", "sprache.deutsch.schreiben"],
+      ["deutsch/literatur", "sprache.deutsch.literatur"],
+      ["deutsch/medien", "sprache.deutsch.medien"],
+      ["deutsch/grammatik", "sprache.deutsch.grammatik"],
+      ["deutsch/rechtschreibung", "sprache.deutsch.rechtschreibung"],
+    ]);
+    for (const atom of tile.atoms) {
+      expect(expected.has(atom.domain), atom.slug).toBe(true);
+      const match = aliases
+        .filter(
+          (alias) =>
+            atom.domain === alias.domainPrefix ||
+            atom.domain.startsWith(`${alias.domainPrefix}/`),
+        )
+        .sort((a, b) => b.domainPrefix.length - a.domainPrefix.length)[0];
+      expect(match?.regionKey, atom.slug).toBe(expected.get(atom.domain));
+    }
+  });
+
+  it("pins the proposal-only decision record and byte-exact legacy source", () => {
+    // Byte-exact proposal from zam-os/zam-academy@514eeaed973adc87e2d0d6d62f6e1ebad84a458b,
+    // deutsch-realschule-10/replaces-de-by.json. No transfer or retirement was approved.
+    const proposal = readFileSync(
+      new URL(
+        "../fixtures/legacy/zam-academy-deutsch-realschule-10-replaces-de-by.json",
+        import.meta.url,
+      ),
+    );
+    expect(createHash("sha256").update(proposal).digest("hex")).toBe(
+      "e64891631ba9e3538f1e978942685bdd300240aff2c48743a057e145e0c351ba",
+    );
+    const bytes = readFileSync(
+      new URL(
+        "../fixtures/curriculum/de-by-realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel-kvt.json",
+        import.meta.url,
+      ),
+    );
+    expect(createHash("sha256").update(bytes).digest("hex")).toBe(
+      mapping.sources[0].sha256,
+    );
+    expect(mapping.source_repository).toBe("zam-os/zam");
+    expect(mapping.source_commit).toBe(
+      "0370098ff1fb50ba130984c4b16612bd509d680e",
+    );
+    expect(mapping.sources[0]).toMatchObject({
+      tile_id: legacy.tile_id,
+      version: legacy.version,
+    });
+    expect(mapping.approved).toBeNull();
+    expect(mapping.status).toBe("proposal-only");
+    expect(mapping.rows.map((row) => row.de_by_id).sort()).toEqual(
+      [...oldIds].sort(),
+    );
+    for (const row of mapping.rows) {
+      expect(row).toMatchObject({
+        category: "C",
+        action: "keep-active",
+        academy_slug: null,
+        de_by_cell: legacy.tile_id,
+      });
+      const oldItem = legacy.atoms
+        .flatMap((atom) => atom.practice_items)
+        .find((item) => item.id === row.de_by_id)!;
+      expect(kvtItemPlainTexts(oldItem).question).toBe(row.de_by_question);
     }
   });
 

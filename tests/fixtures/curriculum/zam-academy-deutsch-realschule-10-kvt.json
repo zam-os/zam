@@ -1,9 +1,9 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "zam-academy:deutsch-realschule-10",
-  "version": "2026.10.1",
+  "version": "2026.10.2",
   "title": "Deutsch 10 Realschule (ZAM Academy)",
-  "description": "30 Lektionen mit 60 gezielten Wiederholungsfragen zu Sprechen, Lesen, Literatur, Argumentation, Schreiben und Sprache nach LehrplanPLUS Bayern. Mündliche Praxis, Ganzschrift, historische Gedichtvergleiche und Lehrkraftfeedback ergänzen die App. Lokaler Entwurf ohne Lernstandsübertragung.",
+  "description": "30 Lektionen mit 60 gezielten Wiederholungsfragen zu Sprechen, Lesen, Literatur, Argumentation, Schreiben und Sprache nach LehrplanPLUS Bayern. Mündliche Praxis, Ganzschrift, historische Gedichtvergleiche und Lehrkraftfeedback ergänzen die App. Zusätzliche Zelle ohne Lernstandsübertragung.",
   "publisher": "ZAM Academy",
   "sources": [
     {
@@ -52,7 +52,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb1",
-          "topic_title": "Sprechen und Zuhören"
+          "topic_title": "Sprechen und Zuhören",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -111,7 +112,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb1",
-          "topic_title": "Sprechen und Zuhören"
+          "topic_title": "Sprechen und Zuhören",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -170,7 +172,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb1",
-          "topic_title": "Sprechen und Zuhören"
+          "topic_title": "Sprechen und Zuhören",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -180,7 +183,7 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 2,
-          "question": "Was gehört als Beschluss ins Ergebnisprotokoll?",
+          "question": "AG-Sitzung, 12.10., Raum 3. Mia möchte zwei zusätzliche Öffnungstage. Ben hält die Betreuung für ungeklärt. Beschlossen wird ein Versuch am Mittwoch; Mia fragt bis Freitag zwei Betreuende an. Die zweite Öffnung bleibt offen.\n\nWas gehört als Beschluss ins Ergebnisprotokoll?",
           "concept": "Ein zusätzlicher Mittwoch wird versuchsweise angeboten.",
           "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-diskussion",
           "fast_check": {
@@ -229,7 +232,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb1",
-          "topic_title": "Sprechen und Zuhören"
+          "topic_title": "Sprechen und Zuhören",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -288,7 +292,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb1",
-          "topic_title": "Sprechen und Zuhören"
+          "topic_title": "Sprechen und Zuhören",
+          "exam_relevant": true
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -296,7 +301,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -337,7 +343,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-leseplan",
       "title": "Mit einer Lesefrage starten",
-      "domain": "deutsch/lesen",
+      "domain": "deutsch/literatur",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-leseplan",
@@ -355,7 +361,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -396,7 +403,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-journalistik",
       "title": "Nachricht, Kommentar oder Glosse?",
-      "domain": "deutsch/lesen",
+      "domain": "deutsch/medien",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-journalistik",
@@ -414,7 +421,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -455,7 +463,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-daten",
       "title": "Zahlen brauchen einen Kontext",
-      "domain": "deutsch/lesen",
+      "domain": "deutsch/medien",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-daten",
@@ -473,7 +481,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -514,7 +523,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-quellen",
       "title": "Quellen prüfen und Medien bewusst nutzen",
-      "domain": "deutsch/lesen",
+      "domain": "deutsch/medien",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-quellen",
@@ -532,7 +541,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -540,7 +550,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -581,7 +592,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-medien",
       "title": "Vom Text zur filmischen Wirkung",
-      "domain": "deutsch/lesen",
+      "domain": "deutsch/medien",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-medien",
@@ -599,7 +610,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -640,7 +652,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-parabel",
       "title": "Eine Parabel öffnen",
-      "domain": "deutsch/lesen",
+      "domain": "deutsch/literatur",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-parabel",
@@ -658,7 +670,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -666,7 +679,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -707,7 +721,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-roman",
       "title": "Erzählperspektive und literarischer Kontext",
-      "domain": "deutsch/lesen",
+      "domain": "deutsch/literatur",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-roman",
@@ -725,7 +739,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -733,7 +748,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -743,7 +759,7 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 2,
-          "question": "Was wissen wir über Miras Gedanken?",
+          "question": "Eigenes Beispiel: „Ich lächelte, als die Tür aufging. Ob Mira meinen Brief gelesen hatte, wusste ich nicht. Die Uhr schlug zehn; ich starrte auf ihre leeren Hände.“\n\nWas wissen wir über Miras Gedanken?",
           "concept": "Der Ausschnitt gibt sie nicht direkt wieder.",
           "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-roman",
           "fast_check": {
@@ -774,7 +790,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-satire",
       "title": "Satire: das Übertriebene ernst nehmen",
-      "domain": "deutsch/lesen",
+      "domain": "deutsch/literatur",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-satire",
@@ -792,7 +808,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -802,7 +819,7 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 2,
-          "question": "Worauf zielt die Kritik?",
+          "question": "„Unsere Schule spart endlich Zeit: Damit niemand mehr auf einen freien Platz warten muss, wurde der Lernraum geschlossen. Die Erfolgsbilanz ist glänzend: keine einzige Warteperson im Raum!“\n\nWorauf zielt die Kritik?",
           "concept": "Auf eine Erfolgsstatistik, die den Zweck des Angebots verdrängt.",
           "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-satire",
           "fast_check": {
@@ -833,7 +850,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-expressionismus",
       "title": "Expressionismus: eine Welt gerät ins Wanken",
-      "domain": "deutsch/lesen",
+      "domain": "deutsch/literatur",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-expressionismus",
@@ -851,7 +868,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -892,7 +910,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-politische-lyrik",
       "title": "Politische Lyrik: Wer spricht zu wem?",
-      "domain": "deutsch/lesen",
+      "domain": "deutsch/literatur",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-politische-lyrik",
@@ -910,7 +928,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -969,7 +988,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1034,7 +1054,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -1042,7 +1063,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1112,7 +1134,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1187,7 +1210,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -1195,7 +1219,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1205,7 +1230,7 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 2,
-          "question": "Welche Empfehlung berücksichtigt alle drei Materialien?",
+          "question": "M1, erfundene AG-Umfrage: 18 von 30 Befragten wünschen Nachmittagsöffnung. M2, erfundene Personalnotiz: Mittwoch ist eine Betreuung frei, Freitag nicht. M3, erfundene Einzelstimme: „Freitag wäre für mich ideal.“ Auftrag: Empfehlung an die Schulleitung.\n\nWelche Empfehlung berücksichtigt alle drei Materialien?",
           "concept": "Mittwoch testen und den unerfüllten Freitagswunsch benennen.",
           "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-material",
           "fast_check": {
@@ -1260,7 +1285,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1319,7 +1345,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -1327,7 +1354,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1386,7 +1414,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1451,7 +1480,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -1459,7 +1489,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1524,7 +1555,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb2",
-          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -1532,7 +1564,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1597,7 +1630,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -1605,7 +1639,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb4",
-          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1646,7 +1681,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-register",
       "title": "Fachsprache und Varietäten bewusst wählen",
-      "domain": "deutsch/sprache",
+      "domain": "deutsch/grammatik",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-register",
@@ -1664,7 +1699,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb4",
-          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1705,7 +1741,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-wandel",
       "title": "Sprachwandel und beschönigende Wörter",
-      "domain": "deutsch/sprache",
+      "domain": "deutsch/grammatik",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-wandel",
@@ -1723,7 +1759,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb4",
-          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1764,7 +1801,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-sprachvergleich",
       "title": "Sprachen vergleichen, genauer verstehen",
-      "domain": "deutsch/sprache",
+      "domain": "deutsch/grammatik",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-sprachvergleich",
@@ -1782,7 +1819,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb4",
-          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1823,7 +1861,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-kohaerenz",
       "title": "Zusammenhang sprachlich herstellen",
-      "domain": "deutsch/sprache",
+      "domain": "deutsch/grammatik",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-kohaerenz",
@@ -1841,7 +1879,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb4",
-          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren",
+          "exam_relevant": true
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -1849,7 +1888,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1859,7 +1899,7 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 2,
-          "question": "Welches Problem hat der erste Satz?",
+          "question": "Entwurf: „Mia sprach mit Lea, nachdem sie den Raum geschlossen hatte. Der Raum ist beliebt. Deshalb gibt es bereits genug Betreuung.“ Zur Betreuung liegt keine Information vor.\n\nWelches Problem hat der erste Satz?",
           "concept": "„Sie“ kann sich auf Mia oder Lea beziehen.",
           "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-kohaerenz",
           "fast_check": {
@@ -1890,7 +1930,7 @@
       "namespace": "zam-academy-deutsch-realschule-10",
       "slug": "d10-rechtschreibung",
       "title": "Eigene Fehler systematisch abbauen",
-      "domain": "deutsch/sprache",
+      "domain": "deutsch/rechtschreibung",
       "reduction": "formal",
       "typical_age_min": 15,
       "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-rechtschreibung",
@@ -1908,7 +1948,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb3",
-          "topic_title": "Schreiben"
+          "topic_title": "Schreiben",
+          "exam_relevant": true
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -1916,7 +1957,8 @@
           "grade": 10,
           "subject": "deutsch",
           "topic_code": "lb4",
-          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren",
+          "exam_relevant": true
         }
       ],
       "practice_items": [
@@ -1951,5 +1993,6 @@
         }
       ]
     }
-  ]
+  ],
+  "published_at": "2026-10-25T08:08:02Z"
 }

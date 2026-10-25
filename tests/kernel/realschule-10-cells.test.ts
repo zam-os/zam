@@ -17,12 +17,12 @@ import {
 // mathematics cells to zam-academy:mathematik-realschule-10 (#23). Their
 // items replace or retire the old ones explicitly. See
 // tests/kernel/zam-academy-*-realschule-10-cell.test.ts. The two chemistry
-// cells moved to zam-academy:chemie-realschule-10 (#43).
+// cells moved to zam-academy:chemie-realschule-10 (#43), the history cell to
+// zam-academy:geschichte-realschule-10 (#45).
 // Deutsch 10 is an additional Academy offering (#46); its four old cards
 // stay bundled and active because no replacement or retirement was approved.
 const RS10_CELL_IDS = [
   "de-by:realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse",
-  "de-by:realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung",
   "de-by:realschule-10-wirtschaft-recht-strafrecht-arbeitsrecht-sozialstaat",
   "de-by:realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel",
   "de-by:realschule-10-englisch-abschlusspruefung-text-production-mediation",
@@ -31,6 +31,7 @@ const ACADEMY_RS10_IDS = [
   "zam-academy:biologie-realschule-10",
   "zam-academy:chemie-realschule-10",
   "zam-academy:deutsch-realschule-10",
+  "zam-academy:geschichte-realschule-10",
   "zam-academy:mathematik-realschule-10",
   "zam-academy:physik-realschule-10",
 ];
@@ -51,7 +52,7 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists the 5 Realschule 10 school cells and the Academy offerings", () => {
+  it("lists the 4 Realschule 10 school cells and the Academy offerings", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(100);
 
@@ -103,17 +104,7 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
     expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
   });
 
-  it("installs and enrols cleanly into Geschichte 10 Kalter Krieg und deutsche Einheit", async () => {
-    const user = "learner-rs10-ges";
-    const cellId =
-      "de-by:realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung";
-
-    const result = await enrolBundledCell(db, user, cellId);
-    expect(result.success).toBe(true);
-    expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
-  });
-
-  it("supports simultaneous co-enrolment in the 5 Grade 10 school cells without conflict", async () => {
+  it("supports simultaneous co-enrolment in the 4 Grade 10 school cells without conflict", async () => {
     const user = "complete-rs10-candidate";
 
     let totalCards = 0;
@@ -123,12 +114,12 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
       totalCards += res.cardsCreated;
     }
 
-    // 5 cells * 4 = 20 cards
-    expect(totalCards).toBe(20);
+    // 4 cells * 4 = 16 cards
+    expect(totalCards).toBe(16);
 
     const cards = (await db
       .prepare(`SELECT COUNT(*) as count FROM cards WHERE user_id = ?`)
       .get(user)) as { count: number };
-    expect(cards.count).toBe(20);
+    expect(cards.count).toBe(16);
   });
 });

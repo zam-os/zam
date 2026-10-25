@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "approved": "2026-10-25",
+  "status": "approved",
+  "source": "Thomas in diesem Claude-Code-Chat am 2026-10-25, nach Eröffnung von zam-os/zam-academy#45: „Ich gebe die Zuordnung 2 A / 0 B / 2 C mit Stilllegung der beiden C-Karten frei. Trag die Freigabe ein und liefere sie als Version 2026.10.2.“",
+  "source_repository": "zam-os/zam",
+  "source_commit": "b2bd246ec9ebb2cfde01e93d0c0dcf9d33024ba9",
+  "authorization": "Thomas hat am 25. Oktober 2026 die hier dokumentierten vier Zuordnungen ausdrücklich freigegeben (2 A, 0 B, 2 C mit Stilllegung). Die Zelle 2026.10.2 deklariert genau zwei replaces und zwei retired_items; persönliche Karten und Reviewhistorien bleiben erhalten.",
+  "policy": "A: gleicher einzelner Abruf, genau ein Nachfolger mit replaces. B: unveränderte mehrteilige Gesamtfrage auf einem eigenen Nachfolger, hier keine. C: mehrteilig, korrigiert oder unsicher; kein replaces, keine Lernstandsübernahme. Altkarte und alle Reviews bleiben erhalten; eine Stilllegung über retired_items nimmt den Alttext nur aus aktiven Wiederholungen.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung-kvt.json",
+      "tile_id": "de-by:realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung",
+      "version": "2026.08.1",
+      "sha256": "ecba7fe3328e8e2bcaeda44dd447a7b1f6f9dde81556f79834f0cfe92535e8ff"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung",
+      "de_by_id": "01K4HAK0000000000000000J01",
+      "de_by_question": "In welcher existenziellen Krise des Jahres 1962 stand die Welt nach der Stationierung sowjetischer Nuklearraketen auf Kuba am Rande eines atomaren Weltkriegs?",
+      "category": "A",
+      "academy_slug": "g10-kuba-krise-merken",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf: der Name der Krise vom Oktober 1962, in der die Welt am Rand eines Atomkriegs stand. Alte Antwort „Die Kubakrise“, neue „In der Kuba-Krise“ (Schreibweise des Lehrplans); die alte Ablenkoption Suezkrise bleibt als Distraktor erhalten. Die neue Frage nennt Kuba nicht mehr im Fragetext."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung",
+      "de_by_id": "01K4HAK0000000000000000J02",
+      "de_by_question": "Analysiere den Kalten Krieg als globale Systemkonfrontation: 1. Ideologischer Gegensatz (Westen: Demokratie, Menschenrechte, Marktwirtschaft, Kapitalismus vs. Osten: Marxistisch-leninistische Diktatur, Planwirtschaft, Vorherrschaft der KPdSU), 2. Die Truman-Doktrin 1947 (Eindämmungspolitik / Containment) und der Marshallplan (ERP) zum wirtschaftlichen Wiederaufbau Westeuropas, 3. Militärische Blockbildung: NATO 1949 vs. Warschauer Pakt 1955, 4. Das nukleare 'Gleichgewicht des Schreckens' (MAD – Mutual Assured Destruction) und Stellvertreterkriege (Korea-Krieg 1950–1953, Vietnamkrieg 1964–1975).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Vierteilige Gesamtfrage, deren Inhalte die neue Zelle auf mehrere Atome verteilt (Blockbildung, Kuba-Krise, Vietnamkrieg, Entspannung); eine Verteilung einer Historie auf mehrere Karten ist ausgeschlossen. Die Musterlösung wertet zugespitzt („in letzter Sekunde abgewendet“, „gigantisches“ Hilfsprogramm) statt zu erklären. Zudem bindet die Alt-Zelle das Atom an Lernbereich 1, der im Plan Methoden und Arbeitstechniken ist. Kein Lernstandsübertrag; die Karte wird stillgelegt, ihre Historie bleibt am alten Token."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung",
+      "de_by_id": "01K4HAK0000000000000000J03",
+      "de_by_question": "An welchem historischen Datum fiel die Berliner Mauer infolge der Friedlichen Revolution in der DDR?",
+      "category": "A",
+      "academy_slug": "g10-friedliche-revolution-merken",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf: das Datum der Grenzöffnung, der 9. November 1989. Die neue Frage verwendet den Lehrplanbegriff „Öffnung der innerdeutschen Grenze“ statt „fiel die Mauer“; Antwort und alte Ablenkoption 3. Oktober 1990 bleiben gleich."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung",
+      "de_by_id": "01K4HAK0000000000000000J04",
+      "de_by_question": "Rekonstruiere die Geschichte des geteilten Deutschland von 1945 bis 1990 in 4 Schlüsselphasen: 1. Doppelte Staatsgründung 1949 (Währungsreform 1948, Berliner Luftbrücke -> 23. Mai 1949: Verkündung des Grundgesetzes der BRD; 7. Oktober 1949: Gründung der DDR), 2. Der Bau der Berliner Mauer (13. August 1961) (Stoppen der Massenflucht von über 2,7 Mio. Bürgern über West-Berlin; Errichtung der hermetisch abgeriegelten innerdeutschen Grenze mit Todesstreifen und Schießbefehl), 3. Die Friedliche Revolution 1989 (Gorbatschows Reformen Glasnost & Perestroika, Massenflucht über Ungarn, Montagsdemonstrationen in Leipzig: 'Wir sind das Volk!', Fall der Mauer am 9. November 1989), 4. Der Weg zur Einheit 1990 (Wirtschafts-, Währungs- und Sozialunion 1. Juli 1990, Zwei-plus-Vier-Vertrag zur vollen Souveränität Deutschlands, Beitritt der 5 neuen Bundesländer am 3. Oktober 1990).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Vierteilige Gesamtfrage über vier Atome der neuen Zelle (Zwei Staaten, Mauerbau, Friedliche Revolution, Weg zur Einheit); keine Verteilung einer Historie. Die Musterlösung wertet mit Begriffen wie „Vasallenstaat“ und „schenken … die volle Souveränität“ statt zu erklären, nennt die Mauer insgesamt eine „155 km lange Betonmauer“ (155 km sind die Grenzanlagen um West-Berlin) und ordnet die Wiedervereinigung Lernbereich 2 zu, der im Plan die Nachkriegszeit ist (die Einheit steht in Lernbereich 4). Kein Lernstandsübertrag; die Karte wird stillgelegt, ihre Historie bleibt am alten Token."
+    }
+  ]
+}

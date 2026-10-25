@@ -42,7 +42,7 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
   schoolYear: "2026/2027",
   capturedOn: "2026-07-19",
   sourceRevision:
-    "LehrplanPLUS Bayern – including WS/FOS/BOS (2026-07-19); +grundschule/mittelschule/foerderschule (2026-07-19); +Realschule Chemie 9 I/II/III, Geographie 9 und Geschichte 9 gemeinsam (2026-10-20); +Realschule Biologie 10 gemeinsam (2026-10-21); +Realschule Physik 10 I/II/III (2026-10-21); +Realschule Physik 8 I/II/III (2026-10-23); +Realschule Chemie 10 I/II/III (2026-10-24)",
+    "LehrplanPLUS Bayern – including WS/FOS/BOS (2026-07-19); +grundschule/mittelschule/foerderschule (2026-07-19); +Realschule Chemie 9 I/II/III, Geographie 9 und Geschichte 9 gemeinsam (2026-10-20); +Realschule Biologie 10 gemeinsam (2026-10-21); +Realschule Physik 10 I/II/III (2026-10-21); +Realschule Physik 8 I/II/III (2026-10-23); +Realschule Chemie 10 I/II/III (2026-10-24); +Realschule Geschichte 10 gemeinsam (2026-10-25)",
 
   schoolTypes: [
     {
@@ -63162,7 +63162,7 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
     "realschule|10|franzoesisch":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/10/fach/franzoesisch/inhalt/fachlehrplaene",
     "realschule|10|geschichte":
-      "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/10/fach/geschichte/inhalt/fachlehrplaene",
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/geschichte",
     "realschule|10|it":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/10/fach/it/inhalt/fachlehrplaene",
     "realschule|10|iu":
