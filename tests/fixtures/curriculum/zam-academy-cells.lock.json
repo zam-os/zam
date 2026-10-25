@@ -36,6 +36,12 @@
     "file": "zam-academy-datennetze-kvt.json"
   },
   {
+    "id": "zam-academy:deutsch-realschule-10",
+    "version": "2026.10.1",
+    "sha256": "f84044d64bf424c5bf1852c9cb97a485f2dd41588c622de97d91222d03753393",
+    "file": "zam-academy-deutsch-realschule-10-kvt.json"
+  },
+  {
     "id": "zam-academy:deutsch-realschule-9",
     "version": "2026.10.3",
     "sha256": "2794857390d885f8759a63f355da1512149600dfa5c5425cc5f2910a6bb5077b",
