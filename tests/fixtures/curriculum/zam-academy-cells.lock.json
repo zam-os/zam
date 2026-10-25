@@ -60,6 +60,12 @@
     "file": "zam-academy-geographie-realschule-9-kvt.json"
   },
   {
+    "id": "zam-academy:geschichte-realschule-10",
+    "version": "2026.10.3",
+    "sha256": "2107c61315796373e29067ca4dedd9c1f82f576fbecafc381835375a226f1210",
+    "file": "zam-academy-geschichte-realschule-10-kvt.json"
+  },
+  {
     "id": "zam-academy:geschichte-realschule-9",
     "version": "2026.10.1",
     "sha256": "d03372a8f474fcefecb72f7847afbb7a95c200ac612886411c50b53e5c87cc5e",
