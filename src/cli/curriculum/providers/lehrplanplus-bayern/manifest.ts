@@ -1329,6 +1329,11 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
         label: "Differenzierter Sport",
       },
     ],
+    // BwR 10 is offered only in group II; the wpfg3a and wpfg3 paths of
+    // LehrplanPLUS redirect to the start page (checked 2026-10-25).
+    "realschule|10|bwl-rechnungswesen": [
+      { id: "wpfg2", label: "Betriebswirtschaftslehre/Rechnungswesen 10 (II)" },
+    ],
     // Chemie 10 branches verified against LehrplanPLUS on 2026-10-24.
     "realschule|10|chemie": [
       {
@@ -11734,6 +11739,30 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
         id: "lb3",
         label: "Arbeiten mit plastischen Massen",
         hours: 26,
+      },
+    ],
+    // Keep the unqualified path for older positions; both use the verified II source.
+    "realschule|10|bwl-rechnungswesen|wpfg2": [
+      {
+        id: "lb1",
+        label: "BwR10 Periodenrichtige Erfolgsermittlung und Rückstellungen",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "BwR10 Unternehmensabschluss und Auswertung",
+        hours: 17,
+      },
+      {
+        id: "lb3",
+        label:
+          "BwR10 Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung",
+        hours: 30,
+      },
+      {
+        id: "lb4",
+        label: "BwR10 Teilkostenrechnung",
+        hours: 15,
       },
     ],
     "realschule|10|bwl-rechnungswesen": [
@@ -63146,7 +63175,9 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
     "realschule|9|werken":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/9/fach/werken/inhalt/fachlehrplaene",
     "realschule|10|bwl-rechnungswesen":
-      "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/10/fach/bwl-rechnungswesen/inhalt/fachlehrplaene",
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/bwl-rechnungswesen/wpfg2",
+    "realschule|10|bwl-rechnungswesen|wpfg2":
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/bwl-rechnungswesen/wpfg2",
     "realschule|10|biologie":
       "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/biologie",
     "realschule|10|deutsch":

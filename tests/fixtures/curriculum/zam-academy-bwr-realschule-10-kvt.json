@@ -1,0 +1,2777 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:bwr-realschule-10",
+  "version": "2026.10.2",
+  "title": "BwR 10 Realschule (ZAM Academy)",
+  "description": "Alle vier Lernbereiche von BwR 10 an der Realschule Bayern, Wahlpflichtfächergruppe II: periodenrichtige Erfolgsermittlung und Rückstellungen, Abschluss und Kennzahlen, Vollkostenrechnung und Teilkostenrechnung. 36 Kernlektionen und zwei optionale Grundlagenauffrischungen.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-25T18:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/bwr-realschule-10/",
+      "checked": "2026-10-25",
+      "label": "ZAM Academy · BwR 10"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/bwl-rechnungswesen/wpfg2",
+      "checked": "2026-10-25",
+      "label": "LehrplanPLUS · BwR 10 · II"
+    },
+    {
+      "uri": "https://www.isb.bayern.de/fileadmin/user_upload/Realschule/BwR/Kontenplaene/Kontenplan_LehrplanPLUS.pdf",
+      "checked": "2026-10-25",
+      "label": "ISB · Kontenplan LehrplanPLUS"
+    }
+  ],
+  "retired_items": [
+    {
+      "id": "01K4WAK0000000000000000J02",
+      "reason": "Mehrteiliger Gesamtabruf: ganzes Kalkulationsschema bis zum Bruttoverkaufspreis und eine Rechnung bis zum Barverkaufspreis. Die neue Zelle teilt das in Selbstkosten (vk-zuschlagskalkulation) und Angebotspreis (vk-angebotspreis); die alte Musterlösung nennt ein „11-stufiges bayerisches Schema“ und schlägt die Umsatzsteuer auf, der Lehrplan verlangt den Listenverkaufspreis netto. Kein Lernstandsübertrag; die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4WAK0000000000000000J04",
+      "reason": "Mehrteiliger Abruf aus Kostenauflösung, Stück- und Gesamtdeckungsbeitrag, Gewinnschwelle, Zusatzauftrag und einer Rechnung. Die neue Zelle verteilt diese Teile auf tk-voll-teil, tk-db, tk-gewinnschwelle und tk-zusatzauftrag; eine Verteilung einer Historie auf mehrere Karten ist ausgeschlossen. Kein Lernstandsübertrag; die Historie bleibt am alten Token."
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5SWZ0Z8QXP6DA6MA9N8EGYK",
+      "atom_uri": "urn:zam:atom:01M5SWZ0Z8QXP6DA6MA9N8EGYK",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-pe-begriffe",
+      "title": "Ausgabe und Aufwand, Einnahme und Ertrag",
+      "domain": "bwr/periodenabgrenzung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-begriffe",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Periodenrichtige Erfolgsermittlung und Rückstellungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Periodenrichtige Erfolgsermittlung und Rückstellungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ0ZB6APSK0Z9JM1736FP",
+          "slug": "bwr10-pe-begriffe-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ist die Tilgung eines Bankdarlehens ein Aufwand?",
+          "concept": "Nein, nur eine Ausgabe; der Gewinn ändert sich nicht.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-begriffe",
+          "materiality": "material",
+          "sample_solution": "Die Tilgung verringert Bankguthaben und Darlehensschuld, beides Bestandskonten. Nur die Zinsen sind Aufwand.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, nur eine Ausgabe; der Gewinn ändert sich nicht.",
+              "Ja, sie mindert den Gewinn um den Tilgungsbetrag."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ0ZDCMZRF50Y1WX6AVST",
+          "slug": "bwr10-pe-begriffe-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wodurch unterscheiden sich Ausgabe und Aufwand?",
+          "concept": "Eine Ausgabe ist ein Geldabfluss, ein Aufwand der Werteverzehr eines Geschäftsjahres, der den Gewinn mindert.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-begriffe",
+          "materiality": "material",
+          "sample_solution": "Beim Kauf einer Maschine per Bank entsteht sofort eine Ausgabe, der Aufwand dagegen über Jahre als Abschreibung. Die Abschreibung selbst ist Aufwand ohne Ausgabe."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ0ZG9JJ4NQGQ8DJE4WHC",
+      "atom_uri": "urn:zam:atom:01M5SWZ0ZG9JJ4NQGQ8DJE4WHC",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-pe-zuordnung",
+      "title": "Aufwand und Ertrag dem richtigen Jahr zuordnen",
+      "domain": "bwr/periodenabgrenzung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-zuordnung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ0Z8QXP6DA6MA9N8EGYK",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Periodenrichtige Erfolgsermittlung und Rückstellungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Periodenrichtige Erfolgsermittlung und Rückstellungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ0ZJ65GFNCSQJSZZK5CM",
+          "slug": "bwr10-pe-zuordnung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wonach richtet sich, in welches Geschäftsjahr ein Aufwand gehört?",
+          "concept": "Nach dem Zeitraum der wirtschaftlichen Verursachung, nicht nach dem Zahlungstag.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-zuordnung",
+          "materiality": "material",
+          "sample_solution": "Grundsatz der Periodenabgrenzung: Aufwendungen und Erträge gehören in das Jahr, in dem sie wirtschaftlich entstehen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nach dem Zeitraum der wirtschaftlichen Verursachung, nicht nach dem Zahlungstag.",
+              "Nach dem Tag der Zahlung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ0ZN10BJ0QS3D4C9BR4J",
+          "slug": "bwr10-pe-zuordnung-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Am 1. Oktober werden 1.200 Euro Versicherungsbeitrag für zwölf Monate bezahlt. Welcher Betrag gehört wirtschaftlich ins neue Jahr?",
+          "concept": "900 Euro (Januar bis September, neun Monate zu je 100 Euro).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-zuordnung",
+          "materiality": "material",
+          "sample_solution": "1.200 : 12 = 100 Euro je Monat. Oktober bis Dezember (300 Euro) gehören ins alte Jahr, Januar bis September (900 Euro) ins neue."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ0ZQ4GZ6F7QE2J6HW4MS",
+      "atom_uri": "urn:zam:atom:01M5SWZ0ZQ4GZ6F7QE2J6HW4MS",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-pe-ara",
+      "title": "Aktive Rechnungsabgrenzung buchen",
+      "domain": "bwr/periodenabgrenzung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-ara",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ0ZG9JJ4NQGQ8DJE4WHC",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Periodenrichtige Erfolgsermittlung und Rückstellungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Periodenrichtige Erfolgsermittlung und Rückstellungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ0ZTNDNDV94FXGJEHY0E",
+          "slug": "bwr10-pe-ara-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet die Buchung der aktiven Rechnungsabgrenzung am 31. Dezember?",
+          "concept": "2900 ARA an Aufwandskonto, mit dem Nettobetrag des neuen Jahres.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-ara",
+          "materiality": "material",
+          "sample_solution": "Vorausbezahlter Aufwand wird aus dem Aufwandskonto genommen; ARA steht auf der Aktivseite.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "2900 ARA an Aufwandskonto, mit dem Nettobetrag des neuen Jahres.",
+              "Aufwandskonto an 2900 ARA, mit dem Nettobetrag des neuen Jahres."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ0ZWTGY26BN20CDXRM0R",
+          "slug": "bwr10-pe-ara-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum wird bei einer umsatzsteuerpflichtigen Vorauszahlung nur der Nettobetrag aktiv abgegrenzt?",
+          "concept": "Die Vorsteuer ist mit der Rechnung im alten Jahr abziehbar und gehört nicht zum Aufwand.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-ara",
+          "materiality": "material",
+          "sample_solution": "Abgegrenzt wird Aufwand. Die Vorsteuer ist eine Forderung an das Finanzamt aus der Rechnung des alten Jahres und wird dort vollständig gebucht."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ0ZZ5AY9THSP9MDX643Z",
+      "atom_uri": "urn:zam:atom:01M5SWZ0ZZ5AY9THSP9MDX643Z",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-pe-pra",
+      "title": "Passive Rechnungsabgrenzung buchen",
+      "domain": "bwr/periodenabgrenzung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-pra",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ0ZG9JJ4NQGQ8DJE4WHC",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Periodenrichtige Erfolgsermittlung und Rückstellungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Periodenrichtige Erfolgsermittlung und Rückstellungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ10104D8GSR4YY167F6M",
+          "slug": "bwr10-pe-pra-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet die Buchung der passiven Rechnungsabgrenzung am 31. Dezember?",
+          "concept": "Ertragskonto an 4900 PRA.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-pra",
+          "materiality": "material",
+          "sample_solution": "Vorauserhaltener Ertrag des neuen Jahres wird aus dem Ertragskonto genommen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ertragskonto an 4900 PRA.",
+              "4900 PRA an Ertragskonto."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ104WRGJQ4CDKYVNCCHE",
+          "slug": "bwr10-pe-pra-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum steht 4900 PRA auf der Passivseite der Bilanz?",
+          "concept": "Der Betrieb hat Geld erhalten und schuldet dafür noch eine Leistung im neuen Jahr.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-pra",
+          "materiality": "material",
+          "sample_solution": "PRA ist eine Leistungsschuld, zum Beispiel bei im Voraus erhaltener Miete: Der Mieter darf den Raum im neuen Jahr noch nutzen."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ107T9HNKGC0KSVA36GQ",
+      "atom_uri": "urn:zam:atom:01M5SWZ107T9HNKGC0KSVA36GQ",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-pe-aufloesung",
+      "title": "Abgrenzungsposten im neuen Jahr auflösen",
+      "domain": "bwr/periodenabgrenzung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-aufloesung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ0ZQ4GZ6F7QE2J6HW4MS",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        },
+        {
+          "atom_id": "01M5SWZ0ZZ5AY9THSP9MDX643Z",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Periodenrichtige Erfolgsermittlung und Rückstellungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Periodenrichtige Erfolgsermittlung und Rückstellungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ109Z4KQA3XSDSKMMDSZ",
+          "slug": "bwr10-pe-aufloesung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie wird eine aktive Rechnungsabgrenzung am 1. Januar aufgelöst?",
+          "concept": "Aufwandskonto an 2900 ARA.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-aufloesung",
+          "materiality": "material",
+          "sample_solution": "Die Auflösung kehrt die Abgrenzung um; der Aufwand steht nun im neuen Jahr.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aufwandskonto an 2900 ARA.",
+              "2900 ARA an Aufwandskonto."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ10CY22SEX4MYT70J409",
+          "slug": "bwr10-pe-aufloesung-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie wirkt die Auflösung von 900 Euro ARA für Versicherung auf den Gewinn des neuen Jahres?",
+          "concept": "Sie mindert ihn um 900 Euro, weil der Versicherungsaufwand nun im neuen Jahr steht.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-aufloesung",
+          "materiality": "material",
+          "sample_solution": "6900 VBEI an 2900 ARA 900 Euro: Aufwand ohne Zahlung im neuen Jahr. Ohne Abgrenzung wäre der Gewinn des alten Jahres zu niedrig und der des neuen zu hoch."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ10E5XBZXHK0Q7RD3B1D",
+      "atom_uri": "urn:zam:atom:01M5SWZ10E5XBZXHK0Q7RD3B1D",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-pe-rst-bilden",
+      "title": "Rückstellungen bilden",
+      "domain": "bwr/periodenabgrenzung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-rst-bilden",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ0Z8QXP6DA6MA9N8EGYK",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Periodenrichtige Erfolgsermittlung und Rückstellungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Periodenrichtige Erfolgsermittlung und Rückstellungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ10HNPHST65PMGCY4M3N",
+          "slug": "bwr10-pe-rst-bilden-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Mit welchem Betrag wird eine Rückstellung für eine aufgeschobene Reparatur gebildet?",
+          "concept": "Mit dem geschätzten Nettobetrag, ohne Vorsteuer.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-rst-bilden",
+          "materiality": "material",
+          "sample_solution": "Vorsteuer entsteht erst mit der Rechnung: 6160 FRI an 3900 RST (netto).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem geschätzten Nettobetrag, ohne Vorsteuer.",
+              "Mit dem Bruttobetrag des Kostenvoranschlags."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ10KM7JB2CMZQZM9GBSN",
+          "slug": "bwr10-pe-rst-bilden-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet eine Rückstellung von einer Verbindlichkeit?",
+          "concept": "Bei der Rückstellung sind Höhe oder Fälligkeit am Bilanzstichtag ungewiss, bei der Verbindlichkeit stehen beide fest.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-rst-bilden",
+          "materiality": "material",
+          "sample_solution": "Beispiel Rückstellung: geschätzte Prozesskosten (6770 RBK an 3900 RST). Beispiel Verbindlichkeit: eine erhaltene Reparaturrechnung über einen festen Betrag (4400 VE)."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ10PCBE2K5TZ0HT22JNG",
+      "atom_uri": "urn:zam:atom:01M5SWZ10PCBE2K5TZ0HT22JNG",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-pe-rst-aufloesen",
+      "title": "Rückstellungen auflösen",
+      "domain": "bwr/periodenabgrenzung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-rst-aufloesen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ10E5XBZXHK0Q7RD3B1D",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        },
+        {
+          "atom_id": "01M5SWZ10RGQGTKCA95FBPEEAQ",
+          "type": "soft",
+          "rationale": "Optionale Auffrischung des benötigten Grundwissens aus BwR 7 und 8."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb1",
+          "topic_title": "Periodenrichtige Erfolgsermittlung und Rückstellungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Periodenrichtige Erfolgsermittlung und Rückstellungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ10VPPX01ADJGFDPQQS9",
+          "slug": "bwr10-pe-rst-aufloesen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Auf welchem Konto wird die Differenz gebucht, wenn eine Rückstellung zu niedrig war?",
+          "concept": "6990 PFAW (periodenfremder Aufwand).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-rst-aufloesen",
+          "materiality": "material",
+          "sample_solution": "Die Rückstellung wird vollständig aufgelöst; der fehlende Betrag ist Aufwand, der eigentlich das alte Jahr betrifft.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "6990 PFAW (periodenfremder Aufwand).",
+              "5490 PFE (periodenfremder Ertrag)."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ10XQD7RT305GCZZ0MCD",
+          "slug": "bwr10-pe-rst-aufloesen-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Rückstellung 2.000 Euro; die Rechnung lautet 1.800 Euro netto plus 342 Euro Umsatzsteuer auf Ziel. Wie lautet die Buchung?",
+          "concept": "3900 RST 2.000 und 2600 VORST 342 an 4400 VE 2.142 und 5490 PFE 200.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=pe-rst-aufloesen",
+          "materiality": "material",
+          "sample_solution": "Die Rückstellung wird ganz aufgelöst. 200 Euro waren zu viel zurückgestellt und werden als periodenfremder Ertrag gebucht. Die Vorsteuer kommt aus der Rechnung, VE wird brutto erfasst."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ110BP0AQP5JD18RHNSN",
+      "atom_uri": "urn:zam:atom:01M5SWZ110BP0AQP5JD18RHNSN",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-ua-abschluss",
+      "title": "Vom Geschäftsgang zum Jahresabschluss",
+      "domain": "bwr/jahresabschluss",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-abschluss",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ10E5XBZXHK0Q7RD3B1D",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ112M5BNYRKY0ATWX1N3",
+          "slug": "bwr10-ua-abschluss-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie wird das GUV-Konto im Gewinnfall abgeschlossen?",
+          "concept": "8020 GUV an 3000 EK.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-abschluss",
+          "materiality": "material",
+          "sample_solution": "Ein Gewinn erhöht das Eigenkapital; im Verlustfall lautet die Buchung umgekehrt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "8020 GUV an 3000 EK.",
+              "3000 EK an 8020 GUV."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ115EPSV5CGFXQAAKNRV",
+          "slug": "bwr10-ua-abschluss-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "In welcher Reihenfolge läuft der Jahresabschluss?",
+          "concept": "Vorbereitende Abschlussbuchungen, Abschluss der Erfolgskonten über 8020 GUV, Abschluss von GUV auf 3000 EK, dann Bestandskonten über 8010 SBK.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-abschluss",
+          "materiality": "material",
+          "sample_solution": "Abgrenzungen, Rückstellungen und Abschreibungen berichtigen Erfolgskonten und müssen deshalb vor deren Abschluss gebucht sein. Erst das Eigenkapital nach dem GUV-Abschluss geht in die Schlussbilanz."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ117VVW3Z26163NTTHYX",
+      "atom_uri": "urn:zam:atom:01M5SWZ117VVW3Z26163NTTHYX",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-ua-eigenkapital",
+      "title": "Gewinn und Eigenkapital",
+      "domain": "bwr/jahresabschluss",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-eigenkapital",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ110BP0AQP5JD18RHNSN",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ11A0ZXSCJJPKAHNCHQP",
+          "slug": "bwr10-ua-eigenkapital-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnet man das Eigenkapital am Jahresende?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{EK}_{\\text{Ende}} = \\text{EK}_{\\text{Anfang}} + \\text{Gewinn} + \\text{Einlagen} - \\text{Entnahmen}",
+              "speech": "Eigenkapital am Ende gleich Eigenkapital am Anfang plus Gewinn plus Einlagen minus Entnahmen"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-eigenkapital",
+          "materiality": "material",
+          "sample_solution": "Privateinlagen erhöhen, Privatentnahmen verringern das Eigenkapital; sie sind weder Aufwand noch Ertrag.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Anfangskapital + Gewinn + Einlagen − Entnahmen",
+              "Anfangskapital + Gewinn − Einlagen + Entnahmen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ11CBK5VESY1QKYJ9V24",
+          "slug": "bwr10-ua-eigenkapital-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Anfangskapital 200.000 Euro, Endkapital 215.000 Euro, Entnahmen 30.000 Euro, keine Einlagen. Wie hoch war der Gewinn?",
+          "concept": "45.000 Euro.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-eigenkapital",
+          "materiality": "material",
+          "sample_solution": "215.000 = 200.000 + Gewinn − 30.000, also Gewinn = 45.000 Euro. Die bloße Differenz von 15.000 Euro übersieht die Entnahmen."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ11FGPR9XKW4DEPSECH9",
+      "atom_uri": "urn:zam:atom:01M5SWZ11FGPR9XKW4DEPSECH9",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-ua-aufbereiten",
+      "title": "Die Bilanz in sieben Posten aufbereiten",
+      "domain": "bwr/jahresabschluss",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-aufbereiten",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ110BP0AQP5JD18RHNSN",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ11J8XJKBN5QZWTJBZ5D",
+          "slug": "bwr10-ua-aufbereiten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Zu welchem Posten der aufbereiteten Bilanz gehört 2900 ARA?",
+          "concept": "Zu den Forderungen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-aufbereiten",
+          "materiality": "material",
+          "sample_solution": "Forderungen = FO + ZWFO + VORST + ARA − EWB − PWB.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zu den Forderungen.",
+              "Zum kurzfristigen Fremdkapital."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ11MERGNEG6FVGD4ZJ7W",
+          "slug": "bwr10-ua-aufbereiten-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche sieben Posten hat die aufbereitete Bilanz?",
+          "concept": "Anlagevermögen, Vorräte, Forderungen, flüssige Mittel; Eigenkapital, langfristiges und kurzfristiges Fremdkapital.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-aufbereiten",
+          "materiality": "material",
+          "sample_solution": "Langfristiges Fremdkapital ist LBKV. Zum kurzfristigen Fremdkapital gehören RST, KBKV, VE, UST, VFA, VSV und PRA."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ11QFVTNM48XE6DR1TCE",
+      "atom_uri": "urn:zam:atom:01M5SWZ11QFVTNM48XE6DR1TCE",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-ua-barliquiditaet",
+      "title": "Barliquidität berechnen und beurteilen",
+      "domain": "bwr/jahresabschluss",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-barliquiditaet",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ11FGPR9XKW4DEPSECH9",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ11S1ZKTJKFMKT2EA0K7",
+          "slug": "bwr10-ua-barliquiditaet-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnet man die Barliquidität?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{Barliquidität} = \\frac{\\text{flüssige Mittel} \\cdot 100}{\\text{kurzfristiges Fremdkapital}}",
+              "speech": "Barliquidität gleich flüssige Mittel mal hundert durch kurzfristiges Fremdkapital"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-barliquiditaet",
+          "materiality": "material",
+          "sample_solution": "Beispiel: 18.000 Euro flüssige Mittel, 120.000 Euro kurzfristiges Fremdkapital ergeben 15 %.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "flüssige Mittel · 100 : kurzfristiges Fremdkapital",
+              "kurzfristiges Fremdkapital · 100 : flüssige Mittel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ11WS6WXBADYQW82SE0R",
+          "slug": "bwr10-ua-barliquiditaet-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welcher Richtwert gilt im Unterricht für die Barliquidität, und was bedeutet ein Wert deutlich darunter?",
+          "concept": "Etwa 20 %; darunter kann der Betrieb nur einen kleinen Teil der kurzfristigen Schulden sofort bezahlen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-barliquiditaet",
+          "materiality": "material",
+          "sample_solution": "Ein zu niedriger Wert gefährdet die Zahlungsfähigkeit. Ein sehr hoher Wert ist auch nicht ideal, weil Geld auf dem Konto kaum Ertrag bringt."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ11Y3HHVPZZBV3XQYQAS",
+      "atom_uri": "urn:zam:atom:01M5SWZ11Y3HHVPZZBV3XQYQAS",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-ua-einzugsliquiditaet",
+      "title": "Einzugsliquidität berechnen und beurteilen",
+      "domain": "bwr/jahresabschluss",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-einzugsliquiditaet",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ11QFVTNM48XE6DR1TCE",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ121H5KN10BRMWREXMXD",
+          "slug": "bwr10-ua-einzugsliquiditaet-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnet man die Einzugsliquidität?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{Einzugsliquidität} = \\frac{(\\text{Forderungen} + \\text{flüssige Mittel}) \\cdot 100}{\\text{kurzfristiges Fremdkapital}}",
+              "speech": "Einzugsliquidität gleich Forderungen plus flüssige Mittel, mal hundert, durch kurzfristiges Fremdkapital"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-einzugsliquiditaet",
+          "materiality": "material",
+          "sample_solution": "Der Richtwert liegt bei 100 %: Dann decken flüssige Mittel und eingehende Forderungen alle kurzfristigen Schulden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "(Forderungen + flüssige Mittel) · 100 : kurzfristiges Fremdkapital",
+              "Forderungen · 100 : kurzfristiges Fremdkapital"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ123NRDYZKFTPEPPKF14",
+          "slug": "bwr10-ua-einzugsliquiditaet-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ändert eine Kundenzahlung per Bank die Einzugsliquidität nicht?",
+          "concept": "Forderungen sinken und flüssige Mittel steigen um denselben Betrag; Zähler und Nenner bleiben gleich.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-einzugsliquiditaet",
+          "materiality": "material",
+          "sample_solution": "Die Einzugsliquidität zählt Forderungen und flüssige Mittel zusammen. Eine Umschichtung zwischen beiden ändert nichts; die Barliquidität steigt dagegen."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ126600K5QVPW74FJ0F5",
+      "atom_uri": "urn:zam:atom:01M5SWZ126600K5QVPW74FJ0F5",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-ua-anlagendeckung",
+      "title": "Anlagendeckung I und II",
+      "domain": "bwr/jahresabschluss",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-anlagendeckung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ11FGPR9XKW4DEPSECH9",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ128Q1RQWJZ873Q6EHD6",
+          "slug": "bwr10-ua-anlagendeckung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnet man die Anlagendeckung II?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{Anlagendeckung II} = \\frac{(\\text{EK} + \\text{langfristiges FK}) \\cdot 100}{\\text{Anlagevermögen}}",
+              "speech": "Anlagendeckung zwei gleich Eigenkapital plus langfristiges Fremdkapital, mal hundert, durch Anlagevermögen"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-anlagendeckung",
+          "materiality": "material",
+          "sample_solution": "Die Anlagendeckung I nimmt nur das Eigenkapital in den Zähler.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "(EK + langfristiges FK) · 100 : Anlagevermögen",
+              "(EK + kurzfristiges FK) · 100 : Anlagevermögen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ12B30W4H8FT09PP2H2C",
+          "slug": "bwr10-ua-anlagendeckung-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was zeigt eine Anlagendeckung II unter 100 %?",
+          "concept": "Ein Teil des Anlagevermögens ist kurzfristig finanziert; die goldene Bilanzregel ist verletzt.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-anlagendeckung",
+          "materiality": "material",
+          "sample_solution": "Werden die kurzfristigen Kredite fällig, sind die Mittel noch in Anlagen gebunden; die Zahlungsfähigkeit ist gefährdet."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ12D5V9TEB7CY918X77R",
+      "atom_uri": "urn:zam:atom:01M5SWZ12D5V9TEB7CY918X77R",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-ua-ekrentabilitaet",
+      "title": "Eigenkapitalrentabilität",
+      "domain": "bwr/jahresabschluss",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-ekrentabilitaet",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ117VVW3Z26163NTTHYX",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ12GV108V6VNZF1HTXDP",
+          "slug": "bwr10-ua-ekrentabilitaet-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnet man die Eigenkapitalrentabilität?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{EK-Rentabilität} = \\frac{\\text{Gewinn} \\cdot 100}{\\text{EK}_{\\text{Anfang}}}",
+              "speech": "Eigenkapitalrentabilität gleich Gewinn mal hundert durch Eigenkapital am Jahresanfang"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-ekrentabilitaet",
+          "materiality": "material",
+          "sample_solution": "Beispiel: 43.500 Euro Gewinn bei 250.000 Euro Anfangskapital ergeben 17,4 %.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gewinn · 100 : Eigenkapital am Jahresanfang",
+              "Eigenkapital am Jahresanfang · 100 : Gewinn"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ12KX4V0XF9ZHVKBS7ZB",
+          "slug": "bwr10-ua-ekrentabilitaet-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum soll die Eigenkapitalrentabilität deutlich über dem Marktzins liegen?",
+          "concept": "Der Gewinn muss auch die Arbeit der Inhaberin (Unternehmerlohn) und ihr unternehmerisches Risiko abgelten.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-ekrentabilitaet",
+          "materiality": "material",
+          "sample_solution": "Eine sichere Geldanlage bringt den Marktzins ohne Arbeit und mit wenig Risiko. Im Unterricht gelten 10 bis 20 % als Orientierung."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ12N880W6AFB3ZGAKVBZ",
+      "atom_uri": "urn:zam:atom:01M5SWZ12N880W6AFB3ZGAKVBZ",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-ua-vergleich",
+      "title": "Kennzahlen vergleichen und beurteilen",
+      "domain": "bwr/jahresabschluss",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-vergleich",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ11QFVTNM48XE6DR1TCE",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Unternehmensabschluss und Auswertung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ12RR05DF4Z89QY113H8",
+          "slug": "bwr10-ua-vergleich-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Die Barliquidität steigt von 15 % auf 18 %. Um wie viel ist sie gestiegen?",
+          "concept": "Um 3 Prozentpunkte.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-vergleich",
+          "materiality": "material",
+          "sample_solution": "Unterschiede von Prozentwerten werden in Prozentpunkten angegeben; relativ wären es 20 %.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Um 3 Prozentpunkte.",
+              "Um 3 Prozent."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ12TXEZ8RENBCVFVH5BJ",
+          "slug": "bwr10-ua-vergleich-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet internen und externen Betriebsvergleich?",
+          "concept": "Intern wird dasselbe Unternehmen über mehrere Jahre verglichen (Zeitvergleich), extern mit anderen Betrieben der Branche.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=ua-vergleich",
+          "materiality": "material",
+          "sample_solution": "Grenzen des Branchenvergleichs: unterschiedliche Größe, nicht veröffentlichte Abschlüsse von Einzelunternehmen und nicht einheitliche Formeln."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ12XM79A1190XYX3YPVG",
+      "atom_uri": "urn:zam:atom:01M5SWZ12XM79A1190XYX3YPVG",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-vk-rechnungskreise",
+      "title": "Rechnungskreis I und II",
+      "domain": "bwr/vollkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-rechnungskreise",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ12Z5QA62NWS67GS2EKM",
+          "slug": "bwr10-vk-rechnungskreise-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Rechnungskreis ist die Kosten- und Leistungsrechnung?",
+          "concept": "Rechnungskreis II (Betriebsbuchführung).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-rechnungskreise",
+          "materiality": "material",
+          "sample_solution": "Rechnungskreis I ist die gesetzlich vorgeschriebene Geschäftsbuchführung mit Bilanz und GuV.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Rechnungskreis II (Betriebsbuchführung).",
+              "Rechnungskreis I (Geschäftsbuchführung)."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ132FM277KGTRZ87Q56C",
+          "slug": "bwr10-vk-rechnungskreise-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Fragen beantwortet die Kosten- und Leistungsrechnung?",
+          "concept": "Welche Kosten sind entstanden (Kostenarten), wo (Kostenstellen) und wofür (Kostenträger)?",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-rechnungskreise",
+          "materiality": "material",
+          "sample_solution": "Damit kalkuliert die Leitung Angebotspreise, kontrolliert die Wirtschaftlichkeit und bereitet Entscheidungen vor."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ134EAH9QYNG48T5QRH8",
+      "atom_uri": "urn:zam:atom:01M5SWZ134EAH9QYNG48T5QRH8",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-vk-grundbegriffe",
+      "title": "Aufwand und Kosten, Ertrag und Leistung",
+      "domain": "bwr/vollkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-grundbegriffe",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ12XM79A1190XYX3YPVG",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ137DZW44EKVB20QF3MJ",
+          "slug": "bwr10-vk-grundbegriffe-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ist ein Verlust aus einem Wertpapierverkauf Kosten?",
+          "concept": "Nein, er ist neutraler, betriebsfremder Aufwand.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-grundbegriffe",
+          "materiality": "material",
+          "sample_solution": "Er hat nichts mit der Herstellung der Erzeugnisse zu tun und geht nicht in die Kosten- und Leistungsrechnung ein.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, er ist neutraler, betriebsfremder Aufwand.",
+              "Ja, er gehört zu den Grundkosten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ13909JV780XJS290K0W",
+          "slug": "bwr10-vk-grundbegriffe-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Arten neutraler Aufwendungen gibt es?",
+          "concept": "Betriebsfremde, außerordentliche und periodenfremde Aufwendungen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-grundbegriffe",
+          "materiality": "material",
+          "sample_solution": "Beispiele: Verlust aus Wertpapierverkauf (betriebsfremd), nicht versicherter Schaden (außerordentlich), Nachzahlung für das Vorjahr auf 6990 PFAW (periodenfremd)."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ13CP8W7EG3EAJFHR6JJ",
+      "atom_uri": "urn:zam:atom:01M5SWZ13CP8W7EG3EAJFHR6JJ",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-vk-ergebnis",
+      "title": "Gesamtergebnis, neutrales Ergebnis und Betriebsergebnis",
+      "domain": "bwr/vollkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-ergebnis",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ134EAH9QYNG48T5QRH8",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ13E6NH0X7HVYE6QSB67",
+          "slug": "bwr10-vk-ergebnis-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie setzt sich das Gesamtergebnis ohne kostenrechnerische Korrekturen zusammen?",
+          "concept": "Neutrales Ergebnis + Betriebsergebnis.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-ergebnis",
+          "materiality": "material",
+          "sample_solution": "Das Betriebsergebnis sind Leistungen minus Kosten, das neutrale Ergebnis neutrale Erträge minus neutrale Aufwendungen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Neutrales Ergebnis + Betriebsergebnis.",
+              "Neutrales Ergebnis − Betriebsergebnis."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ13HZN0F49G3X66JE3SB",
+          "slug": "bwr10-vk-ergebnis-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Gesamtergebnis 20.000 Euro, neutrales Ergebnis 26.000 Euro, keine kostenrechnerischen Korrekturen. Wie hoch ist das Betriebsergebnis?",
+          "concept": "−6.000 Euro.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-ergebnis",
+          "materiality": "material",
+          "sample_solution": "20.000 − 26.000 = −6.000 Euro. Der Gewinn stammt aus neutralen Erträgen; der Betrieb selbst arbeitet mit Verlust."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ13KFRKPZJDP24JB0FG9",
+      "atom_uri": "urn:zam:atom:01M5SWZ13KFRKPZJDP24JB0FG9",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-vk-anders-zusatz",
+      "title": "Anderskosten und Zusatzkosten",
+      "domain": "bwr/vollkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-anders-zusatz",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ134EAH9QYNG48T5QRH8",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ13PGXMTK3FE69HW5PT6",
+          "slug": "bwr10-vk-anders-zusatz-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ist die kalkulatorische Abschreibung Anderskosten oder Zusatzkosten?",
+          "concept": "Anderskosten.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-anders-zusatz",
+          "materiality": "material",
+          "sample_solution": "Derselbe Werteverzehr steht in der Geschäftsbuchführung mit einem anderen Wert; Zusatzkosten wie der kalkulatorische Unternehmerlohn haben dort kein Gegenstück.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Anderskosten.",
+              "Zusatzkosten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ13S6J0KZT9WN56P8H34",
+          "slug": "bwr10-vk-anders-zusatz-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wovon berechnet man die kalkulatorische Abschreibung, und warum?",
+          "concept": "Vom Wiederbeschaffungswert, damit die Preise die Ersatzbeschaffung der Anlage finanzieren.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-anders-zusatz",
+          "materiality": "material",
+          "sample_solution": "Die bilanzielle Abschreibung geht von den Anschaffungskosten aus. Steigen die Preise für Maschinen, reicht sie für eine neue Maschine nicht aus."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ13V53CGZSEKXQJGAVZN",
+      "atom_uri": "urn:zam:atom:01M5SWZ13V53CGZSEKXQJGAVZN",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-vk-kostenarten",
+      "title": "Einzelkosten, Sondereinzelkosten und Gemeinkosten",
+      "domain": "bwr/vollkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-kostenarten",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ134EAH9QYNG48T5QRH8",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ13YZZQ0V8FV1B4K69QY",
+          "slug": "bwr10-vk-kostenarten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Zu welcher Kostenart gehört ein nur für einen Auftrag angefertigtes Spezialwerkzeug?",
+          "concept": "Sondereinzelkosten der Fertigung.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-kostenarten",
+          "materiality": "material",
+          "sample_solution": "Es lässt sich dem Auftrag direkt zurechnen, ist aber weder Material noch Lohn.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sondereinzelkosten der Fertigung.",
+              "Fertigungsgemeinkosten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ1403K4WWV42KJCJNRPE",
+          "slug": "bwr10-vk-kostenarten-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet Einzelkosten von Gemeinkosten?",
+          "concept": "Einzelkosten lassen sich einem Kostenträger direkt zurechnen, Gemeinkosten nur über Schlüssel und Zuschläge.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-kostenarten",
+          "materiality": "material",
+          "sample_solution": "Einzelkosten: Fertigungsmaterial und Fertigungslöhne. Gemeinkosten: zum Beispiel Miete, Strom, Hilfsstoffe und Gehälter der Verwaltung."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ14358RSH6YW7C7JS5R6",
+      "atom_uri": "urn:zam:atom:01M5SWZ14358RSH6YW7C7JS5R6",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-vk-kostenstellen",
+      "title": "Kostenstellen und Verteilungsschlüssel",
+      "domain": "bwr/vollkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-kostenstellen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ13V53CGZSEKXQJGAVZN",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ1454WZ4M3K2YP6WA0XC",
+          "slug": "bwr10-vk-kostenstellen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Nach welchem Schlüssel verteilt man die Miete auf die Kostenstellen?",
+          "concept": "Nach der Fläche in Quadratmetern.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-kostenstellen",
+          "materiality": "material",
+          "sample_solution": "Der Schlüssel soll die Verursachung abbilden: Wer mehr Fläche belegt, verursacht mehr Miete.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nach der Fläche in Quadratmetern.",
+              "Nach dem Umsatz der Kostenstellen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ148YD02XDQRG9MC818X",
+          "slug": "bwr10-vk-kostenstellen-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche vier Hauptkostenstellen hat der einstufige BAB in BwR 10?",
+          "concept": "Material, Fertigung, Verwaltung und Vertrieb.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-kostenstellen",
+          "materiality": "material",
+          "sample_solution": "Die Kostenstellen werden nach dem Verursacherprinzip gebildet; jede erhält ihre Gemeinkosten direkt oder über Schlüssel."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ14ADYDKDSQYMY5E6198",
+      "atom_uri": "urn:zam:atom:01M5SWZ14ADYDKDSQYMY5E6198",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-vk-bab",
+      "title": "Gemeinkosten im Betriebsabrechnungsbogen verteilen",
+      "domain": "bwr/vollkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-bab",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ14358RSH6YW7C7JS5R6",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ14D38QJHCM5ZB64N0PE",
+          "slug": "bwr10-vk-bab-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Stehen die Fertigungslöhne im Betriebsabrechnungsbogen?",
+          "concept": "Nein; sie sind Einzelkosten und Bezugsgröße für den FGK-Zuschlag.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-bab",
+          "materiality": "material",
+          "sample_solution": "Im BAB werden nur Gemeinkosten verteilt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein; sie sind Einzelkosten und Bezugsgröße für den FGK-Zuschlag.",
+              "Ja, als Fertigungsgemeinkosten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ14FFW9MCJRC8TEQ3PXM",
+          "slug": "bwr10-vk-bab-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ergeben die Spaltensummen des Betriebsabrechnungsbogens?",
+          "concept": "Die Gemeinkosten je Kostenstelle: MGK, FGK, VwGK und VtGK.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-bab",
+          "materiality": "material",
+          "sample_solution": "Als Probe muss die Summe der Spalten gleich der Summe aller verteilten Gemeinkostenarten sein."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ14JRR1B4BAFB18SPF8B",
+      "atom_uri": "urn:zam:atom:01M5SWZ14JRR1B4BAFB18SPF8B",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-vk-zuschlagssaetze",
+      "title": "Gemeinkostenzuschlagssätze berechnen",
+      "domain": "bwr/vollkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-zuschlagssaetze",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ14ADYDKDSQYMY5E6198",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ14MPWJNMMGGPNS5J6FE",
+          "slug": "bwr10-vk-zuschlagssaetze-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnet man den Zuschlagssatz für die Fertigungsgemeinkosten?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{FGK-Zuschlag} = \\frac{\\text{FGK} \\cdot 100}{\\text{Fertigungslöhne}}",
+              "speech": "F G K Zuschlag gleich Fertigungsgemeinkosten mal hundert durch Fertigungslöhne"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-zuschlagssaetze",
+          "materiality": "material",
+          "sample_solution": "Der MGK-Zuschlag bezieht sich auf das Fertigungsmaterial.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "FGK · 100 : Fertigungslöhne",
+              "FGK · 100 : Fertigungsmaterial"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ14QK4JV9NNT6N13RTVE",
+          "slug": "bwr10-vk-zuschlagssaetze-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Worauf beziehen sich die Zuschlagssätze für Verwaltung und Vertrieb?",
+          "concept": "Auf die Herstellkosten des Umsatzes.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-zuschlagssaetze",
+          "materiality": "material",
+          "sample_solution": "Verwaltung und Vertrieb arbeiten für die verkauften Erzeugnisse; deshalb ist die Bezugsgröße die HKU, nicht die HKE."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ14SBRTHS9D2CJRBJ8TX",
+      "atom_uri": "urn:zam:atom:01M5SWZ14SBRTHS9D2CJRBJ8TX",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-vk-gesamtrechnung",
+      "title": "Kostenträgerzeitrechnung mit Bestandsveränderungen",
+      "domain": "bwr/vollkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-gesamtrechnung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ14JRR1B4BAFB18SPF8B",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ14W0KEK9WQCH00KHQX9",
+          "slug": "bwr10-vk-gesamtrechnung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wird eine Bestandsmehrung von den Herstellkosten der Erzeugung abgezogen oder dazu addiert?",
+          "concept": "Abgezogen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-gesamtrechnung",
+          "materiality": "material",
+          "sample_solution": "Eine Bestandsmehrung wurde hergestellt, aber nicht verkauft; ihre Kosten gehören nicht zu den Herstellkosten des Umsatzes.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Abgezogen.",
+              "Addiert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ14YYCVVGPP0SPZWD09K",
+          "slug": "bwr10-vk-gesamtrechnung-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie erhält man die Herstellkosten des Umsatzes?",
+          "concept": "Herstellkosten der Erzeugung − Bestandsmehrung + Bestandsminderung.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-gesamtrechnung",
+          "materiality": "material",
+          "sample_solution": "Auf die HKU werden dann VwGK und VtGK geschlagen; das ergibt die Selbstkosten des Umsatzes."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ151ZS8F32JK3PB3Z29F",
+      "atom_uri": "urn:zam:atom:01M5SWZ151ZS8F32JK3PB3Z29F",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-vk-zuschlagskalkulation",
+      "title": "Selbstkosten eines Auftrags kalkulieren",
+      "domain": "bwr/vollkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-zuschlagskalkulation",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ14JRR1B4BAFB18SPF8B",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ153CCQTXJXQRGC0SKGC",
+          "slug": "bwr10-vk-zuschlagskalkulation-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnen sich die Herstellkosten in der Zuschlagskalkulation?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{HK} = \\text{MK} + \\text{FK} = \\text{FM} + \\text{MGK} + \\text{FL} + \\text{FGK}\\;(+\\,\\text{SEKF})",
+              "speech": "Herstellkosten gleich Materialkosten plus Fertigungskosten, also Fertigungsmaterial plus Materialgemeinkosten plus Fertigungslöhne plus Fertigungsgemeinkosten, gegebenenfalls plus Sondereinzelkosten der Fertigung"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-zuschlagskalkulation",
+          "materiality": "material",
+          "sample_solution": "MK = FM + MGK; FK = FL + FGK + Sondereinzelkosten der Fertigung; HK = MK + FK.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Materialkosten + Fertigungskosten",
+              "Selbstkosten + Gewinnzuschlag"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4WAK0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M5SWZ156CYWT5DBJ024SSN0A",
+          "slug": "bwr10-vk-zuschlagskalkulation-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "FM 200 Euro, MGK 10 %, FL 300 Euro, FGK 150 %, VwVtGK 25 %. Wie hoch sind die Selbstkosten?",
+          "concept": "1.212,50 Euro (MK 220, FK 750, HK 970, VwVtGK 242,50 Euro).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-zuschlagskalkulation",
+          "materiality": "material",
+          "sample_solution": "MGK = 20 Euro, MK = 220 Euro. FGK = 450 Euro, FK = 750 Euro. HK = 970 Euro. VwVtGK = 242,50 Euro. SK = 1.212,50 Euro."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ159MJXH09KK7YJECJ9K",
+      "atom_uri": "urn:zam:atom:01M5SWZ159MJXH09KK7YJECJ9K",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-vk-angebotspreis",
+      "title": "Vom Selbstkostenpreis zum Angebotspreis",
+      "domain": "bwr/vollkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-angebotspreis",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ151ZS8F32JK3PB3Z29F",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        },
+        {
+          "atom_id": "01M5SWZ15B75J86Q9HGRNWCMNP",
+          "type": "soft",
+          "rationale": "Optionale Auffrischung des benötigten Grundwissens aus BwR 7 und 8."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ15EKD3K81Z5ZJACCKQH",
+          "slug": "bwr10-vk-angebotspreis-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnet man den Zielverkaufspreis aus dem Barverkaufspreis?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{ZVP} = \\frac{\\text{BVP} \\cdot 100}{100 - \\text{Skontosatz}}",
+              "speech": "Zielverkaufspreis gleich Barverkaufspreis mal hundert durch hundert minus Skontosatz"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-angebotspreis",
+          "materiality": "material",
+          "sample_solution": "Skonto wird im Hundert gerechnet; ebenso der Rabatt vom Zielverkaufs- zum Listenverkaufspreis.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "BVP · 100 : (100 − Skontosatz)",
+              "BVP · (100 + Skontosatz) : 100"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ15GJH5N6263ZXS70CN3",
+          "slug": "bwr10-vk-angebotspreis-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum werden Kundenskonto und Kundenrabatt in der Kalkulation im Hundert aufgeschlagen?",
+          "concept": "Der Kunde zieht sie vom höheren Preis ab; nur so bleibt nach dem Abzug der Barverkaufspreis übrig.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-angebotspreis",
+          "materiality": "material",
+          "sample_solution": "Beispiel: BVP 980 Euro, 2 % Skonto: ZVP = 980 · 100 : 98 = 1.000 Euro; abzüglich 2 % Skonto bleiben genau 980 Euro."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ15KVTS42BTTJ2V66Z27",
+      "atom_uri": "urn:zam:atom:01M5SWZ15KVTS42BTTJ2V66Z27",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-vk-kontrolle",
+      "title": "Wirtschaftlichkeit der Kostenstellen kontrollieren",
+      "domain": "bwr/vollkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-kontrolle",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ14JRR1B4BAFB18SPF8B",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Vollkostenrechnung: Kostenarten-, Kostenstellen- und Kostenträgerrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ15N39NXNY6HRX92KNR6",
+          "slug": "bwr10-vk-kontrolle-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was zeigt ein steigender FGK-Zuschlagssatz?",
+          "concept": "Mehr Fertigungsgemeinkosten je Euro Fertigungslohn: Die Fertigung arbeitet weniger wirtschaftlich.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-kontrolle",
+          "materiality": "material",
+          "sample_solution": "Ursachen können Reparaturen, Energiepreise oder eine schlechte Auslastung sein; die Kostenstellenleitung muss sie klären.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mehr Fertigungsgemeinkosten je Euro Fertigungslohn: Die Fertigung arbeitet weniger wirtschaftlich.",
+              "Die Fertigung arbeitet wirtschaftlicher."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ15R3A7KT45YNE0Y6MRA",
+          "slug": "bwr10-vk-kontrolle-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum vergleicht man Zuschlagssätze statt absoluter Gemeinkosten?",
+          "concept": "Weil sich die Produktion ändert; der Zuschlagssatz setzt die Gemeinkosten ins Verhältnis zur Bezugsgröße.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=vk-kontrolle",
+          "materiality": "material",
+          "sample_solution": "Steigen die FGK um 5 % und die Fertigungslöhne um 20 %, sinkt der Zuschlag: Die Fertigung ist wirtschaftlicher geworden, obwohl ihre Gemeinkosten gestiegen sind."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ15T61MWFF8ZWHSFN4R2",
+      "atom_uri": "urn:zam:atom:01M5SWZ15T61MWFF8ZWHSFN4R2",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-tk-voll-teil",
+      "title": "Vollkosten und Teilkosten unterscheiden",
+      "domain": "bwr/teilkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-voll-teil",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ15WVQXC49CWYRB795WV",
+          "slug": "bwr10-tk-voll-teil-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ist die Miete der Werkhalle fixe oder variable Kosten?",
+          "concept": "Fixe Kosten.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-voll-teil",
+          "materiality": "material",
+          "sample_solution": "Sie fällt unabhängig von der produzierten Menge an.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fixe Kosten.",
+              "Variable Kosten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ15Z8DH3P8MZ7FZQF9NN",
+          "slug": "bwr10-tk-voll-teil-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum sinken die Stückkosten, wenn die Absatzmenge steigt?",
+          "concept": "Die Fixkosten verteilen sich auf mehr Stücke (Fixkostendegression); die variablen Stückkosten bleiben gleich.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-voll-teil",
+          "materiality": "material",
+          "sample_solution": "Beispiel: 40.000 Euro Fixkosten und 60 Euro variable Kosten ergeben bei 1.000 Stück 100 Euro, bei 2.000 Stück 80 Euro je Stück."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ162B88QHM643R6A4F5Y",
+      "atom_uri": "urn:zam:atom:01M5SWZ162B88QHM643R6A4F5Y",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-tk-db",
+      "title": "Deckungsbeitrag je Stück und gesamt",
+      "domain": "bwr/teilkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-db",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ15T61MWFF8ZWHSFN4R2",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ16475JAFFA5MKCE9P7X",
+          "slug": "bwr10-tk-db-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet sich der Stückdeckungsbeitrag "
+            },
+            {
+              "type": "math",
+              "tex": "db",
+              "speech": "d b"
+            },
+            {
+              "type": "text",
+              "text": " aus Verkaufspreis "
+            },
+            {
+              "type": "math",
+              "tex": "p",
+              "speech": "p"
+            },
+            {
+              "type": "text",
+              "text": " und variablen Stückkosten "
+            },
+            {
+              "type": "math",
+              "tex": "k_v",
+              "speech": "k v"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "db = p - k_v",
+              "speech": "d b gleich p minus k v"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-db",
+          "materiality": "material",
+          "sample_solution": "Der Stückdeckungsbeitrag ist der Betrag, den jedes verkaufte Stück zur Deckung der Fixkosten beiträgt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "db = p − kv",
+              "db = p + kv"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4WAK0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M5SWZ167YHCVQFM413J61SVA",
+          "slug": "bwr10-tk-db-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Preis 80 Euro, variable Stückkosten 50 Euro, Absatz 1.000 Stück, Fixkosten 24.000 Euro. Wie hoch ist das Betriebsergebnis?",
+          "concept": "6.000 Euro.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-db",
+          "materiality": "material",
+          "sample_solution": "db = 30 Euro, Deckungsbeitrag 30.000 Euro, minus 24.000 Euro Fixkosten ergibt 6.000 Euro."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ1695KDRV911FR0EC1RZ",
+      "atom_uri": "urn:zam:atom:01M5SWZ1695KDRV911FR0EC1RZ",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-tk-gewinnschwelle",
+      "title": "Die Gewinnschwelle berechnen",
+      "domain": "bwr/teilkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-gewinnschwelle",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ162B88QHM643R6A4F5Y",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ16CYB9ARDZX90XRRMG2",
+          "slug": "bwr10-tk-gewinnschwelle-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnet man die Gewinnschwellenmenge?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "x_{\\text{Gewinnschwelle}} = \\frac{K_f}{db}",
+              "speech": "x Gewinnschwelle gleich Fixkosten durch Stückdeckungsbeitrag"
+            },
+            {
+              "type": "text",
+              "text": ", immer auf ganze Stück aufgerundet"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-gewinnschwelle",
+          "materiality": "material",
+          "sample_solution": "An der Gewinnschwelle ist das Betriebsergebnis null.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fixkosten : Stückdeckungsbeitrag, aufgerundet",
+              "Fixkosten : Verkaufspreis, aufgerundet"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ16E887AXK65B0RX4110",
+          "slug": "bwr10-tk-gewinnschwelle-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum wird die Gewinnschwellenmenge immer aufgerundet?",
+          "concept": "Bei der abgerundeten Menge deckt der Deckungsbeitrag die Fixkosten noch nicht; es bliebe ein Verlust.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-gewinnschwelle",
+          "materiality": "material",
+          "sample_solution": "Beispiel: 45.000 Euro Fixkosten, db 28 Euro: 1.607 Stück bringen 44.996 Euro, es fehlen 4 Euro; erst 1.608 Stück decken die Fixkosten."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ16HWVJ1XZM2WQC6W79G",
+      "atom_uri": "urn:zam:atom:01M5SWZ16HWVJ1XZM2WQC6W79G",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-tk-preisaenderung",
+      "title": "Preisänderungen und Gewinnschwelle",
+      "domain": "bwr/teilkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-preisaenderung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ1695KDRV911FR0EC1RZ",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ16MC2M4CD2B8YP5FCTJ",
+          "slug": "bwr10-tk-preisaenderung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie verändert eine Preissenkung bei gleichen Kosten die Gewinnschwellenmenge?",
+          "concept": "Sie steigt, weil der Stückdeckungsbeitrag um den vollen Nachlass sinkt.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-preisaenderung",
+          "materiality": "material",
+          "sample_solution": "Die Fixkosten bleiben gleich und müssen mit einem kleineren db je Stück gedeckt werden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie steigt, weil der Stückdeckungsbeitrag um den vollen Nachlass sinkt.",
+              "Sie sinkt, weil der Preis sinkt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ16PDKSN3EYVJ4VSJ00F",
+          "slug": "bwr10-tk-preisaenderung-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Preis 50 Euro, variable Kosten 30 Euro, Fixkosten 20.000 Euro. Der Preis sinkt um 10 %. Wie hoch ist die neue Gewinnschwellenmenge?",
+          "concept": "1.334 Stück (neuer db 15 Euro).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-preisaenderung",
+          "materiality": "material",
+          "sample_solution": "Neuer Preis 45 Euro, db 15 Euro; 20.000 : 15 = 1.333,33, aufgerundet 1.334 Stück. Vorher lag die Gewinnschwelle bei 1.000 Stück."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ16SMVX4QDRX27RZFD8R",
+      "atom_uri": "urn:zam:atom:01M5SWZ16SMVX4QDRX27RZFD8R",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-tk-zwei-produkte",
+      "title": "Betriebsergebnis im Zweiproduktunternehmen",
+      "domain": "bwr/teilkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-zwei-produkte",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ162B88QHM643R6A4F5Y",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ16V5EPDMZ5X2K7S1110",
+          "slug": "bwr10-tk-zwei-produkte-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Werden die Fixkosten im Zweiproduktunternehmen je Produkt abgezogen?",
+          "concept": "Nein, einmal von der Summe aller Deckungsbeiträge.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-zwei-produkte",
+          "materiality": "material",
+          "sample_solution": "Die Fixkosten fallen für den ganzen Betrieb an und lassen sich nicht verursachungsgerecht auf die Produkte verteilen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, einmal von der Summe aller Deckungsbeiträge.",
+              "Ja, zu gleichen Teilen je Produkt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ16YB7MT1YTXA0HMDAP5",
+          "slug": "bwr10-tk-zwei-produkte-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Deckungsbeitrag Produkt A 30.000 Euro, Produkt B 25.000 Euro, Fixkosten 60.000 Euro. Wie hoch ist das Betriebsergebnis?",
+          "concept": "−5.000 Euro.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-zwei-produkte",
+          "materiality": "material",
+          "sample_solution": "30.000 + 25.000 − 60.000 = −5.000 Euro."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ17076X02WHMKCBA5EPP",
+      "atom_uri": "urn:zam:atom:01M5SWZ17076X02WHMKCBA5EPP",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-tk-programm",
+      "title": "Das Fertigungsprogramm planen",
+      "domain": "bwr/teilkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-programm",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ16SMVX4QDRX27RZFD8R",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ173BCCSCNXTYXJE048M",
+          "slug": "bwr10-tk-programm-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Bleibt ein Produkt mit positivem Stückdeckungsbeitrag, aber Verlust nach Vollkosten, kurzfristig im Programm?",
+          "concept": "Ja, es trägt zur Deckung der Fixkosten bei.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-programm",
+          "materiality": "material",
+          "sample_solution": "Fällt es weg, entfällt sein Deckungsbeitrag, die Fixkosten bleiben kurzfristig bestehen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ja, es trägt zur Deckung der Fixkosten bei.",
+              "Nein, es wird wegen des Verlusts gestrichen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ175E11CMW40RE1Y2Q4E",
+          "slug": "bwr10-tk-programm-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Um wie viel verbessert sich das Betriebsergebnis, wenn ein Produkt mit einem Stückdeckungsbeitrag von −4 Euro bei 800 Stück gestrichen wird?",
+          "concept": "Um 3.200 Euro; die Fixkosten bleiben gleich.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-programm",
+          "materiality": "material",
+          "sample_solution": "Der negative Deckungsbeitrag von 800 · 4 = 3.200 Euro entfällt. Vor dem Streichen ist zu prüfen, ob andere Produkte zusammen mit ihm gekauft werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ1784RJH1APDYV30R20J",
+      "atom_uri": "urn:zam:atom:01M5SWZ1784RJH1APDYV30R20J",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-tk-zusatzauftrag",
+      "title": "Einen Zusatzauftrag beurteilen",
+      "domain": "bwr/teilkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-zusatzauftrag",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ162B88QHM643R6A4F5Y",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ17ATPM5C7E4865MAK8W",
+          "slug": "bwr10-tk-zusatzauftrag-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche zwei Bedingungen muss ein Zusatzauftrag kurzfristig erfüllen?",
+          "concept": "Der Preis liegt über den variablen Stückkosten, und es gibt freie Kapazität.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-zusatzauftrag",
+          "materiality": "material",
+          "sample_solution": "Die Fixkosten fallen ohnehin an; jeder positive Deckungsbeitrag verbessert das Ergebnis.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Preis liegt über den variablen Stückkosten, und es gibt freie Kapazität.",
+              "Der Preis liegt über den Selbstkosten, und es gibt freie Kapazität."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ17D810VZ53EXH5E8W2P",
+          "slug": "bwr10-tk-zusatzauftrag-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Freie Kapazität ist vorhanden. Ein Kunde bietet für 400 Stühle 68 Euro je Stück, die variablen Kosten betragen 60 Euro. Wie ändert sich das Betriebsergebnis?",
+          "concept": "Es steigt um 3.200 Euro.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-zusatzauftrag",
+          "materiality": "material",
+          "sample_solution": "db = 8 Euro, 8 · 400 = 3.200 Euro. Das gilt auch, wenn der Preis unter den Selbstkosten liegt."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ17GWJC1VPPJSYGFCSN8",
+      "atom_uri": "urn:zam:atom:01M5SWZ17GWJC1VPPJSYGFCSN8",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-tk-preisuntergrenze",
+      "title": "Kurzfristige und langfristige Preisuntergrenze",
+      "domain": "bwr/teilkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-preisuntergrenze",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ162B88QHM643R6A4F5Y",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ17J7WVNV8N1K8QHVM9P",
+          "slug": "bwr10-tk-preisuntergrenze-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wo liegt die kurzfristige Preisuntergrenze?",
+          "concept": "Bei den variablen Stückkosten.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-preisuntergrenze",
+          "materiality": "material",
+          "sample_solution": "Dort ist der Stückdeckungsbeitrag null. Die langfristige Preisuntergrenze sind die Selbstkosten je Stück.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bei den variablen Stückkosten.",
+              "Bei den Selbstkosten je Stück."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ17N4Y92CS85XM8F1CXH",
+          "slug": "bwr10-tk-preisuntergrenze-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Variable Stückkosten 25 Euro, Fixkosten 30.000 Euro, Absatz 3.000 Stück. Wie hoch ist die langfristige Preisuntergrenze?",
+          "concept": "35 Euro je Stück.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-preisuntergrenze",
+          "materiality": "material",
+          "sample_solution": "25 Euro variable Kosten plus 30.000 : 3.000 = 10 Euro Fixkosten je Stück; dort ist das Betriebsergebnis null."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ17RNPEMKJWJKEYMDB5C",
+      "atom_uri": "urn:zam:atom:01M5SWZ17RNPEMKJWJKEYMDB5C",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-tk-make-or-buy",
+      "title": "Eigenfertigung oder Fremdbezug",
+      "domain": "bwr/teilkostenrechnung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-make-or-buy",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SWZ15T61MWFF8ZWHSFN4R2",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Rechenschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Teilkostenrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ17TVH5QS7RCX78R7ZDX",
+          "slug": "bwr10-tk-make-or-buy-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnet man die kritische Menge bei Eigenfertigung oder Fremdbezug?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "x_{\\text{krit}} = \\frac{K_f}{\\text{Einstandspreis} - k_v}",
+              "speech": "x kritisch gleich Fixkosten durch Einstandspreis minus variable Stückkosten"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-make-or-buy",
+          "materiality": "material",
+          "sample_solution": "Oberhalb der kritischen Menge ist die Eigenfertigung günstiger.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fixkosten : (Einstandspreis − variable Stückkosten)",
+              "Fixkosten : (Einstandspreis + variable Stückkosten)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ17XS106VA3S8EKW74ZN",
+          "slug": "bwr10-tk-make-or-buy-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne zwei Gründe, die neben den Kosten für den Fremdbezug sprechen können.",
+          "concept": "Know-how und Qualität des Lieferers sowie Flexibilität bei schwankendem Bedarf.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=tk-make-or-buy",
+          "materiality": "material",
+          "sample_solution": "Für die Eigenfertigung sprechen dagegen Unabhängigkeit vom Lieferer, eigene Qualitätskontrolle und der Erhalt von Know-how und Arbeitsplätzen."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ10RGQGTKCA95FBPEEAQ",
+      "atom_uri": "urn:zam:atom:01M5SWZ10RGQGTKCA95FBPEEAQ",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-gr-vorsteuer",
+      "title": "Netto, Vorsteuer und Brutto",
+      "domain": "bwr/grundlagen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=gr-vorsteuer",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "grundlagen",
+          "topic_title": "Grundlagen auffrischen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ17ZQJYAYZ7FAN3PC4CT",
+          "slug": "bwr10-gr-vorsteuer-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnet man aus einem Bruttobetrag mit 19 % Umsatzsteuer den Nettobetrag?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{Netto} = \\frac{\\text{Brutto} \\cdot 100}{119}",
+              "speech": "Netto gleich Brutto mal hundert durch hundertneunzehn"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=gr-vorsteuer",
+          "materiality": "material",
+          "sample_solution": "Beispiel: 1.190 · 100 : 119 = 1.000 Euro netto, 190 Euro Vorsteuer.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bruttobetrag · 100 : 119",
+              "Bruttobetrag minus 19 % des Bruttobetrags"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ182T5SN13C8T9C1ATEY",
+          "slug": "bwr10-gr-vorsteuer-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie bucht man eine Reparaturrechnung über 2.000 Euro netto plus 19 % Umsatzsteuer auf Ziel?",
+          "concept": "6160 FRI 2.000 und 2600 VORST 380 an 4400 VE 2.380.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=gr-vorsteuer",
+          "materiality": "material",
+          "sample_solution": "Aufwand und Vorsteuer stehen im Soll, die Bruttoverbindlichkeit im Haben."
+        }
+      ]
+    },
+    {
+      "id": "01M5SWZ15B75J86Q9HGRNWCMNP",
+      "atom_uri": "urn:zam:atom:01M5SWZ15B75J86Q9HGRNWCMNP",
+      "namespace": "zam-academy-bwr-realschule-10",
+      "slug": "bwr10-gr-prozent",
+      "title": "Prozentrechnung vom Hundert und im Hundert",
+      "domain": "bwr/grundlagen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=gr-prozent",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-10",
+          "topic_code": "grundlagen",
+          "topic_title": "Grundlagen auffrischen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SWZ185YSPT27TAXXT4MX0Z",
+          "slug": "bwr10-gr-prozent-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Nach 3 % Skonto bleiben 970 Euro. Wie hoch war der Zielverkaufspreis?",
+          "concept": "1.000 Euro.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=gr-prozent",
+          "materiality": "material",
+          "sample_solution": "970 · 100 : 97 = 1.000 Euro. 999,10 Euro entstehen, wenn man 3 % von 970 Euro addiert.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1.000 Euro.",
+              "999,10 Euro."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SWZ1879PHV58H8YEY1ANBW",
+          "slug": "bwr10-gr-prozent-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wann rechnet man im Hundert?",
+          "concept": "Wenn der gesuchte Wert 100 % ist und der bekannte Wert bereits um den Prozentsatz vermindert wurde.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-10/#lesson=gr-prozent",
+          "materiality": "material",
+          "sample_solution": "Beispiel: Der Barverkaufspreis ist der Zielverkaufspreis nach Abzug des Skontos; der ZVP ist deshalb BVP · 100 : (100 − Skontosatz)."
+        }
+      ]
+    }
+  ]
+}
