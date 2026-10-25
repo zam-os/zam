@@ -31,8 +31,10 @@ const CELL_ID = "zam-academy:geschichte-realschule-10";
 const APP = "https://academy.zam-os.org/geschichte-realschule-10/";
 const tile = getBundledCellTile(CELL_ID)!;
 const legacy = legacyRaw as unknown as KvtTile;
+// replaces-de-by.json, copied unchanged from zam-os/zam-academy@ee305e1.
 const mapping = mappingRaw as {
   approved: string;
+  sources: Array<{ file: string; tile_id: string; sha256: string }>;
   rows: Array<{
     de_by_id: string;
     category: string;
@@ -127,18 +129,22 @@ describe("ZAM Academy Geschichte 10 Realschule cell", () => {
     expect(items).toHaveLength(159);
     expect(getBundledCell(legacy.tile_id)).toBeUndefined();
     expect(getBundledCellTile(legacy.tile_id)).toBeUndefined();
-    expect(
-      createHash("sha256")
-        .update(
-          readFileSync(
-            join(
-              __dirname,
-              "../fixtures/legacy/de-by-realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung-kvt.json",
-            ),
-          ),
-        )
-        .digest("hex"),
-    ).toBe("ecba7fe3328e8e2bcaeda44dd447a7b1f6f9dde81556f79834f0cfe92535e8ff");
+    expect(mapping.sources.map((source) => source.tile_id)).toEqual([
+      legacy.tile_id,
+    ]);
+    for (const source of mapping.sources) {
+      // `file` is relative to the Academy package (geschichte-realschule-10/);
+      // ZAM keeps the same bytes in tests/fixtures/legacy/. The hash decides.
+      const file = source.file.replace(/^tests\/fixtures\//, "");
+      expect(
+        createHash("sha256")
+          .update(readFileSync(join(__dirname, "../fixtures/legacy", file)))
+          .digest("hex"),
+      ).toBe(source.sha256);
+    }
+    expect(mapping.sources[0].sha256).toBe(
+      "ecba7fe3328e8e2bcaeda44dd447a7b1f6f9dde81556f79834f0cfe92535e8ff",
+    );
   });
 
   it("uses the common curriculum for every Wahlpflichtfächergruppe and displaces generic import", () => {
