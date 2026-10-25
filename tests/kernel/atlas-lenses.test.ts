@@ -269,6 +269,26 @@ describe("Schule derivation", () => {
     expect(placements[1].path[0].name).toBe("9. Klasse Gymnasium");
   });
 
+  it("uses the full politics subject name and shared key for official pug bindings", () => {
+    const [placement] = deriveSchule(
+      [unit("pug", "politik-und-gesellschaft/strukturen", { atomId: "pug" })],
+      { regions: [], aliases: [], members: [] },
+      [
+        binding("pug", 10, {
+          subject: "pug",
+          topicCode: "lb3",
+          topicTitle: "Politische Strukturen",
+        }),
+      ],
+    );
+    expect(keys(placement.path)).toEqual([
+      "realschule-10",
+      "realschule-10.politik-und-gesellschaft",
+      "realschule-10.politik-und-gesellschaft.politische-strukturen",
+    ]);
+    expect(placement.path[1].name).toBe("Politik und Gesellschaft");
+  });
+
   it("reads grade and subject from a LehrplanPLUS link without an atom", () => {
     const [placement] = deriveSchule(
       [

@@ -174,6 +174,12 @@ const SEED: Readonly<Record<string, SeedEmblem>> = {
       `${c(32, 32, 24, BL, INK, 3, 0.15)}${ell(32, 32, 10, 24)}${ln(8, 32, 56, 32, INK, 2)}${p("M12 20 Q32 26 52 20", "none", INK, 2)}${p("M12 44 Q32 38 52 44", "none", INK, 2)}${p("M20 14 Q26 22 22 30 Q30 34 28 42", "none", GR, 4)}`,
     ),
   },
+  "politik-und-gesellschaft": {
+    glyph: "✓",
+    svg: S(
+      `${rect(10, 30, 44, 26, 3, PU, INK, 3, 0.16)}${ln(21, 36, 43, 36, INK, 3)}${rect(22, 7, 20, 24, 2, "#ffffff")}${p("M27 18 L31 22 L38 13", "none", GR, 3)}`,
+    ),
+  },
   "wirtschaft-recht": {
     glyph: "§ €",
     svg: S(
@@ -456,6 +462,28 @@ const SEED: Readonly<Record<string, SeedEmblem>> = {
   "geographie/mensch": {
     svg: S(
       `${rect(6, 30, 11, 26, 1, GY, INK, 2, 0.3)}${rect(18, 18, 12, 38, 1, BL, INK, 2, 0.25)}${rect(31, 34, 10, 22, 1, GY, INK, 2, 0.3)}${rect(42, 10, 15, 46, 1, OR, INK, 2, 0.25)}${ln(4, 57, 60, 57, INK, 3)}${rect(21, 23, 3, 3, 0, INK, "none", 0)}${rect(46, 16, 3, 3, 0, INK, "none", 0)}${rect(51, 24, 3, 3, 0, INK, "none", 0)}`,
+    ),
+  },
+
+  // ── Gebiete: Politik und Gesellschaft ───────────────────────────────────
+  "politik-und-gesellschaft/methoden": {
+    svg: S(
+      `${rect(10, 7, 31, 44, 3, "#ffffff")}${ln(17, 17, 34, 17, INK, 2)}${ln(17, 25, 30, 25, INK, 2)}${c(36, 37, 12, PU, INK, 3, 0.16)}${ln(45, 46, 57, 58, INK, 5)}`,
+    ),
+  },
+  "politik-und-gesellschaft/mitwirkung": {
+    svg: S(
+      `${rect(6, 9, 39, 26, 7, PU, INK, 3, 0.16)}${p("M16 35 L13 44 L27 35")}${rect(24, 36, 34, 18, 6, "#ffffff")}${p("M49 54 L53 60 L41 54")}${ln(14, 19, 37, 19, INK, 2)}${ln(14, 26, 30, 26, INK, 2)}`,
+    ),
+  },
+  "politik-und-gesellschaft/strukturen": {
+    svg: S(
+      `${poly("7,22 32,7 57,22", PU, INK, 3, 0.2)}${ln(8, 24, 56, 24)}${ln(15, 25, 15, 50, INK, 4)}${ln(32, 25, 32, 50, INK, 4)}${ln(49, 25, 49, 50, INK, 4)}${rect(7, 51, 50, 6, 1, PU, INK, 3, 0.2)}`,
+    ),
+  },
+  "politik-und-gesellschaft/handlungsfelder": {
+    svg: S(
+      `${c(31, 27, 21, BL, INK, 3, 0.15)}${ell(31, 27, 9, 21, "none", INK, 2)}${ln(11, 27, 51, 27, INK, 2)}${rect(36, 40, 7, 16, 1, PU, INK, 2, 0.6)}${rect(47, 33, 7, 23, 1, GR, INK, 2, 0.6)}${ln(30, 57, 58, 57, INK, 2)}`,
     ),
   },
 

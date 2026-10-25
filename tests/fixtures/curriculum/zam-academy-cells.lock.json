@@ -138,6 +138,12 @@
     "file": "zam-academy-physik-realschule-9-kvt.json"
   },
   {
+    "id": "zam-academy:politik-realschule-10",
+    "version": "2026.10.1",
+    "sha256": "ebd1872fde552c2a8ab59c12e4dbf9ff1aa877a30a747c417dfda61819e18690",
+    "file": "zam-academy-politik-realschule-10-kvt.json"
+  },
+  {
     "id": "zam-academy:sql",
     "version": "2026.10.1",
     "sha256": "edb6b698bfd0311a5c68f17445163777a6ef4606112e28780b5e467276eac5f6",

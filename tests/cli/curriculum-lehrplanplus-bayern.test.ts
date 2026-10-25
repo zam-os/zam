@@ -91,6 +91,29 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     expect(provider.listTracks("realschule", "9", "deutsch")).toEqual([]);
   });
 
+  it("offers the common Politik und Gesellschaft 10 curriculum with four learning areas", () => {
+    const position = { schoolType: "realschule", grade: "10", subject: "pug" };
+    expect(provider.listSubjects("realschule", "10")).toContainEqual({
+      id: "pug",
+      label: "Politik und Gesellschaft",
+    });
+    expect(provider.listTracks("realschule", "10", "pug")).toEqual([]);
+    const topics = provider.listTopics(position);
+    expect(topics.map((topic) => [topic.id, topic.hours])).toEqual([
+      ["lb1", undefined],
+      ["lb2", 14],
+      ["lb3", 14],
+      ["lb4", 20],
+    ]);
+    for (const topic of topics)
+      expect(provider.resolveTopic(topic)).toEqual({
+        provider: "lehrplanplus-bayern",
+        topicId: `realschule|10|pug#${topic.id}`,
+        uri: "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/pug",
+      });
+    expect(provider.listCatalogPaths?.()).toContainEqual(position);
+  });
+
   it("offers BwR 10 only in group II with all four verified areas", () => {
     expect(
       provider.listTracks("realschule", "10", "bwl-rechnungswesen"),

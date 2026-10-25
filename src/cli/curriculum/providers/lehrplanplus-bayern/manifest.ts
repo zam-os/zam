@@ -12289,22 +12289,22 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
     "realschule|10|pug": [
       {
         id: "lb1",
-        label: "PuG10 Methoden und Arbeitstechniken",
+        label: "Methoden und Arbeitstechniken",
       },
       {
         id: "lb2",
-        label: "PuG10 Politische Mitwirkungsmöglichkeiten",
+        label: "Politische Mitwirkungsmöglichkeiten",
         hours: 14,
       },
       {
         id: "lb3",
-        label: "PuG10 Politische Strukturen",
+        label: "Politische Strukturen",
         hours: 14,
       },
       {
         id: "lb4",
         label:
-          "PuG10 Politische, gesellschaftliche und wirtschaftliche Handlungsfelder",
+          "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder",
         hours: 20,
       },
     ],
@@ -63221,7 +63221,7 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
     "realschule|10|or":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/10/fach/or/inhalt/fachlehrplaene",
     "realschule|10|pug":
-      "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/10/fach/pug/inhalt/fachlehrplaene",
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/pug",
     "realschule|10|soziallehre":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/10/fach/soziallehre/inhalt/fachlehrplaene",
     "realschule|10|sozialwesen":

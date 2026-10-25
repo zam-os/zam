@@ -206,6 +206,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     const academy = fakeAcademy([
       catalogOnly(),
       { ...UML, version: "2099.1.1" },
+      getBundledCellTile("zam-academy:politik-realschule-10") as BundledTile,
     ]);
     const list = await academyListHandler(db, {
       user: "learner",
@@ -238,6 +239,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:physik-realschule-10",
       "zam-academy:physik-realschule-8",
       "zam-academy:physik-realschule-9",
+      "zam-academy:politik-realschule-10",
       "zam-academy:sql",
       "zam-academy:uml",
       "zam-academy:wirtschaft-recht-realschule-9",
@@ -291,8 +293,19 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       version: "2026.10.2",
       items: 168,
     });
+    expect(
+      list.cells.find(
+        (cell) => cell.id === "zam-academy:politik-realschule-10",
+      ),
+    ).toMatchObject({
+      bundled: true,
+      held: false,
+      version: "2026.10.1",
+      items: 64,
+      appUrl: "https://academy.zam-os.org/politik-realschule-10/",
+    });
     expect(await tilesInstalled()).toBe(0);
-    // Both cells were cached for a later „Aufnehmen“ or an agent.
+    // All three catalog cells were cached for a later „Aufnehmen“ or an agent.
     expect(
       readFileSync(join(academyCacheDir(), "catalog.json"), "utf8"),
     ).toContain("zam-academy:nur-katalog");
@@ -328,6 +341,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:physik-realschule-10",
       "zam-academy:physik-realschule-8",
       "zam-academy:physik-realschule-9",
+      "zam-academy:politik-realschule-10",
       "zam-academy:sql",
       "zam-academy:uml",
       "zam-academy:wirtschaft-recht-realschule-9",

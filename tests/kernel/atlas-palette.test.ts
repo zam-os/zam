@@ -41,6 +41,7 @@ describe("hue", () => {
     expect(hueKeyForDomain("mathematik/geometrie/dreiecke")).toBe("mathematik");
     expect(hueKeyForDomain("schule/chemie/stoffe")).toBe("chemie");
     expect(hueKeyForDomain("bwr/bilanz")).toBe("wirtschaft-recht");
+    expect(hueKeyForDomain("pug/lb3")).toBe("politik-und-gesellschaft");
     expect(hueKeyForDomain("nut/ernaehrung")).toBe("biologie");
     expect(hueKeyForDomain(" Physik/Mechanik ")).toBe("physik");
     expect(hueKeyForDomain("")).toBe("");

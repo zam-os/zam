@@ -343,6 +343,20 @@ export const WELTWISSEN_SEED: readonly SeedBereich[] = [
         ],
       },
       {
+        key: "politik-und-gesellschaft",
+        name: "Politik und Gesellschaft",
+        areas: [
+          { key: "methoden", name: "Methoden und Arbeitstechniken", from: [] },
+          { key: "mitwirkung", name: "Politische Mitwirkung", from: [] },
+          { key: "strukturen", name: "Politische Strukturen", from: [] },
+          {
+            key: "handlungsfelder",
+            name: "Politik, Gesellschaft und Wirtschaft",
+            from: [],
+          },
+        ],
+      },
+      {
         key: "wirtschaft-recht",
         name: "Wirtschaft & Recht",
         areas: [
@@ -480,6 +494,7 @@ export const WELTWISSEN_SUBJECT_ALIASES: Readonly<
   Record<string, { subject: string; area?: string }>
 > = {
   bwr: { subject: "wirtschaft-recht", area: "rechnungswesen" },
+  pug: { subject: "politik-und-gesellschaft" },
   wirtschaft: { subject: "wirtschaft-recht" },
   recht: { subject: "wirtschaft-recht" },
   wirtschaft_recht: { subject: "wirtschaft-recht" },
