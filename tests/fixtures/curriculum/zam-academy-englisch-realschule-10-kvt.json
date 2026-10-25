@@ -1,0 +1,3639 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:englisch-realschule-10",
+  "version": "2026.10.1",
+  "title": "Englisch 10 Realschule (ZAM Academy)",
+  "description": "46 Lektionen mit englischen Materialien, Sprachaufgaben auf zwei Stufen und 92 gezielten Wiederholungsfragen. Gemeinsamer LehrplanPLUS Bayern; natürliche Hörtexte, Gespräche und längere Lektüre ergänzen die App.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-25T09:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/englisch",
+      "checked": "2026-10-25",
+      "label": "LehrplanPLUS Englisch 10 Realschule Bayern"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5SAT8DHZEX4982QSJPT1EY3",
+      "atom_uri": "urn:zam:atom:01M5SAT8DHZEX4982QSJPT1EY3",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-choices",
+      "title": "A decision with conditions",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-choices",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "independence",
+          "topic_title": "Selbständig werden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SAT8DH7BT00HKAE9AAZ75N",
+          "slug": "e10-choices-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A course is useful, but its timetable is unconfirmed. Which conclusion respects that uncertainty?",
+          "concept": "I would accept if the timetable fitted my other duties.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-choices",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "I would accept if the timetable fitted my other duties.",
+              "I have definitely been promised a suitable timetable."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SAT8DH9FS9G3PCJZE2JASY",
+          "slug": "e10-choices-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "What makes a recommendation conditional rather than absolute?",
+          "concept": "It states a choice together with the circumstances that must hold.",
+          "sample_solution": "For example, “I would accept if travel were affordable” recommends an option without pretending that funding is already confirmed.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-choices"
+        }
+      ]
+    },
+    {
+      "id": "01M5SAT8E7BX6NJRWHSFW5RSP5",
+      "atom_uri": "urn:zam:atom:01M5SAT8E7BX6NJRWHSFW5RSP5",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-health-messages",
+      "title": "A claim is not the evidence",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-health-messages",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "independence",
+          "topic_title": "Selbständig werden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SAT8E7F3SGPQV6X68Q53Z2",
+          "slug": "e10-health-messages-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Six volunteers liked an app, with no comparison group. Which report matches the evidence?",
+          "concept": "Six volunteers reported a positive experience.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-health-messages",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Six volunteers reported a positive experience.",
+              "The app has been proved effective for every teenager."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SAT8E7KB03S2AC86GMEH9K",
+          "slug": "e10-health-messages-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why should a small voluntary survey not be reported as proof about everyone?",
+          "concept": "Its selection and size limit how far its results can be generalised.",
+          "sample_solution": "A precise report names who took part and what they actually reported; broader claims need stronger evidence.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-health-messages"
+        }
+      ]
+    },
+    {
+      "id": "01M5SAT8EZBXJ7S5TMX2S2DX94",
+      "atom_uri": "urn:zam:atom:01M5SAT8EZBXJ7S5TMX2S2DX94",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-abroad-listening",
+      "title": "Listen for the change, not the first plan",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-abroad-listening",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "independence",
+          "topic_title": "Selbständig werden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb4",
+          "topic_title": "Methodische Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SAT8EZ1A40102JM2ZR6YVZ",
+          "slug": "e10-abroad-listening-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A speaker says “Not Tuesday: please come on Wednesday instead.” Which note records the final plan?",
+          "concept": "Meeting: Wednesday.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-abroad-listening",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Meeting: Wednesday.",
+              "Meeting: Tuesday."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SAT8EZ0HSKMN6Z415KM796",
+          "slug": "e10-abroad-listening-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "How can you check a changed arrangement in a conversation?",
+          "concept": "Restate the changed detail and ask the speaker to confirm it.",
+          "sample_solution": "For example, “So the meeting is on Wednesday, not Tuesday—is that right?” checks the exact point rather than guessing.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-abroad-listening"
+        }
+      ]
+    },
+    {
+      "id": "01M5SAT8GATW0XB5MVVMWEMDXV",
+      "atom_uri": "urn:zam:atom:01M5SAT8GATW0XB5MVVMWEMDXV",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-complaint",
+      "title": "A complaint with a clear request",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-complaint",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "independence",
+          "topic_title": "Selbständig werden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SAT8GBJWD0Z6NWW2VEGVYJ",
+          "slug": "e10-complaint-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which sentence makes a complaint both specific and constructive?",
+          "concept": "Building work continued until midnight; could you offer a quiet room tonight?",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-complaint",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Building work continued until midnight; could you offer a quiet room tonight?",
+              "Your staff are useless and everything is always awful."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SAT8GBSYM4MCHX15VS98VN",
+          "slug": "e10-complaint-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Which three elements make a written complaint useful to its recipient?",
+          "concept": "An identifiable problem, supporting details and a clear request for a remedy.",
+          "sample_solution": "For example, give the booking reference and relevant dates, describe what differed from the offer, and ask for a practical next step.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-complaint"
+        }
+      ]
+    },
+    {
+      "id": "01M5SAT8HKD3R0PNW7BCTRC2Y8",
+      "atom_uri": "urn:zam:atom:01M5SAT8HKD3R0PNW7BCTRC2Y8",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-mediation-home",
+      "title": "Explain the rule to the right person",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-mediation-home",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "independence",
+          "topic_title": "Selbständig werden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Interkulturelle Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SAT8HMX03C9AJ6WGG6W1BG",
+          "slug": "e10-mediation-home-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A notice allows free entry only after registration. Which mediation preserves the condition?",
+          "concept": "Entry is free, but you need to register first.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-mediation-home",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Entry is free, but you need to register first.",
+              "You can always enter without registering."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SAT8HMS87TNZPEAAGA4G9G",
+          "slug": "e10-mediation-home-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "How does mediation differ from translating every sentence?",
+          "concept": "It selects and explains the information a particular recipient needs while preserving its meaning and conditions.",
+          "sample_solution": "For example, a visitor needs access rules and relevant times, but not internal accounting details; an unknown service must remain unknown.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-mediation-home"
+        }
+      ]
+    },
+    {
+      "id": "01M5SAT8JA2QGFJ6T09Z5XSKW9",
+      "atom_uri": "urn:zam:atom:01M5SAT8JA2QGFJ6T09Z5XSKW9",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-discussion",
+      "title": "Disagree and keep the conversation moving",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-discussion",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "independence",
+          "topic_title": "Selbständig werden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Interkulturelle Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb4",
+          "topic_title": "Methodische Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SAT8JB8K1SN859KMZY9H98",
+          "slug": "e10-discussion-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A partner worries that an exchange is too expensive. Which reply addresses that concern?",
+          "concept": "I see the cost problem; could we check whether support is available?",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-discussion",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "I see the cost problem; could we check whether support is available?",
+              "You clearly do not care about learning languages."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SAT8JBMYQR9H3T576E6M4W",
+          "slug": "e10-discussion-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why can summarising another speaker’s view improve a disagreement?",
+          "concept": "It checks understanding and makes clear which actual point your response addresses.",
+          "sample_solution": "A summary such as “Your main concern is cost” does not mean agreement; it helps avoid arguing against a position the speaker never took.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-discussion"
+        }
+      ]
+    },
+    {
+      "id": "01M5SC42SYNQM0KW7G8JXRV3X9",
+      "atom_uri": "urn:zam:atom:01M5SC42SYNQM0KW7G8JXRV3X9",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-lingua-franca",
+      "title": "English between different first languages",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-lingua-franca",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "global",
+          "topic_title": "International zusammenarbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Interkulturelle Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb4",
+          "topic_title": "Methodische Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SC42SYV3B1AVFX9KB4E7QW",
+          "slug": "e10-lingua-franca-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Two partners understand “next Friday” as different dates. What should they do?",
+          "concept": "Confirm the exact date before agreeing on the deadline.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-lingua-franca",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Confirm the exact date before agreeing on the deadline.",
+              "Speak louder and assume the date is now clear."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SC42SYCXEY8RZN8PP64FXY",
+          "slug": "e10-lingua-franca-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "What is the purpose of clarification in international communication?",
+          "concept": "To establish shared meaning before people act on a message.",
+          "sample_solution": "A request to rephrase or confirm a date checks understanding; it is useful for speakers with any first language.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-lingua-franca"
+        }
+      ]
+    },
+    {
+      "id": "01M5SC42TKCSVD2DP9GS2AG8VF",
+      "atom_uri": "urn:zam:atom:01M5SC42TKCSVD2DP9GS2AG8VF",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-supply-chain",
+      "title": "Follow a product, not a stereotype",
+      "domain": "englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-supply-chain",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "global",
+          "topic_title": "International zusammenarbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Interkulturelle Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SC42TMF57W8BVATZ76HRVF",
+          "slug": "e10-supply-chain-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A parcel is “shipped from Malaysia”. What does this statement establish on its own?",
+          "concept": "It names the place from which the parcel is sent.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-supply-chain",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "It names the place from which the parcel is sent.",
+              "It proves that every component was manufactured there."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SC42TMN03SH5XTFYMAFVGJ",
+          "slug": "e10-supply-chain-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why must a summary distinguish production from shipment?",
+          "concept": "The place where a product is sent from may differ from where its parts were made.",
+          "sample_solution": "A careful summary names the relevant stages separately and preserves any conditions on delivery.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-supply-chain"
+        }
+      ]
+    },
+    {
+      "id": "01M5SC42VBP4QA79727QV121RF",
+      "atom_uri": "urn:zam:atom:01M5SC42VBP4QA79727QV121RF",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-enquiry",
+      "title": "An enquiry that can be answered",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-enquiry",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "global",
+          "topic_title": "International zusammenarbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SC42VCYZRP3MCB6FDTYWFD",
+          "slug": "e10-enquiry-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A group is collecting offers and has not authorised an order. Which sentence states its purpose accurately?",
+          "concept": "We would like information before deciding whether to order.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-enquiry",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "We would like information before deciding whether to order.",
+              "We confirm a binding order for immediate delivery."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SC42VCNJMXJ25QEBFJMPD8",
+          "slug": "e10-enquiry-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "What distinguishes an enquiry from an order?",
+          "concept": "An enquiry requests information; an order communicates a decision to buy under stated conditions.",
+          "sample_solution": "An enquiry can ask about price, delivery or conditions while keeping the purchase decision open. An order communicates the buyer’s decision rather than merely collecting information.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-enquiry"
+        }
+      ]
+    },
+    {
+      "id": "01M5SC42W31NPZ3K6N1ZN7QBBZ",
+      "atom_uri": "urn:zam:atom:01M5SC42W31NPZ3K6N1ZN7QBBZ",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-fairtrade",
+      "title": "A label and the questions behind it",
+      "domain": "englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-fairtrade",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "global",
+          "topic_title": "International zusammenarbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Interkulturelle Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SC42W3RRR81WCEW0285JVE",
+          "slug": "e10-fairtrade-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Why is “A certification label proves that every trade problem is solved” too strong?",
+          "concept": "A label refers to specified standards, not a guarantee that every problem has disappeared.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-fairtrade",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A label refers to specified standards, not a guarantee that every problem has disappeared.",
+              "Any label guarantees identical results in every place and product."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SC42W356MSSRC4Q0G9VD0W",
+          "slug": "e10-fairtrade-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "How should you report a certification claim responsibly?",
+          "concept": "State what the relevant standard covers and what evidence applies to the particular product or supplier.",
+          "sample_solution": "Do not turn a defined certification requirement into a promise that every social or environmental problem is solved.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-fairtrade"
+        }
+      ]
+    },
+    {
+      "id": "01M5SC42WTSBEESKGG2YNWVK0D",
+      "atom_uri": "urn:zam:atom:01M5SC42WTSBEESKGG2YNWVK0D",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-meeting-listening",
+      "title": "Who agreed to do what?",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-meeting-listening",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "global",
+          "topic_title": "International zusammenarbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Interkulturelle Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb4",
+          "topic_title": "Methodische Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SC42WTSSKNA772JHN0WE0F",
+          "slug": "e10-meeting-listening-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A colleague says “I might be able to find a reviewer.” Which note is accurate?",
+          "concept": "Finding a reviewer is possible but not yet confirmed.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-meeting-listening",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Finding a reviewer is possible but not yet confirmed.",
+              "The reviewer has definitely accepted the task."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SC42WTRAXFSK11VHHCPKD3",
+          "slug": "e10-meeting-listening-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "What three details should a confirmed action point in meeting notes normally contain?",
+          "concept": "The task, the person responsible and the agreed deadline.",
+          "sample_solution": "Keep possible contributions and unresolved conditions separate; they are not confirmed action points.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-meeting-listening"
+        }
+      ]
+    },
+    {
+      "id": "01M5SC42XG8513PJJQW261DJ3Y",
+      "atom_uri": "urn:zam:atom:01M5SC42XG8513PJJQW261DJ3Y",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-collaboration",
+      "title": "Turn a shared goal into a plan",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-collaboration",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "global",
+          "topic_title": "International zusammenarbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb4",
+          "topic_title": "Methodische Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SC42XH1671HMYDFG3VMT8C",
+          "slug": "e10-collaboration-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which action point can a team actually check?",
+          "concept": "Kai will send notes from two user tests by Thursday.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-collaboration",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kai will send notes from two user tests by Thursday.",
+              "We will somehow make everything better soon."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SC42XHRBAA8SR9BSB9EZTE",
+          "slug": "e10-collaboration-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why does a project need intermediate deadlines as well as a final date?",
+          "concept": "Later tasks may depend on earlier results being ready in time.",
+          "sample_solution": "For example, a reviewer needs the draft before the final deadline; a plan should allow time for both stages.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-collaboration"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCAMT5CTKB4VRJ6GCRDTN9",
+      "atom_uri": "urn:zam:atom:01M5SCAMT5CTKB4VRJ6GCRDTN9",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-water-reading",
+      "title": "Read the conditions behind a water-saving claim",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-water-reading",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "science",
+          "topic_title": "Wissenschaft und Technik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCAMT5R4WWN8F7V26ZYJ78",
+          "slug": "e10-water-reading-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Water use falls after a tap is changed, but other conditions also change. What is justified?",
+          "concept": "The values fell, but the tap alone has not been proved to cause the change.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-water-reading",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "The values fell, but the tap alone has not been proved to cause the change.",
+              "The new tap must cause the same reduction in every home."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCAMT5EXQQ63ZDJCY7T8Y9",
+          "slug": "e10-water-reading-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why should a report separate an observed change from its possible cause?",
+          "concept": "Different conditions may contribute to the change, so a numerical difference alone does not establish causation.",
+          "sample_solution": "For example, lower model water use may occur while both a tap and the number of visitors change. You can calculate the fall, but the comparison does not isolate the tap as its only cause.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-water-reading"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCAMTWY81ZS749V2NE9C1H",
+      "atom_uri": "urn:zam:atom:01M5SCAMTWY81ZS749V2NE9C1H",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-energy",
+      "title": "Compare energy options by the same measure",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-energy",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "science",
+          "topic_title": "Wissenschaft und Technik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCAMTWM1GCSQBAK2WSG750",
+          "slug": "e10-energy-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "An option produces the most energy but exceeds the stated budget. Which recommendation is careful?",
+          "concept": "It has the highest model output, but affordability must also be considered.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-energy",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "It has the highest model output, but affordability must also be considered.",
+              "The largest output automatically makes it affordable."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCAMTWS39F45C9ZNEM2Y09",
+          "slug": "e10-energy-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why should the criteria of an energy comparison be stated before a recommendation?",
+          "concept": "Different goals and constraints can make different options reasonable.",
+          "sample_solution": "The highest model output alone does not decide affordability, available space or other relevant conditions.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-energy"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCAMVM85GJSE2MCNY7HHE0",
+      "atom_uri": "urn:zam:atom:01M5SCAMVM85GJSE2MCNY7HHE0",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-technology-ethics",
+      "title": "A useful tool still needs a check",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-technology-ethics",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "science",
+          "topic_title": "Wissenschaft und Technik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCAMVN9AFHRYVGS2PBAMJX",
+          "slug": "e10-technology-ethics-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A fluent translation changes “only after registration” into “without registration”. What should happen before publication?",
+          "concept": "A reviewer should check and correct the changed meaning.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-technology-ethics",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A reviewer should check and correct the changed meaning.",
+              "Fluent wording makes a meaning check unnecessary."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCAMVN4CMXRT71X8H8JTX7",
+          "slug": "e10-technology-ethics-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why does a fluent technical output still need verification?",
+          "concept": "Fluency does not establish factual accuracy or preserve every condition of the source.",
+          "sample_solution": "Check the relevant meaning, especially dates, negation and conditions, and make clear who is responsible for the final version.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-technology-ethics"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCAMWED9FJGZJEH36BG5TP",
+      "atom_uri": "urn:zam:atom:01M5SCAMWED9FJGZJEH36BG5TP",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-food",
+      "title": "From a local trial to a limited conclusion",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-food",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "science",
+          "topic_title": "Wissenschaft und Technik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCAMWE2XYBNNBW8DQA9TFD",
+          "slug": "e10-food-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A lunch trial has a different menu and unknown attendance. Which conclusion is justified?",
+          "concept": "The local observation is interesting, but the changed conditions limit the comparison.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-food",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "The local observation is interesting, but the changed conditions limit the comparison.",
+              "It proves what every pupil everywhere should eat."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCAMWED8F7A12AC8AH239T",
+          "slug": "e10-food-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "What should a report do when important comparison details are missing?",
+          "concept": "Identify the missing details and limit its conclusion accordingly.",
+          "sample_solution": "A report can describe a local observation while explaining why a broader recommendation needs a better comparison.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-food"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCAMX6QGYPPBH66DDZ8KRM",
+      "atom_uri": "urn:zam:atom:01M5SCAMX6QGYPPBH66DDZ8KRM",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-data-visuals",
+      "title": "What the chart does—and does not—say",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-data-visuals",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "science",
+          "topic_title": "Wissenschaft und Technik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb4",
+          "topic_title": "Methodische Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCAMX7ARVYQ4XGYV3PQ1SM",
+          "slug": "e10-data-visuals-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Twelve of twenty workshop participants choose repair ideas. Which statement stays within the data?",
+          "concept": "Repair ideas received the most choices in this workshop.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-data-visuals",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Repair ideas received the most choices in this workshop.",
+              "The result proves that most people in every country prefer repair ideas."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCAMX7KZY676BRRKADQ8K8",
+          "slug": "e10-data-visuals-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "What is the difference between describing a chart and explaining its causes?",
+          "concept": "Description reports the values; a causal explanation needs additional evidence about why they occurred.",
+          "sample_solution": "A bar showing twelve choices establishes how often an option was selected. It does not establish whether people chose it because of cost, interest or another reason; that needs additional evidence.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-data-visuals"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCAMXY936AA87XTZ5BKW45",
+      "atom_uri": "urn:zam:atom:01M5SCAMXY936AA87XTZ5BKW45",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-science-debate",
+      "title": "Make a case and test the objection",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-science-debate",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "science",
+          "topic_title": "Wissenschaft und Technik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCAMXZFRCS7ZD3Y8A3KQAC",
+          "slug": "e10-science-debate-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which conclusion weighs a benefit and a real constraint?",
+          "concept": "A small trial may be useful if suitable supervision and rules are confirmed.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-science-debate",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A small trial may be useful if suitable supervision and rules are confirmed.",
+              "A useful idea never needs supervision or rules."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCAMXZDGE1M8S92GY8PQDG",
+          "slug": "e10-science-debate-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "What makes a counterargument useful in an opinion text?",
+          "concept": "It challenges a relevant part of the reasoning and is addressed fairly before the final judgement.",
+          "sample_solution": "A real constraint such as unconfirmed supervision should be weighed, not replaced by a personal attack.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-science-debate"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCGNND6S3RW1P41TV1SFBT",
+      "atom_uri": "urn:zam:atom:01M5SCGNND6S3RW1P41TV1SFBT",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-nz-languages",
+      "title": "A language is more than a greeting",
+      "domain": "englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-nz-languages",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "nz",
+          "topic_title": "Aotearoa New Zealand"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Interkulturelle Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCGNNDAX0Z8QS20KKCNCWJ",
+          "slug": "e10-nz-languages-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "You are unsure how to pronounce a host’s name. Which response avoids making an assumption?",
+          "concept": "Could you tell me how you would like me to pronounce your name?",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-nz-languages",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Could you tell me how you would like me to pronounce your name?",
+              "Your name proves which language you always prefer."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCGNNDVGDRX32YVHWG63QX",
+          "slug": "e10-nz-languages-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why should cultural communication include questions about individual preferences?",
+          "concept": "People within the same country or language community can have different experiences and preferences.",
+          "sample_solution": "Ask the person how they want a name pronounced or a conversation conducted rather than assuming a preference from their background.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-nz-languages"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCGNP48F493XTNP9G7PC6G",
+      "atom_uri": "urn:zam:atom:01M5SCGNP48F493XTNP9G7PC6G",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-nz-treaty",
+      "title": "A historical date needs a question",
+      "domain": "englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-nz-treaty",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "nz",
+          "topic_title": "Aotearoa New Zealand"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Interkulturelle Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCGNP4EVTA7EWFR9J2SQH9",
+          "slug": "e10-nz-treaty-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A short source gives a treaty’s signing date. What does that establish by itself?",
+          "concept": "The date of the event described, not a complete account of every participant’s experience.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-nz-treaty",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "The date of the event described, not a complete account of every participant’s experience.",
+              "That every participant had an identical view of everything that followed."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCGNP4Q3Y6AJAG0W93BBN7",
+          "slug": "e10-nz-treaty-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why is a source’s perspective relevant when reading history in English?",
+          "concept": "It helps identify whose experiences and purposes are represented and what may be missing.",
+          "sample_solution": "A source can provide reliable event details without containing every participant’s interpretation; compare perspectives before making a broad claim.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-nz-treaty"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCGNPWYHQDYXQ5TXCJBJNF",
+      "atom_uri": "urn:zam:atom:01M5SCGNPWYHQDYXQ5TXCJBJNF",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-nz-perspectives",
+      "title": "Two voices are not a national character",
+      "domain": "englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-nz-perspectives",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "nz",
+          "topic_title": "Aotearoa New Zealand"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Interkulturelle Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCGNPWEXEKME1CYZM2MN7P",
+          "slug": "e10-nz-perspectives-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Two writers prefer different meeting routines because their travel situations differ. Which comparison is supported?",
+          "concept": "Both value contact, but their travel situations shape different preferences.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-nz-perspectives",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Both value contact, but their travel situations shape different preferences.",
+              "Their country makes every person prefer exactly the same routine."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCGNPW3FE93B7RS274B24M",
+          "slug": "e10-nz-perspectives-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "How can you compare cultural perspectives without stereotyping?",
+          "concept": "Compare specific evidence from the people or texts and avoid extending it automatically to a whole group.",
+          "sample_solution": "For example, both writers may value contact while different travel needs shape their preferred meeting format. Compare those stated situations rather than treating either voice as the view of a whole country.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-nz-perspectives"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCGNQKQDBQNGMAJ9SV57N9",
+      "atom_uri": "urn:zam:atom:01M5SCGNQKQDBQNGMAJ9SV57N9",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-nz-travel-mediation",
+      "title": "A visitor needs the condition, too",
+      "domain": "englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-nz-travel-mediation",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "nz",
+          "topic_title": "Aotearoa New Zealand"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Interkulturelle Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCGNQKRB1EBGZWMNNKGFH2",
+          "slug": "e10-nz-travel-mediation-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A notice says “Guests may join if places are available.” Which German mediation preserves the meaning?",
+          "concept": "Gäste können teilnehmen, wenn Plätze frei sind.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-nz-travel-mediation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gäste können teilnehmen, wenn Plätze frei sind.",
+              "Für jeden Gast ist bereits ein Platz garantiert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCGNQK16XB87A4163AN32P",
+          "slug": "e10-nz-travel-mediation-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why must mediation distinguish missing information from a prohibition?",
+          "concept": "A text that does not mention a service has not necessarily forbidden it.",
+          "sample_solution": "Report the information gap and ask the organiser; do not invent either a guarantee or a ban.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-nz-travel-mediation"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCP20GF1HEXQ3M94PJNXAG",
+      "atom_uri": "urn:zam:atom:01M5SCP20GF1HEXQ3M94PJNXAG",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-sa-languages",
+      "title": "More than one public language",
+      "domain": "englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-sa-languages",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "sa",
+          "topic_title": "South Africa"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Interkulturelle Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCP20GEV15GAS7Z2AHXXDT",
+          "slug": "e10-sa-languages-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which language gained official status in South Africa in 2023?",
+          "concept": "South African Sign Language.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-sa-languages",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "South African Sign Language.",
+              "English."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCP20GJAJ157FDAYNFBJ3N",
+          "slug": "e10-sa-languages-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why does a country’s official-language list not determine every individual’s preferred language?",
+          "concept": "Legal or public status and a person’s language experience or preference are different things.",
+          "sample_solution": "Use the country information as context, then ask the person what will make the specific communication clear and accessible.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-sa-languages"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCP21743JRKWBZHVA68NCZ",
+      "atom_uri": "urn:zam:atom:01M5SCP21743JRKWBZHVA68NCZ",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-sa-history",
+      "title": "A political turning point and its limits",
+      "domain": "englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-sa-history",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "sa",
+          "topic_title": "South Africa"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Interkulturelle Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCP218154H97K0ZMRAFVDG",
+          "slug": "e10-sa-history-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which year marks South Africa’s first democratic election?",
+          "concept": "1994.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-sa-history",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1994.",
+              "1948."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCP218AT28QZ1D56RRFP4R",
+          "slug": "e10-sa-history-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why is “a political turning point” different from “the end of every social problem”?",
+          "concept": "A political event can change institutions without proving that every social inequality has immediately disappeared.",
+          "sample_solution": "A careful historical account identifies the event and then investigates longer-term developments with appropriate evidence.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-sa-history"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCP22409V2BZ5S877FHXQF",
+      "atom_uri": "urn:zam:atom:01M5SCP22409V2BZ5S877FHXQF",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-sa-radio",
+      "title": "Hear support and concern in the same voice",
+      "domain": "englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-sa-radio",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "sa",
+          "topic_title": "South Africa"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Interkulturelle Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCP224H2N2CHNP7QPRX3VM",
+          "slug": "e10-sa-radio-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A speaker says “I welcome the idea, but the finishing time is a problem.” What is her position?",
+          "concept": "She supports the goal but questions a practical arrangement.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-sa-radio",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "She supports the goal but questions a practical arrangement.",
+              "She rejects every part of the idea."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCP224QB4KJVERZGX14B4A",
+          "slug": "e10-sa-radio-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "How can you identify a speaker’s attitude when a statement contains “but”?",
+          "concept": "Check which part expresses support and which part introduces a concern or limit.",
+          "sample_solution": "A concern about timing may qualify support for an activity rather than reject the activity itself.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-sa-radio"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCP22Y19K5A0X25XKTF9N4",
+      "atom_uri": "urn:zam:atom:01M5SCP22Y19K5A0X25XKTF9N4",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-sa-perspectives",
+      "title": "Report a voice without changing its reach",
+      "domain": "englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-sa-perspectives",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "sa",
+          "topic_title": "South Africa"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Interkulturelle Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCP22YYVXD2FAHAXPNJZHK",
+          "slug": "e10-sa-perspectives-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A writer says “English helps me talk to visitors in this club.” Which paraphrase preserves the scope?",
+          "concept": "The writer finds English useful for speaking to visitors in the club.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-sa-perspectives",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "The writer finds English useful for speaking to visitors in the club.",
+              "The writer says everyone must use only English in every situation."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCP22Y7CJB89GW6NDGDGZX",
+          "slug": "e10-sa-perspectives-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Which details must a fair paraphrase preserve even when its wording changes?",
+          "concept": "The source, the central meaning and relevant limits such as purpose, frequency or conditions.",
+          "sample_solution": "Replacing “sometimes, for this project” with “always, for everyone” changes the claim instead of merely rewording it.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-sa-perspectives"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCXA72TDVGRJZNQ6WSF8NR",
+      "atom_uri": "urn:zam:atom:01M5SCXA72TDVGRJZNQ6WSF8NR",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-tenses",
+      "title": "Choose the time relationship",
+      "domain": "englisch/grammar",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-tenses",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "language",
+          "topic_title": "Sprachwerkstatt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCXA72P34XDW9TV5SSFTJB",
+          "slug": "e10-tenses-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "You name a finished event at a specified past time: “We ___ the draft yesterday.” Which form fits?",
+          "concept": "finished",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-tenses",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "finished",
+              "have finished"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCXA729J33T564TJ3HWTTA",
+          "slug": "e10-tenses-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "How does “was checking when the phone rang” organise the two actions?",
+          "concept": "It presents checking as the ongoing background and the phone call as an event that occurred during it.",
+          "sample_solution": "The past continuous and simple past show the relationship between a continuing activity and a shorter event.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-tenses"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCXA7SNK5APCT0SSAVHT9P",
+      "atom_uri": "urn:zam:atom:01M5SCXA7SNK5APCT0SSAVHT9P",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-modals-revision",
+      "title": "Permission is not obligation",
+      "domain": "englisch/grammar",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-modals-revision",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "language",
+          "topic_title": "Sprachwerkstatt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCXA7TNK0KJJ8NNTM6DXWH",
+          "slug": "e10-modals-revision-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "What does “You do not have to bring a laptop” mean?",
+          "concept": "Bringing a laptop is not required.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-modals-revision",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bringing a laptop is not required.",
+              "Bringing a laptop is forbidden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCXA7TJ2H0HJ20B6RXWZXM",
+          "slug": "e10-modals-revision-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "How do “do not have to” and “must not” differ?",
+          "concept": "Do not have to means there is no obligation; must not expresses a prohibition.",
+          "sample_solution": "An optional item is not automatically forbidden. Use the form that matches the actual rule.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-modals-revision"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCXA8HB2M28ZH6CZNN37KA",
+      "atom_uri": "urn:zam:atom:01M5SCXA8HB2M28ZH6CZNN37KA",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-past-deduction",
+      "title": "Guessing about the past",
+      "domain": "englisch/grammar",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-past-deduction",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SCXA7SNK5APCT0SSAVHT9P",
+          "type": "soft",
+          "rationale": "Die Lektion knüpft an Permission is not obligation an; eigenständiger Einstieg bleibt möglich."
+        },
+        {
+          "atom_id": "01M5SCXA72TDVGRJZNQ6WSF8NR",
+          "type": "soft",
+          "rationale": "Die Lektion knüpft an Choose the time relationship an; eigenständiger Einstieg bleibt möglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "language",
+          "topic_title": "Sprachwerkstatt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCXA8HM9C6328EQSDEJ1MG",
+          "slug": "e10-past-deduction-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which sentence explicitly presents a possible past explanation rather than a confirmed fact?",
+          "concept": "The key might have fallen out of my pocket.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-past-deduction",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "The key might have fallen out of my pocket.",
+              "The key definitely fell out of my pocket."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCXA8H5J5P952FDH1SHA98",
+          "slug": "e10-past-deduction-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "What does “might have happened” communicate?",
+          "concept": "A possibility concerning a past event, not a confirmed fact.",
+          "sample_solution": "The structure is might + have + past participle. Its uncertainty must be preserved when the claim is reported again.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-past-deduction"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCXA9AFP7QCYFHYSSDMEB3",
+      "atom_uri": "urn:zam:atom:01M5SCXA9AFP7QCYFHYSSDMEB3",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-past-advice",
+      "title": "Advice after the event",
+      "domain": "englisch/grammar",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-past-advice",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SCXA7SNK5APCT0SSAVHT9P",
+          "type": "soft",
+          "rationale": "Die Lektion knüpft an Permission is not obligation an; eigenständiger Einstieg bleibt möglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "language",
+          "topic_title": "Sprachwerkstatt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCXA9BB14JQQ8GBF93WME4",
+          "slug": "e10-past-advice-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "After missing a deadline, which sentence gives retrospective advice?",
+          "concept": "I should have checked the date earlier.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-past-advice",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "I should have checked the date earlier.",
+              "I should check the date tomorrow."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCXA9BGHVB88F27ZRV3CTA",
+          "slug": "e10-past-advice-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "In a reflection on a missed deadline, what does “I should have checked it” express?",
+          "concept": "A retrospective judgement that checking would have been the better past action.",
+          "sample_solution": "It differs from “I should check it now,” which advises an action in the present or future.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-past-advice"
+        }
+      ]
+    },
+    {
+      "id": "01M5SCXAA4E40QXQAHXNNT2W33",
+      "atom_uri": "urn:zam:atom:01M5SCXAA4E40QXQAHXNNT2W33",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-could-would",
+      "title": "Possible or conditional?",
+      "domain": "englisch/grammar",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-could-would",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SCXA8HB2M28ZH6CZNN37KA",
+          "type": "soft",
+          "rationale": "Die Lektion knüpft an Guessing about the past an; eigenständiger Einstieg bleibt möglich."
+        },
+        {
+          "atom_id": "01M5SCXA9AFP7QCYFHYSSDMEB3",
+          "type": "soft",
+          "rationale": "Die Lektion knüpft an Advice after the event an; eigenständiger Einstieg bleibt möglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "language",
+          "topic_title": "Sprachwerkstatt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SCXAA4CFBYFRZD3DNDMX79",
+          "slug": "e10-could-would-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A speaker says that, if informed, they would definitely have chosen to attend. Which sentence expresses that conditional result?",
+          "concept": "I would have joined if I had known about it.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-could-would",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "I would have joined if I had known about it.",
+              "I might have joined, but I am not saying what I would have chosen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SCXAA46FMKTA7ZG0CW4PFY",
+          "slug": "e10-could-would-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why can “could have” not always be read as a definitely unused opportunity?",
+          "concept": "In some contexts it expresses a possible explanation of a past event whose truth is unknown.",
+          "sample_solution": "“It could have been moved; we do not know” is a deduction, while “I could have joined, but chose not to” explicitly states an unused opportunity.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-could-would"
+        }
+      ]
+    },
+    {
+      "id": "01M5SE9NZZXAC8VSE3ENN5X5BY",
+      "atom_uri": "urn:zam:atom:01M5SE9NZZXAC8VSE3ENN5X5BY",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-articles",
+      "title": "A sound, a noun and a context",
+      "domain": "englisch/grammar",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-articles",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "language",
+          "topic_title": "Sprachwerkstatt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SE9NZZ6M9BN20678HB727Y",
+          "slug": "e10-articles-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which sentence uses the uncountable noun advice correctly?",
+          "concept": "The tutor gave me some advice.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-articles",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "The tutor gave me some advice.",
+              "The tutor gave me an advice."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SE9NZZWDWDTT7PCZ9BBNA5",
+          "slug": "e10-articles-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "What determines the choice between a and an?",
+          "concept": "The initial sound of the following word, not simply its first written letter.",
+          "sample_solution": "For example, an hour begins with a vowel sound, whereas a university begins with a consonant sound.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-articles"
+        }
+      ]
+    },
+    {
+      "id": "01M5SE9P0Q8PE09VQXYKW2S61R",
+      "atom_uri": "urn:zam:atom:01M5SE9P0Q8PE09VQXYKW2S61R",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-pair-nouns",
+      "title": "A pair is not always two subjects",
+      "domain": "englisch/grammar",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-pair-nouns",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "language",
+          "topic_title": "Sprachwerkstatt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SE9P0RHFGXN5BNCQPYT0RN",
+          "slug": "e10-pair-nouns-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which sentence treats one pair as the subject?",
+          "concept": "A pair of scissors is missing.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-pair-nouns",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A pair of scissors is missing.",
+              "A pair of scissors are missing because scissors is the nearest noun."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SE9P0RHET6SQJQS4DZWJEV",
+          "slug": "e10-pair-nouns-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why is the verb singular in “A pair of scissors is missing”?",
+          "concept": "The grammatical head is the singular noun pair.",
+          "sample_solution": "The plural noun inside of scissors does not change the singular head; compare “Two pairs of scissors are missing.”",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-pair-nouns"
+        }
+      ]
+    },
+    {
+      "id": "01M5SE9P1HN5RCD2W04DVQ10V0",
+      "atom_uri": "urn:zam:atom:01M5SE9P1HN5RCD2W04DVQ10V0",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-unless",
+      "title": "The condition hidden in unless",
+      "domain": "englisch/grammar",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-unless",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "language",
+          "topic_title": "Sprachwerkstatt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SE9P1JJQ7Q5674BV4Q10HA",
+          "slug": "e10-unless-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "What does “We will meet outside unless it rains” mean in this plan?",
+          "concept": "We will meet outside if it does not rain.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-unless",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "We will meet outside if it does not rain.",
+              "We will meet outside only if it rains."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SE9P1JQQN5JPEKBKCP81QE",
+          "slug": "e10-unless-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "How can you check whether an unless-sentence expresses the intended condition?",
+          "concept": "Test what the main action means when the exception is true and when it is not.",
+          "sample_solution": "“Meet outside unless it rains” gives rain as the exception; in this context it means “meet outside if it does not rain.”",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-unless"
+        }
+      ]
+    },
+    {
+      "id": "01M5SE9P2BRGWWKDXAXCD2XAXA",
+      "atom_uri": "urn:zam:atom:01M5SE9P2BRGWWKDXAXCD2XAXA",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-word-building",
+      "title": "Build a word, then check its role",
+      "domain": "englisch/grammar",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-word-building",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "language",
+          "topic_title": "Sprachwerkstatt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb4",
+          "topic_title": "Methodische Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SE9P2B888F6RAAVRE5MMPX",
+          "slug": "e10-word-building-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which word is a noun in “We discussed the usefulness of the example”?",
+          "concept": "usefulness",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-word-building",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "usefulness",
+              "useful"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SE9P2BARXTS4RKCVHCJZ2Y",
+          "slug": "e10-word-building-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why should word formation be checked against sentence context?",
+          "concept": "A familiar stem or ending is only a clue; the required word class and actual meaning depend on usage.",
+          "sample_solution": "Compare useful as an adjective with usefulness as a noun, then verify an unfamiliar form with context and a dictionary.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-word-building"
+        }
+      ]
+    },
+    {
+      "id": "01M5SED61797DNQYRYCNNJKRCG",
+      "atom_uri": "urn:zam:atom:01M5SED61797DNQYRYCNNJKRCG",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-phrasal-verbs",
+      "title": "The particle changes the job",
+      "domain": "englisch/grammar",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-phrasal-verbs",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "language",
+          "topic_title": "Sprachwerkstatt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb4",
+          "topic_title": "Methodische Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SED617A4F7RXCKXEF91QR8",
+          "slug": "e10-phrasal-verbs-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which version uses the pronoun correctly with put off in the meaning postpone?",
+          "concept": "We can put it off.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-phrasal-verbs",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "We can put it off.",
+              "We can put off it."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SED617YEQ4Y3KNYBRJ5AXG",
+          "slug": "e10-phrasal-verbs-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why should a phrasal verb be learned with an example sentence as well as a translation?",
+          "concept": "The example shows its meaning in context and how its object is positioned.",
+          "sample_solution": "Compare separable put it off with look after her; the same word-order rule does not apply to every multi-word verb.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-phrasal-verbs"
+        }
+      ]
+    },
+    {
+      "id": "01M5SED61YYZRPDKD3KYDRBQFF",
+      "atom_uri": "urn:zam:atom:01M5SED61YYZRPDKD3KYDRBQFF",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-collocations",
+      "title": "Words that work together",
+      "domain": "englisch/grammar",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-collocations",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "language",
+          "topic_title": "Sprachwerkstatt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb4",
+          "topic_title": "Methodische Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SED61YH9JF9BCZ3YERKFN8",
+          "slug": "e10-collocations-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which common collocation fits an ordinary project report?",
+          "concept": "We made a decision after doing research.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-collocations",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "We made a decision after doing research.",
+              "We did a decision after making research."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SED61YFXV5M8DRV298VWQ4",
+          "slug": "e10-collocations-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "What is the benefit of learning a collocation rather than isolated translated words?",
+          "concept": "It records a common combination that helps express the intended meaning naturally.",
+          "sample_solution": "For example, learn make a decision and do research as chunks instead of assuming that the same verb works with both nouns.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-collocations"
+        }
+      ]
+    },
+    {
+      "id": "01M5SED62RG82ZYVKFGB04NS4N",
+      "atom_uri": "urn:zam:atom:01M5SED62RG82ZYVKFGB04NS4N",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-verb-patterns",
+      "title": "To does not always introduce an infinitive",
+      "domain": "englisch/grammar",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-verb-patterns",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SE9P2BRGWWKDXAXCD2XAXA",
+          "type": "soft",
+          "rationale": "Die Lektion knüpft an Build a word, then check its role an; eigenständiger Einstieg bleibt möglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "language",
+          "topic_title": "Sprachwerkstatt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SED62S462Z1YK8CEPX6A5C",
+          "slug": "e10-verb-patterns-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which sentence uses look forward to with the correct following verb form?",
+          "concept": "We look forward to meeting you.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-verb-patterns",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "We look forward to meeting you.",
+              "We look forward to meet you."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SED62S1EHGEABY49QVM06M",
+          "slug": "e10-verb-patterns-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why does “look forward to meeting” use an ing-form although it contains to?",
+          "concept": "To is a preposition within look forward to, not the infinitive marker in that expression.",
+          "sample_solution": "Compare look forward to meeting you with want to meet you; the full pattern determines the following form.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-verb-patterns"
+        }
+      ]
+    },
+    {
+      "id": "01M5SENX4MJV2J3P6MASWBSBTQ",
+      "atom_uri": "urn:zam:atom:01M5SENX4MJV2J3P6MASWBSBTQ",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-original-story",
+      "title": "The Spare Chair",
+      "domain": "englisch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-original-story",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "literature",
+          "topic_title": "Literatur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SENX4N8EG7BHJ38RZYCJ3G",
+          "slug": "e10-original-story-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In a first-person story, the narrator reports “Sam looked at the chair” but gives no access to Sam’s thoughts. What can a reader claim directly?",
+          "concept": "Sam’s action is reported; his exact thought is not directly stated.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-original-story",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sam’s action is reported; his exact thought is not directly stated.",
+              "The narrator knows and states every thought Sam has."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SENX4N5JSPZ3WX60FT9MRG",
+          "slug": "e10-original-story-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "How does a literary interpretation differ from a direct statement of the plot?",
+          "concept": "It explains a possible meaning of text details and supports that reading with evidence.",
+          "sample_solution": "A reader may connect repeated objects and changes in behaviour, while distinguishing the text’s observations from inferred motives.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-original-story"
+        }
+      ]
+    },
+    {
+      "id": "01M5SENX5CN3TR064C3Q3MZCSM",
+      "atom_uri": "urn:zam:atom:01M5SENX5CN3TR064C3Q3MZCSM",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-mansfield",
+      "title": "Mansfield: light and a faint chill",
+      "domain": "englisch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-mansfield",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "literature",
+          "topic_title": "Literatur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SENX5CB82VJMMN15D7YC9X",
+          "slug": "e10-mansfield-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "An opening contrasts “the blue sky powdered with gold” with “a faint chill”. What does the contrast show?",
+          "concept": "A bright visual impression can coexist with a feeling of cold.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-mansfield",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A bright visual impression can coexist with a feeling of cold.",
+              "Bright imagery proves that no character can feel any cold."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SENX5DGHKTPDE5V6N5XN53",
+          "slug": "e10-mansfield-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "What should happen before a claim about an entire literary work is based on its opening paragraph?",
+          "concept": "The reader should check the claim against further relevant passages of the work.",
+          "sample_solution": "A close reading of the opening gives a starting point; later evidence may confirm, complicate or change the first interpretation.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-mansfield"
+        }
+      ]
+    },
+    {
+      "id": "01M5SENX63AYH67PC637ZDHB03",
+      "atom_uri": "urn:zam:atom:01M5SENX63AYH67PC637ZDHB03",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-review",
+      "title": "A review gives reasons, not only stars",
+      "domain": "englisch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-review",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SENX4MJV2J3P6MASWBSBTQ",
+          "type": "soft",
+          "rationale": "Die Lektion knüpft an The Spare Chair an; eigenständiger Einstieg bleibt möglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "literature",
+          "topic_title": "Literatur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SENX64Z682D7F37VCYBD00",
+          "slug": "e10-review-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which review sentence supports a judgement with a text detail?",
+          "concept": "The repeated chair makes the quiet change at the end meaningful.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-review",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "The repeated chair makes the quiet change at the end meaningful.",
+              "The story is good because it is good."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SENX644R21CRJW8MK0BN62",
+          "slug": "e10-review-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "What turns a review’s opinion into a reasoned evaluation?",
+          "concept": "A clear judgement linked to relevant evidence and a stated criterion or reader need.",
+          "sample_solution": "“I recommend it because the repeated object creates a meaningful ending” gives more than an unexplained positive label.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-review"
+        }
+      ]
+    },
+    {
+      "id": "01M5SENX6VENKA44FFVNAF775X",
+      "atom_uri": "urn:zam:atom:01M5SENX6VENKA44FFVNAF775X",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-adaptation",
+      "title": "What changes when a story becomes an image?",
+      "domain": "englisch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-adaptation",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SENX4MJV2J3P6MASWBSBTQ",
+          "type": "soft",
+          "rationale": "Die Lektion knüpft an The Spare Chair an; eigenständiger Einstieg bleibt möglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "literature",
+          "topic_title": "Literatur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SENX6WKBY19Q5SDWJW1QZD",
+          "slug": "e10-adaptation-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A storyboard shows a face but gives no spoken or written inner thought. What can an analysis claim directly?",
+          "concept": "It can describe the visible image and discuss a possible interpretation.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-adaptation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "It can describe the visible image and discuss a possible interpretation.",
+              "It proves every exact thought of the character."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SENX6WCA03ZWBE7HWWPCCV",
+          "slug": "e10-adaptation-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why must a media comparison distinguish a storyboard from a finished film?",
+          "concept": "A storyboard is a plan and does not establish the actual movement, sound or final effects of a completed film.",
+          "sample_solution": "Describe what a storyboard proposes, then use a genuinely viewed completed work to discuss its realised effects. A plan alone cannot show the final pacing, performed movement, sound or editing.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-adaptation"
+        }
+      ]
+    },
+    {
+      "id": "01M5SEV0H6Z9GX0742V27DGND9",
+      "atom_uri": "urn:zam:atom:01M5SEV0H6Z9GX0742V27DGND9",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-presentation",
+      "title": "Present a choice, then answer the question",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-presentation",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SCAMX6QGYPPBH66DDZ8KRM",
+          "type": "soft",
+          "rationale": "Die Lektion knüpft an What the chart does—and does not—say an; eigenständiger Einstieg bleibt möglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "projects",
+          "topic_title": "Eigene Projekte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb4",
+          "topic_title": "Methodische Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SEV0H6CPETYGM7PBJ26PC9",
+          "slug": "e10-presentation-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A listener asks for a cost that your source does not give. Which response is responsible?",
+          "concept": "The model does not include that cost; I would need another source to answer.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-presentation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "The model does not include that cost; I would need another source to answer.",
+              "I will invent a precise figure so that the answer sounds confident."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SEV0H60B7X9XSN1WVKJYW1",
+          "slug": "e10-presentation-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "What should determine the selection of language and supporting media in a presentation?",
+          "concept": "Its purpose, the audience’s prior knowledge and the evidence needed for the main points.",
+          "sample_solution": "Choose a graphic that supports the explanation, define unfamiliar terms and keep source limits visible during questions.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-presentation"
+        }
+      ]
+    },
+    {
+      "id": "01M5SEV0HX5ERHZAXZWWFWJ08T",
+      "atom_uri": "urn:zam:atom:01M5SEV0HX5ERHZAXZWWFWJ08T",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-dictionary-intonation",
+      "title": "Meaning, stress and a useful pause",
+      "domain": "englisch/grammar",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-dictionary-intonation",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "projects",
+          "topic_title": "Eigene Projekte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb4",
+          "topic_title": "Methodische Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SEV0HXKT25DS7GMGVD5WZZ",
+          "slug": "e10-dictionary-intonation-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In the usual pronunciation contrast, where is the main stress in the verb record?",
+          "concept": "On the second syllable.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-dictionary-intonation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "On the second syllable.",
+              "On the first syllable, exactly as in the noun."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SEV0HX0Q2VFGJF2SCEPT56",
+          "slug": "e10-dictionary-intonation-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why should pronunciation be checked in the dictionary entry for the word’s actual use?",
+          "concept": "The same spelling can have different meanings, word classes or stress patterns.",
+          "sample_solution": "For example, the usual noun/verb stress contrast in record is clearer when each form is learned in its own sentence.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-dictionary-intonation"
+        }
+      ]
+    },
+    {
+      "id": "01M5SEV0JK2XZ68GW5AJT6V778",
+      "atom_uri": "urn:zam:atom:01M5SEV0JK2XZ68GW5AJT6V778",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-feedback",
+      "title": "Revise one problem at a time",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-feedback",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "projects",
+          "topic_title": "Eigene Projekte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb4",
+          "topic_title": "Methodische Kompetenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SEV0JM0NDPTKBJAYWND959",
+          "slug": "e10-feedback-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which feedback gives a concrete, usable revision target?",
+          "concept": "The second sentence contradicts the registration rule; keep that condition.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-feedback",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "The second sentence contradicts the registration rule; keep that condition.",
+              "The whole text is simply bad."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SEV0JMPXW1KAKKTC1EYEGW",
+          "slug": "e10-feedback-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "What makes feedback actionable?",
+          "concept": "It identifies a specific feature or passage, explains the issue and points towards a relevant improvement.",
+          "sample_solution": "A learner can then revise that part and assess the change, instead of reacting to an unexplained label such as good or bad.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-feedback"
+        }
+      ]
+    },
+    {
+      "id": "01M5SEV0KB49P9XDT74DQMBFTV",
+      "atom_uri": "urn:zam:atom:01M5SEV0KB49P9XDT74DQMBFTV",
+      "namespace": "zam-academy-englisch-realschule-10",
+      "slug": "e10-own-topic",
+      "title": "Investigate a question that matters now",
+      "domain": "englisch/writing",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-own-topic",
+      "prerequisites": [
+        {
+          "atom_id": "01M5SEV0JK2XZ68GW5AJT6V778",
+          "type": "soft",
+          "rationale": "Die Lektion knüpft an Revise one problem at a time an; eigenständiger Einstieg bleibt möglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "englisch-realschule-10",
+          "topic_code": "projects",
+          "topic_title": "Eigene Projekte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb3",
+          "topic_title": "Text- und Medienkompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb4",
+          "topic_title": "Methodische Kompetenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb5",
+          "topic_title": "Themengebiete",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5SEV0KCKTTQXR9A6G34RAXP",
+          "slug": "e10-own-topic-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "A project template has headings but no sources have been read. What can honestly be claimed?",
+          "concept": "The plan is prepared, but the research has not yet been completed.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-own-topic",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "The plan is prepared, but the research has not yet been completed.",
+              "The template proves that all current findings have already been checked."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5SEV0KC8KSJVD4E1FF3PDRP",
+          "slug": "e10-own-topic-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why should a research report distinguish a plan from checked findings?",
+          "concept": "A plan describes intended work; findings require sources that were actually read and evaluated.",
+          "sample_solution": "Report completed evidence honestly, keep unfinished steps visible and never invent quotations or results to fill a template.",
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/englisch-realschule-10/#lesson=e10-own-topic"
+        }
+      ]
+    }
+  ]
+}
