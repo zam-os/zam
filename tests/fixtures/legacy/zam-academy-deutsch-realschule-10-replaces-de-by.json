@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "status": "proposal-only",
+  "approved": null,
+  "note": "Nur Bestandsabgleich: Die neue Zelle enthält weder replaces noch retired_items. Vier C-Zeilen ohne vorgeschlagenen identischen Nachfolger; die alten Karten bleiben aktiv. Eine spätere Stilllegung oder Ersetzung braucht Thomas ausdrücklich.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "0370098ff1fb50ba130984c4b16612bd509d680e",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-deutsch-10.json",
+      "sha256": "410f617eb200faafda06d38dbc8befb1398c11a3493f7d33d532ca35766eb0f5",
+      "tile_id": "de-by:realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel",
+      "version": "2026.08.1"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel",
+      "de_by_id": "01K4DAE0000000000000000J01",
+      "de_by_question": "Welche Seite (Gegenseite oder die von einem selbst befürwortete Seite) wird im Hauptteil einer dialektischen Erörterung nach dem klassischen Sanduhr-Prinzip ZUERST behandelt?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die alte Frage verlangt die erste Seite des klassischen Sanduhrmodells; die neue Gliederungsfrage prüft ein aspektbezogenes Modell. Kein identischer Abruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel",
+      "de_by_id": "01K4DAE0000000000000000J02",
+      "de_by_question": "Vergleiche die beiden Hauptverfahren der dialektischen Erörterung in der bayerischen Realschul-Abschlussprüfung: 1. Das Blockmodell / Sanduhr-Prinzip: I. Einleitung, II. Hauptteil: Block A (Die Gegenposition, die man nicht vertritt: beginnend mit dem stärksten Gegenargument hin zum schwächsten Gegenargument) → Wendepunkt / Drehbrücke → Block B (Die eigene befürwortete Position: beginnend mit dem schwächsten eigenen Argument hin zum stärksten Hauptargument direkt vor dem Schluss), 2. Das Reißverschluss- / Ping-Pong-Prinzip: Direkte Gegenüberstellung von Pro und Kontra zu einzelnen thematischen Teilaspekten, 3. Die Synthese im Schlussteil: Abwägung, Kompromissfindung und persönliches Urteil.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die alte mehrteilige Frage umfasst mehrere Ordnungsmodelle und den Schluss. Die neuen Einzelkarten erhalten diesen Gesamtabruf nicht."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel",
+      "de_by_id": "01K4DAE0000000000000000J03",
+      "de_by_question": "Welches rhetorische Stilmittel liegt vor, wenn eine Frage gestellt wird, auf die keine Antwort erwartet wird, weil die Antwort für jeden offensichtlich ist (z. B. 'Wollen wir wirklich unsere Zukunft aufs Spiel setzen?')?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die alte Karte verlangt die Benennung der rhetorischen Frage; die neue Analysekarte prüft die Verbindung von Befund, Beleg und Funktion. Kein identischer Einzelabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel",
+      "de_by_id": "01K4DAE0000000000000000J04",
+      "de_by_question": "Analysiere 6 zentrale rhetorische Stilmittel nach Definition, Textbeispiel und beabsichtigter Wirkung auf den Leser: 1. Metapher (bildhafter Vergleich ohne Vergleichswort 'wie', z. B. 'eine Mauer des Schweigens' -> Veranschaulichung, emotionale Vertiefung), 2. Alliteration (gleicher Anlaut benachbarter Wörter, z. B. 'Milch macht müde Männer munter' -> Einprägsamkeit, Rhythmus), 3. Anapher (Wortwiederholung am Satzanfang, z. B. 'Wir fordern... Wir fordern...' -> Eindringlichkeit, Appell), 4. Klimax (dreistufige Steigerung, z. B. 'Ich kam, sah und siegte' -> Spannungsaufbau), 5. Antithese (Gegenüberstellung gegensätzlicher Begriffe, z. B. 'Heiß geliebt und kalt verachtet' -> Verdeutlichung von Widersprüchen), 6. Hyperbel (starke Übertreibung, z. B. 'ein Meer von Tränen') und erkläre die 3-Schritte-Regel der Textanalyse: 1. Benennung des Stilmittels mit Textbeleg -> 2. Inhaltliche Bedeutung im Kontext -> 3. Funktion und Wirkung auf den Leser.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Sechs Stilmittel samt Beispielen und Wirkungen und das Analyseverfahren werden in der alten Gesamtfrage verbunden. Kein einzelner neuer Nachfolger erhält diesen Gesamtabruf."
+    }
+  ]
+}

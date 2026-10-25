@@ -1,0 +1,1998 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:deutsch-realschule-10",
+  "version": "2026.10.2",
+  "title": "Deutsch 10 Realschule (ZAM Academy)",
+  "description": "30 Lektionen mit 60 gezielten Wiederholungsfragen zu Sprechen, Lesen, Literatur, Argumentation, Schreiben und Sprache nach LehrplanPLUS Bayern. Mündliche Praxis, Ganzschrift, historische Gedichtvergleiche und Lehrkraftfeedback ergänzen die App. Zusätzliche Zelle ohne Lernstandsübertragung.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/deutsch",
+      "label": "LehrplanPLUS Bayern · Deutsch 10 Realschule",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.gutenberg.org/files/34811/34811-h/34811-h.htm",
+      "label": "Thomas Mann: Buddenbrooks · deutscher Originaltext",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.nobelprize.org/prizes/uncategorized/the-nobel-prize-in-literature-nominations-and-reports-1901-1950/",
+      "label": "Nobel Prize · Thomas Mann, Werk und Auszeichnung 1929",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.tha.de/~harsch/germanica/Chronologie/20Jh/VanHoddis/hod_we08.html",
+      "label": "Jakob van Hoddis: Weltende (1911) · Bibliotheca Augustana",
+      "checked": "2026-10-25"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5RNA4R19DW83KG9R0JK90GB",
+      "atom_uri": "urn:zam:atom:01M5RNA4R19DW83KG9R0JK90GB",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-zuhoeren",
+      "title": "Zuhören und Absichten erkennen",
+      "domain": "deutsch/sprechen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-zuhoeren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "sprechen",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R2WFS5EKHAR4TFY2BV",
+          "slug": "d10-zuhoeren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist hier ein Appell?",
+          "concept": "Die Bitte um einen vierwöchigen Versuch.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-zuhoeren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Bitte um einen vierwöchigen Versuch.",
+              "Die Angabe der 30 Teilnehmenden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R2KB9TJQ8MMWJ0MY95",
+          "slug": "d10-zuhoeren-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum solltest du Inhalt und Darbietung eines Redebeitrags getrennt bewerten?",
+          "concept": "Ein sicherer Auftritt kann überzeugen, obwohl Belege fehlen; eine unsichere Darbietung kann sachlich gut begründet sein.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-zuhoeren",
+          "sample_solution": "Ein sicherer Auftritt kann überzeugen, obwohl Belege fehlen; eine unsichere Darbietung kann sachlich gut begründet sein."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R2MXSZNHRC7TAS6N9G",
+      "atom_uri": "urn:zam:atom:01M5RNA4R2MXSZNHRC7TAS6N9G",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-vortrag",
+      "title": "Ein Vortrag braucht eine Richtung",
+      "domain": "deutsch/sprechen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-vortrag",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "sprechen",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R21MZ7ST0VB4PT1YPR",
+          "slug": "d10-vortrag-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Folie unterstützt diesen Kurzvortrag besser?",
+          "concept": "Drei Stichpunkte und ein einfacher Raumplan.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-vortrag",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Drei Stichpunkte und ein einfacher Raumplan.",
+              "Ein vollständiges Vorlesemanuskript in kleiner Schrift."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R2W4XKMZNVZ8HH33A2",
+          "slug": "d10-vortrag-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie hängen Zielgruppe und Materialauswahl bei einem Vortrag zusammen?",
+          "concept": "Die Zielgruppe bestimmt Vorwissen und Informationsbedarf; daraus wählst und erklärst du passende Inhalte und Medien.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-vortrag",
+          "sample_solution": "Die Zielgruppe bestimmt Vorwissen und Informationsbedarf; daraus wählst und erklärst du passende Inhalte und Medien."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R2EG2J609N5MDC2HJP",
+      "atom_uri": "urn:zam:atom:01M5RNA4R2EG2J609N5MDC2HJP",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-diskussion",
+      "title": "Diskutieren und Ergebnisse sichern",
+      "domain": "deutsch/sprechen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-diskussion",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "sprechen",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R2Z3W5YXEWBDZKHT7T",
+          "slug": "d10-diskussion-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "AG-Sitzung, 12.10., Raum 3. Mia möchte zwei zusätzliche Öffnungstage. Ben hält die Betreuung für ungeklärt. Beschlossen wird ein Versuch am Mittwoch; Mia fragt bis Freitag zwei Betreuende an. Die zweite Öffnung bleibt offen.\n\nWas gehört als Beschluss ins Ergebnisprotokoll?",
+          "concept": "Ein zusätzlicher Mittwoch wird versuchsweise angeboten.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-diskussion",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein zusätzlicher Mittwoch wird versuchsweise angeboten.",
+              "Zwei zusätzliche Tage sind sicher beschlossen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R2GY3DHH9CJDEJJJ77",
+          "slug": "d10-diskussion-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Angaben machen eine beschlossene Aufgabe im Protokoll nachvollziehbar?",
+          "concept": "Was getan werden soll, wer zuständig ist und bis wann es erledigt werden soll.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-diskussion",
+          "sample_solution": "Was getan werden soll, wer zuständig ist und bis wann es erledigt werden soll."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R2GNBKAR324DMEB2ZM",
+      "atom_uri": "urn:zam:atom:01M5RNA4R2GNBKAR324DMEB2ZM",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-gespraech",
+      "title": "Schwierige Gespräche führen",
+      "domain": "deutsch/sprechen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-gespraech",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "sprechen",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R2EN1MZCHYX3VM6Z13",
+          "slug": "d10-gespraech-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage zur fehlenden Frist bleibt zunächst auf der Sachebene?",
+          "concept": "Der Termin ist nicht eingetragen.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-gespraech",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Termin ist nicht eingetragen.",
+              "Die Betreuung respektiert mich sicher nicht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R2AHAN2CJQ458PVPG2",
+          "slug": "d10-gespraech-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist das Zusammenfassen einer fremden Position noch keine Zustimmung?",
+          "concept": "Du prüfst zunächst dein Verständnis; erst danach bewertest du die Position und formulierst deine eigene.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-gespraech",
+          "sample_solution": "Du prüfst zunächst dein Verständnis; erst danach bewertest du die Position und formulierst deine eigene."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R20XSH7YYCAE2P6BPS",
+      "atom_uri": "urn:zam:atom:01M5RNA4R20XSH7YYCAE2P6BPS",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-szene",
+      "title": "Eine Szene deuten und inszenieren",
+      "domain": "deutsch/sprechen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-szene",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "sprechen",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R2E15V7NEATT21ECWH",
+          "slug": "d10-szene-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage ist zunächst eine Beobachtung?",
+          "concept": "Lea zieht den Schlüssel wieder zu sich.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-szene",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Lea zieht den Schlüssel wieder zu sich.",
+              "Lea handelt eindeutig aus Hass."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R21H9T86EAGV5CKFJC",
+          "slug": "d10-szene-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie begründest du ein Urteil über eine Inszenierung nachvollziehbar?",
+          "concept": "Du beschreibst eine konkrete Bühnenentscheidung, deutest ihre Wirkung und nennst den Maßstab deiner Bewertung.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-szene",
+          "sample_solution": "Du beschreibst eine konkrete Bühnenentscheidung, deutest ihre Wirkung und nennst den Maßstab deiner Bewertung."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R2T6MMF9R6700YHAWZ",
+      "atom_uri": "urn:zam:atom:01M5RNA4R2T6MMF9R6700YHAWZ",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-leseplan",
+      "title": "Mit einer Lesefrage starten",
+      "domain": "deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-leseplan",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "lesen",
+          "topic_title": "Lesen, Literatur und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R2HWP90VS5NJ6NSS52",
+          "slug": "d10-leseplan-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Du suchst zunächst nur die Öffnungstage. Welche Strategie passt?",
+          "concept": "Suchendes Lesen nach Zeitangaben.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-leseplan",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Suchendes Lesen nach Zeitangaben.",
+              "Jedes Wort zunächst sprachlich analysieren."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R2SZQWG609JPRJXEZF",
+          "slug": "d10-leseplan-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum reicht Überfliegen für die Prüfung einer Argumentation nicht aus?",
+          "concept": "Es liefert einen Überblick, aber für Belege, Einschränkungen und Schlussfolgerungen ist genaues Lesen nötig.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-leseplan",
+          "sample_solution": "Es liefert einen Überblick, aber für Belege, Einschränkungen und Schlussfolgerungen ist genaues Lesen nötig."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R2ZXB5QDZR37W0MRDP",
+      "atom_uri": "urn:zam:atom:01M5RNA4R2ZXB5QDZR37W0MRDP",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-journalistik",
+      "title": "Nachricht, Kommentar oder Glosse?",
+      "domain": "deutsch/medien",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-journalistik",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "lesen",
+          "topic_title": "Lesen, Literatur und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R297WWBSW3WRSSHSM6",
+          "slug": "d10-journalistik-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Ausschnitt formuliert ausdrücklich eine begründete Wertung?",
+          "concept": "B: Der Versuch wird befürwortet und begründet.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-journalistik",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "B: Der Versuch wird befürwortet und begründet.",
+              "A: Das Datum bewertet den Beschluss."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R2E8J4E05AZE0GAAGS",
+          "slug": "d10-journalistik-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Woran unterscheidest du Kommentar und Nachricht grundsätzlich?",
+          "concept": "Ein Kommentar argumentiert wertend; eine Nachricht soll vor allem sachlich informieren. Die Zuordnung wird am Text belegt.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-journalistik",
+          "sample_solution": "Ein Kommentar argumentiert wertend; eine Nachricht soll vor allem sachlich informieren. Die Zuordnung wird am Text belegt."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R2SX1CXRMBSKK1EBTT",
+      "atom_uri": "urn:zam:atom:01M5RNA4R2SX1CXRMBSKK1EBTT",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-daten",
+      "title": "Zahlen brauchen einen Kontext",
+      "domain": "deutsch/medien",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-daten",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "lesen",
+          "topic_title": "Lesen, Literatur und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R2R7W95AV1C8DC8RY5",
+          "slug": "d10-daten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage ist durch die Daten gedeckt?",
+          "concept": "18 von 30 Befragten der AG wünschen das Angebot.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-daten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "18 von 30 Befragten der AG wünschen das Angebot.",
+              "60 Prozent aller Jugendlichen brauchen es."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R22AAYNVPZQ0GNKGQ6",
+          "slug": "d10-daten-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Angaben prüfst du, bevor du einen Prozentwert verallgemeinerst?",
+          "concept": "Bezugsgruppe, Auswahl und Größe der Stichprobe, Fragestellung, Zeitpunkt und Quelle.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-daten",
+          "sample_solution": "Bezugsgruppe, Auswahl und Größe der Stichprobe, Fragestellung, Zeitpunkt und Quelle."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R2RQWQRQ8K1MDYYMMZ",
+      "atom_uri": "urn:zam:atom:01M5RNA4R2RQWQRQ8K1MDYYMMZ",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-quellen",
+      "title": "Quellen prüfen und Medien bewusst nutzen",
+      "domain": "deutsch/medien",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-quellen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "lesen",
+          "topic_title": "Lesen, Literatur und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R2PT4TDBQH1EQ9PMFP",
+          "slug": "d10-quellen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist der sinnvollste nächste Prüfschritt?",
+          "concept": "Die ursprüngliche Untersuchung und ihre Bedingungen suchen.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-quellen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die ursprüngliche Untersuchung und ihre Bedingungen suchen.",
+              "Vier identische Posts als vier Belege zählen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R2P9TN32EM481Z6R1G",
+          "slug": "d10-quellen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum sind mehrere identische Posts keine unabhängigen Belege?",
+          "concept": "Sie können auf derselben ungeprüften Quelle beruhen; die Zahl der Wiederholungen ersetzt keine unabhängige Prüfung.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-quellen",
+          "sample_solution": "Sie können auf derselben ungeprüften Quelle beruhen; die Zahl der Wiederholungen ersetzt keine unabhängige Prüfung."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R2VMGPHZQNADHM5YM9",
+      "atom_uri": "urn:zam:atom:01M5RNA4R2VMGPHZQNADHM5YM9",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-medien",
+      "title": "Vom Text zur filmischen Wirkung",
+      "domain": "deutsch/medien",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-medien",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "lesen",
+          "topic_title": "Lesen, Literatur und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R2W0QDK8736864FQ7Q",
+          "slug": "d10-medien-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Mittel lenkt besonders auf den Brief?",
+          "concept": "Die Nahaufnahme im Plan A.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-medien",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Nahaufnahme im Plan A.",
+              "Die Totale mit kaum sichtbarem Brief in B."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R2AARK4HA9VZM1PZH8",
+          "slug": "d10-medien-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie strukturierst du einen Text-Film-Vergleich?",
+          "concept": "Du vergleichst eine konkrete Textstelle mit filmischen Mitteln und deutest, wie Auswahl oder Veränderung die Wirkung beeinflusst.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-medien",
+          "sample_solution": "Du vergleichst eine konkrete Textstelle mit filmischen Mitteln und deutest, wie Auswahl oder Veränderung die Wirkung beeinflusst."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R2WXEC3CA1Z3FX15F7",
+      "atom_uri": "urn:zam:atom:01M5RNA4R2WXEC3CA1Z3FX15F7",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-parabel",
+      "title": "Eine Parabel öffnen",
+      "domain": "deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-parabel",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "lesen",
+          "topic_title": "Lesen, Literatur und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R2D06DX4GENNXJJGMQ",
+          "slug": "d10-parabel-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was wäre eine begründete Sachebene?",
+          "concept": "Regeln können ihren Zweck verlieren, wenn sie jedes Handeln blockieren.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-parabel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Regeln können ihren Zweck verlieren, wenn sie jedes Handeln blockieren.",
+              "Jede Brücke ist tatsächlich immer verboten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R2A468J804J7HN8HY3",
+          "slug": "d10-parabel-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie prüfst du die Übertragung einer Parabel?",
+          "concept": "Du verknüpfst konkrete Handlungen und Beziehungen der Bildebene mit einer allgemeinen Frage und benennst die Grenzen der Übertragung.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-parabel",
+          "sample_solution": "Du verknüpfst konkrete Handlungen und Beziehungen der Bildebene mit einer allgemeinen Frage und benennst die Grenzen der Übertragung."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R24CBD91Z1KC5SZ0T5",
+      "atom_uri": "urn:zam:atom:01M5RNA4R24CBD91Z1KC5SZ0T5",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-roman",
+      "title": "Erzählperspektive und literarischer Kontext",
+      "domain": "deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-roman",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "lesen",
+          "topic_title": "Lesen, Literatur und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R2H203K7H6F5Y0MVYK",
+          "slug": "d10-roman-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Eigenes Beispiel: „Ich lächelte, als die Tür aufging. Ob Mira meinen Brief gelesen hatte, wusste ich nicht. Die Uhr schlug zehn; ich starrte auf ihre leeren Hände.“\n\nWas wissen wir über Miras Gedanken?",
+          "concept": "Der Ausschnitt gibt sie nicht direkt wieder.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-roman",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Ausschnitt gibt sie nicht direkt wieder.",
+              "Der Ich-Erzähler kennt sie vollständig."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R24N1RXY29WX87KDHM",
+          "slug": "d10-roman-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum darfst du eine Figurenäußerung nicht ohne Weiteres als Meinung des Autors behandeln?",
+          "concept": "Figurenrede gehört zur gestalteten erzählten Welt; Erzählerhaltung und Autorposition müssen eigenständig untersucht werden.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-roman",
+          "sample_solution": "Figurenrede gehört zur gestalteten erzählten Welt; Erzählerhaltung und Autorposition müssen eigenständig untersucht werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R246GQEMHJWBT9ZBTM",
+      "atom_uri": "urn:zam:atom:01M5RNA4R246GQEMHJWBT9ZBTM",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-satire",
+      "title": "Satire: das Übertriebene ernst nehmen",
+      "domain": "deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-satire",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "lesen",
+          "topic_title": "Lesen, Literatur und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R3DRFJ1TH3VB6QA9ZG",
+          "slug": "d10-satire-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "„Unsere Schule spart endlich Zeit: Damit niemand mehr auf einen freien Platz warten muss, wurde der Lernraum geschlossen. Die Erfolgsbilanz ist glänzend: keine einzige Warteperson im Raum!“\n\nWorauf zielt die Kritik?",
+          "concept": "Auf eine Erfolgsstatistik, die den Zweck des Angebots verdrängt.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-satire",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auf eine Erfolgsstatistik, die den Zweck des Angebots verdrängt.",
+              "Auf die sichere Behauptung, Lernen sei unnötig."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3VC53NF502AFSCGGD",
+          "slug": "d10-satire-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie erschließt du die Kritik einer ironischen Passage?",
+          "concept": "Du vergleichst den wörtlichen Lobton mit dem geschilderten Sachverhalt und begründest daraus die gemeinte Kritik.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-satire",
+          "sample_solution": "Du vergleichst den wörtlichen Lobton mit dem geschilderten Sachverhalt und begründest daraus die gemeinte Kritik."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R3WYYB1RRD1QCM91YY",
+      "atom_uri": "urn:zam:atom:01M5RNA4R3WYYB1RRD1QCM91YY",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-expressionismus",
+      "title": "Expressionismus: eine Welt gerät ins Wanken",
+      "domain": "deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-expressionismus",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "lesen",
+          "topic_title": "Lesen, Literatur und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R32CJ2087Z97K5ZQ1D",
+          "slug": "d10-expressionismus-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches sprachliche Signal stellt ausdrücklich einen Vergleich her?",
+          "concept": "Das Wort „wie“ in der zweiten Zeile.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-expressionismus",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Wort „wie“ in der zweiten Zeile.",
+              "Allein das Wort „Hut“."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R36J9TVMKY6V9DMP7D",
+          "slug": "d10-expressionismus-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie vermeidest du einen Fehlschluss beim Vergleich älterer Lyrik mit heutigen Ängsten?",
+          "concept": "Du unterscheidest textlich belegte historische Gestaltung und deine heutige Assoziation; Ähnlichkeit beweist keine identische Situation oder Absicht.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-expressionismus",
+          "sample_solution": "Du unterscheidest textlich belegte historische Gestaltung und deine heutige Assoziation; Ähnlichkeit beweist keine identische Situation oder Absicht."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R3BWHHB7R9GTD7MPEA",
+      "atom_uri": "urn:zam:atom:01M5RNA4R3BWHHB7R9GTD7MPEA",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-politische-lyrik",
+      "title": "Politische Lyrik: Wer spricht zu wem?",
+      "domain": "deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-politische-lyrik",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "lesen",
+          "topic_title": "Lesen, Literatur und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R38FZHJEB3F517XFNT",
+          "slug": "d10-politische-lyrik-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was unterscheidet die Ansprache?",
+          "concept": "A gestaltet ein gemeinsames Wir, B spricht ein Du an.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-politische-lyrik",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A gestaltet ein gemeinsames Wir, B spricht ein Du an.",
+              "A ist automatisch eine amtliche Erklärung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3D0S3WD2W2EA24H2H",
+          "slug": "d10-politische-lyrik-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Rolle spielt der historische Kontext beim Vergleich politischer Gedichte?",
+          "concept": "Er hilft, Adressaten, Konflikte und Handlungsmöglichkeiten einzuordnen; die Deutung der sprachlichen Mittel bleibt am Text zu belegen.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-politische-lyrik",
+          "sample_solution": "Er hilft, Adressaten, Konflikte und Handlungsmöglichkeiten einzuordnen; die Deutung der sprachlichen Mittel bleibt am Text zu belegen."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R3921C21A3WF7TJM20",
+      "atom_uri": "urn:zam:atom:01M5RNA4R3921C21A3WF7TJM20",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-argument",
+      "title": "Ein Argument trägt eine Behauptung",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-argument",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben und Argumentieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R3BDSTKJDD41DTZPN9",
+          "slug": "d10-argument-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Funktion hat Sams Situation?",
+          "concept": "Sie veranschaulicht den Bedarf an einem ruhigen Ort.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-argument",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie veranschaulicht den Bedarf an einem ruhigen Ort.",
+              "Sie beweist eine Notenverbesserung für alle."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3RPT1KXGKB5P320N2",
+          "slug": "d10-argument-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie unterscheidest du Beispiel und Beweisanspruch in einem Argument?",
+          "concept": "Ein Beispiel macht einen Gedanken anschaulich; die Reichweite einer Behauptung braucht dazu passende Belege und darf nicht größer sein als deren Aussagekraft.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-argument",
+          "sample_solution": "Ein Beispiel macht einen Gedanken anschaulich; die Reichweite einer Behauptung braucht dazu passende Belege und darf nicht größer sein als deren Aussagekraft."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R3Y4SYT1B7E2QACN88",
+      "atom_uri": "urn:zam:atom:01M5RNA4R3Y4SYT1B7E2QACN88",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-gegengrund",
+      "title": "Gegenargumente fair behandeln",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-gegengrund",
+      "prerequisites": [
+        {
+          "atom_id": "01M5RNA4R3921C21A3WF7TJM20",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben und Argumentieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R3ZN8FBCDXSBH6YDFS",
+          "slug": "d10-gegengrund-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Reaktion setzt sich sachlich mit dem Einwand auseinander?",
+          "concept": "Ein Versuch mit gesicherter Betreuung kann Bedarf und Belastung prüfen.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-gegengrund",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Versuch mit gesicherter Betreuung kann Bedarf und Belastung prüfen.",
+              "Wer das sagt, mag keine Jugendlichen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3CAQQBJ1CX1515QXP",
+          "slug": "d10-gegengrund-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet ein Gegenargument von einem persönlichen Angriff?",
+          "concept": "Ein Gegenargument prüft die Aussage und ihre Gründe; ein persönlicher Angriff wertet die Person ab, ohne die Sache zu klären.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-gegengrund",
+          "sample_solution": "Ein Gegenargument prüft die Aussage und ihre Gründe; ein persönlicher Angriff wertet die Person ab, ohne die Sache zu klären."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R3TC655QQBYTCJP8C8",
+      "atom_uri": "urn:zam:atom:01M5RNA4R3TC655QQBYTCJP8C8",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-gliederung",
+      "title": "Eine Erörterung sinnvoll ordnen",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-gliederung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5RNA4R3921C21A3WF7TJM20",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        },
+        {
+          "atom_id": "01M5RNA4R3Y4SYT1B7E2QACN88",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben und Argumentieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R3256KR0N8BJF9C2B2",
+          "slug": "d10-gliederung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie ordnet das aspektbezogene Modell?",
+          "concept": "Es behandelt Pro und Contra jeweils zu derselben Teilfrage.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-gliederung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es behandelt Pro und Contra jeweils zu derselben Teilfrage.",
+              "Es zählt alle Pro-Sätze ohne Zusammenhang auf."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3TGKMR5MEXMP9GJJ8",
+          "slug": "d10-gliederung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wozu dient das Schlussurteil einer dialektischen Erörterung?",
+          "concept": "Es beantwortet die Streitfrage nach begründeter Gewichtung der geprüften Argumente und kann Bedingungen oder eine differenzierte Lösung nennen.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-gliederung",
+          "sample_solution": "Es beantwortet die Streitfrage nach begründeter Gewichtung der geprüften Argumente und kann Bedingungen oder eine differenzierte Lösung nennen."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R3THE2HWHZFV4RYNK3",
+      "atom_uri": "urn:zam:atom:01M5RNA4R3THE2HWHZFV4RYNK3",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-material",
+      "title": "Materialgestützt urteilen",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-material",
+      "prerequisites": [
+        {
+          "atom_id": "01M5RNA4R2SX1CXRMBSKK1EBTT",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        },
+        {
+          "atom_id": "01M5RNA4R2RQWQRQ8K1MDYYMMZ",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        },
+        {
+          "atom_id": "01M5RNA4R3921C21A3WF7TJM20",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben und Argumentieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R3MRBZ6RX8NFB98P6M",
+          "slug": "d10-material-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "M1, erfundene AG-Umfrage: 18 von 30 Befragten wünschen Nachmittagsöffnung. M2, erfundene Personalnotiz: Mittwoch ist eine Betreuung frei, Freitag nicht. M3, erfundene Einzelstimme: „Freitag wäre für mich ideal.“ Auftrag: Empfehlung an die Schulleitung.\n\nWelche Empfehlung berücksichtigt alle drei Materialien?",
+          "concept": "Mittwoch testen und den unerfüllten Freitagswunsch benennen.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mittwoch testen und den unerfüllten Freitagswunsch benennen.",
+              "Freitag sei personell bereits gesichert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3DGRYKM81FSQ7KSW6",
+          "slug": "d10-material-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie verbindest du Materialien in einer eigenen Argumentation?",
+          "concept": "Du ordnest sie gemeinsamen Aspekten zu, prüfst ihre Aussagekraft und nutzt sie als gekennzeichnete Belege für ein eigenes begründetes Urteil.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-material",
+          "sample_solution": "Du ordnest sie gemeinsamen Aspekten zu, prüfst ihre Aussagekraft und nutzt sie als gekennzeichnete Belege für ein eigenes begründetes Urteil."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R3G6VGK0ECGKFXFK02",
+      "atom_uri": "urn:zam:atom:01M5RNA4R3G6VGK0ECGKFXFK02",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-leserbrief",
+      "title": "Leserbrief und Beschwerde",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-leserbrief",
+      "prerequisites": [
+        {
+          "atom_id": "01M5RNA4R3921C21A3WF7TJM20",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben und Argumentieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R3KFD3K7AF0ZVKN9F5",
+          "slug": "d10-leserbrief-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Einstieg passt am besten?",
+          "concept": "Zu Ihrem Beitrag über den Lernraum möchte ich eine andere Perspektive ergänzen.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-leserbrief",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zu Ihrem Beitrag über den Lernraum möchte ich eine andere Perspektive ergänzen.",
+              "Wer so schreibt, ist offensichtlich ahnungslos."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3BKKPD1W4TR655CYV",
+          "slug": "d10-leserbrief-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was braucht eine sachliche Beschwerde neben der Kritik?",
+          "concept": "Einen konkreten Anlass, nachvollziehbare Angaben und eine angemessene Bitte um Abhilfe oder Klärung.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-leserbrief",
+          "sample_solution": "Einen konkreten Anlass, nachvollziehbare Angaben und eine angemessene Bitte um Abhilfe oder Klärung."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R3YR48WYFADC2QY68P",
+      "atom_uri": "urn:zam:atom:01M5RNA4R3YR48WYFADC2QY68P",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-exzerpt",
+      "title": "Vom Material zur brauchbaren Notiz",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-exzerpt",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben und Argumentieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R39DWFZ9HT1P8H1FHT",
+          "slug": "d10-exzerpt-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Information gehört vorrangig ins Exzerpt?",
+          "concept": "Die notwendige zusätzliche Betreuung mit Fundstelle.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-exzerpt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die notwendige zusätzliche Betreuung mit Fundstelle.",
+              "Nur die geplante Wandfarbe ohne Bezug."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3A5W6ZJB3PEM95B3V",
+          "slug": "d10-exzerpt-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Angaben helfen, eine exzerpierte Information später korrekt zu verwenden?",
+          "concept": "Leitfrage, ausgewählte Aussage, Quelle und genaue Fundstelle sowie die Kennzeichnung als Zitat, Paraphrase oder eigener Gedanke.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-exzerpt",
+          "sample_solution": "Leitfrage, ausgewählte Aussage, Quelle und genaue Fundstelle sowie die Kennzeichnung als Zitat, Paraphrase oder eigener Gedanke."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R39CKK55TZ5EZ9DZMV",
+      "atom_uri": "urn:zam:atom:01M5RNA4R39CKK55TZ5EZ9DZMV",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-zitieren",
+      "title": "Zitate sauber einbauen",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-zitieren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben und Argumentieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R37TXNZT54DZQD1Q9S",
+          "slug": "d10-zitieren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist am Entwurf problematisch?",
+          "concept": "Die Verkürzung stützt eine Zusage, die im Original nicht steht.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-zitieren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Verkürzung stützt eine Zusage, die im Original nicht steht.",
+              "Jede Quellenangabe macht jede Deutung korrekt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3BMRWCQ5YYQHNXAYT",
+          "slug": "d10-zitieren-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie unterscheiden sich wörtliches Zitat und Paraphrase in der Kennzeichnung?",
+          "concept": "Das wörtliche Zitat erhält Anführungszeichen; eine Paraphrase ist als sinngemäße Wiedergabe erkennbar. Beide brauchen eine Quellen- oder Fundstellenangabe.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-zitieren",
+          "sample_solution": "Das wörtliche Zitat erhält Anführungszeichen; eine Paraphrase ist als sinngemäße Wiedergabe erkennbar. Beide brauchen eine Quellen- oder Fundstellenangabe."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R3ZCTF8WWN34G5HYG0",
+      "atom_uri": "urn:zam:atom:01M5RNA4R3ZCTF8WWN34G5HYG0",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-analyse",
+      "title": "Eine Textanalyse begründen",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-analyse",
+      "prerequisites": [
+        {
+          "atom_id": "01M5RNA4R39CKK55TZ5EZ9DZMV",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben und Argumentieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R31W1K9GTVDT8XYG4T",
+          "slug": "d10-analyse-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Analyse ist am besten begründet?",
+          "concept": "Die Wiederholung „Wir brauchen“ bündelt gemeinsame Bedürfnisse und verstärkt den Appell.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-analyse",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Wiederholung „Wir brauchen“ bündelt gemeinsame Bedürfnisse und verstärkt den Appell.",
+              "Jede Wiederholung beweist, dass der Inhalt wahr ist."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3RYW5FCEJZW0J6AJG",
+          "slug": "d10-analyse-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie baust du einen begründeten Analyseabsatz auf?",
+          "concept": "Du formulierst einen Befund, belegst ihn am Text und erklärst seine Bedeutung oder Funktion im jeweiligen Zusammenhang.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-analyse",
+          "sample_solution": "Du formulierst einen Befund, belegst ihn am Text und erklärst seine Bedeutung oder Funktion im jeweiligen Zusammenhang."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R3F8VJXXTKESJ3Z5GN",
+      "atom_uri": "urn:zam:atom:01M5RNA4R3F8VJXXTKESJ3Z5GN",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-kreativ",
+      "title": "Perspektiven produktiv verändern",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-kreativ",
+      "prerequisites": [
+        {
+          "atom_id": "01M5RNA4R20XSH7YYCAE2P6BPS",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben und Argumentieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen – mit Texten und weiteren Medien umgehen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R3N93617X2K51QB14Z",
+          "slug": "d10-kreativ-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was muss ein textnaher innerer Monolog beachten?",
+          "concept": "Er soll zu Leas Handlungen passen und Ergänzungen als Gestaltung behandeln.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-kreativ",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er soll zu Leas Handlungen passen und Ergänzungen als Gestaltung behandeln.",
+              "Er muss die einzige wahre Autorenabsicht behaupten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3H4HPA6G1B3MPTFQ2",
+          "slug": "d10-kreativ-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie kann produktives Schreiben eine Interpretation prüfen?",
+          "concept": "Du gestaltest eine mögliche Innensicht oder Alternative und kontrollierst anschließend, ob sie zu den belegten Handlungen und Worten passt.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-kreativ",
+          "sample_solution": "Du gestaltest eine mögliche Innensicht oder Alternative und kontrollierst anschließend, ob sie zu den belegten Handlungen und Worten passt."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R3T2A2H667J6332KAG",
+      "atom_uri": "urn:zam:atom:01M5RNA4R3T2A2H667J6332KAG",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-ueberarbeiten",
+      "title": "Inhalt vor Komma prüfen",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-ueberarbeiten",
+      "prerequisites": [
+        {
+          "atom_id": "01M5RNA4R3ZVKZ2NF1J110RHYA",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben und Argumentieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R353B4HV7FTT2W1KHN",
+          "slug": "d10-ueberarbeiten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Überarbeitung hat zuerst Vorrang?",
+          "concept": "Die überzogenen Schlussfolgerungen und fehlenden Belege korrigieren.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-ueberarbeiten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die überzogenen Schlussfolgerungen und fehlenden Belege korrigieren.",
+              "Nur ein schöneres Synonym für Raum suchen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3J044T3M5ARRYWZET",
+          "slug": "d10-ueberarbeiten-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum helfen getrennte Überarbeitungsdurchgänge?",
+          "concept": "Sie richten die Aufmerksamkeit nacheinander auf Inhalt, Aufbau und Sprache, sodass größere Probleme und eigene Fehlerschwerpunkte gezielt geprüft werden.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-ueberarbeiten",
+          "sample_solution": "Sie richten die Aufmerksamkeit nacheinander auf Inhalt, Aufbau und Sprache, sodass größere Probleme und eigene Fehlerschwerpunkte gezielt geprüft werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R32WZXE8E0F0M8H7GG",
+      "atom_uri": "urn:zam:atom:01M5RNA4R32WZXE8E0F0M8H7GG",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-register",
+      "title": "Fachsprache und Varietäten bewusst wählen",
+      "domain": "deutsch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-register",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "sprache",
+          "topic_title": "Sprache untersuchen und reflektieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R32KMQVD530T1RP1YX",
+          "slug": "d10-register-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Fassung eignet sich als verständlicher öffentlicher Aushang?",
+          "concept": "Die Plätze sind begrenzt. Bitte reserviere vorher einen Platz.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-register",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Plätze sind begrenzt. Bitte reserviere vorher einen Platz.",
+              "Ein Reservationsverfahren determiniert die Kapazitätsauslastung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3RTH8BY4ECZG473FA",
+          "slug": "d10-register-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie beurteilst du den Nutzen von Fachsprache situationsbezogen?",
+          "concept": "Du prüfst, ob sie für die Adressaten präzise und verständlich ist, und erklärst notwendige Begriffe oder wählst allgemein verständliche Formulierungen.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-register",
+          "sample_solution": "Du prüfst, ob sie für die Adressaten präzise und verständlich ist, und erklärst notwendige Begriffe oder wählst allgemein verständliche Formulierungen."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R32CNYYG2XVNH0VZ7K",
+      "atom_uri": "urn:zam:atom:01M5RNA4R32CNYYG2XVNH0VZ7K",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-wandel",
+      "title": "Sprachwandel und beschönigende Wörter",
+      "domain": "deutsch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-wandel",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "sprache",
+          "topic_title": "Sprache untersuchen und reflektieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R3ERZWP6MEKGH2B6NG",
+          "slug": "d10-wandel-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was sollte an A sprachkritisch geprüft werden?",
+          "concept": "Ob „optimiert“ den Verlust der Freitagsöffnung beschönigt.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-wandel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ob „optimiert“ den Verlust der Freitagsöffnung beschönigt.",
+              "Ob jedes Fremdwort grundsätzlich falsch ist."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R31THR8VX27F5J4719",
+          "slug": "d10-wandel-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie analysierst du einen möglichen Euphemismus?",
+          "concept": "Du vergleichst die milde oder positive Benennung mit dem bezeichneten Sachverhalt und erklärst, welche Bewertung oder Ausblendung dadurch entsteht.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-wandel",
+          "sample_solution": "Du vergleichst die milde oder positive Benennung mit dem bezeichneten Sachverhalt und erklärst, welche Bewertung oder Ausblendung dadurch entsteht."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R3B30031FM2PWWFMSM",
+      "atom_uri": "urn:zam:atom:01M5RNA4R3B30031FM2PWWFMSM",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-sprachvergleich",
+      "title": "Sprachen vergleichen, genauer verstehen",
+      "domain": "deutsch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-sprachvergleich",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "sprache",
+          "topic_title": "Sprache untersuchen und reflektieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R3VNJ312WAPZEKA5H6",
+          "slug": "d10-sprachvergleich-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche deutsche Fassung entspricht dem gegebenen Satzbau?",
+          "concept": "Weil es regnet, bleiben wir drinnen.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-sprachvergleich",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil es regnet, bleiben wir drinnen.",
+              "Weil es regnet, wir bleiben drinnen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3NDRBMGYDTNGMV6W8",
+          "slug": "d10-sprachvergleich-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie kann ein Sprachvergleich beim Überarbeiten eigener Texte helfen?",
+          "concept": "Er macht unterschiedliche Strukturen sichtbar, sodass du eine übertragene Form erkennst und die passende deutsche Konstruktion bewusst wählst.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-sprachvergleich",
+          "sample_solution": "Er macht unterschiedliche Strukturen sichtbar, sodass du eine übertragene Form erkennst und die passende deutsche Konstruktion bewusst wählst."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R3ZVKZ2NF1J110RHYA",
+      "atom_uri": "urn:zam:atom:01M5RNA4R3ZVKZ2NF1J110RHYA",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-kohaerenz",
+      "title": "Zusammenhang sprachlich herstellen",
+      "domain": "deutsch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-kohaerenz",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "sprache",
+          "topic_title": "Sprache untersuchen und reflektieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R3VNP6A9VR731E7JPR",
+          "slug": "d10-kohaerenz-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Entwurf: „Mia sprach mit Lea, nachdem sie den Raum geschlossen hatte. Der Raum ist beliebt. Deshalb gibt es bereits genug Betreuung.“ Zur Betreuung liegt keine Information vor.\n\nWelches Problem hat der erste Satz?",
+          "concept": "„Sie“ kann sich auf Mia oder Lea beziehen.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-kohaerenz",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "„Sie“ kann sich auf Mia oder Lea beziehen.",
+              "Er enthält grundsätzlich kein Verb."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R3Q8PBBYK55AT44AG7",
+          "slug": "d10-kohaerenz-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum macht „deshalb“ eine unbelegte Folgerung nicht schlüssig?",
+          "concept": "Das Wort signalisiert nur eine behauptete Folge; ob sie sachlich aus dem vorherigen Gedanken folgt, muss unabhängig geprüft werden.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-kohaerenz",
+          "sample_solution": "Das Wort signalisiert nur eine behauptete Folge; ob sie sachlich aus dem vorherigen Gedanken folgt, muss unabhängig geprüft werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5RNA4R3CZWGV9WC8ETSZ48Z",
+      "atom_uri": "urn:zam:atom:01M5RNA4R3CZWGV9WC8ETSZ48Z",
+      "namespace": "zam-academy-deutsch-realschule-10",
+      "slug": "d10-rechtschreibung",
+      "title": "Eigene Fehler systematisch abbauen",
+      "domain": "deutsch/rechtschreibung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-rechtschreibung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-realschule-10",
+          "topic_code": "sprache",
+          "topic_title": "Sprache untersuchen und reflektieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5RNA4R4R0MR0BRCMJ9N6XTF",
+          "slug": "d10-rechtschreibung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche erste Satzfassung ist korrekt?",
+          "concept": "Ich hoffe, dass der Raum öffnet.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-rechtschreibung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ich hoffe, dass der Raum öffnet.",
+              "Ich hoffe das, der Raum öffnet."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5RNA4R451BTFD95GP211162",
+          "slug": "d10-rechtschreibung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie nutzt du einen eigenen Fehler, um ihn künftig seltener zu machen?",
+          "concept": "Du ordnest ihn einem Fehlerschwerpunkt zu, notierst Korrektur und passende Regel oder Strategie und prüfst diese gezielt an neuen eigenen Sätzen.",
+          "source_link": "https://academy.zam-os.org/deutsch-realschule-10/#lesson=d10-rechtschreibung",
+          "sample_solution": "Du ordnest ihn einem Fehlerschwerpunkt zu, notierst Korrektur und passende Regel oder Strategie und prüfst diese gezielt an neuen eigenen Sätzen."
+        }
+      ]
+    }
+  ],
+  "published_at": "2026-10-25T08:08:02Z"
+}

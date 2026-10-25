@@ -6,10 +6,6 @@ import {
   type Database,
   enrolBundledCell,
   findBundledCellsForScope,
-  getBundledCell,
-  getBundledCellsWithStatus,
-  getBundledCellTile,
-  getCard,
   getTokenById,
   listBundledCells,
   openDatabase,
@@ -23,6 +19,8 @@ import {
 // tests/kernel/zam-academy-*-realschule-10-cell.test.ts. The two chemistry
 // cells moved to zam-academy:chemie-realschule-10 (#43), the history cell to
 // zam-academy:geschichte-realschule-10 (#45).
+// Deutsch 10 is an additional Academy offering (#46); its four old cards
+// stay bundled and active because no replacement or retirement was approved.
 const RS10_CELL_IDS = [
   "de-by:realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse",
   "de-by:realschule-10-wirtschaft-recht-strafrecht-arbeitsrecht-sozialstaat",
@@ -32,6 +30,7 @@ const RS10_CELL_IDS = [
 const ACADEMY_RS10_IDS = [
   "zam-academy:biologie-realschule-10",
   "zam-academy:chemie-realschule-10",
+  "zam-academy:deutsch-realschule-10",
   "zam-academy:geschichte-realschule-10",
   "zam-academy:mathematik-realschule-10",
   "zam-academy:physik-realschule-10",
@@ -53,7 +52,7 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists the 4 Realschule 10 school cells and their Academy successors", () => {
+  it("lists the 4 Realschule 10 school cells and the Academy offerings", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(100);
 
