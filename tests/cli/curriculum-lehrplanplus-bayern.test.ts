@@ -142,7 +142,9 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
       {
         id: "wpfg1-3",
         label: "Wirtschaft und Recht 9 (I/III)",
-        description: expect.stringContaining("Gruppe II lernt in diesem Jahr BwR"),
+        description: expect.stringContaining(
+          "Gruppe II lernt in diesem Jahr BwR",
+        ),
       },
     ]);
     const position = {
@@ -325,6 +327,55 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     expect(provider.listCatalogPaths?.()).toContainEqual({
       schoolType: "realschule",
       grade: "9",
+      subject: "geschichte",
+    });
+  });
+
+  it("offers the common Geschichte 10 curriculum with seven core areas and optional bilingual teaching", () => {
+    expect(provider.listSubjects("realschule", "10")).toContainEqual({
+      id: "geschichte",
+      label: "Geschichte",
+    });
+    expect(provider.listTracks("realschule", "10", "geschichte")).toEqual([]);
+    const topics = provider.listTopics({
+      schoolType: "realschule",
+      grade: "10",
+      subject: "geschichte",
+    });
+    // Checked against /fachlehrplan/realschule/10/geschichte on 2026-10-25.
+    expect(topics.map((topic) => [topic.id, topic.label, topic.hours])).toEqual(
+      [
+        ["lb1", "Methoden und Arbeitstechniken", undefined],
+        ["lb2", "Nachkriegszeit und politischer Neubeginn in Deutschland", 7],
+        ["lb3", "Die Teilung Deutschlands", 9],
+        [
+          "lb4",
+          "Kalter Krieg, Entspannung und Neuorientierung in Europa und der Welt",
+          11,
+        ],
+        [
+          "lb5",
+          "Herausforderungen und Chancen globaler Entwicklungen der Gegenwart",
+          11,
+        ],
+        ["lb6", "Migration in der Geschichte (Längsschnitt)", 5],
+        [
+          "lb7",
+          "Geschichtskultur – wie wir mit Geschichte umgehen (Längsschnitt)",
+          5,
+        ],
+        ["lb8", "Bilingualer Sachfachunterricht (optional)", undefined],
+      ],
+    );
+    for (const topic of topics)
+      expect(provider.resolveTopic(topic)).toEqual({
+        provider: "lehrplanplus-bayern",
+        topicId: `realschule|10|geschichte#${topic.id}`,
+        uri: "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/geschichte",
+      });
+    expect(provider.listCatalogPaths?.()).toContainEqual({
+      schoolType: "realschule",
+      grade: "10",
       subject: "geschichte",
     });
   });

@@ -587,9 +587,6 @@ import tile144Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-d
 import tile145Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-englisch-abschlusspruefung-text-production-mediation-kvt.json" with {
   type: "json",
 };
-import tile146Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung-kvt.json" with {
-  type: "json",
-};
 import tile151Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-wirtschaft-recht-strafrecht-arbeitsrecht-sozialstaat-kvt.json" with {
   type: "json",
 };
@@ -630,6 +627,9 @@ import tile234Raw from "../../../tests/fixtures/curriculum/zam-academy-geographi
   type: "json",
 };
 import tile235Raw from "../../../tests/fixtures/curriculum/zam-academy-geschichte-realschule-9-kvt.json" with {
+  type: "json",
+};
+import tile251Raw from "../../../tests/fixtures/curriculum/zam-academy-geschichte-realschule-10-kvt.json" with {
   type: "json",
 };
 import tile250Raw from "../../../tests/fixtures/curriculum/zam-academy-informatik-realschule-10-kvt.json" with {
@@ -1043,8 +1043,6 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile144Raw as unknown as BundledTile,
   [(tile145Raw as unknown as BundledTile).tile_id]:
     tile145Raw as unknown as BundledTile,
-  [(tile146Raw as unknown as BundledTile).tile_id]:
-    tile146Raw as unknown as BundledTile,
   [(tile151Raw as unknown as BundledTile).tile_id]:
     tile151Raw as unknown as BundledTile,
   [(tile152Raw as unknown as BundledTile).tile_id]:
@@ -1191,6 +1189,8 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile249Raw as unknown as BundledTile,
   [(tile250Raw as unknown as BundledTile).tile_id]:
     tile250Raw as unknown as BundledTile,
+  [(tile251Raw as unknown as BundledTile).tile_id]:
+    tile251Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 
