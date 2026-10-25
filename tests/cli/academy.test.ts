@@ -216,6 +216,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     expect(list.cells.map((cell) => cell.id)).toEqual([
       "zam-academy:algorithmen",
       "zam-academy:biologie-realschule-10",
+      "zam-academy:bwr-realschule-10",
       "zam-academy:bwr-realschule-9",
       "zam-academy:chemie-realschule-10",
       "zam-academy:chemie-realschule-9",
@@ -306,6 +307,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     expect(empty.cells.map((cell) => cell.id)).toEqual([
       "zam-academy:algorithmen",
       "zam-academy:biologie-realschule-10",
+      "zam-academy:bwr-realschule-10",
       "zam-academy:bwr-realschule-9",
       "zam-academy:chemie-realschule-10",
       "zam-academy:chemie-realschule-9",

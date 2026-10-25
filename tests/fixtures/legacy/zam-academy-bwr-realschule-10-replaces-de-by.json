@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "approved": "2026-10-25",
+  "status": "approved",
+  "source": "Thomas in diesem Claude-Code-Chat am 2026-10-25, nach dem Merge von zam-os/zam-academy#50: „Freigabe erteilt - Du kannst als admin mergen und danach mit der ZAM Integration weitermachen“, auf Rückfrage ausdrücklich bestätigt für die Kartenzuordnung (Auswahl „Ja, Zuordnung frei“: J01 und J03 per replaces übernehmen, J02 und J04 stilllegen).",
+  "source_repository": "zam-os/zam",
+  "source_commit": "cd1a71b5e8a91aa3eec601b5db06095844d024e3",
+  "authorization": "Thomas hat am 25. Oktober 2026 die hier dokumentierten vier Zuordnungen ausdrücklich freigegeben (2 A, 0 B, 2 C mit Stilllegung). Die Zelle 2026.10.2 deklariert genau zwei replaces und zwei retired_items; persönliche Karten und Reviewhistorien bleiben erhalten.",
+  "policy": "A: same atomic retrieval, one successor declares replaces. B: original whole multi-part prompt, answer and sample solution retained on one dedicated successor. C: split, corrected or uncertain; no replaces, no mastery transfer; retired only if a row says so after approval.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse-kvt.json",
+      "sha256": "a42ac47333b9e922cb44280544ebf19489b9cfbccb37535053a65a6ef3daa0ea",
+      "tile_id": "de-by:realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse",
+      "version": "2026.08.1"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse",
+      "de_by_id": "01K4WAK0000000000000000J01",
+      "de_by_question": "Wie berechnen sich die 'Herstellkosten der Erzeugung' (HK d. E.) im klassischen 11-stufigen bayerischen BwR-Kalkulationsschema?",
+      "category": "A",
+      "academy_slug": "bwr10-vk-zuschlagskalkulation-check",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Herstellkosten = Materialkosten + Fertigungskosten (FM + MGK + FL + FGK). Die neue Karte nennt zusätzlich die Sondereinzelkosten der Fertigung als Teil der Fertigungskosten (LehrplanPLUS BwR 10, LB 3); der verlangte Abruf bleibt derselbe, die alte Kurzantwort auf der Karte bleibt richtig."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse",
+      "de_by_id": "01K4WAK0000000000000000J02",
+      "de_by_question": "Führe das vollständige bayerische Vorwärtskalkulationsschema (von Fertigungsmaterial bis Bruttoverkaufspreis) lückenlos vor und berechne den Barverkaufspreis (BVP) bei folgenden Werten: Fertigungsmaterial (FM) = 200,00 €, Materialgemeinkostenzuschlag (MGKZ) = 10 %, Fertigungslöhne (FL) = 300,00 €, Fertigungsgemeinkostenzuschlag (FGKZ) = 150 %, Verwaltungsgemeinkostenzuschlag (VwGKZ) = 15 %, Vertriebsgemeinkostenzuschlag (VtGKZ) = 10 %, Gewinnzuschlag = 20 %.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Mehrteiliger Gesamtabruf: ganzes Kalkulationsschema bis zum Bruttoverkaufspreis und eine Rechnung bis zum Barverkaufspreis. Die neue Zelle teilt das in Selbstkosten (vk-zuschlagskalkulation) und Angebotspreis (vk-angebotspreis); der Lehrplan verlangt den Angebotspreis als Listenverkaufspreis netto, die alte Musterlösung nennt ein „11-stufiges bayerisches Schema“ und schlägt die Umsatzsteuer auf. Kein einzelner gleicher Nachfolger, keine Übertragung von Beherrschung. Stillgelegt; die Historie bleibt am alten Token."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse",
+      "de_by_id": "01K4WAK0000000000000000J03",
+      "de_by_question": "Wie berechnet sich der Stückdeckungsbeitrag db eines Produkts aus Verkaufspreis p und variablen Stückkosten k_v?",
+      "category": "A",
+      "academy_slug": "bwr10-tk-db-check",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf mit gleicher Formel: db = p − kv. Die neue Karte stellt dieselbe Frage mit denselben Symbolen und derselben Binärauswahl."
+    },
+    {
+      "de_by_cell": "de-by:realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse",
+      "de_by_id": "01K4WAK0000000000000000J04",
+      "de_by_question": "Erkläre das Instrument der Deckungsbeitragsrechnung (Teilkostenrechnung): 1. Trennung in variable Kosten K_v (beschäftigungsabhängig: Material, Fertigungsakkord) und fixe Kosten K_f (beschäftigungsunabhängig: Miete, Gehälter, zeitabhängige AfA), 2. Stückdeckungsbeitrag (db = p - k_v) und Gesamtdeckungsbeitrag (DB = E - K_v = x \\cdot db), 3. Die Gewinnschwelle / Break-Even-Point (BEP): x_{\\text{BEP}} = \\frac{K_f}{db} (ab dieser Produktionsmenge ist der Gewinn G = 0, darüber entsteht Reingewinn G = DB - K_f), 4. Entscheidungskriterium für Zusatzaufträge bei freien Kapazitäten: Ein Zusatzauftrag lohnt sich, solange der angebotene Sonderpreis p_{\\text{Sonder}} > k_v ist (db > 0). Berechne für K_f = 60.000\\text{ €}, k_v = 40\\text{ €}, p = 70\\text{ €} die Gewinnschwelle x_{\\text{BEP}} und den Betriebsgewinn bei Verkauf von 3.000 Stück.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Mehrteiliger Abruf aus Kostenauflösung, Stück- und Gesamtdeckungsbeitrag, Gewinnschwelle, Zusatzauftrag und einer Rechnung. Die neue Zelle verteilt diese Teile auf tk-voll-teil, tk-db, tk-gewinnschwelle und tk-zusatzauftrag; kein einzelner gleicher Nachfolger, keine Übertragung von Beherrschung. Stillgelegt; die Historie bleibt am alten Token."
+    }
+  ]
+}
