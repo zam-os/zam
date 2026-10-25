@@ -1,11 +1,11 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "zam-academy:geschichte-realschule-10",
-  "version": "2026.10.2",
+  "version": "2026.10.3",
   "title": "Geschichte 10 Realschule (ZAM Academy)",
   "description": "Geschichte 10 nach LehrplanPLUS Bayern: 49 Kernlektionen von der Nachkriegszeit über Teilung, Kalten Krieg und Einheit bis zur Gegenwart, Längsschnitte zu Migration und Geschichtskultur, vier optionale englische Vertiefungen. Ein gemeinsamer Lernpfad für alle Zweige; jede Karte führt zur passenden Lektion.",
   "publisher": "ZAM Academy",
-  "published_at": "2026-10-25T06:01:00Z",
+  "published_at": "2026-10-25T07:26:00Z",
   "sources": [
     {
       "uri": "https://academy.zam-os.org/geschichte-realschule-10/",
@@ -49,6 +49,11 @@
     {
       "uri": "https://www.hdg.de/lemo/kapitel/nachkriegsjahre/alltag/flucht-und-vertreibung.html",
       "label": "LeMO · Flucht und Vertreibung",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.statistischebibliothek.de/mir/servlets/MCRFileNodeServlet/DEHeft_derivate_00096650/volkszaehlungtextteil.pdf",
+      "label": "Statistische Bibliothek · Volkszählung vom 29. Oktober 1946 in den vier Besatzungszonen und Groß-Berlin (Textteil)",
       "checked": "2026-10-25"
     },
     {
@@ -755,7 +760,7 @@
           "bloom_level": 3,
           "source_link": "https://academy.zam-os.org/geschichte-realschule-10/#lesson=g10-bild-und-lied",
           "question": "Nenne zwei Fragen, die du an ein Foto vom Mauerbau stellst, und begründe sie.",
-          "concept": "Ein Protestlied zeigt Kritik Einzelner und die Reaktion des Staates, nicht die Meinung aller.",
+          "concept": "Wer fotografierte und wo erschien das Bild, weil Ost und West den Mauerbau gegensätzlich zeigten; und was lag außerhalb des Ausschnitts, weil ein Moment nicht den ganzen Ablauf zeigt.",
           "sample_solution": "Ich frage, wer das Foto gemacht und wo es veröffentlicht wurde, weil westliche und östliche Medien den Mauerbau gegensätzlich darstellten. Außerdem frage ich, was außerhalb des Bildausschnitts lag, denn ein Moment zeigt nicht den ganzen Ablauf. Erst dann kann ich beurteilen, wofür das Foto ein Beleg ist.",
           "materiality": "material"
         }
@@ -939,25 +944,25 @@
           "tier": "tier1_fast",
           "bloom_level": 1,
           "source_link": "https://academy.zam-os.org/geschichte-realschule-10/#lesson=g10-schaubild",
-          "question": "Wie viele Flüchtlinge zählte die Volkszählung im Oktober 1946 in den vier Zonen?",
-          "concept": "9,6 Millionen",
+          "question": "Wie viele Zugewanderte aus Gebieten östlich von Oder und Neiße und aus dem Ausland zählte die Volkszählung vom Oktober 1946 in den vier Zonen und Groß-Berlin?",
+          "concept": "Rund 9,9 Millionen",
           "materiality": "material",
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "9,6 Millionen",
-              "1,6 Millionen"
+              "Rund 9,9 Millionen",
+              "Rund 1,9 Millionen"
             ],
             "correct_index": 0
           },
           "choice_distractors": [
             {
-              "text": "1,6 Millionen",
-              "reason": "Das ist der Unterschied zweier Zählungen, keine Zählung selbst."
+              "text": "Rund 1,9 Millionen",
+              "reason": "So viele Vertriebene lebten 1949 allein in Bayern, nicht in allen Zonen."
             },
             {
-              "text": "96 Millionen",
-              "reason": "So viele Menschen lebten nicht einmal in ganz Deutschland."
+              "text": "Rund 99 Millionen",
+              "reason": "In allen vier Zonen und Groß-Berlin lebten 1946 insgesamt nur rund 64 Millionen Menschen."
             }
           ]
         },
@@ -1183,7 +1188,7 @@
           "bloom_level": 3,
           "source_link": "https://academy.zam-os.org/geschichte-realschule-10/#lesson=g10-film",
           "question": "Erkläre an einem Beispiel, warum ein historischer Spielfilm Figuren und Szenen erfindet.",
-          "concept": "Spielfilme brauchen Figuren und Spannung; erfundene Szenen sind kein Beleg und müssen geprüft werden.",
+          "concept": "Ein Spielfilm braucht Hauptfiguren und Spannung und verdichtet viele Erfahrungen in erfundene Personen und Gespräche, etwa in einem Film über die Stasi; solche Szenen sind kein Beleg.",
           "sample_solution": "Ein Spielfilm braucht Hauptfiguren, Spannung und einen Höhepunkt, damit Zuschauer mitfühlen. Deshalb verdichtet er viele Erfahrungen in eine erfundene Person oder erfindet Gespräche. Der Film kann so eine Zeit anschaulich machen, einzelne Szenen sind aber kein Beleg; ich prüfe sie an Darstellungen.",
           "materiality": "material"
         }
@@ -2924,7 +2929,7 @@
           "bloom_level": 3,
           "source_link": "https://academy.zam-os.org/geschichte-realschule-10/#lesson=g10-deutsche-frage",
           "question": "Erkläre den Grundsatz „Wandel durch Annäherung“ an einem Beispiel.",
-          "concept": "Verträge und Gespräche statt Isolation sollten die Lage der Menschen verbessern und Wandel ermöglichen.",
+          "concept": "Statt die DDR zu isolieren, sollten Verträge das Leben der Menschen erleichtern, etwa der Grundlagenvertrag von 1972 mit Ständigen Vertretungen und mehr Kontakten.",
           "sample_solution": "Egon Bahr und Willy Brandt wollten durch Verträge und Gespräche mit dem Osten die Lage der Menschen verbessern, statt die DDR zu isolieren. Ein Beispiel ist der Grundlagenvertrag von 1972: Er brachte Ständige Vertretungen und erleichterte Reisen und Kontakte. Langfristig sollte die Annäherung auch einen Wandel im Osten ermöglichen.",
           "materiality": "material"
         }
@@ -3656,7 +3661,7 @@
           "tier": "tier1_fast",
           "bloom_level": 1,
           "source_link": "https://academy.zam-os.org/geschichte-realschule-10/#lesson=g10-friedliche-revolution",
-          "question": "An welchem Tag wurde 1989 die innerdeutsche Grenze in Berlin geöffnet?",
+          "question": "An welchem Tag wurde 1989 die innerdeutsche Grenze geöffnet?",
           "concept": "Am 9. November 1989",
           "materiality": "material",
           "fast_check": {
@@ -5663,7 +5668,7 @@
           "bloom_level": 3,
           "source_link": "https://academy.zam-os.org/geschichte-realschule-10/#lesson=g10-instrumentalisierung",
           "question": "Erkläre an einem Beispiel, wie der NS-Staat Geschichte instrumentalisierte.",
-          "concept": "Hindenburg und Hitler traten an einem Ort preußischer Tradition auf, um Kontinuität vorzutäuschen.",
+          "concept": "Am „Tag von Potsdam“, dem 21. März 1933, traten Hindenburg und Hitler an einem Ort preußischer Tradition auf, um Kontinuität vorzutäuschen.",
           "sample_solution": "Am 21. März 1933 inszenierte der NS-Staat den „Tag von Potsdam“: Hindenburg und Hitler traten an einem Ort preußischer Tradition gemeinsam auf. So sollte die neue Regierung als Fortsetzung der preußischen Geschichte erscheinen und konservative Bürger gewinnen. Geschichte diente damit der Legitimation der Diktatur.",
           "materiality": "material"
         }
@@ -6345,7 +6350,7 @@
           "bloom_level": 3,
           "source_link": "https://academy.zam-os.org/geschichte-realschule-10/#lesson=g10-en-cold-war",
           "question": "Explain what the term proxy war means, using Vietnam as an example.",
-          "concept": "Great powers support opposing sides instead of fighting each other directly.",
+          "concept": "Great powers back opposing sides instead of fighting each other directly: in Vietnam the USA fought for the South, while the Soviet Union and China supplied the North.",
           "sample_solution": "In a proxy war, great powers do not fight each other directly but support opposing sides. In Vietnam the USA fought alongside South Vietnam, while the Soviet Union and China supplied the North. A direct war between the superpowers was avoided because of the danger of nuclear war.",
           "materiality": "material"
         }

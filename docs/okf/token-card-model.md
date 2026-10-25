@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-25T06:41:13Z
+timestamp: 2026-10-25T07:33:03Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -328,7 +328,7 @@ Gymnasium content, so those cards stay active in the libraries that hold
 them. The old cells are no longer bundled.
 
 Geschichte 10 has one Fachlehrplan for all Wahlpflichtfächergruppen, so its
-Academy cell, version 2026.10.2, binds its 53 lessons (49 core lessons and
+Academy cell, version 2026.10.3, binds its 53 lessons (49 core lessons and
 four optional English ones) to grade 10 without a track and is offered to
 every group. It replaces the old school cell of the grade with two A rows,
 the crisis of October 1962 and the date the border opened in 1989, and

@@ -119,7 +119,7 @@ const lessonId = (link: string) => new URL(link).hash.slice("#lesson=".length);
 
 describe("ZAM Academy Geschichte 10 Realschule cell", () => {
   it("bundles the published cell and retires the legacy discovery entry", () => {
-    expect(tile.version).toBe("2026.10.2");
+    expect(tile.version).toBe("2026.10.3");
     expect(getBundledCell(CELL_ID)).toMatchObject({
       title: "Geschichte 10 Realschule (ZAM Academy)",
       publisher: "ZAM Academy",
