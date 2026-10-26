@@ -206,7 +206,7 @@ describe("OKF tools stay inside allowed roots (ADR 2026-10-08b D1)", () => {
 
       const missing = await call("zam_okf_catalog", {});
       expect(missing.isError, missing.text).toBe(true);
-      expect(missing.text).toContain(bundle);
+      expect(JSON.parse(missing.text).error).toContain(bundle);
 
       const written = await call("zam_okf_upsert", {
         file: "default.md",
