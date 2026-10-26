@@ -113,6 +113,31 @@ describe("registered Git worktrees inherit project roots", () => {
     expect(new Set(canonicalRoots([repo, linked])).size).toBe(3);
   });
 
+  it("resolves relative paths only against the directly named checkout", () => {
+    const first = worktree(join(base, "first"));
+    const second = worktree(join(base, "second"));
+    const roots = canonicalRoots([repo]);
+    expect(roots).toHaveLength(3);
+    const relativeArticle = join("docs", "okf", "article.md");
+    expect(() => resolveTrustedPath(relativeArticle, roots)).toThrow(
+      PathRefusedError,
+    );
+    for (const linked of [first, second]) {
+      expect(
+        resolveTrustedPath(join(linked, relativeArticle), roots).root,
+      ).toBe(linked);
+    }
+    mkdirSync(join(repo, "docs", "okf"), { recursive: true });
+    expect(
+      resolveTrustedPath(join("docs", "okf", "new.md"), roots, {
+        mustExist: false,
+      }),
+    ).toEqual({ path: join(repo, "docs", "okf", "new.md"), root: repo });
+    expect(
+      resolveTrustedPath(relativeArticle, canonicalRoots([first])).root,
+    ).toBe(first);
+  });
+
   it("does not extend trust from a repository subfolder", () => {
     const linked = worktree(join(base, "linked"));
     const docs = join(repo, "docs");

@@ -35,10 +35,18 @@ unnecessary setup for ordinary repository work.
    ancestors or neighboring repositories. Missing, mismatched, symlinked
    or oversized records grant no additional root. Git is not executed, so
    hooks, Git configuration and environment overrides do not participate.
+   From a linked checkout, discovery adds its registered siblings but not the
+   main working tree: Git keeps no registration for it that could point back,
+   and a bare or separately stored repository has none at all. The main
+   checkout is included only when the client reports it or the learner
+   trusts it.
 4. Each derived checkout is a file boundary of its own. The most specific
    containing root decides hidden-path checks. Thus a checkout hosted in
    `.codex/worktrees` or `.claude/worktrees` works, while its own `.git`,
    `.env` and escaping symlinks stay inaccessible as source content.
+   A derived checkout is reached only by an absolute path. A relative path
+   resolves against the directly reported or trusted roots alone, so it
+   never depends on which registered checkout happens to be listed first.
 5. Roots are derived anew when used. Newly created checkouts work in an
    existing MCP connection; stale registrations disappear from access.
    `trustedFolders` is not written and no tool gains a security-setting
@@ -70,7 +78,8 @@ server continues using its older resolver until updated and restarted.
 ## Evidence
 
 - Real Git checkout tests cover external, nested and relatively linked
-  worktrees, sibling discovery from a linked root, copied fake gitfiles,
+  worktrees, sibling discovery from a linked root, relative paths that
+  exist only in linked checkouts, copied fake gitfiles,
   broken reciprocal records, hidden files, escaping symlinks and unchanged
   trust configuration.
 - MCP tests exercise `zam_okf_upsert` and `zam_okf_read` through both client

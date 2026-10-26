@@ -222,6 +222,13 @@ export function isAcceptableRoot(dir: string, home = homedir()): boolean {
 }
 
 /**
+ * How many leading entries of a canonicalRoots() result were named directly;
+ * derived worktrees follow them. A relative path resolves only against the
+ * direct roots, so it never lands in whichever checkout readdir lists first.
+ */
+const directRootCount = new WeakMap<readonly string[], number>();
+
+/**
  * Canonical allowed roots from any mix of paths and `file:` URIs: existing
  * directories only, real paths, acceptable roots only, no duplicates.
  * A whole checkout includes its reciprocally registered linked worktrees.
@@ -248,6 +255,7 @@ export function canonicalRoots(
     const real = realPath(dir);
     if (!roots.some((root) => samePath(root, real))) roots.push(real);
   }
+  const direct = roots.length;
   if (includeWorktrees) {
     for (const root of [...roots]) {
       for (const worktree of registeredWorktrees(root)) {
@@ -256,6 +264,7 @@ export function canonicalRoots(
       }
     }
   }
+  directRootCount.set(roots, direct);
   return roots;
 }
 
@@ -352,8 +361,8 @@ function containingRoot(
 
 /**
  * Resolve a path inside the allowed roots. An absolute path must lie in a
- * root; a relative one is tried against each root in turn, never against the
- * working directory. Symlinks and junctions are resolved before the check.
+ * root; a relative one is tried against each directly named root in turn,
+ * never against a derived worktree or the working directory. Symlinks and junctions are resolved before the check.
  * With `mustExist: false`, a missing file resolves through its parent folder.
  */
 export function resolveTrustedPath(
@@ -372,7 +381,9 @@ export function resolveTrustedPath(
   }
   const candidates = isAbsolute(target)
     ? [resolve(target)]
-    : roots.map((root) => resolve(root, target));
+    : roots
+        .slice(0, directRootCount.get(roots) ?? roots.length)
+        .map((root) => resolve(root, target));
 
   // Only the real path decides: symlinks, junctions and aliases such as
   // macOS's /var → /private/var are resolved before any containment check.

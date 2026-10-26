@@ -8,7 +8,7 @@ tags:
   - mcp
   - secrets
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/agent-trust-model.md"
-timestamp: 2026-10-26T20:41:22Z
+timestamp: 2026-10-26T20:54:48Z
 ---
 
 ZAM treats two things as untrusted: the **agent** that calls its tools, and
@@ -37,9 +37,15 @@ The resolver checks reciprocal `gitdir`, `.git` and `commondir` records in
 the repository's worktree registry. A copied gitfile alone grants nothing.
 Trusting only a subfolder does not extend to its parent or siblings.
 
+Discovery from a linked checkout adds its registered siblings but not the
+main checkout, which Git does not register; the main checkout counts only
+when the client reports it or the learner trusts it.
+
 Each checkout is its own boundary, including when hosted below `.codex`
 or `.claude`. Hidden files inside that checkout and symlinks escaping it
-remain refused. Roots are derived afresh, so a newly registered worktree is
+remain refused. A derived worktree is reached only by its absolute path: a
+relative path resolves against the directly reported or trusted folders
+alone. Roots are derived afresh, so a newly registered worktree is
 usable without restarting the MCP connection or adding a stored trusted
 folder. No tool argument writes the trust configuration.
 
