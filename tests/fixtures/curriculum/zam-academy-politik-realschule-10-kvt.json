@@ -1,9 +1,9 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "zam-academy:politik-realschule-10",
-  "version": "2026.10.1",
+  "version": "2026.10.2",
   "title": "Politik und Gesellschaft 10 Realschule (ZAM Academy)",
-  "description": "32 Lektionen und 64 Wiederholungsfragen zu Demokratie, Mitwirkung, Verfassung, Wirtschaft und Friedenssicherung nach LehrplanPLUS Bayern. Eigene aktuelle Recherche, Debatten und Erkundungen ergänzen die App. Lokaler Entwurf ohne Lernstandsübertragung.",
+  "description": "32 Lektionen und 64 Wiederholungsfragen zu Demokratie, Mitwirkung, Verfassung, Wirtschaft und Friedenssicherung nach LehrplanPLUS Bayern. Eigene aktuelle Recherche, Debatten und Erkundungen ergänzen die App. Ohne Lernstandsübertragung.",
   "publisher": "ZAM Academy",
   "sources": [
     {
@@ -117,15 +117,8 @@
           "grade": 10,
           "subject": "pug",
           "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -134,7 +127,7 @@
           "slug": "p10-verfassung-check",
           "language": "de",
           "tier": "tier1_fast",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Was schützt Art. 17 GG?",
           "concept": "Das Recht auf schriftliche Bitten oder Beschwerden.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-verfassung",
@@ -145,7 +138,8 @@
               "Ein Recht auf Annahme jeder Forderung."
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01M5T49AV75DCPJSEDZDVZV4SR",
@@ -157,6 +151,17 @@
           "concept": "Die Norm nennt die Regel; das Fallurteil prüft diese an konkreten Umständen und benennt offene Fragen.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-verfassung",
           "sample_solution": "Die Norm nennt die Regel; das Fallurteil prüft diese an konkreten Umständen und benennt offene Fragen."
+        }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb3",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb1; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
         }
       ]
     },
@@ -184,15 +189,8 @@
           "grade": 10,
           "subject": "pug",
           "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb2",
-          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -225,6 +223,17 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-information",
           "sample_solution": "Eine Meinung wertet; eine Tatsachenbehauptung ist grundsätzlich überprüfbar, aber nicht automatisch wahr."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb2",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb1; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -251,23 +260,8 @@
           "grade": 10,
           "subject": "pug",
           "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb2",
-          "topic_title": "Politische Mitwirkungsmöglichkeiten"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb4",
-          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -276,7 +270,7 @@
           "slug": "p10-quellen-check",
           "language": "de",
           "tier": "tier1_fast",
-          "bloom_level": 2,
+          "bloom_level": 3,
           "question": "Was belegen die 14 von 20 Antworten?",
           "concept": "70 Prozent der befragten Gruppe wünschen längere Öffnung.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-quellen",
@@ -287,18 +281,40 @@
               "70 Prozent aller Jugendlichen Bayerns wünschen längere Öffnung."
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01M5T49AV725EWAAXB51PW3MVV",
           "slug": "p10-quellen-recall",
           "language": "de",
           "tier": "tier2_synthesis",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Welche drei Angaben brauchst du mindestens zum Einordnen einer Umfrage?",
           "concept": "Fragestellung und Methode, Grundgesamtheit beziehungsweise Auswahl sowie Erhebungszeitpunkt.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-quellen",
-          "sample_solution": "Fragestellung und Methode, Grundgesamtheit beziehungsweise Auswahl sowie Erhebungszeitpunkt."
+          "sample_solution": "Fragestellung und Methode, Grundgesamtheit beziehungsweise Auswahl sowie Erhebungszeitpunkt.",
+          "materiality": "cosmetic"
+        }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb2",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb1; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb4",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb1; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
         }
       ]
     },
@@ -326,15 +342,8 @@
           "grade": 10,
           "subject": "pug",
           "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb2",
-          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -361,11 +370,23 @@
           "slug": "p10-satire-recall",
           "language": "de",
           "tier": "tier2_synthesis",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Welche drei Schritte helfen bei einer Karikatur?",
           "concept": "Sichtbares beschreiben, Symbole und Aussage am Bild deuten, Wirkung und Grenzen begründet beurteilen.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-satire",
-          "sample_solution": "Sichtbares beschreiben, Symbole und Aussage am Bild deuten, Wirkung und Grenzen begründet beurteilen."
+          "sample_solution": "Sichtbares beschreiben, Symbole und Aussage am Bild deuten, Wirkung und Grenzen begründet beurteilen.",
+          "materiality": "cosmetic"
+        }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb2",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb1; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
         }
       ]
     },
@@ -393,23 +414,8 @@
           "grade": 10,
           "subject": "pug",
           "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb2",
-          "topic_title": "Politische Mitwirkungsmöglichkeiten"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb4",
-          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -442,6 +448,26 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-debatte",
           "sample_solution": "Er sucht eine tragfähige Verbindung verschiedener Interessen innerhalb verbindlicher Rechte und Regeln."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb2",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb1; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb4",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb1; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -468,23 +494,8 @@
           "grade": 10,
           "subject": "pug",
           "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb2",
-          "topic_title": "Politische Mitwirkungsmöglichkeiten"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -511,11 +522,32 @@
           "slug": "p10-erkundung-recall",
           "language": "de",
           "tier": "tier2_synthesis",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Welche Angaben trennst du im Erkundungsbericht?",
           "concept": "Quelle und Datum, belegte Beobachtung, eigene Deutung beziehungsweise Urteil und offene Fragen.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-erkundung",
-          "sample_solution": "Quelle und Datum, belegte Beobachtung, eigene Deutung beziehungsweise Urteil und offene Fragen."
+          "sample_solution": "Quelle und Datum, belegte Beobachtung, eigene Deutung beziehungsweise Urteil und offene Fragen.",
+          "materiality": "cosmetic"
+        }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb2",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb1; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb3",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb1; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
         }
       ]
     },
@@ -542,16 +574,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb2",
-          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+          "topic_title": "Politische Mitwirkungsmöglichkeiten",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -584,6 +609,17 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-mitwirken",
           "sample_solution": "Reichweite mobilisiert, verleiht aber keine Zuständigkeit und ersetzt keine geregelte Entscheidung."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb2; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -609,16 +645,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb2",
-          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+          "topic_title": "Politische Mitwirkungsmöglichkeiten",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -651,6 +680,17 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-medien",
           "sample_solution": "Reichweite misst Aufmerksamkeit; Glaubwürdigkeit hängt von Belegen, Transparenz und sorgfältiger Prüfung ab."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb2; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -676,24 +716,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb2",
-          "topic_title": "Politische Mitwirkungsmöglichkeiten"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Politische Mitwirkungsmöglichkeiten",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -726,6 +751,26 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-volksentscheid",
           "sample_solution": "Das Volksbegehren bringt bei ausreichender Unterstützung den Entwurf ins Verfahren; im Volksentscheid stimmen Stimmberechtigte über ihn ab."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb2; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb3",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb2; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -751,24 +796,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb2",
-          "topic_title": "Politische Mitwirkungsmöglichkeiten"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb4",
-          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+          "topic_title": "Politische Mitwirkungsmöglichkeiten",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -801,6 +831,26 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-verbaende",
           "sample_solution": "Transparenz, nachvollziehbare Belege, Zugangschancen und berücksichtigte beziehungsweise fehlende Interessen."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb2; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb4",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb2; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -826,24 +876,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb2",
-          "topic_title": "Politische Mitwirkungsmöglichkeiten"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Politische Mitwirkungsmöglichkeiten",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -852,7 +887,7 @@
           "slug": "p10-wahlgrundsaetze-check",
           "language": "de",
           "tier": "tier1_fast",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Welcher Grundsatz schützt vor erzwungener Offenlegung der Stimme?",
           "concept": "Die geheime Wahl.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-wahlgrundsaetze",
@@ -863,18 +898,40 @@
               "Die öffentliche Bekanntgabe jeder persönlichen Stimme."
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01M5T49AV7Q9C0J52PYK0KJAJA",
           "slug": "p10-wahlgrundsaetze-recall",
           "language": "de",
           "tier": "tier2_synthesis",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Welche fünf Wahlgrundsätze nennt Art. 38 GG?",
           "concept": "Allgemein, unmittelbar, frei, gleich und geheim.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-wahlgrundsaetze",
-          "sample_solution": "Allgemein, unmittelbar, frei, gleich und geheim."
+          "sample_solution": "Allgemein, unmittelbar, frei, gleich und geheim.",
+          "materiality": "cosmetic"
+        }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb2; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb3",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb2; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
         }
       ]
     },
@@ -907,24 +964,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb2",
-          "topic_title": "Politische Mitwirkungsmöglichkeiten"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Politische Mitwirkungsmöglichkeiten",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -957,6 +999,26 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-bundestagswahl",
           "sample_solution": "Nein. Seit 2025 ist zusätzlich Zweitstimmendeckung nötig; für erfolgreiche Einzelbewerber gelten besondere Regeln."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb2; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb3",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb2; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -982,24 +1044,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb2",
-          "topic_title": "Politische Mitwirkungsmöglichkeiten"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Politische Mitwirkungsmöglichkeiten",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1032,6 +1079,26 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-eu",
           "sample_solution": "In übertragenen Zuständigkeiten gelten gemeinsam beschlossene Regeln unmittelbar in den Mitgliedstaaten."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb2; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb3",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb2; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -1057,24 +1124,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb2",
-          "topic_title": "Politische Mitwirkungsmöglichkeiten"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb4",
-          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+          "topic_title": "Politische Mitwirkungsmöglichkeiten",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1107,6 +1159,26 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-globalisierung",
           "sample_solution": "Information und Handlungsspielraum sind begrenzt; Unternehmen und staatliche Regeln beeinflussen Bedingungen ebenfalls."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb2; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb4",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb2; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -1132,16 +1204,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Politische Strukturen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1150,7 +1215,7 @@
           "slug": "p10-grundrechte-check",
           "language": "de",
           "tier": "tier1_fast",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Für wen gilt die Menschenwürde nach dem Grundgesetz?",
           "concept": "Für jeden Menschen.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-grundrechte",
@@ -1161,7 +1226,8 @@
               "Nur für Wahlberechtigte."
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01M5T49AV81BB5T8TT8QBC6YKX",
@@ -1173,6 +1239,17 @@
           "concept": "Sie binden auch Mehrheiten und schützen Einzelne vor ungerechtfertigter staatlicher Behandlung.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-grundrechte",
           "sample_solution": "Sie binden auch Mehrheiten und schützen Einzelne vor ungerechtfertigter staatlicher Behandlung."
+        }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb3; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
         }
       ]
     },
@@ -1210,16 +1287,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Politische Strukturen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1246,11 +1316,23 @@
           "slug": "p10-abwaegung-recall",
           "language": "de",
           "tier": "tier2_synthesis",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Welche drei Kernfragen stellt die Verhältnismäßigkeitsprüfung?",
           "concept": "Ist das Mittel geeignet, erforderlich und im Verhältnis zum Zweck angemessen?",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-abwaegung",
-          "sample_solution": "Ist das Mittel geeignet, erforderlich und im Verhältnis zum Zweck angemessen?"
+          "sample_solution": "Ist das Mittel geeignet, erforderlich und im Verhältnis zum Zweck angemessen?",
+          "materiality": "cosmetic"
+        }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb3; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
         }
       ]
     },
@@ -1277,16 +1359,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Politische Strukturen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1319,6 +1394,17 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-rechtsstaat",
           "sample_solution": "Sie verteilt Macht auf verschiedene Funktionen und ermöglicht Kontrolle, um Machtmissbrauch zu begrenzen."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb3; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -1344,24 +1430,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
-          "topic_code": "lb4",
-          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+          "topic_title": "Politische Strukturen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1394,6 +1465,26 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-sozialstaat",
           "sample_solution": "Eine veränderte Altersstruktur kann Bedarf und Finanzierung sozialer Leistungen verändern; mehrere Handlungsoptionen sind abzuwägen."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb3; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb4",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb3; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -1419,16 +1510,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Politische Strukturen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1437,7 +1521,7 @@
           "slug": "p10-parlamentarismus-check",
           "language": "de",
           "tier": "tier1_fast",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Wer wählt die Bundeskanzlerin oder den Bundeskanzler?",
           "concept": "Der Bundestag.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-parlamentarismus",
@@ -1448,7 +1532,8 @@
               "Die Bevölkerung bei einer direkten Kanzlerwahl."
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01M5T49AV89V71MSQCE5E8CTGS",
@@ -1460,6 +1545,17 @@
           "concept": "Sie kontrolliert die Regierung, vertritt Alternativen und ermöglicht politischen Wettbewerb innerhalb demokratischer Regeln.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-parlamentarismus",
           "sample_solution": "Sie kontrolliert die Regierung, vertritt Alternativen und ermöglicht politischen Wettbewerb innerhalb demokratischer Regeln."
+        }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb3; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
         }
       ]
     },
@@ -1486,16 +1582,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Politische Strukturen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1504,7 +1593,7 @@
           "slug": "p10-organe-check",
           "language": "de",
           "tier": "tier1_fast",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Wer vertritt Landesregierungen auf Bundesebene?",
           "concept": "Der Bundesrat.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-organe",
@@ -1515,7 +1604,8 @@
               "Die Bundesversammlung als ständiges Gesetzgebungsorgan."
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01M5T49AV8YDW8B9XQS9BGCSE6",
@@ -1527,6 +1617,17 @@
           "concept": "Es prüft in seinen Zuständigkeiten die Einhaltung des Grundgesetzes und entscheidet Verfassungsstreitigkeiten.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-organe",
           "sample_solution": "Es prüft in seinen Zuständigkeiten die Einhaltung des Grundgesetzes und entscheidet Verfassungsstreitigkeiten."
+        }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb3; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
         }
       ]
     },
@@ -1559,16 +1660,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Politische Strukturen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1601,6 +1695,17 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-gesetzgebung",
           "sample_solution": "Zustimmung ist beim ersten Typ erforderlich; beim zweiten kann der Bundestag einen Einspruch unter den geltenden Voraussetzungen zurückweisen."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb3; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -1626,16 +1731,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Politische Strukturen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1668,6 +1766,17 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-foederalismus",
           "sample_solution": "Er erlaubt regionale Gestaltung und Machtverteilung; zugleich kann länderübergreifende Koordination aufwendig sein."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb3; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -1693,16 +1802,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Politische Strukturen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1711,7 +1813,7 @@
           "slug": "p10-bayern-check",
           "language": "de",
           "tier": "tier1_fast",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Wer wählt die bayerische Regierungsspitze?",
           "concept": "Der Bayerische Landtag.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-bayern",
@@ -1722,18 +1824,31 @@
               "Die Bundesregierung allein."
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01M5T49AV828HTC7Q6MBNZRX54",
           "slug": "p10-bayern-recall",
           "language": "de",
           "tier": "tier2_synthesis",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Welche drei Aufgaben des Landtags solltest du unterscheiden?",
           "concept": "Landesgesetze und Haushalt beschließen, die Regierungsspitze wählen und die Staatsregierung kontrollieren.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-bayern",
-          "sample_solution": "Landesgesetze und Haushalt beschließen, die Regierungsspitze wählen und die Staatsregierung kontrollieren."
+          "sample_solution": "Landesgesetze und Haushalt beschließen, die Regierungsspitze wählen und die Staatsregierung kontrollieren.",
+          "materiality": "cosmetic"
+        }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb3; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
         }
       ]
     },
@@ -1771,16 +1886,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb3",
-          "topic_title": "Politische Strukturen"
+          "topic_title": "Politische Strukturen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1789,7 +1897,7 @@
           "slug": "p10-wehrhaft-check",
           "language": "de",
           "tier": "tier1_fast",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Was schützt Art. 79 Abs. 3 GG?",
           "concept": "Einen Kern zentraler Verfassungsgrundsätze auch vor verfassungsändernden Mehrheiten.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-wehrhaft",
@@ -1800,18 +1908,31 @@
               "Jede bestehende politische Entscheidung für immer."
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01M5T49AV8RTBREGZ9Q2W0P2T0",
           "slug": "p10-wehrhaft-recall",
           "language": "de",
           "tier": "tier2_synthesis",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Wer entscheidet über ein Parteiverbot nach Art. 21 GG?",
           "concept": "Das Bundesverfassungsgericht in einem dafür vorgesehenen Verfahren unter strengen Voraussetzungen.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-wehrhaft",
-          "sample_solution": "Das Bundesverfassungsgericht in einem dafür vorgesehenen Verfahren unter strengen Voraussetzungen."
+          "sample_solution": "Das Bundesverfassungsgericht in einem dafür vorgesehenen Verfahren unter strengen Voraussetzungen.",
+          "materiality": "cosmetic"
+        }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb3; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
         }
       ]
     },
@@ -1838,16 +1959,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb4",
-          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1856,7 +1970,7 @@
           "slug": "p10-bip-check",
           "language": "de",
           "tier": "tier1_fast",
-          "bloom_level": 2,
+          "bloom_level": 3,
           "question": "Die produzierte Menge bleibt gleich, nur der Preis steigt. Wie verändert sich die reale Produktion?",
           "concept": "Sie bleibt unverändert.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-bip",
@@ -1867,7 +1981,8 @@
               "Sie wächst allein wegen des Preisanstiegs um 20 Prozent."
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01M5T49AV8E8A4MP23WT1P13KA",
@@ -1879,6 +1994,17 @@
           "concept": "Nominale Änderungen enthalten Preiseffekte; reale Änderungen sollen die Mengenentwicklung ohne diese Effekte zeigen.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-bip",
           "sample_solution": "Nominale Änderungen enthalten Preiseffekte; reale Änderungen sollen die Mengenentwicklung ohne diese Effekte zeigen."
+        }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb4; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
         }
       ]
     },
@@ -1911,16 +2037,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb4",
-          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1947,11 +2066,23 @@
           "slug": "p10-konjunktur-recall",
           "language": "de",
           "tier": "tier2_synthesis",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Welche vier Phasen unterscheidet das vereinfachte Konjunkturmodell?",
           "concept": "Aufschwung, Hochkonjunktur, Abschwung und Tiefphase.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-konjunktur",
-          "sample_solution": "Aufschwung, Hochkonjunktur, Abschwung und Tiefphase."
+          "sample_solution": "Aufschwung, Hochkonjunktur, Abschwung und Tiefphase.",
+          "materiality": "cosmetic"
+        }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb4; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
         }
       ]
     },
@@ -1984,16 +2115,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb4",
-          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -2026,6 +2150,17 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-fiskal",
           "sample_solution": "Staatliche Einnahmen und Ausgaben sollen Konjunkturschwankungen entgegenwirken, statt sie zu verstärken."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb4; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -2057,16 +2192,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb4",
-          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -2075,7 +2203,7 @@
           "slug": "p10-leitzins-check",
           "language": "de",
           "tier": "tier1_fast",
-          "bloom_level": 2,
+          "bloom_level": 1,
           "question": "Wer entscheidet über die Leitzinsen im Euroraum?",
           "concept": "Der EZB-Rat.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-leitzins",
@@ -2086,7 +2214,8 @@
               "Jede Gemeinde für alle Eurostaaten."
             ],
             "correct_index": 0
-          }
+          },
+          "materiality": "cosmetic"
         },
         {
           "id": "01M5T49AV80976YGJHY22HVBX0",
@@ -2098,6 +2227,17 @@
           "concept": "Über häufig teurere Finanzierung können Nachfrage und Investitionen gedämpft werden; die Wirkung tritt verzögert und nicht sicher ein.",
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-leitzins",
           "sample_solution": "Über häufig teurere Finanzierung können Nachfrage und Investitionen gedämpft werden; die Wirkung tritt verzögert und nicht sicher ein."
+        }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb4; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
         }
       ]
     },
@@ -2130,16 +2270,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb4",
-          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -2172,6 +2305,17 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-urteil",
           "sample_solution": "Eine Maßnahme kann wirtschaftlich wirksam sein und dennoch rechtlich oder demokratisch problematisch, oder umgekehrt."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb4; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -2203,16 +2347,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb4",
-          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -2245,6 +2382,17 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-marktwirtschaft",
           "sample_solution": "Eine Maßnahme kann ein Ziel fördern und zugleich ein anderes beeinträchtigen, sodass begründete Abwägung nötig wird."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb4; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -2276,16 +2424,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb4",
-          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -2318,6 +2459,17 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-lebensqualitaet",
           "sample_solution": "Mehrere Kriterien, passende Belege, Verteilungsfolgen und eine offengelegte Gewichtung."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb4; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     },
     {
@@ -2343,16 +2495,9 @@
           "school_type": "realschule",
           "grade": 10,
           "subject": "pug",
-          "topic_code": "lb1",
-          "topic_title": "Methoden und Arbeitstechniken"
-        },
-        {
-          "provider": "lehrplanplus-bayern",
-          "school_type": "realschule",
-          "grade": 10,
-          "subject": "pug",
           "topic_code": "lb4",
-          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -2385,7 +2530,19 @@
           "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-frieden",
           "sample_solution": "Sie haben unterschiedliche Rechtsgrundlagen, Aufgaben und Entscheidungsverfahren und können verschiedene Handlungsmöglichkeiten bieten."
         }
+      ],
+      "retired_curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "",
+          "subject": "pug",
+          "topic_code": "lb1",
+          "reason": "Die primäre Fachzuordnung dieser Lektion ist lb4; diese zusätzliche Zuordnung der Version 2026.10.1 wird zurückgenommen."
+        }
       ]
     }
-  ]
+  ],
+  "published_at": "2026-10-26T05:46:58Z"
 }

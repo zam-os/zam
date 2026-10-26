@@ -5,7 +5,10 @@ import { join } from "node:path";
 import { ulid } from "ulid";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
+  deriveSchule,
   hueFor,
+  loadBindings,
+  loadUnits,
   SUBJECT_HUES,
   weltwissenSeedRows,
 } from "../../src/kernel/atlas/index.js";
@@ -19,11 +22,14 @@ import {
   getBundledCell,
   getBundledCellTile,
   getTokenById,
+  hasPendingCurriculumRetirements,
   installKvtTile,
+  type KvtTile,
   kvtItemPlainTexts,
   listLibraryTopics,
   needsGenericCurriculumImport,
   openDatabase,
+  reconcileInstalledBundledTiles,
 } from "../../src/kernel/index.js";
 
 const CELL_ID = "zam-academy:politik-realschule-10";
@@ -31,6 +37,19 @@ const APP = "https://academy.zam-os.org/politik-realschule-10/";
 const tile = getBundledCellTile(CELL_ID)!;
 const items = tile.atoms.flatMap((atom) => atom.practice_items);
 const itemIds = new Set(items.map((item) => item.id));
+const legacyBytes = readFileSync(
+  new URL(
+    "../fixtures/legacy/zam-academy-politik-realschule-10-2026.10.1.json",
+    import.meta.url,
+  ),
+);
+const legacy = JSON.parse(legacyBytes.toString("utf8")) as KvtTile;
+const AREAS = {
+  methoden: "lb1",
+  mitwirkung: "lb2",
+  strukturen: "lb3",
+  handlungsfelder: "lb4",
+};
 const scope = (grade = 10, track?: string) => ({
   provider: "lehrplanplus-bayern",
   schoolType: "realschule",
@@ -47,7 +66,10 @@ describe("ZAM Academy Politik und Gesellschaft 10 Realschule cell", () => {
       gradeLabel: "ZAM Academy",
       atomCount: 32,
     });
-    expect(tile.version).toBe("2026.10.1");
+    expect(tile.version).toBe("2026.10.2");
+    expect(tile.published_at).toBe("2026-10-26T05:46:58Z");
+    expect(getBundledCell(CELL_ID)?.publishedAt).toBe(tile.published_at);
+    expect(tile.description).not.toContain("Entwurf");
     expect(
       createHash("sha256")
         .update(
@@ -59,7 +81,7 @@ describe("ZAM Academy Politik und Gesellschaft 10 Realschule cell", () => {
           ),
         )
         .digest("hex"),
-    ).toBe("ebd1872fde552c2a8ab59c12e4dbf9ff1aa877a30a747c417dfda61819e18690");
+    ).toBe("a2046b91a2a860b04c624ae369b450869d01c540a26bc233a9f3407dd389d5ec");
     expect(items).toHaveLength(64);
     expect(itemIds.size).toBe(64);
     expect(new Set(tile.atoms.map((atom) => atom.id)).size).toBe(32);
@@ -82,6 +104,34 @@ describe("ZAM Academy Politik und Gesellschaft 10 Realschule cell", () => {
         subject: "politik-realschule-10",
       }).map((cell) => cell.id),
     ).toContain(CELL_ID);
+  });
+
+  it("pins the published .1 source and keeps every identity, retrieval and lesson link", () => {
+    expect(createHash("sha256").update(legacyBytes).digest("hex")).toBe(
+      "ebd1872fde552c2a8ab59c12e4dbf9ff1aa877a30a747c417dfda61819e18690",
+    );
+    expect(legacy.version).toBe("2026.10.1");
+    expect(
+      tile.atoms.map((atom) => [atom.id, atom.slug, atom.atom_uri]),
+    ).toEqual(legacy.atoms.map((atom) => [atom.id, atom.slug, atom.atom_uri]));
+    for (const [index, atom] of tile.atoms.entries()) {
+      const old = legacy.atoms[index];
+      for (const [itemIndex, item] of atom.practice_items.entries()) {
+        const before = old.practice_items[itemIndex];
+        for (const field of [
+          "id",
+          "slug",
+          "question",
+          "concept",
+          "sample_solution",
+          "source_link",
+          "fast_check",
+        ] as const)
+          expect(item[field], `${atom.slug}/${field}`).toEqual(before[field]);
+        if (item.bloom_level !== before.bloom_level)
+          expect(item.materiality).toBe("cosmetic");
+      }
+    }
   });
 
   it("offers all four common learning areas to every Realschule group in grade 10", () => {
@@ -123,11 +173,23 @@ describe("ZAM Academy Politik und Gesellschaft 10 Realschule cell", () => {
     expect(new Set(bindings.map((binding) => binding.topic_code))).toEqual(
       new Set(["lb1", "lb2", "lb3", "lb4"]),
     );
+    expect(bindings).toHaveLength(32);
+    for (const atom of tile.atoms) {
+      expect(
+        atom.curricula
+          ?.filter((binding) => binding.provider === "lehrplanplus-bayern")
+          .map((binding) => binding.topic_code),
+      ).toEqual([AREAS[atom.domain.split("/")[1] as keyof typeof AREAS]]);
+    }
+    expect(
+      tile.atoms.flatMap((atom) => atom.retired_curricula ?? []),
+    ).toHaveLength(42);
     for (const binding of bindings) {
       expect(binding).toMatchObject({
         school_type: "realschule",
         grade: 10,
         subject: "pug",
+        exam_relevant: false,
       });
       expect(binding.track).toBeUndefined();
     }
@@ -154,6 +216,15 @@ describe("ZAM Academy Politik und Gesellschaft 10 Realschule cell", () => {
       SUBJECT_HUES["politik-und-gesellschaft"],
     );
     expect(SUBJECT_HUES["politik-und-gesellschaft"]).toBeDefined();
+    const hue = SUBJECT_HUES["politik-und-gesellschaft"];
+    for (const [subject, other] of Object.entries(SUBJECT_HUES)) {
+      if (subject === "politik-und-gesellschaft") continue;
+      const distance = Math.abs(hue - other);
+      expect(
+        Math.min(distance, 360 - distance),
+        subject,
+      ).toBeGreaterThanOrEqual(25);
+    }
   });
 
   it("links every card to its lesson and declares no replacement or retirement", () => {
@@ -200,6 +271,112 @@ describe("ZAM Academy Politik und Gesellschaft 10 Realschule cell", () => {
           .all()) as Array<Record<string, unknown>>,
       };
     }
+    async function expectFourSchoolAreas() {
+      const bindings = await loadBindings(db);
+      const official = bindings.filter(
+        (binding) =>
+          binding.provider === "lehrplanplus-bayern" &&
+          binding.subject === "pug",
+      );
+      expect(official).toHaveLength(32);
+      expect(
+        ["lb1", "lb2", "lb3", "lb4"].map(
+          (code) =>
+            official.filter((binding) => binding.topicCode === code).length,
+        ),
+      ).toEqual([6, 8, 10, 8]);
+      const units = await loadUnits(db, { tokenIds: [...itemIds] });
+      expect(units).toHaveLength(32);
+      const placements = deriveSchule(
+        units,
+        { regions: [], aliases: [], members: [] },
+        bindings,
+      );
+      for (const atom of tile.atoms) {
+        const expectedCode =
+          AREAS[atom.domain.split("/")[1] as keyof typeof AREAS];
+        const binding = official.find((row) => row.atomId === atom.id)!;
+        expect(binding.topicCode, atom.slug).toBe(expectedCode);
+        const unit = units.find((row) => row.atomId === atom.id)!;
+        const placement = placements.find((row) => row.unitKey === unit.key)!;
+        expect(placement.path[1]).toMatchObject({
+          key: "realschule-10.politik-und-gesellschaft",
+          name: "Politik und Gesellschaft",
+        });
+        expect(placement.path[2].name, atom.slug).toBe(binding.topicTitle);
+        for (const item of atom.practice_items)
+          expect(await getTokenById(db, item.id)).toMatchObject({
+            provider: "lehrplanplus-bayern",
+            topic_id: expectedCode,
+          });
+      }
+      expect(await hasPendingCurriculumRetirements(db, tile)).toBe(false);
+    }
+
+    it("projects the actual 32 atoms and 64 tokens into all four school learning areas", async () => {
+      await installKvtTile(db, tile);
+      await expectFourSchoolAreas();
+      expect(await snapshot()).toEqual({ cards: [], reviews: [] });
+    });
+
+    it.each([false, true])(
+      "upgrades existing .1 evidence and catches up an older kernel's .2: %s",
+      async (olderKernelFirst) => {
+        await installKvtTile(db, legacy);
+        for (const [index, item] of items.entries()) {
+          const card = await ensureCard(db, item.id, userId);
+          if (index < 4)
+            await evaluateRating(db, {
+              cardId: card.id,
+              tokenId: item.id,
+              userId,
+              rating: 3,
+              answerFormat: "recall",
+              responseTimeMs: 2000,
+              now: new Date("2026-10-25T10:00:00Z"),
+            });
+        }
+        const before = await snapshot();
+        const oldVersions = await Promise.all(
+          items.map(
+            async (item) => (await getTokenById(db, item.id))?.content_version,
+          ),
+        );
+        expect(before.cards).toHaveLength(64);
+        expect(before.reviews).toHaveLength(4);
+        if (olderKernelFirst) {
+          const ignoredWithdrawals = structuredClone(tile);
+          for (const atom of ignoredWithdrawals.atoms)
+            delete atom.retired_curricula;
+          await installKvtTile(db, ignoredWithdrawals);
+          expect(await snapshot()).toEqual(before);
+          expect(await hasPendingCurriculumRetirements(db, tile)).toBe(true);
+        }
+        expect(await reconcileInstalledBundledTiles(db)).toMatchObject({
+          reinstalled: [CELL_ID],
+          failed: [],
+        });
+        await expectFourSchoolAreas();
+        expect(await snapshot()).toEqual(before);
+        expect(
+          await Promise.all(
+            items.map(
+              async (item) =>
+                (await getTokenById(db, item.id))?.content_version,
+            ),
+          ),
+        ).toEqual(oldVersions);
+        expect((await reconcileInstalledBundledTiles(db)).reinstalled).toEqual(
+          [],
+        );
+        expect(await enrolBundledCell(db, userId, CELL_ID)).toMatchObject({
+          cardsCreated: 0,
+          alreadyEnrolled: true,
+        });
+        expect(await snapshot()).toEqual(before);
+      },
+    );
+
     function expectFreshCards(cards: Array<Record<string, unknown>>) {
       expect(cards.map((card) => card.token_id).sort()).toEqual(
         [...itemIds].sort(),

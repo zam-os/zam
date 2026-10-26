@@ -3,6 +3,7 @@
 
 import type { Database } from "../db/types.js";
 import {
+  hasPendingCurriculumRetirements,
   installKvtTile,
   type KvtTile,
   materialiseKvtCards,
@@ -1819,7 +1820,8 @@ export interface ReconcileBundledTilesResult {
 }
 
 /**
- * Reinstall the bundled tiles this library holds whose version changed, so
+ * Reinstall held bundled tiles whose version changed or whose explicit
+ * curriculum withdrawals have not yet been applied, so
  * learners who enrolled before a fix receive it (ADR 2026-10-14b Decision 7).
  *
  * Only installed tiles are touched, one transaction each, at most
@@ -1872,21 +1874,34 @@ export async function reconcileInstalledBundledTiles(
           atom.practice_items.every((item) => presentItems.has(item.id)),
       ),
   );
-  const changed = installed.filter((tile) => {
+  const changed: BundledTile[] = [];
+  for (const tile of installed) {
     const row = recorded.get(tile.tile_id);
-    if (row?.failed_at && row.failed_at >= PROCESS_STARTED_AT) return false;
-    if (!row) return true;
-    // A library ahead of this build — a newer version installed from the
-    // academy catalog — is never downgraded (ADR 2026-10-19 Decision 4).
-    // Versions that are not dotted numbers keep the old rule: different
-    // means reinstall.
+    if (row?.failed_at && row.failed_at >= PROCESS_STARTED_AT) continue;
+    if (!row) {
+      changed.push(tile);
+      continue;
+    }
+    // A newer catalog version is never downgraded. An older kernel may
+    // have recorded this same tile version without applying its explicit
+    // withdrawals; repair it once, only while those bindings remain.
     const order = compareTileVersions(row.version, String(tile.version));
-    if (order === 1) return false;
-    return (
+    if (order === 1) continue;
+    const versionChanged =
       row.failed_at !== null ||
-      (order === null ? row.version !== String(tile.version) : order === -1)
-    );
-  });
+      (order === null ? row.version !== String(tile.version) : order === -1);
+    let pending = false;
+    if (!versionChanged) {
+      try {
+        pending = await hasPendingCurriculumRetirements(db, tile);
+      } catch {
+        // The installer validates and records the error below, so a bad
+        // withdrawal follows the same failure backoff as a bad item.
+        pending = true;
+      }
+    }
+    if (versionChanged || pending) changed.push(tile);
+  }
 
   const limit = Math.max(0, options.maxTiles ?? Number.POSITIVE_INFINITY);
   const result: ReconcileBundledTilesResult = {

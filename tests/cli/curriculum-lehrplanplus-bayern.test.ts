@@ -99,12 +99,18 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     });
     expect(provider.listTracks("realschule", "10", "pug")).toEqual([]);
     const topics = provider.listTopics(position);
-    expect(topics.map((topic) => [topic.id, topic.hours])).toEqual([
-      ["lb1", undefined],
-      ["lb2", 14],
-      ["lb3", 14],
-      ["lb4", 20],
-    ]);
+    expect(topics.map((topic) => [topic.id, topic.label, topic.hours])).toEqual(
+      [
+        ["lb1", "Methoden und Arbeitstechniken", undefined],
+        ["lb2", "Politische Mitwirkungsmöglichkeiten", 14],
+        ["lb3", "Politische Strukturen", 14],
+        [
+          "lb4",
+          "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder",
+          20,
+        ],
+      ],
+    );
     for (const topic of topics)
       expect(provider.resolveTopic(topic)).toEqual({
         provider: "lehrplanplus-bayern",

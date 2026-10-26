@@ -1,0 +1,2391 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:politik-realschule-10",
+  "version": "2026.10.1",
+  "title": "Politik und Gesellschaft 10 Realschule (ZAM Academy)",
+  "description": "32 Lektionen und 64 Wiederholungsfragen zu Demokratie, Mitwirkung, Verfassung, Wirtschaft und Friedenssicherung nach LehrplanPLUS Bayern. Eigene aktuelle Recherche, Debatten und Erkundungen ergänzen die App. Lokaler Entwurf ohne Lernstandsübertragung.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/pug",
+      "label": "LehrplanPLUS Bayern · Politik und Gesellschaft 10",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.gesetze-im-internet.de/gg/",
+      "label": "Grundgesetz · amtlicher Text",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.gesetze-im-internet.de/gg/art_20.html",
+      "label": "Grundgesetz · Art. 20",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.gesetze-im-internet.de/gg/art_79.html",
+      "label": "Grundgesetz · Art. 79",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.gesetze-im-internet.de/gg/art_21.html",
+      "label": "Grundgesetz · Art. 21",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.gesetze-im-internet.de/gg/art_26.html",
+      "label": "Grundgesetz · Art. 26",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.gesetze-bayern.de/Content/Document/BayVerf/true",
+      "label": "Bayerische Verfassung · amtlicher Text",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.bundeswahlleiterin.de/bundestagswahlen/2025/informationen-waehler/wahlsystem.html",
+      "label": "Bundeswahlleiterin · Wahlsystem seit der Bundestagswahl 2025",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.bayern.landtag.de/parlament/aufgaben-des-landtags/gesetzgebung/volksgesetzgebung/",
+      "label": "Bayerischer Landtag · Volksgesetzgebung",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.bayern.landtag.de/parlament/aufgaben-des-landtags/",
+      "label": "Bayerischer Landtag · Aufgaben",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.bundestag.de/parlament/aufgaben/gesetzgebung_neu/gesetzgebung/weg-255468",
+      "label": "Deutscher Bundestag · Weg der Gesetzgebung",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://european-union.europa.eu/institutions-law-budget/institutions-and-bodies_de",
+      "label": "Europäische Union · Institutionen und Einrichtungen",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://eur-lex.europa.eu/eli/reg/2022/612/oj?locale=de",
+      "label": "EUR-Lex · Roamingverordnung (EU) 2022/612",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.destatis.de/DE/Themen/Wirtschaft/Volkswirtschaftliche-Gesamtrechnungen-Inlandsprodukt/_inhalt.html",
+      "label": "Statistisches Bundesamt · Volkswirtschaftliche Gesamtrechnungen",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.ecb.europa.eu/ecb-and-you/explainers/html/interest-rates-changes.de.html",
+      "label": "Europäische Zentralbank · Wie Leitzinsen wirken",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.un.org/en/about-us/un-charter/full-text",
+      "label": "Vereinte Nationen · UN-Charta, Originaltext",
+      "checked": "2026-10-25"
+    },
+    {
+      "uri": "https://www.nato.int/en/about-us/official-texts-and-resources/official-texts/1949/04/04/the-north-atlantic-treaty",
+      "label": "NATO · Nordatlantikvertrag, englischer Originaltext",
+      "checked": "2026-10-25"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5T49AV6K7XA7AMGPN706RGH",
+      "atom_uri": "urn:zam:atom:01M5T49AV6K7XA7AMGPN706RGH",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-verfassung",
+      "title": "Eine Verfassung befragen",
+      "domain": "politik-und-gesellschaft/methoden",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-verfassung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "methoden",
+          "topic_title": "Fragen stellen und prüfen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV714NX97CGJ0902K0C",
+          "slug": "p10-verfassung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was schützt Art. 17 GG?",
+          "concept": "Das Recht auf schriftliche Bitten oder Beschwerden.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-verfassung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Recht auf schriftliche Bitten oder Beschwerden.",
+              "Ein Recht auf Annahme jeder Forderung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV75DCPJSEDZDVZV4SR",
+          "slug": "p10-verfassung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie unterscheidest du eine Verfassungsnorm von einem Fallurteil?",
+          "concept": "Die Norm nennt die Regel; das Fallurteil prüft diese an konkreten Umständen und benennt offene Fragen.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-verfassung",
+          "sample_solution": "Die Norm nennt die Regel; das Fallurteil prüft diese an konkreten Umständen und benennt offene Fragen."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV7M7VRA6V64496F1S3",
+      "atom_uri": "urn:zam:atom:01M5T49AV7M7VRA6V64496F1S3",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-information",
+      "title": "Nachricht oder Meinung?",
+      "domain": "politik-und-gesellschaft/methoden",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-information",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "methoden",
+          "topic_title": "Fragen stellen und prüfen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb2",
+          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV7S0YQKX8EV4GEF3QD",
+          "slug": "p10-information-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Satz ist eine Wertung?",
+          "concept": "Die Entscheidung ist kurzsichtig.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-information",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Entscheidung ist kurzsichtig.",
+              "Der Rat stimmte mit 12 zu 8."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV71GBCEWWTFHBSZSFJ",
+          "slug": "p10-information-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Woran unterscheidest du Meinung und Tatsachenbehauptung?",
+          "concept": "Eine Meinung wertet; eine Tatsachenbehauptung ist grundsätzlich überprüfbar, aber nicht automatisch wahr.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-information",
+          "sample_solution": "Eine Meinung wertet; eine Tatsachenbehauptung ist grundsätzlich überprüfbar, aber nicht automatisch wahr."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV75P2V7Z35DRYRT1X5",
+      "atom_uri": "urn:zam:atom:01M5T49AV75P2V7Z35DRYRT1X5",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-quellen",
+      "title": "Quellen und Diagramme prüfen",
+      "domain": "politik-und-gesellschaft/methoden",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-quellen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "methoden",
+          "topic_title": "Fragen stellen und prüfen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb2",
+          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb4",
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV7KKPH56EK2Y5NTAKF",
+          "slug": "p10-quellen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was belegen die 14 von 20 Antworten?",
+          "concept": "70 Prozent der befragten Gruppe wünschen längere Öffnung.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-quellen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "70 Prozent der befragten Gruppe wünschen längere Öffnung.",
+              "70 Prozent aller Jugendlichen Bayerns wünschen längere Öffnung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV725EWAAXB51PW3MVV",
+          "slug": "p10-quellen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Angaben brauchst du mindestens zum Einordnen einer Umfrage?",
+          "concept": "Fragestellung und Methode, Grundgesamtheit beziehungsweise Auswahl sowie Erhebungszeitpunkt.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-quellen",
+          "sample_solution": "Fragestellung und Methode, Grundgesamtheit beziehungsweise Auswahl sowie Erhebungszeitpunkt."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV78H65CXA5DFTTSJV6",
+      "atom_uri": "urn:zam:atom:01M5T49AV78H65CXA5DFTTSJV6",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-satire",
+      "title": "Eine politische Karikatur deuten",
+      "domain": "politik-und-gesellschaft/methoden",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-satire",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "methoden",
+          "topic_title": "Fragen stellen und prüfen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb2",
+          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV77FYXW184RCQQHFHC",
+          "slug": "p10-satire-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist zunächst eine Beschreibung?",
+          "concept": "Neben den Zuhörenden steht die Uhr auf 0:00.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-satire",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Neben den Zuhörenden steht die Uhr auf 0:00.",
+              "Die Zeichnung beweist Wahlbetrug."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV7YYC947F4XGH239X4",
+          "slug": "p10-satire-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Schritte helfen bei einer Karikatur?",
+          "concept": "Sichtbares beschreiben, Symbole und Aussage am Bild deuten, Wirkung und Grenzen begründet beurteilen.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-satire",
+          "sample_solution": "Sichtbares beschreiben, Symbole und Aussage am Bild deuten, Wirkung und Grenzen begründet beurteilen."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV73NASPQSC5TTB2N3F",
+      "atom_uri": "urn:zam:atom:01M5T49AV73NASPQSC5TTB2N3F",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-debatte",
+      "title": "Fair streiten und Position beziehen",
+      "domain": "politik-und-gesellschaft/methoden",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-debatte",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "methoden",
+          "topic_title": "Fragen stellen und prüfen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb2",
+          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb4",
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV7FN2WT6KMNHV3QHB7",
+          "slug": "p10-debatte-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was macht ein Argument nachvollziehbar?",
+          "concept": "Eine Forderung mit Begründung und überprüfbarem Beleg.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-debatte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Forderung mit Begründung und überprüfbarem Beleg.",
+              "Eine möglichst laute Wiederholung ohne Beleg."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV7J83NRV1PF3TFP644",
+          "slug": "p10-debatte-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wozu dient ein Kompromiss im demokratischen Konflikt?",
+          "concept": "Er sucht eine tragfähige Verbindung verschiedener Interessen innerhalb verbindlicher Rechte und Regeln.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-debatte",
+          "sample_solution": "Er sucht eine tragfähige Verbindung verschiedener Interessen innerhalb verbindlicher Rechte und Regeln."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV75EAGEQP4WZ3FJT72",
+      "atom_uri": "urn:zam:atom:01M5T49AV75EAGEQP4WZ3FJT72",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-erkundung",
+      "title": "Politik vor Ort erkunden",
+      "domain": "politik-und-gesellschaft/methoden",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-erkundung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "methoden",
+          "topic_title": "Fragen stellen und prüfen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb2",
+          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV79NH609N2R4CP36VH",
+          "slug": "p10-erkundung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was steht am Anfang einer Erkundung?",
+          "concept": "Eine konkrete Frage und die zuständige Entscheidungsebene.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-erkundung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine konkrete Frage und die zuständige Entscheidungsebene.",
+              "Ein fertiges Urteil ohne Quellen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV77HXDQFMHS9FWEGEG",
+          "slug": "p10-erkundung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Angaben trennst du im Erkundungsbericht?",
+          "concept": "Quelle und Datum, belegte Beobachtung, eigene Deutung beziehungsweise Urteil und offene Fragen.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-erkundung",
+          "sample_solution": "Quelle und Datum, belegte Beobachtung, eigene Deutung beziehungsweise Urteil und offene Fragen."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV7XCXQJKMK0WW4PRZB",
+      "atom_uri": "urn:zam:atom:01M5T49AV7XCXQJKMK0WW4PRZB",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-mitwirken",
+      "title": "Vom Anliegen zur Mitwirkung",
+      "domain": "politik-und-gesellschaft/mitwirkung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-mitwirken",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "mitwirkung",
+          "topic_title": "Politisch mitwirken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb2",
+          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV75RH7RB1VPVN0V1Z2",
+          "slug": "p10-mitwirken-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was unterscheidet eine Partei typischerweise von einer einzelnen Bürgerinitiative?",
+          "concept": "Eine Partei verfolgt ein breiteres politisches Programm und tritt zu Wahlen an.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-mitwirken",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Partei verfolgt ein breiteres politisches Programm und tritt zu Wahlen an.",
+              "Eine Partei darf jedes Anliegen verbindlich entscheiden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV731DG8QAP84PCJJSN",
+          "slug": "p10-mitwirken-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ersetzt Aufmerksamkeit im Netz keine politische Entscheidung?",
+          "concept": "Reichweite mobilisiert, verleiht aber keine Zuständigkeit und ersetzt keine geregelte Entscheidung.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-mitwirken",
+          "sample_solution": "Reichweite mobilisiert, verleiht aber keine Zuständigkeit und ersetzt keine geregelte Entscheidung."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV71H73PSN751KHFQTA",
+      "atom_uri": "urn:zam:atom:01M5T49AV71H73PSN751KHFQTA",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-medien",
+      "title": "Medien und öffentliche Kontrolle",
+      "domain": "politik-und-gesellschaft/mitwirkung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-medien",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "mitwirkung",
+          "topic_title": "Politisch mitwirken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb2",
+          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV7JYWT9FVN6WPMC8MJ",
+          "slug": "p10-medien-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aufgabe erfüllen recherchierende Medien in einer Demokratie?",
+          "concept": "Sie machen Entscheidungen öffentlich überprüfbar.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-medien",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie machen Entscheidungen öffentlich überprüfbar.",
+              "Sie ersetzen die Abstimmung im Parlament."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV7F2R1PXP9N1B6EEPB",
+          "slug": "p10-medien-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum solltest du Reichweite und Glaubwürdigkeit getrennt prüfen?",
+          "concept": "Reichweite misst Aufmerksamkeit; Glaubwürdigkeit hängt von Belegen, Transparenz und sorgfältiger Prüfung ab.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-medien",
+          "sample_solution": "Reichweite misst Aufmerksamkeit; Glaubwürdigkeit hängt von Belegen, Transparenz und sorgfältiger Prüfung ab."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV7SSPTCPYQM4ZAGTFN",
+      "atom_uri": "urn:zam:atom:01M5T49AV7SSPTCPYQM4ZAGTFN",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-volksentscheid",
+      "title": "Direkte Demokratie in Bayern",
+      "domain": "politik-und-gesellschaft/mitwirkung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-volksentscheid",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "mitwirkung",
+          "topic_title": "Politisch mitwirken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb2",
+          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV778JB3M0T1EPGQ7QJ",
+          "slug": "p10-volksentscheid-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet ein erfolgreiches Volksbegehren zunächst?",
+          "concept": "Ein Gesetzentwurf muss im vorgesehenen Verfahren behandelt werden.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-volksentscheid",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Gesetzentwurf muss im vorgesehenen Verfahren behandelt werden.",
+              "Das Gesetz gilt ohne weitere Schritte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV7XQ00RAAKMV73CYMA",
+          "slug": "p10-volksentscheid-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist der zentrale Unterschied zwischen Volksbegehren und Volksentscheid?",
+          "concept": "Das Volksbegehren bringt bei ausreichender Unterstützung den Entwurf ins Verfahren; im Volksentscheid stimmen Stimmberechtigte über ihn ab.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-volksentscheid",
+          "sample_solution": "Das Volksbegehren bringt bei ausreichender Unterstützung den Entwurf ins Verfahren; im Volksentscheid stimmen Stimmberechtigte über ihn ab."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV7SRDTGC4B3F1FK6C3",
+      "atom_uri": "urn:zam:atom:01M5T49AV7SRDTGC4B3F1FK6C3",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-verbaende",
+      "title": "Interessen organisieren",
+      "domain": "politik-und-gesellschaft/mitwirkung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-verbaende",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "mitwirkung",
+          "topic_title": "Politisch mitwirken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb2",
+          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb4",
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV73B5ZYNHRBY6Z28RA",
+          "slug": "p10-verbaende-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet Pluralismus?",
+          "concept": "Verschiedene Interessen können öffentlich vertreten und ausgehandelt werden.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-verbaende",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Verschiedene Interessen können öffentlich vertreten und ausgehandelt werden.",
+              "Ein Verband bestimmt verbindlich für alle."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV7XHK0FCMPWB5JG6KM",
+          "slug": "p10-verbaende-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nach welchen Kriterien beurteilst du Interessenvertretung?",
+          "concept": "Transparenz, nachvollziehbare Belege, Zugangschancen und berücksichtigte beziehungsweise fehlende Interessen.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-verbaende",
+          "sample_solution": "Transparenz, nachvollziehbare Belege, Zugangschancen und berücksichtigte beziehungsweise fehlende Interessen."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV7WG0EEEN8ER3HPXN7",
+      "atom_uri": "urn:zam:atom:01M5T49AV7WG0EEEN8ER3HPXN7",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-wahlgrundsaetze",
+      "title": "Was macht eine Wahl demokratisch?",
+      "domain": "politik-und-gesellschaft/mitwirkung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-wahlgrundsaetze",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "mitwirkung",
+          "topic_title": "Politisch mitwirken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb2",
+          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV7H6FA34XRARE9NNZ9",
+          "slug": "p10-wahlgrundsaetze-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Grundsatz schützt vor erzwungener Offenlegung der Stimme?",
+          "concept": "Die geheime Wahl.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-wahlgrundsaetze",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die geheime Wahl.",
+              "Die öffentliche Bekanntgabe jeder persönlichen Stimme."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV7Q9C0J52PYK0KJAJA",
+          "slug": "p10-wahlgrundsaetze-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche fünf Wahlgrundsätze nennt Art. 38 GG?",
+          "concept": "Allgemein, unmittelbar, frei, gleich und geheim.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-wahlgrundsaetze",
+          "sample_solution": "Allgemein, unmittelbar, frei, gleich und geheim."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV7T4FW8ZXSDMDJMBMK",
+      "atom_uri": "urn:zam:atom:01M5T49AV7T4FW8ZXSDMDJMBMK",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-bundestagswahl",
+      "title": "Erststimme und Zweitstimme",
+      "domain": "politik-und-gesellschaft/mitwirkung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-bundestagswahl",
+      "prerequisites": [
+        {
+          "atom_id": "01M5T49AV7WG0EEEN8ER3HPXN7",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "mitwirkung",
+          "topic_title": "Politisch mitwirken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb2",
+          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV7DFCD0YQ4XZRVVPDM",
+          "slug": "p10-bundestagswahl-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Stimme ist für die parteibezogene Sitzverteilung maßgeblich?",
+          "concept": "Die Zweitstimme für die Landesliste.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-bundestagswahl",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zweitstimme für die Landesliste.",
+              "Die Erststimme als garantierter Zusatzsitz."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV7HVV0WWH2FPWBF6G5",
+          "slug": "p10-bundestagswahl-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Garantieren die meisten Erststimmen einem Parteibewerber einen Bundestagssitz?",
+          "concept": "Nein. Seit 2025 ist zusätzlich Zweitstimmendeckung nötig; für erfolgreiche Einzelbewerber gelten besondere Regeln.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-bundestagswahl",
+          "sample_solution": "Nein. Seit 2025 ist zusätzlich Zweitstimmendeckung nötig; für erfolgreiche Einzelbewerber gelten besondere Regeln."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV7J4KK2WVPJAYNRVB0",
+      "atom_uri": "urn:zam:atom:01M5T49AV7J4KK2WVPJAYNRVB0",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-eu",
+      "title": "Wie EU-Regeln den Alltag verändern",
+      "domain": "politik-und-gesellschaft/mitwirkung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-eu",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "mitwirkung",
+          "topic_title": "Politisch mitwirken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb2",
+          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV76H7DRDPSVB12P5F6",
+          "slug": "p10-eu-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet EU-Roaming zum Inlandstarif grundsätzlich?",
+          "concept": "Nutzung bei vorübergehenden Reisen in der EU nach den geltenden Bedingungen.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-eu",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nutzung bei vorübergehenden Reisen in der EU nach den geltenden Bedingungen.",
+              "Unbegrenzte kostenlose Nutzung überall auf der Welt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV7NBND3HMXSKP3FE6F",
+          "slug": "p10-eu-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was bedeutet supranationale Gesetzgebung am Beispiel einer EU-Verordnung?",
+          "concept": "In übertragenen Zuständigkeiten gelten gemeinsam beschlossene Regeln unmittelbar in den Mitgliedstaaten.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-eu",
+          "sample_solution": "In übertragenen Zuständigkeiten gelten gemeinsam beschlossene Regeln unmittelbar in den Mitgliedstaaten."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV7RYXND6DJTPQ4ACV5",
+      "atom_uri": "urn:zam:atom:01M5T49AV7RYXND6DJTPQ4ACV5",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-globalisierung",
+      "title": "Kaufentscheidungen und globale Folgen",
+      "domain": "politik-und-gesellschaft/mitwirkung",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-globalisierung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "mitwirkung",
+          "topic_title": "Politisch mitwirken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb2",
+          "topic_title": "Politische Mitwirkungsmöglichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb4",
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8FKA95MCDPVZD3AH8",
+          "slug": "p10-globalisierung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was lässt sich aus einem niedrigen Ladenpreis allein ableiten?",
+          "concept": "Keine verlässliche Aussage über konkrete Arbeitsbedingungen.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-globalisierung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Keine verlässliche Aussage über konkrete Arbeitsbedingungen.",
+              "Dass alle Beschäftigten gut bezahlt werden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV89ZX1JPYPKJYGW2E7",
+          "slug": "p10-globalisierung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum reichen individuelle Kaufentscheidungen allein für faire Lieferketten nicht aus?",
+          "concept": "Information und Handlungsspielraum sind begrenzt; Unternehmen und staatliche Regeln beeinflussen Bedingungen ebenfalls.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-globalisierung",
+          "sample_solution": "Information und Handlungsspielraum sind begrenzt; Unternehmen und staatliche Regeln beeinflussen Bedingungen ebenfalls."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV823K74R09416N23K0",
+      "atom_uri": "urn:zam:atom:01M5T49AV823K74R09416N23K0",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-grundrechte",
+      "title": "Grundrechte schützen Menschen",
+      "domain": "politik-und-gesellschaft/strukturen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-grundrechte",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "strukturen",
+          "topic_title": "Demokratie verstehen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8AN5RBE5E144RJKP5",
+          "slug": "p10-grundrechte-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Für wen gilt die Menschenwürde nach dem Grundgesetz?",
+          "concept": "Für jeden Menschen.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-grundrechte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für jeden Menschen.",
+              "Nur für Wahlberechtigte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV81BB5T8TT8QBC6YKX",
+          "slug": "p10-grundrechte-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum sind Grundrechte für Minderheiten wichtig?",
+          "concept": "Sie binden auch Mehrheiten und schützen Einzelne vor ungerechtfertigter staatlicher Behandlung.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-grundrechte",
+          "sample_solution": "Sie binden auch Mehrheiten und schützen Einzelne vor ungerechtfertigter staatlicher Behandlung."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV8DJSYV50PPBGWT8RA",
+      "atom_uri": "urn:zam:atom:01M5T49AV8DJSYV50PPBGWT8RA",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-abwaegung",
+      "title": "Freiheit und Sicherheit abwägen",
+      "domain": "politik-und-gesellschaft/strukturen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-abwaegung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5T49AV823K74R09416N23K0",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        },
+        {
+          "atom_id": "01M5T49AV6K7XA7AMGPN706RGH",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "strukturen",
+          "topic_title": "Demokratie verstehen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8RA7V2VMA5GBSHKPP",
+          "slug": "p10-abwaegung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was prüft die Erforderlichkeit einer Maßnahme?",
+          "concept": "Ob ein milderes gleich wirksames Mittel verfügbar ist.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-abwaegung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ob ein milderes gleich wirksames Mittel verfügbar ist.",
+              "Ob die Maßnahme besonders hart wirkt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV8HEHH9BH8EWZMC02E",
+          "slug": "p10-abwaegung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Kernfragen stellt die Verhältnismäßigkeitsprüfung?",
+          "concept": "Ist das Mittel geeignet, erforderlich und im Verhältnis zum Zweck angemessen?",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-abwaegung",
+          "sample_solution": "Ist das Mittel geeignet, erforderlich und im Verhältnis zum Zweck angemessen?"
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV8YGBCYVSCX13CYPFT",
+      "atom_uri": "urn:zam:atom:01M5T49AV8YGBCYVSCX13CYPFT",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-rechtsstaat",
+      "title": "Macht an Recht binden",
+      "domain": "politik-und-gesellschaft/strukturen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-rechtsstaat",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "strukturen",
+          "topic_title": "Demokratie verstehen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8Z6982PH1PGCKYBW8",
+          "slug": "p10-rechtsstaat-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was kennzeichnet unabhängigen Rechtsschutz?",
+          "concept": "Auch Behördenentscheidungen können gerichtlich überprüft werden.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-rechtsstaat",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auch Behördenentscheidungen können gerichtlich überprüft werden.",
+              "Die Verwaltung entscheidet immer endgültig über ihre eigenen Fehler."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV897SRPX18HV59WK92",
+          "slug": "p10-rechtsstaat-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Aufgabe hat Gewaltenteilung?",
+          "concept": "Sie verteilt Macht auf verschiedene Funktionen und ermöglicht Kontrolle, um Machtmissbrauch zu begrenzen.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-rechtsstaat",
+          "sample_solution": "Sie verteilt Macht auf verschiedene Funktionen und ermöglicht Kontrolle, um Machtmissbrauch zu begrenzen."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV8NHKG2HPV2NBY09X2",
+      "atom_uri": "urn:zam:atom:01M5T49AV8NHKG2HPV2NBY09X2",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-sozialstaat",
+      "title": "Soziale Sicherheit und Chancen",
+      "domain": "politik-und-gesellschaft/strukturen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-sozialstaat",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "strukturen",
+          "topic_title": "Demokratie verstehen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb4",
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8M609V9YSJDHVZCQ3",
+          "slug": "p10-sozialstaat-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was fordert das Sozialstaatsprinzip grundsätzlich?",
+          "concept": "Staatliche Verantwortung für soziale Sicherheit und Teilhabe.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-sozialstaat",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Staatliche Verantwortung für soziale Sicherheit und Teilhabe.",
+              "Jede beliebige Leistung ohne gesetzliche Voraussetzungen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV8H71BC7VWXFDM98TA",
+          "slug": "p10-sozialstaat-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum erzeugt demografischer Wandel Verteilungsfragen?",
+          "concept": "Eine veränderte Altersstruktur kann Bedarf und Finanzierung sozialer Leistungen verändern; mehrere Handlungsoptionen sind abzuwägen.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-sozialstaat",
+          "sample_solution": "Eine veränderte Altersstruktur kann Bedarf und Finanzierung sozialer Leistungen verändern; mehrere Handlungsoptionen sind abzuwägen."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV87KJE3V1DS15N144M",
+      "atom_uri": "urn:zam:atom:01M5T49AV87KJE3V1DS15N144M",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-parlamentarismus",
+      "title": "Regieren mit parlamentarischer Mehrheit",
+      "domain": "politik-und-gesellschaft/strukturen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-parlamentarismus",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "strukturen",
+          "topic_title": "Demokratie verstehen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8JHHN2BJBY4S11Q0C",
+          "slug": "p10-parlamentarismus-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wer wählt die Bundeskanzlerin oder den Bundeskanzler?",
+          "concept": "Der Bundestag.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-parlamentarismus",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Bundestag.",
+              "Die Bevölkerung bei einer direkten Kanzlerwahl."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV89V71MSQCE5E8CTGS",
+          "slug": "p10-parlamentarismus-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum gehört Opposition zur parlamentarischen Demokratie?",
+          "concept": "Sie kontrolliert die Regierung, vertritt Alternativen und ermöglicht politischen Wettbewerb innerhalb demokratischer Regeln.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-parlamentarismus",
+          "sample_solution": "Sie kontrolliert die Regierung, vertritt Alternativen und ermöglicht politischen Wettbewerb innerhalb demokratischer Regeln."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV8BX67PWB1WCWWDXY9",
+      "atom_uri": "urn:zam:atom:01M5T49AV8BX67PWB1WCWWDXY9",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-organe",
+      "title": "Wer entscheidet im Bund?",
+      "domain": "politik-und-gesellschaft/strukturen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-organe",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "strukturen",
+          "topic_title": "Demokratie verstehen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8C6Y5P7RC70BSYRQ1",
+          "slug": "p10-organe-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wer vertritt Landesregierungen auf Bundesebene?",
+          "concept": "Der Bundesrat.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-organe",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Bundesrat.",
+              "Die Bundesversammlung als ständiges Gesetzgebungsorgan."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV8YDW8B9XQS9BGCSE6",
+          "slug": "p10-organe-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Hauptaufgabe hat das Bundesverfassungsgericht?",
+          "concept": "Es prüft in seinen Zuständigkeiten die Einhaltung des Grundgesetzes und entscheidet Verfassungsstreitigkeiten.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-organe",
+          "sample_solution": "Es prüft in seinen Zuständigkeiten die Einhaltung des Grundgesetzes und entscheidet Verfassungsstreitigkeiten."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV851Z60ZE6TF7NMZ87",
+      "atom_uri": "urn:zam:atom:01M5T49AV851Z60ZE6TF7NMZ87",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-gesetzgebung",
+      "title": "Vom Entwurf zum Bundesgesetz",
+      "domain": "politik-und-gesellschaft/strukturen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-gesetzgebung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5T49AV8BX67PWB1WCWWDXY9",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "strukturen",
+          "topic_title": "Demokratie verstehen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8BGMJVVA0JSZEN3FX",
+          "slug": "p10-gesetzgebung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gilt für ein Zustimmungsgesetz?",
+          "concept": "Ohne erforderliche Zustimmung des Bundesrats kommt es nicht zustande.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-gesetzgebung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ohne erforderliche Zustimmung des Bundesrats kommt es nicht zustande.",
+              "Der Bundesrat darf dabei grundsätzlich nicht mitwirken."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV8K3E2B0S1XS6MME4D",
+          "slug": "p10-gesetzgebung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet Zustimmungs- und Einspruchsgesetze?",
+          "concept": "Zustimmung ist beim ersten Typ erforderlich; beim zweiten kann der Bundestag einen Einspruch unter den geltenden Voraussetzungen zurückweisen.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-gesetzgebung",
+          "sample_solution": "Zustimmung ist beim ersten Typ erforderlich; beim zweiten kann der Bundestag einen Einspruch unter den geltenden Voraussetzungen zurückweisen."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV8WBWR8R6FXQ9RGS0Q",
+      "atom_uri": "urn:zam:atom:01M5T49AV8WBWR8R6FXQ9RGS0Q",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-foederalismus",
+      "title": "Bund und Länder zusammen denken",
+      "domain": "politik-und-gesellschaft/strukturen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-foederalismus",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "strukturen",
+          "topic_title": "Demokratie verstehen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8JD4M1PX9MXSR1F4C",
+          "slug": "p10-foederalismus-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist ein Kennzeichen des Föderalismus?",
+          "concept": "Länder besitzen eigene staatliche Zuständigkeiten und wirken im Bund mit.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-foederalismus",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Länder besitzen eigene staatliche Zuständigkeiten und wirken im Bund mit.",
+              "Alle Länder sind bloße Außenstellen einer Bundesbehörde."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV8N0HMRCW7G0GJ8XGP",
+          "slug": "p10-foederalismus-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne eine Chance und eine Herausforderung des Föderalismus.",
+          "concept": "Er erlaubt regionale Gestaltung und Machtverteilung; zugleich kann länderübergreifende Koordination aufwendig sein.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-foederalismus",
+          "sample_solution": "Er erlaubt regionale Gestaltung und Machtverteilung; zugleich kann länderübergreifende Koordination aufwendig sein."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV8CZ6DRQWEZ125T3QH",
+      "atom_uri": "urn:zam:atom:01M5T49AV8CZ6DRQWEZ125T3QH",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-bayern",
+      "title": "Politische Institutionen in Bayern",
+      "domain": "politik-und-gesellschaft/strukturen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-bayern",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "strukturen",
+          "topic_title": "Demokratie verstehen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8EYTH6YEKMKX9CQZS",
+          "slug": "p10-bayern-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wer wählt die bayerische Regierungsspitze?",
+          "concept": "Der Bayerische Landtag.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-bayern",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Bayerische Landtag.",
+              "Die Bundesregierung allein."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV828HTC7Q6MBNZRX54",
+          "slug": "p10-bayern-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Aufgaben des Landtags solltest du unterscheiden?",
+          "concept": "Landesgesetze und Haushalt beschließen, die Regierungsspitze wählen und die Staatsregierung kontrollieren.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-bayern",
+          "sample_solution": "Landesgesetze und Haushalt beschließen, die Regierungsspitze wählen und die Staatsregierung kontrollieren."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV8GA6EG5HPYRKYQNSP",
+      "atom_uri": "urn:zam:atom:01M5T49AV8GA6EG5HPYRKYQNSP",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-wehrhaft",
+      "title": "Demokratie gegen Machtmissbrauch schützen",
+      "domain": "politik-und-gesellschaft/strukturen",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-wehrhaft",
+      "prerequisites": [
+        {
+          "atom_id": "01M5T49AV823K74R09416N23K0",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        },
+        {
+          "atom_id": "01M5T49AV8YGBCYVSCX13CYPFT",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "strukturen",
+          "topic_title": "Demokratie verstehen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb3",
+          "topic_title": "Politische Strukturen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8WQ9CS9W9HJ65Q5Z2",
+          "slug": "p10-wehrhaft-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was schützt Art. 79 Abs. 3 GG?",
+          "concept": "Einen Kern zentraler Verfassungsgrundsätze auch vor verfassungsändernden Mehrheiten.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-wehrhaft",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einen Kern zentraler Verfassungsgrundsätze auch vor verfassungsändernden Mehrheiten.",
+              "Jede bestehende politische Entscheidung für immer."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV8RTBREGZ9Q2W0P2T0",
+          "slug": "p10-wehrhaft-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wer entscheidet über ein Parteiverbot nach Art. 21 GG?",
+          "concept": "Das Bundesverfassungsgericht in einem dafür vorgesehenen Verfahren unter strengen Voraussetzungen.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-wehrhaft",
+          "sample_solution": "Das Bundesverfassungsgericht in einem dafür vorgesehenen Verfahren unter strengen Voraussetzungen."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV8Z8E789AMQP1P6HMV",
+      "atom_uri": "urn:zam:atom:01M5T49AV8Z8E789AMQP1P6HMV",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-bip",
+      "title": "Wirtschaft messen: das BIP",
+      "domain": "politik-und-gesellschaft/handlungsfelder",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-bip",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "handlungsfelder",
+          "topic_title": "Begründet entscheiden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb4",
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV88WCVVAXM545F5XN2",
+          "slug": "p10-bip-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Die produzierte Menge bleibt gleich, nur der Preis steigt. Wie verändert sich die reale Produktion?",
+          "concept": "Sie bleibt unverändert.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-bip",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie bleibt unverändert.",
+              "Sie wächst allein wegen des Preisanstiegs um 20 Prozent."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV8E8A4MP23WT1P13KA",
+          "slug": "p10-bip-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum unterscheidet man nominales und reales BIP?",
+          "concept": "Nominale Änderungen enthalten Preiseffekte; reale Änderungen sollen die Mengenentwicklung ohne diese Effekte zeigen.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-bip",
+          "sample_solution": "Nominale Änderungen enthalten Preiseffekte; reale Änderungen sollen die Mengenentwicklung ohne diese Effekte zeigen."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV8XZRFMP6D3J3NS1GH",
+      "atom_uri": "urn:zam:atom:01M5T49AV8XZRFMP6D3J3NS1GH",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-konjunktur",
+      "title": "Konjunktur als Modell verstehen",
+      "domain": "politik-und-gesellschaft/handlungsfelder",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-konjunktur",
+      "prerequisites": [
+        {
+          "atom_id": "01M5T49AV8Z8E789AMQP1P6HMV",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "handlungsfelder",
+          "topic_title": "Begründet entscheiden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb4",
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8CACN4A7YX7BRYQ9H",
+          "slug": "p10-konjunktur-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie beurteilst du die fiktive Datenlage am sinnvollsten?",
+          "concept": "Mehrere Indikatoren und zeitliche Verzögerungen gemeinsam prüfen.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-konjunktur",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mehrere Indikatoren und zeitliche Verzögerungen gemeinsam prüfen.",
+              "Eine hohe Preiszahl beweist allein einen Boom."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV8EQJE94GCRBSP28TZ",
+          "slug": "p10-konjunktur-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche vier Phasen unterscheidet das vereinfachte Konjunkturmodell?",
+          "concept": "Aufschwung, Hochkonjunktur, Abschwung und Tiefphase.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-konjunktur",
+          "sample_solution": "Aufschwung, Hochkonjunktur, Abschwung und Tiefphase."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV8VE49FEQN33GEVG1R",
+      "atom_uri": "urn:zam:atom:01M5T49AV8VE49FEQN33GEVG1R",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-fiskal",
+      "title": "Staatsausgaben, Steuern und Schulden",
+      "domain": "politik-und-gesellschaft/handlungsfelder",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-fiskal",
+      "prerequisites": [
+        {
+          "atom_id": "01M5T49AV8XZRFMP6D3J3NS1GH",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "handlungsfelder",
+          "topic_title": "Begründet entscheiden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb4",
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8TV66R2ZEPDWEHM9H",
+          "slug": "p10-fiskal-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was unterscheidet Defizit und Schuldenstand?",
+          "concept": "Defizit betrifft eine Periode, Schuldenstand einen aufgelaufenen Bestand.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-fiskal",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Defizit betrifft eine Periode, Schuldenstand einen aufgelaufenen Bestand.",
+              "Beide Wörter bedeuten stets dasselbe."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV83GEYH91H8HBN2BQB",
+          "slug": "p10-fiskal-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist die Grundidee antizyklischer Fiskalpolitik?",
+          "concept": "Staatliche Einnahmen und Ausgaben sollen Konjunkturschwankungen entgegenwirken, statt sie zu verstärken.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-fiskal",
+          "sample_solution": "Staatliche Einnahmen und Ausgaben sollen Konjunkturschwankungen entgegenwirken, statt sie zu verstärken."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV8SN2C0K176JGNZ528",
+      "atom_uri": "urn:zam:atom:01M5T49AV8SN2C0K176JGNZ528",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-leitzins",
+      "title": "Geldpolitik und Leitzins",
+      "domain": "politik-und-gesellschaft/handlungsfelder",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-leitzins",
+      "prerequisites": [
+        {
+          "atom_id": "01M5T49AV8XZRFMP6D3J3NS1GH",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "handlungsfelder",
+          "topic_title": "Begründet entscheiden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb4",
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8MXM36DCGEJ54N95H",
+          "slug": "p10-leitzins-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wer entscheidet über die Leitzinsen im Euroraum?",
+          "concept": "Der EZB-Rat.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-leitzins",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der EZB-Rat.",
+              "Jede Gemeinde für alle Eurostaaten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV80976YGJHY22HVBX0",
+          "slug": "p10-leitzins-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie können höhere Leitzinsen den Preisdruck beeinflussen?",
+          "concept": "Über häufig teurere Finanzierung können Nachfrage und Investitionen gedämpft werden; die Wirkung tritt verzögert und nicht sicher ein.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-leitzins",
+          "sample_solution": "Über häufig teurere Finanzierung können Nachfrage und Investitionen gedämpft werden; die Wirkung tritt verzögert und nicht sicher ein."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV8HVH717BX3ZGFD1JW",
+      "atom_uri": "urn:zam:atom:01M5T49AV8HVH717BX3ZGFD1JW",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-urteil",
+      "title": "Effizienz und Legitimität getrennt prüfen",
+      "domain": "politik-und-gesellschaft/handlungsfelder",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-urteil",
+      "prerequisites": [
+        {
+          "atom_id": "01M5T49AV75P2V7Z35DRYRT1X5",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "handlungsfelder",
+          "topic_title": "Begründet entscheiden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb4",
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8H3CWA6V0PWV2ZZZ8",
+          "slug": "p10-urteil-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Frage betrifft besonders die Legitimität?",
+          "concept": "Sind Rechte und demokratische Beteiligungsregeln gewahrt?",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-urteil",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sind Rechte und demokratische Beteiligungsregeln gewahrt?",
+              "Wie viele Kilowattstunden werden je Euro gespart?"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV8756AZ4RZ0NNCPGM3",
+          "slug": "p10-urteil-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum solltest du Effizienz und Legitimität getrennt beurteilen?",
+          "concept": "Eine Maßnahme kann wirtschaftlich wirksam sein und dennoch rechtlich oder demokratisch problematisch, oder umgekehrt.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-urteil",
+          "sample_solution": "Eine Maßnahme kann wirtschaftlich wirksam sein und dennoch rechtlich oder demokratisch problematisch, oder umgekehrt."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV8P3FAWCF0G7X3YPXA",
+      "atom_uri": "urn:zam:atom:01M5T49AV8P3FAWCF0G7X3YPXA",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-marktwirtschaft",
+      "title": "Soziale Marktwirtschaft und Zielkonflikte",
+      "domain": "politik-und-gesellschaft/handlungsfelder",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-marktwirtschaft",
+      "prerequisites": [
+        {
+          "atom_id": "01M5T49AV8HVH717BX3ZGFD1JW",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "handlungsfelder",
+          "topic_title": "Begründet entscheiden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb4",
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8JG3HFGADCVQQZAD2",
+          "slug": "p10-marktwirtschaft-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum können Umweltregeln in einer Marktwirtschaft begründet sein?",
+          "concept": "Weil Schäden für Dritte nicht vollständig im Marktpreis enthalten sein können.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-marktwirtschaft",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil Schäden für Dritte nicht vollständig im Marktpreis enthalten sein können.",
+              "Weil jeder Marktpreis automatisch alle Umweltschäden erfasst."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV88TZ8DZXZ5HSBT6JH",
+          "slug": "p10-marktwirtschaft-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist ein politischer Zielkonflikt?",
+          "concept": "Eine Maßnahme kann ein Ziel fördern und zugleich ein anderes beeinträchtigen, sodass begründete Abwägung nötig wird.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-marktwirtschaft",
+          "sample_solution": "Eine Maßnahme kann ein Ziel fördern und zugleich ein anderes beeinträchtigen, sodass begründete Abwägung nötig wird."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV85N5ENAH568FZGTWJ",
+      "atom_uri": "urn:zam:atom:01M5T49AV85N5ENAH568FZGTWJ",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-lebensqualitaet",
+      "title": "Mehr als wirtschaftliches Wachstum",
+      "domain": "politik-und-gesellschaft/handlungsfelder",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-lebensqualitaet",
+      "prerequisites": [
+        {
+          "atom_id": "01M5T49AV8Z8E789AMQP1P6HMV",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "handlungsfelder",
+          "topic_title": "Begründet entscheiden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb4",
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV8A5A67SMTNW1M6YA1",
+          "slug": "p10-lebensqualitaet-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum reicht das BIP nicht als vollständiges Maß für Lebensqualität?",
+          "concept": "Es erfasst Verteilung, Umwelt und Teilhabe nicht umfassend.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-lebensqualitaet",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es erfasst Verteilung, Umwelt und Teilhabe nicht umfassend.",
+              "Es zeigt zuverlässig jede persönliche Zufriedenheit."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV9CXKDVJ76RJ9X16D0",
+          "slug": "p10-lebensqualitaet-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was gehört zu einem nachvollziehbaren Urteil über Lebensqualität?",
+          "concept": "Mehrere Kriterien, passende Belege, Verteilungsfolgen und eine offengelegte Gewichtung.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-lebensqualitaet",
+          "sample_solution": "Mehrere Kriterien, passende Belege, Verteilungsfolgen und eine offengelegte Gewichtung."
+        }
+      ]
+    },
+    {
+      "id": "01M5T49AV9JVHQFN8HFRAFXPMP",
+      "atom_uri": "urn:zam:atom:01M5T49AV9JVHQFN8HFRAFXPMP",
+      "namespace": "zam-academy-politik-realschule-10",
+      "slug": "p10-frieden",
+      "title": "Friedenssicherung und internationale Verantwortung",
+      "domain": "politik-und-gesellschaft/handlungsfelder",
+      "reduction": "formal",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-frieden",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-realschule-10",
+          "topic_code": "handlungsfelder",
+          "topic_title": "Begründet entscheiden"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "pug",
+          "topic_code": "lb4",
+          "topic_title": "Politische, gesellschaftliche und wirtschaftliche Handlungsfelder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5T49AV9594AJJFQQEVMABBY",
+          "slug": "p10-frieden-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gehört zuerst zu einer begründeten Bewertung außenpolitischer Maßnahmen?",
+          "concept": "Rechtsgrundlage, Ziele, Lage und Folgen prüfen.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-frieden",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Rechtsgrundlage, Ziele, Lage und Folgen prüfen.",
+              "Jedes Instrument allein garantiert Frieden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5T49AV9NS78Y1AX8RS0NBT0",
+          "slug": "p10-frieden-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum sind UN, EU und NATO in einem Urteil zu unterscheiden?",
+          "concept": "Sie haben unterschiedliche Rechtsgrundlagen, Aufgaben und Entscheidungsverfahren und können verschiedene Handlungsmöglichkeiten bieten.",
+          "source_link": "https://academy.zam-os.org/politik-realschule-10/#lesson=p10-frieden",
+          "sample_solution": "Sie haben unterschiedliche Rechtsgrundlagen, Aufgaben und Entscheidungsverfahren und können verschiedene Handlungsmöglichkeiten bieten."
+        }
+      ]
+    }
+  ]
+}

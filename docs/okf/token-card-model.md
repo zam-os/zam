@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-25T20:37:00Z
+timestamp: 2026-10-26T06:00:20Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -204,16 +204,30 @@ learners in every new card at once. A concept appears in a learner's queue
 only after that card exists and the token is published. Installation,
 enrolment, and publication remain separate kernel steps.
 
+Curriculum bindings merge across cells: an omitted binding remains installed.
+An atom can explicitly withdraw a wrong published binding through
+`retired_curricula`. Each entry names the complete provider, school type,
+grade (or explicit `null`), track, subject and topic code, plus a reason.
+Missing scope fields and a simultaneous declaration of the same binding
+are refused. Installation removes only the exact rows, then adds current
+bindings in the same transaction. All existing practice items of the atom,
+including overlay items, receive the corrected legacy provider/topic
+projection. Cards and reviews are unchanged.
+
 `installed_tiles` (M048) records each installed tile's version, or its
 last failure. `reconcileInstalledBundledTiles` reinstalls the bundled tiles
-whose version changed (the Studio runs it once per start, a few at a time),
+whose version changed or whose explicit binding withdrawals are still pending
+(the Studio runs it once per start, a few at a time),
 so a fix that is only presentation — `materiality: "cosmetic"`, such as the
 formula migration — reaches every enrolled learner without making anyone
 relearn a card. A team library refuses it: there, tiles change only through
 `zam team reinstall-tiles`, run by the administrator. Reconcile never
 downgrades: versions compare as dotted numbers (`compareTileVersions`), and
 a tile recorded at a newer version — installed from the academy catalog —
-stays.
+stays. If an older kernel recorded the current tile version without
+understanding its withdrawals, `hasPendingCurriculumRetirements` makes
+reconciliation apply that correction once; a later start finds no pending
+row and skips it.
 
 A practice item may name a `source_link`; an item without one takes its
 atom's. Installing writes it to the token, so a card cites where its
@@ -329,22 +343,36 @@ review history. New Tier-2 siblings wait for their atom's initial Tier-1
 review under the normal review policy.
 
 Politik und Gesellschaft 10 Realschule is bundled as an additional Academy
-cell, version 2026.10.1, with 32 lessons and 64 practice items. Its official
-bindings use subject `pug`, grade 10 and all four learning areas without a
-track restriction, so discovery offers it to I, II, IIIa and IIIb alike.
-Its four lesson groups have 6 methods, 8 participation, 10 political
-structures and 8 political, social and economic action-field lessons.
-The knowledge atlas places them under Mensch & Gesellschaft → Politik und
-Gesellschaft in the corresponding four areas, with one shared subject hue.
+cell, version 2026.10.2, with 32 lessons and 64 practice items. Each lesson
+has one primary official binding using subject `pug`, grade 10 and its
+learning area, with no track restriction. Discovery offers it to I, II,
+IIIa and IIIb alike. The four areas contain 6 methods, 8 participation,
+10 political structures and 8 political, social and economic action-field
+lessons. The knowledge atlas places them under Mensch & Gesellschaft →
+Politik und Gesellschaft in the corresponding areas, with one shared
+subject hue also used for the official `pug` key.
 
-Each practice item links to its lesson in the training app; these links
-form one library topic. The cell declares neither `replaces` nor
-`retired_items` and replaces no earlier school cell. Installing it creates
-no personal cards. Taking it creates 64 unlearned cards for a learner who
-has none of its items yet, without changing existing geography, history or
-economics cards or their review histories. Repeated installation and
-enrolment changes no card state or review history. New Tier-2 siblings wait
-for their atom's initial Tier-1 review.
+The published timestamp is fixed and official bindings explicitly set
+`exam_relevant: false`. Bloom levels describe the actual retrieval:
+recalling facts is level 1, explaining relations level 2, and applying the
+percentage or quantity/price model level 3. The tier alone does not decide
+the Bloom level. Each item links to its training lesson; all lesson links
+form one library topic.
+
+Version 2026.10.2 explicitly withdraws the 42 surplus official bindings
+published in .1, which otherwise put all lessons into methods in the school
+atlas. The byte-exact .1 fixture is kept as the update regression source.
+The 96 identifiers, slugs and all card wording stay unchanged. Bloom
+classification corrections declare `materiality: "cosmetic"`, so existing
+schedules and review histories stay intact. The update also catches up
+withdrawals missed by older kernels even when .2 is already recorded.
+
+The cell declares neither `replaces` nor `retired_items` and replaces no
+earlier school cell. Installing it creates no personal cards. Taking it
+creates 64 unlearned cards for a learner who has none of its items yet,
+without changing existing geography, history or economics evidence.
+Repeated installation and enrolment changes no card state or review
+history. New Tier-2 siblings wait for their atom's initial Tier-1 review.
 
 Informatik 10 Realschule is bundled as an additional Academy cell, version
 2026.10.1, with 36 lessons and 72 practice items. It binds the five elective
@@ -458,13 +486,14 @@ exact successor declarations may preserve it, while ambiguous or materially
 changed mappings require real re-retrieval.
 
 # Citations
+- [ADR 2026-10-26 — Explicit Withdrawal of Published Curriculum Bindings](../adr/2026-10-26-curriculum-binding-withdrawals.md)
 - [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
-- Tests: `tests/kernel/zam-academy-politik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-deutsch-realschule-10-cell.test.ts`, `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`, `tests/kernel/academy-catalog.test.ts`, `tests/kernel/academy-cells-lock.test.ts`, `tests/kernel/tile-version.test.ts`, `tests/kernel/zam-academy-uml-cell.test.ts`, `tests/kernel/zam-academy-geographie-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-chemie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-7-cell.test.ts`, `tests/kernel/zam-academy-it-cells.test.ts`, `tests/kernel/zam-academy-informatik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-9-cell.test.ts`, `tests/cli/curriculum-lehrplanplus-bayern.test.ts`, `tests/cli/academy-sync-script.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-10-cell.test.ts`
+- Tests: `tests/kernel/kvt-card-text.test.ts`, `tests/kernel/zam-academy-politik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-deutsch-realschule-10-cell.test.ts`, `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`, `tests/kernel/academy-catalog.test.ts`, `tests/kernel/academy-cells-lock.test.ts`, `tests/kernel/tile-version.test.ts`, `tests/kernel/zam-academy-uml-cell.test.ts`, `tests/kernel/zam-academy-geographie-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-chemie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-7-cell.test.ts`, `tests/kernel/zam-academy-it-cells.test.ts`, `tests/kernel/zam-academy-informatik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-9-cell.test.ts`, `tests/cli/curriculum-lehrplanplus-bayern.test.ts`, `tests/cli/academy-sync-script.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-10-cell.test.ts`
 - Code: `src/kernel/atlas/weltwissen-seed.ts`, `src/kernel/atlas/palette.ts`, `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/library/topics.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/import/material-import.ts`, `src/kernel/library/academy-catalog.ts`, `src/kernel/library/tile-version.ts`, `scripts/sync-academy-cells.mjs`, `src/cli/curriculum/providers/lehrplanplus-bayern/manifest.ts`
 
 - [ADR 2026-03-26 — Personal Workflow Foundations](../adr/2026-03-26-personal-workflow-foundations.md)

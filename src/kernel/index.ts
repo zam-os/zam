@@ -603,12 +603,14 @@ export type {
   InstallKvtResult,
   KvtAtom,
   KvtPracticeItem,
+  KvtRetiredCurriculumBinding,
   KvtRetiredItem,
   KvtTile,
   MaterialiseKvtResult,
 } from "./library/kvt-attach.js";
 export {
   ATOM_ID_PATTERN,
+  hasPendingCurriculumRetirements,
   installKvtTile,
   kvtItemPlainTexts,
   materialiseKvtCards,
