@@ -99,6 +99,8 @@ describe("registered Git worktrees inherit project roots", () => {
     const sibling = worktree(join(base, "sibling"));
     const privateDir = admin(linked);
     // Git's --relative-paths format, without requiring a recent Git executable in CI.
+    // Replace Git's hidden .git file: Windows refuses to truncate it with flag "w".
+    rmSync(join(linked, ".git"));
     writeFileSync(
       join(linked, ".git"),
       `gitdir: ${relative(linked, privateDir)}\n`,
@@ -142,10 +144,10 @@ describe("registered Git worktrees inherit project roots", () => {
     (link) => {
       const linked = worktree(join(base, "linked"));
       const valid = worktree(join(base, "valid"));
-      writeFileSync(
-        link === ".git" ? join(linked, link) : join(admin(linked), link),
-        "not-this-registration\n",
-      );
+      const pointer =
+        link === ".git" ? join(linked, link) : join(admin(linked), link);
+      rmSync(pointer);
+      writeFileSync(pointer, "not-this-registration\n");
       expect(canonicalRoots([repo]).sort()).toEqual([repo, valid].sort());
     },
   );
