@@ -4,6 +4,7 @@
  * write can never become an agent instruction file.
  */
 
+import { execFileSync } from "node:child_process";
 import {
   existsSync,
   mkdirSync,
@@ -16,15 +17,19 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
+import { ListRootsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createMcpServer } from "../../src/cli/commands/mcp.js";
 import { upsertArticle } from "../../src/cli/okf/io.js";
 import {
   addTrustedFolder,
   type Database,
+  getTrustedFolders,
   openDatabase,
+  removeTrustedFolder,
 } from "../../src/kernel/index.js";
 
 function article(title: string): string {
@@ -51,10 +56,12 @@ describe("OKF tools stay inside allowed roots (ADR 2026-10-08b D1)", () => {
   let db: Database;
   let server: ReturnType<typeof createMcpServer>;
   let client: Client;
+  let reportedRoots: string[];
   const saved: Record<string, string | undefined> = {};
 
   beforeEach(async () => {
     base = realpathSync.native(mkdtempSync(join(tmpdir(), "zam-okf-d1-")));
+    reportedRoots = [];
     saved.ZAM_CONFIG_PATH = process.env.ZAM_CONFIG_PATH;
     process.env.ZAM_CONFIG_PATH = join(base, "config.json");
     repo = join(base, "repo");
@@ -65,7 +72,11 @@ describe("OKF tools stay inside allowed roots (ADR 2026-10-08b D1)", () => {
     mkdirSync(bundle, { recursive: true });
     mkdirSync(join(outsideDir, "docs", "okf"), { recursive: true });
     upsertArticle(bundle, "first.md", article("First"));
-    upsertArticle(join(outsideDir, "docs", "okf"), "theirs.md", article("Theirs"));
+    upsertArticle(
+      join(outsideDir, "docs", "okf"),
+      "theirs.md",
+      article("Theirs"),
+    );
     writeFileSync(join(outsideDir, "secret.md"), "outside secret");
 
     db = await openDatabase({
@@ -76,7 +87,13 @@ describe("OKF tools stay inside allowed roots (ADR 2026-10-08b D1)", () => {
     server = createMcpServer(db);
     const [clientTransport, serverTransport] =
       InMemoryTransport.createLinkedPair();
-    client = new Client({ name: "test-client", version: "1.0.0" });
+    client = new Client(
+      { name: "test-client", version: "1.0.0" },
+      { capabilities: { roots: { listChanged: true } } },
+    );
+    client.setRequestHandler(ListRootsRequestSchema, async () => ({
+      roots: reportedRoots.map((root) => ({ uri: pathToFileURL(root).href })),
+    }));
     await Promise.all([
       client.connect(clientTransport),
       server.connect(serverTransport),
@@ -97,8 +114,127 @@ describe("OKF tools stay inside allowed roots (ADR 2026-10-08b D1)", () => {
       isError?: boolean;
       content: Array<{ text: string }>;
     };
-    return { isError: response.isError === true, text: response.content[0].text };
+    return {
+      isError: response.isError === true,
+      text: response.content[0].text,
+    };
   }
+
+  function git(...args: string[]) {
+    return execFileSync(
+      "git",
+      [
+        "-c",
+        "core.fsmonitor=false",
+        "-c",
+        `core.hooksPath=${join(base, "no-hooks")}`,
+        "-c",
+        "user.name=ZAM Test",
+        "-c",
+        "user.email=zam-test@example.invalid",
+        "-C",
+        repo,
+        ...args,
+      ],
+      { stdio: "pipe" },
+    );
+  }
+
+  it("upserts a client's registered worktree bundle under a hidden host directory", async () => {
+    git("init", "-q");
+    git("commit", "--allow-empty", "-qm", "seed");
+    const linked = join(base, ".codex", "worktrees", "lesson");
+    git("worktree", "add", "--detach", linked, "HEAD");
+    reportedRoots = [repo];
+    const linkedBundle = join(linked, "docs", "okf");
+    const written = await call("zam_okf_upsert", {
+      bundle_dir: linkedBundle,
+      file: "worktree.md",
+      markdown: article("Worktree"),
+    });
+    expect(written.isError, written.text).toBe(false);
+    expect(readFileSync(join(linkedBundle, "worktree.md"), "utf8")).toContain(
+      "title: Worktree",
+    );
+    const read = await call("zam_okf_read", {
+      bundle_dir: linkedBundle,
+      file: "worktree.md",
+    });
+    expect(read.isError, read.text).toBe(false);
+    expect(getTrustedFolders()).toEqual([]);
+    const refused = await call("zam_okf_upsert", {
+      bundle_dir: join(outsideDir, "docs", "okf"),
+      file: "worktree.md",
+      markdown: article("Outside"),
+    });
+    expect(refused.isError).toBe(true);
+    expect(existsSync(join(outsideDir, "docs", "okf", "worktree.md"))).toBe(
+      false,
+    );
+  });
+
+  it("sees a newly registered worktree in the same MCP connection without storing extra trust", async () => {
+    git("init", "-q");
+    git("commit", "--allow-empty", "-qm", "seed");
+    addTrustedFolder(repo);
+    const before = readFileSync(process.env.ZAM_CONFIG_PATH!, "utf8");
+    expect((await call("zam_okf_catalog", {})).isError).toBe(false);
+    const linked = join(base, "later-checkout");
+    git("worktree", "add", "--detach", linked, "HEAD");
+    const written = await call("zam_okf_upsert", {
+      bundle_dir: join(linked, "docs", "okf"),
+      file: "later.md",
+      markdown: article("Later"),
+    });
+    expect(written.isError, written.text).toBe(false);
+    expect(getTrustedFolders()).toEqual([repo]);
+    expect(readFileSync(process.env.ZAM_CONFIG_PATH!, "utf8")).toBe(before);
+  });
+
+  it.each(["client", "trusted"])(
+    "keeps the default bundle at the %s root when only a linked worktree has one",
+    async (source) => {
+      git("init", "-q");
+      git("commit", "--allow-empty", "-qm", "seed");
+      const linked = join(base, ".codex", "worktrees", "lesson");
+      git("worktree", "add", "--detach", linked, "HEAD");
+      const linkedBundle = join(linked, "docs", "okf");
+      upsertArticle(linkedBundle, "linked.md", article("Linked"));
+      rmSync(bundle, { recursive: true });
+      if (source === "client") reportedRoots = [repo];
+      else addTrustedFolder(repo);
+
+      const missing = await call("zam_okf_catalog", {});
+      expect(missing.isError, missing.text).toBe(true);
+      expect(JSON.parse(missing.text).error).toContain(bundle);
+
+      const written = await call("zam_okf_upsert", {
+        file: "default.md",
+        markdown: article("Default"),
+      });
+      expect(written.isError, written.text).toBe(false);
+      expect(existsSync(join(bundle, "default.md"))).toBe(true);
+      expect(existsSync(join(linkedBundle, "default.md"))).toBe(false);
+      const catalog = await call("zam_okf_catalog", {});
+      expect(catalog.isError, catalog.text).toBe(false);
+      expect(JSON.parse(catalog.text).dir).toBe(bundle);
+
+      const explicit = await call("zam_okf_catalog", {
+        bundle_dir: linkedBundle,
+      });
+      expect(explicit.isError, explicit.text).toBe(false);
+      expect(JSON.parse(explicit.text).dir).toBe(linkedBundle);
+
+      if (source === "client") reportedRoots = [linked];
+      else {
+        removeTrustedFolder(repo);
+        addTrustedFolder(linked);
+      }
+      const selected = await call("zam_okf_catalog", {});
+      expect(selected.isError, selected.text).toBe(false);
+      expect(JSON.parse(selected.text).dir).toBe(linkedBundle);
+    },
+  );
 
   it("refuses every bundle while nothing is trusted and no root is reported", async () => {
     const res = await call("zam_okf_catalog", {});
@@ -110,7 +246,9 @@ describe("OKF tools stay inside allowed roots (ADR 2026-10-08b D1)", () => {
     addTrustedFolder(repo);
     const catalog = await call("zam_okf_catalog", {});
     expect(catalog.isError).toBe(false);
-    expect(JSON.parse(catalog.text).articles ?? JSON.parse(catalog.text)).toBeDefined();
+    expect(
+      JSON.parse(catalog.text).articles ?? JSON.parse(catalog.text),
+    ).toBeDefined();
 
     const written = await call("zam_okf_upsert", {
       file: "second.md",
@@ -135,7 +273,9 @@ describe("OKF tools stay inside allowed roots (ADR 2026-10-08b D1)", () => {
       markdown: article("Planted"),
     });
     expect(write.isError).toBe(true);
-    expect(existsSync(join(outsideDir, "docs", "okf", "planted.md"))).toBe(false);
+    expect(existsSync(join(outsideDir, "docs", "okf", "planted.md"))).toBe(
+      false,
+    );
   });
 
   it.each(["CLAUDE.md", "AGENTS.md", "gemini.md", "README.md"])(
@@ -201,7 +341,9 @@ describe("OKF tools stay inside allowed roots (ADR 2026-10-08b D1)", () => {
     expect(read.isError).toBe(true);
     expect(read.text).not.toContain("outside secret");
     const catalog = await call("zam_okf_catalog", {});
-    expect(catalog.text).toContain("linked.md: links to a file outside the bundle");
+    expect(catalog.text).toContain(
+      "linked.md: links to a file outside the bundle",
+    );
     expect(catalog.text).not.toContain("outside secret");
   });
 
@@ -221,7 +363,9 @@ describe("OKF tools stay inside allowed roots (ADR 2026-10-08b D1)", () => {
 
   it("writes a knowledge map only inside an allowed root", async () => {
     addTrustedFolder(repo);
-    const config = JSON.parse(readFileSync(process.env.ZAM_CONFIG_PATH!, "utf8"));
+    const config = JSON.parse(
+      readFileSync(process.env.ZAM_CONFIG_PATH!, "utf8"),
+    );
     config.knowledgeMap = { enabled: true };
     writeFileSync(process.env.ZAM_CONFIG_PATH!, JSON.stringify(config));
     // A server started after the alpha switch registers the map tools.

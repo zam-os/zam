@@ -3,7 +3,8 @@
  * the model endpoints this device sends keys to (D5).
  *
  * Source links and agent tools read files only inside the folders trusted
- * here and the agent app's own workspace folders. A model row's key goes only
+ * here and the agent app's own workspace folders, including registered
+ * worktrees of a whole allowed checkout. A model row's key goes only
  * to the endpoint this device confirmed for it. Learner commands only: no
  * bridge command for the Studio panel and no MCP tool can trust a folder or
  * confirm an endpoint.

@@ -749,8 +749,9 @@
       "parent": "untrusted-callers",
       "label": "Trusted folders",
       "link": "confine files to",
-      "text": "Tools read files only inside the agent's workspace folders and the folders the learner trusted.",
+      "text": "Tools read files inside client workspace folders, learner-trusted folders and reciprocally registered worktrees of those repositories.",
       "sources": [
+        "docs/adr/2026-10-26-registered-worktree-paths.md",
         "src/kernel/system/trusted-paths.ts"
       ]
     },

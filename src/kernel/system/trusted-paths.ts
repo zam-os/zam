@@ -4,14 +4,17 @@
  * One resolver decides every path that a tool argument or a stored link
  * names. A path is usable only inside an allowed root: the MCP client's roots
  * and the folders the learner trusts in `~/.zam/config.json`
- * (`trustedFolders[]`). A drive root, the home directory or any ancestor of
- * it is never a root, whatever its source.
+ * (`trustedFolders[]`), including reciprocally registered worktrees of a
+ * whole allowed checkout. A drive root, the home directory or any ancestor
+ * of it is never a root, whatever its source.
  */
 import {
   closeSync,
   existsSync,
   fstatSync,
+  lstatSync,
   openSync,
+  readdirSync,
   readSync,
   realpathSync,
   statSync,
@@ -94,6 +97,111 @@ function realPath(path: string): string {
   return realpathSync.native(path);
 }
 
+/** Git's linking records are small regular files, never symlink targets. */
+function gitMetadataLine(file: string): string | undefined {
+  let fd: number | undefined;
+  try {
+    const checked = lstatSync(file);
+    if (!checked.isFile() || checked.size > 8192) return;
+    fd = openSync(file, "r");
+    const opened = fstatSync(fd);
+    if (
+      !opened.isFile() ||
+      opened.size > 8192 ||
+      opened.dev !== checked.dev ||
+      opened.ino !== checked.ino
+    )
+      return;
+    const buffer = Buffer.alloc(opened.size);
+    let offset = 0;
+    while (offset < buffer.length) {
+      const count = readSync(
+        fd,
+        buffer,
+        offset,
+        buffer.length - offset,
+        offset,
+      );
+      if (!count) break;
+      offset += count;
+    }
+    const line = buffer.subarray(0, offset).toString("utf8").trim();
+    return line && !/[\r\n\0]/.test(line) ? line : undefined;
+  } catch {
+    return;
+  } finally {
+    if (fd !== undefined) closeSync(fd);
+  }
+}
+
+function gitfileDirectory(file: string): string | undefined {
+  const match = /^gitdir: (.+)$/.exec(gitMetadataLine(file) ?? "");
+  if (!match) return;
+  try {
+    const dir = realPath(resolve(dirname(file), match[1]));
+    return statSync(dir).isDirectory() ? dir : undefined;
+  } catch {
+    return;
+  }
+}
+
+/**
+ * Require Git's three reciprocal links: common-dir registration -> .git
+ * file -> that registration, plus commondir -> this repository. A .git
+ * file supplied by a target alone cannot grant access to that target.
+ */
+function registeredWorktree(admin: string, common: string): string | undefined {
+  try {
+    const back = gitMetadataLine(join(admin, "gitdir"));
+    const shared = gitMetadataLine(join(admin, "commondir"));
+    if (!back || !shared || !samePath(realPath(resolve(admin, shared)), common))
+      return;
+    const marker = resolve(admin, back);
+    if (basename(marker) !== ".git") return;
+    const root = realPath(dirname(marker));
+    if (!statSync(root).isDirectory() || !isAcceptableRoot(root)) return;
+    const linked = gitfileDirectory(join(root, ".git"));
+    return linked && samePath(linked, admin) ? root : undefined;
+  } catch {
+    return;
+  }
+}
+
+/** Derive only from a whole allowed checkout, never from one of its subfolders. */
+function registeredWorktrees(root: string): string[] {
+  try {
+    const marker = join(root, ".git");
+    const info = lstatSync(marker);
+    let common: string;
+    if (info.isDirectory()) {
+      common = realPath(marker);
+      if (!samePath(common, marker)) return [];
+    } else if (info.isFile()) {
+      const admin = gitfileDirectory(marker);
+      if (!admin || basename(dirname(admin)) !== "worktrees") return [];
+      common = dirname(dirname(admin));
+      if (!samePath(registeredWorktree(admin, common) ?? "", root)) return [];
+    } else return [];
+
+    const registry = join(common, "worktrees");
+    if (
+      !lstatSync(registry).isDirectory() ||
+      !samePath(realPath(registry), registry)
+    )
+      return [];
+    const result: string[] = [];
+    for (const entry of readdirSync(registry, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const admin = join(registry, entry.name);
+      const worktree = registeredWorktree(admin, common);
+      if (worktree) result.push(worktree);
+    }
+    return result;
+  } catch {
+    return [];
+  }
+}
+
 /**
  * Whether a folder may be an allowed root: never a drive root, the home
  * directory or an ancestor of it.
@@ -114,10 +222,23 @@ export function isAcceptableRoot(dir: string, home = homedir()): boolean {
 }
 
 /**
+ * How many leading entries of a canonicalRoots() result were named directly;
+ * derived worktrees follow them. A relative path resolves only against the
+ * direct roots, so it never lands in whichever checkout readdir lists first.
+ */
+const directRootCount = new WeakMap<readonly string[], number>();
+
+/**
  * Canonical allowed roots from any mix of paths and `file:` URIs: existing
  * directories only, real paths, acceptable roots only, no duplicates.
+ * A whole checkout includes its reciprocally registered linked worktrees.
+ * Disable that expansion when choosing defaults only from explicit roots.
+ * This derives project roots afresh; it never changes trustedFolders.
  */
-export function canonicalRoots(candidates: Iterable<string>): string[] {
+export function canonicalRoots(
+  candidates: Iterable<string>,
+  { includeWorktrees = true }: { includeWorktrees?: boolean } = {},
+): string[] {
   const roots: string[] = [];
   for (const candidate of candidates) {
     if (!candidate) continue;
@@ -134,6 +255,16 @@ export function canonicalRoots(candidates: Iterable<string>): string[] {
     const real = realPath(dir);
     if (!roots.some((root) => samePath(root, real))) roots.push(real);
   }
+  const direct = roots.length;
+  if (includeWorktrees) {
+    for (const root of [...roots]) {
+      for (const worktree of registeredWorktrees(root)) {
+        if (!roots.some((existing) => samePath(existing, worktree)))
+          roots.push(worktree);
+      }
+    }
+  }
+  directRootCount.set(roots, direct);
   return roots;
 }
 
@@ -214,10 +345,24 @@ export interface ResolvedTrustedPath {
   root: string;
 }
 
+/** A registered checkout inside .codex/.claude is its own hidden-path boundary. */
+function containingRoot(
+  roots: readonly string[],
+  target: string,
+): string | undefined {
+  return roots.reduce<string | undefined>(
+    (best, root) =>
+      isInside(root, target) && (!best || root.length > best.length)
+        ? root
+        : best,
+    undefined,
+  );
+}
+
 /**
  * Resolve a path inside the allowed roots. An absolute path must lie in a
- * root; a relative one is tried against each root in turn, never against the
- * working directory. Symlinks and junctions are resolved before the check.
+ * root; a relative one is tried against each directly named root in turn,
+ * never against a derived worktree or the working directory. Symlinks and junctions are resolved before the check.
  * With `mustExist: false`, a missing file resolves through its parent folder.
  */
 export function resolveTrustedPath(
@@ -236,14 +381,16 @@ export function resolveTrustedPath(
   }
   const candidates = isAbsolute(target)
     ? [resolve(target)]
-    : roots.map((root) => resolve(root, target));
+    : roots
+        .slice(0, directRootCount.get(roots) ?? roots.length)
+        .map((root) => resolve(root, target));
 
   // Only the real path decides: symlinks, junctions and aliases such as
   // macOS's /var → /private/var are resolved before any containment check.
   for (const candidate of candidates) {
     if (existsSync(candidate)) {
       const real = realPath(candidate);
-      const root = roots.find((r) => isInside(r, real));
+      const root = containingRoot(roots, real);
       if (root) return { path: real, root };
       continue;
     }
@@ -251,7 +398,7 @@ export function resolveTrustedPath(
     const parent = dirname(candidate);
     if (!existsSync(parent)) continue;
     const realParent = realPath(parent);
-    const root = roots.find((r) => isInside(r, realParent));
+    const root = containingRoot(roots, realParent);
     if (root) return { path: join(realParent, basename(candidate)), root };
   }
   throw outside(target);
