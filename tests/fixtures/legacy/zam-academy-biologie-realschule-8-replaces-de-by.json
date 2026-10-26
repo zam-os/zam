@@ -1,0 +1,152 @@
+{
+  "schema": 1,
+  "status": "proposal-only",
+  "approved": null,
+  "source": "Autorenabgleich am 2026-10-26, nach Review konservativ auf 0 A / 0 B / 16 C korrigiert; keine Freigabe durch Thomas und keine History-Änderung in dieser Zelle.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "0370098ff1fb50ba130984c4b16612bd509d680e",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-8-biologie-atmung-blutkreislauf-kvt.json",
+      "tile_id": "de-by:realschule-8-biologie-atmung-blutkreislauf",
+      "version": "2026.08.1",
+      "sha256": "c450c7b571865bdecf59232e43ddc21402f0d0330ef2bb38494acfcbb60dde74"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-8-biologie-ernaehrung-verdauung-kvt.json",
+      "tile_id": "de-by:realschule-8-biologie-ernaehrung-verdauung",
+      "version": "2026.08.1",
+      "sha256": "a2c0eff9c6793ab75cc35e6b91a89523d57c0f8218f5021736449db7d9c95b2e"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-atmung-blutkreislauf",
+      "de_by_id": "01K4B8A0000000000000000J01",
+      "de_by_question": "An welchen mikroskopisch kleinen Strukturen der Lunge findet der Gasaustausch (Aufnahme von O_2 und Abgabe von CO_2) ins Blut statt?",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Der alte Abruf behandelt entweder Atmung/Kreislauf außerhalb dieses Kurses oder mehrere Teilkompetenzen; die neue einzelne Frage ist kein identischer Gesamtabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-atmung-blutkreislauf",
+      "de_by_id": "01K4B8A0000000000000000J02",
+      "de_by_question": "Beschreibe den Atemweg der Luft (Nase, Rachen, Kehlkopf, Luftröhre, Bronchien, Bronchiolen, Alveolen), vergleiche Brust- und Bauchatmung (Zwerchfell- und Zwischenrippenmuskeln) und erkläre den physikalischen Mechanismus des Gasaustauschs an der Alveolenmembran durch Diffusion entlang des Partialdruckgefälles.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Der alte Abruf behandelt entweder Atmung/Kreislauf außerhalb dieses Kurses oder mehrere Teilkompetenzen; die neue einzelne Frage ist kein identischer Gesamtabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-atmung-blutkreislauf",
+      "de_by_id": "01K4B8A0000000000000000J03",
+      "de_by_question": "Welche Blutzellen enthalten den roten Blutfarbstoff Hämoglobin und transportieren Sauerstoff im Körper?",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Der alte Abruf nennt zusätzlich den roten Blutfarbstoff Hämoglobin; b8-blut-check fragt nur nach dem Sauerstofftransport und antwortet ohne Hämoglobin. Thematisch verwandt, aber kein sicher identischer Abruf. b8-blut-check bleibt lediglich ein später zu prüfender Kandidat in dieser Notiz; kein replaces und keine Stilllegung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-atmung-blutkreislauf",
+      "de_by_id": "01K4B8A0000000000000000J04",
+      "de_by_question": "Erstelle eine Übersicht über die Zusammensetzung des Blutes (ca. 55 % Blutplasma, ca. 45 % Blutzellen), charakterisiere Erythrozyten, Leukozyten und Thrombozyten hinsichtlich Bau und Funktion und beschreibe die drei Schritte der Blutstillung und Blutgerinnung (Vasokonstriktion, Thrombozytenpfropf, Fibrinfadengerüst).",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Der alte Abruf behandelt entweder Atmung/Kreislauf außerhalb dieses Kurses oder mehrere Teilkompetenzen; die neue einzelne Frage ist kein identischer Gesamtabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-atmung-blutkreislauf",
+      "de_by_id": "01K4B8A0000000000000000J05",
+      "de_by_question": "Aus welcher Herzkammer wird das sauerstoffreiche Blut über die Hauptschlagader (Aorta) mit hohem Druck in den großen Körperkreislauf gepumpt?",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Der alte Abruf behandelt entweder Atmung/Kreislauf außerhalb dieses Kurses oder mehrere Teilkompetenzen; die neue einzelne Frage ist kein identischer Gesamtabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-atmung-blutkreislauf",
+      "de_by_id": "01K4B8A0000000000000000J06",
+      "de_by_question": "Zeichne und beschreibe den Weg eines roten Blutkörperchens durch den doppelten Blutkreislauf (Körperkreislauf und Lungenkreislauf), benenne alle vier Herzhöhlen und Klappenarten (Segel- und Taschenklappen) und begründe, warum die Muskulatur der linken Herzkammer deutlich dicker ist als die der rechten.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Der alte Abruf behandelt entweder Atmung/Kreislauf außerhalb dieses Kurses oder mehrere Teilkompetenzen; die neue einzelne Frage ist kein identischer Gesamtabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-atmung-blutkreislauf",
+      "de_by_id": "01K4B8A0000000000000000J07",
+      "de_by_question": "Was wird dem Körper bei einer aktiven Immunisierung (Schutzimpfung, z. B. gegen Masern oder Tetanus) verabreicht?",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Der alte Abruf behandelt entweder Atmung/Kreislauf außerhalb dieses Kurses oder mehrere Teilkompetenzen; die neue einzelne Frage ist kein identischer Gesamtabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-atmung-blutkreislauf",
+      "de_by_id": "01K4B8A0000000000000000J08",
+      "de_by_question": "Erkläre das Schlüssel-Schloss-Prinzip der Antigen-Antikörper-Reaktion, unterscheide die unspezifische (Fresszellen / Makrophagen) von der spezifischen Immunabwehr (B- und T-Lymphozyten, Plasmazellen, Antikörper) und stelle die Vor- und Nachteile der aktiven vs. passiven Immunisierung (Heilimpfung) in einer Übersicht gegenüber.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Der alte Abruf behandelt entweder Atmung/Kreislauf außerhalb dieses Kurses oder mehrere Teilkompetenzen; die neue einzelne Frage ist kein identischer Gesamtabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-ernaehrung-verdauung",
+      "de_by_id": "01K4B8V0000000000000000J01",
+      "de_by_question": "Mit welchem Reagenz lässt sich Stärke (Polysaccharid) durch eine charakteristische intensive Blauschwarzfärbung nachweisen?",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Ernährung, Verdauung oder Enzymatik liegt außerhalb des neuen Biologie-8-Kursumfangs; kein sicherer gleicher Abruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-ernaehrung-verdauung",
+      "de_by_id": "01K4B8V0000000000000000J02",
+      "de_by_question": "Charakterisiere die drei Grundnährstoffe (Kohlenhydrate, Proteine/Eiweiße, Lipide/Fette) bezüglich ihrer molekularen Bausteine, physiologischen Hauptfunktionen (Betriebsstoff vs. Baustoff) und beschreibe die schulischen Labornachweise für Stärke, einfache Zucker (Fehling-Probe) und Proteine (Biuret- oder Xanthoproteinreaktion).",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Ernährung, Verdauung oder Enzymatik liegt außerhalb des neuen Biologie-8-Kursumfangs; kein sicherer gleicher Abruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-ernaehrung-verdauung",
+      "de_by_id": "01K4B8V0000000000000000J03",
+      "de_by_question": "Welche Hauptaufgabe erfüllt der Dickdarm im menschlichen Verdauungssystem?",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Ernährung, Verdauung oder Enzymatik liegt außerhalb des neuen Biologie-8-Kursumfangs; kein sicherer gleicher Abruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-ernaehrung-verdauung",
+      "de_by_id": "01K4B8V0000000000000000J04",
+      "de_by_question": "Verfolge den Weg des Speisebreis durch die Stationen des Verdauungstrakts (Mundhöhle, Speiseröhre mit Peristaltik, Magen, Zwölffingerdarm/Dünndarm, Dickdarm, Enddarm) und erläutere die jeweilige mechanische und chemische Funktion der einzelnen Organabschnitte.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Ernährung, Verdauung oder Enzymatik liegt außerhalb des neuen Biologie-8-Kursumfangs; kein sicherer gleicher Abruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-ernaehrung-verdauung",
+      "de_by_id": "01K4B8V0000000000000000J05",
+      "de_by_question": "In welchem pH-Optimum arbeitet das Protein-Spaltungsenzym Pepsin im Magen am effektivsten?",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Ernährung, Verdauung oder Enzymatik liegt außerhalb des neuen Biologie-8-Kursumfangs; kein sicherer gleicher Abruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-ernaehrung-verdauung",
+      "de_by_id": "01K4B8V0000000000000000J06",
+      "de_by_question": "Erkläre die Grundprinzipien von Enzymen als Biokatalysatoren (Substratspezifität, Wirkungsspezifität, Schlüssel-Schloss-Prinzip, pH- und Temperaturoptimum, irreversible thermische Denaturierung) und stelle die enzymatische Spaltung der drei Hauptnährstoffe (Enzyme, Bildungsort, Wirkort, Spaltprodukte) tabellarisch zusammen.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Ernährung, Verdauung oder Enzymatik liegt außerhalb des neuen Biologie-8-Kursumfangs; kein sicherer gleicher Abruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-ernaehrung-verdauung",
+      "de_by_id": "01K4B8V0000000000000000J07",
+      "de_by_question": "Durch welches biologische Konstruktionsprinzip erreicht der menschliche Dünndarm eine gigantische Resorptionsfläche von ca. 200 m² auf nur ca. 4 bis 5 Metern Länge?",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Ernährung, Verdauung oder Enzymatik liegt außerhalb des neuen Biologie-8-Kursumfangs; kein sicherer gleicher Abruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-biologie-ernaehrung-verdauung",
+      "de_by_id": "01K4B8V0000000000000000J08",
+      "de_by_question": "Beschreibe das biologische Prinzip der Oberflächenvergrößerung am Beispiel des Dünndarms (Falten, Zotten mit Blutkapillaren und zentralem Lymphgefäß, Mikrovilli), erkläre den Unterschied zwischen Grundumsatz und Leistungsumsatz beim menschlichen Energiebedarf und berechne den Tagesgesamtenergiebedarf eines Jugendlichen mit Grundumsatz 6500 kJ und Leistungsumsatz 3500 kJ.",
+      "category": "C",
+      "academy_slug": null,
+      "note": "Ernährung, Verdauung oder Enzymatik liegt außerhalb des neuen Biologie-8-Kursumfangs; kein sicherer gleicher Abruf."
+    }
+  ]
+}

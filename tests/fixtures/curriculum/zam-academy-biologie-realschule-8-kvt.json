@@ -1,0 +1,1928 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:biologie-realschule-8",
+  "version": "2026.10.2",
+  "title": "Biologie 8 Realschule (ZAM Academy)",
+  "description": "30 interaktive Lektionen und 60 gezielte Wiederholungsfragen zu allen fünf Lernbereichen von Biologie 8, Realschule Bayern. Vier digitale Modelle, Aufgaben auf zwei Stufen und druckbare Unterlagen. Praktisches Arbeiten und Unterrichtsfeedback ergänzen den Kurs. Ohne Lernstandsübertragung.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/biologie",
+      "label": "ISB · LehrplanPLUS Biologie 8 Realschule",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.pei.de/DE/service/faq/arzneimittel/faq-impfstoffe-inhalt.html",
+      "label": "Paul-Ehrlich-Institut · aktive und passive Immunisierung",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.kbv.de/praxis/verordnungen/arzneimittel/antibiotika",
+      "label": "Kassenärztliche Bundesvereinigung · Antibiotika",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://gesund.bund.de/allergien",
+      "label": "Bundesgesundheitsportal · Allergien",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.bundesgesundheitsministerium.de/service/begriffe-von-a-z/a/hiv-und-aids/",
+      "label": "Bundesgesundheitsministerium · HIV und AIDS",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.loveline.de/themen/verhuetung/",
+      "label": "BIÖG · Loveline: sachliche Informationen zu Entwicklung und Verhütung",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.ukgm.de/ugm_2/deu/umr_gyn/65275.html",
+      "label": "Universitätsklinikum Gießen und Marburg · Zyklusbeobachtung",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.familienplanung.de/service/lexikon/plazenta/",
+      "label": "BIÖG · Plazenta",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.familienplanung.de/verhuetung/verhuetungsmethoden/kondom/",
+      "label": "BIÖG · Kondom: Funktion und Grenzen",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.loveline.de/fileadmin/loveline/PDF/BZGA-21-04715_S_T_Pille_Kondom_und_Co_BFREI.pdf",
+      "label": "BIÖG · Pille, Kondom und Co.",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.genome.gov/genetics-glossary/Evolution",
+      "label": "NIH / NHGRI · Evolution",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.nhm.ac.uk/discover/dino-directory/archaeopteryx.html",
+      "label": "Natural History Museum · Archaeopteryx",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://humanorigins.si.edu/human-characteristics/walking-upright",
+      "label": "Smithsonian · Belege zum aufrechten Gang",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://hivinfo.nih.gov/understanding-hiv/fact-sheets/drug-resistance",
+      "label": "NIH · HIV-Varianten und Arzneimittelresistenz",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://hivinfo.nih.gov/understanding-hiv/fact-sheets/hiv-treatment-basics",
+      "label": "NIH · Grundprinzip kombinierter HIV-Behandlung",
+      "checked": "2026-10-26"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5VCSHM2GYSFC47182MB7BDB",
+      "atom_uri": "urn:zam:atom:01M5VCSHM2GYSFC47182MB7BDB",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-fragen",
+      "title": "Von einer Beobachtung zur prüfbaren Frage",
+      "domain": "biologie/methoden",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-fragen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "methoden",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM312D4SBFWZDH4DGRX",
+          "slug": "b8-fragen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist eine prüfbare biologische Hypothese?",
+          "concept": "Mehr Licht kann unter gleichen Bedingungen das Algenwachstum erhöhen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-fragen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mehr Licht kann unter gleichen Bedingungen das Algenwachstum erhöhen.",
+              "Ein grüner Teich ist grundsätzlich immer ein ökologisch schlechter Teich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM310E4DJM8RQC5CCHA",
+          "slug": "b8-fragen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet eine Beobachtung von einer Hypothese?",
+          "concept": "Eine Beobachtung beschreibt Wahrgenommenes; eine Hypothese ist eine überprüfbare mögliche Erklärung.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-fragen",
+          "sample_solution": "Eine Beobachtung beschreibt Wahrgenommenes; eine Hypothese ist eine überprüfbare mögliche Erklärung."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM35ASZW29GPX28TATM",
+      "atom_uri": "urn:zam:atom:01M5VCSHM35ASZW29GPX28TATM",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-kontrolle",
+      "title": "Variablen, Kontrolle und Wiederholung",
+      "domain": "biologie/methoden",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-kontrolle",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "methoden",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM33DP40M6ZRA89QWG9",
+          "slug": "b8-kontrolle-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Planung isoliert die Wirkung von Licht am besten?",
+          "concept": "Gleiche Pflanzen und Bedingungen; nur das Licht wird verändert.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-kontrolle",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gleiche Pflanzen und Bedingungen; nur das Licht wird verändert.",
+              "Andere Pflanzen, andere Erde und anderes Licht werden kombiniert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM3TE6TY6V5XHNS52ZJ",
+          "slug": "b8-kontrolle-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum hält ein kontrollierter Vergleich andere Bedingungen möglichst gleich?",
+          "concept": "Damit ein Unterschied möglichst dem gezielt veränderten Faktor zugeordnet werden kann.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-kontrolle",
+          "sample_solution": "Damit ein Unterschied möglichst dem gezielt veränderten Faktor zugeordnet werden kann."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM37GNJPFWNE9PFNQS4",
+      "atom_uri": "urn:zam:atom:01M5VCSHM37GNJPFWNE9PFNQS4",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-mikroskop",
+      "title": "Mikroskopieren und sauber zeichnen",
+      "domain": "biologie/methoden",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-mikroskop",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "methoden",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM312YEYE7Q9F9MWPE6",
+          "slug": "b8-mikroskop-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie bestimmst du die Gesamtvergrößerung eines Lichtmikroskops?",
+          "concept": "Okularvergrößerung mal Objektivvergrößerung.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-mikroskop",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Okularvergrößerung mal Objektivvergrößerung.",
+              "Beide Vergrößerungen addieren."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM3NCR5CSR78RADWA8R",
+          "slug": "b8-mikroskop-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum beginnt man beim Mikroskopieren mit dem kleinsten Objektiv?",
+          "concept": "Das größere Gesichtsfeld erleichtert das Finden und Orientieren am Präparat.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-mikroskop",
+          "sample_solution": "Das größere Gesichtsfeld erleichtert das Finden und Orientieren am Präparat."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM3D2RM5GQV8TBRJA7N",
+      "atom_uri": "urn:zam:atom:01M5VCSHM3D2RM5GQV8TBRJA7N",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-modelle",
+      "title": "Modelle und Quellen kritisch nutzen",
+      "domain": "biologie/methoden",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-modelle",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "methoden",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM338354V4PS0QRR7NN",
+          "slug": "b8-modelle-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist eine sinnvolle Grenze eines farbigen Plastikmodells?",
+          "concept": "Farben und Größen sind nicht automatisch naturgetreu.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-modelle",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Farben und Größen sind nicht automatisch naturgetreu.",
+              "Das Modell ersetzt grundsätzlich jeden anderen Beleg."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM3PKYBEVN3BYF0R68C",
+          "slug": "b8-modelle-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum können neue Befunde ein biologisches Modell verändern?",
+          "concept": "Modelle müssen zu den überprüfbaren Befunden passen und werden bei neuen Erkenntnissen angepasst.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-modelle",
+          "sample_solution": "Modelle müssen zu den überprüfbaren Befunden passen und werden bei neuen Erkenntnissen angepasst."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM3GATA2NGYWYR08CKS",
+      "atom_uri": "urn:zam:atom:01M5VCSHM3GATA2NGYWYR08CKS",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-pilze",
+      "title": "Pilze sind ein eigenes Reich",
+      "domain": "biologie/mikroben",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-pilze",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "mikroben",
+          "topic_title": "Pilze, Bakterien und Viren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Pilze, Bakterien und Viren",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM3ZSZF79WHR5J20ZRE",
+          "slug": "b8-pilze-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man das Geflecht aus Pilzhyphen?",
+          "concept": "Myzel.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-pilze",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Myzel.",
+              "Blutplasma."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM360M7TMGQ0PGF4YM2",
+          "slug": "b8-pilze-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wodurch unterscheiden sich Pilze bei der Ernährung grundsätzlich von grünen Pflanzen?",
+          "concept": "Sie nehmen organische Stoffe auf und betreiben keine Fotosynthese.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-pilze",
+          "sample_solution": "Sie nehmen organische Stoffe auf und betreiben keine Fotosynthese."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM32B1W7QXQSCD95DXT",
+      "atom_uri": "urn:zam:atom:01M5VCSHM32B1W7QXQSCD95DXT",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-bakterien",
+      "title": "Bakterien: Zellen ohne Zellkern",
+      "domain": "biologie/mikroben",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-bakterien",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "mikroben",
+          "topic_title": "Pilze, Bakterien und Viren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Pilze, Bakterien und Viren",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM31T931PT0PNZG3A3H",
+          "slug": "b8-bakterien-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Merkmal fehlt Bakterien im Unterschied zu Pilzzellen?",
+          "concept": "Ein abgegrenzter Zellkern.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-bakterien",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein abgegrenzter Zellkern.",
+              "Eigenes Erbmaterial."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM3MJV1DJHWB1R0YBH5",
+          "slug": "b8-bakterien-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Wie vermehren sich Bakterien typischerweise unter geeigneten Bedingungen?",
+          "concept": "Durch Teilung einer Zelle in zwei Zellen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-bakterien",
+          "sample_solution": "Durch Teilung einer Zelle in zwei Zellen."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM3ETH436GE4PJ5D7T2",
+      "atom_uri": "urn:zam:atom:01M5VCSHM3ETH436GE4PJ5D7T2",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-viren",
+      "title": "Viren brauchen Wirtszellen",
+      "domain": "biologie/mikroben",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-viren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "mikroben",
+          "topic_title": "Pilze, Bakterien und Viren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Pilze, Bakterien und Viren",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM3QP8M5QNWYWCEAKJP",
+          "slug": "b8-viren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum können sich Viren nicht unabhängig in einer Nährlösung wie Bakterien vermehren?",
+          "concept": "Ihnen fehlen ein eigener Stoffwechsel und die nötige Zellmaschinerie.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-viren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ihnen fehlen ein eigener Stoffwechsel und die nötige Zellmaschinerie.",
+              "Sie besitzen niemals Erbmaterial."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM3QF31RZZ9Y31XYGXJ",
+          "slug": "b8-viren-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Was bedeutet Wirtszelle bei der Virusvermehrung?",
+          "concept": "Eine geeignete Zelle, deren Bestandteile für die Virusvermehrung genutzt werden.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-viren",
+          "sample_solution": "Eine geeignete Zelle, deren Bestandteile für die Virusvermehrung genutzt werden."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM3V8ABAW39ND5DZTDJ",
+      "atom_uri": "urn:zam:atom:01M5VCSHM3V8ABAW39ND5DZTDJ",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-vergleich",
+      "title": "Drei Gruppen begründet vergleichen",
+      "domain": "biologie/mikroben",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-vergleich",
+      "prerequisites": [
+        {
+          "atom_id": "01M5VCSHM3GATA2NGYWYR08CKS",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        },
+        {
+          "atom_id": "01M5VCSHM32B1W7QXQSCD95DXT",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        },
+        {
+          "atom_id": "01M5VCSHM3ETH436GE4PJ5D7T2",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "mikroben",
+          "topic_title": "Pilze, Bakterien und Viren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Pilze, Bakterien und Viren",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM35MV1DAADVASDF5N9",
+          "slug": "b8-vergleich-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Merkmal grenzt Viren hier von Pilzen und Bakterien ab?",
+          "concept": "Sie sind keine Zellen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-vergleich",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie sind keine Zellen.",
+              "Sie haben grundsätzlich kein Erbmaterial."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM4HCG0R6NSJND3QJQJ",
+          "slug": "b8-vergleich-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum bedeutet kein Zellkern nicht automatisch Virus?",
+          "concept": "Auch Bakterien besitzen keinen Zellkern, sind aber selbst Zellen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-vergleich",
+          "sample_solution": "Auch Bakterien besitzen keinen Zellkern, sind aber selbst Zellen."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM4475FFAA0P0M6TMZ9",
+      "atom_uri": "urn:zam:atom:01M5VCSHM4475FFAA0P0M6TMZ9",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-hefe",
+      "title": "Hefe und Gärung untersuchen",
+      "domain": "biologie/mikroben",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-hefe",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "mikroben",
+          "topic_title": "Pilze, Bakterien und Viren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Pilze, Bakterien und Viren",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM49VPFZPQC0Y9PCJNV",
+          "slug": "b8-hefe-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Gas entsteht bei der alkoholischen Gärung durch Hefe?",
+          "concept": "Kohlenstoffdioxid.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-hefe",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kohlenstoffdioxid.",
+              "Sauerstoff."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM4C9QV14WHKEP4XGKQ",
+          "slug": "b8-hefe-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Funktion hat ein Vergleichsansatz ohne Zucker bei einer Untersuchung zur Hefegärung?",
+          "concept": "Er zeigt, wie sich der Ansatz ohne den gezielt untersuchten Zuckerzusatz verhält.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-hefe",
+          "sample_solution": "Er zeigt, wie sich der Ansatz ohne den gezielt untersuchten Zuckerzusatz verhält."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM45TVQ47KSPSXVS5FG",
+      "atom_uri": "urn:zam:atom:01M5VCSHM45TVQ47KSPSXVS5FG",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-lebensmittel",
+      "title": "Nützliche Mikroorganismen und Verderb",
+      "domain": "biologie/mikroben",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-lebensmittel",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "mikroben",
+          "topic_title": "Pilze, Bakterien und Viren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Pilze, Bakterien und Viren",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM48BCZ3NY8JAJ9X8QY",
+          "slug": "b8-lebensmittel-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage über Kühlung ist richtig?",
+          "concept": "Sie verlangsamt das Wachstum vieler Mikroorganismen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-lebensmittel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie verlangsamt das Wachstum vieler Mikroorganismen.",
+              "Sie entfernt immer alle Mikroorganismen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM4XBEYAZJYDW69VGHZ",
+          "slug": "b8-lebensmittel-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist Mikroorganismus nicht gleichbedeutend mit Krankheitserreger?",
+          "concept": "Viele Mikroorganismen sind nützlich oder ohne krankmachende Wirkung.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-lebensmittel",
+          "sample_solution": "Viele Mikroorganismen sind nützlich oder ohne krankmachende Wirkung."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM4X3ACED0X0CZ2YSCE",
+      "atom_uri": "urn:zam:atom:01M5VCSHM4X3ACED0X0CZ2YSCE",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-barrieren",
+      "title": "Die erste Grenze: Haut und Schleimhäute",
+      "domain": "biologie/abwehr",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-barrieren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "abwehr",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM4V42YH2TYN0FDV7B2",
+          "slug": "b8-barrieren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aufgabe hat unverletzte Haut bei der Abwehr?",
+          "concept": "Sie erschwert als Barriere das Eindringen vieler Erreger.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-barrieren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie erschwert als Barriere das Eindringen vieler Erreger.",
+              "Sie bildet für jeden Erreger sofort neue Gedächtniszellen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM4Q5NHF1E0GKST06W3",
+          "slug": "b8-barrieren-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist eine äußere Schutzbarriere nicht dasselbe wie eine spezifische Immunantwort?",
+          "concept": "Die Barriere erschwert das Eindringen, ohne erst eine auf ein bestimmtes Antigen abgestimmte Antwort aufzubauen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-barrieren",
+          "sample_solution": "Die Barriere erschwert das Eindringen, ohne erst eine auf ein bestimmtes Antigen abgestimmte Antwort aufzubauen."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM45P1G55BS4PBJ4V6R",
+      "atom_uri": "urn:zam:atom:01M5VCSHM45P1G55BS4PBJ4V6R",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-blut",
+      "title": "Blut: Transport, Abwehr und Gerinnung",
+      "domain": "biologie/abwehr",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-blut",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "abwehr",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM4J9QB40JYRKK9YZER",
+          "slug": "b8-blut-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Blutbestandteile transportieren vor allem Sauerstoff?",
+          "concept": "Rote Blutkörperchen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-blut",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Rote Blutkörperchen.",
+              "Blutplättchen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM4HTSCA2HGDCAGXMZ9",
+          "slug": "b8-blut-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Welche grundlegende Aufgabe haben Blutplättchen?",
+          "concept": "Sie sind an der Blutstillung und Gerinnselbildung beteiligt.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-blut",
+          "sample_solution": "Sie sind an der Blutstillung und Gerinnselbildung beteiligt."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM44YAZCMGJAZ4NZEDF",
+      "atom_uri": "urn:zam:atom:01M5VCSHM44YAZCMGJAZ4NZEDF",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-angeboren",
+      "title": "Angeborene Abwehr und Lymphsystem",
+      "domain": "biologie/abwehr",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-angeboren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "abwehr",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM4ZY4GPA2Z1EDGE1KH",
+          "slug": "b8-angeboren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Tätigkeit passt zu einem Makrophagen?",
+          "concept": "Fremdmaterial aufnehmen und abbauen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-angeboren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fremdmaterial aufnehmen und abbauen.",
+              "Sauerstoff wie ein rotes Blutkörperchen transportieren."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM4RZB164GB5P93J0N1",
+          "slug": "b8-angeboren-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum sind angeborene und spezifische Abwehr keine getrennten Konkurrenzsysteme?",
+          "concept": "Sie ergänzen und beeinflussen einander bei der Abwehr.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-angeboren",
+          "sample_solution": "Sie ergänzen und beeinflussen einander bei der Abwehr."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM40ZP4HS55WS8S50NT",
+      "atom_uri": "urn:zam:atom:01M5VCSHM40ZP4HS55WS8S50NT",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-spezifisch",
+      "title": "Antigen, Antikörper und Gedächtnis",
+      "domain": "biologie/abwehr",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-spezifisch",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "abwehr",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM4MWCVQRVZTJDS0KQ2",
+          "slug": "b8-spezifisch-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was bindet an passende Antigenstrukturen?",
+          "concept": "Ein passender Antikörper.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-spezifisch",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein passender Antikörper.",
+              "Jedes beliebige Molekül unabhängig von seiner Struktur."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM40MVFC4WAPXDWYP91",
+          "slug": "b8-spezifisch-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Wirkung haben Gedächtniszellen bei erneutem Kontakt mit demselben Antigen?",
+          "concept": "Sie ermöglichen häufig eine schnellere spezifische Antwort.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-spezifisch",
+          "sample_solution": "Sie ermöglichen häufig eine schnellere spezifische Antwort."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM411HYS8XH7EW13M9F",
+      "atom_uri": "urn:zam:atom:01M5VCSHM411HYS8XH7EW13M9F",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-immunisierung",
+      "title": "Aktive und passive Immunisierung",
+      "domain": "biologie/abwehr",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-immunisierung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5VCSHM40ZP4HS55WS8S50NT",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "abwehr",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM4BVH7NQSY0QXM8C13",
+          "slug": "b8-immunisierung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was wird bei passiver Immunisierung zugeführt?",
+          "concept": "Fertige passende Antikörper.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-immunisierung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fertige passende Antikörper.",
+              "Eine Garantie lebenslanger Immunität."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM43X9R38Y00AF9X2BB",
+          "slug": "b8-immunisierung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welcher grundlegende Unterschied besteht beim immunologischen Gedächtnis zwischen aktiver und passiver Immunisierung?",
+          "concept": "Die aktive Antwort kann eigenes Gedächtnis aufbauen; zugeführte Antikörper allein tun das nicht.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-immunisierung",
+          "sample_solution": "Die aktive Antwort kann eigenes Gedächtnis aufbauen; zugeführte Antikörper allein tun das nicht."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM4V2WM64NFFHZ395E8",
+      "atom_uri": "urn:zam:atom:01M5VCSHM4V2WM64NFFHZ395E8",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-allergie",
+      "title": "Allergien: eine fehlgeleitete Reaktion",
+      "domain": "biologie/abwehr",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-allergie",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "abwehr",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM46C3Y2PQRVADR22JM",
+          "slug": "b8-allergie-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was bezeichnet man als Allergen?",
+          "concept": "Einen Stoff, der eine allergische Reaktion auslösen kann.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-allergie",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einen Stoff, der eine allergische Reaktion auslösen kann.",
+              "Grundsätzlich jedes Antibiotikum als wirksame Therapie."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM4ETEF7BHZ0CAAHFH6",
+          "slug": "b8-allergie-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist eine allergische Reaktion nicht automatisch eine Infektion?",
+          "concept": "Sie kann durch eine Reaktion auf einen harmlosen Stoff entstehen, ohne dass sich ein Erreger vermehrt.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-allergie",
+          "sample_solution": "Sie kann durch eine Reaktion auf einen harmlosen Stoff entstehen, ohne dass sich ein Erreger vermehrt."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM4D8E6B6YMSFCM74Z0",
+      "atom_uri": "urn:zam:atom:01M5VCSHM4D8E6B6YMSFCM74Z0",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-antibiotika",
+      "title": "Antibiotika und resistente Bakterien",
+      "domain": "biologie/abwehr",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-antibiotika",
+      "prerequisites": [
+        {
+          "atom_id": "01M5VCSHM32B1W7QXQSCD95DXT",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "abwehr",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM4R5BTF6DAPESSX45S",
+          "slug": "b8-antibiotika-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum wirken Antibiotika nicht gegen eine reine Virusinfektion?",
+          "concept": "Viren besitzen die bakteriellen Angriffspunkte nicht.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-antibiotika",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Viren besitzen die bakteriellen Angriffspunkte nicht.",
+              "Viren bestehen aus besonders vielen Bakterien."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM4X74PYS4CNVFK2418",
+          "slug": "b8-antibiotika-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was wird bei einer Antibiotikaresistenz widerstandsfähig?",
+          "concept": "Die Bakterien, nicht der menschliche Körper.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-antibiotika",
+          "sample_solution": "Die Bakterien, nicht der menschliche Körper."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM4WKEVEK10Z7A4TR2N",
+      "atom_uri": "urn:zam:atom:01M5VCSHM4WKEVEK10Z7A4TR2N",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-hiv",
+      "title": "HIV und AIDS unterscheiden",
+      "domain": "biologie/abwehr",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-hiv",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "abwehr",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM4MCXN01A1Q0TX4DZ6",
+          "slug": "b8-hiv-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bezeichnet AIDS im Unterschied zu HIV?",
+          "concept": "Ein fortgeschrittenes Krankheitsstadium mit schwerer Abwehrschwäche.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-hiv",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein fortgeschrittenes Krankheitsstadium mit schwerer Abwehrschwäche.",
+              "Jede HIV-Infektion ab dem ersten Tag."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM4CVX08J4AYD0EAR6J",
+          "slug": "b8-hiv-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum kann die Kombination verschiedener wirksamer Angriffspunkte die Auswahl resistenter HIV-Varianten erschweren?",
+          "concept": "Unterschiedliche wirksame Angriffspunkte erschweren es resistenten Virusvarianten, der Therapie zu entgehen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-hiv",
+          "sample_solution": "Unterschiedliche wirksame Angriffspunkte erschweren es resistenten Virusvarianten, der Therapie zu entgehen."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM4JVK8NNV38J3H1K1B",
+      "atom_uri": "urn:zam:atom:01M5VCSHM4JVK8NNV38J3H1K1B",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-identitaet",
+      "title": "Entwicklung, Identität und Grenzen",
+      "domain": "biologie/entwicklung",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-identitaet",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "entwicklung",
+          "topic_title": "Menschliche Sexualität und Entwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Menschliche Sexualität und Entwicklung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM4ZZZZBQPQHTNC5BRY",
+          "slug": "b8-identitaet-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist eine gesellschaftliche Rollenerwartung?",
+          "concept": "Eine soziale Vorstellung darüber, wie Menschen sich verhalten sollen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-identitaet",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine soziale Vorstellung darüber, wie Menschen sich verhalten sollen.",
+              "Ein unveränderliches Naturgesetz für alle Personen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM4AQQBEEC3R1ZRD753",
+          "slug": "b8-identitaet-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was bedeutet persönliche Grenzen in einer respektvollen Beziehung zu beachten?",
+          "concept": "Die freiwilligen Entscheidungen und ein Nein der anderen Person zu respektieren.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-identitaet",
+          "sample_solution": "Die freiwilligen Entscheidungen und ein Nein der anderen Person zu respektieren."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM4AXZDT085BQ98EX22",
+      "atom_uri": "urn:zam:atom:01M5VCSHM4AXZDT085BQ98EX22",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-zyklus",
+      "title": "Der Eireifezyklus ist hormonell gesteuert",
+      "domain": "biologie/entwicklung",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-zyklus",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "entwicklung",
+          "topic_title": "Menschliche Sexualität und Entwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Menschliche Sexualität und Entwicklung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM4GZDXHRT6C6K2HHRP",
+          "slug": "b8-zyklus-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Hormonanstieg löst den Eisprung aus?",
+          "concept": "Ein Anstieg des luteinisierenden Hormons LH.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-zyklus",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Anstieg des luteinisierenden Hormons LH.",
+              "Ein Anstieg von Hämoglobin."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM4Y0NCGJ0A24W1T3G2",
+          "slug": "b8-zyklus-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Was bezeichnet Eisprung?",
+          "concept": "Die Freisetzung einer Eizelle aus dem Eierstock.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-zyklus",
+          "sample_solution": "Die Freisetzung einer Eizelle aus dem Eierstock."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM4GFKE13VSTTZ4PE0E",
+      "atom_uri": "urn:zam:atom:01M5VCSHM4GFKE13VSTTZ4PE0E",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-befruchtung",
+      "title": "Von Keimzellen zur Einnistung",
+      "domain": "biologie/entwicklung",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-befruchtung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "entwicklung",
+          "topic_title": "Menschliche Sexualität und Entwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Menschliche Sexualität und Entwicklung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM488VQBHG4AM4F6R1K",
+          "slug": "b8-befruchtung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man die befruchtete Eizelle?",
+          "concept": "Zygote.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-befruchtung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zygote.",
+              "Allergen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM4NGM0EYWK3WHTDJH1",
+          "slug": "b8-befruchtung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Wo findet eine Befruchtung gewöhnlich statt?",
+          "concept": "Die Befruchtung findet gewöhnlich im Eileiter statt.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-befruchtung",
+          "sample_solution": "Die Befruchtung findet gewöhnlich im Eileiter statt."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM4G1WZYJWGP33YFA0A",
+      "atom_uri": "urn:zam:atom:01M5VCSHM4G1WZYJWGP33YFA0A",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-schwangerschaft",
+      "title": "Versorgung und Geburt im Überblick",
+      "domain": "biologie/entwicklung",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-schwangerschaft",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "entwicklung",
+          "topic_title": "Menschliche Sexualität und Entwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Menschliche Sexualität und Entwicklung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM4416Y3KFHYMX00ZF4",
+          "slug": "b8-schwangerschaft-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Organ vermittelt den Stoffaustausch während der Schwangerschaft?",
+          "concept": "Die Plazenta.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-schwangerschaft",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Plazenta.",
+              "Die Hornhaut."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM4KT5G6AYP7A2VZCGT",
+          "slug": "b8-schwangerschaft-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Was wird bei der Nachgeburt ausgestoßen?",
+          "concept": "Unter anderem die Plazenta.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-schwangerschaft",
+          "sample_solution": "Unter anderem die Plazenta."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM48Y9FTFMH6D4QZK2Q",
+      "atom_uri": "urn:zam:atom:01M5VCSHM48Y9FTFMH6D4QZK2Q",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-verhuetung",
+      "title": "Verhütung: zwei Schutzziele unterscheiden",
+      "domain": "biologie/entwicklung",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-verhuetung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "entwicklung",
+          "topic_title": "Menschliche Sexualität und Entwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Menschliche Sexualität und Entwicklung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM4A83R4GNTBN8XR48P",
+          "slug": "b8-verhuetung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Schützt die Pille vor sexuell übertragbaren Infektionen?",
+          "concept": "Nein.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-verhuetung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein.",
+              "Ja, vor allen Infektionen vollständig."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM4RS03MEX828EE17DA",
+          "slug": "b8-verhuetung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum müssen Schwangerschaftsvermeidung und Infektionsschutz getrennt betrachtet werden?",
+          "concept": "Eine Methode kann eine Schwangerschaft verhindern, ohne vor Infektionen zu schützen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-verhuetung",
+          "sample_solution": "Eine Methode kann eine Schwangerschaft verhindern, ohne vor Infektionen zu schützen."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM5EGGP5C9XNW379BH9",
+      "atom_uri": "urn:zam:atom:01M5VCSHM5EGGP5C9XNW379BH9",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-variation",
+      "title": "Erbliche Variation entsteht ohne Zielplan",
+      "domain": "biologie/evolution",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-variation",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "evolution",
+          "topic_title": "Evolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb5",
+          "topic_title": "Evolution",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM5ACV69N0XRVYTCJGQ",
+          "slug": "b8-variation-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Entstehen Mutationen gezielt, weil ein Organismus sie braucht?",
+          "concept": "Nein, sie entstehen nicht nach einem solchen Zielplan.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-variation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, sie entstehen nicht nach einem solchen Zielplan.",
+              "Ja, durch den Wunsch des einzelnen Organismus."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM5Y15Z6M44VSAAX5HE",
+          "slug": "b8-variation-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist nicht jede im Leben erworbene Veränderung genetisch vererbbar?",
+          "concept": "Sie verändert nicht automatisch die an Nachkommen weitergegebene Erbinformation.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-variation",
+          "sample_solution": "Sie verändert nicht automatisch die an Nachkommen weitergegebene Erbinformation."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM5JFYM29XRBJGBWQKB",
+      "atom_uri": "urn:zam:atom:01M5VCSHM5JFYM29XRBJGBWQKB",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-selektion",
+      "title": "Variation und natürliche Selektion",
+      "domain": "biologie/evolution",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-selektion",
+      "prerequisites": [
+        {
+          "atom_id": "01M5VCSHM5EGGP5C9XNW379BH9",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "evolution",
+          "topic_title": "Evolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb5",
+          "topic_title": "Evolution",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM5HZ7PJWE10BF6TVZR",
+          "slug": "b8-selektion-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Mechanismus erklärt die Ausbreitung vorteilhafter vererbbarer Varianten über unterschiedlichen Fortpflanzungserfolg?",
+          "concept": "Natürliche Selektion: unterschiedlicher Fortpflanzungserfolg",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-selektion",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Natürliche Selektion: unterschiedlicher Fortpflanzungserfolg",
+              "Gezielte Veränderung durch den Wunsch einzelner Lebewesen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM5NP5C3CFZ7VQ0RNN0",
+          "slug": "b8-selektion-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wodurch kann natürliche Selektion die Zusammensetzung einer Population verändern?",
+          "concept": "Durch unterschiedlichen Fortpflanzungserfolg erblicher Varianten unter bestimmten Umweltbedingungen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-selektion",
+          "sample_solution": "Durch unterschiedlichen Fortpflanzungserfolg erblicher Varianten unter bestimmten Umweltbedingungen."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM5V2BHG2M8YZN1P5W0",
+      "atom_uri": "urn:zam:atom:01M5VCSHM5V2BHG2M8YZN1P5W0",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-artbildung",
+      "title": "Trennung, Artbildung und biologische Ordnung",
+      "domain": "biologie/evolution",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-artbildung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5VCSHM5EGGP5C9XNW379BH9",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "evolution",
+          "topic_title": "Evolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb5",
+          "topic_title": "Evolution",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM549R8KH1491APX5HN",
+          "slug": "b8-artbildung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Beweist eine räumliche Trennung allein schon die Entstehung zweier Arten?",
+          "concept": "Nein, weitere Entwicklung und Fortpflanzungsbarrieren sind zu prüfen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-artbildung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, weitere Entwicklung und Fortpflanzungsbarrieren sind zu prüfen.",
+              "Ja, jede Entfernung erzeugt sofort eine neue Art."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM5HFSBRC2CGDQ5PN9C",
+          "slug": "b8-artbildung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wonach soll biologische Systematik Lebewesen ordnen?",
+          "concept": "Nach ihren Verwandtschaftsbeziehungen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-artbildung",
+          "sample_solution": "Nach ihren Verwandtschaftsbeziehungen."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM59C5SD68CZ41W81RC",
+      "atom_uri": "urn:zam:atom:01M5VCSHM59C5SD68CZ41W81RC",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-fossilien",
+      "title": "Fossilien und Mosaikmerkmale",
+      "domain": "biologie/evolution",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-fossilien",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "evolution",
+          "topic_title": "Evolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb5",
+          "topic_title": "Evolution",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM5NKQQCZA663R85SDQ",
+          "slug": "b8-fossilien-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was macht Mosaikmerkmale eines Fossils für Abstammungsfragen nützlich?",
+          "concept": "Sie verbinden mehrere Merkmalszustände in einem zeitlich einzuordnenden Fund.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-fossilien",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie verbinden mehrere Merkmalszustände in einem zeitlich einzuordnenden Fund.",
+              "Sie beweisen unabhängig von jedem Vergleich automatisch jede Einzelhypothese."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM53DK2YDPCNCH600VK",
+          "slug": "b8-fossilien-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Was ist ein Fossil?",
+          "concept": "Ein erhaltener Rest oder eine erhaltene Spur eines früheren Lebewesens.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-fossilien",
+          "sample_solution": "Ein erhaltener Rest oder eine erhaltene Spur eines früheren Lebewesens."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM5SYT0RT1B8BYVJ5B9",
+      "atom_uri": "urn:zam:atom:01M5VCSHM5SYT0RT1B8BYVJ5B9",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-homologie",
+      "title": "Homologie und Analogie",
+      "domain": "biologie/evolution",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-homologie",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "evolution",
+          "topic_title": "Evolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb5",
+          "topic_title": "Evolution",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM5PG0SG2C9WHRDT1XK",
+          "slug": "b8-homologie-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie heißt die Beziehung zwischen Merkmalen mit gemeinsamem evolutionärem Ursprung trotz unterschiedlicher Funktionen?",
+          "concept": "Homologie (divergente Entwicklung)",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-homologie",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Homologie (divergente Entwicklung)",
+              "Analogie (konvergente Entwicklung)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM5A0TFGNE3MK5ET8EP",
+          "slug": "b8-homologie-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welches Kriterium unterscheidet Homologie von bloßer Funktionsähnlichkeit?",
+          "concept": "Der gemeinsame evolutionäre Ursprung des betrachteten Merkmals.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-homologie",
+          "sample_solution": "Der gemeinsame evolutionäre Ursprung des betrachteten Merkmals."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM5709NENBAPBDVC8HA",
+      "atom_uri": "urn:zam:atom:01M5VCSHM5709NENBAPBDVC8HA",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-stammbaum",
+      "title": "Stammgeschichte als verzweigter Baum",
+      "domain": "biologie/evolution",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-stammbaum",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "evolution",
+          "topic_title": "Evolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb5",
+          "topic_title": "Evolution",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM5JRW7NANP1T2RKH0B",
+          "slug": "b8-stammbaum-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage über einen Abstammungsbaum ist korrekt?",
+          "concept": "Ein Verzweigungspunkt steht im Modell für gemeinsame Vorfahren.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-stammbaum",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Verzweigungspunkt steht im Modell für gemeinsame Vorfahren.",
+              "Ein Verzweigungspunkt beweist automatisch eine Rangordnung heutiger Menschen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM58WNY803QPZXMM4V5",
+          "slug": "b8-stammbaum-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Was stellt ein Verzweigungspunkt in einem Abstammungsbaum dar?",
+          "concept": "Gemeinsame Vorfahren der daraus hervorgehenden Linien.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-stammbaum",
+          "sample_solution": "Gemeinsame Vorfahren der daraus hervorgehenden Linien."
+        }
+      ]
+    },
+    {
+      "id": "01M5VCSHM5BET9N2XCKMFWXJ3R",
+      "atom_uri": "urn:zam:atom:01M5VCSHM5BET9N2XCKMFWXJ3R",
+      "namespace": "zam-academy-biologie-realschule-8",
+      "slug": "b8-mensch",
+      "title": "Aufrechter Gang und menschliche Evolution",
+      "domain": "biologie/evolution",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-mensch",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-8",
+          "topic_code": "evolution",
+          "topic_title": "Evolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb5",
+          "topic_title": "Evolution",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5VCSHM5CGM5HG9N3Q9XRVQX",
+          "slug": "b8-mensch-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Fortbewegungsweise ist bei frühen Homininen vor starker Gehirnvergrößerung belegt?",
+          "concept": "Aufrechter zweibeiniger Gang: Bipedie",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-mensch",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aufrechter zweibeiniger Gang: Bipedie",
+              "Der ausschließliche dauerhafte Flug mit Flügeln"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5VCSHM53YJM5DVYW5Q9B9NC",
+          "slug": "b8-mensch-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Welche Entwicklung ist bei frühen Homininen vor der starken Gehirnvergrößerung belegt?",
+          "concept": "Der regelmäßige aufrechte zweibeinige Gang.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-8/#lesson=b8-mensch",
+          "sample_solution": "Der regelmäßige aufrechte zweibeinige Gang."
+        }
+      ]
+    }
+  ],
+  "published_at": "2026-10-26T14:50:41Z"
+}

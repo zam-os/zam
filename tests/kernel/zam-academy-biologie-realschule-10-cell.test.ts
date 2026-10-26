@@ -196,14 +196,21 @@ describe("ZAM Academy Biologie 10 Realschule cell", () => {
         }),
       ).toBe(false);
     }
-    // The refreshers do not mark Biologie 7 or 8 as migrated: those grades
-    // keep their own school cells. There is no Biologie 9 to cover.
-    for (const grade of [5, 6, 7, 8]) {
+    // The refreshers do not claim earlier grades. Biologie 8 has its own
+    // Academy cell beside its two unchanged school cells. There is no Biologie 9.
+    for (const grade of [5, 6, 7]) {
       const ids = scopeIds("realschule", grade);
       expect(ids).not.toContain(CELL_ID);
       expect(ids.every((id) => id.startsWith("de-by:"))).toBe(true);
       if (grade >= 7) expect(ids).toHaveLength(2);
     }
+    expect(scopeIds("realschule", 8).sort()).toEqual(
+      [
+        "zam-academy:biologie-realschule-8",
+        "de-by:realschule-8-biologie-atmung-blutkreislauf",
+        "de-by:realschule-8-biologie-ernaehrung-verdauung",
+      ].sort(),
+    );
     expect(scopeIds("realschule", 9)).toEqual([]);
     expect(scopeIds("gymnasium", 10)).not.toContain(CELL_ID);
   });
