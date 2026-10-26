@@ -12,6 +12,12 @@
     "file": "zam-academy-biologie-realschule-10-kvt.json"
   },
   {
+    "id": "zam-academy:biologie-realschule-8",
+    "version": "2026.10.2",
+    "sha256": "5e9caa7f16517b045c5a70bc18c29288461ae6670cb969e55000276a9fa0e4f5",
+    "file": "zam-academy-biologie-realschule-8-kvt.json"
+  },
+  {
     "id": "zam-academy:bwr-realschule-10",
     "version": "2026.10.2",
     "sha256": "cfe3b8d9ee0894ea2f7e32646968033d8324a3fa6ffe0ce9c7e97b7af1ea953f",
