@@ -226,6 +226,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:deutsch-realschule-9",
       "zam-academy:englisch-realschule-10",
       "zam-academy:englisch-realschule-9",
+      "zam-academy:franzoesisch-realschule-10",
       "zam-academy:franzoesisch-realschule-9",
       "zam-academy:geographie-realschule-9",
       "zam-academy:geschichte-realschule-10",
@@ -295,6 +296,16 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     });
     expect(
       list.cells.find(
+        (cell) => cell.id === "zam-academy:franzoesisch-realschule-10",
+      ),
+    ).toMatchObject({
+      bundled: true,
+      held: false,
+      version: "2026.10.1",
+      items: 171,
+    });
+    expect(
+      list.cells.find(
         (cell) => cell.id === "zam-academy:politik-realschule-10",
       ),
     ).toMatchObject({
@@ -329,6 +340,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:deutsch-realschule-9",
       "zam-academy:englisch-realschule-10",
       "zam-academy:englisch-realschule-9",
+      "zam-academy:franzoesisch-realschule-10",
       "zam-academy:franzoesisch-realschule-9",
       "zam-academy:geographie-realschule-9",
       "zam-academy:geschichte-realschule-10",

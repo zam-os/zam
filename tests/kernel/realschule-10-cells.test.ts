@@ -22,7 +22,8 @@ import {
 // Deutsch 10 (#46) and Englisch 10 (#49) are additional Academy offerings;
 // their four old cards each stay bundled and active because no replacement
 // or retirement was approved. Politik und Gesellschaft 10 (#52) is also
-// additional; there is no earlier PuG-10 school cell to replace.
+// additional; there is no earlier PuG-10 school cell to replace. Französisch 10
+// (#54) is additional too and is bound to Wahlpflichtfächergruppe IIIa.
 const RS10_CELL_IDS = [
   "de-by:realschule-10-wirtschaft-recht-strafrecht-arbeitsrecht-sozialstaat",
   "de-by:realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel",
@@ -34,6 +35,7 @@ const ACADEMY_RS10_IDS = [
   "zam-academy:chemie-realschule-10",
   "zam-academy:deutsch-realschule-10",
   "zam-academy:englisch-realschule-10",
+  "zam-academy:franzoesisch-realschule-10",
   "zam-academy:geschichte-realschule-10",
   "zam-academy:mathematik-realschule-10",
   "zam-academy:physik-realschule-10",
