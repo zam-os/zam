@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-26T15:14:00Z
+timestamp: 2026-10-26T15:42:36Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -301,24 +301,41 @@ without any mastery transfer and declares no `replaces` (approved 2026-10-24).
 The old cell is no longer bundled; all four personal card states and review
 histories remain intact.
 
-Biologie 8 Realschule is bundled as an additional Academy cell, version
-2026.10.1, with 30 lessons and 60 practice items. Its five official learning
-areas contain 4 methods, 6 microorganism, 8 defence, 5 human development
-and 7 evolution lessons. Every lesson binds only to grade 8 and names no
-track, so discovery offers the cell to I, II, IIIa and IIIb. The knowledge
-atlas places methods under Research and Microscopy, microorganisms in
-their own Biology area, defence and development under the Human Body,
-and evolution under Evolution and Ecology. All cards link to their
-training lesson and together form one library topic.
+Französisch 10 Realschule is bundled as an additional Academy cell, version
+2026.10.2, with 57 lessons and 171 French practice items (2026.10.2 corrects
+two distractor reasons and one sample solution; ids are unchanged). Like Französisch 9
+it binds every lesson to track `IIIa` (grade 10, exam-relevant), so discovery
+offers it to IIIa and to a learner without a chosen group, never to I, II or
+IIIb. ZAM has no earlier Französisch-10 school cell for the Realschule; the
+Gymnasium-10 cell stays bound to its own school type. The Academy cell
+therefore declares neither `replaces` nor `retired_items`. Taking it creates
+171 unlearned cards and leaves every French card state and review history
+of grade 9, the Realschule-8 cell and the Gymnasium-10 cell unchanged.
 
-Both earlier Biologie-8 school cells remain bundled and active. The
-upstream mapping is proposal-only, with 1 A and 15 C rows and no approval;
-the cell declares neither `replaces` nor `retired_items`. Its byte-exact
-proposal and the hashes of both legacy fixtures are pinned. Installing
-creates no personal cards; taking the cell creates 60 unlearned cards
-without changing the 16 earlier cards or their review histories.
-Repeating installation and enrolment changes no schedule or review.
-New Tier-2 siblings wait for their atom's initial Tier-1 review.
+Biologie 8 Realschule is bundled as an additional Academy cell, version
+2026.10.2, with 30 lessons and 60 practice items. The five official learning
+areas comprise 4 lessons on methods, 6 on microorganisms, 8 on defence,
+5 on human development and 7 on evolution. Every lesson binds only to
+grade 8 and names no track, so discovery offers the cell to I, II, IIIa
+and IIIb. All official bindings explicitly set `exam_relevant: false`;
+this is the grade-8 course, not a central school-leaving-exam package.
+The knowledge atlas places methods under Research and Microscopy,
+microorganisms in their own Biology area with a seed emblem, defence
+and development under the Human Body, and evolution under Evolution and
+Ecology. All cards link to their training lesson and form one library topic.
+
+Both earlier Biologie-8 school cells remain bundled and active. All 16
+rows of the upstream mapping are C, proposal-only and unapproved:
+even the earlier oxygen-transport prompt also mentions haemoglobin,
+whereas the new fast check does not. No successor is declared. The cell
+has neither `replaces` nor `retired_items`. Its byte-exact proposal and
+the hashes of both legacy fixtures are pinned. Installing creates no
+personal cards; taking the cell creates 60 unlearned cards without
+changing the 16 earlier cards or their review histories. Repeating
+installation and enrolment changes no schedule or review. New Tier-2
+siblings wait for their atom's initial Tier-1 review. Updating from
+version 2026.10.1 adds explicit binding metadata and keeps every identity,
+retrieval, card state and review unchanged.
 
 Deutsch 10 Realschule is bundled as an additional Academy cell, version
 2026.10.2, with 30 lessons and 60 practice items. Its official bindings name
@@ -512,8 +529,8 @@ changed mappings require real re-retrieval.
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
-- Tests: `tests/kernel/zam-academy-biologie-realschule-8-cell.test.ts`, `tests/kernel/kvt-card-text.test.ts`, `tests/kernel/zam-academy-politik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-deutsch-realschule-10-cell.test.ts`, `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`, `tests/kernel/academy-catalog.test.ts`, `tests/kernel/academy-cells-lock.test.ts`, `tests/kernel/tile-version.test.ts`, `tests/kernel/zam-academy-uml-cell.test.ts`, `tests/kernel/zam-academy-geographie-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-chemie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-7-cell.test.ts`, `tests/kernel/zam-academy-it-cells.test.ts`, `tests/kernel/zam-academy-informatik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-9-cell.test.ts`, `tests/cli/curriculum-lehrplanplus-bayern.test.ts`, `tests/cli/academy-sync-script.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-10-cell.test.ts`
-- Code: `src/kernel/atlas/weltwissen-seed.ts`, `src/kernel/atlas/palette.ts`, `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/library/topics.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/import/material-import.ts`, `src/kernel/library/academy-catalog.ts`, `src/kernel/library/tile-version.ts`, `scripts/sync-academy-cells.mjs`, `src/cli/curriculum/providers/lehrplanplus-bayern/manifest.ts`
+- Tests: `tests/kernel/zam-academy-biologie-realschule-8-cell.test.ts`, `tests/kernel/kvt-card-text.test.ts`, `tests/kernel/zam-academy-politik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-deutsch-realschule-10-cell.test.ts`, `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`, `tests/kernel/academy-catalog.test.ts`, `tests/kernel/academy-cells-lock.test.ts`, `tests/kernel/tile-version.test.ts`, `tests/kernel/zam-academy-uml-cell.test.ts`, `tests/kernel/zam-academy-geographie-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-chemie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-7-cell.test.ts`, `tests/kernel/zam-academy-it-cells.test.ts`, `tests/kernel/zam-academy-informatik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-9-cell.test.ts`, `tests/cli/curriculum-lehrplanplus-bayern.test.ts`, `tests/cli/academy-sync-script.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-10-cell.test.ts`
+- Code: `src/kernel/atlas/weltwissen-emblems.ts`, `src/kernel/atlas/weltwissen-seed.ts`, `src/kernel/atlas/palette.ts`, `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/library/topics.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/import/material-import.ts`, `src/kernel/library/academy-catalog.ts`, `src/kernel/library/tile-version.ts`, `scripts/sync-academy-cells.mjs`, `src/cli/curriculum/providers/lehrplanplus-bayern/manifest.ts`
 
 - [ADR 2026-03-26 — Personal Workflow Foundations](../adr/2026-03-26-personal-workflow-foundations.md)
 - [ADR 2026-07-04 — Knowledge Contexts](../adr/2026-07-04-knowledge-contexts.md)

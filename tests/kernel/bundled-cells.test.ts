@@ -340,6 +340,12 @@ describe("Bundled learning cells (Phase 1)", () => {
       expect(cells("franzoesisch", 9, "wpfg3a")).toContain(french);
       for (const track of ["II", "wpfg2", "IIIb", "wpfg3b"])
         expect(cells("franzoesisch", 9, track)).not.toContain(french);
+      const french10 = "zam-academy:franzoesisch-realschule-10";
+      expect(cells("franzoesisch", 10, "IIIa")).toContain(french10);
+      expect(cells("franzoesisch", 10, "wpfg3a")).toContain(french10);
+      expect(cells("franzoesisch", 9, "IIIa")).not.toContain(french10);
+      for (const track of ["II", "wpfg2", "IIIb", "wpfg3b"])
+        expect(cells("franzoesisch", 10, track)).not.toContain(french10);
       for (const track of [
         "II",
         "wpfg2",

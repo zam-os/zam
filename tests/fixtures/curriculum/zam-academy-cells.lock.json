@@ -13,8 +13,8 @@
   },
   {
     "id": "zam-academy:biologie-realschule-8",
-    "version": "2026.10.1",
-    "sha256": "f54780c2a93e8be3777698490651dd3c07f826b0dee50c84e4ff76c4c5de0e75",
+    "version": "2026.10.2",
+    "sha256": "5e9caa7f16517b045c5a70bc18c29288461ae6670cb969e55000276a9fa0e4f5",
     "file": "zam-academy-biologie-realschule-8-kvt.json"
   },
   {
@@ -70,6 +70,12 @@
     "version": "2026.10.2",
     "sha256": "c0155e3ba42f9a86c15ee2238034d2626bff07e7454c6dcbdb60c17729c5a410",
     "file": "zam-academy-englisch-realschule-9-kvt.json"
+  },
+  {
+    "id": "zam-academy:franzoesisch-realschule-10",
+    "version": "2026.10.2",
+    "sha256": "8d57e27197f64491349c8a2cfb57830b1a644ebe0878ae31df1ebd5aa60e202d",
+    "file": "zam-academy-franzoesisch-realschule-10-kvt.json"
   },
   {
     "id": "zam-academy:franzoesisch-realschule-9",

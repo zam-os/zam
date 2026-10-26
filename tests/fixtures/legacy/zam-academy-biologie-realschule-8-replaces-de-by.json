@@ -2,7 +2,7 @@
   "schema": 1,
   "status": "proposal-only",
   "approved": null,
-  "source": "Autorenabgleich am 2026-10-26; keine Freigabe durch Thomas und keine History-Änderung in dieser Zelle.",
+  "source": "Autorenabgleich am 2026-10-26, nach Review konservativ auf 0 A / 0 B / 16 C korrigiert; keine Freigabe durch Thomas und keine History-Änderung in dieser Zelle.",
   "source_repository": "zam-os/zam",
   "source_commit": "0370098ff1fb50ba130984c4b16612bd509d680e",
   "sources": [
@@ -40,9 +40,9 @@
       "de_by_cell": "de-by:realschule-8-biologie-atmung-blutkreislauf",
       "de_by_id": "01K4B8A0000000000000000J03",
       "de_by_question": "Welche Blutzellen enthalten den roten Blutfarbstoff Hämoglobin und transportieren Sauerstoff im Körper?",
-      "category": "A",
-      "academy_slug": "b8-blut-check",
-      "note": "Gleicher einzelner Abruf des Sauerstofftransports durch rote Blutkörperchen. Ein möglicher späterer Nachfolger ist ausdrücklich benannt; derzeit kein replaces."
+      "category": "C",
+      "academy_slug": null,
+      "note": "Der alte Abruf nennt zusätzlich den roten Blutfarbstoff Hämoglobin; b8-blut-check fragt nur nach dem Sauerstofftransport und antwortet ohne Hämoglobin. Thematisch verwandt, aber kein sicher identischer Abruf. b8-blut-check bleibt lediglich ein später zu prüfender Kandidat in dieser Notiz; kein replaces und keine Stilllegung."
     },
     {
       "de_by_cell": "de-by:realschule-8-biologie-atmung-blutkreislauf",

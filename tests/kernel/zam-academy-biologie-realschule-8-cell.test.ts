@@ -13,6 +13,7 @@ import {
 import {
   buildReviewQueue,
   type Database,
+  type KvtTile,
   enrolBundledCell,
   ensureCard,
   evaluateRating,
@@ -25,6 +26,7 @@ import {
   listLibraryTopics,
   needsGenericCurriculumImport,
   openDatabase,
+  reconcileInstalledBundledTiles,
 } from "../../src/kernel/index.js";
 import mapping from "../fixtures/legacy/zam-academy-biologie-realschule-8-replaces-de-by.json" with {
   type: "json",
@@ -59,7 +61,7 @@ describe("ZAM Academy Biologie 8 Realschule cell", () => {
       gradeLabel: "ZAM Academy",
       atomCount: 30,
     });
-    expect(tile.version).toBe("2026.10.1");
+    expect(tile.version).toBe("2026.10.2");
     expect(tile.published_at).toBe("2026-10-26T14:50:41Z");
     expect(getBundledCell(CELL_ID)?.publishedAt).toBe(tile.published_at);
     expect(items).toHaveLength(60);
@@ -125,6 +127,7 @@ describe("ZAM Academy Biologie 8 Realschule cell", () => {
           grade: 8,
           subject: "biologie",
           topic_code: `lb${index + 1}`,
+          exam_relevant: false,
         });
         expect(official![0].track).toBeUndefined();
       }
@@ -132,7 +135,7 @@ describe("ZAM Academy Biologie 8 Realschule cell", () => {
   });
 
   it("pins the unapproved proposal and both byte-exact legacy sources", () => {
-    // Byte-exact upstream record: zam-os/zam-academy@300fd9443a7962703b69d0c8f9193fad2cea77b3,
+    // Byte-exact upstream record: zam-os/zam-academy@c12945d568c8541a1faebcb7e754d5c5e1c03aa3,
     // biologie-realschule-8/replaces-de-by.json. No history transfer was approved.
     const bytes = readFileSync(
       new URL(
@@ -141,7 +144,7 @@ describe("ZAM Academy Biologie 8 Realschule cell", () => {
       ),
     );
     expect(createHash("sha256").update(bytes).digest("hex")).toBe(
-      "3c023efb37dcb313cda76606148c07405779743f7d105009bd0bb93253dd935f",
+      "c9ad50585a0143e8a42f8e7e0225cf8afa6da0d632f9cc24433ce22b659fb23f",
     );
     expect(mapping.status).toBe("proposal-only");
     expect(mapping.approved).toBeNull();
@@ -154,7 +157,7 @@ describe("ZAM Academy Biologie 8 Realschule cell", () => {
         (category) =>
           mapping.rows.filter((row) => row.category === category).length,
       ),
-    ).toEqual([1, 0, 15]);
+    ).toEqual([0, 0, 16]);
     expect(oldItems).toHaveLength(16);
     expect(mapping.rows.map((row) => row.de_by_id).sort()).toEqual(
       oldItems.map((item) => item.id).sort(),
@@ -172,9 +175,8 @@ describe("ZAM Academy Biologie 8 Realschule cell", () => {
     for (const row of mapping.rows) {
       const old = oldItems.find((item) => item.id === row.de_by_id)!;
       expect(kvtItemPlainTexts(old).question).toBe(row.de_by_question);
-      if (row.category === "A")
-        expect(items.some((item) => item.slug === row.academy_slug)).toBe(true);
-      else expect(row.academy_slug).toBeNull();
+      expect(row.category).toBe("C");
+      expect(row.academy_slug).toBeNull();
     }
   });
 
@@ -246,6 +248,69 @@ describe("ZAM Academy Biologie 8 Realschule cell", () => {
           last_review_at: null,
         });
     }
+
+    it("upgrades the published .1 metadata without changing any retrieval or learned card", async () => {
+      const bytes = readFileSync(
+        new URL(
+          "../fixtures/legacy/zam-academy-biologie-realschule-8-2026.10.1.json",
+          import.meta.url,
+        ),
+      );
+      expect(createHash("sha256").update(bytes).digest("hex")).toBe(
+        "f54780c2a93e8be3777698490651dd3c07f826b0dee50c84e4ff76c4c5de0e75",
+      );
+      const old = JSON.parse(bytes.toString("utf8")) as KvtTile;
+      expect(old.version).toBe("2026.10.1");
+      expect(
+        tile.atoms.map((atom) => [atom.id, atom.slug, atom.source_link]),
+      ).toEqual(
+        old.atoms.map((atom) => [atom.id, atom.slug, atom.source_link]),
+      );
+      expect(tile.atoms.map((atom) => atom.practice_items)).toEqual(
+        old.atoms.map((atom) => atom.practice_items),
+      );
+      await installKvtTile(db, old);
+      for (const [index, item] of items.entries()) {
+        const card = await ensureCard(db, item.id, userId);
+        await evaluateRating(db, {
+          cardId: card.id,
+          tokenId: item.id,
+          userId,
+          rating: ([1, 3] as const)[index % 2],
+          answerFormat: "recall",
+          responseTimeMs: 1500,
+          now: new Date("2026-10-26T10:00:00Z"),
+        });
+      }
+      const before = await snapshot();
+      const versions = await Promise.all(
+        items.map(
+          async (item) => (await getTokenById(db, item.id))?.content_version,
+        ),
+      );
+      expect(before.cards).toHaveLength(60);
+      expect(before.reviews).toHaveLength(60);
+      expect(await reconcileInstalledBundledTiles(db)).toMatchObject({
+        reinstalled: [CELL_ID],
+        failed: [],
+      });
+      expect(await snapshot()).toEqual(before);
+      expect(
+        await Promise.all(
+          items.map(
+            async (item) => (await getTokenById(db, item.id))?.content_version,
+          ),
+        ),
+      ).toEqual(versions);
+      expect((await reconcileInstalledBundledTiles(db)).reinstalled).toEqual(
+        [],
+      );
+      expect(await enrolBundledCell(db, userId, CELL_ID)).toMatchObject({
+        cardsCreated: 0,
+        alreadyEnrolled: true,
+      });
+      expect(await snapshot()).toEqual(before);
+    });
 
     it("projects the actual atoms into their five school learning areas without creating cards", async () => {
       await installKvtTile(db, tile);

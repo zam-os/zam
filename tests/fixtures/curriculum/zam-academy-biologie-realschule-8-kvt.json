@@ -1,7 +1,7 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "zam-academy:biologie-realschule-8",
-  "version": "2026.10.1",
+  "version": "2026.10.2",
   "title": "Biologie 8 Realschule (ZAM Academy)",
   "description": "30 interaktive Lektionen und 60 gezielte Wiederholungsfragen zu allen fünf Lernbereichen von Biologie 8, Realschule Bayern. Vier digitale Modelle, Aufgaben auf zwei Stufen und druckbare Unterlagen. Praktisches Arbeiten und Unterrichtsfeedback ergänzen den Kurs. Ohne Lernstandsübertragung.",
   "publisher": "ZAM Academy",
@@ -107,7 +107,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb1",
-          "topic_title": "Prozessbezogene Kompetenzen"
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -166,7 +167,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb1",
-          "topic_title": "Prozessbezogene Kompetenzen"
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -225,7 +227,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb1",
-          "topic_title": "Prozessbezogene Kompetenzen"
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -284,7 +287,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb1",
-          "topic_title": "Prozessbezogene Kompetenzen"
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -343,7 +347,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb2",
-          "topic_title": "Pilze, Bakterien und Viren"
+          "topic_title": "Pilze, Bakterien und Viren",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -402,7 +407,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb2",
-          "topic_title": "Pilze, Bakterien und Viren"
+          "topic_title": "Pilze, Bakterien und Viren",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -461,7 +467,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb2",
-          "topic_title": "Pilze, Bakterien und Viren"
+          "topic_title": "Pilze, Bakterien und Viren",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -536,7 +543,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb2",
-          "topic_title": "Pilze, Bakterien und Viren"
+          "topic_title": "Pilze, Bakterien und Viren",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -595,7 +603,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb2",
-          "topic_title": "Pilze, Bakterien und Viren"
+          "topic_title": "Pilze, Bakterien und Viren",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -654,7 +663,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb2",
-          "topic_title": "Pilze, Bakterien und Viren"
+          "topic_title": "Pilze, Bakterien und Viren",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -713,7 +723,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb3",
-          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -772,7 +783,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb3",
-          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -831,7 +843,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb3",
-          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -890,7 +903,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb3",
-          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -955,7 +969,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb3",
-          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1014,7 +1029,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb3",
-          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1079,7 +1095,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb3",
-          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1138,7 +1155,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb3",
-          "topic_title": "Schutz- und Abwehrsystem beim Menschen"
+          "topic_title": "Schutz- und Abwehrsystem beim Menschen",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1197,7 +1215,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb4",
-          "topic_title": "Menschliche Sexualität und Entwicklung"
+          "topic_title": "Menschliche Sexualität und Entwicklung",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1256,7 +1275,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb4",
-          "topic_title": "Menschliche Sexualität und Entwicklung"
+          "topic_title": "Menschliche Sexualität und Entwicklung",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1315,7 +1335,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb4",
-          "topic_title": "Menschliche Sexualität und Entwicklung"
+          "topic_title": "Menschliche Sexualität und Entwicklung",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1374,7 +1395,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb4",
-          "topic_title": "Menschliche Sexualität und Entwicklung"
+          "topic_title": "Menschliche Sexualität und Entwicklung",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1433,7 +1455,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb4",
-          "topic_title": "Menschliche Sexualität und Entwicklung"
+          "topic_title": "Menschliche Sexualität und Entwicklung",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1492,7 +1515,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb5",
-          "topic_title": "Evolution"
+          "topic_title": "Evolution",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1557,7 +1581,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb5",
-          "topic_title": "Evolution"
+          "topic_title": "Evolution",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1622,7 +1647,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb5",
-          "topic_title": "Evolution"
+          "topic_title": "Evolution",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1681,7 +1707,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb5",
-          "topic_title": "Evolution"
+          "topic_title": "Evolution",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1740,7 +1767,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb5",
-          "topic_title": "Evolution"
+          "topic_title": "Evolution",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1799,7 +1827,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb5",
-          "topic_title": "Evolution"
+          "topic_title": "Evolution",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
@@ -1858,7 +1887,8 @@
           "grade": 8,
           "subject": "biologie",
           "topic_code": "lb5",
-          "topic_title": "Evolution"
+          "topic_title": "Evolution",
+          "exam_relevant": false
         }
       ],
       "practice_items": [
