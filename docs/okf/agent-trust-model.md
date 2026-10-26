@@ -8,7 +8,7 @@ tags:
   - mcp
   - secrets
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/agent-trust-model.md"
-timestamp: 2026-10-19T16:00:00.000Z
+timestamp: 2026-10-26T16:18:17Z
 ---
 
 ZAM treats two things as untrusted: the **agent** that calls its tools, and
@@ -31,6 +31,19 @@ an **allowed root**:
 - the folders the MCP client reports through `roots/list` (the agent app's
   open workspace), and
 - `trustedFolders` in the machine's `~/.zam/config.json`.
+
+A whole allowed Git checkout also includes its registered linked worktrees.
+The resolver checks reciprocal `gitdir`, `.git` and `commondir` records in
+the repository's worktree registry. A copied gitfile alone grants nothing.
+Trusting only a subfolder does not extend to its parent or siblings.
+
+Each checkout is its own boundary, including when hosted below `.codex`
+or `.claude`. Hidden files inside that checkout and symlinks escaping it
+remain refused. Roots are derived afresh, so a newly registered worktree is
+usable without restarting the MCP connection or adding a stored trusted
+folder. No tool argument writes the trust configuration. Default OKF bundle
+selection still follows the client's workspace; another checkout is selected
+with its explicit `bundle_dir`.
 
 A drive root, the home folder or a folder above it is never a root.
 Containment is decided on the real path after symlinks and junctions, so
@@ -194,8 +207,9 @@ before it ships:
 - [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
+- [ADR 2026-10-26 — Registered Worktree Paths](../adr/2026-10-26-registered-worktree-paths.md)
 - [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
 - [ADR 2026-10-08 — Observation Without Content](../adr/2026-10-08-skill-learner-observation.md)
 - [ADR 2026-07-30b — Credential Secret Backends](../adr/2026-07-30b-credential-secret-backends.md)
 - Code: `src/kernel/system/trusted-paths.ts`, `src/cli/trusted-folders.ts`, `src/cli/commands/trust.ts`, `src/cli/net/safe-fetch.ts`, `src/cli/adapters/source-reader.ts`, `src/cli/review-context.ts`, `src/kernel/recall/reference-resolver.ts`, `src/cli/okf/io.ts`, `src/cli/okf/bundle.ts`, `src/cli/commands/mcp.ts`, `src/cli/agent-approval.ts`, `src/cli/agent-connect.ts`, `src/copilot-extension/loopback-guard.ts`, `src/kernel/secrets/os-store.ts`, `src/kernel/secrets/backends/os.ts`, `src/kernel/secrets/session-store.ts`, `src/kernel/credentials.ts`, `src/kernel/system/endpoint-confirmation.ts`, `src/cli/llm/model-registry.ts`, `src/cli/llm/client.ts`, `src/cli/llm/capability-probe.ts`, `src/kernel/models/settings.ts`, `desktop/src/mobile-pairing.ts`, `src/cli/academy/catalog-client.ts`, `src/cli/academy/cache.ts`, `src/cli/academy/handlers.ts`, `mobile/src/academy.ts`, `desktop/src/source-link.ts`
-- Tests: `tests/kernel/trusted-paths.test.ts`, `tests/cli/okf-confinement.test.ts`, `tests/cli/trusted-folders.test.ts`, `tests/cli/safe-fetch.test.ts`, `tests/cli/model-endpoint-check.test.ts`, `tests/cli/studio-bridge-review.test.ts`, `tests/cli/agent-approval.test.ts`, `tests/cli/copilot-loopback-guard.test.ts`, `tests/kernel/os-secret-store.test.ts`, `tests/kernel/credentials-os-store.test.ts`, `tests/kernel/bitwarden-session-store.test.ts`, `tests/cli/keys-follow-endpoints.test.ts`, `tests/cli/model-registry.test.ts`, `tests/kernel/secret-masking.test.ts`, `tests/cli/academy.test.ts`, `tests/mobile/academy.test.ts`, `tests/desktop/source-link.test.ts`
+- Tests: `tests/kernel/trusted-worktrees.test.ts`, `tests/kernel/trusted-paths.test.ts`, `tests/cli/okf-confinement.test.ts`, `tests/cli/trusted-folders.test.ts`, `tests/cli/safe-fetch.test.ts`, `tests/cli/model-endpoint-check.test.ts`, `tests/cli/studio-bridge-review.test.ts`, `tests/cli/agent-approval.test.ts`, `tests/cli/copilot-loopback-guard.test.ts`, `tests/kernel/os-secret-store.test.ts`, `tests/kernel/credentials-os-store.test.ts`, `tests/kernel/bitwarden-session-store.test.ts`, `tests/cli/keys-follow-endpoints.test.ts`, `tests/cli/model-registry.test.ts`, `tests/kernel/secret-masking.test.ts`, `tests/cli/academy.test.ts`, `tests/mobile/academy.test.ts`, `tests/desktop/source-link.test.ts`

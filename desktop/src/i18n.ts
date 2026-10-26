@@ -5142,7 +5142,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     // Trusted folders (ADR 2026-10-08b D1).
     settings_trusted_folders: "Trusted folders",
     trusted_folders_help:
-      "Source links and AI assistants may read files only in these folders, and in the folder an assistant has open.",
+      "Source links and AI assistants may read files in these folders and in the folder an assistant has open. Registered working copies of the same Git project are included.",
     trusted_folders_none: "No folder is trusted yet.",
     trusted_folders_suggestion:
       "Your cards link to knowledge bases in {count} folders that ZAM may not read yet: {folders}",
@@ -7175,7 +7175,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     // Vertrauenswürdige Ordner (ADR 2026-10-08b D1).
     settings_trusted_folders: "Vertrauenswürdige Ordner",
     trusted_folders_help:
-      "Quell-Links und KI-Assistenten dürfen nur Dateien in diesen Ordnern lesen, dazu den Ordner, den ein Assistent geöffnet hat.",
+      "Quell-Links und KI-Assistenten dürfen Dateien in diesen Ordnern lesen, dazu den Ordner, den ein Assistent geöffnet hat. Registrierte Arbeitskopien desselben Git-Projekts gelten mit.",
     trusted_folders_none: "Noch kein Ordner freigegeben.",
     trusted_folders_suggestion:
       "Deine Karten verweisen auf Wissensbasen in {count} Ordnern, die ZAM noch nicht lesen darf: {folders}",
