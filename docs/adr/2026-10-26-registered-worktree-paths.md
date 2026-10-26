@@ -45,8 +45,12 @@ unnecessary setup for ordinary repository work.
    argument. Drive roots, home folders and their ancestors remain forbidden.
 6. OKF restrictions remain: validated Markdown, existing ZAM bundles or
    `docs/okf`, reserved instruction names, and no writes at the root itself.
-   Default bundle selection still follows the client's workspace; an agent
-   editing another checkout passes that checkout's explicit `bundle_dir`.
+   Default bundle selection searches only directly reported client roots and
+   stored trusted folders. Derived worktrees are access boundaries, not default
+   bundle candidates. An agent editing another checkout passes that checkout's
+   explicit `bundle_dir`; a checkout reported or trusted itself remains a
+   default candidate. When none of those roots has `docs/okf`, creation starts
+   under the first direct root instead of switching to a linked checkout.
 
 ## Consequences and limits
 

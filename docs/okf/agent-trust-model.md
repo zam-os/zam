@@ -8,7 +8,7 @@ tags:
   - mcp
   - secrets
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/agent-trust-model.md"
-timestamp: 2026-10-26T16:18:17Z
+timestamp: 2026-10-26T20:41:22Z
 ---
 
 ZAM treats two things as untrusted: the **agent** that calls its tools, and
@@ -41,9 +41,14 @@ Each checkout is its own boundary, including when hosted below `.codex`
 or `.claude`. Hidden files inside that checkout and symlinks escaping it
 remain refused. Roots are derived afresh, so a newly registered worktree is
 usable without restarting the MCP connection or adding a stored trusted
-folder. No tool argument writes the trust configuration. Default OKF bundle
-selection still follows the client's workspace; another checkout is selected
-with its explicit `bundle_dir`.
+folder. No tool argument writes the trust configuration.
+
+Default OKF bundle selection searches only directly reported client folders
+and stored trusted folders, preferring the first that already has `docs/okf`.
+Derived worktrees do not participate in this search. If no direct root has a
+bundle yet, an upsert creates `docs/okf` under the first direct root. Another
+checkout is selected with its explicit `bundle_dir`; a worktree that the
+client reports or the learner trusts directly is itself a default candidate.
 
 A drive root, the home folder or a folder above it is never a root.
 Containment is decided on the real path after symlinks and junctions, so

@@ -520,11 +520,13 @@ export function createMcpServer(
   }
 
   /** Client roots and the learner's trusted folders, canonical. */
-  async function allowedRoots(): Promise<string[]> {
-    return canonicalRoots([
-      ...(await clientRootDirs()),
-      ...getTrustedFolders(),
-    ]);
+  async function allowedRoots(options?: {
+    includeWorktrees?: boolean;
+  }): Promise<string[]> {
+    return canonicalRoots(
+      [...(await clientRootDirs()), ...getTrustedFolders()],
+      options,
+    );
   }
 
   async function getUserId(paramUser: string | undefined) {
@@ -2237,7 +2239,7 @@ export function createMcpServer(
     .string()
     .optional()
     .describe(
-      "Bundle directory (default: docs/okf under the client's workspace root, falling back to the server cwd)",
+      "Bundle directory (default: docs/okf under a client workspace or learner-trusted folder)",
     );
   const okfViewSchema = z
     .enum(["reader", "graph", "log"])
@@ -2250,7 +2252,7 @@ export function createMcpServer(
    * The bundle an okf tool works on, confined to the allowed roots (ADR
    * 2026-10-08b D1). Default: docs/okf under the first allowed root that has
    * one — the MCP client's workspace roots first, then the learner's trusted
-   * folders — never the server cwd, which for a host-spawned server is often
+   * folders, excluding derived worktrees — never the server cwd, which is often
    * the editor's installation directory (live 0.13.0 finding). Writes go only
    * into an existing ZAM bundle or docs/okf under a root.
    */
@@ -2261,7 +2263,8 @@ export function createMcpServer(
     const { DEFAULT_BUNDLE_DIR, confineBundleDir } = await import(
       "../okf/io.js"
     );
-    const roots = await allowedRoots();
+    const defaultRoots = await allowedRoots({ includeWorktrees: false });
+    const roots = canonicalRoots(defaultRoots);
     if (roots.length === 0) {
       throw new PathRefusedError(
         PATH_OUTSIDE_TRUSTED_FOLDERS,
@@ -2271,10 +2274,10 @@ export function createMcpServer(
     }
     const dir =
       explicit ??
-      roots
+      defaultRoots
         .map((root) => join(root, DEFAULT_BUNDLE_DIR))
         .find((candidate) => existsSync(candidate)) ??
-      join(roots[0], DEFAULT_BUNDLE_DIR);
+      join(defaultRoots[0], DEFAULT_BUNDLE_DIR);
     return confineBundleDir(dir, roots, mode);
   }
 

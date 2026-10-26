@@ -225,9 +225,13 @@ export function isAcceptableRoot(dir: string, home = homedir()): boolean {
  * Canonical allowed roots from any mix of paths and `file:` URIs: existing
  * directories only, real paths, acceptable roots only, no duplicates.
  * A whole checkout includes its reciprocally registered linked worktrees.
+ * Disable that expansion when choosing defaults only from explicit roots.
  * This derives project roots afresh; it never changes trustedFolders.
  */
-export function canonicalRoots(candidates: Iterable<string>): string[] {
+export function canonicalRoots(
+  candidates: Iterable<string>,
+  { includeWorktrees = true }: { includeWorktrees?: boolean } = {},
+): string[] {
   const roots: string[] = [];
   for (const candidate of candidates) {
     if (!candidate) continue;
@@ -244,10 +248,12 @@ export function canonicalRoots(candidates: Iterable<string>): string[] {
     const real = realPath(dir);
     if (!roots.some((root) => samePath(root, real))) roots.push(real);
   }
-  for (const root of [...roots]) {
-    for (const worktree of registeredWorktrees(root)) {
-      if (!roots.some((existing) => samePath(existing, worktree)))
-        roots.push(worktree);
+  if (includeWorktrees) {
+    for (const root of [...roots]) {
+      for (const worktree of registeredWorktrees(root)) {
+        if (!roots.some((existing) => samePath(existing, worktree)))
+          roots.push(worktree);
+      }
     }
   }
   return roots;

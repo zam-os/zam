@@ -29,6 +29,7 @@ import {
   type Database,
   getTrustedFolders,
   openDatabase,
+  removeTrustedFolder,
 } from "../../src/kernel/index.js";
 
 function article(title: string): string {
@@ -189,6 +190,51 @@ describe("OKF tools stay inside allowed roots (ADR 2026-10-08b D1)", () => {
     expect(getTrustedFolders()).toEqual([repo]);
     expect(readFileSync(process.env.ZAM_CONFIG_PATH!, "utf8")).toBe(before);
   });
+
+  it.each(["client", "trusted"])(
+    "keeps the default bundle at the %s root when only a linked worktree has one",
+    async (source) => {
+      git("init", "-q");
+      git("commit", "--allow-empty", "-qm", "seed");
+      const linked = join(base, ".codex", "worktrees", "lesson");
+      git("worktree", "add", "--detach", linked, "HEAD");
+      const linkedBundle = join(linked, "docs", "okf");
+      upsertArticle(linkedBundle, "linked.md", article("Linked"));
+      rmSync(bundle, { recursive: true });
+      if (source === "client") reportedRoots = [repo];
+      else addTrustedFolder(repo);
+
+      const missing = await call("zam_okf_catalog", {});
+      expect(missing.isError, missing.text).toBe(true);
+      expect(missing.text).toContain(bundle);
+
+      const written = await call("zam_okf_upsert", {
+        file: "default.md",
+        markdown: article("Default"),
+      });
+      expect(written.isError, written.text).toBe(false);
+      expect(existsSync(join(bundle, "default.md"))).toBe(true);
+      expect(existsSync(join(linkedBundle, "default.md"))).toBe(false);
+      const catalog = await call("zam_okf_catalog", {});
+      expect(catalog.isError, catalog.text).toBe(false);
+      expect(JSON.parse(catalog.text).dir).toBe(bundle);
+
+      const explicit = await call("zam_okf_catalog", {
+        bundle_dir: linkedBundle,
+      });
+      expect(explicit.isError, explicit.text).toBe(false);
+      expect(JSON.parse(explicit.text).dir).toBe(linkedBundle);
+
+      if (source === "client") reportedRoots = [linked];
+      else {
+        removeTrustedFolder(repo);
+        addTrustedFolder(linked);
+      }
+      const selected = await call("zam_okf_catalog", {});
+      expect(selected.isError, selected.text).toBe(false);
+      expect(JSON.parse(selected.text).dir).toBe(linkedBundle);
+    },
+  );
 
   it("refuses every bundle while nothing is trusted and no root is reported", async () => {
     const res = await call("zam_okf_catalog", {});
