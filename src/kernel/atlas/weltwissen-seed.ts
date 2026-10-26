@@ -230,7 +230,12 @@ export const WELTWISSEN_SEED: readonly SeedBereich[] = [
           {
             key: "forschen",
             name: "Forschen & Mikroskopieren",
-            from: ["arbeitsweisen"],
+            from: ["arbeitsweisen", "methoden"],
+          },
+          {
+            key: "mikroorganismen",
+            name: "Mikroorganismen",
+            from: ["mikroben"],
           },
           { key: "pflanzen", name: "Pflanzen", from: ["botanik"] },
           {
@@ -243,6 +248,8 @@ export const WELTWISSEN_SEED: readonly SeedBereich[] = [
             name: "Der menschliche Körper",
             from: [
               "humanbiologie",
+              "abwehr",
+              "entwicklung",
               "physiologie",
               "sinne",
               "biomedizin",

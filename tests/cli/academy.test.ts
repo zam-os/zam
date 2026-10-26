@@ -207,6 +207,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       catalogOnly(),
       { ...UML, version: "2099.1.1" },
       getBundledCellTile("zam-academy:politik-realschule-10") as BundledTile,
+      getBundledCellTile("zam-academy:biologie-realschule-8") as BundledTile,
     ]);
     const list = await academyListHandler(db, {
       user: "learner",
@@ -217,6 +218,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     expect(list.cells.map((cell) => cell.id)).toEqual([
       "zam-academy:algorithmen",
       "zam-academy:biologie-realschule-10",
+      "zam-academy:biologie-realschule-8",
       "zam-academy:bwr-realschule-10",
       "zam-academy:bwr-realschule-9",
       "zam-academy:chemie-realschule-10",
@@ -304,8 +306,19 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       items: 64,
       appUrl: "https://academy.zam-os.org/politik-realschule-10/",
     });
+    expect(
+      list.cells.find(
+        (cell) => cell.id === "zam-academy:biologie-realschule-8",
+      ),
+    ).toMatchObject({
+      bundled: true,
+      held: false,
+      version: "2026.10.1",
+      items: 60,
+      appUrl: "https://academy.zam-os.org/biologie-realschule-8/",
+    });
     expect(await tilesInstalled()).toBe(0);
-    // All three catalog cells were cached for a later „Aufnehmen“ or an agent.
+    // All four catalog cells were cached for a later „Aufnehmen“ or an agent.
     expect(
       readFileSync(join(academyCacheDir(), "catalog.json"), "utf8"),
     ).toContain("zam-academy:nur-katalog");
@@ -320,6 +333,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     expect(empty.cells.map((cell) => cell.id)).toEqual([
       "zam-academy:algorithmen",
       "zam-academy:biologie-realschule-10",
+      "zam-academy:biologie-realschule-8",
       "zam-academy:bwr-realschule-10",
       "zam-academy:bwr-realschule-9",
       "zam-academy:chemie-realschule-10",

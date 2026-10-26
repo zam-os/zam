@@ -373,6 +373,12 @@ const SEED: Readonly<Record<string, SeedEmblem>> = {
       `${c(26, 26, 17, BL, INK, 3, 0.1)}${ell(26, 26, 9, 5, GR, INK, 2, 0.5)}${c(28, 26, 2, INK, "none", 0)}${ln(39, 39, 56, 56, INK, 6)}`,
     ),
   },
+  "biologie/mikroorganismen": {
+    glyph: "μ",
+    svg: S(
+      `${rect(12, 20, 36, 24, 12, GR, INK, 3, 0.25)}${p("M21 32 Q27 22 33 32 Q39 42 42 30", "none", BL, 2)}${c(21, 37, 2, OR, "none", 0)}${c(37, 26, 2, OR, "none", 0)}${p("M48 32 Q57 23 58 32 Q59 41 53 48", "none", INK, 2)}`,
+    ),
+  },
   "biologie/pflanzen": {
     glyph: "✿",
     svg: S(
