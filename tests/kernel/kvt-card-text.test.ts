@@ -7,6 +7,7 @@ import {
   type CardText,
   type Database,
   getTokenById,
+  hasPendingCurriculumRetirements,
   installKvtTile,
   type KvtTile,
   listActiveDistractors,
@@ -275,6 +276,88 @@ describe("reconcileInstalledBundledTiles", () => {
       .prepare("SELECT version FROM installed_tiles WHERE tile_id = ?")
       .get(bundled.tile_id)) as { version: string };
     expect(row.version).toBe("9999.1.1");
+  });
+
+  it("applies withdrawals missed by an older kernel even when the recorded version is current", async () => {
+    const original = BUNDLED_TILES[bundled.tile_id];
+    const old = structuredClone(original);
+    old.version = "2026.10.1";
+    const wrong = {
+      provider: "lehrplanplus-bayern",
+      school_type: "realschule",
+      grade: 10,
+      track: "",
+      subject: "pug",
+      topic_code: "lb1",
+    };
+    old.atoms[0].curricula = [wrong];
+    const fixed = structuredClone(old);
+    fixed.version = "2026.10.2";
+    fixed.atoms[0].curricula = [{ ...wrong, topic_code: "lb3" }];
+    fixed.atoms[0].retired_curricula = [
+      { ...wrong, reason: "An old kernel did not understand this correction" },
+    ];
+    try {
+      BUNDLED_TILES[bundled.tile_id] = fixed;
+      await installKvtTile(db, old);
+      const olderKernel = structuredClone(fixed);
+      delete olderKernel.atoms[0].retired_curricula;
+      await installKvtTile(db, olderKernel);
+      expect(await hasPendingCurriculumRetirements(db, fixed)).toBe(true);
+      expect(
+        await getTokenById(db, old.atoms[0].practice_items[0].id),
+      ).toMatchObject({ topic_id: "lb1" });
+      // Even an explicit withdrawal may not downgrade a newer catalog tile.
+      await db
+        .prepare(
+          "UPDATE installed_tiles SET version = '9999.1.1' WHERE tile_id = ?",
+        )
+        .run(bundled.tile_id);
+      expect((await reconcileInstalledBundledTiles(db)).reinstalled).toEqual(
+        [],
+      );
+      expect(await hasPendingCurriculumRetirements(db, fixed)).toBe(true);
+      await db
+        .prepare("UPDATE installed_tiles SET version = ? WHERE tile_id = ?")
+        .run(fixed.version, bundled.tile_id);
+      const limited = await reconcileInstalledBundledTiles(db, { maxTiles: 0 });
+      expect(limited).toMatchObject({ reinstalled: [], remaining: 1 });
+      expect((await reconcileInstalledBundledTiles(db)).reinstalled).toEqual([
+        bundled.tile_id,
+      ]);
+      expect(await hasPendingCurriculumRetirements(db, fixed)).toBe(false);
+      expect(
+        await getTokenById(db, old.atoms[0].practice_items[0].id),
+      ).toMatchObject({ topic_id: "lb3" });
+      expect((await reconcileInstalledBundledTiles(db)).reinstalled).toEqual(
+        [],
+      );
+    } finally {
+      BUNDLED_TILES[bundled.tile_id] = original;
+    }
+  });
+
+  it("records malformed withdrawals and backs off instead of breaking each startup", async () => {
+    const original = BUNDLED_TILES[bundled.tile_id];
+    await installKvtTile(db, original);
+    const invalid = structuredClone(original);
+    invalid.atoms[0].retired_curricula = [
+      { provider: "test" },
+    ] as unknown as NonNullable<KvtTile["atoms"][number]["retired_curricula"]>;
+    try {
+      BUNDLED_TILES[bundled.tile_id] = invalid;
+      const result = await reconcileInstalledBundledTiles(db);
+      expect(result.reinstalled).toEqual([]);
+      expect(result.failed).toEqual([
+        {
+          tileId: bundled.tile_id,
+          error: expect.stringMatching(/full scope and a reason/),
+        },
+      ]);
+      expect((await reconcileInstalledBundledTiles(db)).failed).toEqual([]);
+    } finally {
+      BUNDLED_TILES[bundled.tile_id] = original;
+    }
   });
 
   it("reinstalls a tile recorded at an older dotted version", async () => {

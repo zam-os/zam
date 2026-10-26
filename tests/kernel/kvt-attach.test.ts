@@ -4,9 +4,12 @@ import { join, resolve } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   type Database,
+  ensureCard,
+  evaluateRating,
   getCard,
   getPrerequisites,
   getTokenById,
+  hasPendingCurriculumRetirements,
   installKvtTile,
   type KvtTile,
   listLibraryTopics,
@@ -711,6 +714,237 @@ describe("installKvtTile", () => {
     await expect(installKvtTile(db, tile)).rejects.toThrow(
       /Invalid published atom id/,
     );
+  });
+
+  it("withdraws an exact binding for every item, keeping overlays and all personal evidence", async () => {
+    const tile = loadTile();
+    const atom = tile.atoms[0];
+    const wrong = {
+      provider: "lehrplanplus-bayern",
+      school_type: "realschule",
+      grade: 10,
+      track: "",
+      subject: "pug",
+      topic_code: "lb1",
+    };
+    const overlay = { ...wrong, grade: 11, topic_code: "lb2" };
+    tile.atoms = [{ ...atom, curricula: [wrong, overlay] }];
+    await installKvtTile(db, tile);
+    const userId = atom.id;
+    for (const item of atom.practice_items) {
+      const card = await ensureCard(db, item.id, userId);
+      await evaluateRating(db, {
+        cardId: card.id,
+        tokenId: item.id,
+        userId,
+        rating: 3,
+        answerFormat: "recall",
+        responseTimeMs: 2000,
+        now: new Date("2026-10-25T10:00:00Z"),
+      });
+    }
+    const personal = async () => ({
+      cards: await db.prepare("SELECT * FROM cards ORDER BY id").all(),
+      reviews: await db.prepare("SELECT * FROM review_logs ORDER BY id").all(),
+    });
+    const before = await personal();
+    const corrected: KvtTile = {
+      ...tile,
+      version: "2",
+      atoms: [
+        {
+          ...atom,
+          curricula: [{ ...wrong, topic_code: "lb3" }],
+          retired_curricula: [
+            { ...wrong, reason: "Correction of an accidental methods binding" },
+          ],
+          // Another overlay's item still needs the corrected projection.
+          practice_items: [atom.practice_items[0]],
+        },
+      ],
+    };
+    for (let attempt = 0; attempt < 2; attempt++) {
+      await installKvtTile(db, corrected);
+      expect(await personal()).toEqual(before);
+      expect(
+        await db
+          .prepare(
+            "SELECT grade, topic_code FROM atom_curriculum_bindings WHERE atom_id = ? ORDER BY grade",
+          )
+          .all(atom.id),
+      ).toEqual([
+        { grade: 10, topic_code: "lb3" },
+        { grade: 11, topic_code: "lb2" },
+      ]);
+      for (const item of atom.practice_items)
+        expect(await getTokenById(db, item.id)).toMatchObject({
+          provider: wrong.provider,
+          topic_id: "lb3",
+        });
+    }
+  });
+
+  it.each([
+    { provider: "another-provider" },
+    { school_type: "gymnasium" },
+    { grade: 11 },
+    { track: "I" },
+    { subject: "geschichte" },
+    { topic_code: "lb2" },
+  ])("does not withdraw another binding scope: %j", async (different) => {
+    const tile = loadTile();
+    const atom = tile.atoms[0];
+    const held = {
+      provider: "lehrplanplus-bayern",
+      school_type: "realschule",
+      grade: 10,
+      track: "",
+      subject: "pug",
+      topic_code: "lb1",
+    };
+    tile.atoms = [{ ...atom, curricula: [held] }];
+    await installKvtTile(db, tile);
+    await installKvtTile(db, {
+      ...tile,
+      version: "2",
+      atoms: [
+        {
+          ...atom,
+          curricula: [],
+          retired_curricula: [
+            {
+              ...held,
+              ...different,
+              reason: "Only the fully named scope may be removed",
+            },
+          ],
+        },
+      ],
+    });
+    expect(
+      await db
+        .prepare(
+          "SELECT topic_code FROM atom_curriculum_bindings WHERE atom_id = ?",
+        )
+        .all(atom.id),
+    ).toEqual([{ topic_code: "lb1" }]);
+  });
+
+  it("checks pending withdrawals beyond the first remote-query batch without changing knowledge", async () => {
+    const tile = loadTile();
+    const atom = tile.atoms[0];
+    const held = {
+      provider: "lehrplanplus-bayern",
+      school_type: "realschule",
+      grade: 10,
+      track: "",
+      subject: "pug",
+      topic_code: "lb1",
+    };
+    tile.atoms = [{ ...atom, curricula: [held] }];
+    await installKvtTile(db, tile);
+    const corrected: KvtTile = {
+      ...tile,
+      atoms: [
+        {
+          ...atom,
+          curricula: [{ ...held, topic_code: "lb3" }],
+          retired_curricula: [
+            ...Array.from({ length: 64 }, (_, index) => ({
+              ...held,
+              topic_code: `absent-${index}`,
+              reason: "Not present in this library",
+            })),
+            { ...held, reason: "The pending entry is in the second batch" },
+          ],
+        },
+      ],
+    };
+    const before = await snapshot(db);
+    expect(await hasPendingCurriculumRetirements(db, corrected)).toBe(true);
+    expect(await snapshot(db)).toBe(before);
+    await installKvtTile(db, corrected);
+    expect(await hasPendingCurriculumRetirements(db, corrected)).toBe(false);
+  });
+
+  it("withdraws a grade-less binding and clears the last token projection", async () => {
+    const tile = loadTile();
+    const atom = tile.atoms[0];
+    tile.atoms = [
+      { ...atom, curricula: [{ provider: "test", topic_code: "module" }] },
+    ];
+    await installKvtTile(db, tile);
+    await installKvtTile(db, {
+      ...tile,
+      version: "2",
+      atoms: [
+        {
+          ...atom,
+          curricula: [],
+          retired_curricula: [
+            {
+              provider: "test",
+              school_type: "",
+              grade: null,
+              track: "",
+              subject: "",
+              topic_code: "module",
+              reason: "Remove a grade-less module",
+            },
+          ],
+        },
+      ],
+    });
+    expect(
+      await db
+        .prepare("SELECT * FROM atom_curriculum_bindings WHERE atom_id = ?")
+        .all(atom.id),
+    ).toEqual([]);
+    expect(await getTokenById(db, atom.practice_items[0].id)).toMatchObject({
+      provider: null,
+      topic_id: null,
+    });
+  });
+
+  it("refuses incomplete or contradictory withdrawals without changing installed knowledge", async () => {
+    const tile = loadTile();
+    await installKvtTile(db, tile);
+    const before = await snapshot(db);
+    const atom = tile.atoms[0];
+    const declared = atom.curricula![0];
+    const retired = {
+      provider: declared.provider,
+      school_type: declared.school_type ?? "",
+      grade: declared.grade ?? null,
+      track: declared.track ?? "",
+      subject: declared.subject ?? "",
+      topic_code: declared.topic_code,
+      reason: "A scoped correction",
+    };
+    for (const bad of [
+      { ...retired, subject: undefined },
+      { ...retired, grade: undefined },
+      { ...retired, reason: "" },
+      { ...retired, provider: "" },
+    ]) {
+      const invalid = {
+        ...tile,
+        version: "2",
+        atoms: [{ ...atom, curricula: [], retired_curricula: [bad] }],
+      } as unknown as KvtTile;
+      await expect(installKvtTile(db, invalid)).rejects.toThrow(
+        /full scope and a reason/,
+      );
+      expect(await snapshot(db)).toBe(before);
+    }
+    await expect(
+      installKvtTile(db, {
+        ...tile,
+        version: "2",
+        atoms: [{ ...atom, retired_curricula: [retired] }],
+      }),
+    ).rejects.toThrow(/both declared and retired/);
+    expect(await snapshot(db)).toBe(before);
   });
 
   it("merges Gymnasium 8 without wiping Realschule bindings", async () => {

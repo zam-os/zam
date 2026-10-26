@@ -102,6 +102,17 @@ export interface KvtCurriculumBinding {
   exam_relevant?: boolean;
 }
 
+/** Exact published binding withdrawn by an atom's publisher, never a wildcard. */
+export interface KvtRetiredCurriculumBinding {
+  provider: string;
+  school_type: string;
+  grade: number | null;
+  track: string;
+  subject: string;
+  topic_code: string;
+  reason: string;
+}
+
 export interface KvtAtomPrerequisite {
   atom_id: string;
   type: "hard" | "soft";
@@ -203,7 +214,102 @@ export interface KvtAtom {
   prerequisites?: KvtAtomPrerequisite[];
   alignments?: KvtAlignment[];
   curricula?: KvtCurriculumBinding[];
+  /** Explicit corrections to installed bindings; omitted bindings otherwise stay. */
+  retired_curricula?: KvtRetiredCurriculumBinding[];
   practice_items: KvtPracticeItem[];
+}
+
+const RETIRED_CURRICULUM_SCOPE = `atom_id = ? AND provider = ? AND school_type = ?
+  AND COALESCE(grade, -1) = COALESCE(?, -1)
+  AND track = ? AND subject = ? AND topic_code = ?`;
+
+function retiredCurriculaFor(atom: KvtAtom): KvtRetiredCurriculumBinding[] {
+  const entries = atom.retired_curricula ?? [];
+  for (const retired of entries) {
+    const fields = [
+      "provider",
+      "school_type",
+      "track",
+      "subject",
+      "topic_code",
+      "reason",
+    ] as const;
+    if (
+      !retired ||
+      fields.some((field) => typeof retired[field] !== "string") ||
+      !retired.provider.trim() ||
+      !retired.topic_code.trim() ||
+      !retired.reason.trim() ||
+      (retired.grade !== null &&
+        (!Number.isInteger(retired.grade) || retired.grade < 0))
+    ) {
+      throw new Error(
+        `${atom.id}: a retired curriculum binding needs its full scope and a reason`,
+      );
+    }
+    if (
+      (atom.curricula ?? []).some(
+        (binding) =>
+          binding.provider === retired.provider &&
+          (binding.school_type ?? "") === retired.school_type &&
+          (binding.grade ?? null) === retired.grade &&
+          (binding.track ?? "") === retired.track &&
+          (binding.subject ?? "") === retired.subject &&
+          binding.topic_code === retired.topic_code,
+      )
+    ) {
+      throw new Error(
+        `${atom.id}: a curriculum binding cannot be both declared and retired`,
+      );
+    }
+  }
+  return entries;
+}
+
+function retiredCurriculumParams(
+  atomId: string,
+  retired: KvtRetiredCurriculumBinding,
+) {
+  return [
+    atomId,
+    retired.provider,
+    retired.school_type,
+    retired.grade,
+    retired.track,
+    retired.subject,
+    retired.topic_code,
+  ];
+}
+
+/** Whether this library still holds a binding the published tile withdraws. */
+export async function hasPendingCurriculumRetirements(
+  db: Database,
+  tile: KvtTile,
+): Promise<boolean> {
+  const entries = tile.atoms.flatMap((atom) =>
+    retiredCurriculaFor(atom).map((retired) => ({ atomId: atom.id, retired })),
+  );
+  // At most 448 parameters per query, also for remote libraries: checking
+  // a corrected cell at startup should not need one round trip per binding.
+  for (let start = 0; start < entries.length; start += 64) {
+    const chunk = entries.slice(start, start + 64);
+    const condition = chunk
+      .map(() => `(${RETIRED_CURRICULUM_SCOPE})`)
+      .join(" OR ");
+    if (
+      await db
+        .prepare(
+          `SELECT 1 AS present FROM atom_curriculum_bindings WHERE ${condition} LIMIT 1`,
+        )
+        .get(
+          ...chunk.flatMap(({ atomId, retired }) =>
+            retiredCurriculumParams(atomId, retired),
+          ),
+        )
+    )
+      return true;
+  }
+  return false;
 }
 
 export interface KvtRetiredItem {
@@ -897,6 +1003,14 @@ async function installTileInTransaction(
         alignments += 1;
       }
 
+      for (const retired of retiredCurriculaFor(atom)) {
+        await tx
+          .prepare(
+            `DELETE FROM atom_curriculum_bindings WHERE ${RETIRED_CURRICULUM_SCOPE}`,
+          )
+          .run(...retiredCurriculumParams(atom.id, retired));
+      }
+
       for (const binding of atom.curricula ?? []) {
         // Conflict target matches ux_atom_binding, whose COALESCE keeps a
         // binding without a grade idempotent: NULL never equals NULL, so the
@@ -929,6 +1043,19 @@ async function installTileInTransaction(
       }
 
       const projected = await projectedBinding(tx, atom.id);
+      if (atom.retired_curricula?.length) {
+        // Every item of the atom follows the corrected projection, including
+        // items supplied by an overlay. Classification never changes a card.
+        await tx
+          .prepare(
+            "UPDATE tokens SET provider = ?, topic_id = ? WHERE atom_id = ?",
+          )
+          .run(
+            projected?.provider ?? null,
+            projected?.topic_code ?? null,
+            atom.id,
+          );
+      }
 
       for (const item of atom.practice_items) {
         assertItemId(item.id, "practice-item id");

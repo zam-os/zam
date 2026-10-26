@@ -23,6 +23,7 @@ export const SUBJECT_HUES: Readonly<Record<string, number>> = Object.freeze({
   biologie: 100,
   geschichte: 36,
   geographie: 64,
+  "politik-und-gesellschaft": 126,
   "wirtschaft-recht": 278,
   deutsch: 352,
   englisch: 16,
@@ -33,6 +34,7 @@ export const SUBJECT_HUES: Readonly<Record<string, number>> = Object.freeze({
 /** Raw first domain segments that belong to another subject. */
 const SUBJECT_ALIASES: Readonly<Record<string, string>> = Object.freeze({
   bwr: "wirtschaft-recht",
+  pug: "politik-und-gesellschaft",
   wirtschaft: "wirtschaft-recht",
   recht: "wirtschaft-recht",
   wirtschaft_recht: "wirtschaft-recht",
