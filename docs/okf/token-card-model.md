@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-26T06:00:20Z
+timestamp: 2026-10-26T15:10:50Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -302,7 +302,8 @@ The old cell is no longer bundled; all four personal card states and review
 histories remain intact.
 
 Französisch 10 Realschule is bundled as an additional Academy cell, version
-2026.10.1, with 57 lessons and 171 French practice items. Like Französisch 9
+2026.10.2, with 57 lessons and 171 French practice items (2026.10.2 corrects
+two distractor reasons and one sample solution; ids are unchanged). Like Französisch 9
 it binds every lesson to track `IIIa` (grade 10, exam-relevant), so discovery
 offers it to IIIa and to a learner without a chosen group, never to I, II or
 IIIb. ZAM has no earlier Französisch-10 school cell for the Realschule; the

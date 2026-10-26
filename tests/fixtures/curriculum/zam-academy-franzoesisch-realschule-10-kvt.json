@@ -1,11 +1,11 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "zam-academy:franzoesisch-realschule-10",
-  "version": "2026.10.1",
+  "version": "2026.10.2",
   "title": "Französisch 10 Realschule (ZAM Academy)",
   "description": "Der Fachlehrplan Französisch der Realschule Bayern in Jahrgangsstufe 10 für Wahlpflichtfächergruppe IIIa (zweite Fremdsprache, viertes Lernjahr): kommunikative Fertigkeiten mit Sprachmittlung, Grammatik (conditionnel, irreale Bedingung, ce qui und ce que, Adverbien), Wortschatz und Aussprache, Frankreich und Europa, Texte und Medien, Lernstrategien und Themengebiete. 57 Lektionen.",
   "publisher": "ZAM Academy",
-  "published_at": "2026-10-26T08:00:00Z",
+  "published_at": "2026-10-26T14:00:00Z",
   "sources": [
     {
       "uri": "https://academy.zam-os.org/franzoesisch-realschule-10/",
@@ -111,7 +111,7 @@
           "choice_distractors": [
             {
               "text": "flash info",
-              "reason": "Ein flash info sind Kurznachrichten, keine Umfrage."
+              "reason": "Ein flash info ist eine Kurznachricht im Radio, keine Umfrage."
             },
             {
               "text": "courrier des lecteurs",
@@ -2487,7 +2487,7 @@
           "question": "Wie unterscheidest und stellst du direkte und indirekte Objektpronomen?",
           "concept": "Direkt (le, la, les) bei Verben ohne Präposition wie aider, écouter, attendre, appeler; indirekt (lui, leur) bei à + Person wie parler, téléphoner, répondre à. Stellung vor dem konjugierten Verb, vor dem Hilfsverb oder vor dem Infinitiv; im bejahten Imperativ dahinter.",
           "materiality": "material",
-          "sample_solution": "Beispiel: « Je l’aide. » « Je lui téléphone. » « Je les ai vues. » « Je vais leur écrire. » « Appelle-la! » « Ne l’appelle pas! »"
+          "sample_solution": "Beispiel: « Je l’aide. » « Je lui téléphone. » « Les photos? Je les ai vues. » « Je vais leur écrire. » « Appelle-la! » « Ne l’appelle pas! »"
         },
         {
           "id": "01M5VCH3HJX11BTK50CD9CHMFK",
@@ -3870,7 +3870,7 @@
             },
             {
               "text": "une jumelle",
-              "reason": "Une jumelle ist ein Zwilling oder ein Fernglas."
+              "reason": "Une jumelle ist eine Zwillingsschwester; das Fernglas heißt des jumelles."
             }
           ]
         }

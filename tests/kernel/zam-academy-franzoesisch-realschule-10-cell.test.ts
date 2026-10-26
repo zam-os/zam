@@ -39,8 +39,8 @@ const ids = (track?: string, grade = 10) =>
   findBundledCellsForScope(scope(track, grade)).map((cell) => cell.id);
 
 describe("ZAM Academy Französisch 10 Realschule cell", () => {
-  it("bundles the published 57 lessons and 171 practice items as a new cell", () => {
-    expect(tile.version).toBe("2026.10.1");
+  it("bundles the published 57 lessons and 171 practice items as a new cell (2026.10.2 corrects two distractor reasons)", () => {
+    expect(tile.version).toBe("2026.10.2");
     expect(getBundledCell(CELL_ID)).toMatchObject({
       title: "Französisch 10 Realschule (ZAM Academy)",
       publisher: "ZAM Academy",
@@ -156,7 +156,7 @@ describe("ZAM Academy Französisch 10 Realschule cell", () => {
       expect(await snapshot()).toEqual(before);
     });
 
-    it("presents 57 initial fast checks with their published answers and lesson links", async () => {
+    it("presents both Tier-1 fast checks of every lesson, 114 in all, with their published answers and lesson links", async () => {
       await enrolBundledCell(db, userId, CELL_ID);
       const queue = await buildReviewQueue(db, {
         userId,
@@ -166,9 +166,10 @@ describe("ZAM Academy Französisch 10 Realschule cell", () => {
         buryNewSiblings: false,
         buryReviewSiblings: false,
       });
-      // New Tier-2 siblings wait for their atom's initial Tier-1 review; the
-      // extra Tier-1 card of each atom is a sibling of the first.
-      expect(queue.items.length).toBeGreaterThanOrEqual(57);
+      // New Tier-2 siblings wait for their atom's initial Tier-1 review, so the
+      // queue holds the two Tier-1 cards of each of the 57 atoms. Sibling burial
+      // applies only to imported cards, not to Academy items.
+      expect(queue.items).toHaveLength(114);
       for (const entry of queue.items) {
         const source = items.find((item) => item.id === entry.tokenId)!;
         const text = kvtItemPlainTexts(source);

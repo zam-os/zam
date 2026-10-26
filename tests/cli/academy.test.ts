@@ -301,7 +301,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     ).toMatchObject({
       bundled: true,
       held: false,
-      version: "2026.10.1",
+      version: "2026.10.2",
       items: 171,
     });
     expect(
