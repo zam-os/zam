@@ -11,6 +11,7 @@ import {
 import {
   type BundledTile,
   enrolBundledCell,
+  type EnrolBundledCellProgress,
   getBundledCellTile,
   installedTileVersion,
   openDatabase,
@@ -117,7 +118,10 @@ describe("Mobile academy client", () => {
   it("fails when the cell does not match the catalog", async () => {
     const { fetchImpl } = fakeFetch({
       "/catalog.json": catalogFor(catalogOnlyBytes),
-      "/nur-katalog/cell.json": Buffer.concat([catalogOnlyBytes, Buffer.from(" ")]),
+      "/nur-katalog/cell.json": Buffer.concat([
+        catalogOnlyBytes,
+        Buffer.from(" "),
+      ]),
     });
     const catalog = await fetchMobileAcademyCatalog(fetchImpl);
     await expect(
@@ -140,8 +144,21 @@ describe("Mobile academy client", () => {
       useConfiguredCloud: false,
     });
     try {
-      const result = await enrolBundledCell(db, "learner", "zam-academy:nur-katalog", {
-        resolveTile: (id) => (id === tile.tile_id ? tile : undefined),
+      const progress: EnrolBundledCellProgress[] = [];
+      const result = await enrolBundledCell(
+        db,
+        "learner",
+        "zam-academy:nur-katalog",
+        {
+          resolveTile: (id) => (id === tile.tile_id ? tile : undefined),
+          onProgress: (event) => progress.push(event),
+        },
+      );
+      expect(progress[0]).toEqual({ phase: "installing", done: 0, total: 26 });
+      expect(progress.at(-1)).toEqual({
+        phase: "enrolling",
+        done: 26,
+        total: 26,
       });
       expect(result.cardsCreated).toBe(26);
       expect(await installedTileVersion(db, "zam-academy:nur-katalog")).toBe(
@@ -170,6 +187,8 @@ describe("Mobile academy wiring", () => {
   it("installs only on the learner's tap, with the fetched tile", () => {
     const main = file("mobile/src/main.ts");
     expect(main).toContain("resolveTile: (id) => academyTiles.get(id)");
+    expect(main).toContain("onProgress: progress.update");
+    expect(main).toContain("createCellImportProgress");
   });
 
   it("keeps a cell whose download failed, and fetches it again on the tap", () => {
@@ -183,6 +202,8 @@ describe("Mobile academy wiring", () => {
 
   it("fetches the cells in parallel, so one stalled cell cannot hold the screen", () => {
     const main = file("mobile/src/main.ts");
-    expect(main).toMatch(/await Promise\.all\(\s*entries\.map\(async \(entry\) =>/);
+    expect(main).toMatch(
+      /await Promise\.all\(\s*entries\.map\(async \(entry\) =>/,
+    );
   });
 });

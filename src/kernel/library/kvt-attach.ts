@@ -341,6 +341,18 @@ export interface KvtTile {
 export interface InstallKvtOptions {
   /** A shipped image's bytes by its SHA-256, or `null` when absent. */
   media?: (sha256: string) => Uint8Array | null;
+  /** Counts processed practice items; the transaction may still be saving. */
+  onProgress?: (progress: KvtProgress) => void;
+}
+
+export interface KvtProgress {
+  done: number;
+  total: number;
+}
+
+export interface MaterialiseKvtOptions {
+  /** Counts checked items, including siblings deferred by the enrolment budget. */
+  onProgress?: (progress: KvtProgress) => void;
 }
 
 export interface InstallKvtResult {
@@ -818,8 +830,12 @@ export async function installKvtTile(
   }
 
   try {
+    opts.onProgress?.({
+      done: 0,
+      total: tile.atoms.reduce((n, atom) => n + atom.practice_items.length, 0),
+    });
     const images = await tileImages(db, tile, opts);
-    return await installTileInTransaction(db, tile, images);
+    return await installTileInTransaction(db, tile, images, opts.onProgress);
   } catch (error) {
     await recordTileFailure(db, tile, error);
     throw error;
@@ -923,8 +939,14 @@ async function installTileInTransaction(
   db: Database,
   tile: KvtTile,
   images: Array<{ hash: string; type: string; bytes: Uint8Array }> = [],
+  onProgress?: (progress: KvtProgress) => void,
 ): Promise<InstallKvtResult> {
   return db.transaction(async (tx) => {
+    const total = tile.atoms.reduce(
+      (n, atom) => n + atom.practice_items.length,
+      0,
+    );
+    let done = 0;
     const now = new Date().toISOString();
     // Stored before the items, so their card text can name them.
     for (const image of images) {
@@ -1117,6 +1139,7 @@ async function installTileInTransaction(
           await syncCuratedDistractors(tx, asToken, choiceDistractorsOf(item));
           tokensCreated += 1;
           itemsSuperseded += await applyDeclaredReplacements(tx, tile, item);
+          onProgress?.({ done: ++done, total });
           continue;
         }
 
@@ -1214,6 +1237,7 @@ async function installTileInTransaction(
         }
         await syncCuratedDistractors(tx, asToken, choiceDistractorsOf(item));
         itemsSuperseded += await applyDeclaredReplacements(tx, tile, item);
+        onProgress?.({ done: ++done, total });
       }
     }
 
@@ -1330,13 +1354,29 @@ export async function materialiseKvtCards(
   db: Database,
   userId: string,
   atomIds: string[],
+  options: MaterialiseKvtOptions = {},
 ): Promise<MaterialiseKvtResult> {
   if (!userId.trim()) {
     throw new Error("userId is required");
   }
+  atomIds = [...new Set(atomIds)];
   return db.transaction(async (tx) => {
     let cardsCreated = 0;
     let cardsReused = 0;
+    let done = 0;
+    const total =
+      options.onProgress && atomIds.length > 0
+        ? (
+            (await tx
+              .prepare(
+                `SELECT COUNT(*) AS n FROM tokens
+            WHERE atom_id IN (${atomIds.map(() => "?").join(",")})
+              AND deprecated_at IS NULL AND editorial_state = 'published'`,
+              )
+              .get(...atomIds)) as { n: number }
+          ).n
+        : 0;
+    options.onProgress?.({ done, total });
     for (const atomId of atomIds) {
       const items = (await tx
         .prepare(
@@ -1362,6 +1402,7 @@ export async function materialiseKvtCards(
         const before = await getCard(tx, item.id, userId);
         if (before) {
           cardsReused += 1;
+          options.onProgress?.({ done: ++done, total });
           continue;
         }
         missing.push(item.id);
@@ -1370,6 +1411,12 @@ export async function materialiseKvtCards(
       for (const tokenId of toCreate) {
         await ensureCard(tx, tokenId, userId);
         cardsCreated += 1;
+        options.onProgress?.({ done: ++done, total });
+      }
+      // Budgeted siblings were checked, but deliberately get no card yet.
+      if (missing.length > toCreate.length) {
+        done += missing.length - toCreate.length;
+        options.onProgress?.({ done, total });
       }
     }
     return { cardsCreated, cardsReused };

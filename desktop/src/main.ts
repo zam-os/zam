@@ -34,6 +34,7 @@ import {
   shouldShowPointCount,
 } from "../../src/kernel/library/answer-points.js";
 import { runBridge, setBridgeTransport } from "./bridge-transport.js";
+import { type AcademyProgressEvent, setAcademyProgressSource } from "./academy-list.js";
 import { attachedMedia, renderCardText } from "./card-text-render.js";
 import { renderQuestionWithTopic } from "./question-topic.js";
 import {
@@ -253,6 +254,10 @@ setLearningContentProgressSource(async (onProgress) => {
   );
   return unlisten;
 });
+
+setAcademyProgressSource(async (onProgress) =>
+  listen<AcademyProgressEvent>("zam://bridge-progress", (event) => onProgress(event.payload)),
+);
 
 // Lern-Karten opens the knowledge atlas, where the 3D graph used to open.
 setLearningContentGraphOpener(() => {

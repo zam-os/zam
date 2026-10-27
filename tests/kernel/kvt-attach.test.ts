@@ -1,7 +1,7 @@
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   type Database,
   ensureCard,
@@ -12,6 +12,7 @@ import {
   hasPendingCurriculumRetirements,
   installKvtTile,
   type KvtTile,
+  type KvtProgress,
   listLibraryTopics,
   materialiseKvtCards,
   openDatabase,
@@ -85,7 +86,13 @@ describe("installKvtTile", () => {
   });
 
   it("installs atoms, items and bindings", async () => {
-    const result = await installKvtTile(db, loadTile());
+    const progress: KvtProgress[] = [];
+    const result = await installKvtTile(db, loadTile(), {
+      onProgress: (event) => progress.push(event),
+    });
+    expect(progress).toEqual(
+      Array.from({ length: 8 }, (_, done) => ({ done, total: 7 })),
+    );
 
     expect(result.atomsUpserted).toBe(4);
     expect(result.tokensCreated).toBe(7);
@@ -112,6 +119,29 @@ describe("installKvtTile", () => {
     const token = await getTokenById(db, "01K3X9A7R4B8C1D2E3F4G5H003");
     expect(token?.atom_id).toBe(OPTIK.brechungQualitativ);
     expect(token?.question).toMatch(/Luft in Wasser/);
+  });
+
+  it("can fail saving after its last item count, rolling the content back", async () => {
+    const transaction = db.transaction.bind(db);
+    const spy = vi.spyOn(db, "transaction").mockImplementationOnce((run) =>
+      transaction(async (tx) => {
+        await run(tx);
+        throw new Error("commit failed");
+      }),
+    );
+    const progress: KvtProgress[] = [];
+    try {
+      await expect(
+        installKvtTile(db, loadTile(), {
+          onProgress: (event) => progress.push(event),
+        }),
+      ).rejects.toThrow("commit failed");
+      expect(progress.at(-1)).toEqual({ done: 7, total: 7 });
+      expect(await countRows(db, "tokens")).toBe(0);
+      expect(await countRows(db, "cards")).toBe(0);
+    } finally {
+      spy.mockRestore();
+    }
   });
 
   // Codex hardening review H3, after the owner ruled language, tier and
@@ -178,7 +208,13 @@ describe("installKvtTile", () => {
 
   it("materialises cards only for the atoms a learner chose", async () => {
     await installKvtTile(db, loadTile());
-    const result = await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
+    const progress: KvtProgress[] = [];
+    const result = await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL, {
+      onProgress: (event) => progress.push(event),
+    });
+    expect(progress).toEqual(
+      Array.from({ length: 7 }, (_, done) => ({ done, total: 6 })),
+    );
 
     expect(result.cardsCreated).toBe(6);
     expect(await countRows(db, "cards")).toBe(6);
@@ -199,9 +235,44 @@ describe("installKvtTile", () => {
   it("materialises the same atoms twice without new cards", async () => {
     await installKvtTile(db, loadTile());
     await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
-    const again = await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
+    const progress: KvtProgress[] = [];
+    const again = await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL, {
+      onProgress: (event) => progress.push(event),
+    });
+    expect(progress).toEqual(
+      Array.from({ length: 7 }, (_, done) => ({ done, total: 6 })),
+    );
     expect(again.cardsCreated).toBe(0);
     expect(again.cardsReused).toBe(6);
+  });
+
+  it("counts repeated atom ids once and checks siblings without enrolling beyond the budget", async () => {
+    const tile = loadTile();
+    const atom = tile.atoms[0];
+    atom.practice_items.push({
+      ...structuredClone(atom.practice_items[1]),
+      id: "01K3X9A7R4B8C1D2E3F4G5H008",
+      slug: "optik-strahlengang-extra",
+    });
+    await installKvtTile(db, tile);
+    await ensureCard(db, atom.practice_items[0].id, "learner-a");
+    const progress: KvtProgress[] = [];
+    const result = await materialiseKvtCards(
+      db,
+      "learner-a",
+      [atom.id, atom.id],
+      {
+        onProgress: (event) => progress.push(event),
+      },
+    );
+    expect(result).toEqual({ cardsCreated: 1, cardsReused: 1 });
+    expect(progress).toEqual(
+      Array.from({ length: 4 }, (_, done) => ({ done, total: 3 })),
+    );
+    expect(await countRows(db, "cards")).toBe(2);
+    expect(
+      await getCard(db, "01K3X9A7R4B8C1D2E3F4G5H008", "learner-a"),
+    ).toBeUndefined();
   });
 
   // Codex acceptance test 2.
