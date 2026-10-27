@@ -246,6 +246,35 @@ describe("installKvtTile", () => {
     expect(again.cardsReused).toBe(6);
   });
 
+  it("counts repeated atom ids once and checks siblings without enrolling beyond the budget", async () => {
+    const tile = loadTile();
+    const atom = tile.atoms[0];
+    atom.practice_items.push({
+      ...structuredClone(atom.practice_items[1]),
+      id: "01K3X9A7R4B8C1D2E3F4G5H008",
+      slug: "optik-strahlengang-extra",
+    });
+    await installKvtTile(db, tile);
+    await ensureCard(db, atom.practice_items[0].id, "learner-a");
+    const progress: KvtProgress[] = [];
+    const result = await materialiseKvtCards(
+      db,
+      "learner-a",
+      [atom.id, atom.id],
+      {
+        onProgress: (event) => progress.push(event),
+      },
+    );
+    expect(result).toEqual({ cardsCreated: 1, cardsReused: 1 });
+    expect(progress).toEqual(
+      Array.from({ length: 4 }, (_, done) => ({ done, total: 3 })),
+    );
+    expect(await countRows(db, "cards")).toBe(2);
+    expect(
+      await getCard(db, "01K3X9A7R4B8C1D2E3F4G5H008", "learner-a"),
+    ).toBeUndefined();
+  });
+
   // Codex acceptance test 2.
   it("is idempotent: the same release twice changes nothing", async () => {
     await installKvtTile(db, loadTile());

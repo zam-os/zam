@@ -4,16 +4,20 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   type AcademyCellRow,
   type AcademyProgressEvent,
+  academyRow,
+  academyUpdateButton,
   academyErrorText,
   academyMetaText,
   enrolAcademyCell,
   fetchAcademyCells,
   isAcademyCellId,
+  openAcademyList,
   setAcademyProgressSource,
   updateAcademyCell,
 } from "../../desktop/src/academy-list.js";
 import { setBridgeTransport } from "../../desktop/src/bridge-transport.js";
 import { setCurrentLocale, t } from "../../desktop/src/i18n.js";
+import { AcademyElement, academyDom } from "../helpers/academy-dom.js";
 
 /** ADR 2026-10-19 Decision 5: the Studio side of the ZAM Academy. */
 
@@ -37,8 +41,110 @@ function cell(overrides: Partial<AcademyCellRow> = {}): AcademyCellRow {
 afterEach(() => {
   setAcademyProgressSource(null);
   setCurrentLocale("en");
+  vi.unstubAllGlobals();
   setBridgeTransport(async () => {
     throw new Error("no transport in this test");
+  });
+});
+
+describe("academy import dialog lifecycle", () => {
+  function mount() {
+    const dom = academyDom();
+    vi.stubGlobal("document", dom.document);
+    vi.stubGlobal("window", dom.window);
+    return dom;
+  }
+
+  it("removes a mismatched version's bar before retry, leaving just one new bar", async () => {
+    mount();
+    const pending: Array<(result: unknown) => void> = [];
+    setBridgeTransport(() => new Promise((resolve) => pending.push(resolve)));
+    const status = new AcademyElement("p");
+    const row = academyRow(
+      cell(),
+      {},
+      status as unknown as HTMLElement,
+    ) as unknown as AcademyElement;
+    const take = row.all("button")[0];
+    take.click();
+    expect(row.all("progress")).toHaveLength(1);
+    await vi.waitFor(() => expect(pending).toHaveLength(1));
+    pending[0]({ success: true, cardsCreated: 26, version: "2026.9.1" });
+    await vi.waitFor(() => expect(take.disabled).toBe(false));
+    expect(row.all("progress")).toHaveLength(0);
+    expect(status.textContent).toContain("2026.9.1");
+    take.click();
+    expect(row.all("progress")).toHaveLength(1);
+    await vi.waitFor(() => expect(pending).toHaveLength(2));
+    pending[1]({ success: true, cardsCreated: 0, version: cell().version });
+    await vi.waitFor(() => expect(row.all("progress")).toHaveLength(0));
+    expect(take.textContent).toBe(t("academy_taken"));
+  });
+
+  it("lets close, Escape and the backdrop hide the dialog while preserving a running import", async () => {
+    const { body, window } = mount();
+    let finish!: (result: unknown) => void;
+    const list = vi.fn(async () => ({
+      success: true,
+      offline: false,
+      cells: [cell()],
+    }));
+    setBridgeTransport((command) =>
+      command === "academy-list"
+        ? list()
+        : new Promise((resolve) => {
+            finish = resolve;
+          }),
+    );
+    await openAcademyList();
+    const overlay = body.children[0];
+    const buttons = overlay.all("button");
+    const take = buttons.find((b) => b.dataset.action === "take")!;
+    const close = buttons.find((b) => b.textContent === t("academy_close"))!;
+    take.click();
+    const bar = overlay.all("progress")[0];
+    for (const closeDialog of [
+      () => close.click(),
+      () => window.emit("keydown", { key: "Escape" }),
+      () => overlay.click(),
+    ]) {
+      expect(close.disabled).toBe(false);
+      closeDialog();
+      expect(overlay.classList.contains("active")).toBe(false);
+      await openAcademyList();
+      expect(overlay.classList.contains("active")).toBe(true);
+      expect(overlay.all("progress")).toEqual([bar]);
+      expect(list).toHaveBeenCalledOnce();
+    }
+    finish({ success: true, cardsCreated: 26, version: cell().version });
+    await vi.waitFor(() => expect(overlay.all("progress")).toHaveLength(0));
+    expect(take.textContent).toBe(t("academy_taken"));
+    body.replaceChildren();
+  });
+
+  it("removes a completed update bar and keeps the saved version in its button", async () => {
+    const { body } = mount();
+    setBridgeTransport(async (command) =>
+      command === "academy-list"
+        ? {
+            success: true,
+            offline: false,
+            cells: [cell({ newer: true, version: "2026.10.2" })],
+          }
+        : { success: true, updated: true, version: "2026.10.2" },
+    );
+    const card = new AcademyElement("div");
+    card.className = "zam-card";
+    const button = academyUpdateButton(cell().id) as unknown as AcademyElement;
+    card.append(button);
+    body.append(card);
+    button.click();
+    await vi.waitFor(() => expect(button.disabled).toBe(false));
+    button.click();
+    expect(card.all("progress")).toHaveLength(1);
+    await vi.waitFor(() => expect(card.all("progress")).toHaveLength(0));
+    expect(button.textContent).toBe("Updated to 2026.10.2");
+    body.replaceChildren();
   });
 });
 
@@ -192,17 +298,12 @@ describe("academy wiring", () => {
     expect(
       click.indexOf('take.textContent = t("academy_taking")'),
     ).toBeLessThan(click.indexOf("enrolAcademyCell(cell.id, progress.update)"));
-    expect(click.indexOf("progress.finish()")).toBeLessThan(
-      click.indexOf("setTaken(take)"),
-    );
     expect(click).toMatch(/\.catch\(\(err\) => \{\s*setTake\(take\)/);
   });
 
   it("puts „Aufnehmen“ back when another version than the row's was saved", () => {
     const list = file("desktop/src/academy-list.ts");
-    expect(list).toMatch(
-      /result\.version !== cell\.version;\s*if \(other\) setTake\(take\);/,
-    );
+    expect(list).toContain("if (!other) progress.finish()");
     setCurrentLocale("de");
     expect(t("academy_taken_other_version")).toContain("{saved}");
   });

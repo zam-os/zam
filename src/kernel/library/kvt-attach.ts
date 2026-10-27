@@ -351,6 +351,7 @@ export interface KvtProgress {
 }
 
 export interface MaterialiseKvtOptions {
+  /** Counts checked items, including siblings deferred by the enrolment budget. */
   onProgress?: (progress: KvtProgress) => void;
 }
 
@@ -1358,6 +1359,7 @@ export async function materialiseKvtCards(
   if (!userId.trim()) {
     throw new Error("userId is required");
   }
+  atomIds = [...new Set(atomIds)];
   return db.transaction(async (tx) => {
     let cardsCreated = 0;
     let cardsReused = 0;

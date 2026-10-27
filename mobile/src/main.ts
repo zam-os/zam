@@ -72,6 +72,7 @@ import {
   fetchMobileAcademyCatalog,
   fetchMobileAcademyCell,
 } from "./academy.js";
+import { type AcademyImportRow, completeAcademyImportRow } from "./academy-import-view.js";
 import {
   assessPrecondition,
   getPreconditionCandidates,
@@ -4858,7 +4859,10 @@ function openMobileCurriculum(): void {
 // ── ZAM Academy (ADR 2026-10-19 D4, D5) ─────────────────────────────────────
 // Cells fetched on the learner's tap, for this session.
 const academyTiles = new Map<string, BundledTile>();
-const academyImports = new Map<string, ReturnType<typeof createCellImportProgress>>();
+const academyImports = new Map<string, {
+  progress: ReturnType<typeof createCellImportProgress>;
+  row: AcademyImportRow;
+}>();
 
 async function openMobileAcademy(): Promise<void> {
   curriculumTrail = [];
@@ -4980,11 +4984,14 @@ async function renderAcademyCells(): Promise<void> {
         ? t("academy_taken")
         : t("academy_take");
     action.addEventListener("click", () => {
-      void takeAcademyCell(id, entryAhead ? entry : undefined, action);
+      void takeAcademyCell(id, entryAhead ? entry : undefined, { action, meta, held, items });
     });
     card.append(action);
     const importing = academyImports.get(id);
-    if (importing) card.append(importing.element);
+    if (importing) {
+      importing.row = { action, meta, held: importing.row.held, items };
+      card.append(importing.progress.element);
+    }
     curriculumOptions.append(card);
   }
   setCurriculumStatus(offline ? t("academy_offline") : "");
@@ -4993,13 +5000,15 @@ async function renderAcademyCells(): Promise<void> {
 async function takeAcademyCell(
   id: string,
   entry: AcademyCatalogEntry | undefined,
-  action: HTMLButtonElement,
+  row: AcademyImportRow,
 ): Promise<void> {
   if (!currentUserId || academyImports.has(id)) return;
+  const { action } = row;
   const userId = currentUserId;
   action.disabled = true;
   const progress = createCellImportProgress((key, counts) => tf(key, counts));
-  academyImports.set(id, progress);
+  const importing = { progress, row };
+  academyImports.set(id, importing);
   action.parentElement?.append(progress.element);
   setCurriculumStatus("");
   try {
@@ -5018,15 +5027,17 @@ async function takeAcademyCell(
       resolveTile: (id) => academyTiles.get(id),
       onProgress: progress.update,
     });
+    const version = (await installedTileVersion(db, id)) ?? "";
     progress.finish();
     academyImports.delete(id);
-    action.textContent = t("academy_taken");
     setCurriculumStatus(
-      tf("academy_taken_result", {
+      completeAcademyImportRow(importing.row, {
+        version,
         name: entry?.title ?? tileTitle(id),
-        count: result.cardsCreated,
+        cardsCreated: result.cardsCreated,
       }),
     );
+    progress.remove();
     // The saved version is known already; do not fetch the whole Academy
     // again before showing completion.
     await Promise.all([refreshBundledCells(), refresh(userId)]).catch((error) =>
@@ -5036,7 +5047,7 @@ async function takeAcademyCell(
     academyImports.delete(id);
     progress.remove();
     setCurriculumStatus(tf("library_failed", { error: errorMessage(error) }), true);
-    action.disabled = false;
+    importing.row.action.disabled = false;
   }
 }
 

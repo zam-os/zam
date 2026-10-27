@@ -185,6 +185,7 @@ import {
   academyListHandler,
   academyUpdateHandler,
 } from "../academy/handlers.js";
+import { academyProgress } from "../academy/progress.js";
 import {
   CONTENT_USER_AGENT,
   cleanHtml,
@@ -512,26 +513,6 @@ function progressOut(event: {
   phase?: "installing" | "enrolling";
 }): void {
   process.stderr.write(`${JSON.stringify(event)}\n`);
-}
-
-/** Immediate phase changes and counts at most ten times a second. */
-function academyProgress(cellId: string) {
-  let lastAt = 0;
-  return (progress: {
-    phase: "installing" | "enrolling";
-    done: number;
-    total: number;
-  }) => {
-    const now = Date.now();
-    if (
-      progress.done === 0 ||
-      progress.done === progress.total ||
-      now - lastAt >= 100
-    ) {
-      lastAt = now;
-      progressOut({ type: "academy-progress", cellId, ...progress });
-    }
-  };
 }
 
 /**
@@ -9631,7 +9612,7 @@ bridgeCommand
         const result = await handleEnrolBundledCell(db, {
           cellId,
           user: opts.user,
-          onProgress: academyProgress(cellId),
+          onProgress: academyProgress(cellId, progressOut),
         });
         jsonOut(result);
       } catch (err: unknown) {
@@ -9672,7 +9653,7 @@ bridgeCommand
           await academyEnrolHandler(db, {
             cellId,
             user: opts.user,
-            onProgress: academyProgress(cellId),
+            onProgress: academyProgress(cellId, progressOut),
           }),
         );
       } catch (err: unknown) {
@@ -9694,7 +9675,7 @@ bridgeCommand
           await academyUpdateHandler(db, {
             cellId,
             user: opts.user,
-            onProgress: academyProgress(cellId),
+            onProgress: academyProgress(cellId, progressOut),
           }),
         );
       } catch (err: unknown) {

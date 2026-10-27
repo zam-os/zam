@@ -3,6 +3,7 @@ import type { EnrolBundledCellProgress } from "../../src/kernel/library/bundled-
 export type CellImportProgressKey =
   | "academy_import_preparing"
   | "academy_import_installing"
+  | "academy_import_prepared"
   | "academy_import_enrolling"
   | "academy_import_saving"
   | "academy_import_complete";
@@ -24,7 +25,12 @@ export function cellImportProgressState(
   const { phase, done, total } = progress;
   const fraction = total > 0 ? Math.min(1, Math.max(0, done / total)) : 1;
   return {
-    key: done === total ? "academy_import_saving" : `academy_import_${phase}`,
+    key:
+      done === total
+        ? phase === "enrolling"
+          ? "academy_import_saving"
+          : "academy_import_prepared"
+        : `academy_import_${phase}`,
     value: Math.min(0.99, (phase === "installing" ? 0 : 0.5) + fraction / 2),
     done,
     total,
@@ -49,7 +55,7 @@ export function createCellImportProgress(
   bar.max = 1;
   bar.style.width = "100%";
   bar.style.height = "12px";
-  bar.style.accentColor = "var(--clr-primary, #5b71da)";
+  bar.style.accentColor = "var(--color-accent, var(--accent))";
   element.append(label, bar);
 
   function render(progress: EnrolBundledCellProgress | null, complete = false) {

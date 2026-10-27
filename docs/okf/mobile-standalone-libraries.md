@@ -10,7 +10,7 @@ tags:
   - offline
   - curriculum
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mobile-standalone-libraries.md"
-timestamp: 2026-10-27T05:37:31Z
+timestamp: 2026-10-27T14:24:28Z
 ---
 
 ZAM Mobile is a standalone learning app on Android and iOS. An unpaired first
@@ -117,7 +117,11 @@ on Android and iOS as on Desktop. It starts indeterminate during preparation,
 then counts the kernel's installation and enrolment passes. Only successful
 completion fills the bar; a failure removes it and makes the action retryable.
 The curriculum browser's cell enrolment uses the same bar. The callbacks
-work with both local and server-backed libraries.
+work with both local and server-backed libraries. Enrolment labels its counts
+as checked cards, including siblings that the budget leaves without a card.
+Completion removes the bar and reports the result. A successful update keeps
+its saved version in both the row metadata and update button, without fetching
+the catalog again.
 
 A mobile review session persists a bounded kernel queue snapshot. It renders
 the item tier, turns valid Tier-1 binary checks into one-tap choices, offers
@@ -185,6 +189,8 @@ same due cards. It writes nothing: no settle, no stored lens, no thread.
 due cards and no new card. The map itself is not on Mobile yet.
 
 # Citations
+- Code: `mobile/src/academy-import-view.ts`
+- Tests: `tests/mobile/academy-import-view.test.ts`
 - Code: `desktop/src/curriculum-wizard.ts`, `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`
 - Tests: `tests/desktop/cell-import-progress.test.ts`
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)

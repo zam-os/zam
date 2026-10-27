@@ -206,18 +206,15 @@ function ensureDialog(): DialogParts {
 }
 
 export function closeAcademyList(): void {
-  if (activeImports > 0) return;
   dialog?.overlay.classList.remove("active");
 }
 
 function importStarted(): void {
   activeImports++;
-  if (dialog) dialog.close.disabled = true;
 }
 
 function importFinished(): void {
   activeImports--;
-  if (dialog) dialog.close.disabled = activeImports > 0;
 }
 
 function setTake(button: HTMLButtonElement): void {
@@ -293,13 +290,14 @@ export function academyRow(
       status.textContent = t("academy_taking");
       enrolAcademyCell(cell.id, progress.update)
         .then((result) => {
-          progress.finish();
-          setTaken(take);
           // Another version than the row showed is not what was taken: say
           // which one was saved and let the learner try again.
           const other =
             result.version !== null && result.version !== cell.version;
+          if (!other) progress.finish();
+          progress.remove();
           if (other) setTake(take);
+          else setTaken(take);
           status.textContent = other
             ? tf("academy_taken_other_version", {
                 name: cell.title,
@@ -337,6 +335,7 @@ export async function openAcademyList(
   const parts = ensureDialog();
   if (activeImports > 0) {
     parts.overlay.classList.add("active");
+    parts.close.focus();
     return;
   }
   parts.title.textContent = t("academy_title");
@@ -420,6 +419,7 @@ export function academyUpdateButton(
         button.textContent = tf("academy_updated", {
           version: result.version ?? newerVersion ?? "",
         });
+        progress.remove();
         void Promise.resolve(onUpdated?.()).catch((err) =>
           console.error("academy: refresh after update failed", err),
         );

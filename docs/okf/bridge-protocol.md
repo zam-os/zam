@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-27T05:37:31Z
+timestamp: 2026-10-27T14:24:28Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -592,6 +592,8 @@ whose token sits in a keychain ZAM cannot read fails to open with
 `OS_SECRET_UNAVAILABLE`, distinct from `BITWARDEN_REQUIRED`.
 
 # Citations
+- Code: `src/cli/academy/progress.ts`
+- Tests: `tests/cli/academy-progress.test.ts`
 - Code: `desktop/src/curriculum-wizard.ts`, `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`
 - Tests: `tests/desktop/cell-import-progress.test.ts`
 - [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)

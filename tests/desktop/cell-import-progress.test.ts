@@ -27,6 +27,15 @@ describe("cell import progress on Desktop and Mobile", () => {
     }
     expect(values).toEqual([...values].sort((a, b) => a! - b!));
     expect(
+      cellImportProgressState({ phase: "installing", done: 26, total: 26 }),
+    ).toMatchObject({
+      key: "academy_import_prepared",
+      value: 0.5,
+    });
+    expect(
+      cellImportProgressState({ phase: "installing", done: 0, total: 0 }).key,
+    ).toBe("academy_import_prepared");
+    expect(
       cellImportProgressState({ phase: "enrolling", done: 0, total: 0 }),
     ).toMatchObject({ key: "academy_import_saving", value: 0.99 });
     expect(cellImportProgressState(null, true)).toMatchObject({
@@ -62,12 +71,19 @@ describe("cell import progress on Desktop and Mobile", () => {
     const view = createCellImportProgress((key, counts) => tf(key, counts));
     const element = view.element as unknown as Element;
     const [label, bar] = element.children;
+    expect(bar.style).toMatchObject({
+      accentColor: "var(--color-accent, var(--accent))",
+    });
     expect(bar.attributes.has("value")).toBe(false);
     expect(label.attributes.get("role")).toBe("status");
     expect(bar.attributes.get("aria-busy")).toBe("true");
     view.update({ phase: "installing", done: 7, total: 26 });
     expect(label.textContent).toBe("7 von 26 Karten vorbereitet …");
     expect(bar.attributes.get("aria-label")).toBe(label.textContent);
+    view.update({ phase: "installing", done: 26, total: 26 });
+    expect(label.textContent).toBe("Alle Karten vorbereitet …");
+    view.update({ phase: "enrolling", done: 3, total: 26 });
+    expect(label.textContent).toBe("3 von 26 Karten geprüft …");
     view.update({ phase: "enrolling", done: 26, total: 26 });
     expect(bar.value).toBeLessThan(bar.max);
     expect(label.textContent).toBe("Import wird gespeichert …");

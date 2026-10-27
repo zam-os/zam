@@ -418,6 +418,8 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       user: "learner",
       fetch: fakeAcademy([catalogOnly()]).fetch,
     });
+    // The CLI uses this test file's sandboxed HOME/.zam/zam.db, not the
+    // handler's temp db. npm test builds dist first through its pretest hook.
     const result = spawnSync(
       process.execPath,
       [
