@@ -27,9 +27,11 @@ import {
 // zam-academy:informatik-realschule-8 (zam-os/zam-academy#62). Eleven of their
 // 24 cards pass their history on, thirteen retire without transferring
 // mastery. See tests/kernel/zam-academy-informatik-realschule-8-cell.test.ts.
+// The two chemistry cells of this grade moved to the ZAM Academy cell
+// zam-academy:chemie-realschule-8 (zam-os/zam-academy#59, #60). Eight of their
+// sixteen cards pass their history on, eight retire without transferring
+// mastery. See tests/kernel/zam-academy-chemie-realschule-8-cell.test.ts.
 const RS8_CELL_IDS = [
-  "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
-  "de-by:realschule-8-chemie-chemische-reaktion-oxidation",
   "de-by:realschule-8-biologie-atmung-blutkreislauf",
   "de-by:realschule-8-biologie-ernaehrung-verdauung",
   "de-by:realschule-8-bwr-erfolgskonten-guv-werkstoffe-rabatte",
@@ -41,6 +43,7 @@ const RS8_CELL_IDS = [
   "de-by:realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive",
 ];
 const ACADEMY_RS8_IDS = [
+  "zam-academy:chemie-realschule-8",
   "zam-academy:informatik-realschule-8",
   "zam-academy:mathematik-realschule-8",
   "zam-academy:physik-realschule-8",
@@ -79,7 +82,7 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
       schoolType: "realschule",
       grade: 8,
     });
-    // Eleven school cells and the Academy cells listed above.
+    // Nine school cells and the Academy cells listed above.
     expect(rs8Cells.length).toBeGreaterThanOrEqual(
       RS8_CELL_IDS.length + ACADEMY_RS8_IDS.length,
     );
@@ -134,12 +137,12 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
       totalCards += res.cardsCreated;
     }
 
-    // 6 cells * 8 + 5 cells * 4 = 48 + 20 = 68 cards
-    expect(totalCards).toBe(68);
+    // 4 cells * 8 + 5 cells * 4 = 32 + 20 = 52 cards
+    expect(totalCards).toBe(52);
 
     const cards = (await db
       .prepare(`SELECT COUNT(*) as count FROM cards WHERE user_id = ?`)
       .get(user)) as { count: number };
-    expect(cards.count).toBe(68);
+    expect(cards.count).toBe(52);
   });
 });

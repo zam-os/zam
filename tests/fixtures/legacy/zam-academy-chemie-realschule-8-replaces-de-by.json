@@ -1,0 +1,170 @@
+{
+  "schema": 1,
+  "approved": "2026-10-26",
+  "status": "approved",
+  "source": "Thomas in diesem Antigravity-Chat am 2026-10-26, nach dem Merge von zam-os/zam-academy#59: „weiter mit der Integration in ZAM“, auf Rückfrage ausdrücklich bestätigt für die Kartenzuordnung (Auswahl: „Ich gebe das vorgeschlagene Mapping frei (8× Kategorie A per replaces übernehmen, 8× mehrteilige Kategorie-C-Karten per retired_items stilllegen); veröffentliche 2026.10.2 in zam-academy und löse die beiden C8-Altzellen im ZAM-Bundle ab (Snapshots nach tests/fixtures/legacy/).“).",
+  "source_repository": "zam-os/zam",
+  "source_commit": "cd1a71b5e8a91aa3eec601b5db06095844d024e3",
+  "authorization": "Thomas hat am 26. Oktober 2026 die hier dokumentierten sechzehn Zuordnungen ausdrücklich freigegeben (8 A mit replaces, 0 B, 8 C mit Stilllegung). Die Zelle 2026.10.2 deklariert genau acht replaces und acht retired_items; persönliche Karten und Reviewhistorien bleiben erhalten.",
+  "policy": "A: same atomic retrieval, one successor declares replaces. B: original whole multi-part prompt, answer and sample solution retained on one dedicated successor. C: split, corrected or uncertain; no replaces, no mastery transfer; retired only if a row says so after approval.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-8-chemie-stoffe-stoffgemische-trennung-kvt.json",
+      "sha256": "814f018d8188aed51602ef448f167c1e1440a4444dd1bb4c230e1cbfdfb6db4c",
+      "tile_id": "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
+      "version": "2026.08.1"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-8-chemie-chemische-reaktion-oxidation-kvt.json",
+      "sha256": "aa39b90721e440b402f382ebc7fa7fe933f301a0c42ba30a92c21bf5f6427e2b",
+      "tile_id": "de-by:realschule-8-chemie-chemische-reaktion-oxidation",
+      "version": "2026.08.1"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
+      "de_by_id": "01K4C8S0000000000000000J01",
+      "de_by_question": "Wie bezeichnet man ein heterogenes Gemisch aus fein verteilten Feststoffpartikeln in einer Flüssigkeit (z. B. Schlammwasser, Lehmwasser)?",
+      "category": "A",
+      "academy_slug": "c8-reinstoffe-gemische-suspension",
+      "action": "replace",
+      "reason": "Gleicher atomarer Einzelabruf: heterogenes Gemisch aus unlöslichen Feststoffpartikeln in einer Flüssigkeit = Suspension (Abgrenzung zur Emulsion). Die Nachfolgekarte prüft exakt denselben Fachbegriff."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
+      "de_by_id": "01K4C8S0000000000000000J02",
+      "de_by_question": "Erstelle eine vollständige Systematik der Stoffe (Reinstoffe: Elemente vs. Verbindungen; Gemische: homogen vs. heterogen) und ordne folgende Beispiele präzise ein: Messing, Milch, Meerwasser, Granit, reines destilliertes Wasser, Rauch.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Mehrteiliger Synthese-Sammelabruf über die gesamte Stoffsystematik (Elemente, Verbindungen, homogene und heterogene Gemische) samt sechs Einzelbeispielen; zudem band die Altzelle fälschlich Zweig II/III in Jahrgangsstufe 8 ein. Die neue Zelle trennt Gemischarten (ch-reinstoffe-gemische) und Elemente/Verbindungen (ch-elemente-verbindungen) in atomare Einzelkarten auf. Kein 1-zu-1-Nachfolger; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
+      "de_by_id": "01K4C8S0000000000000000J03",
+      "de_by_question": "Wie ist die physikalische Stoffkonstante Dichte ρ mathematisch definiert?",
+      "category": "A",
+      "academy_slug": "c8-sinne-kenngroessen-dichte",
+      "action": "replace",
+      "reason": "Gleicher atomarer Einzelabruf mit identischer Größengleichung: Definition der Dichte ρ = m / V (Masse durch Volumen). Die Nachfolgekarte stellt dieselbe Frage mit typografisch gesetzten Formelsegmenten."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
+      "de_by_id": "01K4C8S0000000000000000J04",
+      "de_by_question": "Erläutere, warum man Stoffe anhand spezifischer Stoffeigenschaften (Dichte, Schmelztemperatur T_s, Siedetemperatur T_s, elektrische Leitfähigkeit, Härte, Löslichkeit) und nicht anhand von Mengeneigenschaften (Masse, Volumen) identifiziert, und berechne die Dichte eines metallischen Probekörpers mit der Masse m = 135 g und dem durch Wasserverdrängung gemessenen Volumen V = 50 cm³ (Identifiziere das Metall).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Mehrteilige Sammelaufgabe aus Begriffsabgrenzung (Kenngrößen vs. Portionsgrößen), Dichteberechnung (135 g / 50 cm³) und Stoffidentifikation (Aluminium). Die neue Zelle trennt Kenngrößenbegriff und Dichteberechnung in atomare Einzelkarten bzw. interaktive Übungsgeneratoren. Kein einzelner identischer Nachfolger; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
+      "de_by_id": "01K4C8S0000000000000000J05",
+      "de_by_question": "Auf welchem Unterschied welcher physikalischen Stoffeigenschaft beruht das Trennverfahren der Destillation (z. B. Trennung von Ethanol und Wasser)?",
+      "category": "A",
+      "academy_slug": "c8-trennverfahren-destillation",
+      "action": "replace",
+      "reason": "Gleicher atomarer Einzelabruf: Destillation nutzt die unterschiedlichen Siedetemperaturen der Gemischbestandteile aus."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
+      "de_by_id": "01K4C8S0000000000000000J06",
+      "de_by_question": "Ordne den Trennverfahren Filtration, Dekantieren, Destillation, Chromatographie und Zentrifugieren jeweils die ausgenutzte Stoffeigenschaft zu und entwirf einen mehrstufigen Laborplan zur vollständigen Trennung eines Dreistoffgemischs aus Sand, Kochsalz und Wasser.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Mehrteiliger Sammelabruf zu fünf Trennverfahren (darunter Chromatographie und Zentrifugieren außerhalb der verbindlichen Inhalte von C8 LB 2: Filtration, Destillation, Magnetscheiden, Extraktion) plus Versuchsplanung. Kein 1-zu-1-Nachfolger; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
+      "de_by_id": "01K4C8S0000000000000000J07",
+      "de_by_question": "Wie nennt man den direkten Phasenübergang eines Stoffes vom festen in den gasförmigen Aggregatzustand ohne flüssige Zwischenphase (z. B. Trockeneis, Iod)?",
+      "category": "A",
+      "academy_slug": "c8-teilchenmodell-phasen-sublimation",
+      "action": "replace",
+      "reason": "Gleicher atomarer Einzelabruf: direkter Phasenübergang vom festen in den gasförmigen Aggregatzustand = Sublimation."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
+      "de_by_id": "01K4C8S0000000000000000J08",
+      "de_by_question": "Erkläre die drei Aggregatzustände (fest, flüssig, gasförmig) anhand der Anordnung, der Abstände und der thermischen Eigenbewegung der Teilchen, benenne alle Phasenübergänge (Schmelzen, Erstarren, Verdampfen, Kondensieren, Sublimieren, Resublimieren) und erkläre das Phänomen der Diffusion (Brownsche Molekularbewegung).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Mehrteiliger Gesamtabruf über alle drei Aggregatzustände, sämtliche sechs Phasenübergänge und die Diffusion auf einer einzigen Karte. In der neuen Zelle auf fokussierte Einzelkarten in ch-teilchenmodell-phasen verteilt; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-chemische-reaktion-oxidation",
+      "de_by_id": "01K4C8R0000000000000000J01",
+      "de_by_question": "Was unterscheidet eine chemische Reaktion grundlegend von einem rein physikalischen Vorgang?",
+      "category": "A",
+      "academy_slug": "c8-merkmale-umgruppierung-unterschied",
+      "action": "replace",
+      "reason": "Gleicher atomarer Einzelabruf: Abgrenzung einer chemischen Reaktion (Stoffumsatz unter Bildung neuer Stoffe mit neuen Kenngrößen durch Atomumgruppierung) von einem physikalischen Vorgang."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-chemische-reaktion-oxidation",
+      "de_by_id": "01K4C8R0000000000000000J02",
+      "de_by_question": "Nenne die drei Hauptkriterien einer chemischen Reaktion (Stoffumwandlung, Energieumsatz, Umgruppierung von Teilchen / Bindungsbruch und Bindungsneubildung) und beurteile die Vorgänge 'Schmelzen von Wachs' vs. 'Verbrennen einer Kerze' hinsichtlich dieser Kriterien.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Mehrteilige Synthesefrage (drei Kriterien nennen plus Vergleich Wachsschmelzen vs. Kerzenverbrennung). In der neuen Zelle in atomare Einzelkarten und das interaktive Labor ch-merkmale-umgruppierung aufgeteilt; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-chemische-reaktion-oxidation",
+      "de_by_id": "01K4C8R0000000000000000J03",
+      "de_by_question": "Welche Wirkung hat der Zusatz eines Katalysators auf eine chemische Reaktion?",
+      "category": "A",
+      "academy_slug": "c8-katalyse-oberflaeche-wirkung",
+      "action": "replace",
+      "reason": "Gleicher atomarer Einzelabruf: Ein Katalysator setzt die Aktivierungsenergie E_A herab, beschleunigt die Reaktion und geht unverändert daraus hervor (wobei der Distraktor der neuen Karte lehrplankonform ΔE_i statt ΔH nennt)."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-chemische-reaktion-oxidation",
+      "de_by_id": "01K4C8R0000000000000000J04",
+      "de_by_question": "Zeichne und beschreibe das Energiediagramm einer exothermen Reaktion im Vergleich zu einer endothermen Reaktion (Ebene der Edukte, Übergangszustand, Aktivierungsenergie E_A, Reaktionsenthalpie ΔH, Produkte) und erkläre die Rolle eines Katalysators im Diagramm.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Mehrteiliger Zeichen- und Beschreibungsauftrag für exotherme/endotherme Energiediagramme plus Katalysatorrolle; verwendet zudem den Begriff Reaktionsenthalpie ΔH (Chemie 9/10) statt der in C8 LB 4 verankerten Änderung der inneren Energie ΔE_i. Aufgeteilt auf ch-innere-energie-diagramm und ch-katalyse-oberflaeche; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-chemische-reaktion-oxidation",
+      "de_by_id": "01K4C8R0000000000000000J05",
+      "de_by_question": "Welche drei Bedingungen müssen im 'Verbrennungsdreieck' gleichzeitig erfüllt sein, damit ein Feuer brennen kann?",
+      "category": "A",
+      "academy_slug": "c8-verbrennung-explosion-brandschutz-dreieck",
+      "action": "replace",
+      "reason": "Gleicher atomarer Einzelabruf zu den drei Bedingungen des Verbrennungsdreiecks: brennbarer Stoff, Sauerstoff und Erreichen der Zündtemperatur."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-chemische-reaktion-oxidation",
+      "de_by_id": "01K4C8R0000000000000000J06",
+      "de_by_question": "Definiere die Oxidation im historischen Sinn (Reaktion eines Stoffes mit Sauerstoff zu einem Oxid), beschreibe das Verbrennungsdreieck und leite daraus die drei physikalisch-chemischen Löschprinzipien der Feuerwehr ab (Erstickungseffekt, Kühleffekt, Entzug des Brennstoffs).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Mehrteilige Sammelaufgabe aus Oxidationsdefinition, Verbrennungsdreieck und drei Löschprinzipien. In der neuen Zelle auf atomare Einzelkarten in ch-verbrennung-explosion-brandschutz verteilt; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-chemische-reaktion-oxidation",
+      "de_by_id": "01K4C8R0000000000000000J07",
+      "de_by_question": "Was besagt das Gesetz von der Erhaltung der Masse nach Antoine Lavoisier bei chemischen Reaktionen in einem geschlossenen System?",
+      "category": "A",
+      "academy_slug": "c8-massenerhaltung-gleichungen-lavoisier",
+      "action": "replace",
+      "reason": "Gleicher atomarer Einzelabruf: Gesetz von der Erhaltung der Masse nach Lavoisier im geschlossenen System — m(Edukte) = m(Produkte)."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-chemie-chemische-reaktion-oxidation",
+      "de_by_id": "01K4C8R0000000000000000J08",
+      "de_by_question": "Begründe das Massenerhaltungsgesetz auf der Teilchenebene (Atome werden weder erzeugt noch vernichtet, sondern nur umgruppiert), erkläre das scheinbare Paradoxon der Massenzunahme beim Verbrennen von Eisenwolle und gleiche folgende unvollständige Reaktionsgleichungen mit stöchiometrischen Koeffizienten aus: a) Al + O_2 -> Al_2O_3, b) Fe + O_2 -> Fe_3O_4.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Mehrteilige Sammelaufgabe (Teilchendeutung der Massenerhaltung, Erklärung der Eisenwolle-Verbrennung und Ausgleichen zweier Reaktionsgleichungen). In ch-massenerhaltung-gleichungen in Einzelkarten und den Reaktionsgleichungs-Übungsgenerator zerlegt; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    }
+  ]
+}

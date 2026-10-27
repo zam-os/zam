@@ -1,0 +1,4034 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:chemie-realschule-8",
+  "version": "2026.10.2",
+  "title": "Chemie 8 Realschule (ZAM Academy)",
+  "description": "Chemie 8 nach LehrplanPLUS Bayern (Zweig I): fünf Etappen mit 32 Lektionen, digitalen Labormodellen und Aufgaben zu Stoffen, Materieaufbau, chemischer Reaktion, Stöchiometrie, Verbrennung und Atombau. Jede Karte führt zur passenden Lektion zurück.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-26T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/chemie-realschule-8/",
+      "checked": "2026-10-26",
+      "label": "ZAM Academy: Chemie 8 Realschule (Zweig I), fünf Etappen"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/chemie/wpfg1",
+      "checked": "2026-10-26",
+      "label": "LehrplanPLUS Chemie 8 Realschule, Wahlpflichtfächergruppe I"
+    }
+  ],
+  "retired_items": [
+    {
+      "id": "01K4C8S0000000000000000J02",
+      "reason": "Mehrteiliger Synthese-Sammelabruf über die gesamte Stoffsystematik (Elemente, Verbindungen, homogene und heterogene Gemische) samt sechs Einzelbeispielen; zudem band die Altzelle fälschlich Zweig II/III in Jahrgangsstufe 8 ein. Die neue Zelle trennt Gemischarten (ch-reinstoffe-gemische) und Elemente/Verbindungen (ch-elemente-verbindungen) in atomare Einzelkarten auf. Kein 1-zu-1-Nachfolger; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4C8S0000000000000000J04",
+      "reason": "Mehrteilige Sammelaufgabe aus Begriffsabgrenzung (Kenngrößen vs. Portionsgrößen), Dichteberechnung (135 g / 50 cm³) und Stoffidentifikation (Aluminium). Die neue Zelle trennt Kenngrößenbegriff und Dichteberechnung in atomare Einzelkarten bzw. interaktive Übungsgeneratoren. Kein einzelner identischer Nachfolger; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4C8S0000000000000000J06",
+      "reason": "Mehrteiliger Sammelabruf zu fünf Trennverfahren (darunter Chromatographie und Zentrifugieren außerhalb der verbindlichen Inhalte von C8 LB 2: Filtration, Destillation, Magnetscheiden, Extraktion) plus Versuchsplanung. Kein 1-zu-1-Nachfolger; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4C8S0000000000000000J08",
+      "reason": "Mehrteiliger Gesamtabruf über alle drei Aggregatzustände, sämtliche sechs Phasenübergänge und die Diffusion auf einer einzigen Karte. In der neuen Zelle auf fokussierte Einzelkarten in ch-teilchenmodell-phasen verteilt; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4C8R0000000000000000J02",
+      "reason": "Mehrteilige Synthesefrage (drei Kriterien nennen plus Vergleich Wachsschmelzen vs. Kerzenverbrennung). In der neuen Zelle in atomare Einzelkarten und das interaktive Labor ch-merkmale-umgruppierung aufgeteilt; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4C8R0000000000000000J04",
+      "reason": "Mehrteiliger Zeichen- und Beschreibungsauftrag für exotherme/endotherme Energiediagramme plus Katalysatorrolle; verwendet zudem den Begriff Reaktionsenthalpie ΔH (Chemie 9/10) statt der in C8 LB 4 verankerten Änderung der inneren Energie ΔE_i. Aufgeteilt auf ch-innere-energie-diagramm und ch-katalyse-oberflaeche; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4C8R0000000000000000J06",
+      "reason": "Mehrteilige Sammelaufgabe aus Oxidationsdefinition, Verbrennungsdreieck und drei Löschprinzipien. In der neuen Zelle auf atomare Einzelkarten in ch-verbrennung-explosion-brandschutz verteilt; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4C8R0000000000000000J08",
+      "reason": "Mehrteilige Sammelaufgabe (Teilchendeutung der Massenerhaltung, Erklärung der Eisenwolle-Verbrennung und Ausgleichen zweier Reaktionsgleichungen). In ch-massenerhaltung-gleichungen in Einzelkarten und den Reaktionsgleichungs-Übungsgenerator zerlegt; Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5WY3HWW6BRR6CRPYXHS56HR",
+      "atom_uri": "urn:zam:atom:01M5WY3HWW6BRR6CRPYXHS56HR",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-gefahrstoffe-sicherheit",
+      "title": "Gefahrstoffe, Laborregeln und Entsorgung",
+      "domain": "chemie/forschen",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-gefahrstoffe-sicherheit",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "arbeiten",
+          "topic_title": "Wie Chemiker denken und arbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Wie Chemiker denken und arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWYGT0GZ6ZRXKK5R025",
+          "slug": "c8-gefahrstoffe-sicherheit-ghs03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-gefahrstoffe-sicherheit",
+          "question": "Welche Gefahr kennzeichnet das GHS-Piktogramm „Flamme über einem Kreis“ (GHS03)?",
+          "concept": "Der Stoff wirkt brandfördernd und verstärkt Brände.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Stoff wirkt brandfördernd und verstärkt Brände.",
+              "Der Stoff wirkt stark ätzend auf Haut und Metalle."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Stoff wirkt stark ätzend auf Haut und Metalle.",
+              "reason": "Ätzwirkung wird durch GHS05 (tropfende Reagenzgläser) dargestellt."
+            },
+            {
+              "text": "Der Stoff wirkt gewässergefährdend auf Wasserorganismen.",
+              "reason": "Gewässergefährdung zeigt GHS09 mit Baum und Fisch."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HWYPBKKMN76Q4476HVV",
+          "slug": "c8-gefahrstoffe-sicherheit-entsorgung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-gefahrstoffe-sicherheit",
+          "question": "Wohin gehören schwermetallhaltige Versuchslösungen (GHS09) nach einem Experiment?",
+          "concept": "In den beschrifteten Sammelbehälter für Schwermetallabfälle.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In den beschrifteten Sammelbehälter für Schwermetallabfälle.",
+              "Stark mit Leitungswasser verdünnt in den Laborausguss."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Stark mit Leitungswasser verdünnt in den Laborausguss.",
+              "reason": "Schwermetallionen schädigen Gewässer und Kläranlagen auch verdünnt."
+            },
+            {
+              "text": "Zusammen mit Filterpapier in den normalen Restmüll.",
+              "reason": "Flüssige Gefahrstoffreste gehören nie in den Hausmüll."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HWYVYFXPBJT4QR4JJ05",
+      "atom_uri": "urn:zam:atom:01M5WY3HWYVYFXPBJT4QR4JJ05",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-experiment-protokoll",
+      "title": "Fragestellung, Experiment und Versuchsprotokoll",
+      "domain": "chemie/forschen",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-experiment-protokoll",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWW6BRR6CRPYXHS56HR",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Gefahrstoffe, Laborregeln und Entsorgung“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "arbeiten",
+          "topic_title": "Wie Chemiker denken und arbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Wie Chemiker denken und arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWYJXZQ4T8DXZHH9S0S",
+          "slug": "c8-experiment-protokoll-trennung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-experiment-protokoll",
+          "question": "Worin unterscheidet sich im Versuchsprotokoll die Beobachtung von der Deutung?",
+          "concept": "Die Beobachtung beschreibt Wahrnehmbares auf Stoffebene, die Deutung erklärt auf Teilchenebene.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Beobachtung beschreibt Wahrnehmbares auf Stoffebene, die Deutung erklärt auf Teilchenebene.",
+              "Die Beobachtung nennt Molekülformeln, die Deutung zählt nur die benutzten Laborgeräte auf."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Beobachtung nennt Molekülformeln, die Deutung zählt nur die benutzten Laborgeräte auf.",
+              "reason": "Moleküle und Formeln gehören in die Deutung, Geräte in den Versuchsaufbau."
+            },
+            {
+              "text": "Die Beobachtung formuliert eine Vermutung vorab, die Deutung beschreibt den Versuchsaufbau.",
+              "reason": "Die prüfbare Vermutung vor Versuchsbeginn heißt Hypothese."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HWYWW8ZM2DE9V18PVDX",
+          "slug": "c8-experiment-protokoll-variablen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-experiment-protokoll",
+          "question": "Was verlangt die Variablenkontrolle bei der Planung eines fairen chemischen Experiments?",
+          "concept": "Nur eine einzige Einflussgröße verändern und alle übrigen Bedingungen konstant halten.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur eine einzige Einflussgröße verändern und alle übrigen Bedingungen konstant halten.",
+              "Möglichst viele Versuchsbedingungen gleichzeitig ändern, um Zeit im Labor zu sparen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Möglichst viele Versuchsbedingungen gleichzeitig ändern, um Zeit im Labor zu sparen.",
+              "reason": "Ändern sich mehrere Größen zugleich, lässt sich die Ursache nicht eindeutig zuordnen."
+            },
+            {
+              "text": "Auf einen Vergleichsansatz verzichten und nur die Temperatur am Ende schätzen.",
+              "reason": "Ohne Kontrollansatz und Messung fehlt der objektive Vergleich."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HWYB19MVH0GS8SGZ3PW",
+      "atom_uri": "urn:zam:atom:01M5WY3HWYB19MVH0GS8SGZ3PW",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-modelle-fachsprache",
+      "title": "Modelle, Modellgrenzen und chemische Fachsprache",
+      "domain": "chemie/forschen",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-modelle-fachsprache",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWYVYFXPBJT4QR4JJ05",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Fragestellung, Experiment und Versuchsprotokoll“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "arbeiten",
+          "topic_title": "Wie Chemiker denken und arbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Wie Chemiker denken und arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWYG5M34W9VMCRQJ4E6",
+          "slug": "c8-modelle-fachsprache-formelarten",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-modelle-fachsprache",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Worin unterscheidet sich die Molekülformel "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{H_2O}",
+              "speech": "H zwei O"
+            },
+            {
+              "type": "text",
+              "text": " von der Verhältnisformel "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{NaCl}",
+              "speech": "N A C L"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{H_2O}",
+              "speech": "H zwei O"
+            },
+            {
+              "type": "text",
+              "text": " nennt die Atomzahl eines einzelnen Moleküls, "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{NaCl}",
+              "speech": "N A C L"
+            },
+            {
+              "type": "text",
+              "text": " das Ionenverhältnis im Gitter."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "H₂O nennt die Atomzahl eines einzelnen Moleküls, NaCl das Ionenverhältnis im Gitter.",
+              "H₂O gibt ein Gitterverhältnis von Ionen an, NaCl beschreibt ein dreiatomiges Gasmolekül."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "H₂O gibt ein Gitterverhältnis von Ionen an, NaCl beschreibt ein dreiatomiges Gasmolekül.",
+              "reason": "Wasser besteht aus einzelnen Molekülen, Kochsalz bildet ein Ionengitter."
+            },
+            {
+              "text": "H₂O gilt nur im festen Eisgitter, NaCl gilt ausschließlich in wässriger Salzlösung.",
+              "reason": "Molekül- und Verhältnisformel kennzeichnen den grundsätzlichen Teilchenverband des Reinstoffs."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HWYRSTEH7F55K85HX6P",
+          "slug": "c8-modelle-fachsprache-modellgrenze",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-modelle-fachsprache",
+          "question": "Wann müssen Chemikerinnen und Chemiker ein Atom- oder Teilchenmodell weiterentwickeln?",
+          "concept": "Wenn neue experimentelle Befunde mit dem bisherigen Modell nicht mehr erklärbar sind.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn neue experimentelle Befunde mit dem bisherigen Modell nicht mehr erklärbar sind.",
+              "Sobald ein Modell älter als zehn Jahre ist, auch wenn es alle Versuche richtig erklärt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sobald ein Modell älter als zehn Jahre ist, auch wenn es alle Versuche richtig erklärt.",
+              "reason": "Bewährte einfache Modelle wie das Dalton-Modell bleiben für passende Fragen weiter im Einsatz."
+            },
+            {
+              "text": "Wenn sich der Aggregatzustand einer Probe beim bloßen Erwärmen von fest zu flüssig ändert.",
+              "reason": "Phasenübergänge erklärt schon das einfache Teilchenmodell zuverlässig."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HWYZNEV5CMPHYS6XMCC",
+      "atom_uri": "urn:zam:atom:01M5WY3HWYZNEV5CMPHYS6XMCC",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-sinne-kenngroessen",
+      "title": "Sinneseindrücke und messbare Kenngrößen",
+      "domain": "chemie/stoffe",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-sinne-kenngroessen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWW6BRR6CRPYXHS56HR",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Gefahrstoffe, Laborregeln und Entsorgung“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "stoffe",
+          "topic_title": "Stoffe und ihre Eigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWYQQN6FX5FF78G1Q4Z",
+          "slug": "c8-sinne-kenngroessen-dichte",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-sinne-kenngroessen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie ist die stoffspezifische Kenngröße Dichte "
+            },
+            {
+              "type": "math",
+              "tex": "\\rho",
+              "speech": "rho"
+            },
+            {
+              "type": "text",
+              "text": " mathematisch definiert?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\rho = \\frac{m}{V}",
+              "speech": "rho gleich Masse durch Volumen"
+            },
+            {
+              "type": "text",
+              "text": " (Masse geteilt durch Volumen)"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ρ = m/V (Masse geteilt durch Volumen)",
+              "ρ = V / m (Volumen geteilt durch Masse)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "ρ = V / m (Volumen geteilt durch Masse)",
+              "reason": "Das wäre der Kehrwert der Dichte (spezifisches Volumen)."
+            },
+            {
+              "text": "ρ = m · V (Masse multipliziert mit Volumen)",
+              "reason": "Ein Produkt aus Masse und Volumen wächst mit der Portionsgröße und ist keine Kenngröße."
+            }
+          ],
+          "replaces": [
+            "01K4C8S0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M5WY3HWYYGH962141K9DCDGK",
+          "slug": "c8-sinne-kenngroessen-leitfaehigkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-sinne-kenngroessen",
+          "question": "Wie verhält sich festes bzw. geschmolzenes Kochsalz bei der Prüfung der elektrischen Leitfähigkeit?",
+          "concept": "Festes Kochsalz leitet nicht; als Schmelze oder wässrige Lösung leitet es den Strom.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Festes Kochsalz leitet nicht; als Schmelze oder wässrige Lösung leitet es den Strom.",
+              "Festes Kochsalz leitet sehr gut; beim Schmelzen oder Lösen geht die Leitfähigkeit verloren."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Festes Kochsalz leitet sehr gut; beim Schmelzen oder Lösen geht die Leitfähigkeit verloren.",
+              "reason": "Erst beim Schmelzen oder Lösen werden die Ionen als Ladungsträger frei beweglich."
+            },
+            {
+              "text": "Weder festes noch geschmolzenes Kochsalz leitet elektrischen Strom unter Laborbedingungen.",
+              "reason": "Salzschmelzen enthalten frei bewegliche Kationen und Anionen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HWY21TXTPYBQH0797SW",
+      "atom_uri": "urn:zam:atom:01M5WY3HWY21TXTPYBQH0797SW",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-nachweisreaktionen",
+      "title": "Nachweisreaktionen für Gase und Wasser",
+      "domain": "chemie/stoffe",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-nachweisreaktionen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWYZNEV5CMPHYS6XMCC",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Sinneseindrücke und messbare Kenngrößen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "stoffe",
+          "topic_title": "Stoffe und ihre Eigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWYCJTMXHTBP0MNGW9E",
+          "slug": "c8-nachweisreaktionen-kalkwasser",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-nachweisreaktionen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Mit welchem Nachweisreagenz und welcher Beobachtung weist du Kohlenstoffdioxid ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{CO_2}",
+              "speech": "C O zwei"
+            },
+            {
+              "type": "text",
+              "text": ") eindeutig nach?"
+            }
+          ],
+          "concept": "Beim Einleiten in klares Kalkwasser entsteht eine weiße, milchige Trübung.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beim Einleiten in klares Kalkwasser entsteht eine weiße, milchige Trübung.",
+              "Ein eingetauchter glimmender Holzspan flammt im Gas sofort hell leuchtend wieder auf."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein eingetauchter glimmender Holzspan flammt im Gas sofort hell leuchtend wieder auf.",
+              "reason": "Das Wiederaufflammen des Glimmspans ist der Nachweis für Sauerstoff."
+            },
+            {
+              "text": "Weißes, wasserfreies Kupfersulfat färbt sich im trockenen Gasstrom kräftig dunkelblau.",
+              "reason": "Wasserfreies Kupfersulfat weist flüssiges Wasser oder Wasserdampf nach, nicht Kohlenstoffdioxid."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HWYA2MFYKTHJPS03FT5",
+          "slug": "c8-nachweisreaktionen-wasser",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-nachweisreaktionen",
+          "question": "Wie weist du im Labor eindeutig nach, dass farblose Flüssigkeitstropfen aus Wasser bestehen?",
+          "concept": "Weißes, wasserfreies Kupfersulfat färbt sich bei Kontakt mit den Tropfen blau.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weißes, wasserfreies Kupfersulfat färbt sich bei Kontakt mit den Tropfen blau.",
+              "Klares Kalkwasser bildet beim Zutropfen von reinem Wasser einen weißen Niederschlag."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Klares Kalkwasser bildet beim Zutropfen von reinem Wasser einen weißen Niederschlag.",
+              "reason": "Kalkwasser trübt sich mit Kohlenstoffdioxid, nicht mit reinem Wasser."
+            },
+            {
+              "text": "Ein brennender Holzspan erzeugt über reinem flüssigem Wasser einen pfeifenden Knall.",
+              "reason": "Die Knallgasprobe weist brennbaren Wasserstoff nach."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HWY3MAMBVV8AB6RJRBD",
+          "slug": "c8-nachweisreaktionen-glimmspan-knallgas",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-nachweisreaktionen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Beschreibe Durchführung und positives Ergebnis der Nachweisreaktionen für Sauerstoff ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{O_2}",
+              "speech": "O zwei"
+            },
+            {
+              "type": "text",
+              "text": ") und Wasserstoff ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{H_2}",
+              "speech": "H zwei"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{O_2}",
+              "speech": "O zwei"
+            },
+            {
+              "type": "text",
+              "text": ": Glimmspanprobe (glimmender Span flammt hell auf); "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{H_2}",
+              "speech": "H zwei"
+            },
+            {
+              "type": "text",
+              "text": ": Knallgasprobe (Reagenzglas Öffnung nach unten an Flamme, Pfeifton bzw. Plopp)."
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Sauerstoff weist man mit der Glimmspanprobe nach: Ein nur noch glimmender Holzspan wird in das Reagenzglas gehalten und flammt in Sauerstoff hell wieder auf. Wasserstoff fängt man wegen seiner geringen Dichte mit der Reagenzglasöffnung nach unten auf und nähert die Öffnung einer Flamme (Knallgasprobe): Ein pfeifender Ton zeigt ein Wasserstoff-Luft-Gemisch, ein leises ‚Plopp‘ fast reinen Wasserstoff an."
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HWYP46YEG0RTWTR8TE2",
+      "atom_uri": "urn:zam:atom:01M5WY3HWYP46YEG0RTWTR8TE2",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-reinstoffe-gemische",
+      "title": "Reinstoffe sowie homogene und heterogene Gemische",
+      "domain": "chemie/stoffe",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-reinstoffe-gemische",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWYZNEV5CMPHYS6XMCC",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Sinneseindrücke und messbare Kenngrößen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "stoffe",
+          "topic_title": "Stoffe und ihre Eigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWYYRZCABG5PA4X726V",
+          "slug": "c8-reinstoffe-gemische-suspension",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-reinstoffe-gemische",
+          "question": "Wie bezeichnet man ein heterogenes Gemisch aus fein verteilten Feststoffpartikeln in einer Flüssigkeit (z. B. Schlammwasser)?",
+          "concept": "Suspension",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Suspension",
+              "Emulsion"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Emulsion",
+              "reason": "Eine Emulsion besteht aus zwei nicht mischbaren Flüssigkeiten wie Milch oder Öl in Wasser."
+            },
+            {
+              "text": "Legierung",
+              "reason": "Eine Legierung ist ein homogenes Gemisch aus zusammengeschmolzenen Metallen wie Messing."
+            }
+          ],
+          "replaces": [
+            "01K4C8S0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M5WY3HWY7C7212V0GYWFNXV4",
+          "slug": "c8-reinstoffe-gemische-siedekurve",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-reinstoffe-gemische",
+          "question": "Woran unterscheidest du beim Erhitzen eine Salzlösung (Gemisch) von destilliertem Wasser (Reinstoff)?",
+          "concept": "Reines Wasser hat einen konstanten Siedepunkt bei 100 °C, die Salzlösung einen ansteigenden Siedebereich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Reines Wasser hat einen konstanten Siedepunkt bei 100 °C, die Salzlösung einen ansteigenden Siedebereich.",
+              "Die Salzlösung siedet konstant bei 78 °C, während reines Wasser einen Siedebereich zeigt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Salzlösung siedet konstant bei 78 °C, während reines Wasser einen Siedebereich zeigt.",
+              "reason": "Reinstoffe sieden bei konstanter Temperatur; gelöstes Salz erhöht und verbreitert den Siedebereich."
+            },
+            {
+              "text": "Beide Flüssigkeiten sieden waagrecht bei 100 °C, unterscheiden sich aber in ihrer Farbe.",
+              "reason": "Auch konzentrierte Kochsalzlösung ist farblos; der Unterschied zeigt sich in der Siedekurve."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HWY44E0QP7SGY4EBE9S",
+      "atom_uri": "urn:zam:atom:01M5WY3HWY44E0QP7SGY4EBE9S",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-teilchenmodell-phasen",
+      "title": "Teilchenmodell und Aggregatzustandsänderungen",
+      "domain": "chemie/stoffe",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-teilchenmodell-phasen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWYP46YEG0RTWTR8TE2",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Reinstoffe sowie homogene und heterogene Gemische“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "stoffe",
+          "topic_title": "Stoffe und ihre Eigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWY92R0YZAKPVGQFKCE",
+          "slug": "c8-teilchenmodell-phasen-sublimation",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-teilchenmodell-phasen",
+          "question": "Wie nennt man den direkten Phasenübergang eines Stoffes vom festen in den gasförmigen Zustand ohne flüssige Zwischenstufe?",
+          "concept": "Sublimation",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sublimation",
+              "Kondensation"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kondensation",
+              "reason": "Kondensation ist der Übergang vom gasförmigen in den flüssigen Aggregatzustand."
+            },
+            {
+              "text": "Erstarrung",
+              "reason": "Erstarren ist der Übergang vom flüssigen in den festen Aggregatzustand."
+            }
+          ],
+          "replaces": [
+            "01K4C8S0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M5WY3HWYWYJD0WG4KMH2PJZ5",
+          "slug": "c8-teilchenmodell-phasen-erwaermen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-teilchenmodell-phasen",
+          "question": "Was ändert sich nach dem Teilchenmodell beim Verdampfen einer Flüssigkeit — und was bleibt unverändert?",
+          "concept": "Teilchenbewegung und mittlere Abstände nehmen stark zu; Größe und Masse der einzelnen Teilchen bleiben gleich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Teilchenbewegung und mittlere Abstände nehmen stark zu; Größe und Masse der einzelnen Teilchen bleiben gleich.",
+              "Jedes einzelne Teilchen dehnt sich auf das Hundertfache aus, während die Abstände gleich bleiben."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Jedes einzelne Teilchen dehnt sich auf das Hundertfache aus, während die Abstände gleich bleiben.",
+              "reason": "Teilchen selbst blähen sich beim Erwärmen nicht auf; nur der leere Raum zwischen ihnen wächst."
+            },
+            {
+              "text": "Die Anziehungskräfte vergrößern sich stark und binden die Teilchen an feste Gitterplätze.",
+              "reason": "Feste Gitterplätze kennzeichnen den festen Zustand beim Erstarren, nicht den Gaszustand."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HWZW7TGY40SG15W1Z07",
+      "atom_uri": "urn:zam:atom:01M5WY3HWZW7TGY40SG15W1Z07",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-trennverfahren",
+      "title": "Physikalische Trennverfahren",
+      "domain": "chemie/stoffe",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-trennverfahren",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWY44E0QP7SGY4EBE9S",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Teilchenmodell und Aggregatzustandsänderungen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "stoffe",
+          "topic_title": "Stoffe und ihre Eigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWZ8Z3CZ9J9B4WN80ED",
+          "slug": "c8-trennverfahren-destillation",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-trennverfahren",
+          "question": "Auf welchem Unterschied welcher physikalischen Stoffeigenschaft beruht das Trennverfahren der Destillation?",
+          "concept": "Unterschiedliche Siedetemperaturen der Gemischbestandteile",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Unterschiedliche Siedetemperaturen der Gemischbestandteile",
+              "Unterschiedliche Teilchengrößen gegenüber den Filterporen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Unterschiedliche Teilchengrößen gegenüber den Filterporen",
+              "reason": "Die Teilchengröße gegenüber der Porengröße nutzt die Filtration einer Suspension."
+            },
+            {
+              "text": "Unterschiedliche Magnetisierbarkeit der festen Bestandteile",
+              "reason": "Ferromagnetismus wird beim Magnetscheiden ausgenutzt, nicht bei der Destillation."
+            }
+          ],
+          "replaces": [
+            "01K4C8S0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M5WY3HWZ0NQCATEX2ED969GQ",
+          "slug": "c8-trennverfahren-extraktion",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-trennverfahren",
+          "question": "Welche Stoffeigenschaft nutzt die Extraktion (das Herauslösen) bei der Trennung eines Sand-Salz-Gemenges mit Wasser?",
+          "concept": "Unterschiedliche Löslichkeit der Bestandteile im gewählten Lösungsmittel",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Unterschiedliche Löslichkeit der Bestandteile im gewählten Lösungsmittel",
+              "Unterschiedliche Siedetemperaturen von Quarzsand und festem Natriumchlorid"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Unterschiedliche Siedetemperaturen von Quarzsand und festem Natriumchlorid",
+              "reason": "Beim kalten Herauslösen mit Wasser wird nichts zum Sieden erhitzt."
+            },
+            {
+              "text": "Unterschiedliche elektrische Leitfähigkeit der trockenen Pulverkörner",
+              "reason": "Leitfähigkeit ist eine Prüfgröße, aber kein Trennprinzip der Extraktion."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HWZTS1JJ35NAAYTCHRB",
+      "atom_uri": "urn:zam:atom:01M5WY3HWZTS1JJ35NAAYTCHRB",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-luft-linde",
+      "title": "Zusammensetzung der Luft und Linde-Verfahren",
+      "domain": "chemie/stoffe",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-luft-linde",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWZW7TGY40SG15W1Z07",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Physikalische Trennverfahren“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "stoffe",
+          "topic_title": "Stoffe und ihre Eigenschaften"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWZWSD4X3MJ7ZJZYJVJ",
+          "slug": "c8-luft-linde-zusammensetzung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-luft-linde",
+          "question": "Wie ist trockene, saubere Luft nach Volumenanteilen näherungsweise zusammengesetzt?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Rund 78 % Stickstoff ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{N_2}",
+              "speech": "N zwei"
+            },
+            {
+              "type": "text",
+              "text": "), 21 % Sauerstoff ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{O_2}",
+              "speech": "O zwei"
+            },
+            {
+              "type": "text",
+              "text": "), 0,9 % Edelgase und 0,04 % "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{CO_2}",
+              "speech": "C O zwei"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Rund 78 % Stickstoff (N₂), 21 % Sauerstoff (O₂), 0,9 % Edelgase und 0,04 % CO₂.",
+              "Rund 78 % Sauerstoff (O₂), 21 % Kohlenstoffdioxid (CO₂), 0,9 % Wasserstoff und 0,04 % N₂."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Rund 78 % Sauerstoff (O₂), 21 % Kohlenstoffdioxid (CO₂), 0,9 % Wasserstoff und 0,04 % N₂.",
+              "reason": "Stickstoff ist mit 78 % der Hauptbestandteil der Luft, Sauerstoff macht 21 % aus."
+            },
+            {
+              "text": "Rund 50 % Stickstoff (N₂), 40 % Sauerstoff (O₂), 9 % Kohlenstoffdioxid und 1 % Edelgase.",
+              "reason": "Kohlenstoffdioxid ist in trockener Luft nur ein Spurengas von rund 0,04 %."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HWZXKMD05S3GAR9S202",
+          "slug": "c8-luft-linde-siedefolge",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-luft-linde",
+          "question": "Welches Gas siedet beim langsamen Erwärmen flüssiger Luft im Linde-Verfahren zuerst ab — und warum?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Stickstoff ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{N_2}",
+              "speech": "N zwei"
+            },
+            {
+              "type": "text",
+              "text": "), weil seine Siedetemperatur ("
+            },
+            {
+              "type": "math",
+              "tex": "-196\\,^{\\circ}\\mathrm{C}",
+              "speech": "minus 196 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": ") niedriger liegt als die von "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{O_2}",
+              "speech": "O zwei"
+            },
+            {
+              "type": "text",
+              "text": " ("
+            },
+            {
+              "type": "math",
+              "tex": "-183\\,^{\\circ}\\mathrm{C}",
+              "speech": "minus 183 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Stickstoff (N₂), weil seine Siedetemperatur (-196 °C) niedriger liegt als die von O₂ (-183 °C).",
+              "Sauerstoff (O₂), weil −183 °C eine tiefere Temperatur als −196 °C von Stickstoff (N₂) ist."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sauerstoff (O₂), weil −183 °C eine tiefere Temperatur als −196 °C von Stickstoff (N₂) ist.",
+              "reason": "Auf der Temperaturskala liegt −196 °C tiefer als −183 °C; N₂ siedet daher zuerst."
+            },
+            {
+              "text": "Kohlenstoffdioxid (CO₂), weil es bis −200 °C flüssig in der Trennkolonne zurückbleibt.",
+              "reason": "CO₂ und Wasserdampf werden schon vor der Verflüssigung abgetrennt, damit sie keine Rohre verstopfen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HWZQP6VDV07XA5JSVC9",
+      "atom_uri": "urn:zam:atom:01M5WY3HWZQP6VDV07XA5JSVC9",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-dalton-elementklassen",
+      "title": "Daltonsches Atommodell und Elementklassen",
+      "domain": "chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-dalton-elementklassen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWY44E0QP7SGY4EBE9S",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Teilchenmodell und Aggregatzustandsänderungen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "materie",
+          "topic_title": "Aufbau der Materie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Aufbau der Materie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWZZ0PNVHVSCSTK2X1P",
+          "slug": "c8-dalton-elementklassen-kernaussage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-dalton-elementklassen",
+          "question": "Wie unterscheidet das Daltonsche Atommodell Atome desselben Elements von Atomen verschiedener Elemente?",
+          "concept": "Atome eines Elements haben gleiche Größe und Masse; Atome verschiedener Elemente unterscheiden sich darin.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Atome eines Elements haben gleiche Größe und Masse; Atome verschiedener Elemente unterscheiden sich darin.",
+              "Alle Atome sämtlicher Elemente haben gleiche Masse, unterscheiden sich aber in ihrer Farbe."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Alle Atome sämtlicher Elemente haben gleiche Masse, unterscheiden sich aber in ihrer Farbe.",
+              "reason": "Einzelne Atome besitzen keine Farbe, wohl aber elementtypische Masse und Größe."
+            },
+            {
+              "text": "Atome desselben Elements wandeln sich beim Schmelzen fortlaufend in andere Atomsorten um.",
+              "reason": "Nach Dalton sind Atome unveränderlich und können nicht in andere Elemente umgewandelt werden."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HWZWV1F73PAY5GQN3S7",
+          "slug": "c8-dalton-elementklassen-ausnahmen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-dalton-elementklassen",
+          "question": "Welches Nichtmetall leitet als wichtige Ausnahme im festen Zustand den elektrischen Strom?",
+          "concept": "Kohlenstoff in der Erscheinungsform Graphit",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kohlenstoff in der Erscheinungsform Graphit",
+              "Gelber kristalliner Schwefel bei Raumtemperatur"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Gelber kristalliner Schwefel bei Raumtemperatur",
+              "reason": "Schwefel ist ein typischer elektrischer Isolator."
+            },
+            {
+              "text": "Festes violett-schwarzes Iod im Kristallgitter",
+              "reason": "Iod besteht aus neutralen I₂-Molekülen und leitet den Strom nicht."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HWZMHDZC111FVJHEF0K",
+      "atom_uri": "urn:zam:atom:01M5WY3HWZMHDZC111FVJHEF0K",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-teilchenverbaende",
+      "title": "Grundbausteine, Anziehungskräfte und Teilchenverbände",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-teilchenverbaende",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWZQP6VDV07XA5JSVC9",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Daltonsches Atommodell und Elementklassen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "materie",
+          "topic_title": "Aufbau der Materie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Aufbau der Materie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWZ4DNRJKMFEGEKGPHP",
+          "slug": "c8-teilchenverbaende-anziehung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-teilchenverbaende",
+          "question": "Wie unterscheidet sich die Anziehung zwischen Nichtmetallatomen in Molekülen von der in Metall- und Ionengittern?",
+          "concept": "In Molekülen wirkt eine gerichtete Anziehung, in Metall- und Ionengittern eine ungerichtete Anziehung.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In Molekülen wirkt eine gerichtete Anziehung, in Metall- und Ionengittern eine ungerichtete Anziehung.",
+              "In Molekülen wirkt ungerichtete Anziehung, in Metall- und Ionengittern streng gerichtete Anziehung."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "In Molekülen wirkt ungerichtete Anziehung, in Metall- und Ionengittern streng gerichtete Anziehung.",
+              "reason": "Gerichtete Bindungen begrenzen das Molekül; ungerichtete Kräfte bauen ausgedehnte Gitter auf."
+            },
+            {
+              "text": "Zwischen Ionen im Salzgitter wirken überhaupt keine elektrischen Anziehungskräfte.",
+              "reason": "Entgegengesetzt geladene Ionen ziehen einander in alle Raumrichtungen stark an."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HWZQDV0843N4S82F6D6",
+          "slug": "c8-teilchenverbaende-vier-typen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-teilchenverbaende",
+          "question": "Ordne den vier Teilchenverbänden (einzelne Atome, Moleküle, Metallgitter, Ionengitter) jeweils die beteiligten Grundbausteine und ein Stoffbeispiel zu.",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Einzelatome: Edelgasatome (Ar); Moleküle: Nichtmetallatome ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{H_2O}",
+              "speech": "H zwei O"
+            },
+            {
+              "type": "text",
+              "text": "); Metallgitter: Metallatome (Cu); Ionengitter: Kationen und Anionen ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{NaCl}",
+              "speech": "N A C L"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "1. Atomar aufgebaut (einzelne Atome): Edelgasatome wie Argon (Ar) oder Helium (He). 2. Molekulare Stoffe (Moleküle): Nichtmetallatome mit gerichteter Anziehung, z. B. Wasser (H₂O) oder Kohlenstoffdioxid (CO₂). 3. Metalle (Metallgitter): Metallatome mit ungerichteter Anziehung, z. B. Kupfer (Cu) oder Eisen (Fe). 4. Salze (Ionengitter): Kationen und Anionen mit ungerichteter elektrischer Anziehung, z. B. Natriumchlorid (NaCl)."
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HWZ3CTW5D0CDB50M4BC",
+      "atom_uri": "urn:zam:atom:01M5WY3HWZ3CTW5D0CDB50M4BC",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-bindigkeit-molekuele",
+      "title": "Bindigkeit, Molekülformeln und Nichtmetallnamen",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-bindigkeit-molekuele",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWZMHDZC111FVJHEF0K",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Grundbausteine, Anziehungskräfte und Teilchenverbände“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "materie",
+          "topic_title": "Aufbau der Materie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Aufbau der Materie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWZBZ41MN93QC0N2TFX",
+          "slug": "c8-bindigkeit-molekuele-ableiten",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-bindigkeit-molekuele",
+          "question": "Welche Molekülformel ergibt sich aus dreibindigem Stickstoff (3) und einbindigem Wasserstoff (1)?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{NH_3}",
+              "speech": "N H drei"
+            },
+            {
+              "type": "text",
+              "text": " (Ammoniak)"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "NH₃ (Ammoniak)",
+              "N₃H (Triazidhydrid)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "N₃H (Triazidhydrid)",
+              "reason": "Drei Bindungsarme eines einzelnen N-Atoms binden drei einbindige H-Atome zu NH₃."
+            },
+            {
+              "text": "NH₂ (Amidradikal)",
+              "reason": "Bei NH₂ bliebe eine Bindungsstelle des dreibindigen Stickstoffatoms ungesättigt."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HWZSYP97D56MJJG1PAB",
+          "slug": "c8-bindigkeit-molekuele-benennung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-bindigkeit-molekuele",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet der systematische Name der binären Nichtmetallverbindung "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{N_2O_5}",
+              "speech": "N zwei O fünf"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "Distickstoffpentoxid",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Distickstoffpentoxid",
+              "Stickstoff(V)-monoxid"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Stickstoff(V)-monoxid",
+              "reason": "Bei binären Nichtmetallverbindungen nutzt man griechische Zahlwörter für beide Indizes."
+            },
+            {
+              "text": "Pentastickstoffdioxid",
+              "reason": "Der Index 2 (di) gehört zum Stickstoff, der Index 5 (penta) zum Sauerstoff."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HWZWRGNJTYG8JYG5YFR",
+      "atom_uri": "urn:zam:atom:01M5WY3HWZWRGNJTYG8JYG5YFR",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-ionenverhaeltnis-salze",
+      "title": "Ionenladung und binäre Salze",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-ionenverhaeltnis-salze",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWZMHDZC111FVJHEF0K",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Grundbausteine, Anziehungskräfte und Teilchenverbände“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "materie",
+          "topic_title": "Aufbau der Materie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Aufbau der Materie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWZC0JTMH3PPHDS23FS",
+          "slug": "c8-ionenverhaeltnis-salze-aluminiumoxid",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-ionenverhaeltnis-salze",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Verhältnisformel hat das binäre Salz Aluminiumoxid aus "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Al^{3+}}",
+              "speech": "A L drei plus"
+            },
+            {
+              "type": "text",
+              "text": "-Ionen und "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{O^{2-}}",
+              "speech": "O zwei minus"
+            },
+            {
+              "type": "text",
+              "text": "-Ionen?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{Al_2O_3}",
+              "speech": "A L zwei O drei"
+            },
+            {
+              "type": "text",
+              "text": " (Ionenverhältnis 2 : 3)"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Al₂O₃ (Ionenverhältnis 2 : 3)",
+              "Al₃O₂ (Ionenverhältnis 3 : 2)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Al₃O₂ (Ionenverhältnis 3 : 2)",
+              "reason": "3 · (+3) + 2 · (−2) = +5 wäre nicht elektrisch neutral; richtig ist 2 · (+3) + 3 · (−2) = 0."
+            },
+            {
+              "text": "AlO₂ (Ionenverhältnis 1 : 2)",
+              "reason": "1 · (+3) + 2 · (−2) = −1 gleicht die unterschiedlichen Ladungsbeträge nicht aus."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HWZKJNQRN100K8FW6XQ",
+          "slug": "c8-ionenverhaeltnis-salze-nomenklatur",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-ionenverhaeltnis-salze",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie wird das binäre Salz "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{FeCl_3}",
+              "speech": "F E C L drei"
+            },
+            {
+              "type": "text",
+              "text": " fachsprachlich eindeutig benannt?"
+            }
+          ],
+          "concept": "Eisen(III)-chlorid",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eisen(III)-chlorid",
+              "Eisentrichlorid"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eisentrichlorid",
+              "reason": "Griechische Zahlwörter gehören zu Nichtmetallverbindungen, nicht zu binären Salzen."
+            },
+            {
+              "text": "Eisen(I)-chlorid",
+              "reason": "Drei einfach negative Chloridionen (3 · 1−) verlangen ein dreifach positives Eisenion Fe³⁺."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HWZM8A5CJQ6HQKSE7MM",
+      "atom_uri": "urn:zam:atom:01M5WY3HWZM8A5CJQ6HQKSE7MM",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-verband-eigenschaften",
+      "title": "Eigenschaften von Metallen, Molekülstoffen und Salzen",
+      "domain": "chemie/bindungen",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-verband-eigenschaften",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWZWRGNJTYG8JYG5YFR",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Ionenladung und binäre Salze“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "materie",
+          "topic_title": "Aufbau der Materie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Aufbau der Materie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWZFM76SMQ4CGZY5Q36",
+          "slug": "c8-verband-eigenschaften-sproedigkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-verband-eigenschaften",
+          "question": "Warum zerspringen Salzkristalle bei einem Hammerschlag spröde, statt sich wie Metalle zu verformen?",
+          "concept": "Durch Verschieben einer Gitterebene treffen gleichnamig geladene Ionen aufeinander und stoßen sich ab.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch Verschieben einer Gitterebene treffen gleichnamig geladene Ionen aufeinander und stoßen sich ab.",
+              "Beim Schlag verdampfen die Anionen sofort und treiben den Kristall als Gasblase auseinander."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Beim Schlag verdampfen die Anionen sofort und treiben den Kristall als Gasblase auseinander.",
+              "reason": "Salze haben sehr hohe Siedepunkte; Ursache des Bruchs ist elektrostatische Abstoßung im Gitter."
+            },
+            {
+              "text": "Zwischen den Ionen eines Salzkristalls wirken schon im Ruhezustand kaum Anziehungskräfte.",
+              "reason": "Im unverschobenen Gitter wirken sehr starke Anziehungskräfte zwischen + und −."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HWZDDAGZ0F2QS1WEEJN",
+          "slug": "c8-verband-eigenschaften-molekuelstoffe",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-verband-eigenschaften",
+          "question": "Warum haben aus kleinen Molekülen aufgebaute Stoffe meist niedrige Schmelz- und Siedetemperaturen?",
+          "concept": "Beim Schmelzen und Sieden werden nur die schwachen Anziehungskräfte zwischen den Molekülen überwunden.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beim Schmelzen und Sieden werden nur die schwachen Anziehungskräfte zwischen den Molekülen überwunden.",
+              "Beim Sieden zerfallen alle Moleküle vollständig in ihre einzelnen freien Nichtmetallatome."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Beim Sieden zerfallen alle Moleküle vollständig in ihre einzelnen freien Nichtmetallatome.",
+              "reason": "Die starken gerichteten Bindungen innerhalb der Moleküle bleiben beim Sieden intakt."
+            },
+            {
+              "text": "Kleine Moleküle stoßen sich wegen positiver Ionenladungen im Flüssigkeitsvolumen ständig ab.",
+              "reason": "Moleküle sind nach außen elektrisch neutral und tragen keine Ionenladung."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HWZ8HZZZW3YZ92G3FDA",
+      "atom_uri": "urn:zam:atom:01M5WY3HWZ8HZZZW3YZ92G3FDA",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-merkmale-umgruppierung",
+      "title": "Merkmale chemischer Reaktionen und Atomumgruppierung",
+      "domain": "chemie/reaktion",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-merkmale-umgruppierung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWZQP6VDV07XA5JSVC9",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Daltonsches Atommodell und Elementklassen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "reaktion",
+          "topic_title": "Chemische Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HWZR2TT37S8RQDM7RQJ",
+          "slug": "c8-merkmale-umgruppierung-unterschied",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-merkmale-umgruppierung",
+          "question": "Was unterscheidet eine chemische Reaktion grundlegend von einem rein physikalischen Vorgang?",
+          "concept": "Entstehung neuer Stoffe mit neuen Kenngrößen durch Umgruppierung der Atome",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Entstehung neuer Stoffe mit neuen Kenngrößen durch Umgruppierung der Atome",
+              "Ausschließlich ein Wechsel des Aggregatzustands bei unveränderten Teilchen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ausschließlich ein Wechsel des Aggregatzustands bei unveränderten Teilchen",
+              "reason": "Phasenwechsel wie Schmelzen oder Sieden sind rein physikalische Vorgänge."
+            },
+            {
+              "text": "Vollständige Vernichtung der Ausgangsatome unter Abgabe von reiner Wärme",
+              "reason": "Atome werden bei chemischen Reaktionen nie vernichtet, sondern nur neu verknüpft."
+            }
+          ],
+          "replaces": [
+            "01K4C8R0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M5WY3HWZN6GMRRGVEH1CHJ1E",
+          "slug": "c8-merkmale-umgruppierung-energie",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-merkmale-umgruppierung",
+          "question": "Welche zwei Hauptmerkmale kennzeichnen ausnahmslos jede chemische Reaktion?",
+          "concept": "Ein Stoffumsatz zu neuen Stoffen verbunden mit einem Energieumsatz",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Stoffumsatz zu neuen Stoffen verbunden mit einem Energieumsatz",
+              "Eine Farbänderung der Lösung verbunden mit einer Verdopplung der Gesamtmasse"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Farbänderung der Lösung verbunden mit einer Verdopplung der Gesamtmasse",
+              "reason": "Nicht jede Reaktion ändert die Farbe, und die Gesamtmasse bleibt im geschlossenen System konstant."
+            },
+            {
+              "text": "Ein Phasenübergang nach gasförmig verbunden mit magnetischer Anziehung",
+              "reason": "Auch Feststoff- und Lösungsreaktionen ohne Gasbildung und ohne Magnetismus sind chemische Reaktionen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX1K5JVZSYVKT72QWN8",
+      "atom_uri": "urn:zam:atom:01M5WY3HX1K5JVZSYVKT72QWN8",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-elemente-verbindungen",
+      "title": "Elemente, Verbindungen und Stoffgemische",
+      "domain": "chemie/reaktion",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-elemente-verbindungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWZ8HZZZW3YZ92G3FDA",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Merkmale chemischer Reaktionen und Atomumgruppierung“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "reaktion",
+          "topic_title": "Chemische Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX1N0DE9DD9W0GKF4HJ",
+          "slug": "c8-elemente-verbindungen-abgrenzung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-elemente-verbindungen",
+          "question": "Worin unterscheidet sich eine chemische Verbindung von einem chemischen Element?",
+          "concept": "Eine Verbindung besteht aus mindestens zwei fest gebundenen Atomsorten, ein Element nur aus einer.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Verbindung besteht aus mindestens zwei fest gebundenen Atomsorten, ein Element nur aus einer.",
+              "Eine Verbindung lässt sich durch Filtration zerlegen, ein Element durch Destillation."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Verbindung lässt sich durch Filtration zerlegen, ein Element durch Destillation.",
+              "reason": "Physikalische Trennverfahren zerlegen nur Gemische, niemals Verbindungen oder Elemente."
+            },
+            {
+              "text": "Eine Verbindung hat veränderbare Siedebereiche, ein Element hat schwankende Dichte.",
+              "reason": "Sowohl Elemente als auch Verbindungen sind Reinstoffe mit konstanten Kenngrößen."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX19WK9HSVR0EPFZJVF",
+          "slug": "c8-elemente-verbindungen-fes",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-elemente-verbindungen",
+          "question": "Woran zeigt sich experimentell, dass Eisen(II)-sulfid eine Verbindung und kein Eisen-Schwefel-Gemenge mehr ist?",
+          "concept": "Der schwarze, spröde Feststoff besitzt neue Kenngrößen und lässt sich nicht mehr mit dem Magneten trennen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der schwarze, spröde Feststoff besitzt neue Kenngrößen und lässt sich nicht mehr mit dem Magneten trennen.",
+              "Die gelben Schwefelkörner schwimmen oben auf, während der Magnet das Eisen restlos herauszieht."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die gelben Schwefelkörner schwimmen oben auf, während der Magnet das Eisen restlos herauszieht.",
+              "reason": "Das beschreibt das unveränderte heterogene Eisen-Schwefel-Gemenge vor der Reaktion."
+            },
+            {
+              "text": "Der Stoff verdampft schon bei Raumtemperatur zu einem farblosen Gasgemisch aus Luft.",
+              "reason": "Eisen(II)-sulfid ist ein hochschmelzender kristalliner Feststoff."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX1KD54DKRVH08Z4TVV",
+      "atom_uri": "urn:zam:atom:01M5WY3HX1KD54DKRVH08Z4TVV",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-wasser-analyse-synthese",
+      "title": "Analyse, Synthese und Reversibilität am Beispiel Wasser",
+      "domain": "chemie/reaktion",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-wasser-analyse-synthese",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HX1K5JVZSYVKT72QWN8",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Elemente, Verbindungen und Stoffgemische“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "reaktion",
+          "topic_title": "Chemische Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX1A7SBKC6QPJEGT9SB",
+          "slug": "c8-wasser-analyse-synthese-hofmann",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-wasser-analyse-synthese",
+          "question": "In welchem Volumenverhältnis entstehen Wasserstoff und Sauerstoff bei der Elektrolyse von Wasser im Hofmann-Apparat?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V(\\mathrm{H_2}) : V(\\mathrm{O_2}) = 2 : 1",
+              "speech": "Volumen H zwei zu Volumen O zwei gleich zwei zu eins"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "V(H₂): V(O₂) = 2: 1",
+              "V(H₂) : V(O₂) = 1 : 2"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "V(H₂) : V(O₂) = 1 : 2",
+              "reason": "Am Minuspol entsteht doppelt so viel Wasserstoff wie Sauerstoff am Pluspol."
+            },
+            {
+              "text": "V(H₂) : V(O₂) = 1 : 8",
+              "reason": "1 : 8 ist das Massenverhältnis m(H₂) : m(O₂), nicht das Gasvolumenverhältnis."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX1MQAS5PMYYAP61BSS",
+          "slug": "c8-wasser-analyse-synthese-diiodpentoxid",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-wasser-analyse-synthese",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Formuliere die ausgeglichene Formelgleichung für die thermische Analyse von Diiodpentoxid ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{I_2O_5}",
+              "speech": "I zwei O fünf"
+            },
+            {
+              "type": "text",
+              "text": ") und nenne die beiden beobachtbaren Nachweise."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "2\\,\\mathrm{I_2O_5} \\rightarrow 2\\,\\mathrm{I_2} + 5\\,\\mathrm{O_2}",
+              "speech": "zwei I zwei O fünf reagiert zu zwei I zwei plus fünf O zwei"
+            },
+            {
+              "type": "text",
+              "text": "; violetter Ioddampf und positive Glimmspanprobe."
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Beim kräftigen Erhitzen zerfällt weißes Diiodpentoxid endotherm in die Elemente Iod und Sauerstoff: 2 I₂O₅ → 2 I₂ + 5 O₂. Man beobachtet violetten Ioddampf (der am kühlen Glasrand zu glänzenden Kristallen resublimiert), und ein glimmender Holzspan flammt im entstehenden Sauerstoff hell auf."
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX1SDVZZCW5A908A5ED",
+      "atom_uri": "urn:zam:atom:01M5WY3HX1SDVZZCW5A908A5ED",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-massenerhaltung-gleichungen",
+      "title": "Massenerhaltung und Ausgleichen von Formelgleichungen",
+      "domain": "chemie/reaktion",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-massenerhaltung-gleichungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HX1KD54DKRVH08Z4TVV",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Analyse, Synthese und Reversibilität am Beispiel Wasser“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "reaktion",
+          "topic_title": "Chemische Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX1GGRBFPDJP3NYW2Y4",
+          "slug": "c8-massenerhaltung-gleichungen-lavoisier",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-massenerhaltung-gleichungen",
+          "question": "Was besagt das Gesetz von der Erhaltung der Masse nach Lavoisier bei chemischen Reaktionen im geschlossenen System?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "m(\\text{Edukte}) = m(\\text{Produkte})",
+              "speech": "Masse der Edukte gleich Masse der Produkte"
+            },
+            {
+              "type": "text",
+              "text": " (die Gesamtmasse bleibt konstant)"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "m(Edukte) = m(Produkte) (die Gesamtmasse bleibt konstant)",
+              "m(Edukte) > m(Produkte) (bei Verbrennungen geht Masse verloren)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "m(Edukte) > m(Produkte) (bei Verbrennungen geht Masse verloren)",
+              "reason": "Entweichende Gase täuschen nur im offenen Gefäß einen Massenverlust vor."
+            },
+            {
+              "text": "m(Edukte) < m(Produkte) (durch Wärme entsteht zusätzliche Masse)",
+              "reason": "Massenzunahme auf offener Waage stammt von gebundenem Luftsauerstoff, nicht von Wärme."
+            }
+          ],
+          "replaces": [
+            "01K4C8R0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M5WY3HX1M54XVQN3GMD9DG08",
+          "slug": "c8-massenerhaltung-gleichungen-indizes",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-massenerhaltung-gleichungen",
+          "question": "Welche Größen darfst du beim Einrichten einer Reaktionsgleichung anpassen — und welche niemals?",
+          "concept": "Nur die vorangestellten Koeffizienten anpassen, niemals die tiefgestellten Indizes in den Formeln.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur die vorangestellten Koeffizienten anpassen, niemals die tiefgestellten Indizes in den Formeln.",
+              "Nur die tiefgestellten Indizes in den Formeln ändern, niemals die Koeffizienten davor."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur die tiefgestellten Indizes in den Formeln ändern, niemals die Koeffizienten davor.",
+              "reason": "Wer einen Index ändert (z. B. H₂O zu H₂O₂), ersetzt den Stoff durch eine andere Verbindung."
+            },
+            {
+              "text": "Beliebig zusätzliche Elementsymbole auf der Produktseite ergänzen, bis die Zahlen passen.",
+              "reason": "In der Gleichung dürfen nur die tatsächlich beteiligten Ausgangs- und Endstoffe stehen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX18E4DTS5DBS84R5C8",
+      "atom_uri": "urn:zam:atom:01M5WY3HX18E4DTS5DBS84R5C8",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-innere-energie-diagramm",
+      "title": "Innere Energie, Aktivierung und Energiediagramm",
+      "domain": "chemie/energetik",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-innere-energie-diagramm",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWZ8HZZZW3YZ92G3FDA",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Merkmale chemischer Reaktionen und Atomumgruppierung“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "reaktion",
+          "topic_title": "Chemische Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX176A29R6YQHK9SC8W",
+          "slug": "c8-innere-energie-diagramm-exotherm",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-innere-energie-diagramm",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Was gilt im Energiediagramm einer exothermen Reaktion für die innere Energie "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\mathrm{i}}",
+              "speech": "E i"
+            },
+            {
+              "type": "text",
+              "text": " und für "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta E_{\\mathrm{i}}",
+              "speech": "Delta E i"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "E_{\\mathrm{i}}(\\text{Produkte}) < E_{\\mathrm{i}}(\\text{Edukte})",
+              "speech": "E i der Produkte kleiner als E i der Edukte"
+            },
+            {
+              "type": "text",
+              "text": ", also "
+            },
+            {
+              "type": "math",
+              "tex": "\\Delta E_{\\mathrm{i}} < 0",
+              "speech": "Delta E i kleiner null"
+            },
+            {
+              "type": "text",
+              "text": " (Energieabgabe)."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "E_i(Produkte) < E_i(Edukte), also ΔE_i < 0 (Energieabgabe).",
+              "E_i(Produkte) > E_i(Edukte), also ΔE_i > 0 (dauerhafte Energieaufnahme)."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "E_i(Produkte) > E_i(Edukte), also ΔE_i > 0 (dauerhafte Energieaufnahme).",
+              "reason": "ΔE_i > 0 kennzeichnet eine endotherme Reaktion, nicht eine exotherme."
+            },
+            {
+              "text": "E_i(Produkte) = E_i(Edukte), also ΔE_i = 0 ohne jeden Energieumsatz.",
+              "reason": "Jede chemische Reaktion ist mit einem Energieumsatz verbunden."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX1VABYPVS1SFYASF4V",
+          "slug": "c8-innere-energie-diagramm-aktivierung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-innere-energie-diagramm",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wozu dient die Aktivierungsenergie "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\mathrm{A}}",
+              "speech": "E A"
+            },
+            {
+              "type": "text",
+              "text": " beim Starten einer chemischen Reaktion?"
+            }
+          ],
+          "concept": "Sie bringt die Ausgangsstoffe auf den energiereichen Übergangszustand, damit Bindungen gelöst werden.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie bringt die Ausgangsstoffe auf den energiereichen Übergangszustand, damit Bindungen gelöst werden.",
+              "Sie legt allein fest, ob die Gesamtreaktion am Ende exotherm oder endotherm verläuft."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie legt allein fest, ob die Gesamtreaktion am Ende exotherm oder endotherm verläuft.",
+              "reason": "Über exotherm oder endotherm entscheidet ΔE_i zwischen Edukten und Produkten, nicht E_A."
+            },
+            {
+              "text": "Sie wird ausschließlich bei endothermen Analysen benötigt, niemals bei Verbrennungen.",
+              "reason": "Auch stark exotherme Verbrennungen brauchen zum Starten eine Aktivierung (Zündtemperatur)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX16VSFQRJ5SZC7CM3F",
+      "atom_uri": "urn:zam:atom:01M5WY3HX16VSFQRJ5SZC7CM3F",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-katalyse-oberflaeche",
+      "title": "Katalyse und Vorgänge an der Katalysatoroberfläche",
+      "domain": "chemie/energetik",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-katalyse-oberflaeche",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HX18E4DTS5DBS84R5C8",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Innere Energie, Aktivierung und Energiediagramm“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "reaktion",
+          "topic_title": "Chemische Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX1DV4YK2AA4HRTNYAS",
+          "slug": "c8-katalyse-oberflaeche-wirkung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-katalyse-oberflaeche",
+          "question": "Welche Wirkung hat der Zusatz eines Katalysators auf eine chemische Reaktion?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Er senkt die Aktivierungsenergie "
+            },
+            {
+              "type": "math",
+              "tex": "E_{\\mathrm{A}}",
+              "speech": "E A"
+            },
+            {
+              "type": "text",
+              "text": " und beschleunigt die Reaktion, ohne verbraucht zu werden."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er senkt die Aktivierungsenergie E_A und beschleunigt die Reaktion, ohne verbraucht zu werden.",
+              "Er vergrößert den Betrag der frei werdenden Reaktionsenergie ΔE_i und verbrennt dabei mit."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er vergrößert den Betrag der frei werdenden Reaktionsenergie ΔE_i und verbrennt dabei mit.",
+              "reason": "Ein Katalysator lässt ΔE_i unverändert und liegt nach der Reaktion unverändert wieder vor."
+            },
+            {
+              "text": "Er erhöht die Zündtemperatur der Edukte und verschiebt das Produktniveau nach unten.",
+              "reason": "Edukt- und Produktniveau bleiben fest; gerade die benötigte Mindesttemperatur sinkt."
+            }
+          ],
+          "replaces": [
+            "01K4C8R0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M5WY3HX100CSV731ZP7YEGR8",
+          "slug": "c8-katalyse-oberflaeche-schritte",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-katalyse-oberflaeche",
+          "question": "Erkläre in vier Schritten auf der Teilchenebene, wie eine Molekülreaktion an einer festen Katalysatoroberfläche abläuft.",
+          "concept": "1. Adsorption der Edukte, 2. Bindungslockerung/-spaltung, 3. Oberflächenreaktion zu Produkten, 4. Desorption (Katalysator wieder frei).",
+          "materiality": "material",
+          "sample_solution": "1. Adsorption: Die Gasmoleküle der Ausgangsstoffe lagern sich an aktive Zentren der Katalysatoroberfläche an. 2. Bindungslockerung: Durch die Wechselwirkung mit der Oberfläche werden bestehende Bindungen im Molekül geschwächt bzw. gespalten (niedrigere Aktivierungsenergie E_A). 3. Oberflächenreaktion: Die Teilchen verknüpfen sich zu neuen Produktmolekülen. 4. Desorption: Die Produkte lösen sich von der Oberfläche ab, sodass der Katalysator unverändert für neue Moleküle bereitsteht."
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX1P1YJ90KYA4CQXWHW",
+      "atom_uri": "urn:zam:atom:01M5WY3HX1P1YJ90KYA4CQXWHW",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-teilchenmasse-molare-masse",
+      "title": "Teilchenmasse, Avogadro-Konstante und molare Masse",
+      "domain": "chemie/stoechiometrie",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-teilchenmasse-molare-masse",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HX1SDVZZCW5A908A5ED",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Massenerhaltung und Ausgleichen von Formelgleichungen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "reaktion",
+          "topic_title": "Chemische Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX1F4BX6GM0M6M2ZA1T",
+          "slug": "c8-teilchenmasse-molare-masse-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-teilchenmasse-molare-masse",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man die molare Masse "
+            },
+            {
+              "type": "math",
+              "tex": "M",
+              "speech": "M"
+            },
+            {
+              "type": "text",
+              "text": " eines Stoffes aus der absoluten Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m(\\text{Teilchen})",
+              "speech": "Masse eines Teilchens"
+            },
+            {
+              "type": "text",
+              "text": " eines einzelnen Atoms oder Moleküls?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "M = m(\\text{Teilchen}) \\cdot N_{\\mathrm{A}}",
+              "speech": "M gleich Teilchenmasse mal Avogadro-Konstante"
+            },
+            {
+              "type": "text",
+              "text": " (Produkt mit der Avogadro-Konstante)"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "M = m(Teilchen)·N_A (Produkt mit der Avogadro-Konstante)",
+              "M = m(Teilchen) / N_A (Quotient durch die Avogadro-Konstante)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "M = m(Teilchen) / N_A (Quotient durch die Avogadro-Konstante)",
+              "reason": "Teilen durch N_A würde einen noch winzigeren Wert ergeben; 1 mol fasst N_A Teilchen zusammen."
+            },
+            {
+              "text": "M = m(Teilchen) · V_m (Produkt mit dem molaren Gasvolumen)",
+              "reason": "Das molare Volumen V_m rechnet Stoffmengen von Gasen in Volumina um, nicht Teilchenmassen."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX12F89EWFZ29ACX24T",
+          "slug": "c8-teilchenmasse-molare-masse-u",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-teilchenmasse-molare-masse",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Ein Kohlenstoffdioxidmolekül ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{CO_2}",
+              "speech": "C O zwei"
+            },
+            {
+              "type": "text",
+              "text": ") hat die Masse "
+            },
+            {
+              "type": "math",
+              "tex": "44{,}0\\,\\mathrm{u}",
+              "speech": "44 Komma 0 u"
+            },
+            {
+              "type": "text",
+              "text": ". Wie groß ist die molare Masse "
+            },
+            {
+              "type": "math",
+              "tex": "M(\\mathrm{CO_2})",
+              "speech": "M von C O zwei"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "44{,}0\\,\\mathrm{g/mol}",
+              "speech": "44 Komma 0 Gramm pro Mol"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "44,0 g/mol",
+              "22,4 g/mol"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "22,4 g/mol",
+              "reason": "22,4 l/mol ist das molare Normvolumen von Gasen, nicht die molare Masse von CO₂."
+            },
+            {
+              "text": "12,0 g/mol",
+              "reason": "12,0 g/mol berücksichtigt nur das Kohlenstoffatom ohne die zwei Sauerstoffatome (2 · 16,0 g/mol)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX15EDEEYYPWSTMJZF7",
+      "atom_uri": "urn:zam:atom:01M5WY3HX15EDEEYYPWSTMJZF7",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-stoffmenge-molvolumen",
+      "title": "Stoffmenge, Masse, Teilchenzahl und molares Volumen",
+      "domain": "chemie/stoechiometrie",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-stoffmenge-molvolumen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HX1P1YJ90KYA4CQXWHW",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Teilchenmasse, Avogadro-Konstante und molare Masse“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "reaktion",
+          "topic_title": "Chemische Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX1Z5QM5SY1FSM4ES4C",
+          "slug": "c8-stoffmenge-molvolumen-normzustand",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-stoffmenge-molvolumen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welches Volumen nimmt "
+            },
+            {
+              "type": "math",
+              "tex": "1{,}0\\,\\mathrm{mol}",
+              "speech": "ein Mol"
+            },
+            {
+              "type": "text",
+              "text": " eines beliebigen idealen Gases im Normzustand ("
+            },
+            {
+              "type": "math",
+              "tex": "0\\,^{\\circ}\\mathrm{C}",
+              "speech": "0 Grad Celsius"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "1013\\,\\mathrm{hPa}",
+              "speech": "1013 Hektopascal"
+            },
+            {
+              "type": "text",
+              "text": ") ein?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V = 22{,}4\\,\\mathrm{l}",
+              "speech": "V gleich 22 Komma 4 Liter"
+            },
+            {
+              "type": "text",
+              "text": " (molares Normvolumen "
+            },
+            {
+              "type": "math",
+              "tex": "V_{\\mathrm{m}} = 22{,}4\\,\\mathrm{l/mol}",
+              "speech": "V m gleich 22 Komma 4 Liter pro Mol"
+            },
+            {
+              "type": "text",
+              "text": ")"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "V = 22,4 l (molares Normvolumen V_m = 22,4 l/mol)",
+              "V = 1,0 l (unabhängig von Druck und Temperatur für alle Stoffe)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "V = 1,0 l (unabhängig von Druck und Temperatur für alle Stoffe)",
+              "reason": "1,0 mol Gas füllt bei 0 °C und 1013 hPa rund 22,4 Liter, nicht 1 Liter."
+            },
+            {
+              "text": "V = 6,022 l (entsprechend dem Zahlenwert der Avogadro-Konstante)",
+              "reason": "6,022 · 10²³ mol⁻¹ gibt die Teilchenzahl pro Mol an, nicht das Gasvolumen in Litern."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX105KPASH6322FC8GC",
+          "slug": "c8-stoffmenge-molvolumen-drehkreuz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-stoffmenge-molvolumen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Mit welchen Quotienten berechnet man die Stoffmenge "
+            },
+            {
+              "type": "math",
+              "tex": "n",
+              "speech": "n"
+            },
+            {
+              "type": "text",
+              "text": " aus Masse "
+            },
+            {
+              "type": "math",
+              "tex": "m",
+              "speech": "m"
+            },
+            {
+              "type": "text",
+              "text": ", Gasvolumen "
+            },
+            {
+              "type": "math",
+              "tex": "V",
+              "speech": "V"
+            },
+            {
+              "type": "text",
+              "text": " bzw. Teilchenzahl "
+            },
+            {
+              "type": "math",
+              "tex": "N",
+              "speech": "N"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "n = \\frac{m}{M} = \\frac{V}{V_{\\mathrm{m}}} = \\frac{N}{N_{\\mathrm{A}}}",
+              "speech": "n gleich m durch Groß M gleich V durch V m gleich Groß N durch N A"
+            },
+            {
+              "type": "text",
+              "text": " (jeweils durch die Umrechnungsgröße teilen)"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "n = m/M = V/V_m = N/N_A (jeweils durch die Umrechnungsgröße teilen)",
+              "n = m · M = V · V_m = N · N_A (jeweils mit der Größe multiplizieren)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "n = m · M = V · V_m = N · N_A (jeweils mit der Größe multiplizieren)",
+              "reason": "Multiplikation liefert falsche Einheiten; die Umrechnungsgrößen stehen jeweils im Nenner."
+            },
+            {
+              "text": "n = M − m = V_m − V = N_A − N (jeweils die Differenz bilden)",
+              "reason": "Größen verschiedener Einheiten wie g/mol und g dürfen niemals voneinander subtrahiert werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX181ZD3CTJVFYS166F",
+      "atom_uri": "urn:zam:atom:01M5WY3HX181ZD3CTJVFYS166F",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-stoffumsatz-rechnen",
+      "title": "Stoffumsatzberechnungen mit Größengleichungen",
+      "domain": "chemie/stoechiometrie",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-stoffumsatz-rechnen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HX15EDEEYYPWSTMJZF7",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Stoffmenge, Masse, Teilchenzahl und molares Volumen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "reaktion",
+          "topic_title": "Chemische Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX1BVBVZXNTGHP8KNC0",
+          "slug": "c8-stoffumsatz-rechnen-dreischritt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-stoffumsatz-rechnen",
+          "question": "In welchen drei Rechenschritten berechnest du aus der Masse eines Ausgangsstoffs die Masse eines Reaktionsprodukts?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "1. "
+            },
+            {
+              "type": "math",
+              "tex": "n_1 = m_1 / M_1",
+              "speech": "n eins gleich m eins durch M eins"
+            },
+            {
+              "type": "text",
+              "text": ", 2. "
+            },
+            {
+              "type": "math",
+              "tex": "n_2",
+              "speech": "n zwei"
+            },
+            {
+              "type": "text",
+              "text": " über das Koeffizientenverhältnis, 3. "
+            },
+            {
+              "type": "math",
+              "tex": "m_2 = n_2 \\cdot M_2",
+              "speech": "m zwei gleich n zwei mal M zwei"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1. n₁ = m₁/M₁, 2. n₂ über das Koeffizientenverhältnis, 3. m₂ = n₂·M₂",
+              "1. m₁ direkt mit dem Koeffizienten multiplizieren, 2. durch V_m teilen, 3. M₁ addieren"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "1. m₁ direkt mit dem Koeffizienten multiplizieren, 2. durch V_m teilen, 3. M₁ addieren",
+              "reason": "Koeffizienten der Reaktionsgleichung gelten für Stoffmengen n in mol, nicht direkt für Massen."
+            },
+            {
+              "text": "1. M₂ mit dem Koeffizienten multiplizieren, 2. n₂ = m₁ · M₁, 3. m₂ = n₂ / M₂",
+              "reason": "Die molare Masse M wird ohne Koeffizient berechnet, und n₁ ist m₁ / M₁."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX1P8FTDX3BNSKS9DNH",
+          "slug": "c8-stoffumsatz-rechnen-wasserbeispiel",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-stoffumsatz-rechnen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Berechne im Dreischritt, welche Masse Wasser ("
+            },
+            {
+              "type": "math",
+              "tex": "M = 18\\,\\mathrm{g/mol}",
+              "speech": "M gleich 18 Gramm pro Mol"
+            },
+            {
+              "type": "text",
+              "text": ") bei der vollständigen Verbrennung von "
+            },
+            {
+              "type": "math",
+              "tex": "8{,}0\\,\\mathrm{g}",
+              "speech": "8 Komma 0 Gramm"
+            },
+            {
+              "type": "text",
+              "text": " Wasserstoff ("
+            },
+            {
+              "type": "math",
+              "tex": "M = 2{,}0\\,\\mathrm{g/mol}",
+              "speech": "M gleich 2 Komma 0 Gramm pro Mol"
+            },
+            {
+              "type": "text",
+              "text": ") nach "
+            },
+            {
+              "type": "math",
+              "tex": "2\\,\\mathrm{H_2} + \\mathrm{O_2} \\rightarrow 2\\,\\mathrm{H_2O}",
+              "speech": "zwei H zwei plus O zwei reagiert zu zwei H zwei O"
+            },
+            {
+              "type": "text",
+              "text": " entsteht."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "n(\\mathrm{H_2}) = 4{,}0\\,\\mathrm{mol} \\Rightarrow n(\\mathrm{H_2O}) = 4{,}0\\,\\mathrm{mol} \\Rightarrow m(\\mathrm{H_2O}) = 72\\,\\mathrm{g}",
+              "speech": "n von H zwei gleich 4 Mol, daraus n von H zwei O gleich 4 Mol, daraus Masse von H zwei O gleich 72 Gramm"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "1. Stoffmenge Wasserstoff: n(H₂) = m(H₂) / M(H₂) = 8,0 g / (2,0 g/mol) = 4,0 mol. 2. Stoffmengenverhältnis laut Gleichung 2 H₂ + O₂ → 2 H₂O ist 2 : 2 = 1 : 1, also n(H₂O) = 4,0 mol. 3. Masse Wasser: m(H₂O) = n(H₂O) · M(H₂O) = 4,0 mol · 18 g/mol = 72 g."
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX195EDQ11X8SVYAA38",
+      "atom_uri": "urn:zam:atom:01M5WY3HX195EDQ11X8SVYAA38",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-alkane-verbrennung",
+      "title": "Homologe Reihe der Alkane und ihre Verbrennung",
+      "domain": "chemie/organik",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-alkane-verbrennung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HX1SDVZZCW5A908A5ED",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Massenerhaltung und Ausgleichen von Formelgleichungen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "reaktion",
+          "topic_title": "Chemische Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX1RAWSM4E4TWR597CV",
+          "slug": "c8-alkane-verbrennung-summenformel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-alkane-verbrennung",
+          "question": "Wie lautet die allgemeine Summenformel der homologen Reihe der Alkane, und wie heißt das Alkan mit vier C-Atomen?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{C}_n\\mathrm{H}_{2n+2}",
+              "speech": "C n H zwei n plus zwei"
+            },
+            {
+              "type": "text",
+              "text": "; bei "
+            },
+            {
+              "type": "math",
+              "tex": "n = 4",
+              "speech": "n gleich vier"
+            },
+            {
+              "type": "text",
+              "text": " heißt es Butan ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{C_4H_{10}}",
+              "speech": "C vier H zehn"
+            },
+            {
+              "type": "text",
+              "text": ")."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "C_nH_(2n+2); bei n = 4 heißt es Butan (C₄H₁₀).",
+              "C_nH_{2n}; bei n = 4 heißt es Propan (C₄H₈)."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "C_nH_{2n}; bei n = 4 heißt es Propan (C₄H₈).",
+              "reason": "C_nH_{2n} gehört nicht zu den offenkettigen Alkanen, und Propan hat nur drei C-Atome (C₃H₈)."
+            },
+            {
+              "text": "C_nH_{n+2}; bei n = 4 heißt es Pentan (C₄H₆).",
+              "reason": "Pentan besitzt fünf C-Atome (C₅H₁₂); für Alkane gilt 2n + 2 Wasserstoffatome."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX122BYMZW8NRZ1TGPG",
+          "slug": "c8-alkane-verbrennung-unvollstaendig",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-alkane-verbrennung",
+          "question": "Welche gefährlichen bzw. sichtbaren Kohlenstoffprodukte entstehen bei der unvollständigen Verbrennung von Alkanen unter Sauerstoffmangel?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Giftiges Kohlenstoffmonoxid ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{CO}",
+              "speech": "C O"
+            },
+            {
+              "type": "text",
+              "text": ") und schwarzer Ruß ("
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{C}",
+              "speech": "C"
+            },
+            {
+              "type": "text",
+              "text": ") neben Wasserdampf."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Giftiges Kohlenstoffmonoxid (CO) und schwarzer Ruß (C) neben Wasserdampf.",
+              "Ausschließlich Kohlenstoffdioxid (CO₂) und reiner Sauerstoff (O₂) ohne Wasserdampf."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ausschließlich Kohlenstoffdioxid (CO₂) und reiner Sauerstoff (O₂) ohne Wasserdampf.",
+              "reason": "CO₂ entsteht bei vollständiger Verbrennung; Sauerstoff wird verbraucht, nicht gebildet."
+            },
+            {
+              "text": "Elementarer Wasserstoff (H₂) und flüssiger Stickstoff (N₂) an kühlen Oberflächen.",
+              "reason": "Bei Sauerstoffmangel oxidiert Wasserstoff bevorzugt zu H₂O, während C als CO und Ruß zurückbleibt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX1GTSDNW5191T9DH1P",
+      "atom_uri": "urn:zam:atom:01M5WY3HX1GTSDNW5191T9DH1P",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-abgaskatalysator-partikelfilter",
+      "title": "Abgaskatalysator und Partikelfilter",
+      "domain": "chemie/umwelt",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-abgaskatalysator-partikelfilter",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HX195EDQ11X8SVYAA38",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Homologe Reihe der Alkane und ihre Verbrennung“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "reaktion",
+          "topic_title": "Chemische Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX17MWMJ4PEJJW0T6SP",
+          "slug": "c8-abgaskatalysator-partikelfilter-dreiwege",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-abgaskatalysator-partikelfilter",
+          "question": "Welche Aufgabe erfüllt der Drei-Wege-Abgaskatalysator im Kraftfahrzeug?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Er wandelt "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{CO}",
+              "speech": "C O"
+            },
+            {
+              "type": "text",
+              "text": ", Kohlenwasserstoffreste und Stickoxide in "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{CO_2}",
+              "speech": "C O zwei"
+            },
+            {
+              "type": "text",
+              "text": ", "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{H_2O}",
+              "speech": "H zwei O"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{N_2}",
+              "speech": "N zwei"
+            },
+            {
+              "type": "text",
+              "text": " um."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er wandelt CO, Kohlenwasserstoffreste und Stickoxide in CO₂, H₂O und N₂ um.",
+              "Er filtert das gesamte Kohlenstoffdioxid aus dem Abgas und speichert es als Benzin zurück."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er filtert das gesamte Kohlenstoffdioxid aus dem Abgas und speichert es als Benzin zurück.",
+              "reason": "CO₂ wird im Drei-Wege-Katalysator nicht zurückgehalten, sondern entsteht bei der CO-Nachoxidation."
+            },
+            {
+              "text": "Er kühlt die Motorabgase unter −196 °C ab, um flüssigen Sauerstoff abzuscheiden.",
+              "reason": "Ein Abgaskatalysator arbeitet erst ab etwa 300 °C an einer Edelmetalloberfläche."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX1MDBW0HWWXQ9RDZNQ",
+          "slug": "c8-abgaskatalysator-partikelfilter-russ",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-abgaskatalysator-partikelfilter",
+          "question": "Warum benötigt ein Verbrennungsmotor neben dem Abgaskatalysator zusätzlich einen Partikelfilter?",
+          "concept": "Er hält feste, lungengängige Rußpartikel aus unvollständiger Verbrennung als Feinstaub zurück.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er hält feste, lungengängige Rußpartikel aus unvollständiger Verbrennung als Feinstaub zurück.",
+              "Er zerlegt Wasserdampf wieder elektrolytisch in Wasserstoff und Sauerstoff für den Motor."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er zerlegt Wasserdampf wieder elektrolytisch in Wasserstoff und Sauerstoff für den Motor.",
+              "reason": "Ein Partikelfilter ist ein mechanisch-thermischer Wandstromfilter für feste Rußteilchen."
+            },
+            {
+              "text": "Er verhindert, dass Luftstickstoff überhaupt in den Ansaugtrakt des Motors gelangt.",
+              "reason": "Ansaugluft enthält immer 78 % Stickstoff; der Partikelfilter sitzt im Abgasstrang."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX1X6P4M1YCFZ78CNYK",
+      "atom_uri": "urn:zam:atom:01M5WY3HX1X6P4M1YCFZ78CNYK",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-verbrennung-explosion-brandschutz",
+      "title": "Verbrennungsbedingungen, Explosion und Brandschutz",
+      "domain": "chemie/reaktion",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-verbrennung-explosion-brandschutz",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HX195EDQ11X8SVYAA38",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Homologe Reihe der Alkane und ihre Verbrennung“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "reaktion",
+          "topic_title": "Chemische Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX1M4VTEF96NY8N8AZ4",
+          "slug": "c8-verbrennung-explosion-brandschutz-dreieck",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-verbrennung-explosion-brandschutz",
+          "question": "Welche drei Bedingungen müssen im Verbrennungsdreieck gleichzeitig erfüllt sein, damit ein Feuer brennen kann?",
+          "concept": "Brennbarer Stoff, Sauerstoff und Erreichen der Zündtemperatur",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Brennbarer Stoff, Sauerstoff und Erreichen der Zündtemperatur",
+              "Brennbarer Stoff, Kohlenstoffdioxid und Raumtemperatur"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Brennbarer Stoff, Kohlenstoffdioxid und Raumtemperatur",
+              "reason": "Kohlenstoffdioxid erstickt Flammen, und Raumtemperatur liegt meist unter der Zündtemperatur."
+            },
+            {
+              "text": "Metallkatalysator, flüssiges Wasser und Luftstickstoff",
+              "reason": "Wasser und Stickstoff sind unbrennbar und fördern gewöhnliche Brände nicht."
+            }
+          ],
+          "replaces": [
+            "01K4C8R0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M5WY3HX1R397KVKD24XNXV4X",
+          "slug": "c8-verbrennung-explosion-brandschutz-staub",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-verbrennung-explosion-brandschutz",
+          "question": "Warum führt fein aufgewirbelter Mehlstaub an einer Zündquelle zu einer heftigen Staubexplosion?",
+          "concept": "Der hohe Zerteilungsgrad schafft eine riesige Gesamtoberfläche mit allseitigem Sauerstoffkontakt.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der hohe Zerteilungsgrad schafft eine riesige Gesamtoberfläche mit allseitigem Sauerstoffkontakt.",
+              "Mehl wandelt sich beim Verwirbeln in der Luft spontan in gasförmiges Methan um."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mehl wandelt sich beim Verwirbeln in der Luft spontan in gasförmiges Methan um.",
+              "reason": "Es bleibt chemisch Stärke/Mehl; entscheidend ist allein die stark vergrößerte Kontaktfläche."
+            },
+            {
+              "text": "In aufgewirbeltem Staub sinkt der Sauerstoffgehalt der Luft auf null Prozent ab.",
+              "reason": "Ohne Luftsauerstoff zwischen den Staubkörnern könnte überhaupt keine Explosion stattfinden."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX1YD8SND6736WV37QA",
+          "slug": "c8-verbrennung-explosion-brandschutz-fettbrand",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-verbrennung-explosion-brandschutz",
+          "question": "Begründe auf Stoff- und Teilchenebene, warum brennendes Speiseöl niemals mit Wasser gelöscht werden darf, und nenne die richtige Löschmaßnahme.",
+          "concept": "Wasser verdampft im > 300 °C heißen Öl schlagartig (~1 : 1700 Volumenzunahme) und reißt brennende Öltröpfchen zur Fettexplosion mit; richtig ist Ersticken mit Deckel oder Löschdecke.",
+          "materiality": "material",
+          "sample_solution": "Brennendes Speiseöl ist über 300 °C heiß und hat eine geringere Dichte als Wasser. Gießt man Wasser hinein, sinkt es unter das Öl und verdampft schlagartig (aus 1 l flüssigem Wasser entstehen rund 1700 l Wasserdampf). Die Dampfblase schleudert feinste Öltröpfchen in die Luft — durch die riesige Oberfläche mit Luftsauerstoff entsteht eine lebensgefährliche Fettexplosion. Richtig löscht man durch Sauerstoffentzug (Ersticken mit Topfdeckel oder Löschdecke) und Abschalten der Wärmequelle."
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX105S9EM29MPVYW1R1",
+      "atom_uri": "urn:zam:atom:01M5WY3HX105S9EM29MPVYW1R1",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-co2-bilanz-kohlenstoffkreislauf",
+      "title": "CO₂-Bilanz von Brennstoffen und Kohlenstoffkreislauf",
+      "domain": "chemie/umwelt",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-co2-bilanz-kohlenstoffkreislauf",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HX181ZD3CTJVFYS166F",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Stoffumsatzberechnungen mit Größengleichungen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "reaktion",
+          "topic_title": "Chemische Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb4",
+          "topic_title": "Chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX1X2VCDZDAC3V59RKA",
+          "slug": "c8-co2-bilanz-kohlenstoffkreislauf-fossil",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-co2-bilanz-kohlenstoffkreislauf",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Warum lässt das Verbrennen fossiler Energieträger die "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{CO_2}",
+              "speech": "C O zwei"
+            },
+            {
+              "type": "text",
+              "text": "-Konzentration der Atmosphäre im Kohlenstoffkreislauf ansteigen?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Über Jahrmillionen gespeicherter Kohlenstoff wird zusätzlich freigesetzt und übersteigt die Aufnahme durch Fotosynthese und Ozeane."
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Über Jahrmillionen gespeicherter Kohlenstoff wird zusätzlich freigesetzt und übersteigt die Aufnahme durch Fotosynthese und Ozeane.",
+              "Fossiles Kohlenstoffdioxid besitzt schwerere Sauerstoffkerne und kann von Pflanzen nicht aufgenommen werden."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Fossiles Kohlenstoffdioxid besitzt schwerere Sauerstoffkerne und kann von Pflanzen nicht aufgenommen werden.",
+              "reason": "Chemisch sind alle CO₂-Moleküle für die Fotosynthese gleich nutzbar; das Problem ist die riesige Zusatzmenge."
+            },
+            {
+              "text": "Beim Verbrennen von Kohle und Erdöl wird der gesamte Stickstoff der Luft in Kohlenstoffdioxid verwandelt.",
+              "reason": "Stickstoffatome können sich durch chemische Reaktionen niemals in Kohlenstoffatome verwandeln."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX1FRG110D7GRFERPXQ",
+          "slug": "c8-co2-bilanz-kohlenstoffkreislauf-wasserstoff",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-co2-bilanz-kohlenstoffkreislauf",
+          "question": "Unter welcher Voraussetzung weist Wasserstoff als Energieträger eine nahezu klimaneutrale Kohlenstoffdioxidbilanz auf?",
+          "concept": "Wenn er per Wasserelektrolyse mit Strom aus erneuerbaren Energien als grüner Wasserstoff gewonnen wird.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn er per Wasserelektrolyse mit Strom aus erneuerbaren Energien als grüner Wasserstoff gewonnen wird.",
+              "Immer automatisch, selbst wenn der Wasserstoff mit Kohlestrom oder aus Erdgas ohne Abscheidung erzeugt wird."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Immer automatisch, selbst wenn der Wasserstoff mit Kohlestrom oder aus Erdgas ohne Abscheidung erzeugt wird.",
+              "reason": "Zur Gesamtbilanz zählt neben der Verbrennung (nur H₂O) zwingend auch die Herstellung des Energieträgers."
+            },
+            {
+              "text": "Wenn er im Motor unvollständig zu festem Ruß statt zu gasförmigem Kohlenstoffdioxid verbrannt wird.",
+              "reason": "Wasserstoff (H₂) enthält gar keinen Kohlenstoff und kann weder Ruß noch CO₂ bilden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX1XA0P1NF8BXD1Y42B",
+      "atom_uri": "urn:zam:atom:01M5WY3HX1XA0P1NF8BXD1Y42B",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-rutherford-kern-huelle",
+      "title": "Rutherfordscher Streuversuch und Kern-Hülle-Modell",
+      "domain": "chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-rutherford-kern-huelle",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HWZQP6VDV07XA5JSVC9",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Daltonsches Atommodell und Elementklassen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "atombau",
+          "topic_title": "Atombau und Periodensystem der Elemente"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Atombau und Periodensystem der Elemente",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX19FS7JGX46HBSK1EP",
+          "slug": "c8-rutherford-kern-huelle-befunde",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-rutherford-kern-huelle",
+          "question": "Was leitete Rutherford daraus ab, dass fast alle α-Teilchen die Goldfolie durchdringen, einzelne aber stark zurückprallen?",
+          "concept": "Ein winziger, positiver, massereicher Atomkern ist von einer riesigen, fast leeren Elektronenhülle umgeben.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein winziger, positiver, massereicher Atomkern ist von einer riesigen, fast leeren Elektronenhülle umgeben.",
+              "Goldatome sind massive, gleichmäßig positiv geladene Vollkugeln ohne innere Zwischenräume."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Goldatome sind massive, gleichmäßig positiv geladene Vollkugeln ohne innere Zwischenräume.",
+              "reason": "An massiven Vollkugeln könnten nicht über 99 % aller α-Teilchen geradlinig hindurchfliegen."
+            },
+            {
+              "text": "Die gesamte Masse sitzt außen in einer starren Elektronenschale um einen hohlen, leeren Kern.",
+              "reason": "Leichte Elektronen können schwere α-Teilchen nicht zurückwerfen; die Masse steckt im Kern."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX1DMW122DDCGCBKCTE",
+          "slug": "c8-rutherford-kern-huelle-nukleonen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-rutherford-kern-huelle",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie ermittelst du aus Ordnungszahl "
+            },
+            {
+              "type": "math",
+              "tex": "Z",
+              "speech": "Z"
+            },
+            {
+              "type": "text",
+              "text": " und Massenzahl "
+            },
+            {
+              "type": "math",
+              "tex": "A",
+              "speech": "A"
+            },
+            {
+              "type": "text",
+              "text": " die Protonen-, Elektronen- und Neutronenzahl eines neutralen Atoms?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Protonenzahl "
+            },
+            {
+              "type": "math",
+              "tex": "= Z",
+              "speech": "gleich Z"
+            },
+            {
+              "type": "text",
+              "text": ", Elektronenzahl "
+            },
+            {
+              "type": "math",
+              "tex": "= Z",
+              "speech": "gleich Z"
+            },
+            {
+              "type": "text",
+              "text": ", Neutronenzahl "
+            },
+            {
+              "type": "math",
+              "tex": "N = A - Z",
+              "speech": "N gleich A minus Z"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Protonenzahl = Z, Elektronenzahl = Z, Neutronenzahl N = A - Z",
+              "Protonenzahl = A, Elektronenzahl = A − Z, Neutronenzahl N = Z"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Protonenzahl = A, Elektronenzahl = A − Z, Neutronenzahl N = Z",
+              "reason": "A ist die Summe aus Protonen und Neutronen (Nukleonenzahl), Z allein ist die Protonenzahl."
+            },
+            {
+              "text": "Protonenzahl = Z, Elektronenzahl = A, Neutronenzahl N = A + Z",
+              "reason": "Wäre die Elektronenzahl gleich A statt Z, wäre das Atom stark negativ geladen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX12GVSJ8QR7BDMPV7E",
+      "atom_uri": "urn:zam:atom:01M5WY3HX12GVSJ8QR7BDMPV7E",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-energiestufen-flammen",
+      "title": "Energiestufenmodell, Flammenfärbung und Modellvergleich",
+      "domain": "chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-energiestufen-flammen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HX1XA0P1NF8BXD1Y42B",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Rutherfordscher Streuversuch und Kern-Hülle-Modell“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "atombau",
+          "topic_title": "Atombau und Periodensystem der Elemente"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Atombau und Periodensystem der Elemente",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX1WYWJZV52SRH290AK",
+          "slug": "c8-energiestufen-flammen-deutung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-energiestufen-flammen",
+          "question": "Wie erklärt das Energiestufenmodell die charakteristischen Flammenfärbungen von Metallsalzen (z. B. gelb-orange bei Natrium)?",
+          "concept": "Wärme regt Elektronen auf höhere Energiestufen an; beim Zurückfallen senden sie Licht fester Energie aus.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wärme regt Elektronen auf höhere Energiestufen an; beim Zurückfallen senden sie Licht fester Energie aus.",
+              "In der Brennerflamme verschmelzen Protonen und Neutronen im Atomkern unter farbigem Leuchten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "In der Brennerflamme verschmelzen Protonen und Neutronen im Atomkern unter farbigem Leuchten.",
+              "reason": "Chemische Flammenwärme verändert niemals den Atomkern, sondern regt nur Hüllenelektronen an."
+            },
+            {
+              "text": "Die Metallatome verdampfen zu farbigen Edelgasen, die ihre Farbe dauerhaft im Raum behalten.",
+              "reason": "Die Elementsorte bleibt erhalten; das Leuchten entsteht nur beim Rücksprung der Elektronen."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX1YZYJ64BVCBJH9A0C",
+          "slug": "c8-energiestufen-flammen-besetzung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-energiestufen-flammen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet die Elektronenkonfiguration (Verteilung auf die Energiestufen von innen nach außen) eines neutralen Chloratoms ("
+            },
+            {
+              "type": "math",
+              "tex": "Z = 17",
+              "speech": "Z gleich 17"
+            },
+            {
+              "type": "text",
+              "text": ")?"
+            }
+          ],
+          "concept": "2 · 8 · 7 (drei Energiestufen, sieben Valenzelektronen)",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "2 · 8 · 7 (drei Energiestufen, sieben Valenzelektronen)",
+              "2 · 7 · 8 (drei Energiestufen, acht Valenzelektronen)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "2 · 7 · 8 (drei Energiestufen, acht Valenzelektronen)",
+              "reason": "Die 2. Energiestufe wird zuerst vollständig mit 8 Elektronen gefüllt, bevor die 3. Stufe 7 erhält."
+            },
+            {
+              "text": "8 · 8 · 1 (drei Energiestufen, ein Valenzelektron)",
+              "reason": "Die innerste (1.) Energiestufe fasst maximal 2 Elektronen, niemals 8."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX1FJN303G7EEM5ETAD",
+      "atom_uri": "urn:zam:atom:01M5WY3HX1FJN303G7EEM5ETAD",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-pse-edelgasregel-ionen",
+      "title": "Periodensystem, Edelgasregel und Ionenladung",
+      "domain": "chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-pse-edelgasregel-ionen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HX12GVSJ8QR7BDMPV7E",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Energiestufenmodell, Flammenfärbung und Modellvergleich“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "atombau",
+          "topic_title": "Atombau und Periodensystem der Elemente"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Atombau und Periodensystem der Elemente",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX1Y13PZ9HF04NZ5S8H",
+          "slug": "c8-pse-edelgasregel-ionen-ordnung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-pse-edelgasregel-ionen",
+          "question": "Welche Information über den Atombau liefern Periodennummer (Zeile) und Hauptgruppennummer (Spalte) im PSE?",
+          "concept": "Periode = Zahl der besetzten Energiestufen; Hauptgruppe = Zahl der Valenzelektronen mit Ausnahme He.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Periode = Zahl der besetzten Energiestufen; Hauptgruppe = Zahl der Valenzelektronen mit Ausnahme He.",
+              "Periode = Zahl der Valenzelektronen; Hauptgruppe = Zahl der Neutronen im Atomkern."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Periode = Zahl der Valenzelektronen; Hauptgruppe = Zahl der Neutronen im Atomkern.",
+              "reason": "Zeilen zählen die Schalen/Energiestufen, Spalten die Valenzelektronen."
+            },
+            {
+              "text": "Periode = Ladungszahl des Ions; Hauptgruppe = Gesamtzahl aller Nukleonen im Kern.",
+              "reason": "Die Nukleonenzahl ist die Massenzahl A, nicht die Hauptgruppennummer."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX1Y7WQXR4QGXQC9XVR",
+          "slug": "c8-pse-edelgasregel-ionen-edegasregel",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-pse-edelgasregel-ionen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Leite mithilfe des Periodensystems und der Edelgasregel die Ionenformeln von Magnesium ("
+            },
+            {
+              "type": "math",
+              "tex": "Z = 12",
+              "speech": "Z gleich 12"
+            },
+            {
+              "type": "text",
+              "text": ", II. Hauptgruppe) und Sauerstoff ("
+            },
+            {
+              "type": "math",
+              "tex": "Z = 8",
+              "speech": "Z gleich 8"
+            },
+            {
+              "type": "text",
+              "text": ", VI. Hauptgruppe) samt ihrer Elektronenkonfiguration ab."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mathrm{Mg}",
+              "speech": "M G"
+            },
+            {
+              "type": "text",
+              "text": " (2 · 8 · 2) gibt 2 "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{e^-}",
+              "speech": "Elektronen"
+            },
+            {
+              "type": "text",
+              "text": " ab → "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{Mg^{2+}}",
+              "speech": "M G zwei plus"
+            },
+            {
+              "type": "text",
+              "text": " (2 · 8); "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{O}",
+              "speech": "O"
+            },
+            {
+              "type": "text",
+              "text": " (2 · 6) nimmt 2 "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{e^-}",
+              "speech": "Elektronen"
+            },
+            {
+              "type": "text",
+              "text": " auf → "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{O^{2-}}",
+              "speech": "O zwei minus"
+            },
+            {
+              "type": "text",
+              "text": " (2 · 8)."
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Magnesium (Z = 12, 3. Periode, II. Hauptgruppe) hat die Konfiguration 2 · 8 · 2 und gibt seine 2 Valenzelektronen ab: Es entsteht das Kation Mg²⁺ mit 12 Protonen und 10 Elektronen (Neon-Konfiguration 2 · 8). Sauerstoff (Z = 8, 2. Periode, VI. Hauptgruppe) hat 2 · 6 und nimmt 2 Elektronen auf: Es entsteht das Anion O²⁻ mit 8 Protonen und ebenfalls 10 Elektronen (Neon-Konfiguration 2 · 8)."
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX1V1JCW38XM2HETSWR",
+      "atom_uri": "urn:zam:atom:01M5WY3HX1V1JCW38XM2HETSWR",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-kugelwolkenmodell",
+      "title": "Das Kugelwolkenmodell",
+      "domain": "chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-kugelwolkenmodell",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HX1FJN303G7EEM5ETAD",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Periodensystem, Edelgasregel und Ionenladung“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "atombau",
+          "topic_title": "Atombau und Periodensystem der Elemente"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Atombau und Periodensystem der Elemente",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX1JFRGZQZFMG2H2XBX",
+          "slug": "c8-kugelwolkenmodell-besetzung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-kugelwolkenmodell",
+          "question": "Wie verteilen sich die 6 Valenzelektronen eines Sauerstoffatoms auf die 4 äußeren Kugelwolken?",
+          "concept": "2 doppelt besetzte Kugelwolken als Elektronenpaare und 2 einfach besetzte Kugelwolken.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "2 doppelt besetzte Kugelwolken als Elektronenpaare und 2 einfach besetzte Kugelwolken.",
+              "3 doppelt besetzte Kugelwolken und 1 vollständig unbesetzte leere Kugelwolke."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "3 doppelt besetzte Kugelwolken und 1 vollständig unbesetzte leere Kugelwolke.",
+              "reason": "Wegen der gegenseitigen Abstoßung werden erst alle 4 Kugelwolken einzeln besetzt, bevor gepaart wird."
+            },
+            {
+              "text": "1 doppelt besetzte Kugelwolke und 4 einfach besetzte Kugelwolken auf fünf Plätzen.",
+              "reason": "Die 2. Energiestufe besitzt genau 4 Kugelwolken für maximal 8 Elektronen."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX151JGB7KZ082M7WXS",
+          "slug": "c8-kugelwolkenmodell-raumordnung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-kugelwolkenmodell",
+          "question": "Welche räumliche Anordnung nehmen die vier äußeren Kugelwolken ab der 2. Energiestufe aufgrund ihrer Abstoßung ein?",
+          "concept": "Sie richten sich nach den vier Ecken eines regelmäßigen Tetraeders aus (Winkel ca. 109,5°).",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie richten sich nach den vier Ecken eines regelmäßigen Tetraeders aus (Winkel ca. 109,5°).",
+              "Sie liegen flach wie die vier Ecken eines Quadrats in einer einzigen Ebene (90°)."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie liegen flach wie die vier Ecken eines Quadrats in einer einzigen Ebene (90°).",
+              "reason": "Im dreidimensionalen Raum ermöglicht das Tetraeder einen größeren Abstand (109,5°) als das flache Quadrat (90°)."
+            },
+            {
+              "text": "Sie reihen sich hintereinander auf einer geraden Linie durch den Atomkern auf.",
+              "reason": "Auf einer Geraden kämen sich die gleichnamig negativen Elektronenwolken viel zu nahe."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5WY3HX145M30B38H4BKPYZC",
+      "atom_uri": "urn:zam:atom:01M5WY3HX145M30B38H4BKPYZC",
+      "namespace": "zam-academy-chemie-realschule-8",
+      "slug": "c8-isotopie-molare-masse",
+      "title": "Isotopie und nicht ganzzahlige molare Massen",
+      "domain": "chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-isotopie-molare-masse",
+      "prerequisites": [
+        {
+          "atom_id": "01M5WY3HX1XA0P1NF8BXD1Y42B",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Rutherfordscher Streuversuch und Kern-Hülle-Modell“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "chemie-realschule-8",
+          "topic_code": "atombau",
+          "topic_title": "Atombau und Periodensystem der Elemente"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "chemie",
+          "track": "I",
+          "topic_code": "lb5",
+          "topic_title": "Atombau und Periodensystem der Elemente",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5WY3HX115D9AA6N019Z6RBZ",
+          "slug": "c8-isotopie-molare-masse-definition",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-isotopie-molare-masse",
+          "question": "Was versteht man in der Chemie unter Isotopen eines Elements?",
+          "concept": "Atome mit gleicher Protonenzahl Z, aber unterschiedlicher Neutronenzahl N und Massenzahl A.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Atome mit gleicher Protonenzahl Z, aber unterschiedlicher Neutronenzahl N und Massenzahl A.",
+              "Atome mit gleicher Massenzahl A, aber unterschiedlicher Protonenzahl Z im Atomkern."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Atome mit gleicher Massenzahl A, aber unterschiedlicher Protonenzahl Z im Atomkern.",
+              "reason": "Verschiedene Protonenzahlen Z gehören zwingend zu verschiedenen chemischen Elementen."
+            },
+            {
+              "text": "Ionen desselben Elements mit gleicher Neutronenzahl, aber verschiedener Elektronenzahl.",
+              "reason": "Unterschiedliche Elektronenzahlen bei gleichem Kern beschreiben Ionen bzw. Ladungszustände, nicht Isotope."
+            }
+          ]
+        },
+        {
+          "id": "01M5WY3HX1MAJKJB3R1ADE1787",
+          "slug": "c8-isotopie-molare-masse-chlor",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/chemie-realschule-8/#lesson=ch-isotopie-molare-masse",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Erkläre mithilfe der Isotopie, warum Chlor im Periodensystem die nicht ganzzahlige molare Masse "
+            },
+            {
+              "type": "math",
+              "tex": "M(\\mathrm{Cl}) = 35{,}45\\,\\mathrm{g/mol}",
+              "speech": "M von Chlor gleich 35 Komma 4 5 Gramm pro Mol"
+            },
+            {
+              "type": "text",
+              "text": " besitzt, obwohl es keine Bruchteile von Nukleonen gibt."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Natürliches Chlor ist ein Isotopengemisch aus ca. 76 % "
+            },
+            {
+              "type": "math",
+              "tex": "{}^{35}_{17}\\mathrm{Cl}",
+              "speech": "Chlor 35"
+            },
+            {
+              "type": "text",
+              "text": " (18 "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{n^0}",
+              "speech": "Neutronen"
+            },
+            {
+              "type": "text",
+              "text": ") und 24 % "
+            },
+            {
+              "type": "math",
+              "tex": "{}^{37}_{17}\\mathrm{Cl}",
+              "speech": "Chlor 37"
+            },
+            {
+              "type": "text",
+              "text": " (20 "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{n^0}",
+              "speech": "Neutronen"
+            },
+            {
+              "type": "text",
+              "text": "); der gewichtete Mittelwert ergibt "
+            },
+            {
+              "type": "math",
+              "tex": "35{,}45\\,\\mathrm{g/mol}",
+              "speech": "35 Komma 4 5 Gramm pro Mol"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Jedes einzelne Chloratom hat Z = 17 Protonen und eine ganzzahlige Neutronenzahl: Rund 76 % aller natürlichen Chloratome sind ³⁵₁₇Cl (18 Neutronen, ca. 35 u), rund 24 % sind ³⁷₁₇Cl (20 Neutronen, ca. 37 u). Da 1 mol Chlor beide Isotope in genau diesem Verhältnis enthält, ergibt der gewichtete Durchschnitt 0,76 · 35 g/mol + 0,24 · 37 g/mol ≈ 35,48 g/mol (genau 35,45 g/mol)."
+        }
+      ]
+    }
+  ]
+}

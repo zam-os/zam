@@ -28,6 +28,7 @@ import type { LensKind, PlanetKind, UnitKey } from "../atlas/types.js";
 import { chooseVariantIn } from "../atlas/variants.js";
 import type { Database } from "../db/types.js";
 import {
+  BUNDLED_TILES,
   type BundledTile,
   type CurriculumScope,
   getBundledCellTile,
@@ -1397,6 +1398,23 @@ async function takeCard(
   return false;
 }
 
+function findReplacingBundledItem(itemId: string): {
+  tile: BundledTile;
+  atomId: string;
+  item: BundledTile["atoms"][number]["practice_items"][number];
+} | null {
+  for (const tile of Object.values(BUNDLED_TILES)) {
+    for (const atom of tile.atoms) {
+      for (const item of atom.practice_items ?? []) {
+        if (item.replaces?.includes(itemId)) {
+          return { tile, atomId: atom.id, item };
+        }
+      }
+    }
+  }
+  return null;
+}
+
 /**
  * Write the learner's choices (Decisions 5, 6, 8, 9) in one transaction:
  *
@@ -1441,13 +1459,33 @@ export async function commitMaterialImport(
   };
 
   const tilesToInstall = new Map<string, BundledTile>();
+  const orphanedRows = new Set<MaterialReviewRow>();
+  const resolvedTargets = new Map<MaterialReviewRow, MaterialTarget>();
   for (const row of rows) {
     if (row.kind === "proposal" || chosen(row) === null) continue;
     if (row.target.type !== "cell-item") continue;
-    if (tilesToInstall.has(row.target.cellId)) continue;
-    const tile = getBundledCellTile(row.target.cellId);
-    if (!tile) throw new Error(`Bundled cell not found: ${row.target.cellId}`);
-    tilesToInstall.set(row.target.cellId, tile);
+    let target: MaterialTarget = row.target;
+    let tile = getBundledCellTile(target.cellId);
+    if (!tile) {
+      const replacement = findReplacingBundledItem(target.itemId);
+      if (replacement) {
+        target = {
+          type: "cell-item",
+          cellId: replacement.tile.tile_id,
+          atomId: replacement.atomId,
+          itemId: replacement.item.id,
+        };
+        resolvedTargets.set(row, target);
+        tile = replacement.tile;
+      }
+    }
+    if (!tile) {
+      orphanedRows.add(row);
+      continue;
+    }
+    if (!tilesToInstall.has(target.cellId)) {
+      tilesToInstall.set(target.cellId, tile);
+    }
   }
   for (const tile of tilesToInstall.values()) {
     await installKvtTile(db, tile);
@@ -1517,6 +1555,10 @@ export async function commitMaterialImport(
     const chosenVariants: Array<{ variant: UnitKey; standsFor: UnitKey }> = [];
 
     for (const row of rows) {
+      if (orphanedRows.has(row)) {
+        result.notSaved++;
+        continue;
+      }
       const choice = chosen(row);
       if (row.kind === "existing" && row.held) continue;
       if (choice === null) {
@@ -1611,7 +1653,8 @@ export async function commitMaterialImport(
         continue;
       }
 
-      const tokenId = targetTokenId(row.target);
+      const target = resolvedTargets.get(row) ?? row.target;
+      const tokenId = targetTokenId(target);
       if (!(await getTokenById(tx, tokenId))) {
         throw new Error(`Library item not found: ${tokenId}`);
       }

@@ -24,7 +24,7 @@ import {
 
 const TILE = resolve(
   __dirname,
-  "../fixtures/curriculum/de-by-realschule-8-chemie-stoffe-stoffgemische-trennung-kvt.json",
+  "../fixtures/legacy/de-by-realschule-8-chemie-stoffe-stoffgemische-trennung-kvt.json",
 );
 const ATOM = "01K4C8S0000000000000000A01";
 const ITEM = "01K4C8S0000000000000000J01";
