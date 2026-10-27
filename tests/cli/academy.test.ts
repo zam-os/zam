@@ -1,3 +1,4 @@
+import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -23,6 +24,7 @@ import {
   type BundledTile,
   type Database,
   enrolBundledCell,
+  type EnrolBundledCellProgress,
   getBundledCellTile,
   installedTileVersion,
   openDatabase,
@@ -388,15 +390,73 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
 
   it("enrols in a cell only the catalog has", async () => {
     const academy = fakeAcademy([catalogOnly()]);
+    const progress: EnrolBundledCellProgress[] = [];
     const result = await academyEnrolHandler(db, {
       cellId: "zam-academy:nur-katalog",
       user: "learner",
       fetch: academy.fetch,
+      onProgress: (event) => progress.push(event),
     });
+    expect(progress[0]).toEqual({ phase: "installing", done: 0, total: 26 });
+    expect(progress.at(-1)).toEqual({
+      phase: "enrolling",
+      done: 26,
+      total: 26,
+    });
+    expect(
+      progress.filter((event) => event.phase === "installing"),
+    ).toHaveLength(27);
     expect(result).toMatchObject({
       success: true,
       cardsCreated: 26,
       version: "2026.10.1",
+    });
+  });
+
+  it("keeps stdout one JSON result while streaming cell counts on stderr", async () => {
+    await academyListHandler(db, {
+      user: "learner",
+      fetch: fakeAcademy([catalogOnly()]).fetch,
+    });
+    const result = spawnSync(
+      process.execPath,
+      [
+        join(process.cwd(), "dist/cli/index.js"),
+        "bridge",
+        "academy-enrol",
+        "zam-academy:nur-katalog",
+        "--user",
+        "learner",
+      ],
+      {
+        encoding: "utf8",
+        env: { ...process.env, ZAM_DB_PROVIDER: "local" },
+        timeout: 20_000,
+      },
+    );
+    expect(result.status, result.stderr).toBe(0);
+    expect(JSON.parse(result.stdout)).toMatchObject({
+      success: true,
+      cardsCreated: 26,
+    });
+    const events = result.stderr
+      .trim()
+      .split("\n")
+      .filter((line) => line.startsWith("{"))
+      .map((line) => JSON.parse(line));
+    expect(events[0]).toEqual({
+      type: "academy-progress",
+      cellId: "zam-academy:nur-katalog",
+      phase: "installing",
+      done: 0,
+      total: 26,
+    });
+    expect(events.at(-1)).toEqual({
+      type: "academy-progress",
+      cellId: "zam-academy:nur-katalog",
+      phase: "enrolling",
+      done: 26,
+      total: 26,
     });
   });
 
@@ -418,10 +478,18 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       listed.cells.find((cell) => cell.id === "zam-academy:uml"),
     ).toMatchObject({ held: true, newer: true });
 
+    const progress: EnrolBundledCellProgress[] = [];
     const update = await academyUpdateHandler(db, {
       cellId: "zam-academy:uml",
       user: "learner",
       fetch: fakeAcademy([{ ...UML, version: "2099.1.1" }]).fetch,
+      onProgress: (event) => progress.push(event),
+    });
+    expect(progress[0]).toEqual({ phase: "installing", done: 0, total: 26 });
+    expect(progress.at(-1)).toEqual({
+      phase: "enrolling",
+      done: 26,
+      total: 26,
     });
     expect(update).toMatchObject({
       updated: true,

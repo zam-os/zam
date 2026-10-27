@@ -17,6 +17,7 @@ import {
   bundleStandsIn,
   compareTileVersions,
   type Database,
+  type EnrolBundledCellProgress,
   enrolBundledCell,
   getBundledCellsWithStatus,
   installedTileVersion,
@@ -60,6 +61,7 @@ export interface AcademyHandlerParams {
   user?: string;
   /** Test seams; never a URL. */
   fetch?: AcademyFetchOptions;
+  onProgress?: (progress: EnrolBundledCellProgress) => void;
 }
 
 /** A bundled academy cell: the build ships it under the academy namespace. */
@@ -221,6 +223,7 @@ export async function academyEnrolHandler(
   }
   const result = await enrolBundledCell(db, userId, cellId, {
     resolveTile: resolveCachedTile,
+    onProgress: params.onProgress,
   });
   return { ...result, version: await installedTileVersion(db, cellId) };
 }
@@ -249,6 +252,7 @@ export async function academyUpdateHandler(
   // re-enrolling hands out its new items within the usual budget.
   const result = await enrolBundledCell(db, userId, cellId, {
     resolveTile: resolveCachedTile,
+    onProgress: params.onProgress,
   });
   return {
     success: true as const,

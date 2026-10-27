@@ -9,6 +9,8 @@
  */
 
 import { runBridge } from "./bridge-transport.js";
+import type { EnrolBundledCellProgress } from "../../src/kernel/library/bundled-cells.js";
+import { createCellImportProgress } from "./cell-import-progress.js";
 import { t, tf } from "./i18n.js";
 
 export interface AcademyCellRow {
@@ -38,6 +40,47 @@ export interface AcademyListOptions {
 }
 
 const OVERLAY_ID = "academy-list-overlay";
+let activeImports = 0;
+
+export interface AcademyProgressEvent extends EnrolBundledCellProgress {
+  type: string;
+  cellId: string;
+}
+
+type AcademyProgressSource = (
+  listener: (event: AcademyProgressEvent) => void,
+) => Promise<() => void>;
+
+let progressSource: AcademyProgressSource | null = null;
+
+export function setAcademyProgressSource(
+  source: AcademyProgressSource | null,
+): void {
+  progressSource = source;
+}
+
+/** Listen before starting the command, and always release the listener. */
+export async function withAcademyProgress<T>(
+  cellId: string,
+  onProgress: ((progress: EnrolBundledCellProgress) => void) | undefined,
+  run: () => Promise<T>,
+): Promise<T> {
+  let unlisten: (() => void) | undefined;
+  try {
+    if (onProgress)
+      unlisten = await progressSource?.((event) => {
+        if (event.type === "academy-progress" && event.cellId === cellId)
+          onProgress(event);
+      });
+  } catch {
+    // The import still works if the native event channel is unavailable.
+  }
+  try {
+    return await run();
+  } finally {
+    unlisten?.();
+  }
+}
 
 export function isAcademyCellId(id: string): boolean {
   return id.startsWith("zam-academy:");
@@ -60,24 +103,30 @@ export async function fetchAcademyCells(): Promise<AcademyListing> {
 
 export async function enrolAcademyCell(
   id: string,
+  onProgress?: (progress: EnrolBundledCellProgress) => void,
 ): Promise<{ cardsCreated: number; version: string | null }> {
-  const result = await runBridge<{
-    success: boolean;
-    cardsCreated: number;
-    version: string | null;
-  }>("academy-enrol", [id]);
+  const result = await withAcademyProgress(id, onProgress, () =>
+    runBridge<{
+      success: boolean;
+      cardsCreated: number;
+      version: string | null;
+    }>("academy-enrol", [id]),
+  );
   if (!result?.success) throw new Error(t("academy_error"));
   return result;
 }
 
 export async function updateAcademyCell(
   id: string,
+  onProgress?: (progress: EnrolBundledCellProgress) => void,
 ): Promise<{ updated: boolean; version: string | null }> {
-  const result = await runBridge<{
-    success: boolean;
-    updated: boolean;
-    version: string | null;
-  }>("academy-update", [id]);
+  const result = await withAcademyProgress(id, onProgress, () =>
+    runBridge<{
+      success: boolean;
+      updated: boolean;
+      version: string | null;
+    }>("academy-update", [id]),
+  );
   if (!result?.success) throw new Error(t("academy_error"));
   return result;
 }
@@ -157,7 +206,18 @@ function ensureDialog(): DialogParts {
 }
 
 export function closeAcademyList(): void {
+  if (activeImports > 0) return;
   dialog?.overlay.classList.remove("active");
+}
+
+function importStarted(): void {
+  activeImports++;
+  if (dialog) dialog.close.disabled = true;
+}
+
+function importFinished(): void {
+  activeImports--;
+  if (dialog) dialog.close.disabled = activeImports > 0;
 }
 
 function setTake(button: HTMLButtonElement): void {
@@ -223,14 +283,22 @@ export function academyRow(
   } else {
     setTake(take);
     take.addEventListener("click", () => {
-      // The click is the decision: show it at once, undo on failure.
-      setTaken(take);
+      take.disabled = true;
+      take.textContent = t("academy_taking");
+      const progress = createCellImportProgress((key, counts) =>
+        tf(key, counts),
+      );
+      row.append(progress.element);
+      importStarted();
       status.textContent = t("academy_taking");
-      enrolAcademyCell(cell.id)
+      enrolAcademyCell(cell.id, progress.update)
         .then((result) => {
+          progress.finish();
+          setTaken(take);
           // Another version than the row showed is not what was taken: say
           // which one was saved and let the learner try again.
-          const other = result.version !== null && result.version !== cell.version;
+          const other =
+            result.version !== null && result.version !== cell.version;
           if (other) setTake(take);
           status.textContent = other
             ? tf("academy_taken_other_version", {
@@ -250,8 +318,10 @@ export function academyRow(
         })
         .catch((err) => {
           setTake(take);
+          progress.remove();
           status.textContent = academyErrorText(err);
-        });
+        })
+        .finally(importFinished);
     });
   }
   buttons.append(take);
@@ -265,6 +335,10 @@ export async function openAcademyList(
   options: AcademyListOptions = {},
 ): Promise<void> {
   const parts = ensureDialog();
+  if (activeImports > 0) {
+    parts.overlay.classList.add("active");
+    return;
+  }
   parts.title.textContent = t("academy_title");
   parts.intro.textContent = t("academy_intro");
   parts.close.textContent = t("academy_close");
@@ -338,8 +412,11 @@ export function academyUpdateButton(
       return;
     }
     button.textContent = t("academy_updating");
-    updateAcademyCell(cellId)
+    const progress = createCellImportProgress((key, counts) => tf(key, counts));
+    button.closest(".zam-card")?.append(progress.element);
+    updateAcademyCell(cellId, progress.update)
       .then((result) => {
+        progress.finish();
         button.textContent = tf("academy_updated", {
           version: result.version ?? newerVersion ?? "",
         });
@@ -348,6 +425,7 @@ export function academyUpdateButton(
         );
       })
       .catch(() => {
+        progress.remove();
         button.textContent = tf("academy_update_to", {
           version: newerVersion ?? "",
         });

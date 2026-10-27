@@ -10,7 +10,7 @@ tags:
   - offline
   - curriculum
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mobile-standalone-libraries.md"
-timestamp: 2026-10-21T15:49:57.000Z
+timestamp: 2026-10-27T05:37:31Z
 ---
 
 ZAM Mobile is a standalone learning app on Android and iOS. An unpaired first
@@ -112,6 +112,13 @@ materializes only the cell's scoped personal cards. Status checks require every
 atom **and** every practice-item id, so overlapping cells cannot produce a
 false installed badge.
 
+Taking or updating a ZAM Academy cell shows the same accessible progress bar
+on Android and iOS as on Desktop. It starts indeterminate during preparation,
+then counts the kernel's installation and enrolment passes. Only successful
+completion fills the bar; a failure removes it and makes the action retryable.
+The curriculum browser's cell enrolment uses the same bar. The callbacks
+work with both local and server-backed libraries.
+
 A mobile review session persists a bounded kernel queue snapshot. It renders
 the item tier, turns valid Tier-1 binary checks into one-tap choices, offers
 finite hard-precondition self-assessment when the prerequisite reaches the
@@ -178,6 +185,8 @@ same due cards. It writes nothing: no settle, no stored lens, no thread.
 due cards and no new card. The map itself is not on Mobile yet.
 
 # Citations
+- Code: `desktop/src/curriculum-wizard.ts`, `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`
+- Tests: `tests/desktop/cell-import-progress.test.ts`
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - [ADR 2026-07-06b — Checkpointed Review Dialogue](../adr/2026-07-06b-checkpointed-review-dialogue.md)

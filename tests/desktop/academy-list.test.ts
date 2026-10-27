@@ -1,13 +1,15 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   type AcademyCellRow,
+  type AcademyProgressEvent,
   academyErrorText,
   academyMetaText,
   enrolAcademyCell,
   fetchAcademyCells,
   isAcademyCellId,
+  setAcademyProgressSource,
   updateAcademyCell,
 } from "../../desktop/src/academy-list.js";
 import { setBridgeTransport } from "../../desktop/src/bridge-transport.js";
@@ -33,6 +35,7 @@ function cell(overrides: Partial<AcademyCellRow> = {}): AcademyCellRow {
 }
 
 afterEach(() => {
+  setAcademyProgressSource(null);
   setCurrentLocale("en");
   setBridgeTransport(async () => {
     throw new Error("no transport in this test");
@@ -65,6 +68,65 @@ describe("academy rows", () => {
 });
 
 describe("academy bridge calls", () => {
+  it.each([enrolAcademyCell, updateAcademyCell])(
+    "subscribes before the command, filters counts, and releases the listener",
+    async (run) => {
+      let listener: ((event: AcademyProgressEvent) => void) | undefined;
+      const unlisten = vi.fn();
+      const counts = vi.fn();
+      setAcademyProgressSource(async (callback) => {
+        listener = callback;
+        return unlisten;
+      });
+      const progress: AcademyProgressEvent = {
+        type: "academy-progress",
+        cellId: "zam-academy:uml",
+        phase: "installing",
+        done: 3,
+        total: 26,
+      };
+      setBridgeTransport(async () => {
+        expect(listener).toBeDefined();
+        listener?.({ ...progress, type: "import-progress" });
+        listener?.({ ...progress, cellId: "zam-academy:other" });
+        listener?.(progress);
+        return {
+          success: true,
+          cardsCreated: 26,
+          updated: true,
+          version: "2026.10.1",
+        };
+      });
+      await run("zam-academy:uml", counts);
+      expect(counts.mock.calls).toEqual([[progress]]);
+      expect(unlisten).toHaveBeenCalledOnce();
+    },
+  );
+
+  it("releases its listener on failure and still imports if subscription fails", async () => {
+    const unlisten = vi.fn();
+    setAcademyProgressSource(async () => unlisten);
+    setBridgeTransport(async () => {
+      throw new Error("save failed");
+    });
+    await expect(enrolAcademyCell("zam-academy:uml", vi.fn())).rejects.toThrow(
+      "save failed",
+    );
+    expect(unlisten).toHaveBeenCalledOnce();
+
+    setAcademyProgressSource(async () => {
+      throw new Error("channel unavailable");
+    });
+    setBridgeTransport(async () => ({
+      success: true,
+      cardsCreated: 26,
+      version: "2026.10.1",
+    }));
+    await expect(
+      enrolAcademyCell("zam-academy:uml", vi.fn()),
+    ).resolves.toMatchObject({ cardsCreated: 26 });
+  });
+
   it("lists, enrols and updates through the learner's bridge commands", async () => {
     const calls: Array<[string, string[]]> = [];
     setBridgeTransport(async (cmd, args) => {
@@ -124,11 +186,14 @@ describe("academy wiring", () => {
     );
   });
 
-  it("flips „Aufnehmen“ at once and undoes it on failure", () => {
+  it("shows an import at once, and permits retry on failure", () => {
     const list = file("desktop/src/academy-list.ts");
     const click = list.slice(list.indexOf('take.addEventListener("click"'));
-    expect(click.indexOf("setTaken(take)")).toBeLessThan(
-      click.indexOf("enrolAcademyCell(cell.id)"),
+    expect(
+      click.indexOf('take.textContent = t("academy_taking")'),
+    ).toBeLessThan(click.indexOf("enrolAcademyCell(cell.id, progress.update)"));
+    expect(click.indexOf("progress.finish()")).toBeLessThan(
+      click.indexOf("setTaken(take)"),
     );
     expect(click).toMatch(/\.catch\(\(err\) => \{\s*setTake\(take\)/);
   });

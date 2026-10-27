@@ -508,8 +508,30 @@ function progressOut(event: {
   type: string;
   done: number;
   total: number;
+  cellId?: string;
+  phase?: "installing" | "enrolling";
 }): void {
   process.stderr.write(`${JSON.stringify(event)}\n`);
+}
+
+/** Immediate phase changes and counts at most ten times a second. */
+function academyProgress(cellId: string) {
+  let lastAt = 0;
+  return (progress: {
+    phase: "installing" | "enrolling";
+    done: number;
+    total: number;
+  }) => {
+    const now = Date.now();
+    if (
+      progress.done === 0 ||
+      progress.done === progress.total ||
+      now - lastAt >= 100
+    ) {
+      lastAt = now;
+      progressOut({ type: "academy-progress", cellId, ...progress });
+    }
+  };
 }
 
 /**
@@ -9609,6 +9631,7 @@ bridgeCommand
         const result = await handleEnrolBundledCell(db, {
           cellId,
           user: opts.user,
+          onProgress: academyProgress(cellId),
         });
         jsonOut(result);
       } catch (err: unknown) {
@@ -9645,7 +9668,13 @@ bridgeCommand
   .action(async (cellId, opts) => {
     await withDb(async (db) => {
       try {
-        jsonOut(await academyEnrolHandler(db, { cellId, user: opts.user }));
+        jsonOut(
+          await academyEnrolHandler(db, {
+            cellId,
+            user: opts.user,
+            onProgress: academyProgress(cellId),
+          }),
+        );
       } catch (err: unknown) {
         jsonError((err as Error).message || String(err));
       }
@@ -9661,7 +9690,13 @@ bridgeCommand
   .action(async (cellId, opts) => {
     await withDb(async (db) => {
       try {
-        jsonOut(await academyUpdateHandler(db, { cellId, user: opts.user }));
+        jsonOut(
+          await academyUpdateHandler(db, {
+            cellId,
+            user: opts.user,
+            onProgress: academyProgress(cellId),
+          }),
+        );
       } catch (err: unknown) {
         jsonError((err as Error).message || String(err));
       }

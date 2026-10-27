@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-21T16:00:00.000Z
+timestamp: 2026-10-27T05:37:31Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -558,9 +558,19 @@ The learner's academy actions (ADR 2026-10-19), called by Studio:
 - `academy-update <cellId>` installs the newer catalog version of one held
   cell, and reports `updated`, `from` and `version`.
 
+`academy-enrol` and `academy-update` also emit NDJSON progress on stderr:
+`type: "academy-progress"`, `cellId`, `phase` (`installing` or `enrolling`),
+`done` and `total`. Counts refer to processed practice items in that phase,
+including reused items. The first and last count of each phase are immediate;
+intermediate counts are emitted at most ten times a second. The final stdout
+response remains the success or failure result; a last progress count does
+not mean the transaction has committed. Desktop subscribes before starting
+and filters by cell id, then removes its listener when the call settles.
+
 None of them is in `STUDIO_BRIDGE_COMMANDS` or behind an MCP tool.
 `bundled-cells-list` also lists the cells cached by the last check, and
-`bundled-cell-enrol` enrols them without fetching.
+`bundled-cell-enrol` enrols them without fetching and emits the same
+`academy-progress` events for the curriculum browser.
 
 # Trust and keys
 
@@ -582,6 +592,8 @@ whose token sits in a keychain ZAM cannot read fails to open with
 `OS_SECRET_UNAVAILABLE`, distinct from `BITWARDEN_REQUIRED`.
 
 # Citations
+- Code: `desktop/src/curriculum-wizard.ts`, `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`
+- Tests: `tests/desktop/cell-import-progress.test.ts`
 - [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)

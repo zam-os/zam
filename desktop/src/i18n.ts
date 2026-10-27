@@ -6453,6 +6453,11 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     academy_practise: "Practise ↗",
     academy_take: "Take",
     academy_taken: "Taken",
+    academy_import_preparing: "Preparing import …",
+    academy_import_installing: "Prepared {done} of {total} cards …",
+    academy_import_enrolling: "Set up {done} of {total} cards for learning …",
+    academy_import_saving: "Saving import …",
+    academy_import_complete: "Import complete.",
     academy_taking: "Taking the cell …",
     academy_taken_result: "{name}: {count} cards added.",
     academy_taken_other_version:
@@ -8526,6 +8531,11 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     academy_practise: "Üben ↗",
     academy_take: "Aufnehmen",
     academy_taken: "Aufgenommen",
+    academy_import_preparing: "Import wird vorbereitet …",
+    academy_import_installing: "{done} von {total} Karten vorbereitet …",
+    academy_import_enrolling: "{done} von {total} Karten zum Lernen eingerichtet …",
+    academy_import_saving: "Import wird gespeichert …",
+    academy_import_complete: "Import abgeschlossen.",
     academy_taking: "Zelle wird aufgenommen …",
     academy_taken_result: "{name}: {count} Karten hinzugefügt.",
     academy_taken_other_version:
