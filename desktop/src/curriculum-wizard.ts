@@ -10,6 +10,8 @@
  * personal-source-confirm-import). Cards store `provider` + `topic_id`.
  */
 import { runBridge } from "./bridge-transport.js";
+import { withAcademyProgress } from "./academy-list.js";
+import { createCellImportProgress } from "./cell-import-progress.js";
 import {
   areAllCurriculumPreviewItemsSelected,
   type BundledCellOffer,
@@ -786,11 +788,17 @@ function renderCellOffer(): void {
     button.disabled = cell.enrolled;
     button.addEventListener("click", async () => {
       button.disabled = true;
+      const progress = createCellImportProgress((key, counts) => tf(key, counts));
+      row.insertAdjacentElement("afterend", progress.element);
       try {
-        await runBridge("bundled-cell-enrol", [cell.id]);
+        await withAcademyProgress(cell.id, progress.update, () =>
+          runBridge("bundled-cell-enrol", [cell.id]),
+        );
+        progress.finish();
         await loadStudioData();
         hideCurriculumWizard();
       } catch (err) {
+        progress.remove();
         button.disabled = false;
         showStepError(describeError(err));
       }

@@ -185,6 +185,7 @@ import {
   academyListHandler,
   academyUpdateHandler,
 } from "../academy/handlers.js";
+import { academyProgress } from "../academy/progress.js";
 import {
   CONTENT_USER_AGENT,
   cleanHtml,
@@ -508,6 +509,8 @@ function progressOut(event: {
   type: string;
   done: number;
   total: number;
+  cellId?: string;
+  phase?: "installing" | "enrolling";
 }): void {
   process.stderr.write(`${JSON.stringify(event)}\n`);
 }
@@ -9609,6 +9612,7 @@ bridgeCommand
         const result = await handleEnrolBundledCell(db, {
           cellId,
           user: opts.user,
+          onProgress: academyProgress(cellId, progressOut),
         });
         jsonOut(result);
       } catch (err: unknown) {
@@ -9645,7 +9649,13 @@ bridgeCommand
   .action(async (cellId, opts) => {
     await withDb(async (db) => {
       try {
-        jsonOut(await academyEnrolHandler(db, { cellId, user: opts.user }));
+        jsonOut(
+          await academyEnrolHandler(db, {
+            cellId,
+            user: opts.user,
+            onProgress: academyProgress(cellId, progressOut),
+          }),
+        );
       } catch (err: unknown) {
         jsonError((err as Error).message || String(err));
       }
@@ -9661,7 +9671,13 @@ bridgeCommand
   .action(async (cellId, opts) => {
     await withDb(async (db) => {
       try {
-        jsonOut(await academyUpdateHandler(db, { cellId, user: opts.user }));
+        jsonOut(
+          await academyUpdateHandler(db, {
+            cellId,
+            user: opts.user,
+            onProgress: academyProgress(cellId, progressOut),
+          }),
+        );
       } catch (err: unknown) {
         jsonError((err as Error).message || String(err));
       }

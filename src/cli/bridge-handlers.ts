@@ -37,6 +37,7 @@ import {
   createAssignment,
   createToken,
   decideUpdate,
+  type EnrolBundledCellProgress,
   enrolBonusAtom,
   enrolBundledCell,
   ensureCard,
@@ -2303,6 +2304,7 @@ export async function listBundledCellsHandler(
 export interface EnrolBundledCellParams {
   cellId: string;
   user?: string;
+  onProgress?: (progress: EnrolBundledCellProgress) => void;
 }
 
 export async function enrolBundledCellHandler(
@@ -2319,6 +2321,7 @@ export async function enrolBundledCellHandler(
   // (ADR 2026-10-19 D4). So a held cell resolves to its installed version.
   const installed = await installedTileVersion(db, cellId);
   const result = await enrolBundledCell(db, userId, cellId, {
+    onProgress: params.onProgress,
     resolveTile: (id) =>
       installed ? readCachedTileVersion(id, installed) : resolveCachedTile(id),
   });

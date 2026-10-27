@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-26T15:42:36Z
+timestamp: 2026-10-27T14:24:28Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -252,6 +252,18 @@ with a SHA-256 each.
 - **„Aufnehmen“** enrols through `enrolBundledCell`, with the fetched tile as
   `resolveTile`.
 - **„Aktualisieren“** installs the newer catalog version of one held cell.
+- **Progress.** Desktop and Mobile show a bar from the start of taking or
+  updating a cell. Installation counts prepared practice items. Enrolment
+  checks each distinct in-scope atom once and counts checked items, including
+  held cards and siblings deferred by the normal enrolment budget; the count
+  does not claim every checked item received a card. Each pass fills half the
+  bar. The end of installation says all cards are prepared; saving is shown
+  at the end of enrolment, below 100% until the command succeeds. Preparation
+  before counts arrive is indeterminate. Taking a cell from the curriculum
+  browser uses the same display. Completion replaces the bar with result
+  text. A saved version differing from the offered one removes the bar and
+  permits retry. Desktop's Academy dialog can be closed during an import;
+  reopening it while work is running retains the same rows and progress.
 - **No downgrade.** Enrolling never installs an older version than the
   library holds.
 - **Team libraries** refuse a cell their build does not bundle.
@@ -522,6 +534,8 @@ exact successor declarations may preserve it, while ambiguous or materially
 changed mappings require real re-retrieval.
 
 # Citations
+- Code: `desktop/src/curriculum-wizard.ts`, `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`
+- Tests: `tests/desktop/cell-import-progress.test.ts`
 - [ADR 2026-10-26 — Explicit Withdrawal of Published Curriculum Bindings](../adr/2026-10-26-curriculum-binding-withdrawals.md)
 - [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)

@@ -17,6 +17,7 @@ import {
 } from "../../desktop/src/card-text-render.js";
 import { renderQuestionWithTopic } from "../../desktop/src/question-topic.js";
 import { webSourceLink } from "../../desktop/src/source-link.js";
+import { createCellImportProgress } from "../../desktop/src/cell-import-progress.js";
 import {
   beginTurn,
   completeTurn,
@@ -71,6 +72,7 @@ import {
   fetchMobileAcademyCatalog,
   fetchMobileAcademyCell,
 } from "./academy.js";
+import { type AcademyImportRow, completeAcademyImportRow } from "./academy-import-view.js";
 import {
   assessPrecondition,
   getPreconditionCandidates,
@@ -4614,9 +4616,14 @@ async function enrolCurriculumCell(
 ): Promise<void> {
   if (!currentUserId || cell.enrolled) return;
   action.disabled = true;
-  setCurriculumStatus("…");
+  const progress = createCellImportProgress((key, counts) => tf(key, counts));
+  action.parentElement?.append(progress.element);
+  setCurriculumStatus("");
   try {
-    const result = await enrolBundledCell(db, currentUserId, cell.id);
+    const result = await enrolBundledCell(db, currentUserId, cell.id, {
+      onProgress: progress.update,
+    });
+    progress.finish();
     setCurriculumStatus(
       tf("learning_path_enrolled", {
         title: cell.title,
@@ -4626,6 +4633,7 @@ async function enrolCurriculumCell(
     await Promise.all([refreshBundledCells(), refresh(currentUserId)]);
     await renderCurriculumView();
   } catch (error) {
+    progress.remove();
     setCurriculumStatus(
       tf("library_failed", { error: errorMessage(error) }),
       true,
@@ -4851,6 +4859,10 @@ function openMobileCurriculum(): void {
 // ── ZAM Academy (ADR 2026-10-19 D4, D5) ─────────────────────────────────────
 // Cells fetched on the learner's tap, for this session.
 const academyTiles = new Map<string, BundledTile>();
+const academyImports = new Map<string, {
+  progress: ReturnType<typeof createCellImportProgress>;
+  row: AcademyImportRow;
+}>();
 
 async function openMobileAcademy(): Promise<void> {
   curriculumTrail = [];
@@ -4965,16 +4977,21 @@ async function renderAcademyCells(): Promise<void> {
     const action = document.createElement("button");
     action.type = "button";
     action.className = held && !newer ? "btn" : "btn primary";
-    action.disabled = held && !newer;
+    action.disabled = (held && !newer) || academyImports.has(id);
     action.textContent = newer
       ? tf("academy_update_to", { version })
       : held
         ? t("academy_taken")
         : t("academy_take");
     action.addEventListener("click", () => {
-      void takeAcademyCell(id, entryAhead ? entry : undefined, action);
+      void takeAcademyCell(id, entryAhead ? entry : undefined, { action, meta, held, items });
     });
     card.append(action);
+    const importing = academyImports.get(id);
+    if (importing) {
+      importing.row = { action, meta, held: importing.row.held, items };
+      card.append(importing.progress.element);
+    }
     curriculumOptions.append(card);
   }
   setCurriculumStatus(offline ? t("academy_offline") : "");
@@ -4983,11 +5000,17 @@ async function renderAcademyCells(): Promise<void> {
 async function takeAcademyCell(
   id: string,
   entry: AcademyCatalogEntry | undefined,
-  action: HTMLButtonElement,
+  row: AcademyImportRow,
 ): Promise<void> {
-  if (!currentUserId) return;
+  if (!currentUserId || academyImports.has(id)) return;
+  const { action } = row;
+  const userId = currentUserId;
   action.disabled = true;
-  setCurriculumStatus("…");
+  const progress = createCellImportProgress((key, counts) => tf(key, counts));
+  const importing = { progress, row };
+  academyImports.set(id, importing);
+  action.parentElement?.append(progress.element);
+  setCurriculumStatus("");
   try {
     // The row showed the entry's version: fetch it now if it did not arrive.
     // The bundle stands in only if it is that version or newer.
@@ -5000,20 +5023,31 @@ async function takeAcademyCell(
     }
     // The tap is „Aufnehmen“ or „Aktualisieren“: the newest version this
     // session fetched is installed, never an older one than the library has.
-    const result = await enrolBundledCell(db, currentUserId, id, {
+    const result = await enrolBundledCell(db, userId, id, {
       resolveTile: (id) => academyTiles.get(id),
+      onProgress: progress.update,
     });
+    const version = (await installedTileVersion(db, id)) ?? "";
+    progress.finish();
+    academyImports.delete(id);
     setCurriculumStatus(
-      tf("academy_taken_result", {
+      completeAcademyImportRow(importing.row, {
+        version,
         name: entry?.title ?? tileTitle(id),
-        count: result.cardsCreated,
+        cardsCreated: result.cardsCreated,
       }),
     );
-    await Promise.all([refreshBundledCells(), refresh(currentUserId)]);
-    await renderAcademyCells();
+    progress.remove();
+    // The saved version is known already; do not fetch the whole Academy
+    // again before showing completion.
+    await Promise.all([refreshBundledCells(), refresh(userId)]).catch((error) =>
+      console.error("academy: refresh after enrol failed", error),
+    );
   } catch (error) {
+    academyImports.delete(id);
+    progress.remove();
     setCurriculumStatus(tf("library_failed", { error: errorMessage(error) }), true);
-    action.disabled = false;
+    importing.row.action.disabled = false;
   }
 }
 

@@ -1734,6 +1734,14 @@ export interface EnrolBundledCellOptions {
    * caller supplies it from what the learner fetched; the kernel never does.
    */
   resolveTile?: (cellId: string) => BundledTile | undefined;
+  onProgress?: (progress: EnrolBundledCellProgress) => void;
+}
+
+/** Counts work in each pass, including items already held by the learner. */
+export interface EnrolBundledCellProgress {
+  phase: "installing" | "enrolling";
+  done: number;
+  total: number;
 }
 
 /** The newer of two tiles for one id; the compiled one when unordered. */
@@ -1787,11 +1795,20 @@ export async function enrolBundledCell(
   // already holds a newer version, which enrolling must not downgrade.
   const installed = await installedTileVersion(db, cellId);
   if (compareTileVersions(installed, String(tile.version)) !== 1) {
-    await installKvtTile(db, tile);
+    await installKvtTile(db, tile, {
+      onProgress: options.onProgress
+        ? (progress) =>
+            options.onProgress?.({ phase: "installing", ...progress })
+        : undefined,
+    });
   }
 
   // Step 2: Enrol learner for in-scope curriculum atoms.
-  const materialiseRes = await materialiseKvtCards(db, userId, inScopeAtomIds);
+  const materialiseRes = await materialiseKvtCards(db, userId, inScopeAtomIds, {
+    onProgress: options.onProgress
+      ? (progress) => options.onProgress?.({ phase: "enrolling", ...progress })
+      : undefined,
+  });
 
   const alreadyEnrolled =
     materialiseRes.cardsCreated === 0 && materialiseRes.cardsReused > 0;

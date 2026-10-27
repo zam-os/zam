@@ -509,6 +509,7 @@ export type {
   BundledCellInfo,
   BundledCellStatus,
   CurriculumScope,
+  EnrolBundledCellProgress,
   ReconcileBundledTilesOptions,
   ReconcileBundledTilesResult,
 } from "./library/bundled-cells.js";
@@ -603,9 +604,11 @@ export type {
   InstallKvtResult,
   KvtAtom,
   KvtPracticeItem,
+  KvtProgress,
   KvtRetiredCurriculumBinding,
   KvtRetiredItem,
   KvtTile,
+  MaterialiseKvtOptions,
   MaterialiseKvtResult,
 } from "./library/kvt-attach.js";
 export {
