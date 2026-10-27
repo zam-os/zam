@@ -1,5 +1,9 @@
 # Log
 
+## 2026-10-27
+
+- **Update** — [Token and Card Model](token-card-model.md)
+
 ## 2026-10-26
 
 - **Update** — [Agent and Library Trust Model](agent-trust-model.md)

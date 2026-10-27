@@ -15,6 +15,10 @@ import {
   openDatabase,
 } from "../../src/kernel/index.js";
 
+// The Informatik cell of this grade moved to the ZAM Academy cell
+// zam-academy:informatik-realschule-8 (zam-os/zam-academy#62), which binds the
+// IT-Anfangsunterricht (modules 1.1–1.9) to Jahrgangsstufe 8. See
+// tests/kernel/zam-academy-informatik-realschule-8-cell.test.ts.
 const RS7_CELL_IDS = [
   "de-by:realschule-7-mathematik-rationale-zahlen-terme",
   "de-by:realschule-7-mathematik-prozent-zinsrechnung",
@@ -26,7 +30,6 @@ const RS7_CELL_IDS = [
   "de-by:realschule-7-biologie-pflanzen-fotosynthese",
   "de-by:realschule-7-bwr-unternehmen-inventur-bilanz",
   "de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung",
-  "de-by:realschule-7-informatik-informationsdarstellung-dateisystem",
   "de-by:realschule-7-geschichte-mittelalter-fruehe-neuzeit",
   "de-by:realschule-7-geographie-europa-raum-wirtschaft",
   "de-by:realschule-7-deutsch-inhaltsangabe-sachtexte-literatur",
@@ -51,7 +54,7 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all bundled cells including all 17 Realschule 7 cells", () => {
+  it("lists all bundled cells including all 16 Realschule 7 cells", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(96);
 
@@ -73,7 +76,7 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
       schoolType: "realschule",
       grade: 7,
     });
-    expect(rs7Cells.length).toBeGreaterThanOrEqual(17);
+    expect(rs7Cells.length).toBeGreaterThanOrEqual(16);
     for (const cellId of RS7_CELL_IDS) {
       expect(
         rs7Cells.some((c) => c.id === cellId),
@@ -140,7 +143,7 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
     expect(fraAtoms.length).toBe(2);
   });
 
-  it("supports simultaneous enrolment in ALL 17 Grade 7 Realschule cells without conflict", async () => {
+  it("supports simultaneous enrolment in ALL 16 Grade 7 Realschule cells without conflict", async () => {
     const userId = "01K4TESTUSERALLRS7000000001";
 
     let totalCardsCreated = 0;
@@ -151,12 +154,12 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
       totalCardsCreated += res.cardsCreated;
     }
 
-    // 11 * 8 (44 atoms * 2) + 3*2 (Mathe) + 3*2 (Deu1) + 2*2 (Deu2) + 3*2 (BwR1) + 2*2 (BwR2) + 2*2 (Fra) = 88 + 30 = 118 cards
-    expect(totalCardsCreated).toBe(118);
+    // 10 * 8 (40 atoms * 2) + 3*2 (Mathe) + 3*2 (Deu1) + 2*2 (Deu2) + 3*2 (BwR1) + 2*2 (BwR2) + 2*2 (Fra) = 80 + 30 = 110 cards
+    expect(totalCardsCreated).toBe(110);
 
     const statuses = await getBundledCellsWithStatus(db, userId);
     const rs7Statuses = statuses.filter((s) => RS7_CELL_IDS.includes(s.id));
-    expect(rs7Statuses.length).toBe(17);
+    expect(rs7Statuses.length).toBe(16);
     for (const status of rs7Statuses) {
       expect(status.installed).toBe(true);
       expect(status.enrolled).toBe(true);

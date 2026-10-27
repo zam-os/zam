@@ -1,0 +1,248 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-10-27",
+  "source": "Thomas in dieser Claude-Code-Session am 2026-10-27, nach dem Review von zam-os/zam-academy#62: „Freigabe erteilt - und danach weiter mit ZAM-Integration“; auf Rückfrage ausdrücklich bestätigt für die Kartenzuordnung (Auswahl „Mapping + 13 C stilllegen“: „10 A und 1 B bekommen replaces, die 13 C-Karten gehen per retired_items aus den aktiven Wiederholungen. Version 2026.10.2 im selben PR.“).",
+  "authorization": "Thomas hat am 27. Oktober 2026 die hier dokumentierten 24 Zuordnungen ausdrücklich freigegeben (10 A und 1 B mit replaces, 13 C mit Stilllegung). Die Zelle 2026.10.2 deklariert genau elf replaces und dreizehn retired_items; persönliche Karten und Reviewhistorien bleiben erhalten.",
+  "source_repository": "https://github.com/zam-os/zam",
+  "source_commit": "b6fdcfecb6160b02e14e8914455c9a0414f8c81a",
+  "summary": "Freigegeben: 10 A (gleicher Einzelabruf) und 1 B (ganzer Sammelabruf auf eigener Nachfolgekarte) übertragen ihre Historie per replaces; 13 C (mehrteilig, außerhalb von 1.1–1.9 oder unsicher) übertragen nichts und werden per retired_items stillgelegt, ihre Historie bleibt am alten Token.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-6-informatik-textverarbeitung-praesentation-kvt.json",
+      "tile_id": "de-by:realschule-6-informatik-textverarbeitung-praesentation",
+      "version": "2026.08.1",
+      "sha256": "44f0ad5ef1b57e7ca1145cb4bcff63630eea887731fd3abdc022033ad90ae874"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-7-informatik-informationsdarstellung-dateisystem-kvt.json",
+      "tile_id": "de-by:realschule-7-informatik-informationsdarstellung-dateisystem",
+      "version": "2026.08.1",
+      "sha256": "3d66c6c0b84cbc84607a76aedefc32b7b98155bde63a7efa39bcc248b3347163"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-8-informatik-objektorientierung-vektorgrafik-kvt.json",
+      "tile_id": "de-by:realschule-8-informatik-objektorientierung-vektorgrafik",
+      "version": "2026.08.1",
+      "sha256": "79c9e9e81264cd1ba6c18d7d4051a21bc4dd15c7df960370ba9ccf6bd0e9e4f8"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-6-informatik-textverarbeitung-praesentation",
+      "de_by_id": "01K4A6T0000000000000000J01",
+      "de_by_question": "Welches der folgenden Formatattribute ist ein reines ABSATZFORMAT (wirkt auf den gesamten Absatz bis zur Eingabetaste Enter)?",
+      "category": "A",
+      "academy_slug": "it8-textobjekte-absatzattribut",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Welches Attribut gilt für den ganzen Absatz? Antwort Zeilenabstand (Ausrichtung als weiteres Absatzattribut in der Lektion)."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-informatik-textverarbeitung-praesentation",
+      "de_by_id": "01K4A6T0000000000000000J02",
+      "de_by_question": "Unterscheide Zeichenformatierung (Attribute einzelner Buchstaben: Schriftart/Font, Schriftgröße in pt, Schriftschnitt: fett/kursiv/unterstrichen, Schriftfarbe) von Absatzformatierung (Attribute des ganzen Textblocks: Ausrichtung linksbündig/rechtsbündig/zentriert/Blocksatz, Zeilenabstand, Vor-/Nachabstand, Erstzeileneinzug, Aufzählungszeichen/Nummerierung) und erkläre die Vorteile der Verwendung von standardisierten Formatvorlagen (Überschrift 1, 2, Fließtext) in großen Dokumenten.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Mehrteiliger Sammelabruf zu Zeichen- und Absatzformaten samt Formatvorlagen und Inhaltsverzeichnis; Formatvorlagen gehören nicht zum Anfangsunterricht 1.1–1.9. Keine Karte mit gleichem Gesamtumfang."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-informatik-textverarbeitung-praesentation",
+      "de_by_id": "01K4A6T0000000000000000J03",
+      "de_by_question": "Welche Textumfluss-Einstellung (Zeilenumbruch) muss für ein Bild gewählt werden, damit der Fließtext das Bild sauber in Form eines Rechtecks umfließt?",
+      "category": "A",
+      "academy_slug": "it8-layout-objekte-quadratisch",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Textumbruch, bei dem der Text ein Bild rechteckig umfließt, Antwort Quadratisch."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-informatik-textverarbeitung-praesentation",
+      "de_by_id": "01K4A6T0000000000000000J04",
+      "de_by_question": "Analysiere die verschiedenen Textumbruch-Arten für Grafiken in Textdokumenten: 1. 'Mit Text in Zeile' (Bild verhält sich wie ein einzelnes Zeichen im Textfluss), 2. 'Quadratisch / Rechteckig' (Fließtext umfließt die Bildbox), 3. 'Passend / Dicht' (Text folgt den transparenten Konturen der Grafik), 4. 'Oben und Unten' (kein seitlicher Textfluss), 5. 'Hinter dem Text' (Wasserzeichen) vs. 'Vor dem Text' (verdeckt Fließtext) und erkläre das proportionale Skalieren über die Eckanfasser mit gedrückter Shift-/Umschalttaste.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Sammelabruf zu fünf Textumbrucharten und Skalieren mit Umschalttaste; die neue Lektion behandelt Umbruch und Eckanfasser in getrennten Karten, kein gleicher Gesamtumfang."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-informatik-textverarbeitung-praesentation",
+      "de_by_id": "01K4A6T0000000000000000J05",
+      "de_by_question": "Wofür steht die Gestaltungsregel des KISS-Prinzips bei der Erstellung von Präsentationsfolien?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Die Altkarte erklärt KISS als „Keep It Simple and Smart“; diese Auflösung ist nicht gesichert. Die neue Lektion lehrt die Gestaltungsregeln ohne das Akronym."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-informatik-textverarbeitung-praesentation",
+      "de_by_id": "01K4A6T0000000000000000J06",
+      "de_by_question": "Formuliere die fünf Grundregeln für gelungene Präsentationsfolien (1. KISS-Prinzip & Stichpunkte statt ganzer Sätze, 2. 7x7-Regel: maximal 7 Zeilen mit je 7 Wörtern, 3. Ausreichende Schriftgröße >= 24 pt und starker Farbkontrast hell/dunkel, 4. Aussagekräftige Bilder/Diagramme statt Textwüsten, 5. Sparsamer, gezielter Einsatz von Animationen) und erkläre die Funktion der Folienmaster-Ebene (Folienmaster / Slide Master).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Mehrteiliger Abruf von fünf Folienregeln (u. a. starre 7x7-Regel, Titel 32–40 pt) und Folienmaster; die neue Zelle fragt Folienmaster und Gestaltungsregeln getrennt und mit anderen Faustregeln."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-informatik-textverarbeitung-praesentation",
+      "de_by_id": "01K4A6T0000000000000000J07",
+      "de_by_question": "Mit welchem Zeichen muss jede Formel oder Funktionsberechnung in einer Tabellenkalkulation (z. B. Excel, Calc) zwingend beginnen?",
+      "category": "A",
+      "academy_slug": "it8-formeln-bezuege-gleichheitszeichen",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Womit beginnt jede Formel? Antwort Gleichheitszeichen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-informatik-textverarbeitung-praesentation",
+      "de_by_id": "01K4A6T0000000000000000J08",
+      "de_by_question": "Beschreibe die Struktur eines Tabellenblatts (Spalten mit Buchstaben A, B, C...; Zeilen mit Zahlen 1, 2, 3...; Zellen als Schnittpunkt mit Zelladresse wie C4), unterscheide die Datentypen Text, Zahl und Formel und schreibe die korrekten Tabellenfunktionen für: a) Die Summe aller Werte im Zellbereich von B2 bis B12, b) Den Notendurchschnitt (Mittelwert) der Zellen D2 bis D25, c) Den kleinsten Wert (Minimum) im Bereich F5 bis F50.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Sammelabruf zu Tabellenstruktur, drei Datentypen und drei Funktionen; in der neuen Zelle auf Bereich, Datentypen und MITTELWERT aufgeteilt."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-informatik-informationsdarstellung-dateisystem",
+      "de_by_id": "01K4A7D0000000000000000J01",
+      "de_by_question": "Was unterscheidet 'Information' von reinen 'Daten' in der Informatik?",
+      "category": "A",
+      "academy_slug": "it8-kommunikationsmodell-daten-information",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Unterschied Daten und Information, Antwort Information = Daten + Deutung im Zusammenhang."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-informatik-informationsdarstellung-dateisystem",
+      "de_by_id": "01K4A7D0000000000000000J02",
+      "de_by_question": "Erkläre das informatische Dreigestirn aus Zeichen/Signal, Daten und Information anhand eines konkreten Praxisbeispiels (z. B. der Zeichenfolge '0815'), definiere den Begriff der Codierung (eindeutige Abbildungsvorschrift nach festen Regeln) und erläutere den Unterschied zwischen Syntax (formale Grammatikregeln) und Semantik (inhaltliche Bedeutung).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Mehrteiliger Abruf zu Zeichen/Daten/Information, Codierung sowie Syntax und Semantik; Syntax/Semantik ist kein Inhalt von 1.4, kein gleicher Gesamtumfang."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-informatik-informationsdarstellung-dateisystem",
+      "de_by_id": "01K4A7D0000000000000000J03",
+      "de_by_question": "Welchen Dezimalwert besitzt die Binärzahl 1011_2?",
+      "category": "A",
+      "academy_slug": "it8-dualsystem-1011",
+      "action": "replace",
+      "reason": "Gleiche Aufgabe: Dezimalwert der Dualzahl 1011, Antwort 11."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-informatik-informationsdarstellung-dateisystem",
+      "de_by_id": "01K4A7D0000000000000000J04",
+      "de_by_question": "Erkläre das Prinzip eines Stellenwertsystems am Vergleich von Dezimalsystem (Basis 10: 10^0, 10^1, 10^2, ...) und Dualsystem / Binärsystem (Basis 2: 2^0=1, 2^1=2, 2^2=4, 2^3=8, 2^4=16, 2^5=32, 2^6=64, 2^7=128), rechne die Dualzahl 110101_2 in das Dezimalsystem um und wandle die Dezimalzahl 43_10 über das Restwertverfahren (wiederholte Division durch 2 mit Rest) in eine Binärzahl um.",
+      "category": "B",
+      "academy_slug": "it8-dualsystem-stellenwert-umrechnung",
+      "action": "replace",
+      "reason": "Ganzer alter Abruf (Stellenwertsysteme, 110101 → 53, 43 → 101011) mit Antwort und Musterlösung unverändert auf einer eigenen Nachfolgekarte; Inhalt von IT 1.4 (Stellenwertsysteme)."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-informatik-informationsdarstellung-dateisystem",
+      "de_by_id": "01K4A7D0000000000000000J05",
+      "de_by_question": "Wie viele verschiedene Zustände bzw. Zeichen können mit genau 1 Byte (8 Bit = 2^8) codiert werden?",
+      "category": "A",
+      "academy_slug": "it8-codierung-byte-256",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Zeichen mit genau einem Byte, Antwort 256."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-informatik-informationsdarstellung-dateisystem",
+      "de_by_id": "01K4A7D0000000000000000J06",
+      "de_by_question": "Definiere die Dateneinheiten Bit, Byte, KiB/KB, MiB/MB, GiB/GB, vergleiche den historischen 7-Bit-ASCII-Code (128 Zeichen, nur englische Schriftzeichen) mit dem modernen Unicode / UTF-8 (variable Byte-Länge, Millionen Schriftzeichen weltweit inkl. Umlaute, Kyrillisch, Arabisch, Emojis) und erkläre, wie der Buchstabe 'A' (ASCII-Dezimalwert 65) als 8-Bit-Binärmuster im Speicher abgelegt wird.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Sammelabruf zu Binärpräfixen (KiB/MiB/GiB), ASCII gegen UTF-8 und Bitmuster von A; UTF-8-Bytelängen gehen über den Anfangsunterricht hinaus, kein gleicher Gesamtumfang."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-informatik-informationsdarstellung-dateisystem",
+      "de_by_id": "01K4A7D0000000000000000J07",
+      "de_by_question": "Womit beginnt ein 'absoluter Pfad' in einem hierarchischen Dateisystem immer?",
+      "category": "A",
+      "academy_slug": "it8-betriebssystem-dateien-absoluter-pfad",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Womit beginnt ein absoluter Pfad? Antwort Wurzelverzeichnis."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-informatik-informationsdarstellung-dateisystem",
+      "de_by_id": "01K4A7D0000000000000000J08",
+      "de_by_question": "Modelliere ein hierarchisches Dateisystem als Baumstruktur (Wurzel, Ordner/Knoten, Dateien/Blätter), unterscheide absolute Pfade (vom Root-Verzeichnis ausgehend) von relativen Pfaden (vom aktuellen Arbeitsverzeichnis ausgehend unter Nutzung von '.' und '..') und erkläre die Funktion von Dateiendungen (.docx, .pdf, .py, .png) für das Betriebssystem.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Sammelabruf zu Baumstruktur, relativen Pfaden mit . und .. und Dateiendungen; relative Pfade sind kein Inhalt von 1.8, keine gleiche Karte."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-informatik-objektorientierung-vektorgrafik",
+      "de_by_id": "01K4A8V0000000000000000J01",
+      "de_by_question": "Wie wird in der Informatik die Gesamtheit aller aktuellen Attributwerte eines Objekts zu einem bestimmten Zeitpunkt bezeichnet?",
+      "category": "A",
+      "academy_slug": "it8-textobjekte-zustand",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Gesamtheit aller Attributwerte eines Objekts, Antwort Zustand; in 1.3 an den Objekten der Textverarbeitung gelehrt."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-informatik-objektorientierung-vektorgrafik",
+      "de_by_id": "01K4A8V0000000000000000J02",
+      "de_by_question": "Erkläre die Grundbegriffe der objektorientierten Modellierung: Objekt (konkreter Gegenstand/Instanz mit Identität), Attribut (Eigenschaftsmerkmal), Attributwert (konkrete Ausprägung), Zustand und Punktschreibweise (objektName.attributName = wert) an einem konkreten Grafikbeispiel (z. B. kreis1: KREIS mit radius = 5 cm, fuellfarbe = rot, x_pos = 10).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Mehrteiliger Erklärabruf zur objektorientierten Modellierung ohne Musterlösung; die neue Zelle fragt Objekte, Attribute und Punktnotation an Textobjekten, nicht an einem Grafikkreis."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-informatik-objektorientierung-vektorgrafik",
+      "de_by_id": "01K4A8V0000000000000000J03",
+      "de_by_question": "Was beschreibt eine Methode im objektorientierten Paradigma?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Methoden im objektorientierten Paradigma gehören zu IT 2.6.2 (Aufbauunterricht), nicht zum Anfangsunterricht dieses Pakets."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-informatik-objektorientierung-vektorgrafik",
+      "de_by_id": "01K4A8V0000000000000000J04",
+      "de_by_question": "Definiere den Begriff Klasse als 'Bauplan' (Schablone) für gleichartige Objekte, erläutere Methodenaufrufe mit Parametern (z. B. kreis1.verschieben(dx = 10, dy = -5)) und skizziere den dreiteiligen Aufbau eines UML-Klassendiagramms (Klassenname, Attribute mit Datentypen, Methoden mit Rückgabetypen).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Klassen, Methodenaufrufe und UML-Klassendiagramm gehören zu IT 2.6.2 (Aufbauunterricht), nicht zum Anfangsunterricht dieses Pakets."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-informatik-objektorientierung-vektorgrafik",
+      "de_by_id": "01K4A8V0000000000000000J05",
+      "de_by_question": "Welcher entscheidende Vorteil zeichnet Vektorgrafiken (z. B. SVG) gegenüber pixelbasierten Rastergrafiken (z. B. JPG, PNG) beim Vergrößern aus?",
+      "category": "A",
+      "academy_slug": "it8-pixel-vektor-skalierbar",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Vorteil der Vektorgrafik beim Vergrößern, Antwort verlustfreie Skalierung ohne Treppeneffekt."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-informatik-objektorientierung-vektorgrafik",
+      "de_by_id": "01K4A8V0000000000000000J06",
+      "de_by_question": "Vergleiche Vektorgrafiken (SVG, EPS) und Rastergrafiken (BMP, PNG, JPEG) systematisch hinsichtlich ihrer internen Speicherform (mathematische Beschreibung von Objekten vs. 2D-Pixelmatrix mit Farbwerten), Dateigröße, Skalierbarkeit und typischen Einsatzbereichen (Logos/Pläne vs. Digitalfotografie).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Systematischer Mehrfachvergleich nach vier Kriterien ohne Musterlösung; die neue Tier-2-Karte vergleicht Aufbau und Einsatz, nicht denselben Gesamtumfang."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-informatik-objektorientierung-vektorgrafik",
+      "de_by_id": "01K4A8V0000000000000000J07",
+      "de_by_question": "Welche Farbe entsteht bei der additiven Farbmischung (RGB-Modell) durch die maximale Überlagerung aller drei Grundfarben Rot, Grün und Blau (255, 255, 255)?",
+      "category": "A",
+      "academy_slug": "it8-bildgroesse-formate-rgb-weiss",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: RGB (255, 255, 255) ergibt Weiß."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-informatik-objektorientierung-vektorgrafik",
+      "de_by_id": "01K4A8V0000000000000000J08",
+      "de_by_question": "Unterscheide das additive Farbmodell (RGB: Bildschirme, Lichtfarben) vom subtraktiven Farbmodell (CMYK: Vierfarbdruck, Körperfarben) und berechne den unkomprimierten Speicherbedarf eines True-Color-Bildes (24 Bit = 3 Byte Farbtiefe) mit einer Auflösung von 4000 × 3000 Pixeln in Megabyte (MB).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Kombinierter Abruf zu RGB/CMYK und einer Speicherberechnung 4000 × 3000 ohne Musterlösung; die neue Karte rechnet ein anderes Beispiel, kein gleicher Gesamtumfang."
+    }
+  ]
+}
