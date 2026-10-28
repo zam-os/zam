@@ -161,6 +161,19 @@ export function buildClaudeUserPayload(req: AgentGenerateRequest): string {
   ].join("\n");
 }
 
+/**
+ * Permission rule allowing Read below one absolute folder. Claude Code marks
+ * absolute paths with `//` and matches Windows paths in POSIX form
+ * (`C:\Temp` → `//c/Temp`).
+ */
+export function claudeReadRule(dir: string): string {
+  const posix = dir
+    .replace(/\\/g, "/")
+    .replace(/^([A-Za-z]):/, (_, drive: string) => `/${drive.toLowerCase()}`)
+    .replace(/\/+$/, "");
+  return `Read(/${posix}/**)`;
+}
+
 export const FALLBACK_CLAUDE_MODELS = ["haiku", "sonnet", "opus"];
 
 export class ClaudeCodeAdapter implements AgentTextAdapter {
@@ -170,6 +183,8 @@ export class ClaudeCodeAdapter implements AgentTextAdapter {
    * via `--add-dir` + absolute paths in the user prompt (no separate -i flag).
    */
   readonly modalities = { text: true, image: true, file: true };
+  /** Read-only tools, no MCP and no stored session for learner material. */
+  readonly supportsIsolation = true;
 
   constructor(
     private readonly resolveExecutable: () =>
@@ -218,13 +233,18 @@ export class ClaudeCodeAdapter implements AgentTextAdapter {
       args.push("--model", req.model);
     }
     if (files.length > 0) {
+      // Read only, and only inside the folders that hold the given files: a
+      // bare `Read` rule would let document instructions read any local file
+      // into the answer.
       args.push(
         "--tools",
         "Read",
         "--allowedTools",
-        "Read",
+        ...addDirs.map(claudeReadRule),
         "--no-session-persistence",
       );
+    } else if (req.isolate) {
+      args.push("--tools", "", "--no-session-persistence");
     }
     for (const dir of addDirs) {
       args.push("--add-dir", dir);

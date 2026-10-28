@@ -297,6 +297,7 @@ describe("analyzeMaterialViaLLM", () => {
           expect(request.user).toContain("learner notes");
           expect(request.imagePaths).toEqual([]);
           expect(request.pdfPaths).toBeUndefined();
+          expect(request.isolate).toBe(true);
           return JSON.stringify({
             analysis: FIXTURE.analysis,
             proposals: FIXTURE.proposals,
@@ -306,6 +307,38 @@ describe("analyzeMaterialViaLLM", () => {
     );
     expect(result.model.label).toBe("Codex");
     expect(result.set.files[0].sourceLink).toMatch(/^notes:/);
+  });
+
+  it("skips agents that cannot run without their tools", async () => {
+    saveMachineAiModels([
+      row({
+        id: "Gemini",
+        transport: "agent",
+        agentHarness: "antigravity",
+        url: "",
+        order: 0,
+      }),
+      row({ id: "Cloud", order: 1 }),
+    ]);
+    const requestAgent = vi.fn();
+    const { fetch } = recordingFetch(() => answer());
+    const result = await analyzeMaterialViaLLM(
+      db,
+      [file("photo.png")],
+      {},
+      { platform: "linux", fetch, requestAgent },
+    );
+    expect(requestAgent).not.toHaveBeenCalled();
+    expect(result.sentTo.map((model) => model.label)).toEqual(["Cloud"]);
+  });
+
+  it("refuses an isolated run on an adapter that cannot isolate", async () => {
+    await expect(
+      requestAgentCompletion(
+        { agentHarness: "antigravity" },
+        { system: "read", user: "notes", isolate: true },
+      ),
+    ).rejects.toThrow("cannot run without its tools");
   });
 
   it("refuses PDF paths before launching an adapter without document support", async () => {

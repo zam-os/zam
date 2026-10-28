@@ -48,6 +48,12 @@ export interface AgentGenerateRequest {
   /** Local PDFs; never pass these through an image-only attachment flag. */
   pdfPaths?: string[];
   /**
+   * The content is untrusted learner material (ADR 2026-10-05): the run may
+   * only read the given files, reaches no MCP service and leaves no harness
+   * session behind. Runs with image or PDF paths are always isolated.
+   */
+  isolate?: boolean;
+  /**
    * Optional harness model id (e.g. `Gemini 3.5 Flash (Low)` for `agy --model`).
    * When omitted the harness default applies.
    */
@@ -91,6 +97,11 @@ export interface AgentTextAdapter {
    * offer an effort control that would silently do nothing.
    */
   readonly supportsEffort?: boolean;
+  /**
+   * True when `generate` honours {@link AgentGenerateRequest.isolate}. Learner
+   * material goes only to adapters that set it.
+   */
+  readonly supportsIsolation?: boolean;
   /** Cheap readiness check for status chips; never runs a real generation. */
   probe(): Promise<AgentProbeResult>;
   /** Optional model discovery for harnesses that support querying available models. */

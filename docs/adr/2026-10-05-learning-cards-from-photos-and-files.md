@@ -224,6 +224,21 @@ file. Claude file reads expose only the Read tool; OpenCode attachment runs
 deny tool actions. These restrictions keep document instructions from invoking
 ZAM or changing library content before the learner's review.
 
+Review follow-up (same day). Typed notes are as untrusted as files, so every
+agent run of an import is isolated, with or without attachments: Claude Code
+gets no tool for notes, Codex disables MCP services, OpenCode denies tools.
+An adapter declares that it honours isolation; agent rows whose adapter does
+not (Antigravity, Copilot, Goose, Grok, Hermes) are skipped instead of
+receiving material. Claude's Read is allowed only below the working-copy
+folder, because a bare `Read` rule would let document instructions pull any
+local file into the answer. OpenCode 2.0.25 has no ephemeral run and stores
+each session with its attachments, so the adapter deletes the session it
+created, also after a failure. The same version showed two gaps invisible to
+mocked tests: `opencode run` no longer accepts `--dir`, and its background
+service ignores the inline `permission: "deny"`. Isolated OpenCode runs
+therefore use `--standalone`; a live check denied the shell tool there and
+read a synthetic PDF attachment, and `session delete` removed both sessions.
+
 "Re-check" reports the adapter's declared text/image/PDF input and executable
 availability. It performs no model generation or test upload, and does not
 claim to verify the selected model's account access or installed PDF tools.

@@ -228,6 +228,8 @@ export class CodexAdapter implements AgentTextAdapter {
   readonly modalities = { text: true, image: true, file: true };
   /** Forwards `effort` to the CLI. */
   readonly supportsEffort = true;
+  /** MCP services off and `--ephemeral` for learner material. */
+  readonly supportsIsolation = true;
 
   constructor(
     private readonly resolveExecutable: () =>
@@ -323,7 +325,8 @@ export class CodexAdapter implements AgentTextAdapter {
           args,
           timeoutMs,
           cwd,
-          isolateTools: images.length > 0 || pdfs.length > 0,
+          isolateTools:
+            req.isolate === true || images.length > 0 || pdfs.length > 0,
         });
       } catch (err) {
         throw new AgentError(

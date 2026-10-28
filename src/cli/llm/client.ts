@@ -1834,6 +1834,8 @@ export async function requestAgentCompletion(
     imagePaths?: string[];
     /** Local PDFs for adapters that explicitly support document input. */
     pdfPaths?: string[];
+    /** Untrusted learner material: only adapters that isolate the run. */
+    isolate?: boolean;
     /** Per-call effort override; wins over registry entry effort. */
     effort?: ProviderConfig["effort"];
     /** Wall-clock budget; the adapter's own default applies when omitted. */
@@ -1860,6 +1862,11 @@ export async function requestAgentCompletion(
       `Harness "${endpoint.agentHarness}" does not support PDF input.`,
     );
   }
+  if (messages.isolate && !adapter.supportsIsolation) {
+    throw new Error(
+      `Harness "${endpoint.agentHarness}" cannot run without its tools.`,
+    );
+  }
   const { defaultAgentModel } = await import("../agent-llm/defaults.js");
   // Prefer the registry model; fall back to the harness's cheap default when
   // the entry still has a placeholder `agent:<harness>` from early builds.
@@ -1874,6 +1881,7 @@ export async function requestAgentCompletion(
     user: messages.user,
     imagePaths: messages.imagePaths,
     pdfPaths: messages.pdfPaths,
+    isolate: messages.isolate,
     model,
     effort,
     timeoutMs: messages.timeoutMs,

@@ -73,15 +73,20 @@ learner's connected model, named in the dialog ("Sent to …"). Photos go to the
 first `image` row of the model registry, a PDF to the first `file` row;
 supported agent rows participate in the same configured order. Codex reads
 PDF paths with its available PDF tools, Claude Code uses its Read tool, and
-OpenCode receives native PDF attachments. Other adapters serve only the
-modalities they explicitly support. PDFs never go through an image-only
+OpenCode receives native PDF attachments. Every agent run of an import,
+typed notes included, is isolated: the material is untrusted, so an agent row
+whose adapter cannot run without its tools (Antigravity, Copilot, Goose, Grok,
+Hermes) is skipped. PDFs never go through an image-only
 attachment flag. Prepared working copies and Codex PDF scratch renders are
 removed after success or failure; the source link and fingerprint still refer
 to the original file. A Codex file-reading run disables configured MCP
 services using complete disabled transport entries; no inventory credentials
 or private endpoints are copied into the child command's arguments. Claude
-file runs expose only Read and disable session persistence,
-and OpenCode attachment runs deny tool actions. After viewing PDF pages,
+file runs expose only Read, allowed only inside the working-copy folder, and
+notes runs no tool at all; neither persists a session. OpenCode runs deny tool
+actions on a private server (its background service ignores the inline
+configuration), and the session OpenCode stores is deleted afterwards, also
+after a failure. After viewing PDF pages,
 Codex cross-checks literal names, identifiers, numbers and symbols against an
 available text layer; layout still determines relationships, and no transcript
 is saved. With no text layer it relies on the page and marks uncertain readings

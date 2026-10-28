@@ -182,6 +182,25 @@ describe("CodexAdapter", () => {
     },
   );
 
+  it("isolates tools for untrusted text without files", async () => {
+    let isolated: boolean | undefined;
+    const adapter = new CodexAdapter(
+      () => BIN,
+      async (input) => {
+        isolated = input.isolateTools;
+        expect(input.args).toContain("read-only");
+        return {
+          code: 0,
+          stdout: agentMessage("ok"),
+          stderr: "",
+          timedOut: false,
+        };
+      },
+    );
+    await adapter.generate({ system: "s", user: "notes", isolate: true });
+    expect(isolated).toBe(true);
+  });
+
   it("disables every configured MCP server without exposing its configuration", () => {
     expect(
       codexMcpDisableArgs(

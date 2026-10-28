@@ -3,6 +3,7 @@ import { AgentError } from "../../../src/cli/agent-llm/adapter.js";
 import {
   buildClaudeUserPayload,
   ClaudeCodeAdapter,
+  claudeReadRule,
   type HeadlessRunner,
   type HeadlessRunResult,
   parseClaudeEnvelope,
@@ -201,6 +202,10 @@ describe("ClaudeCodeAdapter", () => {
         expect(input.stdin).toContain("PDFs must be read as pages");
         expect(input.args).toContain("--no-session-persistence");
         expect(input.args[input.args.indexOf("--tools") + 1]).toBe("Read");
+        // Read is allowed only below the file's folder, never everywhere.
+        expect(input.args[input.args.indexOf("--allowedTools") + 1]).toBe(
+          "Read(//data/**)",
+        );
         expect(input.args).toContain("/data");
         return {
           code: 0,
@@ -217,6 +222,35 @@ describe("ClaudeCodeAdapter", () => {
         pdfPaths: ["/data/book.pdf"],
       }),
     ).resolves.toEqual({ text: "read" });
+  });
+
+  it("runs isolated notes without any tool or stored session", async () => {
+    const adapter = new ClaudeCodeAdapter(
+      () => BIN,
+      async (input) => {
+        expect(input.args[input.args.indexOf("--tools") + 1]).toBe("");
+        expect(input.args).toContain("--no-session-persistence");
+        expect(input.args).not.toContain("--allowedTools");
+        return {
+          code: 0,
+          stdout: successEnvelope("ok"),
+          stderr: "",
+          timedOut: false,
+        };
+      },
+    );
+    await expect(
+      adapter.generate({ system: "s", user: "notes", isolate: true }),
+    ).resolves.toEqual({ text: "ok" });
+  });
+
+  it("writes absolute Read rules in Claude Code's POSIX form", () => {
+    expect(claudeReadRule("/var/folders/x/T/zam-material-agent-1")).toBe(
+      "Read(//var/folders/x/T/zam-material-agent-1/**)",
+    );
+    expect(claudeReadRule("C:\\Users\\a\\AppData\\Local\\Temp\\zam-1\\")).toBe(
+      "Read(//c/Users/a/AppData/Local/Temp/zam-1/**)",
+    );
   });
 
   it("throws an AgentError on timeout", async () => {
