@@ -119,7 +119,51 @@ describe("bridge model-* registry commands", () => {
     return bin;
   }
 
+  it("leaves Codex PDF input off until a page renderer is installed", async () => {
+    const env = { PATH: stubHarnessOnPath("codex") };
+    const added = (
+      await runBridge(
+        [
+          "model-upsert",
+          "--transport",
+          "agent",
+          "--agent-harness",
+          "codex",
+          "--label",
+          "Codex",
+          "--capabilities",
+          JSON.stringify({ text: true, image: true, file: true }),
+        ],
+        env,
+      )
+    ).parsed as {
+      ok: boolean;
+      model: {
+        id: string;
+        capabilities: { image: boolean; file: boolean };
+        detectedCapabilities: { file: boolean };
+      };
+    };
+    expect(added.ok).toBe(true);
+    expect(added.model.capabilities.image).toBe(true);
+    expect(added.model.capabilities.file).toBe(false);
+    expect(added.model.detectedCapabilities.file).toBe(false);
+
+    stubHarnessOnPath("pdftoppm");
+    const checked = (
+      await runBridge(["model-reprobe", "--id", added.model.id], env)
+    ).parsed as {
+      model: {
+        capabilities: { file: boolean };
+        detectedCapabilities: { file: boolean };
+      };
+    };
+    expect(checked.model.detectedCapabilities.file).toBe(true);
+    expect(checked.model.capabilities.file).toBe(true);
+  });
+
   it("re-check discovers agent PDF input and preserves a disabled PDF switch", async () => {
+    stubHarnessOnPath("pdftoppm");
     const env = { PATH: stubHarnessOnPath("codex") };
     const added = (
       await runBridge(

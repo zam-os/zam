@@ -19,13 +19,14 @@
 import { execFile, spawn } from "node:child_process";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { promisify } from "node:util";
 import {
   type AgentHarnessId,
   getHarness,
   resolveHarnessExecutable,
 } from "../agent-harness.js";
+import { findExecutable } from "../terminal-open.js";
 import {
   AgentError,
   type AgentGenerateRequest,
@@ -37,6 +38,28 @@ import {
 const HARNESS: AgentHarnessId = "codex";
 const DEFAULT_TIMEOUT_MS = 120_000;
 const ERROR_SNIPPET_CHARS = 300;
+/**
+ * Page renderers the PDF instructions rely on: Poppler and MuPDF. Codex has no
+ * PDF reader of its own and may not install one, so without either of these
+ * a PDF import could only fail.
+ */
+export const CODEX_PDF_RENDERERS = ["pdftoppm", "mutool"];
+
+/**
+ * The installed page renderer Codex would use, or null. Looks on PATH and next
+ * to the `codex` executable (a package manager puts both in one folder, and an
+ * app started from the Finder may have neither on PATH).
+ */
+export function findCodexPdfRenderer(
+  codex: string,
+  find: (command: string) => string | null = findExecutable,
+): string | null {
+  for (const name of CODEX_PDF_RENDERERS) {
+    const found = find(name) ?? find(join(dirname(codex), name));
+    if (found) return found;
+  }
+  return null;
+}
 
 /** Outcome of one headless `codex exec` run. */
 export interface CodexRunResult {
@@ -236,16 +259,29 @@ export class CodexAdapter implements AgentTextAdapter {
       | string
       | null = defaultResolveExecutable,
     private readonly run: CodexRunner = spawnCodex,
+    private readonly findTool: (
+      command: string,
+    ) => string | null = findExecutable,
   ) {}
 
   async probe(): Promise<AgentProbeResult> {
     const bin = this.resolveExecutable();
+    if (!bin) {
+      return {
+        harness: this.harness,
+        available: false,
+        detail:
+          "Codex CLI (`codex`) not found on PATH. Install it and run `codex login`.",
+      };
+    }
+    const readsPdf = findCodexPdfRenderer(bin, this.findTool) !== null;
     return {
       harness: this.harness,
-      available: bin !== null,
-      detail:
-        bin ??
-        "Codex CLI (`codex`) not found on PATH. Install it and run `codex login`.",
+      available: true,
+      detail: readsPdf
+        ? bin
+        : `${bin} · PDFs need Poppler (pdftoppm) or MuPDF (mutool)`,
+      modalities: { ...this.modalities, file: readsPdf },
     };
   }
 

@@ -6,6 +6,7 @@ import {
   type CodexRunner,
   type CodexRunResult,
   codexMcpDisableArgs,
+  findCodexPdfRenderer,
   parseCodexJsonl,
 } from "../../../src/cli/agent-llm/codex.js";
 
@@ -70,6 +71,34 @@ describe("CodexAdapter", () => {
       harness: "codex",
       available: true,
     });
+  });
+
+  it("reports PDF input only when a page renderer is installed", async () => {
+    const none = new CodexAdapter(() => BIN, fixedRunner({}), () => null);
+    const missing = await none.probe();
+    expect(missing.modalities).toEqual({ text: true, image: true, file: false });
+    expect(missing.detail).toContain("Poppler");
+
+    const withPoppler = new CodexAdapter(
+      () => BIN,
+      fixedRunner({}),
+      (command) => (command === "pdftoppm" ? "/usr/bin/pdftoppm" : null),
+    );
+    await expect(withPoppler.probe()).resolves.toMatchObject({
+      available: true,
+      modalities: { file: true },
+    });
+  });
+
+  it("finds a renderer next to the codex executable", () => {
+    expect(
+      findCodexPdfRenderer("/opt/homebrew/bin/codex", (command) =>
+        command === join("/opt/homebrew/bin", "mutool") ? command : null,
+      ),
+    ).toBe(join("/opt/homebrew/bin", "mutool"));
+    expect(findCodexPdfRenderer("/opt/homebrew/bin/codex", () => null)).toBe(
+      null,
+    );
   });
 
   it("declares multimodal modalities", () => {

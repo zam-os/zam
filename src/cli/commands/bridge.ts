@@ -3532,7 +3532,9 @@ bridgeCommand
       const target = targetIndex >= 0 ? models[targetIndex] : undefined;
       const probe = await adapter.probe();
       const now = new Date().toISOString();
-      const modalities = adapter.modalities ?? { text: true };
+      // This machine's answer wins over the adapter's declaration.
+      const modalities = probe.modalities ??
+        adapter.modalities ?? { text: true };
       const detected = emptyCapabilityFlags();
       // Probe gates readiness; modalities declare what the adapter can do.
       detected.text = probe.available && modalities.text !== false;
@@ -3783,7 +3785,8 @@ bridgeCommand
         jsonError(`No agent-text adapter for harness "${entry.agentHarness}".`);
       }
       const probe = await adapter.probe();
-      const modalities = adapter.modalities ?? { text: true };
+      const modalities = probe.modalities ??
+        adapter.modalities ?? { text: true };
       if (!probe.available) {
         // Like a failed HTTP re-check, leave the last capability verdict and
         // learner choices intact. An offline run is no new capability test.

@@ -241,8 +241,13 @@ read a synthetic PDF attachment, and `session delete` removed both sessions.
 
 "Re-check" reports the adapter's declared text/image/PDF input and executable
 availability. It performs no model generation or test upload, and does not
-claim to verify the selected model's account access or installed PDF tools.
-The UI says so and labels agent PDF input separately. A re-check enables
+claim to verify the selected model's account access. One exception
+(review follow-up): Codex has no PDF reader of its own and may not install
+one, so its probe reports PDF input only when Poppler (`pdftoppm`) or MuPDF
+(`mutool`) is found on PATH or next to `codex`. Without one, the PDF switch
+stays off instead of failing during an import, and the hint names both tools;
+a re-check after installing one turns PDF input on. The UI says so and labels
+agent PDF input separately. A re-check enables
 newly supported PDF input on old agent entries, keeps an existing disabled
 PDF switch off, and leaves the previous verdict intact when the executable
 is unavailable. This does not add chapter splitting, EPUB input or a larger

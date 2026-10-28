@@ -108,9 +108,12 @@ staging file.
 
 **Agent capability checks.** Saving or re-checking an agent detects the
 adapter's declared text, image and PDF input and whether its executable is
-available. It does not upload a test file, verify account/model access or
-prove that PDF tools are installed. Desktop labels PDF input as "PDF via
-agent" and explains this limit; Settings-lite also shows the capabilities.
+available. Codex reads PDFs only by rendering pages, so its PDF input counts
+as detected only when Poppler (`pdftoppm`) or MuPDF (`mutool`) is on PATH or
+next to `codex`; without one the PDF switch stays off and the hint names both.
+The check does not upload a test file or verify account/model access. Desktop
+labels PDF input as "PDF via agent" and explains this limit; Settings-lite
+also shows the capabilities.
 Re-check enables newly supported PDF input on older entries, preserves an
 existing disabled PDF switch and keeps the previous verdict on an unavailable
 executable. Direct HTTP native-file detection is unchanged. The existing
