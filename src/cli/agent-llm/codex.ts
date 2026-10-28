@@ -9,13 +9,17 @@
  * Multimodal: `-i <file>` attaches local images to the initial prompt (native
  * CLI flag). Output is JSONL; we take the last `item.completed` event with
  * `item.type === "agent_message"`.
+ * No PDF input: the CLI attaches only images, and a PDF passed with `-i`
+ * reaches the model as "image content omitted" (codex-cli 0.162.1, ADR
+ * 2026-10-05 amendment). PDF support waits for native file input.
  *
  * Verified against codex-cli 0.145.0: prompt as argv, images via `-i`, events
  * as JSON lines on stdout.
  */
 
-import { spawn } from "node:child_process";
+import { execFile, spawn } from "node:child_process";
 import { tmpdir } from "node:os";
+import { promisify } from "node:util";
 import {
   type AgentHarnessId,
   getHarness,
@@ -48,6 +52,8 @@ export interface CodexRunInput {
   stdin?: string;
   timeoutMs: number;
   cwd: string;
+  /** Learner material needs only built-in tools, never connected MCP services. */
+  isolateTools?: boolean;
 }
 
 /** Injectable subprocess runner so tests never spawn a real `codex`. */
@@ -103,10 +109,70 @@ export function buildCodexPrompt(req: AgentGenerateRequest): string {
   return `${system.trim()}\n\n${req.user.trim()}`;
 }
 
+/**
+ * `-c` override that disables every server in `codex mcp list --json` output,
+ * so learner material cannot reach a connected service.
+ */
+export function codexMcpDisableArgs(stdout: string): string[] {
+  const servers: unknown = JSON.parse(stdout);
+  if (
+    !Array.isArray(servers) ||
+    servers.some(
+      (server) =>
+        !server ||
+        typeof server !== "object" ||
+        typeof server.name !== "string" ||
+        !["stdio", "streamable_http"].includes(server.transport?.type),
+    )
+  )
+    throw new Error("Invalid Codex MCP inventory");
+  // Overrides are validated before all inventory sources are merged. An
+  // enabled-only entry has no transport at that point and fails to load.
+  // Supply a complete, disabled entry of the original transport kind. These
+  // inert placeholders carry no command arguments, URLs or secrets from the
+  // inventory. Quoting names in the TOML value also handles dots correctly;
+  // quotes in a CLI dotted key would become literal name characters.
+  const entries = servers.map((server) => {
+    const transport =
+      server.transport.type === "stdio"
+        ? 'command="codex"'
+        : 'url="http://127.0.0.1"';
+    return `${JSON.stringify(server.name)}={enabled=false,${transport}}`;
+  });
+  return ["-c", `mcp_servers={${entries.join(",")}}`];
+}
+
 /** Default runner: spawn `codex`, collect stdout/stderr with a wall-clock timeout. */
-export const spawnCodex: CodexRunner = (input) =>
-  new Promise<CodexRunResult>((resolve, reject) => {
-    const child = spawn(input.command, input.args, {
+export const spawnCodex: CodexRunner = async (input) => {
+  let args = input.args;
+  if (input.isolateTools) {
+    try {
+      const { stdout } = await promisify(execFile)(
+        input.command,
+        ["mcp", "list", "--json"],
+        {
+          cwd: input.cwd,
+          timeout: 5000,
+          maxBuffer: 1024 * 1024,
+        },
+      );
+      // Options go before the `--` that precedes the prompt.
+      const end = args.at(-2) === "--" ? -2 : -1;
+      args = [
+        ...args.slice(0, end),
+        ...codexMcpDisableArgs(stdout),
+        ...args.slice(end),
+      ];
+    } catch {
+      // Inventory output may contain configuration secrets; never echo it.
+      throw new AgentError(
+        HARNESS,
+        "Could not isolate Codex from its MCP services. Check that `codex mcp list --json` works.",
+      );
+    }
+  }
+  return new Promise<CodexRunResult>((resolve, reject) => {
+    const child = spawn(input.command, args, {
       cwd: input.cwd,
       // stdin closed: prompt is argv; open stdin makes Codex wait for more input.
       stdio: ["ignore", "pipe", "pipe"],
@@ -136,6 +202,7 @@ export const spawnCodex: CodexRunner = (input) =>
       resolve({ code, stdout, stderr, timedOut });
     });
   });
+};
 
 function defaultResolveExecutable(): string | null {
   const harness = getHarness(HARNESS);
@@ -152,9 +219,11 @@ export const FALLBACK_CODEX_MODELS = [
 export class CodexAdapter implements AgentTextAdapter {
   readonly harness: AgentHarnessId = HARNESS;
   /** Codex accepts `-i` images; models (incl. multimodal ChatGPT) can inspect them. */
-  readonly modalities = { text: true as const, image: true as const };
+  readonly modalities = { text: true, image: true, file: false };
   /** Forwards `effort` to the CLI. */
   readonly supportsEffort = true;
+  /** MCP services off and `--ephemeral` for learner material. */
+  readonly supportsIsolation = true;
 
   constructor(
     private readonly resolveExecutable: () =>
@@ -190,6 +259,9 @@ export class CodexAdapter implements AgentTextAdapter {
     const timeoutMs = req.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     const prompt = buildCodexPrompt(req);
     const images = req.imagePaths?.filter(Boolean) ?? [];
+    if (req.pdfPaths?.some(Boolean)) {
+      throw new AgentError(this.harness, "Codex cannot read PDF files yet.");
+    }
 
     // Neutral cwd: never let the nested session write into the ZAM checkout.
     // When images are attached, keep their parents readable via -i (absolute).
@@ -223,8 +295,9 @@ export class CodexAdapter implements AgentTextAdapter {
       args.push("--reasoning-effort", codexEffort);
     }
     // Prompt last as positional argument (not stdin — avoids "Reading additional
-    // input from stdin..." hang when the pipe is empty).
-    args.push(prompt);
+    // input from stdin..." hang when the pipe is empty). `--` ends the
+    // variadic `-i` list, which would otherwise take the prompt as an image.
+    args.push("--", prompt);
 
     let result: CodexRunResult;
     try {
@@ -233,6 +306,7 @@ export class CodexAdapter implements AgentTextAdapter {
         args,
         timeoutMs,
         cwd,
+        isolateTools: req.isolate === true || images.length > 0,
       });
     } catch (err) {
       throw new AgentError(

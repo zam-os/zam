@@ -547,6 +547,8 @@ interface AgentHarnessListEntry {
   outboundText?: boolean;
   /** True when the outbound adapter accepts local image files (vision/OCR). */
   outboundImage?: boolean;
+  /** True when the adapter accepts PDF attachments or document paths. */
+  outboundFile?: boolean;
   /** Recommended cheap default model id for this harness. */
   defaultModel?: string | null;
 }
@@ -3393,7 +3395,11 @@ async function addAgentHarnessAsModel(
     "--label",
     entry.label,
     "--capabilities",
-    JSON.stringify({ text: true, image: withImage }),
+    JSON.stringify({
+      text: true,
+      image: withImage,
+      file: withImage && outbound.outboundFile === true,
+    }),
   ];
   if (outbound.defaultModel) args.push("--model", outbound.defaultModel);
   try {
@@ -3705,7 +3711,10 @@ function createModelRow(
       void toggleCapability(row, cap, box.checked);
     });
     const text = document.createElement("span");
-    text.textContent = capabilityLabel(cap);
+    text.textContent =
+      cap === "file" && agent
+        ? t("model_cap_agent_file")
+        : capabilityLabel(cap);
     label.append(box, text);
     caps.append(label);
   }
@@ -3765,6 +3774,12 @@ function createModelRow(
   actions.append(upButton, downButton, reprobeButton, editButton, removeButton);
 
   el.append(header, meta, caps, statusChip);
+  if (agent) {
+    const hint = document.createElement("p");
+    hint.className = "ai-provider-meta";
+    hint.textContent = t("model_agent_probe_hint");
+    el.append(hint);
+  }
 
   // Keys follow endpoints (ADR 2026-10-08b D5): a row whose address changed
   // since this device confirmed it gets no key until the learner says so.

@@ -198,6 +198,74 @@ more strictly than last year and no longer runs ZAM.
 
 ## Decisions
 
+### Amendment 2026-10-28: direct imports through an agent adapter
+
+The Studio's built-in request also uses configured agent rows. Previously its
+selection discarded every agent, even an image-capable one, while the
+agent-transport decision already allowed this path. Images, PDFs and typed
+notes now share the configured model order, proposal validation, review and
+confirmation regardless of transport.
+
+An adapter explicitly declares `file` support and accepts separate `pdfPaths`;
+PDFs never go through an image-only flag. PDF input through an agent is
+offered only where the PDF reaches the model natively, as Decision 1 requires:
+Claude Code's Read tool hands the document to the model, and OpenCode forwards
+it as a native attachment. The app adds no PDF parser, renderer or
+transcription stage. Direct HTTP PDF requests still require declared native
+`file` input and retain OpenRouter's native-engine gate. An agent must fail if
+it cannot read a file; no guessing from filenames.
+
+**Codex reads no PDFs yet (owner decision, 2026-10-28).** Codex CLI 0.162.1
+attaches only images (`-i`) and has no file input. A PDF passed with `-i`
+reaches the model as "image content omitted because it could not be
+processed" (live check with `gpt-6-luna`, which reads PDFs natively through
+the API). Letting Codex render pages with Poppler worked in a smoke test but
+needs a tool the learner must install, and the app rendering pages itself
+would add the renderer this decision rules out. PDF input through Codex
+therefore waits until the CLI passes PDFs to the model natively; Codex keeps
+images and notes. Rows that still carry a PDF switch are skipped for PDFs.
+
+The app gives the agent bounded, prepared working copies and removes them
+after success or failure. The source link and fingerprint name the original
+file. Claude file reads expose only the Read tool; OpenCode attachment runs
+deny tool actions. These restrictions keep document instructions from invoking
+ZAM or changing library content before the learner's review.
+
+Review follow-up (same day). Typed notes are as untrusted as files, so every
+agent run of an import is isolated, with or without attachments: Claude Code
+gets no tool for notes, Codex disables MCP services, OpenCode denies tools.
+An adapter declares that it honours isolation; agent rows whose adapter does
+not (Antigravity, Copilot, Goose, Grok, Hermes) are skipped instead of
+receiving material. Claude's Read is allowed only below the working-copy
+folder, because a bare `Read` rule would let document instructions pull any
+local file into the answer. OpenCode 2.0.25 has no ephemeral run and stores
+each session with its attachments, so the adapter deletes the session it
+created, also after a failure. The same version showed two gaps invisible to
+mocked tests: `opencode run` no longer accepts `--dir`, and its background
+service ignores the inline `permission: "deny"`. Isolated OpenCode runs
+therefore use `--standalone`; a live check denied the shell tool there and
+read a synthetic PDF attachment, and `session delete` removed both sessions.
+
+"Re-check" reports the adapter's declared text/image/PDF input and executable
+availability. It performs no model generation or test upload, and does not
+claim to verify the selected model's account access. The UI says so, names
+Codex as not reading PDFs yet, and labels agent PDF input separately. A re-check enables
+newly supported PDF input on old agent entries, keeps an existing disabled
+PDF switch off, and leaves the previous verdict intact when the executable
+is unavailable. This does not add chapter splitting, EPUB input or a larger
+file budget.
+
+**Found while testing (2026-10-28).** Codex's bootstrap validates MCP
+overrides before every inventory source is available, so an `enabled=false`
+entry alone can lack a transport, and TOML quoting in a dotted CLI key creates
+a different literal server name. Isolated Codex runs therefore provide
+complete disabled entries of the original transport kind, with inert
+placeholders instead of copying inventory credentials or private endpoints
+into process arguments. Also, the shared prompt's unqualified "bloom is 1–5"
+was ambiguous between the analysis range and a card's level. It now explicitly
+requires `analysis.bloom: [min, max]` and scalar `proposals[].bloom`; invalid
+answers still fail validation.
+
 ### 1. The model reads the page itself — no transcription step
 
 Images and PDFs go to the model as they are, as image or file content parts,

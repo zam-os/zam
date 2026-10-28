@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-27T14:24:28Z
+timestamp: 2026-10-28T06:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -212,7 +212,12 @@ library rows:
   they were sent to (`sentTo`), since a failing first model hands the request
   on; the batch keeps both, and `material-import-review` returns them as
   `readBy` and `sentTo`. `material-import-models` names the models photos and
-  PDFs would go to first.
+  PDFs would go to first, including supported agent rows in the configured
+  order. Agent input uses native attachments or explicit document-reading
+  paths; direct HTTP PDFs still require native file input. Agent re-checks
+  report the adapter contract and executable availability, not a test upload
+  or proof of model access. A failed agent re-check leaves the previous
+  verdict and user capability choices intact.
 - `material-import-review --id <id>` matches the proposals against the library
   and the bundled cells, returns the rows with their presets, area groups and
   earlier imports of the same files, and stores those rows in the batch;

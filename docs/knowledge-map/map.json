@@ -1156,6 +1156,17 @@
       ]
     },
     {
+      "id": "material-import",
+      "parent": "agents",
+      "label": "Material import",
+      "link": "reads through",
+      "text": "The Studio sends photos, PDFs and notes to configured HTTP or supported agent rows; the learner reviews each proposed card.",
+      "sources": [
+        "docs/okf/material-import.md",
+        "src/cli/llm/material-analyze.ts"
+      ]
+    },
+    {
       "id": "agent-source",
       "parent": "agents",
       "label": "Source first",

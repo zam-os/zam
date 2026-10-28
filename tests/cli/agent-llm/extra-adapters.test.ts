@@ -10,7 +10,11 @@ import {
 } from "../../../src/cli/agent-llm/copilot.js";
 import { parseGooseStdout } from "../../../src/cli/agent-llm/goose.js";
 import { parseHermesStdout } from "../../../src/cli/agent-llm/hermes.js";
-import { parseOpenCodeJsonl } from "../../../src/cli/agent-llm/opencode.js";
+import {
+  OpenCodeAdapter,
+  openCodeSessionIds,
+  parseOpenCodeJsonl,
+} from "../../../src/cli/agent-llm/opencode.js";
 
 describe("listAgentTextHarnessIds", () => {
   it("includes the full outbound set for consistent Settings options", () => {
@@ -42,10 +46,16 @@ describe("listAgentTextHarnessIds", () => {
     expect(withEffort.sort()).toEqual(["antigravity", "codex", "copilot"]);
   });
 
-  it(
-    "every registered agent text adapter implements listModels()",
-    async () => {
-      const ids = listAgentTextHarnessIds();
+  // Learner material reaches only adapters that honour `isolate`.
+  it("declares supportsIsolation only for adapters that honour it", () => {
+    const isolating = listAgentTextHarnessIds().filter(
+      (id) => getAgentAdapter(id)?.supportsIsolation === true,
+    );
+    expect(isolating.sort()).toEqual(["claude-code", "codex", "opencode"]);
+  });
+
+  it("every registered agent text adapter implements listModels()", async () => {
+    const ids = listAgentTextHarnessIds();
     for (const id of ids) {
       const adapter = getAgentAdapter(id);
       expect(adapter?.listModels).toBeDefined();
@@ -57,6 +67,113 @@ describe("listAgentTextHarnessIds", () => {
 });
 
 describe("parseOpenCodeJsonl", () => {
+  it("attaches PDFs natively, denies tools and deletes the stored session", async () => {
+    const calls: string[][] = [];
+    const adapter = new OpenCodeAdapter(
+      () => "/opencode",
+      async (input) => {
+        calls.push(input.args);
+        if (input.args[0] === "session") {
+          return { code: 0, stdout: "", stderr: "", timedOut: false };
+        }
+        expect(input.args).not.toContain("--dir");
+        // The background service ignores inline configuration.
+        expect(input.args).toContain("--standalone");
+        expect(input.args[input.args.indexOf("-f") + 1]).toBe(
+          "/source/book.pdf",
+        );
+        expect(JSON.parse(input.env!.OPENCODE_CONFIG_CONTENT!)).toMatchObject({
+          permission: "deny",
+        });
+        return {
+          code: 0,
+          stdout: [
+            JSON.stringify({ type: "step_start", sessionID: "ses_abc123" }),
+            JSON.stringify({
+              type: "text",
+              sessionID: "ses_abc123",
+              part: { text: "read" },
+            }),
+          ].join("\n"),
+          stderr: "",
+          timedOut: false,
+        };
+      },
+    );
+    await expect(
+      adapter.generate({
+        system: "read",
+        user: "read",
+        pdfPaths: ["/source/book.pdf"],
+      }),
+    ).resolves.toEqual({ text: "read" });
+    expect(calls.at(-1)).toEqual([
+      "session",
+      "delete",
+      "--standalone",
+      "ses_abc123",
+    ]);
+  });
+
+  it("deletes an isolated session after a failed run", async () => {
+    const deleted: string[] = [];
+    const adapter = new OpenCodeAdapter(
+      () => "/opencode",
+      async (input) => {
+        if (input.args[0] === "session") {
+          deleted.push(input.args.at(-1)!);
+          throw new Error("cleanup failed");
+        }
+        return {
+          code: 0,
+          stdout: JSON.stringify({
+            type: "error",
+            sessionID: "ses_failed1",
+            error: { data: { message: "Model unavailable" } },
+          }),
+          stderr: "",
+          timedOut: false,
+        };
+      },
+    );
+    await expect(
+      adapter.generate({ system: "s", user: "notes", isolate: true }),
+    ).rejects.toThrow("Model unavailable");
+    expect(deleted).toEqual(["ses_failed1"]);
+  });
+
+  it("leaves ordinary text runs on the background service", async () => {
+    const calls: string[][] = [];
+    const adapter = new OpenCodeAdapter(
+      () => "/opencode",
+      async (input) => {
+        calls.push(input.args);
+        expect(input.env).toBeUndefined();
+        return {
+          code: 0,
+          stdout: JSON.stringify({ sessionID: "ses_x1", text: "ok" }),
+          stderr: "",
+          timedOut: false,
+        };
+      },
+    );
+    await adapter.generate({ system: "s", user: "u" });
+    expect(calls).toHaveLength(1);
+    expect(calls[0]).not.toContain("--standalone");
+  });
+
+  it("reads only well-formed session ids", () => {
+    expect(
+      openCodeSessionIds(
+        [
+          JSON.stringify({ sessionID: "ses_a1" }),
+          JSON.stringify({ sessionID: "ses_a1" }),
+          JSON.stringify({ sessionID: "--all" }),
+          "not json",
+        ].join("\n"),
+      ),
+    ).toEqual(["ses_a1"]);
+  });
   it("surfaces API errors", () => {
     const line = JSON.stringify({
       type: "error",

@@ -10,7 +10,7 @@ tags:
   - agents
   - atlas
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/material-import.md"
-timestamp: 2026-10-15T08:00:00.000Z
+timestamp: 2026-10-28T04:20:00.000Z
 ---
 
 A learner's class notes and handouts become learning cards in three steps:
@@ -20,7 +20,9 @@ before that decision, and nothing of the material itself is ever stored.
 
 # The model reads the page
 
-Images and PDFs go to the model as they are, as image or file content parts.
+Direct HTTP requests carry images and PDFs as image or file content parts.
+Agent requests expose the bounded prepared files to the harness's attachment
+or document-reading tools.
 No step turns them into plain text first, and no transcript is stored or
 shown: layout, arrows and highlighted headings carry meaning a transcript
 loses.
@@ -34,7 +36,7 @@ loses.
   converts HEIC to JPEG), the WebView canvas on Mobile. Elsewhere photos go
   unchanged within 10 MB per file and 20 MB per request, and HEIC is refused
   with a hint to export JPEG.
-- **PDFs go only to models that read them natively.** The `file` capability is
+- **Direct HTTP PDFs go only to models that read them natively.** The `file` capability is
   detected from the provider's declared input modalities (OpenRouter lists
   `file`), never from a model name; the Anthropic Messages API has it by
   contract, since it takes `document` blocks. The gate sits in the request
@@ -69,7 +71,26 @@ harness can ask back.
 **Built in.** The same dialog can send the picked or dropped files to the
 learner's connected model, named in the dialog ("Sent to …"). Photos go to the
 first `image` row of the model registry, a PDF to the first `file` row;
-harness-backed rows are left out. The request carries no reasoning-effort
+supported agent rows participate in the same configured order. A PDF reaches
+an agent's model natively or not at all: Claude Code's Read tool hands it to
+the model and OpenCode attaches it. Codex reads no PDFs yet (its CLI attaches
+only images and replaces a PDF with "image content omitted"), so a Codex row
+is skipped for PDFs even if its PDF switch is on; it keeps photos and notes.
+Every agent run of an import,
+typed notes included, is isolated: the material is untrusted, so an agent row
+whose adapter cannot run without its tools (Antigravity, Copilot, Goose, Grok,
+Hermes) is skipped. PDFs never go through an image-only
+attachment flag. Prepared working copies are
+removed after success or failure; the source link and fingerprint still refer
+to the original file. An isolated Codex run disables configured MCP
+services using complete disabled transport entries; no inventory credentials
+or private endpoints are copied into the child command's arguments. Claude
+file runs expose only Read, allowed only inside the working-copy folder, and
+notes runs no tool at all; neither persists a session. OpenCode runs deny tool
+actions on a private server (its background service ignores the inline
+configuration), and the session OpenCode stores is deleted afterwards, also
+after a failure. Unreadable
+files or inaccessible models fail explicitly instead of inventing cards. The request carries no reasoning-effort
 control, so card writing gets the model's own default rather than the cheap
 level verified for recall. A request the provider rejects for its image count
 or size is split in halves and the cards are merged; a card whose file number
@@ -84,9 +105,28 @@ responsive. **On Mobile** the same request goes through the native
 and merging the replies, and the whole pipeline runs on the device without a
 staging file.
 
+**Agent capability checks.** Saving or re-checking an agent detects the
+adapter's declared text, image and PDF input and whether its executable is
+available; Codex declares no PDF input, and the hint says so.
+The check does not upload a test file or verify account/model access. Desktop
+labels PDF input as "PDF via agent" and explains this limit; Settings-lite
+also shows the capabilities.
+Re-check enables newly supported PDF input on older entries, preserves an
+existing disabled PDF switch and keeps the previous verdict on an unavailable
+executable. Direct HTTP native-file detection is unchanged. The existing
+20 MiB input budget, whole-PDF transfer and page-selection instruction remain;
+there is no EPUB or chapter reader yet.
+
 A harness or Studio batch waits in `~/.zam/pending-imports/<ULID>.json` for
 up to seven days. A staging file holds the proposals and file references only
 — no image bytes, no transcript — and is machine-local, never in the library.
+
+# The proposal format
+
+The analysis uses a two-integer Bloom range, `analysis.bloom: [min, max]`,
+including `[1, 1]` for a single level. Each `proposals[].bloom` is a single
+integer from 1 to 5. The shared instructions distinguish these shapes;
+a response that fails the kernel contract cannot become a staged import.
 
 # Formulas in proposals
 
@@ -258,5 +298,5 @@ a model.
 - [ADR 2026-09-13 — Model Capabilities Are Detected](../adr/2026-09-13-model-capabilities-are-detected.md)
 - [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md) (Decisions 2, 9, 12: kind and status, import at a place, one goal one method)
 - [OpenRouter — PDF inputs](https://openrouter.ai/docs/features/multimodal/pdfs)
-- Code: `src/kernel/import/material-import.ts`, `src/kernel/import/material-contract.ts`, `src/kernel/import/material-review-state.ts`, `src/kernel/db/provision.ts` (M037, M038, M042), `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-prompt.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/llm/capability-refresh.ts`, `src/kernel/atlas/place.ts`, `src/kernel/atlas/variants.ts`, `src/cli/atlas.ts`, `src/cli/commands/mcp.ts`, `src/cli/commands/bridge.ts`, `src/cli/desktop-launch.ts`, `desktop/src/material-import-start.ts`, `desktop/src/material-review.ts`, `desktop/src/material-bonus.ts`, `desktop/src/study-offers.ts`, `mobile/src/material-import.ts`, `mobile/src/material-review-view.ts`, `mobile/src/vl-import.ts`, `skills/zam/SKILL.md`
+- Code: `src/kernel/import/material-import.ts`, `src/kernel/import/material-contract.ts`, `src/kernel/import/material-review-state.ts`, `src/kernel/db/provision.ts` (M037, M038, M042), `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-prompt.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/agent-llm/adapter.ts`, `src/cli/agent-llm/codex.ts`, `src/cli/agent-llm/claude-code.ts`, `src/cli/agent-llm/opencode.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/llm/capability-refresh.ts`, `src/kernel/atlas/place.ts`, `src/kernel/atlas/variants.ts`, `src/cli/atlas.ts`, `src/cli/commands/mcp.ts`, `src/cli/commands/bridge.ts`, `src/cli/desktop-launch.ts`, `desktop/src/material-import-start.ts`, `desktop/src/material-review.ts`, `desktop/src/material-bonus.ts`, `desktop/src/study-offers.ts`, `mobile/src/material-import.ts`, `mobile/src/material-review-view.ts`, `mobile/src/vl-import.ts`, `skills/zam/SKILL.md`
 - Tests: `tests/kernel/material-import.test.ts`, `tests/kernel/material-review-state.test.ts`, `tests/kernel/postgres-material-import.test.ts`, `tests/kernel/schule-domain-migration.test.ts`, `tests/cli/material-import.test.ts`, `tests/cli/material-analyze.test.ts`, `tests/cli/material-prompt.test.ts`, `tests/cli/mcp-material-import.test.ts`, `tests/cli/bridge-material-import.test.ts`, `tests/kernel/atlas-place.test.ts`, `tests/desktop/material-review.test.ts`, `tests/desktop/material-import-start.test.ts`, `tests/desktop/material-bonus.test.ts`, `tests/mobile/material-import.test.ts`

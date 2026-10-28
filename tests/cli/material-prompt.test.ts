@@ -49,6 +49,8 @@ describe("material instructions", () => {
     expect(text).toContain("Use only these pages of the PDF: 2-3.");
     expect(text).toContain("The learner reads ZAM in German");
     expect(text).toContain("you return no files[]");
+    expect(text).toContain("analysis.bloom is a two-integer array [min, max]");
+    expect(text).toContain("proposals[].bloom is a single integer");
     expect(text).not.toContain("/Users/learner");
   });
 

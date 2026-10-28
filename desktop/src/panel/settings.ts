@@ -484,7 +484,7 @@ interface SettingsModelRow {
   /** Stored reasoning-effort override; absent means the adapter default. */
   effort?: string;
   order: number;
-  detectedCapabilities?: { text?: boolean };
+  detectedCapabilities?: { text?: boolean; image?: boolean; file?: boolean };
 }
 
 interface SettingsAgentHarness {
@@ -493,6 +493,7 @@ interface SettingsAgentHarness {
   detected: boolean;
   outboundText?: boolean;
   outboundImage?: boolean;
+  outboundFile?: boolean;
   /** True when this harness's adapter forwards a reasoning-effort setting. */
   outboundEffort?: boolean;
   defaultModel?: string | null;
@@ -692,7 +693,23 @@ function renderAiModelRow(row: SettingsModelRow): HTMLElement {
   });
   actions.appendChild(remove);
 
-  el.append(head, meta, actions);
+  el.append(head, meta);
+  if (row.transport === "agent") {
+    const capabilities = document.createElement("p");
+    capabilities.className = "settings-ai-meta";
+    capabilities.textContent = [
+      row.detectedCapabilities?.text ? t("model_cap_text") : "",
+      row.detectedCapabilities?.image ? t("model_cap_image") : "",
+      row.detectedCapabilities?.file ? t("model_cap_agent_file") : "",
+    ]
+      .filter(Boolean)
+      .join(" · ");
+    const hint = document.createElement("p");
+    hint.className = "settings-ai-meta";
+    hint.textContent = t("model_agent_probe_hint");
+    el.append(capabilities, hint);
+  }
+  el.append(actions);
   return el;
 }
 
@@ -975,7 +992,7 @@ async function saveAgentModel(
       "--label",
       label,
       "--capabilities",
-      JSON.stringify({ text: true, image: true }),
+      JSON.stringify({ text: true, image: true, file: true }),
     ];
     if (existingId) args.push("--id", existingId);
     if (model) args.push("--model", model);

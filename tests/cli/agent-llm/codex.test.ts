@@ -5,6 +5,7 @@ import {
   CodexAdapter,
   type CodexRunner,
   type CodexRunResult,
+  codexMcpDisableArgs,
   parseCodexJsonl,
 } from "../../../src/cli/agent-llm/codex.js";
 
@@ -75,6 +76,7 @@ describe("CodexAdapter", () => {
     expect(new CodexAdapter(() => BIN, fixedRunner({})).modalities).toEqual({
       text: true,
       image: true,
+      file: false,
     });
   });
 
@@ -134,6 +136,102 @@ describe("CodexAdapter", () => {
     expect(seen).toContain("-i");
     expect(seen).toContain("/tmp/a.png");
     expect(seen).toContain("/tmp/b.jpg");
+  });
+
+  it("refuses PDF paths: the CLI would replace them with a placeholder", async () => {
+    let launched = false;
+    const adapter = new CodexAdapter(
+      () => BIN,
+      async () => {
+        launched = true;
+        return {
+          code: 0,
+          stdout: agentMessage("x"),
+          stderr: "",
+          timedOut: false,
+        };
+      },
+    );
+    await expect(
+      adapter.generate({ system: "s", user: "u", pdfPaths: ["/a/book.pdf"] }),
+    ).rejects.toThrow("cannot read PDF files");
+    expect(launched).toBe(false);
+  });
+
+  it("ends the variadic -i list before the prompt", async () => {
+    let seen: string[] = [];
+    const adapter = new CodexAdapter(
+      () => BIN,
+      async (input) => {
+        seen = input.args;
+        return {
+          code: 0,
+          stdout: agentMessage("ok"),
+          stderr: "",
+          timedOut: false,
+        };
+      },
+    );
+    await adapter.generate({
+      system: "S",
+      user: "U",
+      imagePaths: ["/tmp/a.png"],
+    });
+    expect(seen.at(-2)).toBe("--");
+    expect(seen.indexOf("/tmp/a.png")).toBeLessThan(seen.indexOf("--"));
+  });
+
+  it("isolates tools for untrusted text without files", async () => {
+    let isolated: boolean | undefined;
+    const adapter = new CodexAdapter(
+      () => BIN,
+      async (input) => {
+        isolated = input.isolateTools;
+        expect(input.args).toContain("read-only");
+        return {
+          code: 0,
+          stdout: agentMessage("ok"),
+          stderr: "",
+          timedOut: false,
+        };
+      },
+    );
+    await adapter.generate({ system: "s", user: "notes", isolate: true });
+    expect(isolated).toBe(true);
+  });
+
+  it("disables every configured MCP server without exposing its configuration", () => {
+    expect(
+      codexMcpDisableArgs(
+        JSON.stringify([
+          {
+            name: "zam",
+            transport: {
+              type: "stdio",
+              command: "private-command",
+              env: { secret: "do not expose" },
+            },
+          },
+          {
+            name: "name.with.dots",
+            transport: {
+              type: "streamable_http",
+              url: "https://private.example/?token=secret",
+              http_headers: { Authorization: "Bearer secret" },
+            },
+          },
+        ]),
+      ),
+    ).toEqual([
+      "-c",
+      'mcp_servers={"zam"={enabled=false,command="codex"},"name.with.dots"={enabled=false,url="http://127.0.0.1"}}',
+    ]);
+    expect(() => codexMcpDisableArgs('{"error":"secret"}')).toThrow(
+      "Invalid Codex MCP inventory",
+    );
+    expect(() =>
+      codexMcpDisableArgs('[{"name":"zam","transport":{"type":"unknown"}}]'),
+    ).toThrow("Invalid Codex MCP inventory");
   });
 
   it("throws AgentError when codex is missing", async () => {

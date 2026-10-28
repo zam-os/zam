@@ -1091,6 +1091,8 @@ bridgeCommand
             outboundText: outboundTextIds.has(h.id),
             /** True when the outbound adapter accepts local image files. */
             outboundImage: modalities.image === true,
+            /** True when the adapter accepts PDF attachments or document paths. */
+            outboundFile: modalities.file === true,
             /** True when the adapter forwards a reasoning-effort setting. */
             outboundEffort: adapter?.supportsEffort === true,
             /** Recommended cheap default model id for this harness. */
@@ -3535,11 +3537,13 @@ bridgeCommand
       // Probe gates readiness; modalities declare what the adapter can do.
       detected.text = probe.available && modalities.text !== false;
       detected.image = probe.available && modalities.image === true;
+      detected.file = probe.available && modalities.file === true;
       const defaultCaps = {
         ...emptyCapabilityFlags(),
         text: true,
         // Multimodal agents default image on so vision OCR can use them.
         image: modalities.image === true,
+        file: modalities.file === true,
       };
       const requested = opts.capabilities
         ? parseCapabilityFlags(opts.capabilities)
@@ -3550,6 +3554,7 @@ bridgeCommand
       capabilities.text = requested.text !== false;
       capabilities.image =
         modalities.image === true && requested.image === true;
+      capabilities.file = modalities.file === true && requested.file === true;
       const VALID_EFFORTS = new Set([
         "none",
         "minimal",
@@ -3779,14 +3784,25 @@ bridgeCommand
       }
       const probe = await adapter.probe();
       const modalities = adapter.modalities ?? { text: true };
+      if (!probe.available) {
+        // Like a failed HTTP re-check, leave the last capability verdict and
+        // learner choices intact. An offline run is no new capability test.
+        jsonError(probe.detail ?? "Agent is unavailable.");
+      }
       const detected = emptyCapabilityFlags();
       detected.text = probe.available && modalities.text !== false;
       detected.image = probe.available && modalities.image === true;
+      detected.file = probe.available && modalities.file === true;
       // Preserve user intent; detection alone gates runtime selection.
       const capabilities = emptyCapabilityFlags();
       capabilities.text = entry.capabilities.text === true;
       capabilities.image =
         entry.capabilities.image === true && modalities.image === true;
+      // Newly supported PDF input appears enabled after a re-check. A PDF
+      // switch the learner already turned off stays off.
+      capabilities.file =
+        modalities.file === true &&
+        (entry.capabilities.file === true || !entry.detectedCapabilities.file);
       const updated: ModelEntry = {
         ...entry,
         capabilities,
