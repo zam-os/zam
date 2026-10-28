@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-27T21:20:00Z
+timestamp: 2026-10-28T06:30:00Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -453,6 +453,12 @@ The retired cards keep their personal card states and review histories but no
 longer enter the review queue. The old cells are no longer bundled. Grades 6
 and 7 therefore get no Anfangsunterricht cell: discovery there offers only
 the grade-less Aufbauunterricht cells and the generic curriculum importer.
+A moved card keeps its schedule and history, but its item is bound to grade
+8 only, so a grade-6 or grade-7 learner's moved card now sits at grade 8 in
+the curriculum. In grade 8 the cell covers the position fully, so the generic
+importer is not offered beside it, although the cell teaches only
+Lernbereich 1: coverage is decided per position (ADR 2026-08-14 Decision 10),
+not per Lernbereich, as it was for the old school cell.
 
 Mathematik 10 has two Fachlehrpläne that differ in content, not only in
 depth: Zweig I learns Abbildungen and Logarithmusfunktionen, Zweig II/III

@@ -159,6 +159,9 @@ describe("ZAM Academy Informatik 8 Realschule cell", () => {
           ),
           `${subject} ${track}`,
         ).toContain(CELL_ID);
+        // Coverage is decided per position, not per Lernbereich (ADR
+        // 2026-08-14 Decision 10): a grade-8 binding covers grade 8 fully,
+        // although the cell teaches only Lernbereich 1.
         expect(needsGenericCurriculumImport(scope(subject, track))).toBe(false);
       }
     }
