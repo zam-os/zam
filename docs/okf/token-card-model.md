@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-28T06:30:00Z
+timestamp: 2026-10-28T09:00:00Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -442,23 +442,22 @@ card state or review history.
 
 Informatik 8 Realschule covers the IT-Anfangsunterricht, modules 1.1 to
 1.9, which every Wahlpflichtfächergruppe completes by the end of grade 8.
-Its Academy cell, version 2026.10.2, binds its 40 lessons (33 with two
-practice items, seven with three, 87 practice items total) to grade 8 without
-a track, as `it-1.1` to `it-1.9`. The manifest keeps these modules inside
-Lernbereich 1 „Anfangsunterricht“. The cell replaces three old school cells,
-one each for grades 6, 7 and 8. Of their 24 cards, ten A rows and one B row
-pass their histories on; the thirteen C cards are multi-part, outside 1.1 to
-1.9, or uncertain, and are retired as `retired_items` (approved 2026-10-27).
-The retired cards keep their personal card states and review histories but no
-longer enter the review queue. The old cells are no longer bundled. Grades 6
-and 7 therefore get no Anfangsunterricht cell: discovery there offers only
-the grade-less Aufbauunterricht cells and the generic curriculum importer.
-A moved card keeps its schedule and history, but its item is bound to grade
-8 only, so a grade-6 or grade-7 learner's moved card now sits at grade 8 in
-the curriculum. In grade 8 the cell covers the position fully, so the generic
-importer is not offered beside it, although the cell teaches only
-Lernbereich 1: coverage is decided per position (ADR 2026-08-14 Decision 10),
-not per Lernbereich, as it was for the old school cell.
+Its Academy cell, version 2026.10.3, binds each of its 40 lessons (33 with
+two practice items, seven with three, 87 practice items total) to grades 6, 7
+and 8 without a track, as `it-1.1` to `it-1.9`. The manifest keeps these
+modules inside Lernbereich 1 „Anfangsunterricht“. The cell replaces three old
+school cells, one each for grades 6, 7 and 8. Of their 24 cards, ten A rows
+and one B row pass their histories on; the thirteen C cards are multi-part,
+outside 1.1 to 1.9, or uncertain, and are retired as `retired_items` (approved
+2026-10-27). The retired cards keep their personal card states and review
+histories but no longer enter the review queue. The old cells are no longer
+bundled. A moved card keeps its schedule and history, and because every item
+is bound to grades 6, 7 and 8, a moved card from the grade-6 or grade-7 cell
+stays placed in its own grade. In each of these grades the cell covers the
+position fully, so the generic importer is not offered beside it, although
+the cell teaches only Lernbereich 1: coverage is decided per position (ADR
+2026-08-14 Decision 10), not per Lernbereich, as it was for the old school
+cells.
 
 Mathematik 10 has two Fachlehrpläne that differ in content, not only in
 depth: Zweig I learns Abbildungen and Logarithmusfunktionen, Zweig II/III

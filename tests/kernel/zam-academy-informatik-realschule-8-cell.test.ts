@@ -46,8 +46,10 @@ const legacyTiles = [legacyRs6Raw, legacyRs7Raw, legacyRs8Raw].map(
 );
 
 // Thomas approved all 24 rows on 2026-10-27 (zam-os/zam-academy#62, cell
-// 2026.10.2): 10 A and 1 B pass their history on, 13 C retire. The cell bytes
-// and the decision record are those of zam-os/zam-academy@41d9b3a.
+// 2026.10.2): 10 A and 1 B pass their history on, 13 C retire. The decision
+// record is that of zam-os/zam-academy@41d9b3a. Cell 2026.10.3
+// (zam-os/zam-academy#63, @9a9ede38) adds the same bindings for grades 6 and 7
+// and changes no id, card, replaces or retired_items.
 const REPLACEMENTS: Record<string, string> = {
   "01K4A6T0000000000000000J01": "it8-textobjekte-absatzattribut",
   "01K4A8V0000000000000000J01": "it8-textobjekte-zustand",
@@ -101,8 +103,8 @@ describe("ZAM Academy Informatik 8 Realschule cell", () => {
   it("bundles the published bytes and removes the three legacy cells from discovery", () => {
     expect(
       createHash("sha256").update(readFileSync(FIXTURE)).digest("hex"),
-    ).toBe("a799ea2be7337ed968ddfb939f3cb11dd7f2aee9896a592331eb99194f131738");
-    expect(tile.version).toBe("2026.10.2");
+    ).toBe("6f7a95cae80bb719014a441277b4dc443777526a4ff56f461ce76b6d4b67fa99");
+    expect(tile.version).toBe("2026.10.3");
     expect(getBundledCell(CELL_ID)).toMatchObject({
       title: "Informatik 8 Realschule (ZAM Academy)",
       publisher: "ZAM Academy",
@@ -139,45 +141,43 @@ describe("ZAM Academy Informatik 8 Realschule cell", () => {
     }
   });
 
-  it("offers Informatik 8 to every Wahlpflichtfächergruppe in grade 8 only", () => {
-    for (const subject of ["it", "informatik", "informationstechnologie"]) {
-      for (const track of [
-        undefined,
-        "I",
-        "wpfg1",
-        "II",
-        "wpfg2",
-        "IIIa",
-        "wpfg3a",
-        "IIIb",
-        "wpfg3b",
-        "wpfg2-3",
-      ]) {
-        expect(
-          findBundledCellsForScope(scope(subject, track)).map(
-            (cell) => cell.id,
-          ),
-          `${subject} ${track}`,
-        ).toContain(CELL_ID);
-        // Coverage is decided per position, not per Lernbereich (ADR
-        // 2026-08-14 Decision 10): a grade-8 binding covers grade 8 fully,
-        // although the cell teaches only Lernbereich 1.
-        expect(needsGenericCurriculumImport(scope(subject, track))).toBe(false);
+  it("offers Informatik 8 to every Wahlpflichtfächergruppe in grades 6 to 8 only", () => {
+    for (const grade of [6, 7, 8])
+      for (const subject of ["it", "informatik", "informationstechnologie"]) {
+        for (const track of [
+          undefined,
+          "I",
+          "wpfg1",
+          "II",
+          "wpfg2",
+          "IIIa",
+          "wpfg3a",
+          "IIIb",
+          "wpfg3b",
+          "wpfg2-3",
+        ]) {
+          expect(
+            findBundledCellsForScope(scope(subject, track, grade)).map(
+              (cell) => cell.id,
+            ),
+            `${grade} ${subject} ${track}`,
+          ).toContain(CELL_ID);
+          // Coverage is decided per position, not per Lernbereich (ADR
+          // 2026-08-14 Decision 10): a binding that names the grade covers that
+          // grade fully, although the cell teaches only Lernbereich 1.
+          expect(
+            needsGenericCurriculumImport(scope(subject, track, grade)),
+          ).toBe(false);
+        }
       }
-    }
-    // The three old cells sat at grades 6, 7 and 8. Grades 6 and 7 keep only
-    // grade-less Aufbauunterricht cells there, so the importer stays offered.
-    for (const grade of [5, 6, 7, 9, 10]) {
+    // The three old cells sat at grades 6, 7 and 8; the cell binds the same
+    // three grades, so no learner position loses its Anfangsunterricht.
+    for (const grade of [5, 9, 10]) {
       expect(
         findBundledCellsForScope(scope("it", "I", grade)).map(
           (cell) => cell.id,
         ),
       ).not.toContain(CELL_ID);
-    }
-    for (const grade of [6, 7]) {
-      expect(needsGenericCurriculumImport(scope("it", undefined, grade))).toBe(
-        true,
-      );
     }
     expect(
       findBundledCellsForScope({
@@ -189,18 +189,25 @@ describe("ZAM Academy Informatik 8 Realschule cell", () => {
     ).not.toContain(CELL_ID);
   });
 
-  it("binds all 40 lessons to the nine Anfangsunterricht modules for every group", () => {
+  it("binds all 40 lessons to the nine Anfangsunterricht modules in grades 6 to 8 for every group", () => {
     for (const atom of tile.atoms) {
       const school = (atom.curricula ?? []).filter(
         (binding) => binding.provider === "lehrplanplus-bayern",
       );
-      expect(school, atom.slug).toHaveLength(1);
-      expect(school[0]).toMatchObject({
-        school_type: "realschule",
-        grade: 8,
-        subject: "it",
-      });
-      expect(school[0].track, atom.slug).toBeUndefined();
+      expect(
+        school.map((binding) => binding.grade),
+        atom.slug,
+      ).toEqual([6, 7, 8]);
+      for (const binding of school) {
+        expect(binding).toMatchObject({
+          school_type: "realschule",
+          subject: "it",
+          topic_code: school[0].topic_code,
+          topic_title: school[0].topic_title,
+          exam_relevant: false,
+        });
+        expect(binding.track, atom.slug).toBeUndefined();
+      }
       expect(atom.source_link).toBe(`${APP}#lesson=${atom.slug}`);
       for (const item of atom.practice_items) {
         expect(item.source_link).toBe(atom.source_link);
@@ -211,6 +218,7 @@ describe("ZAM Academy Informatik 8 Realschule cell", () => {
         (atom.curricula ?? []).filter(
           (binding) =>
             binding.provider === "lehrplanplus-bayern" &&
+            binding.grade === 8 &&
             binding.topic_code === code,
         ),
       );

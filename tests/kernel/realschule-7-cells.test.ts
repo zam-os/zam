@@ -16,8 +16,8 @@ import {
 } from "../../src/kernel/index.js";
 
 // The Informatik cell of this grade moved to the ZAM Academy cell
-// zam-academy:informatik-realschule-8 (zam-os/zam-academy#62), which binds the
-// IT-Anfangsunterricht (modules 1.1–1.9) to Jahrgangsstufe 8. See
+// zam-academy:informatik-realschule-8 (zam-os/zam-academy#62, #63), which binds
+// the IT-Anfangsunterricht (modules 1.1–1.9) to Jahrgangsstufen 6, 7 and 8. See
 // tests/kernel/zam-academy-informatik-realschule-8-cell.test.ts.
 const RS7_CELL_IDS = [
   "de-by:realschule-7-mathematik-rationale-zahlen-terme",
@@ -77,7 +77,10 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
       grade: 7,
     });
     expect(rs7Cells.length).toBeGreaterThanOrEqual(16);
-    for (const cellId of RS7_CELL_IDS) {
+    for (const cellId of [
+      ...RS7_CELL_IDS,
+      "zam-academy:informatik-realschule-8",
+    ]) {
       expect(
         rs7Cells.some((c) => c.id === cellId),
         `findBundledCellsForScope should include ${cellId}`,

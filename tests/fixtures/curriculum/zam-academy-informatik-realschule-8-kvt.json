@@ -1,11 +1,11 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "zam-academy:informatik-realschule-8",
-  "version": "2026.10.2",
+  "version": "2026.10.3",
   "title": "Informatik 8 Realschule (ZAM Academy)",
   "description": "IT-Anfangsunterricht nach LehrplanPLUS Bayern (Module 1.1–1.9, alle Wahlpflichtfächergruppen, spätestens Ende Jahrgangsstufe 8): neun Etappen mit 40 Lektionen von Zehnfingersystem und ersten Programmen über Textverarbeitung, Dualsystem, Bildbearbeitung und Tabellenkalkulation bis zu Präsentation, Computeraufbau, Datensicherheit und digitalen Medien. Jede Karte führt zur passenden Lektion zurück.",
   "publisher": "ZAM Academy",
-  "published_at": "2026-10-27T12:00:00Z",
+  "published_at": "2026-10-27T21:30:00Z",
   "sources": [
     {
       "uri": "https://academy.zam-os.org/informatik-realschule-8/",
@@ -90,6 +90,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "texterfassung",
           "topic_title": "Texterfassung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -201,6 +219,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.1",
@@ -269,6 +305,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "texterfassung",
           "topic_title": "Texterfassung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -345,6 +399,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.1",
@@ -413,6 +485,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "programmierung",
           "topic_title": "Einführung in die Programmierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -524,6 +614,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.2",
@@ -602,6 +710,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.2",
@@ -676,6 +802,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "programmierung",
           "topic_title": "Einführung in die Programmierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -763,6 +907,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.2",
@@ -837,6 +999,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "textverarbeitung",
           "topic_title": "Einführung in die Textverarbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -948,6 +1128,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.3",
@@ -1022,6 +1220,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "textverarbeitung",
           "topic_title": "Einführung in die Textverarbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -1139,6 +1355,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.3",
@@ -1214,6 +1448,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.4",
@@ -1285,6 +1537,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "informationsaustausch",
           "topic_title": "Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -1386,6 +1656,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "informationsaustausch",
           "topic_title": "Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -1500,6 +1788,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.4",
@@ -1568,6 +1874,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "informationsaustausch",
           "topic_title": "Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -1650,6 +1974,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.4",
@@ -1718,6 +2060,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "bildbearbeitung",
           "topic_title": "Einführung in die Bildbearbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -1808,6 +2168,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.5",
@@ -1885,6 +2263,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "bildbearbeitung",
           "topic_title": "Einführung in die Bildbearbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -1967,6 +2363,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.5",
@@ -2035,6 +2449,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "tabellenkalkulation",
           "topic_title": "Einführung in die Tabellenkalkulation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -2113,6 +2545,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "tabellenkalkulation",
           "topic_title": "Einführung in die Tabellenkalkulation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -2227,6 +2677,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.6",
@@ -2301,6 +2769,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "tabellenkalkulation",
           "topic_title": "Einführung in die Tabellenkalkulation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -2383,6 +2869,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.6",
@@ -2451,6 +2955,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "praesentation",
           "topic_title": "Informationsbeschaffung und -präsentation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -2533,6 +3055,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.7",
@@ -2607,6 +3147,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "praesentation",
           "topic_title": "Informationsbeschaffung und -präsentation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -2689,6 +3247,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.7",
@@ -2757,6 +3333,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "edv",
           "topic_title": "Grundlagen elektronischer Datenverarbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -2835,6 +3429,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "edv",
           "topic_title": "Grundlagen elektronischer Datenverarbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -2920,6 +3532,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.8",
@@ -2998,6 +3628,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.8",
@@ -3066,6 +3714,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "digitale-medien",
           "topic_title": "Digitale Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",
@@ -3148,6 +3814,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.9",
@@ -3226,6 +3910,24 @@
         {
           "provider": "lehrplanplus-bayern",
           "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
           "grade": 8,
           "subject": "it",
           "topic_code": "it-1.9",
@@ -3300,6 +4002,24 @@
           "subject": "informatik-realschule-8",
           "topic_code": "digitale-medien",
           "topic_title": "Digitale Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
         },
         {
           "provider": "lehrplanplus-bayern",

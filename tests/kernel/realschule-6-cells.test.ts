@@ -16,8 +16,8 @@ import {
 } from "../../src/kernel/index.js";
 
 // The Informatik cell of this grade moved to the ZAM Academy cell
-// zam-academy:informatik-realschule-8 (zam-os/zam-academy#62), which binds the
-// IT-Anfangsunterricht (modules 1.1–1.9) to Jahrgangsstufe 8. See
+// zam-academy:informatik-realschule-8 (zam-os/zam-academy#62, #63), which binds
+// the IT-Anfangsunterricht (modules 1.1–1.9) to Jahrgangsstufen 6, 7 and 8. See
 // tests/kernel/zam-academy-informatik-realschule-8-cell.test.ts.
 const RS6_CELL_IDS = [
   "de-by:realschule-6-mathematik-brueche-dezimalbrueche",
@@ -70,7 +70,10 @@ describe("Realschule Bayern 6 Curriculum Cells (Einführungs- und Orientierungss
       grade: 6,
     });
     expect(rs6Cells.length).toBeGreaterThanOrEqual(9);
-    for (const cellId of RS6_CELL_IDS) {
+    for (const cellId of [
+      ...RS6_CELL_IDS,
+      "zam-academy:informatik-realschule-8",
+    ]) {
       expect(
         rs6Cells.some((c) => c.id === cellId),
         `findBundledCellsForScope should include ${cellId}`,
