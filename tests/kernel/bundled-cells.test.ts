@@ -279,8 +279,8 @@ describe("Bundled learning cells (Phase 1)", () => {
           "zam-academy:datennetze",
         ]),
       );
-      expect(ids({ grade: 7, subject: "it" })).toContain(
-        "de-by:realschule-7-informatik-informationsdarstellung-dateisystem",
+      expect(ids({ grade: 8, subject: "it" })).toContain(
+        "zam-academy:informatik-realschule-8",
       );
       expect(
         ids({ grade: 7, subject: "bwl-rechnungswesen", track: "wpfg2-3" }),

@@ -23,13 +23,16 @@ import {
 // sixteen cards pass their history on, ten retire without transferring
 // mastery, and two (Jahrgangsstufe 9 content) stay active in libraries that
 // hold them. See tests/kernel/zam-academy-physik-realschule-8-cell.test.ts.
+// The Informatik cells of grades 6, 7 and 8 moved to the ZAM Academy cell
+// zam-academy:informatik-realschule-8 (zam-os/zam-academy#62). Eleven of their
+// 24 cards pass their history on, thirteen retire without transferring
+// mastery. See tests/kernel/zam-academy-informatik-realschule-8-cell.test.ts.
 const RS8_CELL_IDS = [
   "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
   "de-by:realschule-8-chemie-chemische-reaktion-oxidation",
   "de-by:realschule-8-biologie-atmung-blutkreislauf",
   "de-by:realschule-8-biologie-ernaehrung-verdauung",
   "de-by:realschule-8-bwr-erfolgskonten-guv-werkstoffe-rabatte",
-  "de-by:realschule-8-informatik-objektorientierung-vektorgrafik",
   "de-by:realschule-8-geschichte-aufklaerung-revolution-kaiserreich",
   "de-by:realschule-8-wirtschaft-recht-konsum-geld-jugend",
   "de-by:realschule-8-geographie-tropen-regenwald-passat-wuesten",
@@ -38,6 +41,7 @@ const RS8_CELL_IDS = [
   "de-by:realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive",
 ];
 const ACADEMY_RS8_IDS = [
+  "zam-academy:informatik-realschule-8",
   "zam-academy:mathematik-realschule-8",
   "zam-academy:physik-realschule-8",
 ];
@@ -75,7 +79,7 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
       schoolType: "realschule",
       grade: 8,
     });
-    // Twelve school cells and the Academy cells listed above.
+    // Eleven school cells and the Academy cells listed above.
     expect(rs8Cells.length).toBeGreaterThanOrEqual(
       RS8_CELL_IDS.length + ACADEMY_RS8_IDS.length,
     );
@@ -130,12 +134,12 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
       totalCards += res.cardsCreated;
     }
 
-    // 7 cells * 8 + 5 cells * 4 = 56 + 20 = 76 cards
-    expect(totalCards).toBe(76);
+    // 6 cells * 8 + 5 cells * 4 = 48 + 20 = 68 cards
+    expect(totalCards).toBe(68);
 
     const cards = (await db
       .prepare(`SELECT COUNT(*) as count FROM cards WHERE user_id = ?`)
       .get(user)) as { count: number };
-    expect(cards.count).toBe(76);
+    expect(cards.count).toBe(68);
   });
 });

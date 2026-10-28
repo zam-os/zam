@@ -15,12 +15,15 @@ import {
   openDatabase,
 } from "../../src/kernel/index.js";
 
+// The Informatik cell of this grade moved to the ZAM Academy cell
+// zam-academy:informatik-realschule-8 (zam-os/zam-academy#62, #63), which binds
+// the IT-Anfangsunterricht (modules 1.1–1.9) to Jahrgangsstufen 6, 7 and 8. See
+// tests/kernel/zam-academy-informatik-realschule-8-cell.test.ts.
 const RS6_CELL_IDS = [
   "de-by:realschule-6-mathematik-brueche-dezimalbrueche",
   "de-by:realschule-6-mathematik-flaechen-raum-volumen",
   "de-by:realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen",
   "de-by:realschule-6-biologie-voegel-fische-amphibien-reptilien",
-  "de-by:realschule-6-informatik-textverarbeitung-praesentation",
   "de-by:realschule-6-geschichte-urgeschichte-antike",
   "de-by:realschule-6-geographie-deutschland-bayern-raum",
   "de-by:realschule-6-englisch-grammatik-grundlagen",
@@ -44,7 +47,7 @@ describe("Realschule Bayern 6 Curriculum Cells (Einführungs- und Orientierungss
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all bundled cells including all 10 Realschule 6 cells", () => {
+  it("lists all bundled cells including all 9 Realschule 6 cells", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(100);
 
@@ -66,8 +69,11 @@ describe("Realschule Bayern 6 Curriculum Cells (Einführungs- und Orientierungss
       schoolType: "realschule",
       grade: 6,
     });
-    expect(rs6Cells.length).toBeGreaterThanOrEqual(10);
-    for (const cellId of RS6_CELL_IDS) {
+    expect(rs6Cells.length).toBeGreaterThanOrEqual(9);
+    for (const cellId of [
+      ...RS6_CELL_IDS,
+      "zam-academy:informatik-realschule-8",
+    ]) {
       expect(
         rs6Cells.some((c) => c.id === cellId),
         `findBundledCellsForScope should include ${cellId}`,
@@ -111,7 +117,7 @@ describe("Realschule Bayern 6 Curriculum Cells (Einführungs- und Orientierungss
     expect(reportAtoms.length).toBe(1);
   });
 
-  it("supports simultaneous enrolment in ALL 10 Grade 6 Realschule cells without conflict", async () => {
+  it("supports simultaneous enrolment in ALL 9 Grade 6 Realschule cells without conflict", async () => {
     const userId = "01K4TESTUSERALLRS6000000001";
 
     let totalCardsCreated = 0;
@@ -122,12 +128,12 @@ describe("Realschule Bayern 6 Curriculum Cells (Einführungs- und Orientierungss
       totalCardsCreated += res.cardsCreated;
     }
 
-    // 9 cells * 8 + 1 cell * 4 = 72 + 4 = 76 cards
-    expect(totalCardsCreated).toBe(76);
+    // 8 cells * 8 + 1 cell * 4 = 64 + 4 = 68 cards
+    expect(totalCardsCreated).toBe(68);
 
     const statuses = await getBundledCellsWithStatus(db, userId);
     const rs6Statuses = statuses.filter((s) => RS6_CELL_IDS.includes(s.id));
-    expect(rs6Statuses.length).toBe(10);
+    expect(rs6Statuses.length).toBe(9);
     for (const status of rs6Statuses) {
       expect(status.installed).toBe(true);
       expect(status.enrolled).toBe(true);

@@ -1,0 +1,4079 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:informatik-realschule-8",
+  "version": "2026.10.3",
+  "title": "Informatik 8 Realschule (ZAM Academy)",
+  "description": "IT-Anfangsunterricht nach LehrplanPLUS Bayern (Module 1.1–1.9, alle Wahlpflichtfächergruppen, spätestens Ende Jahrgangsstufe 8): neun Etappen mit 40 Lektionen von Zehnfingersystem und ersten Programmen über Textverarbeitung, Dualsystem, Bildbearbeitung und Tabellenkalkulation bis zu Präsentation, Computeraufbau, Datensicherheit und digitalen Medien. Jede Karte führt zur passenden Lektion zurück.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-10-27T21:30:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/informatik-realschule-8/",
+      "checked": "2026-10-27",
+      "label": "ZAM Academy: Informatik 8 Realschule, IT-Anfangsunterricht 1.1–1.9"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/it",
+      "checked": "2026-10-27",
+      "label": "LehrplanPLUS Realschule Informationstechnologie, Lernbereich 1 Anfangsunterricht"
+    }
+  ],
+  "retired_items": [
+    {
+      "id": "01K4A6T0000000000000000J02",
+      "reason": "Mehrteiliger Sammelabruf zu Zeichen- und Absatzformaten samt Formatvorlagen und Inhaltsverzeichnis; Formatvorlagen gehören nicht zum Anfangsunterricht 1.1–1.9. Keine Karte mit gleichem Gesamtumfang. Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4A6T0000000000000000J04",
+      "reason": "Sammelabruf zu fünf Textumbrucharten und Skalieren mit Umschalttaste; die neue Lektion behandelt Umbruch und Eckanfasser in getrennten Karten, kein gleicher Gesamtumfang. Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4A6T0000000000000000J05",
+      "reason": "Die Altkarte erklärt KISS als „Keep It Simple and Smart“; diese Auflösung ist nicht gesichert. Die neue Lektion lehrt die Gestaltungsregeln ohne das Akronym. Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4A6T0000000000000000J06",
+      "reason": "Mehrteiliger Abruf von fünf Folienregeln (u. a. starre 7x7-Regel, Titel 32–40 pt) und Folienmaster; die neue Zelle fragt Folienmaster und Gestaltungsregeln getrennt und mit anderen Faustregeln. Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4A6T0000000000000000J08",
+      "reason": "Sammelabruf zu Tabellenstruktur, drei Datentypen und drei Funktionen; in der neuen Zelle auf Bereich, Datentypen und MITTELWERT aufgeteilt. Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4A7D0000000000000000J02",
+      "reason": "Mehrteiliger Abruf zu Zeichen/Daten/Information, Codierung sowie Syntax und Semantik; Syntax/Semantik ist kein Inhalt von 1.4, kein gleicher Gesamtumfang. Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4A7D0000000000000000J06",
+      "reason": "Sammelabruf zu Binärpräfixen (KiB/MiB/GiB), ASCII gegen UTF-8 und Bitmuster von A; UTF-8-Bytelängen gehen über den Anfangsunterricht hinaus, kein gleicher Gesamtumfang. Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4A7D0000000000000000J08",
+      "reason": "Sammelabruf zu Baumstruktur, relativen Pfaden mit . und .. und Dateiendungen; relative Pfade sind kein Inhalt von 1.8, keine gleiche Karte. Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4A8V0000000000000000J02",
+      "reason": "Mehrteiliger Erklärabruf zur objektorientierten Modellierung ohne Musterlösung; die neue Zelle fragt Objekte, Attribute und Punktnotation an Textobjekten, nicht an einem Grafikkreis. Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4A8V0000000000000000J03",
+      "reason": "Methoden im objektorientierten Paradigma gehören zu IT 2.6.2 (Aufbauunterricht), nicht zum Anfangsunterricht dieses Pakets. Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4A8V0000000000000000J04",
+      "reason": "Klassen, Methodenaufrufe und UML-Klassendiagramm gehören zu IT 2.6.2 (Aufbauunterricht), nicht zum Anfangsunterricht dieses Pakets. Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4A8V0000000000000000J06",
+      "reason": "Systematischer Mehrfachvergleich nach vier Kriterien ohne Musterlösung; die neue Tier-2-Karte vergleicht Aufbau und Einsatz, nicht denselben Gesamtumfang. Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    },
+    {
+      "id": "01K4A8V0000000000000000J08",
+      "reason": "Kombinierter Abruf zu RGB/CMYK und einer Speicherberechnung 4000 × 3000 ohne Musterlösung; die neue Karte rechnet ein anderes Beispiel, kein gleicher Gesamtumfang. Kein Lernstandsübertrag; stillgelegt, die Historie bleibt am alten Token."
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5Y21G60VXXA1DC3GTCEVD7F",
+      "atom_uri": "urn:zam:atom:01M5Y21G60VXXA1DC3GTCEVD7F",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-zehnfingersystem",
+      "title": "Zehnfingersystem: Grundstellung und Griffwege",
+      "domain": "informatik/texterfassung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-zehnfingersystem",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "texterfassung",
+          "topic_title": "Texterfassung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21G63Y707WS4RC8EJP8WF",
+          "slug": "it8-zehnfingersystem-grundstellung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-zehnfingersystem",
+          "question": "Auf welchen Tasten liegen im Zehnfingersystem die Finger in der Grundstellung?",
+          "concept": "A S D F und J K L Ö",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A S D F und J K L Ö",
+              "Q W E R und U I O P"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Q W E R und U I O P",
+              "reason": "Das ist die obere Buchstabenreihe, nicht die Grundreihe."
+            },
+            {
+              "text": "Y X C V und N M , .",
+              "reason": "Das ist die untere Reihe; dort liegen die Finger nicht in Ruhe."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21G667GB9T2C7P0WTN3CP",
+          "slug": "it8-zehnfingersystem-r-zeigefinger",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-zehnfingersystem",
+          "question": "Welcher Finger tippt im Zehnfingersystem das R?",
+          "concept": "Der linke Zeigefinger",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der linke Zeigefinger",
+              "Der linke Mittelfinger"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der linke Mittelfinger",
+              "reason": "Der linke Mittelfinger tippt D, E und C; R liegt über dem F."
+            },
+            {
+              "text": "Der rechte Zeigefinger",
+              "reason": "Der rechte Zeigefinger tippt H, J, Z, U, N und M, nicht R."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21G6934Y3R6J5MQBH10WW",
+          "slug": "it8-zehnfingersystem-griffwege",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-zehnfingersystem",
+          "question": "Wie findest du ohne Hinsehen die Grundstellung, und welche Tasten erreicht ein Finger von dort?",
+          "concept": "Tastmarken auf F und J; jeder Finger tippt seine Grundtaste und die Tasten schräg darüber und darunter, die Zeigefinger zusätzlich die Spalte zur Mitte.",
+          "materiality": "material",
+          "sample_solution": "Die Zeigefinger ertasten die kleinen Erhebungen auf F und J, die anderen Finger legen sich daneben (A S D F – J K L Ö), die Daumen über die Leertaste. Von seiner Grundtaste aus erreicht jeder Finger die Tasten schräg darüber und darunter, z. B. der linke Mittelfinger E und C. Die Zeigefinger tippen zusätzlich die Spalte zur Tastaturmitte (links G, T, B, rechts H, Z, N). Nach jedem Anschlag kehrt der Finger in die Grundstellung zurück."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21G6BWAZA7Q22VN7CV0ND",
+      "atom_uri": "urn:zam:atom:01M5Y21G6BWAZA7Q22VN7CV0ND",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-tippfehler",
+      "title": "Tippfehler erkennen und vermeiden",
+      "domain": "informatik/texterfassung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-tippfehler",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21G60VXXA1DC3GTCEVD7F",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Zehnfingersystem: Grundstellung und Griffwege“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "texterfassung",
+          "topic_title": "Texterfassung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21G6EHWK2YDKV2M6DSE2F",
+          "slug": "it8-tippfehler-rechtschreibpruefung-grenze",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-tippfehler",
+          "question": "Welchen Tippfehler findet die automatische Rechtschreibprüfung nicht?",
+          "concept": "Einen Fehler, der wieder ein echtes Wort ergibt",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einen Fehler, der wieder ein echtes Wort ergibt",
+              "Einen Buchstabendreher in einem langen Wort"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Einen Buchstabendreher in einem langen Wort",
+              "reason": "Ein Dreher wie „Tasattur“ ergibt meist kein Wort und wird markiert."
+            },
+            {
+              "text": "Ein Wort mit einem fehlenden Buchstaben",
+              "reason": "„Specher“ steht nicht im Wörterbuch und wird markiert."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21G6HV58ZKEPF5X6HM8D7",
+          "slug": "it8-tippfehler-fehlerquote",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-tippfehler",
+          "question": "Wie berechnest du die Fehlerquote einer Abschrift, und wie vermeidest du Tippfehler?",
+          "concept": "Fehlerquote = Fehler ÷ Anschläge · 100 %; Grundstellung prüfen, Tempo an Sicherheit anpassen, Korrektur lesen.",
+          "materiality": "material",
+          "sample_solution": "Die Fehlerquote ist der Anteil der Fehler an allen Anschlägen: Fehler ÷ Anschläge · 100 %. Beispiel: 4 Fehler bei 400 Anschlägen ergeben 1 %. Fehler vermeidest du, indem du die Grundstellung über die Tastmarken auf F und J prüfst, nur so schnell schreibst, wie du sicher bist, und den Text danach selbst liest. Die Rechtschreibprüfung hilft, findet aber keine Fehler, die ein echtes Wort ergeben („Wald“ statt „Wand“)."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21G6MTG13C74D78B1K5ZK",
+      "atom_uri": "urn:zam:atom:01M5Y21G6MTG13C74D78B1K5ZK",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-text-grundfunktionen",
+      "title": "Grundfunktionen der Textverarbeitung",
+      "domain": "informatik/texterfassung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-text-grundfunktionen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "texterfassung",
+          "topic_title": "Texterfassung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21G6Q28CBPJTCDQPCS0DE",
+          "slug": "it8-text-grundfunktionen-speichern-unter",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-text-grundfunktionen",
+          "question": "Was unterscheidet „Speichern unter“ von „Speichern“?",
+          "concept": "Es legt eine neue Datei an statt zu überschreiben.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es legt eine neue Datei an statt zu überschreiben.",
+              "Es druckt die Datei zusätzlich auf Papier aus."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Es druckt die Datei zusätzlich auf Papier aus.",
+              "reason": "Drucken ist eine eigene Grundfunktion; „Speichern unter“ wählt Name, Ort und Format."
+            },
+            {
+              "text": "Es speichert nur die Formatierung ohne Text.",
+              "reason": "Gespeichert wird das ganze Dokument, nur unter neuem Namen, Ort oder Format."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21G6T66JY504DEQ88KZQR",
+          "slug": "it8-text-grundfunktionen-zeichenformate",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-text-grundfunktionen",
+          "question": "Welche einfachen Formatierungen wirken auf Zeichen, und wie gehst du beim Formatieren vor?",
+          "concept": "Schriftart, Schriftgrad (pt), Schriftfarbe, Schriftschnitt (fett, kursiv, unterstrichen); erst markieren, dann formatieren.",
+          "materiality": "material",
+          "sample_solution": "Zeichenformate sind Schriftart (z. B. Arial ohne Serifen, Times New Roman mit Serifen), Schriftgrad in Punkt (Fließtext meist 11 oder 12 pt), Schriftfarbe und Schriftschnitt (fett, kursiv, unterstrichen). Man markiert zuerst den Text und wählt dann das Format; ohne Markierung wirkt die Formatierung nur auf das, was man danach tippt."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21G6XNPK5VD7XHAW86AQJ",
+      "atom_uri": "urn:zam:atom:01M5Y21G6XNPK5VD7XHAW86AQJ",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-ergonomie",
+      "title": "Ergonomie am Computerarbeitsplatz",
+      "domain": "informatik/texterfassung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-ergonomie",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "texterfassung",
+          "topic_title": "Texterfassung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.1",
+          "topic_title": "Texterfassung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21G703SBZENTE9BC8VD2T",
+          "slug": "it8-ergonomie-sehabstand",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-ergonomie",
+          "question": "Wie weit sollte der Bildschirm etwa von den Augen entfernt sein?",
+          "concept": "Etwa eine Armlänge, 50 bis 70 cm",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Etwa eine Armlänge, 50 bis 70 cm",
+              "Etwa eine Handbreit, 10 bis 20 cm"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Etwa eine Handbreit, 10 bis 20 cm",
+              "reason": "So nah ermüden die Augen sehr schnell."
+            },
+            {
+              "text": "Mindestens zwei Meter",
+              "reason": "So weit weg muss man sich vorbeugen, um etwas zu lesen."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21G7387NRAQ2X8187624E",
+          "slug": "it8-ergonomie-arbeitsplatz",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-ergonomie",
+          "question": "Wie richtest du einen Bildschirmarbeitsplatz ergonomisch ein?",
+          "concept": "Sehabstand 50–70 cm, Oberkante auf oder unter Augenhöhe, Füße flach und Knie etwa 90°, Fenster seitlich, regelmäßige Pausen mit Lockerungsübungen.",
+          "materiality": "material",
+          "sample_solution": "Der Bildschirm steht etwa eine Armlänge (50 bis 70 cm) entfernt, seine Oberkante auf oder etwas unter Augenhöhe, damit man leicht nach unten blickt. Man sitzt aufrecht, die Füße stehen flach auf dem Boden, die Knie bilden etwa einen rechten Winkel. Das Fenster liegt seitlich, weil Licht von hinten spiegelt und Licht von vorn blendet. Kurze Pausen mit Lockerungsübungen beugen Verspannungen vor."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21G76B21DPJ1RVDMQ1ACK",
+      "atom_uri": "urn:zam:atom:01M5Y21G76B21DPJ1RVDMQ1ACK",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-handlungsvorschriften",
+      "title": "Handlungsvorschriften und Programme",
+      "domain": "informatik/programmierung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-handlungsvorschriften",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "programmierung",
+          "topic_title": "Einführung in die Programmierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21G7APY9K0QKV50BSD836",
+          "slug": "it8-handlungsvorschriften-eigenschaften",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-handlungsvorschriften",
+          "question": "Welche drei Eigenschaften braucht eine Handlungsvorschrift, damit ein Computer sie ausführen kann?",
+          "concept": "eindeutig, ausführbar und endlich",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "eindeutig, ausführbar und endlich",
+              "schnell, kurz und farbig"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "schnell, kurz und farbig",
+              "reason": "Kürze oder Tempo machen eine Vorschrift nicht ausführbar."
+            },
+            {
+              "text": "geheim, teuer und kompliziert",
+              "reason": "Diese Merkmale haben mit Ausführbarkeit nichts zu tun."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21G7DVVQMDHZ7R30XQ8H9",
+          "slug": "it8-handlungsvorschriften-entwicklungsumgebung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-handlungsvorschriften",
+          "question": "Wie heißt ein Programm, in dem man Programme schreibt, startet und auf Fehler prüft?",
+          "concept": "Entwicklungsumgebung",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Entwicklungsumgebung",
+              "Betriebssystem"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Betriebssystem",
+              "reason": "Das Betriebssystem verwaltet Geräte und startet Programme, ist aber kein Werkzeug zum Programmieren."
+            },
+            {
+              "text": "Tabellenkalkulation",
+              "reason": "Eine Tabellenkalkulation rechnet mit Tabellen, sie ist keine Programmierumgebung."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21G7G6FJ2TDNVBB5MV4NY",
+          "slug": "it8-handlungsvorschriften-roboter-reihenfolge",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-handlungsvorschriften",
+          "question": "Ein Roboter steht auf A5 mit Blick nach Norden. Wohin führen „rechts drehen · vor · vor“ und „vor · vor · rechts drehen“?",
+          "concept": "Erstes Programm: C5 mit Blick nach Osten; zweites Programm: A3 mit Blick nach Osten. Die Reihenfolge der Anweisungen bestimmt das Ergebnis.",
+          "materiality": "material",
+          "sample_solution": "„rechts drehen“ lässt den Roboter nach Osten schauen, zweimal „vor“ bringt ihn von A5 über B5 nach C5. Im zweiten Programm fährt er zuerst zwei Felder nach Norden (A4, A3) und dreht sich dann nach Osten. Gleiche Anweisungen in anderer Reihenfolge ergeben also ein anderes Ergebnis, weil eine Sequenz Schritt für Schritt ausgeführt wird."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21G7K43Q31AY72WHYSRGW",
+      "atom_uri": "urn:zam:atom:01M5Y21G7K43Q31AY72WHYSRGW",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-eingabe-ausgabe",
+      "title": "Eingabe- und Ausgabeereignisse",
+      "domain": "informatik/programmierung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-eingabe-ausgabe",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21G76B21DPJ1RVDMQ1ACK",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Handlungsvorschriften und Programme“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "programmierung",
+          "topic_title": "Einführung in die Programmierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21G7PDJETC5PHM6WQY6EX",
+          "slug": "it8-eingabe-ausgabe-sensorwert",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-eingabe-ausgabe",
+          "question": "Ein Programm misst mit einem Lichtsensor die Helligkeit. Was ist dieser Messwert für das Programm?",
+          "concept": "Ein Eingabeereignis (Sensorwert)",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Eingabeereignis (Sensorwert)",
+              "Ein Ausgabeereignis (optisch)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Ausgabeereignis (optisch)",
+              "reason": "Der Sensor liefert Daten ins Programm; eine Ausgabe wirkt nach außen."
+            },
+            {
+              "text": "Eine Benutzereingabe",
+              "reason": "Den Wert liefert ein Messfühler, nicht ein Mensch."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21G7SD0S99SZ5N164M30H",
+          "slug": "it8-eingabe-ausgabe-ereignisse",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-eingabe-ausgabe",
+          "question": "Unterscheide Eingabe- und Ausgabeereignisse an einem Beispiel.",
+          "concept": "Eingabe: Benutzereingabe (Taste, Touch) oder Sensorwert (Licht, Temperatur); Ausgabe: optisch (LED, Display) oder akustisch (Ton), auch Bewegung.",
+          "materiality": "material",
+          "sample_solution": "Eingabeereignisse bringen Daten ins Programm: Benutzereingaben wie ein Tastendruck oder eine Berührung und Sensorwerte wie Helligkeit, Temperatur oder Abstand. Ausgabeereignisse wirken nach außen: optisch (LED leuchtet, Display zeigt Text) oder akustisch (Ton). Beispiel: Ein Mikrocontroller misst Helligkeit (Eingabe); wird es dunkel, schaltet er eine LED an und piept (Ausgaben)."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21G7WRH9YWBJ2B76BFR89",
+      "atom_uri": "urn:zam:atom:01M5Y21G7WRH9YWBJ2B76BFR89",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-variablen-sequenz",
+      "title": "Variablen, Wertzuweisung und Sequenz",
+      "domain": "informatik/programmierung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-variablen-sequenz",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21G76B21DPJ1RVDMQ1ACK",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Handlungsvorschriften und Programme“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "programmierung",
+          "topic_title": "Einführung in die Programmierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21G7Z4QYNCJ1787BCFRWJ",
+          "slug": "it8-variablen-sequenz-wertzuweisung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-variablen-sequenz",
+          "question": "Welchen Wert hat x nach x ← 5, x ← x · 2, x ← x − 3?",
+          "concept": "7",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "7",
+              "10"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "10",
+              "reason": "Die letzte Zuweisung x ← x − 3 zieht noch 3 ab."
+            },
+            {
+              "text": "5",
+              "reason": "Jede Zuweisung überschreibt den vorigen Wert; x bleibt nicht 5."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21G82Y5CNHAP59N1HHPY5",
+          "slug": "it8-variablen-sequenz-variable",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-variablen-sequenz",
+          "question": "Was ist eine Variable, und was passiert bei einer Wertzuweisung wie punkte ← punkte + 10?",
+          "concept": "Eine Variable ist ein benannter Speicherplatz (Bezeichner); bei der Zuweisung wird rechts mit dem alten Wert gerechnet und das Ergebnis links gespeichert, der alte Wert ist überschrieben.",
+          "materiality": "material",
+          "sample_solution": "Eine Variable ist ein benannter Speicherplatz für einen Wert; ihr Name heißt Bezeichner, z. B. punkte. Bei der Wertzuweisung punkte ← punkte + 10 wird zuerst die rechte Seite mit dem alten Wert ausgerechnet, dann wird das Ergebnis in punkte gespeichert. Der alte Wert ist danach überschrieben. In einer Sequenz laufen die Anweisungen der Reihe nach; wer Variablen verfolgt, notiert nach jeder Zeile die Werte."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21G850WKM4T343GEGMYQ0",
+      "atom_uri": "urn:zam:atom:01M5Y21G850WKM4T343GEGMYQ0",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-auswahl",
+      "title": "Auswahl und Vergleichsoperatoren",
+      "domain": "informatik/programmierung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-auswahl",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21G7WRH9YWBJ2B76BFR89",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Variablen, Wertzuweisung und Sequenz“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "programmierung",
+          "topic_title": "Einführung in die Programmierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21G88HD5J4K1HBAFM8ZX1",
+          "slug": "it8-auswahl-mindestens",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-auswahl",
+          "question": "Welchen Vergleichsoperator brauchst du für „mindestens 50 Punkte“?",
+          "concept": "größer oder gleich (≥)",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "größer oder gleich (≥)",
+              "echt größer als (>)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "echt größer als (>)",
+              "reason": "Mit „größer als“ würden genau 50 Punkte nicht reichen."
+            },
+            {
+              "text": "kleiner oder gleich (≤)",
+              "reason": "„Kleiner oder gleich“ prüft „höchstens 50“, also die Gegenrichtung."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21G8BBQV6VKEMNQJWRC6A",
+          "slug": "it8-auswahl-ein-zweiseitig",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-auswahl",
+          "question": "Unterscheide einseitige und zweiseitige Auswahl.",
+          "concept": "Einseitig: wenn Bedingung dann Anweisung, sonst passiert nichts; zweiseitig: wenn … dann A sonst B, auch der Fall „falsch“ hat eine Anweisung.",
+          "materiality": "material",
+          "sample_solution": "Eine Auswahl prüft eine Bedingung, die wahr oder falsch ist. Bei der einseitigen Auswahl („wenn temperatur ≥ 25 dann Lüfter an“) wird nur im Fall „wahr“ etwas ausgeführt. Die zweiseitige Auswahl hat zusätzlich einen Sonst-Zweig („sonst zeige ‚Fenster zu‘“), der bei „falsch“ ausgeführt wird. Am Grenzwert entscheidet der Vergleichsoperator: „ab 25“ ist ≥ 25, „über 25“ ist > 25."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21G8E3X3C1Y2PG6SRHTT1",
+      "atom_uri": "urn:zam:atom:01M5Y21G8E3X3C1Y2PG6SRHTT1",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-wiederholung",
+      "title": "Wiederholung mit fester Anzahl und mit Anfangsbedingung",
+      "domain": "informatik/programmierung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-wiederholung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21G76B21DPJ1RVDMQ1ACK",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Handlungsvorschriften und Programme“ auf."
+        },
+        {
+          "atom_id": "01M5Y21G850WKM4T343GEGMYQ0",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Auswahl und Vergleichsoperatoren“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "programmierung",
+          "topic_title": "Einführung in die Programmierung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.2",
+          "topic_title": "Einführung in die Programmierung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21G8H2W71PKTJ5E2GFM03",
+          "slug": "it8-wiederholung-anfangsbedingung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-wiederholung",
+          "question": "Wann prüft eine Wiederholung mit Anfangsbedingung ihre Bedingung?",
+          "concept": "Vor jedem einzelnen Durchlauf",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vor jedem einzelnen Durchlauf",
+              "Nach jedem einzelnen Durchlauf"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nach jedem einzelnen Durchlauf",
+              "reason": "Eine Prüfung nach dem Körper wäre eine Endbedingung; die Anfangsbedingung kommt zuerst."
+            },
+            {
+              "text": "Nur einmal beim Programmstart",
+              "reason": "Die Bedingung wird vor jedem einzelnen Durchlauf neu geprüft."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21G8MRFK98MBK8PAXP33Z",
+          "slug": "it8-wiederholung-fest-oder-bedingung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-wiederholung",
+          "question": "Wann wählst du eine Wiederholung mit fester Anzahl, wann eine mit Anfangsbedingung?",
+          "concept": "Feste Anzahl, wenn die Zahl der Durchläufe vorher bekannt ist; Anfangsbedingung, wenn sie von einer Bedingung abhängt, die vor jedem Durchlauf geprüft wird und irgendwann falsch werden muss.",
+          "materiality": "material",
+          "sample_solution": "Steht die Zahl der Durchläufe fest, etwa „mähe 8 Bahnen“, nimmt man „wiederhole 8-mal“. Hängt sie von der Situation ab, etwa „fahre bis zur Wand“, nimmt man „wiederhole solange vorne frei“; die Bedingung wird vor jedem Durchlauf geprüft, und ist sie schon am Anfang falsch, läuft der Körper gar nicht. Der Schleifenkörper muss etwas ändern, das die Bedingung beeinflusst, sonst entsteht eine Endlosschleife."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21G8Q4EFZ6VAWC3X0ZHWW",
+      "atom_uri": "urn:zam:atom:01M5Y21G8Q4EFZ6VAWC3X0ZHWW",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-schreibtempo",
+      "title": "Schreibtempo, Sonderzeichen und Tastenkombinationen",
+      "domain": "informatik/textverarbeitung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-schreibtempo",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21G60VXXA1DC3GTCEVD7F",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Zehnfingersystem: Grundstellung und Griffwege“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "textverarbeitung",
+          "topic_title": "Einführung in die Textverarbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21G8T14GN5728THG8G9ZV",
+          "slug": "it8-schreibtempo-ziel80",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-schreibtempo",
+          "question": "Welches Schreibtempo nach Vorlage ist am Ende des IT-Anfangsunterrichts das Ziel?",
+          "concept": "Mindestens 80 Anschläge pro Minute",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mindestens 80 Anschläge pro Minute",
+              "Mindestens 8 Anschläge pro Minute"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mindestens 8 Anschläge pro Minute",
+              "reason": "Das wäre viel zu langsam; das Ziel liegt zehnmal höher."
+            },
+            {
+              "text": "Mindestens 800 Anschläge pro Minute",
+              "reason": "Das ist das Tempo von Schreibprofis, nicht Kompetenzniveau I."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21G8X9VRNG22NVMKWDC8K",
+          "slug": "it8-schreibtempo-strg-v",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-schreibtempo",
+          "question": "Mit welcher Tastenkombination fügst du einen kopierten Text ein?",
+          "concept": "Strg + V",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Strg + V",
+              "Strg + C"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Strg + C",
+              "reason": "Strg + C kopiert erst in die Zwischenablage."
+            },
+            {
+              "text": "Strg + Z",
+              "reason": "Strg + Z macht den letzten Schritt rückgängig."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21G90PWTHD6RZNBN9MWKK",
+          "slug": "it8-schreibtempo-tempo-berechnen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-schreibtempo",
+          "question": "Du schreibst in 10 Minuten 850 Anschläge. Wie hoch ist dein Tempo, und ist das Ziel erreicht?",
+          "concept": "850 ÷ 10 = 85 Anschläge pro Minute; das Ziel von mindestens 80 ist erreicht.",
+          "materiality": "material",
+          "sample_solution": "Das Schreibtempo ist Anschläge geteilt durch Minuten: 850 ÷ 10 = 85 Anschläge pro Minute. Leerzeichen und Satzzeichen zählen als Anschläge mit. Da das Ziel für Kompetenzniveau I mindestens 80 Anschläge pro Minute sind, ist es erreicht."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21G93NFNXKYCK6C6QN99B",
+      "atom_uri": "urn:zam:atom:01M5Y21G93NFNXKYCK6C6QN99B",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-din-5008",
+      "title": "Schreib- und Gestaltungsregeln nach DIN 5008",
+      "domain": "informatik/textverarbeitung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-din-5008",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21G6MTG13C74D78B1K5ZK",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Grundfunktionen der Textverarbeitung“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "textverarbeitung",
+          "topic_title": "Einführung in die Textverarbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21G96HYASQ9PZSEWMN3DK",
+          "slug": "it8-din-5008-prozent",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-din-5008",
+          "question": "Wie schreibt man fünfundzwanzig Prozent nach DIN 5008?",
+          "concept": "25 % (mit Leerzeichen)",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "25 % (mit Leerzeichen)",
+              "25% (ohne Leerzeichen)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "25% (ohne Leerzeichen)",
+              "reason": "Nach DIN 5008 steht zwischen Zahl und Prozentzeichen ein Leerzeichen."
+            },
+            {
+              "text": "%25 (Zeichen vor der Zahl)",
+              "reason": "Das Prozentzeichen steht nach der Zahl, getrennt durch ein Leerzeichen."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21G99NKG2DXQ2GBZVBC4B",
+          "slug": "it8-din-5008-normgerecht",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-din-5008",
+          "question": "Schreibe normgerecht nach DIN 5008: Datum 3.11.2026, Uhrzeit 9.00h, Telefon 0911/1234, Rabatt 10%, z.B.",
+          "concept": "03.11.2026 (oder 2026-11-03), 09:00 Uhr, 0911 1234, 10 %, z. B.",
+          "materiality": "material",
+          "sample_solution": "Das Datum steht als 03.11.2026 oder international als 2026-11-03. Die Uhrzeit wird mit Doppelpunkt gegliedert: 09:00 Uhr. In Telefonnummern trennt ein Leerzeichen die Vorwahl von der Rufnummer: 0911 1234. Vor dem Prozentzeichen steht ein Leerzeichen: 10 %. Mehrteilige Abkürzungen bekommen ein Leerzeichen: z. B."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21G9CTAZAA6WYFTEXK3BQ",
+      "atom_uri": "urn:zam:atom:01M5Y21G9CTAZAA6WYFTEXK3BQ",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-textobjekte",
+      "title": "Objekte der Textverarbeitung: Zeichen, Absatz, Abschnitt, Dokument",
+      "domain": "informatik/textverarbeitung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-textobjekte",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21G6MTG13C74D78B1K5ZK",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Grundfunktionen der Textverarbeitung“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "textverarbeitung",
+          "topic_title": "Einführung in die Textverarbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21G9F3V209RJV663W6CT2",
+          "slug": "it8-textobjekte-absatzattribut",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-textobjekte",
+          "question": "Welche Formatierung ist ein Absatzattribut, das für den ganzen Absatz bis zur Absatzmarke gilt?",
+          "concept": "Der Zeilenabstand",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Zeilenabstand",
+              "Die Schriftfarbe"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Schriftfarbe",
+              "reason": "Die Farbe kann jedes einzelne Zeichen haben; sie ist ein Zeichenattribut."
+            },
+            {
+              "text": "Der Schriftgrad",
+              "reason": "Die Schriftgröße ist ein Zeichenattribut."
+            }
+          ],
+          "replaces": [
+            "01K4A6T0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M5Y21G9JZNS8W1V6J5FXNYT3",
+          "slug": "it8-textobjekte-zustand",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-textobjekte",
+          "question": "Wie heißen alle aktuellen Attributwerte eines Objekts zusammen?",
+          "concept": "Der Zustand des Objekts",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Zustand des Objekts",
+              "Die Klasse des Objekts"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Klasse des Objekts",
+              "reason": "Die Klasse beschreibt gleichartige Objekte, nicht deren aktuelle Werte."
+            },
+            {
+              "text": "Die Methode des Objekts",
+              "reason": "Eine Methode ist eine Fähigkeit des Objekts, keine Sammlung von Werten."
+            }
+          ],
+          "replaces": [
+            "01K4A8V0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M5Y21G9N44X9FXBW1R2QYMYM",
+          "slug": "it8-textobjekte-objekte-punktnotation",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-textobjekte",
+          "question": "Nenne die Objekte der Textverarbeitung mit je einem Attribut und schreibe „der zweite Absatz wird zentriert“ in Punktnotation.",
+          "concept": "Zeichen (Schriftgrad), Absatz (Ausrichtung), Abschnitt (Seitenränder), Dokument (Dateiname); absatz2.ausrichtung = zentriert.",
+          "materiality": "material",
+          "sample_solution": "Ein Dokument enthält Abschnitte, diese enthalten Absätze, diese Zeichen. Attribute: Zeichen haben Schriftart, Schriftgrad, Schriftfarbe und Schriftschnitt; Absätze Ausrichtung, Zeilenabstand und Einzug; Abschnitte Seitenränder, Seitenausrichtung und Spaltenzahl; das Dokument Dateiname, Speicherort und Format. In Punktnotation: Objekt.Attribut = Attributwert, also absatz2.ausrichtung = zentriert."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21G9RZRKZFJGN7MQ3PTT7",
+      "atom_uri": "urn:zam:atom:01M5Y21G9RZRKZFJGN7MQ3PTT7",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-layout-objekte",
+      "title": "Grafiken, Tabellen, Kopf- und Fußzeilen einfügen",
+      "domain": "informatik/textverarbeitung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-layout-objekte",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21G9CTAZAA6WYFTEXK3BQ",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Objekte der Textverarbeitung: Zeichen, Absatz, Abschnitt, Dokument“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "textverarbeitung",
+          "topic_title": "Einführung in die Textverarbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.3",
+          "topic_title": "Einführung in die Textverarbeitung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21G9VSAJ3WEXFDZXJGNPF",
+          "slug": "it8-layout-objekte-quadratisch",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-layout-objekte",
+          "question": "Welchen Textumbruch wählst du, damit der Text ein Bild rechteckig umfließt?",
+          "concept": "Quadratisch",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Quadratisch",
+              "Mit Text in Zeile"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mit Text in Zeile",
+              "reason": "Dann steht das Bild wie ein großer Buchstabe in der Zeile."
+            },
+            {
+              "text": "Hinter den Text",
+              "reason": "Dann liegt das Bild unter dem Text wie ein Wasserzeichen."
+            }
+          ],
+          "replaces": [
+            "01K4A6T0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M5Y21G9Y3H7YYE92GAP9D3BY",
+          "slug": "it8-layout-objekte-proportional",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-layout-objekte",
+          "question": "Ein Bild ist 12 cm breit und 8 cm hoch. Wie verkleinerst du es unverzerrt auf 9 cm Breite, und wie hoch wird es?",
+          "concept": "Am Eckanfasser ziehen; Faktor 9 ÷ 12 = 0,75, also 8 cm · 0,75 = 6 cm hoch.",
+          "materiality": "material",
+          "sample_solution": "Damit das Seitenverhältnis erhalten bleibt, zieht man am Eckanfasser; dann ändern sich Breite und Höhe mit demselben Faktor. Der Faktor ist neue Breite ÷ alte Breite = 9 ÷ 12 = 0,75. Die neue Höhe ist 8 cm · 0,75 = 6 cm. Am seitlichen Anfasser würde nur die Breite geändert und das Bild verzerrt."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GA1PT1SEK0MR7F08G2Z",
+      "atom_uri": "urn:zam:atom:01M5Y21GA1PT1SEK0MR7F08G2Z",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-kommunikationsmodell",
+      "title": "Kommunikationsmodell: Sender, Kanal, Empfänger",
+      "domain": "informatik/informationsaustausch",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-kommunikationsmodell",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "informationsaustausch",
+          "topic_title": "Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GA43SM5NP0Y95VNFDA6",
+          "slug": "it8-kommunikationsmodell-daten-information",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-kommunikationsmodell",
+          "question": "Was unterscheidet Information von Daten?",
+          "concept": "Information = Daten + Deutung im Zusammenhang",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Information = Daten + Deutung im Zusammenhang",
+              "Information und Daten sind dasselbe"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Information und Daten sind dasselbe",
+              "reason": "Dieselben Zeichen können je nach Zusammenhang Verschiedenes bedeuten."
+            },
+            {
+              "text": "Daten sind immer Zahlen, Information Text",
+              "reason": "Auch Text sind Daten; erst die Deutung macht daraus Information."
+            }
+          ],
+          "replaces": [
+            "01K4A7D0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M5Y21GA7CKFQXY4E04EFZMMG",
+          "slug": "it8-kommunikationsmodell-modell",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-kommunikationsmodell",
+          "question": "Beschreibe das Kommunikationsmodell an einem Funkspruch.",
+          "concept": "Sender codiert die Nachricht (z. B. Morsecode), der Kanal (Funk) überträgt die Signale, der Empfänger decodiert sie mit demselben Code; Störungen können Zeichen verfälschen.",
+          "materiality": "material",
+          "sample_solution": "Ein Schiff (Sender) will einen Hilferuf senden und codiert „SOS“ im Morsecode als ··· −−− ···. Die Signale laufen über den Kanal Funk. Der Empfänger an Land decodiert sie mit demselben Code und erhält die Information „Hilferuf“. Kennt er den Code nicht, bleiben es Daten ohne Bedeutung; eine Störung im Kanal kann Zeichen verfälschen."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GAAHMKVZ9724HP4XH9F",
+      "atom_uri": "urn:zam:atom:01M5Y21GAAHMKVZ9724HP4XH9F",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-dualsystem",
+      "title": "Dezimalsystem und Dualsystem",
+      "domain": "informatik/informationsaustausch",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-dualsystem",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "informationsaustausch",
+          "topic_title": "Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GADMJHWT7DKTMJK13VG",
+          "slug": "it8-dualsystem-1011",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-dualsystem",
+          "question": "Welchen Dezimalwert hat die Dualzahl 1011?",
+          "concept": "11",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "11",
+              "13"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "13",
+              "reason": "13 wäre 1101; die Stellen wurden von der falschen Seite gelesen."
+            },
+            {
+              "text": "3",
+              "reason": "3 ist nur die Anzahl der Einsen; jede 1 zählt ihren Stellenwert."
+            }
+          ],
+          "replaces": [
+            "01K4A7D0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M5Y21GAGPERF1V3DZ4RY3PJJ",
+          "slug": "it8-dualsystem-dezimal-zu-dual",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-dualsystem",
+          "question": "Wandle 13 in eine Dualzahl um und prüfe das Ergebnis.",
+          "concept": "13 = 1101 (dual): 13 : 2 = 6 R 1, 6 : 2 = 3 R 0, 3 : 2 = 1 R 1, 1 : 2 = 0 R 1, Reste von unten nach oben; Probe 8 + 4 + 1 = 13.",
+          "materiality": "material",
+          "sample_solution": "Beim Restwertverfahren teilt man immer wieder durch 2: 13 : 2 = 6 Rest 1, 6 : 2 = 3 Rest 0, 3 : 2 = 1 Rest 1, 1 : 2 = 0 Rest 1. Die Reste von unten nach oben gelesen ergeben 1101. Probe über die Stellenwerte 8, 4, 2, 1: 1 · 8 + 1 · 4 + 0 · 2 + 1 · 1 = 13."
+        },
+        {
+          "id": "01M5Y21GAKGTVCZMTW9591JZ4K",
+          "slug": "it8-dualsystem-stellenwert-umrechnung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-dualsystem",
+          "question": "Erkläre das Prinzip eines Stellenwertsystems am Vergleich von Dezimalsystem (Basis 10: 10^0, 10^1, 10^2, ...) und Dualsystem / Binärsystem (Basis 2: 2^0=1, 2^1=2, 2^2=4, 2^3=8, 2^4=16, 2^5=32, 2^6=64, 2^7=128), rechne die Dualzahl 110101_2 in das Dezimalsystem um und wandle die Dezimalzahl 43_10 über das Restwertverfahren (wiederholte Division durch 2 mit Rest) in eine Binärzahl um.",
+          "concept": "Stellenwert Dualsystem = Potenzen zur Basis 2; 110101_2 = 1*32 + 1*16 + 0*8 + 1*4 + 0*2 + 1*1 = 32 + 16 + 4 + 1 = 53_10; Restwertverfahren für 43: 43:2=21 R1, 21:2=10 R1, 10:2=5 R0, 5:2=2 R1, 2:2=1 R0, 1:2=0 R1 -> von unten nach oben gelesen: 101011_2.",
+          "materiality": "material",
+          "sample_solution": "1. Stellenwertsysteme im Vergleich: - Dezimalsystem (Basis 10): Ziffern 0–9. Stellenwerte sind Zehnerpotenzen: ... 10^3 (1000), 10^2 (100), 10^1 (10), 10^0 (1). - Dualsystem / Binärsystem (Basis 2): Verwendet ausschließlich zwei Ziffern: 0 und 1 (technisch: Strom aus / an). Stellenwerte sind Zweierpotenzen: ... 2^7 (128), 2^6 (64), 2^5 (32), 2^4 (16), 2^3 (8), 2^2 (4), 2^1 (2), 2^0 (1). 2. Umrechnung Dualzahl in Dezimalzahl: Dualzahl: 1 1 0 1 0 1_2 - Berechnung über Stellenwerte: 1 · 2^5 (32) + 1 · 2^4 (16) + 0 · 2^3 (0) + 1 · 2^2 (4) + 0 · 2^1 (0) + 1 · 2^0 (1) = 32 + 16 + 4 + 1 = 53_10. 3. Umrechnung Dezimalzahl in Dualzahl (Restwert-Divisionsverfahren): Dezimalzahl: 43_10 - 43 : 2 = 21  Rest 1 (niederwertigstes Bit LSB) - 21 : 2 = 10  Rest 1 - 10 : 2 = 5   Rest 0 -  5 : 2 = 2   Rest 1 -  2 : 2 = 1   Rest 0 -  1 : 2 = 0   Rest 1 (höchstwertigstes Bit MSB) - Ergebnis (Reste von unten nach oben gelesen): 43_10 = 101011_2 (Probe: 32 + 8 + 2 + 1 = 43).",
+          "replaces": [
+            "01K4A7D0000000000000000J04"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GAP0HGEHJ191KK4QX2F",
+      "atom_uri": "urn:zam:atom:01M5Y21GAP0HGEHJ191KK4QX2F",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-codierung",
+      "title": "Codierungsvorschriften: ASCII und Morsecode",
+      "domain": "informatik/informationsaustausch",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-codierung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GAAHMKVZ9724HP4XH9F",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Dezimalsystem und Dualsystem“ auf."
+        },
+        {
+          "atom_id": "01M5Y21GA1PT1SEK0MR7F08G2Z",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Kommunikationsmodell: Sender, Kanal, Empfänger“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "informationsaustausch",
+          "topic_title": "Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GASRFBTDR2NF00MYMHS",
+          "slug": "it8-codierung-byte-256",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-codierung",
+          "question": "Wie viele verschiedene Zeichen lassen sich mit genau einem Byte codieren?",
+          "concept": "256",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "256",
+              "128"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "128",
+              "reason": "128 = 2⁷ ist der ursprüngliche 7-Bit-ASCII-Code, ein Byte hat 8 Bit."
+            },
+            {
+              "text": "8",
+              "reason": "8 ist die Zahl der Bits in einem Byte, nicht die der Möglichkeiten."
+            }
+          ],
+          "replaces": [
+            "01K4A7D0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M5Y21GAWFMF2ZXD487EYM1ME",
+          "slug": "it8-codierung-ascii-a",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-codierung",
+          "question": "Welchen ASCII-Code hat der Großbuchstabe A?",
+          "concept": "65",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "65",
+              "1"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "1",
+              "reason": "A ist der erste Buchstabe, aber sein ASCII-Code beginnt bei 65."
+            },
+            {
+              "text": "97",
+              "reason": "97 ist der Code des Kleinbuchstabens a."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GAZMTXQ30REXQDKYBEX",
+          "slug": "it8-codierung-datenmenge",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-codierung",
+          "question": "Wie viel Speicher braucht der ASCII-Text „HALLO“, und wie sieht das H im Speicher aus?",
+          "concept": "5 Zeichen = 5 Byte = 40 Bit; H = 72 = 01001000.",
+          "materiality": "material",
+          "sample_solution": "Im ASCII-Code belegt jedes Zeichen 1 Byte = 8 Bit. „HALLO“ hat 5 Zeichen, also 5 Byte bzw. 40 Bit. H ist der 8. Buchstabe und hat den Code 65 + 7 = 72. Als Byte: 72 = 64 + 8, also 01001000."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GB29YEWEDE389RSTF80",
+      "atom_uri": "urn:zam:atom:01M5Y21GB29YEWEDE389RSTF80",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-digitalisierung",
+      "title": "Analog und digital: Digitalisierung",
+      "domain": "informatik/informationsaustausch",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-digitalisierung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GAAHMKVZ9724HP4XH9F",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Dezimalsystem und Dualsystem“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "informationsaustausch",
+          "topic_title": "Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GB6XBENN56EN1A8WHAY",
+          "slug": "it8-digitalisierung-stufen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-digitalisierung",
+          "question": "Wie viele Stufen kann ein Messwert mit 3 Bit annehmen?",
+          "concept": "8",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "8",
+              "6"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "6",
+              "reason": "Das wäre 2 · 3; richtig ist 2 hoch 3."
+            },
+            {
+              "text": "3",
+              "reason": "Drei Bits ergeben mehr als drei Werte: 2 · 2 · 2."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GB9CRC1CG1Z25QJYG92",
+          "slug": "it8-digitalisierung-digitalisieren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-digitalisierung",
+          "question": "Wie wird ein analoges Signal digitalisiert, und was bedeuten feinere Einstellungen?",
+          "concept": "Abtasten in festen Zeitabständen und jeden Messwert auf eine von 2ⁿ Stufen runden; mehr Abtastungen und Bits machen es genauer, erzeugen aber mehr Daten.",
+          "materiality": "material",
+          "sample_solution": "Ein analoges Signal wie ein Ton ändert sich stufenlos. Beim Digitalisieren wird es in festen Zeitabständen gemessen (abgetastet), und jeder Messwert wird auf eine von endlich vielen Stufen gerundet; mit n Bit gibt es 2ⁿ Stufen. Je öfter abgetastet wird und je mehr Bits ein Wert hat, desto genauer ist das digitale Signal, aber die Datenmenge wächst: Abtastrate · Bits je Wert · Zeit."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GBBQGBBY0RW4KKWSWEG",
+      "atom_uri": "urn:zam:atom:01M5Y21GBBQGBBY0RW4KKWSWEG",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-kommunikation-sicher",
+      "title": "Digitale Kommunikation: Gefahren erkennen, fair bleiben",
+      "domain": "informatik/informationsaustausch",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-kommunikation-sicher",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "informationsaustausch",
+          "topic_title": "Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GBD4RFVD91AV631G3YN",
+          "slug": "it8-kommunikation-sicher-phishing",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-kommunikation-sicher",
+          "question": "Eine Mail fordert dich auf, über einen Link dein Passwort zu bestätigen. Wie heißt dieser Trick?",
+          "concept": "Phishing",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Phishing",
+              "Netiquette"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Netiquette",
+              "reason": "Netiquette sind Regeln für höflichen Umgang, kein Betrugstrick."
+            },
+            {
+              "text": "Ausgrenzung",
+              "reason": "Ausgrenzung heißt, jemanden absichtlich auszuschließen."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GBGEZ2XMHJT7J47EXF6",
+          "slug": "it8-kommunikation-sicher-cybermobbing",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-kommunikation-sicher",
+          "question": "Was tust du, wenn du im Klassenchat wiederholt bloßgestellt wirst?",
+          "concept": "Nicht antworten, Beweise sichern (Screenshots), blockieren, melden und eine Vertrauensperson einbeziehen.",
+          "materiality": "material",
+          "sample_solution": "Wiederholtes, gezieltes Bloßstellen ist Cybermobbing durch Diskreditierung. Man antwortet nicht mit Gegenangriffen, sichert Beweise mit Screenshots, blockiert die Person, meldet die Beiträge beim Dienst und spricht mit einer Vertrauensperson, etwa Eltern oder Lehrkraft. Wer zusieht, leitet nichts weiter und unterstützt die betroffene Person."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GBK0DHBXYADR6506FX8",
+      "atom_uri": "urn:zam:atom:01M5Y21GBK0DHBXYADR6506FX8",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-persoenliche-daten",
+      "title": "Persönliche Daten, Recht am eigenen Bild, Datenschutz",
+      "domain": "informatik/informationsaustausch",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-persoenliche-daten",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GBBQGBBY0RW4KKWSWEG",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Digitale Kommunikation: Gefahren erkennen, fair bleiben“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "informationsaustausch",
+          "topic_title": "Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.4",
+          "topic_title": "Informationsaustausch",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GBPF4P15YKA2JS9T596",
+          "slug": "it8-persoenliche-daten-eigenes-bild",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-persoenliche-daten",
+          "question": "Was brauchst du, um ein Foto zu veröffentlichen, auf dem deine Freundin erkennbar ist?",
+          "concept": "Die Einwilligung deiner Freundin",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Einwilligung deiner Freundin",
+              "Die Erlaubnis des Fotografen allein"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Erlaubnis des Fotografen allein",
+              "reason": "Über das Bild entscheidet die abgebildete Person, nicht nur wer fotografiert."
+            },
+            {
+              "text": "Keine Erlaubnis, wenn es schön ist",
+              "reason": "Auch schöne Fotos fallen unter das Recht am eigenen Bild."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GBSS4JCHWTPEQBGX7W5",
+          "slug": "it8-persoenliche-daten-dsgvo",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-persoenliche-daten",
+          "question": "Was sind personenbezogene Daten, und wie gehst du sensibel mit ihnen um?",
+          "concept": "Angaben, die sich einer Person zuordnen lassen (Name, Adresse, Foto, Standort); nur mit Einwilligung teilen, sparsam angeben, Profile privat stellen.",
+          "materiality": "material",
+          "sample_solution": "Personenbezogene Daten sind alle Angaben, die sich einer Person zuordnen lassen, etwa Name, Adresse, Telefonnummer, Fotos oder Standort. Die DSGVO erlaubt ihre Verarbeitung nur mit Grund oder Einwilligung; Fotos erkennbarer Personen dürfen nur mit deren Einwilligung veröffentlicht werden (Recht am eigenen Bild). Sensibel heißt: vorher fragen, nur nötige Daten angeben, Profile privat stellen und den Standort nicht teilen."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GBW54PT5S318J2H18Q9",
+      "atom_uri": "urn:zam:atom:01M5Y21GBW54PT5S318J2H18Q9",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-pixel-vektor",
+      "title": "Pixelgrafik und Vektorgrafik",
+      "domain": "informatik/bildbearbeitung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-pixel-vektor",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "bildbearbeitung",
+          "topic_title": "Einführung in die Bildbearbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GC06P5WKVDKC372SFBY",
+          "slug": "it8-pixel-vektor-skalierbar",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-pixel-vektor",
+          "question": "Welchen Vorteil hat eine Vektorgrafik beim Vergrößern?",
+          "concept": "Sie bleibt ohne Treppeneffekt scharf.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie bleibt ohne Treppeneffekt scharf.",
+              "Sie zeigt Fotos detailreicher."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie zeigt Fotos detailreicher.",
+              "reason": "Für Fotos eignen sich Pixelgrafiken; Vektoren beschreiben Formen."
+            },
+            {
+              "text": "Sie wird beim Zoomen immer verpixelt.",
+              "reason": "Verpixeln ist die Schwäche der Pixelgrafik."
+            }
+          ],
+          "replaces": [
+            "01K4A8V0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M5Y21GC3K2TXWGCH4C6RF9RJ",
+          "slug": "it8-pixel-vektor-vergleich",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-pixel-vektor",
+          "question": "Vergleiche Pixel- und Vektorgrafik nach Aufbau und Einsatz.",
+          "concept": "Pixelgrafik: Raster aus gefärbten Bildpunkten, für Fotos und Scans, verpixelt beim Vergrößern; Vektorgrafik: geometrisch beschriebene Formen, für Logos, Schriften, Pläne, verlustfrei skalierbar.",
+          "materiality": "material",
+          "sample_solution": "Eine Pixelgrafik besteht aus vielen gefärbten Bildpunkten mit festen Positionen; sie eignet sich für Bilder mit feinen Farbverläufen wie Digitalfotos und Scans, wird beim starken Vergrößern aber treppig. Eine Vektorgrafik beschreibt Formen wie Linien, Kreise und Kurven mit ihren Attributen; sie wird beim Vergrößern neu berechnet und bleibt scharf. Darum nimmt man sie für Logos, Computerschriften, Vektorkarten und technische Zeichnungen."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GC6G4H65P2GGCP43RX5",
+      "atom_uri": "urn:zam:atom:01M5Y21GC6G4H65P2GGCP43RX5",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-bildgroesse-formate",
+      "title": "Auflösung, Farbtiefe, Farbmodell und Dateiformate",
+      "domain": "informatik/bildbearbeitung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-bildgroesse-formate",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GBW54PT5S318J2H18Q9",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Pixelgrafik und Vektorgrafik“ auf."
+        },
+        {
+          "atom_id": "01M5Y21GAAHMKVZ9724HP4XH9F",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Dezimalsystem und Dualsystem“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "bildbearbeitung",
+          "topic_title": "Einführung in die Bildbearbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GC9F2Y2Z7XQSZ3MJFCH",
+          "slug": "it8-bildgroesse-formate-rgb-weiss",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-bildgroesse-formate",
+          "question": "Welche Farbe ergibt im RGB-Modell (255, 255, 255)?",
+          "concept": "Weiß",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weiß",
+              "Schwarz"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Schwarz",
+              "reason": "Schwarz ist (0, 0, 0): kein Licht."
+            },
+            {
+              "text": "Grau",
+              "reason": "Grau entsteht bei gleichen mittleren Werten, z. B. (128, 128, 128)."
+            }
+          ],
+          "replaces": [
+            "01K4A8V0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M5Y21GCC26WTQYZE6TZ0SMSR",
+          "slug": "it8-bildgroesse-formate-dateigroesse",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-bildgroesse-formate",
+          "question": "Wie groß ist ein Foto mit 2 000 × 1 500 Pixeln in 24 Bit Farbtiefe unkomprimiert, und welches Format nimmst du zum Verschicken?",
+          "concept": "2 000 · 1 500 · 3 Byte = 9 000 000 Byte = 9 MB; zum Verschicken JPEG, das Fotos verlustbehaftet stark verkleinert.",
+          "materiality": "material",
+          "sample_solution": "Die unkomprimierte Größe ist Breite · Höhe · Farbtiefe in Byte. 24 Bit sind 3 Byte (Rot, Grün, Blau), also 2 000 · 1 500 · 3 = 9 000 000 Byte = 9 MB. Für Fotos eignet sich JPEG, weil es verlustbehaftet komprimiert und die Datei oft unter 1 MB bringt; PNG speichert verlustfrei und mit Transparenz, SVG speichert Vektorgrafiken."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GCFAJX001H2M9FXJJ57",
+      "atom_uri": "urn:zam:atom:01M5Y21GCFAJX001H2M9FXJJ57",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-bildbearbeitung",
+      "title": "Methoden der Bildbearbeitung",
+      "domain": "informatik/bildbearbeitung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-bildbearbeitung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GBW54PT5S318J2H18Q9",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Pixelgrafik und Vektorgrafik“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "bildbearbeitung",
+          "topic_title": "Einführung in die Bildbearbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GCJW55533M8XCS98W4D",
+          "slug": "it8-bildbearbeitung-freistellen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-bildbearbeitung",
+          "question": "Mit welcher Methode löst du eine Person vom Hintergrund eines Fotos?",
+          "concept": "Freistellen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Freistellen",
+              "Rendern"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Rendern",
+              "reason": "Rendern berechnet aus Vektoren ein Pixelbild."
+            },
+            {
+              "text": "Gruppieren",
+              "reason": "Gruppieren fasst Vektorobjekte zusammen."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GCNJHM83QHV44MWHHD5",
+          "slug": "it8-bildbearbeitung-methoden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-bildbearbeitung",
+          "question": "Nenne Methoden der Bildbearbeitung für Pixel- und für Vektorgrafiken.",
+          "concept": "Pixel: zuschneiden, drehen, freistellen, färben; Vektor: färben, gruppieren, skalieren, rendern.",
+          "materiality": "material",
+          "sample_solution": "Bei Pixelgrafiken arbeitet man mit Bildpunkten: Zuschneiden entfernt Ränder, Drehen richtet schiefe Fotos gerade, Freistellen löst ein Motiv vom Hintergrund, Färben ändert Farben. Bei Vektorgrafiken ändert man Attribute von Objekten: Färben ändert Füll- und Linienfarbe, Gruppieren fasst Objekte zusammen, damit sie gemeinsam skaliert oder gedreht werden, und Rendern berechnet aus der Vektorbeschreibung ein Pixelbild."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GCRC58KMFNE3BK679RT",
+      "atom_uri": "urn:zam:atom:01M5Y21GCRC58KMFNE3BK679RT",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-manipulation",
+      "title": "Bildmanipulationen erkennen und bewerten",
+      "domain": "informatik/bildbearbeitung",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-manipulation",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GCFAJX001H2M9FXJJ57",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Methoden der Bildbearbeitung“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "bildbearbeitung",
+          "topic_title": "Einführung in die Bildbearbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.5",
+          "topic_title": "Einführung in die Bildbearbeitung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GCVHHDM00E99S6XADW2",
+          "slug": "it8-manipulation-achse",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-manipulation",
+          "question": "Was bewirkt eine y-Achse, die nicht bei 0 beginnt, in einem Säulendiagramm?",
+          "concept": "Kleine Unterschiede wirken riesig groß.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kleine Unterschiede wirken riesig groß.",
+              "Die Messwerte werden dadurch genauer."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Messwerte werden dadurch genauer.",
+              "reason": "Die Messung ändert sich nicht, nur die Darstellung."
+            },
+            {
+              "text": "Die Säulen zeigen das echte Verhältnis.",
+              "reason": "Gezeigt wird nur der Teil über dem Startwert."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GCYVQQ2859V8342R8B8",
+          "slug": "it8-manipulation-bewerten",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-manipulation",
+          "question": "Nenne Manipulationen an Pixel- und Vektorgrafiken und wie du sie erkennst.",
+          "concept": "Pixel: Retusche, Filter, Fotomontage; Vektor: manipulierte Diagramme (Achse nicht bei 0, Verzerrung); erkennen: Quelle prüfen, Licht und Schatten, Rückwärtssuche, Achsen und Zahlen lesen.",
+          "materiality": "material",
+          "sample_solution": "Fotos werden durch Retusche (Details entfernen oder hinzufügen), Filter (Wirkung verändern) und Fotomontagen (Bilder zusammensetzen) manipuliert. Diagramme werden manipuliert, indem die y-Achse nicht bei 0 beginnt, Achsen verzerrt oder Werte weggelassen werden. Man prüft die Quelle, achtet auf Licht, Schatten und Kanten, nutzt eine Bilder-Rückwärtssuche und liest bei Diagrammen Achsen und Zahlen genau."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GD1RZ3Y64Q8NVXZXCYH",
+      "atom_uri": "urn:zam:atom:01M5Y21GD1RZ3Y64Q8NVXZXCYH",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-tabellen-datentypen",
+      "title": "Tabellenblatt, Zelladressen und Datentypen",
+      "domain": "informatik/tabellenkalkulation",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-tabellen-datentypen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "tabellenkalkulation",
+          "topic_title": "Einführung in die Tabellenkalkulation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GD4V28CRX3NSNCXET4X",
+          "slug": "it8-tabellen-datentypen-bereich",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-tabellen-datentypen",
+          "question": "Wie viele Zellen umfasst der Bereich B2:D6?",
+          "concept": "15",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "15",
+              "12"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "12",
+              "reason": "Randspalte und Randzeile zählen mit: 3 Spalten · 5 Zeilen."
+            },
+            {
+              "text": "8",
+              "reason": "Spalten und Zeilen werden multipliziert, nicht addiert."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GD7J38J68VWA45X9T2K",
+          "slug": "it8-tabellen-datentypen-datentypen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-tabellen-datentypen",
+          "question": "Nenne die Datentypen einer Tabellenkalkulation mit je einem Beispiel.",
+          "concept": "Text („Klasse 8b“), Zahl (12,50 €, 19 %), Datum (27.10.2026), Formel (=B2*C2).",
+          "materiality": "material",
+          "sample_solution": "Text dient als Beschriftung, z. B. „Klasse 8b“, und steht standardmäßig linksbündig. Zahlen stehen rechtsbündig und können als Währung (12,50 €) oder Prozent (19 %) formatiert sein. Ein Datum (27.10.2026) wird intern als Zahl gespeichert, mit der man rechnen kann. Eine Formel beginnt mit = und berechnet etwas aus Zellbezügen, z. B. =B2*C2. Telefonnummern und Postleitzahlen mit führender Null gibt man als Text ein."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GDA04P2DYF4J6NJJJZQ",
+      "atom_uri": "urn:zam:atom:01M5Y21GDA04P2DYF4J6NJJJZQ",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-formeln-bezuege",
+      "title": "Formeln, relative und absolute Zelladressierung",
+      "domain": "informatik/tabellenkalkulation",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-formeln-bezuege",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GD1RZ3Y64Q8NVXZXCYH",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Tabellenblatt, Zelladressen und Datentypen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "tabellenkalkulation",
+          "topic_title": "Einführung in die Tabellenkalkulation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GDDX7K2ZF6PJKZR3SM9",
+          "slug": "it8-formeln-bezuege-gleichheitszeichen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-formeln-bezuege",
+          "question": "Mit welchem Zeichen beginnt jede Formel in einer Tabellenkalkulation?",
+          "concept": "Mit dem Gleichheitszeichen =",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem Gleichheitszeichen =",
+              "Mit dem Doppelpunkt :"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mit dem Doppelpunkt :",
+              "reason": "Der Doppelpunkt trennt Anfang und Ende eines Bereichs."
+            },
+            {
+              "text": "Mit dem Dollarzeichen $",
+              "reason": "Das Dollarzeichen fixiert eine Adresse beim Kopieren."
+            }
+          ],
+          "replaces": [
+            "01K4A6T0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M5Y21GDGMY0XVZZ3576VFVQV",
+          "slug": "it8-formeln-bezuege-absolut",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-formeln-bezuege",
+          "question": "E2 enthält =D2*$F$1. Was steht nach dem Kopieren in E5?",
+          "concept": "=D5*$F$1",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "=D5*$F$1",
+              "=D5*$F$4"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "=D5*$F$4",
+              "reason": "$F$1 ist absolut adressiert und bleibt beim Kopieren unverändert."
+            },
+            {
+              "text": "=E5*$F$1",
+              "reason": "Beim Kopieren nach unten bleibt die Spalte D; nur die Zeile wandert mit."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GDK4DVEY5CW9JT8CCNE",
+          "slug": "it8-formeln-bezuege-relativ-absolut",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-formeln-bezuege",
+          "question": "Erkläre relative und absolute Zelladressierung am Beispiel einer Mehrwertsteuer-Spalte.",
+          "concept": "Relative Bezüge (D2) wandern beim Kopieren mit, absolute ($F$1) bleiben fest; der Steuersatz in F1 muss absolut adressiert werden.",
+          "materiality": "material",
+          "sample_solution": "Steht der Steuersatz in F1, berechnet E2 die Steuer mit =D2*$F$1. Beim Kopieren nach unten wird der relative Bezug D2 zu D3, D4 usw., während $F$1 fest bleibt. Mit dem relativen Bezug F1 stünde in E5 =D5*F4; F4 ist leer, das Ergebnis wäre 0. Das $ vor dem Buchstaben fixiert die Spalte, das $ vor der Zahl die Zeile."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GDPES468KJF0X90ZTF3",
+      "atom_uri": "urn:zam:atom:01M5Y21GDPES468KJF0X90ZTF3",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-funktionen",
+      "title": "Einfache Funktionen: SUMME, MIN, MAX, MITTELWERT",
+      "domain": "informatik/tabellenkalkulation",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-funktionen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GDA04P2DYF4J6NJJJZQ",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Formeln, relative und absolute Zelladressierung“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "tabellenkalkulation",
+          "topic_title": "Einführung in die Tabellenkalkulation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GDSJE78QD5CK6ETRBW9",
+          "slug": "it8-funktionen-mittelwert",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-funktionen",
+          "question": "Welche Formel berechnet den Durchschnitt der Werte in C2 bis C9?",
+          "concept": "=MITTELWERT(C2:C9)",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "=MITTELWERT(C2:C9)",
+              "=SUMME(C2:C9)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "=SUMME(C2:C9)",
+              "reason": "SUMME addiert nur; der Durchschnitt teilt noch durch die Anzahl."
+            },
+            {
+              "text": "=MAX(C2:C9)",
+              "reason": "MAX liefert den größten Wert, nicht den Durchschnitt."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GDVPR4V8N2KHWMHNTP9",
+          "slug": "it8-funktionen-aufbau",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-funktionen",
+          "question": "Beschreibe den Aufbau einer Funktion und nenne vier einfache Funktionen.",
+          "concept": "=NAME(Bereich), z. B. =SUMME(B2:B7); SUMME addiert, MIN liefert den kleinsten, MAX den größten Wert, MITTELWERT = Summe ÷ Anzahl.",
+          "materiality": "material",
+          "sample_solution": "Eine Funktion beginnt mit =, dann folgen der Funktionsname und in Klammern die Argumente, meist ein Bereich mit Doppelpunkt, z. B. =SUMME(B2:B7). SUMME addiert alle Werte, MIN liefert den kleinsten, MAX den größten Wert, MITTELWERT den Durchschnitt (Summe ÷ Anzahl). Einzelne Zellen trennt ein Semikolon, z. B. =SUMME(B2;B5)."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GDY7CEJBNNV1TC9DJC2",
+      "atom_uri": "urn:zam:atom:01M5Y21GDY7CEJBNNV1TC9DJC2",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-modell-mwst",
+      "title": "Mit Modellen planen: Mehrwertsteuer berechnen",
+      "domain": "informatik/tabellenkalkulation",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-modell-mwst",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GDA04P2DYF4J6NJJJZQ",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Formeln, relative und absolute Zelladressierung“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "tabellenkalkulation",
+          "topic_title": "Einführung in die Tabellenkalkulation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GE1ES827M9GQ33X8GQM",
+          "slug": "it8-modell-mwst-netto",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-modell-mwst",
+          "question": "Ein Rad kostet 238 € einschließlich 19 % Mehrwertsteuer. Wie berechnest du den Nettopreis?",
+          "concept": "238 € ÷ 1,19 = 200 €",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "238 € ÷ 1,19 = 200 €",
+              "238 € · 0,81 ≈ 192,78 €"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "238 € · 0,81 ≈ 192,78 €",
+              "reason": "19 % beziehen sich auf den Nettopreis, nicht auf den Bruttopreis."
+            },
+            {
+              "text": "238 € − 19 € = 219 €",
+              "reason": "19 % sind ein Anteil, keine 19 Euro."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GE3ES53MGM3W5JWWPCR",
+          "slug": "it8-modell-mwst-datenfluss",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-modell-mwst",
+          "question": "Wie modellierst du die Bruttopreisberechnung, und wie setzt du sie in der Tabelle um?",
+          "concept": "Datenflussdiagramm: Netto und Steuersatz → Multiplikation → MwSt; Netto + MwSt → Brutto. Tabelle: Steuersatz in einer Zelle, Formeln =B2*$B$1 und =B2+C2.",
+          "materiality": "material",
+          "sample_solution": "Im Datenflussdiagramm fließen Nettopreis und Steuersatz (19 % oder ermäßigt 7 %) in eine Multiplikation, die die Mehrwertsteuer liefert; Nettopreis und Mehrwertsteuer werden zum Bruttopreis addiert. In der Tabelle steht der Steuersatz einmal in einer Zelle, z. B. B1, der Nettopreis in B2. C2 berechnet =B2*$B$1, D2 =B2+C2; die Formeln lassen sich nach unten kopieren."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GE6P06BFANFWNR58VP3",
+      "atom_uri": "urn:zam:atom:01M5Y21GE6P06BFANFWNR58VP3",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-diagramme",
+      "title": "Diagramme gestalten und interpretieren",
+      "domain": "informatik/tabellenkalkulation",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-diagramme",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GD1RZ3Y64Q8NVXZXCYH",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Tabellenblatt, Zelladressen und Datentypen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "tabellenkalkulation",
+          "topic_title": "Einführung in die Tabellenkalkulation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.6",
+          "topic_title": "Einführung in die Tabellenkalkulation",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GE905TJQRG0RPHCBX8P",
+          "slug": "it8-diagramme-kreis",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-diagramme",
+          "question": "Wofür eignet sich ein Kreisdiagramm?",
+          "concept": "Für Anteile an einem Ganzen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für Anteile an einem Ganzen",
+              "Für einen Verlauf über die Zeit"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Für einen Verlauf über die Zeit",
+              "reason": "Für Verläufe nimmt man ein Liniendiagramm."
+            },
+            {
+              "text": "Für Werte ohne gemeinsames Ganzes",
+              "reason": "Ohne Ganzes von 100 % täuscht ein Kreis eine falsche Aufteilung vor."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GECTJ8ZA6EDZ7YC9V6X",
+          "slug": "it8-diagramme-waehlen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-diagramme",
+          "question": "Welcher Diagrammtyp passt zu Anteilen, Vergleichen und Verläufen, und wie groß ist der Winkel für 40 % im Kreisdiagramm?",
+          "concept": "Anteile: Kreis, Vergleich: Säulen, Verlauf: Linie; 40 % · 3,6° = 144°.",
+          "materiality": "material",
+          "sample_solution": "Ein Kreisdiagramm zeigt Anteile an einem Ganzen, ein Säulendiagramm vergleicht Werte verschiedener Kategorien, ein Liniendiagramm zeigt einen Verlauf, meist über die Zeit. Im Kreis entsprechen 100 % genau 360°, also 1 % = 3,6°; 40 % erhalten 40 · 3,6° = 144°. Titel, Achsenbeschriftung mit Einheit und eine Legende gehören dazu."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GEF2FDGE0WZHDGF20FP",
+      "atom_uri": "urn:zam:atom:01M5Y21GEF2FDGE0WZHDGF20FP",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-recherche",
+      "title": "Gezielt recherchieren und Quellen bewerten",
+      "domain": "informatik/praesentation",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-recherche",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "praesentation",
+          "topic_title": "Informationsbeschaffung und -präsentation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GEJAPQFBZH0MEKGYNGM",
+          "slug": "it8-recherche-anfuehrungszeichen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-recherche",
+          "question": "Womit erzwingst du bei einer Suchmaschine die genaue Wortfolge?",
+          "concept": "Mit Anführungszeichen um die Wörter",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit Anführungszeichen um die Wörter",
+              "Mit einem Minus vor den Wörtern"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mit einem Minus vor den Wörtern",
+              "reason": "Ein Minus schließt Wörter aus."
+            },
+            {
+              "text": "Mit site: vor den Wörtern",
+              "reason": "site: beschränkt die Suche auf eine Domain."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GEN0D035XE9ANP2952M",
+          "slug": "it8-recherche-quellen-pruefen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-recherche",
+          "question": "Nach welchen Kriterien prüfst du, ob eine Internetquelle verlässlich ist?",
+          "concept": "Urheber (Impressum, Fachleute), Aktualität, Belege und Quellen, Absicht (informieren oder verkaufen) und Bestätigung durch andere unabhängige Quellen.",
+          "materiality": "material",
+          "sample_solution": "Man prüft, wer hinter der Seite steht (Impressum, Fachleute, Behörde), wie aktuell sie ist, ob sie Belege und Quellen nennt und ob sie informieren oder etwas verkaufen will. Zusätzlich vergleicht man die Aussage mit anderen unabhängigen Quellen. Jede übernommene Information notiert man mit Quellenangabe: Autor, Titel, Adresse und Abrufdatum."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GERNAJ9D14W4V9E0KMA",
+      "atom_uri": "urn:zam:atom:01M5Y21GERNAJ9D14W4V9E0KMA",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-urheberrecht-lizenzen",
+      "title": "Urheberrecht und Lizenzen",
+      "domain": "informatik/praesentation",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-urheberrecht-lizenzen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GEF2FDGE0WZHDGF20FP",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Gezielt recherchieren und Quellen bewerten“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "praesentation",
+          "topic_title": "Informationsbeschaffung und -präsentation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GEVJ6DN8KGHS6YVT171",
+          "slug": "it8-urheberrecht-lizenzen-cc-nd",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-urheberrecht-lizenzen",
+          "question": "Was verbietet der Creative-Commons-Baustein ND?",
+          "concept": "Bearbeitungen zu veröffentlichen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bearbeitungen zu veröffentlichen",
+              "Den Urheber namentlich zu nennen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Den Urheber namentlich zu nennen",
+              "reason": "Die Namensnennung verlangt BY; sie ist immer Pflicht."
+            },
+            {
+              "text": "Das Werk in der Schule zu zeigen",
+              "reason": "Die Schulnutzung bleibt erlaubt; ND betrifft nur Bearbeitungen."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GEXX889A774YVTJ0D4E",
+          "slug": "it8-urheberrecht-lizenzen-cc-bausteine",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-urheberrecht-lizenzen",
+          "question": "Erkläre die Creative-Commons-Bausteine und die TULLU-Regel.",
+          "concept": "BY Namen nennen, NC nicht kommerziell, ND nicht bearbeiten, SA Bearbeitungen unter derselben Lizenz; TULLU: Titel, Urheber, Lizenz, Link zur Lizenz, Ursprungsort.",
+          "materiality": "material",
+          "sample_solution": "Creative-Commons-Lizenzen erlauben die Nutzung fremder Werke unter Bedingungen. BY verlangt, den Urheber zu nennen; NC erlaubt nur nicht kommerzielle Nutzung; ND verbietet veröffentlichte Bearbeitungen; SA verlangt, Bearbeitungen unter derselben Lizenz weiterzugeben. Für die Quellenangabe nennt man nach TULLU Titel, Urheber, Lizenz, Link zur Lizenz und den Ursprungsort."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GF16B8K717HVNXZ4WB5",
+      "atom_uri": "urn:zam:atom:01M5Y21GF16B8K717HVNXZ4WB5",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-praesentation-gestalten",
+      "title": "Präsentationen planen und gestalten",
+      "domain": "informatik/praesentation",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-praesentation-gestalten",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GEF2FDGE0WZHDGF20FP",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Gezielt recherchieren und Quellen bewerten“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "praesentation",
+          "topic_title": "Informationsbeschaffung und -präsentation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GF443BPRMBMM8ZF0YDM",
+          "slug": "it8-praesentation-gestalten-folienmaster",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-praesentation-gestalten",
+          "question": "Was legt der Folienmaster einer Präsentation fest?",
+          "concept": "Schrift und Farben für alle Folien",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Schrift und Farben für alle Folien",
+              "Die Reihenfolge der Vortragenden"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Reihenfolge der Vortragenden",
+              "reason": "Der Master gestaltet Folien, er plant nicht den Vortrag."
+            },
+            {
+              "text": "Die Länge des Vortrags in Minuten",
+              "reason": "Die Dauer hängt vom Vortrag ab, nicht von der Folienvorlage."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GF72NKNGK835EVE2J9R",
+          "slug": "it8-praesentation-gestalten-regeln",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-praesentation-gestalten",
+          "question": "Wie planst du eine Präsentation, und welche Gestaltungsregeln gelten für Folien?",
+          "concept": "Mindmap → Grobgliederung → Feingliederung; Folien: Schrift ab etwa 24 pt, starker Kontrast, Stichpunkte statt Sätze, höchstens etwa sechs Zeilen, wenige Schriften und Farben, Bilder statt Textwüsten.",
+          "materiality": "material",
+          "sample_solution": "Ideen werden in einer Mindmap gesammelt, zu einer Grobgliederung (Einleitung, Hauptteil, Schluss) geordnet und zu einer Feingliederung Folie für Folie verfeinert; im Team verteilt man Teilthemen. Folien sind gut lesbar mit Schrift ab etwa 24 pt, serifenlos, mit starkem Hell-Dunkel-Kontrast, Stichpunkten statt ganzer Sätze und höchstens etwa sechs Zeilen. Ein Folienmaster sorgt für einheitliche Gestaltung, Animationen setzt man sparsam ein."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GFA9AZMRYBNM1TFX5P8",
+      "atom_uri": "urn:zam:atom:01M5Y21GFA9AZMRYBNM1TFX5P8",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-vortragen",
+      "title": "Sach- und adressatengerecht präsentieren",
+      "domain": "informatik/praesentation",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-vortragen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GF16B8K717HVNXZ4WB5",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Präsentationen planen und gestalten“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "praesentation",
+          "topic_title": "Informationsbeschaffung und -präsentation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.7",
+          "topic_title": "Informationsbeschaffung und -präsentation",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GFDJ24MSPX7GP5H9FN2",
+          "slug": "it8-vortragen-stichwortkarten",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-vortragen",
+          "question": "Was hilft am meisten, frei vorzutragen?",
+          "concept": "Stichwortkarten mit den wichtigsten Begriffen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Stichwortkarten mit den wichtigsten Begriffen",
+              "Den ganzen Text auf die Folien schreiben"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Den ganzen Text auf die Folien schreiben",
+              "reason": "Dann liest man ab und verliert den Blickkontakt."
+            },
+            {
+              "text": "Möglichst schnell sprechen",
+              "reason": "Schnelles Sprechen macht den Vortrag unverständlich."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GFG648M48Y1M4BKK54Q",
+          "slug": "it8-vortragen-adressatengerecht",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-vortragen",
+          "question": "Was heißt sach- und adressatengerecht präsentieren?",
+          "concept": "Sachgerecht: richtige, belegte, geordnete Inhalte; adressatengerecht: Sprache, Beispiele und Tiefe passen zum Publikum, Fachbegriffe werden erklärt.",
+          "materiality": "material",
+          "sample_solution": "Sachgerecht ist ein Vortrag, wenn seine Inhalte stimmen, belegt und logisch geordnet sind. Adressatengerecht ist er, wenn Sprache, Beispiele und Tiefe zum Publikum passen; Fachbegriffe werden beim ersten Auftreten erklärt. Dazu kommen Vortragstechniken: frei sprechen mit Stichwortkarten, Blickkontakt, laut und langsam sprechen, Zeit einhalten und am Ende zusammenfassen und Fragen zulassen."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GFK40KZEYPAYFE2RWCV",
+      "atom_uri": "urn:zam:atom:01M5Y21GFK40KZEYPAYFE2RWCV",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-eva-computermodell",
+      "title": "EVA-Prinzip und Computermodell",
+      "domain": "informatik/edv",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-eva-computermodell",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "edv",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GFPDM6N631A5J03N5WJ",
+          "slug": "it8-eva-computermodell-rechenwerk",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-eva-computermodell",
+          "question": "Welches Bauteil führt im Von-Neumann-Modell die Berechnungen aus?",
+          "concept": "Das Rechenwerk im Prozessor",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Rechenwerk im Prozessor",
+              "Der Bus zwischen den Bauteilen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Bus zwischen den Bauteilen",
+              "reason": "Der Bus transportiert Daten zwischen den Bauteilen, er rechnet nicht."
+            },
+            {
+              "text": "Der Arbeitsspeicher",
+              "reason": "Der Arbeitsspeicher hält Programme und Daten bereit."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GFS9YAKGSMSWP3WDRBY",
+          "slug": "it8-eva-computermodell-eva-von-neumann",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-eva-computermodell",
+          "question": "Erkläre das EVA-Prinzip und das vereinfachte Von-Neumann-Modell.",
+          "concept": "EVA: Eingabe → Verarbeitung → Ausgabe, dazu Speicherung; Von Neumann: Prozessor (Steuerwerk, Rechenwerk), Arbeitsspeicher für Programme und Daten, Ein-/Ausgabeeinheit, Bus.",
+          "materiality": "material",
+          "sample_solution": "Nach dem EVA-Prinzip kommen Daten über Eingabegeräte (Tastatur, Mikrofon) herein, werden im Prozessor verarbeitet und über Ausgabegeräte (Monitor, Drucker) ausgegeben; dazu kommt die Speicherung. Das Von-Neumann-Modell besteht aus dem Prozessor mit Steuerwerk und Rechenwerk, dem Arbeitsspeicher, in dem Programme und Daten gemeinsam liegen, der Ein- und Ausgabeeinheit und dem Bus, der alles verbindet."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GFWCDKKTSDJW6CVB303",
+      "atom_uri": "urn:zam:atom:01M5Y21GFWCDKKTSDJW6CVB303",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-betriebssystem-dateien",
+      "title": "Hardware, Software, Betriebssystem und Dateisystem",
+      "domain": "informatik/edv",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-betriebssystem-dateien",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GFK40KZEYPAYFE2RWCV",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „EVA-Prinzip und Computermodell“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "edv",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GFZANDN536DVRRKXHMX",
+          "slug": "it8-betriebssystem-dateien-absoluter-pfad",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-betriebssystem-dateien",
+          "question": "Womit beginnt ein absoluter Pfad in einem hierarchischen Dateisystem?",
+          "concept": "Mit dem Wurzelverzeichnis, z. B. C:\\",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem Wurzelverzeichnis, z. B. C:\\",
+              "Mit dem aktuellen Arbeitsordner"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mit dem aktuellen Arbeitsordner",
+              "reason": "Das gilt für relative Pfade, nicht für absolute."
+            },
+            {
+              "text": "Mit dem Dateinamen",
+              "reason": "Der Dateiname steht am Ende des Pfads."
+            }
+          ],
+          "replaces": [
+            "01K4A7D0000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M5Y21GG2VWZSFGKTCHDF1H45",
+          "slug": "it8-betriebssystem-dateien-schnittstelle",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-betriebssystem-dateien",
+          "question": "Welche Rolle spielt das Betriebssystem zwischen Anwendung und Hardware?",
+          "concept": "Es ist die Schnittstelle: verwaltet Prozessor, Speicher und Geräte (mit Treibern), startet Programme, verwaltet Dateien und bietet die Benutzeroberfläche.",
+          "materiality": "material",
+          "sample_solution": "Anwendungsprogramme greifen nicht direkt auf die Hardware zu, sondern über das Betriebssystem. Es verwaltet Prozessor, Arbeitsspeicher und Geräte, für die es Treiber nutzt, startet und beendet Programme, verwaltet Dateien im Ordnerbaum und stellt die Benutzeroberfläche bereit. Bei Problemen hilft diese Einteilung: Hängt eine Anwendung, beendet man sie über den Task-Manager; erkennt das System ein Gerät nicht, prüft man Kabel und Treiber."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GG5Y8JHPZSR774Z2H66",
+      "atom_uri": "urn:zam:atom:01M5Y21GG5Y8JHPZSR774Z2H66",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-softwarelizenzen",
+      "title": "Lizenzbestimmungen bei Software",
+      "domain": "informatik/edv",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-softwarelizenzen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GERNAJ9D14W4V9E0KMA",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Urheberrecht und Lizenzen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "edv",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GG82V60G79RD1TYYZBS",
+          "slug": "it8-softwarelizenzen-open-source",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-softwarelizenzen",
+          "question": "Welche Software darfst du verändern und verändert weitergeben?",
+          "concept": "Open-Source-Software",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Open-Source-Software",
+              "Kostenlose Freeware"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kostenlose Freeware",
+              "reason": "Freeware ist kostenlos, darf aber meist nicht verändert werden."
+            },
+            {
+              "text": "Gekaufte Software",
+              "reason": "Bei proprietärer Software ist der Quellcode geheim und das Verändern verboten."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GGB9C3ZZA66T02Y47EN",
+          "slug": "it8-softwarelizenzen-lizenzarten",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-softwarelizenzen",
+          "question": "Unterscheide kommerzielle Software, Freeware, Shareware und Open-Source-Software.",
+          "concept": "Kommerziell: Nutzungsrecht kaufen, nicht weitergeben; Freeware: kostenlos nutzen, nicht verändern; Shareware: testen, dann kaufen; Open Source: Quellcode offen, nutzen, verändern, weitergeben nach Lizenz.",
+          "materiality": "material",
+          "sample_solution": "Kommerzielle Software kauft oder abonniert man; der Quellcode ist geheim, Weitergeben und Kopieren für andere sind verboten. Freeware darf kostenlos genutzt, aber meist nicht verändert werden, manchmal nur privat. Shareware darf man eine Zeit lang oder eingeschränkt testen und muss sie danach kaufen. Open-Source-Software hat offenen Quellcode und darf nach ihrer Lizenz (z. B. GPL) genutzt, verändert und weitergegeben werden, etwa LibreOffice oder Firefox."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GGE7E24XF0DYTWXMZG3",
+      "atom_uri": "urn:zam:atom:01M5Y21GGE7E24XF0DYTWXMZG3",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-datensicherheit",
+      "title": "Datensicherheit: Risiken, Regeln und Maßnahmen",
+      "domain": "informatik/edv",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-datensicherheit",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GBBQGBBY0RW4KKWSWEG",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Digitale Kommunikation: Gefahren erkennen, fair bleiben“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "edv",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.8",
+          "topic_title": "Grundlagen elektronischer Datenverarbeitung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GGHSNC9E5BD8YE3TYQC",
+          "slug": "it8-datensicherheit-backup",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-datensicherheit",
+          "question": "Wo bewahrst du ein Backup sinnvoll auf?",
+          "concept": "Auf einem getrennten Datenträger",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auf einem getrennten Datenträger",
+              "Im selben Ordner wie die Originale"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Im selben Ordner wie die Originale",
+              "reason": "Bei einem Defekt oder Trojaner wären Original und Kopie zugleich verloren."
+            },
+            {
+              "text": "Auf dem Desktop desselben Geräts",
+              "reason": "Der Desktop liegt auf demselben Datenträger wie die Originale."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GGM4QDMT9SYXB5MCA07",
+          "slug": "it8-datensicherheit-passwort",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-datensicherheit",
+          "question": "Wie viele Möglichkeiten hat ein Passwort aus 12 Zeichen mit 94 möglichen Zeichen, und welche Regeln machen Passwörter sicher?",
+          "concept": "94¹² ≈ 4,8 · 10²³ Möglichkeiten; mindestens 12 Zeichen, alle Zeichenarten, kein Wörterbuchwort, für jeden Dienst ein eigenes Passwort.",
+          "materiality": "material",
+          "sample_solution": "Die Zahl der möglichen Passwörter ist Zeichenvorrat hoch Länge: 94¹² ≈ 4,8 · 10²³. Selbst bei zehn Milliarden Versuchen pro Sekunde dauerte das Durchprobieren über eine Million Jahre; eine 4-stellige PIN hat nur 10⁴ = 10 000 Möglichkeiten. Sichere Passwörter sind lang, mischen Groß- und Kleinbuchstaben, Ziffern und Sonderzeichen, sind kein Wort aus dem Wörterbuch und werden für jeden Dienst einzeln verwendet."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GGQGV41TJ4GF6CNDT75",
+      "atom_uri": "urn:zam:atom:01M5Y21GGQGV41TJ4GF6CNDT75",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-digitale-werkzeuge",
+      "title": "Digitale Werkzeuge zum Kommunizieren, Zusammenarbeiten und Lernen",
+      "domain": "informatik/digitale-medien",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-digitale-werkzeuge",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "digitale-medien",
+          "topic_title": "Digitale Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GGTZ3FFXD188NS3E95S",
+          "slug": "it8-digitale-werkzeuge-ki-pruefen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-digitale-werkzeuge",
+          "question": "Ein KI-Chatbot nennt dir eine Jahreszahl für dein Referat. Was tust du?",
+          "concept": "Die Angabe in einer verlässlichen Quelle prüfen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Angabe in einer verlässlichen Quelle prüfen",
+              "Sie ungeprüft übernehmen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie ungeprüft übernehmen",
+              "reason": "KI-Antworten können falsch sein, auch wenn sie sicher klingen."
+            },
+            {
+              "text": "So lange fragen, bis er sie wiederholt",
+              "reason": "Eine Wiederholung macht eine falsche Angabe nicht richtig."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GGXESSMSXJ6T2NQ15M8",
+          "slug": "it8-digitale-werkzeuge-cloud",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-digitale-werkzeuge",
+          "question": "Nenne Vorteile und Konsequenzen von Cloud-Computing.",
+          "concept": "Vorteile: Daten von jedem Gerät erreichbar, Geräteverlust kostet keine Daten, gemeinsames Arbeiten; Konsequenzen: Internet nötig, Daten liegen beim Anbieter (Datenschutz), Abhängigkeit vom Anbieter.",
+          "materiality": "material",
+          "sample_solution": "Beim Cloud-Computing liegen Daten und Programme auf Servern im Internet. Dadurch sind sie von jedem Gerät erreichbar, gehen bei einem verlorenen Gerät nicht verloren und lassen sich mit anderen teilen. Man braucht aber eine Internetverbindung, gibt seine Daten einem Anbieter und ist von ihm abhängig. Deshalb gibt man Freigaben sparsam und behält wichtige Dateien zusätzlich offline."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GGZA32EY7SWJKQC8K8N",
+      "atom_uri": "urn:zam:atom:01M5Y21GGZA32EY7SWJKQC8K8N",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-netiquette",
+      "title": "Netiquette und Privatsphäre bei digitalen Interaktionen",
+      "domain": "informatik/digitale-medien",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-netiquette",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GBBQGBBY0RW4KKWSWEG",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Digitale Kommunikation: Gefahren erkennen, fair bleiben“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "digitale-medien",
+          "topic_title": "Digitale Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GH25T7EA7GCBPCK661V",
+          "slug": "it8-netiquette-grossbuchstaben",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-netiquette",
+          "question": "Warum sollte man im Chat nicht in Großbuchstaben schreiben?",
+          "concept": "Weil es wie Schreien wirkt",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil es wie Schreien wirkt",
+              "Weil das Programm sonst abstürzt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Weil das Programm sonst abstürzt",
+              "reason": "Großbuchstaben sind technisch kein Problem."
+            },
+            {
+              "text": "Weil Großbuchstaben verboten sind",
+              "reason": "Es ist eine Höflichkeitsregel, kein Verbot."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GH69EDN3S2Z43WNX9YH",
+          "slug": "it8-netiquette-regeln",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-netiquette",
+          "question": "Nenne Regeln der Netiquette und was sie mit Privatsphäre zu tun haben.",
+          "concept": "Höflich bleiben, nicht in Großbuchstaben schreiben, Ironie kennzeichnen, keine Kettenbriefe, Ruhezeiten; private Nachrichten und Fotos anderer nur mit Einverständnis weitergeben.",
+          "materiality": "material",
+          "sample_solution": "Die Netiquette verlangt einen respektvollen Umgang: höflich bleiben, auch bei Streit, nicht in Großbuchstaben schreiben, Ironie kennzeichnen, keine Kettenbriefe oder Nachrichtenfluten und vereinbarte Ruhezeiten achten. Zur Privatsphäre gehört, private Nachrichten, Sprachnachrichten und Fotos anderer nur mit deren Einverständnis weiterzugeben und keine persönlichen Daten anderer zu veröffentlichen."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GH91KC1E35T7R2MMB3D",
+      "atom_uri": "urn:zam:atom:01M5Y21GH91KC1E35T7R2MMB3D",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-schutzmassnahmen",
+      "title": "Daten, Gesundheit und Umwelt schützen",
+      "domain": "informatik/digitale-medien",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-schutzmassnahmen",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GBK0DHBXYADR6506FX8",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Persönliche Daten, Recht am eigenen Bild, Datenschutz“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "digitale-medien",
+          "topic_title": "Digitale Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GHCDHZ49E032M190GMH",
+          "slug": "it8-schutzmassnahmen-altgeraet",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-schutzmassnahmen",
+          "question": "Wohin gehört ein altes, kaputtes Smartphone?",
+          "concept": "Zum Wertstoffhof",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zum Wertstoffhof",
+              "In den Hausmüll"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "In den Hausmüll",
+              "reason": "Altgeräte enthalten Schadstoffe und wertvolle Rohstoffe."
+            },
+            {
+              "text": "In die Papiertonne",
+              "reason": "Elektrogeräte gehören nie ins Altpapier."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GHF9DH0SH3VAGX9JPV9",
+          "slug": "it8-schutzmassnahmen-drei-bereiche",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-schutzmassnahmen",
+          "question": "Welche Maßnahmen schützen deine Daten, deine Gesundheit und die Umwelt im Umgang mit digitalen Geräten?",
+          "concept": "Daten: nur nötige App-Berechtigungen, Standort nur bei Nutzung, Sperrbildschirm; Gesundheit: Bildschirmzeit begrenzen, Ruhezeiten, Benachrichtigungen bündeln; Umwelt: lange nutzen, reparieren, richtig entsorgen.",
+          "materiality": "material",
+          "sample_solution": "Persönliche Daten schützt man mit Einstellungen: nur nötige App-Berechtigungen, Standortzugriff nur bei Nutzung, Sperrbildschirm und Updates. Die Gesundheit schützt man, indem man die Bildschirmzeit begrenzt, Ruhezeiten vor dem Schlafen einhält und Benachrichtigungen bündelt. Die Umwelt schont man, indem man Geräte lange nutzt, repariert oder gebraucht kauft und Altgeräte beim Wertstoffhof oder Händler zurückgibt."
+        }
+      ]
+    },
+    {
+      "id": "01M5Y21GHJARQETM31HWQPF2RF",
+      "atom_uri": "urn:zam:atom:01M5Y21GHJARQETM31HWQPF2RF",
+      "namespace": "zam-academy-informatik-realschule-8",
+      "slug": "it8-datenspuren",
+      "title": "Datenspuren, Datensparsamkeit und digitale Dienstleister",
+      "domain": "informatik/digitale-medien",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-datenspuren",
+      "prerequisites": [
+        {
+          "atom_id": "01M5Y21GBK0DHBXYADR6506FX8",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Persönliche Daten, Recht am eigenen Bild, Datenschutz“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-realschule-8",
+          "topic_code": "digitale-medien",
+          "topic_title": "Digitale Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "it",
+          "topic_code": "it-1.9",
+          "topic_title": "Digitale Medien",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5Y21GHN62K04WR5PM6BRWF2",
+          "slug": "it8-datenspuren-fingerprinting",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-datenspuren",
+          "question": "Wie kann ein Dienst dich wiedererkennen, obwohl du alle Cookies gelöscht hast?",
+          "concept": "Über Browser-Fingerprinting",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Über Browser-Fingerprinting",
+              "Gar nicht, ohne Cookies bist du unsichtbar"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Gar nicht, ohne Cookies bist du unsichtbar",
+              "reason": "Merkmale von Browser und Gerät verraten dich auch ohne Cookies."
+            },
+            {
+              "text": "Nur über deine Postanschrift",
+              "reason": "Ein Online-Dienst kennt die Anschrift nur, wenn du sie angibst."
+            }
+          ]
+        },
+        {
+          "id": "01M5Y21GHRD7DSF2YNGBYA147A",
+          "slug": "it8-datenspuren-motive-methoden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/informatik-realschule-8/#lesson=it8-datenspuren",
+          "question": "Warum werten digitale Dienstleister Daten aus, und mit welchen Methoden ordnen sie sie Nutzern zu?",
+          "concept": "Motive: Verkehrsführung, gezielte Werbung und Kaufverhalten, politische Beeinflussung; Methoden: Auswertung von Seitenbesuchen, Cookies, Anmeldung mit Konto, Browser-Fingerprinting.",
+          "materiality": "material",
+          "sample_solution": "Dienstleister werten Daten aus, um Angebote zu verbessern (z. B. Stauwarnungen aus Standortdaten), um Werbung gezielt zu platzieren und Kaufverhalten zu beeinflussen oder sogar um politische Meinungen zu beeinflussen. Zugeordnet werden die Daten über ausgewertete Seitenbesuche, Cookies mit einer Kennung, eine Anmeldung mit Konto und Browser-Fingerprinting aus Merkmalen von Browser und Gerät. Datensparsamkeit heißt, nur nötige Daten preiszugeben."
+        }
+      ]
+    }
+  ]
+}

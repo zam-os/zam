@@ -568,6 +568,29 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     }
   });
 
+  // The Fachlehrplan IT lists all modules in every grade (verified at
+  // /fachlehrplan/realschule/8/it on 2026-10-27). Lernbereich 1
+  // "Anfangsunterricht" holds modules 1.1–1.9, which the Academy cell
+  // zam-academy:informatik-realschule-8 binds as it-1.1 … it-1.9.
+  it("offers IT 8 to every group with the Anfangsunterricht as Lernbereich 1", () => {
+    expect(provider.listTracks("realschule", "8", "it")).toEqual([]);
+    const topics = provider.listTopics({
+      schoolType: "realschule",
+      grade: "8",
+      subject: "it",
+    });
+    expect(topics.map((topic) => [topic.id, topic.label])).toEqual([
+      ["lb1", "Anfangsunterricht"],
+      ["lb2", "Aufbauunterricht"],
+      ["lb3", "Bilingualer Sachfachunterricht (optional)"],
+    ]);
+    expect(provider.listCatalogPaths?.()).toContainEqual({
+      schoolType: "realschule",
+      grade: "8",
+      subject: "it",
+    });
+  });
+
   it("offers Chemie 10 with both Wahlpflichtfächergruppen and their own Lernbereiche", () => {
     expect(provider.listTracks("realschule", "10", "chemie")).toEqual([
       {

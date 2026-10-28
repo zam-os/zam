@@ -165,9 +165,10 @@ describe("ZAM Academy IT cells: Algorithmen and Datennetze", () => {
   });
 
   it("covers its module only in part, so the generic importer stays available", () => {
-    // Grades 6 to 8 keep their school cells and grade 9 its SQL cell; all of
-    // them name the grade. Grades 5 and 10 have only grade-less modules,
-    // including the Informatik-10 extensions; the school chooses their order.
+    // Grades 6 to 8 have the Informatik-8 Academy cell (Anfangsunterricht)
+    // and grade 9 its SQL cell; all of them name the grade. Grades 5 and 10
+    // have only grade-less modules, including the Informatik-10 extensions;
+    // the school chooses their order.
     for (const grade of [6, 7, 8, 9])
       expect(
         needsGenericCurriculumImport(itScope(grade)),
