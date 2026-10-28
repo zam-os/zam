@@ -1077,6 +1077,9 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "material_builtin_failed",
   "material_builtin_invalid",
   "model_cap_file",
+  // New agent-input copy is maintained in English and German first.
+  "model_cap_agent_file",
+  "model_agent_probe_hint",
   "btn_material_bonus",
   "material_bonus_title",
   "material_bonus_intro",

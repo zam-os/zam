@@ -10,7 +10,10 @@ import {
 } from "../../../src/cli/agent-llm/copilot.js";
 import { parseGooseStdout } from "../../../src/cli/agent-llm/goose.js";
 import { parseHermesStdout } from "../../../src/cli/agent-llm/hermes.js";
-import { parseOpenCodeJsonl } from "../../../src/cli/agent-llm/opencode.js";
+import {
+  OpenCodeAdapter,
+  parseOpenCodeJsonl,
+} from "../../../src/cli/agent-llm/opencode.js";
 
 describe("listAgentTextHarnessIds", () => {
   it("includes the full outbound set for consistent Settings options", () => {
@@ -42,10 +45,8 @@ describe("listAgentTextHarnessIds", () => {
     expect(withEffort.sort()).toEqual(["antigravity", "codex", "copilot"]);
   });
 
-  it(
-    "every registered agent text adapter implements listModels()",
-    async () => {
-      const ids = listAgentTextHarnessIds();
+  it("every registered agent text adapter implements listModels()", async () => {
+    const ids = listAgentTextHarnessIds();
     for (const id of ids) {
       const adapter = getAgentAdapter(id);
       expect(adapter?.listModels).toBeDefined();
@@ -57,6 +58,33 @@ describe("listAgentTextHarnessIds", () => {
 });
 
 describe("parseOpenCodeJsonl", () => {
+  it("attaches PDFs natively and denies tools for material generation", async () => {
+    const adapter = new OpenCodeAdapter(
+      () => "/opencode",
+      async (input) => {
+        expect(input.args).toContain("/source/book.pdf");
+        expect(input.args[input.args.indexOf("-f") + 1]).toBe(
+          "/source/book.pdf",
+        );
+        expect(JSON.parse(input.env!.OPENCODE_CONFIG_CONTENT!)).toMatchObject({
+          permission: "deny",
+        });
+        return {
+          code: 0,
+          stdout: JSON.stringify({ text: "read" }),
+          stderr: "",
+          timedOut: false,
+        };
+      },
+    );
+    await expect(
+      adapter.generate({
+        system: "read",
+        user: "read",
+        pdfPaths: ["/source/book.pdf"],
+      }),
+    ).resolves.toEqual({ text: "read" });
+  });
   it("surfaces API errors", () => {
     const line = JSON.stringify({
       type: "error",

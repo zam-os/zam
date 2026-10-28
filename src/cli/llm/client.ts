@@ -1821,7 +1821,7 @@ function deduplicateGeneratedCards(
  * text for the caller to parse or format exactly as it would an HTTP
  * chat-completions response.
  */
-async function requestAgentCompletion(
+export async function requestAgentCompletion(
   endpoint: {
     agentHarness?: string;
     model?: string;
@@ -1832,6 +1832,8 @@ async function requestAgentCompletion(
     user: string;
     /** Local image paths for multimodal harnesses (e.g. Antigravity / Gemini). */
     imagePaths?: string[];
+    /** Local PDFs for adapters that explicitly support document input. */
+    pdfPaths?: string[];
     /** Per-call effort override; wins over registry entry effort. */
     effort?: ProviderConfig["effort"];
     /** Wall-clock budget; the adapter's own default applies when omitted. */
@@ -1853,6 +1855,11 @@ async function requestAgentCompletion(
       `Harness "${endpoint.agentHarness}" does not support image input.`,
     );
   }
+  if (messages.pdfPaths?.length && !adapter.modalities?.file) {
+    throw new Error(
+      `Harness "${endpoint.agentHarness}" does not support PDF input.`,
+    );
+  }
   const { defaultAgentModel } = await import("../agent-llm/defaults.js");
   // Prefer the registry model; fall back to the harness's cheap default when
   // the entry still has a placeholder `agent:<harness>` from early builds.
@@ -1866,6 +1873,7 @@ async function requestAgentCompletion(
     system: messages.system,
     user: messages.user,
     imagePaths: messages.imagePaths,
+    pdfPaths: messages.pdfPaths,
     model,
     effort,
     timeoutMs: messages.timeoutMs,

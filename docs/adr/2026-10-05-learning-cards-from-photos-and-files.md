@@ -198,6 +198,69 @@ more strictly than last year and no longer runs ZAM.
 
 ## Decisions
 
+### Amendment 2026-10-28: direct imports through an agent adapter
+
+The Studio's built-in request also uses configured agent rows. Previously its
+selection discarded every agent, even an image-capable one, while the
+agent-transport decision already allowed this path. Images, PDFs and typed
+notes now share the configured model order, proposal validation, review and
+confirmation regardless of transport.
+
+An adapter explicitly declares `file` support and accepts separate `pdfPaths`;
+PDFs never go through an image-only flag. Claude Code reads pages with its Read
+tool, OpenCode forwards native PDF attachments, and Codex reads document paths
+with its available PDF tools. Codex can render pages only in an isolated,
+temporary workspace; its file-reading run disables configured MCP services.
+The app adds no PDF parser, renderer or transcription stage. Direct HTTP PDF
+requests still require declared native `file` input and retain OpenRouter's
+native-engine gate. The native-only wording below applies to direct HTTP,
+not to the agent's own document-reading tools. An agent must inspect pages,
+including their layout, and fail if its tools cannot read them; no guessing
+from filenames or substituting a plain transcript.
+
+The app gives the agent bounded, prepared working copies and removes them
+after success or failure. The source link and fingerprint name the original
+file. Claude file reads expose only the Read tool; OpenCode attachment runs
+deny tool actions. These restrictions keep document instructions from invoking
+ZAM or changing library content before the learner's review.
+
+"Re-check" reports the adapter's declared text/image/PDF input and executable
+availability. It performs no model generation or test upload, and does not
+claim to verify the selected model's account access or installed PDF tools.
+The UI says so and labels agent PDF input separately. A re-check enables
+newly supported PDF input on old agent entries, keeps an existing disabled
+PDF switch off, and leaves the previous verdict intact when the executable
+is unavailable. This does not add chapter splitting, EPUB input or a larger
+file budget.
+
+**Live verification (2026-10-28).** Codex CLI 0.162.1 with the exact
+`gpt-6-luna` model processed a synthetic one-page PDF (2,387 bytes) containing
+two crossed signal arrows with randomly generated labels. The agent rendered
+the page with `pdftoppm`, returned the two correct connections and three valid
+proposals, and the batch could be staged with no cards before confirmation.
+Working copies and the rendering workspace were removed.
+
+This run exposed two issues invisible to the mocked transport tests. Codex's
+bootstrap validates MCP overrides before every inventory source is available,
+so an `enabled=false` entry alone can lack a transport, and TOML quoting in a
+dotted CLI key creates a different literal server name. File-reading runs now
+provide complete disabled entries of the original transport kind, with inert
+placeholders instead of copying inventory credentials or private endpoints
+into process arguments. Also, the shared prompt's unqualified "bloom is 1–5"
+was ambiguous between the analysis range and a card's level. It now explicitly
+requires `analysis.bloom: [min, max]` and scalar `proposals[].bloom`; invalid
+answers still fail validation.
+
+A repetition through the unmodified standard route then misread one letter
+of a synthetic identifier. The Codex PDF instructions now require checking
+literal names, numbers and symbols against an available PDF text layer after
+visually reading the rendered pages. The text layer supplements spelling
+verification only; it never replaces layout reading or determines arrow
+relationships, and no transcript is saved. The standard-route retest returned
+both connections and identifiers exactly, staged two proposals and built two
+review rows with zero cards before confirmation. This is a CLI/model smoke
+test, not a manual Studio or Mobile acceptance pass.
+
 ### 1. The model reads the page itself — no transcription step
 
 Images and PDFs go to the model as they are, as image or file content parts,

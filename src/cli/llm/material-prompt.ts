@@ -223,7 +223,8 @@ export function materialPlaceLines(
 export function materialContractText(path: MaterialPath = "harness"): string {
   return [
     `analysis.kind is one of ${MATERIAL_KINDS.join(", ")}.`,
-    `proposals[].origin is one of ${MATERIAL_ORIGINS.join(", ")}; bloom is 1–5; file indexes files[]; page is the page or photo number.`,
+    "analysis.bloom is a two-integer array [min, max] with 1 ≤ min ≤ max ≤ 5, including [1, 1] when both are the same; never a single number.",
+    `proposals[].origin is one of ${MATERIAL_ORIGINS.join(", ")}; proposals[].bloom is a single integer 1–5; file indexes files[]; page is the page or photo number.`,
     "Optional on a card: placeBelow (names for the levels below the import's place) and standsFor (a unit key), only when the place lines ask for them.",
     "Optional on a card, only when the material mixes both: kind, 'welt' for common knowledge that protects nobody, or 'firma' or 'privat' for what an organisation or a person protects (an internal process, a customer, someone's contact details). How Scrum works is welt; how one team runs it is firma. The learner confirms each.",
     path === "harness"

@@ -25,6 +25,8 @@ export interface AgentModalities {
   text: boolean;
   /** True when the harness can inspect local image files (e.g. Gemini via agy). */
   image?: boolean;
+  /** PDF input supported by this adapter, as an attachment or through its tools. */
+  file?: boolean;
 }
 
 /** One bounded generation request: system framing + user content → text. */
@@ -43,6 +45,8 @@ export interface AgentGenerateRequest {
    * workspace via `--add-dir` rather than base64 payloads.
    */
   imagePaths?: string[];
+  /** Local PDFs; never pass these through an image-only attachment flag. */
+  pdfPaths?: string[];
   /**
    * Optional harness model id (e.g. `Gemini 3.5 Flash (Low)` for `agy --model`).
    * When omitted the harness default applies.

@@ -5,6 +5,7 @@ import {
   CodexAdapter,
   type CodexRunner,
   type CodexRunResult,
+  codexMcpDisableArgs,
   parseCodexJsonl,
 } from "../../../src/cli/agent-llm/codex.js";
 
@@ -75,6 +76,7 @@ describe("CodexAdapter", () => {
     expect(new CodexAdapter(() => BIN, fixedRunner({})).modalities).toEqual({
       text: true,
       image: true,
+      file: true,
     });
   });
 
@@ -136,6 +138,84 @@ describe("CodexAdapter", () => {
     expect(seen).toContain("/tmp/b.jpg");
   });
 
+  it.each([false, true])(
+    "reads PDFs in an isolated workspace and cleans it up (failure: %s)",
+    async (fail) => {
+      let scratch = "";
+      const adapter = new CodexAdapter(
+        () => BIN,
+        async (input) => {
+          scratch = input.cwd;
+          expect(existsSync(scratch)).toBe(true);
+          expect(input.isolateTools).toBe(true);
+          expect(input.args).toContain("workspace-write");
+          expect(input.args).toContain(
+            "sandbox_workspace_write.exclude_slash_tmp=true",
+          );
+          expect(input.args).not.toContain("-i");
+          expect(input.args.at(-1)).toContain('"/source/book.pdf"');
+          expect(input.args.at(-1)).toContain("If PDF tools are unavailable");
+          expect(input.args.at(-1)).toContain(
+            "After inspecting the rendered pages, cross-check exact names",
+          );
+          expect(input.args.at(-1)).toContain(
+            "visual layout remain authoritative",
+          );
+          writeFileSync(join(scratch, "rendered-page.png"), "synthetic page");
+          if (fail) throw new Error("runner failed");
+          return {
+            code: 0,
+            stdout: agentMessage("read"),
+            stderr: "",
+            timedOut: false,
+          };
+        },
+      );
+      const request = adapter.generate({
+        system: "read",
+        user: "pages 2-3",
+        pdfPaths: ["/source/book.pdf"],
+      });
+      if (fail) await expect(request).rejects.toThrow("runner failed");
+      else await expect(request).resolves.toEqual({ text: "read" });
+      expect(existsSync(scratch)).toBe(false);
+    },
+  );
+
+  it("disables every configured MCP server without exposing its configuration", () => {
+    expect(
+      codexMcpDisableArgs(
+        JSON.stringify([
+          {
+            name: "zam",
+            transport: {
+              type: "stdio",
+              command: "private-command",
+              env: { secret: "do not expose" },
+            },
+          },
+          {
+            name: "name.with.dots",
+            transport: {
+              type: "streamable_http",
+              url: "https://private.example/?token=secret",
+              http_headers: { Authorization: "Bearer secret" },
+            },
+          },
+        ]),
+      ),
+    ).toEqual([
+      "-c",
+      'mcp_servers={"zam"={enabled=false,command="codex"},"name.with.dots"={enabled=false,url="http://127.0.0.1"}}',
+    ]);
+    expect(() => codexMcpDisableArgs('{"error":"secret"}')).toThrow(
+      "Invalid Codex MCP inventory",
+    );
+    expect(() =>
+      codexMcpDisableArgs('[{"name":"zam","transport":{"type":"unknown"}}]'),
+    ).toThrow("Invalid Codex MCP inventory");
+  });
+
   it("throws AgentError when codex is missing", async () => {
     const adapter = new CodexAdapter(() => null, fixedRunner({}));
     await expect(
@@ -183,3 +263,6 @@ describe("CodexAdapter", () => {
     expect(seen).toContain("high");
   });
 });
+
+import { existsSync, writeFileSync } from "node:fs";
+import { join } from "node:path";

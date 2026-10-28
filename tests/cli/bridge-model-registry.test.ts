@@ -119,6 +119,91 @@ describe("bridge model-* registry commands", () => {
     return bin;
   }
 
+  it("re-check discovers agent PDF input and preserves a disabled PDF switch", async () => {
+    const env = { PATH: stubHarnessOnPath("codex") };
+    const added = (
+      await runBridge(
+        [
+          "model-upsert",
+          "--transport",
+          "agent",
+          "--agent-harness",
+          "codex",
+          "--label",
+          "Codex",
+        ],
+        env,
+      )
+    ).parsed as {
+      ok: boolean;
+      model: { id: string; detectedCapabilities: { file: boolean } };
+    };
+    expect(added.ok).toBe(true);
+    expect(added.model.detectedCapabilities.file).toBe(true);
+    const config = readConfig();
+    const legacy = config.ai!.models![0];
+    legacy.capabilities.file = false;
+    legacy.detectedCapabilities.file = false;
+    writeFileSync(configPath, JSON.stringify(config));
+    const checked = (
+      await runBridge(["model-reprobe", "--id", added.model.id], env)
+    ).parsed as {
+      ok: boolean;
+      model: {
+        capabilities: { file: boolean };
+        detectedCapabilities: { file: boolean };
+      };
+    };
+    expect(checked.ok).toBe(true);
+    expect(checked.model.capabilities.file).toBe(true);
+    expect(checked.model.detectedCapabilities.file).toBe(true);
+    await runBridge(
+      [
+        "model-set-capabilities",
+        "--id",
+        added.model.id,
+        "--capabilities",
+        JSON.stringify({ text: true, image: true, file: false }),
+      ],
+      env,
+    );
+    await runBridge(["model-reprobe", "--id", added.model.id], env);
+    expect(readConfig().ai!.models![0].capabilities.file).toBe(false);
+    const beforeOffline = readFileSync(configPath, "utf8");
+    await runBridge(["model-reprobe", "--id", added.model.id], {
+      PATH: join(tempHome, "missing-bin"),
+    });
+    expect(readFileSync(configPath, "utf8")).toBe(beforeOffline);
+    await runBridge(["model-reprobe", "--id", added.model.id], env);
+    expect(readConfig().ai!.models![0].capabilities.file).toBe(false);
+  });
+
+  it("never claims PDF input for an image-only agent adapter", async () => {
+    const result = (
+      await runBridge(
+        [
+          "model-upsert",
+          "--transport",
+          "agent",
+          "--agent-harness",
+          "antigravity",
+          "--capabilities",
+          JSON.stringify({ text: true, image: true, file: true }),
+        ],
+        { PATH: stubHarnessOnPath("agy") },
+      )
+    ).parsed as {
+      ok: boolean;
+      model: {
+        capabilities: { file: boolean };
+        detectedCapabilities: { file: boolean };
+      };
+    };
+    expect(result.ok).toBe(true);
+    expect(result.model.detectedCapabilities.file).toBe(false);
+    expect(result.model.capabilities.file).toBe(false);
+  });
+
   it("upserts a reachable text model and persists detected capabilities", async () => {
     const res = (await runBridge([
       "model-upsert",
@@ -755,7 +840,10 @@ describe("bridge model-* registry commands", () => {
       "--effort",
       "low",
     ])) as {
-      parsed: { ok?: boolean; model?: { id: string; model: string; effort?: string } };
+      parsed: {
+        ok?: boolean;
+        model?: { id: string; model: string; effort?: string };
+      };
     };
     expect(edited.parsed.ok).toBe(true);
     expect(edited.parsed.model?.id).toBe(id);

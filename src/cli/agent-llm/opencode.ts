@@ -89,7 +89,7 @@ export function parseOpenCodeJsonl(stdout: string): string {
 
 export class OpenCodeAdapter implements AgentTextAdapter {
   readonly harness: AgentHarnessId = HARNESS;
-  readonly modalities = { text: true as const, image: true as const };
+  readonly modalities = { text: true, image: true, file: true };
 
   constructor(
     private readonly resolveExecutable: () => string | null = () => {
@@ -130,11 +130,46 @@ export class OpenCodeAdapter implements AgentTextAdapter {
     for (const image of req.imagePaths?.filter(Boolean) ?? []) {
       args.push("-f", image);
     }
+    for (const pdf of req.pdfPaths?.filter(Boolean) ?? []) {
+      args.push("-f", pdf);
+    }
     args.push(prompt);
+
+    let env: NodeJS.ProcessEnv | undefined;
+    if (req.imagePaths?.length || req.pdfPaths?.length) {
+      let configured: Record<string, unknown> = {};
+      try {
+        const value: unknown = JSON.parse(
+          process.env.OPENCODE_CONFIG_CONTENT || "{}",
+        );
+        if (!value || typeof value !== "object" || Array.isArray(value))
+          throw new Error();
+        configured = value as Record<string, unknown>;
+      } catch {
+        throw new AgentError(
+          HARNESS,
+          "OpenCode's inline configuration is invalid.",
+        );
+      }
+      env = {
+        OPENCODE_CONFIG_CONTENT: JSON.stringify({
+          ...configured,
+          permission: "deny",
+        }),
+      };
+    }
 
     let result: HeadlessSpawnResult;
     try {
-      result = await this.run({ command: bin, args, timeoutMs, cwd });
+      result = await this.run({
+        command: bin,
+        args,
+        timeoutMs,
+        cwd,
+        // Native attachments need no tools. Document instructions must not
+        // turn this generation into shell commands, edits or MCP writes.
+        ...(env ? { env } : {}),
+      });
     } catch (err) {
       throw new AgentError(
         this.harness,

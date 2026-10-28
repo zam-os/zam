@@ -143,6 +143,7 @@ describe("ClaudeCodeAdapter", () => {
     ).toEqual({
       text: true,
       image: true,
+      file: true,
     });
   });
 
@@ -190,6 +191,32 @@ describe("ClaudeCodeAdapter", () => {
     await expect(
       adapter.generate({ system: "s", user: "u" }),
     ).rejects.toMatchObject({ harness: "claude-code" });
+  });
+
+  it("reads PDFs with only the Read tool and no persisted session", async () => {
+    const adapter = new ClaudeCodeAdapter(
+      () => BIN,
+      async (input) => {
+        expect(input.stdin).toContain('"/data/book.pdf"');
+        expect(input.stdin).toContain("PDFs must be read as pages");
+        expect(input.args).toContain("--no-session-persistence");
+        expect(input.args[input.args.indexOf("--tools") + 1]).toBe("Read");
+        expect(input.args).toContain("/data");
+        return {
+          code: 0,
+          stdout: successEnvelope("read"),
+          stderr: "",
+          timedOut: false,
+        };
+      },
+    );
+    await expect(
+      adapter.generate({
+        system: "read",
+        user: "read",
+        pdfPaths: ["/data/book.pdf"],
+      }),
+    ).resolves.toEqual({ text: "read" });
   });
 
   it("throws an AgentError on timeout", async () => {

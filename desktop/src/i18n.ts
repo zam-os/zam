@@ -5430,6 +5430,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_cap_image: "Vision",
     model_cap_video: "Video",
     model_cap_file: "Files (PDF)",
+    model_cap_agent_file: "PDF via agent",
+    model_agent_probe_hint:
+      "Re-check detects the agent connection's capabilities. Model access and file reading are checked during import; PDF tools may be needed.",
     model_cap_stt: "Speech-to-text",
     model_cap_tts: "Text-to-speech",
     model_cap_none: "No capabilities",
@@ -7478,6 +7481,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_cap_image: "Vision",
     model_cap_video: "Video",
     model_cap_file: "Dateien (PDF)",
+    model_cap_agent_file: "PDF über Agent",
+    model_agent_probe_hint:
+      "Überprüfen erkennt die Fähigkeiten der Agentenanbindung. Modellzugriff und Dateilesen werden beim Import geprüft; für PDFs können Lesewerkzeuge nötig sein.",
     model_cap_stt: "Sprache-zu-Text",
     model_cap_tts: "Text-zu-Sprache",
     model_cap_none: "Keine Fähigkeiten",

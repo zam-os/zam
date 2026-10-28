@@ -8,6 +8,7 @@ import {
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { requestAgentCompletion } from "../../src/cli/llm/client.js";
 import {
   analyzeMaterialText,
   analyzeMaterialViaLLM,
@@ -158,6 +159,168 @@ describe("analyzeMaterialViaLLM", () => {
     return path;
   }
 
+  it.each(["jpg", "pdf"])(
+    "reads a %s through the configured agent and removes its working copy",
+    async (extension) => {
+      saveMachineAiModels([
+        row({
+          id: "Codex",
+          transport: "agent",
+          agentHarness: "codex",
+          url: "",
+          capabilities: flags("text", "image", "file"),
+          detectedCapabilities: flags("text", "image", "file"),
+        }),
+      ]);
+      expect(await materialImportModels(db, "linux")).toMatchObject({
+        image: { label: "Codex" },
+        file: { label: "Codex" },
+        text: { label: "Codex" },
+      });
+      const source = file(`material.${extension}`, "synthetic material bytes");
+      let workingCopy = "";
+      const fetch = vi.fn();
+      const result = await analyzeMaterialViaLLM(
+        db,
+        [source],
+        { pages: "2-3" },
+        {
+          platform: "linux",
+          fetch,
+          requestAgent: async (endpoint, request) => {
+            expect(endpoint).toEqual({
+              agentHarness: "codex",
+              model: "openai/gpt-6-luna",
+            });
+            expect(request.system).toContain(
+              "Use only these pages of the PDF: 2-3.",
+            );
+            expect(request.timeoutMs).toBe(300_000);
+            const paths =
+              extension === "pdf" ? request.pdfPaths : request.imagePaths;
+            expect(paths).toHaveLength(1);
+            workingCopy = paths![0];
+            expect(workingCopy).not.toBe(source);
+            expect(readFileSync(workingCopy, "utf8")).toBe(
+              "synthetic material bytes",
+            );
+            expect(
+              extension === "pdf" ? request.imagePaths : request.pdfPaths,
+            ).toBeUndefined();
+            return JSON.stringify({
+              analysis: FIXTURE.analysis,
+              proposals: FIXTURE.proposals,
+            });
+          },
+        },
+      );
+      expect(fetch).not.toHaveBeenCalled();
+      expect(existsSync(workingCopy)).toBe(false);
+      expect(existsSync(source)).toBe(true);
+      expect(result.set.files[0].sourceLink).toContain(`material.${extension}`);
+      expect(result.set.proposals).not.toHaveLength(0);
+      expect(result.sentTo).toEqual([
+        { label: "Codex", model: "openai/gpt-6-luna" },
+      ]);
+    },
+  );
+
+  it("cleans up a rejected agent import and follows the configured fallback", async () => {
+    saveMachineAiModels([
+      row({
+        id: "Codex",
+        transport: "agent",
+        agentHarness: "codex",
+        url: "",
+        order: 0,
+      }),
+      row({ id: "Cloud", order: 1 }),
+    ]);
+    let workingCopy = "";
+    const { fetch } = recordingFetch(() => answer());
+    const result = await analyzeMaterialViaLLM(
+      db,
+      [file("photo.png")],
+      {},
+      {
+        platform: "linux",
+        fetch,
+        requestAgent: async (_endpoint, request) => {
+          workingCopy = request.imagePaths![0];
+          throw new Error("agent unavailable");
+        },
+      },
+    );
+    expect(existsSync(workingCopy)).toBe(false);
+    expect(result.model.label).toBe("Cloud");
+    expect(result.sentTo.map((model) => model.label)).toEqual([
+      "Codex",
+      "Cloud",
+    ]);
+  });
+
+  it("rejects invalid agent output and cleans up without writing a card", async () => {
+    saveMachineAiModels([
+      row({ id: "Codex", transport: "agent", agentHarness: "codex", url: "" }),
+    ]);
+    let workingCopy = "";
+    await expect(
+      analyzeMaterialViaLLM(
+        db,
+        [file("photo.png")],
+        {},
+        {
+          platform: "linux",
+          requestAgent: async (_endpoint, request) => {
+            workingCopy = request.imagePaths![0];
+            return "I cannot read this file";
+          },
+        },
+      ),
+    ).rejects.toMatchObject({ code: "model-failed" });
+    expect(existsSync(workingCopy)).toBe(false);
+    expect(
+      await db.prepare("SELECT count(*) AS n FROM cards").get(),
+    ).toMatchObject({ n: 0 });
+  });
+
+  it("also sends typed notes through an agent, without attachments", async () => {
+    saveMachineAiModels([
+      row({ id: "Codex", transport: "agent", agentHarness: "codex", url: "" }),
+    ]);
+    const result = await analyzeMaterialText(
+      db,
+      "learner notes",
+      {},
+      {
+        requestAgent: async (_endpoint, request) => {
+          expect(request.user).toContain("learner notes");
+          expect(request.imagePaths).toEqual([]);
+          expect(request.pdfPaths).toBeUndefined();
+          return JSON.stringify({
+            analysis: FIXTURE.analysis,
+            proposals: FIXTURE.proposals,
+          });
+        },
+      },
+    );
+    expect(result.model.label).toBe("Codex");
+    expect(result.set.files[0].sourceLink).toMatch(/^notes:/);
+  });
+
+  it("refuses PDF paths before launching an adapter without document support", async () => {
+    await expect(
+      requestAgentCompletion(
+        { agentHarness: "antigravity" },
+        {
+          system: "read",
+          user: "read",
+          pdfPaths: ["/not-opened.pdf"],
+        },
+      ),
+    ).rejects.toThrow("does not support PDF input");
+  });
+
   it("sends photos to the image model and returns a validated set", async () => {
     saveMachineAiModels([row({ id: "Luna" })]);
     await createToken(db, {
@@ -222,7 +385,8 @@ describe("analyzeMaterialViaLLM", () => {
         detectedCapabilities: flags("text"),
       }),
     ]);
-    const notes = "Brechung: Licht knickt zum Lot hin, wenn es ins Wasser geht.";
+    const notes =
+      "Brechung: Licht knickt zum Lot hin, wenn es ins Wasser geht.";
     const { fetch, calls } = recordingFetch(() =>
       answer(
         FIXTURE.proposals.map((p) => ({
@@ -267,10 +431,14 @@ describe("analyzeMaterialViaLLM", () => {
       lens: "weltwissen",
       regionKey: "natur.physik.optik",
     });
-    expect(result.set.proposals.every((p) => p.file === 0 && p.page === null)).toBe(true);
+    expect(
+      result.set.proposals.every((p) => p.file === 0 && p.page === null),
+    ).toBe(true);
     expect(result.set.proposals[0].placeBelow).toEqual(["Lichtbrechung"]);
     expect(result.set.files).toHaveLength(1);
-    expect(result.set.files[0].sourceLink).toMatch(/^notes:Physik-Heft@\d{4}-\d{2}-\d{2}$/);
+    expect(result.set.files[0].sourceLink).toMatch(
+      /^notes:Physik-Heft@\d{4}-\d{2}-\d{2}$/,
+    );
     expect(result.set.files[0].sha256).toMatch(/^[0-9a-f]{64}$/);
     // The notes themselves are nowhere in the set, nor in the staged batch.
     expect(JSON.stringify(result.set)).not.toContain("knickt zum Lot");
@@ -278,7 +446,10 @@ describe("analyzeMaterialViaLLM", () => {
       { set: result.set, origin: "studio" },
       { dir: join(dir, "pending") },
     );
-    const file = readFileSync(join(dir, "pending", `${staged.id}.json`), "utf8");
+    const file = readFileSync(
+      join(dir, "pending", `${staged.id}.json`),
+      "utf8",
+    );
     expect(file).not.toContain("knickt zum Lot");
     expect(file).toContain("natur.physik.optik");
     expect(log).not.toHaveBeenCalled();

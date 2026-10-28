@@ -2,6 +2,8 @@
 
 ## 2026-10-28
 
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [Learning Cards from Photos and Files](material-import.md)
 - **Update** — [Token and Card Model](token-card-model.md)
 
 ## 2026-10-27
