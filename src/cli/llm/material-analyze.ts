@@ -112,7 +112,9 @@ const IMAGE_TYPES: Record<string, string> = {
 /**
  * Eligible HTTP and agent rows in the registry's configured order. An agent
  * row is left out when its adapter cannot run without its tools: material is
- * untrusted and must not reach a harness that could act on it.
+ * untrusted and must not reach a harness that could act on it. It is also left
+ * out when its adapter does not take the input, whatever the row's stored
+ * switch says (Codex reads no PDFs yet).
  */
 async function materialChain(
   db: Database,
@@ -121,12 +123,14 @@ async function materialChain(
   const primary = await resolveCapability(db, capability);
   if (!primary) return [];
   const { getAgentAdapter } = await import("../agent-llm/adapter.js");
-  return providerChain(primary).filter(
-    (row) =>
-      row.transport !== "agent" ||
-      (row.agentHarness !== undefined &&
-        getAgentAdapter(row.agentHarness)?.supportsIsolation === true),
-  );
+  return providerChain(primary).filter((row) => {
+    if (row.transport !== "agent") return true;
+    const adapter = row.agentHarness ? getAgentAdapter(row.agentHarness) : null;
+    if (adapter?.supportsIsolation !== true) return false;
+    return capability === "text"
+      ? adapter.modalities?.text !== false
+      : adapter.modalities?.[capability] === true;
+  });
 }
 
 export interface MaterialModelInfo {

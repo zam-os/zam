@@ -119,52 +119,8 @@ describe("bridge model-* registry commands", () => {
     return bin;
   }
 
-  it("leaves Codex PDF input off until a page renderer is installed", async () => {
-    const env = { PATH: stubHarnessOnPath("codex") };
-    const added = (
-      await runBridge(
-        [
-          "model-upsert",
-          "--transport",
-          "agent",
-          "--agent-harness",
-          "codex",
-          "--label",
-          "Codex",
-          "--capabilities",
-          JSON.stringify({ text: true, image: true, file: true }),
-        ],
-        env,
-      )
-    ).parsed as {
-      ok: boolean;
-      model: {
-        id: string;
-        capabilities: { image: boolean; file: boolean };
-        detectedCapabilities: { file: boolean };
-      };
-    };
-    expect(added.ok).toBe(true);
-    expect(added.model.capabilities.image).toBe(true);
-    expect(added.model.capabilities.file).toBe(false);
-    expect(added.model.detectedCapabilities.file).toBe(false);
-
-    stubHarnessOnPath("pdftoppm");
-    const checked = (
-      await runBridge(["model-reprobe", "--id", added.model.id], env)
-    ).parsed as {
-      model: {
-        capabilities: { file: boolean };
-        detectedCapabilities: { file: boolean };
-      };
-    };
-    expect(checked.model.detectedCapabilities.file).toBe(true);
-    expect(checked.model.capabilities.file).toBe(true);
-  });
-
   it("re-check discovers agent PDF input and preserves a disabled PDF switch", async () => {
-    stubHarnessOnPath("pdftoppm");
-    const env = { PATH: stubHarnessOnPath("codex") };
+    const env = { PATH: stubHarnessOnPath("claude") };
     const added = (
       await runBridge(
         [
@@ -172,9 +128,9 @@ describe("bridge model-* registry commands", () => {
           "--transport",
           "agent",
           "--agent-harness",
-          "codex",
+          "claude-code",
           "--label",
-          "Codex",
+          "Claude Code",
         ],
         env,
       )
@@ -220,6 +176,33 @@ describe("bridge model-* registry commands", () => {
     expect(readFileSync(configPath, "utf8")).toBe(beforeOffline);
     await runBridge(["model-reprobe", "--id", added.model.id], env);
     expect(readConfig().ai!.models![0].capabilities.file).toBe(false);
+  });
+
+  it("never claims PDF input for Codex, which attaches only images", async () => {
+    const result = (
+      await runBridge(
+        [
+          "model-upsert",
+          "--transport",
+          "agent",
+          "--agent-harness",
+          "codex",
+          "--capabilities",
+          JSON.stringify({ text: true, image: true, file: true }),
+        ],
+        { PATH: stubHarnessOnPath("codex") },
+      )
+    ).parsed as {
+      ok: boolean;
+      model: {
+        capabilities: { image: boolean; file: boolean };
+        detectedCapabilities: { file: boolean };
+      };
+    };
+    expect(result.ok).toBe(true);
+    expect(result.model.capabilities.image).toBe(true);
+    expect(result.model.detectedCapabilities.file).toBe(false);
+    expect(result.model.capabilities.file).toBe(false);
   });
 
   it("never claims PDF input for an image-only agent adapter", async () => {

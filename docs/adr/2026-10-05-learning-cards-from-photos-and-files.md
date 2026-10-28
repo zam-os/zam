@@ -207,16 +207,23 @@ notes now share the configured model order, proposal validation, review and
 confirmation regardless of transport.
 
 An adapter explicitly declares `file` support and accepts separate `pdfPaths`;
-PDFs never go through an image-only flag. Claude Code reads pages with its Read
-tool, OpenCode forwards native PDF attachments, and Codex reads document paths
-with its available PDF tools. Codex can render pages only in an isolated,
-temporary workspace; its file-reading run disables configured MCP services.
-The app adds no PDF parser, renderer or transcription stage. Direct HTTP PDF
-requests still require declared native `file` input and retain OpenRouter's
-native-engine gate. The native-only wording below applies to direct HTTP,
-not to the agent's own document-reading tools. An agent must inspect pages,
-including their layout, and fail if its tools cannot read them; no guessing
-from filenames or substituting a plain transcript.
+PDFs never go through an image-only flag. PDF input through an agent is
+offered only where the PDF reaches the model natively, as Decision 1 requires:
+Claude Code's Read tool hands the document to the model, and OpenCode forwards
+it as a native attachment. The app adds no PDF parser, renderer or
+transcription stage. Direct HTTP PDF requests still require declared native
+`file` input and retain OpenRouter's native-engine gate. An agent must fail if
+it cannot read a file; no guessing from filenames.
+
+**Codex reads no PDFs yet (owner decision, 2026-10-28).** Codex CLI 0.162.1
+attaches only images (`-i`) and has no file input. A PDF passed with `-i`
+reaches the model as "image content omitted because it could not be
+processed" (live check with `gpt-6-luna`, which reads PDFs natively through
+the API). Letting Codex render pages with Poppler worked in a smoke test but
+needs a tool the learner must install, and the app rendering pages itself
+would add the renderer this decision rules out. PDF input through Codex
+therefore waits until the CLI passes PDFs to the model natively; Codex keeps
+images and notes. Rows that still carry a PDF switch are skipped for PDFs.
 
 The app gives the agent bounded, prepared working copies and removes them
 after success or failure. The source link and fingerprint name the original
@@ -241,45 +248,23 @@ read a synthetic PDF attachment, and `session delete` removed both sessions.
 
 "Re-check" reports the adapter's declared text/image/PDF input and executable
 availability. It performs no model generation or test upload, and does not
-claim to verify the selected model's account access. One exception
-(review follow-up): Codex has no PDF reader of its own and may not install
-one, so its probe reports PDF input only when Poppler (`pdftoppm`) or MuPDF
-(`mutool`) is found on PATH or next to `codex`. Without one, the PDF switch
-stays off instead of failing during an import, and the hint names both tools;
-a re-check after installing one turns PDF input on. The UI says so and labels
-agent PDF input separately. A re-check enables
+claim to verify the selected model's account access. The UI says so, names
+Codex as not reading PDFs yet, and labels agent PDF input separately. A re-check enables
 newly supported PDF input on old agent entries, keeps an existing disabled
 PDF switch off, and leaves the previous verdict intact when the executable
 is unavailable. This does not add chapter splitting, EPUB input or a larger
 file budget.
 
-**Live verification (2026-10-28).** Codex CLI 0.162.1 with the exact
-`gpt-6-luna` model processed a synthetic one-page PDF (2,387 bytes) containing
-two crossed signal arrows with randomly generated labels. The agent rendered
-the page with `pdftoppm`, returned the two correct connections and three valid
-proposals, and the batch could be staged with no cards before confirmation.
-Working copies and the rendering workspace were removed.
-
-This run exposed two issues invisible to the mocked transport tests. Codex's
-bootstrap validates MCP overrides before every inventory source is available,
-so an `enabled=false` entry alone can lack a transport, and TOML quoting in a
-dotted CLI key creates a different literal server name. File-reading runs now
-provide complete disabled entries of the original transport kind, with inert
+**Found while testing (2026-10-28).** Codex's bootstrap validates MCP
+overrides before every inventory source is available, so an `enabled=false`
+entry alone can lack a transport, and TOML quoting in a dotted CLI key creates
+a different literal server name. Isolated Codex runs therefore provide
+complete disabled entries of the original transport kind, with inert
 placeholders instead of copying inventory credentials or private endpoints
 into process arguments. Also, the shared prompt's unqualified "bloom is 1–5"
 was ambiguous between the analysis range and a card's level. It now explicitly
 requires `analysis.bloom: [min, max]` and scalar `proposals[].bloom`; invalid
 answers still fail validation.
-
-A repetition through the unmodified standard route then misread one letter
-of a synthetic identifier. The Codex PDF instructions now require checking
-literal names, numbers and symbols against an available PDF text layer after
-visually reading the rendered pages. The text layer supplements spelling
-verification only; it never replaces layout reading or determines arrow
-relationships, and no transcript is saved. The standard-route retest returned
-both connections and identifiers exactly, staged two proposals and built two
-review rows with zero cards before confirmation. This is a CLI/model smoke
-test, not a manual Studio or Mobile acceptance pass.
 
 ### 1. The model reads the page itself — no transcription step
 

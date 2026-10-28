@@ -6,7 +6,6 @@ import {
   type CodexRunner,
   type CodexRunResult,
   codexMcpDisableArgs,
-  findCodexPdfRenderer,
   parseCodexJsonl,
 } from "../../../src/cli/agent-llm/codex.js";
 
@@ -73,39 +72,11 @@ describe("CodexAdapter", () => {
     });
   });
 
-  it("reports PDF input only when a page renderer is installed", async () => {
-    const none = new CodexAdapter(() => BIN, fixedRunner({}), () => null);
-    const missing = await none.probe();
-    expect(missing.modalities).toEqual({ text: true, image: true, file: false });
-    expect(missing.detail).toContain("Poppler");
-
-    const withPoppler = new CodexAdapter(
-      () => BIN,
-      fixedRunner({}),
-      (command) => (command === "pdftoppm" ? "/usr/bin/pdftoppm" : null),
-    );
-    await expect(withPoppler.probe()).resolves.toMatchObject({
-      available: true,
-      modalities: { file: true },
-    });
-  });
-
-  it("finds a renderer next to the codex executable", () => {
-    expect(
-      findCodexPdfRenderer("/opt/homebrew/bin/codex", (command) =>
-        command === join("/opt/homebrew/bin", "mutool") ? command : null,
-      ),
-    ).toBe(join("/opt/homebrew/bin", "mutool"));
-    expect(findCodexPdfRenderer("/opt/homebrew/bin/codex", () => null)).toBe(
-      null,
-    );
-  });
-
   it("declares multimodal modalities", () => {
     expect(new CodexAdapter(() => BIN, fixedRunner({})).modalities).toEqual({
       text: true,
       image: true,
-      file: true,
+      file: false,
     });
   });
 
@@ -167,49 +138,48 @@ describe("CodexAdapter", () => {
     expect(seen).toContain("/tmp/b.jpg");
   });
 
-  it.each([false, true])(
-    "reads PDFs in an isolated workspace and cleans it up (failure: %s)",
-    async (fail) => {
-      let scratch = "";
-      const adapter = new CodexAdapter(
-        () => BIN,
-        async (input) => {
-          scratch = input.cwd;
-          expect(existsSync(scratch)).toBe(true);
-          expect(input.isolateTools).toBe(true);
-          expect(input.args).toContain("workspace-write");
-          expect(input.args).toContain(
-            "sandbox_workspace_write.exclude_slash_tmp=true",
-          );
-          expect(input.args).not.toContain("-i");
-          expect(input.args.at(-1)).toContain('"/source/book.pdf"');
-          expect(input.args.at(-1)).toContain("If PDF tools are unavailable");
-          expect(input.args.at(-1)).toContain(
-            "After inspecting the rendered pages, cross-check exact names",
-          );
-          expect(input.args.at(-1)).toContain(
-            "visual layout remain authoritative",
-          );
-          writeFileSync(join(scratch, "rendered-page.png"), "synthetic page");
-          if (fail) throw new Error("runner failed");
-          return {
-            code: 0,
-            stdout: agentMessage("read"),
-            stderr: "",
-            timedOut: false,
-          };
-        },
-      );
-      const request = adapter.generate({
-        system: "read",
-        user: "pages 2-3",
-        pdfPaths: ["/source/book.pdf"],
-      });
-      if (fail) await expect(request).rejects.toThrow("runner failed");
-      else await expect(request).resolves.toEqual({ text: "read" });
-      expect(existsSync(scratch)).toBe(false);
-    },
-  );
+  it("refuses PDF paths: the CLI would replace them with a placeholder", async () => {
+    let launched = false;
+    const adapter = new CodexAdapter(
+      () => BIN,
+      async () => {
+        launched = true;
+        return {
+          code: 0,
+          stdout: agentMessage("x"),
+          stderr: "",
+          timedOut: false,
+        };
+      },
+    );
+    await expect(
+      adapter.generate({ system: "s", user: "u", pdfPaths: ["/a/book.pdf"] }),
+    ).rejects.toThrow("cannot read PDF files");
+    expect(launched).toBe(false);
+  });
+
+  it("ends the variadic -i list before the prompt", async () => {
+    let seen: string[] = [];
+    const adapter = new CodexAdapter(
+      () => BIN,
+      async (input) => {
+        seen = input.args;
+        return {
+          code: 0,
+          stdout: agentMessage("ok"),
+          stderr: "",
+          timedOut: false,
+        };
+      },
+    );
+    await adapter.generate({
+      system: "S",
+      user: "U",
+      imagePaths: ["/tmp/a.png"],
+    });
+    expect(seen.at(-2)).toBe("--");
+    expect(seen.indexOf("/tmp/a.png")).toBeLessThan(seen.indexOf("--"));
+  });
 
   it("isolates tools for untrusted text without files", async () => {
     let isolated: boolean | undefined;
@@ -311,6 +281,3 @@ describe("CodexAdapter", () => {
     expect(seen).toContain("high");
   });
 });
-
-import { existsSync, writeFileSync } from "node:fs";
-import { join } from "node:path";

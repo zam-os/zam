@@ -71,27 +71,26 @@ harness can ask back.
 **Built in.** The same dialog can send the picked or dropped files to the
 learner's connected model, named in the dialog ("Sent to …"). Photos go to the
 first `image` row of the model registry, a PDF to the first `file` row;
-supported agent rows participate in the same configured order. Codex reads
-PDF paths with its available PDF tools, Claude Code uses its Read tool, and
-OpenCode receives native PDF attachments. Every agent run of an import,
+supported agent rows participate in the same configured order. A PDF reaches
+an agent's model natively or not at all: Claude Code's Read tool hands it to
+the model and OpenCode attaches it. Codex reads no PDFs yet (its CLI attaches
+only images and replaces a PDF with "image content omitted"), so a Codex row
+is skipped for PDFs even if its PDF switch is on; it keeps photos and notes.
+Every agent run of an import,
 typed notes included, is isolated: the material is untrusted, so an agent row
 whose adapter cannot run without its tools (Antigravity, Copilot, Goose, Grok,
 Hermes) is skipped. PDFs never go through an image-only
-attachment flag. Prepared working copies and Codex PDF scratch renders are
+attachment flag. Prepared working copies are
 removed after success or failure; the source link and fingerprint still refer
-to the original file. A Codex file-reading run disables configured MCP
+to the original file. An isolated Codex run disables configured MCP
 services using complete disabled transport entries; no inventory credentials
 or private endpoints are copied into the child command's arguments. Claude
 file runs expose only Read, allowed only inside the working-copy folder, and
 notes runs no tool at all; neither persists a session. OpenCode runs deny tool
 actions on a private server (its background service ignores the inline
 configuration), and the session OpenCode stores is deleted afterwards, also
-after a failure. After viewing PDF pages,
-Codex cross-checks literal names, identifiers, numbers and symbols against an
-available text layer; layout still determines relationships, and no transcript
-is saved. With no text layer it relies on the page and marks uncertain readings
-instead of silently changing a character. Missing tools, unreadable
-pages or inaccessible models fail explicitly instead of inventing cards. The request carries no reasoning-effort
+after a failure. Unreadable
+files or inaccessible models fail explicitly instead of inventing cards. The request carries no reasoning-effort
 control, so card writing gets the model's own default rather than the cheap
 level verified for recall. A request the provider rejects for its image count
 or size is split in halves and the cards are merged; a card whose file number
@@ -108,9 +107,7 @@ staging file.
 
 **Agent capability checks.** Saving or re-checking an agent detects the
 adapter's declared text, image and PDF input and whether its executable is
-available. Codex reads PDFs only by rendering pages, so its PDF input counts
-as detected only when Poppler (`pdftoppm`) or MuPDF (`mutool`) is on PATH or
-next to `codex`; without one the PDF switch stays off and the hint names both.
+available; Codex declares no PDF input, and the hint says so.
 The check does not upload a test file or verify account/model access. Desktop
 labels PDF input as "PDF via agent" and explains this limit; Settings-lite
 also shows the capabilities.

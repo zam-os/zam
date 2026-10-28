@@ -5432,7 +5432,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_cap_file: "Files (PDF)",
     model_cap_agent_file: "PDF via agent",
     model_agent_probe_hint:
-      "Re-check detects the agent connection's capabilities. Model access and file reading are checked during import. Codex reads PDFs only with Poppler (pdftoppm) or MuPDF (mutool) installed; re-check after installing one.",
+      "Re-check detects the agent connection's capabilities. Model access and file reading are checked during import. Codex cannot read PDFs yet; Claude Code and OpenCode pass them to the model.",
     model_cap_stt: "Speech-to-text",
     model_cap_tts: "Text-to-speech",
     model_cap_none: "No capabilities",
@@ -7483,7 +7483,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_cap_file: "Dateien (PDF)",
     model_cap_agent_file: "PDF über Agent",
     model_agent_probe_hint:
-      "Überprüfen erkennt die Fähigkeiten der Agentenanbindung. Modellzugriff und Dateilesen werden beim Import geprüft. Codex liest PDFs nur mit installiertem Poppler (pdftoppm) oder MuPDF (mutool); danach erneut überprüfen.",
+      "Überprüfen erkennt die Fähigkeiten der Agentenanbindung. Modellzugriff und Dateilesen werden beim Import geprüft. Codex kann noch keine PDFs lesen; Claude Code und OpenCode geben sie an das Modell weiter.",
     model_cap_stt: "Sprache-zu-Text",
     model_cap_tts: "Text-zu-Sprache",
     model_cap_none: "Keine Fähigkeiten",

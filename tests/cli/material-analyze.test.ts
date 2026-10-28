@@ -164,18 +164,18 @@ describe("analyzeMaterialViaLLM", () => {
     async (extension) => {
       saveMachineAiModels([
         row({
-          id: "Codex",
+          id: "Claude",
           transport: "agent",
-          agentHarness: "codex",
+          agentHarness: "claude-code",
           url: "",
           capabilities: flags("text", "image", "file"),
           detectedCapabilities: flags("text", "image", "file"),
         }),
       ]);
       expect(await materialImportModels(db, "linux")).toMatchObject({
-        image: { label: "Codex" },
-        file: { label: "Codex" },
-        text: { label: "Codex" },
+        image: { label: "Claude" },
+        file: { label: "Claude" },
+        text: { label: "Claude" },
       });
       const source = file(`material.${extension}`, "synthetic material bytes");
       let workingCopy = "";
@@ -189,7 +189,7 @@ describe("analyzeMaterialViaLLM", () => {
           fetch,
           requestAgent: async (endpoint, request) => {
             expect(endpoint).toEqual({
-              agentHarness: "codex",
+              agentHarness: "claude-code",
               model: "openai/gpt-6-luna",
             });
             expect(request.system).toContain(
@@ -220,10 +220,40 @@ describe("analyzeMaterialViaLLM", () => {
       expect(result.set.files[0].sourceLink).toContain(`material.${extension}`);
       expect(result.set.proposals).not.toHaveLength(0);
       expect(result.sentTo).toEqual([
-        { label: "Codex", model: "openai/gpt-6-luna" },
+        { label: "Claude", model: "openai/gpt-6-luna" },
       ]);
     },
   );
+
+  it("skips Codex for a PDF even when the row's PDF switch is on", async () => {
+    saveMachineAiModels([
+      row({
+        id: "Codex",
+        transport: "agent",
+        agentHarness: "codex",
+        url: "",
+        order: 0,
+        capabilities: flags("text", "image", "file"),
+        detectedCapabilities: flags("text", "image", "file"),
+      }),
+      row({
+        id: "Cloud",
+        order: 1,
+        capabilities: flags("text", "image", "file"),
+        detectedCapabilities: flags("text", "image", "file"),
+      }),
+    ]);
+    const requestAgent = vi.fn();
+    const { fetch } = recordingFetch(() => answer());
+    const result = await analyzeMaterialViaLLM(
+      db,
+      [file("handout.pdf", "%PDF-1.4 synthetic")],
+      {},
+      { platform: "linux", fetch, requestAgent },
+    );
+    expect(requestAgent).not.toHaveBeenCalled();
+    expect(result.sentTo.map((model) => model.label)).toEqual(["Cloud"]);
+  });
 
   it("cleans up a rejected agent import and follows the configured fallback", async () => {
     saveMachineAiModels([

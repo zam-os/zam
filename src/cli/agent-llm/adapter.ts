@@ -77,12 +77,6 @@ export interface AgentProbeResult {
   available: boolean;
   /** Human-readable detail for status chips / errors. */
   detail?: string;
-  /**
-   * What this machine serves right now, when that is narrower than
-   * {@link AgentTextAdapter.modalities} (Codex reads PDFs only with a page
-   * renderer installed). Capability detection prefers it.
-   */
-  modalities?: AgentModalities;
 }
 
 /**
