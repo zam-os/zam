@@ -1,0 +1,55 @@
+{
+	"schema": 1,
+	"status": "proposal-only",
+	"approved": null,
+	"note": "Vier C-Zeilen als Bestandsabgleich. Keine Ersetzungen oder Stilllegungen in der neuen Zelle; alle alten Karten bleiben aktiv. Keine Lernstandsübertragung.",
+	"source_repository": "zam-os/zam",
+	"source_commit": "b6fdcfecb6160b02e14e8914455c9a0414f8c81a",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-deutsch-8.json",
+			"source_path": "tests/fixtures/curriculum/de-by-realschule-8-deutsch-begruendete-stellungnahme-eroerterung-kvt.json",
+			"sha256": "cfd9a64e5e25acad216a411a3ffb8430da8e3ac38e03711b670be2c453ea7e07",
+			"tile_id": "de-by:realschule-8-deutsch-begruendete-stellungnahme-eroerterung",
+			"version": "2026.08.1"
+		}
+	],
+	"rows": [
+		{
+			"de_by_cell": "de-by:realschule-8-deutsch-begruendete-stellungnahme-eroerterung",
+			"de_by_id": "01K4D8E0000000000000000J01",
+			"de_by_question": "Aus welchen 3 aufeinander aufbauenden Komponenten besteht ein vollwertiges Argument nach dem klassischen 3B-Schema?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Die alte Karte fragt die drei Bausteine als Aufzählung ab. Der neue Schnellcheck unterscheidet mögliches Beispiel und Nachweis; kein identischer Abruf."
+		},
+		{
+			"de_by_cell": "de-by:realschule-8-deutsch-begruendete-stellungnahme-eroerterung",
+			"de_by_id": "01K4D8E0000000000000000J02",
+			"de_by_question": "Erkläre die 3 Elemente des vollwertigen Arguments: 1. Behauptung (These/Kernaussage): Was wird behauptet?, 2. Begründung (Kausale Kette): Warum ist diese Behauptung wahr? (Verbindung durch Konjunktionen wie denn, da, weil, aufgrund), 3. Beispiel / Beleg (Evidenz): Konkreter Nachweis aus eigener Erfahrung, wissenschaftlichen Studien oder Statistiken und konstruiere ein vollständiges, überzeugendes 3B-Argument zum Thema: 'Einführung von Wasserspendern an Schulen'.",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Der mehrteilige Gesamtabruf einschließlich der Wasserspenderbeispiele wird nicht auf einer neuen Karte erhalten. Ungesicherte Zahlen und eine angebliche Studie werden nicht übernommen."
+		},
+		{
+			"de_by_cell": "de-by:realschule-8-deutsch-begruendete-stellungnahme-eroerterung",
+			"de_by_id": "01K4D8E0000000000000000J03",
+			"de_by_question": "In welcher Reihenfolge sollten die Argumente im Hauptteil einer linearen Erörterung angeordnet werden, um die größte Überzeugungskraft beim Leser zu erzielen?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Die alte Karte prüft die steigernde Reihenfolge, der neue Gliederungscheck die Orientierung am Schreibauftrag. Kein identischer Abruf."
+		},
+		{
+			"de_by_cell": "de-by:realschule-8-deutsch-begruendete-stellungnahme-eroerterung",
+			"de_by_id": "01K4D8E0000000000000000J04",
+			"de_by_question": "Erkläre den methodischen Aufbau einer linearen Erörterung in 3 Stufen: 1. Einleitung (Hinführung & Thema): Aktueller Aufhänger (Zeitungsartikel, persönliches Erlebnis, Umfrage), Erläuterung des Themas und Formulierung der zentralen Leitfrage (ohne vorweggenommene Meinung!), 2. Hauptteil (Steigernde Argumentenkette): 3 bis 4 vollwertige Argumente (3B-Schema), angeordnet nach dem Sanduhr- bzw. Steigerungsprinzip (vom schwächsten Argument über mittelstarke Argumente hin zum überzeugendsten Hauptargument / 'Paukenschlag' am Schluss), logische Überleitungen (Konjunktionen wie darüber hinaus, ein weiterer gewichtiger Aspekt, von noch größerer Bedeutung ist), 3. Schluss (Synthese & Ausblick): Zusammenfassung der Hauptgedanken, persönliches begründetes Fazit und zukunftsorientierter Ausblick oder Kompromissvorschlag.",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Der mehrteilige Aufbauabruf wird in Teilhandlungen zerlegt und die Vermischung von Sanduhr und linearer Steigerung nicht übernommen. Kein sicher gleicher Nachfolger."
+		}
+	]
+}

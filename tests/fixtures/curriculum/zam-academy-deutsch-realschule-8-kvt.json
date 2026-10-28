@@ -1,0 +1,2656 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:deutsch-realschule-8",
+	"version": "2026.10.1",
+	"title": "Deutsch 8 Realschule (ZAM Academy)",
+	"description": "40 Lektionen und 80 gezielte Wiederholungsfragen zu Sprechen, Lesen und Medien, Literatur, Schreiben, Argumentation und Sprache nach LehrplanPLUS Bayern. Mündliche Praxis, Jugendbuch-Ganzschrift, Originallektüre, Recherche und Lehrkraftfeedback ergänzen die geführten Übungen.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/deutsch",
+			"label": "LehrplanPLUS Bayern · Deutsch 8 Realschule",
+			"checked": "2026-10-28"
+		},
+		{
+			"uri": "https://projekt-gutenberg.org/authors/gotthold-ephraim-lessing/books/nathan-der-weise/chapter/5/",
+			"label": "Lessing: Nathan der Weise · Dritter Aufzug, besonders III,7",
+			"checked": "2026-10-28"
+		},
+		{
+			"uri": "https://de.wikisource.org/wiki/Der_Zauberlehrling_(1827)",
+			"label": "Goethe: Der Zauberlehrling · Originalfassung der Ausgabe 1827, entstanden 1797",
+			"checked": "2026-10-28"
+		},
+		{
+			"uri": "https://de.wikisource.org/wiki/Prometheus_(Gedicht)",
+			"label": "Goethe: Prometheus · frühe Fassung, Druck 1789",
+			"checked": "2026-10-28"
+		},
+		{
+			"uri": "https://www.rechtschreibrat.com/DOX/RfdR_Amtliches-Regelwerk_2024.pdf",
+			"label": "Rat für deutsche Rechtschreibung · Amtliches Regelwerk 2024",
+			"checked": "2026-10-28"
+		},
+		{
+			"uri": "https://grammis.ids-mannheim.de/sgt/2233",
+			"label": "IDS grammis · Konjunktiv: Formen und Funktionen",
+			"checked": "2026-10-28"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M5ZNB3ZQARTFP6VZG9YNX91T",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZQARTFP6VZG9YNX91T",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-zuhoeren",
+			"title": "Gehörtes sichern",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-zuhoeren",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZQF6NWSXN7SDW5DD1G",
+					"slug": "d8-zuhoeren-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Im Schulradio heißt es: „Ob es einen zweiten Termin gibt, klären wir am Montag.“ Was gehört als Ergebnis in die Mitschrift?",
+					"concept": "Zweiter Termin noch offen; Klärung am Montag.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-zuhoeren",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zweiter Termin noch offen; Klärung am Montag.",
+							"Zweiter Leseabend findet sicher am Montag statt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZQT04F4DY7XKFZ6TV3",
+					"slug": "d8-zuhoeren-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie hältst du in einer Mitschrift einen Beschluss und eine noch offene Frage auseinander?",
+					"concept": "Den Beschluss als vereinbartes Ergebnis mit nötigen Angaben notieren; die offene Frage ausdrücklich als ungeklärt markieren, gegebenenfalls mit Zuständigkeit und Klärungstermin.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-zuhoeren",
+					"sample_solution": "Den Beschluss als vereinbartes Ergebnis mit nötigen Angaben notieren; die offene Frage ausdrücklich als ungeklärt markieren, gegebenenfalls mit Zuständigkeit und Klärungstermin."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZQG9VW0ATAFG9Q08C7",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZQG9VW0ATAFG9Q08C7",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-gespraech",
+			"title": "Zuhören und Missverständnisse klären",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-gespraech",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZQFMYR0Y6XPMGK659P",
+					"slug": "d8-gespraech-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Antwort klärt Maras Satz „Ich mache hier schon wieder alles allein“, ohne eine Absicht zu unterstellen?",
+					"concept": "Meinst du, dass die Arbeit ungleich verteilt ist?",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-gespraech",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Meinst du, dass die Arbeit ungleich verteilt ist?",
+							"Du willst dich bestimmt nur wichtig machen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZQRY49EXB990KWX6PC",
+					"slug": "d8-gespraech-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet Paraphrasieren bei einem Missverständnis im Gespräch?",
+					"concept": "Die verstandene Aussage in eigenen Worten wiedergeben und nachfragen, ob sie so gemeint war; Unverstandenes offen benennen, statt eine Absicht zu unterstellen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-gespraech",
+					"sample_solution": "Die verstandene Aussage in eigenen Worten wiedergeben und nachfragen, ob sie so gemeint war; Unverstandenes offen benennen, statt eine Absicht zu unterstellen."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZQWVFXCMXB4DKVFSHA",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZQWVFXCMXB4DKVFSHA",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-vortrag",
+			"title": "Mit einem Vortrag etwas bewegen",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-vortrag",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZQ089WVV1SZ0VSJC3T",
+					"slug": "d8-vortrag-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Folie unterstützt einen zweiminütigen Vortrag am besten?",
+					"concept": "Drei Schlüsselwörter, die im Vortrag erklärt werden.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-vortrag",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Drei Schlüsselwörter, die im Vortrag erklärt werden.",
+							"Ein vollständiges Manuskript in sehr kleiner Schrift."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZQNJYMWS41GNCZYP55",
+					"slug": "d8-vortrag-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie unterscheidet sich ein begründeter Appell von einer bloßen Aufforderung?",
+					"concept": "Ein begründeter Appell benennt für eine bestimmte Zielgruppe eine Handlung und erklärt, warum diese sinnvoll oder wichtig ist.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-vortrag",
+					"sample_solution": "Ein begründeter Appell benennt für eine bestimmte Zielgruppe eine Handlung und erklärt, warum diese sinnvoll oder wichtig ist."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZQ3WQKNYSES4QZGFR0",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZQ3WQKNYSES4QZGFR0",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-debatte",
+			"title": "Fair diskutieren",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-debatte",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZRM1XVZ74EJKYWA6ZZ",
+					"slug": "d8-debatte-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Antwort greift den Einwand „Für Ballspiele bleibt weniger Platz“ sachlich auf?",
+					"concept": "Wir sollten prüfen, ob eine kleine Zone beide Nutzungen ermöglicht.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-debatte",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wir sollten prüfen, ob eine kleine Zone beide Nutzungen ermöglicht.",
+							"Wer gegen die Ruhezone ist, mag keine Bücher."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZRG0N36C9431QJZ5Z7",
+					"slug": "d8-debatte-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie kannst du in einer Diskussion auf einen Einwand eingehen, ohne ihn sofort zu übernehmen?",
+					"concept": "Den Einwand zutreffend wiedergeben, seine berechtigten Aspekte anerkennen und mit einer begründeten Antwort, Einschränkung oder einem prüfbaren Lösungsvorschlag reagieren.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-debatte",
+					"sample_solution": "Den Einwand zutreffend wiedergeben, seine berechtigten Aspekte anerkennen und mit einer begründeten Antwort, Einschränkung oder einem prüfbaren Lösungsvorschlag reagieren."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZRQZ513G3Z82ZD02FX",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZRQZ513G3Z82ZD02FX",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-interview",
+			"title": "Ein Interview vorbereiten",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-interview",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZRHN1A5MFNC6ZZ2D4Q",
+					"slug": "d8-interview-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Frage eignet sich als offene Interviewfrage zu Leseinteressen?",
+					"concept": "Welche Veränderungen beobachten Sie bei den Ausleihen?",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-interview",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Welche Veränderungen beobachten Sie bei den Ausleihen?",
+							"Es lesen doch wirklich alle zu wenig, oder?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZRQB0GWNWCW2S3PBGR",
+					"slug": "d8-interview-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist eine Suggestivfrage, und warum ist sie in einem Interview problematisch?",
+					"concept": "Sie legt durch ihre Formulierung eine bestimmte Antwort nahe. Dadurch kann sie die Auskunft verzerren, statt die Sicht der befragten Person offen zu erkunden.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-interview",
+					"sample_solution": "Sie legt durch ihre Formulierung eine bestimmte Antwort nahe. Dadurch kann sie die Auskunft verzerren, statt die Sicht der befragten Person offen zu erkunden."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZRGQVKDNYENCVEG381",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZRGQVKDNYENCVEG381",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-szene",
+			"title": "Eine Figur auf die Bühne bringen",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-szene",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZRY0YZ1730TSPSHQDR",
+					"slug": "d8-szene-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Miniaturszene: Ada hebt vor einer Tür die Hand und senkt sie wieder. Welche Aussage unterscheidet Textbefund und Spielentscheidung?",
+					"concept": "Das Senken der Hand steht im Text; Zittern wäre eine Spielentscheidung.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-szene",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das Senken der Hand steht im Text; Zittern wäre eine Spielentscheidung.",
+							"Adas gesamte Lebensgeschichte steht bereits sicher im Text."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZRK494189S9F7R7GFJ",
+					"slug": "d8-szene-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie verbindest du konstruktives Feedback zu einer Szene mit einem Überarbeitungsvorschlag?",
+					"concept": "Eine konkrete Beobachtung benennen, ihre wahrgenommene Wirkung erklären und eine erprobbare Änderung vorschlagen; anschließend prüfen, ob die Änderung die beabsichtigte Figurendarstellung unterstützt.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-szene",
+					"sample_solution": "Eine konkrete Beobachtung benennen, ihre wahrgenommene Wirkung erklären und eine erprobbare Änderung vorschlagen; anschließend prüfen, ob die Änderung die beabsichtigte Figurendarstellung unterstützt."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZRB845D0CTXF4WGC9E",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZRB845D0CTXF4WGC9E",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-lesestrategien",
+			"title": "Mit einer Lesefrage starten",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-lesestrategien",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "lesen",
+					"topic_title": "Lesen, Literatur und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZRRWTW07TWC54HB7NV",
+					"slug": "d8-lesestrategien-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Du suchst in einem Aushang nur den Beginn des Lesetauschs. Welche Strategie passt zuerst?",
+					"concept": "Selektives Lesen nach der Zeitangabe.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-lesestrategien",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Selektives Lesen nach der Zeitangabe.",
+							"Jeden Satz möglichst laut auswendig lernen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZRS6RCGRAJHFN6H9H5",
+					"slug": "d8-lesestrategien-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie unterscheidest du orientierendes und selektives Lesen?",
+					"concept": "Orientierendes Lesen verschafft einen Überblick über Thema und Aufbau. Selektives Lesen sucht gezielt eine für die Lesefrage benötigte Information.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-lesestrategien",
+					"sample_solution": "Orientierendes Lesen verschafft einen Überblick über Thema und Aufbau. Selektives Lesen sucht gezielt eine für die Lesefrage benötigte Information."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZRJ41GS4DJ4FG9DM4R",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZRJ41GS4DJ4FG9DM4R",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-bericht-reportage",
+			"title": "Bericht und Reportage vergleichen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-bericht-reportage",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "lesen",
+					"topic_title": "Lesen, Literatur und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZR6TX059V42CRB4SPC",
+					"slug": "d8-bericht-reportage-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Ein Text zeigt einen Karton auf dem Tisch und zitiert Aylin beim Einlegen eines Buchs. Wodurch nähert sich diese Darstellung einer Reportage?",
+					"concept": "Er veranschaulicht ein Ereignis durch Szene und beobachtete Details.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-bericht-reportage",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Er veranschaulicht ein Ereignis durch Szene und beobachtete Details.",
+							"Er verzichtet wegen lebendiger Sprache auf jede Tatsachentreue."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZRP316RKY67KWKPP5G",
+					"slug": "d8-bericht-reportage-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was unterscheidet einen Bericht von einer Reportage in der Darstellungsweise?",
+					"concept": "Ein Bericht vermittelt das Ereignis vorrangig sachlich und geordnet. Eine Reportage kann zusätzlich szenische Beobachtungen und Stimmen nutzen, um erlebte Nähe zu erzeugen; beide brauchen verlässliche Informationen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-bericht-reportage",
+					"sample_solution": "Ein Bericht vermittelt das Ereignis vorrangig sachlich und geordnet. Eine Reportage kann zusätzlich szenische Beobachtungen und Stimmen nutzen, um erlebte Nähe zu erzeugen; beide brauchen verlässliche Informationen."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZRR26GSYQ51HMN80XM",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZRR26GSYQ51HMN80XM",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-diagramme",
+			"title": "Zahlen genau lesen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-diagramme",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "lesen",
+					"topic_title": "Lesen, Literatur und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZRF09K2KZQPRKK9KEW",
+					"slug": "d8-diagramme-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "15 von 25 Befragten einer Klasse stimmen für eine Tauschkiste. Welche Aussage ist durch die Daten gedeckt?",
+					"concept": "60 Prozent der befragten Klasse stimmen zu.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-diagramme",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"60 Prozent der befragten Klasse stimmen zu.",
+							"60 Prozent aller Jugendlichen stimmen zu."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZR8D7EJXKY8A3PA8Q6",
+					"slug": "d8-diagramme-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Angaben prüfst du vor der Deutung einer einfachen Statistik?",
+					"concept": "Thema, Quelle, Erhebungsgruppe, Zeitraum, Einheit und Bezugsgröße; fehlende Angaben sowie die Grenzen einer Übertragung auf andere Gruppen ausdrücklich beachten.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-diagramme",
+					"sample_solution": "Thema, Quelle, Erhebungsgruppe, Zeitraum, Einheit und Bezugsgröße; fehlende Angaben sowie die Grenzen einer Übertragung auf andere Gruppen ausdrücklich beachten."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZR2PVYA5C2S084XDA2",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZR2PVYA5C2S084XDA2",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-zeitung",
+			"title": "Sich in Zeitungen orientieren",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-zeitung",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "lesen",
+					"topic_title": "Lesen, Literatur und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZRMTEVK27B9VK9BQPW",
+					"slug": "d8-zeitung-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Frage prüft die Leserlenkung durch das Jubelfoto zu einem Büchertausch besonders gut?",
+					"concept": "Zeigt das Foto wirklich das beschriebene Ereignis und denselben Zusammenhang?",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-zeitung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zeigt das Foto wirklich das beschriebene Ereignis und denselben Zusammenhang?",
+							"Ist das Foto größer als alle anderen Bilder der Zeitung?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZRV1GP228S5KF1537V",
+					"slug": "d8-zeitung-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was untersuchst du, wenn du Leserlenkung auf einer Zeitungsseite beschreibst?",
+					"concept": "Auswahl und Platzierung von Informationen, Überschrift und Wortwahl, Bilder und Bildunterschriften untersuchen und erklären, welchen Eindruck sie nahelegen und was tatsächlich belegt ist.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-zeitung",
+					"sample_solution": "Auswahl und Platzierung von Informationen, Überschrift und Wortwahl, Bilder und Bildunterschriften untersuchen und erklären, welchen Eindruck sie nahelegen und was tatsächlich belegt ist."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZRR9BXMQG7M625GA3Z",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZRR9BXMQG7M625GA3Z",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-quellen",
+			"title": "Informationen gegenprüfen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-quellen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "lesen",
+					"topic_title": "Lesen, Literatur und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZR9KKVKEEC1ES8N35F",
+					"slug": "d8-quellen-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Ein Blog kopiert die unbelegte Werbeaussage eines Anbieters. Was folgt daraus?",
+					"concept": "Die Wiederholung ist noch keine unabhängige Bestätigung.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-quellen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Wiederholung ist noch keine unabhängige Bestätigung.",
+							"Zwei Webseiten beweisen die Behauptung bereits."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZR7822WECE69KW2Z2W",
+					"slug": "d8-quellen-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum ist die Wiederholung einer Behauptung auf mehreren Webseiten noch keine unabhängige Bestätigung?",
+					"concept": "Die Seiten können dieselbe Quelle abschreiben. Prüfe den Ursprung und ob tatsächlich getrennte, nachvollziehbare Belege vorliegen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-quellen",
+					"sample_solution": "Die Seiten können dieselbe Quelle abschreiben. Prüfe den Ursprung und ob tatsächlich getrennte, nachvollziehbare Belege vorliegen."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZRYJ69XR1YZANM6T80",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZRYJ69XR1YZANM6T80",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-medien",
+			"title": "Medienwirkung erkennen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-medien",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "lesen",
+					"topic_title": "Lesen, Literatur und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZRTRT4F5PJ894DP9WQ",
+					"slug": "d8-medien-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was beweisen viele Likes unter einem zusammengeschnittenen Clip?",
+					"concept": "Viele sichtbare Reaktionen, aber noch nicht die Wahrheit der Einblendung.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-medien",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Viele sichtbare Reaktionen, aber noch nicht die Wahrheit der Einblendung.",
+							"Die Einblendung ist dadurch eine gesicherte Tatsache."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZRJN02MB7RETYXE2D5",
+					"slug": "d8-medien-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie kann ein Schnitt die Deutung eines Videos beeinflussen?",
+					"concept": "Die Reihenfolge und Verbindung von Aufnahmen kann einen Zusammenhang nahelegen, der aus den Einzelaufnahmen allein nicht belegt ist; deshalb zeitlichen und sachlichen Kontext prüfen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-medien",
+					"sample_solution": "Die Reihenfolge und Verbindung von Aufnahmen kann einen Zusammenhang nahelegen, der aus den Einzelaufnahmen allein nicht belegt ist; deshalb zeitlichen und sachlichen Kontext prüfen."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZRBJ7JTWTKHR3EQVH8",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZRBJ7JTWTKHR3EQVH8",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-figuren",
+			"title": "Figuren verstehen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-figuren",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "lesen",
+					"topic_title": "Lesen, Literatur und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZRANGGG83YNEZ35TKG",
+					"slug": "d8-figuren-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Miniatur: Lia trägt einen zerrissenen Notenzettel in der Tasche. Vor dem Musikraum sagt sie zu Sam: „Du gehst zuerst.“ Sam schüttelt den Kopf und bleibt neben ihr stehen. Was ist hier ein ausdrücklich genannter Textbefund?",
+					"concept": "Sam bleibt neben Lia stehen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-figuren",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sam bleibt neben Lia stehen.",
+							"Sam kennt nachweislich jede Ursache des Risses."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZRPNNQ2FSKH4JQWJRW",
+					"slug": "d8-figuren-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie begründest du eine Deutung des Motivs einer literarischen Figur?",
+					"concept": "Eine passende Textstelle zu Handlung oder Äußerung benennen, daraus den möglichen Beweggrund erklären und die Deutung als solche kenntlich machen; andere plausible Lesarten mitbedenken.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-figuren",
+					"sample_solution": "Eine passende Textstelle zu Handlung oder Äußerung benennen, daraus den möglichen Beweggrund erklären und die Deutung als solche kenntlich machen; andere plausible Lesarten mitbedenken."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZRF29P5CSB6R8S3H94",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZRF29P5CSB6R8S3H94",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-erzaehlzeit",
+			"title": "Wer erzählt und wie vergeht Zeit?",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-erzaehlzeit",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "lesen",
+					"topic_title": "Lesen, Literatur und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZRC7JAMPSY1BT88RKT",
+					"slug": "d8-erzaehlzeit-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "„Drei Wochen wartete ich auf die Antwort“: Wie wird die Zeit in diesem Satz gestaltet?",
+					"concept": "Drei Wochen Handlung werden in wenigen Worten gerafft.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-erzaehlzeit",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Drei Wochen Handlung werden in wenigen Worten gerafft.",
+							"Erzählzeit und erzählte Zeit betragen beide drei Wochen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZRXN0A1Q3EHS9C7E1E",
+					"slug": "d8-erzaehlzeit-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was unterscheidet Autor und Erzähler bei einer Ich-Erzählung?",
+					"concept": "Der Autor ist die reale schreibende Person; der Ich-Erzähler ist eine gestaltete Stimme innerhalb des Texts. Seine Erlebnisse sind nicht automatisch Erlebnisse des Autors.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-erzaehlzeit",
+					"sample_solution": "Der Autor ist die reale schreibende Person; der Ich-Erzähler ist eine gestaltete Stimme innerhalb des Texts. Seine Erlebnisse sind nicht automatisch Erlebnisse des Autors."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZRVMPHCJD42RJ4ME4J",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZRVMPHCJD42RJ4ME4J",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-lyrik",
+			"title": "Bilder und Stimmen im Gedicht",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-lyrik",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "lesen",
+					"topic_title": "Lesen, Literatur und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZRYMG43FE3ERC1AW4X",
+					"slug": "d8-lyrik-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "„Die Treppe hält den Atem an“: Welches Mittel ist hier besonders deutlich?",
+					"concept": "Personifikation: Eine Treppe erhält eine menschliche Handlung.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-lyrik",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Personifikation: Eine Treppe erhält eine menschliche Handlung.",
+							"Sachbericht: Eine gemessene Atemfrequenz wird mitgeteilt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZR3BVF8S67T22MNGAD",
+					"slug": "d8-lyrik-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie gehst du bei der Deutung eines sprachlichen Bildes im Gedicht vor?",
+					"concept": "Die konkrete Stelle benennen, die Übertragung oder Gestaltung erklären und eine mögliche Wirkung aus dem Zusammenhang begründen; das Mittel nicht bloß aufzählen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-lyrik",
+					"sample_solution": "Die konkrete Stelle benennen, die Übertragung oder Gestaltung erklären und eine mögliche Wirkung aus dem Zusammenhang begründen; das Mittel nicht bloß aufzählen."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZRB1SWX9Z3D3REDB6J",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZRB1SWX9Z3D3REDB6J",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-aufklaerung",
+			"title": "Toleranz als Handlungsfrage",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-aufklaerung",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "lesen",
+					"topic_title": "Lesen, Literatur und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZR7YQ9HCB5QNXZA2F7",
+					"slug": "d8-aufklaerung-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches Verhalten passt zum Toleranzideal in der Ringparabel?",
+					"concept": "Die eigene Überzeugung durch vorurteilsfreies Handeln bewähren.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-aufklaerung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die eigene Überzeugung durch vorurteilsfreies Handeln bewähren.",
+							"Den Wert eines Menschen nur aus seiner Gruppenzugehörigkeit ableiten."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZRDASQVB499MS0MN20",
+					"slug": "d8-aufklaerung-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Ideal der Aufklärung veranschaulicht der Handlungsrat in Lessings Ringparabel?",
+					"concept": "Toleranz und verantwortliches Handeln: Behauptete moralische Güte soll sich im vorurteilsfreien Umgang mit anderen bewähren, statt allein aus einer Gruppenzugehörigkeit abgeleitet zu werden.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-aufklaerung",
+					"sample_solution": "Toleranz und verantwortliches Handeln: Behauptete moralische Güte soll sich im vorurteilsfreien Umgang mit anderen bewähren, statt allein aus einer Gruppenzugehörigkeit abgeleitet zu werden."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZR6QT0S0X2QRQMCQRR",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZR6QT0S0X2QRQMCQRR",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-goethe",
+			"title": "Goethe: Gefühl, Freiheit, Verantwortung",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-goethe",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "lesen",
+					"topic_title": "Lesen, Literatur und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZRMP4RGJCZWXEVXZDC",
+					"slug": "d8-goethe-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches Problem benennt der Zauberlehrling mit „Die ich rief, die Geister, / Werd’ ich nun nicht los“?",
+					"concept": "Selbst ausgelöste Vorgänge geraten außer Kontrolle.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-goethe",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Selbst ausgelöste Vorgänge geraten außer Kontrolle.",
+							"Die Figur hat von Beginn an jede Folge sicher beherrscht."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZR64Q3PE52ZES590VK",
+					"slug": "d8-goethe-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Vergleichsfrage verbindet Goethes Prometheus und Der Zauberlehrling, ohne die Texte gleichzusetzen?",
+					"concept": "Wie beansprucht eine gestaltete Stimme Freiheit oder eigene Macht, und wie wird dabei das Verhältnis zu Autorität, Grenzen und Verantwortung gezeigt? Die Antwort muss für jeden Text eigens belegt werden.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-goethe",
+					"sample_solution": "Wie beansprucht eine gestaltete Stimme Freiheit oder eigene Macht, und wie wird dabei das Verhältnis zu Autorität, Grenzen und Verantwortung gezeigt? Die Antwort muss für jeden Text eigens belegt werden."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZRK26X8NGTHZ0TNYCP",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZRK26X8NGTHZ0TNYCP",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-lesejournal",
+			"title": "Eine Ganzschrift begleiten",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-lesejournal",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "lesen",
+					"topic_title": "Lesen, Literatur und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZRKRSHZN03PAFPZV58",
+					"slug": "d8-lesejournal-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Journaleintrag: „Elif gibt den Schlüssel nicht sofort zurück. Fürchtet sie eine Beschuldigung? Fundstelle noch nachtragen.“ Welche Ergänzung verbessert den Eintrag besonders?",
+					"concept": "Eine genaue Fundstelle und Textbelege zur vermuteten Angst.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-lesejournal",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine genaue Fundstelle und Textbelege zur vermuteten Angst.",
+							"Eine erfundene Seitenzahl und ein gesichertes Motiv ohne Beleg."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZRZR0T3119RA2BAPM4",
+					"slug": "d8-lesejournal-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche drei Arten von Einträgen hältst du in einem Lesejournal auseinander?",
+					"concept": "Inhaltszusammenfassung, am Text begründete Deutung und persönliche Reaktion oder Bewertung; passende Fundstellen und offene Fragen ergänzen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-lesejournal",
+					"sample_solution": "Inhaltszusammenfassung, am Text begründete Deutung und persönliche Reaktion oder Bewertung; passende Fundstellen und offene Fragen ergänzen."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZR02ZQ7PHRKM0DW9RJ",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZR02ZQ7PHRKM0DW9RJ",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-protokoll",
+			"title": "Vom Stichwort zum Protokoll",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-protokoll",
+			"prerequisites": [
+				{
+					"atom_id": "01M5ZNB3ZQARTFP6VZG9YNX91T",
+					"type": "soft",
+					"rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben und Argumentieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZRN9B2HQC3HFSM8X3H",
+					"slug": "d8-protokoll-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was darf im Protokoll aus „Standort noch offen; Hausmeister fragen“ werden?",
+					"concept": "Der Standort ist offen und muss noch geklärt werden.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-protokoll",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Standort ist offen und muss noch geklärt werden.",
+							"Der Hausmeister hat bereits die Aula verbindlich zugesagt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZR5GSRZ9B4F9VE9VK0",
+					"slug": "d8-protokoll-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Angaben machen eine vereinbarte Aufgabe im Ergebnisprotokoll nachvollziehbar?",
+					"concept": "Die konkrete Aufgabe, die zuständige Person und gegebenenfalls eine vereinbarte Frist; nur tatsächlich vereinbarte Angaben notieren und fehlende Zuständigkeiten als offen kennzeichnen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-protokoll",
+					"sample_solution": "Die konkrete Aufgabe, die zuständige Person und gegebenenfalls eine vereinbarte Frist; nur tatsächlich vereinbarte Angaben notieren und fehlende Zuständigkeiten als offen kennzeichnen."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZRRRX997TVN6JTC1X8",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZRRRX997TVN6JTC1X8",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-inhaltsangabe",
+			"title": "Den Inhalt auf den Punkt bringen",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-inhaltsangabe",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben und Argumentieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZR3253X850GA7EJA7F",
+					"slug": "d8-inhaltsangabe-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Miniatur: Nela findet einen Schlüssel. Sie zögert, weil sie Fragen vermeiden möchte, gibt ihn dann aber der suchenden Lehrkraft. Welche Formulierung passt zur sachlichen Inhaltsangabe?",
+					"concept": "Nela gibt den gefundenen Schlüssel nach kurzem Zögern ab.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-inhaltsangabe",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nela gibt den gefundenen Schlüssel nach kurzem Zögern ab.",
+							"Plötzlich! Ein Schlüssel! Was wird Nela wohl tun?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZR14ATCAM745Z906NR",
+					"slug": "d8-inhaltsangabe-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was unterscheidet eine Inhaltsangabe von einer spannenden Nacherzählung?",
+					"concept": "Die Inhaltsangabe informiert knapp, sachlich und geordnet über wesentliche Inhalte, meist im Präsens und in eigenen Worten. Sie verzichtet auf Spannungstricks, ausschmückende Details und persönliche Wertung.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-inhaltsangabe",
+					"sample_solution": "Die Inhaltsangabe informiert knapp, sachlich und geordnet über wesentliche Inhalte, meist im Präsens und in eigenen Worten. Sie verzichtet auf Spannungstricks, ausschmückende Details und persönliche Wertung."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZSABH3W8NRJ725K6JB",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZSABH3W8NRJ725K6JB",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-zitieren",
+			"title": "Wiedergeben und belegen",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-zitieren",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben und Argumentieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZS8K74NVWE9WFWDNEZ",
+					"slug": "d8-zitieren-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Lea erklärt: „Der Tausch könnte neue Leseideen bringen.“ Welche Wiedergabe erhält die Unsicherheit ihrer Aussage korrekt?",
+					"concept": "Lea nennt neue Leseideen als mögliche Folge des Tauschs.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-zitieren",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Lea nennt neue Leseideen als mögliche Folge des Tauschs.",
+							"Lea beweist einen bereits eingetretenen sicheren Erfolg."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZSFBXB0RGP77YA8M9P",
+					"slug": "d8-zitieren-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist der Unterschied zwischen einer Paraphrase und einem direkten Zitat?",
+					"concept": "Die Paraphrase gibt einen fremden Gedanken in eigenen Worten wieder; das direkte Zitat übernimmt den gesicherten Wortlaut mit Anführungszeichen. Beide brauchen eine nachvollziehbare Herkunft.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-zitieren",
+					"sample_solution": "Die Paraphrase gibt einen fremden Gedanken in eigenen Worten wieder; das direkte Zitat übernimmt den gesicherten Wortlaut mit Anführungszeichen. Beide brauchen eine nachvollziehbare Herkunft."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZS8HK8HP3XTYA6YB4K",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZS8HK8HP3XTYA6YB4K",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-analyse",
+			"title": "Eine Textstelle untersuchen",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-analyse",
+			"prerequisites": [
+				{
+					"atom_id": "01M5ZNB3ZSABH3W8NRJ725K6JB",
+					"type": "soft",
+					"rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben und Argumentieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZSTHZWH5NQ1C6AZ5EG",
+					"slug": "d8-analyse-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Miniatur: Ivo fragt „Jetzt?“, hebt die Hand zur Tür und zieht sie zurück (Z. 2). „Vielleicht morgen“, sagt er. Welcher Satz verbindet Befund, Beleg und Funktion bei der Frage nach seinem Zögern?",
+					"concept": "Das Zurückziehen der Hand (Z. 2) macht seine unterbrochene Handlungsabsicht sichtbar.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-analyse",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das Zurückziehen der Hand (Z. 2) macht seine unterbrochene Handlungsabsicht sichtbar.",
+							"Im Text stehen Wörter, deshalb ist der Text sehr spannend."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZSGR74DYTX612726D4",
+					"slug": "d8-analyse-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche drei Schritte verbindest du in einem Absatz einer Textuntersuchung?",
+					"concept": "Einen zur Frage passenden Befund formulieren, ihn durch eine genaue Textstelle belegen und seine Funktion oder mögliche Wirkung im Zusammenhang erklären.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-analyse",
+					"sample_solution": "Einen zur Frage passenden Befund formulieren, ihn durch eine genaue Textstelle belegen und seine Funktion oder mögliche Wirkung im Zusammenhang erklären."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZSEPDFT2A7B554RAF8",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZSEPDFT2A7B554RAF8",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-bildimpuls",
+			"title": "Aus einem Bild eine Geschichte entwickeln",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-bildimpuls",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben und Argumentieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZSKMPX09FK098H4454",
+					"slug": "d8-bildimpuls-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Bildbeschreibung: Ein leeres Wartehäuschen im Regen. Auf der Bank liegt ein geschlossener roter Umschlag, daneben steht ein einzelner Schuh. Die Herkunft ist unbekannt. Welche Aussage ist eine Beobachtung und keine erfundene Vorgeschichte?",
+					"concept": "Auf der Bank liegt ein geschlossener roter Umschlag.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-bildimpuls",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Auf der Bank liegt ein geschlossener roter Umschlag.",
+							"Ein bestimmtes Kind hat den Umschlag gestern gestohlen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZS6FC3EW95S7R73PPS",
+					"slug": "d8-bildimpuls-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie entwickelst du aus einem Bildimpuls eine eigene Erzählung?",
+					"concept": "Sichtbare Details sichern, eigene Einfälle als Ergänzungen behandeln und daraus Figur, Konflikt, Perspektive und Handlungsverlauf planen; gezielte Wahrnehmungen statt bloßer Adjektivhäufung verwenden.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-bildimpuls",
+					"sample_solution": "Sichtbare Details sichern, eigene Einfälle als Ergänzungen behandeln und daraus Figur, Konflikt, Perspektive und Handlungsverlauf planen; gezielte Wahrnehmungen statt bloßer Adjektivhäufung verwenden."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZS619YY5WDVXMQSZZK",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZS619YY5WDVXMQSZZK",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-rollenbrief",
+			"title": "In einer anderen Stimme schreiben",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-rollenbrief",
+			"prerequisites": [
+				{
+					"atom_id": "01M5ZNB3ZRBJ7JTWTKHR3EQVH8",
+					"type": "soft",
+					"rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+				},
+				{
+					"atom_id": "01M5ZNB3ZRF29P5CSB6R8S3H94",
+					"type": "soft",
+					"rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben und Argumentieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZS7RFA4A773JFY23GE",
+					"slug": "d8-rollenbrief-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Jona verspricht Mira die Buchrückgabe und entdeckt später einen Riss. Mira weiß noch nichts von dem Schaden. Welche Information darf Mira vor einer neuen Mitteilung sicher kennen?",
+					"concept": "Dass Jona die Rückgabe versprochen hat.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-rollenbrief",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Dass Jona die Rückgabe versprochen hat.",
+							"Dass Jona den Riss am Nachmittag bemerkt hat."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZS4Q6BZA2GBX92BETA",
+					"slug": "d8-rollenbrief-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Worauf achtest du bei einem Rollenbrief zu einer literarischen Vorlage?",
+					"concept": "Perspektive und Wissensstand der Figur, Beziehung zum Empfänger, Anlass und Absicht beachten; eigene Ergänzungen passend gestalten und von gesicherten Textbefunden unterscheiden.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-rollenbrief",
+					"sample_solution": "Perspektive und Wissensstand der Figur, Beziehung zum Empfänger, Anlass und Absicht beachten; eigene Ergänzungen passend gestalten und von gesicherten Textbefunden unterscheiden."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZSP7GN013XBY07W9KC",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZSP7GN013XBY07W9KC",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-bewerbung",
+			"title": "Eine Kurzbewerbung verfassen",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-bewerbung",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben und Argumentieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZS9TE396VGDWNGN39B",
+					"slug": "d8-bewerbung-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Übungsrolle Alex hilft in der Klassenbücherei und sortiert Rückgaben. Alex sucht ein Bibliothekspraktikum. Welche Formulierung belegt die passende Erfahrung am konkretsten?",
+					"concept": "In der Klassenbücherei sortiere ich Rückgaben und notiere Ausleihen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-bewerbung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"In der Klassenbücherei sortiere ich Rückgaben und notiere Ausleihen.",
+							"Ich bin ganz sicher die beste Person für jede Bibliothek."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZS7H1B36PKWM3SEQ01",
+					"slug": "d8-bewerbung-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie machst du die eigene Eignung in einer Kurzbewerbung nachvollziehbar?",
+					"concept": "Passendes Interesse mit einer konkreten eigenen Tätigkeit oder Erfahrung verbinden, wahrheitsgemäß formulieren und die Bedeutung für den angefragten Einsatz erklären.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-bewerbung",
+					"sample_solution": "Passendes Interesse mit einer konkreten eigenen Tätigkeit oder Erfahrung verbinden, wahrheitsgemäß formulieren und die Bedeutung für den angefragten Einsatz erklären."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZSSZPXHYT13EVCX5VG",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZSSZPXHYT13EVCX5VG",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-argument",
+			"title": "Ein Argument tragfähig machen",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-argument",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben und Argumentieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZS1T5E760PQ1HPE6GT",
+					"slug": "d8-argument-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Aussage beschreibt die Funktion eines ausdrücklich erfundenen Beispiels in einem Argument korrekt?",
+					"concept": "Es veranschaulicht eine Möglichkeit, belegt aber keine tatsächliche Wirkung.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-argument",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es veranschaulicht eine Möglichkeit, belegt aber keine tatsächliche Wirkung.",
+							"Es beweist eine tatsächlich erhobene allgemeine Wirkung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZSJE6152CH2102EMPB",
+					"slug": "d8-argument-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche unterschiedlichen Aufgaben haben Behauptung, Begründung und Beispiel in einem Argument?",
+					"concept": "Die Behauptung nennt den Gedanken, die Begründung erklärt seinen Zusammenhang, das Beispiel veranschaulicht ihn. Ein als erfunden markiertes Beispiel ist noch kein empirischer Nachweis.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-argument",
+					"sample_solution": "Die Behauptung nennt den Gedanken, die Begründung erklärt seinen Zusammenhang, das Beispiel veranschaulicht ihn. Ein als erfunden markiertes Beispiel ist noch kein empirischer Nachweis."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZSN8X62NRV6BQ01RJQ",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZSN8X62NRV6BQ01RJQ",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-belege",
+			"title": "Material für eine Position auswählen",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-belege",
+			"prerequisites": [
+				{
+					"atom_id": "01M5ZNB3ZRR9BXMQG7M625GA3Z",
+					"type": "soft",
+					"rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+				},
+				{
+					"atom_id": "01M5ZNB3ZRR26GSYQ51HMN80XM",
+					"type": "soft",
+					"rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+				},
+				{
+					"atom_id": "01M5ZNB3ZSSZPXHYT13EVCX5VG",
+					"type": "soft",
+					"rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben und Argumentieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZSQ5HFARXJ52Y8Q4Y5",
+					"slug": "d8-belege-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Angabe belegt eine tatsächliche Nutzung des erfundenen Tauschkistenversuchs?",
+					"concept": "Acht dokumentierte Ausleihen während der zwei Wochen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-belege",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Acht dokumentierte Ausleihen während der zwei Wochen.",
+							"Eine vorab geäußerte Zustimmung ohne Nutzungsbeobachtung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZSNQTMK30QCHHXFM1Y",
+					"slug": "d8-belege-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie prüfst du, ob ein Materialbeleg zu deinem Argument passt?",
+					"concept": "Verlässlichkeit, konkrete Fragestellung und Reichweite prüfen; erklären, welche Aussage die Angabe stützt und welche weitergehenden Schlüsse sie nicht trägt.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-belege",
+					"sample_solution": "Verlässlichkeit, konkrete Fragestellung und Reichweite prüfen; erklären, welche Aussage die Angabe stützt und welche weitergehenden Schlüsse sie nicht trägt."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZSYG92PRCBXDM4HPTY",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZSYG92PRCBXDM4HPTY",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-gegengrund",
+			"title": "Auf Gegengründe antworten",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-gegengrund",
+			"prerequisites": [
+				{
+					"atom_id": "01M5ZNB3ZSSZPXHYT13EVCX5VG",
+					"type": "soft",
+					"rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben und Argumentieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZSSDE39MRY5ETZ7AY9",
+					"slug": "d8-gegengrund-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Antwort nimmt den Einwand beschädigter Bücher fair auf?",
+					"concept": "Die Schäden sind ein Problem; eine Fortsetzung braucht klare Regeln und freiwillige Teilnahme.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-gegengrund",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Schäden sind ein Problem; eine Fortsetzung braucht klare Regeln und freiwillige Teilnahme.",
+							"Wer Schäden anspricht, ist grundsätzlich gegen das Lesen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZSA7V9VD3M8BA05RWQ",
+					"slug": "d8-gegengrund-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie reagierst du sachlich auf einen berechtigten Gegengrund?",
+					"concept": "Den Einwand zutreffend wiedergeben, seinen berechtigten Kern anerkennen und die eigene Position mit einer begründeten Bedingung, Einschränkung oder Gegenüberlegung präzisieren.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-gegengrund",
+					"sample_solution": "Den Einwand zutreffend wiedergeben, seinen berechtigten Kern anerkennen und die eigene Position mit einer begründeten Bedingung, Einschränkung oder Gegenüberlegung präzisieren."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZSMCREFHNFDB4VK8DH",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZSMCREFHNFDB4VK8DH",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-gliederung",
+			"title": "Eine Stellungnahme ordnen",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-gliederung",
+			"prerequisites": [
+				{
+					"atom_id": "01M5ZNB3ZSSZPXHYT13EVCX5VG",
+					"type": "soft",
+					"rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+				},
+				{
+					"atom_id": "01M5ZNB3ZSYG92PRCBXDM4HPTY",
+					"type": "soft",
+					"rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben und Argumentieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZSV0FEDE2410KFYW2Z",
+					"slug": "d8-gliederung-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Woran orientierst du zuerst die Gliederung einer begründeten Stellungnahme?",
+					"concept": "Am konkreten Schreibauftrag und der zu beantwortenden Frage.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-gliederung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Am konkreten Schreibauftrag und der zu beantwortenden Frage.",
+							"An einer einzigen vorgeschriebenen Formel für jeden Text."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZS159K5WT7SNEN2E2B",
+					"slug": "d8-gliederung-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Aufgabe hat der Schluss einer begründeten Stellungnahme?",
+					"concept": "Ein aus der vorherigen Argumentation folgendes Urteil oder einen begründeten Vorschlag formulieren, ohne erstmals entscheidende neue Beweise einzuführen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-gliederung",
+					"sample_solution": "Ein aus der vorherigen Argumentation folgendes Urteil oder einen begründeten Vorschlag formulieren, ohne erstmals entscheidende neue Beweise einzuführen."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZS4NN0F2EGF41VHJQ8",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZS4NN0F2EGF41VHJQ8",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-leserbrief",
+			"title": "Mit einem Leserbrief Stellung beziehen",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-leserbrief",
+			"prerequisites": [
+				{
+					"atom_id": "01M5ZNB3ZSMCREFHNFDB4VK8DH",
+					"type": "soft",
+					"rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+				},
+				{
+					"atom_id": "01M5ZNB3ZSN8X62NRV6BQ01RJQ",
+					"type": "soft",
+					"rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben und Argumentieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZS4WQSPVQ0450YRPRD",
+					"slug": "d8-leserbrief-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Einleitung stellt einen nachvollziehbaren Bezug im Leserbrief her?",
+					"concept": "Zum Vorschlag eurer Schülerzeitung, den Büchertausch verpflichtend auszuweiten, möchte ich Stellung nehmen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-leserbrief",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zum Vorschlag eurer Schülerzeitung, den Büchertausch verpflichtend auszuweiten, möchte ich Stellung nehmen.",
+							"Alle wissen doch längst, dass ich grundsätzlich recht habe."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZS1NEWJS042WEBPP24",
+					"slug": "d8-leserbrief-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Bausteine braucht ein begründeter Leserbrief?",
+					"concept": "Nachvollziehbaren Bezug zum Ausgangsbeitrag, klare eigene Position, passende Gründe und Belege, faire Berücksichtigung eines Gegenpunkts und einen aus der Argumentation folgenden Abschluss.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-leserbrief",
+					"sample_solution": "Nachvollziehbaren Bezug zum Ausgangsbeitrag, klare eigene Position, passende Gründe und Belege, faire Berücksichtigung eines Gegenpunkts und einen aus der Argumentation folgenden Abschluss."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZSKN03PYHV0QVBHK4B",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZSKN03PYHV0QVBHK4B",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-beschwerde",
+			"title": "Eine Beschwerde wirksam formulieren",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-beschwerde",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben und Argumentieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZSHPGW0NTJ7Y7FP5W2",
+					"slug": "d8-beschwerde-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Ein reserviertes Buch fehlt am vereinbarten Abholtag; der Grund ist unbekannt. Die Gruppe braucht es für Montag. Welche Beschwerde bleibt bei diesen Angaben?",
+					"concept": "Das reservierte Buch war am Abholtag nicht da; können wir eine Lösung für Montag finden?",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-beschwerde",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das reservierte Buch war am Abholtag nicht da; können wir eine Lösung für Montag finden?",
+							"Ihre Mitarbeitenden verstecken unsere Bücher absichtlich."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZSDDB3X6TNBWCFN224",
+					"slug": "d8-beschwerde-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie baust du eine sachliche Beschwerde auf?",
+					"concept": "Den konkreten Sachverhalt mit nötigen Angaben schildern, seine Auswirkung erklären und eine angemessene Bitte oder Lösung vorschlagen; unbelegte Schuldzuweisungen vermeiden.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-beschwerde",
+					"sample_solution": "Den konkreten Sachverhalt mit nötigen Angaben schildern, seine Auswirkung erklären und eine angemessene Bitte oder Lösung vorschlagen; unbelegte Schuldzuweisungen vermeiden."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZS8HH9MY9ZNZ1GF0GM",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZS8HH9MY9ZNZ1GF0GM",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-register",
+			"title": "Sprache für die Situation wählen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-register",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprache",
+					"topic_title": "Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZSXR3X0CT8CCJBX6G4",
+					"slug": "d8-register-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie beurteilst du ein Fremdwort in einer Einladung am sinnvollsten?",
+					"concept": "Prüfen, ob die Zielgruppe es versteht und es zum Zweck passt.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-register",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Prüfen, ob die Zielgruppe es versteht und es zum Zweck passt.",
+							"Jedes Fremdwort unabhängig vom Zusammenhang verbieten."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZSVBVEX17QCP8YNEJW",
+					"slug": "d8-register-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie beurteilst du den Einsatz von Umgangssprache, Fachsprache oder Fremdwörtern in einem Text?",
+					"concept": "Zielgruppe, Situation, Zweck und Verständlichkeit prüfen und die Wirkung an konkreten Formulierungen erklären; daraus eine bewusste Sprachwahl ableiten, ohne Sprechende abzuwerten.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-register",
+					"sample_solution": "Zielgruppe, Situation, Zweck und Verständlichkeit prüfen und die Wirkung an konkreten Formulierungen erklären; daraus eine bewusste Sprachwahl ableiten, ohne Sprechende abzuwerten."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZS602B7R8A9NZ6PWEW",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZS602B7R8A9NZ6PWEW",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-konjunktiv1",
+			"title": "Aussagen in indirekter Rede wiedergeben",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-konjunktiv1",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprache",
+					"topic_title": "Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZS41D3XSYGY3CQ3GZF",
+					"slug": "d8-konjunktiv1-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche indirekte Wiedergabe von „Lea sagt: Ich bin bereit“ verwendet Konjunktiv I?",
+					"concept": "Lea sagt, sie sei bereit.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-konjunktiv1",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Lea sagt, sie sei bereit.",
+							"Lea sagt, ich war gestern bereit."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZSYA5GTY0F83ZT4RC9",
+					"slug": "d8-konjunktiv1-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wozu dient Konjunktiv I in der indirekten Rede, und was bedeutet er nicht automatisch?",
+					"concept": "Er kennzeichnet eine fremde Aussage als wiedergegeben. Er bestätigt ihren Inhalt nicht und erklärt sie auch nicht automatisch für falsch.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-konjunktiv1",
+					"sample_solution": "Er kennzeichnet eine fremde Aussage als wiedergegeben. Er bestätigt ihren Inhalt nicht und erklärt sie auch nicht automatisch für falsch."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZSHAWWZNVM4NNW8QWC",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZSHAWWZNVM4NNW8QWC",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-konjunktiv2",
+			"title": "Möglichkeiten und Wünsche ausdrücken",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-konjunktiv2",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprache",
+					"topic_title": "Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZS2VA8AJ5FDWF2PC01",
+					"slug": "d8-konjunktiv2-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Funktion hat „Könnten Sie uns einen Raum nennen?“ in der gegebenen Situation?",
+					"concept": "Eine höfliche Bitte.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-konjunktiv2",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine höfliche Bitte.",
+							"Eine gesicherte Behauptung über einen vorhandenen Raum."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZSRF4MX5VVVE93QJW4",
+					"slug": "d8-konjunktiv2-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie kann Konjunktiv II Wunsch oder vorgestellte Bedingung ausdrücken? Nenne ein Beispiel.",
+					"concept": "Zum Beispiel: „Wenn wir mehr Zeit hätten, könnten wir länger lesen.“ „Hätten“ und „könnten“ stellen Voraussetzung und mögliche Folge vor, ohne die Voraussetzung als erfüllt zu behaupten.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-konjunktiv2",
+					"sample_solution": "Zum Beispiel: „Wenn wir mehr Zeit hätten, könnten wir länger lesen.“ „Hätten“ und „könnten“ stellen Voraussetzung und mögliche Folge vor, ohne die Voraussetzung als erfüllt zu behaupten."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZSR75R8TVEZTSVPBWR",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZSR75R8TVEZTSVPBWR",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-satzbau",
+			"title": "Sätze klar verknüpfen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-satzbau",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprache",
+					"topic_title": "Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZSD28NWT81R1ERM1Q0",
+					"slug": "d8-satzbau-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Beziehung drückt „obwohl“ in „Wir machen weiter, obwohl Schäden auftraten“ aus?",
+					"concept": "Eine Einschränkung beziehungsweise einen Gegengrund.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-satzbau",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine Einschränkung beziehungsweise einen Gegengrund.",
+							"Die Ursache, aus der allein weitergemacht wird."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZSA3A9JJZNS25BDEVV",
+					"slug": "d8-satzbau-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum ist „Wortart“ nicht dasselbe wie „Satzglied“?",
+					"concept": "Wortarten klassifizieren einzelne Wörter nach ihren Eigenschaften. Satzglieder bezeichnen Funktionen von Wörtern oder Wortgruppen im Satz, etwa Subjekt oder Objekt.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-satzbau",
+					"sample_solution": "Wortarten klassifizieren einzelne Wörter nach ihren Eigenschaften. Satzglieder bezeichnen Funktionen von Wörtern oder Wortgruppen im Satz, etwa Subjekt oder Objekt."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZS5G8VFNB1ESBWAVDR",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZS5G8VFNB1ESBWAVDR",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-wortarten",
+			"title": "Mit Wortarten Wirkung gestalten",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-wortarten",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprache",
+					"topic_title": "Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZSEBM3JBE732AR2SBJ",
+					"slug": "d8-wortarten-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "A: „Die Durchführung der Sortierung und die Dokumentation der Ausleihen erfolgen am Freitag.“ B: „Am Freitag sortieren wir die Bücher und notieren die Ausleihen.“ Welche Veränderung macht B besonders deutlich?",
+					"concept": "Tätigkeiten werden durch Verben direkter ausgedrückt.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-wortarten",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Tätigkeiten werden durch Verben direkter ausgedrückt.",
+							"Alle Informationen über Tätigkeiten verschwinden."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZSQ22SFHCRW5A5S074",
+					"slug": "d8-wortarten-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie untersuchst du die Wirkung einer Wortarthäufung?",
+					"concept": "Mehrere konkrete Wörter einer Wortart nennen, ihre Häufung beschreiben und die mögliche Wirkung im jeweiligen Text erklären; keine allgemeine Wirkung unabhängig vom Zusammenhang behaupten.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-wortarten",
+					"sample_solution": "Mehrere konkrete Wörter einer Wortart nennen, ihre Häufung beschreiben und die mögliche Wirkung im jeweiligen Text erklären; keine allgemeine Wirkung unabhängig vom Zusammenhang behaupten."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZSA5R82J26AWZSDEAT",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZSA5R82J26AWZSDEAT",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-infinitiv-partizip",
+			"title": "Sätze verdichten, Bezüge erhalten",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-infinitiv-partizip",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprache",
+					"topic_title": "Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZSGD1AFVFNSB583PPK",
+					"slug": "d8-infinitiv-partizip-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Fassung verwendet eine klare Zweckkonstruktion mit richtigem Komma?",
+					"concept": "Nora bleibt, um Bücher zu sortieren.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-infinitiv-partizip",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nora bleibt, um Bücher zu sortieren.",
+							"Nora bleibt um Bücher zu sortieren."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZS5DEC755FXWENRE4F",
+					"slug": "d8-infinitiv-partizip-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was prüfst du beim Einsatz einer Partizipgruppe auf einen klaren Bezug?",
+					"concept": "Ob der durch das Partizip bezeichnete Zustand oder die Handlung sinnvoll zur gemeinten Person oder Sache im Satz gehört; bei unklarem oder falschem Bezug den Satz umformulieren.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-infinitiv-partizip",
+					"sample_solution": "Ob der durch das Partizip bezeichnete Zustand oder die Handlung sinnvoll zur gemeinten Person oder Sache im Satz gehört; bei unklarem oder falschem Bezug den Satz umformulieren."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZS3H78SWBJ6FA5PGA2",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZS3H78SWBJ6FA5PGA2",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-rechtschreibung",
+			"title": "Schreibweisen begründet prüfen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-rechtschreibung",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprache",
+					"topic_title": "Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZSV9TW09VC881FK6TW",
+					"slug": "d8-rechtschreibung-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "In „Das Buch, das du empfiehlst …“ lässt sich das zweite „das“ durch welches ersetzen. Was folgt?",
+					"concept": "Es ist ein Relativpronomen und wird mit einfachem s geschrieben.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-rechtschreibung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es ist ein Relativpronomen und wird mit einfachem s geschrieben.",
+							"Es ist deshalb die Konjunktion dass mit doppeltem s."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZS6991SA38D2WXEZJK",
+					"slug": "d8-rechtschreibung-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie hilft die Ersatzprobe bei der Unterscheidung von „das“ und „dass“?",
+					"concept": "Prüfen, ob „dieses“, „jenes“ oder „welches“ im Zusammenhang passt. Ein sinnvoll ersetzbares „das“ ist kein „dass“ als Konjunktion; bei Unsicherheit zusätzlich die Satzstruktur prüfen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-rechtschreibung",
+					"sample_solution": "Prüfen, ob „dieses“, „jenes“ oder „welches“ im Zusammenhang passt. Ein sinnvoll ersetzbares „das“ ist kein „dass“ als Konjunktion; bei Unsicherheit zusätzlich die Satzstruktur prüfen."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZSMKQQEF5G6J4GHSDB",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZSMKQQEF5G6J4GHSDB",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-kommas",
+			"title": "Kommas aus der Struktur setzen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-kommas",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprache",
+					"topic_title": "Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZS742BBFANSAV6PV7C",
+					"slug": "d8-kommas-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Fassung grenzt eine eingeschobene Apposition korrekt ab?",
+					"concept": "Mara, unsere Klassensprecherin, eröffnet das Treffen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-kommas",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Mara, unsere Klassensprecherin, eröffnet das Treffen.",
+							"Mara, unsere Klassensprecherin eröffnet das Treffen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZSB7HFAKM5KKN2EVBE",
+					"slug": "d8-kommas-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum braucht ein eingeschobener Relativsatz zwei Kommas?",
+					"concept": "Er wird an Anfang und Ende vom übergeordneten Satz abgegrenzt. Nach dem Einschub geht der Trägersatz weiter; beide Strukturgrenzen müssen sichtbar sein.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-kommas",
+					"sample_solution": "Er wird an Anfang und Ende vom übergeordneten Satz abgegrenzt. Nach dem Einschub geht der Trägersatz weiter; beide Strukturgrenzen müssen sichtbar sein."
+				}
+			]
+		},
+		{
+			"id": "01M5ZNB3ZS32PJAMHT3BC8HB7S",
+			"atom_uri": "urn:zam:atom:01M5ZNB3ZS32PJAMHT3BC8HB7S",
+			"namespace": "zam-academy-deutsch-realschule-8",
+			"slug": "d8-ueberarbeiten",
+			"title": "Einen eigenen Text gezielt verbessern",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-ueberarbeiten",
+			"prerequisites": [
+				{
+					"atom_id": "01M5ZNB3ZSR75R8TVEZTSVPBWR",
+					"type": "soft",
+					"rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+				},
+				{
+					"atom_id": "01M5ZNB3ZS3H78SWBJ6FA5PGA2",
+					"type": "soft",
+					"rationale": "Die verlinkte Lektion erklärt eine hier verwendete Grundlage; alle Lektionen bleiben frei zugänglich."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-8",
+					"topic_code": "sprache",
+					"topic_title": "Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M5ZNB3ZSJZ2AERW8EKN5KE3X",
+					"slug": "d8-ueberarbeiten-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Ein Entwurf behauptet: „Alle wollen den Tausch; er hilft jeder Note.“ Tatsächlich stimmen 15 von 25 Befragten zu; Noten wurden nicht untersucht. Welcher Überarbeitungsschritt ist zuerst nötig?",
+					"concept": "Die unbelegten inhaltlichen Behauptungen an den gegebenen Daten prüfen.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-ueberarbeiten",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die unbelegten inhaltlichen Behauptungen an den gegebenen Daten prüfen.",
+							"Nur die Schriftart ändern und den Inhalt übernehmen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M5ZNB3ZSRTQF1MVP6YDZQ8XP",
+					"slug": "d8-ueberarbeiten-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum reicht ein Rechtschreibprogramm zur Textüberarbeitung nicht aus?",
+					"concept": "Es prüft nicht verlässlich, ob Aussagen belegt sind, Gründe tragen, Bezüge stimmen oder der Text zum Auftrag passt. Inhalt, Aufbau und Sprache brauchen eigene Prüfungen mit Kriterien.",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-8/#lesson=d8-ueberarbeiten",
+					"sample_solution": "Es prüft nicht verlässlich, ob Aussagen belegt sind, Gründe tragen, Bezüge stimmen oder der Text zum Auftrag passt. Inhalt, Aufbau und Sprache brauchen eigene Prüfungen mit Kriterien."
+				}
+			]
+		}
+	]
+}
