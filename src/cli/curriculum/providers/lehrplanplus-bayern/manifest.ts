@@ -42,7 +42,7 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
   schoolYear: "2026/2027",
   capturedOn: "2026-07-19",
   sourceRevision:
-    "LehrplanPLUS Bayern – including WS/FOS/BOS (2026-07-19); +grundschule/mittelschule/foerderschule (2026-07-19); +Realschule Chemie 9 I/II/III, Geographie 9 und Geschichte 9 gemeinsam (2026-10-20); +Realschule Biologie 10 gemeinsam (2026-10-21); +Realschule Physik 10 I/II/III (2026-10-21); +Realschule Physik 8 I/II/III (2026-10-23); +Realschule Chemie 10 I/II/III (2026-10-24); +Realschule Geschichte 10 gemeinsam (2026-10-25); +Realschule PuG 10 Lernbereichs-Labels und Fachlehrplan-Link (2026-10-26)",
+    "LehrplanPLUS Bayern – including WS/FOS/BOS (2026-07-19); +grundschule/mittelschule/foerderschule (2026-07-19); +Realschule Chemie 9 I/II/III, Geographie 9 und Geschichte 9 gemeinsam (2026-10-20); +Realschule Biologie 10 gemeinsam (2026-10-21); +Realschule Physik 10 I/II/III (2026-10-21); +Realschule Physik 8 I/II/III (2026-10-23); +Realschule Chemie 10 I/II/III (2026-10-24); +Realschule Geschichte 10 gemeinsam (2026-10-25); +Realschule PuG 10 Lernbereichs-Labels und Fachlehrplan-Link (2026-10-26); +Realschule Chemie 8 I (2026-10-27)",
 
   schoolTypes: [
     {
@@ -1246,6 +1246,13 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       {
         id: "diff_sport",
         label: "Differenzierter Sport",
+      },
+    ],
+    // Chemie 8 is offered only in group I; branches verified against LehrplanPLUS on 2026-10-27.
+    "realschule|8|chemie": [
+      {
+        id: "wpfg1",
+        label: "Chemie 8 (I)",
       },
     ],
     "realschule|8|mathematik": [
@@ -10103,29 +10110,29 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
         hours: 16,
       },
     ],
-    "realschule|8|chemie": [
+    "realschule|8|chemie|wpfg1": [
       {
         id: "lb1",
-        label: "C8 Wie Chemiker denken und arbeiten",
+        label: "Wie Chemiker denken und arbeiten",
       },
       {
         id: "lb2",
-        label: "C8 Stoffe und ihre Eigenschaften",
+        label: "Stoffe und ihre Eigenschaften",
         hours: 12,
       },
       {
         id: "lb3",
-        label: "C8 Aufbau der Materie",
+        label: "Aufbau der Materie",
         hours: 12,
       },
       {
         id: "lb4",
-        label: "C8 Chemische Reaktion",
+        label: "Chemische Reaktion",
         hours: 24,
       },
       {
         id: "lb5",
-        label: "C8 Atombau und Periodensystem der Elemente",
+        label: "Atombau und Periodensystem der Elemente",
         hours: 8,
       },
     ],
@@ -63054,8 +63061,8 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/7/fach/werken/inhalt/fachlehrplaene",
     "realschule|8|biologie":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/8/fach/biologie/inhalt/fachlehrplaene",
-    "realschule|8|chemie":
-      "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/8/fach/chemie/inhalt/fachlehrplaene",
+    "realschule|8|chemie|wpfg1":
+      "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/chemie/wpfg1",
     "realschule|8|deutsch":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/8/fach/deutsch/inhalt/fachlehrplaene",
     "realschule|8|englisch":

@@ -54,6 +54,12 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     }
     expect(paths).toContainEqual({
       schoolType: "realschule",
+      grade: "8",
+      subject: "chemie",
+      track: "wpfg1",
+    });
+    expect(paths).toContainEqual({
+      schoolType: "realschule",
       grade: "5",
       subject: "mathematik",
     });
@@ -589,6 +595,38 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
       grade: "8",
       subject: "it",
     });
+  });
+
+  it("offers Chemie 8 for group I with five Lernbereiche", () => {
+    expect(provider.listTracks("realschule", "8", "chemie")).toEqual([
+      {
+        id: "wpfg1",
+        label: "Chemie 8 (I)",
+        description: expect.stringContaining("Wahlpflichtfächergruppe I"),
+      },
+    ]);
+    const topics = provider.listTopics({
+      schoolType: "realschule",
+      grade: "8",
+      subject: "chemie",
+      track: "wpfg1",
+    });
+    expect(
+      topics.map((topic) => [topic.id, topic.label, topic.hours]),
+    ).toEqual([
+      ["lb1", "Wie Chemiker denken und arbeiten", undefined],
+      ["lb2", "Stoffe und ihre Eigenschaften", 12],
+      ["lb3", "Aufbau der Materie", 12],
+      ["lb4", "Chemische Reaktion", 24],
+      ["lb5", "Atombau und Periodensystem der Elemente", 8],
+    ]);
+    for (const topic of topics) {
+      expect(provider.resolveTopic(topic)).toEqual({
+        provider: "lehrplanplus-bayern",
+        topicId: `realschule|8|chemie|wpfg1#${topic.id}`,
+        uri: "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/chemie/wpfg1",
+      });
+    }
   });
 
   it("offers Chemie 10 with both Wahlpflichtfächergruppen and their own Lernbereiche", () => {

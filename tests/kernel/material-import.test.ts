@@ -40,11 +40,11 @@ const FIXTURE = JSON.parse(
 ) as Record<string, unknown>;
 
 const SHA = "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08";
-/** Chemie 8 cell (Realschule): "Stoffeigenschaften zur Stoffidentifikation". */
-const CELL_ID = "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung";
-const ATOM_A02 = "01K4C8S0000000000000000A02";
-const ITEM_J03 = "01K4C8S0000000000000000J03";
-const ITEM_J04 = "01K4C8S0000000000000000J04";
+/** Chemie 8 Academy cell: "Sinneseindrücke und messbare Kenngrößen". */
+const CELL_ID = "zam-academy:chemie-realschule-8";
+const ATOM_A02 = "01M5WY3HWYZNEV5CMPHYS6XMCC";
+const ITEM_J03 = "01M5WY3HWYQQN6FX5FF78G1Q4Z";
+const ITEM_J04 = "01M5WY3HWYYGH962141K9DCDGK";
 const USER = "learner";
 
 function fixture(): Record<string, unknown> {
@@ -268,6 +268,8 @@ describe("material import against a library", () => {
     });
 
     it("offers what the material leads to as Bonus, capped", async () => {
+      // The fixture uses "Messbare Kenngrößen", matching the Academy lesson title
+      // "Sinneseindrücke und messbare Kenngrößen" (shares "messbar" and "kenngroess").
       const rows = await matchMaterialProposals(
         db,
         USER,
@@ -292,6 +294,30 @@ describe("material import against a library", () => {
             row.target.atomId === ATOM_A02,
         ),
       ).toBe(true);
+
+      // Regression visibility (zam-os/zam#465): real material with the retired phrasing
+      // "Messbare Stoffeigenschaften" only shares "messbar" with the new Academy title
+      // "Sinneseindrücke und messbare Kenngrößen" (shared = 1 < CONTINUATION_MIN_SHARED = 2),
+      // so it yields no continuation candidate unless the extractor captures "Kenngrößen".
+      const legacyWording = fixture();
+      (legacyWording.analysis as Record<string, unknown>).leadsTo =
+        "Messbare Stoffeigenschaften: Dichte, Schmelz- und Siedetemperatur";
+      legacyWording.proposals = [proposal()];
+      const legacyRows = await matchMaterialProposals(
+        db,
+        USER,
+        parseMaterialProposalSet(legacyWording),
+        {
+          scope: {
+            provider: "lehrplanplus-bayern",
+            schoolType: "realschule",
+            grade: 9,
+          },
+        },
+      );
+      expect(legacyRows.filter((r) => r.kind === "continuation")).toHaveLength(
+        0,
+      );
     });
 
     it("leaves a proposal alone when nothing is close, and is deterministic", async () => {
@@ -512,6 +538,79 @@ describe("material import against a library", () => {
           USER,
         ),
       ).toBe(1);
+    });
+
+    it("follows replaces when a pending import names a retired cell item", async () => {
+      const set = withProposals(proposal());
+      const retiredTarget = {
+        type: "cell-item" as const,
+        cellId: "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
+        atomId: "01K4C8S0000000000000000A02",
+        itemId: "01K4C8S0000000000000000J03",
+      };
+      const rows: MaterialReviewRow[] = [
+        { kind: "proposal", id: "p:0", proposalIndex: 0, preset: null },
+        {
+          kind: "existing",
+          id: "e:0",
+          besideProposal: 0,
+          preset: "yes",
+          held: false,
+          score: 1,
+          via: "lexical",
+          target: retiredTarget,
+          question: "Wie ist die Dichte eines Stoffes definiert?",
+          answer: "Dichte ist Masse pro Volumen, ρ = m / V.",
+          title: "Sinneseindrücke und messbare Kenngrößen",
+          area: "chemie/stoffe",
+        },
+      ];
+      const result = await commitMaterialImport(db, USER, {
+        set,
+        rows,
+        decisions: { "e:0": "yes" },
+      });
+      expect(result.cardsCreated).toBe(1);
+      // Caller's row target is not mutated in place
+      expect(retiredTarget.cellId).toBe(
+        "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
+      );
+      // Successor item from the Academy cell is installed and has a card
+      expect(await getCard(db, ITEM_J03, USER)).toBeDefined();
+    });
+
+    it("skips an unbundled cell item without a successor gracefully instead of aborting", async () => {
+      const set = withProposals(proposal());
+      const orphanedTarget = {
+        type: "cell-item" as const,
+        cellId: "unknown-legacy-cell",
+        atomId: "unknown-atom",
+        itemId: "unknown-item-id",
+      };
+      const rows: MaterialReviewRow[] = [
+        { kind: "proposal", id: "p:0", proposalIndex: 0, preset: "yes" },
+        {
+          kind: "existing",
+          id: "e:0",
+          besideProposal: 0,
+          preset: "yes",
+          held: false,
+          score: 1,
+          via: "lexical",
+          target: orphanedTarget,
+          question: "Unbekannte Frage",
+          answer: "Unbekannte Antwort",
+          title: "Unbekannt",
+          area: "chemie/stoffe",
+        },
+      ];
+      const result = await commitMaterialImport(db, USER, {
+        set,
+        rows,
+        decisions: { "p:0": "yes", "e:0": "yes" },
+      });
+      expect(result.cardsCreated).toBe(1); // p:0 succeeds
+      expect(result.notSaved).toBe(1); // e:0 was skipped gracefully
     });
 
     it("links an exact duplicate instead of writing it twice", async () => {

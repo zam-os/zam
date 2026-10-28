@@ -175,7 +175,7 @@ describe("material import on the phone", () => {
     );
     // Bonus: the extra card, and the Chemie 8 item the material leads to.
     expect(state.choices).toMatchObject({
-      "c:01K4C8S0000000000000000J03": "bonus",
+      "c:01M5WY3HWYQQN6FX5FF78G1Q4Z": "bonus",
     });
     expect(result).toMatchObject({ cardsCreated: 1, bonusKept: 2 });
     const queue = await buildReviewQueue(db, { userId: USER, maxNew: 20 });

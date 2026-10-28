@@ -62,18 +62,18 @@ const existingRow = (
 
 const continuationRow: MaterialImportRowWire = {
   kind: "continuation",
-  id: "c:01K4C8S0000000000000000J03",
+  id: "c:01M5WY3HWYQQN6FX5FF78G1Q4Z",
   preset: "bonus",
   target: {
     type: "cell-item",
-    cellId: "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
-    atomId: "01K4C8S0000000000000000A02",
-    itemId: "01K4C8S0000000000000000J03",
+    cellId: "zam-academy:chemie-realschule-8",
+    atomId: "01M5WY3HWYZNEV5CMPHYS6XMCC",
+    itemId: "01M5WY3HWYQQN6FX5FF78G1Q4Z",
   },
   question: "Wie ist die Dichte definiert?",
   answer: "ρ = m / V",
-  title: "Stoffeigenschaften",
-  area: "chemie/allgemeine-chemie",
+  title: "Sinneseindrücke und messbare Kenngrößen",
+  area: "chemie/stoffe",
 };
 
 function review(rows: MaterialImportRowWire[]): MaterialImportReviewResponse {
