@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "status": "proposal-only",
+  "approved": null,
+  "note": "Eight C rows document changed or uncertain retrieval targets. All old cards remain active; the cell declares no replacements or retirements.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "e6a235f75fe87b9d57af38bd61011027b891492c",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-geschichte-8.json",
+      "source_path": "tests/fixtures/curriculum/de-by-realschule-8-geschichte-aufklaerung-revolution-kaiserreich-kvt.json",
+      "sha256": "01a0969831efc2be464491023478aa2244b381d39400d02b28564ede9fa06672",
+      "tile_id": "de-by:realschule-8-geschichte-aufklaerung-revolution-kaiserreich",
+      "version": "2026.08.1"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-8-geschichte-aufklaerung-revolution-kaiserreich",
+      "de_by_id": "01K4G8R0000000000000000J01",
+      "de_by_question": "Welcher Aufklärungsphilosoph formulierte das bis heute geltende Prinzip der dreigeteilten staatlichen Gewaltenteilung (Exekutive, Legislative, Judikative)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The legacy item retrieves Montesquieu by name and date; the new check classifies a branch of government. Different recall criterion."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-geschichte-aufklaerung-revolution-kaiserreich",
+      "de_by_id": "01K4G8R0000000000000000J02",
+      "de_by_question": "Erkläre Kants Definition der Aufklärung ('Ausgang des Menschen aus seiner selbstverschuldeten Unmündigkeit', 'Sapere aude!'), erläutere die Kernideen der Aufklärer (Vernunft als Maßstab, angeborene Menschenrechte, Volkssouveränität nach Rousseau) und stelle Montesquieus Gewaltenteilung als Schutz vor Tyrannei dar.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The legacy multipart explanation of Kant, rights, Rousseau and Montesquieu is not retained as one new retrieval. No equivalence asserted."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-geschichte-aufklaerung-revolution-kaiserreich",
+      "de_by_id": "01K4G8R0000000000000000J03",
+      "de_by_question": "Mit welchem weltberühmten Ereignis am 14. Juli 1789 begann der gewaltsame Ausbruch der Französischen Revolution in Paris?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The legacy item retrieves the Bastille event and its precise date; the new card retrieves the year of the revolution. Different scope."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-geschichte-aufklaerung-revolution-kaiserreich",
+      "de_by_id": "01K4G8R0000000000000000J04",
+      "de_by_question": "Analysiere die Ursachen der Französischen Revolution 1789 (Krise des Ständestaates, Staatsbankrott, Hungersnöte), beschreibe die drei Phasen der Revolution (1. Bürgerliche Phase & Verfassung 1789-1791; 2. Jakobinerherrschaft / Terreur 1792-1794; 3. Direktorium & Aufstieg Napoleons) und nenne die Parole 'Freiheit, Gleichheit, Brüderlichkeit'.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The legacy multipart causes/phases/slogan prompt is split into lessons and its simplified account of tax privileges is not reused. No single successor."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-geschichte-aufklaerung-revolution-kaiserreich",
+      "de_by_id": "01K4G8R0000000000000000J05",
+      "de_by_question": "Welche bahnbrechende Erfindung von James Watt (1769) trieb den Beginn der Industriellen Revolution in England entscheidend an?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The legacy item retrieves Watt and an invention/date; the new cards ask about interacting industrial conditions. Different recall criterion."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-geschichte-aufklaerung-revolution-kaiserreich",
+      "de_by_id": "01K4G8R0000000000000000J06",
+      "de_by_question": "Beschreibe die Merkmale der Industriellen Revolution (Dampfkraft, Kohle/Stahl, Eisenbahnnetz, Massenproduktion in Fabriken), charakterisiere das Phänomen der 'Sozialen Frage' (Verelendung / Pauperismus, 14-Stunden-Arbeitstag, Kinderarbeit, Mietskasernen) und vergleiche die Lösungsansätze von Karl Marx (Sozialismus/Klassenkampf) und Otto von Bismarck (Staatliche Sozialgesetzgebung 1883-1889).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The legacy industrialisation/social-question/Marx/Bismarck synthesis spans several new lessons and is not retained whole on one card."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-geschichte-aufklaerung-revolution-kaiserreich",
+      "de_by_id": "01K4G8R0000000000000000J07",
+      "de_by_question": "An welchem historischen Ort und in welchem Jahr wurde das Deutsche Kaiserreich durch die Proklamation von König Wilhelm I. zum deutschen Kaiser gegründet?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The legacy item requires the location, year and proclamation; the new short date check does not require the whole legacy response."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-geschichte-aufklaerung-revolution-kaiserreich",
+      "de_by_id": "01K4G8R0000000000000000J08",
+      "de_by_question": "Erläutere die Besonderheit der Reichsgründung 1871 als 'Reichsgründung von oben' durch Otto von Bismarck (nach den drei Einigungskriegen 1864, 1866, 1870/71), analysiere den autoritären Charakter der Reichsverfassung (starker Kaiser und Reichskanzler, Machtlosigkeit des Reichstags) und erkläre das Phänomen des Imperialismus (Kolonialwettlauf, 'Platz an der Sonne', Wettrüsten) als Wegbereiter des 1. Weltkriegs.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The legacy synthesis combines unification, constitution and later imperialism, and its wording understates Reichstag powers. Corrected and split; no equivalent successor."
+    }
+  ]
+}
