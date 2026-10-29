@@ -1,0 +1,2347 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:geschichte-realschule-8",
+  "version": "2026.10.1",
+  "title": "Geschichte 8 Realschule (ZAM Academy)",
+  "description": "35 Kernlektionen und drei optionale englische Vertiefungen zu Geschichte 8 Realschule Bayern: Aufklärung, Revolutionen, Napoleon, Industrialisierung, Kaiserreich und Längsschnitte. 76 kurze Wiederholungsfragen; lokale Recherche, Originalbilder, historische Karten und aktuelle Beispiele ergänzen die App. Keine Lernstandsübertragung; Veröffentlichung über die ZAM Academy.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/geschichte",
+      "label": "LehrplanPLUS Bayern · Geschichte 8 Realschule",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://www.archives.gov/milestone-documents/declaration-of-independence",
+      "label": "US National Archives · Unabhängigkeitserklärung und Transkript",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://www.bpb.de/kurz-knapp/lexika/politiklexikon/17501/franzoesische-revolution/",
+      "label": "Bundeszentrale für politische Bildung · Französische Revolution",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://archiv.hdbg.de/polges/pages/kap6a.htm",
+      "label": "Haus der Bayerischen Geschichte · Königreich Bayern und Montgelas",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://www.schloss.bayern.de/deutsch/schloss/objekte/walhalla.htm",
+      "label": "Bayerische Schlösserverwaltung · Walhalla",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/vormaerz-und-revolution",
+      "label": "Deutsches Historisches Museum · Vormärz und Revolution",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/reaktionszeit/industrie",
+      "label": "Deutsches Historisches Museum · Industrie und Wirtschaft ab 1850",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/innenpolitik/sozialgesetze",
+      "label": "Deutsches Historisches Museum · Sozialgesetzgebung",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/reich/reichsgruendung",
+      "label": "Deutsches Historisches Museum · Reichsgründung 1871",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://www.bundestag.de/parlament/geschichte/parlamentarismus/kaiserreich",
+      "label": "Deutscher Bundestag · Kaiserreich und Parlamentsrechte",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://www.bundestag.de/parlament/geschichte",
+      "label": "Deutscher Bundestag · historische Verfassungstexte",
+      "checked": "2026-10-29"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M630N32VEVVPAY8KCRP1EZNG",
+      "atom_uri": "urn:zam:atom:01M630N32VEVVPAY8KCRP1EZNG",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-quellen",
+      "title": "Wer erzählt Geschichte?",
+      "domain": "geschichte/lb1",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-quellen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32VJP1X9DPKQVNR2AVW",
+          "slug": "g8-quellen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist eine zeitgenössische Quelle zur Revolution von 1848?",
+          "concept": "Ein im März 1848 verfasster Brief.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-quellen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein im März 1848 verfasster Brief.",
+              "Ein Schulbuchkapitel aus dem Jahr 2020."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32VJWN3JNH12DF1ZJMT",
+          "slug": "g8-quellen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was prüfst du bei einer Quelle zuerst, wenn du ihre Aussageabsicht untersuchst?",
+          "concept": "Für wen und zu welchem Zweck sie entstanden ist.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-quellen",
+          "sample_solution": "Für wen und zu welchem Zweck sie entstanden ist."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32V5H5G1PPJJTX2GYHS",
+      "atom_uri": "urn:zam:atom:01M630N32V5H5G1PPJJTX2GYHS",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-bilder",
+      "title": "Bilder zeigen eine Sicht",
+      "domain": "geschichte/lb1",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-bilder",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32V1RJGSG58K8XF61GB",
+          "slug": "g8-bilder-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was lässt sich aus einem politischen Gemälde allein nicht sicher ablesen?",
+          "concept": "Die Zustimmung aller damaligen Menschen.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-bilder",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zustimmung aller damaligen Menschen.",
+              "Die Anordnung der dargestellten Personen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32VKR8JAAEH8AY25YRD",
+          "slug": "g8-bilder-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist ein Historiengemälde keine neutrale Gesamtaufnahme eines Ereignisses?",
+          "concept": "Es gestaltet das Ereignis aus einer bestimmten Perspektive und Entstehungszeit.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-bilder",
+          "sample_solution": "Es gestaltet das Ereignis aus einer bestimmten Perspektive und Entstehungszeit."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32VGWXREJNFSGSAZH5B",
+      "atom_uri": "urn:zam:atom:01M630N32VGWXREJNFSGSAZH5B",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-daten",
+      "title": "Karten, Zahlen und Erklärungen",
+      "domain": "geschichte/lb1",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-daten",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32VH8KVT4HXVEM2CETF",
+          "slug": "g8-daten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was brauchst du zum sachgerechten Vergleich zweier historischer Karten?",
+          "concept": "Die Zeitangaben und Legenden beider Karten.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-daten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zeitangaben und Legenden beider Karten.",
+              "Nur die heutigen Staatsgrenzen Europas."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32VYHPPXRFEBJ2ZQCR3",
+          "slug": "g8-daten-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet eine zeitliche Abfolge von einer Ursachenerklärung?",
+          "concept": "Eine Ursachenerklärung begründet den Zusammenhang; eine Abfolge ordnet nur zeitlich.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-daten",
+          "sample_solution": "Eine Ursachenerklärung begründet den Zusammenhang; eine Abfolge ordnet nur zeitlich."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32W567MK5BKM224372Z",
+      "atom_uri": "urn:zam:atom:01M630N32W567MK5BKM224372Z",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-denkmal",
+      "title": "Walhalla und digitale Geschichtsbilder",
+      "domain": "geschichte/lb1",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-denkmal",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32W7DP3H9KMNGMRGDW2",
+          "slug": "g8-denkmal-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Frage untersucht die Erinnerungsperspektive eines Denkmals?",
+          "concept": "Wer wurde ausgewählt und wer blieb unberücksichtigt?",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-denkmal",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wer wurde ausgewählt und wer blieb unberücksichtigt?",
+              "Wie viele Likes hat das erste Foto?"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32WTWYG1470ND04WS8K",
+          "slug": "g8-denkmal-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist die Zahl der Aufrufe kein Qualitätsnachweis für einen Geschichtsbeitrag?",
+          "concept": "Reichweite belegt keine historische Richtigkeit.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-denkmal",
+          "sample_solution": "Reichweite belegt keine historische Richtigkeit."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32WWSG6HR1G6D93K5RE",
+      "atom_uri": "urn:zam:atom:01M630N32WWSG6HR1G6D93K5RE",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-aufklaerung",
+      "title": "Mit Vernunft nachfragen",
+      "domain": "geschichte/lb2",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-aufklaerung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Moderne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Moderne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32WJNN3DHBE4PW5HHXY",
+          "slug": "g8-aufklaerung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Begründung entspricht aufklärerischem Denken?",
+          "concept": "Eine Regel muss sich vernünftig begründen lassen.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-aufklaerung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Regel muss sich vernünftig begründen lassen.",
+              "Eine Regel ist richtig, weil sie schon immer gilt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32WX4619QB0YR7129DG",
+          "slug": "g8-aufklaerung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Woran misst aufklärerisches Denken die Geltung einer Herrschaftsregel?",
+          "concept": "An einer vernünftigen Begründung statt bloß an Tradition oder Autorität.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-aufklaerung",
+          "sample_solution": "An einer vernünftigen Begründung statt bloß an Tradition oder Autorität."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32WGDKCTH0TESZPEHWD",
+      "atom_uri": "urn:zam:atom:01M630N32WGDKCTH0TESZPEHWD",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-gewaltenteilung",
+      "title": "Wer kontrolliert die Macht?",
+      "domain": "geschichte/lb2",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-gewaltenteilung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Moderne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Moderne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32WNWAH8M85DX6KR58P",
+          "slug": "g8-gewaltenteilung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aufgabe gehört zur Rechtsprechung?",
+          "concept": "Ein Gericht entscheidet einen Rechtsstreit.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-gewaltenteilung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Gericht entscheidet einen Rechtsstreit.",
+              "Ein Parlament beschließt ein neues Gesetz."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32W9PBH4QGDCYBHP3R2",
+          "slug": "g8-gewaltenteilung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was bedeutet Volkssouveränität?",
+          "concept": "Die Staatsgewalt geht vom Volk aus.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-gewaltenteilung",
+          "sample_solution": "Die Staatsgewalt geht vom Volk aus."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32WSPDBQF7F46VCYBDB",
+      "atom_uri": "urn:zam:atom:01M630N32WSPDBQF7F46VCYBDB",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-usa",
+      "title": "Warum trennen sich die Kolonien?",
+      "domain": "geschichte/lb2",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-usa",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Moderne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Moderne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32W9N59FEB3D15TJ2ET",
+          "slug": "g8-usa-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was geschah am 4. Juli 1776?",
+          "concept": "Die Unabhängigkeitserklärung wurde angenommen.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-usa",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Unabhängigkeitserklärung wurde angenommen.",
+              "Die spätere US-Verfassung trat in Kraft."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32WX2C83K6N3Z3EDA65",
+          "slug": "g8-usa-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welches Ereignis bezeichnet das Grunddatum 1776 im Geschichtsunterricht?",
+          "concept": "Die Amerikanische Unabhängigkeitserklärung.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-usa",
+          "sample_solution": "Die Amerikanische Unabhängigkeitserklärung."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32WAPWTSFFTKT6H22ET",
+      "atom_uri": "urn:zam:atom:01M630N32WAPWTSFFTKT6H22ET",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-usa-perspektiven",
+      "title": "Freiheit – für wen?",
+      "domain": "geschichte/lb2",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-usa-perspektiven",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Moderne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Moderne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32W0BZCNAB55124QTRJ",
+          "slug": "g8-usa-perspektiven-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage berücksichtigt unterschiedliche Erfahrungen von 1776?",
+          "concept": "Unabhängigkeit brachte nicht allen Gruppen gleiche Freiheit.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-usa-perspektiven",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Unabhängigkeit brachte nicht allen Gruppen gleiche Freiheit.",
+              "Alle indigenen Gruppen verfolgten dasselbe Ziel."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32WWCTMGCPT0YH6FGMT",
+          "slug": "g8-usa-perspektiven-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welchen Widerspruch zeigt die fortbestehende Sklaverei nach 1776?",
+          "concept": "Der allgemeine Freiheitsanspruch wurde nicht für alle Menschen verwirklicht.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-usa-perspektiven",
+          "sample_solution": "Der allgemeine Freiheitsanspruch wurde nicht für alle Menschen verwirklicht."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32W1N11PTYCBMXBPN4C",
+      "atom_uri": "urn:zam:atom:01M630N32W1N11PTYCBMXBPN4C",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-revolution-ursachen",
+      "title": "Warum beginnt eine Revolution?",
+      "domain": "geschichte/lb2",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-revolution-ursachen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Moderne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Moderne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32WN7KX6G3KZ7M0JFN5",
+          "slug": "g8-revolution-ursachen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Erklärung berücksichtigt mehrere Ursachen von 1789?",
+          "concept": "Finanzkrise, Ungleichheit und neue politische Ideen wirkten zusammen.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-revolution-ursachen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Finanzkrise, Ungleichheit und neue politische Ideen wirkten zusammen.",
+              "Ein einziger schlechter Erntetag erklärte sämtliche Forderungen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32W4D9N9DX8VE3R82DR",
+          "slug": "g8-revolution-ursachen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was bedeutet Multikausalität bei der Erklärung einer Revolution?",
+          "concept": "Mehrere Ursachen wirken zusammen.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-revolution-ursachen",
+          "sample_solution": "Mehrere Ursachen wirken zusammen."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32WTPVBB23V1XKXNJQN",
+      "atom_uri": "urn:zam:atom:01M630N32WTPVBB23V1XKXNJQN",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-revolution-verlauf",
+      "title": "1789 und die Wege danach",
+      "domain": "geschichte/lb2",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-revolution-verlauf",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Moderne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Moderne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32W13SQ4TXMMVTDV85J",
+          "slug": "g8-revolution-verlauf-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Staatsform erhielt Frankreich durch die Verfassung von 1791?",
+          "concept": "Eine konstitutionelle Monarchie.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-revolution-verlauf",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine konstitutionelle Monarchie.",
+              "Eine unveränderte absolute Monarchie."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32WE20XN6GG8RSD6P2W",
+          "slug": "g8-revolution-verlauf-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welches Grunddatum markiert den Beginn der Französischen Revolution?",
+          "concept": "1789.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-revolution-verlauf",
+          "sample_solution": "1789."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32WGEA2BX84X2Y1V8QP",
+      "atom_uri": "urn:zam:atom:01M630N32WGEA2BX84X2Y1V8QP",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-menschenrechte",
+      "title": "Gleiche Rechte als Maßstab",
+      "domain": "geschichte/lb2",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-menschenrechte",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Moderne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Moderne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32WC36R8W9466MWXJFG",
+          "slug": "g8-menschenrechte-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was folgt aus der Erklärung gleicher Rechte von 1789?",
+          "concept": "Sie setzt einen Maßstab, dessen Umsetzung geprüft werden muss.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-menschenrechte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie setzt einen Maßstab, dessen Umsetzung geprüft werden muss.",
+              "Sie beweist sofortige politische Gleichberechtigung aller Frauen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32W9JSR676RK7NPBJYV",
+          "slug": "g8-menschenrechte-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet eine Rechtsnorm von einem Nachweis ihrer Verwirklichung?",
+          "concept": "Eine Rechtsnorm formuliert, was gelten soll; ihre Verwirklichung braucht eigene Belege.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-menschenrechte",
+          "sample_solution": "Eine Rechtsnorm formuliert, was gelten soll; ihre Verwirklichung braucht eigene Belege."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32W7YQJCXNT5F7T3AE6",
+      "atom_uri": "urn:zam:atom:01M630N32W7YQJCXNT5F7T3AE6",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-napoleon",
+      "title": "Napoleon: Erbe und Gegner der Revolution",
+      "domain": "geschichte/lb3",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-napoleon",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb3",
+          "topic_title": "Napoleon und die Umgestaltung Europas"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Napoleon und die Umgestaltung Europas",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32W33RAPHE98ME3YHYH",
+          "slug": "g8-napoleon-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage beschreibt Napoleons Herrschaft angemessen?",
+          "concept": "Bürgerliche Reformen bestanden neben autoritärer Macht.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-napoleon",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bürgerliche Reformen bestanden neben autoritärer Macht.",
+              "Er verwirklichte vollständig die parlamentarische Demokratie."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32WWNPDRG2H02T09J8N",
+          "slug": "g8-napoleon-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist Napoleon nicht einfach ein Vollender der Demokratie?",
+          "concept": "Er konzentrierte politische Macht trotz bürgerlicher Reformen.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-napoleon",
+          "sample_solution": "Er konzentrierte politische Macht trotz bürgerlicher Reformen."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32WMYB6T77PDR0W0Y1Q",
+      "atom_uri": "urn:zam:atom:01M630N32WMYB6T77PDR0W0Y1Q",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-saekularisation",
+      "title": "Kirche, Besitz und neue Grenzen",
+      "domain": "geschichte/lb3",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-saekularisation",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb3",
+          "topic_title": "Napoleon und die Umgestaltung Europas"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Napoleon und die Umgestaltung Europas",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32W4PA27E3JJ92M1RJP",
+          "slug": "g8-saekularisation-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet Säkularisation in der Neuordnung um 1803?",
+          "concept": "Kirchlicher Besitz geht in weltliche Hände über.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-saekularisation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kirchlicher Besitz geht in weltliche Hände über.",
+              "Jede religiöse Überzeugung verschwindet sofort."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32WGTP75R5W7X3FJQ2X",
+          "slug": "g8-saekularisation-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was bezeichnet Säkularisation um 1803 im Bereich des Besitzes?",
+          "concept": "Die Überführung kirchlichen Besitzes in weltliche Hände.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-saekularisation",
+          "sample_solution": "Die Überführung kirchlichen Besitzes in weltliche Hände."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32WXWFM4ZAA8K7ZMJM2",
+      "atom_uri": "urn:zam:atom:01M630N32WXWFM4ZAA8K7ZMJM2",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-bayern",
+      "title": "Bayern wird Königreich",
+      "domain": "geschichte/lb3",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-bayern",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb3",
+          "topic_title": "Napoleon und die Umgestaltung Europas"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Napoleon und die Umgestaltung Europas",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32WDKCV75FAP4V37CR5",
+          "slug": "g8-bayern-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Ereignisse gehören beide zum Jahr 1806?",
+          "concept": "Bayerns Königreich und das Ende des Alten Reiches.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-bayern",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bayerns Königreich und das Ende des Alten Reiches.",
+              "Wiener Kongress und Hambacher Fest."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32WTXYQ4VA19J88CG7N",
+          "slug": "g8-bayern-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche beiden staatlichen Veränderungen verknüpft das Grunddatum 1806?",
+          "concept": "Bayern wird Königreich; das Heilige Römische Reich endet.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-bayern",
+          "sample_solution": "Bayern wird Königreich; das Heilige Römische Reich endet."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32WC1AME2VSC187VBQV",
+      "atom_uri": "urn:zam:atom:01M630N32WC1AME2VSC187VBQV",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-widerstand-napoleon",
+      "title": "Befreiung – mit unterschiedlichen Zielen",
+      "domain": "geschichte/lb3",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-widerstand-napoleon",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb3",
+          "topic_title": "Napoleon und die Umgestaltung Europas"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Napoleon und die Umgestaltung Europas",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32WJCB1ZQQCZ7R22ENQ",
+          "slug": "g8-widerstand-napoleon-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ist die Bezeichnung Befreiungskriege erklärungsbedürftig?",
+          "concept": "Die Beteiligten verbanden damit unterschiedliche Ziele.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-widerstand-napoleon",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Beteiligten verbanden damit unterschiedliche Ziele.",
+              "Alle Beteiligten forderten bereits dieselbe Demokratie."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32WH9S5SK0HWN5SMMHS",
+          "slug": "g8-widerstand-napoleon-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum führte gemeinsamer Widerstand gegen Napoleon nicht automatisch zu Demokratie?",
+          "concept": "Fürstliche Machtsicherung und liberale Freiheitsziele waren nicht dasselbe.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-widerstand-napoleon",
+          "sample_solution": "Fürstliche Machtsicherung und liberale Freiheitsziele waren nicht dasselbe."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32W7MYYDEZR3J0KX0AA",
+      "atom_uri": "urn:zam:atom:01M630N32W7MYYDEZR3J0KX0AA",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-wien",
+      "title": "Wien: Ordnung und enttäuschte Hoffnungen",
+      "domain": "geschichte/lb4",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-wien",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb4",
+          "topic_title": "Deutschland zwischen Restauration und Revolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Deutschland zwischen Restauration und Revolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32WFANSB5ATT5QMX03S",
+          "slug": "g8-wien-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was war der Deutsche Bund von 1815?",
+          "concept": "Ein Staatenbund souveräner Einzelstaaten.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-wien",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Staatenbund souveräner Einzelstaaten.",
+              "Ein demokratischer deutscher Einheitsstaat."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32WENJWXA917B8YTP6V",
+          "slug": "g8-wien-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welches Bündnis entstand 1815 auf dem Wiener Kongress für die deutschen Staaten?",
+          "concept": "Der Deutsche Bund als Staatenbund.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-wien",
+          "sample_solution": "Der Deutsche Bund als Staatenbund."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32W7TXCKNGE449C739Z",
+      "atom_uri": "urn:zam:atom:01M630N32W7TXCKNGE449C739Z",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-hambach",
+      "title": "Einheit und Freiheit einfordern",
+      "domain": "geschichte/lb4",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-hambach",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb4",
+          "topic_title": "Deutschland zwischen Restauration und Revolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Deutschland zwischen Restauration und Revolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32W8DH0XQAZ476HAEHW",
+          "slug": "g8-hambach-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum sind nationale Einheit und politische Freiheit nicht dasselbe?",
+          "concept": "Auch ein gemeinsamer Nationalstaat kann unfrei regiert werden.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-hambach",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auch ein gemeinsamer Nationalstaat kann unfrei regiert werden.",
+              "Ein Nationalstaat garantiert immer gleiche Rechte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32XM84C5T22A894WNE3",
+          "slug": "g8-hambach-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche beiden Leitziele verbindet das Hambacher Fest von 1832 besonders?",
+          "concept": "Nationale Einheit und politische Freiheit.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-hambach",
+          "sample_solution": "Nationale Einheit und politische Freiheit."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32XCAEWHCJS9GYDAHZ1",
+      "atom_uri": "urn:zam:atom:01M630N32XCAEWHCJS9GYDAHZ1",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-revolution-1848",
+      "title": "Ein Parlament in der Paulskirche",
+      "domain": "geschichte/lb4",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-revolution-1848",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb4",
+          "topic_title": "Deutschland zwischen Restauration und Revolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Deutschland zwischen Restauration und Revolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32XPNGGA5FZCZV7XJG4",
+          "slug": "g8-revolution-1848-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was war eine zentrale Aufgabe der Frankfurter Nationalversammlung?",
+          "concept": "Eine Verfassung für einen deutschen Nationalstaat ausarbeiten.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-revolution-1848",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Verfassung für einen deutschen Nationalstaat ausarbeiten.",
+              "Die Reichsgründung von 1871 rückwirkend bestätigen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32XXEJVHPQC4EWFHKYY",
+          "slug": "g8-revolution-1848-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wofür steht die Frankfurter Paulskirche 1848/49 politisch?",
+          "concept": "Für die Nationalversammlung und ihren Versuch einer nationalen Verfassungsgebung.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-revolution-1848",
+          "sample_solution": "Für die Nationalversammlung und ihren Versuch einer nationalen Verfassungsgebung."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32X0JVQRWE43DABKWXR",
+      "atom_uri": "urn:zam:atom:01M630N32X0JVQRWE43DABKWXR",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-revolution-scheitern",
+      "title": "Gescheitert und dennoch wirksam",
+      "domain": "geschichte/lb4",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-revolution-scheitern",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb4",
+          "topic_title": "Deutschland zwischen Restauration und Revolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Deutschland zwischen Restauration und Revolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32X9BPRDQGMTBBNHEQF",
+          "slug": "g8-revolution-scheitern-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Urteil unterscheidet unmittelbares Ergebnis und spätere Bedeutung?",
+          "concept": "Die Staatsgründung scheiterte, Verfassungsarbeit blieb ein Bezugspunkt.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-revolution-scheitern",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Staatsgründung scheiterte, Verfassungsarbeit blieb ein Bezugspunkt.",
+              "1849 wurden sämtliche Ideen für immer bedeutungslos."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32XNF1DMHWHJQS17913",
+          "slug": "g8-revolution-scheitern-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum war die Verfassungsarbeit von 1848/49 trotz des Scheiterns bedeutsam?",
+          "concept": "Sie blieb ein Bezugspunkt für spätere Grundrechte und parlamentarische Ordnung.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-revolution-scheitern",
+          "sample_solution": "Sie blieb ein Bezugspunkt für spätere Grundrechte und parlamentarische Ordnung."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32XW9FX1MRZX1CM758X",
+      "atom_uri": "urn:zam:atom:01M630N32XW9FX1MRZX1CM758X",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-industrialisierung",
+      "title": "Von der Werkstatt zur Fabrik",
+      "domain": "geschichte/lb5",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-industrialisierung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb5",
+          "topic_title": "Industrialisierung und Soziale Frage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Industrialisierung und Soziale Frage",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32XNVEWD7RNMF9EXC3E",
+          "slug": "g8-industrialisierung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Erklärung erfasst Industrialisierung als Strukturwandel?",
+          "concept": "Maschinen, Energie und Fabrikorganisation verändern Arbeit und Alltag.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-industrialisierung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Maschinen, Energie und Fabrikorganisation verändern Arbeit und Alltag.",
+              "Eine einzige Erfindung ersetzt sofort alle älteren Berufe."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32X05SQCGX36N609NHQ",
+          "slug": "g8-industrialisierung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist Industrialisierung mehr als die Erfindung einer Maschine?",
+          "concept": "Sie verändert Produktion, Arbeitsorganisation und gesellschaftlichen Alltag.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-industrialisierung",
+          "sample_solution": "Sie verändert Produktion, Arbeitsorganisation und gesellschaftlichen Alltag."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32X1VJ2T3SXH30N9SAQ",
+      "atom_uri": "urn:zam:atom:01M630N32X1VJ2T3SXH30N9SAQ",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-eisenbahn",
+      "title": "Die Eisenbahn verstärkt den Wandel",
+      "domain": "geschichte/lb5",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-eisenbahn",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb5",
+          "topic_title": "Industrialisierung und Soziale Frage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Industrialisierung und Soziale Frage",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32X1WBEDBNHXTBRDVHK",
+          "slug": "g8-eisenbahn-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie verstärkten sich Eisenbahn und Industrie gegenseitig?",
+          "concept": "Bahntransport förderte Handel, Bahnbau schuf Materialnachfrage.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-eisenbahn",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bahntransport förderte Handel, Bahnbau schuf Materialnachfrage.",
+              "Die Bahn machte Kohle und Eisen sofort überflüssig."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32XEF828T3BNFX4AW97",
+          "slug": "g8-eisenbahn-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Rückwirkung hatte der Eisenbahnbau auf die Schwerindustrie?",
+          "concept": "Er erhöhte die Nachfrage nach Kohle, Eisen und Stahl.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-eisenbahn",
+          "sample_solution": "Er erhöhte die Nachfrage nach Kohle, Eisen und Stahl."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32XPK64QMC1YZHYDNZV",
+      "atom_uri": "urn:zam:atom:01M630N32XPK64QMC1YZHYDNZV",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-soziale-frage",
+      "title": "Warum Fortschritt nicht allen hilft",
+      "domain": "geschichte/lb5",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-soziale-frage",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb5",
+          "topic_title": "Industrialisierung und Soziale Frage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Industrialisierung und Soziale Frage",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32X9NF0KE89NP7S3H2Q",
+          "slug": "g8-soziale-frage-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bezeichnet die Soziale Frage im 19. Jahrhundert?",
+          "concept": "Die sozialen Probleme der industriellen Lebens- und Arbeitsverhältnisse.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-soziale-frage",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die sozialen Probleme der industriellen Lebens- und Arbeitsverhältnisse.",
+              "Nur die Frage nach dem Erfinder einer Dampfmaschine."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32XVBQTWNYF94SPTFXM",
+          "slug": "g8-soziale-frage-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was kennzeichnet die wirtschaftliche Lage des Proletariats?",
+          "concept": "Es ist wesentlich auf den Verkauf der eigenen Arbeitskraft angewiesen.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-soziale-frage",
+          "sample_solution": "Es ist wesentlich auf den Verkauf der eigenen Arbeitskraft angewiesen."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32X7DZN8BXEQCRC93G9",
+      "atom_uri": "urn:zam:atom:01M630N32X7DZN8BXEQCRC93G9",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-stadt-umwelt",
+      "title": "Wachsende Städte, belastete Umwelt",
+      "domain": "geschichte/lb5",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-stadt-umwelt",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb5",
+          "topic_title": "Industrialisierung und Soziale Frage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Industrialisierung und Soziale Frage",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32X38JN2WFTWE1XXYCQ",
+          "slug": "g8-stadt-umwelt-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was zeigt ein Diagramm wachsender Stadtbevölkerung zunächst?",
+          "concept": "Eine Veränderung der erfassten Bevölkerungszahl.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-stadt-umwelt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Veränderung der erfassten Bevölkerungszahl.",
+              "Den persönlichen Umzugsgrund jeder einzelnen Familie."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32XA17FBXQKTAGTXQA6",
+          "slug": "g8-stadt-umwelt-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum beweist Stadtwachstum keine allgemeine Zufriedenheit?",
+          "concept": "Einwohnerzahlen erfassen keine persönlichen Bewertungen oder Umzugsgründe.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-stadt-umwelt",
+          "sample_solution": "Einwohnerzahlen erfassen keine persönlichen Bewertungen oder Umzugsgründe."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32XS4WN8GJK9J5PZC2G",
+      "atom_uri": "urn:zam:atom:01M630N32XS4WN8GJK9J5PZC2G",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-sozialpolitik",
+      "title": "Antworten auf die Soziale Frage",
+      "domain": "geschichte/lb5",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-sozialpolitik",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb5",
+          "topic_title": "Industrialisierung und Soziale Frage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Industrialisierung und Soziale Frage",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32XB43F6M1S9KT6D8V8",
+          "slug": "g8-sozialpolitik-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Bewertung von Bismarcks Sozialgesetzgebung ist angemessen?",
+          "concept": "Sie schuf Schutz und diente zugleich politischen Herrschaftszielen.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-sozialpolitik",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie schuf Schutz und diente zugleich politischen Herrschaftszielen.",
+              "Sie beseitigte sofort sämtliche soziale Not."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32X7RK9Z9BCZPHXFQEZ",
+          "slug": "g8-sozialpolitik-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum darf soziale Wirkung nicht mit der einzigen Absicht einer Reform gleichgesetzt werden?",
+          "concept": "Eine Reform kann Schutz bieten und zugleich politische Machtinteressen bedienen.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-sozialpolitik",
+          "sample_solution": "Eine Reform kann Schutz bieten und zugleich politische Machtinteressen bedienen."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32XW4AWDHDWWA1KAV02",
+      "atom_uri": "urn:zam:atom:01M630N32XW4AWDHDWWA1KAV02",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-reichsgruendung",
+      "title": "Einheit von oben",
+      "domain": "geschichte/lb6",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-reichsgruendung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb6",
+          "topic_title": "Das Deutsche Kaiserreich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Das Deutsche Kaiserreich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32X4EW39TDHVAZTCS39",
+          "slug": "g8-reichsgruendung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet Einigung von oben für 1871?",
+          "concept": "Fürsten und preußische Machtpolitik bestimmten den Einigungsweg.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-reichsgruendung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fürsten und preußische Machtpolitik bestimmten den Einigungsweg.",
+              "Die Paulskirche setzte ihre Verfassung unverändert durch."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32X03MQVP2106978BAJ",
+          "slug": "g8-reichsgruendung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welches Ereignis bezeichnet das Grunddatum 1871?",
+          "concept": "Die Gründung des Deutschen Kaiserreichs.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-reichsgruendung",
+          "sample_solution": "Die Gründung des Deutschen Kaiserreichs."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32X4SZ7925XST144T7R",
+      "atom_uri": "urn:zam:atom:01M630N32X4SZ7925XST144T7R",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-reich-verfassung",
+      "title": "Wahlen ohne parlamentarische Regierung",
+      "domain": "geschichte/lb6",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-reich-verfassung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb6",
+          "topic_title": "Das Deutsche Kaiserreich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Das Deutsche Kaiserreich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32X8X3MAXZXXP846TSF",
+          "slug": "g8-reich-verfassung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wovon hing das Amt des Reichskanzlers vor Oktober 1918 maßgeblich ab?",
+          "concept": "Vom Vertrauen des Kaisers.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-reich-verfassung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vom Vertrauen des Kaisers.",
+              "Nur von einer Mehrheit des Reichstags."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32X7EFSXSBF3HV5HZPR",
+          "slug": "g8-reich-verfassung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum war das Kaiserreich vor Oktober 1918 keine parlamentarische Monarchie?",
+          "concept": "Der Reichskanzler war vom Kaiser und nicht vom Vertrauen einer Reichstagsmehrheit abhängig.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-reich-verfassung",
+          "sample_solution": "Der Reichskanzler war vom Kaiser und nicht vom Vertrauen einer Reichstagsmehrheit abhängig."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32X7YJSEHWSABZ76914",
+      "atom_uri": "urn:zam:atom:01M630N32X7YJSEHWSABZ76914",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-bismarck-innen",
+      "title": "Zusammenhalt durch Ausgrenzung?",
+      "domain": "geschichte/lb6",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-bismarck-innen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb6",
+          "topic_title": "Das Deutsche Kaiserreich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Das Deutsche Kaiserreich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32XPA5VF1N7S5JJYWXQ",
+          "slug": "g8-bismarck-innen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Kombination kennzeichnet Bismarcks Umgang mit der Arbeiterbewegung?",
+          "concept": "Politische Bekämpfung und soziale Absicherung nebeneinander.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-bismarck-innen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Politische Bekämpfung und soziale Absicherung nebeneinander.",
+              "Vollständige politische Freiheit ohne jede Sozialreform."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32XG1S87T24A6P6CCJ4",
+          "slug": "g8-bismarck-innen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum beweist eine auf Loyalität zielende Sozialreform keine tatsächliche allgemeine Zustimmung?",
+          "concept": "Politische Absicht und tatsächliche Wirkung sind verschiedene Aussagen.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-bismarck-innen",
+          "sample_solution": "Politische Absicht und tatsächliche Wirkung sind verschiedene Aussagen."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32XKFC32FYMK8YBXHY8",
+      "atom_uri": "urn:zam:atom:01M630N32XKFC32FYMK8YBXHY8",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-bismarck-aussen",
+      "title": "Sicherheit durch Bündnisse",
+      "domain": "geschichte/lb6",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-bismarck-aussen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb6",
+          "topic_title": "Das Deutsche Kaiserreich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Das Deutsche Kaiserreich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32XZ5SF16H3K1JWWHPN",
+          "slug": "g8-bismarck-aussen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Ziel verfolgte Bismarcks Bündnispolitik nach 1871 besonders?",
+          "concept": "Die Sicherheit des Reiches ohne eigene Isolation.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-bismarck-aussen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Sicherheit des Reiches ohne eigene Isolation.",
+              "Eine automatische Garantie gegen jeden künftigen Krieg."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32XFJDXHZC19TS09XWP",
+          "slug": "g8-bismarck-aussen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist eine Bündnisabsicht keine sichere Aussage über späteren Frieden?",
+          "concept": "Ihre Wirkung hängt von veränderlichen Interessen und Entscheidungen ab.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-bismarck-aussen",
+          "sample_solution": "Ihre Wirkung hängt von veränderlichen Interessen und Entscheidungen ab."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32XSTBQMZ7GCBMYKJGF",
+      "atom_uri": "urn:zam:atom:01M630N32XSTBQMZ7GCBMYKJGF",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-massengesellschaft",
+      "title": "Modern und obrigkeitsstaatlich",
+      "domain": "geschichte/lb6",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-massengesellschaft",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb6",
+          "topic_title": "Das Deutsche Kaiserreich"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Das Deutsche Kaiserreich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32XF8YJ2W7KJ98R8XSA",
+          "slug": "g8-massengesellschaft-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum kann eine Gesellschaft technisch modern und zugleich politisch unfrei sein?",
+          "concept": "Technische Entwicklung garantiert keine gleichen Beteiligungsrechte.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-massengesellschaft",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Technische Entwicklung garantiert keine gleichen Beteiligungsrechte.",
+              "Jede neue Maschine führt sofort zu Frauenwahlrecht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32XGEF54S4X396R5Q2N",
+          "slug": "g8-massengesellschaft-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was bedeutet Militarismus über den militärischen Bereich hinaus?",
+          "concept": "Militärische Werte und Institutionen werden in der Gesellschaft besonders aufgewertet.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-massengesellschaft",
+          "sample_solution": "Militärische Werte und Institutionen werden in der Gesellschaft besonders aufgewertet."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32XTRW759Y7AW8523ND",
+      "atom_uri": "urn:zam:atom:01M630N32XTRW759Y7AW8523ND",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-protest-vergleichen",
+      "title": "Protest ist nicht immer Revolution",
+      "domain": "geschichte/lb7",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-protest-vergleichen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb7",
+          "topic_title": "Protest, Aufstand und Revolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb7",
+          "topic_title": "Protest, Aufstand und Revolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32X03FECNB0NPEKE3FQ",
+          "slug": "g8-protest-vergleichen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Frage hilft beim Unterschied zwischen Protest und Revolution?",
+          "concept": "Soll eine einzelne Maßnahme oder die Grundordnung verändert werden?",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-protest-vergleichen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Soll eine einzelne Maßnahme oder die Grundordnung verändert werden?",
+              "Wie laut ist die Forderung vorgelesen worden?"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32X5V9E15S6FHJ6V8BC",
+          "slug": "g8-protest-vergleichen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Woran unterscheidest du ein begrenztes Protestziel von einem revolutionären Ziel?",
+          "concept": "Am angestrebten Ausmaß der Veränderung der bestehenden Ordnung.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-protest-vergleichen",
+          "sample_solution": "Am angestrebten Ausmaß der Veränderung der bestehenden Ordnung."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32X83AAHES4ESBA5FQK",
+      "atom_uri": "urn:zam:atom:01M630N32X83AAHES4ESBA5FQK",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-protest-wege",
+      "title": "Freiheit fordern – mit verschiedenen Mitteln",
+      "domain": "geschichte/lb7",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-protest-wege",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb7",
+          "topic_title": "Protest, Aufstand und Revolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb7",
+          "topic_title": "Protest, Aufstand und Revolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32XTGEFM2GAE4FR1XAR",
+          "slug": "g8-protest-wege-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Vorgehensweise macht einen Vergleich historischer Proteste tragfähig?",
+          "concept": "Dieselben Kriterien auf unterschiedliche Fälle anwenden.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-protest-wege",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dieselben Kriterien auf unterschiedliche Fälle anwenden.",
+              "Nur identische Schlagwörter sammeln und alles gleichsetzen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32XF6CJD1P57XZY7YW2",
+          "slug": "g8-protest-wege-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Frage verhindert, dass gleiche Freiheitsparolen vorschnell gleichgesetzt werden?",
+          "concept": "Wer fordert welche Freiheit für wen?",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-protest-wege",
+          "sample_solution": "Wer fordert welche Freiheit für wen?"
+        }
+      ]
+    },
+    {
+      "id": "01M630N32XS096Q7EKHPB4NZAN",
+      "atom_uri": "urn:zam:atom:01M630N32XS096Q7EKHPB4NZAN",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-protest-heute",
+      "title": "Ein begründetes Urteil über Protest",
+      "domain": "geschichte/lb7",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-protest-heute",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb7",
+          "topic_title": "Protest, Aufstand und Revolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb7",
+          "topic_title": "Protest, Aufstand und Revolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32XEJNYZSF3HT5KVJ9E",
+          "slug": "g8-protest-heute-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was beweist eine Zahl gesammelter Unterschriften allein nicht?",
+          "concept": "Die Zustimmung aller Bewohner des Ortes.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-protest-heute",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zustimmung aller Bewohner des Ortes.",
+              "Dass Unterschriften als Protestmittel genutzt werden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32XB376J21EX0BEBFS6",
+          "slug": "g8-protest-heute-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum muss ein historischer Vergleich mit einem heutigen Protest seine Grenzen benennen?",
+          "concept": "Ähnliche Forderungen können unter unterschiedlichen politischen Bedingungen entstehen.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-protest-heute",
+          "sample_solution": "Ähnliche Forderungen können unter unterschiedlichen politischen Bedingungen entstehen."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32X7KSJYHCMFCWQBNSC",
+      "atom_uri": "urn:zam:atom:01M630N32X7KSJYHCMFCWQBNSC",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-krieg-gruende",
+      "title": "Begründung ist nicht Ursache",
+      "domain": "geschichte/lb8",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-krieg-gruende",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb8",
+          "topic_title": "Kriege und ihre Folgen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb8",
+          "topic_title": "Kriege und ihre Folgen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32X8XPHN8CJSDEA99VM",
+          "slug": "g8-krieg-gruende-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ist eine Kriegsrechtfertigung keine vollständige Ursachenerklärung?",
+          "concept": "Sie zeigt die öffentliche Begründung eines beteiligten Akteurs.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-krieg-gruende",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie zeigt die öffentliche Begründung eines beteiligten Akteurs.",
+              "Sie beweist alle Motive aller Beteiligten zugleich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32X3KP39P77NYBEMXHT",
+          "slug": "g8-krieg-gruende-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet öffentliche Kriegsrechtfertigung und Kriegsursache?",
+          "concept": "Rechtfertigung ist die vorgetragene Begründung; Ursachen müssen unabhängig untersucht werden.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-krieg-gruende",
+          "sample_solution": "Rechtfertigung ist die vorgetragene Begründung; Ursachen müssen unabhängig untersucht werden."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32XAZNATKX3FRR6YWCX",
+      "atom_uri": "urn:zam:atom:01M630N32XAZNATKX3FRR6YWCX",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-krieg-folgen",
+      "title": "Krieg trifft mehr als Armeen",
+      "domain": "geschichte/lb8",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-krieg-folgen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb8",
+          "topic_title": "Kriege und ihre Folgen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb8",
+          "topic_title": "Kriege und ihre Folgen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32XSE6SCCJ6FNVGWN4K",
+          "slug": "g8-krieg-folgen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum betrifft eine Kriegserzählung auch Zivilbevölkerung?",
+          "concept": "Versorgung, Gewalt und Zerstörung verändern ihren Alltag.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-krieg-folgen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Versorgung, Gewalt und Zerstörung verändern ihren Alltag.",
+              "Nur kämpfende Soldaten können unter Krieg leiden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32Y18QXQN85KA9FH5D3",
+          "slug": "g8-krieg-folgen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist Kriegsende nicht gleichbedeutend mit dem Ende aller Kriegsfolgen?",
+          "concept": "Zerstörte Lebensgrundlagen und menschliche Verluste wirken über einen Friedensschluss hinaus.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-krieg-folgen",
+          "sample_solution": "Zerstörte Lebensgrundlagen und menschliche Verluste wirken über einen Friedensschluss hinaus."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32YAAEK5RF8G4TP7Z8C",
+      "atom_uri": "urn:zam:atom:01M630N32YAAEK5RF8G4TP7Z8C",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-krieg-technik",
+      "title": "Mehr Technik, größere Verantwortung",
+      "domain": "geschichte/lb8",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-krieg-technik",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb8",
+          "topic_title": "Kriege und ihre Folgen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb8",
+          "topic_title": "Kriege und ihre Folgen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32YPDWBTK2Y81MFNQRY",
+          "slug": "g8-krieg-technik-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Schlussfolgerung ist aus technischer Überlegenheit nicht zulässig?",
+          "concept": "Dass ein Krieg dadurch moralisch gerechtfertigt ist.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-krieg-technik",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dass ein Krieg dadurch moralisch gerechtfertigt ist.",
+              "Dass Technik die Möglichkeiten der Kriegführung beeinflusst."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32YPC6A6S16WRX4WSFK",
+          "slug": "g8-krieg-technik-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist technische Leistungsfähigkeit kein moralischer Maßstab für Krieg?",
+          "concept": "Sie beschreibt Möglichkeiten, rechtfertigt aber keine Gewalt.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-krieg-technik",
+          "sample_solution": "Sie beschreibt Möglichkeiten, rechtfertigt aber keine Gewalt."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32YT0XFT7PN0PA2WDVJ",
+      "atom_uri": "urn:zam:atom:01M630N32YT0XFT7PN0PA2WDVJ",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-en-independence",
+      "title": "Independence and equal rights",
+      "domain": "geschichte/lb9",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-en-independence",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb9",
+          "topic_title": "Bilingualer Sachfachunterricht"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb9",
+          "topic_title": "Bilingualer Sachfachunterricht",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32Y5ZGGWV0M5D57AG1G",
+          "slug": "g8-en-independence-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "What distinction helps evaluate the Declaration?",
+          "concept": "A claim to rights versus its implementation.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-en-independence",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A claim to rights versus its implementation.",
+              "A printed document versus universal equality already achieved."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32Y1RV12T2S174PYMYH",
+          "slug": "g8-en-independence-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why must a claim to equal rights be distinguished from its implementation?",
+          "concept": "Declaring a right does not prove that everyone could exercise it.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-en-independence",
+          "sample_solution": "Declaring a right does not prove that everyone could exercise it."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32Y2YCSTE0ZJEEED2B5",
+      "atom_uri": "urn:zam:atom:01M630N32Y2YCSTE0ZJEEED2B5",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-en-industry",
+      "title": "Industrialisation: causes and consequences",
+      "domain": "geschichte/lb9",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-en-industry",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb9",
+          "topic_title": "Bilingualer Sachfachunterricht"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb9",
+          "topic_title": "Bilingualer Sachfachunterricht",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32Y42X7SASAA4BWSR5X",
+          "slug": "g8-en-industry-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Which comparison uses a historical criterion?",
+          "concept": "Comparing transport networks and access to energy.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-en-industry",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Comparing transport networks and access to energy.",
+              "Assuming every region changed on the same day."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32YTBN8MATWHBADQEBK",
+          "slug": "g8-en-industry-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why is industrialisation not explained by one invention alone?",
+          "concept": "Technology worked together with energy, investment, markets and organisation.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-en-industry",
+          "sample_solution": "Technology worked together with energy, investment, markets and organisation."
+        }
+      ]
+    },
+    {
+      "id": "01M630N32Y1VGWNAC9YHD3WD81",
+      "atom_uri": "urn:zam:atom:01M630N32Y1VGWNAC9YHD3WD81",
+      "namespace": "zam-academy-geschichte-realschule-8",
+      "slug": "g8-en-technology",
+      "title": "Technology changes possibilities, not values",
+      "domain": "geschichte/lb9",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-en-technology",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-8",
+          "topic_code": "lb9",
+          "topic_title": "Bilingualer Sachfachunterricht"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb9",
+          "topic_title": "Bilingualer Sachfachunterricht",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M630N32Y24T9KG6MMNR0FWX2",
+          "slug": "g8-en-technology-check",
+          "language": "en",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "What does technical superiority alone fail to establish?",
+          "concept": "A moral justification for using force.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-en-technology",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A moral justification for using force.",
+              "An influence on available military capabilities."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M630N32YQPB1EZVFFAZ6B672",
+          "slug": "g8-en-technology-recall",
+          "language": "en",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Why is technical capability different from moral justification?",
+          "concept": "Being able to do something does not establish that it is right.",
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-8/#lesson=g8-en-technology",
+          "sample_solution": "Being able to do something does not establish that it is right."
+        }
+      ]
+    }
+  ]
+}

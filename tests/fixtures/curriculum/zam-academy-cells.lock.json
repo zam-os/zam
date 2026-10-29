@@ -108,6 +108,12 @@
     "file": "zam-academy-geschichte-realschule-10-kvt.json"
   },
   {
+    "id": "zam-academy:geschichte-realschule-8",
+    "version": "2026.10.1",
+    "sha256": "e931d434a742ea12034bbe2939bc065b94515046d67ec458b30366839e6c16ee",
+    "file": "zam-academy-geschichte-realschule-8-kvt.json"
+  },
+  {
     "id": "zam-academy:geschichte-realschule-9",
     "version": "2026.10.1",
     "sha256": "d03372a8f474fcefecb72f7847afbb7a95c200ac612886411c50b53e5c87cc5e",
