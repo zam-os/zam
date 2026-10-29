@@ -212,6 +212,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       getBundledCellTile("zam-academy:biologie-realschule-8") as BundledTile,
       getBundledCellTile("zam-academy:deutsch-realschule-8") as BundledTile,
       getBundledCellTile("zam-academy:geschichte-realschule-8") as BundledTile,
+      getBundledCellTile("zam-academy:englisch-realschule-8") as BundledTile,
     ]);
     const list = await academyListHandler(db, {
       user: "learner",
@@ -233,6 +234,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:deutsch-realschule-8",
       "zam-academy:deutsch-realschule-9",
       "zam-academy:englisch-realschule-10",
+      "zam-academy:englisch-realschule-8",
       "zam-academy:englisch-realschule-9",
       "zam-academy:franzoesisch-realschule-10",
       "zam-academy:franzoesisch-realschule-9",
@@ -255,6 +257,17 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:uml",
       "zam-academy:wirtschaft-recht-realschule-9",
     ]);
+    expect(
+      list.cells.find(
+        (cell) => cell.id === "zam-academy:englisch-realschule-8",
+      ),
+    ).toMatchObject({
+      bundled: true,
+      held: false,
+      version: "2026.10.2",
+      items: 102,
+      appUrl: "https://academy.zam-os.org/englisch-realschule-8/",
+    });
     expect(
       list.cells.find(
         (cell) => cell.id === "zam-academy:geschichte-realschule-8",
@@ -357,7 +370,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       appUrl: "https://academy.zam-os.org/biologie-realschule-8/",
     });
     expect(await tilesInstalled()).toBe(0);
-    // All six catalog cells were cached for a later „Aufnehmen“ or an agent.
+    // All seven catalog cells were cached for a later „Aufnehmen“ or an agent.
     expect(
       readFileSync(join(academyCacheDir(), "catalog.json"), "utf8"),
     ).toContain("zam-academy:nur-katalog");
@@ -369,6 +382,17 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       fetch: offline,
     });
     expect(empty).toMatchObject({ offline: true });
+    expect(
+      empty.cells.find(
+        (cell) => cell.id === "zam-academy:englisch-realschule-8",
+      ),
+    ).toMatchObject({
+      bundled: true,
+      held: false,
+      version: "2026.10.2",
+      items: 102,
+      appUrl: null,
+    });
     expect(
       empty.cells.find(
         (cell) => cell.id === "zam-academy:geschichte-realschule-8",
@@ -405,6 +429,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:deutsch-realschule-8",
       "zam-academy:deutsch-realschule-9",
       "zam-academy:englisch-realschule-10",
+      "zam-academy:englisch-realschule-8",
       "zam-academy:englisch-realschule-9",
       "zam-academy:franzoesisch-realschule-10",
       "zam-academy:franzoesisch-realschule-9",

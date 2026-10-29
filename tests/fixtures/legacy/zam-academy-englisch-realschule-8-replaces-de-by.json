@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-10-29",
+  "source": "Freigabe durch Thomas am 2026-10-29 im Claude-Code-Chat zu PR #67 (zam-os/zam-academy): Auf die Frage „Do you approve the card mapping 1 A / 0 B / 3 C?“ antwortete er „Approve mapping“. Umgesetzt in Zelle 2026.10.2: J01 wird durch e8-if-type3-check ersetzt; J02–J04 bleiben aktiv, keine retired_items.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "717ba45adf1f531da0bf662393a4b5379961f21f",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-8-englisch-grammar-conditional-reported-speech-kvt.json",
+      "sha256": "cfcdd1843d21ac280b80552d6917cd5eae5f0a2d67d164909c52d69f5d0fbb5a",
+      "tile_id": "de-by:realschule-8-englisch-grammar-conditional-reported-speech",
+      "version": "2026.08.1"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-8-englisch-grammar-conditional-reported-speech",
+      "de_by_id": "01K4E8G0000000000000000J01",
+      "de_by_question": "Wie lautet die korrekte Verbform im Hauptsatz (Main Clause) eines Conditional Type 3 Satzes (z. B. 'If you had asked me, I ... [help] you')?",
+      "category": "A",
+      "academy_slug": "e8-if-type3-check",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf: Hauptsatz eines type-3-Satzes mit would have + past participle, mit demselben Beispiel („If you had asked me, I … (help) you“), derselben Antwort „would have helped“ und derselben binären Auswahl gegen „would help“. Nur die Aufgabensprache wechselt von Deutsch zu Englisch. Freigegeben am 2026-10-29; seit Zelle 2026.10.2 deklariert e8-if-type3-check replaces."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-englisch-grammar-conditional-reported-speech",
+      "de_by_id": "01K4E8G0000000000000000J02",
+      "de_by_question": "Vergleiche die 3 Typen von Bedingungssätzen (If-Clauses) im Englischen: Type 1 (erfüllbare Bedingung: if + Simple Present -> will + Infinitiv), Type 2 (unwahrscheinliche Gegenwart: if + Simple Past -> would + Infinitiv), Type 3 (nicht mehr erfüllbare Vergangenheit: if + Past Perfect -> would have + Past Participle), erläutere das Verbot von 'would im if-Satz' und übersetze: a) 'Wenn sie den Wecker gestellt hätte, hätte sie den Zug nicht verpasst.' b) 'Wenn wir mehr gelernt hätten, hätten wir den Test bestanden.'",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteiliger Gesamtabruf: Vergleich aller drei if-Typen, die would-Regel und zwei Übersetzungen in einer Musterlösung. Das neue Paket teilt diese Inhalte auf e8-if-revision und e8-if-type3 auf; kein Nachfolger enthält den ganzen alten Abruf, daher keine Übertragung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-englisch-grammar-conditional-reported-speech",
+      "de_by_id": "01K4E8G0000000000000000J03",
+      "de_by_question": "In welche Zeitform wandelt sich das Simple Past der direkten Rede ('I lost my wallet'), wenn der Einleitungssatz in der Vergangenheit steht ('He said that...')?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Indirekte Rede mit backshift gehört laut LehrplanPLUS zu Englisch 9 (reported statements), nicht zu Englisch 8. Das E8-Paket enthält dazu keine Karte; eine mögliche Zuordnung zu Englisch 9 wäre ein eigener Vorschlag in jenem Paket."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-englisch-grammar-conditional-reported-speech",
+      "de_by_id": "01K4E8G0000000000000000J04",
+      "de_by_question": "Erkläre die Regeln für Reported Speech mit vergangenem Einleitungssatz (said, told, explained): 1. Backshift of Tenses (Verschiebung um eine Zeitstufe in die Vergangenheit): Simple Present -> Simple Past; Present Continuous -> Past Continuous; Simple Past / Present Perfect -> Past Perfect; will -> would; can -> could, 2. Anpassung der Personal- und Possessivpronomen (I -> he/she, my -> his/her), 3. Anpassung von Orts- und Zeitangaben (now -> then, today -> that day, yesterday -> the day before, tomorrow -> the next day, here -> there) und wandle folgende Sätze in Reported Speech um: a) Tom: 'I am playing football today.' -> Tom said that... b) Sarah: 'I visited London last year.' -> Sarah explained that...",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteiliger Abruf zu drei Regeln der indirekten Rede mit zwei Umformungsaufgaben. Der Stoff gehört zu Englisch 9; im E8-Paket gibt es keinen Nachfolger, daher bleibt die Karte unverändert aktiv."
+    }
+  ]
+}

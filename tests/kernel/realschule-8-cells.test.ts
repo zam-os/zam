@@ -31,6 +31,11 @@ import {
 // zam-academy:chemie-realschule-8 (zam-os/zam-academy#59, #60). Eight of their
 // sixteen cards pass their history on, eight retire without transferring
 // mastery. See tests/kernel/zam-academy-chemie-realschule-8-cell.test.ts.
+// The Englisch 8 grammar cell moved to the ZAM Academy cell
+// zam-academy:englisch-realschule-8 (zam-os/zam-academy#67). One of its four
+// cards passes its history on; three (two of them Jahrgangsstufe 9 content)
+// stay active in libraries that hold them. See
+// tests/kernel/zam-academy-englisch-realschule-8-cell.test.ts.
 const RS8_CELL_IDS = [
   "de-by:realschule-8-biologie-atmung-blutkreislauf",
   "de-by:realschule-8-biologie-ernaehrung-verdauung",
@@ -39,11 +44,11 @@ const RS8_CELL_IDS = [
   "de-by:realschule-8-wirtschaft-recht-konsum-geld-jugend",
   "de-by:realschule-8-geographie-tropen-regenwald-passat-wuesten",
   "de-by:realschule-8-deutsch-begruendete-stellungnahme-eroerterung",
-  "de-by:realschule-8-englisch-grammar-conditional-reported-speech",
   "de-by:realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive",
 ];
 const ACADEMY_RS8_IDS = [
   "zam-academy:chemie-realschule-8",
+  "zam-academy:englisch-realschule-8",
   "zam-academy:informatik-realschule-8",
   "zam-academy:mathematik-realschule-8",
   "zam-academy:physik-realschule-8",
@@ -82,7 +87,7 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
       schoolType: "realschule",
       grade: 8,
     });
-    // Nine school cells and the Academy cells listed above.
+    // Eight school cells and the Academy cells listed above.
     expect(rs8Cells.length).toBeGreaterThanOrEqual(
       RS8_CELL_IDS.length + ACADEMY_RS8_IDS.length,
     );
@@ -117,16 +122,6 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
     expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
   });
 
-  it("installs and enrols cleanly into Englisch 8 Conditional 3 und Reported Speech", async () => {
-    const user = "learner-rs8-eng";
-    const cellId =
-      "de-by:realschule-8-englisch-grammar-conditional-reported-speech";
-
-    const result = await enrolBundledCell(db, user, cellId);
-    expect(result.success).toBe(true);
-    expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
-  });
-
   it("supports simultaneous co-enrolment in the remaining Grade 8 school cells without conflict", async () => {
     const user = "complete-rs8-candidate";
 
@@ -137,12 +132,12 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
       totalCards += res.cardsCreated;
     }
 
-    // 4 cells * 8 + 5 cells * 4 = 32 + 20 = 52 cards
-    expect(totalCards).toBe(52);
+    // 4 cells * 8 + 4 cells * 4 = 32 + 16 = 48 cards
+    expect(totalCards).toBe(48);
 
     const cards = (await db
       .prepare(`SELECT COUNT(*) as count FROM cards WHERE user_id = ?`)
       .get(user)) as { count: number };
-    expect(cards.count).toBe(52);
+    expect(cards.count).toBe(48);
   });
 });

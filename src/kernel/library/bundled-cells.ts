@@ -549,9 +549,6 @@ import tile190Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-bw
 import tile193Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-deutsch-begruendete-stellungnahme-eroerterung-kvt.json" with {
   type: "json",
 };
-import tile194Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-englisch-grammar-conditional-reported-speech-kvt.json" with {
-  type: "json",
-};
 import tile195Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive-kvt.json" with {
   type: "json",
 };
@@ -613,6 +610,9 @@ import tile243Raw from "../../../tests/fixtures/curriculum/zam-academy-deutsch-r
   type: "json",
 };
 import tile252Raw from "../../../tests/fixtures/curriculum/zam-academy-deutsch-realschule-10-kvt.json" with {
+  type: "json",
+};
+import tile262Raw from "../../../tests/fixtures/curriculum/zam-academy-englisch-realschule-8-kvt.json" with {
   type: "json",
 };
 import tile247Raw from "../../../tests/fixtures/curriculum/zam-academy-englisch-realschule-9-kvt.json" with {
@@ -1132,8 +1132,6 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile190Raw as unknown as BundledTile,
   [(tile193Raw as unknown as BundledTile).tile_id]:
     tile193Raw as unknown as BundledTile,
-  [(tile194Raw as unknown as BundledTile).tile_id]:
-    tile194Raw as unknown as BundledTile,
   [(tile195Raw as unknown as BundledTile).tile_id]:
     tile195Raw as unknown as BundledTile,
   [(tile196Raw as unknown as BundledTile).tile_id]:
@@ -1212,6 +1210,8 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile260Raw as unknown as BundledTile,
   [(tile261Raw as unknown as BundledTile).tile_id]:
     tile261Raw as unknown as BundledTile,
+  [(tile262Raw as unknown as BundledTile).tile_id]:
+    tile262Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 
