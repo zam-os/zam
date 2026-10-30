@@ -887,7 +887,9 @@ describe("MCP stdio server tests", () => {
       const timeout = setTimeout(
         () =>
           reject(new Error("Timed out waiting for MCP initialize response")),
-        5_000,
+        // Source-CLI startup loads the bundled cells through tsx. Allow for
+        // shared CI CPU contention within Vitest's 30-second test budget.
+        20_000,
       );
       child.stdout.once("data", () => {
         clearTimeout(timeout);

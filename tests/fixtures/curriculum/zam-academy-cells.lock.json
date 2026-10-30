@@ -96,6 +96,12 @@
     "file": "zam-academy-franzoesisch-realschule-10-kvt.json"
   },
   {
+    "id": "zam-academy:franzoesisch-realschule-8",
+    "version": "2026.10.2",
+    "sha256": "f05f910a492a9492da4e4a49655d34fad9b5a4acf669989fb75f0fbbce4b13d4",
+    "file": "zam-academy-franzoesisch-realschule-8-kvt.json"
+  },
+  {
     "id": "zam-academy:franzoesisch-realschule-9",
     "version": "2026.10.2",
     "sha256": "bb178630a291b0978f0275db7485a2981ba6826d75938c2c751999e4cee37ed3",

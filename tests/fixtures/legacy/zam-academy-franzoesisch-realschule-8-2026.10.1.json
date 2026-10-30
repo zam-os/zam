@@ -1,0 +1,3324 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:franzoesisch-realschule-8",
+  "version": "2026.10.1",
+  "title": "Französisch 8 Realschule (ZAM Academy)",
+  "description": "French for Bavarian Realschule grade 8, IIIa: 40 core lessons, two optional relative-clause extensions and 84 linked cards. Everyday communication, past narration, pronouns, listening preparation and personal projects. Local draft with independent learning histories.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/franzoesisch",
+      "label": "ISB · LehrplanPLUS French 8 Realschule",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://vitrinelinguistique.oqlf.gouv.qc.ca/24224/la-grammaire/le-verbe/auxiliaires/emploi-des-auxiliaires-avoir-et-etre",
+      "label": "OQLF · Avoir and être",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://vitrinelinguistique.oqlf.gouv.qc.ca/24277/la-grammaire/la-grammaire-actuelle/les-fonctions-et-roles-syntaxiques/le-complement-indirect",
+      "label": "OQLF · Indirect objects",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://vitrinelinguistique.oqlf.gouv.qc.ca/fiche-gdt/fiche/26559867/pronom-relatif",
+      "label": "OQLF · Relative pronouns",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://www.culture.gouv.fr/evenements-nationaux/fete-de-la-musique",
+      "label": "French Ministry of Culture · Fête de la musique",
+      "checked": "2026-10-29"
+    },
+    {
+      "uri": "https://www.france.fr/fr/destination/",
+      "label": "Atout France · Destinations",
+      "checked": "2026-10-29"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M64SYS0CY0PYC3PND445P1H4",
+      "atom_uri": "urn:zam:atom:01M64SYS0CY0PYC3PND445P1H4",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-amis",
+      "title": "On se retrouve ?",
+      "domain": "franzoesisch/rencontres",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-amis",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "rencontres",
+          "topic_title": "On se retrouve"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-sprechen",
+          "topic_title": "Sprechen · Verabredungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-wortschatz",
+          "topic_title": "Sprechen · Verabredungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-amis",
+          "topic_title": "Sprechen · Verabredungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0CSG7WPY3WZPQVYN96",
+          "slug": "f8-amis-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Schlage auf Französisch vor: Treffen wir uns vor dem Kino?",
+          "concept": "On se retrouve devant le cinéma ?",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-amis",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "On se retrouve devant le cinéma ?",
+              "On se retrouve derrière le cinéma ?"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0C1KX1471N487YM4QK",
+          "slug": "f8-amis-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie fragst du auf Französisch nach der Uhrzeit einer Verabredung?",
+          "concept": "À quelle heure ?",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-amis",
+          "sample_solution": "À quelle heure ?"
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0C556DAED0XDN9W9WX",
+      "atom_uri": "urn:zam:atom:01M64SYS0C556DAED0XDN9W9WX",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-gouts",
+      "title": "Ça me plaît !",
+      "domain": "franzoesisch/rencontres",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-gouts",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "rencontres",
+          "topic_title": "On se retrouve"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-sprechen",
+          "topic_title": "Sprechen · Vorlieben und Wünsche",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-wortschatz",
+          "topic_title": "Sprechen · Vorlieben und Wünsche",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-loisirs",
+          "topic_title": "Sprechen · Vorlieben und Wünsche",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0CY64XDE5J52RXD5V4",
+          "slug": "f8-gouts-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche feste Wendung heißt Ich würde gern spielen?",
+          "concept": "J’aimerais jouer.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-gouts",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "J’aimerais jouer.",
+              "Je n’aime pas jouer."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0CFYD41FQFDDFDRPAV",
+          "slug": "f8-gouts-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie formulierst du den Wunsch, ins Kino zu gehen?",
+          "concept": "J’aimerais aller au cinéma.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-gouts",
+          "sample_solution": "J’aimerais aller au cinéma."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0CYH39T9GX8MNA426F",
+      "atom_uri": "urn:zam:atom:01M64SYS0CYH39T9GX8MNA426F",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-adjectifs",
+      "title": "Une petite veste bleue",
+      "domain": "franzoesisch/rencontres",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-adjectifs",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "rencontres",
+          "topic_title": "On se retrouve"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · Adjektive",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb4",
+          "topic_title": "Grammatik · Adjektive",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-amis",
+          "topic_title": "Grammatik · Adjektive",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0C6SWZRRWSQV5SP4YK",
+          "slug": "f8-adjectifs-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie heißt eine kleine blaue Jacke auf Französisch?",
+          "concept": "Une petite veste bleue.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-adjectifs",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Une petite veste bleue.",
+              "Une petit veste bleu."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0CGWE6YETNWGXE9JRQ",
+          "slug": "f8-adjectifs-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe zwei kleine blaue Jacken auf Französisch.",
+          "concept": "Deux petites vestes bleues.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-adjectifs",
+          "sample_solution": "Deux petites vestes bleues."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0C4G08BW67105495KJ",
+      "atom_uri": "urn:zam:atom:01M64SYS0C4G08BW67105495KJ",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-demonstratifs",
+      "title": "Ce pull ou cette veste ?",
+      "domain": "franzoesisch/rencontres",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-demonstratifs",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "rencontres",
+          "topic_title": "On se retrouve"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · Demonstrativbegleiter",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-amis",
+          "topic_title": "Grammatik · Demonstrativbegleiter",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0CHCKK7CY9TEVXVK2A",
+          "slug": "f8-demonstratifs-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Demonstrativbegleiter passt vor anorak im Singular?",
+          "concept": "Cet : cet anorak.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-demonstratifs",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Cet : cet anorak.",
+              "Cette : cette anorak."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0CH1PMRDEHP7YTWRA3",
+          "slug": "f8-demonstratifs-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welcher Demonstrativbegleiter steht vor chaussures im Plural?",
+          "concept": "Ces : ces chaussures.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-demonstratifs",
+          "sample_solution": "Ces : ces chaussures."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0CV2M92NF2TDF3T33A",
+      "atom_uri": "urn:zam:atom:01M64SYS0CV2M92NF2TDF3T33A",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-quel",
+      "title": "Quelle taille ?",
+      "domain": "franzoesisch/rencontres",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-quel",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "rencontres",
+          "topic_title": "On se retrouve"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-sprechen",
+          "topic_title": "Grammatik · Fragen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · Fragen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-amis",
+          "topic_title": "Grammatik · Fragen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0CRS9T9QR2RKVE1VV4",
+          "slug": "f8-quel-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Frage auf Französisch: Welche Größe?",
+          "concept": "Quelle taille ?",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-quel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Quelle taille ?",
+              "Quel taille ?"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0CYSWYG0GVNNBYE2FE",
+          "slug": "f8-quel-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Bilde die Frage „Welche Schuhe?“ auf Französisch.",
+          "concept": "Quelles chaussures ?",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-quel",
+          "sample_solution": "Quelles chaussures ?"
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0CG6Z1ZESM4NR5S36N",
+      "atom_uri": "urn:zam:atom:01M64SYS0CG6Z1ZESM4NR5S36N",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-partitif",
+      "title": "Du pain et de l’eau",
+      "domain": "franzoesisch/marche",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-partitif",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "marche",
+          "topic_title": "Au marché"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · Teilungsartikel",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-repas",
+          "topic_title": "Grammatik · Teilungsartikel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0C51PKHC98Y6VY72VM",
+          "slug": "f8-partitif-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ergänze den Teilungsartikel: Je prends … soupe.",
+          "concept": "De la.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-partitif",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "De la.",
+              "Du."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0CJ8GX45R1XZGED7XR",
+          "slug": "f8-partitif-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie heißt eine Flasche Wasser auf Französisch?",
+          "concept": "Une bouteille d’eau.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-partitif",
+          "sample_solution": "Une bouteille d’eau."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0DD7MTQ2KKRRW61SNA",
+      "atom_uri": "urn:zam:atom:01M64SYS0DD7MTQ2KKRRW61SNA",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-en",
+      "title": "J’en prends",
+      "domain": "franzoesisch/marche",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-en",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "marche",
+          "topic_title": "Au marché"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-wortschatz",
+          "topic_title": "Wortschatz · feste Wendungen mit en",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-repas",
+          "topic_title": "Wortschatz · feste Wendungen mit en",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0DDWQ4N6XBS0S42143",
+          "slug": "f8-en-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Lehne das angebotene Lebensmittel mit en ab.",
+          "concept": "Je n’en veux pas.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-en",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Je n’en veux pas.",
+              "J’en veux aussi."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DHAHAGTZBWAJWCV3Z",
+          "slug": "f8-en-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Lehne angebotenes Brot mit en auf Französisch ab.",
+          "concept": "Je n’en veux pas.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-en",
+          "sample_solution": "Je n’en veux pas."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0D5HTCNMJE72HM18DX",
+      "atom_uri": "urn:zam:atom:01M64SYS0D5HTCNMJE72HM18DX",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-acheter",
+      "title": "Au marché",
+      "domain": "franzoesisch/marche",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-acheter",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "marche",
+          "topic_title": "Au marché"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-sprechen",
+          "topic_title": "Sprechen · höflich einkaufen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-mediation",
+          "topic_title": "Sprechen · höflich einkaufen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb2",
+          "topic_title": "Sprechen · höflich einkaufen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-repas",
+          "topic_title": "Sprechen · höflich einkaufen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0DK6GG4AME4WAP04YQ",
+          "slug": "f8-acheter-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Bestelle höflich zwei Äpfel auf Französisch.",
+          "concept": "Je voudrais deux pommes, s’il vous plaît.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-acheter",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Je voudrais deux pommes, s’il vous plaît.",
+              "Donne les pommes, vite !"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DR9N9X97MGG5BCT7C",
+          "slug": "f8-acheter-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie fragst du im Laden höflich nach dem Gesamtpreis?",
+          "concept": "Ça fait combien ?",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-acheter",
+          "sample_solution": "Ça fait combien ?"
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0DTEV61PD36NA4N3AF",
+      "atom_uri": "urn:zam:atom:01M64SYS0DTEV61PD36NA4N3AF",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-nombres",
+      "title": "Cent vingt et un",
+      "domain": "franzoesisch/marche",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-nombres",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "marche",
+          "topic_title": "Au marché"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-wortschatz",
+          "topic_title": "Wortschatz · Zahlen und Reihenfolge",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-voyage",
+          "topic_title": "Wortschatz · Zahlen und Reihenfolge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0D1DA0AE1CN0D0X1QC",
+          "slug": "f8-nombres-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Schreibe 121 auf Französisch in Wörtern.",
+          "concept": "Cent vingt et un.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-nombres",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Cent vingt et un.",
+              "Cent douze."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DKNN28ZF9ZXQTXWNN",
+          "slug": "f8-nombres-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie heißt „der zweite Stock“ auf Französisch?",
+          "concept": "Le deuxième étage.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-nombres",
+          "sample_solution": "Le deuxième étage."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0DZQKN3BV6DXGJFBA4",
+      "atom_uri": "urn:zam:atom:01M64SYS0DZQKN3BV6DXGJFBA4",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-tout",
+      "title": "Toute la classe",
+      "domain": "franzoesisch/marche",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-tout",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "marche",
+          "topic_title": "Au marché"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · tout als Begleiter",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-ecole",
+          "topic_title": "Grammatik · tout als Begleiter",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0DFRC711PQJV0D9QSG",
+          "slug": "f8-tout-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ergänze die ganze Klasse auf Französisch: … la classe.",
+          "concept": "Toute la classe.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-tout",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Toute la classe.",
+              "Tous la classe."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DZ99YTGQ0DTC4PZ04",
+          "slug": "f8-tout-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Ergänze „alle Äpfel“ auf Französisch.",
+          "concept": "Toutes les pommes.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-tout",
+          "sample_solution": "Toutes les pommes."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0DHD17QKXTEGDZVESS",
+      "atom_uri": "urn:zam:atom:01M64SYS0DHD17QKXTEGDZVESS",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-verbes-ir-dre",
+      "title": "On part après le cours",
+      "domain": "franzoesisch/quotidien",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-verbes-ir-dre",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "quotidien",
+          "topic_title": "Notre quotidien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · Verben auf -ir und -dre",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-ecole",
+          "topic_title": "Grammatik · Verben auf -ir und -dre",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0DDEFZT4E3HR6YZVWT",
+          "slug": "f8-verbes-ir-dre-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Bilde die nous-Form von partir im Präsens.",
+          "concept": "Nous partons.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-verbes-ir-dre",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nous partons.",
+              "Nous partent."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DZT2XA4J92QAP19J2",
+          "slug": "f8-verbes-ir-dre-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Konjugiere attendre mit nous im Präsens.",
+          "concept": "Nous attendons.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-verbes-ir-dre",
+          "sample_solution": "Nous attendons."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0DHA5TH0T6ZZPXJKB2",
+      "atom_uri": "urn:zam:atom:01M64SYS0DHA5TH0T6ZZPXJKB2",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-irreguliers",
+      "title": "Lire, écrire, voir",
+      "domain": "franzoesisch/quotidien",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-irreguliers",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "quotidien",
+          "topic_title": "Notre quotidien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · unregelmäßige Verben",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-ecole",
+          "topic_title": "Grammatik · unregelmäßige Verben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0DZG01D10K7PBGH6GT",
+          "slug": "f8-irreguliers-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Bilde die nous-Form von écrire im Präsens.",
+          "concept": "Nous écrivons.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-irreguliers",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nous écrivons.",
+              "Nous écrivez."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DW0A2ZXG049CME01B",
+          "slug": "f8-irreguliers-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Bilde nous zu je viens im Präsens.",
+          "concept": "Nous venons.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-irreguliers",
+          "sample_solution": "Nous venons."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0DBZKSRG1T58217KEB",
+      "atom_uri": "urn:zam:atom:01M64SYS0DBZKSRG1T58217KEB",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-negations",
+      "title": "Plus, jamais, rien",
+      "domain": "franzoesisch/quotidien",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-negations",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "quotidien",
+          "topic_title": "Notre quotidien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · genauer verneinen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-loisirs",
+          "topic_title": "Grammatik · genauer verneinen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0DY2XCVG7XPTH3NH2A",
+          "slug": "f8-negations-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Sage Ich spiele nicht mehr auf Französisch.",
+          "concept": "Je ne joue plus.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-negations",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Je ne joue plus.",
+              "Je ne joue jamais."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0D0M592Y513HTNNJJP",
+          "slug": "f8-negations-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Sage auf Französisch: Ich sehe niemanden.",
+          "concept": "Je ne vois personne.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-negations",
+          "sample_solution": "Je ne vois personne."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0DNZZR448D77XQNCSN",
+      "atom_uri": "urn:zam:atom:01M64SYS0DNZZR448D77XQNCSN",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-directions",
+      "title": "En face de la gare",
+      "domain": "franzoesisch/quotidien",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-directions",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "quotidien",
+          "topic_title": "Notre quotidien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-sprechen",
+          "topic_title": "Wortschatz · Weg und Schulweg",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-wortschatz",
+          "topic_title": "Wortschatz · Weg und Schulweg",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-voyage",
+          "topic_title": "Wortschatz · Weg und Schulweg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0D9MJ5Q9N8YAS56J54",
+          "slug": "f8-directions-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie heißt gegenüber der Apotheke auf Französisch?",
+          "concept": "En face de la pharmacie.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-directions",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "En face de la pharmacie.",
+              "Au bout de la pharmacie."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DBQZEK633VG4ZZRQ0",
+          "slug": "f8-directions-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie heißt „am Ende der Straße“ auf Französisch?",
+          "concept": "Au bout de la rue.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-directions",
+          "sample_solution": "Au bout de la rue."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0DV9GG6SEPK8T4FXRW",
+      "atom_uri": "urn:zam:atom:01M64SYS0DV9GG6SEPK8T4FXRW",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-loisirs",
+      "title": "Notre programme",
+      "domain": "franzoesisch/quotidien",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-loisirs",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "quotidien",
+          "topic_title": "Notre quotidien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-sprechen",
+          "topic_title": "Sprechen · kurzer Vortrag",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-schreiben",
+          "topic_title": "Sprechen · kurzer Vortrag",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-loisirs",
+          "topic_title": "Sprechen · kurzer Vortrag",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0DD33GWJRPTB6JCPNE",
+          "slug": "f8-loisirs-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches französische Ordnungswort bedeutet schließlich?",
+          "concept": "Enfin.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-loisirs",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Enfin.",
+              "D’abord."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DH5THDYS3VXDGEHV5",
+          "slug": "f8-loisirs-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne drei französische Wörter, die einen Ablauf ordnen.",
+          "concept": "D’abord, ensuite, enfin.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-loisirs",
+          "sample_solution": "D’abord, ensuite, enfin."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0D2KQQ6NB72SR4JCTN",
+      "atom_uri": "urn:zam:atom:01M64SYS0D2KQQ6NB72SR4JCTN",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-passe-avoir",
+      "title": "Hier, j’ai joué",
+      "domain": "franzoesisch/hier",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-passe-avoir",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "hier",
+          "topic_title": "Raconter hier"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · passé composé mit avoir",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-schreiben",
+          "topic_title": "Grammatik · passé composé mit avoir",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-loisirs",
+          "topic_title": "Grammatik · passé composé mit avoir",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0DQ8NYT0JV4EVRB417",
+          "slug": "f8-passe-avoir-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Setze Je joue au basket ins passé composé.",
+          "concept": "J’ai joué au basket.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-passe-avoir",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "J’ai joué au basket.",
+              "Je vais jouer au basket."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DD4ZDDPNT3W0VMNNK",
+          "slug": "f8-passe-avoir-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Bilde das passé composé von nous regardons un film.",
+          "concept": "Nous avons regardé un film.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-passe-avoir",
+          "sample_solution": "Nous avons regardé un film."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0DB47QH5BYN2HJT0Z2",
+      "atom_uri": "urn:zam:atom:01M64SYS0DB47QH5BYN2HJT0Z2",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-participes",
+      "title": "J’ai lu, j’ai vu",
+      "domain": "franzoesisch/hier",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-participes",
+      "prerequisites": [
+        {
+          "atom_id": "01M64SYS0D2KQQ6NB72SR4JCTN",
+          "type": "soft",
+          "rationale": "The linked lesson supplies useful foundations; this lesson remains accessible independently."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "hier",
+          "topic_title": "Raconter hier"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · unregelmäßige Partizipien",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-schreiben",
+          "topic_title": "Grammatik · unregelmäßige Partizipien",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-ecole",
+          "topic_title": "Grammatik · unregelmäßige Partizipien",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0DYJ8X9CBVW7DA429D",
+          "slug": "f8-participes-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet das participe passé von lire?",
+          "concept": "Lu.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-participes",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Lu.",
+              "Lit."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DRR97CNKCA84D9TPM",
+          "slug": "f8-participes-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie heißt „Ich habe geschrieben“ auf Französisch?",
+          "concept": "J’ai écrit.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-participes",
+          "sample_solution": "J’ai écrit."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0DEJDH642656K6TV3B",
+      "atom_uri": "urn:zam:atom:01M64SYS0DEJDH642656K6TV3B",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-passe-etre",
+      "title": "Elles sont arrivées",
+      "domain": "franzoesisch/hier",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-passe-etre",
+      "prerequisites": [
+        {
+          "atom_id": "01M64SYS0D2KQQ6NB72SR4JCTN",
+          "type": "soft",
+          "rationale": "The linked lesson supplies useful foundations; this lesson remains accessible independently."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "hier",
+          "topic_title": "Raconter hier"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · être und Angleichung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-schreiben",
+          "topic_title": "Grammatik · être und Angleichung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-voyage",
+          "topic_title": "Grammatik · être und Angleichung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0D7PJMMJR58SF0XQ4R",
+          "slug": "f8-passe-etre-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ergänze Lina et Zoé: Elles … (arriver, passé composé).",
+          "concept": "Elles sont arrivées.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-passe-etre",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Elles sont arrivées.",
+              "Elles ont arrivées."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DFDC6PGJKFFC4FS9H",
+          "slug": "f8-passe-etre-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erzähle auf Französisch: Lina und Zoé sind gegangen.",
+          "concept": "Lina et Zoé sont parties.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-passe-etre",
+          "sample_solution": "Lina et Zoé sont parties."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0D7862WJS1QZ7CAV18",
+      "atom_uri": "urn:zam:atom:01M64SYS0D7862WJS1QZ7CAV18",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-passe-negation",
+      "title": "Je n’ai rien acheté",
+      "domain": "franzoesisch/hier",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-passe-negation",
+      "prerequisites": [
+        {
+          "atom_id": "01M64SYS0D2KQQ6NB72SR4JCTN",
+          "type": "soft",
+          "rationale": "The linked lesson supplies useful foundations; this lesson remains accessible independently."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "hier",
+          "topic_title": "Raconter hier"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · Vergangenheit verneinen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-amis",
+          "topic_title": "Grammatik · Vergangenheit verneinen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0DB4DZ8VM40W8B63JA",
+          "slug": "f8-passe-negation-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Sage auf Französisch: Ich habe nichts gekauft.",
+          "concept": "Je n’ai rien acheté.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-passe-negation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Je n’ai rien acheté.",
+              "Je n’ai acheté rien pas."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DZ20CNFE0DDEC054E",
+          "slug": "f8-passe-negation-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Verneine J’ai vu quelqu’un mit niemanden.",
+          "concept": "Je n’ai vu personne.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-passe-negation",
+          "sample_solution": "Je n’ai vu personne."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0DJDEQY1PN6W1AVVAG",
+      "atom_uri": "urn:zam:atom:01M64SYS0DJDEQY1PN6W1AVVAG",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-vacances",
+      "title": "Un message de vacances",
+      "domain": "franzoesisch/hier",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-vacances",
+      "prerequisites": [
+        {
+          "atom_id": "01M64SYS0D2KQQ6NB72SR4JCTN",
+          "type": "soft",
+          "rationale": "The linked lesson supplies useful foundations; this lesson remains accessible independently."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "hier",
+          "topic_title": "Raconter hier"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-schreiben",
+          "topic_title": "Schreiben · Bericht und E-Mail",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben · Bericht und E-Mail",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-voyage",
+          "topic_title": "Schreiben · Bericht und E-Mail",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0DP8VX9T5WND1ZD27Y",
+          "slug": "f8-vacances-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Nenne eine persönliche französische Schlussformel für Bis bald.",
+          "concept": "À bientôt !",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-vacances",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "À bientôt !",
+              "Bonjour !"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DFDJDBX4C66MD0GEZ",
+          "slug": "f8-vacances-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche zwei Teile braucht eine kurze persönliche E-Mail neben dem Inhalt?",
+          "concept": "Eine passende Anrede und eine Schlussformel.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-vacances",
+          "sample_solution": "Eine passende Anrede und eine Schlussformel."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0D3WR2BG6TSC0PBPCJ",
+      "atom_uri": "urn:zam:atom:01M64SYS0D3WR2BG6TSC0PBPCJ",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-cod",
+      "title": "Je le regarde",
+      "domain": "franzoesisch/echanges",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-cod",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "echanges",
+          "topic_title": "Parler et répondre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · direkte Objektpronomen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-loisirs",
+          "topic_title": "Grammatik · direkte Objektpronomen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0D7A1V0BVSVG773945",
+          "slug": "f8-cod-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ersetze le film in Je regarde le film durch ein Objektpronomen.",
+          "concept": "Je le regarde.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-cod",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Je le regarde.",
+              "Je lui regarde."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0D700BDZAG5CRY1522",
+          "slug": "f8-cod-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Ersetze les chansons in Je veux écouter les chansons durch ein Pronomen.",
+          "concept": "Je veux les écouter.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-cod",
+          "sample_solution": "Je veux les écouter."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0DD9DXACW58MW95JEV",
+      "atom_uri": "urn:zam:atom:01M64SYS0DD9DXACW58MW95JEV",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-coi",
+      "title": "Je parle à Lina",
+      "domain": "franzoesisch/echanges",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-coi",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "echanges",
+          "topic_title": "Parler et répondre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · indirektes Objekt",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-amis",
+          "topic_title": "Grammatik · indirektes Objekt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0D408B9QX8TH6M2M1G",
+          "slug": "f8-coi-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Konstruktion gehört zu jemanden anrufen: téléphoner …?",
+          "concept": "Téléphoner à quelqu’un.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-coi",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Téléphoner à quelqu’un.",
+              "Téléphoner quelqu’un."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DKGGWYF3AA9H5V4FF",
+          "slug": "f8-coi-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Präposition gehört in répondre … quelqu’un?",
+          "concept": "À : répondre à quelqu’un.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-coi",
+          "sample_solution": "À : répondre à quelqu’un."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0DNMBM8EQW6HBVG5V1",
+      "atom_uri": "urn:zam:atom:01M64SYS0DNMBM8EQW6HBVG5V1",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-lui-leur",
+      "title": "Je lui réponds",
+      "domain": "franzoesisch/echanges",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-lui-leur",
+      "prerequisites": [
+        {
+          "atom_id": "01M64SYS0DD9DXACW58MW95JEV",
+          "type": "soft",
+          "rationale": "The linked lesson supplies useful foundations; this lesson remains accessible independently."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "echanges",
+          "topic_title": "Parler et répondre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · indirekte Objektpronomen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-medias",
+          "topic_title": "Grammatik · indirekte Objektpronomen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0DPZY0XHF48FWF9D0X",
+          "slug": "f8-lui-leur-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ersetze à Lina in Je parle à Lina durch ein Objektpronomen.",
+          "concept": "Je lui parle.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-lui-leur",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Je lui parle.",
+              "Je la parle."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0DAD8VA4AHCEMYPMM6",
+          "slug": "f8-lui-leur-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Ersetze à mes amis in Je téléphone à mes amis.",
+          "concept": "Je leur téléphone.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-lui-leur",
+          "sample_solution": "Je leur téléphone."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EVVEZ9YX6HP0J7E21",
+      "atom_uri": "urn:zam:atom:01M64SYS0EVVEZ9YX6HP0J7E21",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-disjoints",
+      "title": "Avec toi, chez eux",
+      "domain": "franzoesisch/echanges",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-disjoints",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "echanges",
+          "topic_title": "Parler et répondre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-grammatik",
+          "topic_title": "Grammatik · unverbundene Pronomen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-amis",
+          "topic_title": "Grammatik · unverbundene Pronomen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0E1ZSZB3VHRCMFE05V",
+          "slug": "f8-disjoints-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie heißt mit dir auf Französisch?",
+          "concept": "Avec toi.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-disjoints",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Avec toi.",
+              "Avec tu."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0EYVZX5BDEQ30AKDKN",
+          "slug": "f8-disjoints-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Ersetze chez mes amis durch ein Pronomen für eine männliche oder gemischte Gruppe.",
+          "concept": "Chez eux.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-disjoints",
+          "sample_solution": "Chez eux."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EJX38RB8JF86MJQ21",
+      "atom_uri": "urn:zam:atom:01M64SYS0EJX38RB8JF86MJQ21",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-invitation",
+      "title": "Tu viens à ma fête ?",
+      "domain": "franzoesisch/echanges",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-invitation",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "echanges",
+          "topic_title": "Parler et répondre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-schreiben",
+          "topic_title": "Schreiben · Einladung und Antwort",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb2",
+          "topic_title": "Schreiben · Einladung und Antwort",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben · Einladung und Antwort",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-medias",
+          "topic_title": "Schreiben · Einladung und Antwort",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0EH5KCKT4W87S5PTT0",
+          "slug": "f8-invitation-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Bedanke dich auf Französisch für eine Einladung.",
+          "concept": "Merci pour ton invitation !",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-invitation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Merci pour ton invitation !",
+              "Merci pour ton information !"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0EA4N6E8W360ASE9SA",
+          "slug": "f8-invitation-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Mit welcher französischen Wendung bedankst du dich für eine Einladung?",
+          "concept": "Merci pour ton invitation !",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-invitation",
+          "sample_solution": "Merci pour ton invitation !"
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EHFRHY7D40VSGD3AC",
+      "atom_uri": "urn:zam:atom:01M64SYS0EHFRHY7D40VSGD3AC",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-train",
+      "title": "Quel train prendre ?",
+      "domain": "franzoesisch/voyage",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-train",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "voyage",
+          "topic_title": "Voyager et découvrir"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-lesen",
+          "topic_title": "Lesen · Fahrplan und Ticket",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-mediation",
+          "topic_title": "Lesen · Fahrplan und Ticket",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-voyage",
+          "topic_title": "Lesen · Fahrplan und Ticket",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0EJD2NVJG5CYVY4PSD",
+          "slug": "f8-train-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet arrivée in einem französischen Fahrplan?",
+          "concept": "Ankunft.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-train",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ankunft.",
+              "Abfahrt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0EF73ARX5HEE4RVGX3",
+          "slug": "f8-train-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche französischen Wörter bezeichnen Abfahrt und Ankunft?",
+          "concept": "Départ et arrivée.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-train",
+          "sample_solution": "Départ et arrivée."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EZ372XFYBQBES8E4J",
+      "atom_uri": "urn:zam:atom:01M64SYS0EZ372XFYBQBES8E4J",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-hotel",
+      "title": "À la réception",
+      "domain": "franzoesisch/voyage",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-hotel",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "voyage",
+          "topic_title": "Voyager et découvrir"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-sprechen",
+          "topic_title": "Sprechen · Unterkunft",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-wortschatz",
+          "topic_title": "Sprechen · Unterkunft",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-voyage",
+          "topic_title": "Sprechen · Unterkunft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0EMP9B0KW3DFWPVFN9",
+          "slug": "f8-hotel-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie fragst du nach der Frühstückszeit auf Französisch?",
+          "concept": "À quelle heure est le petit déjeuner ?",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-hotel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "À quelle heure est le petit déjeuner ?",
+              "À quelle heure est le dîner ?"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0E24YB1CXZT4T3DQ1G",
+          "slug": "f8-hotel-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie fragst du auf Französisch nach der Frühstückszeit?",
+          "concept": "À quelle heure est le petit déjeuner ?",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-hotel",
+          "sample_solution": "À quelle heure est le petit déjeuner ?"
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EC0QASKH718NQGAB7",
+      "atom_uri": "urn:zam:atom:01M64SYS0EC0QASKH718NQGAB7",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-regions",
+      "title": "Quatre villes, plusieurs régions",
+      "domain": "franzoesisch/voyage",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-regions",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "voyage",
+          "topic_title": "Voyager et découvrir"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb2",
+          "topic_title": "Kultur · räumliche Orientierung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-regions",
+          "topic_title": "Kultur · räumliche Orientierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0E8KEACWDMMZ09NGYC",
+          "slug": "f8-regions-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche französische Stadt liegt auf Korsika: Ajaccio oder Bordeaux?",
+          "concept": "Ajaccio.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-regions",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ajaccio.",
+              "Bordeaux."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0E8D2C80RDBZD2XD5V",
+          "slug": "f8-regions-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche der vier geübten Städte liegt am Mittelmeer auf dem französischen Festland?",
+          "concept": "Marseille.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-regions",
+          "sample_solution": "Marseille."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EAEDDYWDCJ3D761GB",
+      "atom_uri": "urn:zam:atom:01M64SYS0EAEDDYWDCJ3D761GB",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-repas",
+      "title": "À table, on demande",
+      "domain": "franzoesisch/voyage",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-repas",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "voyage",
+          "topic_title": "Voyager et découvrir"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-lesen",
+          "topic_title": "Kultur · Essen ohne Klischees",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb2",
+          "topic_title": "Kultur · Essen ohne Klischees",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-repas",
+          "topic_title": "Kultur · Essen ohne Klischees",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0EM1MY3NKKX12GRN5P",
+          "slug": "f8-repas-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist une tarte aux pommes?",
+          "concept": "Ein Apfelkuchen.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-repas",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Apfelkuchen.",
+              "Eine Kartoffelsuppe."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0E55N58EFZ46ZV7ME8",
+          "slug": "f8-repas-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie fragst du höflich nach dem Gemüse in der Suppe?",
+          "concept": "Quels légumes sont dans la soupe, s’il vous plaît ?",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-repas",
+          "sample_solution": "Quels légumes sont dans la soupe, s’il vous plaît ?"
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0E55D9Q95MZMSRC298",
+      "atom_uri": "urn:zam:atom:01M64SYS0E55D9Q95MZMSRC298",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-fetes",
+      "title": "Une fête pour se rencontrer",
+      "domain": "franzoesisch/voyage",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-fetes",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "voyage",
+          "topic_title": "Voyager et découvrir"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb2",
+          "topic_title": "Kultur · Musik und Nachbarschaft",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb3",
+          "topic_title": "Kultur · Musik und Nachbarschaft",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-fetes",
+          "topic_title": "Kultur · Musik und Nachbarschaft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0E05PATEB2X0C9N2GT",
+          "slug": "f8-fetes-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "An welchem Datum findet die Fête de la musique statt?",
+          "concept": "Am 21. Juni.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-fetes",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Am 21. Juni.",
+              "Am 14. Juli."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0EWQY5HWYKDHRPHVAF",
+          "slug": "f8-fetes-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "An welchem Datum findet die Fête de la musique statt?",
+          "concept": "Am 21. Juni.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-fetes",
+          "sample_solution": "Am 21. Juni."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EGQK856RJVXGJ6RJ0",
+      "atom_uri": "urn:zam:atom:01M64SYS0EGQK856RJVXGJ6RJ0",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-ecouter-rendezvous",
+      "title": "Écouter un changement de plan",
+      "domain": "franzoesisch/comprendre",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-ecouter-rendezvous",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "comprendre",
+          "topic_title": "Écouter et comprendre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-horen",
+          "topic_title": "Hören · Ort und Zeit",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb4",
+          "topic_title": "Hören · Ort und Zeit",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-amis",
+          "topic_title": "Hören · Ort und Zeit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0E7F4M1WMFVKEM3JFF",
+          "slug": "f8-ecouter-rendezvous-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche zwei Angaben sind bei einer geänderten Verabredung besonders wichtig?",
+          "concept": "Der neue Ort und die neue Uhrzeit.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-ecouter-rendezvous",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der neue Ort und die neue Uhrzeit.",
+              "Nur die Anzahl der Nachrichten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0EC1HTB091HMKC3PB8",
+          "slug": "f8-ecouter-rendezvous-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche zwei Angaben solltest du bei einer geänderten Verabredung besonders prüfen?",
+          "concept": "Den neuen Ort und die neue Uhrzeit.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-ecouter-rendezvous",
+          "sample_solution": "Den neuen Ort und die neue Uhrzeit."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EXYA4A3BYPVVQDDFM",
+      "atom_uri": "urn:zam:atom:01M64SYS0EXYA4A3BYPVVQDDFM",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-ecouter-gare",
+      "title": "Une annonce à la gare",
+      "domain": "franzoesisch/comprendre",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-ecouter-gare",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "comprendre",
+          "topic_title": "Écouter et comprendre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-horen",
+          "topic_title": "Hören · wichtige Details",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-mediation",
+          "topic_title": "Hören · wichtige Details",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb4",
+          "topic_title": "Hören · wichtige Details",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-voyage",
+          "topic_title": "Hören · wichtige Details",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0EV55HE3N2ARDADSQ8",
+          "slug": "f8-ecouter-gare-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet voie in einer französischen Bahnhofsdurchsage?",
+          "concept": "Gleis.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-ecouter-gare",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gleis.",
+              "Fahrpreis."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0E6170EZEN2V8F78PH",
+          "slug": "f8-ecouter-gare-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie heißt Bahnsteig beziehungsweise Gleis in der geübten Ansage?",
+          "concept": "Voie.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-ecouter-gare",
+          "sample_solution": "Voie."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EMT7QJFQEBS65VD1G",
+      "atom_uri": "urn:zam:atom:01M64SYS0EMT7QJFQEBS65VD1G",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-affiche",
+      "title": "Lire une affiche, imaginer une scène",
+      "domain": "franzoesisch/comprendre",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-affiche",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "comprendre",
+          "topic_title": "Écouter et comprendre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-lesen",
+          "topic_title": "Lesen · Text und Kreativität",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb3",
+          "topic_title": "Lesen · Text und Kreativität",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-loisirs",
+          "topic_title": "Lesen · Text und Kreativität",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0ESK7K5AA21YKF113W",
+          "slug": "f8-affiche-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet L’entrée est gratuite auf einem Aushang?",
+          "concept": "Der Eintritt ist kostenlos.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-affiche",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Eintritt ist kostenlos.",
+              "Eine Anmeldung ist verboten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0EM5F7V1S17F7Y0K95",
+          "slug": "f8-affiche-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet eine Information aus dem Text von einer kreativen Ergänzung?",
+          "concept": "Die Textinformation ist belegt; eine eigene Ergänzung muss als erfunden erkennbar bleiben.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-affiche",
+          "sample_solution": "Die Textinformation ist belegt; eine eigene Ergänzung muss als erfunden erkennbar bleiben."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0E2MVQKJAHHHND54VN",
+      "atom_uri": "urn:zam:atom:01M64SYS0E2MVQKJAHHHND54VN",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-prononciation",
+      "title": "On écoute, on lit, on reprend",
+      "domain": "franzoesisch/comprendre",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-prononciation",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "comprendre",
+          "topic_title": "Écouter et comprendre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-aussprache",
+          "topic_title": "Aussprache · verständlich vorlesen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb4",
+          "topic_title": "Aussprache · verständlich vorlesen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-ecole",
+          "topic_title": "Aussprache · verständlich vorlesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0E2NV893E6C8QD9MPX",
+          "slug": "f8-prononciation-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wird die Verbendung -ent in ils arrivent als eigene Silbe gesprochen?",
+          "concept": "Nein, hier bleibt -ent stumm.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-prononciation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, hier bleibt -ent stumm.",
+              "Ja, hier spricht man eine Silbe ent."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0EYFPKZWWXBKQRVBRV",
+          "slug": "f8-prononciation-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was geschieht bei der üblichen Verbindung von les und amis in les amis?",
+          "concept": "Das s von les wird als z-Laut mit dem folgenden Vokal verbunden.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-prononciation",
+          "sample_solution": "Das s von les wird als z-Laut mit dem folgenden Vokal verbunden."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EA3A4NR8P61Q9B2BS",
+      "atom_uri": "urn:zam:atom:01M64SYS0EA3A4NR8P61Q9B2BS",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-mediation",
+      "title": "Aider sans tout traduire",
+      "domain": "franzoesisch/comprendre",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-mediation",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "comprendre",
+          "topic_title": "Écouter et comprendre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-mediation",
+          "topic_title": "Sprachmittlung · situationsgerecht helfen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb2",
+          "topic_title": "Sprachmittlung · situationsgerecht helfen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-repas",
+          "topic_title": "Sprachmittlung · situationsgerecht helfen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0EMRGY8TRP6YHY0Y6T",
+          "slug": "f8-mediation-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet pommes de terre auf Deutsch?",
+          "concept": "Kartoffeln.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-mediation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kartoffeln.",
+              "Erdbeeren."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0EJD79PT28B88WKH5A",
+          "slug": "f8-mediation-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist das Ziel einer adressatengerechten Sprachmittlung?",
+          "concept": "Die benötigten Informationen sinngemäß und verständlich weitergeben.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-mediation",
+          "sample_solution": "Die benötigten Informationen sinngemäß und verständlich weitergeben."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EM7GJGVK7H2TZ7NXF",
+      "atom_uri": "urn:zam:atom:01M64SYS0EM7GJGVK7H2TZ7NXF",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-lexique",
+      "title": "Relier les mots",
+      "domain": "franzoesisch/outils",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-lexique",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "outils",
+          "topic_title": "Apprendre à apprendre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-wortschatz",
+          "topic_title": "Methode · Wortfelder und Wortfamilien",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb4",
+          "topic_title": "Methode · Wortfelder und Wortfamilien",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-loisirs",
+          "topic_title": "Methode · Wortfelder und Wortfamilien",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0EZFAJM9CVX44MMZCH",
+          "slug": "f8-lexique-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Wort ist ein Gegenwort zu ouvrir?",
+          "concept": "Fermer.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-lexique",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fermer.",
+              "Écrire."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0EAT5T7JNR3TJXRYDE",
+          "slug": "f8-lexique-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Worin unterscheiden sich Wortfeld und Wortfamilie?",
+          "concept": "Wortfeld: gemeinsames Thema. Wortfamilie: sprachlich verwandte Wörter.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-lexique",
+          "sample_solution": "Wortfeld: gemeinsames Thema. Wortfamilie: sprachlich verwandte Wörter."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EM3012RP4VFW0TCR6",
+      "atom_uri": "urn:zam:atom:01M64SYS0EM3012RP4VFW0TCR6",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-consignes",
+      "title": "Reliez, utilisez, expliquez",
+      "domain": "franzoesisch/outils",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-consignes",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "outils",
+          "topic_title": "Apprendre à apprendre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-wortschatz",
+          "topic_title": "Methode · Arbeitsaufträge verstehen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb4",
+          "topic_title": "Methode · Arbeitsaufträge verstehen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-ecole",
+          "topic_title": "Methode · Arbeitsaufträge verstehen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0E5D30FP70SQAETHPQ",
+          "slug": "f8-consignes-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was verlangt die französische Arbeitsanweisung reliez?",
+          "concept": "Verbinden.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-consignes",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Verbinden.",
+              "Streichen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0EJA8FF3N1GJP9VTGX",
+          "slug": "f8-consignes-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was verlangt die Arbeitsanweisung utilisez deux adjectifs?",
+          "concept": "Zwei Adjektive verwenden.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-consignes",
+          "sample_solution": "Zwei Adjektive verwenden."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EC2H9B1D6QY9WXQNA",
+      "atom_uri": "urn:zam:atom:01M64SYS0EC2H9B1D6QY9WXQNA",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-dictionnaire",
+      "title": "Vérifier avant de garder",
+      "domain": "franzoesisch/outils",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-dictionnaire",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "outils",
+          "topic_title": "Apprendre à apprendre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.2-aussprache",
+          "topic_title": "Methode · Nachschlagen und Korrektur",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb4",
+          "topic_title": "Methode · Nachschlagen und Korrektur",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-medias",
+          "topic_title": "Methode · Nachschlagen und Korrektur",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0E6F70A8RG6PQ0B0RY",
+          "slug": "f8-dictionnaire-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches a/à braucht Il … un livre?",
+          "concept": "A ohne Akzent.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-dictionnaire",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A ohne Akzent.",
+              "À mit Akzent."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0EB212E0SV7WWXEP51",
+          "slug": "f8-dictionnaire-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum solltest du einen Rechtschreibvorschlag im Satz prüfen?",
+          "concept": "Weil ein korrekt geschriebenes Wort im Zusammenhang trotzdem die falsche Bedeutung oder Funktion haben kann.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-dictionnaire",
+          "sample_solution": "Weil ein korrekt geschriebenes Wort im Zusammenhang trotzdem die falsche Bedeutung oder Funktion haben kann."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EJXS0V6386FDFG9JY",
+      "atom_uri": "urn:zam:atom:01M64SYS0EJXS0V6386FDFG9JY",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-recherche",
+      "title": "Une information, une source, une date",
+      "domain": "franzoesisch/outils",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-recherche",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "outils",
+          "topic_title": "Apprendre à apprendre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb4",
+          "topic_title": "Methode · aktuelle Recherche",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-actualite",
+          "topic_title": "Methode · aktuelle Recherche",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-medias",
+          "topic_title": "Methode · aktuelle Recherche",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0EQ8TZ4PHBFS9ETVG0",
+          "slug": "f8-recherche-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Angabe hilft zu prüfen, ob eine Meldung noch aktuell ist?",
+          "concept": "Ein überprüftes Datum.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-recherche",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein überprüftes Datum.",
+              "Eine bevorzugte Farbe."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0EMJ1EB3DRXDTMTZXP",
+          "slug": "f8-recherche-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Angaben hältst du bei einer aktuellen Recherche mindestens fest?",
+          "concept": "Quelle, Datum und eine dort belegte Kernaussage.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-recherche",
+          "sample_solution": "Quelle, Datum und eine dort belegte Kernaussage."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0EXJ2VGGWMBYXEQ03K",
+      "atom_uri": "urn:zam:atom:01M64SYS0EXJ2VGGWMBYXEQ03K",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-projet",
+      "title": "Mon petit projet, mon prochain pas",
+      "domain": "franzoesisch/outils",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-projet",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "outils",
+          "topic_title": "Apprendre à apprendre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-schreiben",
+          "topic_title": "Projekt · Fehlerprotokoll und Rückblick",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1.1-sprechen",
+          "topic_title": "Projekt · Fehlerprotokoll und Rückblick",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb3",
+          "topic_title": "Projekt · Fehlerprotokoll und Rückblick",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb4",
+          "topic_title": "Projekt · Fehlerprotokoll und Rückblick",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb5-ecole",
+          "topic_title": "Projekt · Fehlerprotokoll und Rückblick",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0E0RP2AVPF1RJRTYX8",
+          "slug": "f8-projet-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gehört zu einem hilfreichen nächsten Lernschritt?",
+          "concept": "Eine konkrete Schwierigkeit und eine passende Übung.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-projet",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine konkrete Schwierigkeit und eine passende Übung.",
+              "Nur die Behauptung, alles zu können."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0E5X9H2SQFT8FNGD2Q",
+          "slug": "f8-projet-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was gehört in ein hilfreiches Fehlerprotokoll?",
+          "concept": "Ein eigenes Beispiel, die geprüfte Korrektur und ein nächster Übungsschritt.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-projet",
+          "sample_solution": "Ein eigenes Beispiel, die geprüfte Korrektur und ein nächster Übungsschritt."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0E07XPBDXR77GJBBR0",
+      "atom_uri": "urn:zam:atom:01M64SYS0E07XPBDXR77GJBBR0",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-relatifs-qui-que",
+      "title": "La personne qui parle",
+      "domain": "franzoesisch/extension",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-relatifs-qui-que",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "extension",
+          "topic_title": "Pour aller plus loin"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0ETQXDW1CNQMPTV1F4",
+          "slug": "f8-relatifs-qui-que-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ergänze das Relativpronomen: la personne … te parle.",
+          "concept": "Qui.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-relatifs-qui-que",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Qui.",
+              "Que."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0EMQCSNVME3YJZFQH7",
+          "slug": "f8-relatifs-qui-que-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum steht qui in la personne qui te parle?",
+          "concept": "Weil qui Subjekt von parle ist; te ist das Objektpronomen.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-relatifs-qui-que",
+          "sample_solution": "Weil qui Subjekt von parle ist; te ist das Objektpronomen."
+        }
+      ]
+    },
+    {
+      "id": "01M64SYS0E066F797XMSV7E1QK",
+      "atom_uri": "urn:zam:atom:01M64SYS0E066F797XMSV7E1QK",
+      "namespace": "zam-academy-franzoesisch-realschule-8",
+      "slug": "f8-relatif-ou",
+      "title": "La ville où j’habite",
+      "domain": "franzoesisch/extension",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-relatif-ou",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "franzoesisch-realschule-8",
+          "topic_code": "extension",
+          "topic_title": "Pour aller plus loin"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M64SYS0E2CFWBV512BPJVFQC",
+          "slug": "f8-relatif-ou-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ergänze den Ortsbezug: la ville … j’habite.",
+          "concept": "Où.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-relatif-ou",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Où.",
+              "Ou."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M64SYS0E5XZYX5ZVXBS7AAE6",
+          "slug": "f8-relatif-ou-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet où und ou?",
+          "concept": "Où kann einen Ortsbezug ausdrücken; ou bedeutet oder.",
+          "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-relatif-ou",
+          "sample_solution": "Où kann einen Ortsbezug ausdrücken; ou bedeutet oder."
+        }
+      ]
+    }
+  ]
+}

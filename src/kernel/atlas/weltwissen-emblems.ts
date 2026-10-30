@@ -566,6 +566,12 @@ const SEED: Readonly<Record<string, SeedEmblem>> = {
   },
 
   // ── Gebiete: Französisch ─────────────────────────────────────────────────
+  "franzoesisch/communication": {
+    glyph: "« »",
+    svg: S(
+      `${p("M8 10 H56 V43 H28 L16 55 V43 H8 Z", RD, INK, 3, 0.12)}${t(32, 34, 20, RD, "« »")}`,
+    ),
+  },
   "franzoesisch/grammaire": {
     glyph: "é è ê",
     svg: S(`${t(32, 40, 19, RD, "é è ê")}`),
