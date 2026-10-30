@@ -64,5 +64,10 @@ describe("web source links are wired on every surface", () => {
       'academyPracticeLink(sourceLink, result.rating, t("source_open_lesson"))',
     );
     expect(main).toContain('open.rel = "noreferrer"');
+    // "Sitzung beenden" stays off while „Weiter“ loads the end-of-queue
+    // offers, as it does during a rating (review of #471).
+    expect(main).toMatch(
+      /stopReviewButton\.disabled = true;\s*void continueAfterRating\(result\)\.finally\(\(\) => \{\s*stopReviewButton\.disabled = false;/,
+    );
   });
 });

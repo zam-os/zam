@@ -4185,7 +4185,12 @@ async function finishRating(
       // „Sitzung beenden“ on the offer still shows the finished queue's summary.
       if (result.summary) pendingSessionSummary = result.summary;
       showAcademyPracticeOffer(practice, () => {
-        void continueAfterRating(result);
+        // As during a rating: ending the session while the end-of-queue
+        // offers load would let them replace the summary it shows.
+        stopReviewButton.disabled = true;
+        void continueAfterRating(result).finally(() => {
+          stopReviewButton.disabled = false;
+        });
       });
       return true;
     }
