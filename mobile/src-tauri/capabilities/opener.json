@@ -1,0 +1,11 @@
+{
+  "identifier": "external-links",
+  "description": "Open http(s) links in the system browser, only on the learner's tap",
+  "windows": ["main"],
+  "permissions": [
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [{ "url": "https://*" }, { "url": "http://*" }]
+    }
+  ]
+}

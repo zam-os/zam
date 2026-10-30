@@ -63,7 +63,23 @@ describe("web source links are wired on every surface", () => {
     expect(main).toContain(
       'academyPracticeLink(sourceLink, result.rating, t("source_open_lesson"))',
     );
-    expect(main).toContain('open.rel = "noreferrer"');
+    // The iOS web view ignores target="_blank" (review of #471): every web
+    // link on Mobile opens through the opener plugin.
+    expect(main).toContain("void openExternalLink(lesson.href, openUrl)");
+    expect(main).toContain("wireExternalLink(reviewSource, openUrl)");
+    expect(main).toContain("wireExternalLink(practise, openUrl)");
+    expect(main).not.toMatch(/window\.open\(/);
+    expect(file("mobile/src-tauri/src/lib.rs")).toContain(
+      ".plugin(tauri_plugin_opener::init())",
+    );
+    expect(
+      JSON.parse(file("mobile/src-tauri/capabilities/opener.json")).permissions,
+    ).toEqual([
+      {
+        identifier: "opener:allow-open-url",
+        allow: [{ url: "https://*" }, { url: "http://*" }],
+      },
+    ]);
     // "Sitzung beenden" stays off while „Weiter“ loads the end-of-queue
     // offers, as it does during a rating (review of #471).
     expect(main).toMatch(

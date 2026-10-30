@@ -11,6 +11,7 @@ import {
   requestPermissions,
   scan,
 } from "@tauri-apps/plugin-barcode-scanner";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import {
   attachedMedia,
   renderCardText,
@@ -21,6 +22,7 @@ import {
   type WebSourceLink,
   webSourceLink,
 } from "../../desktop/src/source-link.js";
+import { openExternalLink, wireExternalLink } from "./external-link.js";
 import { createCellImportProgress } from "../../desktop/src/cell-import-progress.js";
 import {
   beginTurn,
@@ -575,6 +577,7 @@ const revealedAnswer = element<HTMLElement>("revealed-answer");
 const expectedAnswer = element<HTMLElement>("expected-answer");
 const reviewAnswerMedia = element<HTMLElement>("review-answer-media");
 const reviewSource = element<HTMLAnchorElement>("review-source");
+wireExternalLink(reviewSource, openUrl);
 const evaluationPanel = element<HTMLElement>("evaluation-panel");
 const evaluationVerdict = element<HTMLElement>("evaluation-verdict");
 const evaluationPoints = element<HTMLElement>("evaluation-points");
@@ -4243,6 +4246,13 @@ function showAcademyPracticeOffer(
     body: t("academy_practice_body"),
     actions: [
       {
+        label: t("academy_practice_open"),
+        primary: true,
+        onClick: () => {
+          void openExternalLink(lesson.href, openUrl);
+        },
+      },
+      {
         label: t("academy_practice_next"),
         onClick: () => {
           // One continuation per offer: a double tap must not skip a card.
@@ -4253,14 +4263,6 @@ function showAcademyPracticeOffer(
       },
     ],
   });
-  const open = document.createElement("a");
-  open.className = "btn primary";
-  open.href = lesson.href;
-  open.target = "_blank";
-  open.rel = "noreferrer";
-  open.title = lesson.title;
-  open.textContent = t("academy_practice_open");
-  reviewOfferActions.prepend(open);
 }
 
 // The knowledge atlas on Fortschritt (ADR 2026-10-13, Decision 10): read
@@ -5034,6 +5036,7 @@ async function renderAcademyCells(): Promise<void> {
       practise.target = "_blank";
       practise.rel = "noreferrer";
       practise.textContent = t("academy_practise");
+      wireExternalLink(practise, openUrl);
       card.append(practise);
     }
 
@@ -5721,7 +5724,7 @@ aiChangeKeyButton.addEventListener("click", () => {
 
 aiGetKeyButton.addEventListener("click", () => {
   // ZAM never creates the account or the key — it only points at the page.
-  window.open(OPENROUTER_PROVIDER.keysUrl, "_blank");
+  void openExternalLink(OPENROUTER_PROVIDER.keysUrl, openUrl);
 });
 
 // ── Multi-device upgrade ───────────────────────────────────────────────────

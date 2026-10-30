@@ -34,7 +34,9 @@ fn platform_features() -> serde_json::Value {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    let builder = tauri::Builder::default();
+    // Web links leave the app through the opener: the web view ignores
+    // target="_blank" on iOS and Android.
+    let builder = tauri::Builder::default().plugin(tauri_plugin_opener::init());
     #[cfg(mobile)]
     let builder = builder.plugin(tauri_plugin_barcode_scanner::init());
     // Pairing storage and daily reminders exist on both mobile platforms.
