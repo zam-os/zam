@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "status": "proposal-only",
+  "approved": null,
+  "note": "Four C rows document corrected or split retrieval targets. All legacy cards remain active; no history transfer or retirement is declared.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "0dd65c8f58b7ece3edcf6aff1d5eced099b74e6c",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-franzoesisch-8.json",
+      "source_path": "tests/fixtures/curriculum/de-by-realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive-kvt.json",
+      "sha256": "5658db1b3f09cc11855f76cdc2a2d49ff0e3884b96a9372d8740837e5bee9f9a",
+      "tile_id": "de-by:realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive",
+      "version": "2026.08.1"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive",
+      "de_by_id": "01K4F8P0000000000000000J01",
+      "de_by_question": "Welches Hilfsverb (avoir oder être) verlangen französische Verben der Ortsveränderung / Bewegungsverben (wie aller, venir, partir, arriver, entrer, sortir) im Passé composé?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The movement-verb wording invites an overgeneralisation: marcher and courir take avoir, and auxiliary choice can depend on transitivity. The new bounded tasks have a corrected retrieval target."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive",
+      "de_by_id": "01K4F8P0000000000000000J02",
+      "de_by_question": "Erkläre die Bildungsregeln des Passé composé im Französischen: 1. Bildung mit avoir (Form von avoir im Présent + participe passé: -er -> -é [parlé], -ir -> -i [fini], -re/unregelmäßig -> -u [voulu, lu, vu]; keine Angleichung an das Subjekt!), 2. Bildung mit être (ca. 15 Verben der Bewegung/Zustandsänderung wie aller, venir, partir, arriver, monter, descendre, rester, tomber, naître, mourir sowie alle reflexiven Verben), 3. Die Partizipangleichung (l'accord du participe passé) bei être in Genus und Numerus an das Subjekt (+e weiblich, +s männlich Plural, +es weiblich Plural) und übersetze: a) 'Gestern habe ich einen Film gesehen.' b) 'Sie (weiblich Plural) sind nach Paris gefahren.'",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The long combined prompt covers auxiliary selection, participle patterns, agreement and translations. The new package splits these targets; no single successor preserves the whole response."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive",
+      "de_by_id": "01K4F8P0000000000000000J03",
+      "de_by_question": "Welches Relativpronomen muss eingesetzt werden, wenn es im Relativsatz die Funktion des Subjekts übernimmt (gefolgt direkt von einem Verb, z. B. 'C'est le garçon ... parle français')?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The subject role of qui is useful but immediate adjacency to a finite verb is not a reliable rule: qui te parle is valid. The new optional task uses sentence function, so equivalence is uncertain."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive",
+      "de_by_id": "01K4F8P0000000000000000J04",
+      "de_by_question": "Erkläre die Unterscheidung der französischen Relativpronomen qui, que (qu') und où sowie die Regeln der Adjektivstellung: 1. qui (steht als Subjekt für Personen und Sachen \\rightarrow nach qui folgt sofort das finite Verb), 2. que / qu' (steht als direktes Akkusativobjekt \\rightarrow nach que folgt ein neues Subjekt), 3. où (steht für Orts- und Zeitangaben: 'wo / an dem'), 4. Adjektivstellung: Fast alle Adjektive (Farben, Nationalitäten, Formen) stehen hinter dem Nomen (une voiture rouge); nur kurze, häufige Adjektive stehen vor dem Nomen (grand, petit, bon, mauvais, beau, jeune, nouveau) und übersetze: a) 'Das ist die Stadt, in der ich wohne.' b) 'Der Hund, der im Garten bellt, ist sehr klein.'",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The combined relative-clause/adjective prompt includes an absolute adjacency rule and several translations. Corrected and split targets cannot inherit one old history across multiple successors."
+    }
+  ]
+}

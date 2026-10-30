@@ -451,14 +451,26 @@ export const WELTWISSEN_SEED: readonly SeedBereich[] = [
         name: "Französisch",
         areas: [
           {
+            key: "communication",
+            name: "Communication",
+            from: ["rencontres", "marche", "quotidien", "comprendre", "outils"],
+          },
+          {
             key: "grammaire",
             name: "Grammaire",
-            from: ["grammatik", "subjonctif", "hypothesen"],
+            from: [
+              "grammatik",
+              "subjonctif",
+              "hypothesen",
+              "hier",
+              "echanges",
+              "extension",
+            ],
           },
           {
             key: "civilisation",
             name: "Civilisation",
-            from: ["landeskunde", "politique"],
+            from: ["landeskunde", "politique", "voyage"],
           },
           {
             key: "litterature",
