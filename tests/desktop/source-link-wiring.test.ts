@@ -38,4 +38,31 @@ describe("web source links are wired on every surface", () => {
       /id="review-source"[^>]*data-i18n/,
     );
   });
+
+  // zam-os/zam#438: after a missed Academy card, every surface offers the
+  // lesson before the next card, opened only on a click.
+  it("Studio offers the lesson after a missed card", () => {
+    const main = file("desktop/src/main.ts");
+    expect(main).toContain(
+      "academyPracticeLink(\n        activeCard.sourceLink,",
+    );
+    expect(main).toMatch(/showAcademyPracticeOffer\(practice\);\s*return;/);
+    expect(main).toContain("void openUrl(lesson.href)");
+  });
+
+  it("the MCP recall panel offers it only when the host opens links", () => {
+    const panel = file("desktop/src/panel/recall.ts");
+    expect(panel).toMatch(
+      /app\.getHostCapabilities\(\)\?\.openLinks\s*\?\s*academyPracticeLink\(card\.sourceLink, rating/,
+    );
+    expect(panel).toContain("app.openLink({ url: href })");
+  });
+
+  it("Mobile offers it with the booked rating", () => {
+    const main = file("mobile/src/main.ts");
+    expect(main).toContain(
+      'academyPracticeLink(sourceLink, result.rating, t("source_open_lesson"))',
+    );
+    expect(main).toContain('open.rel = "noreferrer"');
+  });
 });

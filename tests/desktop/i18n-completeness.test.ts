@@ -327,6 +327,11 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   // await native pack review (see i18n pack backlog).
   "source_open_lesson",
   "source_open",
+  // The Academy lesson after a missed card (zam-os/zam#438).
+  "academy_practice_title",
+  "academy_practice_body",
+  "academy_practice_open",
+  "academy_practice_next",
   "academy_menu",
   "academy_title",
   "academy_intro",

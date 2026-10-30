@@ -699,7 +699,9 @@ describe("mobile review session", () => {
       await expect(restored.rate(3)).rejects.toThrow(
         "A choice earns rating 1, not 3",
       );
-      await restored.rateChoice();
+      // The result names the derived rating: a missed choice offers the
+      // Academy lesson like a self-rated 1 (zam-os/zam#438).
+      expect((await restored.rateChoice()).rating).toBe(1);
       const log = (await db
         .prepare(
           "SELECT rating, answer_format FROM review_logs WHERE token_id = ?",
@@ -720,7 +722,7 @@ describe("mobile review session", () => {
       session.choose(wrong);
       session.disputeChoice();
       expect(session.choicePick).toEqual({ chosen: wrong, disputed: true });
-      await session.rateChoice();
+      expect((await session.rateChoice()).rating).toBe(3);
 
       const log = (await db
         .prepare(

@@ -16,7 +16,11 @@ import {
   renderCardText,
 } from "../../desktop/src/card-text-render.js";
 import { renderQuestionWithTopic } from "../../desktop/src/question-topic.js";
-import { webSourceLink } from "../../desktop/src/source-link.js";
+import {
+  academyPracticeLink,
+  type WebSourceLink,
+  webSourceLink,
+} from "../../desktop/src/source-link.js";
 import { createCellImportProgress } from "../../desktop/src/cell-import-progress.js";
 import {
   beginTurn,
@@ -4165,6 +4169,7 @@ async function finishRating(
   // fresh options then, instead of the ones just seen.
   const ratedCardId = reviewSession.currentItem?.cardId;
   if (ratedCardId) choicePreparedCardIds.delete(ratedCardId);
+  const sourceLink = reviewSession.currentPrompt?.sourceLink;
   for (const candidate of ratingButtons) candidate.disabled = true;
   reviewChoiceNext.disabled = true;
   reviewChoiceNextBottom.disabled = true;
@@ -4172,22 +4177,19 @@ async function finishRating(
   try {
     const result = await submit();
     clearEvaluationUi();
-    if (result.summary) {
-      await offerAfterQueueFromReview(result.summary);
-      return false;
+    // Voice mode is hands-free: a step that waits for a tap would stall it.
+    const practice = voiceController.active
+      ? null
+      : academyPracticeLink(sourceLink, result.rating, t("source_open_lesson"));
+    if (practice) {
+      // „Sitzung beenden“ on the offer still shows the finished queue's summary.
+      if (result.summary) pendingSessionSummary = result.summary;
+      showAcademyPracticeOffer(practice, () => {
+        void continueAfterRating(result);
+      });
+      return true;
     }
-    const blocking = result.blockedPrerequisites.length
-      ? tf("prereqs_scheduled", {
-          slugs: result.blockedPrerequisites.join(", "),
-        })
-      : "";
-    renderCurrentReview(
-      tf("saved_next_due", {
-        next: formatDateTime(result.nextDueAt),
-        blocking,
-      }),
-    );
-    return true;
+    return await continueAfterRating(result);
   } catch (error) {
     renderCurrentReview(tf("rating_failed", { error: errorMessage(error) }));
     reviewStatus.classList.add("error");
@@ -4198,6 +4200,62 @@ async function finishRating(
     reviewChoiceNextBottom.disabled = false;
     stopReviewButton.disabled = false;
   }
+}
+
+/** The next card, or the end-of-queue offers once none is left. */
+async function continueAfterRating(
+  result: MobileReviewRatingResult,
+): Promise<boolean> {
+  if (result.summary) {
+    await offerAfterQueueFromReview(result.summary);
+    return false;
+  }
+  const blocking = result.blockedPrerequisites.length
+    ? tf("prereqs_scheduled", {
+        slugs: result.blockedPrerequisites.join(", "),
+      })
+    : "";
+  void renderCurrentReview(
+    tf("saved_next_due", {
+      next: formatDateTime(result.nextDueAt),
+      blocking,
+    }),
+  );
+  return true;
+}
+
+/**
+ * After a missed Academy card, before the next one (zam-os/zam#438): the
+ * lesson opens in the browser on this tap only; „Weiter“ goes on.
+ */
+function showAcademyPracticeOffer(
+  lesson: WebSourceLink,
+  next: () => void,
+): void {
+  let continued = false;
+  showReviewOffer({
+    title: t("academy_practice_title"),
+    body: t("academy_practice_body"),
+    actions: [
+      {
+        label: t("academy_practice_next"),
+        onClick: () => {
+          // One continuation per offer: a double tap must not skip a card.
+          if (continued) return;
+          continued = true;
+          next();
+        },
+      },
+    ],
+  });
+  const open = document.createElement("a");
+  open.className = "btn primary";
+  open.href = lesson.href;
+  open.target = "_blank";
+  open.rel = "noreferrer";
+  open.title = lesson.title;
+  open.textContent = t("academy_practice_open");
+  reviewOfferActions.prepend(open);
 }
 
 // The knowledge atlas on Fortschritt (ADR 2026-10-13, Decision 10): read

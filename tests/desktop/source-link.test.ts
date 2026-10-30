@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { webSourceLink } from "../../desktop/src/source-link.js";
+import {
+  academyPracticeLink,
+  webSourceLink,
+} from "../../desktop/src/source-link.js";
 
 const LESSON = "Lektion öffnen ↗";
 
@@ -77,5 +80,36 @@ describe("webSourceLink (ADR 2026-10-19 Decision 6)", () => {
     expect(long?.label).toMatch(/^example\.org\/x+…x+ ↗$/);
     expect(long?.label.length).toBeLessThan(80);
     expect(long?.title).toBe(`https://example.org/${"x".repeat(100)}`);
+  });
+});
+
+describe("academyPracticeLink (zam-os/zam#438)", () => {
+  const lesson =
+    "https://academy.zam-os.org/mathematik-realschule-9/#lesson=rd-1";
+
+  it("offers the Academy lesson only after a missed card", () => {
+    expect(academyPracticeLink(lesson, 1, LESSON)).toEqual({
+      href: lesson,
+      label: LESSON,
+      title: lesson,
+      academy: true,
+    });
+    for (const rating of [2, 3, 4]) {
+      expect(
+        academyPracticeLink(lesson, rating, LESSON),
+        String(rating),
+      ).toBeNull();
+    }
+  });
+
+  it("offers nothing for another web source, a local path or no source", () => {
+    for (const raw of [
+      "https://de.wikipedia.org/wiki/Satz_des_Pythagoras",
+      "https://academy.zam-os.org.evil.example/uml/",
+      "src/utils.ts#L12",
+      null,
+    ]) {
+      expect(academyPracticeLink(raw, 1, LESSON), String(raw)).toBeNull();
+    }
   });
 });

@@ -18,7 +18,11 @@ import {
   rgbCss,
 } from "../../src/kernel/atlas/palette.js";
 import { initContentImportMenu } from "./content-import-menu.js";
-import { webSourceLink } from "./source-link.js";
+import {
+  academyPracticeLink,
+  type WebSourceLink,
+  webSourceLink,
+} from "./source-link.js";
 import {
   applyTopicImportLabels,
   initTopicImportDialog,
@@ -7684,6 +7688,14 @@ async function submitRating(ratingVal: number, choiceEvidence?: unknown) {
   const cardId = activeCard.cardId;
   const attemptId = activeAttemptId;
   const responseTimeMs = learningClock.elapsedMs(Date.now());
+  // Voice mode is hands-free: a step that waits for a click would stall it.
+  const practice = voiceController.active
+    ? null
+    : academyPracticeLink(
+        activeCard.sourceLink,
+        ratingVal,
+        t("source_open_lesson"),
+      );
   // Checking in the rating closes the thread (ADR 2026-07-06b).
   resetDiscussionUi();
   // Hide the rated card immediately — leaving it up looks like the press
@@ -7718,6 +7730,10 @@ async function submitRating(ratingVal: number, choiceEvidence?: unknown) {
       sessionRatingTally.done += 1;
     }
 
+    if (practice && studySessionActive) {
+      showAcademyPracticeOffer(practice);
+      return;
+    }
     showStudyBusy("next");
     // Load next card or finish
     if (studySessionActive) await loadNextCard();
@@ -8662,6 +8678,34 @@ function renderQuestionPointCount(): void {
           count: countAnswerPoints(activeCard.concept),
         })
       : "";
+}
+
+/**
+ * After a missed Academy card, before the next one (zam-os/zam#438): the
+ * lesson opens in the system browser on this click only; „Weiter“ goes on.
+ */
+function showAcademyPracticeOffer(lesson: WebSourceLink): void {
+  showStudyOffer({
+    title: t("academy_practice_title"),
+    body: t("academy_practice_body"),
+    actions: [
+      {
+        label: t("academy_practice_open"),
+        primary: true,
+        onClick: () => {
+          void openUrl(lesson.href);
+        },
+      },
+      {
+        label: t("academy_practice_next"),
+        onClick: () => {
+          // One load per offer: a double click must not skip a card.
+          if (!studySessionActive || !beginReviewAction()) return;
+          void loadNextCard().finally(endReviewAction);
+        },
+      },
+    ],
+  });
 }
 
 function showPreconditionOffer(precondition: PreconditionOffer): void {

@@ -57,6 +57,21 @@ export function webSourceLink(
   };
 }
 
+/**
+ * The Academy lesson to practise right after a missed card (rating 1), or
+ * null (zam-os/zam#438). The moment of failure is when a lesson helps most,
+ * so every surface offers it then, and only for an Academy source.
+ */
+export function academyPracticeLink(
+  raw: string | null | undefined,
+  rating: number,
+  lessonLabel: string,
+): WebSourceLink | null {
+  if (rating !== 1) return null;
+  const web = webSourceLink(raw, lessonLabel);
+  return web?.academy ? web : null;
+}
+
 function displayPath(pathname: string): string {
   let path = pathname.replace(/\/+$/, "");
   try {
