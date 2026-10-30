@@ -78,6 +78,12 @@
     "file": "zam-academy-englisch-realschule-10-kvt.json"
   },
   {
+    "id": "zam-academy:englisch-realschule-8",
+    "version": "2026.10.2",
+    "sha256": "b47a776ab9f7d7d42d4c9ab88d89ce4e1ccee634671bc2fd721d78cb233e4b1b",
+    "file": "zam-academy-englisch-realschule-8-kvt.json"
+  },
+  {
     "id": "zam-academy:englisch-realschule-9",
     "version": "2026.10.2",
     "sha256": "c0155e3ba42f9a86c15ee2238034d2626bff07e7454c6dcbdb60c17729c5a410",

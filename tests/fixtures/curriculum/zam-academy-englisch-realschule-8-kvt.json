@@ -1,0 +1,4089 @@
+{
+ "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+ "tile_id": "zam-academy:englisch-realschule-8",
+ "version": "2026.10.2",
+ "title": "Englisch 8 Realschule (ZAM Academy)",
+ "description": "51 Lektionen mit englischen Materialien zu Geschichte Nordamerikas, USA, New York, Kanada, Sprachwerkstatt und amerikanischer Jugendliteratur, Sprachaufgaben auf zwei Stufen und 102 gezielten Wiederholungsfragen. LehrplanPLUS Bayern, gemeinsamer Lernpfad; natürliche Hörtexte, Gespräche und eine ganze Lektüre ergänzen die App.",
+ "publisher": "ZAM Academy",
+ "published_at": "2026-10-29T12:00:00Z",
+ "sources": [
+  {
+   "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/englisch",
+   "checked": "2026-10-29",
+   "label": "LehrplanPLUS Englisch 8 Realschule Bayern"
+  }
+ ],
+ "atoms": [
+  {
+   "id": "01M64HCT2C9RVQP20E8XBSARC2",
+   "atom_uri": "urn:zam:atom:01M64HCT2C9RVQP20E8XBSARC2",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-first-peoples",
+   "title": "Many nations, many ways of life",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-first-peoples",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "history",
+     "topic_title": "Schlaglichter der Geschichte"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT2DJXF2FNBNKJ6W083Y",
+     "slug": "e8-first-peoples-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "You need the number of tribes that are recognised today. Which reading technique fits best?",
+     "concept": "Scanning: I look quickly for the number.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-first-peoples",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Scanning: I look quickly for the number.",
+       "Reading every word slowly from the start."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT2ETMGP5VBKMM0JS8CD",
+     "slug": "e8-first-peoples-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Why is the name of a nation, e.g. “the Lakota”, more precise than “the Indians”?",
+     "concept": "There were and are many different nations with their own languages and ways of life.",
+     "sample_solution": "“The Indians” puts very different peoples into one group. Naming the nation, for example the Lakota or the Cherokee, shows that each nation has its own language, history and rules.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-first-peoples"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT2FPDV7HZTF4026XFC8",
+   "atom_uri": "urn:zam:atom:01M64HCT2FPDV7HZTF4026XFC8",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-colonies",
+   "title": "Two settlements, two points of view",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-colonies",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT2C9RVQP20E8XBSARC2",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Many nations, many ways of life“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "history",
+     "topic_title": "Schlaglichter der Geschichte"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT2G067WG7KH0EEP15F8",
+     "slug": "e8-colonies-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "You rewrite a settler's diary from a Wampanoag point of view. What must stay the same?",
+     "concept": "The historical facts, such as the date and the place.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-colonies",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "The historical facts, such as the date and the place.",
+       "The settler's feelings and opinions."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT2HCAE59221BCCDHD5W",
+     "slug": "e8-colonies-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What was Jamestown in Virginia, founded in 1607?",
+     "concept": "The first permanent English colony in North America.",
+     "sample_solution": "Jamestown was founded in 1607 and was the first English colony in North America that lasted. The Pilgrims came later, in 1620, and built Plymouth.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-colonies"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT2JNYC72W757NNX6QF1",
+   "atom_uri": "urn:zam:atom:01M64HCT2JNYC72W757NNX6QF1",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-slavery",
+   "title": "From 1619 to the 13th Amendment",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-slavery",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT2FPDV7HZTF4026XFC8",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Two settlements, two points of view“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "history",
+     "topic_title": "Schlaglichter der Geschichte"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT2KDKRXKJ415Y22FW28",
+     "slug": "e8-slavery-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "What did the 13th Amendment to the U.S. Constitution do in 1865?",
+     "concept": "It abolished slavery in the United States.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-slavery",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "It abolished slavery in the United States.",
+       "It started the American Civil War."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT2MSHYFECTVP481ZZQ1",
+     "slug": "e8-slavery-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What happened in the colony of Virginia in 1619?",
+     "concept": "The arrival of Africans was recorded there for the first time.",
+     "sample_solution": "In 1619 about twenty Africans who had been taken by force arrived in Virginia. It is the first recorded arrival of Africans in the English colony; slavery developed from such beginnings.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-slavery"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT2NW14PQS7ZAVZZV2QB",
+   "atom_uri": "urn:zam:atom:01M64HCT2NW14PQS7ZAVZZV2QB",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-civil-rights",
+   "title": "Rosa Parks keeps her seat",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-civil-rights",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT2JNYC72W757NNX6QF1",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „From 1619 to the 13th Amendment“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "history",
+     "topic_title": "Schlaglichter der Geschichte"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT2P2T1Y02VSESR16YNC",
+     "slug": "e8-civil-rights-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Why was Rosa Parks arrested in Montgomery in 1955?",
+     "concept": "She refused to give up her bus seat for white passengers.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-civil-rights",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "She refused to give up her bus seat for white passengers.",
+       "She refused to pay for her bus ticket."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT2Q8QY3P0G3EEKJ8T5K",
+     "slug": "e8-civil-rights-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What did the Civil Rights Act of 1964 make illegal?",
+     "concept": "Discrimination in public places and at work.",
+     "sample_solution": "President Johnson signed the Civil Rights Act in 1964. It prohibited discrimination in public places, made discrimination at work illegal and supported the integration of schools.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-civil-rights"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT2RDTQKPR459TYSS637",
+   "atom_uri": "urn:zam:atom:01M64HCT2RDTQKPR459TYSS637",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-freedom-mediation",
+   "title": "Explaining the Underground Railroad in German",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-freedom-mediation",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT2JNYC72W757NNX6QF1",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „From 1619 to the 13th Amendment“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "history",
+     "topic_title": "Schlaglichter der Geschichte"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT2SYF23VN1A9WH6MMJD",
+     "slug": "e8-freedom-mediation-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Your grandmother asks what the “Underground Railroad” was. Which German explanation is best?",
+     "concept": "Ein geheimes Netz von Fluchtwegen und Helfern für Versklavte.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-freedom-mediation",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Ein geheimes Netz von Fluchtwegen und Helfern für Versklavte.",
+       "Eine unterirdische Eisenbahn für Flüchtlinge."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT2TWZH6GR9SQ1CF9C3S",
+     "slug": "e8-freedom-mediation-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What does the term “freedom seeker” mean in texts about the Underground Railroad?",
+     "concept": "An enslaved person who escaped to become free.",
+     "sample_solution": "The National Park Service uses “freedom seeker” instead of words like “runaway”: it describes enslaved African Americans who escaped from slavery to gain their freedom.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-freedom-mediation"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT2VKZCMCGSS7QSMMGPW",
+   "atom_uri": "urn:zam:atom:01M64HCT2VKZCMCGSS7QSMMGPW",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-states",
+   "title": "Fifty states and a capital district",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-states",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "usa",
+     "topic_title": "USA"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT2W3S58GVWK0R63T0EK",
+     "slug": "e8-states-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Is Washington, D.C. one of the 50 U.S. states?",
+     "concept": "No, it is a federal district, the District of Columbia.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-states",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "No, it is a federal district, the District of Columbia.",
+       "Yes, it is the smallest of the 50 states."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT2XT2FNTR81MQR4WCM9",
+     "slug": "e8-states-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What does every U.S. state have of its own, according to the fact sheet?",
+     "concept": "Its own capital, government and laws.",
+     "sample_solution": "Each of the 50 states has its own capital, its own government and its own laws, for example on the age for a driver's license. Washington, D.C. is a federal district, not a state.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-states"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT2Y78X0XJA8J7WAR17Z",
+   "atom_uri": "urn:zam:atom:01M64HCT2Y78X0XJA8J7WAR17Z",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-weather-graph",
+   "title": "Storms in a bar chart",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-weather-graph",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT2VKZCMCGSS7QSMMGPW",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Fifty states and a capital district“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "usa",
+     "topic_title": "USA"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT2Z516QDJMQT7QF7MBR",
+     "slug": "e8-weather-graph-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "The chart shows 30 storm reports in April and 60 in May. Which sentence describes this correctly?",
+     "concept": "May had twice as many reports as April.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-weather-graph",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "May had twice as many reports as April.",
+       "April had twice as many reports as May."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT30RK17PJ420BSQSCHD",
+     "slug": "e8-weather-graph-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "From when to when does the Atlantic hurricane season officially run?",
+     "concept": "From June 1 to November 30.",
+     "sample_solution": "According to the U.S. National Hurricane Center, the Atlantic hurricane season runs from June 1 to November 30, so the coasts prepare in summer and autumn.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-weather-graph"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT311R7XER8H4K1EAD9S",
+   "atom_uri": "urn:zam:atom:01M64HCT311R7XER8H4K1EAD9S",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-social-range",
+   "title": "Two teenagers, one country",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-social-range",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "usa",
+     "topic_title": "USA"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT321EKR318X1WSMGQ94",
+     "slug": "e8-social-range-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which conclusion can you really draw from the two interviews?",
+     "concept": "Both want to go to college, but their free time is very different.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-social-range",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Both want to go to college, but their free time is very different.",
+       "All American teenagers live in suburbs with big gardens."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT33TAJZM5CXPJJ79QXF",
+     "slug": "e8-social-range-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What does “social range” mean when people talk about life in the USA?",
+     "concept": "The big differences in how well-off people are and how they live.",
+     "sample_solution": "Social range describes the differences between rich and poor families, for example in housing, free time and chances for college. One interview cannot show the whole range.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-social-range"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT34BV1VA6M93RFMSSGS",
+   "atom_uri": "urn:zam:atom:01M64HCT34BV1VA6M93RFMSSGS",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-ellis-island",
+   "title": "Island of hope, island of tears",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-ellis-island",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT2FPDV7HZTF4026XFC8",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Two settlements, two points of view“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "usa",
+     "topic_title": "USA"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT350M3T9CM10QC4MJD5",
+     "slug": "e8-ellis-island-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Why was Ellis Island also called an “Island of Tears”?",
+     "concept": "Some families were separated and some people were sent back.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-ellis-island",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Some families were separated and some people were sent back.",
+       "The weather on the island was always rainy."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT36P3BBNH9HYSZASRFB",
+     "slug": "e8-ellis-island-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What was Ellis Island from 1892 to 1924?",
+     "concept": "America's largest immigration station, in New York Harbor.",
+     "sample_solution": "From 1892 to 1924 more than 12 million immigrants were processed on Ellis Island. For most it was an “Island of Hope”; for some it became an “Island of Tears”.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-ellis-island"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT370E67RNWD1WKAH8QH",
+   "atom_uri": "urn:zam:atom:01M64HCT370E67RNWD1WKAH8QH",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-green-website",
+   "title": "A website about saving water",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-green-website",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT2Y78X0XJA8J7WAR17Z",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Storms in a bar chart“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "usa",
+     "topic_title": "USA"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT388T2FBK4K7C0V64EA",
+     "slug": "e8-green-website-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which phrase starts a letter to the editor that refers to the website?",
+     "concept": "I read your page on saving water with great interest.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-green-website",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "I read your page on saving water with great interest.",
+       "Hi guys, what's up?"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT39Z01ZFNG0NSKEZ183",
+     "slug": "e8-green-website-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What do you do first in a letter to the editor?",
+     "concept": "Refer to the text you are answering.",
+     "sample_solution": "A letter to the editor starts with a reference such as “I read your article on …”. Then you give your opinion with reasons and end with a suggestion or a clear conclusion.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-green-website"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT3ARD8P76096GC30EBM",
+   "atom_uri": "urn:zam:atom:01M64HCT3ARD8P76096GC30EBM",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-radio-ad",
+   "title": "A radio ad and a store announcement",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-radio-ad",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "usa",
+     "topic_title": "USA"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT3BPG3WMV4MKBX9MN3Y",
+     "slug": "e8-radio-ad-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which trick does the radio ad use when it says “but only until Sunday”?",
+     "concept": "It puts time pressure on the listeners.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-radio-ad",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "It puts time pressure on the listeners.",
+       "It gives a neutral fact about the shoes."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT3C6T7B1BTNNTFWYZRQ",
+     "slug": "e8-radio-ad-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "An announcement says one thing and then “sorry – that's …”. Which information counts?",
+     "concept": "The corrected information after “sorry – that's …”.",
+     "sample_solution": "Speakers often correct themselves in announcements. The second version after “sorry” or “I mean” replaces the first one, so you note the correction.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-radio-ad"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT3DYGEZ9MA73C8ZMGZQ",
+   "atom_uri": "urn:zam:atom:01M64HCT3DYGEZ9MA73C8ZMGZQ",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-tech-guide",
+   "title": "Silicon Valley and a set-up guide",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-tech-guide",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "usa",
+     "topic_title": "USA"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT3EXSQ8KR0RAQFE2YND",
+     "slug": "e8-tech-guide-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "In the guide, the light turns red. What should you do?",
+     "concept": "Unplug it, wait ten seconds and start again.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-tech-guide",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Unplug it, wait ten seconds and start again.",
+       "Hold the button for five seconds once more."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT3F6TPASZFRB855ERXF",
+     "slug": "e8-tech-guide-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Which verb form do instructions in English usually use, e.g. “Plug in the cable.”?",
+     "concept": "The imperative: the base form without a subject.",
+     "sample_solution": "Instructions use the imperative, for example “Plug in the cable” or “Do not open the case”, together with sequence words such as first, next, then and finally.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-tech-guide"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT3G0V21JXNZJ4VKYG5T",
+   "atom_uri": "urn:zam:atom:01M64HCT3G0V21JXNZJ4VKYG5T",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-entry-form",
+   "title": "Filling in a travel form",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-entry-form",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT2VKZCMCGSS7QSMMGPW",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Fifty states and a capital district“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "usa",
+     "topic_title": "USA"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT3HYPN72VXJMG3W7FF7",
+     "slug": "e8-entry-form-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "A U.S. form asks for your date of birth as MM/DD/YYYY. You were born on 7 March 2012. What do you write?",
+     "concept": "03/07/2012",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-entry-form",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "03/07/2012",
+       "07/03/2012"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT3JAQEKRB1NB1QT74N8",
+     "slug": "e8-entry-form-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What do “surname” and “given name” mean on an English form?",
+     "concept": "Surname is the family name; given name is the first name.",
+     "sample_solution": "On forms, “surname” or “last name” asks for your family name (e.g. Weber) and “given name” or “first name” for your first name(s) (e.g. Lena Maria).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-entry-form"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT3KJ6YEPXH4PWR0E0VN",
+   "atom_uri": "urn:zam:atom:01M64HCT3KJ6YEPXH4PWR0E0VN",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-hotel",
+   "title": "Booking a room by phone",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-hotel",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "usa",
+     "topic_title": "USA"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT3MTWMYWVWKKJXWV4WS",
+     "slug": "e8-hotel-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "On the phone you are not sure about a price. What do you say?",
+     "concept": "Sorry, did you say 114 or 140?",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-hotel",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Sorry, did you say 114 or 140?",
+       "Price is wrong, give me another."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT3NSG09QH1NYF7G3F1C",
+     "slug": "e8-hotel-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "How do you politely say that you want to book a room?",
+     "concept": "I'd like to book a room, please.",
+     "sample_solution": "“I'd like to book a double room for two nights, please.” I'd like to (= I would like to) is a polite way to say what you want in a service situation.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-hotel"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT3PJFVQ4C0DFSJE6Z2R",
+   "atom_uri": "urn:zam:atom:01M64HCT3PJFVQ4C0DFSJE6Z2R",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-doctor-mediation",
+   "title": "At the doctor's: helping your dad",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-doctor-mediation",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT2RDTQKPR459TYSS637",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Explaining the Underground Railroad in German“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "usa",
+     "topic_title": "USA"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT3QAXGE53VBSY58NVHM",
+     "slug": "e8-doctor-mediation-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "You don't know the English word for “Knöchel”. What is a good strategy?",
+     "concept": "Paraphrase it: the joint between the foot and the leg.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-doctor-mediation",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Paraphrase it: the joint between the foot and the leg.",
+       "Say the German word louder."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT3RRMW1X90PRNHHZ4WR",
+     "slug": "e8-doctor-mediation-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "In spoken mediation, how do you pass on what your dad says to the doctor?",
+     "concept": "In the third person: “My dad says that …”.",
+     "sample_solution": "You don't translate word for word in the first person. You report: “My dad says that he twisted his ankle yesterday.” Important numbers and instructions are passed on exactly.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-doctor-mediation"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT3SZW6PGP60X9XSPBD8",
+   "atom_uri": "urn:zam:atom:01M64HCT3SZW6PGP60X9XSPBD8",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-online-review",
+   "title": "A fair online review",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-online-review",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT3KJ6YEPXH4PWR0E0VN",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Booking a room by phone“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "usa",
+     "topic_title": "USA"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT3T6KEMFHCWHXEMSAT6",
+     "slug": "e8-online-review-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Why is Review B more helpful than Review A?",
+     "concept": "It gives concrete positive and negative points with reasons.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-online-review",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "It gives concrete positive and negative points with reasons.",
+       "It uses more exclamation marks."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT3VSRPTT1WPBGT9AV93",
+     "slug": "e8-online-review-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What makes an online review fair and helpful?",
+     "concept": "Concrete good and bad points with reasons and a recommendation.",
+     "sample_solution": "A helpful review says what you used and when, gives concrete positive and negative points with reasons, for example “clean room, but noisy at night”, and ends with a recommendation.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-online-review"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT3WH6TVBQD6DDY08MZB",
+   "atom_uri": "urn:zam:atom:01M64HCT3WH6TVBQD6DDY08MZB",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-new-york-history",
+   "title": "From New Amsterdam to New York",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-new-york-history",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT2FPDV7HZTF4026XFC8",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Two settlements, two points of view“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "cities",
+     "topic_title": "New York und andere Metropolen"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT3XR9R8TEEHGXZWGFK8",
+     "slug": "e8-new-york-history-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "What was New York called when it was a Dutch settlement?",
+     "concept": "New Amsterdam",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-new-york-history",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "New Amsterdam",
+       "New England"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT3Y5QWKTBAJ45PQFPZC",
+     "slug": "e8-new-york-history-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "When was the Statue of Liberty dedicated, and who gave it?",
+     "concept": "In 1886; it was a gift from the people of France.",
+     "sample_solution": "The Statue of Liberty in New York Harbor was a gift from the people of France and was dedicated in 1886. It greeted many immigrants who arrived by ship.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-new-york-history"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT3ZTWVVBA1802F973PM",
+   "atom_uri": "urn:zam:atom:01M64HCT3ZTWVVBA1802F973PM",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-subway-listening",
+   "title": "Changes on the subway",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-subway-listening",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT3ARD8P76096GC30EBM",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „A radio ad and a store announcement“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "cities",
+     "topic_title": "New York und andere Metropolen"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT407PS2ZQRGT55Y70JC",
+     "slug": "e8-subway-listening-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which of these is one of New York City's five boroughs?",
+     "concept": "Brooklyn",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-subway-listening",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Brooklyn",
+       "New Jersey"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT41A2M18J1EN1P4K1ZK",
+     "slug": "e8-subway-listening-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "How do you politely check an announcement you didn't hear clearly?",
+     "concept": "Repeat what you understood and ask: “Did they say …?”",
+     "sample_solution": "For example: “Excuse me, did they say the A train isn't stopping at 42nd Street?” The other person only has to confirm or correct the part you are unsure about.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-subway-listening"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT42A6H1HZ2M8CY712SC",
+   "atom_uri": "urn:zam:atom:01M64HCT42A6H1HZ2M8CY712SC",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-street-scene",
+   "title": "Describing a street festival picture",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-street-scene",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "cities",
+     "topic_title": "New York und andere Metropolen"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT430R4XN81MGQHNSG8M",
+     "slug": "e8-street-scene-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which sentence correctly describes the picture?",
+     "concept": "In the foreground, a girl is waving a flag.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-street-scene",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "In the foreground, a girl is waving a flag.",
+       "In the background, a girl waves a flag every day."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT44F1VCWTGDN32H15ED",
+     "slug": "e8-street-scene-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Which tense do you use to describe what is happening in a picture?",
+     "concept": "The present progressive, e.g. “A girl is waving a flag.”",
+     "sample_solution": "In picture descriptions the present progressive shows what is happening at the moment: “A family is eating at a table.” Places are given with in the foreground, in the middle and in the background.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-street-scene"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT45W1EHG9Y4PVMCTV8R",
+   "atom_uri": "urn:zam:atom:01M64HCT45W1EHG9Y4PVMCTV8R",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-chicago-la",
+   "title": "Chicago and Los Angeles compared",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-chicago-la",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT671PPXHHXY43T31P2D",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „However, although, as a result“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "cities",
+     "topic_title": "New York und andere Metropolen"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT46N0X3F1PT065R1CD5",
+     "slug": "e8-chicago-la-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which sentence compares the two cities correctly?",
+     "concept": "While LA is famous for films, Chicago is known for architecture.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-chicago-la",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "While LA is famous for films, Chicago is known for architecture.",
+       "Chicago is more warmer than Los Angeles."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT47V4MGM749M3179NPZ",
+     "slug": "e8-chicago-la-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Which word links two contrasting facts in one sentence: “___ LA is warm, Chicago has cold winters.”?",
+     "concept": "While (or whereas).",
+     "sample_solution": "“While LA is warm and dry, Chicago has cold, windy winters.” While and whereas link two facts that are different; both can start the first clause.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-chicago-la"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT4859M59483RFJASZEH",
+   "atom_uri": "urn:zam:atom:01M64HCT4859M59483RFJASZEH",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-canada-facts",
+   "title": "Ten provinces, three territories",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-canada-facts",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT2VKZCMCGSS7QSMMGPW",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Fifty states and a capital district“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "canada",
+     "topic_title": "Canada"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT49P8469F8975XR2YS8",
+     "slug": "e8-canada-facts-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "How many provinces and territories does Canada have today?",
+     "concept": "Ten provinces and three territories.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-canada-facts",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Ten provinces and three territories.",
+       "Fifty states and one district."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT4AT0QV1ERRP3R5WM32",
+     "slug": "e8-canada-facts-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What are Canada's two official languages?",
+     "concept": "English and French.",
+     "sample_solution": "Canada has two official languages, English and French. Most people in Quebec speak French, while English is the main language in most other provinces.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-canada-facts"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT4BN3TNTMZF9HCDMXQ5",
+   "atom_uri": "urn:zam:atom:01M64HCT4BN3TNTMZF9HCDMXQ5",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-canada-radio",
+   "title": "A radio show about growing up bilingual",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-canada-radio",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT4859M59483RFJASZEH",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Ten provinces, three territories“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "canada",
+     "topic_title": "Canada"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT4CEE35STF3PAPB7NBT",
+     "slug": "e8-canada-radio-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Canadian English often uses British spellings. Which spelling would you expect in a Canadian school book?",
+     "concept": "colour",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-canada-radio",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "colour",
+       "color"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT4D2VGEM8RTSMSKQH0J",
+     "slug": "e8-canada-radio-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What does a Canadian speaker often mean with “eh?” at the end of a sentence?",
+     "concept": "A friendly “don't you agree?”, like German „oder?“.",
+     "sample_solution": "“It's cold today, eh?” invites the listener to agree. It is a typical feature of spoken Canadian English, similar to „oder?“ or „gell?“ in German.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-canada-radio"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT4EMVNZAJX60QHFS4R2",
+   "atom_uri": "urn:zam:atom:01M64HCT4EMVNZAJX60QHFS4R2",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-inuit-email",
+   "title": "An e-mail from Nunavut",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-inuit-email",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT4859M59483RFJASZEH",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Ten provinces, three territories“ an; eigenständiger Einstieg bleibt möglich."
+    },
+    {
+     "atom_id": "01M64HCT2C9RVQP20E8XBSARC2",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Many nations, many ways of life“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "canada",
+     "topic_title": "Canada"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT4F0VCN1FSNCE4P3TVV",
+     "slug": "e8-inuit-email-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which three groups of Indigenous peoples does Canada's Constitution recognise?",
+     "concept": "First Nations, Inuit and Métis",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-inuit-email",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "First Nations, Inuit and Métis",
+       "Inuit, Cherokee and Lakota"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT4GTGGBT8CJBJ3FY5AQ",
+     "slug": "e8-inuit-email-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Which Canadian territory has the capital Iqaluit?",
+     "concept": "Nunavut.",
+     "sample_solution": "Iqaluit is the capital of Nunavut, a territory in the far north of Canada where most people are Inuit and Inuktitut is an important language.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-inuit-email"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT4HEN4VBDRNTJEFHYBP",
+   "atom_uri": "urn:zam:atom:01M64HCT4HEN4VBDRNTJEFHYBP",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-neighbours",
+   "title": "Canada and the US: close neighbours",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-neighbours",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT4859M59483RFJASZEH",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Ten provinces, three territories“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "canada",
+     "topic_title": "Canada"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT4JCMR1TS9T1C1EHSQD",
+     "slug": "e8-neighbours-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "What is special about the land border between Canada and the USA?",
+     "concept": "It is the longest international border in the world.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-neighbours",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "It is the longest international border in the world.",
+       "It is closed to tourists all year."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT4K7G4B9V2VEZT9ANFX",
+     "slug": "e8-neighbours-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name two ways in which Canada and the USA work closely together.",
+     "concept": "Trade and defence, for example through NORAD.",
+     "sample_solution": "The two neighbours are linked by huge trade and investment flows that support millions of jobs, and they defend North America together through NORAD.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-neighbours"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT4M8GQ8KHVENBDBE64E",
+   "atom_uri": "urn:zam:atom:01M64HCT4M8GQ8KHVENBDBE64E",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-exchange-mediation",
+   "title": "Mediating for a Canadian exchange student",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-exchange-mediation",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT3PJFVQ4C0DFSJE6Z2R",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „At the doctor's: helping your dad“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "canada",
+     "topic_title": "Canada"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT4NRBCK7R03Z1C50XXV",
+     "slug": "e8-exchange-mediation-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "How do you best explain the German word “Brotzeit” to a Canadian guest?",
+     "concept": "It's a cold meal with bread, cheese or sausage.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-exchange-mediation",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "It's a cold meal with bread, cheese or sausage.",
+       "It's “bread time”."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT4PZDS3KJ16WKECBCFX",
+     "slug": "e8-exchange-mediation-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "A German word has no English equivalent while you mediate. What do you do?",
+     "concept": "Explain it with a paraphrase or an example.",
+     "sample_solution": "Instead of translating “Brotzeit” word for word, you explain: “It's a cold meal with bread, cheese and sausage.” A paraphrase or example tells the listener what is meant.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-exchange-mediation"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT4QC1A92ZE1Q3S1SPQD",
+   "atom_uri": "urn:zam:atom:01M64HCT4QC1A92ZE1Q3S1SPQD",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-reflexive",
+   "title": "Myself – or no pronoun at all?",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-reflexive",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT4R5D16D6CDG26A045B",
+     "slug": "e8-reflexive-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "How do you say „Wir haben uns am Bahnhof getroffen“ in English?",
+     "concept": "We met at the station.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-reflexive",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "We met at the station.",
+       "We met ourselves at the station."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT4STFDPRKZDBD4YSJVA",
+     "slug": "e8-reflexive-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What are “sich treffen”, “sich erinnern” and “sich fühlen” in English?",
+     "concept": "meet, remember, feel – without a reflexive pronoun.",
+     "sample_solution": "“We met at the station.” “I remember the trip.” “I feel tired.” Many German „sich“-verbs are not reflexive in English, so no myself or ourselves follows.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-reflexive"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT4TC4HHBSFH9S8QN87B",
+   "atom_uri": "urn:zam:atom:01M64HCT4TC4HHBSFH9S8QN87B",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-each-other",
+   "title": "Each other – or themselves?",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-each-other",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT4QC1A92ZE1Q3S1SPQD",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Myself – or no pronoun at all?“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT4VMGV0DD54JMMQH909",
+     "slug": "e8-each-other-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Mia helps Ben, and Ben helps Mia. Which sentence fits?",
+     "concept": "Mia and Ben help each other.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-each-other",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Mia and Ben help each other.",
+       "Mia and Ben help themselves."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT4WEAW0EX6J1721Y6YC",
+     "slug": "e8-each-other-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What does the pronoun show in “I made the poster myself”?",
+     "concept": "That I did it personally, without help.",
+     "sample_solution": "Here myself is an emphatic pronoun: it stresses the person. The sentence is still correct without it, but myself adds „selbst, ohne Hilfe“.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-each-other"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT4XV3837Q4XE8VH4AGH",
+   "atom_uri": "urn:zam:atom:01M64HCT4XV3837Q4XE8VH4AGH",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-two-objects",
+   "title": "Give someone something",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-two-objects",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT4Y6C4RD9892JW5RBKX",
+     "slug": "e8-two-objects-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which sentence is correct?",
+     "concept": "Can you explain the rule to me?",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-two-objects",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Can you explain the rule to me?",
+       "Can you explain me the rule?"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT4Z50MCHN86WXRJYKGE",
+     "slug": "e8-two-objects-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "How do you say „Erklär mir die Regel“ correctly in English?",
+     "concept": "Explain the rule to me.",
+     "sample_solution": "Explain, describe and suggest need to before the person: “Explain the rule to me.” With give, show or send both patterns work: “Show me the map” or “Show the map to me”.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-two-objects"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT50PDA062245WY2WWJ8",
+   "atom_uri": "urn:zam:atom:01M64HCT50PDA062245WY2WWJ8",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-questions",
+   "title": "Who called? – Who did you call?",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-questions",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT51WJXG692NB74311T5",
+     "slug": "e8-questions-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Your friend says, “Somebody called me.” Which question asks about that person?",
+     "concept": "Who called you?",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-questions",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Who called you?",
+       "Who did you call?"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT52A5YTS8FABE4410SZ",
+     "slug": "e8-questions-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "When does a question with who or what need no do, does or did?",
+     "concept": "When who or what is the subject of the question.",
+     "sample_solution": "“Who called you?” asks for the subject (somebody called you), so there is no did. “Who did you call?” asks for the object (you called somebody), so it needs did.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-questions"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT53R90J8BTQBXZDF1CN",
+   "atom_uri": "urn:zam:atom:01M64HCT53R90J8BTQBXZDF1CN",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-negative-questions",
+   "title": "Don't you like it?",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-negative-questions",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT50PDA062245WY2WWJ8",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Who called? – Who did you call?“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT54E6NFRV10W4H9206S",
+     "slug": "e8-negative-questions-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Your friend asks, “Don't you like pizza?” You DO like pizza. What do you answer?",
+     "concept": "Yes, I do.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-negative-questions",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Yes, I do.",
+       "No, I do."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT555T7GNGWR9KF5J8VW",
+     "slug": "e8-negative-questions-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What does a negative question like “Isn't it beautiful?” often show?",
+     "concept": "That the speaker expects the answer yes or is surprised.",
+     "sample_solution": "Negative questions often show surprise (“Don't you know him?”) or that you expect agreement (“Isn't it beautiful?” – “Yes, it is.”). Why don't we …? makes a suggestion.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-negative-questions"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT568HARMD0P6T7RGT1D",
+   "atom_uri": "urn:zam:atom:01M64HCT568HARMD0P6T7RGT1D",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-passive",
+   "title": "It was opened in 1883: the passive",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-passive",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT570A88NC0NPY72S9FQ",
+     "slug": "e8-passive-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which sentence is a correct passive in the simple past?",
+     "concept": "The bridge was opened in 1883.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-passive",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "The bridge was opened in 1883.",
+       "The bridge opened by the city in 1883."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT58KBYVY0JA4QYTNQAD",
+     "slug": "e8-passive-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "How do you form the passive in English?",
+     "concept": "A form of be + past participle.",
+     "sample_solution": "The tense is shown by be: “is used” (present), “was opened” (past), “will be repaired” (future), “can be bought” (modal). The past participle stays the same.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-passive"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT59FK9DQRRNG1E4C8TK",
+   "atom_uri": "urn:zam:atom:01M64HCT59FK9DQRRNG1E4C8TK",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-personal-passive",
+   "title": "I was given a map",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-personal-passive",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT568HARMD0P6T7RGT1D",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „It was opened in 1883: the passive“ an; eigenständiger Einstieg bleibt möglich."
+    },
+    {
+     "atom_id": "01M64HCT4XV3837Q4XE8VH4AGH",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Give someone something“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT5A5TC4E0Z5R8VGGHX9",
+     "slug": "e8-personal-passive-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which passive sentence sounds the most natural in English?",
+     "concept": "I was offered a place in the choir.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-personal-passive",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "I was offered a place in the choir.",
+       "To me was offered a place in the choir."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT5BQA1WYG5AY352PFK0",
+     "slug": "e8-personal-passive-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Turn into the personal passive: “They offered her a job.”",
+     "concept": "She was offered a job.",
+     "sample_solution": "With verbs like give, offer, show, tell and promise, English often makes the person the subject: “She was offered a job.” German says „Ihr wurde ein Job angeboten“.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-personal-passive"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT5C3W3HJP5C1DM7WM6M",
+   "atom_uri": "urn:zam:atom:01M64HCT5C3W3HJP5C1DM7WM6M",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-if-revision",
+   "title": "Type 0, 1, 2 – or 3?",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-if-revision",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT5DT78NMZGVZ1NRK630",
+     "slug": "e8-if-revision-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "You talk about a past situation that cannot be changed. Which type do you need?",
+     "concept": "Type 3: If I had known, I would have come.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-if-revision",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Type 3: If I had known, I would have come.",
+       "Type 1: If I know, I will come."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT5ENMNGV1XB6HETAM3P",
+     "slug": "e8-if-revision-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Which verb forms does a type 2 conditional use?",
+     "concept": "If + simple past, would + infinitive.",
+     "sample_solution": "“If I had a million dollars, I would travel around Canada.” Type 2 describes an unlikely or imagined situation; for advice people often say “If I were you, I would …”.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-if-revision"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT5FB96WA7WX6CHN0ZDW",
+   "atom_uri": "urn:zam:atom:01M64HCT5FB96WA7WX6CHN0ZDW",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-if-type3",
+   "title": "If I had known …",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-if-type3",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT5C3W3HJP5C1DM7WM6M",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Type 0, 1, 2 – or 3?“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT5GVHZEXF7JT7MCVY9D",
+     "slug": "e8-if-type3-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Complete the main clause of this type 3 conditional: “If you had asked me, I ___ (help) you.”",
+     "concept": "would have helped",
+     "replaces": [
+      "01K4E8G0000000000000000J01"
+     ],
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-if-type3",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "would have helped",
+       "would help"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT5HK8J9Y024FCZT1HDR",
+     "slug": "e8-if-type3-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Which tense follows if in a type 3 conditional?",
+     "concept": "The past perfect (had + past participle).",
+     "sample_solution": "“If I had known, I would have come.” The if-clause uses the past perfect, the main clause would/could/might have + past participle. There is no would in the if-clause.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-if-type3"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT5JWZ78W7XTNZ5NTTBT",
+   "atom_uri": "urn:zam:atom:01M64HCT5JWZ78W7XTNZ5NTTBT",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-participles",
+   "title": "Reading shortened sentences",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-participles",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT568HARMD0P6T7RGT1D",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „It was opened in 1883: the passive“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT5K8Q7R5TFNZ3W2TR1C",
+     "slug": "e8-participles-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "What does “Walking along the seawall, we saw a seal” mean?",
+     "concept": "While we were walking along the seawall, we saw a seal.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-participles",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "While we were walking along the seawall, we saw a seal.",
+       "The seal was walking along the seawall when we saw it."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT5MTP8B2YGF0BY6ZT5Z",
+     "slug": "e8-participles-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What kind of meaning does a past participle construction like “Built in 1883, the bridge …” have?",
+     "concept": "A passive meaning: the bridge, which was built in 1883, …",
+     "sample_solution": "Past participle constructions are passive: “Built in 1883, the bridge is still in use” means “The bridge, which was built in 1883, is still in use.” -ing constructions are active.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-participles"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT5NB3CDQZ296S5A0P1A",
+   "atom_uri": "urn:zam:atom:01M64HCT5NB3CDQZ296S5A0P1A",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-modal-substitutes",
+   "title": "Will be able to, had to, allowed to",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-modal-substitutes",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT5PG7TDWPX072JZ78W1",
+     "slug": "e8-modal-substitutes-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which sentence means that something is NOT necessary?",
+     "concept": "You don't have to bring a sleeping bag.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-modal-substitutes",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "You don't have to bring a sleeping bag.",
+       "You mustn't bring a sleeping bag."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT5QC3M9FJMCXFMEMQ6V",
+     "slug": "e8-modal-substitutes-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What is the difference between “mustn't” and “don't have to”?",
+     "concept": "mustn't = not allowed; don't have to = not necessary.",
+     "sample_solution": "“You mustn't use your phone in the test” is a ban (darf nicht). “You don't have to bring a dictionary” means it is not necessary (muss nicht).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-modal-substitutes"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT5R06A9ZE3CG40A0XZD",
+   "atom_uri": "urn:zam:atom:01M64HCT5R06A9ZE3CG40A0XZD",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-ing-ed-adjectives",
+   "title": "Bored or boring?",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-ing-ed-adjectives",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT5SBN17W01520VKR8G3",
+     "slug": "e8-ing-ed-adjectives-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "You feel no interest during a long bus ride. What do you say?",
+     "concept": "I'm bored.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-ing-ed-adjectives",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "I'm bored.",
+       "I'm boring."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT5T5STMHTESQ7DNRJQE",
+     "slug": "e8-ing-ed-adjectives-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What is the difference between “interesting” and “interested”?",
+     "concept": "interesting describes the thing; interested describes how a person feels.",
+     "sample_solution": "“The museum was interesting” describes the museum. “I was interested in the photos” describes my feeling. The same rule works for boring/bored and exciting/excited.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-ing-ed-adjectives"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT5VJKXD5E1Z2BE7FPYQ",
+   "atom_uri": "urn:zam:atom:01M64HCT5VJKXD5E1Z2BE7FPYQ",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-verb-patterns",
+   "title": "Decide to go, enjoy going",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-verb-patterns",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT5WFPJDH36F419Y8DVQ",
+     "slug": "e8-verb-patterns-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which sentence is correct?",
+     "concept": "I'm looking forward to meeting you.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-verb-patterns",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "I'm looking forward to meeting you.",
+       "I'm looking forward to meet you."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT5XQA4BKX6BR6WP9B8P",
+     "slug": "e8-verb-patterns-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Why do you say “I'm looking forward to meeting you” and not “to meet you”?",
+     "concept": "In look forward to, to is a preposition, so -ing follows.",
+     "sample_solution": "After a preposition English uses the -ing form. In look forward to, to is a preposition, not part of an infinitive: “I'm looking forward to meeting you.”",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-verb-patterns"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT5YK97VFCD7K6AM9TXK",
+   "atom_uri": "urn:zam:atom:01M64HCT5YK97VFCD7K6AM9TXK",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-phrasal-verbs",
+   "title": "We didn't give up",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-phrasal-verbs",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT5Z2WP2NSQX5FA6PB34",
+     "slug": "e8-phrasal-verbs-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which sentence is correct?",
+     "concept": "We set it up in ten minutes.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-phrasal-verbs",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "We set it up in ten minutes.",
+       "We set up it in ten minutes."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT6018YC08BW9663PK6T",
+     "slug": "e8-phrasal-verbs-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Where does a pronoun go with a separable phrasal verb like “set up”?",
+     "concept": "Between the verb and the particle: set it up.",
+     "sample_solution": "A noun can go before or after the particle (set up the tent / set the tent up), but a pronoun must go in the middle: “set it up”, not “set up it”.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-phrasal-verbs"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT6138B4BDKSJ33T25K5",
+   "atom_uri": "urn:zam:atom:01M64HCT6138B4BDKSJ33T25K5",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-ae-be",
+   "title": "Sidewalk or pavement?",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-ae-be",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT62YKEK8JKCFWDDA02A",
+     "slug": "e8-ae-be-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which word is British English for the American word “apartment”?",
+     "concept": "flat",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-ae-be",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "flat",
+       "sidewalk"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT63EFKQJZSBS8PW1YB2",
+     "slug": "e8-ae-be-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "How do American and British English spell the word for „Farbe“?",
+     "concept": "AE color, BE colour.",
+     "sample_solution": "American English writes color, center and favorite; British English writes colour, centre and favourite. Both are correct, but one text should use one variety.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-ae-be"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT64W3ZHHGWYQ2D0YNAG",
+   "atom_uri": "urn:zam:atom:01M64HCT64W3ZHHGWYQ2D0YNAG",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-word-building",
+   "title": "Unbelievable offer: word building",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-word-building",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT65AARPAZDVKYAX9TPB",
+     "slug": "e8-word-building-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "“Unbelievable offer!” and “We'll offer you free delivery.” What has happened to the word “offer”?",
+     "concept": "Conversion: the same word is a noun and a verb.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-word-building",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Conversion: the same word is a noun and a verb.",
+       "Clipping: the word has been shortened."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT66JSPKRXDTNW85W7N3",
+     "slug": "e8-word-building-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What is conversion in word building?",
+     "concept": "A word changes its word class without a new ending, e.g. to offer → an offer.",
+     "sample_solution": "In conversion the form stays the same, but the word class changes: to offer → an offer, a text → to text. The sentence (a/the, to, -s) shows you the word class.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-word-building"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT671PPXHHXY43T31P2D",
+   "atom_uri": "urn:zam:atom:01M64HCT671PPXHHXY43T31P2D",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-linking-words",
+   "title": "However, although, as a result",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-linking-words",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT68GHF2E7VXQHP9HBZ6",
+     "slug": "e8-linking-words-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which linking word shows a contrast?",
+     "concept": "however",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-linking-words",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "however",
+       "in addition"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT695HYW7SQA9QR7PDZB",
+     "slug": "e8-linking-words-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name three linking words that introduce a contrast.",
+     "concept": "however, although, whereas (also: on the other hand).",
+     "sample_solution": "Contrast: however, although, whereas, on the other hand, nevertheless. Addition: in addition, furthermore. Result: as a result, therefore, that's why.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-linking-words"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT6AN2EKD68MZNX7KHVP",
+   "atom_uri": "urn:zam:atom:01M64HCT6AN2EKD68MZNX7KHVP",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-tom-sawyer",
+   "title": "Tom Sawyer and the fence",
+   "domain": "englisch/literatur",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-tom-sawyer",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "literature",
+     "topic_title": "Amerikanische Jugendliteratur"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT6BY0T2E1JJGYYRA53S",
+     "slug": "e8-tom-sawyer-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Tom compares his little white streak with a “far-reaching continent of unwhitewashed fence”. What does this exaggeration show?",
+     "concept": "How hopeless the job feels to him.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-tom-sawyer",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "How hopeless the job feels to him.",
+       "That the fence is really as big as a continent."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT6CXMXC6Q0C8RXPX377",
+     "slug": "e8-tom-sawyer-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Who wrote “The Adventures of Tom Sawyer” (1876)?",
+     "concept": "Mark Twain (Samuel L. Clemens).",
+     "sample_solution": "Mark Twain, whose real name was Samuel L. Clemens (1835–1910), grew up in Hannibal on the Mississippi and used memories of that childhood in “The Adventures of Tom Sawyer”.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-tom-sawyer"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT6D3T6Z77DF8W3APNBW",
+   "atom_uri": "urn:zam:atom:01M64HCT6D3T6Z77DF8W3APNBW",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-own-story",
+   "title": "Snow Day: continue or change a story",
+   "domain": "englisch/literatur",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-own-story",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "literature",
+     "topic_title": "Amerikanische Jugendliteratur"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT6EHXBPYJKRNWJCGDJM",
+     "slug": "e8-own-story-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Who tells the story “Snow Day”?",
+     "concept": "A third-person narrator who follows Maya.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-own-story",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "A third-person narrator who follows Maya.",
+       "Maya herself, as an “I” narrator."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT6FQYYEM956D23M1J4P",
+     "slug": "e8-own-story-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What must a continuation of a story keep from the original?",
+     "concept": "The characters, the setting, the tense and the tone.",
+     "sample_solution": "When you continue a story, only the action goes on: the same characters, the same place, the same tense (usually the simple past) and the same tone, so that it fits the beginning.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-own-story"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT6G07T39D9R7NZB96TS",
+   "atom_uri": "urn:zam:atom:01M64HCT6G07T39D9R7NZB96TS",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-authors",
+   "title": "Stowe, Twain and Thurber",
+   "domain": "englisch/literatur",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-authors",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT6AN2EKD68MZNX7KHVP",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Tom Sawyer and the fence“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "literature",
+     "topic_title": "Amerikanische Jugendliteratur"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT6HJ8H197KGYJQ2NTG2",
+     "slug": "e8-authors-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which author wrote the anti-slavery novel “Uncle Tom's Cabin” (1852)?",
+     "concept": "Harriet Beecher Stowe",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-authors",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Harriet Beecher Stowe",
+       "Mark Twain"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT6JFGZTMXTF9HZG3XH8",
+     "slug": "e8-authors-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What is James Thurber known for?",
+     "concept": "Humorous stories and drawings, e.g. “The Secret Life of Walter Mitty”.",
+     "sample_solution": "James Thurber (1894–1961) from Columbus, Ohio, wrote humorous stories and drew cartoons, many first published in The New Yorker; “The Secret Life of Walter Mitty” was filmed in 1947.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-authors"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT6KEB2NF0YAQYCKQTCN",
+   "atom_uri": "urn:zam:atom:01M64HCT6KEB2NF0YAQYCKQTCN",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-book-film",
+   "title": "Book, graphic novel or film?",
+   "domain": "englisch/literatur",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-book-film",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT6AN2EKD68MZNX7KHVP",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Tom Sawyer and the fence“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "literature",
+     "topic_title": "Amerikanische Jugendliteratur"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT6M09HD45R9AA6HPDV6",
+     "slug": "e8-book-film-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "You are reading a whole novel in English. Which strategy fits extensive reading?",
+     "concept": "Read on and guess unknown words from the context.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-book-film",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Read on and guess unknown words from the context.",
+       "Look up every unknown word at once."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT6N3H30HQVE5C3ATVDD",
+     "slug": "e8-book-film-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What do you write in a reading log after a reading session?",
+     "concept": "Pages, what happened, new words and your opinion.",
+     "sample_solution": "A reading log entry notes the pages, a short summary of the plot, a few new words and your opinion. It helps you to keep track of a whole book.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-book-film"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT6PJHM68SNTH63NXMTA",
+   "atom_uri": "urn:zam:atom:01M64HCT6PJHM68SNTH63NXMTA",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-presentation",
+   "title": "Presenting a role model",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-presentation",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT2RDTQKPR459TYSS637",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Explaining the Underground Railroad in German“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "projects",
+     "topic_title": "Eigene Projekte"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT6QFRFY0P3FKJQBD2ZK",
+     "slug": "e8-presentation-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which phrase opens a presentation?",
+     "concept": "Today I'm going to talk about …",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-presentation",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Today I'm going to talk about …",
+       "Are there any questions?"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT6RT05YRV2TCEEGC1D6",
+     "slug": "e8-presentation-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What should you write on note cards for a presentation?",
+     "concept": "Key words, not full sentences.",
+     "sample_solution": "Note cards hold key words, names and numbers, so you can speak freely and look at your audience instead of reading full sentences aloud.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-presentation"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT6SPBHSQ0B7QFQSKJMR",
+   "atom_uri": "urn:zam:atom:01M64HCT6SPBHSQ0B7QFQSKJMR",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-research",
+   "title": "Searching online: what is useful?",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-research",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "projects",
+     "topic_title": "Eigene Projekte"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT6T0QZYA505VCN80EWX",
+     "slug": "e8-research-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "You are researching how geysers work for a school project. Which result is the best place to start?",
+     "concept": "The National Park Service page, updated this year.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-research",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "The National Park Service page, updated this year.",
+       "The sponsored ad for cheap hotels."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT6V76F9XMFP80CQVDJ9",
+     "slug": "e8-research-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name three questions you ask to check a website as a source.",
+     "concept": "Who made it? When was it updated? Does it want to inform or to sell?",
+     "sample_solution": "Check who made the page (an authority, a museum, a company or an unknown person), when it was updated and what its purpose is. Ads are marked “Sponsored” or “Ad”.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-research"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT6WAKA98H5T04D75WVR",
+   "atom_uri": "urn:zam:atom:01M64HCT6WAKA98H5T04D75WVR",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-dictionary-stress",
+   "title": "REcord or reCORD?",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-dictionary-stress",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "projects",
+     "topic_title": "Eigene Projekte"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT6XBG84PE6C0FHQS2S1",
+     "slug": "e8-dictionary-stress-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "“Our class wants to record a podcast.” Where is the stress on “record”?",
+     "concept": "reCORD – on the second syllable, because it is a verb.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-dictionary-stress",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "reCORD – on the second syllable, because it is a verb.",
+       "REcord – on the first syllable, because it is a noun."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT6YM8GWHYHDFQTZCCZ2",
+     "slug": "e8-dictionary-stress-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What does the mark ˈ show in a dictionary's pronunciation?",
+     "concept": "That the next syllable is stressed.",
+     "sample_solution": "In /rɪˈkɔːd/ the mark ˈ comes before the stressed syllable, so the verb record is stressed reCORD; the noun /ˈrekɔːd/ is stressed REcord.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-dictionary-stress"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT6ZAFS8KC25WZCZJG4R",
+   "atom_uri": "urn:zam:atom:01M64HCT6ZAFS8KC25WZCZJG4R",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-learning-log",
+   "title": "Vocabulary, error log and feedback",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-learning-log",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "projects",
+     "topic_title": "Eigene Projekte"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT70GRPGD72EVJ7D95NX",
+     "slug": "e8-learning-log-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Your partner's text has good ideas but several tense mistakes. Which feedback is most helpful?",
+     "concept": "Your ideas are clear. Check the simple past forms in paragraph 2.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-learning-log",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Your ideas are clear. Check the simple past forms in paragraph 2.",
+       "This is bad. Write it again."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT715P3EBGHDNQYP3368",
+     "slug": "e8-learning-log-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What do you write down in an error log (Fehlerprotokoll)?",
+     "concept": "The mistake, the correct form and a rule or example.",
+     "sample_solution": "For example: “I am boring.” → “I am bored.” (feelings: -ed). Writing down the rule helps you to avoid the same mistake next time.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-learning-log"
+    }
+   ]
+  },
+  {
+   "id": "01M64HCT722YP0DWHVC2H75DSB",
+   "atom_uri": "urn:zam:atom:01M64HCT722YP0DWHVC2H75DSB",
+   "namespace": "zam-academy-englisch-realschule-8",
+   "slug": "e8-own-topic",
+   "title": "My own mini-project",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 13,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-own-topic",
+   "prerequisites": [
+    {
+     "atom_id": "01M64HCT6SPBHSQ0B7QFQSKJMR",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Searching online: what is useful?“ an; eigenständiger Einstieg bleibt möglich."
+    },
+    {
+     "atom_id": "01M64HCT6PJHM68SNTH63NXMTA",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Presenting a role model“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-8",
+     "topic_code": "projects",
+     "topic_title": "Eigene Projekte"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 8,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M64HCT73W2RH643J2NQE1TZ2",
+     "slug": "e8-own-topic-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which is the best research question for a mini-project?",
+     "concept": "Why is basketball so popular at American high schools?",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-own-topic",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Why is basketball so popular at American high schools?",
+       "Basketball."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M64HCT74WVT0KT5J25CPVYQJ",
+     "slug": "e8-own-topic-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What makes a good research question for a project?",
+     "concept": "It is open, clear and can be answered with sources in the time you have.",
+     "sample_solution": "“Why is basketball so popular at American high schools?” is open (why/how), clear and answerable. “Basketball” is only a topic, and “Is basketball good?” is too vague.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-8/#lesson=e8-own-topic"
+    }
+   ]
+  }
+ ]
+}
