@@ -25,6 +25,7 @@ import {
   listLibraryTopics,
   needsGenericCurriculumImport,
   openDatabase,
+  reconcileInstalledBundledTiles,
 } from "../../src/kernel/index.js";
 import mapping from "../fixtures/legacy/zam-academy-franzoesisch-realschule-8-replaces-de-by.json" with {
   type: "json",
@@ -63,7 +64,8 @@ const scope = (track?: string, grade = 8) => ({
 
 describe("ZAM Academy French 8 Realschule cell", () => {
   it("bundles 40 core lessons, two optional extensions and 84 published cards", () => {
-    expect(tile.version).toBe("2026.10.1");
+    expect(tile.version).toBe("2026.10.2");
+    expect(tile.description).not.toContain("Local draft");
     expect(getBundledCell(CELL_ID)).toMatchObject({
       title: "Französisch 8 Realschule (ZAM Academy)",
       publisher: "ZAM Academy",
@@ -281,6 +283,84 @@ describe("ZAM Academy French 8 Realschule cell", () => {
         ).toBe("Außerhalb des Lehrplans");
       }
       expect(await snapshot()).toEqual({ cards: [], reviews: [] });
+    });
+
+    it("upgrades the published wording without losing mastery or review logs", async () => {
+      const bytes = readFileSync(
+        new URL(
+          "../fixtures/legacy/zam-academy-franzoesisch-realschule-8-2026.10.1.json",
+          import.meta.url,
+        ),
+      );
+      expect(createHash("sha256").update(bytes).digest("hex")).toBe(
+        "4b9b6ecae060b9a4912b7869bf431c1014164271c84e136fdeccb6abbe017c69",
+      );
+      const previous = JSON.parse(bytes.toString("utf8")) as typeof tile;
+      expect(previous.version).toBe("2026.10.1");
+      expect(
+        tile.atoms.map(({ practice_items: _items, ...atom }) => atom),
+      ).toEqual(
+        previous.atoms.map(({ practice_items: _items, ...atom }) => atom),
+      );
+      const previousItems = previous.atoms.flatMap(
+        (atom) => atom.practice_items,
+      );
+      expect(items.map((item) => item.id)).toEqual(
+        previousItems.map((item) => item.id),
+      );
+      const edited = items.find((item) => item.slug === "f8-fetes-recall")!;
+      for (const [index, item] of items.entries()) {
+        const { question, ...rest } = item;
+        const { question: previousQuestion, ...previousRest } =
+          previousItems[index];
+        expect(rest).toEqual(previousRest);
+        if (item.id === edited.id) expect(question).not.toBe(previousQuestion);
+        else expect(question).toBe(previousQuestion);
+      }
+      await installKvtTile(db, previous);
+      for (const item of previousItems) {
+        const card = await ensureCard(db, item.id, userId);
+        await evaluateRating(db, {
+          cardId: card.id,
+          tokenId: item.id,
+          userId,
+          rating: 3,
+          answerFormat: "recall",
+          responseTimeMs: 1500,
+          now: new Date("2026-10-24T10:00:00Z"),
+        });
+      }
+      const before = await snapshot();
+      const editedVersion = (await getTokenById(db, edited.id))!
+        .content_version;
+      expect(before.cards).toHaveLength(84);
+      expect(before.reviews).toHaveLength(84);
+      expect(await reconcileInstalledBundledTiles(db)).toMatchObject({
+        reinstalled: [CELL_ID],
+        failed: [],
+      });
+      const after = await snapshot();
+      expect(after.reviews).toEqual(before.reviews);
+      expect(after.cards).toHaveLength(84);
+      for (const card of after.cards) {
+        const old = before.cards.find((candidate) => candidate.id === card.id)!;
+        if (card.token_id === edited.id) {
+          // The normal material-edit policy asks for a re-review, retaining FSRS and logs.
+          expect(card.due_at).not.toBe(old.due_at);
+          expect({ ...card, due_at: old.due_at }).toEqual(old);
+        } else expect(card).toEqual(old);
+      }
+      expect((await getTokenById(db, edited.id))!.content_version).toBe(
+        editedVersion + 1,
+      );
+      expect((await reconcileInstalledBundledTiles(db)).reinstalled).toEqual(
+        [],
+      );
+      expect(await enrolBundledCell(db, userId, CELL_ID)).toMatchObject({
+        cardsCreated: 0,
+        alreadyEnrolled: true,
+      });
+      expect(await snapshot()).toEqual(after);
     });
 
     it("enrols 84 fresh cards as one topic and presents 42 linked initial fast checks", async () => {

@@ -1,9 +1,9 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "zam-academy:franzoesisch-realschule-8",
-  "version": "2026.10.1",
+  "version": "2026.10.2",
   "title": "Französisch 8 Realschule (ZAM Academy)",
-  "description": "French for Bavarian Realschule grade 8, IIIa: 40 core lessons, two optional relative-clause extensions and 84 linked cards. Everyday communication, past narration, pronouns, listening preparation and personal projects. Local draft with independent learning histories.",
+  "description": "French for Bavarian Realschule grade 8, IIIa: 40 core lessons, two optional relative-clause extensions and 84 linked cards. Everyday communication, past narration, pronouns, listening preparation and personal projects.",
   "publisher": "ZAM Academy",
   "sources": [
     {
@@ -2371,7 +2371,7 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "An welchem Datum findet die Fête de la musique statt?",
+          "question": "Eine Lernkarte behauptet: „Die Fête de la musique findet am 14. Juli statt.“ Korrigiere die Aussage.",
           "concept": "Am 21. Juni.",
           "source_link": "https://academy.zam-os.org/franzoesisch-realschule-8/#lesson=f8-fetes",
           "sample_solution": "Am 21. Juni."

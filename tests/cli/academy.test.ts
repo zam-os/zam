@@ -268,7 +268,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     ).toMatchObject({
       bundled: true,
       held: false,
-      version: "2026.10.1",
+      version: "2026.10.2",
       items: 84,
       appUrl: "https://academy.zam-os.org/franzoesisch-realschule-8/",
     });
@@ -404,7 +404,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     ).toMatchObject({
       bundled: true,
       held: false,
-      version: "2026.10.1",
+      version: "2026.10.2",
       items: 84,
       appUrl: null,
     });
