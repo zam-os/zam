@@ -35,7 +35,7 @@ import {
 import { currentLocale, setCurrentLocale, t, tf } from "../i18n.js";
 import { renderCardText } from "../card-text-render.js";
 import { renderQuestionWithTopic } from "../question-topic.js";
-import { webSourceLink } from "../source-link.js";
+import { academyPracticeLink, webSourceLink } from "../source-link.js";
 import {
   type BonusOffer,
   bonusBecause,
@@ -488,6 +488,32 @@ function renderChoiceOffer(
   box.append(titleEl, subEl, row);
   attachPendingBlockedNotice(box);
   contentEl.appendChild(box);
+}
+
+/**
+ * After a missed Academy card, before the next one (zam-os/zam#438). Shown
+ * only when the host opens links: the lesson opens on this click only.
+ */
+function renderAcademyPracticeOffer(href: string): void {
+  let continued = false;
+  renderChoiceOffer(t("academy_practice_title"), t("academy_practice_body"), [
+    {
+      label: t("academy_practice_open"),
+      primary: true,
+      onClick: () => {
+        void app.openLink({ url: href }).catch(() => undefined);
+      },
+    },
+    {
+      label: t("academy_practice_next"),
+      onClick: () => {
+        // One advance per offer: a double click must not skip a card.
+        if (continued) return;
+        continued = true;
+        advance();
+      },
+    },
+  ]);
 }
 
 async function loadPreconditionCache(
@@ -1114,6 +1140,13 @@ async function presentCurrentCard(): Promise<void> {
         pendingBlockedNotice = tf("recall_blocked_notice", {
           slug: blockedSlug,
         });
+      }
+      const practice = app.getHostCapabilities()?.openLinks
+        ? academyPracticeLink(card.sourceLink, rating, t("source_open_lesson"))
+        : null;
+      if (practice) {
+        renderAcademyPracticeOffer(practice.href);
+        return;
       }
       setCardBusy(root, t("lbl_study_busy_next"));
       advance();

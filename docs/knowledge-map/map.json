@@ -1233,6 +1233,19 @@
       ]
     },
     {
+      "id": "academy-practice-after-miss",
+      "parent": "academy-cells",
+      "label": "Practise after a miss",
+      "link": "offers",
+      "text": "After a missed Academy card, Studio, Mobile and the recall panel offer its lesson before the next card; it opens only on a click.",
+      "sources": [
+        "desktop/src/source-link.ts",
+        "desktop/src/main.ts",
+        "mobile/src/main.ts",
+        "desktop/src/panel/recall.ts"
+      ]
+    },
+    {
       "id": "card-text",
       "parent": "token",
       "label": "Card text",

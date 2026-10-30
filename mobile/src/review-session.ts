@@ -96,6 +96,8 @@ export interface MobileReviewSummary {
 }
 
 export interface MobileReviewRatingResult {
+  /** The rating booked, also when a choice derived it. */
+  rating: Rating;
   nextDueAt: string;
   blockedPrerequisites: string[];
   summary?: MobileReviewSummary;
@@ -494,6 +496,7 @@ export class MobileReviewSession {
     snapshot.attemptId = null;
 
     const response: MobileReviewRatingResult = {
+      rating,
       nextDueAt: result.evaluation?.nextDueAt ?? item.dueAt,
       blockedPrerequisites:
         result.blocked?.prerequisites.map((entry) => entry.slug) ?? [],

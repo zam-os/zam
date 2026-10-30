@@ -38,4 +38,52 @@ describe("web source links are wired on every surface", () => {
       /id="review-source"[^>]*data-i18n/,
     );
   });
+
+  // zam-os/zam#438: after a missed Academy card, every surface offers the
+  // lesson before the next card, opened only on a click.
+  it("Studio offers the lesson after a missed card", () => {
+    const main = file("desktop/src/main.ts");
+    expect(main).toContain(
+      "academyPracticeLink(\n        activeCard.sourceLink,",
+    );
+    expect(main).toMatch(/showAcademyPracticeOffer\(practice\);\s*return;/);
+    expect(main).toContain("void openUrl(lesson.href)");
+  });
+
+  it("the MCP recall panel offers it only when the host opens links", () => {
+    const panel = file("desktop/src/panel/recall.ts");
+    expect(panel).toMatch(
+      /app\.getHostCapabilities\(\)\?\.openLinks\s*\?\s*academyPracticeLink\(card\.sourceLink, rating/,
+    );
+    expect(panel).toContain("app.openLink({ url: href })");
+  });
+
+  it("Mobile offers it with the booked rating", () => {
+    const main = file("mobile/src/main.ts");
+    expect(main).toContain(
+      'academyPracticeLink(sourceLink, result.rating, t("source_open_lesson"))',
+    );
+    // The iOS web view ignores target="_blank" (review of #471): every web
+    // link on Mobile opens through the opener plugin.
+    expect(main).toContain("void openExternalLink(lesson.href, openUrl)");
+    expect(main).toContain("wireExternalLink(reviewSource, openUrl)");
+    expect(main).toContain("wireExternalLink(practise, openUrl)");
+    expect(main).not.toMatch(/window\.open\(/);
+    expect(file("mobile/src-tauri/src/lib.rs")).toContain(
+      ".plugin(tauri_plugin_opener::init())",
+    );
+    expect(
+      JSON.parse(file("mobile/src-tauri/capabilities/opener.json")).permissions,
+    ).toEqual([
+      {
+        identifier: "opener:allow-open-url",
+        allow: [{ url: "https://*" }, { url: "http://*" }],
+      },
+    ]);
+    // "Sitzung beenden" stays off while „Weiter“ loads the end-of-queue
+    // offers, as it does during a rating (review of #471).
+    expect(main).toMatch(
+      /stopReviewButton\.disabled = true;\s*void continueAfterRating\(result\)\.finally\(\(\) => \{\s*stopReviewButton\.disabled = false;/,
+    );
+  });
 });
