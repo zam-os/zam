@@ -1,0 +1,3540 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:mathematik-grundschule-4",
+	"version": "2026.11.13",
+	"title": "Mathematik 4 Grundschule: Milos Entdeckerinsel",
+	"description": "36 deutsche Entdeckerlektionen im Zahlenwald, auf dem Messmarkt, in der Formenbucht, im Zufallsgarten und in drei gemischten Inselexpeditionen. Rechnen, Größen, Geometrie, Daten und Zufall mit lokalen Übungen und Erklärungen. Vorschau; fachliche Freigabe, praktische Abnahme und Lehrervideos fehlen. Kein freigegebener Jahreskurs.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://academy.zam-os.org/mathematik-grundschule-4/",
+			"label": "ZAM Entdeckerinsel: Milos Zahlenwald"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/mathematik#25773",
+			"label": "LehrplanPLUS Mathematik 3/4, Teilbereich 1.1",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/mathematik#25775",
+			"label": "LehrplanPLUS Mathematik 3/4, Teilbereich 1.2",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/mathematik#25777",
+			"label": "LehrplanPLUS Mathematik 3/4, Teilbereich 1.3",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/mathematik",
+			"label": "LehrplanPLUS Mathematik 3/4, Lernbereich 3 Größen und Messen",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/mathematik",
+			"label": "LehrplanPLUS Mathematik 3/4, Lernbereich 2 Raum und Form",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/mathematik",
+			"label": "LehrplanPLUS Mathematik 3/4, Lernbereich 4 Daten und Zufall; vernetzende Sachaufgaben",
+			"checked": "2026-11-04"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M687PEW1C19H7AG6K8XMHGSS",
+			"atom_uri": "urn:zam:atom:01M687PEW1C19H7AG6K8XMHGSS",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-ziffernwert",
+			"title": "Der Wert einer Ziffer",
+			"domain": "mathematik/stellenwerte",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "zahlenwald-stellenwerte",
+					"topic_title": "Zahlenwald: Stellenwerte"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M687PEW1Y2QF102WZX9DWSM3",
+					"slug": "gs4-ziffernwert-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wovon hängt der Wert einer Ziffer in einer Zahl ab?",
+					"concept": "Von ihrer Stelle in der Zahl.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Von ihrer Stelle in der Zahl.",
+							"Von der Anzahl der Ziffern allein."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M687PEW20404V25D97KRNPSK",
+					"slug": "gs4-ziffernwert-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welchen Wert hat die Ziffer 4 an der Hunderterstelle?",
+					"concept": "400.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["400.", "4."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M68BYKCACMKCRRY3TGDT3XHF",
+					"slug": "gs4-ziffernwert-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Die Ziffer 4 steht in 40 700 und in 204 070. Warum hat sie unterschiedliche Werte?",
+					"concept": "Ihre Stelle entscheidet über ihren Wert: 40 000 in 40 700 und 4 000 in 204 070.",
+					"sample_solution": "In 40 700 steht die 4 bei den Zehntausendern, in 204 070 bei den Tausendern. Eine Stelle weiter links bedeutet den zehnfachen Wert.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M687PEW348C0W3TZ3XM71ZRM",
+			"atom_uri": "urn:zam:atom:01M687PEW348C0W3TZ3XM71ZRM",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-stellenwerttafel",
+			"title": "Zahlen in der Stellenwerttafel",
+			"domain": "mathematik/stellenwerte",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+			"prerequisites": [
+				{
+					"atom_id": "01M687PEW1C19H7AG6K8XMHGSS",
+					"type": "soft",
+					"rationale": "Das Verständnis des Ziffernwerts und der Stellenwerttafel unterstützt diesen Schritt."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "zahlenwald-stellenwerte",
+					"topic_title": "Zahlenwald: Stellenwerte"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M687PEW30D2X2TPSTFMFEZJ7",
+					"slug": "gs4-stellenwerttafel-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Zahl besteht aus drei Hundertern, zwei Zehnern und vier Einern?",
+					"concept": "324.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["324.", "3 024."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M687PEW3BKA43Z23P7TKY380",
+					"slug": "gs4-stellenwerttafel-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie viele Tausender hat die Zahl 2 047?",
+					"concept": "2 Tausender.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["2 Tausender.", "4 Tausender."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M68BYKCB2DFVFZ1W2R5GAAQX",
+					"slug": "gs4-stellenwerttafel-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Zahl besteht aus 3 HT, 2 ZT, 0 T, 4 H, 0 Z und 7 E?",
+					"concept": "320 407.",
+					"sample_solution": "Die Stellen werden in der Reihenfolge HT, ZT, T, H, Z, E geschrieben. Leere Stellen bekommen eine 0: 320 407.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M687PEW35DR12MWJEVZWYSQY",
+			"atom_uri": "urn:zam:atom:01M687PEW35DR12MWJEVZWYSQY",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-nullstelle",
+			"title": "Die Null hält eine Stelle frei",
+			"domain": "mathematik/stellenwerte",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+			"prerequisites": [
+				{
+					"atom_id": "01M687PEW348C0W3TZ3XM71ZRM",
+					"type": "soft",
+					"rationale": "Das Verständnis des Ziffernwerts und der Stellenwerttafel unterstützt diesen Schritt."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "zahlenwald-stellenwerte",
+					"topic_title": "Zahlenwald: Stellenwerte"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M687PEW3ECEQ6V1YQZCBP8HH",
+					"slug": "gs4-nullstelle-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum steht in 306 eine Null an der Zehnerstelle?",
+					"concept": "Weil die Zahl keinen Zehner enthält.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Weil die Zahl keinen Zehner enthält.",
+							"Weil die Null am Ende einer Zahl immer weggelassen wird."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M687PEW372M4C08HYAMZD6XN",
+					"slug": "gs4-nullstelle-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Stelle bleibt bei 4 060 zwischen den Tausendern und Zehnern leer?",
+					"concept": "Die Hunderterstelle.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Die Hunderterstelle.", "Die Zehnerstelle."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M68BYKCBP3NFYYVCDVX50MRD",
+					"slug": "gs4-nullstelle-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum kann man in 30 407 die beiden Nullen nicht einfach weglassen?",
+					"concept": "Sie halten Tausender- und Zehnerstelle frei. Ohne sie würden andere Ziffern an falsche Stellen rutschen.",
+					"sample_solution": "30 407 hat 3 ZT, 0 T, 4 H, 0 Z und 7 E. 347 wäre eine andere Zahl mit anderen Stellenwerten.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M687PEW3VTYQ0BB7XT0D591G",
+			"atom_uri": "urn:zam:atom:01M687PEW3VTYQ0BB7XT0D591G",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-buendeln",
+			"title": "Bündeln ohne Wertänderung",
+			"domain": "mathematik/stellenwerte",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+			"prerequisites": [
+				{
+					"atom_id": "01M687PEW1C19H7AG6K8XMHGSS",
+					"type": "soft",
+					"rationale": "Das Verständnis des Ziffernwerts und der Stellenwerttafel unterstützt diesen Schritt."
+				},
+				{
+					"atom_id": "01M687PEW348C0W3TZ3XM71ZRM",
+					"type": "soft",
+					"rationale": "Das Verständnis des Ziffernwerts und der Stellenwerttafel unterstützt diesen Schritt."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "zahlenwald-stellenwerte",
+					"topic_title": "Zahlenwald: Stellenwerte"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M687PEW3MRZB4V47EAMHJFBV",
+					"slug": "gs4-buendeln-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie viele Einer sind genauso viel wie ein Zehner?",
+					"concept": "10 Einer.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["10 Einer.", "100 Einer."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M687PEW3R5NMZE46FRV96H05",
+					"slug": "gs4-buendeln-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie viele Zehner erhältst du beim Entbündeln eines Hunderters?",
+					"concept": "10 Zehner.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["10 Zehner.", "100 Zehner."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M68BYKCBB92WM491SKV1YXDS",
+					"slug": "gs4-buendeln-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Erkläre, warum 1 000 genauso viel wie 10 H oder 100 Z ist.",
+					"concept": "1 T = 10 H = 100 Z. Der Wert bleibt 1 000.",
+					"sample_solution": "1 T wird in 10 H entbündelt. Jeder der 10 H ergibt 10 Z; zusammen sind das 100 Z. Es bleibt dieselbe Menge.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=stellenwerte-buendeln",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6DJ33QT7BKQM3M5YMV541Q2",
+			"atom_uri": "urn:zam:atom:01M6DJ33QT7BKQM3M5YMV541Q2",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-vergleichen-ordnen",
+			"title": "Zahlen vergleichen und ordnen",
+			"domain": "mathematik/zahlenwald",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zahlen-vergleichen-ordnen",
+			"prerequisites": [
+				{
+					"atom_id": "01M687PEW1C19H7AG6K8XMHGSS",
+					"type": "soft",
+					"rationale": "Das Stellenwertverständnis unterstützt diesen Schritt."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "zahlen-vergleichen-ordnen",
+					"topic_title": "Zahlen vergleichen und ordnen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6DJ33QTKB7AQSGV64EP7CMB",
+					"slug": "gs4-vergleichen-ordnen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Stelle entscheidet beim Vergleichen gleich langer Zahlen?",
+					"concept": "Die erste unterschiedliche Stelle von links.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die erste unterschiedliche Stelle von links.",
+							"Immer die Einerstelle."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zahlen-vergleichen-ordnen",
+					"materiality": "material"
+				},
+				{
+					"id": "01M6DJ33QTN94XDXJGF9662KJR",
+					"slug": "gs4-vergleichen-ordnen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was bedeutet es, Zahlen aufsteigend zu ordnen?",
+					"concept": "Von klein nach groß ordnen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Von klein nach groß ordnen.",
+							"Von groß nach klein ordnen."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zahlen-vergleichen-ordnen",
+					"materiality": "material"
+				},
+				{
+					"id": "01M6DJ33QTRJ24TF0TDD5T506W",
+					"slug": "gs4-vergleichen-ordnen-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Ordne 80 080, 8 800 und 80 008 aufsteigend. Begründe die Reihenfolge.",
+					"sample_solution": "8 800 hat weniger Stellen und ist am kleinsten. Bei den beiden fünfstelligen Zahlen sind Zehntausender, Tausender und Hunderter gleich. An der Zehnerstelle steht bei 80 008 eine 0, bei 80 080 eine 8. Deshalb ist 80 008 kleiner.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zahlen-vergleichen-ordnen",
+					"materiality": "material",
+					"concept_segments": [
+						{
+							"type": "math",
+							"tex": "8\\,800 < 80\\,008 < 80\\,080",
+							"speech": "achttausendachthundert ist kleiner als achtzigtausendacht ist kleiner als achtzigtausendachtzig"
+						},
+						{
+							"type": "text",
+							"text": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6DJ33QTWTDY1874E545B9S4",
+			"atom_uri": "urn:zam:atom:01M6DJ33QTWTDY1874E545B9S4",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-zahlenstrahl",
+			"title": "Zahlenstrahl und Zahlensprünge",
+			"domain": "mathematik/zahlenwald",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zahlenstrahl-zahlenspruenge",
+			"prerequisites": [
+				{
+					"atom_id": "01M687PEW1C19H7AG6K8XMHGSS",
+					"type": "soft",
+					"rationale": "Das Stellenwertverständnis unterstützt diesen Schritt."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "zahlenstrahl-zahlenspruenge",
+					"topic_title": "Zahlenstrahl und Zahlensprünge"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6DJ33QTCNX4498056DTM8GZ",
+					"slug": "gs4-zahlenstrahl-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie bestimmst du die Schrittweite zwischen zwei beschrifteten Zahlen am Zahlenstrahl?",
+					"concept": "Abstand der Zahlen durch die Anzahl gleich großer Abschnitte teilen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Abstand der Zahlen durch die Anzahl gleich großer Abschnitte teilen.",
+							"Die beiden Zahlen addieren und durch die Anzahl der Striche teilen."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zahlenstrahl-zahlenspruenge",
+					"materiality": "material"
+				},
+				{
+					"id": "01M6DJ33QTMJJ6ANSKTMC7J6GT",
+					"slug": "gs4-zahlenstrahl-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was geschieht bei einem Schritt nach links auf dem Zahlenstrahl?",
+					"concept": "Die Zahl wird um die Schrittweite kleiner.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Zahl wird um die Schrittweite kleiner.",
+							"Die Zahl wird immer um 1 kleiner, unabhängig von der Schrittweite."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zahlenstrahl-zahlenspruenge",
+					"materiality": "material"
+				},
+				{
+					"id": "01M6DJ33QT1CR2M1SRGEH3F0Z5",
+					"slug": "gs4-zahlenstrahl-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Zwischen 200 000 und 300 000 liegen zehn gleich große Abschnitte. Welche Zahl liegt drei Schritte rechts von 200 000? Erkläre.",
+					"concept": "230 000.",
+					"sample_solution": "Der Abstand beträgt 100 000. Zehn gleich große Abschnitte bedeuten 100 000 : 10 = 10 000 je Schritt. Drei Schritte nach rechts ergeben 200 000 + 3 · 10 000 = 230 000.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zahlenstrahl-zahlenspruenge",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6DJ33QT1X4ZC5GC5SENN67H",
+			"atom_uri": "urn:zam:atom:01M6DJ33QT1X4ZC5GC5SENN67H",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-zerlegen",
+			"title": "Zahlen zerlegen und ergänzen",
+			"domain": "mathematik/zahlenwald",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zahlen-zerlegen-ergaenzen",
+			"prerequisites": [
+				{
+					"atom_id": "01M687PEW348C0W3TZ3XM71ZRM",
+					"type": "soft",
+					"rationale": "Das Stellenwertverständnis unterstützt diesen Schritt."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "zahlen-zerlegen-ergaenzen",
+					"topic_title": "Zahlen zerlegen und ergänzen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6DJ33QTEQX79B5W1DMEPZJG",
+					"slug": "gs4-zerlegen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie berechnest du einen fehlenden Teil, wenn die ganze Zahl und der andere Teil bekannt sind?",
+					"concept": "Ganze Zahl minus bekannter Teil.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ganze Zahl minus bekannter Teil.",
+							"Ganze Zahl plus bekannter Teil."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zahlen-zerlegen-ergaenzen",
+					"materiality": "material"
+				},
+				{
+					"id": "01M6DJ33QTJ9VMFBC80WFEHWA6",
+					"slug": "gs4-zerlegen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Stellenwertzerlegung passt zu 405 060?",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["400 000 + 5 000 + 60.", "400 000 + 50 000 + 6."],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zahlen-zerlegen-ergaenzen",
+					"materiality": "material",
+					"concept_segments": [
+						{
+							"type": "math",
+							"tex": "400\\,000 + 5\\,000 + 60",
+							"speech": "vierhunderttausend plus fünftausend plus sechzig"
+						},
+						{
+							"type": "text",
+							"text": "."
+						}
+					]
+				},
+				{
+					"id": "01M6DJ33QT32JS9JJHCKEN7N6C",
+					"slug": "gs4-zerlegen-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "100 000 sind in 30 000 und 70 000 zerlegt. Der erste Teil wird um 1 000 größer. Wie verändert sich der zweite Teil, wenn die Summe gleich bleibt?",
+					"concept": "Er wird um 1 000 kleiner, also 69 000.",
+					"sample_solution": "Der erste Teil ist nun 31 000. Damit die Summe 100 000 bleibt, muss der zweite Teil 69 000 sein: 31 000 + 69 000 = 100 000. Ein größerer Teil erfordert bei gleicher Summe einen entsprechend kleineren anderen Teil.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zahlen-zerlegen-ergaenzen",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"domain": "mathematik/zahlenwald",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"prerequisites": [
+				{
+					"atom_id": "01M687PEW348C0W3TZ3XM71ZRM",
+					"type": "soft",
+					"rationale": "Das Stellenwertverständnis unterstützt diesen Schritt."
+				}
+			],
+			"id": "01M6EQYDM417KPCFPXNCFJQKZZ",
+			"atom_uri": "urn:zam:atom:01M6EQYDM417KPCFPXNCFJQKZZ",
+			"slug": "gs4-addieren",
+			"title": "Geschickt addieren",
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=geschickt-addieren",
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "geschickt-addieren",
+					"topic_title": "Geschickt addieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6EQYDM4KVF733E4JRQJ2BPX",
+					"slug": "gs4-addieren-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie nutzt du 6 + 3 = 9 für 6 000 + 3 000?",
+					"concept": "Du rechnest mit Tausenderbündeln: 6 Tausender + 3 Tausender = 9 Tausender, also 9 000.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=geschickt-addieren",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Du rechnest mit Tausenderbündeln: 6 Tausender + 3 Tausender = 9 Tausender, also 9 000.",
+							"Das Ergebnis bleibt 9, weil nur die beiden ersten Ziffern zählen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6EQYDM4G87PZB6SW6B1W2YQ",
+					"slug": "gs4-addieren-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Du ersetzt beim Addieren + 2 900 durch + 3 000. Wie gleichst du aus?",
+					"concept": "Du ziehst anschließend 100 ab.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=geschickt-addieren",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Du ziehst anschließend 100 ab.",
+							"Du addierst anschließend noch 100."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6EQYDM4X0YN1J2RAKK4N6B3",
+					"slug": "gs4-addieren-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Berechne 38 700 + 4 800 mit einer Hilfsaufgabe und erkläre den Ausgleich.",
+					"concept": "43 500.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=geschickt-addieren",
+					"materiality": "material",
+					"sample_solution": "38 700 + 5 000 = 43 700. Dabei wurden 200 zu viel addiert. Deshalb: 43 700 − 200 = 43 500."
+				}
+			]
+		},
+		{
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"domain": "mathematik/zahlenwald",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"prerequisites": [
+				{
+					"atom_id": "01M687PEW348C0W3TZ3XM71ZRM",
+					"type": "soft",
+					"rationale": "Das Stellenwertverständnis unterstützt diesen Schritt."
+				}
+			],
+			"id": "01M6EQYDM4YW8W4Y14PFN2P471",
+			"atom_uri": "urn:zam:atom:01M6EQYDM4YW8W4Y14PFN2P471",
+			"slug": "gs4-subtrahieren",
+			"title": "Geschickt subtrahieren",
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=geschickt-subtrahieren",
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "geschickt-subtrahieren",
+					"topic_title": "Geschickt subtrahieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6EQYDM4ZZTSR4EC1Y8T8PB1",
+					"slug": "gs4-subtrahieren-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie prüfst du eine Subtraktion durch Addieren?",
+					"concept": "Differenz + abgezogene Zahl = Startzahl.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=geschickt-subtrahieren",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Differenz + abgezogene Zahl = Startzahl.",
+							"Differenz + Startzahl = abgezogene Zahl."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6EQYDM4C4KV2QGRWWVB4KXZ",
+					"slug": "gs4-subtrahieren-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Du ersetzt beim Subtrahieren − 4 900 durch − 5 000. Wie gleichst du aus?",
+					"concept": "Du gibst anschließend 100 wieder dazu.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=geschickt-subtrahieren",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Du gibst anschließend 100 wieder dazu.",
+							"Du ziehst anschließend weitere 100 ab."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6EQYDM4JRHN5PPXQQSQT9MR",
+					"slug": "gs4-subtrahieren-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Berechne 63 200 − 5 800 mit einer Hilfsaufgabe und prüfe dein Ergebnis.",
+					"concept": "57 400.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=geschickt-subtrahieren",
+					"materiality": "material",
+					"sample_solution": "63 200 − 6 000 = 57 200. Es wurden 200 zu viel weggenommen: 57 200 + 200 = 57 400. Probe: 57 400 + 5 800 = 63 200."
+				}
+			]
+		},
+		{
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"domain": "mathematik/zahlenwald",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"prerequisites": [
+				{
+					"atom_id": "01M687PEW348C0W3TZ3XM71ZRM",
+					"type": "soft",
+					"rationale": "Das Stellenwertverständnis unterstützt diesen Schritt."
+				}
+			],
+			"id": "01M6EQYDM45HP78N17YA5KGEWJ",
+			"atom_uri": "urn:zam:atom:01M6EQYDM45HP78N17YA5KGEWJ",
+			"slug": "gs4-malnehmen-teilen",
+			"title": "Malnehmen und teilen",
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=malnehmen-teilen",
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "malnehmen-teilen",
+					"topic_title": "Malnehmen und teilen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6EQYDM4QSK1115R2EX109KT",
+					"slug": "gs4-malnehmen-teilen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Rechnung beschreibt 6 gleich große Gruppen mit je 4 Dingen?",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=malnehmen-teilen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["6·4 = 24.", "6 + 4 = 10."],
+						"correct_index": 0
+					},
+					"concept_segments": [
+						{
+							"type": "math",
+							"tex": "6 \\cdot 4 = 24",
+							"speech": "sechs mal vier ist vierundzwanzig"
+						},
+						{
+							"type": "text",
+							"text": "."
+						}
+					]
+				},
+				{
+					"id": "01M6EQYDM4HK9CMQE75CMWX4K2",
+					"slug": "gs4-malnehmen-teilen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Malaufgabe prüft 42 : 7 = 6?",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=malnehmen-teilen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["7·6 = 42.", "7 + 6 = 13."],
+						"correct_index": 0
+					},
+					"concept_segments": [
+						{
+							"type": "math",
+							"tex": "7 \\cdot 6 = 42",
+							"speech": "sieben mal sechs ist zweiundvierzig"
+						},
+						{
+							"type": "text",
+							"text": "."
+						}
+					]
+				},
+				{
+					"id": "01M6EQYDM4AQZFDK9CBACV26SS",
+					"slug": "gs4-malnehmen-teilen-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "7 Körbe enthalten zusammen 2 100 Samen. Wie viele Samen sind in jedem Korb? Erkläre mit dem kleinen Einmaleins.",
+					"concept": "300 Samen je Korb.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=malnehmen-teilen",
+					"materiality": "material",
+					"sample_solution": "7 · 3 = 21. Mit Hunderterbündeln gilt 7 · 300 = 2 100. Deshalb ist 2 100 : 7 = 300. Die Malaufgabe ist zugleich die Probe."
+				}
+			]
+		},
+		{
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"domain": "mathematik/zahlenwald",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"prerequisites": [
+				{
+					"atom_id": "01M687PEW348C0W3TZ3XM71ZRM",
+					"type": "soft",
+					"rationale": "Das Stellenwertverständnis unterstützt diesen Schritt."
+				}
+			],
+			"id": "01M6ESYAQNPJDABE7QGX55XY6B",
+			"atom_uri": "urn:zam:atom:01M6ESYAQNPJDABE7QGX55XY6B",
+			"slug": "gs4-schriftlich-addieren",
+			"title": "Schriftlich addieren",
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-addieren",
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "schriftlich-addieren",
+					"topic_title": "Schriftlich addieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6ESYAQNW5R29BYVN40965G9",
+					"slug": "gs4-schriftlich-addieren-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie schreibst du zwei Summanden für die schriftliche Addition untereinander?",
+					"concept": "Einer unter Einer, Zehner unter Zehner und gleiche weitere Stellenwerte untereinander.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-addieren",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Einer unter Einer, Zehner unter Zehner und gleiche weitere Stellenwerte untereinander.",
+							"Beide Zahlen beginnen links in derselben Spalte, auch wenn sie verschieden lang sind."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6ESYAQNK14RQ05EX40S7CNK",
+					"slug": "gs4-schriftlich-addieren-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "In der Einerspalte erhältst du 15. Was schreibst du ins Ergebnis und in die Übertragszeile?",
+					"concept": "5 bei den Einern im Ergebnis und 1 als Übertrag zu den Zehnern.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-addieren",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"5 bei den Einern im Ergebnis und 1 als Übertrag zu den Zehnern.",
+							"1 bei den Einern im Ergebnis und 5 als Übertrag zu den Zehnern."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6ESYAQNAXWVCNASVZHYJZ3G",
+					"slug": "gs4-schriftlich-addieren-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Rechne 3 748 + 2 567 schriftlich. Erkläre die Überträge.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-addieren",
+					"materiality": "material",
+					"sample_solution": "E: 8 + 7 = 15, schreibe 5 und übertrage 1 zu Z. Z: 4 + 6 + 1 = 11, schreibe 1 und übertrage 1 zu H. H: 7 + 5 + 1 = 13, schreibe 3 und übertrage 1 zu T. T: 3 + 2 + 1 = 6. Die Summe ist 6 315. Tauschprobe: 2 567 + 3 748 = 6 315. Rechne die Tauschaufgabe neu und vergleiche beide Summen.",
+					"concept_segments": [
+						{
+							"type": "math",
+							"tex": "6\\,315",
+							"speech": "sechstausenddreihundertfünfzehn"
+						},
+						{
+							"type": "text",
+							"text": "."
+						}
+					]
+				},
+				{
+					"id": "01M6ESYAQNDKJ51HVCGYQDGMGW",
+					"slug": "gs4-schriftlich-addieren-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum ergibt 999 999 + 1 die Zahl 1 000 000? Erkläre mit den Stellenwerten.",
+					"concept": "Die Übertragskette bündelt bis zu einer Million.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-addieren",
+					"materiality": "material",
+					"sample_solution": "9 Einer + 1 Einer ergeben 10 Einer: 0 Einer bleiben, 1 Zehner wird übertragen. In jeder folgenden Stelle werden 9 vorhandene Bündel und 1 ankommendes Bündel zu 10 Bündeln. Daraus entsteht jeweils 1 Bündel der nächsten Stelle. Nach 10 Hunderttausendern entsteht 1 Million; die sechs niedrigeren Ergebnisstellen sind 0."
+				}
+			]
+		},
+		{
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"domain": "mathematik/zahlenwald",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"prerequisites": [
+				{
+					"atom_id": "01M687PEW3VTYQ0BB7XT0D591G",
+					"type": "soft",
+					"rationale": "Wertgleiches Entbündeln unterstützt das Abziehverfahren."
+				},
+				{
+					"atom_id": "01M6ESYAQNPJDABE7QGX55XY6B",
+					"type": "soft",
+					"rationale": "Die schriftliche Addition unterstützt die Additionsprobe."
+				}
+			],
+			"id": "01M6EZ0V5SK9DYSAGJMSH7BVWS",
+			"atom_uri": "urn:zam:atom:01M6EZ0V5SK9DYSAGJMSH7BVWS",
+			"slug": "gs4-schriftlich-subtrahieren",
+			"title": "Schriftlich subtrahieren",
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-subtrahieren",
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "schriftlich-subtrahieren",
+					"topic_title": "Schriftlich subtrahieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6EZ0V5W1ENAE89K475AAGN5",
+					"slug": "gs4-schriftlich-subtrahieren-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was ändert sich beim Entbündeln eines Zehners in der oberen Zahl?",
+					"concept": "Ein Zehner weniger und zehn Einer mehr; der Wert der Zahl bleibt gleich.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-subtrahieren",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein Zehner weniger und zehn Einer mehr; der Wert der Zahl bleibt gleich.",
+							"Zehn Einer mehr, während alle Zehner unverändert bleiben."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6EZ0V5WK7QBYD4XN6WX0V6W",
+					"slug": "gs4-schriftlich-subtrahieren-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie prüfst du das Ergebnis einer Subtraktion durch Addieren?",
+					"concept": "Ergebnis plus abgezogene Zahl muss die obere Startzahl ergeben.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-subtrahieren",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ergebnis plus abgezogene Zahl muss die obere Startzahl ergeben.",
+							"Ergebnis plus obere Startzahl muss die abgezogene Zahl ergeben."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6EZ0V5WC9JWR171X7GB3C4Q",
+					"slug": "gs4-schriftlich-subtrahieren-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-subtrahieren",
+					"materiality": "material",
+					"question_segments": [
+						{
+							"type": "text",
+							"text": "Rechne "
+						},
+						{
+							"type": "math",
+							"tex": "6\\,004\\,−\\,2\\,578",
+							"speech": "sechstausendvier minus zweitausendfünfhundertachtundsiebzig"
+						},
+						{
+							"type": "text",
+							"text": " schriftlich und erkläre das Entbündeln über die Nullstellen."
+						}
+					],
+					"sample_solution": "Tausche 1 T in 10 H, 1 H in 10 Z und 1 Z in 10 E. Oben liegen jetzt 5 T, 9 H, 9 Z und 14 E; ihr Gesamtwert bleibt 6 004. E: 14 − 8 = 6; Z: 9 − 7 = 2; H: 9 − 5 = 4; T: 5 − 2 = 3. Additionsprobe: 3 426 + 2 578 = 6 004.",
+					"concept_segments": [
+						{
+							"type": "math",
+							"tex": "3\\,426",
+							"speech": "dreitausendvierhundertsechsundzwanzig"
+						},
+						{
+							"type": "text",
+							"text": "."
+						}
+					]
+				},
+				{
+					"id": "01M6EZ0V5WPZECEVETKR1J877V",
+					"slug": "gs4-schriftlich-subtrahieren-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum ergibt eine Million minus eins die Zahl 999 999? Erkläre mit Bündeln.",
+					"concept": "Nach dem Entbündeln und Abziehen bleibt an jeder der sechs Stellen eine 9.",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-subtrahieren",
+					"materiality": "material",
+					"sample_solution": "Tausche 1 M in 10 HT, dann jeweils ein Bündel weiter in zehn kleinere bis zu den Einern. So liegen oben 9 HT, 9 ZT, 9 T, 9 H, 9 Z und 10 E. Nach dem Abziehen von 1 E bleiben 9 E und damit 999 999. Additionsprobe: 999 999 + 1 = 1 000 000."
+				}
+			]
+		},
+		{
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"domain": "mathematik/zahlenwald",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"prerequisites": [
+				{
+					"atom_id": "01M6EQYDM45HP78N17YA5KGEWJ",
+					"type": "soft",
+					"rationale": "Dieser Rechenweg unterstützt die schriftliche Rechnung und ihre Probe."
+				},
+				{
+					"atom_id": "01M6ESYAQNPJDABE7QGX55XY6B",
+					"type": "soft",
+					"rationale": "Dieser Rechenweg unterstützt die schriftliche Rechnung und ihre Probe."
+				}
+			],
+			"id": "01M6F0EKRM3ATJ840D5K7703Q3",
+			"atom_uri": "urn:zam:atom:01M6F0EKRM3ATJ840D5K7703Q3",
+			"slug": "gs4-schriftlich-multiplizieren",
+			"title": "Schriftlich multiplizieren",
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-multiplizieren",
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "schriftlich-multiplizieren",
+					"topic_title": "Schriftlich multiplizieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6F0EKRNPG5H8VK8VFDATDC8",
+					"slug": "gs4-schriftlich-multiplizieren-1",
+					"language": "de",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-multiplizieren",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"question": "Wie behandelst du beim schriftlichen Multiplizieren eine Spaltensumme von 42?",
+					"concept": "2 in die Ergebnisstelle schreiben und 4 als Übertrag zur nächsten Stelle links mitrechnen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"2 in die Ergebnisstelle schreiben und 4 als Übertrag zur nächsten Stelle links mitrechnen.",
+							"42 in ein Ergebnisfeld schreiben und ohne Übertrag weiterrechnen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6F0EKRNR26AR0HBQETRQJ96",
+					"slug": "gs4-schriftlich-multiplizieren-2",
+					"language": "de",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-multiplizieren",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"question": "Warum wird die Zehnerreihe beim Multiplizieren mit einem zweistelligen Faktor nach links verschoben?",
+					"concept": "Der Zehnerfaktor ist zehnmal so groß wie seine Ziffer; jeder Stellenwert wird zehnmal so groß.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Zehnerfaktor ist zehnmal so groß wie seine Ziffer; jeder Stellenwert wird zehnmal so groß.",
+							"Die zweite Reihe ist immer nur eine Wiederholung der Einerreihe."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6F0EKRN0RM8XSN94VQS69F3",
+					"slug": "gs4-schriftlich-multiplizieren-3",
+					"language": "de",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-multiplizieren",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"sample_solution": "Einerreihe: 306 · 4 = 1 224. Zehnerreihe: 306 · 20 = 6 120. Summe: 1 224 + 6 120 = 7 344. Andere Zerlegung: 300 · 24 = 7 200 und 6 · 24 = 144; zusammen 7 344.",
+					"question_segments": [
+						{
+							"type": "text",
+							"text": "Rechne "
+						},
+						{
+							"type": "math",
+							"tex": "306 \\cdot 24",
+							"speech": "dreihundertsechs mal vierundzwanzig"
+						},
+						{
+							"type": "text",
+							"text": " schriftlich und prüfe mit einer anderen Zerlegung."
+						}
+					],
+					"concept_segments": [
+						{
+							"type": "math",
+							"tex": "7\\,344",
+							"speech": "siebentausenddreihundertvierundvierzig"
+						},
+						{
+							"type": "text",
+							"text": "."
+						}
+					]
+				},
+				{
+					"id": "01M6F0EKRNE9997YZ501Z956XV",
+					"slug": "gs4-schriftlich-multiplizieren-4",
+					"language": "de",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-multiplizieren",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"question": "Milo rechnet bei 204 mal 23 die Teilergebnisse 612 und 408 zusammen. Erkläre und verbessere seinen Fehler.",
+					"concept": "Die Zehnerreihe muss 4 080 sein; das Produkt ist 4 692.",
+					"sample_solution": "23 besteht aus 20 und 3. 204 · 3 = 612. 204 · 2 = 408, aber 204 · 20 ist zehnmal so groß: 4 080. Deshalb 612 + 4 080 = 4 692. Die feste 0 steht rechts in der Zehnerreihe."
+				}
+			]
+		},
+		{
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"domain": "mathematik/zahlenwald",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"prerequisites": [
+				{
+					"atom_id": "01M6F0EKRM3ATJ840D5K7703Q3",
+					"type": "soft",
+					"rationale": "Dieser Rechenweg unterstützt die schriftliche Rechnung und ihre Probe."
+				},
+				{
+					"atom_id": "01M6EQYDM45HP78N17YA5KGEWJ",
+					"type": "soft",
+					"rationale": "Dieser Rechenweg unterstützt die schriftliche Rechnung und ihre Probe."
+				}
+			],
+			"id": "01M6F0EKRN13BXXSS137PPTS1Q",
+			"atom_uri": "urn:zam:atom:01M6F0EKRN13BXXSS137PPTS1Q",
+			"slug": "gs4-schriftlich-dividieren",
+			"title": "Schriftlich dividieren",
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-dividieren",
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "schriftlich-dividieren",
+					"topic_title": "Schriftlich dividieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6F0EKRNQB539BVE78NQ3D52",
+					"slug": "gs4-schriftlich-dividieren-1",
+					"language": "de",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-dividieren",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"question": "Darfst du beim schriftlichen Dividieren eine Ergebnisnull mitten im Quotienten weglassen?",
+					"concept": "Nein. Sie hält den Stellenwert der folgenden Ergebnisziffern fest.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein. Sie hält den Stellenwert der folgenden Ergebnisziffern fest.",
+							"Ja. Nullen haben keinen Wert und können an jeder Stelle verschwinden."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6F0EKRNCE5JSWR2JCVRFPJK",
+					"slug": "gs4-schriftlich-dividieren-2",
+					"language": "de",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-dividieren",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"question": "Woran erkennst du einen zulässigen Rest beim Teilen ganzer Dinge?",
+					"concept": "Der Rest ist mindestens 0 und kleiner als der Teiler.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Rest ist mindestens 0 und kleiner als der Teiler.",
+							"Der Rest darf gleich groß wie der Teiler sein."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6F0EKRNKDP75MVVWDJ70EPB",
+					"slug": "gs4-schriftlich-dividieren-3",
+					"language": "de",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-dividieren",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"concept": "302 Rest 1.",
+					"sample_solution": "2 : 8 ergibt zunächst 0 Rest 2. Dann 24 : 8 ergibt 3 Rest 0. Die nächste Ziffer 1 ergibt 0 Rest 1; diese Ergebnisnull bleibt stehen. Zuletzt 17 : 8 ergibt 2 Rest 1. Ergebnis: 302 Rest 1. Probe: 302 · 8 + 1 = 2 416 + 1 = 2 417; 1 ist kleiner als 8.",
+					"question_segments": [
+						{
+							"type": "text",
+							"text": "Teile "
+						},
+						{
+							"type": "math",
+							"tex": "2\\,417 : 8",
+							"speech": "zweitausendvierhundertsiebzehn geteilt durch acht"
+						},
+						{
+							"type": "text",
+							"text": " schriftlich. Nenne den Rest und prüfe deine Antwort."
+						}
+					]
+				},
+				{
+					"id": "01M6F0EKRNXRZARQCEX5SWEK4C",
+					"slug": "gs4-schriftlich-dividieren-4",
+					"language": "de",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-dividieren",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"question": "Milo teilt 1 259 durch 6 und erhält 208 Rest 11. Warum ist er noch nicht fertig?",
+					"concept": "Der Rest enthält noch einmal 6. Richtig sind 209 Rest 5.",
+					"sample_solution": "Ein gültiger Rest muss kleiner als 6 sein. Aus Rest 11 kann Milo noch einmal 6 verteilen: 11 − 6 = 5. Der Quotient wächst um 1 auf 209. Probe: 209 · 6 + 5 = 1 254 + 5 = 1 259. Der Rest 5 ist kleiner als 6."
+				}
+			]
+		},
+		{
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"domain": "mathematik/zahlenwald",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"prerequisites": [
+				{
+					"atom_id": "01M6EQYDM417KPCFPXNCFJQKZZ",
+					"type": "soft",
+					"rationale": "Dieser Rechenweg hilft beim Untersuchen und Prüfen der Zusammenhänge."
+				},
+				{
+					"atom_id": "01M6EZ0V5SK9DYSAGJMSH7BVWS",
+					"type": "soft",
+					"rationale": "Dieser Rechenweg hilft beim Untersuchen und Prüfen der Zusammenhänge."
+				}
+			],
+			"id": "01M6FWJNJHBE2HJPSP2H7QZP4K",
+			"atom_uri": "urn:zam:atom:01M6FWJNJHBE2HJPSP2H7QZP4K",
+			"slug": "gs4-muster-zahlbeziehungen",
+			"title": "Muster und Zahlbeziehungen",
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=muster-zahlbeziehungen",
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "muster-zahlbeziehungen",
+					"topic_title": "Muster und Zahlbeziehungen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FWJNJJADZXDEFJMAES6VM9",
+					"slug": "gs4-muster-zahlbeziehungen-1",
+					"language": "de",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=muster-zahlbeziehungen",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"question": "Ein Summand wird um 20 größer, der andere um 20 kleiner. Wie verändert sich die Summe?",
+					"concept": "Sie bleibt gleich, weil sich die Veränderungen ausgleichen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie bleibt gleich, weil sich die Veränderungen ausgleichen.",
+							"Sie wird um 40 größer, weil beide Summanden verändert werden."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FWJNJJQFY4GDYF4W1J2VQ9",
+					"slug": "gs4-muster-zahlbeziehungen-2",
+					"language": "de",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=muster-zahlbeziehungen",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"question": "Wie sind bei einer ANNA-Zahl die äußeren und die inneren Ziffern angeordnet?",
+					"concept": "Die beiden äußeren Ziffern sind gleich, ebenso die beiden inneren.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die beiden äußeren Ziffern sind gleich, ebenso die beiden inneren.",
+							"Alle vier Ziffern müssen verschieden sein."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FWJNJJKM5ZJ2DEDMAAHKDA",
+					"slug": "gs4-muster-zahlbeziehungen-3",
+					"language": "de",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=muster-zahlbeziehungen",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"question": "Eine Folge beginnt bei 2 475. Bei jedem Schritt kommen 125 dazu. Nenne die nächsten vier Zahlen und prüfe die Übergänge.",
+					"concept": "2 600, 2 725, 2 850, 2 975.",
+					"sample_solution": "2 475 + 125 = 2 600; dann 2 725, 2 850 und 2 975. Jeder Abstand beträgt 125. Auch ein Hunderter- oder Tausenderübergang ändert die Regel nicht."
+				},
+				{
+					"id": "01M6FWJNJJMMD8P2ET1NHDX7KG",
+					"slug": "gs4-muster-zahlbeziehungen-4",
+					"language": "de",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=muster-zahlbeziehungen",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"question": "Bei einer ANNA-Zahl und ihrer Tauschzahl wird jede der beiden verwendeten Ziffern um 1 erhöht. Alle Ziffern bleiben einstellig. Warum bleibt die Differenz gleich?",
+					"concept": "Beide Zahlen wachsen um 1 111. Gleich viel dazu verändert ihre Differenz nicht.",
+					"sample_solution": "Jede der vier Stellen wächst um eine Einheit ihres Stellenwerts: 1 000 + 100 + 10 + 1 = 1 111. Das gilt für die ANNA-Zahl und ihre Tauschzahl. Weil beide Zahlen um gleich viel wachsen, bleibt die Differenz gleich."
+				}
+			]
+		},
+		{
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"domain": "mathematik/zahlenwald",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"prerequisites": [
+				{
+					"atom_id": "01M6EQYDM45HP78N17YA5KGEWJ",
+					"type": "soft",
+					"rationale": "Dieser Rechenweg hilft beim Untersuchen und Prüfen der Zusammenhänge."
+				},
+				{
+					"atom_id": "01M6F0EKRN13BXXSS137PPTS1Q",
+					"type": "soft",
+					"rationale": "Dieser Rechenweg hilft beim Untersuchen und Prüfen der Zusammenhänge."
+				}
+			],
+			"id": "01M6FWJNJJJV0GQ6RCZ87A41YA",
+			"atom_uri": "urn:zam:atom:01M6FWJNJJJV0GQ6RCZ87A41YA",
+			"slug": "gs4-sachaufgaben-mehrschrittig",
+			"title": "Sachaufgaben in Schritten",
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=sachaufgaben-mehrschrittig",
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "sachaufgaben-mehrschrittig",
+					"topic_title": "Sachaufgaben in Schritten"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FWJNJJPXRSHDH3MQB6KPFJ",
+					"slug": "gs4-sachaufgaben-mehrschrittig-1",
+					"language": "de",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=sachaufgaben-mehrschrittig",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"question": "Woran entscheidest du bei einer Sachaufgabe, welche Zahlen aus dem Text du brauchst?",
+					"concept": "An der Frage und den Zusammenhängen der Geschichte.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"An der Frage und den Zusammenhängen der Geschichte.",
+							"Jede Zahl im Text muss in der Rechnung vorkommen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FWJNJJ75ESN7YX5CY0SSQJ",
+					"slug": "gs4-sachaufgaben-mehrschrittig-2",
+					"language": "de",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=sachaufgaben-mehrschrittig",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"question": "Beim Planen von Booten mit mehreren Plätzen bleibt nach den vollen Booten ein Rest von Kindern. Was bedeutet das für die Zahl der benötigten Boote?",
+					"concept": "Die übrigen Kinder brauchen zusammen ein weiteres Boot.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die übrigen Kinder brauchen zusammen ein weiteres Boot.",
+							"Der Rest wird weggelassen; die vollen Boote reichen immer."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FWJNJJXSN0GAPGJV2HM0BD",
+					"slug": "gs4-sachaufgaben-mehrschrittig-3",
+					"language": "de",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=sachaufgaben-mehrschrittig",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"question": "Sieben Beutel enthalten je 24 Samen. 35 Samen werden gesät. Wie viele Samen bleiben? Nenne auch dein Zwischenergebnis.",
+					"concept": "168 Samen vor dem Säen, 133 Samen danach.",
+					"sample_solution": "Zuerst den gesamten Vorrat berechnen: 7 · 24 = 168 Samen. Dann die gesäten Samen abziehen: 168 − 35 = 133 Samen. Es bleiben weniger als vorher; die 35 Samen werden nur einmal vom ganzen Vorrat abgezogen."
+				},
+				{
+					"id": "01M6FWJNJJPESJNJ98BB6PVNK1",
+					"slug": "gs4-sachaufgaben-mehrschrittig-4",
+					"language": "de",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=sachaufgaben-mehrschrittig",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"question": "Milo verschenkt 27 Muscheln. Den Rest verteilt er auf fünf Kisten mit je 18 Muscheln. Wie viele hatte er am Anfang? Prüfe vorwärts.",
+					"concept": "117 Muscheln.",
+					"sample_solution": "Der Rest umfasst 5 · 18 = 90 Muscheln. Rückwärts kommen die verschenkten 27 wieder dazu: 90 + 27 = 117. Vorwärtsprobe: 117 − 27 = 90; 90 : 5 = 18 Muscheln je Kiste."
+				}
+			]
+		},
+		{
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"domain": "mathematik/zahlenwald",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"id": "01M6FYQ7QE0B92JHPRXXA0XNQ7",
+			"atom_uri": "urn:zam:atom:01M6FYQ7QE0B92JHPRXXA0XNQ7",
+			"slug": "gs4-systematisch-kombinieren",
+			"title": "Systematisch kombinieren",
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=systematisch-kombinieren",
+			"prerequisites": [
+				{
+					"atom_id": "01M6EQYDM45HP78N17YA5KGEWJ",
+					"type": "soft",
+					"rationale": "Dieser Zusammenhang unterstützt das systematische Untersuchen und Prüfen."
+				},
+				{
+					"atom_id": "01M6FWJNJJJV0GQ6RCZ87A41YA",
+					"type": "soft",
+					"rationale": "Dieser Zusammenhang unterstützt das systematische Untersuchen und Prüfen."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "systematisch-kombinieren",
+					"topic_title": "Systematisch kombinieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FYQ7QEQ1SGR8N7BXJ8TV7Q",
+					"slug": "gs4-systematisch-kombinieren-1",
+					"language": "de",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=systematisch-kombinieren",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"question": "Wie findest du alle Zusammenstellungen aus zwei Reihen, ohne eine zu vergessen?",
+					"concept": "Eine Auswahl der ersten Reihe festhalten und jede der zweiten Reihe dazu ausprobieren; dann die erste Auswahl wechseln.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine Auswahl der ersten Reihe festhalten und jede der zweiten Reihe dazu ausprobieren; dann die erste Auswahl wechseln.",
+							"Immer beide Auswahlen gleichzeitig wechseln und aufhören, sobald eine doppelt erscheint."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FYQ7QEBJ4AYGEYF2GKN1SQ",
+					"slug": "gs4-systematisch-kombinieren-2",
+					"language": "de",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=systematisch-kombinieren",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"question": "Darfst du bei einer Einschränkung immer die Anzahl aller Auswahlen miteinander multiplizieren?",
+					"concept": "Nein. Prüfe zuerst die erlaubten Fälle und zähle sie systematisch.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein. Prüfe zuerst die erlaubten Fälle und zähle sie systematisch.",
+							"Ja. Eine Einschränkung ändert die Zahl der Möglichkeiten nie."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FYQ7QE8XKVWBWJC68GPFM4",
+					"slug": "gs4-systematisch-kombinieren-3",
+					"language": "de",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=systematisch-kombinieren",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"question": "Drei Hemden, zwei Hosen und zwei Mützen passen beliebig zusammen. Wie viele Zusammenstellungen aus genau einem Stück jeder Art sind möglich? Begründe systematisch.",
+					"concept": "12 Zusammenstellungen.",
+					"sample_solution": "Zu jedem Hemd gehören 2 Hosen. Zu jeder dieser Möglichkeiten passen 2 Mützen. Also gibt es 4 Zusammenstellungen je Hemd und 3 · 4 = 12 insgesamt. Halte Hemd und Hose fest, wechsle erst die Mütze und gehe dann geordnet weiter."
+				},
+				{
+					"id": "01M6FYQ7QEMARTY6SSFB80FPNF",
+					"slug": "gs4-systematisch-kombinieren-4",
+					"language": "de",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=systematisch-kombinieren",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"question": "Drei Wege können mit zwei Booten kombiniert werden. Nur der Waldweg ist auf ein bestimmtes Boot beschränkt; bei den beiden anderen Wegen gehen beide Boote. Wie viele erlaubte Zusammenstellungen gibt es?",
+					"concept": "5 Zusammenstellungen.",
+					"sample_solution": "Für den Waldweg gibt es 1 Möglichkeit, für jeden der anderen Wege 2. Insgesamt 1 + 2 + 2 = 5. Die Rechnung 3 · 2 würde die verbotene Zusammenstellung mitzählen."
+				}
+			]
+		},
+		{
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"domain": "mathematik/zahlenwald",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"id": "01M6FYQ7QFWGC8TNMK0EVS3QW2",
+			"atom_uri": "urn:zam:atom:01M6FYQ7QFWGC8TNMK0EVS3QW2",
+			"slug": "gs4-teiler-vielfache",
+			"title": "Teiler und Vielfache",
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=teiler-vielfache",
+			"prerequisites": [
+				{
+					"atom_id": "01M6EQYDM45HP78N17YA5KGEWJ",
+					"type": "soft",
+					"rationale": "Dieser Zusammenhang unterstützt das systematische Untersuchen und Prüfen."
+				},
+				{
+					"atom_id": "01M6F0EKRN13BXXSS137PPTS1Q",
+					"type": "soft",
+					"rationale": "Dieser Zusammenhang unterstützt das systematische Untersuchen und Prüfen."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "teiler-vielfache",
+					"topic_title": "Teiler und Vielfache"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FYQ7QF7Z2CMJ1KA7Z1J390",
+					"slug": "gs4-teiler-vielfache-1",
+					"language": "de",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=teiler-vielfache",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"question": "Wann ist eine positive ganze Zahl ein Teiler einer anderen positiven ganzen Zahl?",
+					"concept": "Wenn die Division ohne Rest aufgeht.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wenn die Division ohne Rest aufgeht.",
+							"Wenn die Division mindestens einen Rest von 1 lässt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FYQ7QF2C27G6VGPS0916CT",
+					"slug": "gs4-teiler-vielfache-2",
+					"language": "de",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=teiler-vielfache",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"question": "Welche Beziehung gilt, wenn 4 ein Teiler von 28 ist?",
+					"concept": "28 ist ein Vielfaches von 4.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"28 ist ein Vielfaches von 4.",
+							"4 ist ein Vielfaches von 28."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FYQ7QFK30WHVGJ5XPQ8KNH",
+					"slug": "gs4-teiler-vielfache-3",
+					"language": "de",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=teiler-vielfache",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"question": "Prüfe mit Division und Malaufgabe, ob 6 ein Teiler von 84 ist. Verwende auch das Wort Vielfaches.",
+					"concept": "6 ist ein Teiler von 84; 84 ist ein Vielfaches von 6.",
+					"sample_solution": "84 : 6 = 14 ohne Rest. Die Probe 6 · 14 = 84 bestätigt das. Daher ist 6 ein Teiler von 84 und 84 ein Vielfaches von 6."
+				},
+				{
+					"id": "01M6FYQ7QF8GY1CT0BJHQ3ENDM",
+					"slug": "gs4-teiler-vielfache-4",
+					"language": "de",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=teiler-vielfache",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"question": "Welche Zahlen von 1 bis 10 sind Teiler von 48? Begründe auch, warum 5 nicht dazugehört.",
+					"concept": "1, 2, 3, 4, 6 und 8.",
+					"sample_solution": "1 · 48, 2 · 24, 3 · 16, 4 · 12, 6 · 8 und 8 · 6 ergeben jeweils 48. Die übrigen angebotenen Zahlen teilen 48 nicht ohne Rest. Zum Beispiel 48 : 5 = 9 Rest 3; deshalb gehört 5 nicht dazu. Gesucht sind nur die Teiler unter den Zahlen von 1 bis 10."
+				}
+			]
+		},
+		{
+			"id": "01M6HGN3MBNWG2APEZG7EVE8H6",
+			"atom_uri": "urn:zam:atom:01M6HGN3MBNWG2APEZG7EVE8H6",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-laengen-messen",
+			"title": "Längen messen",
+			"domain": "mathematik/messmarkt",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=laengen-messen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6EQYDM45HP78N17YA5KGEWJ",
+					"type": "soft",
+					"rationale": "Die Grundrechenarten unterstützen das Rechnen mit Größen."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "laengen-messen",
+					"topic_title": "Längen messen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HGN3MB5T29WRZAXY13A62C",
+					"slug": "gs4-laengen-messen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=laengen-messen",
+					"materiality": "material",
+					"question": "Wo legst du den Anfang eines Gegenstands am Lineal an?",
+					"concept": "Am Nullstrich.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Am Nullstrich.",
+							"Immer am äußeren Rand, auch wenn dort nicht 0 steht."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HGN3MB6DD9XZ8QJ31J1RSJ",
+					"slug": "gs4-laengen-messen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=laengen-messen",
+					"materiality": "material",
+					"question": "Wie viele Millimeter hat ein Zentimeter?",
+					"concept": "10 mm.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["10 mm.", "100 mm."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HGN3MBBS9MDCNP3WRRAZ0S",
+					"slug": "gs4-laengen-messen-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=laengen-messen",
+					"materiality": "material",
+					"question": "Ein Band reicht von 12 mm bis 57 mm. Bestimme seine Länge und begründe.",
+					"concept": "45 mm = 4 cm 5 mm.",
+					"sample_solution": "Die Länge ist die Differenz der Endmarken: 57 mm − 12 mm = 45 mm. Der Endwert allein zählt die Strecke vor dem Band mit."
+				},
+				{
+					"id": "01M6HGN3MBGBJRKNSGY86NGQWP",
+					"slug": "gs4-laengen-messen-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=laengen-messen",
+					"materiality": "material",
+					"question": "Wie viel Band brauchst du für vier Stücke zu je 35 cm und 20 cm Reserve? Gib auch Meter an.",
+					"concept": "160 cm = 1,60 m.",
+					"sample_solution": "4 · 35 cm + 20 cm = 140 cm + 20 cm = 160 cm. 100 cm sind 1 m, daher sind 160 cm gleich 1,60 m."
+				}
+			]
+		},
+		{
+			"id": "01M6HGN3MB3C9PWBB1T2YBBE4X",
+			"atom_uri": "urn:zam:atom:01M6HGN3MB3C9PWBB1T2YBBE4X",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-masse-fassungsvermoegen",
+			"title": "Masse und Fassungsvermögen",
+			"domain": "mathematik/messmarkt",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=masse-fassungsvermoegen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6EQYDM45HP78N17YA5KGEWJ",
+					"type": "soft",
+					"rationale": "Die Grundrechenarten unterstützen das Rechnen mit Größen."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "masse-fassungsvermoegen",
+					"topic_title": "Masse und Fassungsvermögen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HGN3MBFWVDF9V3ZF3V2XJY",
+					"slug": "gs4-masse-fassungsvermoegen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=masse-fassungsvermoegen",
+					"materiality": "material",
+					"question": "Welche Einheiten passen zur Masse?",
+					"concept": "kg und g.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["kg und g.", "l und ml."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HGN3MBKQCF1K03ZCBA5K81",
+					"slug": "gs4-masse-fassungsvermoegen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=masse-fassungsvermoegen",
+					"materiality": "material",
+					"question": "Wie viele Milliliter hat ein Liter?",
+					"concept": "1 000 ml.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["1 000 ml.", "100 ml."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HGN3MBMQCHTNYX20DVR40J",
+					"slug": "gs4-masse-fassungsvermoegen-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=masse-fassungsvermoegen",
+					"materiality": "material",
+					"question": "Eine leere Kiste wiegt 400 g, ihr Inhalt 1 kg 300 g. Wie viel wiegt alles zusammen?",
+					"concept": "1 kg 700 g.",
+					"sample_solution": "1 kg 300 g = 1 300 g. Dazu 400 g ergeben 1 700 g = 1 kg 700 g. Die Kiste muss mitgezählt werden."
+				},
+				{
+					"id": "01M6HGN3MBPFN99YBY8HP8ANKB",
+					"slug": "gs4-masse-fassungsvermoegen-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=masse-fassungsvermoegen",
+					"materiality": "material",
+					"question": "Wie viel sind drei Viertel von 2 l? Erkläre mit gleich großen Teilen.",
+					"concept": "1 500 ml = 1 l 500 ml.",
+					"sample_solution": "2 l = 2 000 ml. Ein Viertel sind 2 000 ml : 4 = 500 ml. Drei solche Teile sind 3 · 500 ml = 1 500 ml."
+				}
+			]
+		},
+		{
+			"id": "01M6HGN3MB2CSCQFF5AVMHTWDC",
+			"atom_uri": "urn:zam:atom:01M6HGN3MB2CSCQFF5AVMHTWDC",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-uhrzeit-zeitspannen",
+			"title": "Uhrzeit und Zeitspannen",
+			"domain": "mathematik/messmarkt",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=uhrzeit-zeitspannen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6EQYDM45HP78N17YA5KGEWJ",
+					"type": "soft",
+					"rationale": "Die Grundrechenarten unterstützen das Rechnen mit Größen."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "uhrzeit-zeitspannen",
+					"topic_title": "Uhrzeit und Zeitspannen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HGN3MBBW70C1F1DR3XS9DJ",
+					"slug": "gs4-uhrzeit-zeitspannen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=uhrzeit-zeitspannen",
+					"materiality": "material",
+					"question": "Wie viele Minuten hat eine Stunde?",
+					"concept": "60 min.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["60 min.", "100 min."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HGN3MBDW3NMPZTJ2PQYE7C",
+					"slug": "gs4-uhrzeit-zeitspannen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=uhrzeit-zeitspannen",
+					"materiality": "material",
+					"question": "Was unterscheidet einen Zeitpunkt von einer Zeitspanne?",
+					"concept": "Ein Zeitpunkt sagt wann, eine Zeitspanne wie lange.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein Zeitpunkt sagt wann, eine Zeitspanne wie lange.",
+							"Beides ist immer dieselbe Angabe."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HGN3MBZN2SDJK8CZR1CZ8K",
+					"slug": "gs4-uhrzeit-zeitspannen-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=uhrzeit-zeitspannen",
+					"materiality": "material",
+					"question": "Wie lange dauert ein Weg von 23:40 Uhr bis 00:15 Uhr am nächsten Tag?",
+					"concept": "35 min.",
+					"sample_solution": "Von 23:40 Uhr bis Mitternacht sind es 20 min, danach noch 15 min. Zusammen 35 min. Der Tageswechsel gehört zur Rechnung."
+				},
+				{
+					"id": "01M6HGN3MC4NBVQ8AFGH70M0VW",
+					"slug": "gs4-uhrzeit-zeitspannen-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=uhrzeit-zeitspannen",
+					"materiality": "material",
+					"question": "Du musst um 14:10 Uhr ankommen und brauchst 45 min. Wann gehst du spätestens los?",
+					"concept": "13:25 Uhr.",
+					"sample_solution": "10 min zurück führen zu 14 Uhr, weitere 35 min zu 13:25 Uhr. Probe: 13:25 Uhr + 45 min = 14:10 Uhr."
+				}
+			]
+		},
+		{
+			"id": "01M6HGN3MCRTY6T48NFKR8GS1A",
+			"atom_uri": "urn:zam:atom:01M6HGN3MCRTY6T48NFKR8GS1A",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-geld-einkaufen",
+			"title": "Geld und Einkaufen",
+			"domain": "mathematik/messmarkt",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=geld-einkaufen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6EQYDM45HP78N17YA5KGEWJ",
+					"type": "soft",
+					"rationale": "Die Grundrechenarten unterstützen das Rechnen mit Größen."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "geld-einkaufen",
+					"topic_title": "Geld und Einkaufen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HGN3MC9J4TQ37XP52ZWS4A",
+					"slug": "gs4-geld-einkaufen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=geld-einkaufen",
+					"materiality": "material",
+					"question": "Wie schreibst du 3 € 8 ct in Euro mit Komma?",
+					"concept": "3,08 €.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["3,08 €.", "3,80 €."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HGN3MCG75GTW8RHX1E4MSD",
+					"slug": "gs4-geld-einkaufen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=geld-einkaufen",
+					"materiality": "material",
+					"question": "Was passiert mit dem Geldwert beim richtigen Wechseln von Münzen?",
+					"concept": "Der Wert bleibt gleich.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Wert bleibt gleich.",
+							"Mehr Münzen bedeuten immer mehr Geld."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HGN3MCPGCVP6R0AXE96ERC",
+					"slug": "gs4-geld-einkaufen-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=geld-einkaufen",
+					"materiality": "material",
+					"question": "Ein Heft kostet 1,45 €. Du kaufst drei und bezahlst 5 €. Wie viel Rückgeld bekommst du?",
+					"concept": "65 ct.",
+					"sample_solution": "3 · 145 ct = 435 ct. 500 ct − 435 ct = 65 ct. Die Probe ist 435 ct + 65 ct = 500 ct."
+				},
+				{
+					"id": "01M6HGN3MCNNTDB680WHE4788A",
+					"slug": "gs4-geld-einkaufen-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=geld-einkaufen",
+					"materiality": "material",
+					"question": "Vier gleiche Hefte kosten zusammen 6 €. Reichen 8 € für sechs solche Hefte? Begründe.",
+					"concept": "Nein, sechs Hefte kosten 9 €.",
+					"sample_solution": "Ein Heft kostet 600 ct : 4 = 150 ct. Sechs Hefte kosten 6 · 150 ct = 900 ct = 9 €. Zum Budget fehlen 1 €."
+				}
+			]
+		},
+		{
+			"id": "01M6HGN3MC0HS6N0C2P6FWSS8N",
+			"atom_uri": "urn:zam:atom:01M6HGN3MC0HS6N0C2P6FWSS8N",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-einheiten-wechseln",
+			"title": "Einheiten wechseln",
+			"domain": "mathematik/messmarkt",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=einheiten-wechseln",
+			"prerequisites": [
+				{
+					"atom_id": "01M6EQYDM45HP78N17YA5KGEWJ",
+					"type": "soft",
+					"rationale": "Die Grundrechenarten unterstützen das Rechnen mit Größen."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "einheiten-wechseln",
+					"topic_title": "Einheiten wechseln"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HGN3MCMBQ11F0GA2T2FA1R",
+					"slug": "gs4-einheiten-wechseln-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=einheiten-wechseln",
+					"materiality": "material",
+					"question": "Ändert sich eine Strecke, wenn du sie statt in km in m angibst?",
+					"concept": "Nein, nur Einheit und Maßzahl ändern sich.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein, nur Einheit und Maßzahl ändern sich.",
+							"Ja, die Strecke wird länger."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HGN3MCXG0YWTETWXTNPYYH",
+					"slug": "gs4-einheiten-wechseln-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=einheiten-wechseln",
+					"materiality": "material",
+					"question": "Gilt bei jedem Einheitenwechsel der Schritt 1 000?",
+					"concept": "Nein, zum Beispiel hat 1 h nur 60 min.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein, zum Beispiel hat 1 h nur 60 min.",
+							"Ja, jede große Einheit enthält 1 000 kleinere."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HGN3MCD8APPDSZ4GFY36CD",
+					"slug": "gs4-einheiten-wechseln-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=einheiten-wechseln",
+					"materiality": "material",
+					"question": "Zerlege 3 650 ml in ganze Liter und übrige Milliliter. Prüfe.",
+					"concept": "3 l 650 ml.",
+					"sample_solution": "3 000 ml sind 3 l, 650 ml bleiben. Probe: 3 · 1 000 ml + 650 ml = 3 650 ml."
+				},
+				{
+					"id": "01M6HGN3MCDFZ40GSN3TD9CGSR",
+					"slug": "gs4-einheiten-wechseln-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=einheiten-wechseln",
+					"materiality": "material",
+					"question": "Vergleiche 2 kg 400 g mit 2 350 g. Welche Masse ist größer und um wie viel?",
+					"concept": "2 kg 400 g sind um 50 g größer.",
+					"sample_solution": "2 kg 400 g = 2 400 g. In derselben Einheit lässt sich vergleichen: 2 400 g − 2 350 g = 50 g."
+				}
+			]
+		},
+		{
+			"id": "01M6HGN3MCN1J3WF67JHXXG25H",
+			"atom_uri": "urn:zam:atom:01M6HGN3MCN1J3WF67JHXXG25H",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-schaetzen-sachprobleme",
+			"title": "Schätzen und Sachprobleme",
+			"domain": "mathematik/messmarkt",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schaetzen-sachprobleme",
+			"prerequisites": [
+				{
+					"atom_id": "01M6EQYDM45HP78N17YA5KGEWJ",
+					"type": "soft",
+					"rationale": "Die Grundrechenarten unterstützen das Rechnen mit Größen."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "schaetzen-sachprobleme",
+					"topic_title": "Schätzen und Sachprobleme"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HGN3MCJZTRS9WSWGNCJKVS",
+					"slug": "gs4-schaetzen-sachprobleme-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schaetzen-sachprobleme",
+					"materiality": "material",
+					"question": "Womit begründest du eine sinnvolle Größenschätzung?",
+					"concept": "Mit einer passenden bekannten Bezugsgröße.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Mit einer passenden bekannten Bezugsgröße.",
+							"Mit einer Zahl ohne Vergleich und ohne Einheit."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HGN3MCK8CHGEYSFAYJX9R0",
+					"slug": "gs4-schaetzen-sachprobleme-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schaetzen-sachprobleme",
+					"materiality": "material",
+					"question": "Wird ein Ergebnis aus ungefähren Angaben durch Multiplizieren automatisch genau?",
+					"concept": "Nein, es bleibt ungefähr.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein, es bleibt ungefähr.",
+							"Ja, jede Rechnung ist eine genaue Messung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HGN3MC6T57Z3RY30XKA58D",
+					"slug": "gs4-schaetzen-sachprobleme-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schaetzen-sachprobleme",
+					"materiality": "material",
+					"question": "17 Kinder bekommen je 250 ml Wasser. Wie viele volle 1-l-Flaschen brauchst du mindestens?",
+					"concept": "5 Flaschen.",
+					"sample_solution": "17 · 250 ml = 4 250 ml. Vier Flaschen liefern nur 4 000 ml. Fünf Flaschen liefern 5 000 ml und reichen; 750 ml bleiben."
+				},
+				{
+					"id": "01M6HGN3MCXEN3GVHPAVGS4NDN",
+					"slug": "gs4-schaetzen-sachprobleme-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schaetzen-sachprobleme",
+					"materiality": "material",
+					"question": "Drei Päckchen kosten je 2,35 €. Das Budget beträgt 7 €. Reicht ein Überschlag für die Entscheidung? Begründe genau.",
+					"concept": "Hier brauchst du die genaue Rechnung; das Budget reicht nicht.",
+					"sample_solution": "3 · 235 ct = 705 ct = 7,05 €. Es fehlen 5 ct. Ein grober Überschlag kann diese knappe Grenze übersehen."
+				}
+			]
+		},
+		{
+			"id": "01M6HJYH48WKRX7J6JPD48J22G",
+			"atom_uri": "urn:zam:atom:01M6HJYH48WKRX7J6JPD48J22G",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-wege-lageplaene",
+			"title": "Wege und Lagepläne",
+			"domain": "mathematik/formenbucht",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=wege-lageplaene",
+			"prerequisites": [
+				{
+					"atom_id": "01M6HGN3MBNWG2APEZG7EVE8H6",
+					"type": "soft",
+					"rationale": "Längen und gleich große Einheiten unterstützen die geometrischen Modelle."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "wege-lageplaene",
+					"topic_title": "Wege und Lagepläne"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HJYH490MP5B3KSDZMAS8KV",
+					"slug": "gs4-wege-lageplaene-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=wege-lageplaene",
+					"materiality": "material",
+					"question": "Was prüfst du zuerst, bevor du einen Lageplan benutzt?",
+					"concept": "Orientierung und Bedeutung der Zeichen oder Abstände.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Orientierung und Bedeutung der Zeichen oder Abstände.",
+							"Nur die Farbe des Plans."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4AX75KHKC3MPBFT0DC",
+					"slug": "gs4-wege-lageplaene-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=wege-lageplaene",
+					"materiality": "material",
+					"question": "Wie gehst du auf demselben Weg rückwärts zurück?",
+					"concept": "In umgekehrter Reihenfolge und mit umgekehrten Richtungen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"In umgekehrter Reihenfolge und mit umgekehrten Richtungen.",
+							"In derselben Reihenfolge mit denselben Richtungen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4AY2QEZ166WWPAWJF5",
+					"slug": "gs4-wege-lageplaene-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=wege-lageplaene",
+					"materiality": "material",
+					"question": "Ein Planweg führt drei Abstände nach Osten und zwei nach Norden. Ein Abstand bedeutet 20 m. Wie lang ist dieser Weg?",
+					"concept": "100 m.",
+					"sample_solution": "Es sind 3 + 2 = 5 Wegabstände. 5 · 20 m =100 m. Die diagonale Luftlinie ist ein anderer Weg."
+				},
+				{
+					"id": "01M6HJYH4A3E9CAAPX1HP2CQDK",
+					"slug": "gs4-wege-lageplaene-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=wege-lageplaene",
+					"materiality": "material",
+					"question": "Milo ging erst zwei nach Westen und dann drei nach Süden. Beschreibe den Rückweg.",
+					"concept": "Erst drei nach Norden, dann zwei nach Osten.",
+					"sample_solution": "Die letzte Bewegung wird zuerst rückgängig gemacht. Süden wird Norden, danach Westen zu Osten."
+				}
+			]
+		},
+		{
+			"id": "01M6HJYH4ANKVXBJFYMDYPCEF8",
+			"atom_uri": "urn:zam:atom:01M6HJYH4ANKVXBJFYMDYPCEF8",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-wuerfelgebaeude-ansichten",
+			"title": "Würfelgebäude und Ansichten",
+			"domain": "mathematik/formenbucht",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=wuerfelgebaeude-ansichten",
+			"prerequisites": [
+				{
+					"atom_id": "01M6HGN3MBNWG2APEZG7EVE8H6",
+					"type": "soft",
+					"rationale": "Längen und gleich große Einheiten unterstützen die geometrischen Modelle."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "wuerfelgebaeude-ansichten",
+					"topic_title": "Würfelgebäude und Ansichten"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HJYH4AZ0RR742CAWDWBKCG",
+					"slug": "gs4-wuerfelgebaeude-ansichten-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=wuerfelgebaeude-ansichten",
+					"materiality": "material",
+					"question": "Was bedeutet die Zahl 3 an einem Platz eines lückenlosen Würfelbauplans?",
+					"concept": "Dort steht ein 3 Würfel hoher Stapel.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Dort steht ein 3 Würfel hoher Stapel.",
+							"Im ganzen Gebäude gibt es insgesamt 3 Würfel."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4ADHAMS8Q8HAPXVY4K",
+					"slug": "gs4-wuerfelgebaeude-ansichten-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=wuerfelgebaeude-ansichten",
+					"materiality": "material",
+					"question": "Wie bestimmst du die Höhe einer Spalte der Vorderansicht?",
+					"concept": "Nimm die größte Stapelhöhe in dieser Spalte des Bauplans.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nimm die größte Stapelhöhe in dieser Spalte des Bauplans.",
+							"Addiere immer alle Stapelhöhen hintereinander."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4AR6E1JGTAFYZ4CT8W",
+					"slug": "gs4-wuerfelgebaeude-ansichten-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=wuerfelgebaeude-ansichten",
+					"materiality": "material",
+					"question": "Hinten stehen Stapel mit Höhen 2 und 4, vorne mit Höhen 3 und 1. Wie viele Würfel sind es und welche Vorderansicht entsteht?",
+					"concept": "10 Würfel; vorne links Höhe 3, rechts Höhe 4.",
+					"sample_solution": "Für alle Würfel addierst du 2 + 4 + 3 + 1 = 10. In der linken Spalte bestimmt der 3er-Stapel, rechts der 4er-Stapel die Ansicht."
+				},
+				{
+					"id": "01M6HJYH4ATQZSZ4XAGV5RJ180",
+					"slug": "gs4-wuerfelgebaeude-ansichten-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=wuerfelgebaeude-ansichten",
+					"materiality": "material",
+					"question": "Ein Gebäude enthält 15 Würfel. Drei seiner vier Stapel sind 2, 4 und 5 Würfel hoch. Wie hoch ist der fehlende Stapel?",
+					"concept": "4 Würfel hoch.",
+					"sample_solution": "Die bekannten Stapel enthalten 2 + 4 + 5 = 11 Würfel. 15 − 11 = 4. Jeder Stapel ist von unten lückenlos gefüllt."
+				}
+			]
+		},
+		{
+			"id": "01M6HJYH4AXT9WDWJHRV6AXSSS",
+			"atom_uri": "urn:zam:atom:01M6HJYH4AXT9WDWJHRV6AXSSS",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-figuren-zeichnen",
+			"title": "Figuren zeichnen",
+			"domain": "mathematik/formenbucht",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=figuren-zeichnen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6HGN3MBNWG2APEZG7EVE8H6",
+					"type": "soft",
+					"rationale": "Längen und gleich große Einheiten unterstützen die geometrischen Modelle."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "figuren-zeichnen",
+					"topic_title": "Figuren zeichnen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HJYH4AYRYZMNQ0Q776RD80",
+					"slug": "gs4-figuren-zeichnen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=figuren-zeichnen",
+					"materiality": "material",
+					"question": "Welche Winkel hat ein Rechteck?",
+					"concept": "Vier rechte Winkel.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Vier rechte Winkel.",
+							"Beliebige Winkel, wenn gegenüberliegende Seiten gleich lang sind."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4ARHD1717N6PKNMFQC",
+					"slug": "gs4-figuren-zeichnen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=figuren-zeichnen",
+					"materiality": "material",
+					"question": "Was bleibt beim Zeichnen eines Kreises mit dem Zirkel gleich?",
+					"concept": "Der Abstand vom festen Mittelpunkt zum Rand.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Abstand vom festen Mittelpunkt zum Rand.",
+							"Nur die Farbe, die Zirkelöffnung darf ständig wechseln."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4A54FR96ZJAF66DQE4",
+					"slug": "gs4-figuren-zeichnen-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=figuren-zeichnen",
+					"materiality": "material",
+					"question": "Ein Rechteck hat oben 7 cm und rechts 4 cm. Bestimme die anderen Seiten und die Randlänge.",
+					"concept": "Unten 7 cm, links 4 cm; Randlänge 22 cm.",
+					"sample_solution": "Gegenüberliegende Seiten sind gleich lang. 7 + 4 + 7 + 4 = 22 cm. Prüfe außerdem alle vier rechten Winkel."
+				},
+				{
+					"id": "01M6HJYH4AH0RY8D6WBDAH1HD9",
+					"slug": "gs4-figuren-zeichnen-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=figuren-zeichnen",
+					"materiality": "material",
+					"question": "Der Zirkel ist 25 mm geöffnet. Wie groß ist der Abstand Mitte–Rand und die gerade Strecke Rand–Mitte–Rand?",
+					"concept": "25 mm und 50 mm.",
+					"sample_solution": "Jeder Randpunkt ist 25 mm von der Mitte entfernt. Durch die Mitte folgen zwei dieser Abstände: 25 mm +25 mm =50 mm."
+				}
+			]
+		},
+		{
+			"id": "01M6HJYH4AE1H1FN5JGJ6TQXM8",
+			"atom_uri": "urn:zam:atom:01M6HJYH4AE1H1FN5JGJ6TQXM8",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-koerper-netze",
+			"title": "Körper und Netze",
+			"domain": "mathematik/formenbucht",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=koerper-netze",
+			"prerequisites": [
+				{
+					"atom_id": "01M6HGN3MBNWG2APEZG7EVE8H6",
+					"type": "soft",
+					"rationale": "Längen und gleich große Einheiten unterstützen die geometrischen Modelle."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "koerper-netze",
+					"topic_title": "Körper und Netze"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HJYH4A845SGH1V3VDCMH2B",
+					"slug": "gs4-koerper-netze-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=koerper-netze",
+					"materiality": "material",
+					"question": "Sind sechs an Kanten verbundene Quadrate immer ein Würfelnetz?",
+					"concept": "Nein, ihre Anordnung muss sechs verschiedene Seiten ohne Überlappung schließen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein, ihre Anordnung muss sechs verschiedene Seiten ohne Überlappung schließen.",
+							"Ja, die Anzahl allein genügt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4ADWRWHQN6F8EGKZQD",
+					"slug": "gs4-koerper-netze-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=koerper-netze",
+					"materiality": "material",
+					"question": "Was bedeutet deckungsgleich bei zwei Flächen?",
+					"concept": "Sie passen beim geeigneten Aufeinanderlegen genau aufeinander.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie passen beim geeigneten Aufeinanderlegen genau aufeinander.",
+							"Sie haben nur dieselbe Farbe."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4APVCTYH8Z9WCPKRMM",
+					"slug": "gs4-koerper-netze-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=koerper-netze",
+					"materiality": "material",
+					"question": "Erkläre, wie du ein selbst gezeichnetes Würfelnetz prüfen kannst.",
+					"concept": "Gedanklich oder mit Papier falten und alle sechs Seiten auf Überlappung und Abschluss prüfen.",
+					"sample_solution": "Eine Fläche als Boden festhalten, Nachbarn hochklappen und die restlichen Flächen verfolgen. Es müssen sechs verschiedene Seiten entstehen. Drehen des gesamten Netzes verändert seine Eignung nicht."
+				},
+				{
+					"id": "01M6HJYH4A7N6102KFFJ5GD097",
+					"slug": "gs4-koerper-netze-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=koerper-netze",
+					"materiality": "material",
+					"question": "Ein Quader hat die Kantenlängen 2, 4 und 5 Einheiten. Beschreibe seine drei Flächenpaare.",
+					"concept": "Je zwei Rechtecke mit Seiten 2 und 4, 2 und 5 sowie 4 und 5.",
+					"sample_solution": "Gegenüberliegende Flächen sind deckungsgleich. Drei Paare mit je zwei Flächen ergeben insgesamt sechs Flächen. Nicht alle Kanten sind gleich, daher ist dieser Quader kein Würfel."
+				}
+			]
+		},
+		{
+			"id": "01M6HJYH4AGQQ9SW4WK5Y6VTAD",
+			"atom_uri": "urn:zam:atom:01M6HJYH4AGQQ9SW4WK5Y6VTAD",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-spiegeln-symmetrie",
+			"title": "Spiegeln und Symmetrie",
+			"domain": "mathematik/formenbucht",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=spiegeln-symmetrie",
+			"prerequisites": [
+				{
+					"atom_id": "01M6HGN3MBNWG2APEZG7EVE8H6",
+					"type": "soft",
+					"rationale": "Längen und gleich große Einheiten unterstützen die geometrischen Modelle."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "spiegeln-symmetrie",
+					"topic_title": "Spiegeln und Symmetrie"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HJYH4ASGHPPK8RRKR3GH13",
+					"slug": "gs4-spiegeln-symmetrie-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=spiegeln-symmetrie",
+					"materiality": "material",
+					"question": "Wie liegen ein Punkt und sein Spiegelpunkt zur Symmetrieachse?",
+					"concept": "Genau gegenüber und im gleichen Abstand.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Genau gegenüber und im gleichen Abstand.",
+							"Immer auf derselben Seite der Achse."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4AYE83N9ZYYPAVK9X8",
+					"slug": "gs4-spiegeln-symmetrie-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=spiegeln-symmetrie",
+					"materiality": "material",
+					"question": "Was passiert mit einem Punkt direkt auf der Spiegelachse?",
+					"concept": "Er bleibt an seinem Platz.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Er bleibt an seinem Platz.",
+							"Er wird immer zwei Felder verschoben."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4A6PCRCVVX9H438NBT",
+					"slug": "gs4-spiegeln-symmetrie-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=spiegeln-symmetrie",
+					"materiality": "material",
+					"question": "Ein Punkt liegt in Spalte 1, Zeile 2 eines Fünfergitters. Die senkrechte Achse geht durch Spalte 3. Wo liegt der Spiegelpunkt?",
+					"concept": "Spalte 5, Zeile 2.",
+					"sample_solution": "Spalte 1 liegt zwei Feldabstände links von der Achse. Zwei Abstände rechts liegt Spalte 5. Die Zeile bleibt bei einer senkrechten Achse gleich."
+				},
+				{
+					"id": "01M6HJYH4AAVP67EC3NQ91C51C",
+					"slug": "gs4-spiegeln-symmetrie-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=spiegeln-symmetrie",
+					"materiality": "material",
+					"question": "Woran erkennst du eine achsensymmetrische Figur? Beschreibe eine praktische Prüfung.",
+					"concept": "Beim Falten an der Symmetrieachse passen beide Teile deckungsgleich aufeinander.",
+					"sample_solution": "Jeder Punkt hat einen genau gegenüberliegenden Partner im gleichen Abstand zur Achse; Punkte auf der Achse bleiben fest. Mit Papierfalten oder einem Spiegel kannst du nachprüfen."
+				}
+			]
+		},
+		{
+			"id": "01M6HJYH4A0GQMYQBSKNRKTCQD",
+			"atom_uri": "urn:zam:atom:01M6HJYH4A0GQMYQBSKNRKTCQD",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-vergroessern-verkleinern",
+			"title": "Vergrößern und Verkleinern",
+			"domain": "mathematik/formenbucht",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=vergroessern-verkleinern",
+			"prerequisites": [
+				{
+					"atom_id": "01M6HGN3MBNWG2APEZG7EVE8H6",
+					"type": "soft",
+					"rationale": "Längen und gleich große Einheiten unterstützen die geometrischen Modelle."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "vergroessern-verkleinern",
+					"topic_title": "Vergrößern und Verkleinern"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HJYH4ANS9VGX6R35E6TCV9",
+					"slug": "gs4-vergroessern-verkleinern-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=vergroessern-verkleinern",
+					"materiality": "material",
+					"question": "Welche Längen veränderst du beim maßstäblichen Vergrößern?",
+					"concept": "Alle entsprechenden Längen mit demselben Faktor.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Alle entsprechenden Längen mit demselben Faktor.",
+							"Nur die längste Seite."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4AC45XHDQV88NNBSHF",
+					"slug": "gs4-vergroessern-verkleinern-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=vergroessern-verkleinern",
+					"materiality": "material",
+					"question": "Was bedeutet eine Vergrößerung 2 : 1 für eine Strecke von 1 cm?",
+					"concept": "Sie wird 2 cm lang.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie wird 2 cm lang.",
+							"Sie wird um 2 cm auf 3 cm verlängert."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4AWRVQ2Q436PYFX937",
+					"slug": "gs4-vergroessern-verkleinern-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=vergroessern-verkleinern",
+					"materiality": "material",
+					"question": "Ein Rechteck ist 4 cm breit und 3 cm hoch. Es soll doppelte Längen erhalten. Welche Maße hat es danach?",
+					"concept": "8 cm breit und 6 cm hoch.",
+					"sample_solution": "Beide Längen werden mit 2 multipliziert. Nur die Breite zu verändern wäre keine passende Vergrößerung."
+				},
+				{
+					"id": "01M6HJYH4AV7H483C0Z7RJ3XFY",
+					"slug": "gs4-vergroessern-verkleinern-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=vergroessern-verkleinern",
+					"materiality": "material",
+					"question": "Eine Figur mit Seitenlängen 10 cm und 6 cm wird auf die Hälfte verkleinert. Bestimme die neuen Längen und prüfe mit der Umkehrung.",
+					"concept": "5 cm und 3 cm.",
+					"sample_solution": "10 cm : 2 = 5 cm und 6 cm : 2 = 3 cm. Beim Verdoppeln erhältst du wieder 10 cm und 6 cm."
+				}
+			]
+		},
+		{
+			"id": "01M6HJYH4A7A46N58720CZ0Q41",
+			"atom_uri": "urn:zam:atom:01M6HJYH4A7A46N58720CZ0Q41",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-parkette-ornamente",
+			"title": "Parkette und Ornamente",
+			"domain": "mathematik/formenbucht",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=parkette-ornamente",
+			"prerequisites": [
+				{
+					"atom_id": "01M6HGN3MBNWG2APEZG7EVE8H6",
+					"type": "soft",
+					"rationale": "Längen und gleich große Einheiten unterstützen die geometrischen Modelle."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "parkette-ornamente",
+					"topic_title": "Parkette und Ornamente"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HJYH4A5D8VVEE3MFS3JZVB",
+					"slug": "gs4-parkette-ornamente-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=parkette-ornamente",
+					"materiality": "material",
+					"question": "Was kennzeichnet ein Parkett?",
+					"concept": "Die Fläche wird ohne Lücken und Überlappungen bedeckt.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Fläche wird ohne Lücken und Überlappungen bedeckt.",
+							"Die einzelnen Teile müssen sich überdecken."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4APTVS8GG3N9MNF0V2",
+					"slug": "gs4-parkette-ornamente-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=parkette-ornamente",
+					"materiality": "material",
+					"question": "Was wiederholst du bei einem ausdrücklich vorgegebenen Bandornament?",
+					"concept": "Die ganze angegebene Einheit in derselben Reihenfolge.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die ganze angegebene Einheit in derselben Reihenfolge.",
+							"Nur das zuletzt sichtbare Zeichen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4AK599CXV348K4EXE6",
+					"slug": "gs4-parkette-ornamente-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=parkette-ornamente",
+					"materiality": "material",
+					"question": "Das Grundmuster ist Kreis–Quadrat–Quadrat–Kreis. Schreibe zwei ganze Wiederholungen und nenne die Anzahl der Fliesen.",
+					"concept": "Kreis–Quadrat–Quadrat–Kreis–Kreis–Quadrat–Quadrat–Kreis; 8 Fliesen.",
+					"sample_solution": "Eine Einheit enthält 4 Fliesen. Zwei Einheiten enthalten 8. Die beiden Kreise in der Mitte gehören zu benachbarten Einheiten."
+				},
+				{
+					"id": "01M6HJYH4A5ZEXN3B62CJ04E4S",
+					"slug": "gs4-parkette-ornamente-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=parkette-ornamente",
+					"materiality": "material",
+					"question": "Erfinde ein Vierermuster mit mindestens zwei Markierungen und beschreibe drei gleiche Wiederholungen.",
+					"concept": "Zum Beispiel Kreis–Dreieck–Quadrat–Dreieck, dreimal hintereinander.",
+					"sample_solution": "Die selbst gewählte Vierereinheit bleibt in jeder Wiederholung gleich. Drei Vierereinheiten ergeben 12 markierte quadratische Fliesen. Andere konsistente Muster mit mindestens zwei Markierungen sind ebenfalls richtig."
+				}
+			]
+		},
+		{
+			"id": "01M6HJYH4AGDBHV8FHK1B9F9J7",
+			"atom_uri": "urn:zam:atom:01M6HJYH4AGDBHV8FHK1B9F9J7",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-flaechen-vergleichen",
+			"title": "Flächen mit Einheitsplättchen vergleichen",
+			"domain": "mathematik/formenbucht",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=flaechen-vergleichen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6HGN3MBNWG2APEZG7EVE8H6",
+					"type": "soft",
+					"rationale": "Längen und gleich große Einheiten unterstützen die geometrischen Modelle."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "flaechen-vergleichen",
+					"topic_title": "Flächen mit Einheitsplättchen vergleichen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HJYH4A0TEPEWEDMSSKRBCJ",
+					"slug": "gs4-flaechen-vergleichen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=flaechen-vergleichen",
+					"materiality": "material",
+					"question": "Welche Plättchen brauchst du zum direkten Flächenvergleich über die Anzahl?",
+					"concept": "Gleich große Einheitsplättchen ohne Lücken oder Überlappungen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Gleich große Einheitsplättchen ohne Lücken oder Überlappungen.",
+							"Beliebig unterschiedlich große Plättchen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4AJ7T22EW5N3RY3F1R",
+					"slug": "gs4-flaechen-vergleichen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=flaechen-vergleichen",
+					"materiality": "material",
+					"question": "Ändert sich die bedeckte Fläche, wenn du dieselben Plättchen lückenlos umlegst?",
+					"concept": "Nein, sie bleibt gleich.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein, sie bleibt gleich.",
+							"Ja, eine längere Form hat immer mehr Fläche."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4AJYA3M2RKTR0FQ8AM",
+					"slug": "gs4-flaechen-vergleichen-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=flaechen-vergleichen",
+					"materiality": "material",
+					"question": "Eine Figur hat in ihren Reihen 4, 2 und 5 Einheitsplättchen. Wie viele bedecken sie? Was bleibt beim Umlegen gleich?",
+					"concept": "11 Plättchen; die bedeckte Fläche bleibt beim lückenlosen Umlegen gleich.",
+					"sample_solution": "4 + 2 + 5 = 11. Die Plättchengröße und Anzahl bleiben erhalten, wenn genau dieselben Teile ohne Überlappung verwendet werden."
+				},
+				{
+					"id": "01M6HJYH4ASG5M5VEA4DZXFGKG",
+					"slug": "gs4-flaechen-vergleichen-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=flaechen-vergleichen",
+					"materiality": "material",
+					"question": "Ein Rahmen hat 5 Reihen mit je 5 Plätzen. 14 Einheitsplättchen liegen schon darin. Wie viele fehlen?",
+					"concept": "11 Plättchen.",
+					"sample_solution": "5 Reihen mit je 5 Plätzen brauchen 25 Plättchen. 25 − 14 = 11. Gezählt wird die bedeckte Fläche, nicht der Rand."
+				}
+			]
+		},
+		{
+			"id": "01M6HJYH4AA547J6JEJ4653PMX",
+			"atom_uri": "urn:zam:atom:01M6HJYH4AA547J6JEJ4653PMX",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-rauminhalte-wuerfel",
+			"title": "Rauminhalte mit Einheitswürfeln",
+			"domain": "mathematik/formenbucht",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=rauminhalte-wuerfel",
+			"prerequisites": [
+				{
+					"atom_id": "01M6HGN3MBNWG2APEZG7EVE8H6",
+					"type": "soft",
+					"rationale": "Längen und gleich große Einheiten unterstützen die geometrischen Modelle."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "rauminhalte-wuerfel",
+					"topic_title": "Rauminhalte mit Einheitswürfeln"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6HJYH4ANRPSKKJRF4GNWNJ4",
+					"slug": "gs4-rauminhalte-wuerfel-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=rauminhalte-wuerfel",
+					"materiality": "material",
+					"question": "Welche Würfel zählen zum Rauminhalt eines lückenlos gefüllten Körpers?",
+					"concept": "Alle Einheitswürfel, auch verdeckte und innere.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Alle Einheitswürfel, auch verdeckte und innere.",
+							"Nur die Würfel, die du von vorne siehst."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4AM9D2KR2YME5EJMYH",
+					"slug": "gs4-rauminhalte-wuerfel-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=rauminhalte-wuerfel",
+					"materiality": "material",
+					"question": "Wann bedeuten gleich viele Würfel auch gleich viel Rauminhalt?",
+					"concept": "Wenn die Einheitswürfel gleich groß sind und ohne Lücken gebaut werden.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wenn die Einheitswürfel gleich groß sind und ohne Lücken gebaut werden.",
+							"Immer, unabhängig von der Würfelgröße."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6HJYH4A8D3PSG8AJ7GZPB72",
+					"slug": "gs4-rauminhalte-wuerfel-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=rauminhalte-wuerfel",
+					"materiality": "material",
+					"question": "Eine Kiste enthält drei gleiche Schichten. Jede Schicht hat zwei Reihen mit je vier Einheitswürfeln. Wie viele Würfel füllen die Kiste?",
+					"concept": "24 Würfel.",
+					"sample_solution": "Eine Schicht enthält 2 · 4 = 8 Würfel. Drei Schichten enthalten 8 + 8 + 8 = 24. Auch die inneren Würfel gehören dazu."
+				},
+				{
+					"id": "01M6HJYH4AMBFZX1YPAZS1QQZF",
+					"slug": "gs4-rauminhalte-wuerfel-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=rauminhalte-wuerfel",
+					"materiality": "material",
+					"question": "Eine volle Kiste enthält 24 Einheitswürfel. Fünf werden herausgenommen. Wie viele bleiben und was fehlt bis zur vollen Kiste?",
+					"concept": "19 bleiben; 5 fehlen.",
+					"sample_solution": "24 − 5 = 19. Die Ergänzungsprobe 19 + 5 = 24 bestätigt das Ganze. Die Zahl sichtbarer Außenflächen ersetzt diese Zählung nicht."
+				}
+			]
+		},
+		{
+			"id": "01M6JFW47JSQVHH64VQ5B4Z7SJ",
+			"atom_uri": "urn:zam:atom:01M6JFW47JSQVHH64VQ5B4Z7SJ",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-daten-sammeln-darstellen",
+			"title": "Daten sammeln und darstellen",
+			"domain": "mathematik/zufallsgarten",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=daten-sammeln-darstellen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FWJNJHBE2HJPSP2H7QZP4K",
+					"type": "soft",
+					"rationale": "Geordnete Darstellungen unterstützen das Untersuchen von Daten."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "daten-sammeln-darstellen",
+					"topic_title": "Daten sammeln und darstellen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6JFW47JAPQ5D6MWVKCPG69S",
+					"slug": "gs4-daten-sammeln-darstellen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=daten-sammeln-darstellen",
+					"materiality": "material",
+					"question": "Was bedeutet die Häufigkeit einer Kategorie in einer Sammlung?",
+					"concept": "Wie oft diese Kategorie in den erfassten Beobachtungen vorkommt.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wie oft diese Kategorie in den erfassten Beobachtungen vorkommt.",
+							"Wie groß das Bild der Kategorie gezeichnet wurde."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6JFW47JCG271TCZ3E96YNTN",
+					"slug": "gs4-daten-sammeln-darstellen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=daten-sammeln-darstellen",
+					"materiality": "material",
+					"question": "Was brauchst du, um die Höhe einer Säule als Anzahl zu lesen?",
+					"concept": "Kategorien, Einheit und Skala des Diagramms.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Kategorien, Einheit und Skala des Diagramms.",
+							"Nur die Farbe der Säule."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6JFW47JF1YPHBEW4BEVJY4H",
+					"slug": "gs4-daten-sammeln-darstellen-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=daten-sammeln-darstellen",
+					"materiality": "material",
+					"question": "Eine Sammlung enthält 4 Äpfel, 6 Birnen und 3 Pflaumen. Wie kontrollierst du ihre Erfassung?",
+					"concept": "Die Häufigkeiten ergeben zusammen 13 Früchte; jede Beobachtung muss genau einmal zugeordnet sein.",
+					"sample_solution": "4 + 6 + 3 = 13. Vergleiche diese Gesamtzahl mit der Zahl der gesammelten Früchte und prüfe auf fehlende oder doppelte Einträge."
+				},
+				{
+					"id": "01M6JFW47J3RDP5NVN748M3DRS",
+					"slug": "gs4-daten-sammeln-darstellen-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=daten-sammeln-darstellen",
+					"materiality": "material",
+					"question": "Eine Säule ist sechs kleine Skalenstufen hoch. Eine Stufe bedeutet zwei Stück. Welche Häufigkeit zeigt sie und warum?",
+					"concept": "12 Stück.",
+					"sample_solution": "Sechs gleich große Stufen zu je zwei Stück ergeben 6 · 2 = 12. Die Stufenzahl allein wäre bei dieser Skala keine Stückzahl."
+				}
+			]
+		},
+		{
+			"id": "01M6JFW47JE45DM36Y5W69ZS06",
+			"atom_uri": "urn:zam:atom:01M6JFW47JE45DM36Y5W69ZS06",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-tabellen-diagramme-auswerten",
+			"title": "Tabellen und Diagramme auswerten",
+			"domain": "mathematik/zufallsgarten",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=tabellen-diagramme-auswerten",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FWJNJHBE2HJPSP2H7QZP4K",
+					"type": "soft",
+					"rationale": "Geordnete Darstellungen unterstützen das Untersuchen von Daten."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "tabellen-diagramme-auswerten",
+					"topic_title": "Tabellen und Diagramme auswerten"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6JFW47JB81A0BJ56ZTG4F92",
+					"slug": "gs4-tabellen-diagramme-auswerten-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=tabellen-diagramme-auswerten",
+					"materiality": "material",
+					"question": "Welche Rechnung beantwortet die Frage, wie viele Besucher Stand B mehr als Stand A hat?",
+					"concept": "Besucherzahl B minus Besucherzahl A.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Besucherzahl B minus Besucherzahl A.",
+							"Die beiden Besucherzahlen addieren."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6JFW47JZRKY8KWGVNKEPCG4",
+					"slug": "gs4-tabellen-diagramme-auswerten-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=tabellen-diagramme-auswerten",
+					"materiality": "material",
+					"question": "Was unterscheidet reine Fahrtzeit von der Reisezeit mit Aufenthalt?",
+					"concept": "Die Reisezeit enthält zusätzlich den Aufenthalt.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Reisezeit enthält zusätzlich den Aufenthalt.",
+							"Ein Aufenthalt dauert grundsätzlich keine Zeit."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6JFW47JJ79FMM5MG0ETKPJM",
+					"slug": "gs4-tabellen-diagramme-auswerten-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=tabellen-diagramme-auswerten",
+					"materiality": "material",
+					"question": "Ein Fahrplan zeigt Start 08:10 Uhr, Zwischenankunft 08:35 Uhr, Weiterfahrt 08:45 Uhr und Ziel 09:15 Uhr. Bestimme Fahrtzeit, Aufenthalt und Reisezeit.",
+					"concept": "55 min Fahrt, 10 min Aufenthalt, 65 min Reisezeit.",
+					"sample_solution": "Erste Fahrt 25 min, zweite Fahrt 30 min; zusammen 55 min. Der Aufenthalt dauert 10 min. Insgesamt 55 min + 10 min = 65 min."
+				},
+				{
+					"id": "01M6JFW47JQG04JB3CNEK37BWK",
+					"slug": "gs4-tabellen-diagramme-auswerten-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=tabellen-diagramme-auswerten",
+					"materiality": "material",
+					"question": "Drei Kategorien haben insgesamt 30 Beobachtungen. Zwei enthalten 8 und 12. Wie viele enthält die dritte? Erkläre deinen Schluss.",
+					"concept": "10 Beobachtungen.",
+					"sample_solution": "Der fehlende Teil ergibt sich aus dem Ganzen: 30 − 8 − 12 = 10. Die Angabe ist erschlossen, auch wenn sie nicht direkt in einem Diagramm beschriftet ist."
+				}
+			]
+		},
+		{
+			"id": "01M6JFW47KR8RRC24PN5X5CNDW",
+			"atom_uri": "urn:zam:atom:01M6JFW47KR8RRC24PN5X5CNDW",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-zufallsexperimente",
+			"title": "Zufallsexperimente und Chancen",
+			"domain": "mathematik/zufallsgarten",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zufallsexperimente",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FWJNJHBE2HJPSP2H7QZP4K",
+					"type": "soft",
+					"rationale": "Geordnete Darstellungen unterstützen das Untersuchen von Daten."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "zufallsexperimente",
+					"topic_title": "Zufallsexperimente und Chancen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6JFW47KWDWA7TJ5XYGPGAAV",
+					"slug": "gs4-zufallsexperimente-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zufallsexperimente",
+					"materiality": "material",
+					"question": "Ein gemischter Beutel enthält mindestens eine Kugel jeder Farbe und mehr rote als blaue, gleich gut greifbare Kugeln. Was folgt für die nächste Ziehung?",
+					"concept": "Rot hat die größere Chance, ist aber nicht garantiert.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Rot hat die größere Chance, ist aber nicht garantiert.",
+							"Die nächste Kugel ist sicher rot."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6JFW47KTRQJDB04Q1GE4053",
+					"slug": "gs4-zufallsexperimente-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zufallsexperimente",
+					"materiality": "material",
+					"question": "Nach fünf roten Ziehungen mit Zurücklegen und neuem Mischen: Muss jetzt Blau kommen?",
+					"concept": "Nein. Frühere Ergebnisse erzwingen keine nächste Farbe.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein. Frühere Ergebnisse erzwingen keine nächste Farbe.",
+							"Ja. Blau muss sofort ausgleichen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6JFW47KAPZQ2797V6G7BDQH",
+					"slug": "gs4-zufallsexperimente-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zufallsexperimente",
+					"materiality": "material",
+					"question": "Beutel A enthält 1 rote und 3 blaue Kugeln, Beutel B 3 rote und 1 blaue. Wo ist die Chance auf Rot größer? Begründe.",
+					"concept": "In Beutel B.",
+					"sample_solution": "Beide Beutel enthalten vier gleich gut greifbare Kugeln insgesamt. In B sind mehr davon rot. Deshalb ist Rot dort wahrscheinlicher; eine einzelne Ziehung bleibt offen."
+				},
+				{
+					"id": "01M6JFW47KXE815PQK32P9KRW5",
+					"slug": "gs4-zufallsexperimente-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=zufallsexperimente",
+					"materiality": "material",
+					"question": "Ein Beutel enthält gleich viele rote und blaue Kugeln. Eine kurze Reihe liefert 8 rote und 4 blaue Ziehungen mit Zurücklegen. Widerspricht das gleichen Chancen?",
+					"concept": "Nein. Beobachtete Häufigkeiten einer kurzen Reihe können verschieden sein.",
+					"sample_solution": "Gleiche Chancen garantieren nicht genau gleich viele Ergebnisse in zwölf Ziehungen. Die Beobachtung beschreibt diese Reihe. Der unveränderte Beutel bestimmt weiterhin die Chancen der nächsten Ziehung."
+				}
+			]
+		},
+		{
+			"id": "01M6JFW47K5V60M8APP9SCGSEN",
+			"atom_uri": "urn:zam:atom:01M6JFW47K5V60M8APP9SCGSEN",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-expedition-werkstatt",
+			"title": "Eine Werkstatt ausstatten",
+			"domain": "mathematik/inselexpeditionen",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-werkstatt",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FWJNJJJV0GQ6RCZ87A41YA",
+					"type": "soft",
+					"rationale": "Mehrschrittige Sachsituationen unterstützen den begründeten Plan."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "expedition-werkstatt",
+					"topic_title": "Eine Werkstatt ausstatten"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6JFW47KK9SQ7Y65X0BRV2V4",
+					"slug": "gs4-expedition-werkstatt-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-werkstatt",
+					"materiality": "material",
+					"question": "Warum kann die Gesamtlänge allein bei der Planung ganzer Leisten aus Brettern nicht genügen?",
+					"concept": "Reststücke dürfen möglicherweise nicht zu einer ganzen Leiste zusammengesetzt werden.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Reststücke dürfen möglicherweise nicht zu einer ganzen Leiste zusammengesetzt werden.",
+							"Einheiten spielen beim Zuschneiden keine Rolle."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6JFW47K6QP3MZFHFECQFM54",
+					"slug": "gs4-expedition-werkstatt-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-werkstatt",
+					"materiality": "material",
+					"question": "Welche Masse zählt bei einer Grenze für volle Kisten?",
+					"concept": "Inhalt plus leere Kiste.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Inhalt plus leere Kiste.",
+							"Nur der Inhalt, die Kiste wiegt immer nichts."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6JFW47KJYMZVC5VY5PG7DE0",
+					"slug": "gs4-expedition-werkstatt-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-werkstatt",
+					"materiality": "material",
+					"question": "Sieben Leisten zu je 60 cm sollen aus 2-m-Brettern geschnitten werden. Ohne Schnittverlust und ohne Zusammensetzen: Wie viele Bretter brauchst du mindestens?",
+					"concept": "Drei Bretter.",
+					"sample_solution": "Auf 200 cm passen drei ganze 60-cm-Leisten. Zwei Bretter liefern nur sechs Leisten. Ein drittes ist nötig, auch wenn dort ein Rest bleibt."
+				},
+				{
+					"id": "01M6JFW47KQPFG9KQXZBRFQ9KG",
+					"slug": "gs4-expedition-werkstatt-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-werkstatt",
+					"materiality": "material",
+					"question": "Sechs Kisten enthalten je 800 g Material und wiegen leer je 200 g. Ein Wagen darf 3 kg je Fahrt tragen. Wie viele Fahrten sind mindestens nötig?",
+					"concept": "Zwei Fahrten.",
+					"sample_solution": "Eine volle Kiste wiegt 1 000 g. Drei passen in die Grenze von 3 000 g. Sechs Kisten lassen sich deshalb auf zwei Fahrten verteilen; eine reicht nicht."
+				}
+			]
+		},
+		{
+			"id": "01M6JFW47KVHFPJ5RK4ZQPYF20",
+			"atom_uri": "urn:zam:atom:01M6JFW47KVHFPJ5RK4ZQPYF20",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-expedition-reise",
+			"title": "Eine Inselreise planen",
+			"domain": "mathematik/inselexpeditionen",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-reise",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FWJNJJJV0GQ6RCZ87A41YA",
+					"type": "soft",
+					"rationale": "Mehrschrittige Sachsituationen unterstützen den begründeten Plan."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "expedition-reise",
+					"topic_title": "Eine Inselreise planen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6JFW47K02G764M8BYJ6Y187",
+					"slug": "gs4-expedition-reise-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-reise",
+					"materiality": "material",
+					"question": "Welche Strecke zählst du bei einem Weg mit zwei Abschnitten und einer Ecke?",
+					"concept": "Beide tatsächlich gegangenen Abschnitte zusammen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Beide tatsächlich gegangenen Abschnitte zusammen.",
+							"Immer nur die diagonale Luftlinie."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6JFW47KCXV48XZR9W3D2D4Z",
+					"slug": "gs4-expedition-reise-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-reise",
+					"materiality": "material",
+					"question": "Wie planst du Boote, wenn nach ganzen vollen Booten noch Personen ohne Platz bleiben?",
+					"concept": "Ein weiteres ganzes Boot einplanen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein weiteres ganzes Boot einplanen.",
+							"Den Rest weglassen und abrunden."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6JFW47KEKTKEFQACGVD5Y64",
+					"slug": "gs4-expedition-reise-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-reise",
+					"materiality": "material",
+					"question": "Ein Planweg hat drei Abstände nach Osten und zwei nach Norden. Je Abstand sind 20 m und 5 min geplant, dazu 10 min Pause. Bestimme Länge und Dauer.",
+					"concept": "100 m und 35 min.",
+					"sample_solution": "Es sind fünf Abstände: 5 · 20 m = 100 m. Die Zeit ist 5 · 5 min + 10 min = 35 min. Die Pause verändert die Dauer, nicht die Weglänge."
+				},
+				{
+					"id": "01M6JFW47KN29EQV5WPG0V41GQ",
+					"slug": "gs4-expedition-reise-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-reise",
+					"materiality": "material",
+					"question": "Start ist 08:20 Uhr. Fußweg 15 min, Warten 10 min, Bootsfahrt 35 min. Wann fährt das Boot ab, wann kommst du an?",
+					"concept": "Abfahrt 08:45 Uhr, Ankunft 09:20 Uhr.",
+					"sample_solution": "08:20 Uhr + 15 min + 10 min = 08:45 Uhr. Weitere 35 min führen über 09:00 Uhr zu 09:20 Uhr. Insgesamt dauert die Reise 60 min."
+				}
+			]
+		},
+		{
+			"id": "01M6JFW47KJWN73E482EDQCV0K",
+			"atom_uri": "urn:zam:atom:01M6JFW47KJWN73E482EDQCV0K",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-expedition-inselfest",
+			"title": "Ein Inselfest organisieren",
+			"domain": "mathematik/inselexpeditionen",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-inselfest",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FWJNJJJV0GQ6RCZ87A41YA",
+					"type": "soft",
+					"rationale": "Mehrschrittige Sachsituationen unterstützen den begründeten Plan."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "expedition-inselfest",
+					"topic_title": "Ein Inselfest organisieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6JFW47KA88PJBTA4Y1F1QJ4",
+					"slug": "gs4-expedition-inselfest-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-inselfest",
+					"materiality": "material",
+					"question": "Wer gehört zur Personenzahl, wenn für Kinder und Helfer Getränke geplant werden?",
+					"concept": "Kinder und Helfer zusammen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Kinder und Helfer zusammen.",
+							"Nur die Kinder, auch wenn Helfer mittrinken sollen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6JFW47KJS82DF65DPCNEK9N",
+					"slug": "gs4-expedition-inselfest-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-inselfest",
+					"materiality": "material",
+					"question": "Welche Zeitabschnitte gehören in einen vollständigen Festplan mit Aufräumen?",
+					"concept": "Alle geplanten Aktivitäten, Pausen und das Aufräumen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Alle geplanten Aktivitäten, Pausen und das Aufräumen.",
+							"Nur das erste Spiel."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6JFW47K25FTVMCKKETXXKG8",
+					"slug": "gs4-expedition-inselfest-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-inselfest",
+					"materiality": "material",
+					"question": "13 Kinder und 3 Helfer bekommen je 250 ml Wasser. Es gibt volle 1-l-Flaschen und Tische mit je sechs Plätzen. Wie viele Flaschen und Tische reichen mindestens?",
+					"concept": "Vier Flaschen und drei Tische.",
+					"sample_solution": "16 Personen brauchen 16 · 250 ml = 4 000 ml, also vier Literflaschen. Zwei Tische bieten nur zwölf Plätze; drei bieten 18 und reichen."
+				},
+				{
+					"id": "01M6JFW47KQAE2E1QK878FDZA2",
+					"slug": "gs4-expedition-inselfest-4",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-inselfest",
+					"materiality": "material",
+					"question": "Eine Modellabstimmung ergibt 7 Stimmen für Bauen, 12 für Malen und 9 für Spielen. Die höchste Stimmenzahl entscheidet. Welche Aktivität gewinnt, wie viele Stimmen gibt es und wie groß ist der Vorsprung?",
+					"concept": "Malen gewinnt; 28 Stimmen insgesamt; Vorsprung 3 Stimmen vor Spielen.",
+					"sample_solution": "7 + 12 + 9 = 28. Malen hat die höchste Zahl 12. Der zweite Platz hat 9; 12 − 9 = 3. Die Regel entscheidet über den ersten Platz, nicht automatisch über eine absolute Mehrheit."
+				}
+			]
+		}
+	]
+}

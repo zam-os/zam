@@ -1,0 +1,2113 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:hsu-grundschule-4",
+	"version": "2026.11.1",
+	"title": "Heimat- und Sachunterricht 4 Grundschule: Lottas Bayern-Forscherbuch",
+	"description": "Zwanzig kindgerechte Entdeckerstationen und sechzig Lernkarten zu allen sechs Lernbereichen des bayerischen LehrplanPLUS Heimat- und Sachunterricht 3/4: Demokratie und Gesellschaft, Körper und Gesundheit, Natur und Umwelt, Zeit und Wandel, Raum und Mobilität sowie Technik und Kultur. Jede Station wird im Forscherbuch einmal erkundet und anschließend in ZAM wiederholt. Vorschau; fachliche Freigabe durch eine Grundschullehrkraft und Lehrervideos stehen noch aus.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://academy.zam-os.org/hsu-grundschule-4/",
+			"label": "ZAM Academy: Lottas Bayern-Forscherbuch (HSU 4)"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26125",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 1.1 Zusammenleben in Familie, Schule und Gemeinschaft",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26128",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 1.2 Leben in einer Medien- und Konsumgesellschaft",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26091",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 2.1 Körper und Entwicklung",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26093",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 2.2 Gefühle und Wohlbefinden",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26097",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 3.1 Tiere, Pflanzen, Lebensräume",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26099",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 3.2 Stoffe und Energie",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26102",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 3.3 Luft, Wasser, Wetter",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26108",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 4.1 Zeitbewusstsein und Orientierung in der Zeit",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26111",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 4.2 Dauer und Wandel",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26114",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 4.3 Fakten und Fiktion",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26120",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 5.1 Räume wahrnehmen und sich orientieren",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26123",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 5.2 Räume nutzen und schützen",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26126",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 5.3 Mobilität im Raum",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26129",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 6.1 Arbeit, technische und kulturelle Entwicklung",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/hsu#26130",
+			"label": "ISB · LehrplanPLUS HSU 3/4, Teilbereich 6.2 Bauen und Konstruieren",
+			"checked": "2026-11-03"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M6FXBPWQ4DQHBEBQQAWW5DEX",
+			"atom_uri": "urn:zam:atom:01M6FXBPWQ4DQHBEBQQAWW5DEX",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-gemeinschaft-kinderrechte",
+			"title": "Fair zusammenleben, wählen & Kinderrechte",
+			"domain": "hsu/demokratie-und-gesellschaft",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=gemeinschaft-kinderrechte",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb1-demokratie-gesellschaft",
+					"topic_title": "LB 1: Demokratie und Gesellschaft"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPXBJJ76SYRXW4N2HEYR",
+					"slug": "hsu4-gemeinschaft-kinderrechte-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lauten die fünf Grundsätze einer demokratischen Wahl?",
+					"concept": "Allgemein, frei, gleich, geheim und unmittelbar.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=gemeinschaft-kinderrechte",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Allgemein, frei, gleich, geheim und unmittelbar.",
+							"Offen, laut, nach Alter gestaffelt und verpflichtend."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Offen per Zuruf, nach Noten gewichtet und öffentlich.",
+							"reason": "Verwechselt demokratische Urnenwahl mit offenem Zuruf und ungleichem Stimmgewicht."
+						},
+						{
+							"text": "Nur mit Unterschrift auf dem Stimmzettel gültig.",
+							"reason": "Namensunterschrift auf dem Stimmzettel verletzt das Wahlgeheimnis."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPXCB1MES90XHMHG2C28",
+					"slug": "hsu4-gemeinschaft-kinderrechte-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet ein Kompromiss bei einem Konflikt in der Klasse?",
+					"concept": "Beide Seiten gehen friedlich einen Schritt aufeinander zu und einigen sich fair.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=gemeinschaft-kinderrechte",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Beide Seiten gehen friedlich einen Schritt aufeinander zu und einigen sich fair.",
+							"Die lautere Gruppe setzt ihren Willen komplett alleine durch."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Die stärkere Person bestimmt allein und alle anderen Kinder müssen schweigen.",
+							"reason": "Beschreibt das Recht des Stärkeren statt einer demokratischen Einigung."
+						},
+						{
+							"text": "Das gemeinsame Vorhaben wird ganz abgesagt, damit niemand etwas davon hat.",
+							"reason": "Verwechselt einen tragfähigen Ausgleich mit einem bloßen Abbruch."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPXDP9J6DAFYV8CBC7Q9",
+					"slug": "hsu4-gemeinschaft-kinderrechte-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne drei zentrale UN-Kinderrechte und den Zusammenhang mit Pflichten.",
+					"concept": "Bildung, Schutz vor Gewalt und Mitbestimmung; dazu gehört Rücksicht auf andere.",
+					"sample_solution": "Wichtige Kinderrechte sind das Recht auf Bildung, auf Schutz vor Gewalt, auf Freizeit, Gesundheit, Inklusion und Mitbestimmung. Damit jedes Kind diese Rechte erleben kann, hat jedes Mitglied der Gemeinschaft auch die Pflicht, Rücksicht zu nehmen und Regeln einzuhalten.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=gemeinschaft-kinderrechte",
+					"choice_distractors": [
+						{
+							"text": "Freies Fernsehen, keine Hausaufgaben und Konsolen; Regeln gelten nur für Lehrer.",
+							"reason": "Verwechselt Konsumwünsche mit Grundrechten und übersieht die gegenseitige Verantwortung."
+						},
+						{
+							"text": "Kinderrechte gelten erst ab dem 18. Geburtstag und ausschließlich innerhalb Europas.",
+							"reason": "Die UN-Kinderrechtskonvention schützt weltweit gerade Kinder und Jugendliche unter 18 Jahren."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPWRH9DXKGEEX8WQ1D26",
+			"atom_uri": "urn:zam:atom:01M6FXBPWRH9DXKGEEX8WQ1D26",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-unsere-gemeinde",
+			"title": "Rathaus, Bürgermeister & Aufgaben der Gemeinde",
+			"domain": "hsu/demokratie-und-gesellschaft",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=unsere-gemeinde",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXBPWQ4DQHBEBQQAWW5DEX",
+					"type": "soft",
+					"rationale": "Überträgt demokratische Wahlen und Mehrheitsentscheidungen aus der Schule auf die Kommune."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb1-demokratie-gesellschaft",
+					"topic_title": "LB 1: Demokratie und Gesellschaft"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPXEWMCXJH5F7TJ033JT",
+					"slug": "hsu4-unsere-gemeinde-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Aufgaben gehören zu den gesetzlichen Pflichtaufgaben einer Gemeinde?",
+					"concept": "Trinkwasser, Abwasser, Feuerwehr, Straßen und Grundschulen.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=unsere-gemeinde",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Trinkwasser, Abwasser, Feuerwehr, Straßen und Grundschulen.",
+							"Erlebnis-Freibad, Theaterfestspiele und Eislaufhalle."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Erlebnis-Freibad, Gemeindebücherei, Museum und Sommerfeste.",
+							"reason": "Ordnet freiwillige Kultur- und Freizeitangebote fälschlich den Pflichtaufgaben zu."
+						},
+						{
+							"text": "Landesverteidigung, Zollkontrollen und Bau von Bundesautobahnen.",
+							"reason": "Verwechselt Aufgaben des Bundes mit den kommunalen Aufgaben vor Ort."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPXFEX03ECXNKDK104Q0",
+					"slug": "hsu4-unsere-gemeinde-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wer beschließt Vorhaben in der Gemeinde und wer leitet das Rathaus?",
+					"concept": "Der Gemeinderat beschließt; die Bürgermeisterin oder der Bürgermeister leitet das Rathaus.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=unsere-gemeinde",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Gemeinderat beschließt; die Bürgermeisterin oder der Bürgermeister leitet das Rathaus.",
+							"Der Bürgermeister entscheidet alles allein ohne Abstimmung im Rat."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Die Feuerwehr beschließt den Haushalt und die Schulleitung führt die Gemeindeverwaltung.",
+							"reason": "Verwechselt öffentliche Einrichtungen der Gemeinde mit den gewählten politischen Organen."
+						},
+						{
+							"text": "Der Bürgermeister beschließt alle Satzungen ganz allein ohne Abstimmung im Gemeinderat.",
+							"reason": "Übersieht die demokratische Mehrheitsentscheidung im gewählten Gemeinderat."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPXGJ9J4FZV28JB2VV6N",
+					"slug": "hsu4-unsere-gemeinde-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Worin unterscheiden sich Pflichtaufgaben und freiwillige Aufgaben einer Kommune?",
+					"concept": "Pflichtaufgaben muss jede Gemeinde erfüllen; freiwillige Angebote hängen vom Haushalt ab.",
+					"sample_solution": "Pflichtaufgaben wie Wasser, Abwasser, Feuerwehr und Schulgebäude sichern die Grundversorgung und sind gesetzlich vorgeschrieben. Freiwillige Aufgaben wie Schwimmbad, Bücherei oder Jugendtreff finanziert die Gemeinde zusätzlich, wenn nach den Pflichtaufgaben genügend Geld vorhanden ist.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=unsere-gemeinde",
+					"choice_distractors": [
+						{
+							"text": "Bei freiwilligen Aufgaben arbeiten nur Ehrenamtliche, Pflichtaufgaben sind immer kostenlos.",
+							"reason": "Deutet das Wort ‚freiwillig‘ als ehrenamtliche Arbeit statt als haushaltsabhängige Leistung."
+						},
+						{
+							"text": "Pflichtaufgaben gelten nur für Großstädte, kleinere Dörfer haben nur freiwillige Aufgaben.",
+							"reason": "Jede Gemeinde – ob Dorf oder Stadt – muss Brandschutz, Wasser und Schulgebäude gewährleisten."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPWSCSCFPHE59AFDNVWN",
+			"atom_uri": "urn:zam:atom:01M6FXBPWSCSCFPHE59AFDNVWN",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-medien-und-konsum",
+			"title": "Medien-Detektive, Werbung & kluger Konsum",
+			"domain": "hsu/demokratie-und-konsum",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=medien-und-konsum",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb1-demokratie-gesellschaft",
+					"topic_title": "LB 1: Demokratie und Gesellschaft"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPXHMY7VR9VAT17NQJ4J",
+					"slug": "hsu4-medien-und-konsum-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Mit welchen Tricks fördern Supermärkte und Werbung spontane Käufe?",
+					"concept": "Teure Marken in Augenhöhe, Quengelware an der Kasse und bunte Werbeversprechen.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=medien-und-konsum",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Teure Marken in Augenhöhe, Quengelware an der Kasse und bunte Werbeversprechen.",
+							"Die günstigsten Grundnahrungsmittel liegen immer direkt am Kassenband."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Günstige Eigenmarken stehen immer auf Augenhöhe, teure Marken versteckt ganz unten.",
+							"reason": "Verdreht Sichtzone (teure Marken) und Bückzone (günstigere Basisprodukte)."
+						},
+						{
+							"text": "Werbung zählt neutral alle Nachteile eines Produkts auf, um vom Kauf abzuraten.",
+							"reason": "Übersieht das Verkaufsziel von Werbung und Influencer-Anzeigen."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPXJATYZKAHQR21PHQDP",
+					"slug": "hsu4-medien-und-konsum-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche drei Hauptfunktionen erfüllen Medien im Alltag?",
+					"concept": "Information, Kommunikation und Unterhaltung im Alltag.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=medien-und-konsum",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Information, Kommunikation und Unterhaltung im Alltag.",
+							"Ersetzen von Schlaf, Bewegung und allen persönlichen Gesprächen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Medien dienen ausschließlich dem Bestellen von Waren im Internet.",
+							"reason": "Verkürzt vielfältige Informations- und Kommunikationsmedien auf reinen Onlinehandel."
+						},
+						{
+							"text": "Jeder Beitrag im Internet zeigt ungefiltert die volle Wirklichkeit.",
+							"reason": "Verwechselt inszenierte Mediendarstellungen mit überprüften Fakten."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPXK3JNK00G68H8N70ZA",
+					"slug": "hsu4-medien-und-konsum-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie handelst du beim Einkaufen als nachhaltiger und kritischer Verbraucher?",
+					"concept": "Bedarf und Preise prüfen sowie langlebige Mehrweg- und Regionalware statt Einweg wählen.",
+					"sample_solution": "Vor dem Kauf hinterfrage ich Werbeversprechen, prüfe Bedarf, Haltbarkeit und Herkunft und entscheide mich für unverpackte oder Mehrweg-Produkte sowie Reparieren und Weitergeben, um Rohstoffe und Umwelt zu schonen.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=medien-und-konsum",
+					"choice_distractors": [
+						{
+							"text": "Möglichst oft billige Einwegware kaufen, weil Wegwerfen das Wasser beim Spülen einspart.",
+							"reason": "Übersieht den hohen Rohstoff-, Energie- und Müllaufwand bei Einwegprodukten."
+						},
+						{
+							"text": "Sich beim Einkauf allein auf bunte Verpackungsfiguren und Influencer-Videos verlassen.",
+							"reason": "Lässt sich von Verpackungsdesign statt von Inhalt, Bedarf und Umweltfolgen leiten."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPWTTZ8YY35ZWAN4YAN9",
+			"atom_uri": "urn:zam:atom:01M6FXBPWTTZ8YY35ZWAN4YAN9",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-wunderwerk-auge",
+			"title": "Wunderwerk Auge: Aufbau, Sehen & Schutz",
+			"domain": "hsu/koerper-und-gesundheit",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wunderwerk-auge",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb2-koerper-gesundheit",
+					"topic_title": "LB 2: Körper und Gesundheit"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPXMWXK96286RV1515VX",
+					"slug": "hsu4-wunderwerk-auge-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie reagiert die Pupille auf helles Sonnenlicht und auf Dunkelheit?",
+					"concept": "Bei Helligkeit wird die Pupille eng zum Blendschutz, im Dunkeln weit für mehr Licht.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wunderwerk-auge",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Bei Helligkeit wird die Pupille eng zum Blendschutz, im Dunkeln weit für mehr Licht.",
+							"Bei greller Sonne öffnet sich die Pupille ganz weit, im Dunkeln schließt sie sich."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Die Pupille bleibt bei grellem Sonnenlicht und in tiefer Nacht immer gleich groß.",
+							"reason": "Übersieht den Schutzreflex der Regenbogenhaut (Iris)."
+						},
+						{
+							"text": "Bei Sonne öffnet sich die Pupille weit, im Dunkeln zieht sie sich ganz eng zusammen.",
+							"reason": "Vertauscht Verengen und Weiten und verkennt die Blendgefahr für die Netzhaut."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPXN3K8E54W5SXCGQTB8",
+					"slug": "hsu4-wunderwerk-auge-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche natürlichen Einrichtungen schützen unser Auge von außen?",
+					"concept": "Augenbrauen, Wimpern, Augenlider und reinigende Tränenflüssigkeit.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wunderwerk-auge",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Augenbrauen, Wimpern, Augenlider und reinigende Tränenflüssigkeit.",
+							"Nur eine Sonnenbrille, weil der Körper selbst keinen Augenschutz besitzt."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Der hintere Sehnerv, der Glaskörper und die beiden Ohrläppchen.",
+							"reason": "Der Sehnerv liegt hinter dem Augapfel und leitet Reize weiter, schützt aber nicht außen vor Staub."
+						},
+						{
+							"text": "Wimpern und Brauen dienen nur dem Aussehen ohne jede Schutzfunktion.",
+							"reason": "Unterschätzt den Lidschlussreflex und Staubschutz durch Wimpern."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPXPM6AAR67MGQ76SR3W",
+					"slug": "hsu4-wunderwerk-auge-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Beschreibe den Weg des Lichts beim Sehen bis zum fertigen Bild im Kopf.",
+					"concept": "Durch Hornhaut, Pupille und Linse auf die Netzhaut; der Sehnerv meldet ans Gehirn.",
+					"sample_solution": "Lichtstrahlen treten durch die Hornhaut und die Pupille ein, werden von der Linse gebündelt und erzeugen auf der Netzhaut ein verkleinertes, umgekehrtes Bild. Sinneszellen senden diese Information über den Sehnerv an das Gehirn, das daraus das richtige, aufrechte Bild zusammensetzt.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wunderwerk-auge",
+					"choice_distractors": [
+						{
+							"text": "Das Auge sendet eigene Sehstrahlen nach außen und erkennt Bilder ganz ohne Gehirn.",
+							"reason": "Alte Sehstrahl-Fehlvorstellung: Wir sehen nur, wenn Licht ins Auge hineinfällt und im Gehirn verarbeitet wird."
+						},
+						{
+							"text": "Schon vorn auf der Hornhaut entsteht das Bild, und die Netzhaut bestimmt die Augenfarbe.",
+							"reason": "Verwechselt Regenbogenhaut (Augenfarbe) und Netzhaut (Lichtsinneszellen)."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPWVS3MX3F22JS69ZWNV",
+			"atom_uri": "urn:zam:atom:01M6FXBPWVS3MX3F22JS69ZWNV",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-wachsen-und-neues-leben",
+			"title": "Neues Leben & Veränderungen in der Pubertät",
+			"domain": "hsu/koerper-und-gesundheit",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wachsen-und-neues-leben",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb2-koerper-gesundheit",
+					"topic_title": "LB 2: Körper und Gesundheit"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPXQEZCNFKYJEZBYJEHS",
+					"slug": "hsu4-wachsen-und-neues-leben-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie wird das ungeborene Kind in der Gebärmutter geschützt und versorgt?",
+					"concept": "Fruchtwasser polstert Stöße ab; Plazenta und Nabelschnur liefern Sauerstoff und Nahrung.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wachsen-und-neues-leben",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Fruchtwasser polstert Stöße ab; Plazenta und Nabelschnur liefern Sauerstoff und Nahrung.",
+							"Das Baby wächst im Magen heran und atmet dort bereits Luft mit der Lunge."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Das Baby liegt direkt im Magen der Mutter und isst dort feste Mahlzeiten einfach mit.",
+							"reason": "Häufige Kinder-Fehlvorstellung: Schwangerschaft findet in der Gebärmutter statt, nicht im Magen."
+						},
+						{
+							"text": "Schon ab dem ersten Monat atmet das ungeborene Kind normale Luft mit seiner eigenen Lunge.",
+							"reason": "Die Lungenatmung setzt erst mit dem ersten Schrei nach der Geburt ein."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPXR50278FZZ8H2FEW26",
+					"slug": "hsu4-wachsen-und-neues-leben-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie entsteht bei der Zeugung neues menschliches Leben?",
+					"concept": "Eine weibliche Eizelle und eine männliche Samenzelle verschmelzen miteinander.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wachsen-und-neues-leben",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine weibliche Eizelle und eine männliche Samenzelle verschmelzen miteinander.",
+							"Ein fertiges Baby teilt sich aus einer Hautzelle am Arm."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Eine weibliche Eizelle entwickelt sich ganz ohne Samenzelle von allein weiter.",
+							"reason": "Beim Menschen sind für die Befruchtung Eizelle und Samenzelle gemeinsam nötig."
+						},
+						{
+							"text": "Die gesamte Schwangerschaft dauert beim Menschen immer nur genau vier Wochen.",
+							"reason": "Verwechselt die rund neunmonatige menschliche Schwangerschaft mit kurzen Tragzeiten kleiner Tiere."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPXSW5D9DYV7QZBB8XAQ",
+					"slug": "hsu4-wachsen-und-neues-leben-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche körperlichen und seelischen Veränderungen kennzeichnen die beginnende Pubertät?",
+					"concept": "Wachstumsschub, Körperreifung und wechselnde Gefühle – bei jedem Kind im eigenen Tempo.",
+					"sample_solution": "Botenstoffe (Hormone) lösen einen Wachstumsschub, Körperbehaarung, stärkeres Schwitzen, Stimmbruch bzw. Brustentwicklung und später Regelblutung oder Samenerguss aus. Zugleich schwanken Gefühle stärker und das Bedürfnis nach Selbstständigkeit und Privatsphäre wächst – bei jedem Kind im eigenen Tempo.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wachsen-und-neues-leben",
+					"choice_distractors": [
+						{
+							"text": "Nur die Körpergröße wächst, Gefühle ändern sich nie und alles beginnt am selben Geburtstag.",
+							"reason": "Übersieht seelische Reifung und die großen individuellen Zeitunterschiede."
+						},
+						{
+							"text": "Stimmungsschwankungen sind eine ansteckende Krankheit, bei der Bewegung streng verboten ist.",
+							"reason": "Deutet normale hormonelle Entwicklungsschritte fälschlich als Krankheit."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPWWP4DCJ1KBZ56C010H",
+			"atom_uri": "urn:zam:atom:01M6FXBPWWP4DCJ1KBZ56C010H",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-erste-hilfe-und-notruf",
+			"title": "Erste Hilfe leisten & Notruf 112",
+			"domain": "hsu/koerper-und-gesundheit",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=erste-hilfe-und-notruf",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb2-koerper-gesundheit",
+					"topic_title": "LB 2: Körper und Gesundheit"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPXT0QPWSXS2VTQCE6TE",
+					"slug": "hsu4-erste-hilfe-und-notruf-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lauten die fünf W-Fragen beim Notruf 112?",
+					"concept": "Wo? Was? Wie viele Verletzte? Welche Verletzungen? Warten auf Rückfragen!",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=erste-hilfe-und-notruf",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wo? Was? Wie viele Verletzte? Welche Verletzungen? Warten auf Rückfragen!",
+							"Wer ist schuld? Warum weint jemand? Wann gibt es Essen? Sofort auflegen!"
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Wo, Was, Wer trägt die Schuld – und danach sofort den Hörer auflegen.",
+							"reason": "Sofortiges Auflegen verhindert wichtige Rückfragen und Anleitungen der Rettungsleitstelle."
+						},
+						{
+							"text": "Vor der 112 muss man zuerst eine Ortsvorwahl und Handy-Guthaben eingeben.",
+							"reason": "Die 112 funktioniert europaweit kostenlos und ohne Vorwahl."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPXV051MTVZQXAK8QETB",
+					"slug": "hsu4-erste-hilfe-und-notruf-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wann bringt man eine verletzte Person in die stabile Seitenlage?",
+					"concept": "Wenn sie bewusstlos ist, aber normal atmet – damit die Atemwege frei bleiben.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=erste-hilfe-und-notruf",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wenn sie bewusstlos ist, aber normal atmet – damit die Atemwege frei bleiben.",
+							"Bei jedem kleinen Kratzer am Finger einer wachen Person."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Man legt eine bewusstlose Person flach auf den Rücken und flößt ihr Wasser ein.",
+							"reason": "Bewusstlosen darf niemals etwas eingeflößt werden, da akute Erstickungsgefahr besteht."
+						},
+						{
+							"text": "Nur wenn eine völlig wache Person aufrecht steht und über leichten Durst klagt.",
+							"reason": "Wache Personen brauchen je nach Beschwerde Ruhe, Pflaster oder Beine-Hochlagern."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPXWNWVM42D1A58K9MSD",
+					"slug": "hsu4-erste-hilfe-und-notruf-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Erste Hilfe passt zu Schürfwunde, Insektenstich und Schwindel?",
+					"concept": "Wunde reinigen und Pflaster; Stich kühlen; bei Schwindel Schatten und Beine hochlagern.",
+					"sample_solution": "Eine kleine Schürfwunde spült man mit sauberem Wasser ab und klebt keimfrei ein Pflaster auf. Einen Insektenstich am Arm oder eine Prellung kühlt man gegen Schwellung (bei Stich im Mund sofort 112!). Bei Kreislaufschwäche legt sich die wache Person in den Schatten und lagert die Beine hoch.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=erste-hilfe-und-notruf",
+					"choice_distractors": [
+						{
+							"text": "Offene Schürfwunden mit Eiswürfeln einreiben und bei Schwindel in der prallen Sonne rennen.",
+							"reason": "Eis gehört nicht direkt in offene Wunden, und Anstrengung in der Sonne verschlimmert Kreislaufschwäche."
+						},
+						{
+							"text": "Kinder dürfen niemals trösten oder Hilfe holen, sondern sollen am Unfallort vorbeigehen.",
+							"reason": "Schon Trösten, Hilfe holen und den Notruf 112 wählen sind wertvolle Erste Hilfe."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPWX273GDVXZAD7Y4R99",
+			"atom_uri": "urn:zam:atom:01M6FXBPWX273GDVXZAD7Y4R99",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-gefuehle-grenzen-wohlbefinden",
+			"title": "Gefühle, eigene Grenzen & aktive Freizeit",
+			"domain": "hsu/koerper-und-gesundheit",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=gefuehle-grenzen-wohlbefinden",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXBPWVS3MX3F22JS69ZWNV",
+					"type": "soft",
+					"rationale": "Verbindet körperliche Entwicklung mit Selbstbestimmung, Gefühlen und Körperbildern."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb2-koerper-gesundheit",
+					"topic_title": "LB 2: Körper und Gesundheit"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPXXWXG3W72PJC5ZCAAD",
+					"slug": "hsu4-gefuehle-grenzen-wohlbefinden-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet körperliche Selbstbestimmung im Alltag?",
+					"concept": "Ich bestimme über Nähe, sage bei Unwohlsein ‚Nein!‘ und hole mir bei Bedarf Hilfe.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=gefuehle-grenzen-wohlbefinden",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ich bestimme über Nähe, sage bei Unwohlsein ‚Nein!‘ und hole mir bei Bedarf Hilfe.",
+							"Aus Höflichkeit muss jedes Kind unangenehme Berührungen stillschweigend dulden."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Jedes Geheimnis muss immer verschwiegen werden, selbst wenn es Angst oder Bauchweh macht.",
+							"reason": "Unterscheidet nicht zwischen schönen Überraschungen und belastenden schlechten Geheimnissen."
+						},
+						{
+							"text": "Eigene körperliche Grenzen gelten nur gegenüber Fremden, niemals im Bekanntenkreis.",
+							"reason": "Körperliche Grenzen gelten gegenüber allen Personen gleichermaßen."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPXY5J79CK16N8NK7HM8",
+					"slug": "hsu4-gefuehle-grenzen-wohlbefinden-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum sollte man Schönheitsideale in Werbung und sozialen Medien hinterfragen?",
+					"concept": "Fotos sind oft durch Filter geschönt; echte Körper sind vielfältig und wertvoll.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=gefuehle-grenzen-wohlbefinden",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Fotos sind oft durch Filter geschönt; echte Körper sind vielfältig und wertvoll.",
+							"Werbefotos zeigen immer unverändert, wie jeder gesunde Mensch aussehen muss."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Nur wer genauso aussieht wie auf einem Werbeplakat, ist gesund und sportlich.",
+							"reason": "Übernimmt künstliche Werbeideale unkritisch als Maßstab für Selbstwert."
+						},
+						{
+							"text": "Digitale Foto-Filter können nur Landschaftsfarben ändern, niemals Gesichter.",
+							"reason": "Unterschätzt digitale Retusche von Haut, Augen und Körperformen."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPXZGHNQBZ8CY5R6HZD9",
+					"slug": "hsu4-gefuehle-grenzen-wohlbefinden-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie stärken Achtsamkeit für Gefühle und aktive Freizeit deine Gesundheit?",
+					"concept": "Gefühle ernst nehmen sowie Bewegung, Freunde und Ruhepausen im Gleichgewicht halten.",
+					"sample_solution": "Gefühle wie Freude, Wut, Trauer oder Angst sind wichtige Signale unseres Körpers. Wer sie wahrnimmt, darüber spricht und seine Freizeit aktiv mit Bewegung, Natur, Freundschaften und Ruhepausen gestaltet, bleibt körperlich und seelisch im Gleichgewicht.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=gefuehle-grenzen-wohlbefinden",
+					"choice_distractors": [
+						{
+							"text": "Unangenehme Gefühle verdrängt man am besten durch stundenlanges Alleinsein am Bildschirm.",
+							"reason": "Dauerhafte Ablenkung ohne Bewegung und Gespräch verstärkt Überlastung oft."
+						},
+						{
+							"text": "Gesundheit hängt allein von Tabletten ab, Bewegung und Gefühle spielen gar keine Rolle.",
+							"reason": "Trennt körperliche Gesundheit künstlich von seelischem Wohlbefinden und Bewegung."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPWY4VT2ZV77ZPM1Z3TQ",
+			"atom_uri": "urn:zam:atom:01M6FXBPWY4VT2ZV77ZPM1Z3TQ",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-lebensraeume-wald-gewaesser",
+			"title": "Lebensräume Wald & Gewässer entdecken",
+			"domain": "hsu/natur-und-umwelt",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=lebensraeume-wald-gewaesser",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb3-natur-umwelt",
+					"topic_title": "LB 3: Natur und Umwelt"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPY0TKJKB77N9R3DVVBM",
+					"slug": "hsu4-lebensraeume-wald-gewaesser-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißen die vier oberirdischen Stockwerke des Waldes von unten nach oben?",
+					"concept": "Moosschicht, Krautschicht, Strauchschicht und oben die Baumschicht.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=lebensraeume-wald-gewaesser",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Moosschicht, Krautschicht, Strauchschicht und oben die Baumschicht.",
+							"Baumschicht, Wolkenschicht, Grasschicht und Steinschicht."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Baumschicht, Strauchschicht, Moosschicht und ganz oben die Wurzelschicht.",
+							"reason": "Kehrt die Reihenfolge um und legt die unterirdische Wurzelschicht nach oben."
+						},
+						{
+							"text": "Im Wald wachsen alle Pflanzenarten ohne Stockwerke auf exakt gleicher Höhe.",
+							"reason": "Übersieht den typischen Stockwerkaufbau und die unterschiedlichen Lichtverhältnisse."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPY1A5CXTK3FKDEZYAAT",
+					"slug": "hsu4-lebensraeume-wald-gewaesser-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet der Pfeil in ‚Alge → Wasserfloh → Kleinfisch → Graureiher‘?",
+					"concept": "Der Pfeil bedeutet „wird gefressen von“ und zeigt den Nahrungsfluss.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=lebensraeume-wald-gewaesser",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Pfeil bedeutet „wird gefressen von“ und zeigt den Nahrungsfluss.",
+							"Der Pfeil bedeutet „frisst das rechts stehende Lebewesen auf“."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Der Pfeil zeigt immer vom großen Räuber zurück zu seiner Nahrungspflanze.",
+							"reason": "Klassische Pfeilrichtungs-Verwechslung in Nahrungsketten."
+						},
+						{
+							"text": "Jede Nahrungskette beginnt mit einem Raubtier ganz ohne grüne Pflanzen.",
+							"reason": "Am Anfang stehen grüne Pflanzen oder Algen als Erzeuger."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPY2894EJ9RMPRQ7FRCM",
+					"slug": "hsu4-lebensraeume-wald-gewaesser-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne je ein Beispiel für Angepasstheit von Lebewesen in Wald und Gewässer.",
+					"concept": "Laubabwurf schützt Bäume im Winter; Fische atmen mit Kiemen, Seerosen haben Luftkanäle.",
+					"sample_solution": "Im Wald schützen sich Laubbäume durch verholzte Stämme und den herbstlichen Laubabwurf vor dem Vertrocknen bei gefrorenem Boden. Im Gewässer ist die Bachforelle durch Stromlinienform, Flossen und Kiemen an strömendes Wasser angepasst, und Seerosenblätter schwimmen mithilfe luftgefüllter Hohlräume an der Oberfläche.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=lebensraeume-wald-gewaesser",
+					"choice_distractors": [
+						{
+							"text": "Fische atmen unter Wasser mit Vogellungen und Laubbäume blühen mitten im tiefen Januarfrost.",
+							"reason": "Verwechselt Kiemen- und Lungenatmung und deutet Laubwechsel zweckfremd."
+						},
+						{
+							"text": "Licht, Temperatur und Wasserqualität entscheiden nie darüber, welche Arten im Bach überleben.",
+							"reason": "Übersieht den direkten Zusammenhang zwischen Umweltfaktoren und Artenzusammensetzung."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPWZR3KYNCP02EC2FVTP",
+			"atom_uri": "urn:zam:atom:01M6FXBPWZR3KYNCP02EC2FVTP",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-tierentwicklung-wolf-hund",
+			"title": "Tierentwicklung, Wolf & sicherer Umgang mit dem Hund",
+			"domain": "hsu/natur-und-umwelt",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=tierentwicklung-wolf-hund",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXBPWY4VT2ZV77ZPM1Z3TQ",
+					"type": "soft",
+					"rationale": "Vertieft Tierbeobachtung und Angepasstheit an konkreten Entwicklungsstadien und Verhaltensweisen."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb3-natur-umwelt",
+					"topic_title": "LB 3: Natur und Umwelt"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPY3PVY5P1A75E8EKNJD",
+					"slug": "hsu4-tierentwicklung-wolf-hund-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche vier Stadien durchläuft der Marienkäfer bei seiner Verwandlung?",
+					"concept": "Vom Ei über die gefräßige Larve und die Puppe zum erwachsenen Marienkäfer.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=tierentwicklung-wolf-hund",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Vom Ei über die gefräßige Larve und die Puppe zum erwachsenen Marienkäfer.",
+							"Kleiner Käfer mit 1 Punkt, der jedes Lebensjahr 1 Punkt dazubekommt."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Die schwarzen Punkte auf den Flügeln zeigen das genaue Alter in Jahren an.",
+							"reason": "Weit verbreiteter Irrtum: Die Punktzahl kennzeichnet die Marienkäferart, ein fertiger Käfer wächst nicht mehr."
+						},
+						{
+							"text": "Aus dem Ei schlüpft direkt der fertige Käfer ohne Larven- und Puppenphase.",
+							"reason": "Überspringt Larve und Puppe der vollkommenen Insektenmetamorphose."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPY4BCMKJBKEADHBR42B",
+					"slug": "hsu4-tierentwicklung-wolf-hund-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie verändert sich die Atmung bei der Entwicklung von der Kaulquappe zum Frosch?",
+					"concept": "Kaulquappen atmen im Wasser mit Kiemen, erwachsene Frösche mit Lunge und feuchter Haut.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=tierentwicklung-wolf-hund",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Kaulquappen atmen im Wasser mit Kiemen, erwachsene Frösche mit Lunge und feuchter Haut.",
+							"Kaulquappen haben schon Lungen und verlieren sie als erwachsener Frosch."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Sowohl Froschlaich als auch Frösche atmen ausschließlich durch trockene Hornschuppen.",
+							"reason": "Frösche sind Amphibien mit feuchter Drüsenhaut, keine beschuppten Reptilien."
+						},
+						{
+							"text": "Bei Kaulquappen wachsen zuerst Vorderbeine und erst im Winter eine breite Schwanzflosse.",
+							"reason": "Bei der Frosch-Metamorphose erscheinen zuerst die Hinterbeine, danach die Vorderbeine."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPY5FZ7PBFRYEN4ZD8S3",
+					"slug": "hsu4-tierentwicklung-wolf-hund-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was hat der Hund vom Wolf geerbt, und wie begegnest du fremden Hunden sicher?",
+					"concept": "Feine Sinne, Rudelverhalten und Jagdtrieb; ruhig stehen bleiben und vorher Halter fragen.",
+					"sample_solution": "Der Haushund stammt vom Wolf ab und besitzt einen ausgeprägten Geruchs- und Gehörsinn, Sozialverhalten sowie Jagdinstinkt. Artgerechte Haltung braucht täglichen Auslauf, Beschäftigung und Familienanschluss. Fremden Hunden begegnet man ruhig, rennt nicht schreiend weg (Jagdtrieb!) und fragt immer zuerst die Halterin oder den Halter.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=tierentwicklung-wolf-hund",
+					"choice_distractors": [
+						{
+							"text": "Vor fremden Hunden laut schreiend wegrennen und ihnen starr direkt in die Augen schauen.",
+							"reason": "Wegrennen weckt den Beutefangtrieb, starres Anstarren wirkt auf Hunde bedrohlich."
+						},
+						{
+							"text": "Als Haustier hat der Hund alle feinen Sinne und Instinkte des Wolfs vollständig verloren.",
+							"reason": "Domestikation veränderte das Zusammenleben mit dem Menschen, nicht aber Geruchssinn und Grundinstinkte."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPX0EYEDS5849J3A1THR",
+			"atom_uri": "urn:zam:atom:01M6FXBPX0EYEDS5849J3A1THR",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-bauernhof-und-lebensmittel",
+			"title": "Bauernhof, Eierstempel & regionale Lebensmittel",
+			"domain": "hsu/natur-und-umwelt",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=bauernhof-und-lebensmittel",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb3-natur-umwelt",
+					"topic_title": "LB 3: Natur und Umwelt"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPY601FJK3TQQ1BP6WE8",
+					"slug": "hsu4-bauernhof-und-lebensmittel-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wofür stehen die Ziffern 0, 1, 2 und 3 am Anfang des Eierstempels?",
+					"concept": "0 = Bio-Haltung, 1 = Freilandhaltung, 2 = Bodenhaltung, 3 = Käfighaltung.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=bauernhof-und-lebensmittel",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"0 = Bio-Haltung, 1 = Freilandhaltung, 2 = Bodenhaltung, 3 = Käfighaltung.",
+							"0 = Käfighaltung, 1 = Bodenhaltung, 2 = Freiland, 3 = Bio-Haltung."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Die erste Ziffer zeigt die Gewichtsklasse des Eis von klein bis sehr groß.",
+							"reason": "Verwechselt die Haltungsform-Kennziffer mit den Gewichtsklassen S, M, L, XL auf dem Karton."
+						},
+						{
+							"text": "3 = Bio-Haltung mit Wiese, 2 = Freiland, 1 = Boden und 0 = enger Käfig.",
+							"reason": "Kehrt die Skala um: 0 bietet den höchsten Tierwohl- und Bio-Standard, 3 den geringsten Platz."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPY7E2X01MQ45PERNJBC",
+					"slug": "hsu4-bauernhof-und-lebensmittel-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was verrät die Kennzeichnung ‚DE-09‘ im Code auf einem Hühnerei?",
+					"concept": "Das Ei stammt aus dem Herkunftsland Deutschland und dem Bundesland Bayern.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=bauernhof-und-lebensmittel",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das Ei stammt aus dem Herkunftsland Deutschland und dem Bundesland Bayern.",
+							"Das Ei ist nur bis zum neunten Dezember im Kühlschrank haltbar."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Das Ei wurde in Dänemark gelegt und genau neun Tage im Kühlhaus gelagert.",
+							"reason": "DE ist das Länderkürzel für Deutschland (Dänemark wäre DK), 09 steht für Bayern."
+						},
+						{
+							"text": "Das Mindesthaltbarkeitsdatum des Eis endet jeweils am neunten Dezember.",
+							"reason": "Deutet den Länder- und Bundeslandschlüssel fälschlich als Haltbarkeitsdatum."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPY88CEA4R4GM1TF05W0",
+					"slug": "hsu4-bauernhof-und-lebensmittel-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie hängen Produktionsweise, Lebensmittelpreis, Tierwohl und Saison-Einkauf zusammen?",
+					"concept": "Tierwohl und Bio kosten mehr Fläche; Saisonware aus der Region spart Transportenergie.",
+					"sample_solution": "Artgerechte Tierhaltung (z. B. Bio- und Freilandhaltung) benötigt mehr Auslauf, kleinere Gruppen und hochwertiges Futter und hat deshalb einen höheren Preis als Massenware. Wer außerdem Obst und Gemüse passend zur heimischen Erntezeit aus der Region kauft, vermeidet energieintensive Gewächshäuser und weite Flug- oder Lkw-Transporte.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=bauernhof-und-lebensmittel",
+					"choice_distractors": [
+						{
+							"text": "Eingeflogene Erdbeeren im Januar schonen das Klima stärker als Freilandobst im Juni.",
+							"reason": "Übersieht den enormen Treibstoff- und Kühlaufwand von Luftfracht außerhalb der Saison."
+						},
+						{
+							"text": "Der Ladenpreis eines Lebensmittels hängt nie mit Tierhaltung oder Umweltauflagen zusammen.",
+							"reason": "Verkennt den Mehraufwand landwirtschaftlicher Betriebe für Tier- und Umweltschutz."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPX109XDXSE8STRNFWZN",
+			"atom_uri": "urn:zam:atom:01M6FXBPX109XDXSE8STRNFWZN",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-strom-und-energie",
+			"title": "Stromkreis, Leiter & kluger Energieeinsatz",
+			"domain": "hsu/natur-und-umwelt",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=strom-und-energie",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb3-natur-umwelt",
+					"topic_title": "LB 3: Natur und Umwelt"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPY94AQZZ9A0V2QDY7ZA",
+					"slug": "hsu4-strom-und-energie-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wann fließt elektrischer Strom und welche Stoffe leiten ihn?",
+					"concept": "Im geschlossenen Stromkreis; Metalle und Graphit leiten, Plastik und Holz isolieren.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=strom-und-energie",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Im geschlossenen Stromkreis; Metalle und Graphit leiten, Plastik und Holz isolieren.",
+							"Schon über ein einzelnes Kabel vom Pluspol; Plastik leitet den Strom am besten."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Eine einzige Leitung von der Batterie zur Lampe genügt ganz ohne Rückleitung.",
+							"reason": "Häufige Ein-Kabel-Fehlvorstellung: Elektrischer Strom braucht immer einen geschlossenen Hin- und Rückweg."
+						},
+						{
+							"text": "Gummi, Glas und trockenes Plastik leiten elektrischen Strom besser als Kupferdraht.",
+							"reason": "Vertauscht elektrische Leiter (Kupfer) und schützende Isolatoren (Kunststoff, Gummi)."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYAVM2QJER1GYA8V3XA",
+					"slug": "hsu4-strom-und-energie-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Sicherheitsregel gilt bei 230-V-Steckdosen im Haushalt?",
+					"concept": "Nichts in Steckdosen stecken, defekte Kabel meiden und nie mit Nässe berühren.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=strom-und-energie",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nichts in Steckdosen stecken, defekte Kabel meiden und nie mit Nässe berühren.",
+							"Steckdosen haben genau dieselbe harmlose Spannung wie eine kleine Flachbatterie."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Verklemmtes Brot holt man mit einer Metallgabel aus dem laufenden Toaster heraus.",
+							"reason": "Metall leitet die lebensgefährlichen 230 V direkt weiter."
+						},
+						{
+							"text": "Leitungswasser schützt zuverlässig vor Stromschlägen an eingeschalteten Geräten.",
+							"reason": "Leitungswasser leitet Strom und erhöht die Lebensgefahr bei Elektrogeräten drastisch."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYBD129XV9Z9CJV4123",
+					"slug": "hsu4-strom-und-energie-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Vergleiche fossile und erneuerbare Stromerzeugung sowie Wege zum Stromsparen.",
+					"concept": "Kohle erzeugt CO2 und ist endlich; Sonne und Wind sind erneuerbar; Abschalten spart Strom.",
+					"sample_solution": "Kohle- und Gaskraftwerke verbrennen endliche Rohstoffe und stoßen klimaschädliches Kohlenstoffdioxid aus. Wind-, Solar- und Wasserkraft nutzen erneuerbare Quellen ohne CO2 im Betrieb, schwanken aber mit dem Wetter. Im Alltag sparen LED-Lampen, komplettes Ausschalten statt Stand-by und bewusstes Nutzen von Geräten wertvolle Energie.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=strom-und-energie",
+					"choice_distractors": [
+						{
+							"text": "Steinkohle wächst jedes Jahr nach, und Geräte im Stand-by brauchen gar keinen Strom.",
+							"reason": "Verkennt die Endlichkeit fossiler Brennstoffe und den stillen Dauerverbrauch im Stand-by."
+						},
+						{
+							"text": "Solaranlagen laufen nur nachts, während Kohlekraftwerke keinerlei Abgase ausstoßen.",
+							"reason": "Verdreht Funktionsweise von Photovoltaik und Klimabelastung durch Kohleverbrennung."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPX2GQSQHY6NAE6GFHPX",
+			"atom_uri": "urn:zam:atom:01M6FXBPX2GQSQHY6NAE6GFHPX",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-feuer-und-brandschutz",
+			"title": "Feuer, Verbrennungsdreieck & Brandschutz",
+			"domain": "hsu/natur-und-umwelt",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=feuer-und-brandschutz",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXBPWWP4DCJ1KBZ56C010H",
+					"type": "soft",
+					"rationale": "Knüpft beim Verhalten im Brandfall an den Notruf 112 und die 5 W-Fragen an."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb3-natur-umwelt",
+					"topic_title": "LB 3: Natur und Umwelt"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPYCRQ867XESC4T66JRG",
+					"slug": "hsu4-feuer-und-brandschutz-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche drei Bedingungen gehören zum Verbrennungsdreieck?",
+					"concept": "Brennbarer Stoff, Sauerstoff und das Erreichen der Zündtemperatur.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=feuer-und-brandschutz",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Brennbarer Stoff, Sauerstoff und das Erreichen der Zündtemperatur.",
+							"Brennbarer Stoff, Kohlenstoffdioxid und eisige Frostkälte."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Trockenes Holz, erstickendes Kohlenstoffdioxid und kaltes Löschwasser.",
+							"reason": "Kohlenstoffdioxid und Wasser ersticken bzw. kühlen Flammen, statt die Verbrennung zu ermöglichen."
+						},
+						{
+							"text": "Es reicht allein Sauerstoff in der Luft, ganz ohne Brennstoff und Wärme.",
+							"reason": "Fehlt auch nur eine der drei Bedingungen, kommt keine Verbrennung zustande."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYDEZ3AS7PDE7P8KWX8",
+					"slug": "hsu4-feuer-und-brandschutz-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum darf brennendes Öl in einer Pfanne nie mit Wasser gelöscht werden?",
+					"concept": "Wasser verdampft schlagartig als Fettexplosion; ein Deckel erstickt die Flamme.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=feuer-und-brandschutz",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wasser verdampft schlagartig als Fettexplosion; ein Deckel erstickt die Flamme.",
+							"Wasser lässt heißes Speiseöl sofort friedlich zu festem Eis erstarren."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Leitungswasser ist selbst ein leicht brennbarer Stoff genau wie Benzin.",
+							"reason": "Wasser brennt nicht, dehnt sich beim schlagartigen Verdampfen im heißen Öl aber enorm aus."
+						},
+						{
+							"text": "Bei einem Fettbrand wedelt man kräftig frische Luft zu, damit das Öl abkühlt.",
+							"reason": "Luftzufuhr liefert noch mehr Sauerstoff und facht den Brand weiter an."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYEN7GKJGWWNRK38RY9",
+					"slug": "hsu4-feuer-und-brandschutz-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche drei Löschmethoden folgen aus dem Verbrennungsdreieck?",
+					"concept": "Unter Zündtemperatur abkühlen, Sauerstoff entziehen oder brennbaren Stoff entfernen.",
+					"sample_solution": "Weil ein Feuer alle drei Bedingungen braucht, gibt es drei Löschwege: 1. Abkühlen unter die Zündtemperatur (z. B. Lagerfeuer mit Wasser löschen), 2. Ersticken durch Entzug von Sauerstoff (z. B. Löschdecke, Sand oder Topfdeckel), 3. Entfernen des brennbaren Stoffs (z. B. Gaszufuhr abdrehen oder Brandgut wegräumen).",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=feuer-und-brandschutz",
+					"choice_distractors": [
+						{
+							"text": "Jeder Brand – auch Fett- und Elektrobrand – wird immer mit einem Eimer Wasser gelöscht.",
+							"reason": "Missachtet Lebensgefahr durch Fettexplosion und Stromschlag bei Wasser."
+						},
+						{
+							"text": "Bei Rauch im Haus versteckt man sich im Schrank und nimmt später langsam den Aufzug.",
+							"reason": "Im Brandfall niemals verstecken und niemals den Aufzug benutzen, sondern gebückt ins Freie gehen."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPX3YF7YD7QJ4T0N46JY",
+			"atom_uri": "urn:zam:atom:01M6FXBPX3YF7YD7QJ4T0N46JY",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-wasser-und-wasserkreislauf",
+			"title": "Wasser erforschen, Wasserkreislauf & Gewässerschutz",
+			"domain": "hsu/natur-und-umwelt",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wasser-und-wasserkreislauf",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb3-natur-umwelt",
+					"topic_title": "LB 3: Natur und Umwelt"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPYFWX7NVQ4NR7CKS1CQ",
+					"slug": "hsu4-wasser-und-wasserkreislauf-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche vier Stationen bilden den natürlichen Wasserkreislauf?",
+					"concept": "Verdunstung, Kondensation zu Wolken, Niederschlag sowie Versickern und Abfluss.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wasser-und-wasserkreislauf",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Verdunstung, Kondensation zu Wolken, Niederschlag sowie Versickern und Abfluss.",
+							"Wasser entsteht in Wolken völlig neu und verschwindet im Meer für immer."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Wolken saugen flüssiges Meerwasser ohne jede Verdunstung direkt in den Himmel.",
+							"reason": "Übersieht die unsichtbare Verdunstung zu Wasserdampf und anschließende Kondensation."
+						},
+						{
+							"text": "Regenwasser versickert ungebremst bis zum Erdmittelpunkt ohne Grundwasserschicht.",
+							"reason": "Wasserstauende Ton- oder Gesteinsschichten sammeln das gefilterte Grundwasser."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYGZDKQWSV8KWR36BM4",
+					"slug": "hsu4-wasser-und-wasserkreislauf-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche drei Zustandsformen kann Wasser annehmen?",
+					"concept": "Fest als Eis, flüssig als Wasser und gasförmig als unsichtbarer Wasserdampf.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wasser-und-wasserkreislauf",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Fest als Eis, flüssig als Wasser und gasförmig als unsichtbarer Wasserdampf.",
+							"Nur flüssig und fest; gasförmiges Wasser kommt in der Natur nicht vor."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Weißer Nebel über dem Topf ist trockenes Gas ganz ohne feine Wassertröpfchen.",
+							"reason": "Echter Wasserdampf ist unsichtbar; sichtbarer Nebel besteht bereits aus winzigen Wassertröpfchen."
+						},
+						{
+							"text": "Reines Wasser gefriert bereits bei +25 °C und siedet erst ab genau 500 °C.",
+							"reason": "Unter Normalbedingungen gefriert reines Wasser bei 0 °C und siedet bei 100 °C."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYH8BKPG1QCB479EQ7P",
+					"slug": "hsu4-wasser-und-wasserkreislauf-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum müssen wir Wasser vor Schadstoffen und Verschwendung schützen?",
+					"concept": "Gelöste Gifte gefährden Grundwasser, und Industrieprodukte verbrauchen viel Wasser.",
+					"sample_solution": "Böden filtern zwar groben Schmutz, aber keine gelösten Chemikalien, Medikamente oder Öle. Zudem ist Süßwasser weltweit ungleich verteilt: Für die Herstellung von Baumwollkleidung, Papier oder Metallen wird oft in trockenen Regionen enorm viel Wasser verbraucht.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wasser-und-wasserkreislauf",
+					"choice_distractors": [
+						{
+							"text": "Sandboden reinigt selbst Altöl restlos, und Fabriken benötigen gar kein Wasser.",
+							"reason": "Überschätzt die natürliche Bodenfilterung bei gelösten Giften und ignoriert Prozesswasser."
+						},
+						{
+							"text": "Über neunzig Prozent allen Wassers auf der Erde ist sofort trinkbares Süßwasser.",
+							"reason": "Der Großteil des Wassers auf der Erde ist Salzwasser in den Ozeanen; Trinkwasser ist knapp."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPX4TJXJJ02F4Y7S95T6",
+			"atom_uri": "urn:zam:atom:01M6FXBPX4TJXJJ02F4Y7S95T6",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-zeitreise-und-quellen",
+			"title": "Zeitreise, Zeitleiste & historische Quellen",
+			"domain": "hsu/zeit-und-wandel",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=zeitreise-und-quellen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb4-zeit-wandel",
+					"topic_title": "LB 4: Zeit und Wandel"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPYJ3P1AKYVC0ERHGVMD",
+					"slug": "hsu4-zeitreise-und-quellen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welchem Jahrhundert liegt 1835, und wie lang sind Jahrzehnt und Jahrhundert?",
+					"concept": "1835 liegt im 19. Jahrhundert; ein Jahrzehnt hat 10, ein Jahrhundert 100 Jahre.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=zeitreise-und-quellen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"1835 liegt im 19. Jahrhundert; ein Jahrzehnt hat 10, ein Jahrhundert 100 Jahre.",
+							"1835 liegt im 18. Jahrhundert; ein Jahrhundert dauert genau 1 000 Jahre."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "1835 gehört zum 18. Jahrhundert, weil die Jahreszahl vorn mit 18 beginnt.",
+							"reason": "Typischer Jahrhundert-Fehler: Da das 1. Jahrhundert von 1 bis 100 reicht, liegen 1801 bis 1900 im 19. Jahrhundert."
+						},
+						{
+							"text": "1835 gehört zum 20. Jahrhundert; ein Jahrzehnt dauert genau hundert Jahre.",
+							"reason": "Verwechselt Jahrhundert-Grenzen und die Dauer eines Jahrzehnts."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYKYC3AQDXT11JZ9K1W",
+					"slug": "hsu4-zeitreise-und-quellen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche vier Arten historischer Quellen unterscheiden wir?",
+					"concept": "Sachquellen, Bildquellen, schriftliche Textquellen und Berichte von Zeitzeugen.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=zeitreise-und-quellen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sachquellen, Bildquellen, schriftliche Textquellen und Berichte von Zeitzeugen.",
+							"Nur neu gedruckte Schulbücher von heute gelten als historische Quellen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Eine alte Münze ist eine Textquelle und ein Brief eine reine Sachquelle.",
+							"reason": "Vertauscht gegenständliche Sachquellen und schriftliche Textquellen."
+						},
+						{
+							"text": "Aus allen Epochen vor der Erfindung der Kamera gibt es gar keine Quellen.",
+							"reason": "Übersieht Urkunden, Chroniken, Gemälde, Münzen und Bauwerke aus früheren Jahrhunderten."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYMEWJBXF6PWAJ9KWCP",
+					"slug": "hsu4-zeitreise-und-quellen-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wozu dienen Museen und Archive, und warum vergleicht man mehrere Quellen?",
+					"concept": "Sie schützen Originale vor Verfall; mehrere Quellen gleichen Lücken und Irrtümer aus.",
+					"sample_solution": "Museen bewahren und erklären vor allem Sach- und Bildquellen, während Archive Urkunden, Akten und Zeitungen vor Licht und Feuchtigkeit schützen. Jede Quelle zeigt nur einen Ausschnitt oder eine persönliche Sichtweise – deshalb prüfen Fachleute mehrere Quellen gegeneinander.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=zeitreise-und-quellen",
+					"choice_distractors": [
+						{
+							"text": "Jede einzelne Quelle berichtet immer lückenlos und irrtumsfrei die ganze Wahrheit.",
+							"reason": "Übersieht Lücken, Erinnerungsfehler von Zeitzeugen und einseitige Darstellungen."
+						},
+						{
+							"text": "Archive vernichten alte Urkunden nach zehn Jahren, um Platz für Neues zu schaffen.",
+							"reason": "Aufgabe eines Archivs ist gerade die dauerhafte Sicherung historischer Schriftstücke."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPX5A39MTQGSDXNQ87ZM",
+			"atom_uri": "urn:zam:atom:01M6FXBPX5A39MTQGSDXNQ87ZM",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-wandel-fakten-fiktion",
+			"title": "Erfindungen im Wandel, Fakten & Fiktion",
+			"domain": "hsu/zeit-und-wandel",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wandel-fakten-fiktion",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXBPX4TJXJJ02F4Y7S95T6",
+					"type": "soft",
+					"rationale": "Nutzt Quellenwissen, um technische Entwicklungen sowie Fakten und Fiktion einzuordnen."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb4-zeit-wandel",
+					"topic_title": "LB 4: Zeit und Wandel"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPYN7ESVXDEFB9X7564C",
+					"slug": "hsu4-wandel-fakten-fiktion-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welchen Hauptschritten entwickelte sich das Fahrrad seit 1817?",
+					"concept": "Draisine 1817 → Hochrad um 1870 → Niederrad mit Kette und Luftreifen → modernes Rad.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wandel-fakten-fiktion",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Draisine 1817 → Hochrad um 1870 → Niederrad mit Kette und Luftreifen → modernes Rad.",
+							"Erst E-Bike mit Motor → dann Hochrad → zuletzt hölzerne Draisine."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Schon die Draisine von 1817 besaß Kettenantrieb, Gangschaltung und Luftreifen.",
+							"reason": "Projiziert spätere Erfindungen (ab 1885/1888) zurück auf die hölzerne Laufmaschine von Karl Drais."
+						},
+						{
+							"text": "Das Hochrad war viel sturzsicherer als das Niederrad mit zwei gleichen Rädern.",
+							"reason": "Gerade der hohe Schwerpunkt über dem Vorderrad führte beim Hochrad zu schweren Kopfüber-Stürzen."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYPJK52EB324EJJC9PM",
+					"slug": "hsu4-wandel-fakten-fiktion-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Worin unterscheiden sich historische Fakten und Fiktion in Medien?",
+					"concept": "Fakten sind durch echte Quellen belegt; Fiktion in Sagen oder Filmen ist erfunden.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wandel-fakten-fiktion",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Fakten sind durch echte Quellen belegt; Fiktion in Sagen oder Filmen ist erfunden.",
+							"Alles, was in einem historischen Spielfilm vorkommt, ist ein bewiesener Fakt."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Alte Ortssagen mit Drachen sind immer Wort für Wort belegte Tatsachenberichte.",
+							"reason": "Sagen knüpfen zwar oft an reale Orte an, schmücken Ereignisse aber mit Fiktion aus."
+						},
+						{
+							"text": "Spielfilme dürfen niemals echte historische Orte oder Jahreszahlen aufgreifen.",
+							"reason": "Populäre Medien mischen häufig reale Schauplätze (Fakt) mit erfundenen Figuren (Fiktion)."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYQCKQ9NBAB9JP85CKW",
+					"slug": "hsu4-wandel-fakten-fiktion-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Bedeutung haben Museen, Denkmäler, historische Feste und Gedenktage?",
+					"concept": "Sie bewahren Ortsgeschichte, erklären Traditionen und mahnen zu Frieden und Demokratie.",
+					"sample_solution": "Regionale Museen, Denkmäler, Feste und Gedenktage machen Geschichte vor Ort erlebbar. Sie erinnern einerseits an Stadtgründungen oder kulturelle Leistungen und mahnen andererseits an Krieg und Unrecht, damit Menschen heute Demokratie und Frieden schützen.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=wandel-fakten-fiktion",
+					"choice_distractors": [
+						{
+							"text": "Gedenktage dienen nur als Einkaufswerbung ohne Bezug zur regionalen Vergangenheit.",
+							"reason": "Übersieht den geschichtlichen und gesellschaftlichen Sinn regionaler Erinnerungskultur."
+						},
+						{
+							"text": "Erinnerungskultur feiert ausschließlich Erfolge und blendet schwierige Zeiten ganz aus.",
+							"reason": "Verantwortungsvolle Erinnerung schließt ausdrücklich auch mahnendes Gedenken ein."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPX648C31TF0Q2TMJTT5",
+			"atom_uri": "urn:zam:atom:01M6FXBPX648C31TF0Q2TMJTT5",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-orientierung-und-kartenlesen",
+			"title": "Himmelsrichtungen, Kompass & Karten lesen",
+			"domain": "hsu/raum-und-mobilitaet",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=orientierung-und-kartenlesen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb5-raum-mobilitaet",
+					"topic_title": "LB 5: Raum und Mobilität"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPYR6TNYJRS4Y09CTMS6",
+					"slug": "hsu4-orientierung-und-kartenlesen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lauten die acht Himmelsrichtungen im Uhrzeigersinn, und wohin zeigt der Kompass?",
+					"concept": "N, NO, O, SO, S, SW, W, NW; die Magnetnadel des Kompasses zeigt nach Norden.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=orientierung-und-kartenlesen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"N, NO, O, SO, S, SW, W, NW; die Magnetnadel des Kompasses zeigt nach Norden.",
+							"N, W, S, O im Uhrzeigersinn; die Kompassnadel zeigt immer zur Sonne."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Die Kompassnadel dreht sich tagsüber immer der wandernden Sonne hinterher.",
+							"reason": "Die Magnetnadel folgt dem Erdmagnetfeld nach Norden, nicht dem Sonnenlicht."
+						},
+						{
+							"text": "Im Uhrzeigersinn folgen auf Norden zuerst Westen, dann Süden und zuletzt Osten.",
+							"reason": "Verdreht Ost und West (Merkspruch im Uhrzeigersinn: ‚Nie ohne Seife waschen‘)."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYSZBJ3SKA31QDWXVFP",
+					"slug": "hsu4-orientierung-und-kartenlesen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet der Maßstab 1 : 25 000 auf einer Wanderkarte?",
+					"concept": "1 cm auf der Karte entspricht 25 000 cm, also 250 m in der Wirklichkeit.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=orientierung-und-kartenlesen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"1 cm auf der Karte entspricht 25 000 cm, also 250 m in der Wirklichkeit.",
+							"1 cm auf der Karte entspricht 25 000 km in der Wirklichkeit."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "1 cm auf der Karte entspricht genau 25 km Luftlinie in der echten Natur.",
+							"reason": "Umrechnungsfehler zwischen Zentimetern und Metern: 25 000 cm : 100 = 250 m, nicht 25 km."
+						},
+						{
+							"text": "Auf dem gesamten Kartenblatt sind genau 25 000 einzelne Gebäude abgebildet.",
+							"reason": "Deutet die Maßstabszahl als Stückzahl statt als Verkleinerungsverhältnis."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYT2DK6AWAA703J8002",
+					"slug": "hsu4-orientierung-und-kartenlesen-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Kartenmerkmale helfen beim Lesen, und warum ist eine Karte kein Foto?",
+					"concept": "Nordpfeil, Maßstab, Legende und Höhenfarben; Karten vereinfachen je nach Zweck.",
+					"sample_solution": "Beim Lesen einer Karte beachtet man Nordung, Maßstab, Kartenzeichen in der Legende und Höhenschichtenfarben (Grün = Tiefland, Gelb/Hellbraun = Hügelland, Dunkelbraun = Hochgebirge, Blau = Gewässer). Anders als ein Luftbild lässt eine Karte durch Generalisierung Unwichtiges weg, damit sie übersichtlich bleibt.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=orientierung-und-kartenlesen",
+					"choice_distractors": [
+						{
+							"text": "Grün zeigt auf physischen Karten dichten Bergwald und Braun frisch gepflügte Äcker.",
+							"reason": "Klassische Fehlvorstellung: Auf Höhenschichtenkarten zeigen Grün und Braun die Geländehöhe an, nicht die Bewuchsart!"
+						},
+						{
+							"text": "Je kleiner der Maßstab einer Weltkarte, desto mehr schmale Fußwege sind sichtbar.",
+							"reason": "Bei starker Verkleinerung muss stärker generalisiert (vereinfacht) werden."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPX7ZD9BFCCEWKAVTF88",
+			"atom_uri": "urn:zam:atom:01M6FXBPX7ZD9BFCCEWKAVTF88",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-bayern-deutschland-welt",
+			"title": "Vom Heimatort nach Bayern, Europa & in die Welt",
+			"domain": "hsu/raum-und-mobilitaet",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=bayern-deutschland-welt",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXBPX648C31TF0Q2TMJTT5",
+					"type": "soft",
+					"rationale": "Wendet Kartenlesen und Himmelsrichtungen auf Bayern, Deutschland und globale Räume an."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb5-raum-mobilitaet",
+					"topic_title": "LB 5: Raum und Mobilität"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPYVYZPNG15NET2P4P3A",
+					"slug": "hsu4-bayern-deutschland-welt-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißen die sieben Regierungsbezirke Bayerns?",
+					"concept": "Oberbayern, Niederbayern, Oberpfalz, Ober-, Mittel-, Unterfranken und Schwaben.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=bayern-deutschland-welt",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Oberbayern, Niederbayern, Oberpfalz, Ober-, Mittel-, Unterfranken und Schwaben.",
+							"Oberbayern, Südbayern, Ostfranken, Thüringen und Tirol."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Oberbayern, Unterbayern, Westpfalz, Ostfranken, Allgäu, Rhön und Spessart.",
+							"reason": "Vermischt Landschaftsnamen und erfundene Bezeichnungen mit den amtlichen 7 Regierungsbezirken."
+						},
+						{
+							"text": "Bayern gliedert sich nur in die drei Bezirke Altbayern, Franken und Schwaben.",
+							"reason": "Verwechselt historische Stämme/Regionen mit den sieben staatlichen Regierungsbezirken."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYWB8E2DD8XR1TEAV5M",
+					"slug": "hsu4-bayern-deutschland-welt-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie gliedern sich die politischen Räume von deiner Gemeinde bis Europa?",
+					"concept": "Gemeinde → Landkreis → Regierungsbezirk → Bayern → Deutschland → Europa.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=bayern-deutschland-welt",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Gemeinde → Landkreis → Regierungsbezirk → Bayern → Deutschland → Europa.",
+							"Gemeinde → Bayern → Landkreis → Deutschland → Regierungsbezirk → Europa."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Regierungsbezirk → Gemeinde → Landkreis → Europa → Bayern → Deutschland.",
+							"reason": "Bringt die Größenebenen vom Lokalen zum Europäischen durcheinander."
+						},
+						{
+							"text": "Landkreis → Gemeinde → Deutschland → Bayern → Regierungsbezirk → Europa.",
+							"reason": "Vertauscht benachbarte Ebenen der politischen Raumgliederung."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYXQZGYNMH5H4YE9E22",
+					"slug": "hsu4-bayern-deutschland-welt-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne Bayerns Hauptflüsse und Gebirge sowie Schutzmaßnahmen im Alpenraum.",
+					"concept": "Main im Norden, Donau und Alpen mit Zugspitze im Süden; Schutzgebiete und ÖPNV helfen.",
+					"sample_solution": "Nordbayern prägt der Main, Südbayern die Donau mit ihren südlichen Zuflüssen Iller, Lech, Isar und Inn sowie die Alpen mit der Zugspitze (2 962 m). Wo Tourismus Arbeitsplätze schafft, aber Verkehr und Flächenverbrauch die Natur belasten, helfen Schutzgebiete, Besucherlenkung auf Wegen und sanfter Tourismus per Bahn und Wanderbus.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=bayern-deutschland-welt",
+					"choice_distractors": [
+						{
+							"text": "Donau und Main fließen beide nach Norden in die Ostsee; Bergwald braucht keinen Schutz.",
+							"reason": "Verwechselt Fließrichtungen (Main → Rhein → Nordsee; Donau → Schwarzes Meer) und Schutzwaldfunktion."
+						},
+						{
+							"text": "Naturschutz gelingt nur dann, wenn alle Alpendörfer von Menschen ganz geräumt werden.",
+							"reason": "Übersieht nachhaltige Konzepte, die Lebensraum, Kulturlandschaft und Naturschutz verbinden."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPX8RAYKSJFHM63CVYB7",
+			"atom_uri": "urn:zam:atom:01M6FXBPX8RAYKSJFHM63CVYB7",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-fahrrad-und-mobilitaet",
+			"title": "Sicher mit dem Rad & nachhaltig mobil",
+			"domain": "hsu/raum-und-mobilitaet",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=fahrrad-und-mobilitaet",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb5-raum-mobilitaet",
+					"topic_title": "LB 5: Raum und Mobilität"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPYYBQREZCDNEYBV2F3Y",
+					"slug": "hsu4-fahrrad-und-mobilitaet-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Ausrüstung gehört zwingend zu einem verkehrssicheren Fahrrad?",
+					"concept": "Zwei unabhängige Bremsen, Klingel, Licht vorn und hinten sowie alle Reflektoren.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=fahrrad-und-mobilitaet",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zwei unabhängige Bremsen, Klingel, Licht vorn und hinten sowie alle Reflektoren.",
+							"Eine einzige Bremse, Gepäckkorb und elektronischer Tacho genügen völlig."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Vorn ein rotes Rücklicht, hinten ein weißer Scheinwerfer und nur eine Bremse.",
+							"reason": "Vertauscht die Lichtfarben für vorn (weiß) und hinten (rot) und lässt die zweite Bremse weg."
+						},
+						{
+							"text": "Wer nur tagsüber bei Sonnenschein radelt, braucht weder Klingel noch zweite Bremse.",
+							"reason": "Verkehrssichere Brems- und Warneinrichtungen müssen bei jeder Fahrt vorhanden sein."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPYZX4Q5NJV6C2J15JMN",
+					"slug": "hsu4-fahrrad-und-mobilitaet-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie läuft das sichere Linksabbiegen mit dem Fahrrad an einer Kreuzung ab?",
+					"concept": "Umschauen, Handzeichen links, einordnen, Vorfahrt achten, umschauen, weiter Bogen, rechts.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=fahrrad-und-mobilitaet",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Umschauen, Handzeichen links, einordnen, Vorfahrt achten, umschauen, weiter Bogen, rechts.",
+							"Erst zur Mitte ziehen, danach kurz hinschauen und eng die Kurve schneiden."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Zuerst zur Fahrbahnmitte ziehen und erst mitten in der Kurve nach hinten umschauen.",
+							"reason": "Lebensgefährlicher Reihenfolgefehler: Vor jedem Spurwechsel muss zuerst der Schulterblick erfolgen!"
+						},
+						{
+							"text": "Man gibt rechts Handzeichen und schneidet die Kurve eng über die Gegenfahrbahn ab.",
+							"reason": "Kurveschneiden führt direkt in den Gegenverkehr; vorgeschrieben ist der weite Bogen."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPZ02RQ5SJVGB795D61A",
+					"slug": "hsu4-fahrrad-und-mobilitaet-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Erkläre den toten Winkel sowie Vorteile von Fußweg, Rad, Bus und Bahn.",
+					"concept": "Neben Lkw unsichtbar – dahinter warten; Rad, Bus und Bahn sparen Fläche und Abgase.",
+					"sample_solution": "Trotz Spiegeln gibt es neben und direkt vor/hinter großen Fahrzeugen wie Lkw und Bussen Bereiche (toter Winkel), in denen Radfahrende unsichtbar sind – deshalb bleibt man beim Rechtsabbiegen eines Lkw mit Abstand dahinter. Zu Fuß gehen, Radfahren sowie Bus und Bahn schonen Klima und Platz in der Region; Radfahren und Gehen stärken außerdem die eigene Fitness.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=fahrrad-und-mobilitaet",
+					"choice_distractors": [
+						{
+							"text": "Wer auf dem Radweg Vorfahrt hat, darf rechts neben einem blinkenden Lkw vorfahren.",
+							"reason": "Besteht auf Vorfahrt trotz Lebensgefahr durch Übersehen im toten Winkel."
+						},
+						{
+							"text": "Breite Schnellstraßen und Großparkplätze verringern Bodenversiegelung und schützen Tiere.",
+							"reason": "Verkehrsflächen versiegeln Boden und zerschneiden Lebensräume."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPX96HVBTT8V88DDPWXP",
+			"atom_uri": "urn:zam:atom:01M6FXBPX96HVBTT8V88DDPWXP",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-werkzeuge-maschinen-produktion",
+			"title": "Hebel, Zahnräder, Werkzeuge & Produktion",
+			"domain": "hsu/technik-und-kultur",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=werkzeuge-maschinen-produktion",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb6-technik-kultur",
+					"topic_title": "LB 6: Technik und Kultur"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPZ1JGYV1Q58KV6DGFNQ",
+					"slug": "hsu4-werkzeuge-maschinen-produktion-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie erleichtert ein Hebel wie Flaschenöffner oder Brechstange die Arbeit?",
+					"concept": "Ein langer Kraftarm und ein kurzer Lastarm am Drehpunkt sparen viel Kraft.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=werkzeuge-maschinen-produktion",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein langer Kraftarm und ein kurzer Lastarm am Drehpunkt sparen viel Kraft.",
+							"Je kürzer der Griff zum Anfassen ist, desto leichter hebt man die Last."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Man fasst den Hebel ganz dicht am Drehpunkt an, um möglichst viel Kraft zu sparen.",
+							"reason": "Verkürzt den Kraftarm und erhöht dadurch den nötigen Kraftaufwand."
+						},
+						{
+							"text": "Ein kurzer Kraftarm und ein langer Lastarm machen schwere Kisten besonders leicht.",
+							"reason": "Vertauscht die Rolle von Kraftarm und Lastarm am Hebel."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPZ28Z8QSMJK95SR945F",
+					"slug": "hsu4-werkzeuge-maschinen-produktion-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was geschieht, wenn ein großes Zahnrad direkt ein kleines Zahnrad antreibt?",
+					"concept": "Das kleine Rad dreht schneller und gegenläufig; im Siebkorb wirkt Fliehkraft.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=werkzeuge-maschinen-produktion",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das kleine Rad dreht schneller und gegenläufig; im Siebkorb wirkt Fliehkraft.",
+							"Beide Zahnräder drehen sich exakt gleich schnell in dieselbe Richtung."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Zwei direkt ineinandergreifende Zahnräder drehen immer in dieselbe Richtung.",
+							"reason": "Übersieht die Drehrichtungsumkehr an der Eingriffsstelle zweier Zahnräder."
+						},
+						{
+							"text": "Das kleine angetriebene Zahnrad dreht sich langsamer als das große Kurbelrad.",
+							"reason": "Vertauscht Übersetzung ins Schnelle (groß treibt klein) und ins Langsame."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPZ3Q9WYHRKC1NEBA8P7",
+					"slug": "hsu4-werkzeuge-maschinen-produktion-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Vergleiche Handwerk und Massenproduktion mit Blick auf Menschen und Umwelt.",
+					"concept": "Handwerk fertigt langlebige Einzelstücke; Massenware ist günstig, braucht aber viele Ressourcen.",
+					"sample_solution": "Im Handwerk fertigen Fachkräfte langlebige Einzel- oder Maßstücke und führen abwechslungsreiche Arbeitsschritte aus. Industrielle Massenproduktion nutzt Maschinen und Arbeitsteilung für große Mengen zu niedrigen Preisen, kann aber zu eintöniger Arbeit und – etwa bei kurzlebiger Billigkleidung – zu hohem Wasser-, Energie- und Rohstoffverbrauch führen.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=werkzeuge-maschinen-produktion",
+					"choice_distractors": [
+						{
+							"text": "Massenproduktion verbraucht keinerlei Rohstoffe und macht Reparaturen im Alltag sinnlos.",
+							"reason": "Blendet Ressourcenverbrauch, Transportwege und Müllberge durch Wegwerfware aus."
+						},
+						{
+							"text": "Die Erfindung der Druckerpresse verteuerte Bücher so stark, dass niemand mehr lesen konnte.",
+							"reason": "Erst der Buchdruck machte Bücher und Wissen für breite Bevölkerungsschichten erschwinglich."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M6FXBPXAF4JZHRD1YBDVC7JH",
+			"atom_uri": "urn:zam:atom:01M6FXBPXAF4JZHRD1YBDVC7JH",
+			"namespace": "zam-academy-hsu-grundschule-4",
+			"slug": "hsu4-bruecken-und-balance",
+			"title": "Stabile Brücken, Papierprofile & Gleichgewicht",
+			"domain": "hsu/technik-und-kultur",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=bruecken-und-balance",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXBPX96HVBTT8V88DDPWXP",
+					"type": "soft",
+					"rationale": "Überträgt das Hebelverständnis auf das Gleichgewichtsprinzip und auf tragfähige Baukonstruktionen."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "hsu-grundschule-4",
+					"topic_code": "lb6-technik-kultur",
+					"topic_title": "LB 6: Technik und Kultur"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXBPZ44PK4P92RW1CYXDT0",
+					"slug": "hsu4-bruecken-und-balance-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche vier Brückenbauweisen gibt es, und was macht Papiermodelle stabil?",
+					"concept": "Balken-, Bogen-, Fachwerk- und Hängebrücke; Profile und Dreiecke geben Halt.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=bruecken-und-balance",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Balken-, Bogen-, Fachwerk- und Hängebrücke; Profile und Dreiecke geben Halt.",
+							"Nur flache Blätter und lose Vierecke ohne Streben machen Brücken stabil."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Offene Vierecksrahmen ohne Diagonalstreben sind viel formstabiler als Dreiecke.",
+							"reason": "Vierecke verschieben sich seitlich zu Parallelogrammen, während Dreiecke formstabil bleiben."
+						},
+						{
+							"text": "Ein flaches Blatt Papier trägt deutlich mehr Last als ein gefaltetes Zickzack-Profil.",
+							"reason": "Erst die Aufkantung im Profil verhindert das Durchbiegen (Materialökonomie)."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPZ5F5XHX36PJECXV6QY",
+					"slug": "hsu4-bruecken-und-balance-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wann ist eine Wippe oder Balkenwaage mit verschiedenen Gewichten im Gleichgewicht?",
+					"concept": "Wenn Gewicht mal Abstand zum Drehpunkt auf beiden Seiten gleich groß ist.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=bruecken-und-balance",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wenn Gewicht mal Abstand zum Drehpunkt auf beiden Seiten gleich groß ist.",
+							"Verschieden schwere Kinder können auf einer Wippe nie im Gleichgewicht sein."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Das leichtere Kind rückt ganz nah an den Drehpunkt, das schwerere ganz nach außen.",
+							"reason": "Vertauscht die Abstände: Das schwerere Gewicht sitzt näher am Drehpunkt, das leichtere weiter außen."
+						},
+						{
+							"text": "Der Sitzabstand zum Drehpunkt spielt für das Gleichgewicht der Wippe keine Rolle.",
+							"reason": "Übersieht die Hebelwirkung des Abstands an Balancegeräten."
+						}
+					]
+				},
+				{
+					"id": "01M6FXBPZ6ST1VHK5QKA8SCXSX",
+					"slug": "hsu4-bruecken-und-balance-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet Materialökonomie beim Bauen, und wozu dienen Bauzeichnungen?",
+					"concept": "Hohe Tragkraft mit wenig Material durch Profile; Bauzeichnungen planen Maße und Aufbau.",
+					"sample_solution": "Materialökonomie bedeutet, durch kluge Formgebung wie Hohlprofile, Bögen (z. B. Steinerne Brücke Regensburg) oder Dreiecks-Fachwerk mit wenig Baustoff hohe Stabilität zu erzielen. Bauzeichnungen und einfache Anleitungen halten Seitenansicht, Draufsicht und benötigtes Material fest, damit Konstruktionen geplant, geprüft und nachgebaut werden können.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=bruecken-und-balance",
+					"choice_distractors": [
+						{
+							"text": "Materialökonomie heißt, möglichst dicke massive Blöcke ohne Rücksicht auf Gewicht zu nutzen.",
+							"reason": "Verwechselt Materialverschwendung mit ressourcensparendem Leichtbau."
+						},
+						{
+							"text": "Bauzeichnungen fertigt man nie vor dem Bauen an, weil Skizzen die Konstruktion behindern.",
+							"reason": "Skizzen und Anleitungen sind zentrale Werkzeuge zum Planen und Überprüfen von Konstruktionen."
+						}
+					]
+				}
+			]
+		}
+	]
+}

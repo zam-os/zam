@@ -364,6 +364,42 @@ export const WELTWISSEN_SEED: readonly SeedBereich[] = [
         ],
       },
       {
+        key: "hsu",
+        name: "Heimat- und Sachunterricht",
+        areas: [
+          {
+            key: "demokratie",
+            name: "Demokratie & Gesellschaft",
+            from: ["demokratie-und-gesellschaft", "demokratie-und-konsum"],
+          },
+          {
+            key: "koerper",
+            name: "Körper & Gesundheit",
+            from: ["koerper-und-gesundheit"],
+          },
+          {
+            key: "natur",
+            name: "Natur & Umwelt",
+            from: ["natur-und-umwelt"],
+          },
+          {
+            key: "zeit",
+            name: "Zeit & Wandel",
+            from: ["zeit-und-wandel"],
+          },
+          {
+            key: "raum",
+            name: "Raum & Mobilität",
+            from: ["raum-und-mobilitaet"],
+          },
+          {
+            key: "technik",
+            name: "Technik & Kultur",
+            from: ["technik-und-kultur"],
+          },
+        ],
+      },
+      {
         key: "wirtschaft-recht",
         name: "Wirtschaft & Recht",
         areas: [

@@ -1,0 +1,1792 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:deutsch-grundschule-4",
+	"version": "2026.11.1",
+	"title": "Deutsch 4 Grundschule: Tintos Wörterstadt",
+	"description": "23 Lektionen zum Untersuchen von Sprache und zum richtigen Schreiben: Wortarten, vier Fälle, Zeitformen, Wortbildung, Satzarten, wörtliche Rede, Satzglieder, Bindewörter und Rechtschreibstrategien. Vorschau; fachliche Freigabe durch eine Grundschullehrkraft und Lehrervideos fehlen. Lesen, Texte schreiben und Sprechen folgen.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://academy.zam-os.org/deutsch-grundschule-4/",
+			"label": "ZAM Academy: Tintos Wörterstadt"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/deutsch#26329",
+			"label": "LehrplanPLUS Deutsch 3/4, Lernbereich 4.3",
+			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/deutsch#26332",
+			"label": "LehrplanPLUS Deutsch 3/4, Lernbereich 4.4",
+			"checked": "2026-11-03"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M6FXMSVCK73BHPCY92JMKC9Z",
+			"atom_uri": "urn:zam:atom:01M6FXMSVCK73BHPCY92JMKC9Z",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-nomen-artikel",
+			"title": "Nomen und ihre Begleiter",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=nomen-artikel",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMSX791W31GCPMC2EPS91",
+					"slug": "gs4d-nomen-artikel-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Wörter sind Nomen?",
+					"concept": "Namen für Lebewesen, Dinge und Gedachtes wie Gefühle.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=nomen-artikel",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Namen für Lebewesen, Dinge und Gedachtes wie Gefühle.",
+							"Nur Namen für Menschen und Tiere."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSX9EYTEAHBMCG1QMYK7",
+					"slug": "gs4d-nomen-artikel-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Artikel gehört zu „Freude“?",
+					"concept": "die",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=nomen-artikel",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"die",
+							"das"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSXC5W961JPQ3G3BCNHB",
+					"slug": "gs4d-nomen-artikel-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Mit welchen zwei Proben erkennst du ein Nomen?",
+					"concept": "Artikelprobe (der, die, das davor) und Erweiterungsprobe (ein Adjektiv davor, z. B. der rote Ball).",
+					"sample_solution": "Ich setze der, die oder das davor: die Freude. Oder ich erweitere: die große Freude. Passt das, ist es ein Nomen, und ich schreibe es groß.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=nomen-artikel",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSVFJWSC6YPWHEVXE4DT",
+			"atom_uri": "urn:zam:atom:01M6FXMSVFJWSC6YPWHEVXE4DT",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-vier-faelle",
+			"title": "Die vier Fälle",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=vier-faelle",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSVCK73BHPCY92JMKC9Z",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMSXEWW9W7QV0RQYXEPTV",
+					"slug": "gs4d-vier-faelle-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie findest du sicher den Fall eines Nomens im Satz?",
+					"concept": "Ich frage: Wer oder was? Wessen? Wem? Wen oder was?",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=vier-faelle",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ich frage: Wer oder was? Wessen? Wem? Wen oder was?",
+							"Ich schaue, wo das Nomen im Satz steht."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSXHA48X81QEEQA0JZ5H",
+					"slug": "gs4d-vier-faelle-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Mit welcher Frage findest du den 3. Fall (Dativ)?",
+					"concept": "Wem?",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=vier-faelle",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wem?",
+							"Wen oder was?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSXKGKMF9Q4Y6P6YJXQ3",
+					"slug": "gs4d-vier-faelle-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Bestimme den Fall von „dem Hund“ in „Tinto gibt dem Hund Futter.“ und begründe.",
+					"concept": "3. Fall (Dativ): Wem gibt Tinto Futter? – dem Hund.",
+					"sample_solution": "Ich frage: Wem gibt Tinto Futter? Die Antwort ist „dem Hund“. Nach „Wem?“ fragt man beim 3. Fall, dem Dativ.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=vier-faelle",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSVHRMFCGYH26JNTCQ3R",
+			"atom_uri": "urn:zam:atom:01M6FXMSVHRMFCGYH26JNTCQ3R",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-adjektive-steigern",
+			"title": "Adjektive vergleichen und steigern",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=adjektive-steigern",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMSXP5QYXE5A7BN4AJDSG",
+					"slug": "gs4d-adjektive-steigern-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welcher Vergleich ist richtig?",
+					"concept": "Mein Rad ist schneller als deins.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=adjektive-steigern",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Mein Rad ist schneller als deins.",
+							"Mein Rad ist so schnell als deins."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSXRCX3ACSYVMT1QK194",
+					"slug": "gs4d-adjektive-steigern-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie steigerst du „gut“?",
+					"concept": "gut – besser – am besten",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=adjektive-steigern",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"gut – besser – am besten",
+							"gut – guter – am gutesten"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSXVHQV5JJBTJQ43Z2FC",
+					"slug": "gs4d-adjektive-steigern-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wann vergleichst du mit „wie“ und wann mit „als“?",
+					"concept": "„so … wie“, wenn beide gleich sind; „…er als“, wenn sie verschieden sind.",
+					"sample_solution": "Sind beide gleich, sage ich „so groß wie“. Ist einer größer, nehme ich die 1. Steigerungsstufe mit „als“: größer als.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=adjektive-steigern",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSVM0SQN3MG66BQGNXWV",
+			"atom_uri": "urn:zam:atom:01M6FXMSVM0SQN3MG66BQGNXWV",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-verben-personalform",
+			"title": "Verben und ihre Personalform",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=verben-personalform",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMSXX7EVNF7YVHJREGRG0",
+					"slug": "gs4d-verben-personalform-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie heißt die du-Form von „lesen“?",
+					"concept": "du liest",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=verben-personalform",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"du liest",
+							"du lesst"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSY0QC10V8SF3NVWKP2T",
+					"slug": "gs4d-verben-personalform-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt die Grundform von „er fährt“?",
+					"concept": "fahren",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=verben-personalform",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"fahren",
+							"fähren"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSY2DF480EKJP280VQGZ",
+					"slug": "gs4d-verben-personalform-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Was ist eine Personalform? Gib ein Beispiel.",
+					"concept": "Die Form des Verbs, die zur Person passt, z. B. ich lese, du liest, sie liest.",
+					"sample_solution": "Im Satz passt sich das Verb der Person an. Die Grundform ist „lesen“, die Personalformen sind zum Beispiel ich lese, du liest, wir lesen.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=verben-personalform",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSVPQQ0KP3C3Y5RMDHZ7",
+			"atom_uri": "urn:zam:atom:01M6FXMSVPQQ0KP3C3Y5RMDHZ7",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-zeitformen",
+			"title": "Zeitformen: früher, jetzt, später",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=zeitformen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSVM0SQN3MG66BQGNXWV",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMSY5C439Y69BRY1CZ2AP",
+					"slug": "gs4d-zeitformen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "In welcher Zeitform steht „Ich habe gespielt.“?",
+					"concept": "Perfekt",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=zeitformen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Perfekt",
+							"Futur"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSY8GCVVS5XKTCR84C38",
+					"slug": "gs4d-zeitformen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt „er läuft“ im Präteritum?",
+					"concept": "er lief",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=zeitformen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"er lief",
+							"er laufte"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSYA9V5JB93NTAKE49ZY",
+					"slug": "gs4d-zeitformen-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie bildest du das Perfekt und das Futur?",
+					"concept": "Perfekt: haben oder sein + ge-Form (ich bin gelaufen). Futur: werden + Grundform (ich werde laufen).",
+					"sample_solution": "Für das Perfekt nehme ich „haben“ oder „sein“ und eine ge-Form: ich habe gespielt, ich bin gelaufen. Für das Futur nehme ich „werden“ und die Grundform: ich werde spielen.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=zeitformen",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSVSRXZGWQ02MATY5ZPV",
+			"atom_uri": "urn:zam:atom:01M6FXMSVSRXZGWQ02MATY5ZPV",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-wortbausteine",
+			"title": "Wörter aus Bausteinen",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=wortbausteine",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMSYDFBW7BZ10CR6A2XVT",
+					"slug": "gs4d-wortbausteine-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Nachsilbe macht aus „klug“ ein Nomen?",
+					"concept": "-heit",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=wortbausteine",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"-heit",
+							"-ig"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSYFFRKV7QHC8KHB28ZM",
+					"slug": "gs4d-wortbausteine-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Wortart entsteht mit den Nachsilben -ung, -heit und -keit?",
+					"concept": "Nomen",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=wortbausteine",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nomen",
+							"Adjektive"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSYJQ5GSG3K1Y3DFE8YZ",
+					"slug": "gs4d-wortbausteine-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Zerlege „unaufmerksam“ in seine Bausteine.",
+					"concept": "un + auf + merk + sam: zwei Vorsilben, der Stamm „merk“ und die Nachsilbe „-sam“.",
+					"sample_solution": "Vorne stehen die Vorsilben un- und auf-, in der Mitte der Wortstamm merk, hinten die Nachsilbe -sam. Mit -sam entsteht ein Adjektiv, un- macht das Gegenteil.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=wortbausteine",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSVWT55G7XTX0YW0JN1E",
+			"atom_uri": "urn:zam:atom:01M6FXMSVWT55G7XTX0YW0JN1E",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-wortfamilien",
+			"title": "Wortfamilien",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=wortfamilien",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSVSRXZGWQ02MATY5ZPV",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMSYMRYWD366020TK6DZ4",
+					"slug": "gs4d-wortfamilien-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche zwei Wörter gehören zur Wortfamilie „fahren“?",
+					"concept": "Fahrer und Abfahrt",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=wortfamilien",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Fahrer und Abfahrt",
+							"Farbe und fallen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSYQHRP92VNDEPDT2G5T",
+					"slug": "gs4d-wortfamilien-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was haben alle Wörter einer Wortfamilie gemeinsam?",
+					"concept": "den Wortstamm",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=wortfamilien",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"den Wortstamm",
+							"den Anfangsbuchstaben"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSYSY0TFR2ECCT4AW1J9",
+					"slug": "gs4d-wortfamilien-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum schreibt man „Getränk“ mit ä?",
+					"concept": "Es gehört zur Wortfamilie „trinken – trank“; aus dem a in „trank“ wird ä.",
+					"sample_solution": "„Getränk“ gehört zur Familie von trinken, trank und Trank. Den Stamm schreibt man in der Familie gleich, das a wird zu ä.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=wortfamilien",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSVY1ZKZ11YD61FY70EZ",
+			"atom_uri": "urn:zam:atom:01M6FXMSVY1ZKZ11YD61FY70EZ",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-zusammengesetzte-nomen",
+			"title": "Zusammengesetzte Nomen",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=zusammengesetzte-nomen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSVCK73BHPCY92JMKC9Z",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMSYWPX3TS6D6ARMJQN92",
+					"slug": "gs4d-zusammengesetzte-nomen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welchen Artikel hat „Haustür“ (das Haus + die Tür)?",
+					"concept": "die",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=zusammengesetzte-nomen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"die",
+							"das"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSYY5CQ3Z8YENJRG2BH2",
+					"slug": "gs4d-zusammengesetzte-nomen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Wort bestimmt bei einem zusammengesetzten Nomen den Artikel?",
+					"concept": "das Grundwort, also das letzte Wort",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=zusammengesetzte-nomen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"das Grundwort, also das letzte Wort",
+							"das Bestimmungswort, also das erste Wort"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSZ1AAEPVFBHCG3W5TEM",
+					"slug": "gs4d-zusammengesetzte-nomen-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Erkläre, wie „Schreibblock“ gebildet ist.",
+					"concept": "Aus dem Verbstamm „schreib“ (schreiben) und dem Grundwort „der Block“; deshalb heißt es der Schreibblock.",
+					"sample_solution": "Vorne steht der Stamm des Verbs schreiben, hinten das Grundwort Block. Das Grundwort gibt den Artikel: der Schreibblock.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=zusammengesetzte-nomen",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSW11REYR51TP9NX61QG",
+			"atom_uri": "urn:zam:atom:01M6FXMSW11REYR51TP9NX61QG",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-wortfelder",
+			"title": "Treffende Wörter: Wortfelder",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=wortfelder",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMSZ3GK931Y0PRF6P8FR6",
+					"slug": "gs4d-wortfelder-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was ist ein Wortfeld?",
+					"concept": "Wörter mit ähnlicher Bedeutung",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=wortfelder",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wörter mit ähnlicher Bedeutung",
+							"Wörter, die sich reimen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSZ6WXF1WS7SA3KABAKV",
+					"slug": "gs4d-wortfelder-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Verb aus dem Wortfeld „sagen“ passt zu einem Geheimnis?",
+					"concept": "flüstern",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=wortfelder",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"flüstern",
+							"brüllen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSZ8SY22E66RGBNBNMT7",
+					"slug": "gs4d-wortfelder-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum lohnt es sich, Wörter aus einem Wortfeld zu verwenden?",
+					"concept": "Treffende Wörter beschreiben genauer, machen Texte lebendig und vermeiden Wiederholungen.",
+					"sample_solution": "Statt immer „sagte“ schreibe ich „flüsterte“ oder „rief“. Dann weiß der Leser genau, wie jemand spricht, und der Text wird lebendiger.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=wortfelder",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSW31K4341P65FVMHBC9",
+			"atom_uri": "urn:zam:atom:01M6FXMSW31K4341P65FVMHBC9",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-satzarten",
+			"title": "Satzarten und Satzzeichen",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=satzarten",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "satzbahnhof",
+					"topic_title": "Satzbahnhof: Sätze untersuchen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMSZB5EFKEYN45XAGJFD9",
+					"slug": "gs4d-satzarten-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches Zeichen steht am Ende von „Komm sofort her“?",
+					"concept": "ein Ausrufezeichen",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=satzarten",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ein Ausrufezeichen",
+							"ein Fragezeichen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSZDN4M5NSZ2QRJZJDSV",
+					"slug": "gs4d-satzarten-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wo steht bei einer Ja-Nein-Frage das Verb?",
+					"concept": "ganz vorne",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=satzarten",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ganz vorne",
+							"ganz hinten"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSZGPMXR8TW3N4MNXRP0",
+					"slug": "gs4d-satzarten-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Nenne die drei Satzarten mit ihren Satzzeichen.",
+					"concept": "Aussagesatz mit Punkt, Fragesatz mit Fragezeichen, Ausrufe- oder Aufforderungssatz mit Ausrufezeichen.",
+					"sample_solution": "Ein Aussagesatz teilt etwas mit und endet mit einem Punkt. Ein Fragesatz endet mit einem Fragezeichen. Ein Ausrufe- oder Aufforderungssatz endet mit einem Ausrufezeichen.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=satzarten",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSW6S17GH2QJW643VSN2",
+			"atom_uri": "urn:zam:atom:01M6FXMSW6S17GH2QJW643VSN2",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-woertliche-rede",
+			"title": "Wörtliche Rede",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=woertliche-rede",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSW31K4341P65FVMHBC9",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "satzbahnhof",
+					"topic_title": "Satzbahnhof: Sätze untersuchen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMSZJ2TBWBQEFKBYSF8VE",
+					"slug": "gs4d-woertliche-rede-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches Zeichen folgt auf den Begleitsatz, wenn er vor der wörtlichen Rede steht?",
+					"concept": "ein Doppelpunkt",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=woertliche-rede",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ein Doppelpunkt",
+							"ein Komma"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSZN1WFAB257D2JEYZNC",
+					"slug": "gs4d-woertliche-rede-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was passiert mit dem Punkt der Rede, wenn der Begleitsatz hinten steht?",
+					"concept": "Er fällt weg; nach dem Schlusszeichen folgt ein Komma.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=woertliche-rede",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Er fällt weg; nach dem Schlusszeichen folgt ein Komma.",
+							"Er bleibt vor dem Schlusszeichen stehen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSZQYXAR91VQKVWEWW7T",
+					"slug": "gs4d-woertliche-rede-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Schreibe „Ich komme mit“, sagt Mia. mit dem Begleitsatz vorne.",
+					"concept": "Mia sagt: „Ich komme mit.“",
+					"sample_solution": "Zuerst der Begleitsatz „Mia sagt“, dann ein Doppelpunkt, dann die Rede in Anführungszeichen mit Punkt: Mia sagt: „Ich komme mit.“",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=woertliche-rede",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSW83FTF4DJYK3ZD602H",
+			"atom_uri": "urn:zam:atom:01M6FXMSW83FTF4DJYK3ZD602H",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-satzglieder-umstellprobe",
+			"title": "Satzglieder: der Satzzug",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=satzglieder-umstellprobe",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "satzbahnhof",
+					"topic_title": "Satzbahnhof: Sätze untersuchen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMSZTS3MBYBD6JSWPQHKQ",
+					"slug": "gs4d-satzglieder-umstellprobe-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie findest du die Satzglieder eines Satzes?",
+					"concept": "Mit der Umstellprobe: Was beim Umstellen zusammenbleibt, ist ein Satzglied.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=satzglieder-umstellprobe",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Mit der Umstellprobe: Was beim Umstellen zusammenbleibt, ist ein Satzglied.",
+							"Ich unterstreiche alle Nomen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSZWWSEHX82XT73K89R9",
+					"slug": "gs4d-satzglieder-umstellprobe-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "An welcher Stelle steht das Prädikat im Aussagesatz?",
+					"concept": "an zweiter Stelle",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=satzglieder-umstellprobe",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"an zweiter Stelle",
+							"an erster Stelle"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMSZZY64Y804K93380FWK",
+					"slug": "gs4d-satzglieder-umstellprobe-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Stelle um, sodass „am Montag“ vorne steht: „Tinto bringt seiner Oma am Montag einen Kuchen.“",
+					"concept": "Am Montag bringt Tinto seiner Oma einen Kuchen.",
+					"sample_solution": "„Am Montag“ kommt nach vorne. Das Prädikat „bringt“ bleibt an zweiter Stelle: Am Montag bringt Tinto seiner Oma einen Kuchen.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=satzglieder-umstellprobe",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSWBTF44QF7QGPQA4PHJ",
+			"atom_uri": "urn:zam:atom:01M6FXMSWBTF44QF7QGPQA4PHJ",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-subjekt-praedikat",
+			"title": "Subjekt und Prädikat",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=subjekt-praedikat",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSW83FTF4DJYK3ZD602H",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				},
+				{
+					"atom_id": "01M6FXMSVM0SQN3MG66BQGNXWV",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "satzbahnhof",
+					"topic_title": "Satzbahnhof: Sätze untersuchen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMT01CZKJWDWQAJ32289P",
+					"slug": "gs4d-subjekt-praedikat-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Mit welcher Frage findest du das Subjekt?",
+					"concept": "Wer oder was?",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=subjekt-praedikat",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wer oder was?",
+							"Wem?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT04EYN2GMYMBSBEQ3JY",
+					"slug": "gs4d-subjekt-praedikat-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist das Prädikat in „Am Morgen weckt der Wecker die Familie.“?",
+					"concept": "weckt",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=subjekt-praedikat",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"weckt",
+							"der Wecker"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT07HX1W6GJCPDKKC2GT",
+					"slug": "gs4d-subjekt-praedikat-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum heißt es „Die Kinder spielen“, aber „Das Kind spielt“?",
+					"concept": "Das Prädikat passt sich dem Subjekt an: Mehrzahl → spielen, Einzahl → spielt.",
+					"sample_solution": "Das Subjekt „die Kinder“ steht in der Mehrzahl, deshalb heißt das Prädikat „spielen“. Bei „das Kind“ (Einzahl) heißt es „spielt“.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=subjekt-praedikat",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSWDQMT5GJ07H7JYF5AC",
+			"atom_uri": "urn:zam:atom:01M6FXMSWDQMT5GJ07H7JYF5AC",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-objekte",
+			"title": "Wem? Wen oder was? Die Objekte",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=objekte",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSWBTF44QF7QGPQA4PHJ",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				},
+				{
+					"atom_id": "01M6FXMSVFJWSC6YPWHEVXE4DT",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "satzbahnhof",
+					"topic_title": "Satzbahnhof: Sätze untersuchen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMT09KQ1JYSWH28D4FWNB",
+					"slug": "gs4d-objekte-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Mit welcher Frage findest du das Dativobjekt?",
+					"concept": "Wem?",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=objekte",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wem?",
+							"Wer oder was?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT0CDWGXTZM6PNVPK3B1",
+					"slug": "gs4d-objekte-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist das Akkusativobjekt in „Tinto schenkt seiner Oma einen Kuchen.“?",
+					"concept": "einen Kuchen",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=objekte",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"einen Kuchen",
+							"seiner Oma"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT0EV4K6YR6N9VN92WGT",
+					"slug": "gs4d-objekte-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Bestimme die Objekte in „Der Opa erzählt den Kindern eine Geschichte.“",
+					"concept": "„den Kindern“ ist das Dativobjekt (Wem?), „eine Geschichte“ das Akkusativobjekt (Wen oder was?).",
+					"sample_solution": "Wem erzählt der Opa? – den Kindern: Dativobjekt. Was erzählt der Opa? – eine Geschichte: Akkusativobjekt. „Der Opa“ ist das Subjekt.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=objekte",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSWGB5JCQSDZ5XCDR464",
+			"atom_uri": "urn:zam:atom:01M6FXMSWGB5JCQSDZ5XCDR464",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-orts-zeitangaben",
+			"title": "Wo? Wann? Orts- und Zeitangaben",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=orts-zeitangaben",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSW83FTF4DJYK3ZD602H",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "satzbahnhof",
+					"topic_title": "Satzbahnhof: Sätze untersuchen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMT0HJ39ENDMJPKWSN390",
+					"slug": "gs4d-orts-zeitangaben-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Mit welcher Frage findest du eine Zeitangabe?",
+					"concept": "Wann?",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=orts-zeitangaben",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wann?",
+							"Wo?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT0KP595KGDG787PSNTD",
+					"slug": "gs4d-orts-zeitangaben-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist „unter dem Tisch“ in „Der Hund schläft unter dem Tisch.“?",
+					"concept": "eine Ortsangabe",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=orts-zeitangaben",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"eine Ortsangabe",
+							"eine Zeitangabe"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT0PPNQE1CHE87WAB1Q1",
+					"slug": "gs4d-orts-zeitangaben-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Nenne die Fragen für Ortsangaben und für Zeitangaben.",
+					"concept": "Ort: Wo? Wohin? Woher? – Zeit: Wann? Seit wann? Wie lange? Wie oft?",
+					"sample_solution": "Nach dem Ort frage ich mit Wo, Wohin oder Woher. Nach der Zeit frage ich mit Wann, Seit wann, Wie lange oder Wie oft.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=orts-zeitangaben",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSWJHB9AQ20ZEY0AYF95",
+			"atom_uri": "urn:zam:atom:01M6FXMSWJHB9AQ20ZEY0AYF95",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-saetze-verbinden",
+			"title": "Sätze verbinden: die Kupplung",
+			"domain": "deutsch/sprache-untersuchen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=saetze-verbinden",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSW83FTF4DJYK3ZD602H",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "satzbahnhof",
+					"topic_title": "Satzbahnhof: Sätze untersuchen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMT0R7Z495P0NEEQQHG76",
+					"slug": "gs4d-saetze-verbinden-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welcher Satz ist richtig?",
+					"concept": "Ich bleibe drinnen, weil es regnet.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=saetze-verbinden",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ich bleibe drinnen, weil es regnet.",
+							"Ich bleibe drinnen weil es regnet."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT0V5B55WEZ55FWMA6WM",
+					"slug": "gs4d-saetze-verbinden-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Vor welchen Bindewörtern steht ein Komma?",
+					"concept": "vor aber, denn, weil und dass",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=saetze-verbinden",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"vor aber, denn, weil und dass",
+							"vor und und oder"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT0X6Y0M6CAA69HY1CW1",
+					"slug": "gs4d-saetze-verbinden-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Verbinde mit „weil“: „Tim lacht. Der Film ist lustig.“",
+					"concept": "Tim lacht, weil der Film lustig ist.",
+					"sample_solution": "Vor „weil“ setze ich ein Komma. Nach „weil“ wandert das Verb „ist“ ans Ende: Tim lacht, weil der Film lustig ist.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=saetze-verbinden",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSWNFZ7Y4J4KB8R7G6WX",
+			"atom_uri": "urn:zam:atom:01M6FXMSWNFZ7Y4J4KB8R7G6WX",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-silbentrennung",
+			"title": "Silben schwingen und trennen",
+			"domain": "deutsch/rechtschreibung",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=silbentrennung",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "detektivbuero",
+					"topic_title": "Detektivbüro: Richtig schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMT106BW83QFNRT2Y4BEQ",
+					"slug": "gs4d-silbentrennung-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie trennst du „Zucker“ am Zeilenende?",
+					"concept": "Zu-cker",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=silbentrennung",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zu-cker",
+							"Zuk-ker"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT12VJ1MS165N11CPPKR",
+					"slug": "gs4d-silbentrennung-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie trennst du „Sonne“ am Zeilenende?",
+					"concept": "Son-ne",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=silbentrennung",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Son-ne",
+							"So-nne"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT15VHC8V9MSWTNQ4AXX",
+					"slug": "gs4d-silbentrennung-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Was musst du bei der Trennung von ck, ch und sch beachten?",
+					"concept": "Sie bleiben zusammen und kommen in die nächste Silbe: Zu-cker, Ku-chen, Ta-sche.",
+					"sample_solution": "ck, ch und sch werden nicht getrennt. Sie stehen am Anfang der nächsten Silbe, zum Beispiel Zu-cker und Ta-sche.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=silbentrennung",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSWQPPKNY7HAV7K0F22V",
+			"atom_uri": "urn:zam:atom:01M6FXMSWQPPKNY7HAV7K0F22V",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-kurze-selbstlaute",
+			"title": "Kurz und knapp: doppelte Mitlaute, ck und tz",
+			"domain": "deutsch/rechtschreibung",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=kurze-selbstlaute",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSWNFZ7Y4J4KB8R7G6WX",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "detektivbuero",
+					"topic_title": "Detektivbüro: Richtig schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMT18S19EE2R72K33CFNR",
+					"slug": "gs4d-kurze-selbstlaute-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie schreibt man das Tier, das miaut?",
+					"concept": "Katze",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=kurze-selbstlaute",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Katze",
+							"Kaze"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT1A9RVEDRQWBY8GAYV2",
+					"slug": "gs4d-kurze-selbstlaute-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum schreibt man „Wolke“ ohne ck?",
+					"concept": "Nach l steht nie ck.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=kurze-selbstlaute",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nach l steht nie ck.",
+							"Weil das o lang ist."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT1DQMDXST43Z6YNGH2F",
+					"slug": "gs4d-kurze-selbstlaute-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wann schreibst du einen doppelten Mitlaut?",
+					"concept": "Nach einem kurzen, betonten Selbstlaut, wenn man nur einen Mitlaut hört: Mutter, Teller. Statt kk schreibt man ck, statt zz tz.",
+					"sample_solution": "Ich spreche das Wort. Ist der betonte Selbstlaut kurz und höre ich danach nur einen Mitlaut, verdopple ich ihn: Mutter. Aus kk wird ck, aus zz wird tz.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=kurze-selbstlaute",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSWTSN7H874PDBHH8T1Q",
+			"atom_uri": "urn:zam:atom:01M6FXMSWTSN7H874PDBHH8T1Q",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-lange-selbstlaute",
+			"title": "Lang gezogen: ie, h, Doppelvokal und ß",
+			"domain": "deutsch/rechtschreibung",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=lange-selbstlaute",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSWNFZ7Y4J4KB8R7G6WX",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "detektivbuero",
+					"topic_title": "Detektivbüro: Richtig schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMT1FNV30JVAWFN4TV8AH",
+					"slug": "gs4d-lange-selbstlaute-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Lang oder kurz? Wie schreibt man Stra_e richtig?",
+					"concept": "Straße",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=lange-selbstlaute",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Straße",
+							"Strase"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT1H4GV5FYCKQD8M950G",
+					"slug": "gs4d-lange-selbstlaute-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie schreibst du ein langes i meistens?",
+					"concept": "ie",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=lange-selbstlaute",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ie",
+							"ih"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT1MM0SDE7APQVXTMRMZ",
+					"slug": "gs4d-lange-selbstlaute-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wann schreibst du ss und wann ß?",
+					"concept": "ss nach kurzem Selbstlaut (Wasser), ß nach langem Selbstlaut oder nach ei, au, eu (Straße, heiß).",
+					"sample_solution": "Ist der Selbstlaut vor dem scharfen s kurz, schreibe ich ss: Wasser, Fluss. Ist er lang oder steht davor ei, au oder eu, schreibe ich ß: Straße, Fuß, heiß.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=lange-selbstlaute",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSWWP0JKPTPK3N75HC76",
+			"atom_uri": "urn:zam:atom:01M6FXMSWWP0JKPTPK3N75HC76",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-verlaengern",
+			"title": "Der Verlängerungs-Trick",
+			"domain": "deutsch/rechtschreibung",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=verlaengern",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSVCK73BHPCY92JMKC9Z",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "detektivbuero",
+					"topic_title": "Detektivbüro: Richtig schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMT1P16ZXGYRWS2B8TZJP",
+					"slug": "gs4d-verlaengern-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie findest du heraus, ob man „Hund“ oder „Hunt“ schreibt?",
+					"concept": "Ich verlängere: die Hunde – dort hört man d.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=verlaengern",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ich verlängere: die Hunde – dort hört man d.",
+							"Ich höre genau auf das Wortende."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT1S792VSWVGXXG5QMT3",
+					"slug": "gs4d-verlaengern-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie verlängerst du ein Verb wie „er lebt“?",
+					"concept": "mit der Grundform: leben",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=verlaengern",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"mit der Grundform: leben",
+							"mit einem Artikel: das lebt"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT1VXXV5YGXWPT07ZD23",
+					"slug": "gs4d-verlaengern-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Begründe die Schreibung von „Berg“.",
+					"concept": "Verlängert heißt es „die Berge“. Dort hört man deutlich ein g.",
+					"sample_solution": "Am Ende klingt g wie k. Ich bilde die Mehrzahl „die Berge“ und höre dann das g. Also schreibe ich Berg.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=verlaengern",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSWZTAJD1RVRJJXAVYQR",
+			"atom_uri": "urn:zam:atom:01M6FXMSWZTAJD1RVRJJXAVYQR",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-ableiten",
+			"title": "Der Ableitungs-Trick: ä oder e, äu oder eu",
+			"domain": "deutsch/rechtschreibung",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=ableiten",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSVWT55G7XTX0YW0JN1E",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "detektivbuero",
+					"topic_title": "Detektivbüro: Richtig schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMT1Y4MD40RQX71GZSP3T",
+					"slug": "gs4d-ableiten-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum schreibt man „Hände“ mit ä?",
+					"concept": "Es kommt von „Hand“.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=ableiten",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es kommt von „Hand“.",
+							"Weil man ä hört."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT21SH7EBRGD93CKTBTP",
+					"slug": "gs4d-ableiten-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie schreibt man die Mehrzahl von „Baum“?",
+					"concept": "Bäume",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=ableiten",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Bäume",
+							"Beume"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT23BKYQ3EFXVRQ6VGT2",
+					"slug": "gs4d-ableiten-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wann schreibst du eu statt äu?",
+					"concept": "Wenn es kein verwandtes Wort mit au gibt, z. B. Eule, Leute, Feuer.",
+					"sample_solution": "Ich suche ein verwandtes Wort mit au. Bei „Bäume“ gibt es „Baum“, also äu. Bei „Eule“ gibt es keins, also eu.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=ableiten",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSX1Y18WNBTH1SQDGA92",
+			"atom_uri": "urn:zam:atom:01M6FXMSX1Y18WNBTH1SQDGA92",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-grossschreibung",
+			"title": "Groß oder klein? Nomen entlarven",
+			"domain": "deutsch/rechtschreibung",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grossschreibung",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSVCK73BHPCY92JMKC9Z",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				},
+				{
+					"atom_id": "01M6FXMSVSRXZGWQ02MATY5ZPV",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "detektivbuero",
+					"topic_title": "Detektivbüro: Richtig schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMT26BSNNZBJVRXEDED1T",
+					"slug": "gs4d-grossschreibung-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was schreibst du groß?",
+					"concept": "Satzanfänge, Nomen und Namen",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grossschreibung",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Satzanfänge, Nomen und Namen",
+							"Nur Satzanfänge und Namen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT28PDENDSFQYJVRXQ4C",
+					"slug": "gs4d-grossschreibung-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Nachsilben zeigen dir immer ein Nomen?",
+					"concept": "-ung, -heit, -keit, -nis, -schaft",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grossschreibung",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"-ung, -heit, -keit, -nis, -schaft",
+							"-ig, -lich, -isch"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT2B0M8AB7AJDEK8V2JQ",
+					"slug": "gs4d-grossschreibung-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie beweist du mit der Erweiterungsprobe, dass „angst“ in „Sie hat angst.“ großgeschrieben wird?",
+					"concept": "Ich setze ein Adjektiv davor: Sie hat große Angst. Das geht nur bei Nomen, also schreibe ich „Angst“ groß.",
+					"sample_solution": "Ich erweitere: Sie hat große Angst. Weil ein Adjektiv davor passt, ist „Angst“ ein Nomen und wird großgeschrieben.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grossschreibung",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6FXMSX4430Q4MTZVXQG4REP",
+			"atom_uri": "urn:zam:atom:01M6FXMSX4430Q4MTZVXQG4REP",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-woerterbuch-fehlerdetektiv",
+			"title": "Wörterbuch und Fehlerdetektiv",
+			"domain": "deutsch/rechtschreibung",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=woerterbuch-fehlerdetektiv",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSWWP0JKPTPK3N75HC76",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				},
+				{
+					"atom_id": "01M6FXMSWZTAJD1RVRJJXAVYQR",
+					"type": "soft",
+					"rationale": "Diese Lektion baut auf der vorherigen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "detektivbuero",
+					"topic_title": "Detektivbüro: Richtig schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6FXMT2DK9PA9JG0FCNVW8HW",
+					"slug": "gs4d-woerterbuch-fehlerdetektiv-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Unter welchem Wort schlägst du „er fährt“ im Wörterbuch nach?",
+					"concept": "fahren",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=woerterbuch-fehlerdetektiv",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"fahren",
+							"fuhr"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT2G40E8PT97NXYYQ78S",
+					"slug": "gs4d-woerterbuch-fehlerdetektiv-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Wort steht im Wörterbuch zuerst: Baum oder Bank?",
+					"concept": "Bank",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=woerterbuch-fehlerdetektiv",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Bank",
+							"Baum"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6FXMT2J8E88TBS3M621ZMXF",
+					"slug": "gs4d-woerterbuch-fehlerdetektiv-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie gehst du als Fehlerdetektiv bei deinem Text vor?",
+					"concept": "Langsam Wort für Wort lesen, verdächtige Stellen mit Tricks prüfen (verlängern, ableiten, Artikelprobe, kurz oder lang) und Merkwörter nachschlagen.",
+					"sample_solution": "Ich lese meinen Text langsam, Wort für Wort. Bei verdächtigen Wörtern verlängere ich, leite ab oder mache die Artikelprobe. Merkwörter schlage ich im Wörterbuch nach.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=woerterbuch-fehlerdetektiv",
+					"materiality": "material"
+				}
+			]
+		}
+	]
+}
