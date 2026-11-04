@@ -1,9 +1,9 @@
 {
 	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
 	"tile_id": "zam-academy:deutsch-grundschule-4",
-	"version": "2026.11.1",
+	"version": "2026.11.2",
 	"title": "Deutsch 4 Grundschule: Tintos Wörterstadt",
-	"description": "23 Lektionen zum Untersuchen von Sprache und zum richtigen Schreiben: Wortarten, vier Fälle, Zeitformen, Wortbildung, Satzarten, wörtliche Rede, Satzglieder, Bindewörter und Rechtschreibstrategien. Vorschau; fachliche Freigabe durch eine Grundschullehrkraft und Lehrervideos fehlen. Lesen, Texte schreiben und Sprechen folgen.",
+	"description": "26 Lektionen zum Untersuchen von Sprache und zum richtigen Schreiben: Wortarten, vier Fälle, Zeitformen, Wortbildung, Satzarten, wörtliche Rede, Satzglieder, Bindewörter, Rechtschreibstrategien und der verbindliche Grundwortschatz 3/4. Vorschau; fachliche Freigabe durch eine Grundschullehrkraft und Lehrervideos fehlen. Lesen, Texte schreiben und Sprechen folgen.",
 	"publisher": "ZAM Academy",
 	"sources": [
 		{
@@ -19,6 +19,11 @@
 			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/deutsch#26332",
 			"label": "LehrplanPLUS Deutsch 3/4, Lernbereich 4.4",
 			"checked": "2026-11-03"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/serviceinformation/l43316",
+			"label": "ISB München: Grundwortschatz für die Jahrgangsstufen 3 und 4",
+			"checked": "2026-11-04"
 		}
 	],
 	"atoms": [
@@ -1784,6 +1789,265 @@
 					"concept": "Langsam Wort für Wort lesen, verdächtige Stellen mit Tricks prüfen (verlängern, ableiten, Artikelprobe, kurz oder lang) und Merkwörter nachschlagen.",
 					"sample_solution": "Ich lese meinen Text langsam, Wort für Wort. Bei verdächtigen Wörtern verlängere ich, leite ab oder mache die Artikelprobe. Merkwörter schlage ich im Wörterbuch nach.",
 					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=woerterbuch-fehlerdetektiv",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6M35FW4VZT2N0ZPQXDHPRSZ",
+			"atom_uri": "urn:zam:atom:01M6M35FW4VZT2N0ZPQXDHPRSZ",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-grundwortschatz-regeln",
+			"title": "Schatzwörter mit Regeln",
+			"domain": "deutsch/rechtschreibung",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grundwortschatz-regeln",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSWNFZ7Y4J4KB8R7G6WX",
+					"type": "soft",
+					"rationale": "Das Trennen nach Silben stammt aus dieser Lektion."
+				},
+				{
+					"atom_id": "01M6FXMSWQPPKNY7HAV7K0F22V",
+					"type": "soft",
+					"rationale": "Doppelte Mitlaute, tz und ck stammen aus dieser Lektion."
+				},
+				{
+					"atom_id": "01M6FXMSWTSN7H874PDBHH8T1Q",
+					"type": "soft",
+					"rationale": "Das lange i mit ie stammt aus dieser Lektion."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterschatz",
+					"topic_title": "Wörterschatz: Grundwortschatz 3/4"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6M35FW4M062XZE84BHEN283",
+					"slug": "gs4d-grundwortschatz-regeln-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie trennst du „Geschichte“ am Zeilenende?",
+					"concept": "Ge-schich-te",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grundwortschatz-regeln",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ge-schich-te",
+							"Gesch-ich-te"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M35FW4WPGQJYCF79SKA6VB",
+					"slug": "gs4d-grundwortschatz-regeln-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie schreibst du meistens den langen i-Laut, etwa in „Br…f“?",
+					"concept": "mit ie",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grundwortschatz-regeln",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"mit ie",
+							"mit i"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M35FW4FDRB763H0C8J4NF9",
+					"slug": "gs4d-grundwortschatz-regeln-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum schreibst du „zurück“ mit ck und „Platz“ mit tz?",
+					"concept": "Nach einem kurzen Selbstlaut steht ck statt k und tz statt z.",
+					"sample_solution": "Das ü in „zurück“ und das a in „Platz“ klingen kurz. Nach einem kurzen Selbstlaut schreibe ich ck statt k und tz statt z.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grundwortschatz-regeln",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6M35FW4XAY6CMKG1TSWGJ72",
+			"atom_uri": "urn:zam:atom:01M6M35FW4XAY6CMKG1TSWGJ72",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-grundwortschatz-formen",
+			"title": "Schatzwörter, die sich verändern",
+			"domain": "deutsch/rechtschreibung",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grundwortschatz-formen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSVPQQ0KP3C3Y5RMDHZ7",
+					"type": "soft",
+					"rationale": "Das Präteritum stammt aus dieser Lektion."
+				},
+				{
+					"atom_id": "01M6FXMSWWP0JKPTPK3N75HC76",
+					"type": "soft",
+					"rationale": "Das Verlängern stammt aus dieser Lektion."
+				},
+				{
+					"atom_id": "01M6FXMSWZTAJD1RVRJJXAVYQR",
+					"type": "soft",
+					"rationale": "Das Ableiten stammt aus dieser Lektion."
+				},
+				{
+					"atom_id": "01M6FXMSVFJWSC6YPWHEVXE4DT",
+					"type": "soft",
+					"rationale": "Die Fragen wem und wen oder was stammen aus dieser Lektion."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterschatz",
+					"topic_title": "Wörterschatz: Grundwortschatz 3/4"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6M35FW4GDBAKPWXVJQHE34H",
+					"slug": "gs4d-grundwortschatz-formen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie heißt das Präteritum von „wir gehen“?",
+					"concept": "wir gingen",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grundwortschatz-formen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"wir gingen",
+							"wir gangen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M35FW45Y8PM7PEEDB07C26",
+					"slug": "gs4d-grundwortschatz-formen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches Wort setzt du ein: „Ich helfe … Mann.“?",
+					"concept": "dem",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grundwortschatz-formen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"dem",
+							"den"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M35FW4919MV70SMN3QPM16",
+					"slug": "gs4d-grundwortschatz-formen-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie klärst du die Schreibung von „Hand“ und „Hände“?",
+					"concept": "Verlängern: Hände zeigt das d in Hand. Ableiten: Hand zeigt das ä in Hände.",
+					"sample_solution": "Am Wortende von „Hand“ höre ich ein t. Wenn ich verlängere, höre ich in „Hände“ ein d. Das ä in „Hände“ leite ich von „Hand“ ab, weil dort ein a steht.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grundwortschatz-formen",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6M35FW4P1SEDJC57EBG9GCF",
+			"atom_uri": "urn:zam:atom:01M6M35FW4P1SEDJC57EBG9GCF",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-grundwortschatz-merkwoerter",
+			"title": "Merkwörter im Schatz",
+			"domain": "deutsch/rechtschreibung",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grundwortschatz-merkwoerter",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSX4430Q4MTZVXQG4REP",
+					"type": "soft",
+					"rationale": "Das Nachschlagen stammt aus dieser Lektion."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterschatz",
+					"topic_title": "Wörterschatz: Grundwortschatz 3/4"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6M35FW40YHSHMEMNH8VQV6M",
+					"slug": "gs4d-grundwortschatz-merkwoerter-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Besonderheit haben Haar, Meer und Schnee?",
+					"concept": "doppelter Selbstlaut",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grundwortschatz-merkwoerter",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"doppelter Selbstlaut",
+							"Dehnungs-h"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M35FW4N2C8PG9GHBB1HZQ6",
+					"slug": "gs4d-grundwortschatz-merkwoerter-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was tust du, wenn du bei einem Merkwort unsicher bist?",
+					"concept": "im Wörterbuch nachschlagen",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grundwortschatz-merkwoerter",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"im Wörterbuch nachschlagen",
+							"so schreiben, wie du es sprichst"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M35FW4RVW1GXK2QB8SBPRS",
+					"slug": "gs4d-grundwortschatz-merkwoerter-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum musst du dir Wörter wie „Stadt“ oder „Pizza“ einprägen?",
+					"concept": "Keine Rechtschreibregel erklärt ihre Schreibung.",
+					"sample_solution": "Bei „Stadt“ und „Pizza“ hilft mir keine Regel. Ich schaue sie genau an, decke sie ab, schreibe sie auf und vergleiche.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grundwortschatz-merkwoerter",
 					"materiality": "material"
 				}
 			]
