@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-11-04T21:43:13Z
+timestamp: 2026-11-04T21:53:08Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -614,7 +614,7 @@ never reviewed it.
 Mathematik, Deutsch and Heimat- und Sachunterricht 4 Grundschule are bundled as
 Academy cells while their apps are public previews: primary-teacher review and
 teacher videos are open, and each covers only part of its Fachlehrplan. The
-versions are 2026.11.14 (43 atoms, 159 items), 2026.11.2 (26 atoms, 78 items) and
+versions are 2026.11.14 (43 atoms, 159 items), 2026.11.3 (33 atoms, 99 items) and
 2026.11.1 (20 atoms, 60 items). They bind only their Academy stations, not
 `lehrplanplus-bayern`, so learners find them in the Academy list and the library.
 The school curriculum path for Grundschule 4 does not offer them and keeps its

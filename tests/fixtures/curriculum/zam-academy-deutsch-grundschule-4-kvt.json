@@ -1,9 +1,9 @@
 {
 	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
 	"tile_id": "zam-academy:deutsch-grundschule-4",
-	"version": "2026.11.2",
+	"version": "2026.11.3",
 	"title": "Deutsch 4 Grundschule: Tintos Wörterstadt",
-	"description": "26 Lektionen zum Untersuchen von Sprache und zum richtigen Schreiben: Wortarten, vier Fälle, Zeitformen, Wortbildung, Satzarten, wörtliche Rede, Satzglieder, Bindewörter, Rechtschreibstrategien und der verbindliche Grundwortschatz 3/4. Vorschau; fachliche Freigabe durch eine Grundschullehrkraft und Lehrervideos fehlen. Lesen, Texte schreiben und Sprechen folgen.",
+	"description": "33 Lektionen zum Untersuchen von Sprache, zum richtigen Schreiben und zum Lesen: Wortarten, vier Fälle, Zeitformen, Wortbildung, Satzarten, wörtliche Rede, Satzglieder, Bindewörter, Rechtschreibstrategien und der verbindliche Grundwortschatz 3/4 sowie Textarten, Lesestrategien, Sachtexte, Geschichten, Gedichte und Medien. Vorschau; fachliche Freigabe durch eine Grundschullehrkraft und Lehrervideos fehlen. Texte schreiben und Sprechen folgen.",
 	"publisher": "ZAM Academy",
 	"sources": [
 		{
@@ -23,6 +23,11 @@
 		{
 			"uri": "https://www.lehrplanplus.bayern.de/serviceinformation/l43316",
 			"label": "ISB München: Grundwortschatz für die Jahrgangsstufen 3 und 4",
+			"checked": "2026-11-04"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/4/deutsch",
+			"label": "LehrplanPLUS Deutsch 3/4, Lernbereich 2 Lesen",
 			"checked": "2026-11-04"
 		}
 	],
@@ -2048,6 +2053,546 @@
 					"concept": "Keine Rechtschreibregel erklärt ihre Schreibung.",
 					"sample_solution": "Bei „Stadt“ und „Pizza“ hilft mir keine Regel. Ich schaue sie genau an, decke sie ab, schreibe sie auf und vergleiche.",
 					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=grundwortschatz-merkwoerter",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6M6HX32W2MVFMW0RDNXE0CT",
+			"atom_uri": "urn:zam:atom:01M6M6HX32W2MVFMW0RDNXE0CT",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-textarten-erkennen",
+			"title": "Textarten erkennen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=textarten-erkennen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "lesewerkstatt",
+					"topic_title": "Lesewerkstatt: Texte verstehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6M6HX32YTSGJCTESVN1XXGZ",
+					"slug": "gs4d-textarten-erkennen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was für ein Text hat Zutaten und Kochschritte?",
+					"concept": "ein Rezept",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=textarten-erkennen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ein Rezept",
+							"eine Fabel"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M6HX32KJE0BTBYX62BS698",
+					"slug": "gs4d-textarten-erkennen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Woran erkennst du eine Fabel?",
+					"concept": "Tiere sprechen, und am Ende steht eine Lehre.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=textarten-erkennen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Tiere sprechen, und am Ende steht eine Lehre.",
+							"Sie beginnt immer mit „Es war einmal“."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M6HX3257M1BGV0N0GWHGG2",
+					"slug": "gs4d-textarten-erkennen-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie unterscheiden sich ein Sachtext und eine Anleitung?",
+					"concept": "Ein Sachtext informiert über Tatsachen, eine Anleitung sagt Schritt für Schritt, was du tun sollst.",
+					"sample_solution": "Ein Sachtext erklärt mir zum Beispiel, wie Igel leben. Eine Anleitung sagt mir der Reihe nach, was ich tun soll, etwa beim Bau eines Vogelhauses.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=textarten-erkennen",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6M6HX32YRJJ4DVTA0XSB68R",
+			"atom_uri": "urn:zam:atom:01M6M6HX32YRJJ4DVTA0XSB68R",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-lesestrategien",
+			"title": "Mit Strategien lesen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=lesestrategien",
+			"prerequisites": [
+				{
+					"atom_id": "01M6M6HX32W2MVFMW0RDNXE0CT",
+					"type": "soft",
+					"rationale": "Die Erwartung an einen Text hängt von seiner Textart ab."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "lesewerkstatt",
+					"topic_title": "Lesewerkstatt: Texte verstehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6M6HX32EA53MSXTGVS50PWJ",
+					"slug": "gs4d-lesestrategien-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was markierst du beim Lesen?",
+					"concept": "nur die wichtigsten Wörter oder Sätze",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=lesestrategien",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"nur die wichtigsten Wörter oder Sätze",
+							"jedes Wort"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M6HX32HV0T5VQ1EQCJ84XN",
+					"slug": "gs4d-lesestrategien-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was hilft dir zuerst bei einem unbekannten Wort?",
+					"concept": "die Sätze davor und danach",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=lesestrategien",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"die Sätze davor und danach",
+							"das Wort einfach überspringen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M6HX32SE19VARW9DRTW0JK",
+					"slug": "gs4d-lesestrategien-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Was tust du vor, während und nach dem Lesen?",
+					"concept": "Vorher Überschrift lesen und Fragen stellen, dabei Wichtiges markieren und Wörter klären, nachher Fragen prüfen und wiedergeben.",
+					"sample_solution": "Vor dem Lesen schaue ich auf die Überschrift und frage mich, was ich schon weiß. Dabei markiere ich Schlüsselwörter. Danach prüfe ich meine Fragen und erzähle den Text mit eigenen Worten.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=lesestrategien",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6M6HX322DK6X4XE4MF471KV",
+			"atom_uri": "urn:zam:atom:01M6M6HX322DK6X4XE4MF471KV",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-sachtexte-tabellen",
+			"title": "Sachtexte, Tabellen und Diagramme",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=sachtexte-tabellen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6M6HX32YRJJ4DVTA0XSB68R",
+					"type": "soft",
+					"rationale": "Das Markieren und Klären aus dieser Lektion hilft bei Sachtexten."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "lesewerkstatt",
+					"topic_title": "Lesewerkstatt: Texte verstehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6M6HX32D875RV6X721VC91Y",
+					"slug": "gs4d-sachtexte-tabellen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wo findest du im Buch schnell ein einzelnes Wort wie „Fledermaus“?",
+					"concept": "im Stichwortverzeichnis",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=sachtexte-tabellen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"im Stichwortverzeichnis",
+							"im Inhaltsverzeichnis"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M6HX320NXYHPZC8HFVMQPQ",
+					"slug": "gs4d-sachtexte-tabellen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie findest du einen Wert in einer Tabelle?",
+					"concept": "die passende Zeile und Spalte suchen",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=sachtexte-tabellen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"die passende Zeile und Spalte suchen",
+							"alle Zahlen zusammenzählen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M6HX32YJY3PVH571SQ16XZ",
+					"slug": "gs4d-sachtexte-tabellen-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie gibst du einen Sachtext mit eigenen Worten wieder?",
+					"concept": "Gib jedem Absatz eine kurze Überschrift und nenne die wichtigsten Punkte der Reihe nach.",
+					"sample_solution": "Ich überlege mir für jeden Absatz eine kurze Überschrift. Dann erzähle ich die wichtigsten Punkte der Reihe nach, ohne die Sätze abzuschreiben.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=sachtexte-tabellen",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6M6HX32DW5DN7C06HXGA365",
+			"atom_uri": "urn:zam:atom:01M6M6HX32DW5DN7C06HXGA365",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-geschichten-verstehen",
+			"title": "Geschichten verstehen",
+			"domain": "deutsch/literatur",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=geschichten-verstehen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6M6HX32YRJJ4DVTA0XSB68R",
+					"type": "soft",
+					"rationale": "Die Lesestrategien helfen auch bei Erzähltexten."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "lesewerkstatt",
+					"topic_title": "Lesewerkstatt: Texte verstehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6M6HX321DSDSHQWWHT2W2DY",
+					"slug": "gs4d-geschichten-verstehen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt das Ereignis, das eine Handlung in Gang bringt?",
+					"concept": "der Auslöser",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=geschichten-verstehen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"der Auslöser",
+							"der Schluss"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M6HX32EHH6Y1EVQ9YXQ47G",
+					"slug": "gs4d-geschichten-verstehen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Nach welchen drei Dingen fragst du bei jeder Geschichte?",
+					"concept": "Wer? Wo? Was passiert?",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=geschichten-verstehen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wer? Wo? Was passiert?",
+							"Wie teuer? Wie weit? Wie schwer?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M6HX32GPQ8AX8QCQT8P4G5",
+					"slug": "gs4d-geschichten-verstehen-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum kann ein Ort wie ein Brunnen für eine Geschichte wichtig sein?",
+					"concept": "Dort kann ein Geheimnis liegen, das die Handlung auslöst.",
+					"sample_solution": "In der Geschichte vom Schlüssel löst der Brunnen alles aus: Ohne ihn hätte Mia nichts gefunden. Ein Ort ist dann mehr als nur der Hintergrund.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=geschichten-verstehen",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6M6HX328F2FWJ6J1APMDXST",
+			"atom_uri": "urn:zam:atom:01M6M6HX328F2FWJ6J1APMDXST",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-figuren-verstehen",
+			"title": "Figuren genau kennenlernen",
+			"domain": "deutsch/literatur",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=figuren-verstehen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6M6HX32DW5DN7C06HXGA365",
+					"type": "soft",
+					"rationale": "Figuren sind ein Teil der Geschichte."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "lesewerkstatt",
+					"topic_title": "Lesewerkstatt: Texte verstehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6M6HX326GSQ2ACRC37K34XW",
+					"slug": "gs4d-figuren-verstehen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was beschreibst du, wenn du sagst: Ein Junge ist mutig?",
+					"concept": "sein Wesen",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=figuren-verstehen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"sein Wesen",
+							"sein Äußeres"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M6HX32R0VDP029RJ9PXVG4",
+					"slug": "gs4d-figuren-verstehen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Von welchen vier Seiten kannst du eine Figur beschreiben?",
+					"concept": "Äußeres, Wesen, Handeln, Beziehungen",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=figuren-verstehen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Äußeres, Wesen, Handeln, Beziehungen",
+							"Titel, Seite, Kapitel, Schluss"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M6HX32N42AAFFVA4CNW0YS",
+					"slug": "gs4d-figuren-verstehen-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie erkennst du das Wesen einer Figur, wenn es nicht im Text steht?",
+					"concept": "Du schließt aus ihrem Handeln darauf.",
+					"sample_solution": "Wer ein weinendes Kind tröstet, ist wohl freundlich. Ich achte darauf, was die Figur tut und sagt, und schließe daraus, wie sie ist.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=figuren-verstehen",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6M6HX321VQNVD889WR2XQV6",
+			"atom_uri": "urn:zam:atom:01M6M6HX321VQNVD889WR2XQV6",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-sprachbilder-gedichte",
+			"title": "Sprachbilder und Gedichte",
+			"domain": "deutsch/literatur",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=sprachbilder-gedichte",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FXMSW11REYR51TP9NX61QG",
+					"type": "soft",
+					"rationale": "Die Bedeutung von Wörtern im Zusammenhang stammt aus dieser Lektion."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "lesewerkstatt",
+					"topic_title": "Lesewerkstatt: Texte verstehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6M6HX32Z4SEBJYQ5DDVA6SG",
+					"slug": "gs4d-sprachbilder-gedichte-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was bedeutet: Das Fest fällt ins Wasser?",
+					"concept": "Es findet nicht statt.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=sprachbilder-gedichte",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es findet nicht statt.",
+							"Alle werden nass."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M6HX32Y26QBQJ01GN9SBM6",
+					"slug": "gs4d-sprachbilder-gedichte-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist ein Vers?",
+					"concept": "eine Zeile in einem Gedicht",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=sprachbilder-gedichte",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"eine Zeile in einem Gedicht",
+							"ein Reimwort"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M6HX32TE5TZYJYDZ6ACXS8",
+					"slug": "gs4d-sprachbilder-gedichte-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie findest du heraus, was eine Redewendung bedeutet?",
+					"concept": "Du überlegst aus dem Zusammenhang, was gemeint ist, denn die Wörter sind nicht wörtlich gemeint.",
+					"sample_solution": "Wörtlich ergibt „Tomaten auf den Augen“ keinen Sinn. Ich schaue, was im Text passiert: Jemand übersieht etwas. Das ist gemeint.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=sprachbilder-gedichte",
+					"materiality": "material"
+				}
+			]
+		},
+		{
+			"id": "01M6M6HX32QAA81D3RYRFHF1VD",
+			"atom_uri": "urn:zam:atom:01M6M6HX32QAA81D3RYRFHF1VD",
+			"namespace": "zam-academy-deutsch-grundschule-4",
+			"slug": "gs4d-medien-verstehen",
+			"title": "Medien verstehen und wählen",
+			"domain": "deutsch/medien",
+			"reduction": "formal",
+			"typical_age_min": 9,
+			"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=medien-verstehen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6M6HX32W2MVFMW0RDNXE0CT",
+					"type": "soft",
+					"rationale": "Auch Medien haben wie Textarten eine eigene Absicht."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-grundschule-4",
+					"topic_code": "lesewerkstatt",
+					"topic_title": "Lesewerkstatt: Texte verstehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6M6HX32MW0Y07DMR8W53BKG",
+					"slug": "gs4d-medien-verstehen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Sendung berichtet, was gerade in der Welt geschieht?",
+					"concept": "Kindernachrichten",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=medien-verstehen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Kindernachrichten",
+							"Kinderserie"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M6HX327CK4KKE9VRPHAV4X",
+					"slug": "gs4d-medien-verstehen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Womit erzählt ein Hörspiel?",
+					"concept": "mit Stimmen, Geräuschen und Musik",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=medien-verstehen",
+					"materiality": "material",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"mit Stimmen, Geräuschen und Musik",
+							"mit Bildern und Sprechblasen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M6HX321GGX4W5KDXYY4VGD",
+					"slug": "gs4d-medien-verstehen-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Woran erkennst du ein Klischee?",
+					"concept": "Es behauptet etwas über alle Menschen einer Gruppe, obwohl Menschen verschieden sind.",
+					"sample_solution": "Wenn es heißt, alle Mädchen seien ängstlich, ist das ein Klischee. Menschen sind verschieden, darum glaube ich so einem Satz nicht.",
+					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=medien-verstehen",
 					"materiality": "material"
 				}
 			]
