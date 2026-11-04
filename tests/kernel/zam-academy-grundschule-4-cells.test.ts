@@ -27,9 +27,9 @@ const CELLS = [
     id: "zam-academy:mathematik-grundschule-4",
     app: "mathematik-grundschule-4",
     subject: "mathematik",
-    version: "2026.11.13",
-    atoms: 39,
-    items: 146,
+    version: "2026.11.14",
+    atoms: 43,
+    items: 159,
   },
   {
     id: "zam-academy:deutsch-grundschule-4",

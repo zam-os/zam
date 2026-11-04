@@ -1,9 +1,9 @@
 {
 	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
 	"tile_id": "zam-academy:mathematik-grundschule-4",
-	"version": "2026.11.13",
+	"version": "2026.11.14",
 	"title": "Mathematik 4 Grundschule: Milos Entdeckerinsel",
-	"description": "36 deutsche Entdeckerlektionen im Zahlenwald, auf dem Messmarkt, in der Formenbucht, im Zufallsgarten und in drei gemischten Inselexpeditionen. Rechnen, Größen, Geometrie, Daten und Zufall mit lokalen Übungen und Erklärungen. Vorschau; fachliche Freigabe, praktische Abnahme und Lehrervideos fehlen. Kein freigegebener Jahreskurs.",
+	"description": "40 deutsche Entdeckerlektionen im Zahlenwald, auf dem Messmarkt, in der Formenbucht, im Zufallsgarten und in drei gemischten Inselexpeditionen. Rechnen, Schätzen, Größen, Geometrie, Daten und Zufall mit lokalen Übungen und Erklärungen. Vorschau; fachliche Freigabe, praktische Abnahme und Lehrervideos fehlen. Kein freigegebener Jahreskurs.",
 	"publisher": "ZAM Academy",
 	"sources": [
 		{
@@ -42,6 +42,314 @@
 		}
 	],
 	"atoms": [
+		{
+			"id": "01M6M2TB6BD49AKWNV09G8YPTM",
+			"atom_uri": "urn:zam:atom:01M6M2TB6BD49AKWNV09G8YPTM",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-anzahlen-schaetzen-fermi",
+			"title": "Anzahlen schätzen und Fermi-Annahmen prüfen",
+			"domain": "mathematik/zahlen",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=anzahlen-schaetzen-fermi",
+			"prerequisites": [
+				{
+					"atom_id": "01M6EQYDM45HP78N17YA5KGEWJ",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "anzahlen-schaetzen-fermi",
+					"topic_title": "Anzahlen schätzen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6M2TB6CJY8Q2Z5T0585V9S2",
+					"slug": "gs4-anzahlen-schaetzen-fermi-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"materiality": "material",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=anzahlen-schaetzen-fermi",
+					"question": "Welche Probe hilft beim Schätzen einer Menge aus ähnlich gefüllten, gleich großen Teilen?",
+					"concept": "Eine typische Teilmenge zählen und auf die Anzahl vergleichbarer Teile übertragen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine typische Teilmenge zählen und auf die Anzahl vergleichbarer Teile übertragen.",
+							"Immer nur die dichteste Stelle zählen und für alle Teile übernehmen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M2TB6CWCWXT5B1E4NTGZJQ",
+					"slug": "gs4-anzahlen-schaetzen-fermi-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"materiality": "material",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=anzahlen-schaetzen-fermi",
+					"question": "Wird eine Schätzung durch fehlerfreies Rechnen automatisch zu einer genauen Messung?",
+					"concept": "Nein. Das Ergebnis hängt weiterhin von den ungefähren Angaben und Annahmen ab.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein. Das Ergebnis hängt weiterhin von den ungefähren Angaben und Annahmen ab.",
+							"Ja. Eine richtige Multiplikation beweist die wirkliche Anzahl."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M2TB6CX7FY204EW3Z2XK13",
+					"slug": "gs4-anzahlen-schaetzen-fermi-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"materiality": "material",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=anzahlen-schaetzen-fermi",
+					"question": "Wie prüfst und verbesserst du eine Fermi-Schätzung, die auf nur einer Probe beruht?",
+					"concept": "Die Annahme offenlegen, weitere typische Proben nehmen und die Schätzwerte vergleichen.",
+					"sample_solution": "Ich prüfe, ob die Probe zur ganzen Menge passt. Ich zähle weitere vergleichbare Teile und rechne mit den neuen Annahmen. Unterschiedliche Ergebnisse zeigen, wie die Annahmen die Schätzung beeinflussen. Wenn nötig, messe oder zähle ich genauer."
+				}
+			]
+		},
+		{
+			"id": "01M6M2TB6CPR3R1KSNFEA8Z4WC",
+			"atom_uri": "urn:zam:atom:01M6M2TB6CPR3R1KSNFEA8Z4WC",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-rechenweg-waehlen",
+			"title": "Einen passenden Rechenweg wählen",
+			"domain": "mathematik/rechnen",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=rechenweg-waehlen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6EQYDM45HP78N17YA5KGEWJ",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "rechenweg-waehlen",
+					"topic_title": "Rechenwege wählen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6M2TB6CFR60GRDY8FW5R9V4",
+					"slug": "gs4-rechenweg-waehlen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"materiality": "material",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=rechenweg-waehlen",
+					"question": "Was bedeutet halbschriftliches Rechnen?",
+					"concept": "Wichtige Zwischenergebnisse, Teilrechnungen oder Sprünge nachvollziehbar notieren.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wichtige Zwischenergebnisse, Teilrechnungen oder Sprünge nachvollziehbar notieren.",
+							"Nur die Hälfte der Ziffern einer Aufgabe verwenden."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M2TB6D212C9A41TE6ECZCG",
+					"slug": "gs4-rechenweg-waehlen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"materiality": "material",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=rechenweg-waehlen",
+					"question": "Wovon hängt die Wahl zwischen im Kopf, halbschriftlich und schriftlich ab?",
+					"concept": "Von der Zahlenstruktur, dem Zweck und einem übersichtlichen, erklärbaren Rechenweg.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Von der Zahlenstruktur, dem Zweck und einem übersichtlichen, erklärbaren Rechenweg.",
+							"Nur von der Stellenzahl; jede große Zahl verlangt schriftliches Rechnen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M2TB6DT95R9ACSWQ9CW0Y7",
+					"slug": "gs4-rechenweg-waehlen-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"materiality": "material",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=rechenweg-waehlen",
+					"question": "Wann genügt ein Überschlag und wann brauchst du ein genaues Ergebnis? Nenne je einen Zweck.",
+					"concept": "Für eine erste Größenordnung genügt ein begründeter Überschlag; für genaue Abrechnung oder knappes Budget muss genau gerechnet werden.",
+					"sample_solution": "Für die ungefähre Größe eines Vorrats kann ich überschlagen. Beim Rückgeld oder wenn ich prüfen muss, ob wenig Geld genau reicht, rechne ich mit den genauen Beträgen. Ein Überschlag hilft dann zusätzlich bei der Kontrolle."
+				}
+			]
+		},
+		{
+			"id": "01M6M2TB6D446AJZJP4GWRVT4X",
+			"atom_uri": "urn:zam:atom:01M6M2TB6D446AJZJP4GWRVT4X",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-sachaufgaben-veraendern",
+			"title": "Sachsituationen verändern und Informationen beschaffen",
+			"domain": "mathematik/sachaufgaben",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=sachaufgaben-veraendern",
+			"prerequisites": [
+				{
+					"atom_id": "01M6FWJNJJJV0GQ6RCZ87A41YA",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "sachaufgaben-veraendern",
+					"topic_title": "Sachsituationen verändern"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6M2TB6DT169JCVTHFHJGB2F",
+					"slug": "gs4-sachaufgaben-veraendern-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"materiality": "material",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=sachaufgaben-veraendern",
+					"question": "Welche Angaben müssen beim Verkürzen einer Sachaufgabe erhalten bleiben?",
+					"concept": "Alle Angaben, die für die gestellte Frage nötig sind.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Alle Angaben, die für die gestellte Frage nötig sind.",
+							"Nur die kleinste Zahl, weil der Text kürzer werden soll."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M2TB6DGV1WR3RYV85CQPT8",
+					"slug": "gs4-sachaufgaben-veraendern-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"materiality": "material",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=sachaufgaben-veraendern",
+					"question": "Was tust du, wenn für ein genaues Ergebnis eine nötige Angabe fehlt?",
+					"concept": "Die passende Information nachlesen, messen oder erfragen; ohne sie ist die genaue Antwort noch nicht eindeutig.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die passende Information nachlesen, messen oder erfragen; ohne sie ist die genaue Antwort noch nicht eindeutig.",
+							"Irgendeine andere Zahl aus dem Text als Ersatz verwenden."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M2TB6DZ5YADX04JSWHF9ZY",
+					"slug": "gs4-sachaufgaben-veraendern-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"materiality": "material",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=sachaufgaben-veraendern",
+					"question": "Wie prüfst du deinen Rechenplan, wenn eine Vorratsgeschichte um eine Lieferung und anschließenden Verbrauch erweitert wird?",
+					"concept": "Zuerst den Anfangsvorrat bestimmen, die Lieferung addieren und danach den Verbrauch abziehen.",
+					"sample_solution": "Ich ordne jeden Rechenschritt einem Ereignis zu: Beutelzahl mal Inhalt je Beutel ergibt den Anfangsvorrat. Die Lieferung kommt dazu. Der danach verbrauchte Teil geht weg. Abschließend prüfe ich, ob meine Antwort die veränderte Frage beantwortet."
+				}
+			]
+		},
+		{
+			"id": "01M6M2TB6D81Z2WT4MBBZQXRWV",
+			"atom_uri": "urn:zam:atom:01M6M2TB6D81Z2WT4MBBZQXRWV",
+			"namespace": "zam-academy-mathematik-grundschule-4",
+			"slug": "gs4-groessen-vergleichen-ordnen",
+			"title": "Größen vergleichen und ordnen",
+			"domain": "mathematik/groessen",
+			"reduction": "axiomatic",
+			"typical_age_min": 8,
+			"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=groessen-vergleichen-ordnen",
+			"prerequisites": [
+				{
+					"atom_id": "01M6HGN3MC0HS6N0C2P6FWSS8N",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "mathematik-grundschule-4",
+					"topic_code": "groessen-vergleichen-ordnen",
+					"topic_title": "Größen vergleichen und ordnen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M6M2TB6DJEED2R2550AFNQP0",
+					"slug": "gs4-groessen-vergleichen-ordnen-1",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"materiality": "material",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=groessen-vergleichen-ordnen",
+					"question": "Wie vergleichst du Größen desselben Bereichs mit verschiedenen Einheiten?",
+					"concept": "Zuerst in dieselbe Einheit umwandeln, dann die Maßzahlen vergleichen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zuerst in dieselbe Einheit umwandeln, dann die Maßzahlen vergleichen.",
+							"Nur die ursprünglichen Maßzahlen vergleichen und die Einheiten ignorieren."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M2TB6DEE28CXX300ZGMQYV",
+					"slug": "gs4-groessen-vergleichen-ordnen-2",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"materiality": "material",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=groessen-vergleichen-ordnen",
+					"question": "Welcher Umrechnungsschritt gilt beim Vergleichen von Stunden und Minuten?",
+					"concept": "Eine Stunde hat 60 Minuten.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine Stunde hat 60 Minuten.",
+							"Eine Stunde hat 100 Minuten wie ein Euro 100 Cent."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M6M2TB6DH7ZMYV4F24SR84W4",
+					"slug": "gs4-groessen-vergleichen-ordnen-3",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"materiality": "material",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=groessen-vergleichen-ordnen",
+					"question": "Warum kann eine größere Maßzahl eine kleinere Länge beschreiben? Begründe mit einem Beispiel.",
+					"concept": "Die Einheit entscheidet mit: 180 cm sind weniger als 2 m, denn 2 m sind 200 cm.",
+					"sample_solution": "Ich vergleiche dieselbe Einheit. 2 m entsprechen 200 cm; 180 cm sind kleiner als 200 cm. Deshalb ist die Länge mit der Maßzahl 180 hier kürzer als die mit der Maßzahl 2."
+				}
+			]
+		},
 		{
 			"id": "01M687PEW1C19H7AG6K8XMHGSS",
 			"atom_uri": "urn:zam:atom:01M687PEW1C19H7AG6K8XMHGSS",
@@ -860,6 +1168,25 @@
 				}
 			],
 			"practice_items": [
+				{
+					"id": "01M6M2TB6DHDGAMDKDR0D5ACKD",
+					"slug": "gs4-schriftlich-addieren-mehrere-summanden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"materiality": "material",
+					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=schriftlich-addieren",
+					"question": "Was bedeutet ein Übertrag von 2 beim schriftlichen Addieren mehrerer Summanden?",
+					"concept": "Zwei volle Zehner der aktuellen Spalte werden als 2 in der nächsten Spalte links mitgerechnet.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zwei volle Zehner der aktuellen Spalte werden als 2 in der nächsten Spalte links mitgerechnet.",
+							"Ein Übertrag darf immer nur 1 sein; die zweite Zehnergruppe entfällt."
+						],
+						"correct_index": 0
+					}
+				},
 				{
 					"id": "01M6ESYAQNW5R29BYVN40965G9",
 					"slug": "gs4-schriftlich-addieren-1",
