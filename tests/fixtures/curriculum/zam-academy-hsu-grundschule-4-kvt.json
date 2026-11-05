@@ -1,7 +1,7 @@
 {
 	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
 	"tile_id": "zam-academy:hsu-grundschule-4",
-	"version": "2026.11.1",
+	"version": "2026.11.2",
 	"title": "Heimat- und Sachunterricht 4 Grundschule: Lottas Bayern-Forscherbuch",
 	"description": "Zwanzig kindgerechte Entdeckerstationen und sechzig Lernkarten zu allen sechs Lernbereichen des bayerischen LehrplanPLUS Heimat- und Sachunterricht 3/4: Demokratie und Gesellschaft, Körper und Gesundheit, Natur und Umwelt, Zeit und Wandel, Raum und Mobilität sowie Technik und Kultur. Jede Station wird im Forscherbuch einmal erkundet und anschließend in ZAM wiederholt. Vorschau; fachliche Freigabe durch eine Grundschullehrkraft und Lehrervideos stehen noch aus.",
 	"publisher": "ZAM Academy",
@@ -560,8 +560,8 @@
 							"reason": "Beim Menschen sind für die Befruchtung Eizelle und Samenzelle gemeinsam nötig."
 						},
 						{
-							"text": "Die gesamte Schwangerschaft dauert beim Menschen immer nur genau vier Wochen.",
-							"reason": "Verwechselt die rund neunmonatige menschliche Schwangerschaft mit kurzen Tragzeiten kleiner Tiere."
+							"text": "Eine Samenzelle allein wächst zu einem Baby heran.",
+							"reason": "Eine Samenzelle allein entwickelt sich nicht weiter; erst die Verschmelzung mit der Eizelle lässt neues Leben entstehen."
 						}
 					]
 				},
@@ -968,8 +968,8 @@
 							"reason": "Frösche sind Amphibien mit feuchter Drüsenhaut, keine beschuppten Reptilien."
 						},
 						{
-							"text": "Bei Kaulquappen wachsen zuerst Vorderbeine und erst im Winter eine breite Schwanzflosse.",
-							"reason": "Bei der Frosch-Metamorphose erscheinen zuerst die Hinterbeine, danach die Vorderbeine."
+							"text": "Kaulquappen atmen mit der Lunge, und erwachsene Frösche atmen nur noch mit Kiemen.",
+							"reason": "Vertauscht die Entwicklung: Die Kaulquappe hat Kiemen, der erwachsene Frosch atmet mit Lunge und feuchter Haut."
 						}
 					]
 				},
@@ -1178,8 +1178,8 @@
 					"tier": "tier2_synthesis",
 					"bloom_level": 2,
 					"question": "Vergleiche fossile und erneuerbare Stromerzeugung sowie Wege zum Stromsparen.",
-					"concept": "Kohle erzeugt CO2 und ist endlich; Sonne und Wind sind erneuerbar; Abschalten spart Strom.",
-					"sample_solution": "Kohle- und Gaskraftwerke verbrennen endliche Rohstoffe und stoßen klimaschädliches Kohlenstoffdioxid aus. Wind-, Solar- und Wasserkraft nutzen erneuerbare Quellen ohne CO2 im Betrieb, schwanken aber mit dem Wetter. Im Alltag sparen LED-Lampen, komplettes Ausschalten statt Stand-by und bewusstes Nutzen von Geräten wertvolle Energie.",
+					"concept": "Kohle erzeugt CO₂ und ist endlich; Sonne und Wind sind erneuerbar; Abschalten spart Strom.",
+					"sample_solution": "Kohle- und Gaskraftwerke verbrennen endliche Rohstoffe und stoßen klimaschädliches Kohlenstoffdioxid aus. Wind-, Solar- und Wasserkraft nutzen erneuerbare Quellen ohne CO₂ im Betrieb, schwanken aber mit dem Wetter. Im Alltag sparen LED-Lampen, komplettes Ausschalten statt Stand-by und bewusstes Nutzen von Geräten wertvolle Energie.",
 					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=strom-und-energie",
 					"choice_distractors": [
 						{
@@ -1366,12 +1366,12 @@
 					},
 					"choice_distractors": [
 						{
-							"text": "Weißer Nebel über dem Topf ist trockenes Gas ganz ohne feine Wassertröpfchen.",
+							"text": "Fest als Eis, flüssig als Wasser und gasförmig als weißer Nebel über dem Topf.",
 							"reason": "Echter Wasserdampf ist unsichtbar; sichtbarer Nebel besteht bereits aus winzigen Wassertröpfchen."
 						},
 						{
-							"text": "Reines Wasser gefriert bereits bei +25 °C und siedet erst ab genau 500 °C.",
-							"reason": "Unter Normalbedingungen gefriert reines Wasser bei 0 °C und siedet bei 100 °C."
+							"text": "Flüssig, fest und gefroren, denn zu einem Gas wird Wasser nie.",
+							"reason": "Fest und gefroren sind dieselbe Zustandsform; die dritte ist gasförmig als Wasserdampf."
 						}
 					]
 				},
@@ -1960,23 +1960,23 @@
 					"tier": "tier1_fast",
 					"bloom_level": 1,
 					"question": "Was geschieht, wenn ein großes Zahnrad direkt ein kleines Zahnrad antreibt?",
-					"concept": "Das kleine Rad dreht schneller und gegenläufig; im Siebkorb wirkt Fliehkraft.",
+					"concept": "Das kleine Rad dreht schneller und gegenläufig.",
 					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=werkzeuge-maschinen-produktion",
 					"fast_check": {
 						"type": "binary_choice",
 						"options": [
-							"Das kleine Rad dreht schneller und gegenläufig; im Siebkorb wirkt Fliehkraft.",
-							"Beide Zahnräder drehen sich exakt gleich schnell in dieselbe Richtung."
+							"Das kleine Rad dreht schneller und gegenläufig.",
+							"Beide Räder drehen gleich schnell in dieselbe Richtung."
 						],
 						"correct_index": 0
 					},
 					"choice_distractors": [
 						{
-							"text": "Zwei direkt ineinandergreifende Zahnräder drehen immer in dieselbe Richtung.",
+							"text": "Beide Räder drehen immer in dieselbe Richtung.",
 							"reason": "Übersieht die Drehrichtungsumkehr an der Eingriffsstelle zweier Zahnräder."
 						},
 						{
-							"text": "Das kleine angetriebene Zahnrad dreht sich langsamer als das große Kurbelrad.",
+							"text": "Das kleine Rad dreht sich langsamer als das große.",
 							"reason": "Vertauscht Übersetzung ins Schnelle (groß treibt klein) und ins Langsame."
 						}
 					]
@@ -1997,8 +1997,8 @@
 							"reason": "Blendet Ressourcenverbrauch, Transportwege und Müllberge durch Wegwerfware aus."
 						},
 						{
-							"text": "Die Erfindung der Druckerpresse verteuerte Bücher so stark, dass niemand mehr lesen konnte.",
-							"reason": "Erst der Buchdruck machte Bücher und Wissen für breite Bevölkerungsschichten erschwinglich."
+							"text": "In der Fabrik ist die Arbeit immer abwechslungsreicher als im Handwerk.",
+							"reason": "Vertauscht die Arbeit: Bei der Massenproduktion wiederholen sich Arbeitsschritte oft und können eintönig werden, im Handwerk sind sie abwechslungsreicher."
 						}
 					]
 				}

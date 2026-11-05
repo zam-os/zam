@@ -1,7 +1,7 @@
 {
 	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
 	"tile_id": "zam-academy:deutsch-grundschule-4",
-	"version": "2026.11.3",
+	"version": "2026.11.4",
 	"title": "Deutsch 4 Grundschule: Tintos Wörterstadt",
 	"description": "33 Lektionen zum Untersuchen von Sprache, zum richtigen Schreiben und zum Lesen: Wortarten, vier Fälle, Zeitformen, Wortbildung, Satzarten, wörtliche Rede, Satzglieder, Bindewörter, Rechtschreibstrategien und der verbindliche Grundwortschatz 3/4 sowie Textarten, Lesestrategien, Sachtexte, Geschichten, Gedichte und Medien. Vorschau; fachliche Freigabe durch eine Grundschullehrkraft und Lehrervideos fehlen. Texte schreiben und Sprechen folgen.",
 	"publisher": "ZAM Academy",
@@ -2357,7 +2357,7 @@
 					"bloom_level": 3,
 					"question": "Warum kann ein Ort wie ein Brunnen für eine Geschichte wichtig sein?",
 					"concept": "Dort kann ein Geheimnis liegen, das die Handlung auslöst.",
-					"sample_solution": "In der Geschichte vom Schlüssel löst der Brunnen alles aus: Ohne ihn hätte Mia nichts gefunden. Ein Ort ist dann mehr als nur der Hintergrund.",
+					"sample_solution": "Ein Ort kann mehr sein als nur der Hintergrund: Liegt in einem Brunnen zum Beispiel ein alter Schlüssel, löst dieser Fund die ganze Handlung aus. Ohne den Brunnen gäbe es diese Geschichte dann nicht.",
 					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=geschichten-verstehen",
 					"materiality": "material"
 				}
@@ -2513,7 +2513,7 @@
 					"bloom_level": 3,
 					"question": "Wie findest du heraus, was eine Redewendung bedeutet?",
 					"concept": "Du überlegst aus dem Zusammenhang, was gemeint ist, denn die Wörter sind nicht wörtlich gemeint.",
-					"sample_solution": "Wörtlich ergibt „Tomaten auf den Augen“ keinen Sinn. Ich schaue, was im Text passiert: Jemand übersieht etwas. Das ist gemeint.",
+					"sample_solution": "Sucht jemand seine Brille, obwohl sie auf der Nase sitzt, und hört „Hast du Tomaten auf den Augen?“, ergibt das wörtlich keinen Sinn. Aus dem Zusammenhang wird klar: Die Person übersieht etwas.",
 					"source_link": "https://academy.zam-os.org/deutsch-grundschule-4/#lesson=sprachbilder-gedichte",
 					"materiality": "material"
 				}

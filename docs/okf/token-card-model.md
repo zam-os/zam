@@ -615,8 +615,8 @@ Mathematik, Deutsch and Heimat- und Sachunterricht 4 Grundschule are bundled as
 Academy cells while their apps are public previews: primary-teacher review and
 teacher videos are open. Deutsch still leaves part of its Fachlehrplan out;
 Mathematik and HSU map every competence to a lesson or station, but their depth
-is marked partial or is unreviewed. The versions are 2026.11.14 (43 atoms, 159
-items), 2026.11.3 (33 atoms, 99 items) and 2026.11.1 (20 atoms, 60 items). They
+is marked partial or is unreviewed. The versions are 2026.11.15 (43 atoms, 159
+items), 2026.11.4 (33 atoms, 99 items) and 2026.11.2 (20 atoms, 60 items). They
 bind only their Academy stations, not `lehrplanplus-bayern`, so learners find
 them in the Academy list, the library and the Weltwissen atlas. The Schule lens
 shows them outside the curriculum, under their subject and not under a grade. The

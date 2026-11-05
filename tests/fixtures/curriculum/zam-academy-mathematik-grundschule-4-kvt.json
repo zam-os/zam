@@ -1,7 +1,7 @@
 {
 	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
 	"tile_id": "zam-academy:mathematik-grundschule-4",
-	"version": "2026.11.14",
+	"version": "2026.11.15",
 	"title": "Mathematik 4 Grundschule: Milos Entdeckerinsel",
 	"description": "40 deutsche Entdeckerlektionen im Zahlenwald, auf dem Messmarkt, in der Formenbucht, im Zufallsgarten und in drei gemischten Inselexpeditionen. Rechnen, Schätzen, Größen, Geometrie, Daten und Zufall mit lokalen Übungen und Erklärungen. Vorschau; fachliche Freigabe, praktische Abnahme und Lehrervideos fehlen. Kein freigegebener Jahreskurs.",
 	"publisher": "ZAM Academy",
@@ -269,7 +269,7 @@
 					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=sachaufgaben-veraendern",
 					"question": "Wie prüfst du deinen Rechenplan, wenn eine Vorratsgeschichte um eine Lieferung und anschließenden Verbrauch erweitert wird?",
 					"concept": "Zuerst den Anfangsvorrat bestimmen, die Lieferung addieren und danach den Verbrauch abziehen.",
-					"sample_solution": "Ich ordne jeden Rechenschritt einem Ereignis zu: Beutelzahl mal Inhalt je Beutel ergibt den Anfangsvorrat. Die Lieferung kommt dazu. Der danach verbrauchte Teil geht weg. Abschließend prüfe ich, ob meine Antwort die veränderte Frage beantwortet."
+					"sample_solution": "Ich ordne jeden Rechenschritt einem Ereignis zu: Zuerst bestimme ich den Anfangsvorrat. Die Lieferung kommt dazu. Der danach verbrauchte Teil geht weg. Abschließend prüfe ich, ob meine Antwort die veränderte Frage beantwortet."
 				}
 			]
 		},
@@ -1087,7 +1087,7 @@
 					"materiality": "material",
 					"fast_check": {
 						"type": "binary_choice",
-						"options": ["6·4 = 24.", "6 + 4 = 10."],
+						"options": ["6 · 4 = 24.", "6 + 4 = 10."],
 						"correct_index": 0
 					},
 					"concept_segments": [
@@ -1113,7 +1113,7 @@
 					"materiality": "material",
 					"fast_check": {
 						"type": "binary_choice",
-						"options": ["7·6 = 42.", "7 + 6 = 13."],
+						"options": ["7 · 6 = 42.", "7 + 6 = 13."],
 						"correct_index": 0
 					},
 					"concept_segments": [
@@ -2329,7 +2329,7 @@
 					"materiality": "material",
 					"question": "Vier gleiche Hefte kosten zusammen 6 €. Reichen 8 € für sechs solche Hefte? Begründe.",
 					"concept": "Nein, sechs Hefte kosten 9 €.",
-					"sample_solution": "Ein Heft kostet 600 ct : 4 = 150 ct. Sechs Hefte kosten 6 · 150 ct = 900 ct = 9 €. Zum Budget fehlen 1 €."
+					"sample_solution": "Ein Heft kostet 600 ct : 4 = 150 ct. Sechs Hefte kosten 6 · 150 ct = 900 ct = 9 €. Mit 8 € fehlt also 1 €."
 				}
 			]
 		},
@@ -2587,7 +2587,7 @@
 					"materiality": "material",
 					"question": "Ein Planweg führt drei Abstände nach Osten und zwei nach Norden. Ein Abstand bedeutet 20 m. Wie lang ist dieser Weg?",
 					"concept": "100 m.",
-					"sample_solution": "Es sind 3 + 2 = 5 Wegabstände. 5 · 20 m =100 m. Die diagonale Luftlinie ist ein anderer Weg."
+					"sample_solution": "Es sind 3 + 2 = 5 Wegabstände. 5 · 20 m = 100 m. Die diagonale Luftlinie ist ein anderer Weg."
 				},
 				{
 					"id": "01M6HJYH4A3E9CAAPX1HP2CQDK",
@@ -2779,7 +2779,7 @@
 					"materiality": "material",
 					"question": "Der Zirkel ist 25 mm geöffnet. Wie groß ist der Abstand Mitte–Rand und die gerade Strecke Rand–Mitte–Rand?",
 					"concept": "25 mm und 50 mm.",
-					"sample_solution": "Jeder Randpunkt ist 25 mm von der Mitte entfernt. Durch die Mitte folgen zwei dieser Abstände: 25 mm +25 mm =50 mm."
+					"sample_solution": "Jeder Randpunkt ist 25 mm von der Mitte entfernt. Durch die Mitte folgen zwei dieser Abstände: 25 mm + 25 mm = 50 mm."
 				}
 			]
 		},
@@ -3137,9 +3137,9 @@
 					"bloom_level": 3,
 					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=parkette-ornamente",
 					"materiality": "material",
-					"question": "Erfinde ein Vierermuster mit mindestens zwei Markierungen und beschreibe drei gleiche Wiederholungen.",
-					"concept": "Zum Beispiel Kreis–Dreieck–Quadrat–Dreieck, dreimal hintereinander.",
-					"sample_solution": "Die selbst gewählte Vierereinheit bleibt in jeder Wiederholung gleich. Drei Vierereinheiten ergeben 12 markierte quadratische Fliesen. Andere konsistente Muster mit mindestens zwei Markierungen sind ebenfalls richtig."
+					"question": "Du erfindest ein Grundmuster aus vier Fliesen und legst es dreimal hintereinander. Was muss gleich bleiben, und wie viele Fliesen liegen dann?",
+					"concept": "Alle vier Fliesen in derselben Reihenfolge; 12 Fliesen.",
+					"sample_solution": "In jeder Wiederholung stehen dieselben vier Fliesen in derselben Reihenfolge, zum Beispiel Kreis, Dreieck, Quadrat, Dreieck. Drei Wiederholungen ergeben 3 · 4 = 12 Fliesen."
 				}
 			]
 		},
@@ -3466,13 +3466,13 @@
 					"bloom_level": 2,
 					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=tabellen-diagramme-auswerten",
 					"materiality": "material",
-					"question": "Was unterscheidet reine Fahrtzeit von der Reisezeit mit Aufenthalt?",
+					"question": "Was unterscheidet die reine Fahrtzeit von der ganzen Reisezeit?",
 					"concept": "Die Reisezeit enthält zusätzlich den Aufenthalt.",
 					"fast_check": {
 						"type": "binary_choice",
 						"options": [
 							"Die Reisezeit enthält zusätzlich den Aufenthalt.",
-							"Ein Aufenthalt dauert grundsätzlich keine Zeit."
+							"Die Fahrtzeit ist immer länger als die Reisezeit."
 						],
 						"correct_index": 0
 					}
@@ -3646,7 +3646,7 @@
 					"bloom_level": 2,
 					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-werkstatt",
 					"materiality": "material",
-					"question": "Welche Masse zählt bei einer Grenze für volle Kisten?",
+					"question": "Eine volle Kiste darf höchstens 20 kg wiegen. Was zählt alles zu dieser Masse?",
 					"concept": "Inhalt plus leere Kiste.",
 					"fast_check": {
 						"type": "binary_choice",
@@ -3807,13 +3807,13 @@
 					"bloom_level": 2,
 					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-inselfest",
 					"materiality": "material",
-					"question": "Wer gehört zur Personenzahl, wenn für Kinder und Helfer Getränke geplant werden?",
-					"concept": "Kinder und Helfer zusammen.",
+					"question": "Bei einem Fest sind 24 Kinder und 6 Helfer dabei. Für wie viele Personen planst du Getränke?",
+					"concept": "30 Personen: Kinder und Helfer zusammen.",
 					"fast_check": {
 						"type": "binary_choice",
 						"options": [
-							"Kinder und Helfer zusammen.",
-							"Nur die Kinder, auch wenn Helfer mittrinken sollen."
+							"30 Personen: Kinder und Helfer zusammen.",
+							"24 Personen: nur die Kinder, die Helfer zählen nicht."
 						],
 						"correct_index": 0
 					}
@@ -3826,13 +3826,13 @@
 					"bloom_level": 2,
 					"source_link": "https://academy.zam-os.org/mathematik-grundschule-4/#lesson=expedition-inselfest",
 					"materiality": "material",
-					"question": "Welche Zeitabschnitte gehören in einen vollständigen Festplan mit Aufräumen?",
-					"concept": "Alle geplanten Aktivitäten, Pausen und das Aufräumen.",
+					"question": "Du planst die Zeit für ein Fest. Was muss im Zeitplan stehen, damit am Ende keine Zeit fehlt?",
+					"concept": "Alle Aktivitäten, mögliche Pausen und das Aufräumen.",
 					"fast_check": {
 						"type": "binary_choice",
 						"options": [
-							"Alle geplanten Aktivitäten, Pausen und das Aufräumen.",
-							"Nur das erste Spiel."
+							"Alle Aktivitäten, mögliche Pausen und das Aufräumen.",
+							"Nur die Spiele; Pausen und Aufräumen gehen nebenbei."
 						],
 						"correct_index": 0
 					}
