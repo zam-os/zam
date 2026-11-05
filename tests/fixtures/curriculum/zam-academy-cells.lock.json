@@ -54,6 +54,12 @@
     "file": "zam-academy-datennetze-kvt.json"
   },
   {
+    "id": "zam-academy:deutsch-grundschule-4",
+    "version": "2026.11.6",
+    "sha256": "3a191cd260b3083a193e06385bc014b4d4401feea98f1601321fa4702ba7f492",
+    "file": "zam-academy-deutsch-grundschule-4-kvt.json"
+  },
+  {
     "id": "zam-academy:deutsch-realschule-10",
     "version": "2026.10.2",
     "sha256": "e159ddbb1a0f2e15a2e8ec9d7c61189d716f8403e72e15a3499b3115cd903fd4",
@@ -132,6 +138,12 @@
     "file": "zam-academy-geschichte-realschule-9-kvt.json"
   },
   {
+    "id": "zam-academy:hsu-grundschule-4",
+    "version": "2026.11.4",
+    "sha256": "f561198789849e745e0846e0cf6a9dc4e21ea3b35f927802c684a403f6cc8482",
+    "file": "zam-academy-hsu-grundschule-4-kvt.json"
+  },
+  {
     "id": "zam-academy:informatik-realschule-10",
     "version": "2026.10.1",
     "sha256": "f7b93c334660c109c77fa72d5578a6ee53ba4545d301fe4654ae92e6bdf49c24",
@@ -142,6 +154,12 @@
     "version": "2026.10.3",
     "sha256": "6f7a95cae80bb719014a441277b4dc443777526a4ff56f461ce76b6d4b67fa99",
     "file": "zam-academy-informatik-realschule-8-kvt.json"
+  },
+  {
+    "id": "zam-academy:mathematik-grundschule-4",
+    "version": "2026.11.16",
+    "sha256": "edab06ec0a09c9430803464b6c5d4d64e00e3779705c67a3707867d5806b90d5",
+    "file": "zam-academy-mathematik-grundschule-4-kvt.json"
   },
   {
     "id": "zam-academy:mathematik-realschule-10",

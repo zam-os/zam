@@ -801,7 +801,10 @@ export interface MaterialMatchOptions {
   embed?: (texts: string[]) => Promise<number[][]>;
   /** The model the stored token vectors must match; required with `embed`. */
   embeddingModel?: string;
-  /** The learner's curriculum position. It ranks cells; it never filters. */
+  /**
+   * The learner's curriculum position. It ranks cells and filters only one
+   * thing: Grundschule cells stay with Grundschule learners.
+   */
   scope?: CurriculumScope;
 }
 
@@ -964,10 +967,15 @@ function cellCandidates(
   const subjects = set.analysis.subjects;
   const candidates: Candidate[] = [];
   for (const cell of listBundledCells()) {
+    // Primary-school cards are the one exception to ranking: a matching card
+    // preselects its whole cell, and an older learner's material is no reason
+    // to install one.
     const scopes = cell.curriculumScopes.filter(
       (cellScope) =>
         cellScope.subject !== undefined &&
-        subjects.includes(cellScope.subject.toLowerCase()),
+        subjects.includes(cellScope.subject.toLowerCase()) &&
+        (cellScope.schoolType !== "grundschule" ||
+          scope?.schoolType === "grundschule"),
     );
     if (scopes.length === 0) continue;
     // Rank, never filter (Decision 8): the learner's school type first, then

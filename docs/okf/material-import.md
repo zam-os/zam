@@ -199,7 +199,9 @@ Every proposal is a row with Yes, No or Bonus:
 - **Already there.** Each proposal is matched against the learner's library
   and the bundled cells: lexically on word stems, and by meaning when an
   embedding model is connected (the vector leg searches the whole library;
-  the subject only bounds the word match and the cell catalog). A match stands
+  the subject only bounds the word match and the cell catalog). Grundschule
+  cells are matched only for a Grundschule learner, because a match preselects
+  its whole cell. A match stands
   **beside** the proposal, labelled "Already there", and inherits its preset,
   so by default the learner takes what the library holds while their own
   wording stays one tap away. A card the learner already holds is shown and
