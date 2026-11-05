@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { parseFrontmatter, renderIndex } from "../../src/cli/okf/bundle.js";
+import { parseFrontmatter } from "../../src/cli/okf/bundle.js";
 import { loadBundle } from "../../src/cli/okf/io.js";
 
 /**
@@ -30,9 +30,16 @@ describe("docs/okf conformance", () => {
     }
   });
 
-  it("index.md is exactly the rendered catalog (regenerate via zam_okf_upsert)", () => {
+  it("index.md lists every article once under its type, allowing curated layout and wording", () => {
     const index = readFileSync(join(BUNDLE_DIR, "index.md"), "utf8");
-    expect(index).toBe(renderIndex(bundle.catalog));
+    expect(parseFrontmatter(index).fields.okf_version).toBe("0.1");
+    for (const entry of bundle.catalog) {
+      const link = `](${entry.file})`;
+      expect(index.split(link).length - 1, entry.file).toBe(1);
+      const before = index.slice(0, index.indexOf(link));
+      const headings = [...before.matchAll(/^## (.+)$/gm)];
+      expect(headings.at(-1)?.[1], entry.file).toBe(entry.type);
+    }
   });
 
   it("log.md exists and mentions every article at least once", () => {

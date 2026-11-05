@@ -225,46 +225,284 @@ export function renderIndex(
 }
 
 /**
- * Append a log entry, newest day first, merging into an existing entry
- * group when the date matches the current top group.
- *
- * An article revised several times in one day yields one line, not one per
- * write: the log records what changed on a day, and a run of identical
- * "Update — <article>" lines is noise that buries the other articles touched
- * that day.
+ * Keep original line endings and whitespace when editing bundle navigation.
+ */
+function linesOf(markdown: string): string[] {
+  return markdown.match(/[^\n]*\n|[^\n]+$/g) ?? [];
+}
+
+/** Markdown tab stops are four columns wide, including inside list prefixes. */
+function columnAfter(text: string, column = 0): number {
+  for (const character of text) {
+    column += character === "\t" ? 4 - (column % 4) : 1;
+  }
+  return column;
+}
+
+/** Ignore frontmatter and code while retaining list nesting context. */
+function contentLines(lines: string[]): string[] {
+  let frontmatter = lines[0]?.replace(/^﻿/, "").trim() === "---";
+  let fence = "";
+  let paragraph = false;
+  const listIndents: number[] = [];
+  return lines.map((line, i) => {
+    const text = line.trimEnd();
+    if (frontmatter) {
+      if (i > 0 && text === "---") frontmatter = false;
+      return "";
+    }
+    if (text.trim() === "") {
+      paragraph = false;
+      return "";
+    }
+    const leading = /^[ \t]*/.exec(text)?.[0] ?? "";
+    const indent = columnAfter(leading);
+    const body = text.slice(leading.length);
+    const interruptsParagraph =
+      /^(?:#{1,6}(?:[ \t]|$)|>|[-*+](?:[ \t]|$)|\d{1,9}[.)](?:[ \t]|$)|`{3,}|~{3,}|<|(?:[-*_][ \t]*){3,}$)/.test(
+        body,
+      );
+    // A dedented plain line can still belong to the list item's paragraph.
+    const lazy = paragraph && !fence && !interruptsParagraph;
+    while (
+      !lazy &&
+      listIndents.length &&
+      indent < listIndents[listIndents.length - 1]
+    ) {
+      listIndents.pop();
+    }
+    const containerIndent = listIndents.at(-1) ?? 0;
+    const code = indent - containerIndent >= 4;
+    const marker = code
+      ? null
+      : /^(`{3,}|~{3,})(.*)$/.exec(text.slice(leading.length));
+    if (fence) {
+      paragraph = false;
+      if (
+        marker &&
+        marker[1][0] === fence[0] &&
+        marker[1].length >= fence.length &&
+        marker[2].trim() === ""
+      ) {
+        fence = "";
+      }
+      return "";
+    }
+    if (code) {
+      paragraph = false;
+      return "";
+    }
+    if (marker) {
+      paragraph = false;
+      fence = marker[1];
+      return "";
+    }
+    const list = /^([-*+]|\d{1,9}[.)])([ \t]+)/.exec(
+      text.slice(leading.length),
+    );
+    if (list) {
+      const markerEnd = indent + list[1].length;
+      const gap = columnAfter(list[2], markerEnd) - markerEnd;
+      listIndents.push(markerEnd + (gap <= 4 ? gap : 1));
+      paragraph = false;
+      // More than four spaces after a marker starts code inside that item.
+      if (gap > 4) return "";
+      const itemFence = /^(`{3,}|~{3,})(.*)$/.exec(body.slice(list[0].length));
+      if (itemFence) {
+        fence = itemFence[1];
+        return "";
+      }
+    }
+    paragraph = !interruptsParagraph || Boolean(list);
+    return text;
+  });
+}
+
+function insertLines(
+  lines: string[],
+  at: number,
+  added: string[],
+  eol: string,
+): string {
+  if (at > 0 && !lines[at - 1].endsWith("\n")) lines[at - 1] += eol;
+  lines.splice(at, 0, ...added);
+  return lines.join("");
+}
+
+/**
+ * Read the leading link of a Markdown list row. Labels may have
+ * nested or escaped brackets; destinations may have an optional link title.
+ * The caller masks code using the surrounding list's indentation context.
+ */
+function indexRowLink(
+  line: string,
+): { prefix: string; file: string } | undefined {
+  const bullet = /^([ \t]*[-*+][ \t]+)\[/.exec(line);
+  if (!bullet) return undefined;
+  let depth = 1;
+  for (let i = bullet[0].length; i < line.length; i++) {
+    if (line[i] === "\\") {
+      i++;
+    } else if (line[i] === "[") {
+      depth++;
+    } else if (line[i] === "]" && --depth === 0) {
+      const target =
+        /^\((?:<([^<>]+)>|([^\s()<>]+))(?:[ \t]+(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\)))?[ \t]*\)/.exec(
+          line.slice(i + 1),
+        );
+      if (!target) return undefined;
+      return {
+        prefix: bullet[1],
+        file: (target[1] ?? target[2]).replace(/^\.\//, ""),
+      };
+    }
+  }
+  return undefined;
+}
+
+/**
+ * Replace only this article's list row, keeping its subgroup when its type
+ * is unchanged. New entries go before any subgroups of their matching ##
+ * type section; a changed type moves the row. All other text stays intact.
+ */
+export function updateIndex(existing: string, entry: CatalogEntry): string {
+  const lines = linesOf(existing);
+  let content = contentLines(lines);
+  const eol = existing.includes("\r\n") ? "\r\n" : "\n";
+  const row = `[${entry.title}](${entry.file}) — ${entry.description}`;
+  const typeHeading = (line: string) =>
+    /^##[ \t]+(.+?)(?:[ \t]+#+)?$/.exec(line)?.[1];
+  let type: string | undefined;
+  for (let i = 0; i < content.length; i++) {
+    if (/^#[ \t]/.test(content[i])) type = undefined;
+    type = typeHeading(content[i]) ?? type;
+    const link = indexRowLink(content[i]);
+    if (link?.file !== entry.file) continue;
+    if (type === entry.type) {
+      const ending = /\r?\n$/.exec(lines[i])?.[0] ?? "";
+      lines[i] = `${link.prefix}${row}${ending}`;
+      return lines.join("");
+    }
+    lines.splice(i, 1);
+    content = contentLines(lines);
+    break;
+  }
+
+  const section = content.findIndex((line) => typeHeading(line) === entry.type);
+  if (section === -1) {
+    const gap = lines.length && lines.at(-1)?.trim() !== "" ? [eol] : [];
+    return insertLines(
+      lines,
+      lines.length,
+      [...gap, `## ${entry.type}${eol}`, eol, `- ${row}${eol}`],
+      eol,
+    );
+  }
+  let at = section + 1;
+  while (at < content.length && !/^#{1,6}[ \t]/.test(content[at])) at++;
+  while (at > section + 1 && lines[at - 1].trim() === "") at--;
+  const before = /^\s*[-*+][ \t]/.test(content[at - 1]) ? [] : [eol];
+  const after = at < lines.length && lines[at].trim() !== "" ? [eol] : [];
+  return insertLines(lines, at, [...before, `- ${row}${eol}`, ...after], eol);
+}
+
+export interface LogEntry {
+  file: string;
+  title: string;
+  created: boolean;
+}
+
+/**
+ * Recognize dated filename bullets, including inline-code filenames and
+ * the bundle's bullet/separator style. Notes belong to the original entry
+ * and are never copied to another article.
+ */
+const DATED_LOG_ROW =
+  /^([ \t]*[-*+][ \t]+)(\d{4}-\d{2}-\d{2})([ \t]+[—–-][ \t]+)(`?)([a-z0-9-]+\.md)\4(:[ \t]*)(created|updated)\b/;
+const LOG_DATE_HEADING = /^##[ \t]+(\d{4}-\d{2}-\d{2})(?:[ \t]+#+)?$/;
+
+/**
+ * Preserve dated-bullet or date-heading logs, including their direction
+ * and same-day deduplication. Empty logs use ZAM's date-heading format;
+ * nonempty logs without date headings receive a dated filename bullet.
  */
 export function appendLog(
   existing: string,
   date: string,
-  line: string,
+  entry: LogEntry,
 ): string {
-  const header = `## ${date}`;
-  const entry = `- ${line}`;
-  // A hand-edited or Windows-checkout log may arrive with CRLF endings;
-  // normalize so the rebuilt log is uniformly LF instead of mixed.
-  const trimmed = existing.replace(/^﻿/, "").replace(/\r\n/g, "\n").trim();
-  if (trimmed === "") {
-    return `# Log\n\n${header}\n\n${entry}\n`;
+  const lines = linesOf(existing);
+  const content = contentLines(lines);
+  const eol = existing.includes("\r\n") ? "\r\n" : "\n";
+  const groupedRow = `- **${entry.created ? "Creation" : "Update"}** — [${entry.title}](${entry.file})`;
+  if (existing.trim() === "") {
+    return `# Log${eol}${eol}## ${date}${eol}${eol}${groupedRow}${eol}`;
   }
-  const lines = trimmed.split("\n");
-  const firstHeaderIdx = lines.findIndex((l) => l.startsWith("## "));
-  if (firstHeaderIdx !== -1 && lines[firstHeaderIdx].trim() === header) {
-    // Scope the duplicate check to today's group: the same article legitimately
-    // appears again under a later date.
-    const groupEnd = lines.findIndex(
-      (l, i) => i > firstHeaderIdx && l.startsWith("## "),
-    );
-    const todaysEntries = lines.slice(
-      firstHeaderIdx + 1,
-      groupEnd === -1 ? lines.length : groupEnd,
-    );
-    if (todaysEntries.some((l) => l.trim() === entry)) {
-      return `${lines.join("\n")}\n`;
+  const headings = content.flatMap((line, i) => {
+    const match = LOG_DATE_HEADING.exec(line);
+    return match ? [{ i, date: match[1] }] : [];
+  });
+  const bullets = content.flatMap((line, i) => {
+    const match = DATED_LOG_ROW.exec(line);
+    return match ? [{ i, date: match[2], match }] : [];
+  });
+  if (bullets.length && (!headings.length || bullets[0].i < headings[0].i)) {
+    const action = entry.created ? "created" : "updated";
+    if (
+      bullets.some(
+        ({ date: day, match }) =>
+          day === date && match[5] === entry.file && match[7] === action,
+      )
+    ) {
+      return existing;
     }
-    lines.splice(firstHeaderIdx + 2, 0, entry);
-    return `${lines.join("\n")}\n`;
+    const style = bullets[0].match;
+    const row = `${style[1]}${date}${style[3]}${style[4]}${entry.file}${style[4]}${style[6]}${action}${eol}`;
+    const ascending = bullets[0].date < bullets[bullets.length - 1].date;
+    const next = bullets.find((b) =>
+      ascending ? b.date > date : b.date <= date,
+    );
+    return insertLines(
+      lines,
+      next?.i ?? bullets[bullets.length - 1].i + 1,
+      [row],
+      eol,
+    );
   }
-  const insertAt = firstHeaderIdx === -1 ? lines.length : firstHeaderIdx;
-  lines.splice(insertAt, 0, header, "", entry, "");
-  return `${lines.join("\n")}\n`;
+  if (headings.length) {
+    const today = headings.find((h) => h.date === date);
+    if (today) {
+      let end = today.i + 1;
+      while (end < content.length && !/^#{1,2}[ \t]/.test(content[end])) end++;
+      if (content.slice(today.i + 1, end).some((line) => line === groupedRow)) {
+        return existing;
+      }
+      let at = today.i + 1;
+      while (at < end && lines[at].trim() === "") at++;
+      const gap = at === today.i + 1 ? [eol] : [];
+      return insertLines(lines, at, [...gap, `${groupedRow}${eol}`], eol);
+    }
+    const ascending = headings[0].date < headings[headings.length - 1].date;
+    const next = headings.find((h) =>
+      ascending ? h.date > date : h.date < date,
+    );
+    const at = next?.i ?? lines.length;
+    const gap = at > 0 && lines[at - 1].trim() !== "" ? [eol] : [];
+    return insertLines(
+      lines,
+      at,
+      [...gap, `## ${date}${eol}`, eol, `${groupedRow}${eol}`, eol],
+      eol,
+    );
+  }
+  const gap = lines.at(-1)?.trim() !== "" ? [eol] : [];
+  return insertLines(
+    lines,
+    lines.length,
+    [
+      ...gap,
+      `- ${date} — ${entry.file}: ${entry.created ? "created" : "updated"}${eol}`,
+    ],
+    eol,
+  );
 }

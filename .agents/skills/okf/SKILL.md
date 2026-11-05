@@ -19,8 +19,11 @@ release-level care. Contract: ADR 2026-07-17.
 
 **Never edit files in `docs/okf/` by hand.** The only sanctioned write
 path is the `zam_okf_upsert` MCP tool (server: `zam mcp`): it validates
-the frontmatter contract, regenerates `index.md`, and appends the `log.md`
-entry. `zam_okf_catalog` lists articles plus conformance problems;
+the frontmatter contract, updates only the written article's `index.md`
+entry, and adds a `log.md` entry. Existing index headings, subgroups, and
+other entries stay intact. Logs retain dated filename bullets
+(`- YYYY-MM-DD — file.md: created/updated`) or ZAM's date-heading format;
+missing navigation files use ZAM defaults. `zam_okf_catalog` lists articles plus conformance problems;
 `zam_okf_read` returns one article; `zam_okf_audit` reports conservative
 freshness hints from declared code citations and Git history. CI enforces
 bundle conformance (`tests/cli/okf-conformance.test.ts`).

@@ -15,10 +15,13 @@ import {
   buildCatalog,
   parseFrontmatter,
   renderIndex,
+  toCatalogEntry,
+  updateIndex,
   validateArticle,
 } from "../../src/cli/okf/bundle.js";
 import {
   collectSourceLinkBases,
+  isZamBundle,
   loadBundle,
   resolveArticlePath,
   resolveBundleDirFromRoots,
@@ -42,6 +45,37 @@ const article = (over: Partial<Record<string, string>> = {}) =>
     over.body ?? "FSRS-6 drives the queue.",
     "",
   ].join("\n");
+
+const logEntry = (file = "a.md", created = false) => ({
+  file,
+  title: file.slice(0, -3).toUpperCase(),
+  created,
+});
+
+const curatedIndex = [
+  "---",
+  'okf_version: "0.1"',
+  'title: "Our handbook"',
+  "---",
+  "",
+  "# Our handbook",
+  "",
+  "Start here. Articles are written with `zam_okf_upsert`.",
+  "",
+  "## concept",
+  "",
+  "### Scheduling",
+  "",
+  "- [FSRS](fsrs-scheduling.md) — Curated wording for this article.",
+  "- [Other](other.md) — Keep this wording, not its frontmatter description.",
+  "",
+  "## protocol",
+  "",
+  "A curated introduction to protocols.",
+  "",
+  "- [Bridge](bridge.md) — A hand-written overview.",
+  "",
+].join("\n");
 
 describe("okf/bundle parseFrontmatter", () => {
   it("parses scalars, quoted scalars, and block lists", () => {
@@ -90,9 +124,9 @@ describe("okf/bundle parseFrontmatter", () => {
   });
 
   it("rejects list items without a key, with a line number", () => {
-    expect(() =>
-      parseFrontmatter("---\n  - stray\n---\nbody"),
-    ).toThrow(/line 2: list item without a key/);
+    expect(() => parseFrontmatter("---\n  - stray\n---\nbody")).toThrow(
+      /line 2: list item without a key/,
+    );
   });
 
   it("rejects lines outside the subset", () => {
@@ -144,9 +178,9 @@ describe("okf/bundle index and log rendering", () => {
   });
 
   it("appends log entries newest-day-first and merges same-day entries", () => {
-    const first = appendLog("", "2026-07-17", "**Creation** — [A](a.md)");
-    const sameDay = appendLog(first, "2026-07-17", "**Update** — [A](a.md)");
-    const nextDay = appendLog(sameDay, "2026-07-18", "**Creation** — [B](b.md)");
+    const first = appendLog("", "2026-07-17", logEntry("a.md", true));
+    const sameDay = appendLog(first, "2026-07-17", logEntry());
+    const nextDay = appendLog(sameDay, "2026-07-18", logEntry("b.md", true));
     expect(nextDay.indexOf("## 2026-07-18")).toBeLessThan(
       nextDay.indexOf("## 2026-07-17"),
     );
@@ -160,13 +194,13 @@ describe("okf/bundle index and log rendering", () => {
     // Revising an article several times in one sitting must not bury the
     // other articles touched that day under identical lines.
     const line = "**Update** — [A](a.md)";
-    let log = appendLog("", "2026-08-01", line);
-    log = appendLog(log, "2026-08-01", line);
-    log = appendLog(log, "2026-08-01", line);
+    let log = appendLog("", "2026-08-01", logEntry());
+    log = appendLog(log, "2026-08-01", logEntry());
+    log = appendLog(log, "2026-08-01", logEntry());
     expect(log.split(line).length - 1).toBe(1);
 
-    log = appendLog(log, "2026-08-01", "**Update** — [B](b.md)");
-    log = appendLog(log, "2026-08-02", line);
+    log = appendLog(log, "2026-08-01", logEntry("b.md"));
+    log = appendLog(log, "2026-08-02", logEntry());
     expect(log.split(line).length - 1).toBe(2);
     const secondDay = log.slice(
       log.indexOf("## 2026-08-02"),
@@ -175,12 +209,301 @@ describe("okf/bundle index and log rendering", () => {
     expect(secondDay).toContain(line);
   });
 
-  it("merges into a CRLF log and emits LF-normalized output", () => {
+  it("merges into a CRLF log without changing its existing bytes", () => {
     const crlfLog = "# Log\r\n\r\n## 2026-07-18\r\n\r\n- old entry\r\n";
-    const next = appendLog(crlfLog, "2026-07-18", "new entry");
-    expect(next).not.toContain("\r");
-    const day = next.slice(next.indexOf("## 2026-07-18"));
-    expect(day.indexOf("new entry")).toBeLessThan(day.indexOf("old entry"));
+    const next = appendLog(crlfLog, "2026-07-18", logEntry());
+    expect(next).toBe(
+      crlfLog.replace("- old entry", "- **Update** — [A](a.md)\r\n- old entry"),
+    );
+  });
+
+  it("preserves dated filename bullets, notes, intro, and same-day deduplication", () => {
+    const log =
+      "# Changes\n\nOur own history.\n\n- 2026-07-17 — old.md: created (reviewed by hand)\n";
+    const first = appendLog(log, "2026-07-18", logEntry("a.md", true));
+    expect(first).toBe(
+      log.replace("- 2026-07-17", "- 2026-07-18 — a.md: created\n- 2026-07-17"),
+    );
+    const updated = appendLog(first, "2026-07-18", logEntry());
+    expect(updated).toContain(
+      "- 2026-07-18 — a.md: updated\n- 2026-07-18 — a.md: created",
+    );
+    expect(appendLog(updated, "2026-07-18", logEntry())).toBe(updated);
+    const nextDay = appendLog(updated, "2026-07-19", logEntry());
+    expect(nextDay).toContain("- 2026-07-19 — a.md: updated");
+    expect(nextDay).not.toContain("## ");
+    expect(nextDay).not.toContain("**Update**");
+  });
+
+  it("retains a dated bullet's marker, separator, code quotes, and CRLF", () => {
+    const log = "# Changes\r\n\r\n* 2026-07-17 - `old.md`: created (keep)\r\n";
+    const next = appendLog(log, "2026-07-18", logEntry());
+    expect(next).toBe(
+      log.replace(
+        "* 2026-07-17",
+        "* 2026-07-18 - `a.md`: updated\r\n* 2026-07-17",
+      ),
+    );
+    expect(
+      appendLog(
+        next.replace("updated", "updated (note)"),
+        "2026-07-18",
+        logEntry(),
+      ),
+    ).toBe(next.replace("updated", "updated (note)"));
+  });
+
+  it("keeps ascending dated-bullet history and its footer", () => {
+    const log =
+      "# Changes\n\n- 2026-07-16 — old.md: created\n- 2026-07-17 — other.md: updated\n\nKeep this footer.\n";
+    expect(appendLog(log, "2026-07-18", logEntry())).toBe(
+      log.replace("\n\nKeep", "\n- 2026-07-18 — a.md: updated\n\nKeep"),
+    );
+  });
+
+  it("keeps date-heading history order and deduplicates non-top date groups", () => {
+    const log =
+      "# History\n\nIntro.\n\n## 2026-07-16\n\n- **Update** — [A](a.md)\n\n## 2026-07-17\n\n- **Creation** — [B](b.md)\n";
+    expect(appendLog(log, "2026-07-16", logEntry())).toBe(log);
+    expect(appendLog(log, "2026-07-18", logEntry())).toBe(
+      `${log}\n## 2026-07-18\n\n- **Update** — [A](a.md)\n\n`,
+    );
+  });
+
+  it("adds a dated bullet to a nonempty log with no date headings", () => {
+    const log = "# Changelog\n\nHistory begins here.";
+    expect(appendLog(log, "2026-07-18", logEntry())).toBe(
+      `${log}\n\n- 2026-07-18 — a.md: updated\n`,
+    );
+  });
+
+  it("ignores log-format examples in fenced code", () => {
+    const log =
+      "# History\n\n```md\n## 2000-01-01\n```\n\n- 2026-07-17 — old.md: created\n";
+    expect(appendLog(log, "2026-07-18", logEntry())).toBe(
+      log.replace("- 2026-07-17", "- 2026-07-18 — a.md: updated\n- 2026-07-17"),
+    );
+  });
+});
+
+describe("okf/bundle incremental index maintenance", () => {
+  it.each(["\n", "\r\n"])(
+    "changes only the target row in a curated index (%j)",
+    (eol) => {
+      const index = curatedIndex.replace(/\n/g, eol);
+      const entry = toCatalogEntry(
+        "fsrs-scheduling.md",
+        article({ description: "Updated." }),
+      );
+      const next = updateIndex(index, entry);
+      expect(next).toBe(
+        index.replace(
+          "- [FSRS](fsrs-scheduling.md) — Curated wording for this article.",
+          "- [FSRS Scheduling](fsrs-scheduling.md) — Updated.",
+        ),
+      );
+      expect(updateIndex(next, entry)).toBe(next);
+    },
+  );
+
+  it("inserts a new article in its type before existing subgroups", () => {
+    const entry = toCatalogEntry("new.md", article({ title: "New" }));
+    expect(updateIndex(curatedIndex, entry)).toBe(
+      curatedIndex.replace(
+        "## concept\n",
+        "## concept\n\n- [New](new.md) — How ZAM schedules reviews.\n",
+      ),
+    );
+  });
+
+  it("moves only the article's row when its type changes", () => {
+    const entry = toCatalogEntry(
+      "fsrs-scheduling.md",
+      article({ type: "protocol" }),
+    );
+    expect(updateIndex(curatedIndex, entry)).toBe(
+      curatedIndex
+        .replace(
+          "- [FSRS](fsrs-scheduling.md) — Curated wording for this article.\n",
+          "",
+        )
+        .replace(
+          "- [Bridge](bridge.md) — A hand-written overview.\n",
+          "- [Bridge](bridge.md) — A hand-written overview.\n- [FSRS Scheduling](fsrs-scheduling.md) — How ZAM schedules reviews.\n",
+        ),
+    );
+  });
+
+  it("adds a missing type section without replacing an index that has no final newline", () => {
+    const entry = toCatalogEntry(
+      "new.md",
+      article({ type: "algorithm", title: "New" }),
+    );
+    const index = curatedIndex.trimEnd();
+    expect(updateIndex(index, entry)).toBe(
+      `${index}\n\n## algorithm\n\n- [New](new.md) — How ZAM schedules reviews.\n`,
+    );
+  });
+
+  it("preserves list markers and handles ./ links without duplicating the entry", () => {
+    const index = "# Custom\n\n## concept ##\n\n* [Old](./a.md) — Old.";
+    expect(
+      updateIndex(index, toCatalogEntry("a.md", article({ title: "A" }))),
+    ).toBe(
+      "# Custom\n\n## concept ##\n\n* [A](a.md) — How ZAM schedules reviews.",
+    );
+  });
+
+  it.each(["Arrays [T]", "Arrays [Map[K, V]]"])(
+    "updates renderer-generated nested labels without duplicates: %s",
+    (title) => {
+      const entry = toCatalogEntry("arrays.md", article({ title }));
+      const index = renderIndex([entry]);
+      const revised = { ...entry, description: "Updated." };
+      const next = updateIndex(index, revised);
+      expect(next).toBe(index.replace(entry.description, revised.description));
+      expect(updateIndex(next, revised)).toBe(next);
+      expect(next.split("](arrays.md)").length - 1).toBe(1);
+    },
+  );
+
+  it.each([
+    '- [Arrays [T]](./arrays.md "Reference") — Old.',
+    "- [Arrays \\[T\\]](<./arrays.md> 'Reference') — Old.",
+    "- [Arrays [T]](arrays.md (Reference)) — Old.",
+  ])("recognizes escaped labels and optional link titles: %s", (oldRow) => {
+    const entry = toCatalogEntry("arrays.md", article({ title: "Arrays [T]" }));
+    const index = `# Handbook\n\n## concept\n\n${oldRow}\n`;
+    const next = updateIndex(index, entry);
+    expect(next).toBe(
+      index.replace(
+        oldRow,
+        "- [Arrays [T]](arrays.md) — How ZAM schedules reviews.",
+      ),
+    );
+    expect(updateIndex(next, entry)).toBe(next);
+  });
+
+  it("does not mistake a secondary link in another article's row for its entry", () => {
+    const other = "- [Other](other.md) — See [Arrays [T]](arrays.md).";
+    const index = `# Handbook\n\n## concept\n\n${other}\n- [Old](arrays.md) — Old.\n`;
+    const entry = toCatalogEntry("arrays.md", article({ title: "Arrays [T]" }));
+    expect(updateIndex(index, entry)).toBe(
+      index.replace(
+        "- [Old](arrays.md) — Old.",
+        "- [Arrays [T]](arrays.md) — How ZAM schedules reviews.",
+      ),
+    );
+  });
+
+  it.each(["    ", "\t", " \t", "   \t"])(
+    "leaves an indented code example unchanged before the real row (%j)",
+    (indent) => {
+      const example = `${indent}- [A](a.md) — An example.`;
+      const index = `# Handbook\n\n## concept\n\nExample:\n\n${example}\n\n- [A](a.md) — Real entry.\n`;
+      const entry = toCatalogEntry(
+        "a.md",
+        article({ title: "A", description: "Updated." }),
+      );
+      const next = updateIndex(index, entry);
+      expect(next).toBe(
+        index.replace("- [A](a.md) — Real entry.", "- [A](a.md) — Updated."),
+      );
+      expect(updateIndex(next, entry)).toBe(next);
+    },
+  );
+
+  it("moves the real row on a type change without removing an indented example", () => {
+    const index =
+      "# Handbook\n\n## concept\n\nExample:\n\n    - [A](a.md) — An example.\n\n- [A](a.md) — Real entry.\n\n## protocol\n\n- [B](b.md) — Keep.\n";
+    const entry = toCatalogEntry(
+      "a.md",
+      article({ title: "A", type: "protocol", description: "Updated." }),
+    );
+    expect(updateIndex(index, entry)).toBe(
+      index
+        .replace("- [A](a.md) — Real entry.\n", "")
+        .replace(
+          "- [B](b.md) — Keep.\n",
+          "- [B](b.md) — Keep.\n- [A](a.md) — Updated.\n",
+        ),
+    );
+  });
+
+  it("keeps valid three-space-indented list rows editable", () => {
+    const index = "# Handbook\n\n## concept\n\n   * [A](a.md) — Old.\n";
+    const entry = toCatalogEntry(
+      "a.md",
+      article({ title: "A", description: "Updated." }),
+    );
+    expect(updateIndex(index, entry)).toBe(
+      index.replace("— Old.", "— Updated."),
+    );
+  });
+
+  it.each([
+    "- Core concepts\n    ",
+    "- Core concepts\ncontinued lazily\n\n    ",
+    "- Core concepts\n\t",
+    "1. Core concepts\n    ",
+    "- Core concepts\n    - Details\n        ",
+  ])(
+    "updates nested list rows without moving or duplicating them: %j",
+    (parent) => {
+      const index = `# Handbook\n\n## concept\n\n${parent}- [A [T]](a.md) — Old.\n`;
+      const entry = toCatalogEntry(
+        "a.md",
+        article({ title: "A [T]", description: "Updated." }),
+      );
+      const next = updateIndex(index, entry);
+      expect(next).toBe(index.replace("— Old.", "— Updated."));
+      expect(updateIndex(next, entry)).toBe(next);
+      expect(next.split("](a.md)").length - 1).toBe(1);
+    },
+  );
+
+  it.each([
+    "        - [A](a.md) — Indented code.",
+    "    ```md\n    - [A](a.md) — Fenced code.\n    ```",
+    "    - ```md\n      - [A](a.md) — Fenced code after a marker.\n      ```",
+    "    -     [A](a.md) — Code after a list marker.",
+  ])(
+    "preserves code inside a list before its real nested row: %s",
+    (example) => {
+      const index = `# Handbook\n\n## concept\n\n- Core concepts\n\n${example}\n\n    - [A](a.md) — Real entry.\n`;
+      const entry = toCatalogEntry(
+        "a.md",
+        article({ title: "A", description: "Updated." }),
+      );
+      expect(updateIndex(index, entry)).toBe(
+        index.replace("— Real entry.", "— Updated."),
+      );
+    },
+  );
+
+  it("ends list context before a standalone indented code example", () => {
+    const index =
+      "# Handbook\n\n## concept\n\n- Core concepts\n\nOutside the list.\n\n    - [A](a.md) — Code.\n\n- [A](a.md) — Real entry.\n";
+    const entry = toCatalogEntry(
+      "a.md",
+      article({ title: "A", description: "Updated." }),
+    );
+    expect(updateIndex(index, entry)).toBe(
+      index.replace("— Real entry.", "— Updated."),
+    );
+  });
+
+  it("leaves frontmatter, prose links and fenced examples alone", () => {
+    const index =
+      "---\ntitle: Example\n---\n\n# Handbook\n\nSee [A](a.md).\n\n```md\n## concept\n- [A](a.md) — Example only.\n```\n\n## concept\n\n- [Actual](a.md) — Old.\n";
+    expect(
+      updateIndex(index, toCatalogEntry("a.md", article({ title: "A" }))),
+    ).toBe(
+      index.replace(
+        "- [Actual](a.md) — Old.",
+        "- [A](a.md) — How ZAM schedules reviews.",
+      ),
+    );
   });
 });
 
@@ -199,8 +522,13 @@ describe("okf/io", () => {
     expect(() => resolveArticlePath(dir, "log.md")).toThrow(/reserved/);
   });
 
-  it("upsert writes the article, regenerates index.md, appends log.md", () => {
-    const res = upsertArticle(dir, "fsrs-scheduling.md", article(), "2026-07-17");
+  it("upsert writes the article and initializes missing navigation files", () => {
+    const res = upsertArticle(
+      dir,
+      "fsrs-scheduling.md",
+      article(),
+      "2026-07-17",
+    );
     expect(res.validation.ok).toBe(true);
     expect(res.created).toBe(true);
     expect(res.entry?.title).toBe("FSRS Scheduling");
@@ -222,6 +550,41 @@ describe("okf/io", () => {
     expect(log.indexOf("## 2026-07-18")).toBeLessThan(
       log.indexOf("## 2026-07-17"),
     );
+  });
+
+  it("upsert preserves a curated bundle's index and dated-bullet log (#474)", () => {
+    writeFileSync(join(dir, "index.md"), curatedIndex);
+    writeFileSync(join(dir, "fsrs-scheduling.md"), article());
+    writeFileSync(
+      join(dir, "other.md"),
+      article({ description: "Different from the index." }),
+    );
+    const log =
+      "# Our history\n\n- 2026-07-16 — fsrs-scheduling.md: created (initial review)\n";
+    writeFileSync(join(dir, "log.md"), log);
+
+    expect(
+      upsertArticle(
+        dir,
+        "fsrs-scheduling.md",
+        article({ description: "Updated." }),
+        "2026-07-18",
+      ).validation.ok,
+    ).toBe(true);
+    expect(readFileSync(join(dir, "index.md"), "utf8")).toBe(
+      curatedIndex.replace(
+        "- [FSRS](fsrs-scheduling.md) — Curated wording for this article.",
+        "- [FSRS Scheduling](fsrs-scheduling.md) — Updated.",
+      ),
+    );
+    expect(readFileSync(join(dir, "log.md"), "utf8")).toBe(
+      log.replace(
+        "- 2026-07-16",
+        "- 2026-07-18 — fsrs-scheduling.md: updated\n- 2026-07-16",
+      ),
+    );
+    expect(isZamBundle(dir)).toBe(true);
+    expect(loadBundle(dir).problems).toEqual([]);
   });
 
   it("upsert refuses invalid articles without touching the bundle", () => {
@@ -282,34 +645,47 @@ describe("resolveCitationPath", () => {
 
   it("resolves a relative ADR citation inside the repo", () => {
     const root = makeRepo();
-    const p = resolveCitationPath(join(root, "docs", "okf"), "../adr/2026-01-01-x.md");
+    const p = resolveCitationPath(
+      join(root, "docs", "okf"),
+      "../adr/2026-01-01-x.md",
+    );
     expect(p).toBe(resolve(root, "docs", "adr", "2026-01-01-x.md"));
   });
 
   it("rejects absolute paths", () => {
     const root = makeRepo();
-    expect(() => resolveCitationPath(join(root, "docs", "okf"), resolve(root, "docs/adr/2026-01-01-x.md")))
-      .toThrow(/invalid citation target/);
+    expect(() =>
+      resolveCitationPath(
+        join(root, "docs", "okf"),
+        resolve(root, "docs/adr/2026-01-01-x.md"),
+      ),
+    ).toThrow(/invalid citation target/);
   });
 
   it("rejects escape from the repo root", () => {
     const root = makeRepo();
-    expect(() => resolveCitationPath(join(root, "docs", "okf"), "../../../etc/passwd.md"))
-      .toThrow(/invalid citation target/);
+    expect(() =>
+      resolveCitationPath(join(root, "docs", "okf"), "../../../etc/passwd.md"),
+    ).toThrow(/invalid citation target/);
   });
 
   it("rejects non-markdown targets", () => {
     const root = makeRepo();
-    expect(() => resolveCitationPath(join(root, "docs", "okf"), "../adr/x.png"))
-      .toThrow(/invalid citation target/);
+    expect(() =>
+      resolveCitationPath(join(root, "docs", "okf"), "../adr/x.png"),
+    ).toThrow(/invalid citation target/);
   });
 
   it("falls back to the bundle parent as root when no .git exists", () => {
     const root = mkdtempSync(join(tmpdir(), "zam-okf-nogit-"));
     mkdirSync(join(root, "okf"), { recursive: true });
     writeFileSync(join(root, "sibling.md"), "# S\n");
-    expect(resolveCitationPath(join(root, "okf"), "../sibling.md")).toBe(resolve(root, "sibling.md"));
-    expect(() => resolveCitationPath(join(root, "okf"), "../../outside.md")).toThrow(/invalid citation target/);
+    expect(resolveCitationPath(join(root, "okf"), "../sibling.md")).toBe(
+      resolve(root, "sibling.md"),
+    );
+    expect(() =>
+      resolveCitationPath(join(root, "okf"), "../../outside.md"),
+    ).toThrow(/invalid citation target/);
   });
 
   // Hardening (Task 1 review): the containment check must be segment-aware.
