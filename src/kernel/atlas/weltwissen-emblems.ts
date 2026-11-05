@@ -180,6 +180,12 @@ const SEED: Readonly<Record<string, SeedEmblem>> = {
       `${rect(10, 30, 44, 26, 3, PU, INK, 3, 0.16)}${ln(21, 36, 43, 36, INK, 3)}${rect(22, 7, 20, 24, 2, "#ffffff")}${p("M27 18 L31 22 L38 13", "none", GR, 3)}`,
     ),
   },
+  hsu: {
+    glyph: "HSU",
+    svg: S(
+      `${c(32, 40, 18, GR, INK, 3, 0.18)}${p("M32 40 V14", "none", INK, 3)}${p("M32 22 Q42 12 52 16 Q48 28 32 28", "none", GR, 3)}${p("M32 28 Q22 18 12 22 Q16 34 32 34", "none", GR, 3)}`,
+    ),
+  },
   "wirtschaft-recht": {
     glyph: "§ €",
     svg: S(
@@ -472,6 +478,36 @@ const SEED: Readonly<Record<string, SeedEmblem>> = {
   },
 
   // ── Gebiete: Politik und Gesellschaft ───────────────────────────────────
+  "hsu/demokratie": {
+    svg: S(
+      `${rect(14, 26, 36, 28, 3, GR, INK, 3, 0.16)}${ln(24, 34, 40, 34, INK, 3)}${rect(24, 8, 16, 22, 2, "#ffffff")}${p("M28 18 L31 22 L37 13", "none", GR, 3)}`,
+    ),
+  },
+  "hsu/koerper": {
+    svg: S(
+      `${c(32, 14, 8, RD, INK, 3, 0.18)}${p("M32 22 V42 M18 30 H46 M32 42 L22 58 M32 42 L42 58", "none", INK, 3)}`,
+    ),
+  },
+  "hsu/natur": {
+    svg: S(
+      `${c(32, 24, 16, GR, INK, 3, 0.2)}${ln(32, 34, 32, 58, BR, 5)}${ln(14, 58, 50, 58, INK, 3)}`,
+    ),
+  },
+  "hsu/zeit": {
+    svg: S(
+      `${c(32, 32, 24, YE, INK, 3, 0.16)}${p("M32 16 V32 L43 39", "none", INK, 3)}`,
+    ),
+  },
+  "hsu/raum": {
+    svg: S(
+      `${c(32, 32, 24, BL, INK, 3, 0.14)}${poly("32,12 38,32 32,52 26,32", OR, INK, 2, 0.5)}${ln(10, 32, 54, 32, INK, 2)}`,
+    ),
+  },
+  "hsu/technik": {
+    svg: S(
+      `${p("M6 44 Q32 12 58 44", "none", INK, 4)}${ln(6, 44, 58, 44, INK, 4)}${ln(20, 44, 20, 30, GY, 3)}${ln(32, 44, 32, 24, GY, 3)}${ln(44, 44, 44, 30, GY, 3)}`,
+    ),
+  },
   "politik-und-gesellschaft/methoden": {
     svg: S(
       `${rect(10, 7, 31, 44, 3, "#ffffff")}${ln(17, 17, 34, 17, INK, 2)}${ln(17, 25, 30, 25, INK, 2)}${c(36, 37, 12, PU, INK, 3, 0.16)}${ln(45, 46, 57, 58, INK, 5)}`,

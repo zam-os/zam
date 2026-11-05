@@ -441,6 +441,58 @@ describe("okf/bundle incremental index maintenance", () => {
     );
   });
 
+  it.each([
+    "- Core concepts\n    ",
+    "- Core concepts\ncontinued lazily\n\n    ",
+    "- Core concepts\n\t",
+    "1. Core concepts\n    ",
+    "- Core concepts\n    - Details\n        ",
+  ])(
+    "updates nested list rows without moving or duplicating them: %j",
+    (parent) => {
+      const index = `# Handbook\n\n## concept\n\n${parent}- [A [T]](a.md) — Old.\n`;
+      const entry = toCatalogEntry(
+        "a.md",
+        article({ title: "A [T]", description: "Updated." }),
+      );
+      const next = updateIndex(index, entry);
+      expect(next).toBe(index.replace("— Old.", "— Updated."));
+      expect(updateIndex(next, entry)).toBe(next);
+      expect(next.split("](a.md)").length - 1).toBe(1);
+    },
+  );
+
+  it.each([
+    "        - [A](a.md) — Indented code.",
+    "    ```md\n    - [A](a.md) — Fenced code.\n    ```",
+    "    - ```md\n      - [A](a.md) — Fenced code after a marker.\n      ```",
+    "    -     [A](a.md) — Code after a list marker.",
+  ])(
+    "preserves code inside a list before its real nested row: %s",
+    (example) => {
+      const index = `# Handbook\n\n## concept\n\n- Core concepts\n\n${example}\n\n    - [A](a.md) — Real entry.\n`;
+      const entry = toCatalogEntry(
+        "a.md",
+        article({ title: "A", description: "Updated." }),
+      );
+      expect(updateIndex(index, entry)).toBe(
+        index.replace("— Real entry.", "— Updated."),
+      );
+    },
+  );
+
+  it("ends list context before a standalone indented code example", () => {
+    const index =
+      "# Handbook\n\n## concept\n\n- Core concepts\n\nOutside the list.\n\n    - [A](a.md) — Code.\n\n- [A](a.md) — Real entry.\n";
+    const entry = toCatalogEntry(
+      "a.md",
+      article({ title: "A", description: "Updated." }),
+    );
+    expect(updateIndex(index, entry)).toBe(
+      index.replace("— Real entry.", "— Updated."),
+    );
+  });
+
   it("leaves frontmatter, prose links and fenced examples alone", () => {
     const index =
       "---\ntitle: Example\n---\n\n# Handbook\n\nSee [A](a.md).\n\n```md\n## concept\n- [A](a.md) — Example only.\n```\n\n## concept\n\n- [Actual](a.md) — Old.\n";

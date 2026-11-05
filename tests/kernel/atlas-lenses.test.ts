@@ -269,6 +269,152 @@ describe("Schule derivation", () => {
     expect(placements[1].path[0].name).toBe("9. Klasse Gymnasium");
   });
 
+  it("never names the Grundschule, nor counts it as a second school type", () => {
+    const grundschule = {
+      provider: "zam-academy",
+      schoolType: "grundschule",
+      subject: "mathematik",
+    };
+    const [alone] = deriveSchule(
+      [unit("gs", "mathematik", { atomId: "gs" })],
+      { regions: [], aliases: [], members: [] },
+      [binding("gs", 4, grundschule)],
+    );
+    expect(alone.path[0]).toMatchObject({
+      key: "grundschule-4",
+      name: "4. Klasse",
+    });
+
+    const [gs, rs] = deriveSchule(
+      [
+        unit("gs", "mathematik", { atomId: "gs" }),
+        unit("rs", "mathematik", { atomId: "rs" }),
+      ],
+      { regions: [], aliases: [], members: [] },
+      [binding("gs", 4, grundschule), binding("rs", 9)],
+    );
+    expect(gs.path[0].name).toBe("4. Klasse");
+    expect(rs.path[0].name).toBe("9. Klasse");
+
+    const [withTwo, realschule, gymnasium] = deriveSchule(
+      [
+        unit("gs", "mathematik", { atomId: "gs" }),
+        unit("rs", "mathematik", { atomId: "rs" }),
+        unit("gy", "mathematik", { atomId: "gy" }),
+      ],
+      { regions: [], aliases: [], members: [] },
+      [
+        binding("gs", 4, grundschule),
+        binding("rs", 9),
+        binding("gy", 10, { schoolType: "gymnasium" }),
+      ],
+    );
+    expect(withTwo.path[0].name).toBe("4. Klasse");
+    expect(realschule.path[0].name).toBe("9. Klasse Realschule");
+    expect(gymnasium.path[0].name).toBe("10. Klasse Gymnasium");
+  });
+
+  it("keeps a binding without school type or grade out of the school years", () => {
+    const academyOnly = {
+      provider: "zam-academy",
+      schoolType: "",
+      subject: "mathematik-grundschule-4",
+      topicCode: "zahlenwald",
+      topicTitle: "Zahlenwald",
+    };
+    const [stage, grade, gradeless] = deriveSchule(
+      [
+        unit("gs", "mathematik/zahlen", { atomId: "gs" }),
+        unit("rs", "mathematik/zahlen", { atomId: "rs" }),
+        unit("it", "informatik/algorithmen", { atomId: "it" }),
+      ],
+      { regions: [], aliases: [], members: [] },
+      [
+        binding("gs", null, academyOnly),
+        binding("rs", 9),
+        binding("it", null, academyOnly),
+        binding("it", null, { subject: "it", topicCode: "it" }),
+      ],
+    );
+    expect(keys(stage.path)).toEqual([
+      "ausserhalb",
+      "ausserhalb.mathematik",
+      "ausserhalb.mathematik.zahlenwald",
+    ]);
+    expect(stage.path.map((step) => step.name)).toEqual([
+      "Außerhalb des Lehrplans",
+      "Mathematik",
+      "Zahlenwald",
+    ]);
+    // A stage names no school type, so one type stays one type.
+    expect(grade.path[0].name).toBe("9. Klasse");
+    // A school place wins over the stage the same atom also has.
+    expect(gradeless.path[0].key).toBe("realschule-ohne-klasse");
+    expect(gradeless.path[0].name).toBe("Realschule: ohne Klasse");
+  });
+
+  it("keeps a grade without a school type in the school years", () => {
+    const [placement] = deriveSchule(
+      [unit("g", "mathematik/zahlen", { atomId: "g" })],
+      { regions: [], aliases: [], members: [] },
+      [binding("g", 4, { provider: "zam-academy", schoolType: "" })],
+    );
+    expect(placement.path[0].name).toBe("4. Klasse");
+  });
+
+  it("names a stage from the binding that sorts first and merges subject aliases", () => {
+    const [first, second] = deriveSchule(
+      [
+        unit("a", "bwr/kosten", { atomId: "a" }),
+        unit("b", "wirtschaft-recht/recht", { atomId: "b" }),
+      ],
+      { regions: [], aliases: [], members: [] },
+      [
+        binding("a", null, {
+          provider: "zam-academy",
+          schoolType: "",
+          subject: "bwr",
+          topicCode: "a-1",
+          topicTitle: "Erste Station",
+        }),
+        binding("a", null, {
+          provider: "zam-academy",
+          schoolType: "",
+          subject: "bwr",
+          topicCode: "z-2",
+          topicTitle: "Letzte Station",
+        }),
+        binding("b", null, {
+          provider: "zam-academy",
+          schoolType: "",
+          subject: "wr",
+          topicCode: "b",
+          topicTitle: "Recht",
+        }),
+      ],
+    );
+    expect(first.path[2].name).toBe("Erste Station");
+    expect(first.path[1].key).toBe("ausserhalb.wirtschaft-recht");
+    expect(second.path[1].key).toBe(first.path[1].key);
+  });
+
+  it("names the IT subject of grade-less modules", () => {
+    const [placement] = deriveSchule(
+      [unit("m", "informatik/netze", { atomId: "m" })],
+      { regions: [], aliases: [], members: [] },
+      [
+        binding("m", null, {
+          subject: "it",
+          topicCode: "n",
+          topicTitle: "Datennetze I",
+        }),
+      ],
+    );
+    expect(placement.path[0].name).toBe("Realschule: ohne Klasse");
+    expect(placement.path[1].name).toBe("Informatik");
+    expect(placement.path[1].key).toBe("realschule-ohne-klasse.informatik");
+  });
+
   it("uses the full politics subject name and shared key for official pug bindings", () => {
     const [placement] = deriveSchule(
       [unit("pug", "politik-und-gesellschaft/strukturen", { atomId: "pug" })],

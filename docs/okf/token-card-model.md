@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-29T20:56:25Z
+timestamp: 2026-11-04T21:53:08Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -611,6 +611,26 @@ published Tier-1 item, else the lowest published id), and edges that
 pointed at the retired item are removed so it cannot block a learner who
 never reviewed it.
 
+Mathematik, Deutsch and Heimat- und Sachunterricht 4 Grundschule are bundled as
+Academy cells while their apps are public previews: primary-teacher review and
+teacher videos are open. Their competences are practised in part or with
+unreviewed depth: Mathematik and HSU map every competence to a lesson or station,
+and Deutsch practises 69 of 116 in the app and leaves 47 to practice outside it,
+and rates no free text. The versions are 2026.11.16 (43 atoms, 159 items),
+2026.11.6 (45 atoms, 135 items) and 2026.11.4 (20 atoms, 60 items). They
+bind their Academy stations and, also under the provider `zam-academy`, their
+school place (`grundschule`, grade 4, plain subject), not `lehrplanplus-bayern`.
+The Schule lens therefore shows them under "4. Klasse". A Grundschule grade
+carries no school-type name and does not count as a second school type. The
+island offers these three cells and each subject its own, without the generic
+import. A binding with neither school type nor grade names no school place, so
+no school place offers it; such an atom stays outside the curriculum, under its
+subject and stage. The school curriculum path for Grundschule 4 does not offer
+the cells and keeps its generic import, so an unfinished preview does not stand
+in for the whole subject.
+ZAM has no earlier Grundschule cell, so they declare neither `replaces` nor
+`retired_items`, and enrolling creates only unlearned cards.
+
 Different cells may reuse the same atom and some of the same practice items.
 Installation status therefore checks every declared atom and item id, while
 enrolment status checks personal card coverage of every in-scope atom. Personal
@@ -620,7 +640,7 @@ changed mappings require real re-retrieval.
 
 # Citations
 - Code: `desktop/src/curriculum-wizard.ts`, `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`
-- Tests: `tests/desktop/cell-import-progress.test.ts`
+- Tests: `tests/desktop/cell-import-progress.test.ts`, `tests/kernel/zam-academy-grundschule-4-cells.test.ts`
 - [ADR 2026-10-26 — Explicit Withdrawal of Published Curriculum Bindings](../adr/2026-10-26-curriculum-binding-withdrawals.md)
 - [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)

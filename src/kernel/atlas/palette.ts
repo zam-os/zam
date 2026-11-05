@@ -24,6 +24,7 @@ export const SUBJECT_HUES: Readonly<Record<string, number>> = Object.freeze({
   geschichte: 36,
   geographie: 64,
   "politik-und-gesellschaft": 126,
+  hsu: 84,
   "wirtschaft-recht": 278,
   deutsch: 352,
   englisch: 16,
@@ -39,6 +40,7 @@ const SUBJECT_ALIASES: Readonly<Record<string, string>> = Object.freeze({
   recht: "wirtschaft-recht",
   wirtschaft_recht: "wirtschaft-recht",
   nut: "biologie",
+  it: "informatik",
 });
 
 /**

@@ -231,18 +231,53 @@ function linesOf(markdown: string): string[] {
   return markdown.match(/[^\n]*\n|[^\n]+$/g) ?? [];
 }
 
-/** Ignore frontmatter and fenced examples when looking for entries/headings. */
+/** Markdown tab stops are four columns wide, including inside list prefixes. */
+function columnAfter(text: string, column = 0): number {
+  for (const character of text) {
+    column += character === "\t" ? 4 - (column % 4) : 1;
+  }
+  return column;
+}
+
+/** Ignore frontmatter and code while retaining list nesting context. */
 function contentLines(lines: string[]): string[] {
   let frontmatter = lines[0]?.replace(/^﻿/, "").trim() === "---";
   let fence = "";
+  let paragraph = false;
+  const listIndents: number[] = [];
   return lines.map((line, i) => {
     const text = line.trimEnd();
     if (frontmatter) {
       if (i > 0 && text === "---") frontmatter = false;
       return "";
     }
-    const marker = /^ {0,3}(`{3,}|~{3,})(.*)$/.exec(text);
+    if (text.trim() === "") {
+      paragraph = false;
+      return "";
+    }
+    const leading = /^[ \t]*/.exec(text)?.[0] ?? "";
+    const indent = columnAfter(leading);
+    const body = text.slice(leading.length);
+    const interruptsParagraph =
+      /^(?:#{1,6}(?:[ \t]|$)|>|[-*+](?:[ \t]|$)|\d{1,9}[.)](?:[ \t]|$)|`{3,}|~{3,}|<|(?:[-*_][ \t]*){3,}$)/.test(
+        body,
+      );
+    // A dedented plain line can still belong to the list item's paragraph.
+    const lazy = paragraph && !fence && !interruptsParagraph;
+    while (
+      !lazy &&
+      listIndents.length &&
+      indent < listIndents[listIndents.length - 1]
+    ) {
+      listIndents.pop();
+    }
+    const containerIndent = listIndents.at(-1) ?? 0;
+    const code = indent - containerIndent >= 4;
+    const marker = code
+      ? null
+      : /^(`{3,}|~{3,})(.*)$/.exec(text.slice(leading.length));
     if (fence) {
+      paragraph = false;
       if (
         marker &&
         marker[1][0] === fence[0] &&
@@ -253,10 +288,32 @@ function contentLines(lines: string[]): string[] {
       }
       return "";
     }
+    if (code) {
+      paragraph = false;
+      return "";
+    }
     if (marker) {
+      paragraph = false;
       fence = marker[1];
       return "";
     }
+    const list = /^([-*+]|\d{1,9}[.)])([ \t]+)/.exec(
+      text.slice(leading.length),
+    );
+    if (list) {
+      const markerEnd = indent + list[1].length;
+      const gap = columnAfter(list[2], markerEnd) - markerEnd;
+      listIndents.push(markerEnd + (gap <= 4 ? gap : 1));
+      paragraph = false;
+      // More than four spaces after a marker starts code inside that item.
+      if (gap > 4) return "";
+      const itemFence = /^(`{3,}|~{3,})(.*)$/.exec(body.slice(list[0].length));
+      if (itemFence) {
+        fence = itemFence[1];
+        return "";
+      }
+    }
+    paragraph = !interruptsParagraph || Boolean(list);
     return text;
   });
 }
@@ -273,14 +330,14 @@ function insertLines(
 }
 
 /**
- * Read the leading link of a top-level Markdown list row. Labels may have
+ * Read the leading link of a Markdown list row. Labels may have
  * nested or escaped brackets; destinations may have an optional link title.
- * Four-column indentation (including a leading tab) is code, not an index row.
+ * The caller masks code using the surrounding list's indentation context.
  */
 function indexRowLink(
   line: string,
 ): { prefix: string; file: string } | undefined {
-  const bullet = /^( {0,3}[-*+][ \t]+)\[/.exec(line);
+  const bullet = /^([ \t]*[-*+][ \t]+)\[/.exec(line);
   if (!bullet) return undefined;
   let depth = 1;
   for (let i = bullet[0].length; i < line.length; i++) {

@@ -182,6 +182,7 @@ export {
   ISLAND_GAP,
   isBuiltInLensKind,
   islandDrift,
+  isSchoolPlace,
   LEBEN_LENS,
   LENSES,
   LensEditError,

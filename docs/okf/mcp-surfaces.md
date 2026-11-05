@@ -251,9 +251,10 @@ heading. An existing row keeps its subgroup when the type is unchanged;
 a changed type moves the row, and new types get a new section. The index’s
 frontmatter, title, introduction, other subgroups and other articles’ wording
 stay intact. Missing or empty indexes use ZAM’s generated layout.
-Top-level list links may use nested or escaped brackets in their labels
-and optional Markdown link titles. Four-space or tab-indented code examples
-stay untouched.
+Index list links may use nested or escaped brackets in their labels and
+optional Markdown link titles. Indentation follows the surrounding list
+context: nested entries remain editable, while indented and fenced code
+examples stay untouched.
 
 Logs keep either ZAM’s `## YYYY-MM-DD` groups with Creation/Update links or
 dated filename bullets such as `- YYYY-MM-DD — file.md: created (note)`.
