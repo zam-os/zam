@@ -40,6 +40,7 @@ const SUBJECT_ALIASES: Readonly<Record<string, string>> = Object.freeze({
   recht: "wirtschaft-recht",
   wirtschaft_recht: "wirtschaft-recht",
   nut: "biologie",
+  it: "informatik",
 });
 
 /**

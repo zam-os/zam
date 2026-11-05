@@ -336,22 +336,39 @@ async function schuleScope(
   level: number,
 ): Promise<CurriculumScope | null> {
   const counts = new Map<string, { scope: CurriculumScope; n: number }>();
+  const stages = new Map<string, { scope: CurriculumScope; n: number }>();
+  const add = (
+    into: Map<string, { scope: CurriculumScope; n: number }>,
+    scope: CurriculumScope,
+  ) => {
+    const key = JSON.stringify(scope);
+    const entry = into.get(key) ?? { scope, n: 0 };
+    entry.n++;
+    into.set(key, entry);
+  };
   for (const binding of await loadBindings(db)) {
-    if (!atomIds.has(binding.atomId) || !isSchoolPlace(binding)) continue;
-    const scope: CurriculumScope = {
+    if (!atomIds.has(binding.atomId)) continue;
+    if (!isSchoolPlace(binding)) {
+      // A stage names no school: its subject leads back to its own cell.
+      if (level >= 1 && binding.subject)
+        add(stages, { provider: binding.provider, subject: binding.subject });
+      continue;
+    }
+    add(counts, {
       provider: binding.provider,
       schoolType: binding.schoolType || undefined,
       grade: binding.grade ?? undefined,
-      // On the island (a grade) every subject belongs.
-      subject: level >= 1 ? binding.subject || undefined : undefined,
-    };
-    const key = JSON.stringify(scope);
-    const entry = counts.get(key) ?? { scope, n: 0 };
-    entry.n++;
-    counts.set(key, entry);
+      // On a grade's island every subject belongs. Without a grade the island
+      // is a whole school type, so it keeps to the subject.
+      subject:
+        level >= 1 || binding.grade === null
+          ? binding.subject || undefined
+          : undefined,
+    });
   }
-  const best = [...counts.values()].sort((a, b) => b.n - a.n)[0];
-  return best?.scope ?? null;
+  const best = (entries: Map<string, { scope: CurriculumScope; n: number }>) =>
+    [...entries.values()].sort((a, b) => b.n - a.n)[0]?.scope ?? null;
+  return best(counts) ?? best(stages);
 }
 
 /** Cells whose atoms fall into a Weltwissen region, by alias or by place. */
@@ -417,7 +434,12 @@ export async function atlasPlace(
   const level = place.path[place.path.length - 1].level;
   let scope: CurriculumScope | null = null;
   let found: BundledCellInfo[] = [];
+  // Academy stages are no gap in a curriculum: the generic import does not help.
+  let holdsStages = false;
   if (lens.kind === "schule") {
+    holdsStages = (await loadBindings(db)).some(
+      (binding) => atomIds.has(binding.atomId) && !isSchoolPlace(binding),
+    );
     scope = await schuleScope(db, atomIds, level);
     found = scope ? findBundledCellsForScope(scope) : [];
   } else if (lens.kind === "weltwissen") {
@@ -445,7 +467,7 @@ export async function atlasPlace(
         ? false
         : scope
           ? needsGenericCurriculumImport(scope)
-          : cells.length === 0,
+          : cells.length === 0 && !holdsStages,
   };
 }
 

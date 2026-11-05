@@ -308,6 +308,68 @@ describe("Schule derivation", () => {
     expect(gradeless.path[0].name).toBe("Realschule: ohne Klasse");
   });
 
+  it("keeps a grade without a school type in the school years", () => {
+    const [placement] = deriveSchule(
+      [unit("g", "mathematik/zahlen", { atomId: "g" })],
+      { regions: [], aliases: [], members: [] },
+      [binding("g", 4, { provider: "zam-academy", schoolType: "" })],
+    );
+    expect(placement.path[0].name).toBe("4. Klasse");
+  });
+
+  it("names a stage from the binding that sorts first and merges subject aliases", () => {
+    const [first, second] = deriveSchule(
+      [
+        unit("a", "bwr/kosten", { atomId: "a" }),
+        unit("b", "wirtschaft-recht/recht", { atomId: "b" }),
+      ],
+      { regions: [], aliases: [], members: [] },
+      [
+        binding("a", null, {
+          provider: "zam-academy",
+          schoolType: "",
+          subject: "bwr",
+          topicCode: "a-1",
+          topicTitle: "Erste Station",
+        }),
+        binding("a", null, {
+          provider: "zam-academy",
+          schoolType: "",
+          subject: "bwr",
+          topicCode: "z-2",
+          topicTitle: "Letzte Station",
+        }),
+        binding("b", null, {
+          provider: "zam-academy",
+          schoolType: "",
+          subject: "wr",
+          topicCode: "b",
+          topicTitle: "Recht",
+        }),
+      ],
+    );
+    expect(first.path[2].name).toBe("Erste Station");
+    expect(first.path[1].key).toBe("ausserhalb.wirtschaft-recht");
+    expect(second.path[1].key).toBe(first.path[1].key);
+  });
+
+  it("names the IT subject of grade-less modules", () => {
+    const [placement] = deriveSchule(
+      [unit("m", "informatik/netze", { atomId: "m" })],
+      { regions: [], aliases: [], members: [] },
+      [
+        binding("m", null, {
+          subject: "it",
+          topicCode: "n",
+          topicTitle: "Datennetze I",
+        }),
+      ],
+    );
+    expect(placement.path[0].name).toBe("Realschule: ohne Klasse");
+    expect(placement.path[1].name).toBe("Informatik");
+    expect(placement.path[1].key).toBe("realschule-ohne-klasse.informatik");
+  });
+
   it("uses the full politics subject name and shared key for official pug bindings", () => {
     const [placement] = deriveSchule(
       [unit("pug", "politik-und-gesellschaft/strukturen", { atomId: "pug" })],

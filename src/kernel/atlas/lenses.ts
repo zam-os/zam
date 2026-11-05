@@ -963,7 +963,7 @@ export function deriveSchule(
     if (!place) {
       const segments = unit.domain.split("/").filter(Boolean);
       const root = segments[0] === "schule" ? segments[1] : segments[0];
-      const fachKey = `${OUTSIDE_CURRICULUM_KEY}.${slugSegment(root ?? "allgemein")}`;
+      const fachKey = `${OUTSIDE_CURRICULUM_KEY}.${slugSegment(hueKeyForDomain(root ?? "allgemein"))}`;
       const fachName = subjectName(root ?? "allgemein");
       // What is bound outside any school keeps its stage as the Lernbereich.
       const stage = unit.atomId ? byAtom.get(unit.atomId)?.[0]?.topicTitle : "";

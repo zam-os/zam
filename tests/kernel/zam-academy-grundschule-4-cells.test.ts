@@ -218,16 +218,48 @@ describe("Grundschule 4 preview cells in the atlas", () => {
       ).toEqual(["Deutsch", "Heimat- und Sachunterricht", "Mathematik"]);
     });
 
-    it("offers no other school's cell at their place", async () => {
-      for (const region of ["ausserhalb", "ausserhalb.mathematik"]) {
+    it("offers its own cell at a subject, nothing at the island, and no generic import", async () => {
+      const island = await atlasPlace(db, {
+        userId,
+        lens: "schule",
+        region: "ausserhalb",
+      });
+      expect(island.scope).toBeNull();
+      expect(island.cells).toEqual([]);
+      expect(island.wizard).toBe(false);
+      for (const cell of CELLS) {
         const place = await atlasPlace(db, {
           userId,
           lens: "schule",
-          region,
+          region: `ausserhalb.${cell.subject}`,
         });
-        expect(place.scope, region).toBeNull();
-        expect(place.cells, region).toEqual([]);
+        expect(
+          place.cells.map((c) => c.id),
+          cell.id,
+        ).toEqual([cell.id]);
+        expect(place.wizard, cell.id).toBe(false);
       }
+    });
+
+    it("keeps a grade-less module to its subject instead of a whole school type", async () => {
+      const id = "zam-academy:algorithmen";
+      await installKvtTile(db, getBundledCellTile(id)!);
+      await enrolBundledCell(db, userId, id);
+      const place = await atlasPlace(db, {
+        userId,
+        lens: "schule",
+        region: "realschule-ohne-klasse",
+      });
+      expect(place.scope).toMatchObject({
+        schoolType: "realschule",
+        subject: "it",
+      });
+      const ids = place.cells.map((c) => c.id);
+      expect(ids).toContain(id);
+      expect(ids.filter((c) => /biologie|mathematik/.test(c))).toEqual([]);
+      const { regions } = await readAtlas(db, { userId, lens: SCHULE_LENS });
+      expect(regions.map((r) => r.name)).toContain("Informatik");
+      expect(regions.map((r) => r.name)).not.toContain("It");
     });
   });
 });

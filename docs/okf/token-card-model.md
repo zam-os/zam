@@ -619,9 +619,10 @@ and Deutsch practises 69 of 116 in the app and leaves 47 to practice outside it,
 and rates no free text. The versions are 2026.11.15 (43 atoms, 159 items),
 2026.11.5 (45 atoms, 135 items) and 2026.11.2 (20 atoms, 60 items). They
 bind only their Academy stations, not `lehrplanplus-bayern`, so learners find
-them in the Academy list, the library and the Weltwissen atlas. The Schule lens
-shows them outside the curriculum, under their subject and not under a grade. The
-school curriculum path for Grundschule 4 does not offer them and keeps its
+them in the Academy list, the library and the Weltwissen atlas. A binding with
+neither school type nor grade names no school place, so the Schule lens shows such
+atoms outside the curriculum, under their subject and stage and not under a grade,
+and offers their own cell there. The school curriculum path for Grundschule 4 does not offer them and keeps its
 generic import, so an unfinished preview does not stand in for the whole subject.
 ZAM has no earlier Grundschule cell, so they declare neither `replaces` nor
 `retired_items`, and enrolling creates only unlearned cards.
