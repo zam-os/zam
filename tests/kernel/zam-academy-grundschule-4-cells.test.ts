@@ -24,8 +24,8 @@ import {
 } from "../../src/kernel/index.js";
 
 // Mathematik, Deutsch and HSU 4 (zam-os/zam-academy#81) are public previews:
-// primary-teacher review and videos are open, Deutsch leaves part of its
-// Fachlehrplan out, and the depth of the others is unreviewed. ZAM has no earlier
+// primary-teacher review and videos are open, and their competences are covered
+// in part or with unreviewed depth. ZAM has no earlier
 // Grundschule cell, so they replace and retire nothing. They bind only their
 // Academy stations, so the school curriculum path keeps its generic import
 // instead of offering a preview as the whole subject.
@@ -42,9 +42,9 @@ const CELLS = [
     id: "zam-academy:deutsch-grundschule-4",
     app: "deutsch-grundschule-4",
     subject: "deutsch",
-    version: "2026.11.4",
-    atoms: 33,
-    items: 99,
+    version: "2026.11.5",
+    atoms: 45,
+    items: 135,
   },
   {
     id: "zam-academy:hsu-grundschule-4",
