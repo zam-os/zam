@@ -3,6 +3,12 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { ulid } from "ulid";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { atlasPlace } from "../../src/cli/atlas.js";
+import {
+  readAtlas,
+  SCHULE_LENS,
+  weltwissenSeedRows,
+} from "../../src/kernel/atlas/index.js";
 import {
   type Database,
   enrolBundledCell,
@@ -18,10 +24,11 @@ import {
 } from "../../src/kernel/index.js";
 
 // Mathematik, Deutsch and HSU 4 (zam-os/zam-academy#81) are public previews:
-// primary-teacher review and videos are open and each covers only part of its
-// Fachlehrplan. ZAM has no earlier Grundschule cell, so they replace and retire
-// nothing. They bind only their Academy stations, so the school curriculum path
-// keeps its generic import instead of treating a part as the whole subject.
+// primary-teacher review and videos are open, Deutsch leaves part of its
+// Fachlehrplan out, and the depth of the others is unreviewed. ZAM has no earlier
+// Grundschule cell, so they replace and retire nothing. They bind only their
+// Academy stations, so the school curriculum path keeps its generic import
+// instead of offering a preview as the whole subject.
 const CELLS = [
   {
     id: "zam-academy:mathematik-grundschule-4",
@@ -82,7 +89,7 @@ describe.each(CELLS)("ZAM Academy $app preview cell", (cell) => {
         expect(binding.provider, atom.slug).toBe("zam-academy");
   });
 
-  it("links every German card to a lesson of its published app", () => {
+  it("links every German card to a lesson URL of its own app", () => {
     for (const atom of tile.atoms)
       for (const item of atom.practice_items) {
         expect(item.source_link, item.id).toMatch(
@@ -152,6 +159,75 @@ describe.each(CELLS)("ZAM Academy $app preview cell", (cell) => {
         alreadyEnrolled: true,
       });
       expect(await snapshot()).toEqual(before);
+    });
+  });
+});
+
+describe("Grundschule 4 preview cells in the atlas", () => {
+  it("places every HSU station in one of the six HSU areas", () => {
+    const { aliases } = weltwissenSeedRows();
+    const tile = getBundledCellTile("zam-academy:hsu-grundschule-4")!;
+    const areas = new Set(
+      tile.atoms.map(
+        (atom) =>
+          aliases.find((alias) => alias.domainPrefix === atom.domain)
+            ?.regionKey,
+      ),
+    );
+    expect([...areas].sort()).toEqual([
+      "gesellschaft.hsu.demokratie",
+      "gesellschaft.hsu.koerper",
+      "gesellschaft.hsu.natur",
+      "gesellschaft.hsu.raum",
+      "gesellschaft.hsu.technik",
+      "gesellschaft.hsu.zeit",
+    ]);
+  });
+
+  describe("in the Schule lens", () => {
+    let dir: string;
+    let db: Database;
+    const userId = ulid();
+
+    beforeEach(async () => {
+      dir = mkdtempSync(join(tmpdir(), "zam-academy-grundschule-4-schule-"));
+      db = await openDatabase({
+        dbPath: join(dir, "test.db"),
+        useConfiguredCloud: false,
+      });
+      for (const cell of CELLS) {
+        await installKvtTile(db, getBundledCellTile(cell.id)!);
+        await enrolBundledCell(db, userId, cell.id);
+      }
+    });
+    afterEach(async () => {
+      await db.close();
+      rmSync(dir, { recursive: true, force: true, maxRetries: 10 });
+    });
+
+    it("names them by subject outside the curriculum, under no invented grade", async () => {
+      const { regions } = await readAtlas(db, { userId, lens: SCHULE_LENS });
+      expect(
+        regions.filter((region) => region.level === 0).map((r) => r.name),
+      ).toEqual(["Außerhalb des Lehrplans"]);
+      expect(
+        regions
+          .filter((region) => region.level === 1)
+          .map((r) => r.name)
+          .sort(),
+      ).toEqual(["Deutsch", "Heimat- und Sachunterricht", "Mathematik"]);
+    });
+
+    it("offers no other school's cell at their place", async () => {
+      for (const region of ["ausserhalb", "ausserhalb.mathematik"]) {
+        const place = await atlasPlace(db, {
+          userId,
+          lens: "schule",
+          region,
+        });
+        expect(place.scope, region).toBeNull();
+        expect(place.cells, region).toEqual([]);
+      }
     });
   });
 });

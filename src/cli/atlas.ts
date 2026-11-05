@@ -39,6 +39,7 @@ import {
   getSetting,
   installKvtTile,
   isBundledCellInstalled,
+  isSchoolPlace,
   type LensCuration,
   type LensDefinition,
   type LensEdit,
@@ -336,7 +337,7 @@ async function schuleScope(
 ): Promise<CurriculumScope | null> {
   const counts = new Map<string, { scope: CurriculumScope; n: number }>();
   for (const binding of await loadBindings(db)) {
-    if (!atomIds.has(binding.atomId)) continue;
+    if (!atomIds.has(binding.atomId) || !isSchoolPlace(binding)) continue;
     const scope: CurriculumScope = {
       provider: binding.provider,
       schoolType: binding.schoolType || undefined,

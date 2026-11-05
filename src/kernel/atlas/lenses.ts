@@ -898,6 +898,14 @@ interface SchoolPlace {
   lernbereich: string;
 }
 
+/**
+ * Whether a binding names a place in a school. One with neither school type nor
+ * grade does not: a ZAM Academy stage, for one (ADR 2026-10-19).
+ */
+export function isSchoolPlace(binding: BindingRow): boolean {
+  return Boolean(binding.schoolType) || binding.grade !== null;
+}
+
 /** Schule: Klasse › Fach › Lernbereich. */
 export function deriveSchule(
   units: UnitRow[],
@@ -910,7 +918,9 @@ export function deriveSchule(
 
   const places = new Map<UnitKey, SchoolPlace | null>();
   for (const unit of units) {
-    const binding = unit.atomId ? byAtom.get(unit.atomId)?.[0] : undefined;
+    const binding = unit.atomId
+      ? byAtom.get(unit.atomId)?.find(isSchoolPlace)
+      : undefined;
     if (binding) {
       const name = subjectName(binding.subject);
       places.set(unit.key, {
@@ -954,6 +964,10 @@ export function deriveSchule(
       const segments = unit.domain.split("/").filter(Boolean);
       const root = segments[0] === "schule" ? segments[1] : segments[0];
       const fachKey = `${OUTSIDE_CURRICULUM_KEY}.${slugSegment(root ?? "allgemein")}`;
+      const fachName = subjectName(root ?? "allgemein");
+      // What is bound outside any school keeps its stage as the Lernbereich.
+      const stage = unit.atomId ? byAtom.get(unit.atomId)?.[0]?.topicTitle : "";
+      const bereich = stage ? cleanTopic(stage, fachName, "") : "Allgemein";
       return {
         unitKey: unit.key,
         path: [
@@ -965,13 +979,13 @@ export function deriveSchule(
           },
           {
             key: fachKey,
-            name: subjectName(root ?? "allgemein"),
+            name: fachName,
             level: 1,
             rank: subjectRank(root ?? ""),
           },
           {
-            key: `${fachKey}.allgemein`,
-            name: "Allgemein",
+            key: `${fachKey}.${slugSegment(bereich)}`,
+            name: bereich,
             level: 2,
             rank: 0,
           },

@@ -159,6 +159,7 @@ export {
   ensureWorldLenses,
   findLensId,
   isBuiltInLensKind,
+  isSchoolPlace,
   LAST_RANK,
   LEBEN_LENS,
   LENSES,

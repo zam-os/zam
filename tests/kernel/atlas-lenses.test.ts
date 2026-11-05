@@ -269,6 +269,45 @@ describe("Schule derivation", () => {
     expect(placements[1].path[0].name).toBe("9. Klasse Gymnasium");
   });
 
+  it("keeps a binding without school type or grade out of the school years", () => {
+    const academyOnly = {
+      provider: "zam-academy",
+      schoolType: "",
+      subject: "mathematik-grundschule-4",
+      topicCode: "zahlenwald",
+      topicTitle: "Zahlenwald",
+    };
+    const [stage, grade, gradeless] = deriveSchule(
+      [
+        unit("gs", "mathematik/zahlen", { atomId: "gs" }),
+        unit("rs", "mathematik/zahlen", { atomId: "rs" }),
+        unit("it", "informatik/algorithmen", { atomId: "it" }),
+      ],
+      { regions: [], aliases: [], members: [] },
+      [
+        binding("gs", null, academyOnly),
+        binding("rs", 9),
+        binding("it", null, academyOnly),
+        binding("it", null, { subject: "it", topicCode: "it" }),
+      ],
+    );
+    expect(keys(stage.path)).toEqual([
+      "ausserhalb",
+      "ausserhalb.mathematik",
+      "ausserhalb.mathematik.zahlenwald",
+    ]);
+    expect(stage.path.map((step) => step.name)).toEqual([
+      "Außerhalb des Lehrplans",
+      "Mathematik",
+      "Zahlenwald",
+    ]);
+    // A stage names no school type, so one type stays one type.
+    expect(grade.path[0].name).toBe("9. Klasse");
+    // A school place wins over the stage the same atom also has.
+    expect(gradeless.path[0].key).toBe("realschule-ohne-klasse");
+    expect(gradeless.path[0].name).toBe("Realschule: ohne Klasse");
+  });
+
   it("uses the full politics subject name and shared key for official pug bindings", () => {
     const [placement] = deriveSchule(
       [unit("pug", "politik-und-gesellschaft/strukturen", { atomId: "pug" })],
