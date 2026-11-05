@@ -86,3 +86,13 @@ unknown types and broken links.
   must extend the parser first (with tests), not hand-edit around it.
 - Consumers of the bundle outside this repo (an LLM `cat`-ing a file, a
   future central sync service) get plain markdown — no ZAM dependency.
+
+## 2026-11-05 amendment — Preserve curated navigation (#474)
+
+Decision 3's full index regeneration is replaced by an incremental update
+of the written article's row under its type heading. Curated introductions,
+subgroups and unrelated entries must survive an upsert. A type change moves
+only that article's row. Existing logs retain dated filename bullets or
+ZAM's date-heading format; missing navigation files still use ZAM defaults.
+This keeps the validated write path usable for bundles with curated layouts
+without requiring authors to restore their navigation after every write.

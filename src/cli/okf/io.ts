@@ -26,6 +26,7 @@ import {
   isReservedFile,
   renderIndex,
   toCatalogEntry,
+  updateIndex,
   type ValidationResult,
   validateArticle,
 } from "./bundle.js";
@@ -230,7 +231,7 @@ export interface UpsertResult {
 
 /**
  * The sanctioned write path (ADR 2026-07-17 rule 3): validate, write the
- * article, regenerate index.md, append a log.md entry. Returns problems
+ * article, update its index.md row, append a log.md entry. Returns problems
  * instead of writing when validation fails.
  */
 export function upsertArticle(
@@ -255,7 +256,16 @@ export function upsertArticle(
   writeFileSync(target, markdown, "utf8");
 
   const bundle = loadBundle(root);
-  writeFileSync(join(root, "index.md"), renderIndex(bundle.catalog), "utf8");
+  const entry = toCatalogEntry(file, markdown);
+  const indexPath = join(root, "index.md");
+  const index = existsSync(indexPath) ? readFileSync(indexPath, "utf8") : "";
+  writeFileSync(
+    indexPath,
+    index.trim() === ""
+      ? renderIndex(bundle.catalog)
+      : updateIndex(index, entry),
+    "utf8",
+  );
 
   let log = "";
   try {
@@ -263,14 +273,9 @@ export function upsertArticle(
   } catch {
     // first entry creates the log
   }
-  const entry = bundle.catalog.find((e) => e.file === file);
   writeFileSync(
     join(root, "log.md"),
-    appendLog(
-      log,
-      today,
-      `**${created ? "Creation" : "Update"}** — [${entry?.title ?? file}](${file})`,
-    ),
+    appendLog(log, today, { file, title: entry.title, created }),
     "utf8",
   );
   return { validation, entry, created };
@@ -289,7 +294,7 @@ function realPathOfNearest(path: string): string {
   return join(realpathSync.native(existing), ...rest);
 }
 
-/** Whether `dir` holds a bundle ZAM generated: its index.md says so. */
+/** Whether `dir` holds a bundle marked for ZAM's validated write path. */
 export function isZamBundle(dir: string): boolean {
   const index = join(dir, "index.md");
   if (!existsSync(index)) return false;

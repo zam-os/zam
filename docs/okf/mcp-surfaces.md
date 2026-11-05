@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-16T09:00:00.000Z
+timestamp: 2026-11-05T09:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -240,11 +240,27 @@ The model-visible learning tools cover:
 | `zam_okf_catalog` | List articles and conformance problems; `include_log` optionally includes raw `log.md` |
 | `zam_okf_read` | Read one complete article |
 | `zam_okf_audit` | Report Git-backed freshness evidence without writing |
-| `zam_okf_upsert` | Validate and write an article, regenerate `index.md`, and append `log.md` |
+| `zam_okf_upsert` | Validate and write an article, update only its `index.md` row, and add a `log.md` entry in the supported existing format |
 | `zam_okf_read_citation` | Read a repo-contained Markdown citation such as an ADR |
 | `zam_okf_visualize` | Open the searchable reader, article graph, or log |
 | `zam_okf_focused` | Resolve the article currently focused in any connected reader |
 | `zam_okf_import` | Atomically record an agent's finished decomposition as tokens and cards; tokens without a question are parked as drafts (`drafts` in the result) until published |
+
+Upserts maintain only the written article’s index row under its `## <type>`
+heading. An existing row keeps its subgroup when the type is unchanged;
+a changed type moves the row, and new types get a new section. The index’s
+frontmatter, title, introduction, other subgroups and other articles’ wording
+stay intact. Missing or empty indexes use ZAM’s generated layout.
+
+Logs keep either ZAM’s `## YYYY-MM-DD` groups with Creation/Update links or
+dated filename bullets such as `- YYYY-MM-DD — file.md: created (note)`.
+Dated bullets retain their bullet marker, date separator, filename code
+quotes and chronological direction. Existing notes and line endings are
+preserved; new entries say `created` or `updated` without copying old notes.
+Repeated writes of the same action on the same day add no duplicate entry.
+Missing or empty logs use ZAM’s date-heading format. A nonempty log without
+a recognized date format receives a dated filename bullet, without adding
+date headings.
 
 ## Bundle resolution and containment
 
@@ -629,6 +645,9 @@ A context-bar learner change reloads the persisted mode before the next queue
 is painted, so one learner's preference cannot bleed into another's session.
 
 # Citations
+
+- Code: `src/cli/okf/bundle.ts`, `src/cli/okf/io.ts`
+- Tests: `tests/cli/okf-bundle.test.ts`, `tests/cli/okf-conformance.test.ts`, `tests/cli/okf-confinement.test.ts`
 
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)

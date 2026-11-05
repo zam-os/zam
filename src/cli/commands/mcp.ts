@@ -2375,7 +2375,7 @@ export function createMcpServer(
     "zam_okf_upsert",
     {
       description:
-        "Create or update an OKF knowledge-base article through the validated write path: checks the frontmatter contract, regenerates index.md, and appends the log.md entry. Never edit bundle files directly.",
+        "Create or update an OKF knowledge-base article through the validated write path: checks the frontmatter contract, updates only its index.md entry, and adds a log.md entry using the bundle's dated-bullet or date-heading format. Preserves other index text; missing navigation files use ZAM defaults. Never edit bundle files directly.",
       inputSchema: {
         bundle_dir: okfBundleDirSchema,
         file: z
