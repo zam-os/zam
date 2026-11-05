@@ -28,6 +28,11 @@ export interface AcademyCatalogEntry {
   cellUrl: string;
   /** SHA-256 of the cell file's bytes, lowercase hex. */
   sha256: string;
+  /**
+   * A public preview: no teacher has reviewed its content yet. Every surface
+   * that offers the cell says so.
+   */
+  preview: boolean;
 }
 
 export interface AcademyCatalog {
@@ -65,6 +70,10 @@ export function parseAcademyCatalog(raw: unknown): AcademyCatalog {
     if (typeof items !== "number" || !Number.isInteger(items) || items < 0) {
       throw new Error(`${where}: invalid item count`);
     }
+    const preview = value.preview === undefined ? false : value.preview;
+    if (typeof preview !== "boolean") {
+      throw new Error(`${where}: preview must be true or false`);
+    }
     const language = value.language;
     return {
       id,
@@ -76,6 +85,7 @@ export function parseAcademyCatalog(raw: unknown): AcademyCatalog {
       appUrl: academyUrl(value.app, `${where}: app`),
       cellUrl: academyUrl(value.cell, `${where}: cell`),
       sha256,
+      preview,
     };
   });
   return { schema: 1, cells };

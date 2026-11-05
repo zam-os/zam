@@ -2,7 +2,11 @@ import { createHash } from "node:crypto";
 import { readdirSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-import { BUNDLED_TILES } from "../../src/kernel/index.js";
+import {
+  BUNDLED_CELLS,
+  BUNDLED_TILES,
+  listBundledCells,
+} from "../../src/kernel/index.js";
 
 /**
  * ADR 2026-10-19 Decision 1, plan Phase 6: zam-os/zam-academy is the source
@@ -19,6 +23,7 @@ interface LockEntry {
   version: string;
   sha256: string;
   file: string;
+  preview?: true;
 }
 
 const lock = JSON.parse(
@@ -38,6 +43,28 @@ describe("bundled ZAM Academy cells", () => {
       expect(tile.tile_id).toBe(entry.id);
       expect(String(tile.version)).toBe(entry.version);
       expect(BUNDLED_TILES[entry.id], `${entry.id} is bundled`).toBeDefined();
+    }
+  });
+
+  it("marks exactly the previews the lock records as previews", () => {
+    const recorded = lock
+      .filter((entry) => entry.preview === true)
+      .map((entry) => entry.id)
+      .sort();
+    // The Grade 4 cells have no teacher review yet. Lifting this is a catalog
+    // change in zam-os/zam-academy, followed by `npm run academy:sync`.
+    expect(recorded).toEqual([
+      "zam-academy:deutsch-grundschule-4",
+      "zam-academy:hsu-grundschule-4",
+      "zam-academy:mathematik-grundschule-4",
+    ]);
+    for (const cells of [BUNDLED_CELLS, listBundledCells()]) {
+      expect(
+        cells
+          .filter((cell) => cell.preview)
+          .map((cell) => cell.id)
+          .sort(),
+      ).toEqual(recorded);
     }
   });
 

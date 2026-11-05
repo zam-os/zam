@@ -57,7 +57,8 @@
     "id": "zam-academy:deutsch-grundschule-4",
     "version": "2026.11.6",
     "sha256": "3a191cd260b3083a193e06385bc014b4d4401feea98f1601321fa4702ba7f492",
-    "file": "zam-academy-deutsch-grundschule-4-kvt.json"
+    "file": "zam-academy-deutsch-grundschule-4-kvt.json",
+    "preview": true
   },
   {
     "id": "zam-academy:deutsch-realschule-10",
@@ -141,7 +142,8 @@
     "id": "zam-academy:hsu-grundschule-4",
     "version": "2026.11.5",
     "sha256": "727d74773b04db32750ccd0c744e889deba9a5d62480cf206b465a02019398bb",
-    "file": "zam-academy-hsu-grundschule-4-kvt.json"
+    "file": "zam-academy-hsu-grundschule-4-kvt.json",
+    "preview": true
   },
   {
     "id": "zam-academy:informatik-realschule-10",
@@ -159,7 +161,8 @@
     "id": "zam-academy:mathematik-grundschule-4",
     "version": "2026.11.16",
     "sha256": "edab06ec0a09c9430803464b6c5d4d64e00e3779705c67a3707867d5806b90d5",
-    "file": "zam-academy-mathematik-grundschule-4-kvt.json"
+    "file": "zam-academy-mathematik-grundschule-4-kvt.json",
+    "preview": true
   },
   {
     "id": "zam-academy:mathematik-realschule-10",

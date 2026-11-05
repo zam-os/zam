@@ -1268,6 +1268,8 @@ export interface AtlasPlaceResponse {
     id: string;
     title: string;
     gradeLabel: string;
+    /** No teacher has reviewed its content yet. */
+    preview: boolean;
     installed: boolean;
     enrolled: boolean;
     cardCount: number;

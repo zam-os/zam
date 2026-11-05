@@ -30,6 +30,24 @@ describe("parseAcademyCatalog (ADR 2026-10-19 D2, D4)", () => {
     });
   });
 
+  it("reads preview, and an entry without it is none", () => {
+    const parse = (cell: object) =>
+      parseAcademyCatalog({ schema: 1, cells: [cell] }).cells[0].preview;
+    expect(parse({ ...entry, preview: true })).toBe(true);
+    expect(parse({ ...entry, preview: false })).toBe(false);
+    expect(parse(entry)).toBe(false);
+  });
+
+  it("refuses a preview that is no boolean", () => {
+    for (const preview of ["true", 1, null, {}]) {
+      expect(
+        () =>
+          parseAcademyCatalog({ schema: 1, cells: [{ ...entry, preview }] }),
+        String(preview),
+      ).toThrow(/preview/);
+    }
+  });
+
   it("never lets an entry name another host", () => {
     for (const cell of [
       "https://evil.example/cell.json",

@@ -34,6 +34,7 @@ function cell(overrides: Partial<AcademyCellRow> = {}): AcademyCellRow {
     held: false,
     heldVersion: null,
     newer: false,
+    preview: false,
     ...overrides,
   };
 }
@@ -54,6 +55,21 @@ describe("academy import dialog lifecycle", () => {
     vi.stubGlobal("window", dom.window);
     return dom;
   }
+
+  it("labels a preview cell's row, and no other", () => {
+    mount();
+    setCurrentLocale("de");
+    const status = new AcademyElement("p") as unknown as HTMLElement;
+    const labels = (preview: boolean) =>
+      (academyRow(cell({ preview }), {}, status) as unknown as AcademyElement)
+        .all("span")
+        .filter((span) => span.className === "academy-preview-label")
+        .map((span) => span.textContent);
+    expect(labels(true)).toEqual([
+      "Vorschau · noch nicht von einer Lehrkraft geprüft",
+    ]);
+    expect(labels(false)).toEqual([]);
+  });
 
   it("removes a mismatched version's bar before retry, leaving just one new bar", async () => {
     mount();

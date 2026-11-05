@@ -78,7 +78,11 @@ import {
   fetchMobileAcademyCatalog,
   fetchMobileAcademyCell,
 } from "./academy.js";
-import { type AcademyImportRow, completeAcademyImportRow } from "./academy-import-view.js";
+import {
+  type AcademyImportRow,
+  academyPreviewLabel,
+  completeAcademyImportRow,
+} from "./academy-import-view.js";
 import {
   assessPrecondition,
   getPreconditionCandidates,
@@ -4740,7 +4744,9 @@ function renderCurriculumCells(cells: BundledCellStatus[]): void {
     action.addEventListener("click", () => {
       void enrolCurriculumCell(cell, action);
     });
-    card.append(title, meta, description, action);
+    card.append(title);
+    if (cell.preview) card.append(academyPreviewLabel());
+    card.append(meta, description, action);
     curriculumOptions.appendChild(card);
   }
 }
@@ -5011,6 +5017,12 @@ async function renderAcademyCells(): Promise<void> {
       ? (statuses.find((cell) => cell.id === id)?.enrolled ?? false)
       : heldVersion !== null;
     const newer = held && compareTileVersions(version, heldVersion) === 1;
+    // Either source is enough, as in the CLI's `academy-list`: a label one
+    // release too long does no harm, a missing one says the content was
+    // reviewed.
+    const preview =
+      entry?.preview === true ||
+      statuses.find((cell) => cell.id === id)?.preview === true;
 
     const card = document.createElement("section");
     card.className = "curriculum-cell-offer stack";
@@ -5020,7 +5032,9 @@ async function renderAcademyCells(): Promise<void> {
     const meta = document.createElement("p");
     meta.className = "t-footnote";
     meta.textContent = tf("academy_row_meta", { items, version });
-    card.append(title, meta);
+    card.append(title);
+    if (preview) card.append(academyPreviewLabel());
+    card.append(meta);
     const error = entryAhead ? failed.get(id) : undefined;
     if (error) {
       const note = document.createElement("p");
@@ -5202,7 +5216,9 @@ function renderBundledCells(cells: BundledCellStatus[]): void {
     action.disabled = true;
     action.textContent = t("learning_path_active");
 
-    card.append(title, grade, description, action);
+    card.append(title);
+    if (cell.preview) card.append(academyPreviewLabel());
+    card.append(grade, description, action);
     bundledCellsList.appendChild(card);
   }
 }

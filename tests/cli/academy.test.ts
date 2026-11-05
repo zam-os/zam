@@ -52,7 +52,11 @@ interface Route {
 }
 
 /** A fake academy.zam-os.org; counts every request. */
-function fakeAcademy(tiles: BundledTile[], extra: Record<string, Route> = {}) {
+function fakeAcademy(
+  tiles: BundledTile[],
+  extra: Record<string, Route> = {},
+  previews: string[] = [],
+) {
   const routes: Record<string, Route> = { ...extra };
   const cells = tiles.map((tile) => {
     const app = tile.tile_id.split(":")[1];
@@ -68,6 +72,7 @@ function fakeAcademy(tiles: BundledTile[], extra: Record<string, Route> = {}) {
       app: `/${app}/`,
       cell: `/${app}/cell.json`,
       sha256: sha(body),
+      ...(previews.includes(tile.tile_id) ? { preview: true } : {}),
     };
   });
   routes["/catalog.json"] ??= {
@@ -392,6 +397,32 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     expect(
       readFileSync(join(academyCacheDir(), "catalog.json"), "utf8"),
     ).toContain("zam-academy:nur-katalog");
+  });
+
+  it("marks a preview from the catalog or from the bundle, offline too", async () => {
+    const grade4 = "zam-academy:hsu-grundschule-4";
+    const academy = fakeAcademy([catalogOnly(), UML], {}, [
+      "zam-academy:nur-katalog",
+    ]);
+    const list = await academyListHandler(db, {
+      user: "learner",
+      fetch: academy.fetch,
+    });
+    const preview = (cells: typeof list.cells, id: string) =>
+      cells.find((cell) => cell.id === id)?.preview;
+    expect(preview(list.cells, "zam-academy:nur-katalog")).toBe(true);
+    expect(preview(list.cells, "zam-academy:uml")).toBe(false);
+    // This catalog does not list it, but the release bundled it as a preview.
+    expect(preview(list.cells, grade4)).toBe(true);
+
+    // The cached catalog still knows the cell only the catalog has.
+    const cached = await academyListHandler(db, {
+      user: "learner",
+      fetch: offline,
+    });
+    expect(cached.offline).toBe(true);
+    expect(preview(cached.cells, "zam-academy:nur-katalog")).toBe(true);
+    expect(preview(cached.cells, grade4)).toBe(true);
   });
 
   it("answers from the cache, or the bundled cells, when offline", async () => {

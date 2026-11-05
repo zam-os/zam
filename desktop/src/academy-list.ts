@@ -25,6 +25,7 @@ export interface AcademyCellRow {
   held: boolean;
   heldVersion: string | null;
   newer: boolean;
+  preview: boolean;
 }
 
 export interface AcademyListing {
@@ -89,6 +90,14 @@ export function isAcademyCellId(id: string): boolean {
 /** "26 Karten · Version 2026.10.1" */
 export function academyMetaText(cell: AcademyCellRow): string {
   return tf("academy_row_meta", { items: cell.items, version: cell.version });
+}
+
+/** „Vorschau · …“ on a cell whose content no teacher has reviewed yet. */
+export function academyPreviewLabel(): HTMLElement {
+  const label = document.createElement("span");
+  label.className = "academy-preview-label";
+  label.textContent = t("academy_preview");
+  return label;
 }
 
 export async function fetchAcademyCells(): Promise<AcademyListing> {
@@ -324,7 +333,9 @@ export function academyRow(
   }
   buttons.append(take);
 
-  row.append(name, description, meta, buttons);
+  row.append(name);
+  if (cell.preview) row.append(academyPreviewLabel());
+  row.append(description, meta, buttons);
   return row;
 }
 

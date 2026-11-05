@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-11-04T21:53:08Z
+timestamp: 2026-11-05T14:22:22Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -630,6 +630,14 @@ the cells and keeps its generic import, so an unfinished preview does not stand
 in for the whole subject.
 ZAM has no earlier Grundschule cell, so they declare neither `replaces` nor
 `retired_items`, and enrolling creates only unlearned cards.
+
+A preview is marked `preview: true` in the Academy catalog. A cell file does not
+say so and is copied byte for byte, so `npm run academy:sync` records the flag in
+`zam-academy-cells.lock.json`, and bundled cells read it from there. Studio and
+Mobile label such a cell („Vorschau · noch nicht von einer Lehrkraft geprüft“)
+everywhere they list one: the Academy list, the atlas import dialog, the curriculum
+offer and the active learning paths. The Academy list shows the label if the catalog
+or the bundle says preview, so it ends with the next sync after the catalog lifts it.
 
 Different cells may reuse the same atom and some of the same practice items.
 Installation status therefore checks every declared atom and item id, while

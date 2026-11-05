@@ -1,6 +1,9 @@
 // Auto-generated bundled cells library
 // Generated on: 2026-08-16T05:39:43.013Z
 
+import academyCellsLock from "../../../tests/fixtures/curriculum/zam-academy-cells.lock.json" with {
+  type: "json",
+};
 import type { Database } from "../db/types.js";
 import {
   hasPendingCurriculumRetirements,
@@ -765,6 +768,8 @@ export interface BundledCellInfo {
   inScopeAtomIds: string[];
   /** Curriculum positions this cell covers, used by every discovery surface. */
   curriculumScopes: CurriculumScope[];
+  /** A public preview: no teacher has reviewed its content yet. */
+  preview: boolean;
 }
 
 export interface BundledCellStatus extends BundledCellInfo {
@@ -781,6 +786,17 @@ export interface BundledCellEnrolResult {
   cardsReused: number;
   alreadyEnrolled: boolean;
 }
+
+/**
+ * The academy cells this release bundles as previews. A cell file does not say
+ * so, and it is copied byte for byte, so `npm run academy:sync` records the
+ * catalog's flag in the lock next to it.
+ */
+const BUNDLED_PREVIEW_IDS: ReadonlySet<string> = new Set(
+  academyCellsLock
+    .filter((entry) => entry.preview === true)
+    .map((entry) => entry.id),
+);
 
 // --- begin bundled-tile-map ---
 export const BUNDLED_TILES: Record<string, BundledTile> = {
@@ -1368,6 +1384,7 @@ export function bundledCellInfoForTile(tile: BundledTile): BundledCellInfo {
     atomCount: override?.atomCount ?? tile.atoms.length,
     inScopeAtomIds: override?.inScopeAtomIds || tile.atoms.map((a) => a.id),
     curriculumScopes: curriculumScopesForTile(tile),
+    preview: BUNDLED_PREVIEW_IDS.has(tile.tile_id),
   };
 }
 
@@ -1400,6 +1417,7 @@ export function listBundledCells(): (BundledCellInfo & {
       atomCount: override?.atomCount ?? t.atoms.length,
       inScopeAtomIds: override?.inScopeAtomIds || t.atoms.map((a) => a.id),
       curriculumScopes: curriculumScopesForTile(t),
+      preview: BUNDLED_PREVIEW_IDS.has(t.tile_id),
       atoms: t.atoms,
     };
   });

@@ -111,6 +111,7 @@ describe("cell precedence inside the wizard", () => {
     description: "…",
     atomCount: 4,
     enrolled: false,
+    preview: false,
   };
 
   it("offers the covering cells when the answer says so", () => {

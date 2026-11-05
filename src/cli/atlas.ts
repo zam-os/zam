@@ -312,6 +312,7 @@ export interface AtlasPlaceCell {
   id: string;
   title: string;
   gradeLabel: string;
+  preview: boolean;
   installed: boolean;
   enrolled: boolean;
   cardCount: number;
@@ -452,6 +453,7 @@ export async function atlasPlace(
       id: cell.id,
       title: cell.title,
       gradeLabel: cell.gradeLabel,
+      preview: cell.preview,
       ...status,
     });
   }

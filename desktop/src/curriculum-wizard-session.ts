@@ -84,6 +84,8 @@ export interface BundledCellOffer {
   description: string;
   atomCount: number;
   enrolled: boolean;
+  /** No teacher has reviewed its content yet. */
+  preview: boolean;
 }
 
 /**
