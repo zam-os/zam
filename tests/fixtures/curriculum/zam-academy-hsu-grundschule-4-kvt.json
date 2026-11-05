@@ -1,9 +1,9 @@
 {
 	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
 	"tile_id": "zam-academy:hsu-grundschule-4",
-	"version": "2026.11.4",
+	"version": "2026.11.5",
 	"title": "Heimat- und Sachunterricht 4 Grundschule: Lottas Bayern-Forscherbuch",
-	"description": "Zwanzig kindgerechte Entdeckerstationen und sechzig Lernkarten zu allen sechs Lernbereichen des bayerischen LehrplanPLUS Heimat- und Sachunterricht 3/4: Demokratie und Gesellschaft, Körper und Gesundheit, Natur und Umwelt, Zeit und Wandel, Raum und Mobilität sowie Technik und Kultur. Jede Station wird im Forscherbuch einmal erkundet und anschließend in ZAM wiederholt. Vorschau; fachliche Freigabe durch eine Grundschullehrkraft und Lehrervideos stehen noch aus.",
+	"description": "Zwanzig kindgerechte Entdeckerstationen und einundsechzig Lernkarten zu allen sechs Lernbereichen des bayerischen LehrplanPLUS Heimat- und Sachunterricht 3/4: Demokratie und Gesellschaft, Körper und Gesundheit, Natur und Umwelt, Zeit und Wandel, Raum und Mobilität sowie Technik und Kultur. Jede Station wird im Forscherbuch einmal erkundet und anschließend in ZAM wiederholt. Vorschau; fachliche Freigabe durch eine Grundschullehrkraft und Lehrervideos stehen noch aus.",
 	"publisher": "ZAM Academy",
 	"sources": [
 		{
@@ -156,7 +156,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Beide Seiten gehen friedlich einen Schritt aufeinander zu und einigen sich fair.",
-							"Die lautere Gruppe setzt ihren Willen komplett alleine durch."
+							"Die lautere Gruppe setzt ihren Willen durch, und die anderen Kinder müssen sich fügen."
 						],
 						"correct_index": 0
 					},
@@ -269,7 +269,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Der Gemeinderat beschließt; die Bürgermeisterin oder der Bürgermeister leitet das Rathaus.",
-							"Der Bürgermeister entscheidet alles allein ohne Abstimmung im Rat."
+							"Die Bürgermeisterin oder der Bürgermeister beschließt allein; der Gemeinderat führt das Rathaus."
 						],
 						"correct_index": 0
 					},
@@ -348,7 +348,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Teure Marken in Augenhöhe, Quengelware an der Kasse und bunte Werbeversprechen.",
-							"Die günstigsten Grundnahrungsmittel liegen immer direkt am Kassenband."
+							"Die günstigsten Waren stehen in Augenhöhe, an der Kasse liegen nur Grundnahrungsmittel."
 						],
 						"correct_index": 0
 					},
@@ -562,7 +562,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Fruchtwasser polstert Stöße ab; Plazenta und Nabelschnur liefern Sauerstoff und Nahrung.",
-							"Das Baby wächst im Magen heran und atmet dort bereits Luft mit der Lunge."
+							"Eine Luftschicht polstert Stöße ab; das Kind atmet selbst mit der Lunge und schluckt Nahrung."
 						],
 						"correct_index": 0
 					},
@@ -590,7 +590,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Eine weibliche Eizelle und eine männliche Samenzelle verschmelzen miteinander.",
-							"Ein fertiges Baby teilt sich aus einer Hautzelle am Arm."
+							"Eine weibliche Eizelle wächst ganz ohne männliche Samenzelle von allein zum Kind heran."
 						],
 						"correct_index": 0
 					},
@@ -697,7 +697,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Wenn sie bewusstlos ist, aber normal atmet – damit die Atemwege frei bleiben.",
-							"Bei jedem kleinen Kratzer am Finger einer wachen Person."
+							"Wenn sie wach ist und nur am Finger blutet – damit die Wunde schneller heilt."
 						],
 						"correct_index": 0
 					},
@@ -889,7 +889,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Moosschicht, Krautschicht, Strauchschicht und oben die Baumschicht.",
-							"Baumschicht, Wolkenschicht, Grasschicht und Steinschicht."
+							"Moosschicht, Strauchschicht, Krautschicht und oben die Baumschicht."
 						],
 						"correct_index": 0
 					},
@@ -1030,7 +1030,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Kaulquappen atmen im Wasser mit Kiemen, erwachsene Frösche mit Lunge und feuchter Haut.",
-							"Kaulquappen haben schon Lungen und verlieren sie als erwachsener Frosch."
+							"Kaulquappen atmen im Wasser mit der Lunge, erwachsene Frösche mit Kiemen und feuchter Haut."
 						],
 						"correct_index": 0
 					},
@@ -1109,7 +1109,7 @@
 						"type": "binary_choice",
 						"options": [
 							"0 = Bio-Haltung, 1 = Freilandhaltung, 2 = Bodenhaltung, 3 = Käfighaltung.",
-							"0 = Käfighaltung, 1 = Bodenhaltung, 2 = Freiland, 3 = Bio-Haltung."
+							"0 = Käfighaltung, 1 = Bodenhaltung, 2 = Freilandhaltung, 3 = Bio-Haltung."
 						],
 						"correct_index": 0
 					},
@@ -1137,7 +1137,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Das Ei stammt aus dem Herkunftsland Deutschland und dem Bundesland Bayern.",
-							"Das Ei ist nur bis zum neunten Dezember im Kühlschrank haltbar."
+							"Das Ei ist bis zum 9. Dezember haltbar und stammt von einem deutschen Bauernhof."
 						],
 						"correct_index": 0
 					},
@@ -1329,7 +1329,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Brennbarer Stoff, Sauerstoff und das Erreichen der Zündtemperatur.",
-							"Brennbarer Stoff, Kohlenstoffdioxid und eisige Frostkälte."
+							"Brennbarer Stoff, Kohlenstoffdioxid und das Erreichen der Zündtemperatur."
 						],
 						"correct_index": 0
 					},
@@ -1357,7 +1357,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Wasser verdampft schlagartig als Fettexplosion; ein Deckel erstickt die Flamme.",
-							"Wasser lässt heißes Speiseöl sofort friedlich zu festem Eis erstarren."
+							"Wasser verdünnt das Öl; danach schmeckt das Essen aus der Pfanne viel zu fade."
 						],
 						"correct_index": 0
 					},
@@ -1543,7 +1543,7 @@
 						"type": "binary_choice",
 						"options": [
 							"1835 liegt im 19. Jahrhundert; ein Jahrzehnt hat 10, ein Jahrhundert 100 Jahre.",
-							"1835 liegt im 18. Jahrhundert; ein Jahrhundert dauert genau 1 000 Jahre."
+							"1835 liegt im 18. Jahrhundert; ein Jahrzehnt hat 100, ein Jahrhundert 1 000 Jahre."
 						],
 						"correct_index": 0
 					},
@@ -1571,7 +1571,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Sachquellen, Bildquellen, schriftliche Textquellen und Berichte von Zeitzeugen.",
-							"Nur neu gedruckte Schulbücher von heute gelten als historische Quellen."
+							"Schulbücher, Lexika, aktuelle Internetseiten und Erklärfilme, die heute neu erscheinen."
 						],
 						"correct_index": 0
 					},
@@ -1656,7 +1656,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Draisine 1817 → Hochrad um 1870 → Niederrad mit Kette und Luftreifen → modernes Rad.",
-							"Erst E-Bike mit Motor → dann Hochrad → zuletzt hölzerne Draisine."
+							"Hochrad 1817 → Draisine um 1870 → Niederrad mit Kette und Luftreifen → modernes Rad."
 						],
 						"correct_index": 0
 					},
@@ -1763,7 +1763,7 @@
 						"type": "binary_choice",
 						"options": [
 							"N, NO, O, SO, S, SW, W, NW; die Magnetnadel des Kompasses zeigt nach Norden.",
-							"N, W, S, O im Uhrzeigersinn; die Kompassnadel zeigt immer zur Sonne."
+							"N, NW, W, SW, S, SO, O, NO; die Magnetnadel des Kompasses zeigt zur Sonne hin."
 						],
 						"correct_index": 0
 					},
@@ -1791,7 +1791,7 @@
 						"type": "binary_choice",
 						"options": [
 							"1 cm auf der Karte entspricht 25 000 cm, also 250 m in der Wirklichkeit.",
-							"1 cm auf der Karte entspricht 25 000 km in der Wirklichkeit."
+							"1 cm auf der Karte entspricht 25 000 m, also 25 km in der Wirklichkeit."
 						],
 						"correct_index": 0
 					},
@@ -1876,7 +1876,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Oberbayern, Niederbayern, Oberpfalz, Ober-, Mittel-, Unterfranken und Schwaben.",
-							"Oberbayern, Südbayern, Ostfranken, Thüringen und Tirol."
+							"Oberbayern, Mittelbayern, Oberpfalz, Ober-, Unter-, Ostfranken und das Allgäu."
 						],
 						"correct_index": 0
 					},
@@ -1983,7 +1983,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Zwei unabhängige Bremsen, Klingel, Licht vorn und hinten sowie alle Reflektoren.",
-							"Eine einzige Bremse, Gepäckkorb und elektronischer Tacho genügen völlig."
+							"Eine starke Bremse, Gepäckkorb, Tacho und Licht vorn; Reflektoren sind freiwillig."
 						],
 						"correct_index": 0
 					},
@@ -2011,7 +2011,7 @@
 						"type": "binary_choice",
 						"options": [
 							"Umschauen, Handzeichen links, einordnen, Vorfahrt achten, umschauen, weiter Bogen, rechts.",
-							"Erst zur Mitte ziehen, danach kurz hinschauen und eng die Kurve schneiden."
+							"Handzeichen links, umschauen, einordnen, Vorfahrt achten, weiter Bogen, umschauen, rechts."
 						],
 						"correct_index": 0
 					},
@@ -2151,6 +2151,34 @@
 						{
 							"text": "In der Fabrik ist die Arbeit immer abwechslungsreicher als im Handwerk.",
 							"reason": "Vertauscht die Arbeit: Bei der Massenproduktion wiederholen sich Arbeitsschritte oft und können eintönig werden, im Handwerk sind sie abwechslungsreicher."
+						}
+					]
+				},
+				{
+					"id": "01M6P17RCW3CD9EM97B1XSFA38",
+					"slug": "hsu4-werkzeuge-maschinen-produktion-4",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Kraft drückt das Wasser in der Salatschleuder nach außen?",
+					"concept": "Die Fliehkraft: Beim schnellen Drehen drückt sie die Wassertropfen vom Mittelpunkt weg.",
+					"source_link": "https://academy.zam-os.org/hsu-grundschule-4/#lesson=werkzeuge-maschinen-produktion",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Fliehkraft: Beim schnellen Drehen drückt sie die Wassertropfen vom Mittelpunkt weg.",
+							"Die Muskelkraft: Beim schnellen Kurbeln presst die Hand das Wasser direkt aus dem Salat."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Die Zahnräder im Deckel saugen das Wasser nach oben aus dem Salat heraus.",
+							"reason": "Die Zahnräder machen die Drehung nur schneller; sie saugen kein Wasser an."
+						},
+						{
+							"text": "Die Luft im Korb wird beim Drehen warm, und das Wasser verdunstet dadurch.",
+							"reason": "Verwechselt Schleudern mit Trocknen durch Wärme; die Tropfen fliegen flüssig nach außen."
 						}
 					]
 				}

@@ -53,9 +53,9 @@ const CELLS = [
     id: "zam-academy:hsu-grundschule-4",
     app: "hsu-grundschule-4",
     subject: "hsu",
-    version: "2026.11.4",
+    version: "2026.11.5",
     atoms: 20,
-    items: 60,
+    items: 61,
   },
 ];
 

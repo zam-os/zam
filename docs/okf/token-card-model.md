@@ -617,7 +617,7 @@ teacher videos are open. Their competences are practised in part or with
 unreviewed depth: Mathematik and HSU map every competence to a lesson or station,
 and Deutsch practises 69 of 116 in the app and leaves 47 to practice outside it,
 and rates no free text. The versions are 2026.11.16 (43 atoms, 159 items),
-2026.11.6 (45 atoms, 135 items) and 2026.11.4 (20 atoms, 60 items). They
+2026.11.6 (45 atoms, 135 items) and 2026.11.5 (20 atoms, 61 items). They
 bind their Academy stations and, also under the provider `zam-academy`, their
 school place (`grundschule`, grade 4, plain subject), not `lehrplanplus-bayern`.
 The Schule lens therefore shows them under "4. Klasse". A Grundschule grade
