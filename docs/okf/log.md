@@ -2,6 +2,7 @@
 
 ## 2026-11-05
 
+- **Update** — [Learning Cards from Photos and Files](material-import.md)
 - **Update** — [Token and Card Model](token-card-model.md)
 
 ## 2026-11-04

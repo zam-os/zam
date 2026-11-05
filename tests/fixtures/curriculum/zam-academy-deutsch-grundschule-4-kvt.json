@@ -1,7 +1,7 @@
 {
 	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
 	"tile_id": "zam-academy:deutsch-grundschule-4",
-	"version": "2026.11.5",
+	"version": "2026.11.6",
 	"title": "Deutsch 4 Grundschule: Tintos Wörterstadt",
 	"description": "45 Lektionen zum Untersuchen von Sprache, zum richtigen Schreiben, zum Lesen und zum Schreiben eigener Texte: Wortarten, vier Fälle, Zeitformen, Wortbildung, Satzarten, wörtliche Rede, Satzglieder, Bindewörter, Rechtschreibstrategien und der verbindliche Grundwortschatz 3/4, Textarten, Lesestrategien, Sachtexte, Geschichten, Gedichte und Medien sowie Ideen sammeln, Erzählen, Beschreiben, Berichten, Begründen und Überarbeiten, Wirkung von Sprache und Sprachen im Umfeld. Vorschau; fachliche Freigabe durch eine Grundschullehrkraft und Lehrervideos fehlen. Freie Texte bewertet die App nicht; Sprechen bleibt Praxis außerhalb.",
 	"publisher": "ZAM Academy",
@@ -52,6 +52,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "woerterwerkstatt",
 					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
 				}
@@ -132,6 +140,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "woerterwerkstatt",
 					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
 				}
 			],
 			"practice_items": [
@@ -204,6 +220,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "woerterwerkstatt",
 					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
 				}
 			],
 			"practice_items": [
@@ -274,6 +298,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "woerterwerkstatt",
 					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
 				}
@@ -354,6 +386,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "woerterwerkstatt",
 					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
 				}
 			],
 			"practice_items": [
@@ -424,6 +464,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "woerterwerkstatt",
 					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
 				}
@@ -504,6 +552,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "woerterwerkstatt",
 					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
 				}
 			],
 			"practice_items": [
@@ -582,6 +638,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "woerterwerkstatt",
 					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
 				}
 			],
 			"practice_items": [
@@ -654,6 +718,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "woerterwerkstatt",
 					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "woerterwerkstatt",
+					"topic_title": "Wörterwerkstatt: Wortarten und Wortbildung"
 				}
 			],
 			"practice_items": [
@@ -724,6 +796,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "satzbahnhof",
+					"topic_title": "Satzbahnhof: Sätze untersuchen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "satzbahnhof",
 					"topic_title": "Satzbahnhof: Sätze untersuchen"
 				}
@@ -804,6 +884,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "satzbahnhof",
 					"topic_title": "Satzbahnhof: Sätze untersuchen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "satzbahnhof",
+					"topic_title": "Satzbahnhof: Sätze untersuchen"
 				}
 			],
 			"practice_items": [
@@ -874,6 +962,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "satzbahnhof",
+					"topic_title": "Satzbahnhof: Sätze untersuchen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "satzbahnhof",
 					"topic_title": "Satzbahnhof: Sätze untersuchen"
 				}
@@ -959,6 +1055,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "satzbahnhof",
 					"topic_title": "Satzbahnhof: Sätze untersuchen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "satzbahnhof",
+					"topic_title": "Satzbahnhof: Sätze untersuchen"
 				}
 			],
 			"practice_items": [
@@ -1042,6 +1146,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "satzbahnhof",
 					"topic_title": "Satzbahnhof: Sätze untersuchen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "satzbahnhof",
+					"topic_title": "Satzbahnhof: Sätze untersuchen"
 				}
 			],
 			"practice_items": [
@@ -1118,6 +1230,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "satzbahnhof",
+					"topic_title": "Satzbahnhof: Sätze untersuchen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "satzbahnhof",
 					"topic_title": "Satzbahnhof: Sätze untersuchen"
 				}
@@ -1198,6 +1318,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "satzbahnhof",
 					"topic_title": "Satzbahnhof: Sätze untersuchen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "satzbahnhof",
+					"topic_title": "Satzbahnhof: Sätze untersuchen"
 				}
 			],
 			"practice_items": [
@@ -1268,6 +1396,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "detektivbuero",
+					"topic_title": "Detektivbüro: Richtig schreiben"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "detektivbuero",
 					"topic_title": "Detektivbüro: Richtig schreiben"
 				}
@@ -1348,6 +1484,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "detektivbuero",
 					"topic_title": "Detektivbüro: Richtig schreiben"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "detektivbuero",
+					"topic_title": "Detektivbüro: Richtig schreiben"
 				}
 			],
 			"practice_items": [
@@ -1424,6 +1568,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "detektivbuero",
+					"topic_title": "Detektivbüro: Richtig schreiben"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "detektivbuero",
 					"topic_title": "Detektivbüro: Richtig schreiben"
 				}
@@ -1504,6 +1656,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "detektivbuero",
 					"topic_title": "Detektivbüro: Richtig schreiben"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "detektivbuero",
+					"topic_title": "Detektivbüro: Richtig schreiben"
 				}
 			],
 			"practice_items": [
@@ -1580,6 +1740,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "detektivbuero",
+					"topic_title": "Detektivbüro: Richtig schreiben"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "detektivbuero",
 					"topic_title": "Detektivbüro: Richtig schreiben"
 				}
@@ -1665,6 +1833,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "detektivbuero",
 					"topic_title": "Detektivbüro: Richtig schreiben"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "detektivbuero",
+					"topic_title": "Detektivbüro: Richtig schreiben"
 				}
 			],
 			"practice_items": [
@@ -1746,6 +1922,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "detektivbuero",
+					"topic_title": "Detektivbüro: Richtig schreiben"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "detektivbuero",
 					"topic_title": "Detektivbüro: Richtig schreiben"
 				}
@@ -1834,6 +2018,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "woerterschatz",
+					"topic_title": "Wörterschatz: Grundwortschatz 3/4"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "woerterschatz",
 					"topic_title": "Wörterschatz: Grundwortschatz 3/4"
 				}
@@ -1929,6 +2121,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "woerterschatz",
 					"topic_title": "Wörterschatz: Grundwortschatz 3/4"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "woerterschatz",
+					"topic_title": "Wörterschatz: Grundwortschatz 3/4"
 				}
 			],
 			"practice_items": [
@@ -2007,6 +2207,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "woerterschatz",
 					"topic_title": "Wörterschatz: Grundwortschatz 3/4"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "woerterschatz",
+					"topic_title": "Wörterschatz: Grundwortschatz 3/4"
 				}
 			],
 			"practice_items": [
@@ -2077,6 +2285,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "lesewerkstatt",
+					"topic_title": "Lesewerkstatt: Texte verstehen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "lesewerkstatt",
 					"topic_title": "Lesewerkstatt: Texte verstehen"
 				}
@@ -2157,6 +2373,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "lesewerkstatt",
 					"topic_title": "Lesewerkstatt: Texte verstehen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "lesewerkstatt",
+					"topic_title": "Lesewerkstatt: Texte verstehen"
 				}
 			],
 			"practice_items": [
@@ -2233,6 +2457,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "lesewerkstatt",
+					"topic_title": "Lesewerkstatt: Texte verstehen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "lesewerkstatt",
 					"topic_title": "Lesewerkstatt: Texte verstehen"
 				}
@@ -2313,6 +2545,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "lesewerkstatt",
 					"topic_title": "Lesewerkstatt: Texte verstehen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "lesewerkstatt",
+					"topic_title": "Lesewerkstatt: Texte verstehen"
 				}
 			],
 			"practice_items": [
@@ -2389,6 +2629,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "lesewerkstatt",
+					"topic_title": "Lesewerkstatt: Texte verstehen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "lesewerkstatt",
 					"topic_title": "Lesewerkstatt: Texte verstehen"
 				}
@@ -2469,6 +2717,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "lesewerkstatt",
 					"topic_title": "Lesewerkstatt: Texte verstehen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "lesewerkstatt",
+					"topic_title": "Lesewerkstatt: Texte verstehen"
 				}
 			],
 			"practice_items": [
@@ -2545,6 +2801,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "lesewerkstatt",
+					"topic_title": "Lesewerkstatt: Texte verstehen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "lesewerkstatt",
 					"topic_title": "Lesewerkstatt: Texte verstehen"
 				}
@@ -2625,6 +2889,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "schreibwerkstatt",
 					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "schreibwerkstatt",
+					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
 				}
 			],
 			"practice_items": [
@@ -2701,6 +2973,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "schreibwerkstatt",
+					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "schreibwerkstatt",
 					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
 				}
@@ -2791,6 +3071,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "schreibwerkstatt",
 					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "schreibwerkstatt",
+					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
 				}
 			],
 			"practice_items": [
@@ -2867,6 +3155,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "schreibwerkstatt",
+					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "schreibwerkstatt",
 					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
 				}
@@ -2947,6 +3243,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "schreibwerkstatt",
 					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "schreibwerkstatt",
+					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
 				}
 			],
 			"practice_items": [
@@ -3025,6 +3329,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "schreibwerkstatt",
 					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "schreibwerkstatt",
+					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
 				}
 			],
 			"practice_items": [
@@ -3101,6 +3413,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "schreibwerkstatt",
+					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "schreibwerkstatt",
 					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
 				}
@@ -3186,6 +3506,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "schreibwerkstatt",
 					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "schreibwerkstatt",
+					"topic_title": "Schreibwerkstatt: Texte planen und überarbeiten"
 				}
 			],
 			"practice_items": [
@@ -3264,6 +3592,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "sprachlabor",
 					"topic_title": "Sprachlabor: Sprachgebrauch untersuchen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "sprachlabor",
+					"topic_title": "Sprachlabor: Sprachgebrauch untersuchen"
 				}
 			],
 			"practice_items": [
@@ -3334,6 +3670,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "sprachlabor",
+					"topic_title": "Sprachlabor: Sprachgebrauch untersuchen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "sprachlabor",
 					"topic_title": "Sprachlabor: Sprachgebrauch untersuchen"
 				}
@@ -3414,6 +3758,14 @@
 					"subject": "deutsch-grundschule-4",
 					"topic_code": "sprachlabor",
 					"topic_title": "Sprachlabor: Sprachgebrauch untersuchen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
+					"topic_code": "sprachlabor",
+					"topic_title": "Sprachlabor: Sprachgebrauch untersuchen"
 				}
 			],
 			"practice_items": [
@@ -3484,6 +3836,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "deutsch-grundschule-4",
+					"topic_code": "sprachlabor",
+					"topic_title": "Sprachlabor: Sprachgebrauch untersuchen"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "deutsch",
 					"topic_code": "sprachlabor",
 					"topic_title": "Sprachlabor: Sprachgebrauch untersuchen"
 				}

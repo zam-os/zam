@@ -1437,6 +1437,15 @@ function bindingMatchesScope(
   scope: CurriculumScope,
 ): boolean {
   if (binding.provider !== scope.provider) return false;
+  // A binding with neither school type nor grade is no school place — a ZAM
+  // Academy stage, for one (ADR 2026-10-19) — so no school place offers it.
+  if (
+    (scope.schoolType !== undefined || scope.grade !== undefined) &&
+    !binding.school_type &&
+    binding.grade === undefined
+  ) {
+    return false;
+  }
   if (
     scope.schoolType !== undefined &&
     binding.school_type !== undefined &&

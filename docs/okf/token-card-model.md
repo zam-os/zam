@@ -616,14 +616,18 @@ Academy cells while their apps are public previews: primary-teacher review and
 teacher videos are open. Their competences are practised in part or with
 unreviewed depth: Mathematik and HSU map every competence to a lesson or station,
 and Deutsch practises 69 of 116 in the app and leaves 47 to practice outside it,
-and rates no free text. The versions are 2026.11.15 (43 atoms, 159 items),
-2026.11.5 (45 atoms, 135 items) and 2026.11.2 (20 atoms, 60 items). They
-bind only their Academy stations, not `lehrplanplus-bayern`, so learners find
-them in the Academy list, the library and the Weltwissen atlas. A binding with
-neither school type nor grade names no school place, so the Schule lens shows such
-atoms outside the curriculum, under their subject and stage and not under a grade,
-and offers their own cell there. The school curriculum path for Grundschule 4 does not offer them and keeps its
-generic import, so an unfinished preview does not stand in for the whole subject.
+and rates no free text. The versions are 2026.11.16 (43 atoms, 159 items),
+2026.11.6 (45 atoms, 135 items) and 2026.11.4 (20 atoms, 60 items). They
+bind their Academy stations and, also under the provider `zam-academy`, their
+school place (`grundschule`, grade 4, plain subject), not `lehrplanplus-bayern`.
+The Schule lens therefore shows them under "4. Klasse". A Grundschule grade
+carries no school-type name and does not count as a second school type. The
+island offers these three cells and each subject its own, without the generic
+import. A binding with neither school type nor grade names no school place, so
+no school place offers it; such an atom stays outside the curriculum, under its
+subject and stage. The school curriculum path for Grundschule 4 does not offer
+the cells and keeps its generic import, so an unfinished preview does not stand
+in for the whole subject.
 ZAM has no earlier Grundschule cell, so they declare neither `replaces` nor
 `retired_items`, and enrolling creates only unlearned cards.
 

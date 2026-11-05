@@ -862,6 +862,8 @@ export function deriveWeltwissen(
   });
 }
 
+const GRUNDSCHULE = "grundschule";
+
 const SCHOOL_TYPE_NAMES: Readonly<Record<string, string>> = {
   grundschule: "Grundschule",
   mittelschule: "Mittelschule",
@@ -949,9 +951,13 @@ export function deriveSchule(
     places.set(unit.key, null);
   }
 
-  // Name grades by school type only when the library holds more than one.
+  // Name grades by school type only when the library holds more than one that
+  // could be confused. A Bavarian Grundschule's grades stand alone: 1 to 4 end
+  // before the secondary schools begin, and no other Land reaches this lens yet.
   const schoolTypes = new Set(
-    [...places.values()].filter((p) => p !== null).map((p) => p?.schoolType),
+    [...places.values()]
+      .filter((p) => p !== null && p.schoolType !== GRUNDSCHULE)
+      .map((p) => p?.schoolType),
   );
   const several = schoolTypes.size > 1;
 
@@ -1003,7 +1009,7 @@ export function deriveSchule(
     const islandName =
       place.grade === null
         ? `${typeName}: ohne Klasse`
-        : several
+        : several && place.schoolType !== GRUNDSCHULE
           ? `${place.grade}. Klasse ${typeName}`
           : `${place.grade}. Klasse`;
     const fachKey = `${islandKey}.${slugSegment(hueKeyForDomain(place.subject))}`;

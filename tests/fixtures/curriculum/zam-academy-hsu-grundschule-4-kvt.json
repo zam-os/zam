@@ -1,7 +1,7 @@
 {
 	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
 	"tile_id": "zam-academy:hsu-grundschule-4",
-	"version": "2026.11.2",
+	"version": "2026.11.4",
 	"title": "Heimat- und Sachunterricht 4 Grundschule: Lottas Bayern-Forscherbuch",
 	"description": "Zwanzig kindgerechte Entdeckerstationen und sechzig Lernkarten zu allen sechs Lernbereichen des bayerischen LehrplanPLUS Heimat- und Sachunterricht 3/4: Demokratie und Gesellschaft, Körper und Gesundheit, Natur und Umwelt, Zeit und Wandel, Raum und Mobilität sowie Technik und Kultur. Jede Station wird im Forscherbuch einmal erkundet und anschließend in ZAM wiederholt. Vorschau; fachliche Freigabe durch eine Grundschullehrkraft und Lehrervideos stehen noch aus.",
 	"publisher": "ZAM Academy",
@@ -102,6 +102,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "hsu-grundschule-4",
+					"topic_code": "lb1-demokratie-gesellschaft",
+					"topic_title": "LB 1: Demokratie und Gesellschaft"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
 					"topic_code": "lb1-demokratie-gesellschaft",
 					"topic_title": "LB 1: Demokratie und Gesellschaft"
 				}
@@ -209,6 +217,14 @@
 					"subject": "hsu-grundschule-4",
 					"topic_code": "lb1-demokratie-gesellschaft",
 					"topic_title": "LB 1: Demokratie und Gesellschaft"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
+					"topic_code": "lb1-demokratie-gesellschaft",
+					"topic_title": "LB 1: Demokratie und Gesellschaft"
 				}
 			],
 			"practice_items": [
@@ -306,6 +322,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "hsu-grundschule-4",
+					"topic_code": "lb1-demokratie-gesellschaft",
+					"topic_title": "LB 1: Demokratie und Gesellschaft"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
 					"topic_code": "lb1-demokratie-gesellschaft",
 					"topic_title": "LB 1: Demokratie und Gesellschaft"
 				}
@@ -407,6 +431,14 @@
 					"subject": "hsu-grundschule-4",
 					"topic_code": "lb2-koerper-gesundheit",
 					"topic_title": "LB 2: Körper und Gesundheit"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
+					"topic_code": "lb2-koerper-gesundheit",
+					"topic_title": "LB 2: Körper und Gesundheit"
 				}
 			],
 			"practice_items": [
@@ -506,6 +538,14 @@
 					"subject": "hsu-grundschule-4",
 					"topic_code": "lb2-koerper-gesundheit",
 					"topic_title": "LB 2: Körper und Gesundheit"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
+					"topic_code": "lb2-koerper-gesundheit",
+					"topic_title": "LB 2: Körper und Gesundheit"
 				}
 			],
 			"practice_items": [
@@ -603,6 +643,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "hsu-grundschule-4",
+					"topic_code": "lb2-koerper-gesundheit",
+					"topic_title": "LB 2: Körper und Gesundheit"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
 					"topic_code": "lb2-koerper-gesundheit",
 					"topic_title": "LB 2: Körper und Gesundheit"
 				}
@@ -710,6 +758,14 @@
 					"subject": "hsu-grundschule-4",
 					"topic_code": "lb2-koerper-gesundheit",
 					"topic_title": "LB 2: Körper und Gesundheit"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
+					"topic_code": "lb2-koerper-gesundheit",
+					"topic_title": "LB 2: Körper und Gesundheit"
 				}
 			],
 			"practice_items": [
@@ -807,6 +863,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "hsu-grundschule-4",
+					"topic_code": "lb3-natur-umwelt",
+					"topic_title": "LB 3: Natur und Umwelt"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
 					"topic_code": "lb3-natur-umwelt",
 					"topic_title": "LB 3: Natur und Umwelt"
 				}
@@ -914,6 +978,14 @@
 					"subject": "hsu-grundschule-4",
 					"topic_code": "lb3-natur-umwelt",
 					"topic_title": "LB 3: Natur und Umwelt"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
+					"topic_code": "lb3-natur-umwelt",
+					"topic_title": "LB 3: Natur und Umwelt"
 				}
 			],
 			"practice_items": [
@@ -1013,6 +1085,14 @@
 					"subject": "hsu-grundschule-4",
 					"topic_code": "lb3-natur-umwelt",
 					"topic_title": "LB 3: Natur und Umwelt"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
+					"topic_code": "lb3-natur-umwelt",
+					"topic_title": "LB 3: Natur und Umwelt"
 				}
 			],
 			"practice_items": [
@@ -1110,6 +1190,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "hsu-grundschule-4",
+					"topic_code": "lb3-natur-umwelt",
+					"topic_title": "LB 3: Natur und Umwelt"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
 					"topic_code": "lb3-natur-umwelt",
 					"topic_title": "LB 3: Natur und Umwelt"
 				}
@@ -1217,6 +1305,14 @@
 					"subject": "hsu-grundschule-4",
 					"topic_code": "lb3-natur-umwelt",
 					"topic_title": "LB 3: Natur und Umwelt"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
+					"topic_code": "lb3-natur-umwelt",
+					"topic_title": "LB 3: Natur und Umwelt"
 				}
 			],
 			"practice_items": [
@@ -1316,6 +1412,14 @@
 					"subject": "hsu-grundschule-4",
 					"topic_code": "lb3-natur-umwelt",
 					"topic_title": "LB 3: Natur und Umwelt"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
+					"topic_code": "lb3-natur-umwelt",
+					"topic_title": "LB 3: Natur und Umwelt"
 				}
 			],
 			"practice_items": [
@@ -1413,6 +1517,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "hsu-grundschule-4",
+					"topic_code": "lb4-zeit-wandel",
+					"topic_title": "LB 4: Zeit und Wandel"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
 					"topic_code": "lb4-zeit-wandel",
 					"topic_title": "LB 4: Zeit und Wandel"
 				}
@@ -1520,6 +1632,14 @@
 					"subject": "hsu-grundschule-4",
 					"topic_code": "lb4-zeit-wandel",
 					"topic_title": "LB 4: Zeit und Wandel"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
+					"topic_code": "lb4-zeit-wandel",
+					"topic_title": "LB 4: Zeit und Wandel"
 				}
 			],
 			"practice_items": [
@@ -1617,6 +1737,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "hsu-grundschule-4",
+					"topic_code": "lb5-raum-mobilitaet",
+					"topic_title": "LB 5: Raum und Mobilität"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
 					"topic_code": "lb5-raum-mobilitaet",
 					"topic_title": "LB 5: Raum und Mobilität"
 				}
@@ -1724,6 +1852,14 @@
 					"subject": "hsu-grundschule-4",
 					"topic_code": "lb5-raum-mobilitaet",
 					"topic_title": "LB 5: Raum und Mobilität"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
+					"topic_code": "lb5-raum-mobilitaet",
+					"topic_title": "LB 5: Raum und Mobilität"
 				}
 			],
 			"practice_items": [
@@ -1823,6 +1959,14 @@
 					"subject": "hsu-grundschule-4",
 					"topic_code": "lb5-raum-mobilitaet",
 					"topic_title": "LB 5: Raum und Mobilität"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
+					"topic_code": "lb5-raum-mobilitaet",
+					"topic_title": "LB 5: Raum und Mobilität"
 				}
 			],
 			"practice_items": [
@@ -1920,6 +2064,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "hsu-grundschule-4",
+					"topic_code": "lb6-technik-kultur",
+					"topic_title": "LB 6: Technik und Kultur"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
 					"topic_code": "lb6-technik-kultur",
 					"topic_title": "LB 6: Technik und Kultur"
 				}
@@ -2025,6 +2177,14 @@
 				{
 					"provider": "zam-academy",
 					"subject": "hsu-grundschule-4",
+					"topic_code": "lb6-technik-kultur",
+					"topic_title": "LB 6: Technik und Kultur"
+				},
+				{
+					"provider": "zam-academy",
+					"school_type": "grundschule",
+					"grade": 4,
+					"subject": "hsu",
 					"topic_code": "lb6-technik-kultur",
 					"topic_title": "LB 6: Technik und Kultur"
 				}

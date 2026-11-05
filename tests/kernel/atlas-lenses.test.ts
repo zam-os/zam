@@ -269,6 +269,51 @@ describe("Schule derivation", () => {
     expect(placements[1].path[0].name).toBe("9. Klasse Gymnasium");
   });
 
+  it("never names the Grundschule, nor counts it as a second school type", () => {
+    const grundschule = {
+      provider: "zam-academy",
+      schoolType: "grundschule",
+      subject: "mathematik",
+    };
+    const [alone] = deriveSchule(
+      [unit("gs", "mathematik", { atomId: "gs" })],
+      { regions: [], aliases: [], members: [] },
+      [binding("gs", 4, grundschule)],
+    );
+    expect(alone.path[0]).toMatchObject({
+      key: "grundschule-4",
+      name: "4. Klasse",
+    });
+
+    const [gs, rs] = deriveSchule(
+      [
+        unit("gs", "mathematik", { atomId: "gs" }),
+        unit("rs", "mathematik", { atomId: "rs" }),
+      ],
+      { regions: [], aliases: [], members: [] },
+      [binding("gs", 4, grundschule), binding("rs", 9)],
+    );
+    expect(gs.path[0].name).toBe("4. Klasse");
+    expect(rs.path[0].name).toBe("9. Klasse");
+
+    const [withTwo, realschule, gymnasium] = deriveSchule(
+      [
+        unit("gs", "mathematik", { atomId: "gs" }),
+        unit("rs", "mathematik", { atomId: "rs" }),
+        unit("gy", "mathematik", { atomId: "gy" }),
+      ],
+      { regions: [], aliases: [], members: [] },
+      [
+        binding("gs", 4, grundschule),
+        binding("rs", 9),
+        binding("gy", 10, { schoolType: "gymnasium" }),
+      ],
+    );
+    expect(withTwo.path[0].name).toBe("4. Klasse");
+    expect(realschule.path[0].name).toBe("9. Klasse Realschule");
+    expect(gymnasium.path[0].name).toBe("10. Klasse Gymnasium");
+  });
+
   it("keeps a binding without school type or grade out of the school years", () => {
     const academyOnly = {
       provider: "zam-academy",
