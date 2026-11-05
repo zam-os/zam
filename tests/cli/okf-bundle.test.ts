@@ -354,6 +354,93 @@ describe("okf/bundle incremental index maintenance", () => {
     );
   });
 
+  it.each(["Arrays [T]", "Arrays [Map[K, V]]"])(
+    "updates renderer-generated nested labels without duplicates: %s",
+    (title) => {
+      const entry = toCatalogEntry("arrays.md", article({ title }));
+      const index = renderIndex([entry]);
+      const revised = { ...entry, description: "Updated." };
+      const next = updateIndex(index, revised);
+      expect(next).toBe(index.replace(entry.description, revised.description));
+      expect(updateIndex(next, revised)).toBe(next);
+      expect(next.split("](arrays.md)").length - 1).toBe(1);
+    },
+  );
+
+  it.each([
+    '- [Arrays [T]](./arrays.md "Reference") — Old.',
+    "- [Arrays \\[T\\]](<./arrays.md> 'Reference') — Old.",
+    "- [Arrays [T]](arrays.md (Reference)) — Old.",
+  ])("recognizes escaped labels and optional link titles: %s", (oldRow) => {
+    const entry = toCatalogEntry("arrays.md", article({ title: "Arrays [T]" }));
+    const index = `# Handbook\n\n## concept\n\n${oldRow}\n`;
+    const next = updateIndex(index, entry);
+    expect(next).toBe(
+      index.replace(
+        oldRow,
+        "- [Arrays [T]](arrays.md) — How ZAM schedules reviews.",
+      ),
+    );
+    expect(updateIndex(next, entry)).toBe(next);
+  });
+
+  it("does not mistake a secondary link in another article's row for its entry", () => {
+    const other = "- [Other](other.md) — See [Arrays [T]](arrays.md).";
+    const index = `# Handbook\n\n## concept\n\n${other}\n- [Old](arrays.md) — Old.\n`;
+    const entry = toCatalogEntry("arrays.md", article({ title: "Arrays [T]" }));
+    expect(updateIndex(index, entry)).toBe(
+      index.replace(
+        "- [Old](arrays.md) — Old.",
+        "- [Arrays [T]](arrays.md) — How ZAM schedules reviews.",
+      ),
+    );
+  });
+
+  it.each(["    ", "\t", " \t", "   \t"])(
+    "leaves an indented code example unchanged before the real row (%j)",
+    (indent) => {
+      const example = `${indent}- [A](a.md) — An example.`;
+      const index = `# Handbook\n\n## concept\n\nExample:\n\n${example}\n\n- [A](a.md) — Real entry.\n`;
+      const entry = toCatalogEntry(
+        "a.md",
+        article({ title: "A", description: "Updated." }),
+      );
+      const next = updateIndex(index, entry);
+      expect(next).toBe(
+        index.replace("- [A](a.md) — Real entry.", "- [A](a.md) — Updated."),
+      );
+      expect(updateIndex(next, entry)).toBe(next);
+    },
+  );
+
+  it("moves the real row on a type change without removing an indented example", () => {
+    const index =
+      "# Handbook\n\n## concept\n\nExample:\n\n    - [A](a.md) — An example.\n\n- [A](a.md) — Real entry.\n\n## protocol\n\n- [B](b.md) — Keep.\n";
+    const entry = toCatalogEntry(
+      "a.md",
+      article({ title: "A", type: "protocol", description: "Updated." }),
+    );
+    expect(updateIndex(index, entry)).toBe(
+      index
+        .replace("- [A](a.md) — Real entry.\n", "")
+        .replace(
+          "- [B](b.md) — Keep.\n",
+          "- [B](b.md) — Keep.\n- [A](a.md) — Updated.\n",
+        ),
+    );
+  });
+
+  it("keeps valid three-space-indented list rows editable", () => {
+    const index = "# Handbook\n\n## concept\n\n   * [A](a.md) — Old.\n";
+    const entry = toCatalogEntry(
+      "a.md",
+      article({ title: "A", description: "Updated." }),
+    );
+    expect(updateIndex(index, entry)).toBe(
+      index.replace("— Old.", "— Updated."),
+    );
+  });
+
   it("leaves frontmatter, prose links and fenced examples alone", () => {
     const index =
       "---\ntitle: Example\n---\n\n# Handbook\n\nSee [A](a.md).\n\n```md\n## concept\n- [A](a.md) — Example only.\n```\n\n## concept\n\n- [Actual](a.md) — Old.\n";

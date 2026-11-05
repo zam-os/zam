@@ -273,6 +273,37 @@ function insertLines(
 }
 
 /**
+ * Read the leading link of a top-level Markdown list row. Labels may have
+ * nested or escaped brackets; destinations may have an optional link title.
+ * Four-column indentation (including a leading tab) is code, not an index row.
+ */
+function indexRowLink(
+  line: string,
+): { prefix: string; file: string } | undefined {
+  const bullet = /^( {0,3}[-*+][ \t]+)\[/.exec(line);
+  if (!bullet) return undefined;
+  let depth = 1;
+  for (let i = bullet[0].length; i < line.length; i++) {
+    if (line[i] === "\\") {
+      i++;
+    } else if (line[i] === "[") {
+      depth++;
+    } else if (line[i] === "]" && --depth === 0) {
+      const target =
+        /^\((?:<([^<>]+)>|([^\s()<>]+))(?:[ \t]+(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\)))?[ \t]*\)/.exec(
+          line.slice(i + 1),
+        );
+      if (!target) return undefined;
+      return {
+        prefix: bullet[1],
+        file: (target[1] ?? target[2]).replace(/^\.\//, ""),
+      };
+    }
+  }
+  return undefined;
+}
+
+/**
  * Replace only this article's list row, keeping its subgroup when its type
  * is unchanged. New entries go before any subgroups of their matching ##
  * type section; a changed type moves the row. All other text stays intact.
@@ -288,14 +319,11 @@ export function updateIndex(existing: string, entry: CatalogEntry): string {
   for (let i = 0; i < content.length; i++) {
     if (/^#[ \t]/.test(content[i])) type = undefined;
     type = typeHeading(content[i]) ?? type;
-    const link =
-      /^([ \t]*[-*+][ \t]+)\[[^\]]*\]\((?:\.\/)?<?([^\s)>]+)>?\)/.exec(
-        content[i],
-      );
-    if (link?.[2] !== entry.file) continue;
+    const link = indexRowLink(content[i]);
+    if (link?.file !== entry.file) continue;
     if (type === entry.type) {
       const ending = /\r?\n$/.exec(lines[i])?.[0] ?? "";
-      lines[i] = `${link[1]}${row}${ending}`;
+      lines[i] = `${link.prefix}${row}${ending}`;
       return lines.join("");
     }
     lines.splice(i, 1);

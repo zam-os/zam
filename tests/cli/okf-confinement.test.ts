@@ -169,6 +169,39 @@ describe("OKF tools stay inside allowed roots (ADR 2026-10-08b D1)", () => {
     expect(nextLog).not.toContain("## ");
   });
 
+  it("keeps nested-label rows unique and code examples intact across MCP upserts", async () => {
+    reportedRoots = [repo];
+    const oldRow = '- [First [T]](first.md "Reference") — Old.';
+    const index = [
+      "# Handbook",
+      "",
+      "## architecture",
+      "",
+      "Example:",
+      "",
+      "    - [First [T]](first.md) — Keep this code example.",
+      "",
+      oldRow,
+      "",
+    ].join("\n");
+    writeFileSync(join(bundle, "index.md"), index);
+    for (const title of ["Revised [T]", "Revised [Map[K, V]]"]) {
+      const result = await call("zam_okf_upsert", {
+        bundle_dir: bundle,
+        file: "first.md",
+        markdown: article(title),
+      });
+      expect(result.isError, result.text).toBe(false);
+      expect(JSON.parse(result.text)).toMatchObject({
+        ok: true,
+        created: false,
+      });
+      expect(readFileSync(join(bundle, "index.md"), "utf8")).toBe(
+        index.replace(oldRow, `- [${title}](first.md) — A test article.`),
+      );
+    }
+  });
+
   it("upserts a client's registered worktree bundle under a hidden host directory", async () => {
     git("init", "-q");
     git("commit", "--allow-empty", "-qm", "seed");
