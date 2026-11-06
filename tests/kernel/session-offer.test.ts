@@ -12,7 +12,6 @@ import {
   getDueSummary,
   getSessionOffer,
 } from "../../src/kernel/index.js";
-import { getReview } from "../../src/cli/bridge-handlers.js";
 import {
   describeWithProviders,
   type ProvidedDatabase,
@@ -177,19 +176,28 @@ describeWithProviders("what a session offers", "zam_session_offer", (provider) =
     return id;
   }
 
+  /**
+   * The queue `getReview` builds for Desktop's next card. The handler itself
+   * derives a team identity on PostgreSQL, so it has its own test on SQLite in
+   * `tests/cli/bridge-handlers.test.ts`.
+   */
+  async function nextCard(maxNew: number) {
+    const queue = await buildReviewQueue(db, {
+      userId: USER,
+      maxReviews: 1,
+      maxNew,
+      timeZone: "UTC",
+    });
+    return queue.items[0];
+  }
+
   /** What Desktop's study view does: one card at a time, rated before the next. */
   async function walkDesktopSession(): Promise<{ reviews: number; newCards: number }> {
     let newLeft = 10;
     let cardsLeft = 50;
     const served = { reviews: 0, newCards: 0 };
     while (cardsLeft > 0) {
-      const { card: next } = await getReview(db, {
-        user: USER,
-        timeZone: "UTC",
-        maxNew: newLeft > 0 ? 1 : 0,
-        noResolve: true,
-        noDynamicQuestion: true,
-      });
+      const next = await nextCard(newLeft > 0 ? 1 : 0);
       if (!next) break;
       await admitPresentation(db, { userId: USER, cardId: next.cardId, timeZone: "UTC" });
       if (next.state === "new") {
@@ -290,14 +298,7 @@ describeWithProviders("what a session offers", "zam_session_offer", (provider) =
     await dueReview("review-5", "2026-01-05T00:00:00.000Z", shared);
     await card("a-new-sibling", shared);
 
-    const { card: next } = await getReview(db, {
-      user: USER,
-      timeZone: "UTC",
-      maxNew: 1,
-      noResolve: true,
-      noDynamicQuestion: true,
-    });
-    expect(next?.slug).toBe("review-5");
+    expect((await nextCard(1))?.slug).toBe("review-5");
   });
 
   it("keeps serving what it offers in later sessions of the same day", async () => {

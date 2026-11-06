@@ -20,6 +20,7 @@ import {
   updateCheck,
 } from "../../src/cli/bridge-handlers.js";
 import {
+  admitPresentation,
   AtomSiblingOccupiedError,
   buildReviewQueue,
   commitTextImport,
@@ -28,9 +29,11 @@ import {
   DRAFT_FIRST_SETTING,
   enrolBundledCell,
   ensureCard,
+  executeReviewAction,
   getCard,
   getPrerequisites,
   getReviewsForCard,
+  getSessionOffer,
   getTokenBySlug,
   openDatabase,
   previewTextImport,
@@ -184,6 +187,77 @@ describe("bridge-handlers unit tests", () => {
         timeZone: "UTC",
       }),
     ).rejects.toBeInstanceOf(AtomSiblingOccupiedError);
+  });
+
+  it("serves one card at a time what getSessionOffer announced", async () => {
+    const addCard = async (slug: string, atomId?: string): Promise<string> => {
+      const token = await createToken(db, {
+        slug,
+        concept: slug,
+        domain: "hsu/natur-und-umwelt",
+        question: `${slug}?`,
+        ...(atomId ? { atom_id: atomId } : {}),
+      });
+      return (await ensureCard(db, token.id, "thomas")).id;
+    };
+    const makeDue = async (cardId: string, day: number): Promise<void> => {
+      const dueAt = `2026-01-0${day}T00:00:00.000Z`;
+      await db
+        .prepare(
+          "UPDATE cards SET state = 'review', due_at = ?, last_review_at = ? WHERE id = ?",
+        )
+        .run(dueAt, dueAt, cardId);
+    };
+
+    for (let day = 1; day <= 4; day++) {
+      await makeDue(await addCard(`review-${day}`), day);
+    }
+    // The fifth review shares its atom with the first new card, which
+    // interspersing would place ahead of it.
+    const shared = ulid();
+    await db
+      .prepare("INSERT INTO learning_atoms (id, title) VALUES (?, ?)")
+      .run(shared, "Shared");
+    await makeDue(await addCard("review-5", shared), 5);
+    await addCard("a-new-sibling", shared);
+    for (let n = 1; n <= 12; n++) {
+      await addCard(`new-${String(n).padStart(2, "0")}`);
+    }
+
+    const offer = await getSessionOffer(db, "thomas", "UTC");
+    expect(offer).toEqual({ reviews: 5, newCards: 10 });
+
+    let newLeft = 10;
+    const served = { reviews: 0, newCards: 0 };
+    while (true) {
+      const { card } = await getReview(db, {
+        user: "thomas",
+        timeZone: "UTC",
+        maxNew: newLeft > 0 ? 1 : 0,
+        noResolve: true,
+        noDynamicQuestion: true,
+      });
+      if (!card) break;
+      await admitPresentation(db, {
+        userId: "thomas",
+        cardId: card.cardId,
+        timeZone: "UTC",
+      });
+      if (card.state === "new") {
+        newLeft -= 1;
+        served.newCards += 1;
+      } else {
+        served.reviews += 1;
+      }
+      await executeReviewAction(db, {
+        action: "rate",
+        cardId: card.cardId,
+        userId: "thomas",
+        rating: 4,
+        answerFormat: "recall",
+      });
+    }
+    expect(served).toEqual(offer);
   });
 
   it("applies session admission, tier ordering, and structured fast checks on learner surfaces", async () => {
