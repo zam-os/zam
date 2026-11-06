@@ -7,10 +7,12 @@ import {
   createToken,
   type Database,
   ensureCard,
+  executeReviewAction,
   getDueCards,
   getDueSummary,
   getSessionOffer,
 } from "../../src/kernel/index.js";
+import { getReview } from "../../src/cli/bridge-handlers.js";
 import {
   describeWithProviders,
   type ProvidedDatabase,
@@ -148,6 +150,168 @@ describeWithProviders("what a session offers", "zam_session_offer", (provider) =
       await buildReviewQueue(db, { userId: USER, timeZone: "UTC", onePerAtom: true })
     ).items;
     expect(item.cardId).toBe(first);
+  });
+
+  /**
+   * Four due reviews, a fifth that shares an atom with a never-seen card, and
+   * twelve other never-seen cards. The sibling sorts first among the new cards,
+   * so interspersing puts it ahead of the fifth review.
+   */
+  async function reviewsWithANewSibling(): Promise<void> {
+    for (let n = 1; n <= 4; n++) {
+      await dueReview(`review-${n}`, `2026-01-0${n}T00:00:00.000Z`);
+    }
+    const shared = await atom("Shared");
+    await dueReview("review-5", "2026-01-05T00:00:00.000Z", shared);
+    await card("a-new-sibling", shared);
+    for (let n = 1; n <= 12; n++) {
+      await card(`new-${String(n).padStart(2, "0")}`);
+    }
+  }
+
+  async function dueReview(slug: string, dueAt: string, atomId?: string): Promise<string> {
+    const id = await card(slug, atomId);
+    await db
+      .prepare("UPDATE cards SET state = 'review', due_at = ?, last_review_at = ? WHERE id = ?")
+      .run(dueAt, dueAt, id);
+    return id;
+  }
+
+  /** What Desktop's study view does: one card at a time, rated before the next. */
+  async function walkDesktopSession(): Promise<{ reviews: number; newCards: number }> {
+    let newLeft = 10;
+    let cardsLeft = 50;
+    const served = { reviews: 0, newCards: 0 };
+    while (cardsLeft > 0) {
+      const { card: next } = await getReview(db, {
+        user: USER,
+        timeZone: "UTC",
+        maxNew: newLeft > 0 ? 1 : 0,
+        noResolve: true,
+        noDynamicQuestion: true,
+      });
+      if (!next) break;
+      await admitPresentation(db, { userId: USER, cardId: next.cardId, timeZone: "UTC" });
+      if (next.state === "new") {
+        newLeft -= 1;
+        served.newCards += 1;
+      } else {
+        served.reviews += 1;
+      }
+      cardsLeft -= 1;
+      await executeReviewAction(db, {
+        action: "rate",
+        cardId: next.cardId,
+        userId: USER,
+        rating: 4,
+        answerFormat: "recall",
+      });
+    }
+    return served;
+  }
+
+  it("does not let a card outside the new-card limit hold back a due sibling", async () => {
+    await reviewsWithANewSibling();
+    const queue = await buildReviewQueue(db, {
+      userId: USER,
+      maxNew: 0,
+      onePerAtom: true,
+      timeZone: "UTC",
+    });
+    expect(queue.items.map((item) => item.slug)).toEqual([
+      "review-1",
+      "review-2",
+      "review-3",
+      "review-4",
+      "review-5",
+    ]);
+  });
+
+  it("gives an atom to its due review, and still mixes new cards in", async () => {
+    await reviewsWithANewSibling();
+    const queue = await buildReviewQueue(db, {
+      userId: USER,
+      onePerAtom: true,
+      timeZone: "UTC",
+    });
+    const slugs = queue.items.map((item) => item.slug);
+    expect(slugs).toContain("review-5");
+    expect(slugs).not.toContain("a-new-sibling");
+    expect(slugs.slice(0, 5)).toEqual(["review-1", "review-2", "review-3", "review-4", "new-01"]);
+    expect(queue.reviewCount).toBe(5);
+    expect(queue.newCount).toBe(10);
+  });
+
+  it("offers what Desktop's one-at-a-time session serves", async () => {
+    await reviewsWithANewSibling();
+    const offer = await getSessionOffer(db, USER, "UTC");
+    expect(offer).toEqual({ reviews: 5, newCards: 10 });
+    expect(await walkDesktopSession()).toEqual(offer);
+  });
+
+  it("offers reviews first when they reach the card limit", async () => {
+    for (let n = 1; n <= 5; n++) {
+      await dueReview(`review-${n}`, `2026-01-0${n}T00:00:00.000Z`);
+    }
+    await card("new-1");
+    const queue = await buildReviewQueue(db, {
+      userId: USER,
+      maxReviews: 5,
+      onePerAtom: true,
+      timeZone: "UTC",
+    });
+    expect(queue.items.map((item) => item.slug)).toEqual([
+      "review-1",
+      "review-2",
+      "review-3",
+      "review-4",
+      "review-5",
+    ]);
+  });
+
+  it("serves a due review before a new sibling when earlier reviews are held back", async () => {
+    for (let n = 1; n <= 4; n++) {
+      const held = await atom(`Held ${n}`);
+      const presented = await card(`held-${n}-a`, held);
+      await db
+        .prepare("UPDATE cards SET due_at = '2099-01-01T00:00:00.000Z' WHERE id = ?")
+        .run(presented);
+      await admitPresentation(db, { userId: USER, cardId: presented, timeZone: "UTC" });
+      await executeReviewAction(db, {
+        action: "rate",
+        cardId: presented,
+        userId: USER,
+        rating: 4,
+        answerFormat: "recall",
+      });
+      await dueReview(`held-${n}-b`, `2026-01-0${n}T00:00:00.000Z`, held);
+    }
+    const shared = await atom("Shared");
+    await dueReview("review-5", "2026-01-05T00:00:00.000Z", shared);
+    await card("a-new-sibling", shared);
+
+    const { card: next } = await getReview(db, {
+      user: USER,
+      timeZone: "UTC",
+      maxNew: 1,
+      noResolve: true,
+      noDynamicQuestion: true,
+    });
+    expect(next?.slug).toBe("review-5");
+  });
+
+  it("keeps serving what it offers in later sessions of the same day", async () => {
+    for (let n = 0; n < 40; n++) {
+      const atomId = await atom(`Atom ${n}`);
+      for (const part of ["a", "b", "c"]) {
+        await card(`atom-${String(n).padStart(2, "0")}-${part}`, atomId);
+      }
+    }
+    for (let session = 1; session <= 4; session++) {
+      const offer = await getSessionOffer(db, USER, "UTC");
+      expect(offer).toEqual({ reviews: 0, newCards: 10 });
+      expect(await walkDesktopSession()).toEqual(offer);
+    }
   });
 });
 

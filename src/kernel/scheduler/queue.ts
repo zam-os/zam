@@ -46,10 +46,14 @@ export interface ReviewQueueOptions {
   /** IANA time zone for the local learning day. Device context, not DB server. */
   timeZone?: string;
   /**
-   * Keep only the first item of each atom. A queue is a prefetch and by default
-   * lists an atom's siblings, of which presenting one rules out the others for
-   * the day. A surface that counts its items, or walks them as a fixed list,
-   * would promise cards it never serves, so it asks for this.
+   * Select what a session would serve, one item per atom. A queue is a prefetch
+   * and by default lists an atom's siblings, of which presenting one rules out
+   * the others for the day. A surface that counts its items, or walks them as a
+   * fixed list, would promise cards it never serves, so it asks for this.
+   *
+   * Reviews choose first, up to `maxReviews`, then new cards fill what is left,
+   * as in a session that fetches one card at a time. New cards are still mixed
+   * in among the selected reviews.
    */
   onePerAtom?: boolean;
 }
@@ -317,6 +321,18 @@ export async function buildReviewQueue(
          AND t.maintenance_at IS NULL
          AND t.editorial_state = 'published'
          AND c.detached_at IS NULL
+         AND (
+           t.atom_id IS NULL
+           OR NOT EXISTS (
+             SELECT 1
+               FROM card_presentations held
+              WHERE held.user_id = c.user_id
+                AND held.learning_day = ?
+                AND held.atom_id = t.atom_id
+                AND held.abandoned_at IS NULL
+                AND held.card_id <> c.id
+           )
+         )
          AND NOT (
            t.tier = 'tier2_synthesis'
            AND t.atom_id IS NOT NULL
@@ -336,7 +352,7 @@ export async function buildReviewQueue(
            )
          )`;
 
-  const newParams: unknown[] = [options.userId, nowISO];
+  const newParams: unknown[] = [options.userId, nowISO, learningDay];
 
   if (options.domain) {
     newSql += " AND t.domain = ?";
@@ -357,7 +373,9 @@ export async function buildReviewQueue(
     newParams.push(...options.tokenIds);
   }
 
-  // Sibling suppression can discard candidates, so the window has to be wider
+  // An atom presented today is left out in the query above: its siblings would
+  // otherwise fill this window and hide the other atoms' cards. Sibling
+  // suppression can still discard candidates, so the window has to be wider
   // than maxNew — but it must stay bounded: an imported library holds tens of
   // thousands of new cards, and a remote (Turso/Postgres) provider would ship
   // every one of them over the wire on every queue build.
@@ -379,27 +397,21 @@ export async function buildReviewQueue(
     sortedDue.map((row) => ({ ...rowToItem(row), domain: row.domain })),
   );
 
-  // ── Step 5: Intersperse new cards at regular intervals ─────────────────
-  const newItems = newRows.map(rowToItem);
-  const merged = intersperseNew(interleavedDue, newItems, 5);
-
+  // ── Step 5: Drop atoms that another item already holds for the day ─────
+  // Before new cards are placed, so that a queue starts with a review whenever
+  // one is eligible: a session fetching one card at a time relies on that.
   const occupying = await occupyingAtomCards(db, options.userId, learningDay);
-  const atomsInQueue = new Set<string>();
-  const atomFiltered = merged.filter((item) => {
-    if (!cardAllowedForAtom(item.cardId, item.atomId, occupying)) return false;
-    if (!options.onePerAtom || !item.atomId) return true;
-    if (atomsInQueue.has(item.atomId)) return false;
-    atomsInQueue.add(item.atomId);
-    return true;
-  });
+  const allowed = (item: ReviewQueueItem): boolean =>
+    cardAllowedForAtom(item.cardId, item.atomId, occupying);
+  const eligibleDue = interleavedDue.filter(allowed);
+  const eligibleNew = newRows.map(rowToItem).filter(allowed);
 
-  // ── Step 6: Keep one sibling per enabled bucket, then apply limits ─────
-  const capped = applyWorkloadLimits(atomFiltered, {
-    maxNew,
-    maxReviews,
-    buryNewSiblings,
-    buryReviewSiblings,
-  });
+  // ── Step 6: Keep one sibling per enabled bucket, apply limits, and ────
+  //           intersperse new cards at regular intervals
+  const limits = { maxNew, maxReviews, buryNewSiblings, buryReviewSiblings };
+  const capped = options.onePerAtom
+    ? selectOnePerAtom(eligibleDue, eligibleNew, limits)
+    : applyWorkloadLimits(intersperseNew(eligibleDue, eligibleNew, 5), limits);
 
   // ── Compute metadata ──────────────────────────────────────────────────
   let newCount = 0;
@@ -439,8 +451,10 @@ export interface SessionOffer {
 }
 
 /**
- * What a session started now would offer. It asks the queue itself, so what a
- * surface announces and what the session serves cannot disagree.
+ * What a session started now would offer. It asks the queue itself and its
+ * selection for a session, so what a surface announces and what the session
+ * serves agree. A card rated Again and due again within the session comes on
+ * top: nobody can count that beforehand.
  */
 export async function getSessionOffer(
   db: Database,
@@ -652,22 +666,55 @@ function parseOptionSegments(
   return out.some((entry) => entry !== null) ? out : null;
 }
 
+interface WorkloadLimits {
+  maxNew: number;
+  maxReviews: number;
+  buryNewSiblings: boolean;
+  buryReviewSiblings: boolean;
+}
+
+/**
+ * One item per atom, reviews first (see `ReviewQueueOptions.onePerAtom`). An
+ * atom counts as taken only by an item that passed the limits, so a card the
+ * limits reject never costs its sibling a place.
+ */
+function selectOnePerAtom(
+  due: ReviewQueueItem[],
+  fresh: ReviewQueueItem[],
+  limits: WorkloadLimits,
+): ReviewQueueItem[] {
+  const taken: SelectionState = {
+    siblingGroups: new Set<string>(),
+    atoms: new Set<string>(),
+  };
+  const reviews = applyWorkloadLimits(due, limits, taken);
+  const newCards = applyWorkloadLimits(
+    fresh,
+    { ...limits, maxReviews: limits.maxReviews - reviews.length },
+    taken,
+  );
+  return intersperseNew(reviews, newCards, 5);
+}
+
+interface SelectionState {
+  siblingGroups: Set<string>;
+  /** Present when only one item of each atom may be selected. */
+  atoms?: Set<string>;
+}
+
 function applyWorkloadLimits(
   items: ReviewQueueItem[],
-  options: {
-    maxNew: number;
-    maxReviews: number;
-    buryNewSiblings: boolean;
-    buryReviewSiblings: boolean;
-  },
+  options: WorkloadLimits,
+  taken: SelectionState = { siblingGroups: new Set<string>() },
 ): ReviewQueueItem[] {
   const selected: ReviewQueueItem[] = [];
-  const seenSiblingGroups = new Set<string>();
+  const seenSiblingGroups = taken.siblingGroups;
   let selectedNew = 0;
 
   for (const item of items) {
     if (selected.length >= options.maxReviews) break;
     if (item.state === "new" && selectedNew >= options.maxNew) continue;
+    if (item.atomId && taken.atoms?.has(item.atomId)) continue;
 
     const siblingAlreadySelected = Boolean(
       item.siblingGroup && seenSiblingGroups.has(item.siblingGroup),
@@ -683,6 +730,7 @@ function applyWorkloadLimits(
     selected.push(item);
     if (item.state === "new") selectedNew++;
     if (item.siblingGroup) seenSiblingGroups.add(item.siblingGroup);
+    if (item.atomId) taken.atoms?.add(item.atomId);
   }
   return selected;
 }

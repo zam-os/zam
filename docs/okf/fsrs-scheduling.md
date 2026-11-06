@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-11-06T09:00:00.000Z
+timestamp: 2026-11-06T12:00:00.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -318,7 +318,13 @@ on one local learning day. Every surface — Studio, Mobile, the Recall panel,
 hides the other items of an atom that already has a presentation that day.
 A queue prefetch is not an exposure, so a queue lists an atom's siblings by
 default; a surface that counts or walks its items passes `onePerAtom`, so it
-never promises a card it cannot show. Due dates are compared as UTC instants
+never promises a card it cannot show. That selection gives reviews the first
+choice, up to the card limit, and new cards fill what is left and are mixed in
+afterwards. A session that fetches one card at a time serves the same cards, so
+`getSessionOffer()` holds for it too: a due review keeps its atom ahead of a
+never-seen sibling, and a card the limits reject costs no sibling its place. An
+atom presented today also leaves the bounded window of new cards, so its
+siblings cannot hide other atoms in a later session of that day. Due dates are compared as UTC instants
 regardless of the learner's zone.
 
 Each learner has persisted workload settings. The balanced default allows 10
