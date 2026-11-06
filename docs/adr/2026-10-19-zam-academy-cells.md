@@ -123,7 +123,7 @@ GitHub Pages serves, read-only:
 - `/<app>/cell.json` — its cell.
 - `/catalog.json` — one entry per cell, with the cell's id, title, short
   description, language, version, app URL, cell URL, and the SHA-256 of
-  `cell.json`.
+  `cell.json`; `preview: true` on a cell no teacher has reviewed yet.
 
 This is the first piece of the central learning-content server: static
 public content, versioned in git, contributed through reviewed PRs. Anything
@@ -392,3 +392,8 @@ and Decision 3 makes it released from that ZAM release on.
   - Decision 6: the label shows host and path, with the host in punycode.
   - The release test checks the recorded copy, not the live catalog.
 - 2026-10-19 — Implemented on `feat/zam-academy-cells` (PR #419): Phases 2–8 of the plan. Phase 1 was zam-os/zam-academy#1.
+- 2026-11-05 — Decision 2: the catalog's `preview` flag reaches the learner.
+  The cell's bytes are published unchanged and do not carry it, so
+  `npm run academy:sync` records it in the lock. Studio and Mobile label a
+  preview cell wherever they list one, because its learners can be children
+  and their parents should see that the content is unreviewed.

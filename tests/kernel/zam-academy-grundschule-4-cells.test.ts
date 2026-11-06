@@ -250,6 +250,8 @@ describe("Grundschule 4 preview cells in the atlas", () => {
           cell.id,
         ).toEqual([cell.id]);
         expect(place.wizard, cell.id).toBe(false);
+        // The atlas dialog labels it: no teacher has reviewed it yet.
+        expect(place.cells[0].preview, cell.id).toBe(true);
       }
     });
 

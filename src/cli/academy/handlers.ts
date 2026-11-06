@@ -55,6 +55,8 @@ export interface AcademyCellRow {
   heldVersion: string | null;
   /** The catalog has a newer version than the library holds. */
   newer: boolean;
+  /** No teacher has reviewed its content yet. */
+  preview: boolean;
 }
 
 export interface AcademyHandlerParams {
@@ -161,6 +163,9 @@ export async function academyListHandler(
         held &&
         entry !== undefined &&
         compareTileVersions(entry.version, heldVersion) === 1,
+      // Either source is enough: a label one release too long does no harm,
+      // a missing one tells a child's parents the content was reviewed.
+      preview: entry?.preview === true || statuses.get(id)?.preview === true,
     });
   }
   return {

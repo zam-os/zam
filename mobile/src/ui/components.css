@@ -429,6 +429,19 @@ button.chip {
   margin-bottom: 0;
 }
 
+/* A cell no teacher has reviewed yet; on every surface that lists one. */
+.academy-preview-label {
+  width: fit-content;
+  padding: 2px 8px;
+  border: 1px solid color-mix(in srgb, var(--orange) 50%, var(--separator));
+  border-radius: var(--radius-row);
+  background: color-mix(in srgb, var(--orange) 12%, transparent);
+  color: var(--orange);
+  font-size: 0.84em;
+  font-weight: 600;
+  margin: 0;
+}
+
 .curriculum-back {
   align-self: flex-start;
 }

@@ -10,7 +10,7 @@
  * personal-source-confirm-import). Cards store `provider` + `topic_id`.
  */
 import { runBridge } from "./bridge-transport.js";
-import { withAcademyProgress } from "./academy-list.js";
+import { academyPreviewLabel, withAcademyProgress } from "./academy-list.js";
 import { createCellImportProgress } from "./cell-import-progress.js";
 import {
   areAllCurriculumPreviewItemsSelected,
@@ -778,6 +778,7 @@ function renderCellOffer(): void {
       count: cell.atomCount,
     })}`;
     text.append(name, detail);
+    if (cell.preview) text.append(academyPreviewLabel());
 
     const button = document.createElement("button");
     button.type = "button";

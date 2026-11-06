@@ -102,6 +102,18 @@ export function selectCatalogEntries(entries, app) {
   return selected;
 }
 
+// A cell file does not say that it is a preview, so the lock carries the
+// catalog's flag for the release (`preview` in bundled-cells.ts).
+export function lockEntry(entry, hash, file) {
+  return {
+    id: entry.id,
+    version: entry.version,
+    sha256: hash,
+    file,
+    ...(entry.preview === true ? { preview: true } : {}),
+  };
+}
+
 export function mergeLockEntries(previous, copied) {
   const entries = new Map(previous.map((entry) => [entry.id, entry]));
   for (const entry of copied) entries.set(entry.id, entry);
@@ -177,7 +189,8 @@ export async function syncAcademyCells(args = process.argv.slice(2)) {
       !app ||
       !CELL.test(entry.cell ?? "") ||
       entry.cell !== `/${app}/cell.json` ||
-      !VERSION.test(entry.version ?? "")
+      !VERSION.test(entry.version ?? "") ||
+      (entry.preview !== undefined && typeof entry.preview !== "boolean")
     ) {
       throw new Error(
         `catalog.json: malformed entry ${JSON.stringify(entry.id)}`,
@@ -198,7 +211,7 @@ export async function syncAcademyCells(args = process.argv.slice(2)) {
     if (!existsSync(path)) added = true;
     const before = existsSync(path) ? sha256(readFileSync(path)) : null;
     writeFileSync(path, bytes);
-    copied.push({ id: entry.id, version: entry.version, sha256: hash, file });
+    copied.push(lockEntry(entry, hash, file));
     console.log(
       `${before === hash ? "same   " : before ? "updated" : "added  "} ${file}  ${entry.id} ${entry.version}`,
     );

@@ -25,6 +25,8 @@ export const LOCALE_LABELS: Record<Locale, string> = {
 
 export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
   es: {
+    // A cell no teacher has reviewed yet (ZAM Academy)
+    academy_preview: "Vista previa · aún sin revisar por un docente",
     // Library topics (ADR 2026-10-02)
     btn_library_topics: "Temas de la biblioteca",
     dashboard_library_topics: "Empieza con los temas de la biblioteca",
@@ -973,6 +975,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     settings_section_update: "Actualización",
   },
   fr: {
+    // A cell no teacher has reviewed yet (ZAM Academy)
+    academy_preview: "Aperçu · pas encore vérifié par un enseignant",
     // Library topics (ADR 2026-10-02)
     btn_library_topics: "Thèmes de la bibliothèque",
     dashboard_library_topics: "Commencer par les thèmes de la bibliothèque",
@@ -1934,6 +1938,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     settings_section_update: "Mise à jour",
   },
   pt: {
+    // A cell no teacher has reviewed yet (ZAM Academy)
+    academy_preview: "Prévia · ainda não revisada por um professor",
     // Library topics (ADR 2026-10-02)
     btn_library_topics: "Temas da biblioteca",
     dashboard_library_topics: "Comece pelos temas da biblioteca",
@@ -2880,6 +2886,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     settings_section_update: "Atualização",
   },
   zh: {
+    // A cell no teacher has reviewed yet (ZAM Academy)
+    academy_preview: "预览 · 尚未经教师审核",
     // Library topics (ADR 2026-10-02)
     btn_library_topics: "知识库主题",
     dashboard_library_topics: "从知识库的主题开始",
@@ -3758,6 +3766,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     settings_section_update: "更新",
   },
   ja: {
+    // A cell no teacher has reviewed yet (ZAM Academy)
+    academy_preview: "プレビュー · 教師による確認前",
     // Library topics (ADR 2026-10-02)
     btn_library_topics: "ライブラリのトピック",
     dashboard_library_topics: "ライブラリのトピックから始める",
@@ -6463,6 +6473,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     academy_error: "Could not reach the academy",
     academy_close: "Close",
     academy_row_meta: "{items} cards · version {version}",
+    academy_preview: "Preview · not yet reviewed by a teacher",
     academy_practise: "Practise ↗",
     academy_take: "Take",
     academy_taken: "Taken",
@@ -8555,6 +8566,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     academy_error: "Academy nicht erreichbar",
     academy_close: "Schließen",
     academy_row_meta: "{items} Karten · Version {version}",
+    academy_preview: "Vorschau · noch nicht von einer Lehrkraft geprüft",
     academy_practise: "Üben ↗",
     academy_take: "Aufnehmen",
     academy_taken: "Aufgenommen",

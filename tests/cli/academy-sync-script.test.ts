@@ -8,6 +8,7 @@ const {
   parseSyncArgs,
   selectCatalogEntries,
   mergeLockEntries,
+  lockEntry,
   biomeFormatCommand,
 } = await import(
   new URL("../../scripts/sync-academy-cells.mjs", import.meta.url).href
@@ -72,6 +73,20 @@ describe("targeted Academy release sync", () => {
     expect(mergeLockEntries([physics, oldGeo], [geo])).toEqual([geo, physics]);
     expect(mergeLockEntries([], [physics, geo])).toEqual([geo, physics]);
     expect(oldGeo.sha256).toBe("old");
+  });
+
+  it("records the catalog's preview flag, and nothing for any other cell", () => {
+    const entry = { id: "zam-academy:geo", version: "2026.10.1" };
+    expect(lockEntry({ ...entry, preview: true }, "abc", "geo.json")).toEqual({
+      id: "zam-academy:geo",
+      version: "2026.10.1",
+      sha256: "abc",
+      file: "geo.json",
+      preview: true,
+    });
+    for (const other of [entry, { ...entry, preview: false }]) {
+      expect(lockEntry(other, "abc", "geo.json")).not.toHaveProperty("preview");
+    }
   });
 
   it("formats bundled-cells.ts with the local Biome through Node, so Windows needs no shell", () => {

@@ -118,6 +118,7 @@ import {
 } from "../kernel/index.js";
 import {
   cachedCatalogTiles,
+  readCachedCatalog,
   readCachedTileVersion,
   resolveCachedTile,
 } from "./academy/cache.js";
@@ -2279,10 +2280,21 @@ export async function listBundledCellsHandler(
     const extra = cachedCatalogTiles().filter(
       (tile) => !BUNDLED_TILES[tile.tile_id],
     );
+    const previews = new Set(
+      readCachedCatalog()
+        ?.cells.filter((entry) => entry.preview)
+        .map((entry) => entry.id),
+    );
     const cells = await getBundledCellsWithStatus(
       db,
       userId,
-      [...BUNDLED_CELLS, ...extra.map(bundledCellInfoForTile)],
+      [
+        ...BUNDLED_CELLS,
+        ...extra.map((tile) => ({
+          ...bundledCellInfoForTile(tile),
+          preview: previews.has(tile.tile_id),
+        })),
+      ],
       (cellId) => BUNDLED_TILES[cellId] ?? resolveCachedTile(cellId),
     );
     return { success: true as const, cells, scoped: false as const };

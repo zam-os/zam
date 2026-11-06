@@ -342,6 +342,7 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "academy_error",
   "academy_close",
   "academy_row_meta",
+  "academy_preview",
   "academy_practise",
   "academy_take",
   "academy_taken",

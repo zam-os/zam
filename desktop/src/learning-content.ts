@@ -17,6 +17,7 @@ import {
   selectLearningContentCurriculum,
 } from "./learning-content-sources.js";
 import {
+  academyPreviewLabel,
   academyUpdateButton,
   initAcademyList,
   isAcademyCellId,
@@ -3354,6 +3355,7 @@ interface BundledCellItem {
   installed: boolean;
   enrolled: boolean;
   cardCount: number;
+  preview: boolean;
 }
 
 let bundledCellsListEl: HTMLElement | null = null;
@@ -3476,7 +3478,9 @@ function renderBundledCells(cells: BundledCellItem[]): void {
     }
     buttons.append(stateBtn);
     footer.append(countEl, buttons);
-    cardEl.append(header, desc, footer);
+    cardEl.append(header);
+    if (cell.preview) cardEl.append(academyPreviewLabel());
+    cardEl.append(desc, footer);
     bundledCellsListEl.appendChild(cardEl);
   }
 }

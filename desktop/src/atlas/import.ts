@@ -20,6 +20,7 @@ import type {
   AtlasLensKindWire,
   AtlasPlaceResponse,
 } from "../../../src/bridge/protocol.js";
+import { academyPreviewLabel } from "../academy-list.js";
 import { runBridge } from "../bridge-transport.js";
 import { t, tf } from "../i18n.js";
 
@@ -227,6 +228,7 @@ function renderCells(
     const grade = el("span", "atlas-import-cell-meta", cell.gradeLabel);
     const label = el("span");
     label.append(text, grade);
+    if (cell.preview) label.append(academyPreviewLabel());
     li.append(label);
     if (cell.enrolled) {
       li.append(

@@ -7,6 +7,14 @@ export interface AcademyImportRow {
   items: number;
 }
 
+/** „Vorschau · …“ on a cell whose content no teacher has reviewed yet. */
+export function academyPreviewLabel(): HTMLElement {
+  const label = document.createElement("p");
+  label.className = "academy-preview-label";
+  label.textContent = t("academy_preview");
+  return label;
+}
+
 /** Update the existing row from the saved version, without refetching the catalog. */
 export function completeAcademyImportRow(
   row: AcademyImportRow,

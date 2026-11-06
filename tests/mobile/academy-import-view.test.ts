@@ -1,11 +1,29 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   type AcademyImportRow,
+  academyPreviewLabel,
   completeAcademyImportRow,
 } from "../../mobile/src/academy-import-view.js";
 import { setLocale } from "../../mobile/src/i18n.js";
+import { academyDom } from "../helpers/academy-dom.js";
 
-afterEach(() => setLocale("de"));
+afterEach(() => {
+  setLocale("de");
+  vi.unstubAllGlobals();
+});
+
+describe("Mobile Academy preview label", () => {
+  it.each([
+    ["de", "Vorschau · noch nicht von einer Lehrkraft geprüft"],
+    ["en", "Preview · not yet reviewed by a teacher"],
+  ] as const)("says what is missing in %s", (locale, text) => {
+    vi.stubGlobal("document", academyDom().document);
+    setLocale(locale);
+    const label = academyPreviewLabel();
+    expect(label.className).toBe("academy-preview-label");
+    expect(label.textContent).toBe(text);
+  });
+});
 
 function row(held: boolean): AcademyImportRow {
   return {
