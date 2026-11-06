@@ -4763,6 +4763,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     nav_graph: "Knowledge graph",
     dashboard_due_headline: "{count} cards are due",
     dashboard_due_headline_one: "1 card is due",
+    dashboard_new_headline: "{count} new cards are waiting",
+    dashboard_new_headline_one: "1 new card is waiting",
+    dashboard_mixed_headline: "{total} cards are waiting: {due} due, {new} new",
     dashboard_due_none: "Nothing is due right now",
     dashboard_due_minutes: "About {minutes} min at your pace",
     dashboard_week_title: "This week",
@@ -4827,9 +4830,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Before the question: do you already have “{title}”?",
     btn_precondition_known: "Yes, I already know this",
     btn_precondition_learn: "I want to learn it",
-    lbl_keep_going_title: "Nothing left for today",
+    lbl_keep_going_title: "That's it for this session",
     lbl_keep_going_body:
-      "The daily limit is there for a reason. If you want, you can keep going with what is already on your path.",
+      "A session is limited on purpose. If you want, you can keep going with what is already on your path.",
     btn_keep_going: "Keep going",
     btn_session_done: "Stop for today",
     lbl_bonus_title: "One idea beside the path",
@@ -4978,6 +4981,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_none: "Nothing yet.",
     atlas_review: "Review",
     atlas_review_none: "Nothing is due here.",
+    atlas_review_new_today: "Nothing to review here yet. New cards are waiting under Today.",
+    reveal_answer: "Answer",
+    reveal_topic: "Topic",
     atlas_review_elsewhere:
       "Review this region in ZAM Desktop or the ZAM app; this view only shows the map.",
     atlas_review_practice_hint:
@@ -6795,6 +6801,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     nav_graph: "Wissensnetz",
     dashboard_due_headline: "{count} Karten sind fällig",
     dashboard_due_headline_one: "1 Karte ist fällig",
+    dashboard_new_headline: "{count} neue Karten warten",
+    dashboard_new_headline_one: "1 neue Karte wartet",
+    dashboard_mixed_headline: "{total} Karten warten: {due} fällig, {new} neu",
     dashboard_due_none: "Gerade ist nichts fällig",
     dashboard_due_minutes: "Etwa {minutes} Min. in deinem Tempo",
     dashboard_week_title: "Diese Woche",
@@ -6860,9 +6869,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_precondition_body: "Bevor die Frage kommt: Kannst du „{title}“ schon?",
     btn_precondition_known: "Ja, kann ich schon",
     btn_precondition_learn: "Will ich lernen",
-    lbl_keep_going_title: "Für heute ist nichts mehr da",
+    lbl_keep_going_title: "Das war's für diese Sitzung",
     lbl_keep_going_body:
-      "Das Tageslimit gibt es aus einem Grund. Wenn du willst, kannst du mit dem weiterlernen, was schon auf deinem Weg liegt.",
+      "Eine Sitzung hat mit Absicht eine Grenze. Wenn du willst, kannst du mit dem weiterlernen, was schon auf deinem Weg liegt.",
     btn_keep_going: "Noch ein bisschen weiter",
     btn_session_done: "Für heute Schluss",
     lbl_bonus_title: "Eine Idee daneben",
@@ -7016,6 +7025,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_none: "Noch nichts.",
     atlas_review: "Wiederholen",
     atlas_review_none: "Hier ist nichts fällig.",
+    atlas_review_new_today: "Hier gibt es noch nichts zu wiederholen. Neue Karten warten unter Heute.",
+    reveal_answer: "Antwort",
+    reveal_topic: "Thema",
     atlas_review_elsewhere:
       "Wiederholen kannst du diesen Bereich in ZAM Desktop oder in der ZAM-App; diese Ansicht zeigt nur die Karte.",
     atlas_review_practice_hint:

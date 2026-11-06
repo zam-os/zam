@@ -124,7 +124,7 @@ describe("mobile review session", () => {
     );
   });
 
-  it("skips a prefetched atom sibling after the current card is shown", async () => {
+  it("serves every card it counts when an atom has siblings", async () => {
     const atomId = ulid();
     await db
       .prepare("INSERT INTO learning_atoms (id, title) VALUES (?, ?)")
@@ -159,7 +159,8 @@ describe("mobile review session", () => {
     const session = new MobileReviewSession(db, new MemoryStorage(), () => 1);
     expect(await session.start("student-9")).toBe(true);
     expect(session.currentItem?.tokenId).toBe(p1.id);
-    expect(session.progress.total).toBe(3);
+    // The sibling is never listed: it could not be shown today anyway.
+    expect(session.progress.total).toBe(2);
 
     await session.confirmCurrent();
     session.updateDraftAnswer("ok");
@@ -482,7 +483,7 @@ describe("mobile review session", () => {
       expect(restored.currentPrompt?.question).toContain("MCP server");
     });
 
-    it("drops an atom sibling that cannot be shown today instead of counting it", async () => {
+    it("does not count an atom sibling that cannot be shown today", async () => {
       const atomId = ulid();
       await db
         .prepare("INSERT INTO learning_atoms (id, title) VALUES (?, ?)")
@@ -504,10 +505,10 @@ describe("mobile review session", () => {
         () => 1_000,
       );
       expect(await session.start("student-9")).toBe(true);
-      expect(session.progress).toEqual({ current: 1, total: 2 });
+      // The second sibling cannot be shown today, so it is not counted.
+      expect(session.progress).toEqual({ current: 1, total: 1 });
       session.reveal({ allowEmpty: true });
       const result = await session.rate(3);
-      // The second sibling was never shown, so the session was one card long.
       expect(result.summary).toMatchObject({
         completedCount: 1,
         totalCount: 1,

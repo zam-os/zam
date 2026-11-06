@@ -512,6 +512,7 @@ export interface GetReviewsResponse {
     slug: string;
     concept: string;
     domain: string;
+    topicTitle?: string | null;
     bloomLevel: number;
     state: string;
     dueAt: string;

@@ -1,5 +1,10 @@
 # Log
 
+## 2026-11-06
+
+- **Update** — [Agent and Library Trust Model](agent-trust-model.md)
+- **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
+
 ## 2026-11-05
 
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)

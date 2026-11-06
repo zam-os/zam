@@ -123,7 +123,7 @@ describe("renderQuestionWithTopic with segments", () => {
     const element = fakeDocument();
     renderQuestionWithTopic(
       element as never,
-      "physik/elektrizitaet",
+      "physik › elektrizitaet",
       "plain",
       CARD,
     );

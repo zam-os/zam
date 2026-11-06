@@ -248,6 +248,8 @@ export class MobileReviewSession {
       userId,
       maxNew: options.tokenIds ? 0 : options.maxNew,
       timeZone: this.timeZone(),
+      // The session walks this list and shows its position in it.
+      onePerAtom: true,
       ...(options.tokenIds ? { tokenIds: options.tokenIds } : {}),
     });
     if (queue.items.length === 0) return false;

@@ -67,6 +67,8 @@ export interface DueCard extends Card {
   concept: string;
   domain: string;
   bloom_level: number;
+  /** Raw title of the atom's curriculum topic; see {@link cardTopicTitle}. */
+  topic_title: string | null;
 }
 
 /** A blocked card joined with its token details. */
@@ -412,6 +414,35 @@ export async function deleteCardForUser(
 }
 
 /**
+ * The title of the curriculum topic a token's atom belongs to, as a scalar
+ * subquery over `t`. An atom can have several bindings, so the choice has to be
+ * stable: the Academy's own stage comes first, because that is the name the
+ * learner sees on the lesson path, then the order `projectedBinding` uses.
+ */
+export const TOPIC_TITLE_SQL = `(SELECT NULLIF(b.topic_title, '')
+           FROM atom_curriculum_bindings b
+          WHERE b.atom_id = t.atom_id
+            AND NULLIF(b.topic_title, '') IS NOT NULL
+          ORDER BY CASE WHEN b.provider = 'zam-academy' THEN 0 ELSE 1 END,
+                   b.provider, b.school_type, COALESCE(b.grade, -1), b.track,
+                   b.topic_code
+          LIMIT 1)`;
+
+/**
+ * The name of a card's topic for a learner: the curriculum title without its
+ * running number. "LB 1: Demokratie und Gesellschaft" and "Etappe 1: Potenzen"
+ * name a place in a list that a single card does not show.
+ */
+export function cardTopicTitle(
+  rawTitle: string | null | undefined,
+): string | null {
+  const title = (rawTitle ?? "")
+    .replace(/^(?:LB|Etappe)\s*\d+\s*:\s*/i, "")
+    .trim();
+  return title.length > 0 ? title : null;
+}
+
+/**
  * The row source and eligibility every "due" reader shares: the same schedule
  * window and the same review-queue filters. A draft is not learning content
  * yet, a deprecated token is not learning content any more, a detached card is
@@ -448,7 +479,8 @@ export async function getDueCards(
 ): Promise<DueCard[]> {
   const cutoff = now ?? new Date().toISOString();
 
-  let sql = `SELECT c.*, t.slug, t.concept, t.domain, t.bloom_level
+  let sql = `SELECT c.*, t.slug, t.concept, t.domain, t.bloom_level,
+      ${TOPIC_TITLE_SQL} AS topic_title
     ${DUE_CARD_SOURCE}`;
   const params: unknown[] = [userId, cutoff, cutoff];
 
@@ -471,7 +503,11 @@ export async function getDueCards(
 }
 
 export interface DueSummary {
-  /** How many cards the review queue would offer right now. */
+  /**
+   * How many cards are past their schedule, never-seen cards included. This is
+   * not what a session offers: limits and the one-item-per-atom rule hold most
+   * of a fresh deck back. For that number use {@link getSessionOffer}.
+   */
   dueCount: number;
   /** Domains the due cards belong to, sorted, without empty names. */
   domains: string[];

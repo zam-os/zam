@@ -16,7 +16,10 @@ import {
   attachedMedia,
   renderCardText,
 } from "../../desktop/src/card-text-render.js";
-import { renderQuestionWithTopic } from "../../desktop/src/question-topic.js";
+import {
+  cardTopic,
+  renderQuestionWithTopic,
+} from "../../desktop/src/question-topic.js";
 import {
   academyPracticeLink,
   type WebSourceLink,
@@ -686,7 +689,7 @@ function renderReviewCardText(): void {
   if (!item || !prompt) return;
   renderQuestionWithTopic(
     reviewQuestion,
-    item.domain,
+    cardTopic(item),
     prompt.question,
     prompt.question === item.question ? item.questionSegments : null,
     reviewImages,
@@ -2177,7 +2180,7 @@ function renderQueue(queue: ReviewQueue): void {
     const meta = document.createElement("div");
     meta.className = "meta";
     meta.textContent = tf("queue_item_meta", {
-      domain: item.domain || t("no_domain"),
+      domain: item.topicTitle || item.domain || t("no_domain"),
       due: formatDueDay(item.dueAt),
     });
     entry.append(title, meta);
@@ -3113,22 +3116,24 @@ async function renderCurrentReview(message = ""): Promise<void> {
   // The title is free text, and for imported cards it is often the first
   // sentence of the answer — so before the reveal the meta line names only the
   // domain. A prompt that prints the answer underneath itself is not recall.
+  // A card with a curriculum topic already names it before the question, so
+  // its slug has no place here.
   const tierLabel =
     item.tier === "tier1_fast"
       ? t("tier_fast")
       : item.tier === "tier2_synthesis"
         ? t("tier_synthesis")
         : item.tier;
+  const place = item.topicTitle ? null : item.domain || t("no_domain");
   const baseMeta = reviewSession.revealed
-    ? tf("review_meta", {
-        title: item.title,
-        domain: item.domain || t("no_domain"),
-      })
-    : item.domain || t("no_domain");
-  reviewMeta.textContent = tierLabel ? `${baseMeta} · ${tierLabel}` : baseMeta;
+    ? place
+      ? tf("review_meta", { title: item.title, domain: place })
+      : item.title
+    : place;
+  reviewMeta.textContent = [baseMeta, tierLabel].filter(Boolean).join(" · ");
   renderQuestionWithTopic(
     reviewQuestion,
-    item.domain,
+    cardTopic(item),
     prompt.question,
     prompt.question === item.question ? item.questionSegments : null,
     reviewImages,
@@ -3765,7 +3770,7 @@ async function refresh(userId: string): Promise<void> {
     await updateReminderDue(0);
     return;
   }
-  const queue = await buildReviewQueue(db, { userId });
+  const queue = await buildReviewQueue(db, { userId, onePerAtom: true });
   if (queue.items.length === 0) {
     // A library with cards but nothing scheduled is a good day, not an empty
     // screen — say so rather than showing "0".

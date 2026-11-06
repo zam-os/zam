@@ -56,6 +56,7 @@ describe("mobile atlas wiring", () => {
       "atlas_own_unit",
       "atlas_review",
       "atlas_review_none",
+      "atlas_review_new_today",
       "atlas_empty",
       "atlas_load_failed",
       ...["weltwissen", "schule", "leben", "produkte", "unternehmen"].map(

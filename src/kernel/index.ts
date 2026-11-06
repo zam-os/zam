@@ -741,6 +741,7 @@ export type {
   UpdateCardInput,
 } from "./models/card.js";
 export {
+  cardTopicTitle,
   deleteCardForUser,
   detachCardForUser,
   ensureCard,
@@ -1265,10 +1266,12 @@ export type {
   ReviewQueue,
   ReviewQueueItem,
   ReviewQueueOptions,
+  SessionOffer,
 } from "./scheduler/queue.js";
 export {
   buildReviewQueue,
   cardTextFields,
+  getSessionOffer,
   parseReviewFastCheck,
   presentFastCheck,
   TIER1_FIRST_RULE,

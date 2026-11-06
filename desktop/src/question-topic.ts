@@ -4,7 +4,10 @@
  * The same question can mean different things in different contexts — "Which
  * probes do the pods use?" depends on which repository it is about — and the
  * card's title cannot say, because it is often the answer's first sentence.
- * The domain is the stable, spoiler-free context every card carries.
+ * A card from a curriculum names its topic; any other card falls back on its
+ * domain, the stable, spoiler-free context every card carries. A domain is a
+ * slug, so it is never prettified for a learner: "koerper" is no spelling of
+ * "Körper".
  * Framework-free (like discussion.ts), so Studio, Mobile and the Recall panel
  * format it the same way.
  */
@@ -26,6 +29,14 @@ export function questionTopic(
   return segments.length > 0 ? segments.join(" › ") : null;
 }
 
+/** What a card's question is labelled with: its topic, else its domain. */
+export function cardTopic(card: {
+  topicTitle?: string | null;
+  domain?: string | null;
+}): string | null {
+  return card.topicTitle?.trim() || questionTopic(card.domain);
+}
+
 /**
  * Put the topic in bold before the question, as DOM nodes — card text is
  * never parsed as HTML.
@@ -36,12 +47,11 @@ export function questionTopic(
  */
 export function renderQuestionWithTopic(
   element: HTMLElement,
-  domain: string | null | undefined,
+  topic: string | null,
   question: string,
   segments?: readonly CardSegmentPayload[] | null,
   options?: RenderCardTextOptions,
 ): void {
-  const topic = questionTopic(domain);
   const doc = element.ownerDocument;
   if (segments && segments.length > 0) {
     const body = doc.createElement("span");

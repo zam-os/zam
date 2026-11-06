@@ -12,9 +12,11 @@
 import {
   type AtlasLayout,
   buildAtlasLayout,
+  practisedUnits,
   regionCondition,
   regionDue,
   unitsIn,
+  unseenUnits,
 } from "../../desktop/src/atlas/layout.js";
 import {
   conditionWords,
@@ -152,7 +154,11 @@ export function createMobileAtlas(
     if (due === 0) {
       const none = document.createElement("p");
       none.className = "t-footnote";
-      none.textContent = t("atlas_review_none");
+      none.textContent = t(
+        practisedUnits(current, key) === 0 && unseenUnits(current, key) > 0
+          ? "atlas_review_new_today"
+          : "atlas_review_none",
+      );
       els.detail.appendChild(none);
     }
     review.addEventListener("click", () => {

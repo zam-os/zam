@@ -8,7 +8,7 @@ tags:
   - mcp
   - secrets
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/agent-trust-model.md"
-timestamp: 2026-10-26T20:54:48Z
+timestamp: 2026-11-06T09:00:00.000Z
 ---
 
 ZAM treats two things as untrusted: the **agent** that calls its tools, and
@@ -105,6 +105,11 @@ content, so it is narrower still.
 - **Integrity.** A cell must match the SHA-256, tile id and version in the
   catalog. The hash binds a cell to its catalog entry; trust in the
   publisher rests on the pinned origin over TLS.
+- **A review never reads it.** `src/cli/review-context.ts` resolves an Academy
+  `source_link` to nothing before any request, for every caller: `get-review`,
+  `get-reviews`, `zam_get_reviews`, answer evaluation and the dynamic question.
+  A card names its lesson in the `#lesson=` fragment, which is never sent, so a
+  fetch could only return the app's frame. The learner opens the link.
 - **Agents never fetch.** No MCP tool and no `STUDIO_BRIDGE_COMMANDS` entry
   reaches the catalog. `zam_bundled_cells_list` and `zam_bundled_cell_enrol`
   read a machine-local cache (`~/.zam/academy`) of the learner's last check,
