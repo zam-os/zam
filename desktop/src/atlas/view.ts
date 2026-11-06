@@ -45,6 +45,7 @@ import {
   emblemOf,
   mayPractiseRegion,
   practisedUnits,
+  unseenUnits,
   regionCondition,
   regionDue,
   regionPath,
@@ -1087,7 +1088,9 @@ function regionPanel(
           ? t("atlas_review_practice_hint")
           : practisedUnits(layout, key) > 0
             ? t("atlas_review_too_big")
-            : t("atlas_review_none");
+            : unseenUnits(layout, key) > 0
+              ? t("atlas_review_new_today")
+              : t("atlas_review_none");
     review.addEventListener("click", () => {
       if (!s.lens) return;
       reviewRegion(s.lens, key, {

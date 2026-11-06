@@ -40,7 +40,8 @@ import {
 import { runBridge, setBridgeTransport } from "./bridge-transport.js";
 import { type AcademyProgressEvent, setAcademyProgressSource } from "./academy-list.js";
 import { attachedMedia, renderCardText } from "./card-text-render.js";
-import { renderQuestionWithTopic } from "./question-topic.js";
+import { cardTopic, renderQuestionWithTopic } from "./question-topic.js";
+import { dueHeadline } from "./due-headline.js";
 import {
   DEFAULT_LOCAL_ENDPOINT_URL,
   DEFAULT_MODEL_ENDPOINT_URL,
@@ -406,7 +407,10 @@ let studyLearningSavePending = false;
 let aiConfigEditorOpen = false;
 let modelRegistry: ModelRow[] = [];
 let editingModelId: string | null = null;
+/** What a session started now would offer: due reviews plus new cards. */
 let totalDue = 0;
+let offeredReviews = 0;
+let offeredNewCards = 0;
 let cardsReviewedThisSession = 0;
 /** Ratings submitted this study session (for the end-of-session summary). */
 const sessionRatingTally: {
@@ -592,6 +596,8 @@ interface BridgeCard {
   title?: string;
   concept: string;
   domain: string;
+  /** The card's curriculum topic for a learner to read; absent or null if none. */
+  topicTitle?: string | null;
   bloomLevel: number;
   state: string;
   dueAt: string;
@@ -4754,12 +4760,10 @@ function renderDueSummary(): void {
   if (!dueSummaryLoaded) return;
   const headline = document.getElementById("today-due-headline");
   if (headline) {
-    headline.textContent =
-      totalDue === 1
-        ? t("dashboard_due_headline_one")
-        : totalDue > 1
-          ? tf("dashboard_due_headline", { count: totalDue })
-          : t("dashboard_due_none");
+    headline.textContent = dueHeadline(
+      { reviews: offeredReviews, newCards: offeredNewCards },
+      { t, tf },
+    );
   }
   const navCount = document.getElementById("nav-due-count");
   if (navCount) {
@@ -6303,6 +6307,7 @@ async function loadDashboard() {
       locale: string;
       llm: { enabled: boolean };
       dueSummary: { dueCount: number; domains: string[]; cardsInDeck: number };
+      sessionOffer: { reviews: number; newCards: number };
       activeWorkspaceId?: string;
       workspaceDir?: string;
       onboardingDone?: boolean;
@@ -6313,7 +6318,7 @@ async function loadDashboard() {
       embedding?: OnboardingEmbeddingStatus;
       agentOffers?: OnboardingAgentOffer[];
       workspaceStructure?: OnboardingWorkspaceStructure;
-    }>("desktop-bootstrap");
+    }>("desktop-bootstrap", ["--time-zone", learnerTimeZone()]);
     desktopUserId = settings.userId;
     setCurrentLocale(settings.locale || "en");
     isLlmEnabled = settings.llm?.enabled || false;
@@ -6372,7 +6377,9 @@ async function loadDashboard() {
     // command and its nine reads on every dashboard load.
     beginBootStep("cards");
     const dueInfo = settings.dueSummary;
-    totalDue = dueInfo.dueCount;
+    offeredReviews = settings.sessionOffer.reviews;
+    offeredNewCards = settings.sessionOffer.newCards;
+    totalDue = offeredReviews + offeredNewCards;
     deckCardCount = dueInfo.cardsInDeck;
     completeBootStep("cards");
 
@@ -6386,7 +6393,9 @@ async function loadDashboard() {
     renderDueSummary();
     void loadTodayWeek();
 
-    if (totalDue > 0) {
+    // By what is past its schedule, not by the offer: when today's rule holds
+    // everything back, starting still leads to the choice to keep going.
+    if (dueInfo.dueCount > 0) {
       caughtUpEl.classList.add("hidden");
       startBtn.disabled = false;
     } else {
@@ -7027,7 +7036,7 @@ function renderReveal(
   };
 
   // 1. Concept Row — as card text when it has formulas or images.
-  addRevealRow("concept", activeCard.concept);
+  addRevealRow("reveal_answer", activeCard.concept);
   if (activeCard.conceptSegments) {
     const conceptVal = revealContentList.querySelector(".reveal-item .reveal-val");
     if (conceptVal) {
@@ -7038,11 +7047,9 @@ function renderReveal(
   }
   renderReviewMedia("answer-media", activeCard.media, "answer");
 
-  // 2. Title Row (human friendly)
-  addRevealRow("title", getDisplayTitle(activeCard));
-
-  // 3. Token Slug Row (technical)
-  addRevealRow("token", activeCard.slug, { code: true });
+  // 2. Title Row (human friendly). The slug is for the card editor, which
+  // shows it: a review is no place for a technical key.
+  addRevealRow("reveal_topic", getDisplayTitle(activeCard));
 
   // 3. Context Row (if any)
   if (activeCard.context) {
@@ -7970,7 +7977,7 @@ async function saveInlineEdit(): Promise<void> {
     activePromptQuestion = question.trim();
     renderQuestionWithTopic(
       document.getElementById("question-text")!,
-      activeCard.domain,
+      cardTopic(activeCard),
       activePromptQuestion,
       activeCard.questionSegments,
       { imageSource: cardImageSource },
@@ -8146,8 +8153,10 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
     `${sessionRatingTally.done + 1} / ${totalSessionCards}`;
   renderStudyProgress(sessionRatingTally.done, totalSessionCards);
 
+  // A curriculum topic stands before the question, so the slug stays out.
   const domainBadge = document.getElementById("domain-badge")!;
   domainBadge.textContent = activeCard.domain || "general";
+  domainBadge.hidden = Boolean(activeCard.topicTitle);
 
   const tierBadge = document.getElementById("tier-badge")!;
   tierBadge.hidden = !activeCard.tier;
@@ -8169,7 +8178,7 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
   document.getElementById("translation-loading")?.classList.add("hidden");
   renderQuestionWithTopic(
     document.getElementById("question-text")!,
-    activeCard.domain,
+    cardTopic(activeCard),
     activePromptQuestion,
     activeCard.questionSegments,
     { imageSource: cardImageSource },

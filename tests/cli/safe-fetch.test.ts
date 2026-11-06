@@ -5,6 +5,7 @@
  */
 
 import { createServer, type Server } from "node:http";
+import https from "node:https";
 import type { AddressInfo } from "node:net";
 import { gzipSync } from "node:zlib";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -338,5 +339,30 @@ describe("source links go through the fetcher", () => {
       expect(context?.content, link).toMatch(/Access denied/);
     }
     expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  it("never reads the Academy for a review (ADR 2026-10-19 D4)", async () => {
+    const transport = vi.spyOn(https, "request");
+    const fetchSpy = vi.fn();
+    vi.stubGlobal("fetch", fetchSpy);
+    try {
+      for (const link of [
+        "https://academy.zam-os.org/hsu-grundschule-4/#lesson=x",
+        "https://academy.zam-os.org/",
+        "http://academy.zam-os.org/uml/",
+        "https://ACADEMY.zam-os.org/uml/",
+      ]) {
+        expect(await resolveReviewContext(link), link).toBeNull();
+      }
+      expect(transport).not.toHaveBeenCalled();
+      expect(fetchSpy).not.toHaveBeenCalled();
+    } finally {
+      transport.mockRestore();
+    }
+  });
+
+  it("does not mistake another host for the Academy", async () => {
+    const context = await resolveReviewContext("http://10.0.0.1/academy.zam-os.org/");
+    expect(context?.content).toMatch(/Access denied/);
   });
 });

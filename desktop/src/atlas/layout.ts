@@ -479,6 +479,11 @@ export function practisedUnits(layout: AtlasLayout, key: string): number {
   ).length;
 }
 
+/** Units in a region with cards the learner has not seen yet: new, not due. */
+export function unseenUnits(layout: AtlasLayout, key: string): number {
+  return unitsIn(layout, key).filter((u) => u.condition === "unpractised").length;
+}
+
 /** Going through a region again is offered for small regions only. */
 export function mayPractiseRegion(layout: AtlasLayout, key: string): boolean {
   const units = practisedUnits(layout, key);

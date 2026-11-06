@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  cardTopic,
   questionTopic,
   renderQuestionWithTopic,
 } from "../../desktop/src/question-topic.js";
@@ -62,15 +63,26 @@ describe("question topic", () => {
     expect(plain.element.textContent).toBe("<b>not markup</b>");
   });
 
+  it("prefers a curriculum topic and leaves other cards on their domain", () => {
+    expect(
+      cardTopic({ topicTitle: "Natur und Umwelt", domain: "hsu/natur-und-umwelt" }),
+    ).toBe("Natur und Umwelt");
+    expect(cardTopic({ topicTitle: null, domain: "physik/optik" })).toBe(
+      "physik › optik",
+    );
+    expect(cardTopic({ domain: "axon-ivy" })).toBe("axon-ivy");
+    expect(cardTopic({ topicTitle: " ", domain: "" })).toBeNull();
+  });
+
   it("is used by the Studio, Mobile and the Recall panel", () => {
     expect(file("desktop/src/main.ts")).toContain(
       'renderQuestionWithTopic(\n    document.getElementById("question-text")!,',
     );
     expect(file("mobile/src/main.ts")).toContain(
-      "renderQuestionWithTopic(\n    reviewQuestion,\n    item.domain,\n    prompt.question,",
+      "renderQuestionWithTopic(\n    reviewQuestion,\n    cardTopic(item),\n    prompt.question,",
     );
     expect(file("desktop/src/panel/recall.ts")).toContain(
-      "renderQuestionWithTopic(\n    question,\n    card.domain,",
+      "renderQuestionWithTopic(\n    question,\n    cardTopic(card),",
     );
   });
 });

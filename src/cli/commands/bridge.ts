@@ -87,6 +87,7 @@ import {
   getPreviousLibrary,
   getProviderApiKey,
   getReviewActivity,
+  getSessionOffer,
   getSetting,
   getStudyLearningSettings,
   getStudyWorkloadSettings,
@@ -4568,6 +4569,7 @@ bridgeCommand
   .command("desktop-bootstrap")
   .description("Initialize first-run desktop state (JSON)")
   .option("--user <id>", "Preferred user ID when none is configured")
+  .option("--time-zone <iana>", "IANA time zone for the local learning day")
   .action(async (opts) => {
     // Hardware detection shells out to PowerShell synchronously (several
     // seconds on slow Windows machines). Run it before the database is
@@ -4584,6 +4586,7 @@ bridgeCommand
       // desktop app: link the bundled CLI onto the user's PATH. installCliShim
       // never throws and never shadows an externally installed `zam`.
       const cli = installCliShim();
+      const dueSummary = await getDueSummary(db, userId);
       jsonOut({
         userId,
         locale,
@@ -4594,7 +4597,14 @@ bridgeCommand
         // one — one more request over the persistent bridge host and nine
         // more reads on every start, for three numbers. Same eligibility as
         // the review queue, one light read instead of a full card pull.
-        dueSummary: await getDueSummary(db, userId),
+        dueSummary,
+        // What a session would really offer, from the queue itself. Nothing
+        // past its schedule means nothing to offer, so that start stays one
+        // light read.
+        sessionOffer:
+          dueSummary.dueCount > 0
+            ? await getSessionOffer(db, userId, opts.timeZone)
+            : { reviews: 0, newCards: 0 },
         activeWorkspaceId,
         workspaceDir,
         skillLinks,

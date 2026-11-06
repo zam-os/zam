@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-10-14T15:00:00.000Z
+timestamp: 2026-11-06T09:00:00.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -299,14 +299,26 @@ context can narrow it further. The due list behind `check-due` and
 desktop dashboard's startup due digest reads the same eligibility source:
 `getDueSummary()` in `src/kernel/models/card.ts` aggregates it into the
 `desktop-bootstrap` payload instead of issuing a separate `check-due`
-request.
+request. Both count every card past its schedule, never-seen cards included,
+so neither says what a session will serve. For that, `getSessionOffer()` asks
+the queue itself and returns due reviews and new cards apart. The Today
+headline, the navigation badge and the session counter show that number, and a
+card nobody has seen is called new, not due.
+
+Each queue item carries its `topicTitle`, the curriculum topic of its atom
+without a running number: the Academy's own stage first, then any other
+binding. Surfaces show it before the question. A card without one, such as the
+learner's own, keeps its domain. A domain is a slug and is never prettified for
+a learner.
 
 At most one distinct practice item of a learning atom is shown to a learner
 on one local learning day. Every surface — Studio, Mobile, the Recall panel,
 `zam learn`, `zam review`, `zam session`, and agents through
 `zam_admit_review` — admits a card immediately before display, and the queue
 hides the other items of an atom that already has a presentation that day.
-A queue prefetch is not an exposure. Due dates are compared as UTC instants
+A queue prefetch is not an exposure, so a queue lists an atom's siblings by
+default; a surface that counts or walks its items passes `onePerAtom`, so it
+never promises a card it cannot show. Due dates are compared as UTC instants
 regardless of the learner's zone.
 
 Each learner has persisted workload settings. The balanced default allows 10
@@ -316,7 +328,9 @@ problems preset uses 5 and 30 with both burial switches enabled. Learners can
 customize both bounded limits and each burial switch in Desktop or standalone
 Mobile settings; CLI and bridge sessions read the same values. Explicit kernel
 queue options remain available for automation. Limits are applied after
-sibling filtering, so a suppressed sibling does not consume a daily slot.
+sibling filtering, so a suppressed sibling does not consume a slot. The limit
+holds per session, not per day: a new session brings the next new cards, up to
+the one-item-per-atom rule.
 
 The same settings module stores a separate per-learner interaction object:
 `flash`, `choice`, `answer_feedback`, the scaffolded `answer_variation`, or
@@ -423,6 +437,6 @@ snapshots with the same workload and tier rules.
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - [Anki Manual — Deck Options](https://docs.ankiweb.net/deck-options.html)
 - [Anki Manual — Studying](https://docs.ankiweb.net/studying.html)
-- Tests: `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/answer-points.test.ts`, `tests/kernel/card-shape.test.ts`, `tests/cli/material-prompt.test.ts`, `tests/mobile/curriculum.test.ts`, `tests/kernel/publication.test.ts`, `tests/desktop/answer-points-surfaces.test.ts`, `tests/desktop/rating-recall-split.test.ts`, `tests/mobile/dom-contract.test.ts`, `tests/mobile/voice.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
-- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/cli/review-actions.ts`, `src/cli/llm/client.ts`, `skills/zam/SKILL.md`, `src/kernel/library/answer-points.ts`, `src/kernel/library/card-shape.ts`, `src/cli/llm/material-prompt.ts`, `src/cli/commands/mcp.ts`, `mobile/src/curriculum.ts`, `src/kernel/library/publication.ts`, `desktop/src/panel/recall-evaluation.ts`, `src/kernel/models/card.ts`, `src/kernel/analytics/stats.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
+- Tests: `tests/kernel/session-offer.test.ts`, `tests/desktop/due-headline.test.ts`, `tests/desktop/question-topic.test.ts`, `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/answer-points.test.ts`, `tests/kernel/card-shape.test.ts`, `tests/cli/material-prompt.test.ts`, `tests/mobile/curriculum.test.ts`, `tests/kernel/publication.test.ts`, `tests/desktop/answer-points-surfaces.test.ts`, `tests/desktop/rating-recall-split.test.ts`, `tests/mobile/dom-contract.test.ts`, `tests/mobile/voice.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
+- Code: `desktop/src/due-headline.ts`, `desktop/src/question-topic.ts`, `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/cli/review-actions.ts`, `src/cli/llm/client.ts`, `skills/zam/SKILL.md`, `src/kernel/library/answer-points.ts`, `src/kernel/library/card-shape.ts`, `src/cli/llm/material-prompt.ts`, `src/cli/commands/mcp.ts`, `mobile/src/curriculum.ts`, `src/kernel/library/publication.ts`, `desktop/src/panel/recall-evaluation.ts`, `src/kernel/models/card.ts`, `src/kernel/analytics/stats.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
 - Algorithm reference: <https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm>

@@ -15,6 +15,7 @@ import {
 } from "../library/card-text.js";
 import { parseStoredCardText } from "../library/card-text-store.js";
 import { bindStandingAssignments } from "../models/assignment.js";
+import { cardTopicTitle, TOPIC_TITLE_SQL } from "../models/card.js";
 import { getDisplayTitle } from "../models/token.js";
 import { seededPermutation } from "../util/seeded.js";
 import { interleave } from "./interleaver.js";
@@ -44,6 +45,13 @@ export interface ReviewQueueOptions {
   tokenIds?: readonly string[];
   /** IANA time zone for the local learning day. Device context, not DB server. */
   timeZone?: string;
+  /**
+   * Keep only the first item of each atom. A queue is a prefetch and by default
+   * lists an atom's siblings, of which presenting one rules out the others for
+   * the day. A surface that counts its items, or walks them as a fixed list,
+   * would promise cards it never serves, so it asks for this.
+   */
+  onePerAtom?: boolean;
 }
 
 /** `AND t.id IN (…)` for a token filter; `AND 1 = 0` for an empty one. */
@@ -76,6 +84,11 @@ export interface ReviewQueueItem {
   title: string;
   concept: string;
   domain: string;
+  /**
+   * The name of the card's curriculum topic, for a learner to read; `null`
+   * when its atom has none, as with the learner's own cards.
+   */
+  topicTitle: string | null;
   bloomLevel: number;
   state: string; // 'new' | 'learning' | 'review' | 'relearning'
   dueAt: string;
@@ -129,6 +142,7 @@ interface CardRow {
   title: string;
   concept: string;
   domain: string;
+  topic_title: string | null;
   bloom_level: number;
   state: string;
   due_at: string;
@@ -202,6 +216,7 @@ export async function buildReviewQueue(
          t.title    AS title,
          t.concept  AS concept,
          t.domain   AS domain,
+         ${TOPIC_TITLE_SQL} AS topic_title,
          t.bloom_level AS bloom_level,
          c.state    AS state,
          c.due_at   AS due_at,
@@ -269,6 +284,7 @@ export async function buildReviewQueue(
          t.title    AS title,
          t.concept  AS concept,
          t.domain   AS domain,
+         ${TOPIC_TITLE_SQL} AS topic_title,
          t.bloom_level AS bloom_level,
          c.state    AS state,
          c.due_at   AS due_at,
@@ -368,9 +384,14 @@ export async function buildReviewQueue(
   const merged = intersperseNew(interleavedDue, newItems, 5);
 
   const occupying = await occupyingAtomCards(db, options.userId, learningDay);
-  const atomFiltered = merged.filter((item) =>
-    cardAllowedForAtom(item.cardId, item.atomId, occupying),
-  );
+  const atomsInQueue = new Set<string>();
+  const atomFiltered = merged.filter((item) => {
+    if (!cardAllowedForAtom(item.cardId, item.atomId, occupying)) return false;
+    if (!options.onePerAtom || !item.atomId) return true;
+    if (atomsInQueue.has(item.atomId)) return false;
+    atomsInQueue.add(item.atomId);
+    return true;
+  });
 
   // ── Step 6: Keep one sibling per enabled bucket, then apply limits ─────
   const capped = applyWorkloadLimits(atomFiltered, {
@@ -410,6 +431,33 @@ export async function buildReviewQueue(
   };
 }
 
+export interface SessionOffer {
+  /** Due reviews, relearning included, a session would serve right now. */
+  reviews: number;
+  /** Never-seen cards it would add, within the limit for new cards. */
+  newCards: number;
+}
+
+/**
+ * What a session started now would offer. It asks the queue itself, so what a
+ * surface announces and what the session serves cannot disagree.
+ */
+export async function getSessionOffer(
+  db: Database,
+  userId: string,
+  timeZone?: string,
+): Promise<SessionOffer> {
+  const queue = await buildReviewQueue(db, {
+    userId,
+    timeZone,
+    onePerAtom: true,
+  });
+  return {
+    reviews: queue.reviewCount + queue.relearnCount,
+    newCards: queue.newCount,
+  };
+}
+
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 /** Convert a SQL row to a ReviewQueueItem. */
@@ -426,6 +474,7 @@ function rowToItem(row: CardRow): ReviewQueueItem {
     title: getDisplayTitle(row),
     concept: row.concept,
     domain: row.domain,
+    topicTitle: cardTopicTitle(row.topic_title),
     bloomLevel: row.bloom_level,
     state: row.state,
     dueAt: row.due_at,

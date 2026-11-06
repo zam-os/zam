@@ -20,7 +20,7 @@ describe("Tier-1 choice reveal on desktop surfaces", () => {
       0,
       revealFn.indexOf("function discussionElements"),
     );
-    expect(body).toContain('addRevealRow("concept", activeCard.concept)');
+    expect(body).toContain('addRevealRow("reveal_answer", activeCard.concept)');
     expect(body).toContain(
       'document.getElementById("revealed-box")!.classList.remove("hidden")',
     );

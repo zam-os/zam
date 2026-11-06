@@ -34,7 +34,7 @@ import {
 } from "../../../src/kernel/library/answer-points.js";
 import { currentLocale, setCurrentLocale, t, tf } from "../i18n.js";
 import { renderCardText } from "../card-text-render.js";
-import { renderQuestionWithTopic } from "../question-topic.js";
+import { cardTopic, renderQuestionWithTopic } from "../question-topic.js";
 import { academyPracticeLink, webSourceLink } from "../source-link.js";
 import {
   type BonusOffer,
@@ -120,6 +120,7 @@ interface ReviewCard {
   slug: string;
   concept: string;
   domain: string | null;
+  topicTitle?: string | null;
   bloomLevel: number;
   state: string;
   dueAt: string;
@@ -1000,7 +1001,7 @@ async function presentCurrentCard(): Promise<void> {
   question.className = "recall-question";
   renderQuestionWithTopic(
     question,
-    card.domain,
+    cardTopic(card),
     card.question?.trim() ? card.question : card.slug,
     card.question?.trim() ? card.questionSegments : null,
   );

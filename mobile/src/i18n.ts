@@ -407,6 +407,8 @@ const DE: Messages = {
   atlas_own_unit: "eigene Einheit",
   atlas_review: "Wiederholen",
   atlas_review_none: "Hier ist nichts fällig.",
+  atlas_review_new_today:
+    "Hier gibt es noch nichts zu wiederholen. Neue Karten warten unter Lernen.",
   atlas_empty:
     "Noch nichts auf der Karte. Importiere Lerninhalte, dann erscheinen sie hier.",
   atlas_load_failed: "Der Atlas konnte nicht geladen werden.",
@@ -628,9 +630,9 @@ const DE: Messages = {
   precondition_body: "Bevor die Frage kommt: Kannst du „{title}“ schon?",
   precondition_known: "Ja, kann ich schon",
   precondition_learn: "Will ich lernen",
-  keep_going_title: "Für heute ist nichts mehr da",
+  keep_going_title: "Das war's für diese Sitzung",
   keep_going_body:
-    "Das Tageslimit gibt es aus einem Grund. Wenn du willst, kannst du mit dem weiterlernen, was schon auf deinem Weg liegt.",
+    "Eine Sitzung hat mit Absicht eine Grenze. Wenn du willst, kannst du mit dem weiterlernen, was schon auf deinem Weg liegt.",
   keep_going_yes: "Noch ein bisschen weiter",
   session_done_today: "Für heute Schluss",
   bonus_title: "Eine Idee daneben",
@@ -1053,6 +1055,8 @@ const EN: Messages = {
   atlas_own_unit: "own unit",
   atlas_review: "Review",
   atlas_review_none: "Nothing is due here.",
+  atlas_review_new_today:
+    "Nothing to review here yet. New cards are waiting under Learn.",
   atlas_empty:
     "Nothing on the map yet. Import learning content, and it appears here.",
   atlas_load_failed: "The atlas could not be loaded.",
@@ -1272,7 +1276,7 @@ const EN: Messages = {
   precondition_learn: "I want to learn it",
   keep_going_title: "Nothing left for today",
   keep_going_body:
-    "The daily limit is there for a reason. If you want, you can keep going with what is already on your path.",
+    "A session is limited on purpose. If you want, you can keep going with what is already on your path.",
   keep_going_yes: "Keep going",
   session_done_today: "Stop for today",
   bonus_title: "One idea beside the path",

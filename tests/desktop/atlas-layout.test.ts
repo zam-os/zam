@@ -9,6 +9,7 @@ import {
   mayPractiseRegion,
   PATTERNS,
   practisedUnits,
+  unseenUnits,
   REGION_PRACTICE_MAX_UNITS,
   regionCondition,
   regionDue,
@@ -192,6 +193,17 @@ describe("atlas map layout", () => {
       if (unitsIn(layout, leaf).length === 0) {
         expect(regionCondition(layout, leaf)).toBeNull();
       }
+    }
+  });
+
+  it("counts as unseen only units whose cards were never practised", () => {
+    for (const key of layout.geoms.keys()) {
+      expect(unseenUnits(layout, key)).toBe(
+        unitsIn(layout, key).filter((u) => u.condition === "unpractised").length,
+      );
+      expect(unseenUnits(layout, key) + practisedUnits(layout, key)).toBeLessThanOrEqual(
+        unitsIn(layout, key).length,
+      );
     }
   });
 
