@@ -1,0 +1,4719 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:mathematik-gymnasium-12",
+  "version": "2026.11.1",
+  "title": "Mathematik 12 Gymnasium (ZAM Academy)",
+  "description": "Fünf Lernbereiche für die 12. Klasse am Gymnasium. 30 Lektionen mit Labor, Aufgaben auf zwei Stufen und Lernkarten. Jede Karte führt zur passenden Lektion zurück.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-11-08T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/mathematik/regulaer",
+      "checked": "2026-11-08",
+      "label": "M12, LB 1–5"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M6Y39BAC0XKZW0P1WTJP357K",
+      "atom_uri": "urn:zam:atom:01M6Y39BAC0XKZW0P1WTJP357K",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-schar-ganzrational",
+      "title": "Kurvenscharen ganzrationaler Funktionen",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-schar-ganzrational",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACPRPDX9S3J1WZEJST",
+          "slug": "g12-schar-parameter-behandlung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-schar-ganzrational",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Wie eine zusätzliche freie Variable (wie die Variable x).",
+              "reason": "Der Parameter ist konstant bezüglich der Differenziation nach x."
+            },
+            {
+              "text": "Er wird beim Ableiten grundsätzlich zu null gesetzt.",
+              "reason": "Als konstanter Faktor bleibt a bei a·x erhalten."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie wird der Scharparameter a beim Differenzieren einer Funktionenschar "
+            },
+            {
+              "type": "math",
+              "tex": "f_a(x)",
+              "speech": "f a von x"
+            },
+            {
+              "type": "text",
+              "text": " behandelt?"
+            }
+          ],
+          "concept": "Wie eine feste reelle Zahl (Konstante).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wie eine feste reelle Zahl (Konstante).",
+              "Wie eine zusätzliche freie Variable (wie die Variable x)."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACDZGN8VYRB5JAVQFW",
+          "slug": "g12-schar-waagrechte-tangenten",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-schar-ganzrational",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "f_a(0) = 0 nach dem Parameter a auflösen.",
+              "reason": "Extremstellen erfordern das Nullsetzen der Ableitung, nicht des Funktionswerts im Ursprung."
+            },
+            {
+              "text": "f''_a(x) = 0 nach dem Parameter a auflösen.",
+              "reason": "f'' = 0 liefert Wendestellen, keine Extremstellen."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Gleichung bestimmt die Lage möglicher Extremstellen einer Schar "
+            },
+            {
+              "type": "math",
+              "tex": "f_a(x)",
+              "speech": "f a von x"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f'_a(x) = 0 nach der Variablen x auflösen.",
+              "f_a(0) = 0 nach dem Parameter a auflösen."
+            ],
+            "correct_index": 0
+          },
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f'_a(x) = 0",
+              "speech": "f Strich a von x gleich 0"
+            },
+            {
+              "type": "text",
+              "text": " nach der Variablen x auflösen."
+            }
+          ]
+        },
+        {
+          "id": "01M6Y39BACHDAF2G78C1Z7ZE0Q",
+          "slug": "g12-schar-extremstelle-berechnen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-schar-ganzrational",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "x = 4",
+              "reason": "Hat vergessen, die Wurzel aus 4 zu ziehen."
+            },
+            {
+              "text": "x = 12",
+              "reason": "Hat den Koeffizienten 12 direkt als Extremstelle übernommen."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Bestimme die positive Extremstelle der Schar "
+            },
+            {
+              "type": "math",
+              "tex": "f_a(x) = x^3 - 12x",
+              "speech": "f a von x gleich x hoch 3 minus 12 x"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "x = 2",
+              "speech": "x gleich 2"
+            }
+          ],
+          "sample_solution": "f'(x) = 3x² − 12 = 0 ⇔ 3x² = 12 ⇔ x² = 4 ⇔ x = 2 (da x > 0)."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BAC49GG2Q2GV7973MGT",
+      "atom_uri": "urn:zam:atom:01M6Y39BAC49GG2Q2GV7973MGT",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-stammfunktion-ganzrational",
+      "title": "Stammfunktionen und graphisches Integrieren",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stammfunktion-ganzrational",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BAC0XKZW0P1WTJP357K",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACWK95J1CCD5X7VS1G",
+          "slug": "g12-stammfunktion-definition",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stammfunktion-ganzrational",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Wenn die Ableitung f' von f mit der Stammfunktion F übereinstimmt.",
+              "reason": "Verwechselt Stammfunktion und Ableitung: F muss abgeleitet f ergeben, nicht umgekehrt."
+            },
+            {
+              "text": "Wenn der Graph von F überall oberhalb des Graphen von f verläuft.",
+              "reason": "Die geometrische Lage ist irrelevant; entscheidend ist die Ableitungsbeziehung F' = f."
+            }
+          ],
+          "question": "Wann heißt eine differenzierbare Funktion F eine Stammfunktion von f auf einem Intervall?",
+          "concept": "Wenn die Ableitung F' von F mit der Funktion f übereinstimmt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn die Ableitung F' von F mit der Funktion f übereinstimmt.",
+              "Wenn die Ableitung f' von f mit der Stammfunktion F übereinstimmt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACNPAPSKDQS689W2GP",
+          "slug": "g12-stammfunktion-konstante",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stammfunktion-ganzrational",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Sie unterscheiden sich durch einen konstanten Vorfaktor k.",
+              "reason": "Die Ableitung einer Konstante ist null; ein Faktor würde die Ableitung verändern."
+            },
+            {
+              "text": "Sie besitzen stets dieselben Nullstellen auf der x-Achse.",
+              "reason": "Die additive Konstante verschiebt den Graphen vertikal und ändert die Nullstellen."
+            }
+          ],
+          "question": "Wie unterscheiden sich zwei beliebige Stammfunktionen F und G derselben stetigen Funktion?",
+          "concept": "Sie unterscheiden sich nur um eine additive Konstante C.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie unterscheiden sich nur um eine additive Konstante C.",
+              "Sie unterscheiden sich durch einen konstanten Vorfaktor k."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACF2116CS80AGJVTEK",
+          "slug": "g12-stammfunktion-anfangsbedingung",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stammfunktion-ganzrational",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "F(x) = 6x − 4 + 5",
+              "reason": "Hat f abgeleitet statt integriert."
+            },
+            {
+              "text": "F(x) = x³ − 4x² + 5",
+              "reason": "Hat beim Integrieren von 4x den Faktor 1/2 vergessen."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Gegeben ist "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = 3x^2 - 4x",
+              "speech": "f von x gleich 3 x Quadrat minus 4 x"
+            },
+            {
+              "type": "text",
+              "text": ". Bestimme diejenige Stammfunktion F mit "
+            },
+            {
+              "type": "math",
+              "tex": "F(0) = 5",
+              "speech": "F von 0 gleich 5"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "F(x) = x^3 - 2x^2 + 5",
+              "speech": "F von x gleich x hoch 3 minus 2 x Quadrat plus 5"
+            }
+          ],
+          "sample_solution": "Die allgemeine Stammfunktion lautet F(x) = x³ − 2x² + C. Aus F(0) = 5 folgt C = 5, also F(x) = x³ − 2x² + 5."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACRMQBREW73TMVVYP5",
+      "atom_uri": "urn:zam:atom:01M6Y39BACRMQBREW73TMVVYP5",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-exp-ableitung-regeln",
+      "title": "Natürliche Exponentialfunktion – Produkt- und Kettenregel",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-ableitung-regeln",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BAC49GG2Q2GV7973MGT",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BAC64M1PGD72J2SV5ZV",
+          "slug": "g12-exp-ableitung-basis",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-ableitung-regeln",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ihre Ableitung ergibt nach der Potenzregel x mal e hoch x minus 1.",
+              "reason": "Die Potenzregel gilt nur für feste Exponenten, nicht für Exponentialfunktionen."
+            },
+            {
+              "text": "Ihre Ableitung verschwindet an der Stelle x = 0 identisch.",
+              "reason": "f'(0) = e⁰ = 1 ≠ 0."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Was zeichnet die natürliche Exponentialfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = e^x",
+              "speech": "f von x gleich e hoch x"
+            },
+            {
+              "type": "text",
+              "text": " beim Differenzieren aus?"
+            }
+          ],
+          "concept": "Ihre Ableitungsfunktion f' stimmt exakt mit der Funktion f überein.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ihre Ableitungsfunktion f' stimmt exakt mit der Funktion f überein.",
+              "Ihre Ableitung ergibt nach der Potenzregel x mal e hoch x minus 1."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BAC8XFZ6HJ3SGDRZNE2",
+          "slug": "g12-exp-ableitung-regeln-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-ableitung-regeln",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "f'(x) = 2 · e^(−x)",
+              "reason": "Hat die Kettenregel beim zweiten Faktor und die Produktregel ignoriert."
+            },
+            {
+              "text": "f'(x) = (2x − 1) · e^(−x)",
+              "reason": "Vorzeichenfehler beim Ausklammern: 2·e^(−x) − (2x − 3)·e^(−x) = (5 − 2x)·e^(−x)."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f'(x) = (5 − 2x) · e^(−x)",
+              "f'(x) = 2 · e^(−x)"
+            ],
+            "correct_index": 0
+          },
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet die 1. Ableitung von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = (2x − 3) \\cdot e^{-x}",
+              "speech": "f von x gleich Klammer auf 2 x minus 3 Klammer zu mal e hoch minus x"
+            },
+            {
+              "type": "text",
+              "text": " nach Produkt- und Kettenregel?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f'(x) = (5 − 2x) \\cdot e^{-x}",
+              "speech": "f Strich von x gleich Klammer auf 5 minus 2 x Klammer zu mal e hoch minus x"
+            }
+          ],
+          "replaces": [
+            "01K8GC00000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M6Y39BACSJPBB24NHE54JF73",
+          "slug": "g12-exp-ableitung-produkt-kette",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-ableitung-regeln",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "x = 1,5",
+              "reason": "1,5 ist die Nullstelle von f (2x − 3 = 0), nicht die Extremstelle."
+            },
+            {
+              "text": "x = 5,0",
+              "reason": "Hat beim Auflösen von 5 − 2x = 0 das Teilen durch 2 vergessen."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Bestimme die Extremstelle der Funktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = (2x - 3) \\cdot e^{-x}",
+              "speech": "f von x gleich Klammer auf 2 x minus 3 Klammer zu mal e hoch minus x"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "x = 2{,}5",
+              "speech": "x gleich 2 Komma 5"
+            }
+          ],
+          "sample_solution": "f'(x) = 2·e^(−x) + (2x − 3)·(−e^(−x)) = (5 − 2x)·e^(−x). Da e^(−x) > 0, folgt 5 − 2x = 0 ⇔ x = 2,5."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACM91RK6EN99AYTFJ4",
+      "atom_uri": "urn:zam:atom:01M6Y39BACM91RK6EN99AYTFJ4",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-exp-grenzwerte",
+      "title": "Grenzwerte und Dominanz der Exponentialfunktion",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-grenzwerte",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BACRMQBREW73TMVVYP5",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BAC323C5X9NHS6MJJYT",
+          "slug": "g12-exp-dominanz-potenz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-grenzwerte",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Potenzfunktionen wachsen für große x stets schneller als e^x.",
+              "reason": "Exponentialfunktionen überholen langfristig jede noch so hohe Potenz."
+            },
+            {
+              "text": "Beide Funktionstypen wachsen asymptotisch gleich schnell.",
+              "reason": "Der Quotient x^n / e^x strebt gegen 0, nicht gegen eine Konstante."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Wachstumsbeziehung gilt für x gegen plus unendlich zwischen "
+            },
+            {
+              "type": "math",
+              "tex": "e^x",
+              "speech": "e hoch x"
+            },
+            {
+              "type": "text",
+              "text": " und jeder Potenz "
+            },
+            {
+              "type": "math",
+              "tex": "x^n",
+              "speech": "x hoch n"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "Die e-Funktion wächst wesentlich schneller als jede Potenzfunktion.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die e-Funktion wächst wesentlich schneller als jede Potenzfunktion.",
+              "Potenzfunktionen wachsen für große x stets schneller als e^x."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACJXNGF5WJF1MAQX4E",
+          "slug": "g12-exp-limes-minus-unendlich",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-grenzwerte",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Der Grenzwert strebt gegen plus unendlich.",
+              "reason": "e^x fällt für x → −∞ schneller gegen 0, als x^n wachsen kann."
+            },
+            {
+              "text": "Der Grenzwert strebt gegen minus unendlich.",
+              "reason": "Die e-Funktion dominiert und zieht das Produkt gegen 0."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welchen Grenzwert hat das Produkt "
+            },
+            {
+              "type": "math",
+              "tex": "x^n \\cdot e^x",
+              "speech": "x hoch n mal e hoch x"
+            },
+            {
+              "type": "text",
+              "text": " für x gegen minus unendlich?"
+            }
+          ],
+          "concept": "Der Grenzwert des Produkts ist gleich null.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Grenzwert des Produkts ist gleich null.",
+              "Der Grenzwert strebt gegen plus unendlich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BAC7TY2D15W5M0G2M7Y",
+          "slug": "g12-exp-grenzwert-berechnen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-grenzwerte",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "3/2",
+              "reason": "Hat fälschlich die Leitkoeffizienten dividiert."
+            },
+            {
+              "text": "1",
+              "reason": "Der Grenzwert ist 0, da der Nenner über alle Schranken schneller wächst."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Bestimme den Grenzwert "
+            },
+            {
+              "type": "math",
+              "tex": "\\lim_{x \\to +\\infty} \\frac{3x^2 + 1}{e^{2x}}",
+              "speech": "Limes für x gegen plus unendlich von 3 x Quadrat plus 1 durch e hoch 2 x"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "0",
+              "speech": "null"
+            }
+          ],
+          "sample_solution": "Wegen der Dominanz der Exponentialfunktion e^(2x) gegenüber jedem Polynom im Nenner gilt lim = 0."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACKGYYS41VJ4HPFKMG",
+      "atom_uri": "urn:zam:atom:01M6Y39BACKGYYS41VJ4HPFKMG",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-exp-kurvendiskussion",
+      "title": "Kurvendiskussion verknüpfter Exponentialfunktionen",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-kurvendiskussion",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BACM91RK6EN99AYTFJ4",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BAC7C9T6GSGCNBBHJDN",
+          "slug": "g12-exp-nullstellen-satz-nullprodukt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-kurvendiskussion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Weil die e-Funktion an der Stelle x = 1 immer eine Nullstelle besitzt.",
+              "reason": "e^x wird im Reellen niemals null (e^x > 0 für alle x)."
+            },
+            {
+              "text": "Weil man e hoch g(x) auf beiden Seiten durch Subtraktion beseitigen darf.",
+              "reason": "Nullstellen erfordern das Lösen des Polynomteils p(x) = 0 nach dem Satz vom Nullprodukt."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Warum vereinfacht sich das Suchen von Nullstellen bei "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = p(x) \\cdot e^{g(x)}",
+              "speech": "f von x gleich p von x mal e hoch g von x"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "Weil e hoch g(x) für alle reellen x stets echt größer als null ist.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil e hoch g(x) für alle reellen x stets echt größer als null ist.",
+              "Weil die e-Funktion an der Stelle x = 1 immer eine Nullstelle besitzt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACM2CHR5V4Y9A7WX0J",
+          "slug": "g12-exp-extremstellen-ableitung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-kurvendiskussion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Durch Nullsetzen des ursprünglichen Polynoms (x² − 3).",
+              "reason": "Das sind die Nullstellen der Funktion f, nicht die Extremstellen."
+            },
+            {
+              "text": "Durch Gleichsetzen des quadratischen Polynoms mit e^x.",
+              "reason": "Extremstellen verlangen das Verschwinden der ersten Ableitung."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie bestimmt man die Extremstellen von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = (x^2 - 3) \\cdot e^x",
+              "speech": "f von x gleich Klammer auf x Quadrat minus 3 Klammer zu mal e hoch x"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Durch Nullsetzen des Terms "
+            },
+            {
+              "type": "math",
+              "tex": "x^2 + 2x - 3",
+              "speech": "x Quadrat plus 2 x minus 3"
+            },
+            {
+              "type": "text",
+              "text": " in der Ableitung."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch Nullsetzen des Terms (x² + 2x − 3) in der Ableitung.",
+              "Durch Nullsetzen des ursprünglichen Polynoms (x² − 3)."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACFSFNATT5V43R6JYM",
+          "slug": "g12-exp-wendepunkt-rechnen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-kurvendiskussion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "x = 1",
+              "reason": "x = 1 ist der Hochpunkt (f'(1) = 0), nicht der Wendepunkt."
+            },
+            {
+              "text": "x = 3",
+              "reason": "Rechenfehler bei der 2. Ableitung."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "An welcher Stelle "
+            },
+            {
+              "type": "math",
+              "tex": "x > 0",
+              "speech": "x größer als 0"
+            },
+            {
+              "type": "text",
+              "text": " besitzt "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = x \\cdot e^{-x}",
+              "speech": "f von x gleich x mal e hoch minus x"
+            },
+            {
+              "type": "text",
+              "text": " ihren Wendepunkt?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "x = 2",
+              "speech": "x gleich 2"
+            }
+          ],
+          "sample_solution": "f'(x) = (1 − x)·e^(−x), f''(x) = −1·e^(−x) + (1 − x)·(−e^(−x)) = (x − 2)·e^(−x). f''(x) = 0 ⇔ x = 2."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACSA87KK7M2W126EVQ",
+      "atom_uri": "urn:zam:atom:01M6Y39BACSA87KK7M2W126EVQ",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-exp-wachstum-modelle",
+      "title": "Modellierung von Wachstums- und Abklingprozessen",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-wachstum-modelle",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BACKGYYS41VJ4HPFKMG",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACDQFKXBKB6YTS6TRX",
+          "slug": "g12-exp-basiswechsel-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-wachstum-modelle",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "f(t) = B_0 · e^(a · t)",
+              "reason": "Im Exponenten muss der natürliche Logarithmus ln(a) stehen, nicht a selbst."
+            },
+            {
+              "text": "f(t) = B_0 · ln(a) · e^t",
+              "reason": "ln(a) gehört in den Exponenten als Wachstumskonstante k = ln(a)."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f(t) = B_0 · e^(ln(a) · t)",
+              "f(t) = B_0 · e^(a · t)"
+            ],
+            "correct_index": 0
+          },
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie schreibt man eine Exponentialfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(t) = B_0 \\cdot a^t",
+              "speech": "f von t gleich B null mal a hoch t"
+            },
+            {
+              "type": "text",
+              "text": " mit "
+            },
+            {
+              "type": "math",
+              "tex": "a > 0",
+              "speech": "a größer als null"
+            },
+            {
+              "type": "text",
+              "text": " zur Basis e um?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f(t) = B_0 \\cdot e^{\\ln(a) \\cdot t}",
+              "speech": "f von t gleich B null mal e hoch l n von a mal t"
+            }
+          ]
+        },
+        {
+          "id": "01M6Y39BACMCYYQJC24H827Y0D",
+          "slug": "g12-exp-halbwertszeit-begriff",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-wachstum-modelle",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die halbe Lebensdauer, nach der die gesamte Substanz restlos verschwunden ist.",
+              "reason": "Radioaktiver Zerfall verläuft asymptotisch und endet mathematisch nie ganz."
+            },
+            {
+              "text": "Den Zeitpunkt, an dem die Zerfallsrate ihren Höchstwert erreicht.",
+              "reason": "Die Zerfallsrate ist zu Beginn am größten und nimmt stetig ab."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Was versteht man unter der Halbwertszeit "
+            },
+            {
+              "type": "math",
+              "tex": "T_H",
+              "speech": "T H"
+            },
+            {
+              "type": "text",
+              "text": " eines radioaktiven Zerfalls "
+            },
+            {
+              "type": "math",
+              "tex": "N(t) = N_0 \\cdot e^{-k t}",
+              "speech": "N von t gleich N null mal e hoch minus k t"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "Die Zeitspanne, nach der die Hälfte der Ausgangsmenge zerfallen ist.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zeitspanne, nach der die Hälfte der Ausgangsmenge zerfallen ist.",
+              "Die halbe Lebensdauer, nach der die gesamte Substanz restlos verschwunden ist."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACXE17NK2DN71YW1AN",
+          "slug": "g12-exp-zerfall-berechnen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-exp-wachstum-modelle",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "t = 4 · ln(2)",
+              "reason": "Hat mit 0,5 multipliziert statt durch 0,5 zu teilen."
+            },
+            {
+              "text": "t = 3 · ln(2)",
+              "reason": "Rechenfehler beim Logarithmieren."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Ein Bestand folgt "
+            },
+            {
+              "type": "math",
+              "tex": "B(t) = 80 \\cdot e^{-0{,}5 t}",
+              "speech": "B von t gleich 80 mal e hoch minus 0 Komma 5 t"
+            },
+            {
+              "type": "text",
+              "text": ". Zu welchem Zeitpunkt t ist "
+            },
+            {
+              "type": "math",
+              "tex": "B(t) = 40",
+              "speech": "B von t gleich 40"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "t = 2 \\ln(2)",
+              "speech": "t gleich 2 mal natürlicher Logarithmus von 2"
+            }
+          ],
+          "sample_solution": "80·e^(−0,5t) = 40 ⇔ e^(−0,5t) = 0,5 ⇔ −0,5t = ln(1/2) = −ln(2) ⇔ t = 2·ln(2) ≈ 1,386."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BAC3KTED095R2MQCC5K",
+      "atom_uri": "urn:zam:atom:01M6Y39BAC3KTED095R2MQCC5K",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-trig-ableitung-graph",
+      "title": "Graphische Herleitung der Ableitungen von Sinus und Kosinus",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-trig-ableitung-graph",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BACSA87KK7M2W126EVQ",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACFQB12498G42J9JEV",
+          "slug": "g12-sinus-ableitung-kosinus",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-trig-ableitung-graph",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die negative Kosinusfunktion: f'(x) = −cos(x).",
+              "reason": "Die Ableitung von sin(x) ist positiv cos(x); das Minuszeichen gehört zur Ableitung von cos(x)."
+            },
+            {
+              "text": "Die Tangensfunktion: f'(x) = tan(x).",
+              "reason": "Die Sinuskurve ändert sich beim Ableiten in die Kosinuskurve."
+            }
+          ],
+          "question": "Wie lautet die 1. Ableitung der Standard-Sinusfunktion?",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Kosinusfunktion: f'(x) = cos(x).",
+              "Die negative Kosinusfunktion: f'(x) = −cos(x)."
+            ],
+            "correct_index": 0
+          },
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Die Kosinusfunktion: "
+            },
+            {
+              "type": "math",
+              "tex": "f'(x) = \\cos(x)",
+              "speech": "f Strich von x gleich Kosinus von x"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ]
+        },
+        {
+          "id": "01M6Y39BACQ36686G4YSJAZKCN",
+          "slug": "g12-kosinus-ableitung-minus-sinus",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-trig-ableitung-graph",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Der positive Sinus: g'(x) = sin(x).",
+              "reason": "Da cos(x) für x ∈ ]0; π[ fällt, muss die Steigung negativ sein: −sin(x)."
+            },
+            {
+              "text": "Die Kehrwertfunktion: g'(x) = 1 / cos(x).",
+              "reason": "Die Ableitung des Kosinus ist der negative Sinus, kein Bruch."
+            }
+          ],
+          "question": "Wie lautet die 1. Ableitung der Standard-Kosinusfunktion?",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der negative Sinus: g'(x) = −sin(x).",
+              "Der positive Sinus: g'(x) = sin(x)."
+            ],
+            "correct_index": 0
+          },
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Der negative Sinus: "
+            },
+            {
+              "type": "math",
+              "tex": "g'(x) = −\\sin(x)",
+              "speech": "g Strich von x gleich minus Sinus von x"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ]
+        },
+        {
+          "id": "01M6Y39BACM73KH85JZ1SEP3WY",
+          "slug": "g12-trig-steigung-ausrechnen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-trig-ableitung-graph",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die Steigung beträgt 0.",
+              "reason": "f(π) = sin(π) = 0 ist der Funktionswert, gesucht ist aber die Steigung f'(π) = −1."
+            },
+            {
+              "text": "Die Steigung beträgt −π.",
+              "reason": "Hat den Winkel π statt des Funktionswerts von cos(π) eingesetzt."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Berechne die Steigung der Tangente an "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\sin(x)",
+              "speech": "f von x gleich Sinus von x"
+            },
+            {
+              "type": "text",
+              "text": " an der Stelle "
+            },
+            {
+              "type": "math",
+              "tex": "x = \\pi",
+              "speech": "x gleich Pi"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Die Steigung beträgt "
+            },
+            {
+              "type": "math",
+              "tex": "-1",
+              "speech": "minus 1"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "sample_solution": "f'(x) = cos(x). An der Stelle x = π gilt: f'(π) = cos(π) = −1."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACTT1RE3S8V8GF02NH",
+      "atom_uri": "urn:zam:atom:01M6Y39BACTT1RE3S8V8GF02NH",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-trig-kurvendiskussion",
+      "title": "Kurvendiskussion trigonometrischer Verknüpfungen",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-trig-kurvendiskussion",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BAC3KTED095R2MQCC5K",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Untersuchung von Funktionen – Stammfunktion, Produkt- und Kettenregel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACTW6YVMCPFREYM68W",
+          "slug": "g12-trig-amplitude-periode",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-trig-kurvendiskussion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "p = b / (2π)",
+              "reason": "Eine größere Frequenz b staucht die Schwingung und verkürzt die Periode: 2π / b."
+            },
+            {
+              "text": "p = π / b",
+              "reason": "Die Grundperiode von Sinus ist 2π, nicht π."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet die Periode p der Funktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\sin(b \\cdot x)",
+              "speech": "f von x gleich Sinus von b mal x"
+            },
+            {
+              "type": "text",
+              "text": " für "
+            },
+            {
+              "type": "math",
+              "tex": "b > 0",
+              "speech": "b größer als 0"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "p = \\frac{2\\pi}{b}",
+              "speech": "p gleich 2 Pi durch b"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "p = 2π / b",
+              "p = b / (2π)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BAC5ZGEKJMB4QSS2TED",
+          "slug": "g12-trig-kettenregel-linear",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-trig-kurvendiskussion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "f'(x) = cos(3x + 1)",
+              "reason": "Hat das Nachdifferenzieren mit der inneren Ableitung 3 vergessen."
+            },
+            {
+              "text": "f'(x) = 1/3 · cos(3x + 1)",
+              "reason": "Beim Ableiten wird mit der inneren Ableitung multipliziert, nicht dividiert."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie leitet man "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\sin(3x + 1)",
+              "speech": "f von x gleich Sinus von 3 x plus 1"
+            },
+            {
+              "type": "text",
+              "text": " nach der Kettenregel ab?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f'(x) = 3 \\cos(3x + 1)",
+              "speech": "f Strich von x gleich 3 mal Kosinus von 3 x plus 1"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f'(x) = 3 · cos(3x + 1)",
+              "f'(x) = cos(3x + 1)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACBFSTS1485B0AX8G8",
+          "slug": "g12-trig-extremum-bestimmen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-trig-kurvendiskussion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "x = 3π/4",
+              "reason": "Bei 3π/4 ist cos(3π/2) = 0 (Nullstelle)."
+            },
+            {
+              "text": "x = π/4",
+              "reason": "Bei x = π/4 ist cos(π/2) = 0 (Nullstelle, kein Extremum)."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Bestimme das kleinste positive x, an dem "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\cos(2x)",
+              "speech": "f von x gleich Kosinus von 2 x"
+            },
+            {
+              "type": "text",
+              "text": " ein lokales Minimum besitzt."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "x = \\frac{\\pi}{2}",
+              "speech": "x gleich Pi halbe"
+            }
+          ],
+          "sample_solution": "f'(x) = −2·sin(2x) = 0 ⇔ 2x = π ⇔ x = π/2. Dort ist cos(2·π/2) = cos(π) = −1 (Minimum)."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BAC2CK1CBDCB0VMYA9B",
+      "atom_uri": "urn:zam:atom:01M6Y39BAC2CK1CBDCB0VMYA9B",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-stoch-axiomatik",
+      "title": "Axiomatische Definition der Wahrscheinlichkeit nach Kolmogorow",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-axiomatik",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Zufallsgrößen und Binomialverteilung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Zufallsgrößen und Binomialverteilung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACPQB4DHNT4S2887EF",
+          "slug": "g12-kolmogorow-nichtnegativitaet",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-axiomatik",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die Wahrscheinlichkeit P(A) muss eine rationale Zahl sein.",
+              "reason": "Wahrscheinlichkeiten können beliebige reelle Zahlen in [0; 1] sein."
+            },
+            {
+              "text": "Die Wahrscheinlichkeit P(A) ist stets kleiner als 0,5.",
+              "reason": "Wahrscheinlichkeiten können Werte bis einschließlich 1 annehmen."
+            }
+          ],
+          "question": "Welche Aussage bildet das 1. Axiom von Kolmogorow für jedes Ereignis A?",
+          "concept": "Die Wahrscheinlichkeit P(A) ist stets größer oder gleich null: P(A) ≥ 0.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Wahrscheinlichkeit P(A) ist stets größer oder gleich null: P(A) ≥ 0.",
+              "Die Wahrscheinlichkeit P(A) muss eine rationale Zahl sein."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BAC035NXH6MBEZJ798G",
+          "slug": "g12-kolmogorow-normiertheit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-axiomatik",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die Wahrscheinlichkeit (des sicheren Ereignisses) ist gleich 100.",
+              "reason": "Wahrscheinlichkeiten sind im Intervall [0; 1] normiert."
+            },
+            {
+              "text": "Die Wahrscheinlichkeit (des sicheren Ereignisses) hängt von der Stichprobengröße n ab.",
+              "reason": "Das sichere Ereignis tritt mit Gewissheit ein, P(Ω) = 1 ist absolut."
+            }
+          ],
+          "question": "Was besagt das 2. Axiom von Kolmogorow über den sicheren Ereignisraum Ω?",
+          "concept": "Die Wahrscheinlichkeit des sicheren Ereignisses ist gleich 1: P(Ω) = 1.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Wahrscheinlichkeit des sicheren Ereignisses ist gleich 1: P(Ω) = 1.",
+              "Die Wahrscheinlichkeit (des sicheren Ereignisses) ist gleich 100."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACQY9GCVV5FK96VTK5",
+          "slug": "g12-kolmogorow-additionssatz",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-axiomatik",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "0,12",
+              "reason": "Hat die Wahrscheinlichkeiten multipliziert (Pfadregel) statt addiert."
+            },
+            {
+              "text": "0,58",
+              "reason": "Hat fälschlicherweise P(A)·P(B) abgezogen, obwohl die Ereignisse unvereinbar sind."
+            }
+          ],
+          "concept": "0,7",
+          "sample_solution": "Nach dem 3. Axiom von Kolmogorow gilt für unvereinbare Ereignisse: P(A ∪ B) = P(A) + P(B) = 0,3 + 0,4 = 0,7.",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Zwei unvereinbare Ereignisse haben "
+            },
+            {
+              "type": "math",
+              "tex": "P(A) = 0{,}3",
+              "speech": "P von A gleich 0,3"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "P(B) = 0{,}4",
+              "speech": "P von B gleich 0,4"
+            },
+            {
+              "type": "text",
+              "text": ". Berechne "
+            },
+            {
+              "type": "math",
+              "tex": "P(A \\cup B)",
+              "speech": "P von A vereinigt mit B"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BAC29BF8T08CEPBXWSQ",
+      "atom_uri": "urn:zam:atom:01M6Y39BAC29BF8T08CEPBXWSQ",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-stoch-zufallsgroesse-parameter",
+      "title": "Zufallsgrößen und Wahrscheinlichkeitsverteilungen",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-zufallsgroesse-parameter",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BAC2CK1CBDCB0VMYA9B",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Zufallsgrößen und Binomialverteilung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Zufallsgrößen und Binomialverteilung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACJGWK8C4NMNF5ETFK",
+          "slug": "g12-zufallsgroesse-definition",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-zufallsgroesse-parameter",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Eine unbestimmte Zahl, die bei jeder Wiederholung denselben festen Wert liefert.",
+              "reason": "Ein fester Wert wäre konstant; eine Zufallsgröße variiert stochastisch mit den Ausgängen."
+            },
+            {
+              "text": "Das Verhältnis der Treffer zur Gesamtzahl aller möglichen Versuchsausgänge.",
+              "reason": "Das wäre die Definition einer relativen Häufigkeit, nicht einer Zufallsgröße."
+            }
+          ],
+          "question": "Was versteht man unter einer Zufallsgröße X in der Stochastik?",
+          "concept": "Eine Funktion, die jedem Ergebnis eines Zufallsexperiments eine reelle Zahl zuordnet.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Funktion, die jedem Ergebnis eines Zufallsexperiments eine reelle Zahl zuordnet.",
+              "Eine unbestimmte Zahl, die bei jeder Wiederholung denselben festen Wert liefert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BAC0ATM9YXC1VX5VS4C",
+          "slug": "g12-erwartungswert-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-zufallsgroesse-parameter",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Als Summe aus Ausprägung und Wahrscheinlichkeit: ∑ (x_i + p_i).",
+              "reason": "Werte und Wahrscheinlichkeiten werden gewichtet multipliziert, nicht addiert."
+            },
+            {
+              "text": "Als ungewichtetes arithmetisches Mittel: 1/n · ∑ x_i.",
+              "reason": "Das ist das ungewichtete arithmetische Mittel und gilt nur bei Gleichverteilung."
+            }
+          ],
+          "question": "Wie berechnet man den Erwartungswert E(X) einer diskreten Zufallsgröße?",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als Summe der Produkte aus Ausprägung und Wahrscheinlichkeit: ∑ x_i · p_i.",
+              "Als Summe aus Ausprägung und Wahrscheinlichkeit: ∑ (x_i + p_i)."
+            ],
+            "correct_index": 0
+          },
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Als Summe der Produkte aus Ausprägung und Wahrscheinlichkeit: "
+            },
+            {
+              "type": "math",
+              "tex": "E(X) = \\sum x_i \\cdot p_i",
+              "speech": "E von X gleich Summe über x i mal p i"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ]
+        },
+        {
+          "id": "01M6Y39BAC7PNAHSSHM2WBNTSH",
+          "slug": "g12-standardabweichung-ausrechnen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-zufallsgroesse-parameter",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "σ = 25",
+              "reason": "Hat Standardabweichung mit Varianz gleichgesetzt."
+            },
+            {
+              "text": "σ = 10",
+              "reason": "Rechenfehler bei der Wurzel."
+            }
+          ],
+          "question": "Eine Zufallsgröße hat die Varianz Var(X) = 25. Wie groß ist die Standardabweichung σ?",
+          "concept": "σ = 5",
+          "sample_solution": "Die Standardabweichung ist die Quadratwurzel aus der Varianz: σ = √Var(X) = √25 = 5."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACS8RS9ABFH8D9VCMZ",
+      "atom_uri": "urn:zam:atom:01M6Y39BACS8RS9ABFH8D9VCMZ",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-stoch-urnenmodelle",
+      "title": "Urnenmodelle und Kombinatorik",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-urnenmodelle",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BAC29BF8T08CEPBXWSQ",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Zufallsgrößen und Binomialverteilung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Zufallsgrößen und Binomialverteilung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACVMDHTDJS3CHCZQTW",
+          "slug": "g12-urne-mit-ohne-zuruecklegen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-urnenmodelle",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ziehen ohne Zurücklegen, da sich die Gesamtzahl der Kugeln verringert.",
+              "reason": "Ohne Zurücklegen ändern sich die Wahrscheinlichkeiten (hypergeometrische Verteilung)."
+            },
+            {
+              "text": "Nur Experimente mit mindestens drei verschiedenen Kugelarten.",
+              "reason": "Ein Bernoulli-Versuch hat genau zwei Ausgänge (Treffer / Niete)."
+            }
+          ],
+          "question": "Welches Modell führt bei n-facher Wiederholung auf eine Bernoulli-Kette?",
+          "concept": "Ziehen mit Zurücklegen, da die Wahrscheinlichkeiten auf jeder Stufe konstant bleiben.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ziehen mit Zurücklegen, da die Wahrscheinlichkeiten auf jeder Stufe konstant bleiben.",
+              "Ziehen ohne Zurücklegen, da sich die Gesamtzahl der Kugeln verringert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACGEABPJXYY8G64Y3N",
+          "slug": "g12-binomialkoeffizient-bedeutung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-urnenmodelle",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die Wahrscheinlichkeit, in n Versuchen mindestens k Treffer zu erzielen.",
+              "reason": "Der Binomialkoeffizient ist eine reine Anzahl (Kombinatorik), keine Wahrscheinlichkeit."
+            },
+            {
+              "text": "Das Verhältnis der Trefferwahrscheinlichkeit p zur Nietenwahrscheinlichkeit.",
+              "reason": "Der Koeffizient zählt die Pfade im Baumdiagramm mit genau k Treffern."
+            }
+          ],
+          "question": "Was gibt der Binomialkoeffizient (n über k) anschaulich an?",
+          "concept": "Die Anzahl der Möglichkeiten, k Treffer auf n Versuche zu verteilen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Anzahl der Möglichkeiten, k Treffer auf n Versuche zu verteilen.",
+              "Die Wahrscheinlichkeit, in n Versuchen mindestens k Treffer zu erzielen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACCN5NCX4Y073ED8YB",
+          "slug": "g12-lotto-kombinatorik-anzahl",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-urnenmodelle",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "20",
+              "reason": "Hat das Teilen durch 2! vergessen."
+            },
+            {
+              "text": "2,5",
+              "reason": "Hat 5 durch 2 geteilt statt den Binomialkoeffizienten zu berechnen."
+            }
+          ],
+          "question": "Berechne den Binomialkoeffizienten (5 über 2).",
+          "concept": "10",
+          "sample_solution": "(5 über 2) = (5 · 4) / (2 · 1) = 20 / 2 = 10."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACTS9XMRA7YF98CZC8",
+      "atom_uri": "urn:zam:atom:01M6Y39BACTS9XMRA7YF98CZC8",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-stoch-bernoulli-binomial",
+      "title": "Bernoulli-Ketten und Binomialverteilung",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-bernoulli-binomial",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BACS8RS9ABFH8D9VCMZ",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Zufallsgrößen und Binomialverteilung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Zufallsgrößen und Binomialverteilung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACQN93M1ZXYAM7D0X4",
+          "slug": "g12-bernoulli-kette-eigenschaften",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-bernoulli-binomial",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ziehen ohne Zurücklegen mit sich von Stufe zu Stufe ändernder Wahrscheinlichkeit.",
+              "reason": "Das beschreibt ein hypergeometrisches Modell, keine Bernoulli-Kette."
+            },
+            {
+              "text": "Mindestens drei verschiedene Versuchsausgänge bei stochastischer Abhängigkeit.",
+              "reason": "Ein Bernoulli-Versuch besitzt per Definition genau zwei Ausgänge (Treffer / Niete)."
+            }
+          ],
+          "question": "Was zeichnet eine Bernoulli-Kette der Länge n aus?",
+          "concept": "n voneinander unabhängige Stufen mit je zwei Ausgängen und konstanter Trefferwahrscheinlichkeit p.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "n voneinander unabhängige Stufen mit je zwei Ausgängen und konstanter Trefferwahrscheinlichkeit p.",
+              "Ziehen ohne Zurücklegen mit sich von Stufe zu Stufe ändernder Wahrscheinlichkeit."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACETP1DWGKXRMB9HDE",
+          "slug": "g12-bernoulli-formel-struktur",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-bernoulli-binomial",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Summe aus Binomialkoeffizient (n über k) und den beiden Einzelpotenzen.",
+              "reason": "Wahrscheinlichkeiten unabhängiger Stufen werden multipliziert, nicht addiert."
+            },
+            {
+              "text": "Einfaches Produkt n mal Trefferpotenz p^k ohne Kombinatorikfaktor.",
+              "reason": "Als Vorfaktor gehört der Binomialkoeffizient (n über k) eingesetzt, nicht einfach n."
+            }
+          ],
+          "question": "Wie berechnet die Bernoulli-Formel die Wahrscheinlichkeit für k Treffer bei n Stufen?",
+          "concept": "Produkt aus Binomialkoeffizient (n über k), Trefferpotenz p^k und Nietenpotenz.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Produkt aus Binomialkoeffizient (n über k), Trefferpotenz p^k und Nietenpotenz.",
+              "Summe aus Binomialkoeffizient (n über k) und den beiden Einzelpotenzen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACFKHN47TX44BR4A02",
+          "slug": "g12-bernoulli-null-treffer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-bernoulli-binomial",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "(1/6)⁴",
+              "reason": "Das ist die Wahrscheinlichkeit für 4 Sechsen statt 0 Sechsen."
+            },
+            {
+              "text": "4 · (5/6)³",
+              "reason": "Bei k = 0 Treffern lautet der Term (5/6)⁴ ohne weiteren Vorfaktor."
+            }
+          ],
+          "question": "Ein Würfel wird 4-mal geworfen. Wie groß ist die Wahrscheinlichkeit für genau 0 Sechsen?",
+          "concept": "(5/6)⁴",
+          "sample_solution": "Mit n = 4, p = 1/6, k = 0 gilt: P(X = 0) = (4 über 0) · (1/6)⁰ · (5/6)⁴ = 1 · 1 · (5/6)⁴ = (5/6)⁴ ≈ 0,482."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACNE5C6MHHFFG4YC0P",
+      "atom_uri": "urn:zam:atom:01M6Y39BACNE5C6MHHFFG4YC0P",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-stoch-binomial-parameter",
+      "title": "Parameter und Glockenkurvenform der Binomialverteilung",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-binomial-parameter",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BACTS9XMRA7YF98CZC8",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Zufallsgrößen und Binomialverteilung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Zufallsgrößen und Binomialverteilung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACDPC7VDW3VNTQEMHH",
+          "slug": "g12-binomial-parameter-formeln",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-binomial-parameter",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "μ = n·(1 − p) und σ = √(n·p·(1 − p))",
+              "reason": "Erwartungswert fälschlich mit Gegenwahrscheinlichkeit berechnet."
+            },
+            {
+              "text": "μ = p/n und σ = n·p·(1 − p)",
+              "reason": "Quotient beim Erwartungswert und Varianz statt Standardabweichung."
+            }
+          ],
+          "question": "Wie lauten Erwartungswert μ und Standardabweichung σ einer Binomialverteilung B(n; p)?",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "μ = n·p und σ = √(n·p·(1 − p))",
+              "μ = n·(1 − p) und σ = √(n·p·(1 − p))"
+            ],
+            "correct_index": 0
+          },
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\mu = n \\cdot p",
+              "speech": "mü gleich n mal p"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\sigma = \\sqrt{n \\cdot p \\cdot (1 − p)}",
+              "speech": "sigma gleich Wurzel aus n mal p mal Klammer auf 1 minus p Klammer zu"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ]
+        },
+        {
+          "id": "01M6Y39BACXYJBZN12N8QMSFNP",
+          "slug": "g12-eins-sigma-anteil",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-binomial-parameter",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Etwa 95,4 %",
+              "reason": "95,4 % entspricht dem 2-Sigma-Intervall [μ − 2σ; μ + 2σ]."
+            },
+            {
+              "text": "Etwa 99,7 %",
+              "reason": "99,7 % entspricht dem 3-Sigma-Intervall [μ − 3σ; μ + 3σ]."
+            }
+          ],
+          "question": "Welcher Anteil der Werte liegt bei der Normalapproximation etwa im Intervall [μ − σ; μ + σ]?",
+          "concept": "Etwa 68,3 %",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Etwa 68,3 %",
+              "Etwa 95,4 %"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACB50GEZVKF64YEA4X",
+          "slug": "g12-sigma-werte-ausrechnen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-stoch-binomial-parameter",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "μ = 20 und σ = 16",
+              "reason": "Hat die Varianz angegeben und vergessen, die Wurzel zu ziehen."
+            },
+            {
+              "text": "μ = 50 und σ = 5",
+              "reason": "Hat mit p = 0,5 gerechnet statt mit dem vorgegebenen p = 0,2."
+            }
+          ],
+          "question": "Bestimme Erwartungswert μ und Standardabweichung σ für n = 100 und p = 0,2.",
+          "concept": "μ = 20 und σ = 4",
+          "sample_solution": "μ = n·p = 100·0,2 = 20. Varianz Var(X) = 100·0,2·0,8 = 16. Standardabweichung σ = √16 = 4."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BAC52YNG7GEZRKC14MV",
+      "atom_uri": "urn:zam:atom:01M6Y39BAC52YNG7GEZRKC14MV",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-hypo-grundprinzip",
+      "title": "Grundprinzip des einseitigen Signifikanztests",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-grundprinzip",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Einseitiger Signifikanztest"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Einseitiger Signifikanztest (bei als binomialverteilt angenommenen Merkmalen)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACTMS56C5N8GERVBEV",
+          "slug": "g12-hypothesentest-ziel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-grundprinzip",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Zu beweisen, dass die Nullhypothese H0 mit mathematischer Sicherheit wahr ist.",
+              "reason": "Ein statistischer Test kann Hypothesen nie beweisen, sondern nur verwerfen oder beibehalten."
+            },
+            {
+              "text": "Den wahren Trefferanteil p der Gesamtheit auf viele Stellen exakt zu bestimmen.",
+              "reason": "Ein Hypothesentest ist eine Ja/Nein-Entscheidung, kein Schätzverfahren für Parameter."
+            }
+          ],
+          "question": "Was ist das primäre Ziel eines Signifikanztests bezüglich der Nullhypothese H0?",
+          "concept": "Die Nullhypothese H0 soll auf Basis der Stichprobe zugunsten von H1 verworfen werden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Nullhypothese H0 soll auf Basis der Stichprobe zugunsten von H1 verworfen werden.",
+              "Zu beweisen, dass die Nullhypothese H0 mit mathematischer Sicherheit wahr ist."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BAC2KEVRH5GPJGYJFVV",
+          "slug": "g12-hypo-grundprinzip-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-grundprinzip",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ein rechtsseitiger Signifikanztest mit Ablehnungsbereich bei großen Trefferzahlen.",
+              "reason": "Die Gegenhypothese p < 0,90 richtet den Test nach links aus."
+            },
+            {
+              "text": "Ein beidseitiger Test ohne feste Ausrichtung des Ablehnungsbereichs.",
+              "reason": "Die Vermutung richtet sich gezielt auf schlechtere Qualität (einseitig links)."
+            }
+          ],
+          "question": "Hersteller: p ≥ 0,90. Verbrauchermagazin vermutet p < 0,90. Welcher Testtyp liegt vor?",
+          "concept": "Ein linksseitiger Signifikanztest mit Ablehnungsbereich bei kleinen Trefferzahlen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein linksseitiger Signifikanztest mit Ablehnungsbereich bei kleinen Trefferzahlen.",
+              "Ein rechtsseitiger Signifikanztest mit Ablehnungsbereich bei großen Trefferzahlen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACXZ53NCMXY9YG9S28",
+          "slug": "g12-signifikanzniveau-bedeutung",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-grundprinzip",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die Wahrscheinlichkeit, dass H0 wahr ist, liegt bei exakt 95 %.",
+              "reason": "Hypothesen besitzen in der klassischen Stochastik keine Wahrscheinlichkeiten."
+            },
+            {
+              "text": "Der Fehler 2. Art ist auf höchstens 5 % beschränkt.",
+              "reason": "α kontrolliert ausschließlich den Fehler 1. Art, nicht den Fehler 2. Art."
+            }
+          ],
+          "question": "Was garantiert ein Signifikanzniveau von α = 0,05 beim Testen?",
+          "concept": "Die Wahrscheinlichkeit für einen Fehler 1. Art beträgt höchstens 5 %.",
+          "sample_solution": "Das Signifikanzniveau ist die vertraglich festgelegte Obergrenze für die Wahrscheinlichkeit, H0 fälschlich abzulehnen: P(Fehler 1. Art) ≤ α = 5 %."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACP7VA7ZV6MNG2RAZ6",
+      "atom_uri": "urn:zam:atom:01M6Y39BACP7VA7ZV6MNG2RAZ6",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-hypo-fehlerarten",
+      "title": "Fehler 1. Art und Fehler 2. Art",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-fehlerarten",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BAC52YNG7GEZRKC14MV",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Einseitiger Signifikanztest"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Einseitiger Signifikanztest (bei als binomialverteilt angenommenen Merkmalen)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACSQ770XWH8QB3AFJT",
+          "slug": "g12-hypo-fehlerarten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-fehlerarten",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die Nullhypothese H0 wird fälschlicherweise beibehalten, obwohl sie in Wahrheit falsch ist.",
+              "reason": "Das ist die Definition des Fehlers 2. Art (Beta-Fehler)."
+            },
+            {
+              "text": "Die Stichprobe wurde nicht rein zufällig erhoben.",
+              "reason": "Das wäre ein methodischer Stichprobenfehler, kein stochastischer Alpha-Fehler."
+            }
+          ],
+          "question": "Was versteht man in der Testtheorie unter einem Fehler 1. Art (Alpha-Fehler)?",
+          "concept": "Die Nullhypothese H0 wird fälschlicherweise verworfen, obwohl sie in Wahrheit zutrifft.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Nullhypothese H0 wird fälschlicherweise verworfen, obwohl sie in Wahrheit zutrifft.",
+              "Die Nullhypothese H0 wird fälschlicherweise beibehalten, obwohl sie in Wahrheit falsch ist."
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K8GC20000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M6Y39BAC8JG640VA69QFTDXH",
+          "slug": "g12-beta-fehler-abhaengigkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-fehlerarten",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ausschließlich vom vorgegebenen Wert unter der Nullhypothese H0.",
+              "reason": "Der Beta-Fehler setzt voraus, dass H0 falsch ist, hängt also vom wahren p unter H1 ab."
+            },
+            {
+              "text": "Ausschließlich von der Uhrzeit der Stichprobenerhebung.",
+              "reason": "Stochastische Kenngrößen hängen von Verteilungsparametern ab."
+            }
+          ],
+          "question": "Wovon hängt die Wahrscheinlichkeit β für einen Fehler 2. Art maßgeblich ab?",
+          "concept": "Vom tatsächlichen wahren Wert des Parameters p unter der Gegenhypothese H1.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vom tatsächlichen wahren Wert des Parameters p unter der Gegenhypothese H1.",
+              "Ausschließlich vom vorgegebenen Wert unter der Nullhypothese H0."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACY4MH3RPCRKHX6KXR",
+          "slug": "g12-beta-fehler-berechnen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-fehlerarten",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "0,88 (bzw. 88 %)",
+              "reason": "1 − 0,12 = 0,88 ist die Güte (Power) des Tests, nicht der Beta-Fehler."
+            },
+            {
+              "text": "0,05 (bzw. 5 %)",
+              "reason": "Verwechselt den Beta-Fehler mit dem Signifikanzniveau α."
+            }
+          ],
+          "question": "Annahmebereich ist {0, ..., 14}. Unter p = 0,25 ist P(X ≤ 14) = 0,12. Wie groß ist β?",
+          "concept": "0,12 (bzw. 12 %)",
+          "sample_solution": "Der Fehler 2. Art tritt ein, wenn das Testergebnis trotz geltender Alternative im Annahmebereich landet: P(X ≤ 14 unter p = 0,25) = 0,12 = 12 %."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACJWHBMFV7V6DB2XGF",
+      "atom_uri": "urn:zam:atom:01M6Y39BACJWHBMFV7V6DB2XGF",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-hypo-ablehnungsbereich",
+      "title": "Bestimmung des Ablehnungsbereichs",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-ablehnungsbereich",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BACP7VA7ZV6MNG2RAZ6",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Einseitiger Signifikanztest"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Einseitiger Signifikanztest (bei als binomialverteilt angenommenen Merkmalen)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACK4SSQPSCZJW429CD",
+          "slug": "g12-rechtsseitig-ablehnungsbereich-form",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-ablehnungsbereich",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "A = {0, 1, ..., k} bis zu einer oberen Schranke k.",
+              "reason": "Das beschreibt einen linksseitigen Ablehnungsbereich."
+            },
+            {
+              "text": "A = {k} bestehend aus genau einem einzigen Wert.",
+              "reason": "Ein rechtsseitiger Test lehnt für alle Werte ab der kritischen Zahl k bis n ab."
+            }
+          ],
+          "question": "Wie ist der Ablehnungsbereich A bei einem rechtsseitigen Test mit Stichprobengröße n aufgebaut?",
+          "concept": "A = {k, k + 1, ..., n} ab einer kritischen Zahl k.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A = {k, k + 1, ..., n} ab einer kritischen Zahl k.",
+              "A = {0, 1, ..., k} bis zu einer oberen Schranke k."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACK2TE1QQNFMD9T3HP",
+          "slug": "g12-rechtsseitig-bedingung-alpha",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-ablehnungsbereich",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die linke kumulierte Summe P(X ≤ k) unterschreitet das Niveau α.",
+              "reason": "Bei einem rechtsseitigen Test betrachtet man den oberen Rand P(X ≥ k)."
+            },
+            {
+              "text": "Die Einzelwahrscheinlichkeit P(X = k) trifft das Niveau α exakt.",
+              "reason": "Wegen der Diskretheit der Binomialverteilung wird α praktisch nie exakt als Punktwert getroffen."
+            }
+          ],
+          "question": "Welche Bedingung bestimmt die kritische Zahl k bei einem rechtsseitigen Test unter H0?",
+          "concept": "P(X ≥ k) ≤ α bei gleichzeitigem P(X ≥ k − 1) > α.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "P(X ≥ k) ≤ α bei gleichzeitigem P(X ≥ k − 1) > α.",
+              "Die linke kumulierte Summe P(X ≤ k) unterschreitet das Niveau α."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACSXMJ0ST7JWY9GDF3",
+          "slug": "g12-entscheidungsregel-auswerten",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-ablehnungsbereich",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "H0 wird verworfen (H1 wird angenommen).",
+              "reason": "17 liegt nicht im Ablehnungsbereich A, sondern im Annahmebereich."
+            },
+            {
+              "text": "Der Test muss abgebrochen werden (keine Aussage).",
+              "reason": "Die Entscheidungsregel ist eindeutig: Werte außerhalb von A führen zur Beibehaltung von H0."
+            }
+          ],
+          "question": "Bei einem Test ist A = {18, 19, ..., 100}. Wie lautet die Entscheidung bei 17 Treffern?",
+          "concept": "H0 wird nicht verworfen (H0 bleibt beibehalten).",
+          "sample_solution": "Das Testergebnis 17 liegt im Annahmebereich {0, ..., 17} und nicht im Ablehnungsbereich A = {18, ..., 100}. Daher wird H0 nicht verworfen."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BAC4BYMZGQKCC2H9BVN",
+      "atom_uri": "urn:zam:atom:01M6Y39BAC4BYMZGQKCC2H9BVN",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-hypo-interpretation",
+      "title": "Interpretation von Testergebnissen im Sachkontext",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-interpretation",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BACJWHBMFV7V6DB2XGF",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Einseitiger Signifikanztest"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Einseitiger Signifikanztest (bei als binomialverteilt angenommenen Merkmalen)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACWCKNKDBP15T45NXM",
+          "slug": "g12-signifikantes-ergebnis-bedeutung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-interpretation",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die Nullhypothese H0 trifft mit einer berechneten Wahrscheinlichkeit von mindestens 95 % im Test zu.",
+              "reason": "Signifikanz ist eine Eigenschaft der Stichprobe unter H0, keine Wahrscheinlichkeit für H0."
+            },
+            {
+              "text": "Genau 5 % aller erfassten Stichprobendaten weisen nachweisbare Mess- oder Übertragungsfehler auf.",
+              "reason": "Das Signifikanzniveau ist eine stochastische Irrtumsgrenze, kein Messfehleranteil."
+            }
+          ],
+          "question": "Was bedeutet die Aussage „Das Testergebnis ist auf dem 5 %-Niveau signifikant“?",
+          "concept": "Unter der Annahme, dass H₀ wahr ist, tritt ein mindestens so extremes Ergebnis mit höchstens 5 % Wahrscheinlichkeit auf.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Unter der Annahme, dass H₀ wahr ist, tritt ein mindestens so extremes Ergebnis mit höchstens 5 % Wahrscheinlichkeit auf.",
+              "Die Nullhypothese H0 trifft mit einer berechneten Wahrscheinlichkeit von mindestens 95 % im Test zu."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACVZQNXAZ03FVNS67Y",
+          "slug": "g12-nullhypothese-keine-wahrscheinlichkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-interpretation",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Weil statistische Tests grundsätzlich ungenaue Ergebnisse liefern.",
+              "reason": "Die Mathematik ist exakt; das Beibehalten bedeutet Mangel an Gegenbeweisen, kein Beweis für H0."
+            },
+            {
+              "text": "Weil die Gegenhypothese H1 in jedem Fall automatisch wahr wird.",
+              "reason": "Beim Nicht-Verwerfen bleibt H0 der Status quo."
+            }
+          ],
+          "question": "Warum darf man aus dem Nicht-Verwerfen von H0 nicht folgern, dass H0 wahr ist?",
+          "concept": "Weil H0 lediglich mit den Daten vereinbar ist, aber viele andere Parameterwerte ebenso.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil H0 lediglich mit den Daten vereinbar ist, aber viele andere Parameterwerte ebenso.",
+              "Weil statistische Tests grundsätzlich ungenaue Ergebnisse liefern."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BAC86345Z3W0TZH4PQE",
+          "slug": "g12-umfrage-stichproben-irrtum",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-hypo-interpretation",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Wegen gesetzlicher Vorgaben (Sicherheitsabschläge) bei Wahlumfragen.",
+              "reason": "Statistische Unsicherheit beruht auf Stichprobenvarianz, nicht auf gesetzlichen Vorgaben."
+            },
+            {
+              "text": "Weil 52 % rechnerisch noch unter der erforderlichen Zweidrittelmehrheit (im Parlament) liegt.",
+              "reason": "Gesucht ist die einfache Mehrheit, aber die Stichprobentoleranz erlaubt Werte unter 50 %."
+            }
+          ],
+          "question": "In einer Umfrage (n = 1000) liegt ein Kandidat bei 52 %. Warum ist ein Sieg noch nicht sicher?",
+          "concept": "Wegen der statistischen Schwankungsbreite (Fehlertoleranz) der Stichprobe.",
+          "sample_solution": "Bei n = 1000 beträgt der 95%-Fehlerbereich etwa ±3,1 %. Der wahre Wert könnte also auch bei unter 50 % liegen."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BAC4KZYQDWC7TV0A8NX",
+      "atom_uri": "urn:zam:atom:01M6Y39BAC4KZYQDWC7TV0A8NX",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-quotientenregel-basis",
+      "title": "Die Quotientenregel zur Differenzierung",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-quotientenregel-basis",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BAC9X70P3JZ9TGJP0R5",
+          "slug": "g12-quotientenregel-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-quotientenregel-basis",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Man teilt die Zählerableitung direkt durch die separate Nennerableitung.",
+              "reason": "Zähler und Nenner dürfen beim Differenzieren nicht einfach separat abgeleitet werden."
+            },
+            {
+              "text": "Zählerableitung mal Nenner plus Zähler mal Nennerableitung, geteilt durch Nennerquadrat.",
+              "reason": "Im Zähler der Quotientenregel steht ein Minuszeichen, kein Pluszeichen."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie leitet man einen Quotienten "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{u(x)}{v(x)}",
+              "speech": "u von x durch v von x"
+            },
+            {
+              "type": "text",
+              "text": " differenzierbarer Funktionen ab?"
+            }
+          ],
+          "concept": "Zählerableitung mal Nenner minus Zähler mal Nennerableitung, geteilt durch Nennerquadrat.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zählerableitung mal Nenner minus Zähler mal Nennerableitung, geteilt durch Nennerquadrat.",
+              "Man teilt die Zählerableitung direkt durch die separate Nennerableitung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACHQA9GPW1K3QKGFNY",
+          "slug": "g12-quotientenregel-nenner",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-quotientenregel-basis",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die 1. Ableitung der Nennerfunktion v'(x).",
+              "reason": "Im Nenner steht das Quadrat der Ausgangsfunktion [v(x)]², keine Ableitung."
+            },
+            {
+              "text": "Die Summe aus Zähler- und Nennerfunktion [u(x) + v(x)]².",
+              "reason": "Der Nenner hängt ausschließlich von der Nennerfunktion v ab."
+            }
+          ],
+          "question": "Welcher Term steht im Nenner der Quotientenregel?",
+          "concept": "Das Quadrat der Nennerfunktion [v(x)]².",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Quadrat der Nennerfunktion [v(x)]².",
+              "Die 1. Ableitung der Nennerfunktion v'(x)."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACJ7MMMWWWBQX0FT84",
+          "slug": "g12-quotientenregel-rational-ableitung",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-quotientenregel-basis",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "f'(x) = 2 / (x + 3)",
+              "reason": "Hat das Quadrat im Nenner vergessen und den Zähler nicht vollständig vereinfacht."
+            },
+            {
+              "text": "f'(x) = (4x + 7) / (x + 3)²",
+              "reason": "Hat im Zähler addiert statt subtrahiert: 2(x+3) + (2x+1) statt 2(x+3) − (2x+1)."
+            }
+          ],
+          "sample_solution": "u = 2x + 1, u' = 2; v = x + 3, v' = 1. f'(x) = [2·(x + 3) − (2x + 1)·1] / (x + 3)² = [2x + 6 − 2x − 1] / (x + 3)² = 5 / (x + 3)².",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Leite "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{2x + 1}{x + 3}",
+              "speech": "f von x gleich Bruch mit Zähler 2 x plus 1 und Nenner x plus 3"
+            },
+            {
+              "type": "text",
+              "text": " für "
+            },
+            {
+              "type": "math",
+              "tex": "x \\neq −3",
+              "speech": "x ungleich minus 3"
+            },
+            {
+              "type": "text",
+              "text": " ab."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f'(x) = \\frac{5}{(x + 3)^2}",
+              "speech": "f Strich von x gleich 5 geteilt durch Klammer auf x plus 3 Klammer zu zum Quadrat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACVBWKB1ZNKHG91DP2",
+      "atom_uri": "urn:zam:atom:01M6Y39BACVBWKB1ZNKHG91DP2",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-gebrochen-rational-diskussion",
+      "title": "Kurvendiskussion gebrochen-rationaler Funktionen",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-gebrochen-rational-diskussion",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BAC4KZYQDWC7TV0A8NX",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BAC18SB7SS8KE7DGWFK",
+          "slug": "g12-asymptote-grad-bedingung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-gebrochen-rational-diskussion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Wenn der Zählergrad exakt gleich dem Nennergrad ist.",
+              "reason": "Bei gleichem Grad ist die Asymptote y = a_n / b_n ≠ 0."
+            },
+            {
+              "text": "Wenn der Zählergrad echt größer als der Nennergrad ist.",
+              "reason": "Dann liegt eine schräge Asymptote oder eine Näherungskurve vor."
+            }
+          ],
+          "question": "Wann besitzt eine gebrochen-rationale Funktion die waagrechte Asymptote y = 0?",
+          "concept": "Wenn der Zählergrad echt kleiner als der Nennergrad ist.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn der Zählergrad echt kleiner als der Nennergrad ist.",
+              "Wenn der Zählergrad exakt gleich dem Nennergrad ist."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACX6MJVR5XZ96CEDT7",
+          "slug": "g12-polstelle-vs-luecke",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-gebrochen-rational-diskussion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "An einer Polstelle existiert der Funktionswert stets im Reellen, an einer Lücke nicht.",
+              "reason": "An beiden Stellen ist die Funktion im Reellen nicht definiert."
+            },
+            {
+              "text": "Polstellen treten ausschließlich bei ganzrationalen Polynomfunktionen auf.",
+              "reason": "Ganzrationale Polynome haben keine Nenner und somit gar keine Polstellen."
+            }
+          ],
+          "question": "Was unterscheidet eine Polstelle von einer hebbaren Definitionslücke?",
+          "concept": "An einer Polstelle verschwindet der Nenner, ohne dass sich der Faktor herauskürzt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "An einer Polstelle verschwindet der Nenner, ohne dass sich der Faktor herauskürzt.",
+              "An einer Polstelle existiert der Funktionswert stets im Reellen, an einer Lücke nicht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACG6JSV7ANK3JKXKWB",
+          "slug": "g12-waagrechte-asymptote-berechnen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-gebrochen-rational-diskussion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "y = 0",
+              "reason": "Zähler und Nenner haben denselben Grad; daher ist der Grenzwert 6/2 = 3, nicht 0."
+            },
+            {
+              "text": "y = −5/7",
+              "reason": "Das ist der y-Achsenabschnitt f(0), nicht die Asymptote für x gegen unendlich."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Bestimme die waagrechte Asymptote von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{6x^2 - 5}{2x^2 + 7}",
+              "speech": "f von x gleich 6 x Quadrat minus 5 durch 2 x Quadrat plus 7"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "y = 3",
+              "speech": "y gleich 3"
+            }
+          ],
+          "sample_solution": "Zählergrad = Nennergrad = 2. Für x → ±∞ dominiert der Quotient der Leitkoeffizienten: lim (6x²)/(2x²) = 6/2 = 3. Also waagrechte Asymptote y = 3."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BAC589HGDQ7G7Q2S1TC",
+      "atom_uri": "urn:zam:atom:01M6Y39BAC589HGDQ7G7Q2S1TC",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-quotientenregel-verknuepfung",
+      "title": "Verknüpfungen mit der Quotientenregel",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-quotientenregel-verknuepfung",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BACVBWKB1ZNKHG91DP2",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BAC6M472ZEEWRTEMXAP",
+          "slug": "g12-quotient-e-funktion-ableitung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-quotientenregel-verknuepfung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "f'(x) = [e^x · (x + 2)] / x²",
+              "reason": "Rechenfehler im Zähler der Quotientenregel."
+            },
+            {
+              "text": "f'(x) = [e^x · x − e^x] / 1",
+              "reason": "Hat das Quadrat der Nennerfunktion im Nenner vergessen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f'(x) = [e^x · (x − 1)] / x²",
+              "f'(x) = [e^x · (x + 2)] / x²"
+            ],
+            "correct_index": 0
+          },
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet die 1. Ableitung von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{e^x}{x}",
+              "speech": "f von x gleich e hoch x geteilt durch x"
+            },
+            {
+              "type": "text",
+              "text": " für "
+            },
+            {
+              "type": "math",
+              "tex": "x \\neq 0",
+              "speech": "x ungleich 0"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f'(x) = \\frac{e^x \\cdot (x − 1)}{x^2}",
+              "speech": "f Strich von x gleich Bruch mit Zähler e hoch x mal Klammer auf x minus 1 Klammer zu und Nenner x Quadrat"
+            }
+          ]
+        },
+        {
+          "id": "01M6Y39BACWXQV0T4Q3T25N2CQ",
+          "slug": "g12-quotient-waagrechte-tangente",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-quotientenregel-verknuepfung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "x = 2",
+              "reason": "f'(x) = 0 erfordert x − 1 = 0, also x = 1."
+            },
+            {
+              "text": "x = 3",
+              "reason": "Rechenfehler bei der Ableitung."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "An welcher Stelle "
+            },
+            {
+              "type": "math",
+              "tex": "x > 0",
+              "speech": "x größer als 0"
+            },
+            {
+              "type": "text",
+              "text": " besitzt die Funktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{e^x}{x}",
+              "speech": "f von x gleich e hoch x durch x"
+            },
+            {
+              "type": "text",
+              "text": " eine waagrechte Tangente?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "x = 1",
+              "speech": "x gleich 1"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "x = 1",
+              "x = 2"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACASZVJNVE55XA882Y",
+          "slug": "g12-trigonometrischer-quotient-steigung",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-quotientenregel-verknuepfung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "0",
+              "reason": "Hat f(0) = 0/1 = 0 berechnet statt der Ableitung f'(0)."
+            },
+            {
+              "text": "2",
+              "reason": "Rechenfehler bei der Auswertung im Zähler."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Berechne die Steigung "
+            },
+            {
+              "type": "math",
+              "tex": "f'(0)",
+              "speech": "f Strich von 0"
+            },
+            {
+              "type": "text",
+              "text": " für "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{\\sin(x)}{x + 1}",
+              "speech": "f von x gleich Sinus von x durch x plus 1"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "1",
+              "speech": "1"
+            }
+          ],
+          "sample_solution": "Quotientenregel: f'(x) = [cos(x)·(x + 1) − sin(x)·1] / (x + 1)². Bei x = 0 ergibt sich [1·1 − 0] / 1² = 1."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACS9HFVTSVZGD0ZAKJ",
+      "atom_uri": "urn:zam:atom:01M6Y39BACS9HFVTSVZGD0ZAKJ",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-umkehrfunktion-wurzel",
+      "title": "Umkehrbarkeit und Umkehrfunktionen",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-umkehrfunktion-wurzel",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BAC589HGDQ7G7Q2S1TC",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACR7T9PCJP15G24JXX",
+          "slug": "g12-umkehrbarkeit-monotonie-kriterium",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-umkehrfunktion-wurzel",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Wenn f achsensymmetrisch zur y-Achse ist.",
+              "reason": "Achsensymmetrische Funktionen verletzen die Eindeutigkeit der Umkehrung, da f(−x) = f(x)."
+            },
+            {
+              "text": "Wenn die 2. Ableitung f''(x) = 0 auf dem gesamten Intervall verschwindet.",
+              "reason": "Das kennzeichnet Geraden, ist aber keine allgemeine Bedingung für Umkehrbarkeit."
+            }
+          ],
+          "question": "Unter welcher Bedingung ist eine reelle Funktion f auf einem Intervall umkehrbar?",
+          "concept": "Wenn f auf dem Intervall streng monoton wachsend oder fallend ist.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn f auf dem Intervall streng monoton wachsend oder fallend ist.",
+              "Wenn f achsensymmetrisch zur y-Achse ist."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACJ5WZCFX5ZQDZP9RR",
+          "slug": "g12-umkehrfunktion-spiegelung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-umkehrfunktion-wurzel",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Durch Spiegelung an der x-Achse.",
+              "reason": "Spiegelung an der x-Achse liefert den Graphen von −f(x), nicht die Umkehrfunktion."
+            },
+            {
+              "text": "Durch Drehung des Graphen um 90° gegen den Uhrzeigersinn.",
+              "reason": "Eine 90°-Drehung ist keine Achsenspiegelung an der Geraden y = x."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie entsteht der Graph der Umkehrfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "f^{-1}",
+              "speech": "f hoch minus 1"
+            },
+            {
+              "type": "text",
+              "text": " geometrisch aus dem Graphen von f?"
+            }
+          ],
+          "concept": "Durch Spiegelung an der ersten Winkelhalbierenden y = x.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch Spiegelung an der ersten Winkelhalbierenden y = x.",
+              "Durch Spiegelung an der x-Achse."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACBZBR0K9VKKC0JMMM",
+          "slug": "g12-lineare-umkehrfunktion-term",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-umkehrfunktion-wurzel",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "f^(−1)(x) = 1/(3x − 6)",
+              "reason": "Verwechselt die Umkehrfunktion f^(−1) mit dem Kehrwert 1/f."
+            },
+            {
+              "text": "f^(−1)(x) = 3x + 6",
+              "reason": "Hat nach x aufgelöst, aber das Teilen durch die Steigung 3 vergessen."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Bestimme den Funktionsterm der Umkehrfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "f^{-1}(x)",
+              "speech": "f hoch minus 1 von x"
+            },
+            {
+              "type": "text",
+              "text": " für "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = 3x - 6",
+              "speech": "f von x gleich 3 x minus 6"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f^{-1}(x) = \\frac{1}{3} x + 2",
+              "speech": "f hoch minus 1 von x gleich ein Drittel x plus 2"
+            }
+          ],
+          "sample_solution": "Auflösen: y = 3x − 6 ⇔ y + 6 = 3x ⇔ x = (1/3)y + 2. Variablentausch: f^(−1)(x) = 1/3·x + 2."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BAC7JJFGWY2E7TNFYYA",
+      "atom_uri": "urn:zam:atom:01M6Y39BAC7JJFGWY2E7TNFYYA",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-potenz-rationale-exponenten",
+      "title": "Ableitung von Potenzen mit rationalen Exponenten",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-potenz-rationale-exponenten",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BACS9HFVTSVZGD0ZAKJ",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BAC4WATZFWT6NCEHHJW",
+          "slug": "g12-ableitung-quadratwurzel-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-potenz-rationale-exponenten",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "f'(x) = 2 · √x",
+              "reason": "Aus x^(1/2) wird beim Ableiten 1/2 · x^(−1/2) = 1/(2√x)."
+            },
+            {
+              "text": "f'(x) = 1 / √x",
+              "reason": "Hat den Vorfaktor 1/2 aus der Potenzregel vergessen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f'(x) = 1 / (2√x)",
+              "f'(x) = 2 · √x"
+            ],
+            "correct_index": 0
+          },
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet die 1. Ableitung der Quadratwurzelfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\sqrt{x}",
+              "speech": "f von x gleich Wurzel aus x"
+            },
+            {
+              "type": "text",
+              "text": " für "
+            },
+            {
+              "type": "math",
+              "tex": "x > 0",
+              "speech": "x größer null"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f'(x) = \\frac{1}{2\\sqrt{x}}",
+              "speech": "f Strich von x gleich 1 geteilt durch 2 mal Wurzel aus x"
+            }
+          ]
+        },
+        {
+          "id": "01M6Y39BAC85J5PRJRYPSK7TV9",
+          "slug": "g12-wurzel-in-potenz-umschreiben",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-potenz-rationale-exponenten",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "x^(3/2)",
+              "reason": "Der Wurzelexponent gehört in den Nenner des Exponenten, nicht in den Zähler."
+            },
+            {
+              "text": "x^(1/3)",
+              "reason": "Hat den inneren Exponenten 2 des Radikanden übersehen."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie schreibt man den Wurzelausdruck "
+            },
+            {
+              "type": "math",
+              "tex": "\\sqrt[3]{x^2}",
+              "speech": "dritte Wurzel aus x Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " als Potenz mit rationalem Exponenten?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "x^{2/3}",
+              "speech": "x hoch zwei Drittel"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "x^(2/3)",
+              "x^(3/2)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACQ94BZ9X1CJWZ218W",
+          "slug": "g12-wurzel-steigung-ausrechnen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-potenz-rationale-exponenten",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "1/3",
+              "reason": "Hat den Faktor 2 im Nenner vergessen: 1/(2·3) = 1/6, nicht 1/3."
+            },
+            {
+              "text": "3/2",
+              "reason": "Hat die Ableitung fälschlicherweise als √x / 2 interpretiert."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Berechne den Wert der 1. Ableitung von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\sqrt{x}",
+              "speech": "f von x gleich Wurzel aus x"
+            },
+            {
+              "type": "text",
+              "text": " an der Stelle "
+            },
+            {
+              "type": "math",
+              "tex": "x = 9",
+              "speech": "x gleich 9"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "1/6",
+              "speech": "ein Sechstel"
+            }
+          ],
+          "sample_solution": "f'(x) = 1 / (2√x). Für x = 9: f'(9) = 1 / (2·√9) = 1 / (2·3) = 1/6."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACZ89YS4YRJ50H4NQV",
+      "atom_uri": "urn:zam:atom:01M6Y39BACZ89YS4YRJ50H4NQV",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-wurzel-kurvendiskussion",
+      "title": "Kurvendiskussion von Wurzelfunktionen",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-wurzel-kurvendiskussion",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BAC7JJFGWY2E7TNFYYA",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACZQH23TBTR09VNWRC",
+          "slug": "g12-radikand-nichtnegativ-regel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-wurzel-kurvendiskussion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Der Radikand g(x) muss ungleich null sein.",
+              "reason": "Die Wurzel aus null ist reell definiert (√0 = 0); nur negativ darf er nicht sein."
+            },
+            {
+              "text": "Die 1. Ableitung g'(x) darf nicht verschwinden.",
+              "reason": "Das betrifft waagrechte Tangenten, nicht den Definitionsbereich."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Bedingung schränkt die Definitionsmenge von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\sqrt{g(x)}",
+              "speech": "f von x gleich Wurzel aus g von x"
+            },
+            {
+              "type": "text",
+              "text": " im Reellen ein?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Der Radikand muss größer oder gleich null sein: "
+            },
+            {
+              "type": "math",
+              "tex": "g(x) \\ge 0",
+              "speech": "g von x größer gleich 0"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Radikand g(x) muss größer oder gleich null sein (g(x) ≥ 0).",
+              "Der Radikand g(x) muss ungleich null sein."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACBM3ZX67ZT5JZWFWY",
+          "slug": "g12-wurzel-randsteigung-tangente",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-wurzel-kurvendiskussion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die Steigung strebt gegen 0 (waagrechte Tangente).",
+              "reason": "f'(x) = 1/(2√x) wächst für x → 0 über alle Schranken, wird also steiler, nicht flacher."
+            },
+            {
+              "text": "Die Steigung bleibt konstant bei 1.",
+              "reason": "Die Wurzelfunktion ist gekrümmt; ihre Steigung variiert stark."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Was geschieht mit der Tangentensteigung von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\sqrt{x}",
+              "speech": "f von x gleich Wurzel aus x"
+            },
+            {
+              "type": "text",
+              "text": " für x gegen 0 von rechts?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Die Steigung strebt gegen "
+            },
+            {
+              "type": "math",
+              "tex": "+\\infty",
+              "speech": "plus unendlich"
+            },
+            {
+              "type": "text",
+              "text": " (senkrechte Randtangente)."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Steigung strebt gegen +∞ (senkrechte Randtangente).",
+              "Die Steigung strebt gegen 0 (waagrechte Tangente)."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BAC1N3PC6P8D8R24XA5",
+          "slug": "g12-wurzel-definitionsmenge-intervall",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-wurzel-kurvendiskussion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "D = [0; +4]",
+              "reason": "Hat negative Zahlen vergessen: Auch für x ∈ [−4; 0] ist x² ≤ 16 und der Radikand positiv."
+            },
+            {
+              "text": "D = ]−16; +16[",
+              "reason": "Hat vergessen, aus der Schranke 16 die Quadratwurzel 4 zu ziehen."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Bestimme die maximale Definitionsmenge in "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathbb{R}",
+              "speech": "R"
+            },
+            {
+              "type": "text",
+              "text": " für "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\sqrt{16 - x^2}",
+              "speech": "f von x gleich Wurzel aus 16 minus x Quadrat"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "D = [-4;\\, 4]",
+              "speech": "D gleich das Intervall von minus 4 bis 4"
+            }
+          ],
+          "sample_solution": "Bedingung: 16 − x² ≥ 0 ⇔ x² ≤ 16 ⇔ |x| ≤ 4 ⇔ −4 ≤ x ≤ 4. Also D = [−4; 4]."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACW8HWNSFAMSSFG8RB",
+      "atom_uri": "urn:zam:atom:01M6Y39BACW8HWNSFAMSSFG8RB",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-ln-ableitung",
+      "title": "Die natürliche Logarithmusfunktion und ihre Ableitung",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-ln-ableitung",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BACZ89YS4YRJ50H4NQV",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACAC5MZDNNAJ435FA6",
+          "slug": "g12-ln-ableitung-basis",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-ln-ableitung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "f'(x) = e^x",
+              "reason": "Die e-Funktion ist die Umkehrfunktion des ln, nicht seine Ableitung."
+            },
+            {
+              "text": "f'(x) = x",
+              "reason": "Die Steigung fällt antiproportional mit 1/x und wächst nicht linear."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f'(x) = 1 / x",
+              "f'(x) = e^x"
+            ],
+            "correct_index": 0
+          },
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet die 1. Ableitung der natürlichen Logarithmusfunktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\ln(x)",
+              "speech": "f von x gleich l n von x"
+            },
+            {
+              "type": "text",
+              "text": " für "
+            },
+            {
+              "type": "math",
+              "tex": "x > 0",
+              "speech": "x größer null"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f'(x) = \\frac{1}{x}",
+              "speech": "f Strich von x gleich 1 geteilt durch x"
+            }
+          ]
+        },
+        {
+          "id": "01M6Y39BACW0J4K1MKZ38GGSAY",
+          "slug": "g12-logarithmische-ableitung-regel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-ln-ableitung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "f'(x) = 1 / u'(x)",
+              "reason": "Kettenregel: Äußere Ableitung 1/u multipliziert mit innerer Ableitung u' ergibt u'/u."
+            },
+            {
+              "text": "f'(x) = u'(x) · ln(u(x))",
+              "reason": "Das verwechselt die Kettenregel mit einer Produktregel."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f'(x) = u'(x) / u(x)",
+              "f'(x) = 1 / u'(x)"
+            ],
+            "correct_index": 0
+          },
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet die logarithmische Ableitung von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\ln(u(x))",
+              "speech": "f von x gleich l n von u von x"
+            },
+            {
+              "type": "text",
+              "text": " nach der Kettenregel?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f'(x) = \\frac{u'(x)}{u(x)}",
+              "speech": "f Strich von x gleich u Strich von x geteilt durch u von x"
+            }
+          ]
+        },
+        {
+          "id": "01M6Y39BAC6YZAZ0P6KYRQASWT",
+          "slug": "g12-ln-ableitung-wert-berechnen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-ln-ableitung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "1/5",
+              "reason": "Hat das Nachdifferenzieren mit der inneren Ableitung u'(1) = 6·1 = 6 vergessen."
+            },
+            {
+              "text": "6",
+              "reason": "Hat die Division durch die innere Funktion u(1) = 5 vergessen."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Berechne die 1. Ableitung von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\ln(3x^2 + 2)",
+              "speech": "f von x gleich natürlicher Logarithmus von 3 x Quadrat plus 2"
+            },
+            {
+              "type": "text",
+              "text": " an der Stelle "
+            },
+            {
+              "type": "math",
+              "tex": "x = 1",
+              "speech": "x gleich 1"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "6/5",
+              "speech": "sechs Fünftel"
+            }
+          ],
+          "sample_solution": "u(x) = 3x² + 2, u'(x) = 6x. Logarithmische Ableitung: f'(x) = 6x / (3x² + 2). Für x = 1: f'(1) = 6 / 5 = 1,2."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BAC5NPAA59Y7H7QCN1J",
+      "atom_uri": "urn:zam:atom:01M6Y39BAC5NPAA59Y7H7QCN1J",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-ln-kurvendiskussion-grenzwerte",
+      "title": "Kurvendiskussion und Grenzwerte mit der ln-Funktion",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-ln-kurvendiskussion-grenzwerte",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BACW8HWNSFAMSSFG8RB",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Untersuchung von Funktionen – Quotientenregel, Umkehrfunktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BAC8ZB1TVNA8VF8P6WB",
+          "slug": "g12-limes-x-ln-x-null",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-ln-kurvendiskussion-grenzwerte",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Der Grenzwert strebt gegen minus unendlich.",
+              "reason": "Die Potenz x zieht das Produkt schneller zu 0, als ln(x) gegen −∞ fällt."
+            },
+            {
+              "text": "Der Grenzwert ist gleich 1.",
+              "reason": "Der Grenzwert ist 0; der lineare Faktor x erzwingt den Nullwert im Ursprung."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welchen Grenzwert hat der Term "
+            },
+            {
+              "type": "math",
+              "tex": "x \\cdot \\ln(x)",
+              "speech": "x mal natürlicher Logarithmus von x"
+            },
+            {
+              "type": "text",
+              "text": " für x gegen 0 von rechts?"
+            }
+          ],
+          "concept": "Der Grenzwert ist gleich 0.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Grenzwert ist gleich 0.",
+              "Der Grenzwert strebt gegen minus unendlich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACQQA1Z21D4TFJ9Y25",
+          "slug": "g12-limes-ln-x-durch-x",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-ln-kurvendiskussion-grenzwerte",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Der Grenzwert strebt gegen plus unendlich.",
+              "reason": "Der Zähler ln(x) wächst wesentlich langsamer als die Potenz x im Nenner."
+            },
+            {
+              "text": "Der Grenzwert ist gleich 1.",
+              "reason": "Der Nenner wächst ungleich schneller als der Logarithmus, der Bruch geht gegen 0."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welchen Grenzwert hat der Quotient "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{\\ln(x)}{x}",
+              "speech": "natürlicher Logarithmus von x durch x"
+            },
+            {
+              "type": "text",
+              "text": " für x gegen unendlich?"
+            }
+          ],
+          "concept": "Der Grenzwert ist gleich 0.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Grenzwert ist gleich 0.",
+              "Der Grenzwert strebt gegen plus unendlich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BAC4P3PJ0JN2R6FG9TH",
+          "slug": "g12-tiefpunkt-x-ln-x",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-ln-kurvendiskussion-grenzwerte",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "x = 2/e",
+              "reason": "Rechenfehler beim Umstellen nach x."
+            },
+            {
+              "text": "x = 3/e",
+              "reason": "Rechenfehler bei der Ableitung."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "An welcher positiven Stelle besitzt die Funktion "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = x \\cdot \\ln(x)",
+              "speech": "f von x gleich x mal natürlicher Logarithmus von x"
+            },
+            {
+              "type": "text",
+              "text": " ihren Tiefpunkt?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "x = \\frac{1}{e}",
+              "speech": "x gleich 1 durch e"
+            }
+          ],
+          "sample_solution": "Produktregel: f'(x) = 1·ln(x) + x·(1/x) = ln(x) + 1 = 0 ⇔ ln(x) = −1 ⇔ x = e^(−1) = 1/e."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACR5YVMPCBPARKRS6B",
+      "atom_uri": "urn:zam:atom:01M6Y39BACR5YVMPCBPARKRS6B",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-raum-koordinatensystem",
+      "title": "Das dreidimensionale Koordinatensystem",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-raum-koordinatensystem",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Grundlagen der Koordinatengeometrie im Raum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Koordinatengeometrie im Raum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACN7J39QPZ98XA5KAK",
+          "slug": "g12-grundebene-koordinate-null",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-raum-koordinatensystem",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die x1-Koordinate ist null (x1 = 0).",
+              "reason": "x1 = 0 beschreibt die x2-x3-Ebene, nicht die x1-x2-Ebene."
+            },
+            {
+              "text": "Alle drei Raumkoordinaten müssen null sein.",
+              "reason": "Das beschreibt nur den Ursprung (0|0|0), nicht die gesamte Ebene."
+            }
+          ],
+          "question": "Welche Koordinate ist für alle Punkte der x1-x2-Koordinatenebene im Raum gleich null?",
+          "concept": "Die x3-Koordinate ist null (x3 = 0).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die x3-Koordinate ist null (x3 = 0).",
+              "Die x1-Koordinate ist null (x1 = 0)."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACH5Y40BMFBZFJVM0E",
+          "slug": "g12-spiegelung-ebene-koordinaten",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-raum-koordinatensystem",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die Vorzeichen aller drei Koordinaten kehren sich um.",
+              "reason": "Das ist die Punktspiegelung am Ursprung, nicht an der x1-x2-Ebene."
+            },
+            {
+              "text": "Nur das Vorzeichen der ersten Koordinate x1 kehrt sich um.",
+              "reason": "x1 kehrt sich bei Spiegelung an der x2-x3-Ebene um."
+            }
+          ],
+          "question": "Wie spiegeln sich die Koordinaten eines Punktes P(x1|x2|x3) an der x1-x2-Ebene?",
+          "concept": "Nur das Vorzeichen der dritten Koordinate x3 kehrt sich um.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur das Vorzeichen der dritten Koordinate x3 kehrt sich um.",
+              "Die Vorzeichen aller drei Koordinaten kehren sich um."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BAC6K82P5C9DBQFYDZ3",
+          "slug": "g12-punktabstand-ursprung-raum",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-raum-koordinatensystem",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "d = 11",
+              "reason": "Hat die Koordinaten linear addiert (2 + 3 + 6 = 11) statt den Raum-Pythagoras zu nutzen."
+            },
+            {
+              "text": "d = 49",
+              "reason": "Hat die Summe der Quadrate berechnet, aber vergessen, die Quadratwurzel zu ziehen."
+            }
+          ],
+          "question": "Berechne den Abstand d des Punktes P(2 | 3 | 6) vom Koordinatenursprung.",
+          "concept": "d = 7",
+          "sample_solution": "d = √(2² + 3² + 6²) = √(4 + 9 + 36) = √49 = 7."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BAC6AHY1QF265TA5FNQ",
+      "atom_uri": "urn:zam:atom:01M6Y39BAC6AHY1QF265TA5FNQ",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-vektoralgebra-raum",
+      "title": "Vektoralgebra im dreidimensionalen Raum",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-vektoralgebra-raum",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BACR5YVMPCBPARKRS6B",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Grundlagen der Koordinatengeometrie im Raum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Koordinatengeometrie im Raum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACTD1VKBNG2RFKF8DZ",
+          "slug": "g12-kollinearitaet-kriterium",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-vektoralgebra-raum",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Wenn ihr Skalarprodukt genau den Wert 1 annimmt: a · b = 1.",
+              "reason": "Das Skalarprodukt prüft Orthogonalität (bei 0), nicht Kollinearität."
+            },
+            {
+              "text": "Wenn beide Vektoren exakt dieselbe Länge besitzen: |a| = |b|.",
+              "reason": "Gleich lange Vektoren können in völlig verschiedene Richtungen zeigen."
+            }
+          ],
+          "question": "Wann heißen zwei Vektoren a und b (ungleich null) kollinear (parallel)?",
+          "concept": "Wenn einer ein reelles skalares Vielfaches des anderen ist: a = k · b.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn einer ein reelles skalares Vielfaches des anderen ist: a = k · b.",
+              "Wenn ihr Skalarprodukt genau den Wert 1 annimmt: a · b = 1."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BAC3RR3GXRHM78NHHMA",
+          "slug": "g12-verbindungsvektor-spitze-fuss",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-vektoralgebra-raum",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Durch Fuß minus Spitze: AB = A − B.",
+              "reason": "Das liefert den Gegenvektor BA mit entgegengesetzter Richtung."
+            },
+            {
+              "text": "Durch Addition der Ortsvektoren: AB = A + B.",
+              "reason": "Die Summe der Ortsvektoren liefert die Diagonale des Parallelogramms, nicht AB."
+            }
+          ],
+          "question": "Wie berechnet man den Verbindungsvektor AB von Punkt A nach Punkt B?",
+          "concept": "Durch Spitze minus Fuß: AB = B − A.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch Spitze minus Fuß: AB = B − A.",
+              "Durch Fuß minus Spitze: AB = A − B."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACBNV1CQBC6KCWT081",
+          "slug": "g12-linearkombination-komponente",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-vektoralgebra-raum",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "5",
+              "reason": "Hat die Skalarmultiplikation vergessen (1 + 4 = 5 statt 2·1 + 4 = 6)."
+            },
+            {
+              "text": "9",
+              "reason": "Rechenfehler bei der Vektorberechnung."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Gegeben sind "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{a} = \\begin{pmatrix} 1 \\\\ 2 \\\\ 3 \\end{pmatrix}",
+              "speech": "Vektor a mit den Komponenten 1, 2, 3"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{b} = \\begin{pmatrix} 4 \\\\ -1 \\\\ 0 \\end{pmatrix}",
+              "speech": "Vektor b mit den Komponenten 4, minus 1, 0"
+            },
+            {
+              "type": "text",
+              "text": ". Berechne die 1. Komponente von "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{c} = 2\\vec{a} + \\vec{b}",
+              "speech": "Vektor c gleich 2 mal Vektor a plus Vektor b"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "6",
+              "speech": "6"
+            }
+          ],
+          "sample_solution": "c1 = 2·a1 + b1 = 2·1 + 4 = 6."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACKNVTZ2K45MTFNSDS",
+      "atom_uri": "urn:zam:atom:01M6Y39BACKNVTZ2K45MTFNSDS",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-skalarprodukt-winkel",
+      "title": "Skalarprodukt und Orthogonalität",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-skalarprodukt-winkel",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BAC6AHY1QF265TA5FNQ",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Grundlagen der Koordinatengeometrie im Raum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Koordinatengeometrie im Raum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACERY8HEPBQA2VB3FF",
+          "slug": "g12-orthogonalitaet-skalarprodukt-null",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-skalarprodukt-winkel",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ihr Skalarprodukt ist gleich eins: a · b = 1.",
+              "reason": "Orthogonalität bedeutet cos(90°) = 0, daher muss das Skalarprodukt null sein."
+            },
+            {
+              "text": "Ihre Vektorlängen müssen exakt übereinstimmen: |a| = |b|.",
+              "reason": "Orthogonale Vektoren müssen keineswegs gleich lang sein."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ihr Skalarprodukt ist gleich null: a · b = 0.",
+              "Ihr Skalarprodukt ist gleich eins: a · b = 1."
+            ],
+            "correct_index": 0
+          },
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Bedingung kennzeichnet zwei zueinander orthogonale Vektoren "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{a}, \\vec{b} \\neq \\vec{0}",
+              "speech": "Vektor a und Vektor b ungleich Nullvektor"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Ihr Skalarprodukt ist gleich null: "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{a} \\cdot \\vec{b} = 0",
+              "speech": "Vektor a Skalarprodukt Vektor b gleich null"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ]
+        },
+        {
+          "id": "01M6Y39BACN27HTGE93ZWCQF7P",
+          "slug": "g12-skalarprodukt-negativ-stumpfer-winkel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-skalarprodukt-winkel",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ein spitzer Winkel zwischen 0° und 90° (0° ≤ φ < 90°).",
+              "reason": "Der Kosinus ist für spitze Winkel positiv; negativ bedeutet stumpfer Winkel."
+            },
+            {
+              "text": "Ein überstumpfer Winkel größer als 180°.",
+              "reason": "Der Schnittwinkel zwischen zwei Vektoren ist per Definition auf [0°; 180°] beschränkt."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welcher Winkelbereich ergibt sich, wenn das Skalarprodukt negativ ist, also "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{a} \\cdot \\vec{b} < 0",
+              "speech": "Vektor a mal Vektor b kleiner als 0"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Ein stumpfer Winkel: "
+            },
+            {
+              "type": "math",
+              "tex": "90^\\circ < \\varphi \\le 180^\\circ",
+              "speech": "90 Grad kleiner phi kleiner gleich 180 Grad"
+            },
+            {
+              "type": "text",
+              "text": "."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein stumpfer Winkel zwischen 90° und 180° (90° < φ ≤ 180°).",
+              "Ein spitzer Winkel zwischen 0° und 90° (0° ≤ φ < 90°)."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACQHYHQXV8PF99JFR2",
+          "slug": "g12-orthogonal-parameter-ausrechnen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-skalarprodukt-winkel",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "1",
+              "reason": "Rechenfehler beim Auflösen von 4 − 2k = 0."
+            },
+            {
+              "text": "3",
+              "reason": "Rechenfehler bei der Summe."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Für welche reelle Zahl k stehen "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{a} = \\begin{pmatrix} 2 \\\\ k \\\\ 4 \\end{pmatrix}",
+              "speech": "Vektor a mit den Komponenten 2, k, 4"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{b} = \\begin{pmatrix} 4 \\\\ -2 \\\\ -1 \\end{pmatrix}",
+              "speech": "Vektor b mit den Komponenten 4, minus 2, minus 1"
+            },
+            {
+              "type": "text",
+              "text": " senkrecht aufeinander?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "2",
+              "speech": "2"
+            }
+          ],
+          "sample_solution": "a · b = 2·4 + k·(−2) + 4·(−1) = 8 − 2k − 4 = 4 − 2k = 0 ⇔ 2k = 4 ⇔ k = 2."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BAC208WV46GST66502G",
+      "atom_uri": "urn:zam:atom:01M6Y39BAC208WV46GST66502G",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-vektorprodukt-spatprodukt",
+      "title": "Vektorprodukt und Spatprodukt",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-vektorprodukt-spatprodukt",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BACKNVTZ2K45MTFNSDS",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Grundlagen der Koordinatengeometrie im Raum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Koordinatengeometrie im Raum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACGTY1KX6Q803S5HBD",
+          "slug": "g12-kreuzprodukt-flaeche-bedeutung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-vektorprodukt-spatprodukt",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Er entspricht dem Umfang des aufgespannten Dreiecks.",
+              "reason": "Das Kreuzprodukt liefert Flächeninhalte, keine Kantenumfänge."
+            },
+            {
+              "text": "Er entspricht dem Rauminhalt des aufgespannten Spats.",
+              "reason": "Das Spatvolumen erfordert drei Vektoren und das Spatprodukt |(a × b) · c|."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche geometrische Bedeutung hat der Betrag des Kreuzprodukts "
+            },
+            {
+              "type": "math",
+              "tex": "|\\vec{a} \\times \\vec{b}|",
+              "speech": "Betrag von Vektor a kreuz Vektor b"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "Er entspricht dem Flächeninhalt des aufgespannten Parallelogramms.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er entspricht dem Flächeninhalt des aufgespannten Parallelogramms.",
+              "Er entspricht dem Umfang des aufgespannten Dreiecks."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACWZFX4J20B9R5XZ7V",
+          "slug": "g12-kreuzprodukt-richtung-orthogonal",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-vektorprodukt-spatprodukt",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Er zeigt in Richtung der Winkelhalbierenden von a und b.",
+              "reason": "Das Kreuzprodukt verlässt die von a und b aufgespannte Ebene und steht senkrecht darauf."
+            },
+            {
+              "text": "Er zeigt stets parallel zur x3-Achse des Koordinatensystems.",
+              "reason": "Die Richtung hängt von der Orientierung von a und b ab, nicht vom Koordinatensystem."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "In welche Richtung zeigt der Ergebnisvektor des Vektorprodukts "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{a} \\times \\vec{b}",
+              "speech": "Vektor a kreuz Vektor b"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "Er steht senkrecht auf beiden Ausgangsvektoren a und b.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er steht senkrecht auf beiden Ausgangsvektoren a und b.",
+              "Er zeigt in Richtung der Winkelhalbierenden von a und b."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACR5SY6ZEM2RWHSXZG",
+          "slug": "g12-dreiecksflaeche-vektor-berechnen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-vektorprodukt-spatprodukt",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "12",
+              "reason": "12 ist die Fläche des Parallelogramms; das Dreieck hat die halbe Fläche: 0,5 · 12 = 6."
+            },
+            {
+              "text": "7",
+              "reason": "Hat die Vektorlängen addiert (4 + 3 = 7) statt die Fläche zu berechnen."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Berechne den Flächeninhalt des Dreiecks, das von "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{a} = \\begin{pmatrix} 4 \\\\ 0 \\\\ 0 \\end{pmatrix}",
+              "speech": "Vektor a mit den Komponenten 4, 0, 0"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "\\vec{b} = \\begin{pmatrix} 0 \\\\ 3 \\\\ 0 \\end{pmatrix}",
+              "speech": "Vektor b mit den Komponenten 0, 3, 0"
+            },
+            {
+              "type": "text",
+              "text": " aufgespannt wird."
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "6",
+              "speech": "6"
+            }
+          ],
+          "sample_solution": "|a × b| = |(0 | 0 | 12)^T| = 12. Dreiecksfläche: A = 0,5 · |a × b| = 0,5 · 12 = 6."
+        }
+      ]
+    },
+    {
+      "id": "01M6Y39BACC2HB9X13ZQZMC6TK",
+      "atom_uri": "urn:zam:atom:01M6Y39BACC2HB9X13ZQZMC6TK",
+      "namespace": "zam-academy-mathematik-gymnasium-12",
+      "slug": "g12-koerper-sachkontexte",
+      "title": "Berechnungen an Raumkörpern in Sachkontexten",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 17,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-koerper-sachkontexte",
+      "prerequisites": [
+        {
+          "atom_id": "01M6Y39BAC208WV46GST66502G",
+          "relationship": "requires"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-12",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Grundlagen der Koordinatengeometrie im Raum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Koordinatengeometrie im Raum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6Y39BACNT6C522XV0X434V3",
+          "slug": "g12-pyramidenvolumen-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-koerper-sachkontexte",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "V = 1/2 · G · h",
+              "reason": "Der Faktor 1/2 gehört zur Dreiecksfläche; spitze Raumkörper haben den Faktor 1/3."
+            },
+            {
+              "text": "V = G · h",
+              "reason": "G · h ist das Volumen eines Prismas oder Zylinders, nicht einer Pyramide."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "V = 1/3 · G · h",
+              "V = 1/2 · G · h"
+            ],
+            "correct_index": 0
+          },
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man das Volumen einer Pyramide mit Grundfläche "
+            },
+            {
+              "type": "math",
+              "tex": "G",
+              "speech": "G"
+            },
+            {
+              "type": "text",
+              "text": " und Höhe "
+            },
+            {
+              "type": "math",
+              "tex": "h",
+              "speech": "h"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V = \\frac{1}{3} \\cdot G \\cdot h",
+              "speech": "V gleich ein Drittel mal G mal h"
+            }
+          ]
+        },
+        {
+          "id": "01M6Y39BACCNWHXGM52VV2HWZE",
+          "slug": "g12-dach-neigungswinkel-vektor",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-koerper-sachkontexte",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Durch direktes Messen des räumlichen Abstands der Dachspitze zum Ursprung.",
+              "reason": "Der Abstand ist eine Längenangabe und bestimmt keinen Flächenneigungswinkel."
+            },
+            {
+              "text": "Über das Produkt aller drei Kantenlängen der geneigten Dachfläche.",
+              "reason": "Ein Längenprodukt liefert ein Volumen, keinen Neigungswinkel."
+            }
+          ],
+          "question": "Wie bestimmt man den Neigungswinkel α einer Dachfläche gegenüber der Horizontale?",
+          "concept": "Über den Schnittwinkel zwischen dem Ebenen-Normalenvektor und dem vertikalen Einheitsvektor.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Über den Schnittwinkel zwischen dem Ebenen-Normalenvektor und dem vertikalen Einheitsvektor.",
+              "Durch direktes Messen des räumlichen Abstands der Dachspitze zum Ursprung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M6Y39BACVG1320R327RD3K04",
+          "slug": "g12-pyramidenvolumen-sachaufgabe",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-12/#lesson=g12-koerper-sachkontexte",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "144",
+              "reason": "Hat den Pyramidenfaktor 1/3 vergessen: 6² · 4 = 144."
+            },
+            {
+              "text": "72",
+              "reason": "Hat mit Faktor 1/2 gerechnet: 0,5 · 144 = 72 statt (1/3) · 144 = 48."
+            }
+          ],
+          "question": "Eine Pyramide hat eine quadratische Grundfläche mit a = 6 und Höhe h = 4. Berechne V.",
+          "concept": "48",
+          "sample_solution": "Grundfläche G = a² = 6² = 36. Pyramidenvolumen: V = (1/3) · G · h = (1/3) · 36 · 4 = 12 · 4 = 48."
+        }
+      ]
+    }
+  ]
+}

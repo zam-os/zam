@@ -1,0 +1,3521 @@
+{
+ "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+ "tile_id": "zam-academy:englisch-realschule-5",
+ "version": "2026.11.2",
+ "title": "Englisch 5 Realschule (ZAM Academy)",
+ "description": "43 Lektionen mit englischen Materialien zu den Britischen Inseln, Alltags- und Schulleben in Großbritannien, Freizeit, Sprachwerkstatt sowie Geschichten und Gedichten, Sprachaufgaben auf zwei Stufen und 86 gezielten Wiederholungsfragen. LehrplanPLUS Bayern, gemeinsamer Lernpfad; natürliche Hörtexte, Gespräche und eine Ganzschrift ergänzen die App.",
+ "publisher": "ZAM Academy",
+ "published_at": "2026-11-07T12:00:00Z",
+ "sources": [
+  {
+   "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/5/englisch",
+   "checked": "2026-11-07",
+   "label": "LehrplanPLUS Englisch 5 Realschule Bayern"
+  }
+ ],
+ "atoms": [
+  {
+   "id": "01M6TY2FGHGHA7JGNMZ1S5PC9S",
+   "atom_uri": "urn:zam:atom:01M6TY2FGHGHA7JGNMZ1S5PC9S",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-hello-uk",
+   "title": "Hello from the British Isles",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-hello-uk",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "world",
+     "topic_title": "Englisch als Weltsprache & UK"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2FH2P1DSJ9E5PBPMW29E",
+     "slug": "e5-hello-uk-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which four parts belong to the United Kingdom (UK)?",
+     "concept": "England, Scotland, Wales and Northern Ireland",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-hello-uk",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "England, Scotland, Wales and Northern Ireland",
+       "England, Scotland, Wales and the Republic of Ireland"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2FHKZCNA2CG29MVSJ1F1",
+     "slug": "e5-hello-uk-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Explain the difference between Great Britain, the United Kingdom and the British Isles, and name the four capitals in the UK.",
+     "concept": "Great Britain = England, Scotland, Wales; UK = Great Britain + Northern Ireland; capitals: London, Edinburgh, Cardiff, Belfast.",
+     "sample_solution": "Great Britain is the largest island and includes England (London), Scotland (Edinburgh) and Wales (Cardiff). The United Kingdom (UK) adds Northern Ireland (Belfast). The British Isles are the geographical group of islands including both the UK and the Republic of Ireland (Dublin).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-hello-uk"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2FJ4749VD4VW6XWBSR11",
+   "atom_uri": "urn:zam:atom:01M6TY2FJ4749VD4VW6XWBSR11",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-uk-ireland-map",
+   "title": "Four nations and the island of Ireland",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-uk-ireland-map",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2FGHGHA7JGNMZ1S5PC9S",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Hello from the British Isles“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "world",
+     "topic_title": "Englisch als Weltsprache & UK"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2FJNJK0HFCDRWTRTHGCA",
+     "slug": "e5-uk-ireland-map-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which currency do people use in the Republic of Ireland (Dublin)?",
+     "concept": "the euro (€)",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-uk-ireland-map",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "the euro (€)",
+       "the pound sterling (£)"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2FK6KPZ557PWRP77J6B3",
+     "slug": "e5-uk-ireland-map-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "How do Northern Ireland and the Republic of Ireland differ in political status, capital city and currency?",
+     "concept": "Northern Ireland: part of the UK, capital Belfast, pound (£); Republic of Ireland: independent EU country, capital Dublin, euro (€).",
+     "sample_solution": "Northern Ireland belongs to the United Kingdom, its capital is Belfast, and people pay in pounds (£). The Republic of Ireland is an independent country in the European Union, its capital is Dublin, and people pay in euros (€).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-uk-ireland-map"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2FKQX6F4K5463A27RTBD",
+   "atom_uri": "urn:zam:atom:01M6TY2FKQX6F4K5463A27RTBD",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-world-language",
+   "title": "English around us every day",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-world-language",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2FJ4749VD4VW6XWBSR11",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Four nations and the island of Ireland“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "world",
+     "topic_title": "Englisch als Weltsprache & UK"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2FM8BMXFSFRQPSM29RCR",
+     "slug": "e5-world-language-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "What does the English word “gift” mean in “Every visitor gets a free gift”?",
+     "concept": "a present (ein Geschenk)",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-world-language",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "a present (ein Geschenk)",
+       "poison (deutsches Wort „Gift“)"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2FMSZVE7YX82PA21HYN7",
+     "slug": "e5-world-language-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Why is English important at international meetings, and what should you watch out for with words like “gift”?",
+     "concept": "English serves as a common world language between people from different countries; watch out for false friends like gift = present.",
+     "sample_solution": "English is a world language that lets people from different countries, such as Germany, Spain and Poland, communicate with each other. You must watch out for false friends such as “gift”, which means “present” in English, not poison.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-world-language"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2FNA4CP9KV3X995XTQXP",
+   "atom_uri": "urn:zam:atom:01M6TY2FNA4CP9KV3X995XTQXP",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-classroom-phrases",
+   "title": "In our English classroom",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-classroom-phrases",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2FKQX6F4K5463A27RTBD",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „English around us every day“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "world",
+     "topic_title": "Englisch als Weltsprache & UK"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2FNV72NA0XV3DCM23T85",
+     "slug": "e5-classroom-phrases-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which classroom phrase do you use when you want to know the English word for an object?",
+     "concept": "What’s this in English, please?",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-classroom-phrases",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "What’s this in English, please?",
+       "Where is the bus station, please?"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2FPCP3J4JATM04JP9T4K",
+     "slug": "e5-classroom-phrases-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name three polite classroom phrases you can use when you do not understand a word, its spelling or a page number.",
+     "concept": "What’s this in English, please?; How do you spell that, please?; Can you repeat that, please?",
+     "sample_solution": "You can ask: “What’s this in English, please?” to learn a new word, “How do you spell that, please?” to check the letters, and “Can you repeat that, please?” if you missed a page number or instruction.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-classroom-phrases"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2FPX8PRTP2KJSNX9K3Q3",
+   "atom_uri": "urn:zam:atom:01M6TY2FPX8PRTP2KJSNX9K3Q3",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-dictionary-skills",
+   "title": "Finding words in the dictionary",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-dictionary-skills",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2FNA4CP9KV3X995XTQXP",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „In our English classroom“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "world",
+     "topic_title": "Englisch als Weltsprache & UK"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2FQE23KQ95GRSJ4NHM0C",
+     "slug": "e5-dictionary-skills-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "In a dictionary entry, what does the abbreviation “adj” stand for?",
+     "concept": "adjective (Adjektiv / Eigenschaftswort)",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-dictionary-skills",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "adjective (Adjektiv / Eigenschaftswort)",
+       "noun (Nomen / Hauptwort)"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2FQZF7A3XSN1YNHPZF0F",
+     "slug": "e5-dictionary-skills-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Why is it risky to copy the very first translation in a dictionary entry without checking the grammar label (n, v, adj)?",
+     "concept": "Many English words have several parts of speech and meanings (e.g. watch = noun Armbanduhr or verb beobachten/fernsehen).",
+     "sample_solution": "Many English words belong to more than one word class and have different meanings. For example, “watch” as a noun (n) means “Armbanduhr”, but as a verb (v) it means “beobachten” or “fernsehen”, so you must check the sentence context first.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-dictionary-skills"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2FRG9F1XG29EKC4S3565",
+   "atom_uri": "urn:zam:atom:01M6TY2FRG9F1XG29EKC4S3565",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-greetings-politeness",
+   "title": "Please, thank you and excuse me",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-greetings-politeness",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "everyday",
+     "topic_title": "Alltagsleben in Großbritannien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2FS1KQD3GJ7H4KK5PXX1",
+     "slug": "e5-greetings-politeness-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "What do you say in English when you want to get someone’s attention politely before asking a question?",
+     "concept": "Excuse me, …",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-greetings-politeness",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Excuse me, …",
+       "Good night, …"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2FSJX4KY1Y5P0VB5E9H4",
+     "slug": "e5-greetings-politeness-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "When do you say “Good afternoon”, “Good evening” and “Good night” in English?",
+     "concept": "Good afternoon = from 12 p.m. to about 6 p.m.; Good evening = greeting after 6 p.m.; Good night = only when saying goodbye before going to sleep.",
+     "sample_solution": "You say “Good afternoon” between noon and about 6 p.m., and “Good evening” when you greet someone in the evening. “Good night” is only used when you leave in the late evening or go to bed.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-greetings-politeness"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2FT31GG0MNCF01VHS3A9",
+   "atom_uri": "urn:zam:atom:01M6TY2FT31GG0MNCF01VHS3A9",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-family-listening",
+   "title": "Meet the Robinson family",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-family-listening",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2FRG9F1XG29EKC4S3565",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Please, thank you and excuse me“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "everyday",
+     "topic_title": "Alltagsleben in Großbritannien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2FTMHGVEW14P1VK0FYZF",
+     "slug": "e5-family-listening-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "What is a “semi-detached house” in Britain?",
+     "concept": "a house joined to one other house on one side (Doppelhaushälfte)",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-family-listening",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "a house joined to one other house on one side (Doppelhaushälfte)",
+       "a flat on the top floor of a tall city building"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2FV5Q9XGKZH6M0W67H7F",
+     "slug": "e5-family-listening-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name three typical British types of home and six family words beyond mum, dad, brother and sister.",
+     "concept": "Homes: terraced house, semi-detached house, detached house, flat; Family: parents, grandparents, aunt, uncle, cousin, stepdad/stepmum.",
+     "sample_solution": "Typical British homes are a terraced house, a semi-detached house, a detached house and a flat. Important family words are parents, grandparents, aunt, uncle, cousin and stepdad or stepmum.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-family-listening"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2FVPCW0SYZ74PEB1HSB2",
+   "atom_uri": "urn:zam:atom:01M6TY2FVPCW0SYZ74PEB1HSB2",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-pets-animals",
+   "title": "Pets and animals in the garden",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-pets-animals",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2FT31GG0MNCF01VHS3A9",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Meet the Robinson family“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "everyday",
+     "topic_title": "Alltagsleben in Großbritannien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2FW7X7HPTPR1M344VDTQ",
+     "slug": "e5-pets-animals-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which phrase do you use to say where something is at the front of a picture?",
+     "concept": "in the foreground",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-pets-animals",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "in the foreground",
+       "in the background"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2FWR68EK2G3QRKVH6ZM3",
+     "slug": "e5-pets-animals-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name five position phrases for describing a picture and explain when you use “there is” vs. “there are”.",
+     "concept": "in the background, in the middle, in the foreground, on the left, on the right; there is + singular, there are + plural.",
+     "sample_solution": "To describe positions in a picture, you use “in the background”, “in the middle”, “in the foreground”, “on the left” and “on the right”. You use “there is” with one person, animal or thing (singular) and “there are” with two or more (plural).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-pets-animals"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2FX95TGXY440MKS15JVE",
+   "atom_uri": "urn:zam:atom:01M6TY2FX95TGXY440MKS15JVE",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-holidays-festivals",
+   "title": "Red noses, bonfires and pancakes",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-holidays-festivals",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2FVPCW0SYZ74PEB1HSB2",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Pets and animals in the garden“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "everyday",
+     "topic_title": "Alltagsleben in Großbritannien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2FXTEJWX68WGK0NZVFPV",
+     "slug": "e5-holidays-festivals-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "When do most British children open their Christmas presents?",
+     "concept": "on the morning of Christmas Day (25th December)",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-holidays-festivals",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "on the morning of Christmas Day (25th December)",
+       "on Bonfire Night (5th November)"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2FYBW2CPXSBCP180XZV0",
+     "slug": "e5-holidays-festivals-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Which prepositions do you use before months/seasons and before specific days/dates, and what happens on Bonfire Night (5th November)?",
+     "concept": "in + month/season (in November, in autumn); on + day/date (on 5th November, on Christmas Day); Bonfire Night has bonfires and fireworks.",
+     "sample_solution": "You use “in” before months and seasons (in November, in autumn) and “on” before specific days and dates (on 5th November, on Christmas Day). On Bonfire Night families watch bonfires and fireworks and eat warm food like baked potatoes.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-holidays-festivals"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2FYW12BF0MA854DYDPBS",
+   "atom_uri": "urn:zam:atom:01M6TY2FYW12BF0MA854DYDPBS",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-food-shopping",
+   "title": "At the market: how much and how many",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-food-shopping",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2FX95TGXY440MKS15JVE",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Red noses, bonfires and pancakes“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "everyday",
+     "topic_title": "Alltagsleben in Großbritannien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2FZDS6RD5GBXN2F2K2SV",
+     "slug": "e5-food-shopping-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which question word phrase do you use before uncountable nouns such as “milk”, “bread”, “cheese” or “money”?",
+     "concept": "How much …?",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-food-shopping",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "How much …?",
+       "How many …?"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2FZYPJS0MHE3HHRRSWHB",
+     "slug": "e5-food-shopping-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Explain the difference between “How many…?” and “How much…?” and name five common uncountable nouns in English.",
+     "concept": "How many + countable plural nouns; How much + uncountable singular nouns or prices; uncountable: milk, water, bread, cheese, fruit, money.",
+     "sample_solution": "You use “How many…?” with countable nouns in the plural (e.g. How many eggs?) and “How much…?” with uncountable nouns and prices (e.g. How much milk? How much is it?). Common uncountable nouns are milk, water, bread, cheese, fruit and money.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-food-shopping"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2G0FZET8KT6GGP314WN0",
+   "atom_uri": "urn:zam:atom:01M6TY2G0FZET8KT6GGP314WN0",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-clothes-shopping",
+   "title": "This jacket or those trainers?",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-clothes-shopping",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2FYW12BF0MA854DYDPBS",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „At the market: how much and how many“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "everyday",
+     "topic_title": "Alltagsleben in Großbritannien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2G100Y5CSE29Y2ZE02KH",
+     "slug": "e5-clothes-shopping-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which demonstrative word fits “How much are ___ dark blue jeans over there by the window?”",
+     "concept": "those",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-clothes-shopping",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "those",
+       "that"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2G1HZKZY93DNWQMST47B",
+     "slug": "e5-clothes-shopping-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "When do you use “this”, “that”, “these” and “those”, and why do nouns like “trousers”, “jeans” and “trainers” take plural forms?",
+     "concept": "this = singular near; that = singular far; these = plural near; those = plural far; trousers/jeans/trainers have two parts/shoes so they are plural.",
+     "sample_solution": "You use “this” (singular) and “these” (plural) for things near you (“here”), and “that” (singular) and “those” (plural) for things further away (“over there”). Nouns like “trousers”, “jeans” and “trainers” have two legs or two shoes, so they are always plural and take “these” or “those”.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-clothes-shopping"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2G220QX0EZ9TBVAZV36P",
+   "atom_uri": "urn:zam:atom:01M6TY2G220QX0EZ9TBVAZV36P",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-health-illness",
+   "title": "Get well soon: should and shouldn’t",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-health-illness",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2G0FZET8KT6GGP314WN0",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „This jacket or those trainers?“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "everyday",
+     "topic_title": "Alltagsleben in Großbritannien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2G2K6SSPFB6K5GM3DSQ1",
+     "slug": "e5-health-illness-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which sentence gives a grammatically correct piece of advice with “should”?",
+     "concept": "He should drink warm tea and stay in bed.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-health-illness",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "He should drink warm tea and stay in bed.",
+       "He shoulds drinks warm tea and stays in bed."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2G34VSDVPA7GF3ZJW2SY",
+     "slug": "e5-health-illness-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "How do you form positive and negative advice with “should”, and how do you express common illnesses like Kopfschmerzen and Halsschmerzen in English?",
+     "concept": "should / shouldn’t + base form (without to or -s); I’ve got a headache, a sore throat, a cold, a stomach ache, a temperature.",
+     "sample_solution": "To give advice, use “should” or “shouldn’t” plus the base form of the verb (e.g. “You should rest; you shouldn’t eat cold ice cream”). Common illnesses are “I’ve got a headache”, “a sore throat”, “a stomach ache”, “a cold” and “a temperature”.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-health-illness"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2G3NMMA3BS8G2KGYRQAX",
+   "atom_uri": "urn:zam:atom:01M6TY2G3NMMA3BS8G2KGYRQAX",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-smart-consumer",
+   "title": "Smart consumers: pocket money and green choices",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-smart-consumer",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2G220QX0EZ9TBVAZV36P",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Get well soon: should and shouldn’t“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "everyday",
+     "topic_title": "Alltagsleben in Großbritannien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2G46JJSBQ59ZS5570Q64",
+     "slug": "e5-smart-consumer-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "According to the Bristol school chart, which green habit has the highest percentage (85%)?",
+     "concept": "Bringing a refillable bottle to school",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-smart-consumer",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Bringing a refillable bottle to school",
+       "Buying local fruit without plastic (40%)"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2G4QVGCMP3AKWQW702HD",
+     "slug": "e5-smart-consumer-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name four ways young consumers can save pocket money and reduce plastic waste in everyday life (as shown in the Bristol school survey).",
+     "concept": "Use a refillable water bottle, carry a cloth shopping bag, buy loose local fruit without plastic, and swap or repair books/toys.",
+     "sample_solution": "Pupils can use a refillable water bottle instead of single-use plastic bottles, take a cloth bag to the shops, buy local fruit without plastic packaging, and swap books or games with friends.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-smart-consumer"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2G58X0HSZMEMV5BKVZC9",
+   "atom_uri": "urn:zam:atom:01M6TY2G58X0HSZMEMV5BKVZC9",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-school-life",
+   "title": "A day at a British secondary school",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-school-life",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "school",
+     "topic_title": "Schule in Großbritannien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2G5SQP17CJPTVCP96Q6E",
+     "slug": "e5-school-life-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "What does “Surname” mean on an English registration form?",
+     "concept": "your family name / last name (Nachname)",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-school-life",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "your family name / last name (Nachname)",
+       "your favourite school subject (Lieblingsfach)"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2G6ACHDCVBSHQWRBFS5N",
+     "slug": "e5-school-life-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name four typical features of a British secondary school day and explain the form fields “First name”, “Surname” and “Form”.",
+     "concept": "School uniform, morning registration/assembly, lunch in the canteen, after-school clubs; First name = Vorname, Surname = Nachname, Form = Klasse.",
+     "sample_solution": "At a British secondary school, pupils wear a school uniform, start with morning registration, have lunch at school in the canteen, and can join after-school clubs in the afternoon. On a form, “First name” is your given name, “Surname” is your family name, and “Form” is your class.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-school-life"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2G6VT5W226Q0M0GTWVAW",
+   "atom_uri": "urn:zam:atom:01M6TY2G6VT5W226Q0M0GTWVAW",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-classroom-places",
+   "title": "Around the school: prepositions of place",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-classroom-places",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2G58X0HSZMEMV5BKVZC9",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „A day at a British secondary school“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "school",
+     "topic_title": "Schule in Großbritannien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2G7CCQA45J6K0P3Q5KX0",
+     "slug": "e5-classroom-places-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which preposition completes “Form Room 7B is ___ the computer room and the music room”?",
+     "concept": "between",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-classroom-places",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "between",
+       "under"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2G7X2F4HP131WM14YDJ8",
+     "slug": "e5-classroom-places-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name seven prepositions of place and explain the fixed phrases “at school”, “on time” and “in time for…”.",
+     "concept": "in, on, under, next to, in front of, behind, between; at school = in der Schule, on time = pünktlich (nach Plan), in time for… = rechtzeitig (vor etwas).",
+     "sample_solution": "Important prepositions of place are in, on, under, next to, in front of, behind and between. Fixed prepositional phrases are “at school” (in der Schule), “on time” (pünktlich nach Fahr-/Stundenplan, e.g. “The bus is on time”) and “in time for…” (rechtzeitig vor einem Ereignis, e.g. “in time for registration”).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-classroom-places"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2G8EHGD7AEHAXKSVQFSW",
+   "atom_uri": "urn:zam:atom:01M6TY2G8EHGD7AEHAXKSVQFSW",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-timetable-numbers",
+   "title": "Timetables, times and ordinal numbers",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-timetable-numbers",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2G6VT5W226Q0M0GTWVAW",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Around the school: prepositions of place“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "school",
+     "topic_title": "Schule in Großbritannien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2G8Z9KJFVXXFPP5RYVA0",
+     "slug": "e5-timetable-numbers-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "What time is “half past nine” in numbers?",
+     "concept": "9.30 (halb zehn)",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-timetable-numbers",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "9.30 (halb zehn)",
+       "8.30 (halb neun)"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2G9G9VGQK768Y72B6PKX",
+     "slug": "e5-timetable-numbers-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Write the first five ordinal numbers as words and abbreviations, and explain how to spell 14 vs. 40.",
+     "concept": "first (1st), second (2nd), third (3rd), fourth (4th), fifth (5th); 14 = fourteen (with u), 40 = forty (without u).",
+     "sample_solution": "The first five ordinal numbers are first (1st), second (2nd), third (3rd), fourth (4th) and fifth (5th). For cardinal numbers, 14 is spelled “fourteen” with a “u”, whereas 40 is spelled “forty” without a “u”.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-timetable-numbers"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2GA1GNFR5H85SQ8P1F0T",
+   "atom_uri": "urn:zam:atom:01M6TY2GA1GNFR5H85SQ8P1F0T",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-way-to-school",
+   "title": "How do you get to school?",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-way-to-school",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2G8EHGD7AEHAXKSVQFSW",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Timetables, times and ordinal numbers“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "school",
+     "topic_title": "Schule in Großbritannien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2GAJDTP1Y3G3Q4RPDDPT",
+     "slug": "e5-way-to-school-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which phrase is correct in English for „Ich gehe zu Fuß zur Schule“?",
+     "concept": "I go to school on foot. (or: I walk to school.)",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-way-to-school",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "I go to school on foot. (or: I walk to school.)",
+       "I go to school by foot."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2GB36S89ZH461HC9X3F1",
+     "slug": "e5-way-to-school-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "How do you express means of transport in English, and what is the exception for walking?",
+     "concept": "by + transport without article (by bus, by bike, by train, by car); exception: on foot (or walk).",
+     "sample_solution": "For vehicles and public transport you use “by” without an article: by bus, by bike, by train, by car. The exception is walking: you say “I go to school on foot” or “I walk to school”.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-way-to-school"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2GBMZ7YVQY6NES6HABG7",
+   "atom_uri": "urn:zam:atom:01M6TY2GBMZ7YVQY6NES6HABG7",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-study-methods",
+   "title": "Mind maps, word webs and flashcards",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-study-methods",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2GA1GNFR5H85SQ8P1F0T",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „How do you get to school?“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "school",
+     "topic_title": "Schule in Großbritannien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2GC53T187THYXQATYYHF",
+     "slug": "e5-study-methods-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which verb forms the correct English collocation with “your homework”?",
+     "concept": "to do your homework",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-study-methods",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "to do your homework",
+       "to make your homework"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2GCP7EJ8G73N2WGKX12Z",
+     "slug": "e5-study-methods-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name three effective techniques for organising new vocabulary and give two English collocations with “do” or “make”.",
+     "concept": "Word webs / mind maps by topic, umbrella terms, opposites, flashcards with example sentences; to do your homework, to make a mistake.",
+     "sample_solution": "You can organise new words in topic mind maps (word webs), group them under umbrella terms or as opposites (e.g. noisy – quiet), and write flashcards with whole collocations and example sentences, such as “to do your homework” and “to make a mistake”.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-study-methods"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2GD701MBNSYYENYPEKNV",
+   "atom_uri": "urn:zam:atom:01M6TY2GD701MBNSYYENYPEKNV",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-hobbies-sports",
+   "title": "Hobbies, sports and verb patterns",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-hobbies-sports",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "leisure",
+     "topic_title": "Freizeit, Reisen & Medien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2GDRQSGN6VVEZ3VPRWG0",
+     "slug": "e5-hobbies-sports-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which verb form completes “I’d like ___ the drums this year” and “I enjoy ___ basketball”?",
+     "concept": "to learn / playing",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-hobbies-sports",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "to learn / playing",
+       "learning / to play"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2GE93EQX9Q7WNM0NN6Y3",
+     "slug": "e5-hobbies-sports-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Give one example each for (1) gerund as subject, (2) enjoy + -ing, and (3) I’d like (you) + to-infinitive.",
+     "concept": "(1) Swimming is fun. (2) I enjoy playing football. (3) I’d like to learn judo / I’d like you to join our team.",
+     "sample_solution": "(1) Gerund as subject: “Swimming is fun.” (2) Chunk with verb + -ing: “I enjoy playing football.” (3) Chunk with verb + to-infinitive: “I’d like to learn the guitar” or “I’d like you to come with me.”",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-hobbies-sports"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2GETEVAA4ECVGM268EW2",
+   "atom_uri": "urn:zam:atom:01M6TY2GETEVAA4ECVGM268EW2",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-charity-community",
+   "title": "Helping others: charity and community projects",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-charity-community",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2GD701MBNSYYENYPEKNV",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Hobbies, sports and verb patterns“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "leisure",
+     "topic_title": "Freizeit, Reisen & Medien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2GFBVXH6YDBKFKHRZB33",
+     "slug": "e5-charity-community-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "What happens on a “non-uniform day” at a British school?",
+     "concept": "Pupils wear their own everyday clothes and donate a small amount (e.g. £1) to charity.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-charity-community",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Pupils wear their own everyday clothes and donate a small amount (e.g. £1) to charity.",
+       "Pupils must buy three new school uniforms."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2GFWDG4JG2AS8FYYPDZZ",
+     "slug": "e5-charity-community-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name three ways British pupils raise money for charity at school and who benefits in the Oakfield newsletter.",
+     "concept": "Non-uniform day, bake sale, sponsored walk/swim; in the newsletter they help a local animal shelter and a children’s hospital.",
+     "sample_solution": "British pupils raise money through non-uniform days, bake sales (selling homemade cakes at break time) and sponsored walks or swims. At Oakfield School the money goes to a local animal shelter and a children’s hospital.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-charity-community"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2GGDT87GRVQBS845RG1P",
+   "atom_uri": "urn:zam:atom:01M6TY2GGDT87GRVQBS845RG1P",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-digital-media-habits",
+   "title": "Screen time, games and staying safe online",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-digital-media-habits",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2GETEVAA4ECVGM268EW2",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Helping others: charity and community projects“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "leisure",
+     "topic_title": "Freizeit, Reisen & Medien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2GGYSY6VHPX1EES72RSJ",
+     "slug": "e5-digital-media-habits-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "According to the Class 5a Media Charter, what should you NEVER do with photos of classmates?",
+     "concept": "Post them online without asking the classmates first.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-digital-media-habits",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Post them online without asking the classmates first.",
+       "Look at them together in the classroom."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2GHFR2MQK7313JMTC2ZT",
+     "slug": "e5-digital-media-habits-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name five adverbs of frequency from 100% to 0% and two important online safety rules for young people.",
+     "concept": "always, usually, often, sometimes, never; never share passwords/addresses in public and ask before posting photos of others.",
+     "sample_solution": "The five main adverbs of frequency are always, usually, often, sometimes and never. Online, you should never share personal data like your address or password with strangers, and you should never post photos of classmates without asking them first.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-digital-media-habits"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2GJ0C82M9VP63JMT2AJ2",
+   "atom_uri": "urn:zam:atom:01M6TY2GJ0C82M9VP63JMT2AJ2",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-trips-sights-uk",
+   "title": "Day trips: London and castles in Wales",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-trips-sights-uk",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2GGDT87GRVQBS845RG1P",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Screen time, games and staying safe online“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "leisure",
+     "topic_title": "Freizeit, Reisen & Medien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2GJHK1FW22S30S1AY8R1",
+     "slug": "e5-trips-sights-uk-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "What can visitors see inside the Tower of London?",
+     "concept": "the Crown Jewels, the White Tower and the famous ravens",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-trips-sights-uk",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "the Crown Jewels, the White Tower and the famous ravens",
+       "the giant Ferris wheel called the London Eye inside a castle room"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2GK2DM8NTXM1AXPG7KF3",
+     "slug": "e5-trips-sights-uk-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name three famous sights in London along the River Thames and explain why Wales is famous for day trips.",
+     "concept": "London sights: Tower of London, Tower Bridge, Big Ben / Houses of Parliament, London Eye; Wales is famous for its many castles like Cardiff Castle.",
+     "sample_solution": "Famous sights along the River Thames in London are the Tower of London, Tower Bridge, Big Ben at the Houses of Parliament and the London Eye. Wales is famous for its many historic castles, such as Cardiff Castle and Caernarfon Castle.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-trips-sights-uk"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2GKKVDNCH1TYZD5GREQH",
+   "atom_uri": "urn:zam:atom:01M6TY2GKKVDNCH1TYZD5GREQH",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-holiday-listening",
+   "title": "Holiday plans and seaside memories",
+   "domain": "englisch/landeskunde",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-holiday-listening",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2GJ0C82M9VP63JMT2AJ2",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Day trips: London and castles in Wales“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "leisure",
+     "topic_title": "Freizeit, Reisen & Medien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb2",
+     "topic_title": "Interkulturelle Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2GM4JNPFB82GD5NJSS8M",
+     "slug": "e5-holiday-listening-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "In Holly’s sentence “Next Saturday we’re visiting my cousins in Brighton”, which time does “we’re visiting” refer to?",
+     "concept": "a fixed plan in the future (next Saturday)",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-holiday-listening",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "a fixed plan in the future (next Saturday)",
+       "an event that happened five years ago"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2GMN5MBJD3Q6HX643014",
+     "slug": "e5-holiday-listening-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "How can you tell in a conversation whether a speaker is talking about past holidays or future holiday plans?",
+     "concept": "Past time markers (last week, on Monday) + simple past (went, stayed) show past events; future time markers (tomorrow, next Saturday) + present progressive / simple present show future plans/timetables.",
+     "sample_solution": "Past holidays use time markers like “last week” or “yesterday” and verbs in the simple past (went, stayed, built). Future plans and timetables in Grade 5 are recognised by future time expressions like “next Saturday” or “tomorrow” combined with the present progressive (“we’re visiting”) or simple present (“the coach leaves at 7.30”).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-holiday-listening"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2GN6XS1JWJ90MJFWRNW8",
+   "atom_uri": "urn:zam:atom:01M6TY2GN6XS1JWJ90MJFWRNW8",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-holiday-postcard",
+   "title": "A holiday postcard from Brighton",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-holiday-postcard",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2GKKVDNCH1TYZD5GREQH",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Holiday plans and seaside memories“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "leisure",
+     "topic_title": "Freizeit, Reisen & Medien"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2GNQ99XG79VCM7SW1WVW",
+     "slug": "e5-holiday-postcard-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "How do you start the first line after the greeting “Dear Ben,” in an English postcard or email?",
+     "concept": "With a capital letter (Großbuchstabe), e.g. “Greetings from Brighton!”",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-holiday-postcard",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "With a capital letter (Großbuchstabe), e.g. “Greetings from Brighton!”",
+       "With a small letter, just like in German after a comma"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2GP83T695MZXWQ5HSXV9",
+     "slug": "e5-holiday-postcard-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Which four parts belong to a well-structured holiday postcard, and which tenses do you combine?",
+     "concept": "1. Greeting (Dear…,); 2. Where you are & what you are doing right now (present progressive); 3. What you did yesterday (simple past); 4. Closing phrase & name.",
+     "sample_solution": "A holiday postcard starts with a greeting (“Dear …,”), describes where you are and what you are doing right now in the present progressive, tells what you did yesterday in the simple past, and ends with a friendly closing (“See you soon,” / “Lots of love,”) and your name.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-holiday-postcard"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2GPSGB0HC63VDJTV40VH",
+   "atom_uri": "urn:zam:atom:01M6TY2GPSGB0HC63VDJTV40VH",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-to-be",
+   "title": "Forms of to be: statements, questions and short answers",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-to-be",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2GQAJTYWEH2VFNMQYSKC",
+     "slug": "e5-to-be-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which short negative form of “is not” completes “He ___ at home”?",
+     "concept": "isn’t",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-to-be",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "isn’t",
+       "aren’t"
+      ],
+      "correct_index": 0
+     },
+     "replaces": [
+      "01K4E5B0000000000000000J01"
+     ]
+    },
+    {
+     "id": "01M6TY2GQVJF147R7A1FGXZ0C4",
+     "slug": "e5-to-be-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "How do you form yes-no questions and positive/negative short answers with “to be”?",
+     "concept": "Put Am/Is/Are before the subject; short answers: Yes, I am / No, I’m not; Yes, he is / No, he isn’t (no contraction in positive short answers).",
+     "sample_solution": "To form a yes-no question with “to be”, put Am, Is or Are before the subject (e.g. “Is she from London?”). Short answers repeat the pronoun and the form of “to be”: “Yes, she is” (never contracted!) or “No, she isn’t.”",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-to-be"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2GRCG72YJHGPG9YG1VZ8",
+   "atom_uri": "urn:zam:atom:01M6TY2GRCG72YJHGPG9YG1VZ8",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-have-got",
+   "title": "Possession with have got and has got",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-have-got",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2GPSGB0HC63VDJTV40VH",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Forms of to be: statements, questions and short answers“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2GRXKBSHJYNR87FQZMXB",
+     "slug": "e5-have-got-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which form of “have got” must be used with the third person singular (he, she, it)?",
+     "concept": "has got (he/she/it has got)",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-have-got",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "has got (he/she/it has got)",
+       "have got"
+      ],
+      "correct_index": 0
+     },
+     "replaces": [
+      "01K4E5B0000000000000000J03"
+     ]
+    },
+    {
+     "id": "01M6TY2GSEGFXBQSNXPR17WZ3S",
+     "slug": "e5-have-got-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "How do you form questions and short answers with “have got / has got”, and why is “Yes, I have got” wrong?",
+     "concept": "Question: Have/Has + subject + got…?; Short answer: Yes, I have / No, she hasn’t (without “got” in short answers!).",
+     "sample_solution": "In questions, “Have” or “Has” goes before the subject and “got” stays after the subject (e.g. “Has Tom got a pet?”). Short answers use only the pronoun and have/has/haven’t/hasn’t without “got” (“Yes, he has” / “No, he hasn’t”).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-have-got"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2GSZP3DGWRH7FEYQ1NKD",
+   "atom_uri": "urn:zam:atom:01M6TY2GSZP3DGWRH7FEYQ1NKD",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-articles-nouns",
+   "title": "Nouns, articles (a/an, the) and irregular plurals",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-articles-nouns",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2GRCG72YJHGPG9YG1VZ8",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Possession with have got and has got“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2GTGEWZKRJP4HD9920PD",
+     "slug": "e5-articles-nouns-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "When do you use the indefinite article “an” instead of “a” (for example “… apple” vs. “… book”)?",
+     "concept": "Before a spoken vowel sound (an apple, an hour)",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-articles-nouns",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Before a spoken vowel sound (an apple, an hour)",
+       "Before plural nouns (apples, books)"
+      ],
+      "correct_index": 0
+     },
+     "replaces": [
+      "01K4E5B0000000000000000J05"
+     ]
+    },
+    {
+     "id": "01M6TY2GV10E50MG67QGVZXT15",
+     "slug": "e5-articles-nouns-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Explain why we say “an hour” but “a uniform”, and give the plural of child, woman, mouse, foot and box.",
+     "concept": "“hour” starts with a vowel sound (silent h) -> an hour; “uniform” starts with consonant sound /j/ -> a uniform; plurals: children, women, mice, feet, boxes.",
+     "sample_solution": "In “hour” the “h” is silent, so the word starts with a vowel sound (“an hour”). In “uniform” the first sound is the consonant sound /j/ (“you-niform”), so we say “a uniform”. The plurals are children, women, mice, feet and boxes.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-articles-nouns"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2GVJ8VE93ANDZPPZH9BM",
+   "atom_uri": "urn:zam:atom:01M6TY2GVJ8VE93ANDZPPZH9BM",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-genitive-possessives",
+   "title": "Whose is it? ’s/of-genitive and possessive adjectives",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-genitive-possessives",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2GSZP3DGWRH7FEYQ1NKD",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Nouns, articles (a/an, the) and irregular plurals“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2GW39JWDJJPWEJ0TMGF2",
+     "slug": "e5-genitive-possessives-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which genitive form is correct for the house that belongs to “my parents” (regular plural ending in -s)?",
+     "concept": "my parents’ house (apostrophe after the plural -s)",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-genitive-possessives",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "my parents’ house (apostrophe after the plural -s)",
+       "my parent’s house (when talking about both mother and father)"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2GWMMR230HWPJ69660VJ",
+     "slug": "e5-genitive-possessives-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "When do you use ’s, s’ and the of-genitive, and what is the difference between “its” and “it’s”?",
+     "concept": "’s = singular person/animal or irregular plural (Tom’s dog, children’s room); s’ = regular plural (parents’ car); of = things (door of the room); its = possessive, it’s = it is.",
+     "sample_solution": "Use ’s for one person/animal or irregular plurals (Tom’s bag, the children’s books), s’ for regular plural nouns ending in -s (my parents’ house), and “of” for things (the roof of the shed). “Its” is a possessive adjective (its tail), while “it’s” means “it is” or “it has”.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-genitive-possessives"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2GX5Q3A4M6MBSTQZ1VQJ",
+   "atom_uri": "urn:zam:atom:01M6TY2GX5Q3A4M6MBSTQZ1VQJ",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-pronouns-subject-object",
+   "title": "Subject, object and interrogative pronouns",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-pronouns-subject-object",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2GVJ8VE93ANDZPPZH9BM",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Whose is it? ’s/of-genitive and possessive adjectives“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2GXP4K9Y78KSPG79VGAS",
+     "slug": "e5-pronouns-subject-object-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which object pronoun correctly completes “Where are the apples? I can’t find ___”?",
+     "concept": "them",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-pronouns-subject-object",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "them",
+       "they"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2GY73HJE08JHERRFJ7MG",
+     "slug": "e5-pronouns-subject-object-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "List the pairs of subject and object pronouns in English and explain when you use “which” vs. “what” or “who” vs. “whose”.",
+     "concept": "I/me, you/you, he/him, she/her, it/it, we/us, they/them; which = choice from a small set, what = general, who = person, whose = possession.",
+     "sample_solution": "The subject/object pronoun pairs are I–me, you–you, he–him, she–her, it–it, we–us and they–them. “Who” asks about a person, “whose” asks who something belongs to, “what” asks generally, and “which” asks you to choose from a specific group.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-pronouns-subject-object"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2GYRKWYEX70B08GCY33F",
+   "atom_uri": "urn:zam:atom:01M6TY2GYRKWYEX70B08GCY33F",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-simple-present",
+   "title": "Simple present: routines, third-person -s and time expressions",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-simple-present",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2GX5Q3A4M6MBSTQZ1VQJ",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Subject, object and interrogative pronouns“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2GZ96YZV6NC56AH5WAVR",
+     "slug": "e5-simple-present-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which negative sentence in the simple present is grammatically correct for “Mia” (she)?",
+     "concept": "Mia doesn’t watch TV in the morning.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-simple-present",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Mia doesn’t watch TV in the morning.",
+       "Mia doesn’t watches TV in the morning."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2GZT25SYRE6PP0E9V62T",
+     "slug": "e5-simple-present-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Explain the 3rd-person singular spelling rules in the simple present, why “doesn’t watches” is wrong, and where adverbs of frequency stand.",
+     "concept": "Add -s (gets), -es after s/sh/ch/x/o (watches, goes, does), consonant+y -> -ies (tidies); after doesn’t/does use base form; adverbs stand before main verbs but after am/is/are.",
+     "sample_solution": "In the 3rd person singular you add -s (plays), -es after hissing sounds or o (watches, goes, does), and change consonant + y to -ies (tidies). After “doesn’t” or “Does…?” the main verb stays in the base form because “does” already carries the -es. Adverbs of frequency go before the main verb (“she always helps”) but after forms of “to be” (“she is always kind”).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-simple-present"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2H0BBEE7C8HBG9A76DV6",
+   "atom_uri": "urn:zam:atom:01M6TY2H0BBEE7C8HBG9A76DV6",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-present-progressive",
+   "title": "Present progressive: what is happening right now",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-present-progressive",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2GYRKWYEX70B08GCY33F",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Simple present: routines, third-person -s and time expressions“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2H0WR87MEG57NTR436A7",
+     "slug": "e5-present-progressive-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which spelling of the -ing form is correct for “write” and “swim”?",
+     "concept": "writing and swimming",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-present-progressive",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "writing and swimming",
+       "writeing and swiming"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2H1D4GYYQ1SQG11HJDJN",
+     "slug": "e5-present-progressive-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "How do you form statements, negations and questions in the present progressive, and what are the spelling rules for “make” and “sit”?",
+     "concept": "am/is/are + verb-ing; negation: am not / isn’t / aren’t + verb-ing; question: Am/Is/Are + subject + verb-ing?; make -> making, sit -> sitting.",
+     "sample_solution": "You form the present progressive with am/is/are + verb-ing (e.g. “She is reading”, “She isn’t sleeping”, “Is she reading?”). Verbs ending in a silent -e drop the -e (“make → making”), and short-vowel verbs double the final consonant (“sit → sitting”).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-present-progressive"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2H1YARMWD3Z963BDK72E",
+   "atom_uri": "urn:zam:atom:01M6TY2H1YARMWD3Z963BDK72E",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-present-contrast",
+   "title": "Simple present vs. present progressive",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-present-contrast",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2H0BBEE7C8HBG9A76DV6",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Present progressive: what is happening right now“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2H2FJE3SFJPA8240ZCXD",
+     "slug": "e5-present-contrast-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which verb forms correctly complete “Owen usually ___ his school uniform, but today he ___ jeans”?",
+     "concept": "wears / is wearing",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-present-contrast",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "wears / is wearing",
+       "is wearing / wears"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2H3037ETA2SEQ4WX4NRY",
+     "slug": "e5-present-contrast-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name three signal words each for the simple present and the present progressive, and give a contrast sentence with “usually … but today …”.",
+     "concept": "Simple present: always, usually, every day; Present progressive: right now, at the moment, Look!; e.g. I usually ride my bike, but today I am taking the bus.",
+     "sample_solution": "Signal words for the simple present are “always”, “usually”, “often” and “every day”. Signal words for the present progressive are “now”, “right now”, “at the moment”, “Look!” and “Listen!”. Example: “I usually ride my bike to school, but today it is raining, so I am taking the bus.”",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-present-contrast"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2H3HM9BEHTKHY6WJTDFQ",
+   "atom_uri": "urn:zam:atom:01M6TY2H3HM9BEHTKHY6WJTDFQ",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-simple-past-was-were",
+   "title": "Simple past: was/were and regular verbs (-ed)",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-simple-past-was-were",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2H1YARMWD3Z963BDK72E",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Simple present vs. present progressive“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2H42RVWVVDBKX7V8PPP4",
+     "slug": "e5-simple-past-was-were-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which past forms correctly complete “Yesterday the weather ___ cold, and our bus ___ in front of the museum”?",
+     "concept": "was / stopped",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-simple-past-was-were",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "was / stopped",
+       "were / stoped"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2H4K22E7HRSQE4FN5C3M",
+     "slug": "e5-simple-past-was-were-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "When do you use “was” vs. “were”, and what are the -ed spelling rules for “arrive”, “carry” and “stop”?",
+     "concept": "I/he/she/it was, you/we/they were; arrive -> arrived (+d), carry -> carried (consonant+y -> -ied), stop -> stopped (doubled consonant).",
+     "sample_solution": "Use “was” (wasn’t) with I, he, she, it and “were” (weren’t) with you, we, they. For regular past verbs, add -d after silent -e (arrive → arrived), change consonant + y to -ied (carry → carried), and double a single consonant after a short stressed vowel (stop → stopped).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-simple-past-was-were"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2H54MWYECH92MS3XF7PJ",
+   "atom_uri": "urn:zam:atom:01M6TY2H54MWYECH92MS3XF7PJ",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-simple-past-irregular-did",
+   "title": "Simple past: irregular verbs and questions/negations with did",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-simple-past-irregular-did",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2H3HM9BEHTKHY6WJTDFQ",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Simple past: was/were and regular verbs (-ed)“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2H5NPR92VYD3EJFAZ2R4",
+     "slug": "e5-simple-past-irregular-did-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which negative sentence and question in the simple past are grammatically correct?",
+     "concept": "We didn’t go to the zoo. / Did you see the castle?",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-simple-past-irregular-did",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "We didn’t go to the zoo. / Did you see the castle?",
+       "We didn’t went to the zoo. / Did you saw the castle?"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2H6684QNE5TC7MYFT1BJ",
+     "slug": "e5-simple-past-irregular-did-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Give the simple past forms of go, see, buy, have, eat and take, and explain why “He didn’t went” is wrong.",
+     "concept": "go–went, see–saw, buy–bought, have–had, eat–ate, take–took; after didn’t/did the main verb must be in the base form (He didn’t go).",
+     "sample_solution": "The irregular simple past forms are go → went, see → saw, buy → bought, have → had, eat → ate and take → took. “He didn’t went” is wrong because “didn’t” already carries the past tense; the main verb must be in the base form: “He didn’t go.”",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-simple-past-irregular-did"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2H6Q3D42PBBR9G66ZEF6",
+   "atom_uri": "urn:zam:atom:01M6TY2H6Q3D42PBBR9G66ZEF6",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-modals-can-must-may",
+   "title": "Modal verbs: can/can’t, could/couldn’t, may and must",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-modals-can-must-may",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2H54MWYECH92MS3XF7PJ",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Simple past: irregular verbs and questions/negations with did“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2H785DHXGMCVK9JRDGFQ",
+     "slug": "e5-modals-can-must-may-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "How do you spell the full negative form of “can”, and what verb form follows modal verbs like “can, could, may, must”?",
+     "concept": "cannot (one word) + base form without “to”",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-modals-can-must-may",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "cannot (one word) + base form without “to”",
+       "can not (always two separate words) + to-infinitive"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2H7SP41PNFM6PJDXM1KF",
+     "slug": "e5-modals-can-must-may-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Explain the meaning of “can/can’t”, “could/couldn’t”, “may” and “must”, and state the three grammar rules shared by all modal verbs.",
+     "concept": "can = ability/permission, could = past ability or polite request, may = polite permission, must = obligation; rules: no -s, base form without to, questions/negations without do.",
+     "sample_solution": "“Can/can’t” expresses present ability or permission, “could/couldn’t” expresses past ability or a polite request, “may” asks politely for permission (“May I…?”), and “must” expresses an obligation. All modal verbs take no -s in the 3rd person, are followed by the base form without “to”, and form questions and negations without “do/did”.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-modals-can-must-may"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2H8AEGMTF4G8FWEJAYJX",
+   "atom_uri": "urn:zam:atom:01M6TY2H8AEGMTF4G8FWEJAYJX",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-questions-answers",
+   "title": "Questions and short answers across tenses",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-questions-answers",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2H6Q3D42PBBR9G66ZEF6",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Modal verbs: can/can’t, could/couldn’t, may and must“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2H8VTTNTAKF6TQ7AGYPR",
+     "slug": "e5-questions-answers-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which short answer matches the question “Does Ben walk to school every day?”?",
+     "concept": "Yes, he does. / No, he doesn’t.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-questions-answers",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Yes, he does. / No, he doesn’t.",
+       "Yes, he is. / No, he isn’t."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2H9C621S4P60AG3VDBKN",
+     "slug": "e5-questions-answers-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "State the QUASI word-order rule for wh-questions with main verbs and give the matching short answers for “Are you…?”, “Have you got…?”, “Does she…?” and “Did they…?”.",
+     "concept": "QUASI = Question word + Auxiliary (do/does/did) + Subject + Infinitive; Yes, I am / Yes, I have / Yes, she does / Yes, they did.",
+     "sample_solution": "In wh-questions with main verbs, the order is Question word + Auxiliary (do/does/did) + Subject + Infinitive (base form), e.g. “Where does she live?”. Short answers mirror the auxiliary: “Yes, I am”, “Yes, I have”, “Yes, she does”, and “Yes, they did”.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-questions-answers"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2H9XQFRAGWPC6K0S0J94",
+   "atom_uri": "urn:zam:atom:01M6TY2H9XQFRAGWPC6K0S0J94",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-imperatives",
+   "title": "Imperatives, classroom instructions and Let’s",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-imperatives",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2H8AEGMTF4G8FWEJAYJX",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Questions and short answers across tenses“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2HAE5SA7P9XQG2ZH2CE3",
+     "slug": "e5-imperatives-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "How do you form a negative imperative in English (for example “___ run in the corridor!”)?",
+     "concept": "Don’t + base form (Don’t run!)",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-imperatives",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Don’t + base form (Don’t run!)",
+       "Not + base form (Not run!)"
+      ],
+      "correct_index": 0
+     },
+     "replaces": [
+      "01K4E5B0000000000000000J07"
+     ]
+    },
+    {
+     "id": "01M6TY2HAZ20QXCRY0F8V2SF3Z",
+     "slug": "e5-imperatives-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "How do you form (1) a polite positive imperative, (2) a negative imperative (even with “to be”), and (3) a suggestion for “we”?",
+     "concept": "(1) Base form + please (Sit down, please); (2) Don’t + base form (Don’t talk! Don’t be late!); (3) Let’s + base form (Let’s go!).",
+     "sample_solution": "A polite positive imperative uses the base form of the verb without a subject plus “please” (“Open the window, please!”). A negative imperative always starts with “Don’t + base form”, even with “be” (“Don’t run!”, “Don’t be late!”). A suggestion for “we” uses “Let’s + base form” (“Let’s play a game!”).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-imperatives"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2HBG7V9FPNFFTER8HR0A",
+   "atom_uri": "urn:zam:atom:01M6TY2HBG7V9FPNFFTER8HR0A",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-word-order-linking",
+   "title": "Word order (S–V–O, place before time) and linking words",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-word-order-linking",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2H9XQFRAGWPC6K0S0J94",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Imperatives, classroom instructions and Let’s“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2HC1HS54R3591HZ47WF9",
+     "slug": "e5-word-order-linking-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which sentence follows the correct English word order (Subject–Verb–Object and Place before Time)?",
+     "concept": "We play football in the park every Saturday.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-word-order-linking",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "We play football in the park every Saturday.",
+       "Every Saturday play we in the park football."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2HCJMHTYFSEZ8Q1TEJCS",
+     "slug": "e5-word-order-linking-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "State the English word-order rule for Subject, Verb, Object, Place and Time, and explain what happens to word order after “because”.",
+     "concept": "Subject – Verb – Object – Place – Time (S–V–O–P–T); even after a time phrase at the start or after “because”, Subject stays before Verb.",
+     "sample_solution": "In English statements the order is Subject – Verb – Object – Place – Time (e.g. “She meets her friends in town on Saturdays”). Unlike German, the subject stays before the verb even when a time expression starts the sentence or in a clause after “because” (“…because the weather was cold”).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-word-order-linking"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2HD38JAMVRXHJKBT246Z",
+   "atom_uri": "urn:zam:atom:01M6TY2HD38JAMVRXHJKBT246Z",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-pronunciation-ipa",
+   "title": "Sounds, silent letters and IPA symbols",
+   "domain": "englisch/grammar",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-pronunciation-ipa",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2HBG7V9FPNFFTER8HR0A",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Word order (S–V–O, place before time) and linking words“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "language",
+     "topic_title": "Sprachwerkstatt: Wortschatz & Grammatik"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2HDMWA8KVQV16584QHH5",
+     "slug": "e5-pronunciation-ipa-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which letter is silent (not pronounced) in the English words “know” /nəʊ/ and “knee” /niː/?",
+     "concept": "the letter “k” at the beginning",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-pronunciation-ipa",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "the letter “k” at the beginning",
+       "the vowel at the end"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2HE5T4BNG20NJBYQSWX9",
+     "slug": "e5-pronunciation-ipa-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Explain the two IPA symbols /θ/ and /ð/ for “th” with two example words each, and name three English words with silent letters.",
+     "concept": "/θ/ = voiceless th (think, three, Thursday); /ð/ = voiced th (this, that, mother, weather); silent letters: know (k), write (w), hour (h).",
+     "sample_solution": "The symbol /θ/ stands for the voiceless “th” sound in “think”, “three” and “Thursday”, while /ð/ stands for the voiced “th” sound in “this”, “that”, “mother” and “weather”. Words with silent letters include “know” (silent k), “write” (silent w) and “hour” (silent h).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-pronunciation-ipa"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2HEPQ3E40P88PKXPGSGS",
+   "atom_uri": "urn:zam:atom:01M6TY2HEPQ3E40P88PKXPGSGS",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-reading-detective",
+   "title": "Reading detective: context clues and mystery stories",
+   "domain": "englisch/literatur",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-reading-detective",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "stories",
+     "topic_title": "Geschichten, Gedichte & Lesetagebuch"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2HF77YWB8W5M46JDRHY5",
+     "slug": "e5-reading-detective-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "What should you do FIRST when you meet one unfamiliar word while reading an English story?",
+     "concept": "Try to work out its meaning from the context and word parts before looking it up.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-reading-detective",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Try to work out its meaning from the context and word parts before looking it up.",
+       "Stop reading immediately and close the book."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2HFR8NG4C018T8QT2DV8",
+     "slug": "e5-reading-detective-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Name three strategies for working out the meaning of an unknown word in a story without a dictionary.",
+     "concept": "1. Use context clues from the surrounding sentences; 2. break compound words into known parts (torch + light); 3. compare with German or international words.",
+     "sample_solution": "First, use context clues from the sentences before and after the word and check its word class. Second, split compound words into familiar parts (such as “torchlight” = torch + light). Third, look for similarities with German or international words (such as “muddy” or “footprints”).",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-reading-detective"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2HG9WT2DE2T08TPB2QYV",
+   "atom_uri": "urn:zam:atom:01M6TY2HG9WT2DE2T08TPB2QYV",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-class-reader",
+   "title": "Reading a whole book: characters, setting and reading log",
+   "domain": "englisch/literatur",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-class-reader",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2HEPQ3E40P88PKXPGSGS",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Reading detective: context clues and mystery stories“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "stories",
+     "topic_title": "Geschichten, Gedichte & Lesetagebuch"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2HGTXYH89V9QKPWXZ6JA",
+     "slug": "e5-class-reader-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "What are the three core elements you record in a Reading Log when reading a class reader?",
+     "concept": "Setting (place & time), characters (with traits) and main events of each chapter",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-class-reader",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Setting (place & time), characters (with traits) and main events of each chapter",
+       "Every single word of the book translated word-for-word into German"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2HHB657FS7K023X52175",
+     "slug": "e5-class-reader-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Explain the terms “setting” and “characters” in a book report and name four English adjectives to describe a character.",
+     "concept": "Setting = where and when the story takes place; characters = the people/animals in the story; adjectives: brave, curious, friendly, helpful.",
+     "sample_solution": "The “setting” tells where and when a story takes place (for example on an island in Cornwall in autumn). The “characters” are the people or animals in the story. Four useful adjectives to describe them are brave, curious, friendly and helpful.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-class-reader"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2HHWNHHTQW0X5NSWJ9JW",
+   "atom_uri": "urn:zam:atom:01M6TY2HHWNHHTQW0X5NSWJ9JW",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-poems-rhymes",
+   "title": "Rhythm and rhyme: Robert Louis Stevenson’s poems",
+   "domain": "englisch/literatur",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-poems-rhymes",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2HG9WT2DE2T08TPB2QYV",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Reading a whole book: characters, setting and reading log“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "stories",
+     "topic_title": "Geschichten, Gedichte & Lesetagebuch"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2HJDKE2FYQ9S540SVGHD",
+     "slug": "e5-poems-rhymes-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "In Robert Louis Stevenson’s poem “Time to Rise”, which word rhymes with “bill” (beak)?",
+     "concept": "sill (window sill)",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-poems-rhymes",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "sill (window sill)",
+       "tree (in the garden)"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2HJY7S56FRBVH93CDZKB",
+     "slug": "e5-poems-rhymes-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "Which pairs of words rhyme in Stevenson’s “Time to Rise” and “Rain”, and why do “tree” and “sea” rhyme even though they are spelled differently?",
+     "concept": "Time to Rise: bill–sill, said–head; Rain: tree–sea; rhyme in English depends on the spoken sound (/triː/ and /siː/), not the spelling.",
+     "sample_solution": "In “Time to Rise”, “bill” rhymes with “sill” and “said” /sed/ rhymes with “sleepy-head” /hed/. In “Rain”, “tree” /triː/ rhymes with “sea” /siː/. They rhyme because English rhyme depends on the spoken vowel and final sound, not the letters.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-poems-rhymes"
+    }
+   ]
+  },
+  {
+   "id": "01M6TY2HKFM62D5M95T1Y9VJEG",
+   "atom_uri": "urn:zam:atom:01M6TY2HKFM62D5M95T1Y9VJEG",
+   "namespace": "zam-academy-englisch-realschule-5",
+   "slug": "e5-creative-writing",
+   "title": "Story workshop: planning, writing and checking your text",
+   "domain": "englisch/writing",
+   "reduction": "formal",
+   "typical_age_min": 10,
+   "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-creative-writing",
+   "prerequisites": [
+    {
+     "atom_id": "01M6TY2HHWNHHTQW0X5NSWJ9JW",
+     "type": "soft",
+     "rationale": "Die Lektion knüpft an „Rhythm and rhyme: Robert Louis Stevenson’s poems“ an; eigenständiger Einstieg bleibt möglich."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "englisch-realschule-5",
+     "topic_code": "stories",
+     "topic_title": "Geschichten, Gedichte & Lesetagebuch"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb1",
+     "topic_title": "Kommunikative Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb3",
+     "topic_title": "Text- und Medienkompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb4",
+     "topic_title": "Methodische Kompetenzen",
+     "exam_relevant": false
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "realschule",
+     "grade": 5,
+     "subject": "englisch",
+     "topic_code": "lb5",
+     "topic_title": "Themengebiete",
+     "exam_relevant": false
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6TY2HM0DMGH6VETRA7XSM1S",
+     "slug": "e5-creative-writing-check",
+     "language": "en",
+     "tier": "tier1_fast",
+     "bloom_level": 2,
+     "question": "Which words help you structure the sequence of events in a story from beginning to end?",
+     "concept": "First, … Then … After that, … Suddenly, … Finally, …",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-creative-writing",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "First, … Then … After that, … Suddenly, … Finally, …",
+       "Starting every single sentence with “And then I…” ten times"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6TY2HMHD28V16W9BJJW54GV",
+     "slug": "e5-creative-writing-recall",
+     "language": "en",
+     "tier": "tier2_synthesis",
+     "bloom_level": 2,
+     "question": "What are the three steps of writing a good English text, and which words are always written with a capital letter in English?",
+     "concept": "1. Plan (mind map/notes), 2. Write (with First, Then, Suddenly, Finally and linking words), 3. Check (word order, tenses, spelling); Capitals: sentence start, I, days, months, countries/languages.",
+     "sample_solution": "The three steps are planning (notes or mind map), writing (using sequencing words like First, Then, Suddenly, Finally and linking words) and checking/revising. In English you always capitalise the start of a sentence, the pronoun “I”, days of the week, months, names, towns, countries and languages.",
+     "materiality": "material",
+     "source_link": "https://academy.zam-os.org/englisch-realschule-5/#lesson=e5-creative-writing"
+    }
+   ]
+  }
+ ]
+}

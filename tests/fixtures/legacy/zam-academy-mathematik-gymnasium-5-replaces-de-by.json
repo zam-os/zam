@@ -1,0 +1,166 @@
+{
+  "schema": 1,
+  "approved": "2026-11-07",
+  "status": "approved",
+  "source": "Thomas in dieser Claude-Code-Sitzung am 2026-11-07, nach den Reviews zu zam-os/zam-academy#102: „Es gibt Reviews! Die Kartenzuordnung gebe ich frei.“ Die Freigabe gilt der Zuordnung der 16 de-by-Karten in dieser Datei (5 A, 0 B, 11 C; alle C-Karten bleiben aktiv). Die Korrekturen nach diesen Reviews ändern weder Zeilen noch die fünf Nachfolger.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "f57e6740854a2f91f985b59b9e101b388186d3bc",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-gymnasium-5-mathematik-geometrie-flaechen-volumen-kvt.json",
+      "sha256": "b35100b5dde2e5eefb2e5dc86213295bfdb400cdf63958777cecd00fed12e2cf",
+      "tile_id": "de-by:gymnasium-5-mathematik-geometrie-flaechen-volumen"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-5-mathematik-zahlen-rechengesetze-terme-kvt.json",
+      "sha256": "df715bb761774f5b63bb6fc6068453c8bc031cdcde8fd78fff954dc4407854d2",
+      "tile_id": "de-by:gymnasium-5-mathematik-zahlen-rechengesetze-terme"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-geometrie-flaechen-volumen",
+      "de_by_id": "01K4YM5G000000000000000J01",
+      "de_by_question": "Wie lautet die mathematische Schreibweise für die Aussage, dass die Gerade g senkrecht (orthogonal) auf der Geraden h steht?",
+      "category": "A",
+      "academy_slug": "g5-senkrecht-zeichen",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: die Schreibweise g ⊥ h für senkrechte Geraden."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-geometrie-flaechen-volumen",
+      "de_by_id": "01K4YM5G000000000000000J02",
+      "de_by_question": "Definiere Punkt P, Gerade g, Halbgerade [AB und Strecke [AB] mit ihrer Streckenlänge |AB|, erkläre die gegenseitigen Lagebeziehungen zweier Geraden in der Ebene (parallel g || h, senkrecht g ⊥ h, sich schneidend mit Schnittpunkt S) und beschreibe den Aufbau eines 2D-Koordinatensystems mit 4 Quadranten bei Erweiterung auf die ganzen Zahlen Z.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilig (Grundgebilde, Lagebeziehungen, Quadranten); die neue Zelle trennt das auf mehrere Karten, also keine Übertragung einer Historie."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-geometrie-flaechen-volumen",
+      "de_by_id": "01K4YM5G000000000000000J03",
+      "de_by_question": "Welche geometrische Gerade steht senkrecht auf einer Strecke [AB] und halbiert diese exakt in der Mitte?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mittelsenkrechte gehört nicht zu den Kompetenzerwartungen von M5 am Gymnasium; die Karte bleibt aktiv und bekommt keinen Nachfolger."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-geometrie-flaechen-volumen",
+      "de_by_id": "01K4YM5G000000000000000J04",
+      "de_by_question": "Erkläre die 5 fundamentalen Eigenschaften einer Achsenspiegelung an der Spiegelachse s: 1. Längentreue (|A'B'| = |AB|), 2. Winkeltreue (alpha' = alpha), 3. Geradentreue, 4. Umkehrung des Umlaufsinns (aus mathematisch positivem Drehsinn gegen den Uhrzeigersinn wird Uhrzeigersinn), 5. Fixpunkte (jeder Punkt auf der Achse ist sein eigener Bildpunkt P=P') und beschreibe die Zirkel- und Lineal-Konstruktion der Mittelsenkrechten einer Strecke [AB].",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Achsenspiegelung und Konstruktion stehen nicht im aktuellen Fachlehrplan M5; mehrteilig und ohne Nachfolger, bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-geometrie-flaechen-volumen",
+      "de_by_id": "01K4YM5G000000000000000J05",
+      "de_by_question": "Wie berechnet man den Flächeninhalt A eines rechtwinkligen Dreiecks mit den beiden zueinander senkrechten Katheten a und b?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Der Flächeninhalt von Dreiecken gehört nach LehrplanPLUS zu M6 (LB 2.1); ohne Nachfolger, bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-geometrie-flaechen-volumen",
+      "de_by_id": "01K4YM5G000000000000000J06",
+      "de_by_question": "Leite die Flächeninhaltsformeln für Quadrat (A = a²), Rechteck (A = a·b) und rechtwinkliges Dreieck (A = 1/2 · a·b) her, stelle die Kette der Flächenmaße mit der Umrechnungszahl 100 dar (mm², cm², dm², m², a, ha, km²) und berechne: Ein rechteckiges Baugrundstück hat die Länge a = 40 m und die Breite b = 25 m. Bestimme den Flächeninhalt in m² und in Ar (a) sowie den Umfang U.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilig und enthält das Dreieck aus M6; die Teile liegen auf mehreren neuen Karten, darum keine Übertragung."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-geometrie-flaechen-volumen",
+      "de_by_id": "01K4YM5G000000000000000J07",
+      "de_by_question": "Unter welchem Verzerrungswinkel alpha und mit welchem Verkürzungsfaktor q werden nach hinten verlaufende Kanten beim Schrägbild eines Quaders auf Karopapier gezeichnet?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Fragt den Verkürzungsfaktor 1/2 und 45° ab; die neue Zelle arbeitet in M5 ohne Bruchzahl und fragt anders nach dem Schrägbild. Unsicher, also keine Übertragung."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-geometrie-flaechen-volumen",
+      "de_by_id": "01K4YM5G000000000000000J08",
+      "de_by_question": "Erkläre die Regeln für Schrägbild und Körpernetz eines Quaders (Vorderfläche original, Tiefenkanten unter 45° halbiert, verdeckte Kanten gestrichelt; Netz aus 6 paarweise kongruenten Rechtecken), leite die Formeln für Oberflächeninhalt A_O = 2·(ab + bc + ac) und Rauminhalt V = a·b·c her, stelle die Raummaße dar (1 m³ = 1000 dm³ = 1000 Liter) und berechne Oberfläche und Volumen eines quaderförmigen Kartons mit a = 6 dm, b = 4 dm und c = 5 dm.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilig und enthält das Volumen aus M6 (LB 2.2); keine Übertragung."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-zahlen-rechengesetze-terme",
+      "de_by_id": "01K4YM5Z000000000000000J01",
+      "de_by_question": "Was versteht man unter dem Betrag |a| einer ganzen Zahl a auf der Zahlengeraden?",
+      "category": "A",
+      "academy_slug": "g5-betrag",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Der Betrag ist der Abstand der Zahl von der Null."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-zahlen-rechengesetze-terme",
+      "de_by_id": "01K4YM5Z000000000000000J02",
+      "de_by_question": "Erkläre die Erweiterung des Zahlenbereichs von den natürlichen Zahlen N = {1, 2, 3, ...} über N_0 zur Menge der ganzen Zahlen Z = {..., -3, -2, -1, 0, 1, 2, 3, ...}, definiere Gegenzahl (-a) und Betrag (|a|), beschreibe die Anordnung auf der Zahlengeraden (von links nach rechts aufsteigend) und berechne: a) |-15| - |+9|, b) Ordne die Zahlen mit <: -12, 5, -3, 0, -18, 7.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilig (Zahlenbereiche, Betrag, Anordnung, Rechnung); die Teile liegen auf mehreren neuen Karten, darum keine Übertragung."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-zahlen-rechengesetze-terme",
+      "de_by_id": "01K4YM5Z000000000000000J03",
+      "de_by_question": "Welches Vorzeichen ergibt das Produkt zweier ganzer Zahlen mit ungleichen Vorzeichen (z. B. (+a) · (-b))?",
+      "category": "A",
+      "academy_slug": "g5-plus-mal-minus",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Verschiedene Vorzeichen ergeben ein negatives Produkt."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-zahlen-rechengesetze-terme",
+      "de_by_id": "01K4YM5Z000000000000000J04",
+      "de_by_question": "Formuliere die Vorzeichenregeln für Addition, Subtraktion, Multiplikation und Division ganzer Zahlen, wende die Rechengesetze (Kommutativ-, Assoziativ- und Distributivgesetz: a·(b+c) = a·b + a·c) vorteilhaft an und berechne: a) (-4) · (+17) · (-25), b) (-38) · 45 + (-38) · 55.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilig (alle Vorzeichenregeln, Rechengesetze, zwei Aufgaben); die Teile liegen auf mehreren neuen Karten."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-zahlen-rechengesetze-terme",
+      "de_by_id": "01K4YM5Z000000000000000J05",
+      "de_by_question": "Welchen Wert hat die Potenz (-3)² im Vergleich zu -3²?",
+      "category": "A",
+      "academy_slug": "g5-klammer-basis",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf mit denselben Zahlen: (−3)² = 9 und −3² = −9."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-zahlen-rechengesetze-terme",
+      "de_by_id": "01K4YM5Z000000000000000J06",
+      "de_by_question": "Erkläre die Potenzdefinition a^n = a · a · ... · a (n Faktoren), unterscheide (-a)^n bei geradem n (Ergebnis positiv) und ungeradem n (Ergebnis negativ), stelle das Rechnen mit großen Zahlen in wissenschaftlicher Zehnerpotenzschreibweise dar (z. B. Erdradius ca. 6,37 · 10⁶ m) und berechne: a) (-2)⁵, b) (-10)⁴ - (-5)³, c) 4 · 10⁶ + 2,5 · 10⁵.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilig und enthält Kommazahlen wie 6,37 · 10⁶ und 2,5 · 10⁵, die in M5 noch nicht vorkommen; keine Übertragung."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-zahlen-rechengesetze-terme",
+      "de_by_id": "01K4YM5Z000000000000000J07",
+      "de_by_question": "Wie viele verschiedene Outfits lassen sich aus 4 Hosen, 5 T-Shirts und 3 Paar Schuhen nach dem grundlegenden Zählprinzip kombinieren?",
+      "category": "A",
+      "academy_slug": "g5-outfits",
+      "action": "replace",
+      "reason": "Gleiche Aufgabe mit denselben Zahlen: 4 · 5 · 3 = 60 Outfits nach dem Zählprinzip."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-mathematik-zahlen-rechengesetze-terme",
+      "de_by_id": "01K4YM5Z000000000000000J08",
+      "de_by_question": "Erkläre das fundamentale Zählprinzip (Produktregel bei mehrstufigen Zufallsauswahlen: n_1 · n_2 · ... · n_k Möglichkeiten) und die grafische Darstellung im Baumdiagramm (Pfade vom Startknoten zu den Endblättern), unterscheide Auswahlen mit Zurücklegen/Wiederholung (z. B. PIN-Codes) von Anordnungen ohne Wiederholung (Permutationen / Fakultät n! = n · (n-1) · ... · 1) und berechne: a) Wie viele 4-stellige Zahlenschlösser (Ziffern 0–9) gibt es? b) Auf wie viele verschiedene Arten können sich 5 Schüler in einer Reihe nebeneinander aufstellen?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilig und fragt die Fakultät n! ab, die der Fachlehrplan M5 nicht nennt; keine Übertragung."
+    }
+  ]
+}

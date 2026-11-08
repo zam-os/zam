@@ -1,0 +1,166 @@
+{
+  "schema": 1,
+  "approved": "2026-11-08",
+  "status": "approved",
+  "source": "Thomas in der Claude-Code-Sitzung zur ZAM-Integration am 2026-11-08: „Ich stimme den Mappings zu. Die Gefahr ist auch sehr gering. ZAM ist quasi noch ein Geheimprojekt. Also bitte gleich alle 9 bündeln.“ Die Freigabe gilt der Zuordnung der 16 de-by-Karten in dieser Datei (8 A, 0 B, 8 C; keine Stilllegung, alle C-Karten bleiben aktiv). Die 8 Nachfolger tragen ab Zellversion 2026.11.2 je ein replaces auf ihre alte Karte.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "f57e6740854a2f91f985b59b9e101b388186d3bc",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-5-mathematik-geometrie-groessen-flaechen-kvt.json",
+      "sha256": "8af65491ff1655a53d37696215e85224733d4b2fd0c411a14db7874b7ffc23ee",
+      "tile_id": "de-by:realschule-5-mathematik-geometrie-groessen-flaechen"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-5-mathematik-zahlen-rechengesetze-kvt.json",
+      "sha256": "dd08d115a231e09b7d0d86c04dbad5816d63a3c1f564255ffef6c5065a26fc6f",
+      "tile_id": "de-by:realschule-5-mathematik-zahlen-rechengesetze"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-geometrie-groessen-flaechen",
+      "de_by_id": "01K4M5G0000000000000000J01",
+      "de_by_question": "Wie nennt man eine gerade Linie, die zwei definierte Endpunkte A und B besitzt und eine messbare endliche Länge hat?",
+      "category": "A",
+      "academy_slug": "m5-strecke",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: gerade Linie mit zwei Endpunkten und Länge heißt Strecke [AB]."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-geometrie-groessen-flaechen",
+      "de_by_id": "01K4M5G0000000000000000J02",
+      "de_by_question": "Unterscheide Gerade g (unendlich in beide Richtungen), Halbgerade / Strahl [AB (Startpunkt A, unendlich in Richtung B) und Strecke [AB] (Länge |AB| mit zwei Endpunkten), beschreibe die Lagebeziehungen 'parallel' (g || h) und 'senkrecht / orthogonal' (g ⊥ h mit 90°-Winkel) und erkläre den Aufbau eines rechtwinkligen 2D-Koordinatensystems (Rechtsachse x-Achse, Hochachse y-Achse, Koordinatenursprung O(0|0), Punkteintragung P(x|y)).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteiliger Abruf aus Strecke, Halbgerade, Gerade, Lagebeziehungen und Koordinatensystem. Kein Nachfolger enthält ihn vollständig, darum bleibt die alte Karte aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-geometrie-groessen-flaechen",
+      "de_by_id": "01K4M5G0000000000000000J03",
+      "de_by_question": "Welche Winkelart liegt vor, wenn das Winkelmaß alpha genau zwischen 90° und 180° liegt (90° < alpha < 180°)?",
+      "category": "A",
+      "academy_slug": "m5-stumpf",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Winkel zwischen 90° und 180° heißt stumpfer Winkel."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-geometrie-groessen-flaechen",
+      "de_by_id": "01K4M5G0000000000000000J04",
+      "de_by_question": "Klassifiziere alle 6 Winkelarten nach ihrer Gradzahl (Nullwinkel 0°, spitzer Winkel 0° < alpha < 90°, rechter Winkel alpha = 90°, stumpfer Winkel 90° < alpha < 180°, gestreckter Winkel alpha = 180°, überstumpfer Winkel 180° < alpha < 360°, Vollwinkel alpha = 360°) und beschreibe die fehlerfreie Winkelmessung und -zeichnung mit dem Geodreieck (Nullpunkt an den Scheitelpunkt S anlegen, Grundkante exakt an den ersten Schenkel, Drehsinn gegen den Uhrzeigersinn / mathematisch positiver Drehsinn beachten).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Klassifiziert alle Winkelarten und beschreibt zugleich die Messung mit dem Geodreieck. Die neuen Karten fragen einzelne Teile, also bleibt die Historie bei der alten Karte."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-geometrie-groessen-flaechen",
+      "de_by_id": "01K4M5G0000000000000000J05",
+      "de_by_question": "Wie viele Millimeter (mm) sind genau 1 Meter (m)?",
+      "category": "A",
+      "academy_slug": "m5-meter-millimeter",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: 1 m = 1.000 mm."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-geometrie-groessen-flaechen",
+      "de_by_id": "01K4M5G0000000000000000J06",
+      "de_by_question": "Stelle die Umrechnungsketten für Längenmaße (1 km = 1000 m, 1 m = 10 dm, 1 dm = 10 cm, 1 cm = 10 mm), Massen (1 t = 1000 kg, 1 kg = 1000 g, 1 g = 1000 mg) und Zeitmaße (1 d = 24 h, 1 h = 60 min, 1 min = 60 s) dar und rechne um: a) 3 km 45 m in m, b) 4,05 kg in g, c) 2 h 15 min in s.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Verbindet drei Umrechnungsketten und drei Rechnungen, darunter 4,05 kg und 8.100 s. Kein neuer Einzelabruf ist derselbe, die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-geometrie-groessen-flaechen",
+      "de_by_id": "01K4M5G0000000000000000J07",
+      "de_by_question": "Welche Stufenzahl (Umrechnungszahl) gilt zwischen den metrischen Flächeneinheiten (mm², cm², dm², m², a, ha, km²)?",
+      "category": "A",
+      "academy_slug": "m5-umrechnungszahl",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Die Umrechnungszahl benachbarter Flächeneinheiten ist 100."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-geometrie-groessen-flaechen",
+      "de_by_id": "01K4M5G0000000000000000J08",
+      "de_by_question": "Unterscheide Umfang U (Gesamtlänge des Randes / Zaunlänge in Längeneinheiten m) von Flächeninhalt A (Größe der überdeckten Fläche in Quadrateinheiten m²), leite die Formeln für Rechteck (U = 2·a + 2·b = 2·(a+b), A = a·b) und Quadrat (U = 4·a, A = a²) her, stelle die Kette der Flächenmaße mit Ar (1 a = 100 m²) und Hektar (1 ha = 100 a = 10.000 m²) dar und berechne Umfang und Fläche eines Fußballfeldes mit a = 105 m und b = 68 m.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Verbindet Umfang, Fläche, Formeln, Flächenmaße und das Fußballfeld. Die neuen Karten trennen diese Teile, darum keine Historienübertragung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-zahlen-rechengesetze",
+      "de_by_id": "01K4M5Z0000000000000000J01",
+      "de_by_question": "Bei welchen Ziffern an der Rundungsstelle wird nach den mathematischen Rundungsregeln ABGERUNDET?",
+      "category": "A",
+      "academy_slug": "m5-abrunden",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf zu den Ziffern 0 bis 4; die neue Karte nennt die Ziffer genauer als rechts neben der Rundungsstelle."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-zahlen-rechengesetze",
+      "de_by_id": "01K4M5Z0000000000000000J02",
+      "de_by_question": "Erkläre das Prinzip des dekadischen Stellenwertsystems (Basis 10, Ziffern 0–9, Bündelung von 10 Einheiten zur nächsthöheren Stufe: E, Z, H, T, ZT, HT, M, ZM, HM, Mrd), beschreibe die Anordnung natürlicher Zahlen auf dem Zahlenstrahl (Vorgänger, Nachfolger, Ungleichungskette mit < und >) und runde die Zahl 4.738.529: a) auf Tausender (T), b) auf Hunderttausender (HT), c) auf Millionen (M).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Verbindet Stellenwertsystem, Zahlenstrahl und drei Rundungsaufgaben. Die neuen Karten fragen je einen Teil, die alte Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-zahlen-rechengesetze",
+      "de_by_id": "01K4M5Z0000000000000000J03",
+      "de_by_question": "Wie lautet das Kommutativgesetz (Vertauschungsgesetz) für die Addition und Multiplikation zweier Zahlen a und b?",
+      "category": "A",
+      "academy_slug": "m5-kommutativ",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: das Kommutativgesetz für Addition und Multiplikation."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-zahlen-rechengesetze",
+      "de_by_id": "01K4M5Z0000000000000000J04",
+      "de_by_question": "Formuliere die drei zentralen Rechengesetze der Mathematik mit Variablen und Worten: 1. Kommutativgesetz (Vertauschungsgesetz: a+b = b+a, a·b = b·a), 2. Assoziativgesetz (Verbindungsgesetz: (a+b)+c = a+(b+c), (a·b)·c = a·(b·c)), 3. Distributivgesetz (Verteilungsgesetz: a·(b+c) = a·b + a·c sowie Ausklammern) und berechne unter geschickter Ausnutzung von Rechenvorteilen: a) 25 · 37 · 4, b) 48 · 17 + 52 · 17.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Verbindet alle drei Rechengesetze in Worten und Formeln mit zwei Rechnungen. Das ist breiter als jeder Nachfolger, also keine Übertragung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-zahlen-rechengesetze",
+      "de_by_id": "01K4M5Z0000000000000000J05",
+      "de_by_question": "Wie nennt man bei der Potenzschreibweise a^n die Zahl a (die multipliziert wird) und wie die Hochzahl n (die angibt, wie oft der Faktor auftritt)?",
+      "category": "A",
+      "academy_slug": "m5-basis-exponent",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: In a hoch n heißen a Basis und n Exponent."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-zahlen-rechengesetze",
+      "de_by_id": "01K4M5Z0000000000000000J06",
+      "de_by_question": "Definiere den Begriff der Potenz a^n = a · a · ... · a (n Faktoren), liste die Quadratzahlen von 1² bis 15² auswendig auf, erkläre den Zusammenhang zwischen dem Exponenten einer Zehnerpotenz 10^n und der Anzahl der Nullen (z. B. 10³ = 1.000, 10⁶ = 1.000.000 = 1 Million) und berechne: a) 2⁵, b) 3³ + 4², c) Schreibe 350.000 als Produkt aus Zahl und Zehnerpotenz (wissenschaftliche Schreibweise: 35 · 10⁴ bzw. 3,5 · 10⁵).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Verbindet Potenzdefinition, Quadratzahlen bis 15, Zehnerpotenzen und drei Rechnungen. Kein Nachfolger enthält den ganzen Abruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-zahlen-rechengesetze",
+      "de_by_id": "01K4M5Z0000000000000000J07",
+      "de_by_question": "In welcher hierarchischen Reihenfolge müssen mathematische Rechenoperationen nach der Merkregel 'Kla-Po-Pu-Stri' ausgeführt werden?",
+      "category": "A",
+      "academy_slug": "m5-reihenfolge",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Klammern, Potenzen, Punkt, Strich."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-mathematik-zahlen-rechengesetze",
+      "de_by_id": "01K4M5Z0000000000000000J08",
+      "de_by_question": "Erkläre die Vorrangregeln der Mathematik (Klammern von innen nach außen -> Potenzen -> Punktrechnung vor Strichrechnung -> bei gleicher Rangfolge streng von links nach rechts), bestimme die Art des Gesamtterms (benannt nach der zuletzt auszuführenden Rechenoperation) und berechne schrittweise: a) 100 - 4 · (3 + 2²), b) (64 : 8 + 12) · 5 - 30 : 6.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Verbindet Vorrangregeln, Termart und zwei Rechnungen. Die neuen Karten trennen Regel und Rechnung, die alte Karte bleibt aktiv."
+    }
+  ]
+}

@@ -1,0 +1,3727 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:mathematik-gymnasium-11",
+  "version": "2026.11.1",
+  "title": "Mathematik 11 Gymnasium (ZAM Academy)",
+  "description": "Hält fest, was du in der ZAM Academy zu Mathematik 11 (Gymnasium Bayern, LehrplanPLUS) geübt hast: Eigenschaften von Funktionen, gebrochen-rationale Funktionen, bedingte Wahrscheinlichkeit und Unabhängigkeit sowie die Grundlagen der Differentialrechnung. Jede Karte verlinkt die Lektion mit Labor und Aufgaben.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-11-08T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/mathematik",
+      "checked": "2026-11-08",
+      "label": "M11, LB 1–4"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M6XB9TDV5HWS1YM3X9G9R1HN",
+      "atom_uri": "urn:zam:atom:01M6XB9TDV5HWS1YM3X9G9R1HN",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-funktionstypen",
+      "title": "Funktionstypen und ihre charakteristischen Eigenschaften",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-1-funktionstypen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-1-funktionen",
+          "topic_title": "Etappe 1: Spezielle Eigenschaften von Funktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Spezielle Eigenschaften von Funktionen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TG38QME4Z3R675D13T9",
+          "slug": "m11-exponential-asymptote",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-1-funktionstypen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Wertemenge hat "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = 2^x",
+              "speech": "f von x gleich 2 hoch x"
+            },
+            {
+              "type": "text",
+              "text": ", und welche Asymptote hat ihr Graph?"
+            }
+          ],
+          "concept": "W_f = ℝ⁺; die x-Achse ist für x → −∞ waagrechte Asymptote.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "W_f = ℝ⁺; die x-Achse ist für x → −∞ waagrechte Asymptote.",
+              "W_f = ℝ; der Graph hat keine Asymptote."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "W_f = ℝ₀⁺; der Graph berührt die x-Achse im Ursprung.",
+              "reason": "2ˣ ist für jedes x positiv, auch 2⁰ = 1; der Graph erreicht die x-Achse nie."
+            },
+            {
+              "text": "W_f = ℝ⁺; die y-Achse ist senkrechte Asymptote.",
+              "reason": "Die Annäherung geschieht für x → −∞ an die x-Achse; f ist auf ganz ℝ definiert."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TG6HWY3PQHBWG67SNM9",
+          "slug": "m11-potenz-symmetrie",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-1-funktionstypen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Symmetrie hat der Graph von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = x^n",
+              "speech": "f von x gleich x hoch n"
+            },
+            {
+              "type": "text",
+              "text": " bei geradem und bei ungeradem Exponenten n?"
+            }
+          ],
+          "concept": "n gerade: achsensymmetrisch zur y-Achse; n ungerade: punktsymmetrisch zum Ursprung.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "n gerade: achsensymmetrisch zur y-Achse; n ungerade: punktsymmetrisch zum Ursprung.",
+              "n gerade: punktsymmetrisch; n ungerade: achsensymmetrisch."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Beide sind achsensymmetrisch zur y-Achse, weil xⁿ für x = 0 null ist.",
+              "reason": "Ein gemeinsamer Punkt im Ursprung sagt nichts über die Symmetrie; (−x)³ = −x³."
+            },
+            {
+              "text": "Nur Potenzfunktionen mit n > 1 haben überhaupt eine Symmetrie.",
+              "reason": "Auch f(x) = x (n = 1) und f(x) = x⁻¹ sind punktsymmetrisch zum Ursprung."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TG8470EB2XY7TBN310T",
+          "slug": "m11-funktion-steckbrief",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-1-funktionstypen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Beschreibe den Graphen von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = -0{,}5 \\cdot 2^x",
+              "speech": "f von x gleich minus 0,5 mal 2 hoch x"
+            },
+            {
+              "type": "text",
+              "text": " mit seinen wesentlichen Eigenschaften."
+            }
+          ],
+          "concept": "unterhalb der x-Achse, W_f = ℝ⁻, streng monoton fallend, Asymptote y = 0 für x → −∞",
+          "materiality": "material",
+          "sample_solution": "Der Graph von 2ˣ wird mit 0,5 gestaucht und an der x-Achse gespiegelt. Daher liegt er unterhalb der x-Achse, die für x → −∞ Asymptote bleibt; f fällt streng monoton und schneidet die y-Achse bei −0,5.",
+          "choice_distractors": [
+            {
+              "text": "oberhalb der x-Achse, W_f = ℝ⁺, streng monoton steigend, Asymptote y = 0 für x → −∞",
+              "reason": "Der negative Faktor spiegelt an der x-Achse; das übersieht diese Antwort."
+            },
+            {
+              "text": "unterhalb der x-Achse, W_f = ℝ⁻, streng monoton steigend, Asymptote y = 0 für x → +∞",
+              "reason": "Gespiegelt wird auch das Wachstum: Aus steigend wird fallend, und die Asymptote gilt weiter für x → −∞."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TDX2KCCPQWKY5R4AW36",
+      "atom_uri": "urn:zam:atom:01M6XB9TDX2KCCPQWKY5R4AW36",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-grenzverhalten",
+      "title": "Grenzverhalten für x → ±∞, Konvergenz und Divergenz",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-2-grenzverhalten",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TDV5HWS1YM3X9G9R1HN"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-1-funktionen",
+          "topic_title": "Etappe 1: Spezielle Eigenschaften von Funktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Spezielle Eigenschaften von Funktionen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TGBMWP5Z0SH6YYBM9W2",
+          "slug": "m11-grenzwert-streifen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-2-grenzverhalten",
+          "question": "Was bedeutet lim f(x) = a für x → +∞ anschaulich mit dem Streifen um y = a?",
+          "concept": "Jeder noch so schmale Streifen um y = a enthält den Graphen ab einer Stelle x₀.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Jeder noch so schmale Streifen um y = a enthält den Graphen ab einer Stelle x₀.",
+              "Der Graph schneidet die Gerade y = a irgendwann."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Graph liegt für alle x in einem festen Streifen um die Gerade y = a.",
+              "reason": "Erst ab einer Stelle x₀ muss er im Streifen bleiben, und das für jede Streifenbreite."
+            },
+            {
+              "text": "Der Graph erreicht für ein großes x genau den Wert a und bleibt dort.",
+              "reason": "Konvergenz verlangt Annäherung, nicht Erreichen; 2 + 3/x erreicht 2 nie."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TGD4X77AXM0B1ATM75P",
+          "slug": "m11-divergent-sinus",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-2-grenzverhalten",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Ist "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = 3 + \\sin x",
+              "speech": "f von x gleich 3 plus sinus x"
+            },
+            {
+              "type": "text",
+              "text": " für x → +∞ konvergent?"
+            }
+          ],
+          "concept": "Nein, f(x) schwankt immer zwischen 2 und 4: divergent.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, f(x) schwankt immer zwischen 2 und 4: divergent.",
+              "Ja, mit dem Grenzwert 3."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nein, f(x) wächst über alle Grenzen: divergent.",
+              "reason": "f bleibt beschränkt; divergent ist f, weil es schwankt, nicht weil es wächst."
+            },
+            {
+              "text": "Ja, f ist konvergent gegen 4, den größten Wert.",
+              "reason": "Ein Streifen mit ε < 1 um 4 wird immer wieder verlassen."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TGGTAKF2R4K87Z2SQGW",
+          "slug": "m11-grenzwert-termumformung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-2-grenzverhalten",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Bestimme "
+            },
+            {
+              "type": "math",
+              "tex": "\\lim_{x \\to +\\infty} \\frac{2x + 3}{x}",
+              "speech": "Grenzwert für x gegen plus unendlich von 2 x plus 3 durch x"
+            },
+            {
+              "type": "text",
+              "text": " mit einer Termumformung."
+            }
+          ],
+          "concept": "2, denn (2x + 3)/x = 2 + 3/x und 3/x → 0",
+          "materiality": "material",
+          "sample_solution": "Termweise teilen: (2x + 3)/x = 2 + 3/x. Für x → +∞ geht 3/x gegen 0, also ist der Grenzwert 2, und y = 2 ist waagrechte Asymptote.",
+          "choice_distractors": [
+            {
+              "text": "+∞, denn der Zähler (2x + 3) wächst unbegrenzt",
+              "reason": "Auch der Nenner wächst; entscheidend ist ihr Verhältnis."
+            },
+            {
+              "text": "5, denn für x = 1 ist (2x + 3)/x = 5",
+              "reason": "Für den Grenzwert wird x beliebig groß, nicht ein fester Wert eingesetzt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TE07G31EC203QHH3CPX",
+      "atom_uri": "urn:zam:atom:01M6XB9TE07G31EC203QHH3CPX",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-symmetrie",
+      "title": "Symmetrie zur y-Achse und zum Ursprung rechnerisch prüfen",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-3-symmetrie",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TDV5HWS1YM3X9G9R1HN"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-1-funktionen",
+          "topic_title": "Etappe 1: Spezielle Eigenschaften von Funktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Spezielle Eigenschaften von Funktionen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TGKRNZK59D31GJJWCVZ",
+          "slug": "m11-achsensymmetrie-bedingung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-3-symmetrie",
+          "question": "Welche Gleichung beweist, dass der Graph von f achsensymmetrisch zur y-Achse ist?",
+          "concept": "f(−x) = f(x) für alle x aus D_f",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f(−x) = f(x) für alle x aus D_f",
+              "f(−x) = −f(x) für alle x aus D_f"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "f(−2) = f(2) für einen Wert",
+              "reason": "Ein einzelnes Punktepaar kann zufällig passen; die Gleichung muss für alle x gelten."
+            },
+            {
+              "text": "f(0) = 0, der Graph geht durch den Ursprung",
+              "reason": "Das bedeutet nur, dass der Graph durch den Ursprung geht, nicht dass er symmetrisch ist."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TGNNNSSQTAR44XYX95R",
+          "slug": "m11-punktsymmetrie-bruch",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-3-symmetrie",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Symmetrie hat der Graph von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{x}{x^2 + 1}",
+              "speech": "f von x gleich x durch x Quadrat plus 1"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "punktsymmetrisch zum Ursprung, denn f(−x) = −f(x)",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "punktsymmetrisch zum Ursprung, denn f(−x) = −f(x)",
+              "Achsensymmetrie zur y-Achse"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "keine, denn im Term stehen gerade und ungerade Potenzen",
+              "reason": "Die Exponentenregel gilt für Polynome; hier zeigt f(−x) = −f(x) die Punktsymmetrie."
+            },
+            {
+              "text": "achsensymmetrisch zur y-Achse, denn f(−x) = f(x)",
+              "reason": "Der Zähler x ändert sein Vorzeichen, also auch der ganze Bruch: f(−x) = −f(x)."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TGRBRQ9SQ41H50SV9VM",
+          "slug": "m11-symmetrie-nachweis",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-3-symmetrie",
+          "question": "Wie prüfst du rechnerisch, ob der Graph von f(x) = x · sin x symmetrisch ist?",
+          "concept": "f(−x) = (−x) · sin(−x) = (−x) · (−sin x) = f(x): achsensymmetrisch zur y-Achse.",
+          "materiality": "material",
+          "sample_solution": "Man ersetzt x durch −x und vereinfacht mit sin(−x) = −sin x. Es ergibt sich f(−x) = f(x) für alle x ∈ ℝ, also ist der Graph achsensymmetrisch zur y-Achse.",
+          "choice_distractors": [
+            {
+              "text": "Punktsymmetrisch, weil x und sin x beide punktsymmetrisch sind.",
+              "reason": "Das Produkt zweier ungerader Funktionen ist gerade: Die beiden Minuszeichen heben sich auf."
+            },
+            {
+              "text": "Man prüft f(1) und f(−1); sind sie gleich, ist der Graph symmetrisch.",
+              "reason": "Zwei Werte genügen nicht; f(−x) = f(x) muss allgemein gezeigt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TE2JZW70VTAWGXKYB8F",
+      "atom_uri": "urn:zam:atom:01M6XB9TE2JZW70VTAWGXKYB8F",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-transformationen",
+      "title": "Verschieben, Strecken und Spiegeln von Graphen",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-4-transformationen",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TDV5HWS1YM3X9G9R1HN"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-1-funktionen",
+          "topic_title": "Etappe 1: Spezielle Eigenschaften von Funktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Spezielle Eigenschaften von Funktionen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TGTTJ8AF6PDX4H7PEDJ",
+          "slug": "m11-verschiebung-x",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-4-transformationen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie entsteht der Graph von "
+            },
+            {
+              "type": "math",
+              "tex": "g(x) = f(x - 3)",
+              "speech": "g von x gleich f von x minus 3"
+            },
+            {
+              "type": "text",
+              "text": " aus dem Graphen von f?"
+            }
+          ],
+          "concept": "durch Verschieben um 3 nach rechts",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "durch Verschieben um 3 nach rechts",
+              "durch Verschieben um 3 nach links"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "durch Verschieben um 3 nach unten",
+              "reason": "Die Änderung steht innen am x, wirkt also in x-Richtung."
+            },
+            {
+              "text": "durch Strecken mit dem Faktor 3 in x-Richtung",
+              "reason": "Eine Subtraktion verschiebt; strecken würde ein Faktor vor x."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TGWDK8PA1NE7XSNGN1V",
+          "slug": "m11-spiegelung-yachse",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-4-transformationen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Was bewirkt das Minuszeichen in "
+            },
+            {
+              "type": "math",
+              "tex": "g(x) = f(-x)",
+              "speech": "g von x gleich f von minus x"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "eine Spiegelung des Graphen an der y-Achse",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "eine Spiegelung des Graphen an der y-Achse",
+              "eine Spiegelung an der x-Achse"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "eine Verschiebung um 1 nach links",
+              "reason": "−x ist ein Faktor −1 vor x, keine Verschiebung."
+            },
+            {
+              "text": "nichts, weil nur der Graph von x² betroffen wäre",
+              "reason": "Bei achsensymmetrischen Graphen fällt die Spiegelung nicht auf, bei 2ˣ sehr wohl."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TGZ8XVGSXQE4V3TJAY8",
+          "slug": "m11-transformation-parameter",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-4-transformationen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Was bewirken a, b, c und d in "
+            },
+            {
+              "type": "math",
+              "tex": "g(x) = a \\cdot f(b \\cdot (x + c)) + d",
+              "speech": "g von x gleich a mal f von b mal x plus c in Klammern plus d"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "a streckt in y-Richtung, b in x-Richtung mit 1/|b|; c verschiebt um −c in x-, d um d in y-Richtung.",
+          "materiality": "material",
+          "sample_solution": "Außen (a, d) wirkt in y-Richtung so, wie es dasteht; innen (b, c) wirkt in x-Richtung umgekehrt. Beispiel: 2 · sin(0,5 · (x + 1)) − 3 ist gegenüber sin x um 1 nach links und 3 nach unten verschoben und in beide Richtungen mit 2 gestreckt.",
+          "choice_distractors": [
+            {
+              "text": "a verschiebt in y-Richtung, b in x-Richtung; c streckt in x-, d streckt in y-Richtung.",
+              "reason": "Faktoren strecken, Summanden verschieben; die Rollen sind hier vertauscht."
+            },
+            {
+              "text": "a streckt in y-Richtung, b in x-Richtung mit b; c verschiebt um c in x-, d um d in y-Richtung.",
+              "reason": "Innen wirkt alles umgekehrt: + c verschiebt nach links, b staucht mit 1/b."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TE53EPX0AEWB4N2C4DB",
+      "atom_uri": "urn:zam:atom:01M6XB9TE53EPX0AEWB4N2C4DB",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-transformationen-reihenfolge",
+      "title": "Kombination von Transformationen und ihre Reihenfolge",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-5-reihenfolge",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TE2JZW70VTAWGXKYB8F"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-1-funktionen",
+          "topic_title": "Etappe 1: Spezielle Eigenschaften von Funktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Spezielle Eigenschaften von Funktionen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TH20487YQ6G0EAZFXQB",
+          "slug": "m11-reihenfolge-strecken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-5-reihenfolge",
+          "question": "Die Normalparabel wird erst um 1 nach oben verschoben und dann mit 2 in y-Richtung gestreckt. Welcher Term entsteht?",
+          "concept": "y = 2x² + 2",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "y = 2x² + 2",
+              "y = 2x² + 1"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "y = 2(x + 1)²",
+              "reason": "Nach oben verschieben ändert y, nicht das x in der Klammer."
+            },
+            {
+              "text": "y = (2x)² + 1",
+              "reason": "Strecken in y-Richtung multipliziert den Funktionswert, nicht x."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TH4Z8GKYHR6NRANYJEC",
+          "slug": "m11-reihenfolge-vertauschbar",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-5-reihenfolge",
+          "question": "Ist die Reihenfolge egal, wenn man einen Graphen um 1 nach rechts verschiebt und an der x-Achse spiegelt?",
+          "concept": "Ja: Die beiden Schritte wirken in verschiedenen Richtungen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ja: Die beiden Schritte wirken in verschiedenen Richtungen.",
+              "Nein, die Reihenfolge ändert immer das Ergebnis."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nein, weil die Spiegelung auch die Verschiebung umkehrt.",
+              "reason": "Die Spiegelung an der x-Achse ändert nur y-Werte, die Verschiebung nach rechts nur x-Werte."
+            },
+            {
+              "text": "Ja, aber nur bei der Normalparabel.",
+              "reason": "Das gilt für jeden Graphen, weil die Schritte in verschiedenen Richtungen wirken."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TH7WQQMJG701SPCTKDZ",
+          "slug": "m11-reihenfolge-begruendung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-5-reihenfolge",
+          "question": "Warum ergeben „erst strecken, dann verschieben“ und „erst verschieben, dann strecken“ in y-Richtung verschiedene Graphen?",
+          "concept": "Wird zuletzt gestreckt, wird die schon vorhandene Verschiebung mitgestreckt.",
+          "materiality": "material",
+          "sample_solution": "Aus x² wird mit „verschieben um d, dann strecken mit a“ der Term a(x² + d) = ax² + ad; mit „strecken, dann verschieben“ ax² + d. Die Verschiebung ist also im ersten Fall a-mal so groß.",
+          "choice_distractors": [
+            {
+              "text": "Weil eine Streckung in y-Richtung den Graphen nach rechts verschiebt.",
+              "reason": "Eine Streckung in y-Richtung ändert keine x-Koordinaten."
+            },
+            {
+              "text": "Sie ergeben denselben Graphen; die Reihenfolge spielt nie eine Rolle.",
+              "reason": "Bei Schritten in derselben Richtung spielt sie eine Rolle, wie 2(x² + 1) ≠ 2x² + 1 zeigt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TE8GNGW6FFKVTA4Z0Y0",
+      "atom_uri": "urn:zam:atom:01M6XB9TE8GNGW6FFKVTA4Z0Y0",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-stetigkeit",
+      "title": "Stetigkeit abschnittsweise definierter Funktionen",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-6-stetigkeit",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TDV5HWS1YM3X9G9R1HN"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-1-funktionen",
+          "topic_title": "Etappe 1: Spezielle Eigenschaften von Funktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb1",
+          "topic_title": "Spezielle Eigenschaften von Funktionen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TH99DX5C06QBAF5R97A",
+          "slug": "m11-stetig-anschaulich",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-6-stetigkeit",
+          "question": "Wann ist eine abschnittsweise definierte Funktion an einer Nahtstelle stetig?",
+          "concept": "Wenn beide Teile an der Nahtstelle denselben Wert haben: Der Graph springt nicht.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn beide Teile an der Nahtstelle denselben Wert haben: Der Graph springt nicht.",
+              "Wenn beide Teile dieselbe Steigung haben."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wenn beide Teile lineare Funktionen sind.",
+              "reason": "Auch zwei Geraden können an der Nahtstelle auseinanderklaffen."
+            },
+            {
+              "text": "Wenn die Nahtstelle eine ganze Zahl ist, etwa x₀ = 1 oder x₀ = 2.",
+              "reason": "Es kommt auf die Funktionswerte an, nicht auf die Lage der Stelle."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9THCKN6QDPDTFPZEFMSS",
+          "slug": "m11-treppenfunktion",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-6-stetigkeit",
+          "question": "Ist eine Paketpreis-Treppenfunktion an einer Gewichtsgrenze stetig?",
+          "concept": "Nein, dort springt der Preis.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, dort springt der Preis.",
+              "Ja, weil der Preis nur positive Werte hat."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ja, weil der Preis immer weiter wächst.",
+              "reason": "Auch ein steigender Verlauf kann Sprünge haben."
+            },
+            {
+              "text": "Das hängt davon ab, wie schwer das Paket ist.",
+              "reason": "An den Grenzen springt der Preis immer; dazwischen ist er konstant und stetig."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9THEZAP8V1XG0HRD0H3Z",
+          "slug": "m11-stetig-parameter",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=fk-6-stetigkeit",
+          "question": "f(x) = 2x + k für x ≤ 1 und f(x) = x² + 3 für x > 1. Für welches k ist f bei 1 stetig?",
+          "concept": "k = 2, denn 2 · 1 + k = 1² + 3 = 4.",
+          "materiality": "material",
+          "sample_solution": "Stetig heißt: Beide Teile haben bei x = 1 denselben Wert. Rechts: 1 + 3 = 4. Links: 2 + k = 4, also k = 2. Auch die Steigungen stimmen bei 1 überein (links 2, rechts 2 · 1 = 2): Der Übergang ist glatt, ohne Knick; f ist bei 1 sogar differenzierbar.",
+          "choice_distractors": [
+            {
+              "text": "k = 4, der Wert des rechten Teils.",
+              "reason": "Von 4 muss noch der Beitrag 2 · 1 des linken Teils abgezogen werden."
+            },
+            {
+              "text": "k = 0, damit die Gerade durch den Ursprung geht.",
+              "reason": "Die Lage der Geraden im Ursprung spielt für die Nahtstelle bei 1 keine Rolle."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TEAYWGX063SEGVADZQY",
+      "atom_uri": "urn:zam:atom:01M6XB9TEAYWGX063SEGVADZQY",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-gebrochen-rational-definitionsmenge",
+      "title": "Definitionsmenge, Nullstellen und Linearfaktoren gebrochen-rationaler Funktionen",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-1-definitionsmenge",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-2-gebrochen-rational",
+          "topic_title": "Etappe 2: Gebrochen-rationale Funktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Gebrochen-rationale Funktionen – Grenzwerte und Asymptoten"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9THHNKN2QCZTJEGG1Y1A",
+          "slug": "m11-definitionsluecken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-1-definitionsmenge",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Stellen schließt man bei "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{Z(x)}{N(x)}",
+              "speech": "f von x gleich Z von x durch N von x"
+            },
+            {
+              "type": "text",
+              "text": " aus der Definitionsmenge aus?"
+            }
+          ],
+          "concept": "die Nullstellen des Nenners N",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die Nullstellen des Nenners N",
+              "die Nullstellen des Zählers Z"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "alle negativen x",
+              "reason": "Negative Zahlen dürfen eingesetzt werden; nur durch null darf nicht geteilt werden."
+            },
+            {
+              "text": "die Stellen, an denen f(x) = 0 ist",
+              "reason": "Dort ist f definiert und hat Nullstellen."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9THMHB9KMBD5ZSW7F41E",
+          "slug": "m11-nullstellen-bruch",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-1-definitionsmenge",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Nullstellen hat "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{x^2 - 4}{x - 3}",
+              "speech": "f von x gleich x Quadrat minus 4 durch x minus 3"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "x = 2 und x = −2",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "x = 2 und x = −2",
+              "x = 3"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "x = 4 und x = −4",
+              "reason": "x² − 4 = 0 heißt x² = 4, also x = ±2."
+            },
+            {
+              "text": "x = 2, x = −2 und x = 3",
+              "reason": "x = 3 ist eine Definitionslücke, keine Nullstelle."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9THPA17WZFZNFYJN8559",
+          "slug": "m11-linearfaktoren-d",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-1-definitionsmenge",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Bestimme die Definitionsmenge von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{2x - 2}{x^2 - x - 2}",
+              "speech": "f von x gleich 2 x minus 2 durch x Quadrat minus x minus 2"
+            },
+            {
+              "type": "text",
+              "text": " und schreibe den Term mit Linearfaktoren."
+            }
+          ],
+          "concept": "D_f = ℝ \\ {−1; 2}; f(x) = 2(x − 1)/((x + 1)(x − 2)), Nullstelle 1.",
+          "materiality": "material",
+          "sample_solution": "Nenner: x² − x − 2 = 0 ⇔ x = −1 oder x = 2, also x² − x − 2 = (x + 1)(x − 2). Zähler: 2x − 2 = 2(x − 1). Der Term ist gekürzt; die Nullstelle 1 liegt in D_f.",
+          "choice_distractors": [
+            {
+              "text": "D_f = ℝ \\ {1}; f(x) = 2(x − 1)/((x − 1)(x + 2)).",
+              "reason": "Die Zählernullstelle wurde mit einer Nennernullstelle verwechselt; der Nenner hat die Nullstellen −1 und 2."
+            },
+            {
+              "text": "D_f = ℝ, weil der Nenner ein Polynom ist.",
+              "reason": "Auch ein Polynom im Nenner hat Nullstellen, die ausgeschlossen werden müssen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TEDDDYE7HEP13CWSZEE",
+      "atom_uri": "urn:zam:atom:01M6XB9TEDDDYE7HEP13CWSZEE",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-asymptoten-unendlich",
+      "title": "Verhalten im Unendlichen: waagrechte und schräge Asymptoten",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-2-asymptoten",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TDX2KCCPQWKY5R4AW36"
+        },
+        {
+          "atom_id": "01M6XB9TEAYWGX063SEGVADZQY"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-2-gebrochen-rational",
+          "topic_title": "Etappe 2: Gebrochen-rationale Funktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Gebrochen-rationale Funktionen – Grenzwerte und Asymptoten"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9THSF18SRTMM3FCF11RV",
+          "slug": "m11-asymptote-gleicher-grad",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-2-asymptoten",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche waagrechte Asymptote hat "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{6x^2 - x}{2x^2 + 5}",
+              "speech": "f von x gleich 6 x Quadrat minus x durch 2 x Quadrat plus 5"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "y = 3",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "y = 3",
+              "y = 0"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "y = 6",
+              "reason": "Der Leitkoeffizient des Nenners, 2, muss mit berücksichtigt werden: 6 : 2."
+            },
+            {
+              "text": "y = 1",
+              "reason": "Gleicher Grad heißt nicht Grenzwert 1; es zählt der Quotient der Leitkoeffizienten."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9THVXC6H8JQFKWGPJKCC",
+          "slug": "m11-asymptote-kleiner-grad",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-2-asymptoten",
+          "question": "Welche waagrechte Asymptote hat eine gebrochen-rationale Funktion, deren Zählergrad kleiner als der Nennergrad ist?",
+          "concept": "die x-Achse, y = 0",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die x-Achse, y = 0",
+              "die y-Achse, x = 0"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "die Gerade y = 1",
+              "reason": "Der Nenner wächst schneller als der Zähler; der Bruch geht gegen 0."
+            },
+            {
+              "text": "Es gibt keine waagrechte Asymptote.",
+              "reason": "Gerade wenn der Nenner schneller wächst, nähert sich der Graph der x-Achse."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9THYWH3NT67D54T2TV0Z",
+          "slug": "m11-schraege-asymptote",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-2-asymptoten",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Gib die schräge Asymptote des Graphen von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = 0{,}5x - 1 + \\frac{2}{x + 1}",
+              "speech": "f von x gleich 0,5 x minus 1 plus 2 durch x plus 1"
+            },
+            {
+              "type": "text",
+              "text": " an und begründe."
+            }
+          ],
+          "concept": "y = 0,5x − 1, denn der Bruch 2/(x + 1) geht gegen 0",
+          "materiality": "material",
+          "sample_solution": "Der Bruch 2/(x + 1) wird für große |x| beliebig klein. Der Unterschied zwischen f(x) und 0,5x − 1 geht also gegen 0. Für x → +∞ liegt der Graph oberhalb, für x → −∞ unterhalb der Asymptote.",
+          "choice_distractors": [
+            {
+              "text": "y = 0,5x, denn Konstanten (wie −1) fallen weg",
+              "reason": "Die Konstante −1 gehört zur Geraden, der sich der Graph nähert; nur der Bruch verschwindet."
+            },
+            {
+              "text": "x = −1, denn dort wird der Nenner (x + 1) null",
+              "reason": "x = −1 ist die senkrechte Asymptote; gefragt ist die schräge."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TEFM75NWWW8VDYHTW28",
+      "atom_uri": "urn:zam:atom:01M6XB9TEFM75NWWW8VDYHTW28",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-polstellen",
+      "title": "Polstellen, einseitige Grenzwerte und senkrechte Asymptoten",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-3-polstellen",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TEAYWGX063SEGVADZQY"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-2-gebrochen-rational",
+          "topic_title": "Etappe 2: Gebrochen-rationale Funktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Gebrochen-rationale Funktionen – Grenzwerte und Asymptoten"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TJ1JEHP0VPERZC4SM0P",
+          "slug": "m11-pol-ohne-vzw",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-3-polstellen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie verhält sich "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{1}{(x - 3)^2}",
+              "speech": "f von x gleich 1 durch x minus 3 in Klammern zum Quadrat"
+            },
+            {
+              "type": "text",
+              "text": " bei Annäherung an x = 3?"
+            }
+          ],
+          "concept": "von beiden Seiten f(x) → +∞, Pol ohne Vorzeichenwechsel",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "von beiden Seiten f(x) → +∞, Pol ohne Vorzeichenwechsel",
+              "Von links −∞, von rechts +∞."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "von beiden Seiten f(x) → 0, weil der Zähler 1 ist",
+              "reason": "Der Nenner wird beliebig klein; der Kehrwert wird beliebig groß."
+            },
+            {
+              "text": "von links f(x) → −∞, von rechts f(x) → +∞",
+              "reason": "(x − 3)² ist auf beiden Seiten positiv, das Vorzeichen wechselt nicht."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TJ3WH51DCZBS09T15KZ",
+          "slug": "m11-senkrechte-asymptote",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-3-polstellen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Gleichung hat die senkrechte Asymptote von "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{x + 1}{x - 2}",
+              "speech": "f von x gleich x plus 1 durch x minus 2"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "x = 2",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "x = 2",
+              "y = 2"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "x = 3",
+              "reason": "Die senkrechte Asymptote liegt bei der Nennernullstelle 2, nicht bei 3."
+            },
+            {
+              "text": "y = 1",
+              "reason": "y = 1 ist die waagrechte Asymptote; senkrechte Asymptoten haben die Form x = x₀."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TJ62HFYG993N15WQ2GV",
+          "slug": "m11-einseitige-grenzwerte",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-3-polstellen",
+          "question": "Bestimme das Verhalten von f(x) = (x + 1)/(x − 2) für x → 2 von links und von rechts.",
+          "concept": "von links f(x) → −∞, von rechts f(x) → +∞",
+          "materiality": "material",
+          "sample_solution": "Der Zähler hat bei x = 2 den Wert 3 > 0. Links von 2 ist x − 2 < 0, also wird f(x) betragsmäßig groß und negativ; rechts ist x − 2 > 0. Probe: f(1,9) = −29, f(2,1) = 31.",
+          "choice_distractors": [
+            {
+              "text": "von beiden Seiten f(x) → +∞",
+              "reason": "Das Vorzeichen des Nenners wechselt bei 2; ein einfacher Faktor (x − 2) gibt einen Vorzeichenwechsel."
+            },
+            {
+              "text": "von beiden Seiten f(x) → 3, dem Zählerwert",
+              "reason": "Der Nenner geht gegen 0; der Quotient bleibt nicht beschränkt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TEJHAYNXQ7QJF94A4RW",
+      "atom_uri": "urn:zam:atom:01M6XB9TEJHAYNXQ7QJF94A4RW",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-gebrochen-rational-analyse",
+      "title": "Gebrochen-rationale Funktionen analysieren und Terme finden",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-4-graph-term",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TEDDDYE7HEP13CWSZEE"
+        },
+        {
+          "atom_id": "01M6XB9TEFM75NWWW8VDYHTW28"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-2-gebrochen-rational",
+          "topic_title": "Etappe 2: Gebrochen-rationale Funktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Gebrochen-rationale Funktionen – Grenzwerte und Asymptoten"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TJ80JDARNJHT16ZZNK5",
+          "slug": "m11-term-aus-eigenschaften",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-4-graph-term",
+          "question": "Welcher Term hat die Nullstelle 1, einen Pol mit Vorzeichenwechsel bei 3 und die Asymptote y = −2?",
+          "concept": "f(x) = −2(x − 1)/(x − 3)",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f(x) = −2(x − 1)/(x − 3)",
+              "f(x) = −2(x − 3)/(x − 1)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "f(x) = (x − 1)/(x − 3) − 2",
+              "reason": "Der Bruch geht gegen 1, die Asymptote wäre also y = −1, und bei x = 1 ist der Wert −2 statt 0."
+            },
+            {
+              "text": "f(x) = −2(x − 3)/(x − 1)",
+              "reason": "Null- und Polstelle sind vertauscht: Nullstelle 3, Pol bei 1."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TJBSPZ18VASGK6G6843",
+          "slug": "m11-gerueste-graph",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-4-graph-term",
+          "question": "Welche drei Eigenschaften bilden das Gerüst für die Skizze einer gebrochen-rationalen Funktion?",
+          "concept": "Polstellen, Nullstellen und Asymptoten",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Polstellen, Nullstellen und Asymptoten",
+              "Hochpunkte, Tiefpunkte und Wendepunkte"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wertetabelle, Steigung und y-Achsenabschnitt",
+              "reason": "Eine Wertetabelle übersieht Pole und das Verhalten im Unendlichen leicht."
+            },
+            {
+              "text": "Symmetrie, Periode und Amplitude",
+              "reason": "Periode und Amplitude gehören zu Sinusfunktionen, nicht zu gebrochen-rationalen."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TJENFZDY3GJ9X6DP7J6",
+          "slug": "m11-ansatz-term",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-4-graph-term",
+          "question": "Wie findest du einen Term f(x) = a(x − z)/(x − p) mit vorgegebener Nullstelle, Polstelle und waagrechter Asymptote?",
+          "concept": "z = Nullstelle, p = Polstelle, a = Höhe der waagrechten Asymptote",
+          "materiality": "material",
+          "sample_solution": "Die Nullstelle steht im Zähler, die Polstelle im Nenner. Bei gleichem Grad ist die Asymptote y = a : 1 = a. Beispiel: Nullstelle 2, Pol bei −1, Asymptote y = 2 ⇒ f(x) = 2(x − 2)/(x + 1).",
+          "choice_distractors": [
+            {
+              "text": "z = Polstelle, p = Nullstelle, a = Schnittpunkt mit der y-Achse.",
+              "reason": "Zähler und Nenner sind vertauscht, und a ist bei gleichem Grad die Asymptote."
+            },
+            {
+              "text": "a ist immer 1; die Asymptote stellt man mit einer Verschiebung ein.",
+              "reason": "Der Faktor a legt bei diesem Ansatz die Asymptote fest; eine Verschiebung würde die Nullstelle ändern."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TENYQNSXQCEJXFVTNVE",
+      "atom_uri": "urn:zam:atom:01M6XB9TENYQNSXQCEJXFVTNVE",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-bruchgleichung-schnittpunkte",
+      "title": "Schnittpunkte mit gebrochen-rationalen Funktionen",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-5-schnittpunkte",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TEAYWGX063SEGVADZQY"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-2-gebrochen-rational",
+          "topic_title": "Etappe 2: Gebrochen-rationale Funktionen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb2",
+          "topic_title": "Gebrochen-rationale Funktionen – Grenzwerte und Asymptoten"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TJGTWRAE9SWWH448DZE",
+          "slug": "m11-schnitt-hyperbel-gerade",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-5-schnittpunkte",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Schnittstellen haben "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = \\frac{1}{x}",
+              "speech": "f von x gleich 1 durch x"
+            },
+            {
+              "type": "text",
+              "text": " und "
+            },
+            {
+              "type": "math",
+              "tex": "g(x) = -x + 2{,}5",
+              "speech": "g von x gleich minus x plus 2,5"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept": "x = 0,5 und x = 2",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "x = 0,5 und x = 2",
+              "x = 0 und x = 2,5"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "x = 1 und x = 1,5",
+              "reason": "Aus 1 = −x² + 2,5x folgt x² − 2,5x + 1 = 0 mit den Lösungen 0,5 und 2."
+            },
+            {
+              "text": "x = 0 und x = 0,5",
+              "reason": "x = 0 ist ausgeschlossen; aus x² − 2,5x + 1 = 0 folgen 0,5 und 2."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TJK55KZJ8WJKSE3B1BH",
+          "slug": "m11-beruehren-diskriminante",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-5-schnittpunkte",
+          "question": "Woran erkennst du beim Gleichsetzen von Gerade und Hyperbel, dass die Gerade den Graphen berührt?",
+          "concept": "Die quadratische Gleichung hat die Diskriminante 0.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die quadratische Gleichung hat die Diskriminante 0.",
+              "Die Gleichung hat zwei Lösungen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Gerade ist waagrecht und schneidet die y-Achse.",
+              "reason": "Auch waagrechte Geraden können zwei Schnittpunkte haben; entscheidend ist die Anzahl der Lösungen."
+            },
+            {
+              "text": "Die quadratische Gleichung hat keine Lösung.",
+              "reason": "Ohne Lösung haben die Graphen keinen gemeinsamen Punkt."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TJNDDR48KR1TAR2A1FW",
+          "slug": "m11-bruchgleichung-vorgehen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=gr-5-schnittpunkte",
+          "question": "Wie bestimmst du die Schnittpunkte des Graphen einer gebrochen-rationalen Funktion mit einer Geraden?",
+          "concept": "f(x) = g(x) mit dem Nenner multiplizieren, lösen, Lösungen mit D_f vergleichen",
+          "materiality": "material",
+          "sample_solution": "Beispiel 2/(x − 1) = x mit D = ℝ \\ {1}: 2 = x² − x ⇔ x² − x − 2 = 0 ⇔ x = −1 oder x = 2. Beide liegen in D. Schnittpunkte (−1 | −1) und (2 | 2).",
+          "choice_distractors": [
+            {
+              "text": "den Bruch weglassen, weil er für große x klein wird, dann lösen",
+              "reason": "Für Schnittpunkte zählt jede Stelle; der Bruch darf nicht vernachlässigt werden."
+            },
+            {
+              "text": "nur den Zähler gleich g(x) setzen und die Gleichung lösen",
+              "reason": "Der Nenner gehört zum Funktionswert; man multipliziert die ganze Gleichung mit ihm."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TEQDJB8M38K15DCA9SP",
+      "atom_uri": "urn:zam:atom:01M6XB9TEQDJB8M38K15DCA9SP",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-bedingte-wahrscheinlichkeit",
+      "title": "Bedingte Wahrscheinlichkeit in Baumdiagramm und Vierfeldertafel",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-1-bedingte-wahrscheinlichkeit",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-3-bedingte-wahrscheinlichkeit",
+          "topic_title": "Etappe 3: Bedingte Wahrscheinlichkeit und Unabhängigkeit"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Bedingte Wahrscheinlichkeit und stochastische Unabhängigkeit"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TJRTEYPAA6NFNN551QE",
+          "slug": "m11-bedingte-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-1-bedingte-wahrscheinlichkeit",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie berechnet man "
+            },
+            {
+              "type": "math",
+              "tex": "P_B(A)",
+              "speech": "P unter der Bedingung B von A"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "P_B(A) = \\frac{P(A \\cap B)}{P(B)}",
+              "speech": "P unter der Bedingung B von A gleich P von A geschnitten B durch P von B"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "P_B(A) = \\frac{P(A \\cap B)}{P(B)}",
+                  "speech": "P unter der Bedingung B von A gleich P von A geschnitten B durch P von B"
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": "P(A ∩ B) : P(A)"
+                }
+              ]
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "P_B(A) = P(A) · P(B)",
+              "reason": "Das Produkt ist P(A ∩ B) nur bei Unabhängigkeit, und es ist keine bedingte Wahrscheinlichkeit."
+            },
+            {
+              "text": "P_B(A) = P(A ∩ B)/P(A)",
+              "reason": "Durch P(A) zu teilen ergibt P_A(B); bei P_B(A) ist B die Bedingung."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TJVGGF3Q734WZ9Q3HDG",
+          "slug": "m11-vierfelder-absolut",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-1-bedingte-wahrscheinlichkeit",
+          "question": "120 Jugendliche: 50 fahren Bus (B), 20 davon tragen eine Brille (A). Wie groß ist der Anteil der Brillenträger unter den Busfahrenden?",
+          "concept": "P_B(A) = 20 : 50 = 0,4",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "P_B(A) = 20 : 50 = 0,4",
+              "20 : 120 ≈ 0,17"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "P(B) = 50 : 120 ≈ 0,42",
+              "reason": "Das ist P(B), der Anteil der Busfahrenden an allen."
+            },
+            {
+              "text": "P_B(A) = 20 : 70 ≈ 0,29",
+              "reason": "Bezugsgruppe sind die 50 Busfahrenden, nicht die übrigen 70."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TJXJBJ9CZDSRB43H2Y9",
+          "slug": "m11-pfadregel-bedingt",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-1-bedingte-wahrscheinlichkeit",
+          "question": "Im Baumdiagramm ist P(A) = 0,3, P_A(B) = 0,8 und P_Ā(B) = 0,2. Berechne P(B).",
+          "concept": "P(B) = 0,24 + 0,14 = 0,38",
+          "materiality": "material",
+          "sample_solution": "Beide Pfade, die in B enden, werden addiert (Satz von der totalen Wahrscheinlichkeit): P(A ∩ B) = 0,24 und P(Ā ∩ B) = 0,14, zusammen 0,38.",
+          "choice_distractors": [
+            {
+              "text": "P(B) = 0,8 + 0,2 = 1,0",
+              "reason": "Bedingte Wahrscheinlichkeiten verschiedener Bedingungen dürfen nicht addiert werden; jede wird mit ihrem Pfad gewichtet."
+            },
+            {
+              "text": "P(B) = 0,3 · 0,8 = 0,24",
+              "reason": "Das ist nur der Pfad über A; der Pfad über Ā gehört auch zu B."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TETB2BGG1S80YYK39VY",
+      "atom_uri": "urn:zam:atom:01M6XB9TETB2BGG1S80YYK39VY",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-bedingung-umkehren",
+      "title": "P_B(A), P_A(B) und P(A ∩ B) unterscheiden und umkehren",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-2-diagnostik",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TEQDJB8M38K15DCA9SP"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-3-bedingte-wahrscheinlichkeit",
+          "topic_title": "Etappe 3: Bedingte Wahrscheinlichkeit und Unabhängigkeit"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Bedingte Wahrscheinlichkeit und stochastische Unabhängigkeit"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TK0NP6W5NSMWK0VRA1M",
+          "slug": "m11-sensitivitaet",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-2-diagnostik",
+          "question": "Was gibt die Sensitivität eines medizinischen Tests an?",
+          "concept": "P_K(T): den Anteil der Kranken, die positiv getestet werden",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "P_K(T): den Anteil der Kranken, die positiv getestet werden",
+              "P_T(K): den Anteil der Kranken unter den positiv Getesteten"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "P(K ∩ T): den Anteil aller, die krank und positiv sind",
+              "reason": "Bei der Sensitivität sind die Kranken die Bezugsgruppe, nicht alle Getesteten."
+            },
+            {
+              "text": "den Anteil der Gesunden mit negativem Test",
+              "reason": "Das ist die Spezifität P_K̄(T̄)."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TK2RJRGY259X31S9F85",
+          "slug": "m11-faustregel-praevalenz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-2-diagnostik",
+          "question": "Prävalenz 1 %, Sensitivität und Spezifität je 99 %: Wie groß ist P_T(K)?",
+          "concept": "50 %, denn 99 von 198 Positiven sind krank",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "50 %, denn 99 von 198 Positiven sind krank",
+              "99 %"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "1 %, denn nur 1 % der Getesteten ist krank",
+              "reason": "Der Test hebt die Wahrscheinlichkeit deutlich über die Prävalenz; 99 von 198 Positiven sind krank."
+            },
+            {
+              "text": "98 %, denn der Test irrt nur in 2 % der Fälle",
+              "reason": "Bei seltenen Krankheiten sind viele Positive falsch positiv; ohne Häufigkeitsbaum überschätzt man P_T(K)."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TK56NKS3V9AEM98RPP6",
+          "slug": "m11-natuerliche-haeufigkeiten",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-2-diagnostik",
+          "question": "Wie schließt du von der Sensitivität P_K(T) auf P_T(K)?",
+          "concept": "mit natürlichen Häufigkeiten: P_T(K) = (krank und positiv) : (alle positiv)",
+          "materiality": "material",
+          "sample_solution": "Beispiel: Prävalenz 1 %, Sensitivität 99 %, Spezifität 99 %. 100 Kranke, davon 99 positiv; 9 900 Gesunde, davon 99 positiv. P_T(K) = 99 : 198 = 0,5. Ein umgekehrter Baum oder eine Vierfeldertafel liefert dasselbe.",
+          "choice_distractors": [
+            {
+              "text": "gar nicht nötig: P_T(K) = P_K(T), beide zählen (krank und positiv)",
+              "reason": "Die Bezugsgruppen sind verschieden: Kranke einerseits, positiv Getestete andererseits."
+            },
+            {
+              "text": "mit dem Gegenereignis: P_T(K) = 1 − P_K(T), also (krank und negativ)",
+              "reason": "Das Gegenereignis betrifft die Kranken mit negativem Test, nicht die Umkehrung der Bedingung."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TEWTMGH3E7QXK5AKJH4",
+      "atom_uri": "urn:zam:atom:01M6XB9TEWTMGH3E7QXK5AKJH4",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-unabhaengigkeit",
+      "title": "Stochastische Unabhängigkeit",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-3-unabhaengigkeit",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TEQDJB8M38K15DCA9SP"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-3-bedingte-wahrscheinlichkeit",
+          "topic_title": "Etappe 3: Bedingte Wahrscheinlichkeit und Unabhängigkeit"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Bedingte Wahrscheinlichkeit und stochastische Unabhängigkeit"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TK8Y9MMC2ET3VDSYD7H",
+          "slug": "m11-unabhaengig-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-3-unabhaengigkeit",
+          "question": "Wann sind zwei Ereignisse A und B stochastisch unabhängig?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "P(A \\cap B) = P(A) \\cdot P(B)",
+              "speech": "P von A geschnitten B gleich P von A mal P von B"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "P(A \\cap B) = P(A) \\cdot P(B)",
+                  "speech": "P von A geschnitten B gleich P von A mal P von B"
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": "P(A ∩ B) = 0"
+                }
+              ]
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "P(A) = P(B) = 0,5",
+              "reason": "Gleich wahrscheinliche Ereignisse können abhängig sein; es zählt das Produkt."
+            },
+            {
+              "text": "P(A ∩ B) = 0, unvereinbar",
+              "reason": "Unvereinbare Ereignisse mit positiver Wahrscheinlichkeit sind gerade abhängig."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TKA1TAHN311AVA945DH",
+          "slug": "m11-unabhaengig-baum",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-3-unabhaengigkeit",
+          "question": "Woran erkennst du stochastische Unabhängigkeit im Baumdiagramm mit A auf der ersten Stufe?",
+          "concept": "Hinter A und hinter Ā steht dieselbe Wahrscheinlichkeit für B.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Hinter A und hinter Ā steht dieselbe Wahrscheinlichkeit für B.",
+              "Alle Pfade haben die gleiche Wahrscheinlichkeit."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Auf der ersten Stufe stehen die Wahrscheinlichkeiten 0,5 und 0,5.",
+              "reason": "Die erste Stufe ist beliebig; es kommt auf P_A(B) = P_Ā(B) an."
+            },
+            {
+              "text": "Der Baum hat genau vier Pfade mit gleicher Wahrscheinlichkeit.",
+              "reason": "Gleich wahrscheinliche Pfade sind ein Sonderfall; nötig ist nur P_A(B) = P_Ā(B)."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TKDVWWV2RAKWSBW1869",
+          "slug": "m11-unabhaengigkeit-pruefen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-3-unabhaengigkeit",
+          "question": "P(A) = 0,4, P(B) = 0,5 und P(A ∩ B) = 0,2. Sind A und B unabhängig? Begründe.",
+          "concept": "Ja: P(A) · P(B) = 0,4 · 0,5 = 0,2 = P(A ∩ B).",
+          "materiality": "material",
+          "sample_solution": "Man vergleicht P(A ∩ B) mit dem Produkt. Hier stimmen sie überein, also gilt auch P_A(B) = 0,2 : 0,4 = 0,5 = P(B): Das Eintreten von A ändert die Wahrscheinlichkeit von B nicht.",
+          "choice_distractors": [
+            {
+              "text": "Nein, weil P(A ∩ B) nicht 0 ist.",
+              "reason": "Unabhängige Ereignisse können sehr wohl gemeinsam eintreten."
+            },
+            {
+              "text": "Nein, weil P(A) und P(B) verschieden sind.",
+              "reason": "Unabhängigkeit verlangt keine gleichen Wahrscheinlichkeiten."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TEZXT3RYM4E73KX44W5",
+      "atom_uri": "urn:zam:atom:01M6XB9TEZXT3RYM4E73KX44W5",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-daten-hinterfragen",
+      "title": "Aussagen aus Daten kritisch hinterfragen",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-4-daten-hinterfragen",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TEQDJB8M38K15DCA9SP"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-3-bedingte-wahrscheinlichkeit",
+          "topic_title": "Etappe 3: Bedingte Wahrscheinlichkeit und Unabhängigkeit"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb3",
+          "topic_title": "Bedingte Wahrscheinlichkeit und stochastische Unabhängigkeit"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TKF1JHWDK4MA7Q3SPT0",
+          "slug": "m11-korrelation-kausalitaet",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-4-daten-hinterfragen",
+          "question": "Was unterscheidet Korrelation von Kausalität?",
+          "concept": "Korrelation: Merkmale treten gemeinsam auf; Kausalität: eines bewirkt das andere.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Korrelation: Merkmale treten gemeinsam auf; Kausalität: eines bewirkt das andere.",
+              "Korrelation und Kausalität bedeuten dasselbe."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kausalität ist eine besonders starke Korrelation zwischen zwei Merkmalen.",
+              "reason": "Auch eine starke Korrelation kann durch eine dritte Größe entstehen."
+            },
+            {
+              "text": "Korrelation gibt es nur bei Zahlen, Kausalität nur bei Ursachen und Wirkungen.",
+              "reason": "Beides beschreibt Zusammenhänge zwischen Merkmalen; der Unterschied ist die Wirkungsrichtung."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TKJE60DWNWNDDTFAFMK",
+          "slug": "m11-simpson",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-4-daten-hinterfragen",
+          "question": "Was zeigt das Simpson-Paradoxon?",
+          "concept": "In jeder Teilgruppe besser, aber insgesamt schlechter ist möglich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In jeder Teilgruppe besser, aber insgesamt schlechter ist möglich.",
+              "Große Stichproben liefern immer richtige Ergebnisse."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Gesamtquote ist immer der Mittelwert der Gruppenquoten.",
+              "reason": "Die Gesamtquote ist ein gewichteter Mittelwert; die Gewichte sind die Gruppengrößen."
+            },
+            {
+              "text": "Wer in jeder Teilgruppe besser ist, ist auch insgesamt besser.",
+              "reason": "Gerade das widerlegt das Paradoxon, wenn die Teilgruppen verschieden zusammengesetzt sind."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TKMNG2KNJM5W5XT3NZ1",
+          "slug": "m11-stichprobe-verzerrt",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=bw-4-daten-hinterfragen",
+          "question": "Eine Online-Umfrage auf einer Gaming-Seite ergibt 80 % Zustimmung zu mehr Spielzeit. Warum darf man daraus nicht auf die Bevölkerung schließen?",
+          "concept": "Die Stichprobe ist verzerrt: Es stimmen vor allem Interessierte ab.",
+          "materiality": "material",
+          "sample_solution": "Umfang allein genügt nicht; die Zusammensetzung der Stichprobe muss zur Grundgesamtheit passen. Auch Art der Erhebung und Fragestellung beeinflussen das Ergebnis.",
+          "choice_distractors": [
+            {
+              "text": "Ein Anteil von 80 % ist zu hoch, um wahr zu sein.",
+              "reason": "Die Höhe des Werts ist kein Argument; das Problem ist, wer befragt wurde."
+            },
+            {
+              "text": "Online-Umfragen rechnen Prozentwerte grundsätzlich falsch.",
+              "reason": "Die Rechnung kann stimmen; die Stichprobe ist verzerrt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TF20P1QZQSDYHSGRRKD",
+      "atom_uri": "urn:zam:atom:01M6XB9TF20P1QZQSDYHSGRRKD",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-differenzenquotient",
+      "title": "Differenzenquotient, Sekantensteigung und mittlere Änderungsrate",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-1-differenzenquotient",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-4-differenzieren",
+          "topic_title": "Etappe 4: Lokales und globales Differenzieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Grundlagen der Differentialrechnung: Lokales und globales Differenzieren"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TKQWWM7V1C2S4HJ5W4C",
+          "slug": "m11-differenzenquotient-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-1-differenzenquotient",
+          "question": "Wie lautet der Differenzenquotient von f im Intervall [x₁; x₂]?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\frac{f(x_2) - f(x_1)}{x_2 - x_1}",
+              "speech": "f von x 2 minus f von x 1 durch x 2 minus x 1"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\frac{f(x_2) - f(x_1)}{x_2 - x_1}",
+                  "speech": "f von x 2 minus f von x 1 durch x 2 minus x 1"
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": "f(x₂) − f(x₁)"
+                }
+              ]
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "(x₂ − x₁) : (f(x₂) − f(x₁))",
+              "reason": "Zähler und Nenner sind vertauscht: Steigung ist Δy durch Δx."
+            },
+            {
+              "text": "(f(x₂) + f(x₁)) : 2",
+              "reason": "Das wäre der Mittelwert der Funktionswerte, keine Änderungsrate."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TKTAYJ374B7RQTP41WF",
+          "slug": "m11-sekante-geometrisch",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-1-differenzenquotient",
+          "question": "Was ist der Differenzenquotient geometrisch?",
+          "concept": "die Steigung der Sekante durch beide Graphenpunkte",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die Steigung der Sekante durch beide Graphenpunkte",
+              "die Steigung der Tangente im ersten Punkt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "der Abstand der beiden Graphenpunkte voneinander",
+              "reason": "Der Differenzenquotient ist ein Steigungsmaß, keine Länge."
+            },
+            {
+              "text": "die Fläche unter dem Graphen zwischen x₁ und x₂",
+              "reason": "Flächen gehören zur Integralrechnung; Δy/Δx ist eine Steigung."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TKWAVV3RPJWEKZK7541",
+          "slug": "m11-durchschnittsgeschwindigkeit",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-1-differenzenquotient",
+          "question": "Ein Körper legt s(t) = t² Meter in t Sekunden zurück. Berechne die Durchschnittsgeschwindigkeit zwischen 2 s und 5 s.",
+          "concept": "v̄ = (25 − 4) : 3 = 7 m/s",
+          "materiality": "material",
+          "sample_solution": "Mittlere Änderungsrate von s auf [2; 5]: (s(5) − s(2)) : (5 − 2) = (25 m − 4 m) : 3 s = 7 m/s. Das ist die Steigung der Sekante durch (2 | 4) und (5 | 25).",
+          "choice_distractors": [
+            {
+              "text": "v̄ = 25 : 5 = 5 m/s",
+              "reason": "Das ist die Durchschnittsgeschwindigkeit ab dem Start, nicht im Intervall [2; 5]."
+            },
+            {
+              "text": "v̄ = (25 − 4) m = 21 m/s",
+              "reason": "21 m ist der zurückgelegte Weg; geteilt durch 3 s ergibt sich die Geschwindigkeit."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TF4YWJRK9X1KR6EWGWD",
+      "atom_uri": "urn:zam:atom:01M6XB9TF4YWJRK9X1KR6EWGWD",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-differentialquotient",
+      "title": "Differentialquotient als Tangentensteigung",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-2-differentialquotient",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TF20P1QZQSDYHSGRRKD"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-4-differenzieren",
+          "topic_title": "Etappe 4: Lokales und globales Differenzieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Grundlagen der Differentialrechnung: Lokales und globales Differenzieren"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TKZPJM4ZGCMXANX08QW",
+          "slug": "m11-differentialquotient-def",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-2-differentialquotient",
+          "question": "Wie ist der Differentialquotient f′(x₀) definiert?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f'(x_0) = \\lim_{h \\to 0} \\frac{f(x_0 + h) - f(x_0)}{h}",
+              "speech": "f Strich von x null gleich Grenzwert für h gegen null von f von x null plus h minus f von x null durch h"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "f'(x_0) = \\lim_{h \\to 0} \\frac{f(x_0 + h) - f(x_0)}{h}",
+                  "speech": "f Strich von x null gleich Grenzwert für h gegen null von f von x null plus h minus f von x null durch h"
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": "der Differenzenquotient für h = 1"
+                }
+              ]
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "f′(x₀) = f(x₀) : x₀, die Steigung von 0 nach P",
+              "reason": "Das ist die Steigung der Ursprungsgeraden durch P, nicht die der Tangente."
+            },
+            {
+              "text": "der Wert des Differenzenquotienten für h = 0",
+              "reason": "Für h = 0 entsteht 0 : 0; man braucht den Grenzwert für h → 0."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TM12K8SNN9CFACJFAYN",
+          "slug": "m11-tangentensteigung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-2-differentialquotient",
+          "question": "Was bedeutet f′(x₀) geometrisch?",
+          "concept": "die Steigung der Tangente an den Graphen im Punkt P(x₀ | f(x₀))",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die Steigung der Tangente an den Graphen im Punkt P(x₀ | f(x₀))",
+              "die Steigung einer Sekante durch P"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "den y-Wert der Tangente an den Graphen im Punkt P(x₀ | f(x₀))",
+              "reason": "Das ist f(x₀); f′(x₀) ist eine Steigung."
+            },
+            {
+              "text": "den y-Achsenabschnitt der Tangente im Punkt P(x₀ | f(x₀))",
+              "reason": "Der y-Achsenabschnitt der Tangente ist f(x₀) − f′(x₀) · x₀."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TM4QXEQ0R0YR0MSST92",
+          "slug": "m11-h-methode",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-2-differentialquotient",
+          "question": "Berechne f′(1) für f(x) = x² mit der h-Methode.",
+          "concept": "f′(1) = 2, denn (f(1 + h) − f(1)) : h = 2 + h → 2",
+          "materiality": "material",
+          "sample_solution": "(1 + h)² − 1 = 2h + h². Geteilt durch h (h ≠ 0) bleibt 2 + h. Für h → 0, von rechts wie von links, geht das gegen 2. Die Tangente in (1 | 1) hat die Steigung 2.",
+          "choice_distractors": [
+            {
+              "text": "f′(1) = 1, denn f(1) = 1 und (1 + h)² → 1",
+              "reason": "Der Funktionswert ist nicht die Steigung."
+            },
+            {
+              "text": "f′(1) = 2,1, denn (f(1,1) − f(1)) : 0,1 = 2,1",
+              "reason": "Das ist noch eine Sekantensteigung; erst der Grenzwert h → 0 liefert f′(1)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TF7YEP652K25Q2CW167",
+      "atom_uri": "urn:zam:atom:01M6XB9TF7YEP652K25Q2CW167",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-differenzierbarkeit",
+      "title": "Lokale Differenzierbarkeit",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-3-differenzierbarkeit",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TF4YWJRK9X1KR6EWGWD"
+        },
+        {
+          "atom_id": "01M6XB9TE8GNGW6FFKVTA4Z0Y0"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-4-differenzieren",
+          "topic_title": "Etappe 4: Lokales und globales Differenzieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Grundlagen der Differentialrechnung: Lokales und globales Differenzieren"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TM7E7WPHZKZQX0Y2ZW4",
+          "slug": "m11-betrag-nicht-diffbar",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-3-differenzierbarkeit",
+          "question": "Warum ist f(x) = |x| an der Stelle 0 nicht differenzierbar?",
+          "concept": "Links strebt die Sekantensteigung gegen −1, rechts gegen 1: ein Knick.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Links strebt die Sekantensteigung gegen −1, rechts gegen 1: ein Knick.",
+              "Weil |x| bei 0 nicht stetig ist."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Graph springt bei 0 von −1 auf 1, er ist dort nicht stetig.",
+              "reason": "|x| ist bei 0 stetig; verschieden sind die Steigungen, nicht die Werte."
+            },
+            {
+              "text": "Weil f(0) = 0 ist und man durch 0 nicht teilen darf.",
+              "reason": "Ein Funktionswert 0 verhindert keine Ableitung; x² hat f(0) = 0 und ist differenzierbar."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TM9WVRVE1J0J4XVWSZ5",
+          "slug": "m11-diffbar-stetig",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-3-differenzierbarkeit",
+          "question": "Gilt: Jede stetige Funktion ist differenzierbar?",
+          "concept": "Nein: |x| ist bei 0 stetig, aber nicht differenzierbar.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein: |x| ist bei 0 stetig, aber nicht differenzierbar.",
+              "Ja, stetig und differenzierbar bedeuten dasselbe."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ja: Ohne Sprung hat der Graph überall eine Tangente.",
+              "reason": "Auch ohne Sprung kann ein Knick die Differenzierbarkeit verhindern."
+            },
+            {
+              "text": "Nein, und differenzierbar heißt auch nicht stetig.",
+              "reason": "Differenzierbarkeit erzwingt Stetigkeit; nur die andere Richtung gilt nicht."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TMC4582W2NQP7MEBVZA",
+          "slug": "m11-glatter-uebergang",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-3-differenzierbarkeit",
+          "question": "f(x) = x² für x ≤ 1 und f(x) = mx + t für x > 1. Für welche m und t ist f bei 1 differenzierbar?",
+          "concept": "m = 2 und t = −1",
+          "materiality": "material",
+          "sample_solution": "Differenzierbar heißt ohne Sprung und ohne Knick. Steigung der Parabel bei 1: 2 · 1 = 2, also m = 2. Wert bei 1: 1, also 2 · 1 + t = 1 und t = −1.",
+          "choice_distractors": [
+            {
+              "text": "m = 1 und t = 0",
+              "reason": "Durch (1 | 1) geht die Gerade dann, aber mit Steigung 1 statt 2 entsteht ein Knick."
+            },
+            {
+              "text": "m = 2 und t = 0",
+              "reason": "Mit t = 0 hätte die Gerade bei 1 den Wert 2, der Graph würde springen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TF9Z87TP0YD4Q2MAGTV",
+      "atom_uri": "urn:zam:atom:01M6XB9TF9Z87TP0YD4Q2MAGTV",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-ableitungsfunktion",
+      "title": "Ableitungsfunktion und grafisches Ableiten",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-4-ableitungsfunktion",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TF4YWJRK9X1KR6EWGWD"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-4-differenzieren",
+          "topic_title": "Etappe 4: Lokales und globales Differenzieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Grundlagen der Differentialrechnung: Lokales und globales Differenzieren"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TMF9TW7NG7VZNWBM7K9",
+          "slug": "m11-tiefpunkt-ableitung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-4-ableitungsfunktion",
+          "question": "Der Graph von f hat bei x = 2 einen Tiefpunkt. Was gilt für den Graphen von f′ bei x = 2?",
+          "concept": "Er hat dort eine Nullstelle, f′(2) = 0.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er hat dort eine Nullstelle, f′(2) = 0.",
+              "Er hat dort ebenfalls einen Tiefpunkt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er liegt dort oberhalb der x-Achse, f′(2) > 0.",
+              "reason": "Im Tiefpunkt ist die Tangente waagrecht, die Steigung also 0."
+            },
+            {
+              "text": "Er hat dort einen Tiefpunkt, f″(2) = 0.",
+              "reason": "Extrempunkte von f′ gehören zu den steilsten Stellen von f, nicht zu Tiefpunkten."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TMJ0VY872JR4WJSQ2ZT",
+          "slug": "m11-steigt-positiv",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-4-ableitungsfunktion",
+          "question": "In einem Intervall liegt der Graph von f′ ganz oberhalb der x-Achse. Was folgt für f?",
+          "concept": "f steigt dort streng monoton",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f steigt dort streng monoton",
+              "f fällt dort streng monoton"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "f hat dort einen Hochpunkt",
+              "reason": "Ein Hochpunkt braucht f′(x₀) = 0; bei f′ > 0 gibt es keine waagrechte Tangente."
+            },
+            {
+              "text": "f ist dort linksgekrümmt",
+              "reason": "Die Krümmung zeigt das Vorzeichen von f″, nicht das von f′."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TMNWKV2MFF4276KGR44",
+          "slug": "m11-grafisch-ableiten",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-4-ableitungsfunktion",
+          "question": "Wie skizzierst du den Graphen von f′ aus dem Graphen von f = x³ − 3x?",
+          "concept": "Parabel mit Nullstellen −1 und 1 (Extremstellen von f) und Tiefpunkt bei 0",
+          "materiality": "material",
+          "sample_solution": "Man liest die Steigung ab: waagrechte Tangenten bei −1 und 1 geben Nullstellen, steigende Abschnitte positive, fallende negative Werte. Die steilste Stelle 0 wird zum Extrempunkt von f′. Tatsächlich ist f′(x) = 3x² − 3.",
+          "choice_distractors": [
+            {
+              "text": "Parabel mit Nullstellen −√3, 0 und √3 (Nullstellen von f)",
+              "reason": "Nullstellen von f′ gehören zu waagrechten Tangenten von f, nicht zu Nullstellen von f."
+            },
+            {
+              "text": "Parabel mit Tiefpunkt bei 1 und Hochpunkt bei −1 (wie f)",
+              "reason": "Extrempunkte von f′ liegen an den steilsten Stellen von f."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TFCD6MX90FVWJ9B31ZX",
+      "atom_uri": "urn:zam:atom:01M6XB9TFCD6MX90FVWJ9B31ZX",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-ableitungsregeln",
+      "title": "Potenz-, Faktor- und Summenregel",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-5-ableitungsregeln",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TF9Z87TP0YD4Q2MAGTV"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-4-differenzieren",
+          "topic_title": "Etappe 4: Lokales und globales Differenzieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Grundlagen der Differentialrechnung: Lokales und globales Differenzieren"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TMQ4KNH81S2X65M5S15",
+          "slug": "m11-potenzregel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-5-ableitungsregeln",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Wie lautet die Ableitung von "
+            },
+            {
+              "type": "math",
+              "tex": "x^n",
+              "speech": "x hoch n"
+            },
+            {
+              "type": "text",
+              "text": " (n ∈ ℕ)?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "n \\cdot x^{n-1}",
+              "speech": "n mal x hoch n minus 1"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "n \\cdot x^{n-1}",
+                  "speech": "n mal x hoch n minus 1"
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": "x hoch n plus 1 geteilt durch n plus 1"
+                }
+              ]
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "(n − 1) · xⁿ",
+              "reason": "Der Exponent wird um 1 kleiner, und der alte Exponent n wird Faktor: (x³)′ = 3x²."
+            },
+            {
+              "text": "xⁿ⁺¹ : n",
+              "reason": "Das erinnert an eine Stammfunktion; beim Ableiten sinkt der Exponent: (x³)′ = 3x²."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TMTMCZXM3G0AKQTNKA5",
+          "slug": "m11-ableitung-konstante",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-5-ableitungsregeln",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche Ableitung hat "
+            },
+            {
+              "type": "math",
+              "tex": "f(x) = 4x^3 - x + 9",
+              "speech": "f von x gleich 4 x hoch 3 minus x plus 9"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f'(x) = 12x^2 - 1",
+              "speech": "f Strich von x gleich 12 x Quadrat minus 1"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "f'(x) = 12x^2 - 1",
+                  "speech": "f Strich von x gleich 12 x Quadrat minus 1"
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": "f′(x) = 12x² − 1 + 9"
+                }
+              ]
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "f′(x) = 4x² − 1",
+              "reason": "Faktorregel und Potenzregel: (4x³)′ = 4 · 3x² = 12x²."
+            },
+            {
+              "text": "f′(x) = 12x³ − 1",
+              "reason": "Der Exponent sinkt beim Ableiten um 1."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TMWTCJ1Y8KAD6E99DM8",
+          "slug": "m11-ableitungsregeln-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-5-ableitungsregeln",
+          "question": "Leite f(x) = x · (x − 2)² ab.",
+          "concept": "f′(x) = 3x² − 8x + 4",
+          "materiality": "material",
+          "sample_solution": "Erst ausmultiplizieren: x(x² − 4x + 4) = x³ − 4x² + 4x. Dann summandenweise mit Potenz- und Faktorregel ableiten: 3x² − 8x + 4.",
+          "choice_distractors": [
+            {
+              "text": "f′(x) = 2x − 4",
+              "reason": "Man darf Faktoren nicht einzeln ableiten und multiplizieren; erst ausmultiplizieren."
+            },
+            {
+              "text": "f′(x) = 3x² − 4x + 4",
+              "reason": "Beim Ableiten von −4x² entsteht −8x."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TFES54M5JXD9406JRBY",
+      "atom_uri": "urn:zam:atom:01M6XB9TFES54M5JXD9406JRBY",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-lokale-aenderungsrate",
+      "title": "Lokale Änderungsrate im Sachkontext",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-6-aenderungsrate",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TFCD6MX90FVWJ9B31ZX"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-4-differenzieren",
+          "topic_title": "Etappe 4: Lokales und globales Differenzieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Grundlagen der Differentialrechnung: Lokales und globales Differenzieren"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TMZQQ5WSA9T75D7SFJB",
+          "slug": "m11-momentangeschwindigkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-6-aenderungsrate",
+          "question": "Was gibt s′(t₀) an, wenn s(t) der zurückgelegte Weg zur Zeit t ist?",
+          "concept": "die Momentangeschwindigkeit zum Zeitpunkt t₀",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die Momentangeschwindigkeit zum Zeitpunkt t₀",
+              "den bis t₀ zurückgelegten Weg"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "die Durchschnittsgeschwindigkeit bis t₀",
+              "reason": "Die Durchschnittsgeschwindigkeit ist ein Differenzenquotient über ein Intervall."
+            },
+            {
+              "text": "die Beschleunigung zum Zeitpunkt t₀",
+              "reason": "Die Beschleunigung wäre die Änderungsrate der Geschwindigkeit, also s″."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TN1JH8X7TS5JVTN8B22",
+          "slug": "m11-volumen-rate",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-6-aenderungsrate",
+          "question": "V(t) ist das Wasservolumen in Litern nach t Minuten. Was bedeutet V′(5) = 12?",
+          "concept": "Nach 5 Minuten fließen gerade 12 Liter pro Minute zu.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nach 5 Minuten fließen gerade 12 Liter pro Minute zu.",
+              "Nach 5 Minuten sind 12 Liter im Becken."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "In den ersten 5 Minuten flossen im Mittel 12 Liter pro Minute zu.",
+              "reason": "Das wäre die mittlere Änderungsrate (V(5) − V(0)) : 5."
+            },
+            {
+              "text": "Das Becken ist nach 12 Minuten voll.",
+              "reason": "V′(5) ist eine Rate zum Zeitpunkt 5, keine Zeitangabe."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TN42TTKVGGM9EJ4ZK75",
+          "slug": "m11-strassensteigung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-6-aenderungsrate",
+          "question": "Eine Straße hat das Höhenprofil h(x) = 60x² − 8x³ (x in km, h in m). Wie steil ist sie bei x = 1 in Prozent?",
+          "concept": "9,6 %, denn h′(1) = 96 m pro km",
+          "materiality": "material",
+          "sample_solution": "h′(x) = 120x − 24x² gibt die lokale Steigung in m pro km. Bei x = 1 sind das 96 m auf 1000 m, also 9,6 %.",
+          "choice_distractors": [
+            {
+              "text": "52 %, denn h(1) = 52 m über dem Start",
+              "reason": "Das ist die Höhe in Metern, keine Steigung."
+            },
+            {
+              "text": "96 %, denn h′(1) = 96 m pro km",
+              "reason": "96 m Höhe auf 1000 m Strecke sind 9,6 %, nicht 96 %."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TFH1FED7SVK1VQV3HC4",
+      "atom_uri": "urn:zam:atom:01M6XB9TFH1FED7SVK1VQV3HC4",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-tangente-steigungswinkel",
+      "title": "Tangentengleichung und Steigungswinkel",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-7-tangente",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TFCD6MX90FVWJ9B31ZX"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-4-differenzieren",
+          "topic_title": "Etappe 4: Lokales und globales Differenzieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Grundlagen der Differentialrechnung: Lokales und globales Differenzieren"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TN74AHAW46ND8NJ0Q99",
+          "slug": "m11-tangentengleichung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-7-tangente",
+          "question": "Wie lautet die Gleichung der Tangente an den Graphen von f im Punkt P(x₀ | f(x₀))?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "y = f'(x_0) \\cdot (x - x_0) + f(x_0)",
+              "speech": "y gleich f Strich von x null mal x minus x null in Klammern plus f von x null"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "y = f'(x_0) \\cdot (x - x_0) + f(x_0)",
+                  "speech": "y gleich f Strich von x null mal x minus x null in Klammern plus f von x null"
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": "y = f(x₀) · (x − x₀) + f′(x₀)"
+                }
+              ]
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "y = f(x₀) · x + f′(x₀) · x₀",
+              "reason": "Steigung ist f′(x₀); diese Gerade geht im Allgemeinen nicht durch P."
+            },
+            {
+              "text": "y = f(x₀) · x + f′(x₀)",
+              "reason": "Steigung ist f′(x₀); f(x₀) ist der y-Wert von P."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TN9NZG8K8EQ9SX7JE8R",
+          "slug": "m11-steigungswinkel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-7-tangente",
+          "question": "Wie hängt der Steigungswinkel α der Tangente mit f′(x₀) zusammen?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\tan \\alpha = f'(x_0)",
+              "speech": "Tangens alpha gleich f Strich von x null"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\tan \\alpha = f'(x_0)",
+                  "speech": "Tangens alpha gleich f Strich von x null"
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": "sin α = f′(x₀)"
+                }
+              ]
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "α = f′(x₀) in Grad",
+              "reason": "Die Steigung ist der Tangens des Winkels; α = tan⁻¹(f′(x₀))."
+            },
+            {
+              "text": "cos α = 1 : f′(x₀)",
+              "reason": "Die Steigung ist Gegenkathete durch Ankathete, also der Tangens."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TNCXJ6CPEGSWFGX4BCZ",
+          "slug": "m11-tangente-aufstellen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=df-7-tangente",
+          "question": "Stelle die Tangente an f(x) = 0,5x² + 2 bei x₀ = 2 auf und gib ihren Steigungswinkel an.",
+          "concept": "t: y = 2x; α = tan⁻¹(2) ≈ 63,4°",
+          "materiality": "material",
+          "sample_solution": "f′(x) = x, also m = 2; P(2 | 4). Einsetzen: y = 2x + t mit 4 = 4 + t, also t = 0. Die Tangente geht durch den Ursprung. Steigungswinkel mit dem Taschenrechner im Gradmaß: tan⁻¹(2) ≈ 63,4°.",
+          "choice_distractors": [
+            {
+              "text": "t: y = 2x + 4; α = 2° (die Steigung)",
+              "reason": "4 ist der y-Wert von P, nicht der Achsenabschnitt; und der Winkel ist tan⁻¹(2), nicht 2."
+            },
+            {
+              "text": "t: y = 4x − 4; α = tan⁻¹(4) ≈ 76,0°",
+              "reason": "Die Steigung ist f′(2) = 2, nicht f(2) = 4."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TFMFESWD6J4C0MJA91T",
+      "atom_uri": "urn:zam:atom:01M6XB9TFMFESWD6J4C0MJA91T",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-monotonie",
+      "title": "Strenge Monotonie und Monotoniekriterium",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-1-monotonie",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TF9Z87TP0YD4Q2MAGTV"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-5-kurvenuntersuchung",
+          "topic_title": "Etappe 5: Ganzrationale Funktionen untersuchen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Grundlagen der Differentialrechnung: Anwendung bei der Untersuchung ganzrationaler Funktionen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TNFJXXMSDEBXBY0CMD1",
+          "slug": "m11-monotonie-definition",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-1-monotonie",
+          "question": "Wann heißt f in einem Intervall I streng monoton steigend?",
+          "concept": "Wenn für alle x₁, x₂ ∈ I mit x₁ < x₂ gilt: f(x₁) < f(x₂).",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn für alle x₁, x₂ ∈ I mit x₁ < x₂ gilt: f(x₁) < f(x₂).",
+              "Wenn f′(x) > 0 an einer Stelle von I ist."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wenn f(x) > 0 für alle x ∈ I ist.",
+              "reason": "Positive Werte sagen nichts über Zunahme; f(x) = 5 − x ist positiv und fällt."
+            },
+            {
+              "text": "Wenn f(x₁) < f(x₂) für ein Paar x₁ < x₂ gilt.",
+              "reason": "Die Bedingung muss für alle Paare im Intervall gelten."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TNHN2AM2AZYWMBG0VBC",
+          "slug": "m11-x-hoch-3-monoton",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-1-monotonie",
+          "question": "Ist f(x) = x³ auf ℝ streng monoton steigend, obwohl f′(0) = 0 ist?",
+          "concept": "Ja, denn aus x₁ < x₂ folgt immer x₁³ < x₂³.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ja, denn aus x₁ < x₂ folgt immer x₁³ < x₂³.",
+              "Nein, bei x = 0 hat f einen Hochpunkt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nein, denn bei x = 0 ist f′(0) = 0, nicht positiv.",
+              "reason": "f′ > 0 ist hinreichend, aber nicht notwendig; die Definition vergleicht Funktionswerte."
+            },
+            {
+              "text": "Nur für x > 0, denn für x < 0 ist x³ negativ.",
+              "reason": "Negative Werte stören nicht; −8 < −1 < 0 < 1 < 8 steigt durchgehend."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TNMBZYE7WAKYGAZ1999",
+          "slug": "m11-monotonieintervalle",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-1-monotonie",
+          "question": "Bestimme die Monotonieintervalle von f(x) = x³ − 3x.",
+          "concept": "f steigt auf ]−∞; −1] und [1; +∞[, fällt auf [−1; 1]",
+          "materiality": "material",
+          "sample_solution": "Nullstellen von f′ sind −1 und 1. Für x < −1 und x > 1 ist f′ > 0, dazwischen f′ < 0. Mit dem Monotoniekriterium folgen die Intervalle.",
+          "choice_distractors": [
+            {
+              "text": "f steigt auf ganz ℝ, denn der Leitkoeffizient ist positiv",
+              "reason": "Der Leitkoeffizient bestimmt nur das Verhalten für x → ±∞."
+            },
+            {
+              "text": "f fällt auf ]−∞; −1] und [1; +∞[, steigt auf [−1; 1]",
+              "reason": "Die Vorzeichen von f′ sind vertauscht: Vor −1 ist f′ positiv."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TFPVG1ZYTGNT7RYFG2V",
+      "atom_uri": "urn:zam:atom:01M6XB9TFPVG1ZYTGNT7RYFG2V",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-extremstellen",
+      "title": "Extremstellen mit dem Vorzeichenwechsel von f′",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-2-extremstellen",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TFMFESWD6J4C0MJA91T"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-5-kurvenuntersuchung",
+          "topic_title": "Etappe 5: Ganzrationale Funktionen untersuchen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Grundlagen der Differentialrechnung: Anwendung bei der Untersuchung ganzrationaler Funktionen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TNPEX3ZVE1NQHGM0TTX",
+          "slug": "m11-vzw-hochpunkt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-2-extremstellen",
+          "question": "f′ wechselt bei x₀ das Vorzeichen von + nach −. Was liegt bei x₀ vor?",
+          "concept": "ein Hochpunkt",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ein Hochpunkt",
+              "ein Tiefpunkt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "ein Wendepunkt",
+              "reason": "Ein Vorzeichenwechsel von f′ zeigt eine Extremstelle; Wendestellen zeigt f″."
+            },
+            {
+              "text": "ein Terrassenpunkt",
+              "reason": "Beim Terrassenpunkt wechselt f′ das Vorzeichen gerade nicht."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TNS8MADQ6K9SDC32PW6",
+          "slug": "m11-terrassenpunkt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-2-extremstellen",
+          "question": "f′(x) = (x − 1)² · (x + 2). Was hat der Graph von f bei x = 1?",
+          "concept": "einen Terrassenpunkt, denn f′ wechselt bei 1 das Vorzeichen nicht",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "einen Terrassenpunkt, denn f′ wechselt bei 1 das Vorzeichen nicht",
+              "einen Hochpunkt, weil f′(1) = 0 ist"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "einen Tiefpunkt, denn (x − 1)² ist bei 1 am kleinsten",
+              "reason": "Ein nichtnegativer Faktor ohne Vorzeichenwechsel erzeugt kein Extremum."
+            },
+            {
+              "text": "eine Nullstelle von f, denn f′(1) = 0",
+              "reason": "f′(1) = 0 betrifft die Steigung, nicht den Funktionswert."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TNWE4YZ9H8AWFB6MD15",
+          "slug": "m11-extrempunkte-bestimmen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-2-extremstellen",
+          "question": "Bestimme Art und Lage der Extrempunkte von f(x) = 0,25x⁴ − (2/3)x³.",
+          "concept": "Tiefpunkt T(2 | −4/3); bei 0 ein Terrassenpunkt",
+          "materiality": "material",
+          "sample_solution": "Kandidaten aus f′(x) = x³ − 2x² = x²(x − 2) = 0: x = 0 und x = 2. Bei 0 ist x² ≥ 0 und x − 2 < 0, also kein Vorzeichenwechsel. Bei 2 wechselt f′ von − nach +: Tiefpunkt mit f(2) = 4 − 16/3 = −4/3.",
+          "choice_distractors": [
+            {
+              "text": "Hochpunkt H(0 | 0) und Tiefpunkt T(2 | −4/3)",
+              "reason": "Bei 0 fehlt der Vorzeichenwechsel; f′(0) = 0 allein reicht nicht."
+            },
+            {
+              "text": "Tiefpunkte T(0 | 0) und T(2 | −4/3)",
+              "reason": "Bei 0 ist f′ auf beiden Seiten negativ: Der Graph fällt durch."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TFSVMM8G73TKF3S7PB7",
+      "atom_uri": "urn:zam:atom:01M6XB9TFSVMM8G73TKF3S7PB7",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-kruemmung-wendestellen",
+      "title": "Krümmung und Wendestellen mit der zweiten Ableitung",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-3-kruemmung",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TFPVG1ZYTGNT7RYFG2V"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-5-kurvenuntersuchung",
+          "topic_title": "Etappe 5: Ganzrationale Funktionen untersuchen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Grundlagen der Differentialrechnung: Anwendung bei der Untersuchung ganzrationaler Funktionen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TNYG8RPRF0RRC94NZCZ",
+          "slug": "m11-linkskruemmung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-3-kruemmung",
+          "question": "Was bedeutet f″(x) > 0 in einem Intervall für den Graphen von f?",
+          "concept": "Er ist dort linksgekrümmt: f′ nimmt zu.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er ist dort linksgekrümmt: f′ nimmt zu.",
+              "Er ist dort rechtsgekrümmt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er steigt dort, denn f nimmt zu.",
+              "reason": "Ob f steigt, zeigt f′; f″ beschreibt die Krümmung."
+            },
+            {
+              "text": "Er liegt dort oberhalb der x-Achse.",
+              "reason": "Die Lage zur x-Achse hängt von f ab, nicht von f″."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TP1QF5MR4SYCE0PA8F3",
+          "slug": "m11-wendestelle-bedeutung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-3-kruemmung",
+          "question": "Was ist an einer Wendestelle von f besonders, etwa in einem Wachstumsmodell?",
+          "concept": "Dort ist die Steigung f′ extremal: größtes Wachstum.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dort ist die Steigung f′ extremal: größtes Wachstum.",
+              "Dort ist f selbst am größten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Dort hört das Wachstum auf, denn f′ = 0.",
+              "reason": "An der Wendestelle wächst f oft gerade am schnellsten; aufhören würde es bei f′ = 0."
+            },
+            {
+              "text": "Dort hat der Graph eine waagrechte Tangente.",
+              "reason": "Das gilt nur bei einem Terrassenpunkt, nicht an jeder Wendestelle."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TP38Y6698NBCN93CPZ0",
+          "slug": "m11-wendepunkt-berechnen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-3-kruemmung",
+          "question": "Bestimme den Wendepunkt von f(x) = x³ − 3x² + 2.",
+          "concept": "W(1 | 0), denn f″(1) = 0 mit Vorzeichenwechsel",
+          "materiality": "material",
+          "sample_solution": "f′(x) = 3x² − 6x, f″(x) = 6x − 6. f″ ist für x < 1 negativ (rechtsgekrümmt) und für x > 1 positiv (linksgekrümmt). f(1) = 1 − 3 + 2 = 0. Bei 1 fällt der Graph am stärksten: f′(1) = −3.",
+          "choice_distractors": [
+            {
+              "text": "W(0 | 2), denn f′(0) = 0 und f(0) = 2",
+              "reason": "f′(0) = 0 zeigt eine waagrechte Tangente (hier ein Hochpunkt), keine Wendestelle."
+            },
+            {
+              "text": "W(2 | −2), denn f′(2) = 0 im Tiefpunkt",
+              "reason": "Im Tiefpunkt ist f″(2) = 6 > 0, die Krümmung wechselt dort nicht."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TFVRW79W6BJJC34Z63J",
+      "atom_uri": "urn:zam:atom:01M6XB9TFVRW79W6BJJC34Z63J",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-notwendig-hinreichend",
+      "title": "Notwendige und hinreichende Bedingungen für Extrem- und Wendestellen",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-4-bedingungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TFSVMM8G73TKF3S7PB7"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-5-kurvenuntersuchung",
+          "topic_title": "Etappe 5: Ganzrationale Funktionen untersuchen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Grundlagen der Differentialrechnung: Anwendung bei der Untersuchung ganzrationaler Funktionen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TP6HRK7NAEP63WKW3TK",
+          "slug": "m11-notwendig-nicht-hinreichend",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-4-bedingungen",
+          "question": "Ist f′(x₀) = 0 notwendig oder hinreichend für eine Extremstelle einer differenzierbaren Funktion?",
+          "concept": "notwendig, aber nicht hinreichend",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "notwendig, aber nicht hinreichend",
+              "hinreichend"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "weder notwendig noch hinreichend",
+              "reason": "Jede Extremstelle einer differenzierbaren Funktion hat eine waagrechte Tangente; notwendig ist die Bedingung also."
+            },
+            {
+              "text": "hinreichend, aber nicht notwendig",
+              "reason": "x³ hat f′(0) = 0, aber kein Extremum; hinreichend ist die Bedingung also nicht."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TP8WNH70C72BY1VY2YE",
+          "slug": "m11-hochpunkt-f2",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-4-bedingungen",
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Welche hinreichende Bedingung garantiert einen Hochpunkt an einer Stelle "
+            },
+            {
+              "type": "math",
+              "tex": "x_0",
+              "speech": "x null"
+            },
+            {
+              "type": "text",
+              "text": " mit "
+            },
+            {
+              "type": "math",
+              "tex": "f'(x_0) = 0",
+              "speech": "f Strich von x null gleich 0"
+            },
+            {
+              "type": "text",
+              "text": "?"
+            }
+          ],
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f''(x_0) < 0",
+              "speech": "f zwei Strich von x null kleiner 0"
+            },
+            {
+              "type": "text",
+              "text": " (der Graph ist dort rechtsgekrümmt)"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "f''(x_0) < 0",
+                  "speech": "f zwei Strich von x null kleiner 0"
+                },
+                {
+                  "type": "text",
+                  "text": " (der Graph ist dort rechtsgekrümmt)"
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": "f″(x₀) > 0"
+                }
+              ]
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "f(x₀) liegt oberhalb der x-Achse (y > 0)",
+              "reason": "Die Lage oberhalb der x-Achse entscheidet nicht über Hoch- oder Tiefpunkt."
+            },
+            {
+              "text": "f‴(x₀) ≠ 0 (die dritte Ableitung)",
+              "reason": "Die dritte Ableitung gehört zum Kriterium für Wendestellen, nicht für Extrema."
+            }
+          ],
+          "replaces": [
+            "01K8GB00000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M6XB9TPB6KB8XVX2BNW3DYYP",
+          "slug": "m11-gegenbeispiel-x4",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-4-bedingungen",
+          "question": "Warum ist f″(x₀) = 0 nicht hinreichend für eine Wendestelle? Gib ein Gegenbeispiel.",
+          "concept": "g(x) = x⁴: g″(0) = 0, aber bei 0 liegt ein Tiefpunkt.",
+          "materiality": "material",
+          "sample_solution": "Hinreichend für eine Wendestelle ist f″(x₀) = 0 zusammen mit einem Vorzeichenwechsel von f″. Bei x⁴ ist g″(x) = 12x² ≥ 0, die Krümmung wechselt nicht.",
+          "choice_distractors": [
+            {
+              "text": "g(x) = x³: g″(0) = 0, aber bei 0 liegt ein Hochpunkt.",
+              "reason": "x³ hat bei 0 einen Wendepunkt (Terrassenpunkt); f″ wechselt dort das Vorzeichen."
+            },
+            {
+              "text": "Keins: f″(x₀) = 0 ist für Wendestellen hinreichend.",
+              "reason": "x⁴ widerlegt das: g″(0) = 0 ohne Krümmungswechsel."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TFY08QWR30RMC4ZNTRB",
+      "atom_uri": "urn:zam:atom:01M6XB9TFY08QWR30RMC4ZNTRB",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-kurvenuntersuchung",
+      "title": "Ganzrationale Funktionen mit den Methoden der Differentialrechnung untersuchen",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-5-untersuchung",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TFVRW79W6BJJC34Z63J"
+        },
+        {
+          "atom_id": "01M6XB9TE07G31EC203QHH3CPX"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-5-kurvenuntersuchung",
+          "topic_title": "Etappe 5: Ganzrationale Funktionen untersuchen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Grundlagen der Differentialrechnung: Anwendung bei der Untersuchung ganzrationaler Funktionen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TPEB3TZTKXX8G9WS2RY",
+          "slug": "m11-doppelte-nullstelle",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-5-untersuchung",
+          "question": "Was folgt für den Graphen einer ganzrationalen Funktion aus einer doppelten Nullstelle bei x = 2?",
+          "concept": "Er berührt dort die x-Achse: ein Extrempunkt.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er berührt dort die x-Achse: ein Extrempunkt.",
+              "Er schneidet dort die x-Achse mit Vorzeichenwechsel."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er hat dort einen Wendepunkt auf der x-Achse.",
+              "reason": "Bei einer doppelten Nullstelle gilt f(2) = f′(2) = 0 und f wechselt das Vorzeichen nicht: ein Extremum."
+            },
+            {
+              "text": "Er hat dort eine senkrechte Asymptote.",
+              "reason": "Ganzrationale Funktionen haben keine Polstellen."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TPGNZR25Y6Q2ZHJP3FC",
+          "slug": "m11-grad3-wendepunkt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-5-untersuchung",
+          "question": "Wie viele Wendepunkte hat der Graph einer ganzrationalen Funktion dritten Grades?",
+          "concept": "genau einen, und der Graph ist punktsymmetrisch zu ihm",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "genau einen, und der Graph ist punktsymmetrisch zu ihm",
+              "zwei"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "keinen, wenn der Graph keine Extrempunkte hat",
+              "reason": "f″ ist linear mit einer Nullstelle und Vorzeichenwechsel, also gibt es genau einen."
+            },
+            {
+              "text": "zwei, zwischen je zwei Extrempunkten einen",
+              "reason": "Eine Funktion dritten Grades hat höchstens zwei Extrempunkte und dazwischen genau einen Wendepunkt."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TPK5Y0XH36MZ541C5RK",
+          "slug": "m11-kurvendiskussion-beispiel",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-5-untersuchung",
+          "question": "Untersuche f(x) = x³ − 3x² + 4 auf Nullstellen, Extrem- und Wendepunkte.",
+          "concept": "H(0 | 4), T(2 | 0), W(1 | 2); Nullstellen −1 und 2",
+          "materiality": "material",
+          "sample_solution": "f′(x) = 3x² − 6x = 3x(x − 2): bei 0 von + nach − (Hochpunkt), bei 2 von − nach + (Tiefpunkt). f″(x) = 6x − 6: Wendestelle 1 mit f(1) = 2. Die doppelte Nullstelle 2 ist der Tiefpunkt auf der x-Achse. Für x → +∞ gilt f(x) → +∞, für x → −∞ f(x) → −∞.",
+          "choice_distractors": [
+            {
+              "text": "H(2 | 0), T(0 | 4), W(1 | 2); Nullstellen −1 und 2",
+              "reason": "Hoch- und Tiefpunkt sind vertauscht: Bei 0 wechselt f′ von + nach −."
+            },
+            {
+              "text": "H(0 | 4), T(2 | 0), W(0 | 4); Nullstellen −1, 2, 3",
+              "reason": "f hat nur die Nullstellen −1 und 2; bei 0 liegt der Hochpunkt, nicht der Wendepunkt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M6XB9TG09XZP8TQ73TYNCNHA",
+      "atom_uri": "urn:zam:atom:01M6XB9TG09XZP8TQ73TYNCNHA",
+      "namespace": "zam-academy-mathematik-gymnasium-11",
+      "slug": "m11-newton-verfahren",
+      "title": "Newton-Verfahren",
+      "domain": "mathematik/analysis",
+      "reduction": "axiomatic",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-6-newton",
+      "prerequisites": [
+        {
+          "atom_id": "01M6XB9TFH1FED7SVK1VQV3HC4"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-gymnasium-11",
+          "topic_code": "stage-5-kurvenuntersuchung",
+          "topic_title": "Etappe 5: Ganzrationale Funktionen untersuchen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "exam_relevant": true,
+          "topic_code": "lb4",
+          "topic_title": "Grundlagen der Differentialrechnung: Anwendung bei der Untersuchung ganzrationaler Funktionen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M6XB9TPP2ZEGE2YAGR0VJZRB",
+          "slug": "m11-newton-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-6-newton",
+          "question": "Wie lautet die Iterationsvorschrift des Newton-Verfahrens?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "x_{n+1} = x_n - \\frac{f(x_n)}{f'(x_n)}",
+              "speech": "x n plus 1 gleich x n minus f von x n durch f Strich von x n"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "x_{n+1} = x_n - \\frac{f(x_n)}{f'(x_n)}",
+                  "speech": "x n plus 1 gleich x n minus f von x n durch f Strich von x n"
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": "xₙ₊₁ = xₙ + f(xₙ) : f′(xₙ)"
+                }
+              ]
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "xₙ₊₁ = xₙ − f′(xₙ) : f(xₙ)",
+              "reason": "Zähler und Nenner sind vertauscht: Geteilt wird durch die Steigung f′."
+            },
+            {
+              "text": "xₙ₊₁ = f(xₙ) : f′(xₙ)",
+              "reason": "Die Korrektur f(xₙ) : f′(xₙ) wird von xₙ abgezogen; allein ist sie keine Näherung."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TPR4CPPVCH6K6RM5TBQ",
+          "slug": "m11-newton-abbruch",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-6-newton",
+          "question": "Wann bricht das Newton-Verfahren ab?",
+          "concept": "wenn die Tangente bei xₙ waagrecht ist, also f′ = 0",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "wenn die Tangente bei xₙ waagrecht ist, also f′ = 0",
+              "wenn f an der Stelle xₙ negativ ist"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "wenn der Startwert x₀ eine negative Zahl ist",
+              "reason": "Auch negative Startwerte funktionieren, etwa für die Nullstelle ≈ −1,879 von x³ − 3x + 1."
+            },
+            {
+              "text": "immer nach genau drei Schritten der Rechnung",
+              "reason": "Man rechnet so lange, bis die gewünschte Genauigkeit erreicht ist."
+            }
+          ]
+        },
+        {
+          "id": "01M6XB9TPVVNNJC9ZDAB7XW6BY",
+          "slug": "m11-newton-schritt",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/mathematik-gymnasium-11/#lesson=ku-6-newton",
+          "question": "Führe für f(x) = x³ − 3x + 1 einen Newton-Schritt mit x₀ = 2 aus.",
+          "concept": "x₁ = 2 − 3 : 9 ≈ 1,667",
+          "materiality": "material",
+          "sample_solution": "f(2) = 8 − 6 + 1 = 3, f′(x) = 3x² − 3, f′(2) = 9. x₁ = 2 − 3/9 ≈ 1,6667. Weitere Schritte: 1,5486; 1,5324; 1,5321, die Nullstelle ≈ 1,532.",
+          "choice_distractors": [
+            {
+              "text": "x₁ = 2 + 3 : 9 ≈ 2,333",
+              "reason": "Im Newton-Verfahren wird f(x₀) : f′(x₀) abgezogen."
+            },
+            {
+              "text": "x₁ = 2 − 9 : 3 = −1",
+              "reason": "Geteilt wird f(x₀) = 3 durch f′(x₀) = 9, nicht umgekehrt."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

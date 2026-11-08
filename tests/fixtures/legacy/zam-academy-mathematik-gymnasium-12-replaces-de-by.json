@@ -1,0 +1,935 @@
+{
+  "schema": 1,
+  "approved": "2026-11-08",
+  "status": "approved",
+  "source": "Thomas in der Claude-Code-Review-Session zu zam-os/zam-academy#106 am 2026-11-08, nach der dritten Prüfung (Kommentar https://github.com/zam-os/zam-academy/pull/106#issuecomment-6725605725, Stand d9cf0f7): „Freigabe der Zuordnung erteilt.“ Die Freigabe gilt der Zuordnung der 12 de-by-Karten in dieser Datei (2 A / 0 B / 10 C); die beiden Nachfolgekarten der A-Zeilen sind seit d9cf0f7 unverändert.",
+  "authorization": "Thomas hat am 8. November 2026 die hier dokumentierten 12 Zuordnungen ausdrücklich freigegeben. Die zwei A-Zeilen dürfen mit der ersten Veröffentlichung der Zelle als replaces erscheinen; die 10 C-Karten bleiben ohne Nachfolger aktiv und werden nicht zurückgezogen. Persönliche Karten und Reviewhistorien bleiben erhalten.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "e6a235f75fe87b9d57af38bd61011027b891492c",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-gymnasium-12-mathematik-e-funktion-kettenregel-produktregel-kvt.json",
+      "sha256": "08841ce56098963fa2001ce48f689c71231752a13e79808c98fe97c2a4ce4eee",
+      "tile_id": "de-by:gymnasium-12-mathematik-e-funktion-kettenregel-produktregel",
+      "version": "2026.08.1"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-12-mathematik-hypothesentests-signifikanzniveau-fehler-1-und-2-art-kvt.json",
+      "sha256": "2293d061192bbde0b1525c7fc3e73c8bcef70a9943ed79c1508917b424c5c523",
+      "tile_id": "de-by:gymnasium-12-mathematik-hypothesentests-signifikanzniveau-fehler-1-und-2-art",
+      "version": "2026.08.1"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-12-mathematik-lineare-gleichungssysteme-gauss-matrizen-kvt.json",
+      "sha256": "aa894ba8b56cba965c879c2f09b8ef68b4eb654894eac81134695ac47f9c070e",
+      "tile_id": "de-by:gymnasium-12-mathematik-lineare-gleichungssysteme-gauss-matrizen",
+      "version": "2026.08.1"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:gymnasium-12-mathematik-e-funktion-kettenregel-produktregel",
+      "de_by_id": "01K8GC00000000000000000J01",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Wie lautet die 1. Ableitung der Funktion "
+        },
+        {
+          "type": "math",
+          "tex": "f(x) = (2x - 3) \\cdot e^{-x}",
+          "speech": "f von x gleich Klammer auf 2 x minus 3 Klammer zu mal e hoch minus x"
+        },
+        {
+          "type": "text",
+          "text": " nach Produkt- und Kettenregel?"
+        }
+      ],
+      "category": "A",
+      "academy_slug": "g12-exp-ableitung-regeln-check",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Ableitung einer verknüpften Exponentialfunktion nach Produkt- und Kettenregel."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-12-mathematik-e-funktion-kettenregel-produktregel",
+      "de_by_id": "01K8GC00000000000000000J02",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Untersuche die Funktion "
+        },
+        {
+          "type": "math",
+          "tex": "f(x) = (x^2 - 4) \\cdot e^{-x}",
+          "speech": "f von x gleich Klammer auf x Quadrat minus 4 Klammer zu mal e hoch minus x"
+        },
+        {
+          "type": "text",
+          "text": " auf ihrem maximalen Definitionsbereich "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbb{D} = \\mathbb{R}",
+          "speech": "D gleich R"
+        },
+        {
+          "type": "text",
+          "text": ": 1. Bestimme alle Nullstellen von "
+        },
+        {
+          "type": "math",
+          "tex": "f(x)",
+          "speech": "f von x"
+        },
+        {
+          "type": "text",
+          "text": ", 2. Berechne die 1. und 2. Ableitung "
+        },
+        {
+          "type": "math",
+          "tex": "f'(x)",
+          "speech": "f Strich von x"
+        },
+        {
+          "type": "text",
+          "text": " und "
+        },
+        {
+          "type": "math",
+          "tex": "f''(x)",
+          "speech": "f Strich Strich von x"
+        },
+        {
+          "type": "text",
+          "text": " unter Ausklammern von "
+        },
+        {
+          "type": "math",
+          "tex": "e^{-x}",
+          "speech": "e hoch minus x"
+        },
+        {
+          "type": "text",
+          "text": ", 3. Ermittle alle lokalen Extrempunkte (Hoch-/Tiefpunkte mit "
+        },
+        {
+          "type": "math",
+          "tex": "x",
+          "speech": "x"
+        },
+        {
+          "type": "text",
+          "text": "- und "
+        },
+        {
+          "type": "math",
+          "tex": "y",
+          "speech": "y"
+        },
+        {
+          "type": "text",
+          "text": "-Koordinaten sowie Nachweis über "
+        },
+        {
+          "type": "math",
+          "tex": "f''",
+          "speech": "f Strich Strich"
+        },
+        {
+          "type": "text",
+          "text": "), 4. Untersuche das Grenzverhalten für "
+        },
+        {
+          "type": "math",
+          "tex": "x \\to +\\infty",
+          "speech": "x gegen plus unendlich"
+        },
+        {
+          "type": "text",
+          "text": " und "
+        },
+        {
+          "type": "math",
+          "tex": "x \\to -\\infty",
+          "speech": "x gegen minus unendlich"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteiliger Gesamtabruf (Nullstellen, 1. und 2. Ableitung, Extrema, Grenzverhalten); das neue Paket teilt die Teilkompetenzen auf fokussierte Karten auf, keine Historienübertragung."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-12-mathematik-e-funktion-kettenregel-produktregel",
+      "de_by_id": "01K8GC00000000000000000J03",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Wie lautet die exakte Integralformel zur Berechnung des Volumens "
+        },
+        {
+          "type": "math",
+          "tex": "V_x",
+          "speech": "V x"
+        },
+        {
+          "type": "text",
+          "text": " eines Rotationskörpers, der durch Rotation des Graphen einer stetigen Funktion "
+        },
+        {
+          "type": "math",
+          "tex": "f(x)",
+          "speech": "f von x"
+        },
+        {
+          "type": "text",
+          "text": " im Intervall "
+        },
+        {
+          "type": "math",
+          "tex": "[a; b]",
+          "speech": "Intervall von a bis b"
+        },
+        {
+          "type": "text",
+          "text": " um die "
+        },
+        {
+          "type": "math",
+          "tex": "x",
+          "speech": "x"
+        },
+        {
+          "type": "text",
+          "text": "-Achse entsteht?"
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Volumenberechnung von Rotationskörpern gehört im bayerischen G9-LehrplanPLUS zur Jahrgangsstufe 13 (Analysis vertieft); bleibt aktiv und erhält keinen Nachfolger in M12."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-12-mathematik-e-funktion-kettenregel-produktregel",
+      "de_by_id": "01K8GC00000000000000000J04",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Analysiere uneigentliche Integrale und Rotationskörper: 1. Das uneigentliche Integral ins Unendliche:   * Definiert als Grenzwert einer Integralfunktion:     "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{\\int_a^\\infty f(x)\\,\\mathrm{d}x = \\lim_{z \\to \\infty} \\int_a^z f(x)\\,\\mathrm{d}x}",
+          "block": true,
+          "speech": "Integral von a bis unendlich über f von x d x gleich Limes für z gegen unendlich Integral von a bis z über f von x d x"
+        },
+        {
+          "type": "text",
+          "text": "   * Existiert der endliche Grenzwert, so konvergiert das uneigentliche Integral; andernfalls divergiert es, 2. Der Rotationskörper um die "
+        },
+        {
+          "type": "math",
+          "tex": "x",
+          "speech": "x"
+        },
+        {
+          "type": "text",
+          "text": "-Achse:   * Rotation der Kreisquerschnittsflächen mit Radius "
+        },
+        {
+          "type": "math",
+          "tex": "r = f(x) \\implies A(x) = \\pi \\cdot [f(x)]^2",
+          "speech": "r gleich f von x, daraus folgt A von x gleich Pi mal f von x zum Quadrat"
+        },
+        {
+          "type": "text",
+          "text": ":     "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{V_x = \\pi \\int_a^b [f(x)]^2\\,\\mathrm{d}x}",
+          "block": true,
+          "speech": "V x gleich Pi mal Integral von a bis b über f von x Quadrat d x"
+        },
+        {
+          "type": "text",
+          "text": " 3. Konkrete Durchrechnung:   * Gegeben ist "
+        },
+        {
+          "type": "math",
+          "tex": "f(x) = 2 \\cdot e^{-0{,}5 x}",
+          "speech": "f von x gleich 2 mal e hoch minus 0,5 x"
+        },
+        {
+          "type": "text",
+          "text": " über dem unbeschränkten Intervall "
+        },
+        {
+          "type": "math",
+          "tex": "[0; +\\infty[",
+          "speech": "Intervall von 0 bis plus unendlich, rechts offen"
+        },
+        {
+          "type": "text",
+          "text": ".   * a) Berechne die vom Graphen und den Koordinatenachsen vollständig eingeschlossene unendliche Fläche "
+        },
+        {
+          "type": "math",
+          "tex": "A = \\int_0^\\infty f(x)\\,\\mathrm{d}x",
+          "speech": "A gleich Integral von 0 bis unendlich über f von x d x"
+        },
+        {
+          "type": "text",
+          "text": ".   * b) Berechne das Volumen "
+        },
+        {
+          "type": "math",
+          "tex": "V_x",
+          "speech": "V x"
+        },
+        {
+          "type": "text",
+          "text": " des unendlich langen Rotationskörpers, der bei Rotation dieser Fläche um die "
+        },
+        {
+          "type": "math",
+          "tex": "x",
+          "speech": "x"
+        },
+        {
+          "type": "text",
+          "text": "-Achse entsteht."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Uneigentliche Integrale und Rotationskörper gehören im G9-LehrplanPLUS zu Jahrgangsstufe 13; bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-12-mathematik-hypothesentests-signifikanzniveau-fehler-1-und-2-art",
+      "de_by_id": "01K8GC20000000000000000J01",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Ein Hersteller behauptet, dass mindestens 90 % seiner Akkus fehlerfrei sind ("
+        },
+        {
+          "type": "math",
+          "tex": "H_0: p \\ge 0{,}90",
+          "speech": "H null: p größer gleich 0,90"
+        },
+        {
+          "type": "text",
+          "text": "). Ein Verbrauchermagazin vermutet eine schlechtere Qualität ("
+        },
+        {
+          "type": "math",
+          "tex": "H_1: p < 0{,}90",
+          "speech": "H eins: p kleiner als 0,90"
+        },
+        {
+          "type": "text",
+          "text": "). Welcher Testtyp liegt vor und wo liegt der Ablehnungsbereich der Nullhypothese?"
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Alte Multi-Part-Frage (Testtyp und Ablehnungsbereich kombiniert) wird in der Akademie auf separate atomare Kärtchen aufgeteilt; bleibt vorerst eigenständig aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-12-mathematik-hypothesentests-signifikanzniveau-fehler-1-und-2-art",
+      "de_by_id": "01K8GC20000000000000000J02",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Strukturiere die Durchführung eines rechtsseitigen Hypothesentests: 1. Aufstellen der Hypothesen:   * "
+        },
+        {
+          "type": "math",
+          "tex": "H_0: p \\le p_0",
+          "speech": "H null: p kleiner gleich p null"
+        },
+        {
+          "type": "text",
+          "text": " (Status quo / Behauptung, die widerlegt werden soll).   * "
+        },
+        {
+          "type": "math",
+          "tex": "H_1: p > p_0",
+          "speech": "H eins: p größer als p null"
+        },
+        {
+          "type": "text",
+          "text": " (Forschungsvermutung), 2. Festlegung von Testgröße und Signifikanzniveau:   * Stichprobenumfang "
+        },
+        {
+          "type": "math",
+          "tex": "n",
+          "speech": "n"
+        },
+        {
+          "type": "text",
+          "text": ", Testgröße "
+        },
+        {
+          "type": "math",
+          "tex": "X \\sim B(n; p_0)",
+          "speech": "X ist binomialverteilt mit n und p null"
+        },
+        {
+          "type": "text",
+          "text": ".   * Signifikanzniveau "
+        },
+        {
+          "type": "math",
+          "tex": "\\alpha",
+          "speech": "Alpha"
+        },
+        {
+          "type": "text",
+          "text": " (z. B. "
+        },
+        {
+          "type": "math",
+          "tex": "\\alpha = 0{,}05",
+          "speech": "Alpha gleich 0,05"
+        },
+        {
+          "type": "text",
+          "text": "), 3. Bestimmung der Entscheidungsregel:   * Ablehnungsbereich "
+        },
+        {
+          "type": "math",
+          "tex": "\\bar{A} = \\{k+1, \\dots, n\\}",
+          "speech": "A quer gleich die Menge von k plus 1 bis n"
+        },
+        {
+          "type": "text",
+          "text": ".   * Bedingung: "
+        },
+        {
+          "type": "math",
+          "tex": "P_{p_0}(X \\in \\bar{A}) = P_{p_0}(X \\ge k+1) = 1 - P_{p_0}(X \\le k) \\le \\alpha \\iff P_{p_0}(X \\le k) \\ge 1 - \\alpha",
+          "speech": "P p null von X Element von A quer gleich P p null von X größer gleich k plus 1 gleich 1 minus P p null von X kleiner gleich k kleiner gleich Alpha, genau dann, wenn P p null von X kleiner gleich k größer gleich 1 minus Alpha"
+        },
+        {
+          "type": "text",
+          "text": ", 4. Entscheidung & Interpretation:   * Fällt das Stichprobenergebnis "
+        },
+        {
+          "type": "math",
+          "tex": "x \\in \\bar{A}",
+          "speech": "x Element von A quer"
+        },
+        {
+          "type": "text",
+          "text": ", wird "
+        },
+        {
+          "type": "math",
+          "tex": "H_0",
+          "speech": "H null"
+        },
+        {
+          "type": "text",
+          "text": " zugunsten von "
+        },
+        {
+          "type": "math",
+          "tex": "H_1",
+          "speech": "H eins"
+        },
+        {
+          "type": "text",
+          "text": " verworfen; fällt "
+        },
+        {
+          "type": "math",
+          "tex": "x \\in A",
+          "speech": "x Element von A"
+        },
+        {
+          "type": "text",
+          "text": ", wird "
+        },
+        {
+          "type": "math",
+          "tex": "H_0",
+          "speech": "H null"
+        },
+        {
+          "type": "text",
+          "text": " nicht verworfen."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteiliger Testablauf (Hypothesenpaar, Testgröße, Entscheidungsregel, Ablehnungsbereich); bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-12-mathematik-hypothesentests-signifikanzniveau-fehler-1-und-2-art",
+      "de_by_id": "01K8GC20000000000000000J03",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Was versteht man in der Testtheorie unter einem 'Fehler 1. Art' ("
+        },
+        {
+          "type": "math",
+          "tex": "\\alpha",
+          "speech": "Alpha"
+        },
+        {
+          "type": "text",
+          "text": "-Fehler)?"
+        }
+      ],
+      "category": "A",
+      "academy_slug": "g12-hypo-fehlerarten-check",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Definition des Fehlers 1. Art (Alpha-Fehler) als Ablehnung einer wahren Nullhypothese."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-12-mathematik-hypothesentests-signifikanzniveau-fehler-1-und-2-art",
+      "de_by_id": "01K8GC20000000000000000J04",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Analysiere und berechne die beiden Fehlerarten bei einem Hypothesentest: 1. Vierfeldertafel der Testentscheidungen: | Reale Realität | Entscheidung: "
+        },
+        {
+          "type": "math",
+          "tex": "H_0",
+          "speech": "H null"
+        },
+        {
+          "type": "text",
+          "text": " beibehalten ("
+        },
+        {
+          "type": "math",
+          "tex": "x \\in A",
+          "speech": "x Element von A"
+        },
+        {
+          "type": "text",
+          "text": ") | Entscheidung: "
+        },
+        {
+          "type": "math",
+          "tex": "H_0",
+          "speech": "H null"
+        },
+        {
+          "type": "text",
+          "text": " ablehnen ("
+        },
+        {
+          "type": "math",
+          "tex": "x \\in \\bar{A}",
+          "speech": "x Element von A quer"
+        },
+        {
+          "type": "text",
+          "text": ") | | :--- | :--- | :--- | | "
+        },
+        {
+          "type": "math",
+          "tex": "H_0",
+          "speech": "H null"
+        },
+        {
+          "type": "text",
+          "text": " ist wahr | Richtige Entscheidung ("
+        },
+        {
+          "type": "math",
+          "tex": "1 - \\alpha",
+          "speech": "1 minus Alpha"
+        },
+        {
+          "type": "text",
+          "text": ") | Fehler 1. Art ("
+        },
+        {
+          "type": "math",
+          "tex": "\\alpha",
+          "speech": "Alpha"
+        },
+        {
+          "type": "text",
+          "text": "-Fehler) | | "
+        },
+        {
+          "type": "math",
+          "tex": "H_0",
+          "speech": "H null"
+        },
+        {
+          "type": "text",
+          "text": " ist falsch ("
+        },
+        {
+          "type": "math",
+          "tex": "H_1",
+          "speech": "H eins"
+        },
+        {
+          "type": "text",
+          "text": " wahr) | Fehler 2. Art ("
+        },
+        {
+          "type": "math",
+          "tex": "\\beta",
+          "speech": "Beta"
+        },
+        {
+          "type": "text",
+          "text": "-Fehler) | Richtige Entscheidung / Power ("
+        },
+        {
+          "type": "math",
+          "tex": "1 - \\beta",
+          "speech": "1 minus Beta"
+        },
+        {
+          "type": "text",
+          "text": ") | 2. Definition und Berechnung:   * Fehler 1. Art ("
+        },
+        {
+          "type": "math",
+          "tex": "\\alpha",
+          "speech": "Alpha"
+        },
+        {
+          "type": "text",
+          "text": "-Risiko): Wahrscheinlichkeit, dass die Testgröße "
+        },
+        {
+          "type": "math",
+          "tex": "X",
+          "speech": "X"
+        },
+        {
+          "type": "text",
+          "text": " in den Ablehnungsbereich "
+        },
+        {
+          "type": "math",
+          "tex": "\\bar{A}",
+          "speech": "A quer"
+        },
+        {
+          "type": "text",
+          "text": " fällt, obwohl "
+        },
+        {
+          "type": "math",
+          "tex": "p_0",
+          "speech": "p null"
+        },
+        {
+          "type": "text",
+          "text": " zutrifft:     "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{P(\\text{Fehler 1. Art}) = P_{p_0}(X \\in \\bar{A}) \\le \\alpha}",
+          "block": true,
+          "speech": "P von Fehler 1. Art gleich P p null von X Element von A quer, kleiner gleich Alpha"
+        },
+        {
+          "type": "text",
+          "text": "   * Fehler 2. Art ("
+        },
+        {
+          "type": "math",
+          "tex": "\\beta",
+          "speech": "Beta"
+        },
+        {
+          "type": "text",
+          "text": "-Risiko): Wahrscheinlichkeit, dass die Testgröße "
+        },
+        {
+          "type": "math",
+          "tex": "X",
+          "speech": "X"
+        },
+        {
+          "type": "text",
+          "text": " im Annahmebereich "
+        },
+        {
+          "type": "math",
+          "tex": "A",
+          "speech": "A"
+        },
+        {
+          "type": "text",
+          "text": " landet, obwohl in Wirklichkeit ein alternativer Parameterwert "
+        },
+        {
+          "type": "math",
+          "tex": "p_1",
+          "speech": "p eins"
+        },
+        {
+          "type": "text",
+          "text": " vorliegt:     "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{P(\\text{Fehler 2. Art}) = P_{p_1}(X \\in A)}",
+          "block": true,
+          "speech": "P von Fehler 2. Art gleich P p eins von X Element von A"
+        },
+        {
+          "type": "text",
+          "text": " 3. Zielkonflikt:   * Durch Absenkung von "
+        },
+        {
+          "type": "math",
+          "tex": "\\alpha",
+          "speech": "Alpha"
+        },
+        {
+          "type": "text",
+          "text": " vergrößert sich zwangsläufig der Annahmebereich "
+        },
+        {
+          "type": "math",
+          "tex": "A \\implies \\beta",
+          "speech": "A, daraus folgt Beta"
+        },
+        {
+          "type": "text",
+          "text": " steigt. Die einzige Möglichkeit, beide Fehler gleichzeitig zu senken, besteht in der Erhöhung des Stichprobenumfangs "
+        },
+        {
+          "type": "math",
+          "tex": "n",
+          "speech": "n"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Berechnung beider Fehlerarten und Vierfeldertafel; bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-12-mathematik-lineare-gleichungssysteme-gauss-matrizen",
+      "de_by_id": "01K8GC10000000000000000J01",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Welche Aussage über die Lösungsmenge eines linearen Gleichungssystems (LGS) trifft zu, wenn die Zeilenstufenform des Gauß-Verfahrens eine Zeile der Form "
+        },
+        {
+          "type": "math",
+          "tex": "(0\\;0\\;0\\;|\\;7)",
+          "speech": "Zeile null, null, null, Strich, sieben"
+        },
+        {
+          "type": "text",
+          "text": " enthält?"
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Lineare Gleichungssysteme mit Gauß-Verfahren gehören im G9 zur Mittelstufe bzw. zum Vertiefungskurs, nicht zum regulären Fachlehrplan M12; bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-12-mathematik-lineare-gleichungssysteme-gauss-matrizen",
+      "de_by_id": "01K8GC10000000000000000J02",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Löse das folgende lineare Gleichungssystem (LGS) systematisch mit dem Gaußschen Eliminationsverfahren: "
+        },
+        {
+          "type": "math",
+          "tex": "\\begin{aligned}   (I)   & \\quad x_1 + 2x_2 - x_3 = 3 \\\\   (II)  & \\quad 2x_1 + 5x_2 + x_3 = 11 \\\\   (III) & \\quad -x_1 - x_2 + 4x_3 = 4 \\end{aligned}",
+          "block": true,
+          "speech": "Gleichung eins: x eins plus 2 x zwei minus x drei gleich 3; Gleichung zwei: 2 x eins plus 5 x zwei plus x drei gleich 11; Gleichung drei: minus x eins minus x zwei plus 4 x drei gleich 4"
+        },
+        {
+          "type": "text",
+          "text": " 1. Stelle die erweiterte Koeffizientenmatrix "
+        },
+        {
+          "type": "math",
+          "tex": "(A|b)",
+          "speech": "erweiterte Matrix A, Strich, b"
+        },
+        {
+          "type": "text",
+          "text": " auf, 2. Führe elementare Zeilenumformungen zur oberen Dreiecksform (Zeilenstufenform) durch, 3. Bestimme die eindeutige Lösungsmenge "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbb{L}",
+          "speech": "L"
+        },
+        {
+          "type": "text",
+          "text": " durch Rückwärtseinsetzen."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteiliges Gauß-Eliminationsverfahren; gehört im G9 nicht zum Pflichtstoff von M12; bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-12-mathematik-lineare-gleichungssysteme-gauss-matrizen",
+      "de_by_id": "01K8GC10000000000000000J03",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Welche Eigenschaft muss eine quadratische Matrix "
+        },
+        {
+          "type": "math",
+          "tex": "M",
+          "speech": "M"
+        },
+        {
+          "type": "text",
+          "text": " zwingend aufweisen, um eine stochastische Übergangsmatrix darzustellen?"
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Stochastische Übergangsmatrizen gehören im G9 zum Vertiefungskurs Mathematik, nicht zum regulären Fachlehrplan M12; bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-12-mathematik-lineare-gleichungssysteme-gauss-matrizen",
+      "de_by_id": "01K8GC10000000000000000J04",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Analysiere stochastische Übergangsprozesse und berechne die stationäre Grenzverteilung (Fixvektor): 1. Stochastische Übergangsmatrix "
+        },
+        {
+          "type": "math",
+          "tex": "M",
+          "speech": "M"
+        },
+        {
+          "type": "text",
+          "text": ":   * Beschreibt Zustandswechsel zwischen Zuständen "
+        },
+        {
+          "type": "math",
+          "tex": "Z_1, Z_2, \\dots, Z_k",
+          "speech": "Z eins, Z zwei bis Z k"
+        },
+        {
+          "type": "text",
+          "text": ".   * Zustand nach "
+        },
+        {
+          "type": "math",
+          "tex": "n",
+          "speech": "n"
+        },
+        {
+          "type": "text",
+          "text": " Schritten: "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{\\vec{v}_n = M^n \\cdot \\vec{v}_0}",
+          "speech": "Vektor v n gleich M hoch n mal Vektor v null"
+        },
+        {
+          "type": "text",
+          "text": ". 2. Der Fixvektor / Stationäre Zustand "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{v}_{\\text{stat}}",
+          "speech": "Vektor v stat"
+        },
+        {
+          "type": "text",
+          "text": ":   * Ein Zustandsvektor, der sich bei Multiplikation mit "
+        },
+        {
+          "type": "math",
+          "tex": "M",
+          "speech": "M"
+        },
+        {
+          "type": "text",
+          "text": " nicht mehr verändert:     "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{M \\cdot \\vec{v}_{\\text{stat}} = \\vec{v}_{\\text{stat}} \\iff (M - E) \\cdot \\vec{v}_{\\text{stat}} = \\vec{0}}",
+          "block": true,
+          "speech": "M mal Vektor v stat gleich Vektor v stat genau dann, wenn, M minus E, mal Vektor v stat gleich Nullvektor"
+        },
+        {
+          "type": "text",
+          "text": "   * Zusammen mit der Normierungsbedingung "
+        },
+        {
+          "type": "math",
+          "tex": "\\sum v_i = 1",
+          "speech": "Summe der v i gleich 1"
+        },
+        {
+          "type": "text",
+          "text": " bzw. "
+        },
+        {
+          "type": "math",
+          "tex": "100\\%",
+          "speech": "100 Prozent"
+        },
+        {
+          "type": "text",
+          "text": ", 3. Konkrete Berechnung:   * Gegeben ist die Übergangsmatrix zweier Smartphone-Hersteller A und B:     "
+        },
+        {
+          "type": "math",
+          "tex": "M = \\begin{pmatrix} 0{,}8 & 0{,}3 \\\\ 0{,}2 & 0{,}7 \\end{pmatrix}",
+          "block": true,
+          "speech": "M gleich die Matrix mit den Zeilen 0,8 und 0,3 sowie 0,2 und 0,7"
+        },
+        {
+          "type": "text",
+          "text": "   * Berechne den langfristigen stationären Marktanteil "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{v}_{\\text{stat}} = \\begin{pmatrix} x \\\\ y \\end{pmatrix}",
+          "speech": "Vektor v stat gleich Spaltenvektor x, y"
+        },
+        {
+          "type": "text",
+          "text": " von A und B."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Berechnung des Fixvektors / Grenzverteilung einer Übergangsmatrix; gehört zum Vertiefungskurs; bleibt aktiv."
+    }
+  ]
+}

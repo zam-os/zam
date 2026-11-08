@@ -51,12 +51,14 @@ describe("bundled ZAM Academy cells", () => {
       .filter((entry) => entry.preview === true)
       .map((entry) => entry.id)
       .sort();
-    // The Grade 4 cells have no teacher review yet. Lifting this is a catalog
-    // change in zam-os/zam-academy, followed by `npm run academy:sync`.
+    // The Grade 4 cells and Mathematik 13 Gymnasium have no teacher review
+    // yet (Mathematik 13 also lacks its teacher videos). Lifting this is a catalog change in
+    // zam-os/zam-academy, followed by `npm run academy:sync`.
     expect(recorded).toEqual([
       "zam-academy:deutsch-grundschule-4",
       "zam-academy:hsu-grundschule-4",
       "zam-academy:mathematik-grundschule-4",
+      "zam-academy:mathematik-gymnasium-13",
     ]);
     for (const cells of [BUNDLED_CELLS, listBundledCells()]) {
       expect(

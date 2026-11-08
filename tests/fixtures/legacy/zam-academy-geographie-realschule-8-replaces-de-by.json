@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "status": "proposal-only",
+  "approved": null,
+  "source": "Thomas beauftragte am 26. Oktober 2026 den Bau von Geographie 8. Keine Freigabe einer Lernstandsübertragung oder Stilllegung.",
+  "source_repository": "https://github.com/zam-os/zam",
+  "source_commit": "e6a235f75fe87b9d57af38bd61011027b891492c",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-8-geographie-tropen-regenwald-passat-wuesten-kvt.json",
+      "tile_id": "de-by:realschule-8-geographie-tropen-regenwald-passat-wuesten",
+      "version": "2026.08.1",
+      "sha256": "c1f7a05aa9cf98f840bf48796fe938fff7cc338d40cc7b3a0e86722b98d13ea1"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-8-geographie-tropen-regenwald-passat-wuesten",
+      "de_by_question": "Wo befinden sich im tropischen Regenwald über 80 % der gesamten Nährstoffe des Ökosystems?",
+      "de_by_id": "01K4G8T0000000000000000J01",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Pauschale Nährstoffquote ohne Standort und Speicherdefinition; die neue Lektion erklärt Nutzung und Folgen, keine gleiche atomare Abfrage."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-geographie-tropen-regenwald-passat-wuesten",
+      "de_by_question": "Analysiere das Ökosystem des tropischen Regenwalds: 1. Tageszeitenklima (Temperaturunterschiede zwischen Tag und Nacht sind mit ca. 8–10 °C größer als zwischen den Jahreszeiten; ganzjährig ca. 25–28 °C; tägliche Zenitalregen am Nachmittag durch starke Konvektion), 2. Stockwerkbau (Stratifikation): Urwaldriesen (Emergenten bis 60 m), Kronendach (zusammenhängend bei 30–40 m), Mittlere Baumschicht, Strauchschicht, Kraut-/Moosschicht am dämmrigen Waldboden mit Brettwurzeln und Epiphyten/Aufsitzerpflanzen, 3. Der kurzgeschlossene Nährstoffkreislauf (rasche Zersetzung von Falllaub durch Mykorrhiza-Pilze und sofortige Wiederaufnahme über Flachwurzeln), 4. Ursachen und ökologische Folgen der Brandrodung (Tropischer Boden lateritisiert, verkrustet und wird nach 2–3 Jahren unfruchtbar).",
+      "de_by_id": "01K4G8T0000000000000000J02",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Mehrteilige, teils unzulässig pauschale Regenwaldfrage (täglicher Regen, Lateritisierung und feste Nutzungsdauer); keine sichere vollständige Entsprechung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-geographie-tropen-regenwald-passat-wuesten",
+      "de_by_question": "Warum sind die Gebiete an den geographischen Wendekreisen (ca. 23,5° N und S, z. B. Sahara, Atacama, Australische Wüste) extrem trocken und bilden Wendekreiswüsten?",
+      "de_by_id": "01K4G8T0000000000000000J03",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Passatzirkulation und Wendekreiswüsten sind kein eigener Pflichtbereich von Geo8. Atacamas Trockenheit hat mehrere Ursachen; keine gleiche Abfrage."
+    },
+    {
+      "de_by_cell": "de-by:realschule-8-geographie-tropen-regenwald-passat-wuesten",
+      "de_by_question": "Erkläre das globale Strömungssystem der Passatzirkulation (Hadley-Zelle) schrittweise: 1. Zenitalstand der Sonne am Äquator: Maximale Einstrahlung erwärmt die Luft führt zu Luft dehnt sich aus, wird spezifisch leichter und steigt auf führt zu Äquatoriale Tiefdruckrinne (ITC / Innertropische Konvergenzzone) mit starken Niederschlägen, 2. Höhenantitrades: Abströmung der Höhenluft nach Norden und Süden in Richtung der Wendekreise, 3. Subtropischer Hochdruckgürtel (ca. 23,5°–30° N/S): Die abgekühlte Höhenluft sinkt großräumig ab, erwärmt sich adiabatisch, die relative Luftfeuchtigkeit sinkt drastisch führt zu wolkenloser Himmel, Trockenheit und Entstehung von Wendekreiswüsten (Sahara), 4. Bodennahe Passatwinde: Rückströmung der Luftmassen zum Äquator (durch die Corioliskraft abgelenkt als Nordost-Passat auf der Nordhalbkugel und Südost-Passat auf der Südhalbkugel).",
+      "de_by_id": "01K4G8T0000000000000000J04",
+      "category": "C",
+      "academy_slug": null,
+      "reason": "Mehrteilige Erklärung der Passatzirkulation mit pauschalen Aussagen zu täglichem Zenitalregen und einer festen Lage der ITC; weder gleicher Abruf noch vollständige neue Synthesekarte."
+    }
+  ]
+}
