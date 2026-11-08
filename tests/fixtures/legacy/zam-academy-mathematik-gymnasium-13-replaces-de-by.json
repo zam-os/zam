@@ -1,0 +1,1253 @@
+{
+ "schema": 1,
+ "approved": "2026-11-08",
+ "status": "approved",
+ "source": "Thomas im OpenCode-Chat am 8. November 2026: „Freigabe für den Bestandsabgleich erteilt - Du darfst nach den Fixes als admin mergen“. Die Freigabe gilt der Zuordnung der 12 de-by-Karten in dieser Datei (5 A / 0 B / 7 C, keine Stilllegung): Die fünf genannten Nachfolger tragen ab dieser Freigabe jeweils ein replaces auf ihre alte Karte; alle persönlichen Karten und Reviewhistorien bleiben erhalten, die sieben C-Karten bleiben aktiv. Vorheriger Stand war der Vorschlag ohne Freigabe gemäß Paketstandard vom 22.10.2026.",
+ "source_repository": "zam-os/zam",
+ "source_commit": "e6a235f75fe87b9d57af38bd61011027b891492c",
+ "sources": [
+  {
+   "file": "tests/fixtures/de-by-gymnasium-13-mathematik-gebrochen-rationale-funktionen-asymptoten-uneigentliche-integrale-kvt.json",
+   "tile_id": "de-by:gymnasium-13-mathematik-gebrochen-rationale-funktionen-asymptoten-uneigentliche-integrale",
+   "version": "2026.08.1",
+   "sha256": "dfbd89d72f82bbb9317f0371a30af9ac7e1dbd64b2687586a4f8df63c01944d8"
+  },
+  {
+   "file": "tests/fixtures/de-by-gymnasium-13-mathematik-geometrie-abstaende-hesse-kugeln-schnittwinkel-kvt.json",
+   "tile_id": "de-by:gymnasium-13-mathematik-geometrie-abstaende-hesse-kugeln-schnittwinkel",
+   "version": "2026.08.1",
+   "sha256": "ad66bf508c7247183d1aa4450c11cd21c502ee534aa6000354cf8de05a5d254b"
+  },
+  {
+   "file": "tests/fixtures/de-by-gymnasium-13-mathematik-stochastik-stetige-zufallsgroessen-normalverteilung-sigma-regeln-kvt.json",
+   "tile_id": "de-by:gymnasium-13-mathematik-stochastik-stetige-zufallsgroessen-normalverteilung-sigma-regeln",
+   "version": "2026.08.1",
+   "sha256": "12972fab828cc885a6654226575e944c7c159cee0fe0081c09e00328cfe14ce9"
+  }
+ ],
+ "policy": "A: sicher gleicher Einzelabruf, genau ein Nachfolger mit replaces. B: vollständiger alter Gesamtabruf auf genau einem eigenen Nachfolger – hier keine Zeile, keine der alten Gesamtaufgaben passt vollständig in eine Lektion von M13. C: keine Übertragung aus M11-/M12-Stoff, aus mehrteiligen Altfragen oder aus Inhalten jenseits des Fachlehrplans; alle persönlichen Karten und Reviewhistorien bleiben erhalten und aktiv.",
+ "rows": [
+  {
+   "de_by_cell": "de-by:gymnasium-13-mathematik-gebrochen-rationale-funktionen-asymptoten-uneigentliche-integrale",
+   "de_by_id": "01K8GD00000000000000000J01",
+   "de_by_question": "Wann besitzt eine gebrochen-rationale Funktion f(x) = Z(x)/N(x) für x -> +-unendlich eine schiefe/schräge Asymptote y = m*x + t (mit m != 0)?",
+   "category": "C",
+   "academy_slug": null,
+   "action": "keep-active",
+   "reason": "Gebrochen-rationale Funktionen mit Polstellen und Asymptoten sind Stoff von M11 (LB 2: gebrochen-rationale Funktionen, Grenzverhalten, Asymptoten). M13 LB 1 rechnet uneigentliche Integrale, ohne diese Klassifikation zu behandeln; die neue Zelle hat keinen Einzelnachfolger."
+  },
+  {
+   "de_by_cell": "de-by:gymnasium-13-mathematik-gebrochen-rationale-funktionen-asymptoten-uneigentliche-integrale",
+   "de_by_id": "01K8GD00000000000000000J02",
+   "de_by_question": [
+    {
+     "type": "text",
+     "text": "Analysiere gebrochen-rationale Funktionen und führe eine vollständige Asymptotenbestimmung durch: 1. Klassifikation der Definitionslücken bei "
+    },
+    {
+     "type": "math",
+     "tex": "f(x) = \\frac{Z(x)}{N(x)}",
+     "speech": "f von x gleich Z von x durch N von x"
+    },
+    {
+     "type": "text",
+     "text": ":   * Hebbare Definitionslücke bei "
+    },
+    {
+     "type": "math",
+     "tex": "x_0",
+     "speech": "x null"
+    },
+    {
+     "type": "text",
+     "text": ": Wenn "
+    },
+    {
+     "type": "math",
+     "tex": "x_0",
+     "speech": "x null"
+    },
+    {
+     "type": "text",
+     "text": " Nullstelle von Zähler und Nenner mit gleicher oder höherer Vielfachheit im Zähler ist "
+    },
+    {
+     "type": "math",
+     "tex": "\\implies",
+     "speech": "daraus folgt"
+    },
+    {
+     "type": "text",
+     "text": " der Faktor "
+    },
+    {
+     "type": "math",
+     "tex": "(x - x_0)",
+     "speech": "x minus x null"
+    },
+    {
+     "type": "text",
+     "text": " lässt sich vollständig herauskürzen; der Grenzwert "
+    },
+    {
+     "type": "math",
+     "tex": "\\lim_{x \\to x_0} f(x) = y_0",
+     "speech": "Limes für x gegen x null f von x gleich y null"
+    },
+    {
+     "type": "text",
+     "text": " existiert.   * Polstelle (senkrechte Asymptote) bei "
+    },
+    {
+     "type": "math",
+     "tex": "x_0",
+     "speech": "x null"
+    },
+    {
+     "type": "text",
+     "text": ": Wenn nach dem Kürzen eine Nennernullstelle verbleibt "
+    },
+    {
+     "type": "math",
+     "tex": "\\implies \\lim_{x \\to x_0} f(x) = \\pm \\infty",
+     "speech": "daraus folgt Limes für x gegen x null f von x gleich plus minus unendlich"
+    },
+    {
+     "type": "text",
+     "text": " (mit VZW bei ungerader Polstellen-Ordnung, ohne VZW bei gerader Ordnung), 2. Grenzverhalten im Unendlichen:   * "
+    },
+    {
+     "type": "math",
+     "tex": "\\operatorname{Grad}(Z) < \\operatorname{Grad}(N) \\implies",
+     "speech": "Grad von Z kleiner als Grad von N, daraus folgt"
+    },
+    {
+     "type": "text",
+     "text": " waagrechte Asymptote "
+    },
+    {
+     "type": "math",
+     "tex": "y = 0",
+     "speech": "y gleich 0"
+    },
+    {
+     "type": "text",
+     "text": ".   * "
+    },
+    {
+     "type": "math",
+     "tex": "\\operatorname{Grad}(Z) = \\operatorname{Grad}(N) \\implies",
+     "speech": "Grad von Z gleich Grad von N, daraus folgt"
+    },
+    {
+     "type": "text",
+     "text": " waagrechte Asymptote "
+    },
+    {
+     "type": "math",
+     "tex": "y = \\frac{a_n}{b_n}",
+     "speech": "y gleich a n durch b n"
+    },
+    {
+     "type": "text",
+     "text": ".   * "
+    },
+    {
+     "type": "math",
+     "tex": "\\operatorname{Grad}(Z) = \\operatorname{Grad}(N) + 1 \\implies",
+     "speech": "Grad von Z gleich Grad von N plus 1, daraus folgt"
+    },
+    {
+     "type": "text",
+     "text": " schiefe Asymptote "
+    },
+    {
+     "type": "math",
+     "tex": "y = m x + t",
+     "speech": "y gleich m x plus t"
+    },
+    {
+     "type": "text",
+     "text": " durch Polynomdivision "
+    },
+    {
+     "type": "math",
+     "tex": "f(x) = m x + t + \\frac{R(x)}{N(x)}",
+     "speech": "f von x gleich m x plus t plus R von x durch N von x"
+    },
+    {
+     "type": "text",
+     "text": ", 3. Konkrete Aufgabe:   * Gegeben ist die Funktion "
+    },
+    {
+     "type": "math",
+     "tex": "f(x) = \\frac{2x^3 - 4x^2 - 2x + 4}{x^2 - 1}",
+     "speech": "f von x gleich Bruch: 2 x hoch drei minus 4 x Quadrat minus 2 x plus 4, durch x Quadrat minus 1"
+    },
+    {
+     "type": "text",
+     "text": ".   * a) Bestimme die maximale Definitionsmenge "
+    },
+    {
+     "type": "math",
+     "tex": "D_f",
+     "speech": "D f"
+    },
+    {
+     "type": "text",
+     "text": ".   * b) Untersuche alle Definitionslücken auf hebbare Lücken bzw. Polstellen.   * c) Bestimme die Gleichung der schiefen Asymptote "
+    },
+    {
+     "type": "math",
+     "tex": "y = m x + t",
+     "speech": "y gleich m x plus t"
+    },
+    {
+     "type": "text",
+     "text": "."
+    }
+   ],
+   "category": "C",
+   "academy_slug": null,
+   "action": "keep-active",
+   "reason": "Mehrteilige Gesamtanalyse zu Definitionslücken, Asymptoten und Kurvendiskussion (M11 LB 2, die Differentialrechnung dafür bis M12 LB 4). Eine Historie wird nie auf Teilkarten verteilt; die alte Karte bleibt mit ihrer Historie aktiv."
+  },
+  {
+   "de_by_cell": "de-by:gymnasium-13-mathematik-gebrochen-rationale-funktionen-asymptoten-uneigentliche-integrale",
+   "de_by_id": "01K8GD00000000000000000J03",
+   "de_by_question": [
+    {
+     "type": "text",
+     "text": "Für welche reellen Exponenten "
+    },
+    {
+     "type": "math",
+     "tex": "p",
+     "speech": "p"
+    },
+    {
+     "type": "text",
+     "text": " konvergiert das uneigentliche Integral "
+    },
+    {
+     "type": "math",
+     "tex": "\\int_{1}^{\\infty} \\frac{1}{x^p} \\, dx",
+     "speech": "Integral von 1 bis unendlich über 1 durch x hoch p d x"
+    },
+    {
+     "type": "text",
+     "text": " gegen einen endlichen Flächeninhalt?"
+    }
+   ],
+   "category": "A",
+   "academy_slug": "g13-konvergenz-1-hoch-p",
+   "action": "replace",
+   "reason": "Gleicher Einzelabruf: Für welche Exponenten p das uneigentliche Integral von 1 über x hoch p gegen einen endlichen Flächeninhalt konvergiert. Der Nachfolger nennt zusätzlich den Grenzwert 1 : (p − 1)."
+  },
+  {
+   "de_by_cell": "de-by:gymnasium-13-mathematik-gebrochen-rationale-funktionen-asymptoten-uneigentliche-integrale",
+   "de_by_id": "01K8GD00000000000000000J04",
+   "de_by_question": [
+    {
+     "type": "text",
+     "text": "Analysiere Kurvenscharen, Ortskurven und berechne uneigentliche Integrale: 1. Bestimmung von Ortskurven für Scharen "
+    },
+    {
+     "type": "math",
+     "tex": "f_k(x)",
+     "speech": "f k von x"
+    },
+    {
+     "type": "text",
+     "text": ":   * Bestimme die Koordinaten des charakteristischen Punktes in Abhängigkeit von "
+    },
+    {
+     "type": "math",
+     "tex": "k",
+     "speech": "k"
+    },
+    {
+     "type": "text",
+     "text": ": "
+    },
+    {
+     "type": "math",
+     "tex": "x = x(k)",
+     "speech": "x gleich x von k"
+    },
+    {
+     "type": "text",
+     "text": " und "
+    },
+    {
+     "type": "math",
+     "tex": "y = y(k)",
+     "speech": "y gleich y von k"
+    },
+    {
+     "type": "text",
+     "text": ".   * Löse die Gleichung "
+    },
+    {
+     "type": "math",
+     "tex": "x = x(k)",
+     "speech": "x gleich x von k"
+    },
+    {
+     "type": "text",
+     "text": " nach dem Parameter "
+    },
+    {
+     "type": "math",
+     "tex": "k",
+     "speech": "k"
+    },
+    {
+     "type": "text",
+     "text": " auf: "
+    },
+    {
+     "type": "math",
+     "tex": "k = g(x)",
+     "speech": "k gleich g von x"
+    },
+    {
+     "type": "text",
+     "text": ".   * Setze "
+    },
+    {
+     "type": "math",
+     "tex": "k = g(x)",
+     "speech": "k gleich g von x"
+    },
+    {
+     "type": "text",
+     "text": " in die "
+    },
+    {
+     "type": "math",
+     "tex": "y",
+     "speech": "y"
+    },
+    {
+     "type": "text",
+     "text": "-Gleichung ein "
+    },
+    {
+     "type": "math",
+     "tex": "\\implies \\mathbf{y = y(g(x))}",
+     "speech": "daraus folgt y gleich y von g von x"
+    },
+    {
+     "type": "text",
+     "text": " (Gleichung der Ortskurve), 2. Definition des Uneigentlichen Integrals:   * 1. Art (unbeschränkte Grenze): "
+    },
+    {
+     "type": "math",
+     "tex": "\\int_{a}^{\\infty} f(x)\\,dx = \\lim_{u \\to \\infty} \\int_{a}^{u} f(x)\\,dx",
+     "speech": "Integral von a bis unendlich über f von x d x gleich Limes für u gegen unendlich Integral von a bis u über f von x d x"
+    },
+    {
+     "type": "text",
+     "text": ".   * 2. Art (unbeschränkter Integrand bei "
+    },
+    {
+     "type": "math",
+     "tex": "x_0",
+     "speech": "x null"
+    },
+    {
+     "type": "text",
+     "text": "): "
+    },
+    {
+     "type": "math",
+     "tex": "\\int_{x_0}^{b} f(x)\\,dx = \\lim_{u \\to x_0^+} \\int_{u}^{b} f(x)\\,dx",
+     "speech": "Integral von x null bis b über f von x d x gleich Limes für u gegen x null von rechts, Integral von u bis b über f von x d x"
+    },
+    {
+     "type": "text",
+     "text": ".   * Wenn der Grenzwert existiert und endlich ist, nennt man das Integral konvergent, andernfalls divergent, 3. Berechnungsaufgabe:   * Gegeben ist die Funktion "
+    },
+    {
+     "type": "math",
+     "tex": "f(x) = x \\cdot e^{-2x}",
+     "speech": "f von x gleich x mal e hoch minus 2 x"
+    },
+    {
+     "type": "text",
+     "text": " für "
+    },
+    {
+     "type": "math",
+     "tex": "x \\ge 0",
+     "speech": "x größer gleich 0"
+    },
+    {
+     "type": "text",
+     "text": ".   * a) Bestimme das unbestimmte Integral "
+    },
+    {
+     "type": "math",
+     "tex": "\\int x \\cdot e^{-2x}\\,dx",
+     "speech": "Integral über x mal e hoch minus 2 x d x"
+    },
+    {
+     "type": "text",
+     "text": " mittels partieller Integration.   * b) Berechne den Flächeninhalt "
+    },
+    {
+     "type": "math",
+     "tex": "A = \\int_{0}^{\\infty} x \\cdot e^{-2x}\\,dx",
+     "speech": "A gleich Integral von 0 bis unendlich über x mal e hoch minus 2 x d x"
+    },
+    {
+     "type": "text",
+     "text": ", den der Graph von "
+    },
+    {
+     "type": "math",
+     "tex": "f",
+     "speech": "f"
+    },
+    {
+     "type": "text",
+     "text": " mit der positiven "
+    },
+    {
+     "type": "math",
+     "tex": "x",
+     "speech": "x"
+    },
+    {
+     "type": "text",
+     "text": "-Achse vollständig einschließt."
+    }
+   ],
+   "category": "C",
+   "academy_slug": null,
+   "action": "keep-active",
+   "reason": "Mehrteilig und zu großen Teilen jenseits des Fachlehrplans M13 (Ortskurven, Kurvenscharen). Nur die Konvergenzfrage steckt in int-7-uneigentlich; ohne vollständigen Einzelnachfolger bleibt die alte Karte aktiv."
+  },
+  {
+   "de_by_cell": "de-by:gymnasium-13-mathematik-geometrie-abstaende-hesse-kugeln-schnittwinkel",
+   "de_by_id": "01K8GD10000000000000000J01",
+   "de_by_question": [
+    {
+     "type": "text",
+     "text": "Mit welcher trigonometrischen Funktion berechnet man den Schnittwinkel "
+    },
+    {
+     "type": "math",
+     "tex": "\\beta",
+     "speech": "Beta"
+    },
+    {
+     "type": "text",
+     "text": " zwischen einer Geraden mit Richtungsvektor "
+    },
+    {
+     "type": "math",
+     "tex": "\\vec{u}",
+     "speech": "Vektor u"
+    },
+    {
+     "type": "text",
+     "text": " und einer Ebene mit Normalenvektor "
+    },
+    {
+     "type": "math",
+     "tex": "\\vec{n}",
+     "speech": "Vektor n"
+    },
+    {
+     "type": "text",
+     "text": "?"
+    }
+   ],
+   "category": "A",
+   "academy_slug": "g13-schnittwinkel-gerade-ebene",
+   "action": "replace",
+   "reason": "Gleicher Einzelabruf: der Schnittwinkel zwischen Gerade und Ebene über sin φ = |n⃗ · u⃗| : (|n⃗| · |u⃗|), gefordert in M13 LB 3 (Schnittwinkel berechnen)."
+  },
+  {
+   "de_by_cell": "de-by:gymnasium-13-mathematik-geometrie-abstaende-hesse-kugeln-schnittwinkel",
+   "de_by_id": "01K8GD10000000000000000J02",
+   "de_by_question": [
+    {
+     "type": "text",
+     "text": "Analysiere metrische Abstands- und Winkelprobleme im "
+    },
+    {
+     "type": "math",
+     "tex": "\\mathbb{R}^3",
+     "speech": "R drei"
+    },
+    {
+     "type": "text",
+     "text": ": 1. Die Hessesche Normalenform (HNF):   * Gegeben Ebene "
+    },
+    {
+     "type": "math",
+     "tex": "E: n_1 x_1 + n_2 x_2 + n_3 x_3 - d = 0",
+     "speech": "Ebene E: n eins x eins plus n zwei x zwei plus n drei x drei minus d gleich 0"
+    },
+    {
+     "type": "text",
+     "text": ".   * Normierung durch Division durch den Betrag "
+    },
+    {
+     "type": "math",
+     "tex": "|\\vec{n}| = \\sqrt{n_1^2 + n_2^2 + n_3^2}",
+     "speech": "Betrag von Vektor n gleich Wurzel aus n eins Quadrat plus n zwei Quadrat plus n drei Quadrat"
+    },
+    {
+     "type": "text",
+     "text": ":     "
+    },
+    {
+     "type": "math",
+     "tex": "\\mathbf{\\text{HNF: } \\frac{n_1 x_1 + n_2 x_2 + n_3 x_3 - d}{\\sqrt{n_1^2 + n_2^2 + n_3^2}} = 0}",
+     "block": true,
+     "speech": "Hessesche Normalform: n eins x eins plus n zwei x zwei plus n drei x drei minus d, geteilt durch Wurzel aus n eins Quadrat plus n zwei Quadrat plus n drei Quadrat, gleich 0"
+    },
+    {
+     "type": "text",
+     "text": "   * Der Abstand eines beliebigen Punktes "
+    },
+    {
+     "type": "math",
+     "tex": "P(p_1, p_2, p_3)",
+     "speech": "Punkt P mit den Koordinaten p eins, p zwei und p drei"
+    },
+    {
+     "type": "text",
+     "text": " zur Ebene "
+    },
+    {
+     "type": "math",
+     "tex": "E",
+     "speech": "E"
+    },
+    {
+     "type": "text",
+     "text": " ergibt sich durch direktes Einsetzen in die linke Seite der HNF:     "
+    },
+    {
+     "type": "math",
+     "tex": "\\mathbf{d(P, E) = \\left| \\frac{n_1 p_1 + n_2 p_2 + n_3 p_3 - d}{|\\vec{n}|} \\right|}",
+     "block": true,
+     "speech": "d von P und E gleich Betrag von, n eins p eins plus n zwei p zwei plus n drei p drei minus d, geteilt durch Betrag von Vektor n"
+    },
+    {
+     "type": "text",
+     "text": ", 2. Abstand zweier windschiefer Geraden "
+    },
+    {
+     "type": "math",
+     "tex": "g",
+     "speech": "g"
+    },
+    {
+     "type": "text",
+     "text": " und "
+    },
+    {
+     "type": "math",
+     "tex": "h",
+     "speech": "h"
+    },
+    {
+     "type": "text",
+     "text": ":   * "
+    },
+    {
+     "type": "math",
+     "tex": "g: \\vec{x} = \\vec{a} + r \\vec{u}_g",
+     "speech": "g: Vektor x gleich Vektor a plus r Vektor u g"
+    },
+    {
+     "type": "text",
+     "text": ", "
+    },
+    {
+     "type": "math",
+     "tex": "h: \\vec{x} = \\vec{b} + s \\vec{u}_h",
+     "speech": "h: Vektor x gleich Vektor b plus s Vektor u h"
+    },
+    {
+     "type": "text",
+     "text": ".   * Gemeinsamer Normalenvektor: "
+    },
+    {
+     "type": "math",
+     "tex": "\\vec{n}_0 = \\frac{\\vec{u}_g \\times \\vec{u}_h}{|\\vec{u}_g \\times \\vec{u}_h|}",
+     "speech": "Vektor n null gleich Vektor u g kreuz Vektor u h, geteilt durch den Betrag von Vektor u g kreuz Vektor u h"
+    },
+    {
+     "type": "text",
+     "text": ".   * Abstand: "
+    },
+    {
+     "type": "math",
+     "tex": "\\mathbf{d(g, h) = |(\\vec{b} - \\vec{a}) \\cdot \\vec{n}_0|}",
+     "speech": "d von g und h gleich Betrag von, Vektor b minus Vektor a, mal Vektor n null"
+    },
+    {
+     "type": "text",
+     "text": ", 3. Konkrete Aufgabe:   * Gegeben Ebene "
+    },
+    {
+     "type": "math",
+     "tex": "E: 2x_1 - x_2 + 2x_3 - 9 = 0",
+     "speech": "Ebene E: 2 x eins minus x zwei plus 2 x drei minus 9 gleich 0"
+    },
+    {
+     "type": "text",
+     "text": " und Punkt "
+    },
+    {
+     "type": "math",
+     "tex": "P(5 \\mid 4 \\mid 8)",
+     "speech": "Punkt P mit den Koordinaten 5, 4 und 8"
+    },
+    {
+     "type": "text",
+     "text": ".   * a) Bestimme den Abstand "
+    },
+    {
+     "type": "math",
+     "tex": "d(P, E)",
+     "speech": "d von P und E"
+    },
+    {
+     "type": "text",
+     "text": ".   * b) Berechne den Lotfußpunkt "
+    },
+    {
+     "type": "math",
+     "tex": "F",
+     "speech": "F"
+    },
+    {
+     "type": "text",
+     "text": " des Punktes "
+    },
+    {
+     "type": "math",
+     "tex": "P",
+     "speech": "P"
+    },
+    {
+     "type": "text",
+     "text": " auf der Ebene "
+    },
+    {
+     "type": "math",
+     "tex": "E",
+     "speech": "E"
+    },
+    {
+     "type": "text",
+     "text": "."
+    }
+   ],
+   "category": "C",
+   "academy_slug": null,
+   "action": "keep-active",
+   "reason": "Mehrteilig (Normierung der Hesseschen Normalform, Abstand Punkt-Ebene, Lotfußpunkt). In rg-8-abstaende liegen eigene Karten zu jedem Teil; eine Historie wird nicht auf sie verteilt."
+  },
+  {
+   "de_by_cell": "de-by:gymnasium-13-mathematik-geometrie-abstaende-hesse-kugeln-schnittwinkel",
+   "de_by_id": "01K8GD10000000000000000J03",
+   "de_by_question": "Wie berechnet man den Radius r_k des Schnittkreises, der entsteht, wenn eine Ebene im Abstand d < r eine Kugel mit Mittelpunkt M und Kugelradius r schneidet?",
+   "category": "A",
+   "academy_slug": "g13-schnittkreisradius",
+   "action": "replace",
+   "reason": "Gleicher Einzelabruf: der Radius ρ = √(r² − d²) des Schnittkreises aus Kugel und schneidender Ebene, gefordert in M13 LB 3 (Lage von Kugeln und Ebenen)."
+  },
+  {
+   "de_by_cell": "de-by:gymnasium-13-mathematik-geometrie-abstaende-hesse-kugeln-schnittwinkel",
+   "de_by_id": "01K8GD10000000000000000J04",
+   "de_by_question": [
+    {
+     "type": "text",
+     "text": "Analysiere Kugelgleichungen und Schnittbeziehungen zwischen Kugel und Ebene: 1. Kugelgleichung im "
+    },
+    {
+     "type": "math",
+     "tex": "\\mathbb{R}^3",
+     "speech": "R drei"
+    },
+    {
+     "type": "text",
+     "text": ":   * Vektorielle Form: "
+    },
+    {
+     "type": "math",
+     "tex": "(\\vec{x} - \\vec{m})^2 = r^2",
+     "speech": "Klammer auf Vektor x minus Vektor m Klammer zu Quadrat gleich r Quadrat"
+    },
+    {
+     "type": "text",
+     "text": ".   * Koordinatenform: "
+    },
+    {
+     "type": "math",
+     "tex": "(x_1 - m_1)^2 + (x_2 - m_2)^2 + (x_3 - m_3)^2 = r^2",
+     "speech": "Klammer auf x eins minus m eins Klammer zu Quadrat plus Klammer auf x zwei minus m zwei Klammer zu Quadrat plus Klammer auf x drei minus m drei Klammer zu Quadrat gleich r Quadrat"
+    },
+    {
+     "type": "text",
+     "text": ", 2. Lagebeziehung Kugel "
+    },
+    {
+     "type": "math",
+     "tex": "K(M; r)",
+     "speech": "K von M und r"
+    },
+    {
+     "type": "text",
+     "text": " und Ebene "
+    },
+    {
+     "type": "math",
+     "tex": "E",
+     "speech": "E"
+    },
+    {
+     "type": "text",
+     "text": ":   * Bestimme den Abstand "
+    },
+    {
+     "type": "math",
+     "tex": "d = d(M, E)",
+     "speech": "d gleich d von M und E"
+    },
+    {
+     "type": "text",
+     "text": " des Kugelmittelpunkts "
+    },
+    {
+     "type": "math",
+     "tex": "M",
+     "speech": "M"
+    },
+    {
+     "type": "text",
+     "text": " zur Ebene "
+    },
+    {
+     "type": "math",
+     "tex": "E",
+     "speech": "E"
+    },
+    {
+     "type": "text",
+     "text": ":     - "
+    },
+    {
+     "type": "math",
+     "tex": "d > r",
+     "speech": "d größer als r"
+    },
+    {
+     "type": "text",
+     "text": " (Passantenebene): Kein Schnittpunkt ("
+    },
+    {
+     "type": "math",
+     "tex": "K \\cap E = \\emptyset",
+     "speech": "K geschnitten mit E gleich leere Menge"
+    },
+    {
+     "type": "text",
+     "text": ").     - "
+    },
+    {
+     "type": "math",
+     "tex": "d = r",
+     "speech": "d gleich r"
+    },
+    {
+     "type": "text",
+     "text": " (Tangentialebene): Genau ein Berührpunkt "
+    },
+    {
+     "type": "math",
+     "tex": "B",
+     "speech": "B"
+    },
+    {
+     "type": "text",
+     "text": " ("
+    },
+    {
+     "type": "math",
+     "tex": "K \\cap E = \\{B\\}",
+     "speech": "K geschnitten mit E gleich die Menge aus B"
+    },
+    {
+     "type": "text",
+     "text": ").     - "
+    },
+    {
+     "type": "math",
+     "tex": "d < r",
+     "speech": "d kleiner als r"
+    },
+    {
+     "type": "text",
+     "text": " (Sekantenebene / Schnittebene): Schnittgebilde ist ein Kreis mit:       * Kreismittelpunkt "
+    },
+    {
+     "type": "math",
+     "tex": "M_k =",
+     "speech": "M k gleich"
+    },
+    {
+     "type": "text",
+     "text": " Lotfußpunkt von "
+    },
+    {
+     "type": "math",
+     "tex": "M",
+     "speech": "M"
+    },
+    {
+     "type": "text",
+     "text": " auf "
+    },
+    {
+     "type": "math",
+     "tex": "E",
+     "speech": "E"
+    },
+    {
+     "type": "text",
+     "text": ".       * Kreisradius "
+    },
+    {
+     "type": "math",
+     "tex": "\\mathbf{r_k = \\sqrt{r^2 - d^2}}",
+     "speech": "r k gleich Wurzel aus r Quadrat minus d Quadrat"
+    },
+    {
+     "type": "text",
+     "text": ", 3. Konkrete Aufgabe:   * Gegeben ist die Kugel "
+    },
+    {
+     "type": "math",
+     "tex": "K: (x_1 - 1)^2 + (x_2 + 2)^2 + (x_3 - 3)^2 = 25",
+     "speech": "Kugel K: Klammer auf x eins minus 1 Klammer zu Quadrat plus Klammer auf x zwei plus 2 Klammer zu Quadrat plus Klammer auf x drei minus 3 Klammer zu Quadrat gleich 25"
+    },
+    {
+     "type": "text",
+     "text": " und die Ebene "
+    },
+    {
+     "type": "math",
+     "tex": "E: 2x_1 - 2x_2 + x_3 - 18 = 0",
+     "speech": "Ebene E: 2 x eins minus 2 x zwei plus x drei minus 18 gleich 0"
+    },
+    {
+     "type": "text",
+     "text": ".   * a) Zeige, dass die Ebene "
+    },
+    {
+     "type": "math",
+     "tex": "E",
+     "speech": "E"
+    },
+    {
+     "type": "text",
+     "text": " die Kugel "
+    },
+    {
+     "type": "math",
+     "tex": "K",
+     "speech": "K"
+    },
+    {
+     "type": "text",
+     "text": " in einem Kreis schneidet.   * b) Bestimme den Mittelpunkt "
+    },
+    {
+     "type": "math",
+     "tex": "M_k",
+     "speech": "M k"
+    },
+    {
+     "type": "text",
+     "text": " und den Radius "
+    },
+    {
+     "type": "math",
+     "tex": "r_k",
+     "speech": "r k"
+    },
+    {
+     "type": "text",
+     "text": " des Schnittkreises."
+    }
+   ],
+   "category": "C",
+   "academy_slug": null,
+   "action": "keep-active",
+   "reason": "Mehrteilige Kugelgesamtanalyse aus Gleichung, Abstand und Schnittkreis. rg-9-kugeln verteilt das auf Gleichung, Lage und quadratische Ergänzung; ohne vollständigen Einzelnachfolger bleibt die alte Karte aktiv."
+  },
+  {
+   "de_by_cell": "de-by:gymnasium-13-mathematik-stochastik-stetige-zufallsgroessen-normalverteilung-sigma-regeln",
+   "de_by_id": "01K8GD20000000000000000J01",
+   "de_by_question": "Wie groß ist die Wahrscheinlichkeit P(X = x_0), dass eine stetige Zufallsgröße X exakt einen einzelnen reellen Punktwert x_0 annimmt?",
+   "category": "A",
+   "academy_slug": "g13-stetig-punkt-null",
+   "action": "replace",
+   "reason": "Gleicher Einzelabruf: Bei einer stetigen Zufallsgröße hat ein Einzelwert die Wahrscheinlichkeit 0, nur Intervalle haben Fläche unter der Dichte."
+  },
+  {
+   "de_by_cell": "de-by:gymnasium-13-mathematik-stochastik-stetige-zufallsgroessen-normalverteilung-sigma-regeln",
+   "de_by_id": "01K8GD20000000000000000J02",
+   "de_by_question": [
+    {
+     "type": "text",
+     "text": "Analysiere stetige Zufallsgrößen, Dichtefunktionen und Verteilungsfunktionen: 1. Kriterien für eine Dichtefunktion "
+    },
+    {
+     "type": "math",
+     "tex": "f(x)",
+     "speech": "f von x"
+    },
+    {
+     "type": "text",
+     "text": ":   * Nichtnegativität: "
+    },
+    {
+     "type": "math",
+     "tex": "f(x) \\ge 0",
+     "speech": "f von x größer gleich 0"
+    },
+    {
+     "type": "text",
+     "text": " für alle "
+    },
+    {
+     "type": "math",
+     "tex": "x \\in \\mathbb{R}",
+     "speech": "x Element der reellen Zahlen"
+    },
+    {
+     "type": "text",
+     "text": ".   * Normierungsbedingung: "
+    },
+    {
+     "type": "math",
+     "tex": "\\mathbf{\\int_{-\\infty}^{\\infty} f(x)\\,dx = 1}",
+     "speech": "Integral von minus unendlich bis unendlich über f von x d x gleich 1"
+    },
+    {
+     "type": "text",
+     "text": ", 2. Zusammenhang zwischen Dichte und Verteilungsfunktion:   * Verteilungsfunktion: "
+    },
+    {
+     "type": "math",
+     "tex": "F(x) = P(X \\le x) = \\int_{-\\infty}^{x} f(t)\\,dt",
+     "speech": "F von x gleich P von X kleiner gleich x gleich Integral von minus unendlich bis x über f von t d t"
+    },
+    {
+     "type": "text",
+     "text": ".   * Fundamentalsatz: "
+    },
+    {
+     "type": "math",
+     "tex": "F'(x) = f(x)",
+     "speech": "F Strich von x gleich f von x"
+    },
+    {
+     "type": "text",
+     "text": " an allen Stetigkeitsstellen.   * Wahrscheinlichkeit für Intervalle: "
+    },
+    {
+     "type": "math",
+     "tex": "\\mathbf{P(a \\le X \\le b) = F(b) - F(a) = \\int_{a}^{b} f(x)\\,dx}",
+     "speech": "P von a kleiner gleich X kleiner gleich b gleich F von b minus F von a gleich Integral von a bis b über f von x d x"
+    },
+    {
+     "type": "text",
+     "text": ", 3. Konkrete Aufgabe:   * Eine stetige Zufallsgröße "
+    },
+    {
+     "type": "math",
+     "tex": "X",
+     "speech": "X"
+    },
+    {
+     "type": "text",
+     "text": " besitzt die Dichtefunktion "
+    },
+    {
+     "type": "math",
+     "tex": "f(x) = \\begin{cases} c \\cdot x^2 & \\text{für } 0 \\le x \\le 3 \\\\ 0 & \\text{sonst} \\end{cases}",
+     "speech": "f von x gleich c mal x Quadrat für 0 kleiner gleich x kleiner gleich 3, sonst 0"
+    },
+    {
+     "type": "text",
+     "text": ".   * a) Bestimme den Parameter "
+    },
+    {
+     "type": "math",
+     "tex": "c",
+     "speech": "c"
+    },
+    {
+     "type": "text",
+     "text": ", sodass "
+    },
+    {
+     "type": "math",
+     "tex": "f",
+     "speech": "f"
+    },
+    {
+     "type": "text",
+     "text": " eine gültige Dichtefunktion ist.   * b) Berechne die Wahrscheinlichkeit "
+    },
+    {
+     "type": "math",
+     "tex": "P(1 \\le X \\le 2)",
+     "speech": "P von 1 kleiner gleich X kleiner gleich 2"
+    },
+    {
+     "type": "text",
+     "text": ".   * c) Berechne den Erwartungswert "
+    },
+    {
+     "type": "math",
+     "tex": "E(X)",
+     "speech": "E von X"
+    },
+    {
+     "type": "text",
+     "text": "."
+    }
+   ],
+   "category": "C",
+   "academy_slug": null,
+   "action": "keep-active",
+   "reason": "Mehrteilig (Nichtnegativität, Normierungsbedingung, Wahrscheinlichkeiten aus der Dichte). Verteilt auf nv-1-zufallsgroessen und nv-3-dichte-verteilung; eine Historie wird nicht auf Teilkarten verteilt."
+  },
+  {
+   "de_by_cell": "de-by:gymnasium-13-mathematik-stochastik-stetige-zufallsgroessen-normalverteilung-sigma-regeln",
+   "de_by_id": "01K8GD20000000000000000J03",
+   "de_by_question": "Wie lautet die Standardisierungsformel (z-Transformation), um eine normalverteilte Zufallsgröße X ~ N(mu, sigma^2) in eine standardnormalverteilte Zufallsgröße Z ~ N(0, 1) zu transformieren?",
+   "category": "A",
+   "academy_slug": "g13-standardisierung",
+   "action": "replace",
+   "reason": "Gleicher Einzelabruf: die Standardisierung einer normalverteilten Zufallsgröße mit z = (x − μ) : σ."
+  },
+  {
+   "de_by_cell": "de-by:gymnasium-13-mathematik-stochastik-stetige-zufallsgroessen-normalverteilung-sigma-regeln",
+   "de_by_id": "01K8GD20000000000000000J04",
+   "de_by_question": [
+    {
+     "type": "text",
+     "text": "Analysiere die Gaußsche Normalverteilung, die Sigma-Regeln und den Satz von Moivre-Laplace: 1. Eigenschaften der Gaußschen Glockenkurve "
+    },
+    {
+     "type": "math",
+     "tex": "\\varphi_{\\mu, \\sigma}(x)",
+     "speech": "Phi My Sigma von x"
+    },
+    {
+     "type": "text",
+     "text": ":   * Maximum (Symmetrieachse) bei "
+    },
+    {
+     "type": "math",
+     "tex": "x = \\mu",
+     "speech": "x gleich My"
+    },
+    {
+     "type": "text",
+     "text": ".   * Wendepunkte exakt bei "
+    },
+    {
+     "type": "math",
+     "tex": "x = \\mu - \\sigma",
+     "speech": "x gleich My minus Sigma"
+    },
+    {
+     "type": "text",
+     "text": " und "
+    },
+    {
+     "type": "math",
+     "tex": "x = \\mu + \\sigma",
+     "speech": "x gleich My plus Sigma"
+    },
+    {
+     "type": "text",
+     "text": ".   * Dichte: "
+    },
+    {
+     "type": "math",
+     "tex": "\\varphi_{\\mu, \\sigma}(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x - \\mu}{\\sigma}\\right)^2}",
+     "speech": "Phi My Sigma von x gleich 1 durch Sigma Wurzel aus 2 Pi mal e hoch minus ein halb mal, x minus My durch Sigma, zum Quadrat"
+    },
+    {
+     "type": "text",
+     "text": ", 2. Die klassischen Sigma-Umgebungsregeln:   * "
+    },
+    {
+     "type": "math",
+     "tex": "1\\sigma",
+     "speech": "1 Sigma"
+    },
+    {
+     "type": "text",
+     "text": "-Intervall: "
+    },
+    {
+     "type": "math",
+     "tex": "P(\\mu - 1\\sigma \\le X \\le \\mu + 1\\sigma) \\approx \\mathbf{68{,}3\\,\\%}",
+     "speech": "P von My minus 1 Sigma kleiner gleich X kleiner gleich My plus 1 Sigma ungefähr 68,3 Prozent"
+    },
+    {
+     "type": "text",
+     "text": ".   * "
+    },
+    {
+     "type": "math",
+     "tex": "2\\sigma",
+     "speech": "2 Sigma"
+    },
+    {
+     "type": "text",
+     "text": "-Intervall: "
+    },
+    {
+     "type": "math",
+     "tex": "P(\\mu - 2\\sigma \\le X \\le \\mu + 2\\sigma) \\approx \\mathbf{95{,}4\\,\\%}",
+     "speech": "P von My minus 2 Sigma kleiner gleich X kleiner gleich My plus 2 Sigma ungefähr 95,4 Prozent"
+    },
+    {
+     "type": "text",
+     "text": ".   * "
+    },
+    {
+     "type": "math",
+     "tex": "3\\sigma",
+     "speech": "3 Sigma"
+    },
+    {
+     "type": "text",
+     "text": "-Intervall: "
+    },
+    {
+     "type": "math",
+     "tex": "P(\\mu - 3\\sigma \\le X \\le \\mu + 3\\sigma) \\approx \\mathbf{99{,}7\\,\\%}",
+     "speech": "P von My minus 3 Sigma kleiner gleich X kleiner gleich My plus 3 Sigma ungefähr 99,7 Prozent"
+    },
+    {
+     "type": "text",
+     "text": ".   * Exakte Prognoseintervalle: "
+    },
+    {
+     "type": "math",
+     "tex": "90\\,\\% \\implies [\\mu \\pm 1{,}64\\sigma]",
+     "speech": "90 Prozent, daraus folgt das Intervall My plus minus 1,64 Sigma"
+    },
+    {
+     "type": "text",
+     "text": ", "
+    },
+    {
+     "type": "math",
+     "tex": "95\\,\\% \\implies [\\mu \\pm 1{,}96\\sigma]",
+     "speech": "95 Prozent, daraus folgt das Intervall My plus minus 1,96 Sigma"
+    },
+    {
+     "type": "text",
+     "text": ", "
+    },
+    {
+     "type": "math",
+     "tex": "99\\,\\% \\implies [\\mu \\pm 2{,}58\\sigma]",
+     "speech": "99 Prozent, daraus folgt das Intervall My plus minus 2,58 Sigma"
+    },
+    {
+     "type": "text",
+     "text": ", 3. Approximation nach Moivre-Laplace:   * Eine binomialverteilte Zufallsgröße "
+    },
+    {
+     "type": "math",
+     "tex": "X \\sim B(n, p)",
+     "speech": "X ist binomialverteilt mit n und p"
+    },
+    {
+     "type": "text",
+     "text": " mit "
+    },
+    {
+     "type": "math",
+     "tex": "\\mu = n \\cdot p",
+     "speech": "My gleich n mal p"
+    },
+    {
+     "type": "text",
+     "text": " und "
+    },
+    {
+     "type": "math",
+     "tex": "\\sigma = \\sqrt{n \\cdot p \\cdot (1 - p)}",
+     "speech": "Sigma gleich Wurzel aus n mal p mal, 1 minus p"
+    },
+    {
+     "type": "text",
+     "text": " kann bei "
+    },
+    {
+     "type": "math",
+     "tex": "\\mathbf{\\sigma > 3}",
+     "speech": "Sigma größer als 3"
+    },
+    {
+     "type": "text",
+     "text": " (Laplace-Bedingung) durch die Normalverteilung approximiert werden:     "
+    },
+    {
+     "type": "math",
+     "tex": "\\mathbf{P(k_1 \\le X \\le k_2) \\approx \\Phi\\left( \\frac{k_2 + 0{,}5 - \\mu}{\\sigma} \\right) - \\Phi\\left( \\frac{k_1 - 0{,}5 - \\mu}{\\sigma} \\right)}",
+     "block": true,
+     "speech": "P von k eins kleiner gleich X kleiner gleich k zwei ungefähr großes Phi von, k zwei plus 0,5 minus My, durch Sigma, minus großes Phi von, k eins minus 0,5 minus My, durch Sigma"
+    },
+    {
+     "type": "text",
+     "text": "   (mit "
+    },
+    {
+     "type": "math",
+     "tex": "+0{,}5",
+     "speech": "plus 0,5"
+    },
+    {
+     "type": "text",
+     "text": " und "
+    },
+    {
+     "type": "math",
+     "tex": "-0{,}5",
+     "speech": "minus 0,5"
+    },
+    {
+     "type": "text",
+     "text": " als Stetigkeitskorrektur)."
+    }
+   ],
+   "category": "C",
+   "academy_slug": null,
+   "action": "keep-active",
+   "reason": "Mehrteilig und mit dem Satz von Moivre-Laplace über den Fachlehrplan M13 hinaus. Die Sigma-Regeln stecken in nv-4-sigma-regeln; ohne vollständigen Einzelnachfolger bleibt die alte Karte aktiv."
+  }
+ ]
+}

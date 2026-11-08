@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "approved": "2026-11-08",
+  "status": "approved",
+  "source": "Thomas in der Claude-Code-Sitzung zur ZAM-Integration am 2026-11-08: „Ich stimme den Mappings zu. Die Gefahr ist auch sehr gering. ZAM ist quasi noch ein Geheimprojekt. Also bitte gleich alle 9 bündeln.“ Die Freigabe gilt der Zuordnung der 8 de-by-Karten in dieser Datei (4 A, 0 B, 4 C; keine Stilllegung, alle C-Karten bleiben aktiv). Die 4 Nachfolger tragen ab Zellversion 2026.11.2 je ein replaces auf ihre alte Karte.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "e6a235f75fe87b9d57af38bd61011027b891492c",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-5-englisch-grundlagen-to-be-have-got-kvt.json",
+      "sha256": "d2c9c970eee345cbf419ec8259db0dd6bc1397b9672d516b304b00aad2c832a5",
+      "tile_id": "de-by:realschule-5-englisch-grundlagen-to-be-have-got",
+      "version": "2026.08.1"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-5-englisch-grundlagen-to-be-have-got",
+      "de_by_id": "01K4E5B0000000000000000J01",
+      "de_by_question": "Wie lautet die korrekte verneinte Kurzform von 'is not' im Englischen (z. B. 'He ... at home')?",
+      "category": "A",
+      "academy_slug": "e5-to-be-check",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf: verneinte Kurzform von 'is not' im Beispielsatz 'He ... at home' mit der Antwort 'isn't' und derselben binären Abgrenzung gegen 'aren't'. Nur die Aufgabensprache wechselt von Deutsch zu Englisch."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-englisch-grundlagen-to-be-have-got",
+      "de_by_id": "01K4E5B0000000000000000J02",
+      "de_by_question": "Konjugiere das englische Verb 'to be' durch alle Personen im Präsens: Langformen (I am, you are, he/she/it is, we are, you are, they are), Kurzformen (I'm, you're, he's/she's/it's, we're, they're), Verneinungen (I'm not, isn't, aren't) sowie Entscheidungsfragen und Kurzantworten (z. B. 'Are you ready?' – 'Yes, I am.' / 'No, I'm not.') und übersetze: a) 'Sie sind nicht im Garten.' b) 'Ist Peter dein Freund?' – 'Ja, ist er.'",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteiliger Gesamtabruf aus vollständiger Konjugationstabelle von 'to be', Entscheidungsfragen, Kurzantworten und zwei Übersetzungsaufgaben. Das neue Paket teilt diese Teilkompetenzen auf fokussierte Karten in e5-to-be und e5-questions-answers auf; kein einzelner Nachfolger enthält den gesamten alten Abruf, daher bleibt die Karte aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-englisch-grundlagen-to-be-have-got",
+      "de_by_id": "01K4E5B0000000000000000J03",
+      "de_by_question": "Welche Form von 'have got' (haben/besitzen) muss bei der 3. Person Einzahl (he, she, it) verwendet werden?",
+      "category": "A",
+      "academy_slug": "e5-have-got-check",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf: Form von 'have got' in der 3. Person Singular (he, she, it) mit der Antwort 'has got (he/she/it has got)' und derselben binären Auswahl gegen 'have got'."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-englisch-grundlagen-to-be-have-got",
+      "de_by_id": "01K4E5B0000000000000000J04",
+      "de_by_question": "Erkläre die Verwendung und Formen von 'have got' / 'has got' (Aussagen: I've got, he's got; Verneinung: haven't got, hasn't got; Fragen: Have you got a dog? / Has she got a brother?; Kurzantworten: Yes, I have. / No, she hasn't. – ohne 'got' in der Kurzantwort!) und übersetze: a) 'Wir haben ein neues Haus.' b) 'Hat Tom ein Haustier?' – 'Nein, hat er nicht.'",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteiliger Sammel-Abruf zu Aussagen, Verneinung, Fragebildung, Kurzantworten ohne 'got' und zwei Übersetzungen. Im neuen Paket wird dies in fokussierte Einzelkarten aufgeteilt; daher keine 1:1-Verlaufsübertragung und keep-active."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-englisch-grundlagen-to-be-have-got",
+      "de_by_id": "01K4E5B0000000000000000J05",
+      "de_by_question": "Wann wird im Englischen der unbestimmte Artikel 'an' statt 'a' verwendet (z. B. '... apple' vs. '... book')?",
+      "category": "A",
+      "academy_slug": "e5-articles-nouns-check",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf: Regel für den unbestimmten Artikel 'an' statt 'a' vor gesprochenem Vokallaut (an apple, an hour) im Kontrast zu Pluralnomen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-englisch-grundlagen-to-be-have-got",
+      "de_by_id": "01K4E5B0000000000000000J06",
+      "de_by_question": "Erkläre die Pluralregeln im Englischen: 1. Regelmäßiger Plural (+s: dog -> dogs), 2. Plural auf -es nach Zischlauten s, sh, ch, x (bus -> buses, box -> boxes, watch -> watches), 3. Endung -y nach Konsonant wird zu -ies (city -> cities, aber boy -> boys nach Vokal), 4. Wichtige unregelmäßige Plurale (man -> men, woman -> women, child -> children, foot -> feet, tooth -> teeth, mouse -> mice, sheep -> sheep) und setze die Artikel a oder an ein: a) '... elephant', b) '... umbrella', c) '... uniform' (gesprochen: /ju:/).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteiliger Gesamtabruf aus vier Pluralregeln, acht unregelmäßigen Pluralformen und drei Artikel-Einsetzaufgaben. Da das neue Paket atomare Karten verwendet, wird der Lernverlauf nicht aufgeteilt; die alte Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-englisch-grundlagen-to-be-have-got",
+      "de_by_id": "01K4E5B0000000000000000J07",
+      "de_by_question": "Wie wird ein verneinter Befehl bzw. ein Verbot im englischen Imperativ eingeleitet (z. B. '... run in the corridor!')?",
+      "category": "A",
+      "academy_slug": "e5-imperatives-check",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf: Bildung des verneinten Imperativs im Beispielsatz '... run in the corridor!' mit 'Don't + base form (Don't run!)' gegenüber dem typischen Lernendenfehler 'Not + base form (Not run!)'."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-englisch-grundlagen-to-be-have-got",
+      "de_by_id": "01K4E5B0000000000000000J08",
+      "de_by_question": "Erkläre die Bildung des englischen Imperativs (Aufforderungsform): 1. Positiver Befehl / Aufforderung (reiner Infinitiv ohne Subjekt: Open your book! Listen carefully!), 2. Höflichkeitsform mit 'please' am Satzanfang oder Satzende, 3. Verneinte Aufforderung / Verbot (Don't + Infinitiv: Don't touch that! Don't be late!), 4. Gemeinsame Aufforderung / Vorschlag für 'wir' (Let's + Infinitiv: Let's play football! Let's go home!) und übersetze: a) 'Mach bitte das Fenster auf!' b) 'Lauf nicht über die Straße!' c) 'Lasst uns eine Pizza essen!'",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteiliger Gesamtabruf zu vier Imperativformen und drei Übersetzungen. Kein einzelner Nachfolger übernimmt den kompletten mehrteiligen Abruf; daher bleibt die alte Karte aktiv."
+    }
+  ]
+}

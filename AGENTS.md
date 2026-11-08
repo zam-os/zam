@@ -120,7 +120,9 @@ open a terminal.
   academy-*`, Mobile's tap). The origin is a constant, redirects fail, and
   agent tools read only the cache in `~/.zam/academy`. A card's web
   `source_link` opens in the system browser only on a click, only for
-  http(s) (`desktop/src/source-link.ts`).
+  http(s) (`desktop/src/source-link.ts`). Integrating new cells and
+  replacing the `de-by:` school cells follows
+  `docs/plans/2026-11-08-academy-cell-integration.md`.
 - New kernel API must be re-exported from `src/kernel/index.ts`.
 - **`docs/okf/` is not hand-editable.** It is an OKF knowledge bundle whose
   articles are learning sources (ADR 2026-07-17): write only through the

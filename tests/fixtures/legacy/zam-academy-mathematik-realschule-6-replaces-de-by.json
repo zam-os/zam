@@ -1,0 +1,166 @@
+{
+  "schema": 1,
+  "approved": "2026-11-08",
+  "status": "approved",
+  "source": "Thomas in der Claude-Code-Sitzung zur ZAM-Integration am 2026-11-08: „Ich stimme den Mappings zu. Die Gefahr ist auch sehr gering. ZAM ist quasi noch ein Geheimprojekt. Also bitte gleich alle 9 bündeln.“ Die Freigabe gilt der Zuordnung der 16 de-by-Karten in dieser Datei (6 A, 0 B, 10 C; keine Stilllegung, alle C-Karten bleiben aktiv). Die 6 Nachfolger tragen ab Zellversion 2026.11.2 je ein replaces auf ihre alte Karte.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "f57e6740854a2f91f985b59b9e101b388186d3bc",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-6-mathematik-brueche-dezimalbrueche-kvt.json",
+      "sha256": "af5bd9abc574c33b5e36016f3d10549b6688a7aac928c1511040285aea3721c3",
+      "tile_id": "de-by:realschule-6-mathematik-brueche-dezimalbrueche"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-6-mathematik-flaechen-raum-volumen-kvt.json",
+      "sha256": "1e02e49af9815993972fdad74e2ef0a81116a9efec1a408fa78358abfc11af02",
+      "tile_id": "de-by:realschule-6-mathematik-flaechen-raum-volumen"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-brueche-dezimalbrueche",
+      "de_by_id": "01K4M6B0000000000000000J01",
+      "de_by_question": "Was geschieht mit dem mathematischen Wert eines Bruchs, wenn man Zähler und Nenner mit derselben Zahl multipliziert (Erweitern)?",
+      "category": "A",
+      "academy_slug": "m6-erweitern-wert",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Der Wert eines Bruchs bleibt beim Erweitern gleich."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-brueche-dezimalbrueche",
+      "de_by_id": "01K4M6B0000000000000000J02",
+      "de_by_question": "Definiere die Bestandteile eines Bruchs (Zähler = Anzahl der Teile; Bruchstrich = Geteilt-Zeichen; Nenner = Anzahl der gleich großen Teile des Ganzen), unterscheide Erweitern (Multiplikation von Zähler und Nenner mit k) von Kürzen (Division von Zähler und Nenner durch gemeinsamen Teiler) und bringe die Brüche 3/4, 5/6 und 7/12 auf den kleinsten gemeinsamen Hauptnenner (kgV).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Karte aus Begriffen, Erweitern, Kürzen und einer Hauptnennerrechnung. Die neuen Karten trennen diese Abrufe; eine Gesamthistorie darf nicht auf mehrere Karten verteilt werden."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-brueche-dezimalbrueche",
+      "de_by_id": "01K4M6B0000000000000000J03",
+      "de_by_question": "Wie lautet die Grundregel zur Addition zweier gleichnamiger Brüche a/n + b/n?",
+      "category": "A",
+      "academy_slug": "m6-gleichnamig-addieren",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: gleichnamige Brüche durch Addieren der Zähler bei gleichem Nenner."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-brueche-dezimalbrueche",
+      "de_by_id": "01K4M6B0000000000000000J04",
+      "de_by_question": "Formuliere den Algorithmus zur Addition und Subtraktion ungleichnamiger Brüche (1. Hauptnenner bestimmen, 2. Brüche erweitern, 3. Zähler addieren/subtrahieren bei unverändertem Nenner, 4. Ergebnis vollständig kürzen / in gemischte Zahl umwandeln) und berechne: 2 1/3 + 1 3/4 - 5/6.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Karte aus Algorithmus und Rechnung mit gemischten Brüchen. Kein einzelner Nachfolger umfasst den ganzen Abruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-brueche-dezimalbrueche",
+      "de_by_id": "01K4M6B0000000000000000J05",
+      "de_by_question": "Wie dividiert man einen Bruch durch einen anderen Bruch (z. B. 2/3 : 4/5)?",
+      "category": "A",
+      "academy_slug": "m6-durch-bruch",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Division durch einen Bruch als Multiplikation mit dem Kehrwert des zweiten Bruchs."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-brueche-dezimalbrueche",
+      "de_by_id": "01K4M6B0000000000000000J06",
+      "de_by_question": "Formuliere die Rechengesetze zur Multiplikation (a/b · c/d = (a·c)/(b·d); erst über Kreuz kürzen!) und Division (a/b : c/d = a/b · d/c mit Kehrwert d/c) von Brüchen, erkläre, warum gemischte Zahlen vor der Multiplikation/Division zwingend in unechte Brüche umgewandelt werden müssen, und berechne: (3 1/3) · (6/25) : (4/5).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Karte aus Multiplikation, Division, Umwandeln und Rechnung, zudem mit dem Ausdruck „über Kreuz kürzen“. Kein einzelner Nachfolger umfasst sie."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-brueche-dezimalbrueche",
+      "de_by_id": "01K4M6B0000000000000000J07",
+      "de_by_question": "Wann ergibt ein vollständig gekürzter Bruch a/b einen ENDLICHEN (abbrechenden) Dezimalbruch?",
+      "category": "A",
+      "academy_slug": "m6-endlich-nenner",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: endliche Dezimalzahl genau bei den Primfaktoren 2 und 5 im Nenner des gekürzten Bruchs."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-brueche-dezimalbrueche",
+      "de_by_id": "01K4M6B0000000000000000J08",
+      "de_by_question": "Erkläre den Aufbau der Stellenwerttafel nach dem Komma (Zehntel z = 1/10, Hundertstel h = 1/100, Tausendstel t = 1/1000), beschreibe die Umwandlung von Brüchen in Dezimalbrüche (durch Erweitern auf Zehnerpotenzen oder schriftliche Division Zähler : Nenner) und wandle folgende Zahlen um: a) 3/8 in einen Dezimalbruch, b) 0,35 in einen vollständig gekürzten Bruch, c) 1/3 in die periodische Dezimalbruchschreibweise.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Karte aus Stellenwerttafel, Umwandlung und drei Rechnungen. Die neuen Karten fragen diese Teile einzeln ab."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-flaechen-raum-volumen",
+      "de_by_id": "01K4M6F0000000000000000J01",
+      "de_by_question": "Wie lautet die allgemeine Formel zur Berechnung des Flächeninhalts A eines Dreiecks mit Grundseite g und zugehöriger Höhe h?",
+      "category": "A",
+      "academy_slug": "m6-dreieck-formel",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Formel für den Flächeninhalt eines Dreiecks aus Grundseite und zugehöriger Höhe."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-flaechen-raum-volumen",
+      "de_by_id": "01K4M6F0000000000000000J02",
+      "de_by_question": "Leite die Flächeninhaltsformel des Parallelogramms (A = g · h) durch flächengleiches Zerlegen und Zusammensetzen in ein Rechteck her, begründe daraus die Dreiecksformel (A = 1/2 · g · h, da jedes Dreieck die Hälfte eines flächengleichen Parallelogramms ist) und berechne die Fläche eines Dreiecks mit c = 8 cm und h_c = 4,5 cm.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Karte aus zwei Herleitungen und einer Rechnung. Die neuen Karten trennen Parallelogramm, Dreieck und Rechnung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-flaechen-raum-volumen",
+      "de_by_id": "01K4M6F0000000000000000J03",
+      "de_by_question": "Wie viele Begrenzungsflächen, Ecken und Kanten besitzt ein Quader (bzw. Würfel)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Ecken, Kanten und Flächen des Quaders sind M5 LB 3 und damit Vorwissen. Die neue Zelle fragt sie nicht ab; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-flaechen-raum-volumen",
+      "de_by_id": "01K4M6F0000000000000000J04",
+      "de_by_question": "Beschreibe die Konventionen zum Zeichnen eines Schrägbilds (Vorderfläche in Originalgröße, nach hinten verlaufende Kanten im Winkel von alpha = 45° und auf die halbe Länge q = 1/2 verkürzt, verdeckte Kanten gestrichelt), leite die Formel für die Gesamtoberfläche eines Quaders A_O = 2 · (a·b + b·c + a·c) her und berechne die Oberfläche eines Quaders mit a = 5 cm, b = 4 cm und c = 3 cm.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Schrägbild ist M5 LB 3, die Oberfläche M6 LB 3. Die mehrteilige Karte gehört zu keinem einzelnen Nachfolger."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-flaechen-raum-volumen",
+      "de_by_id": "01K4M6F0000000000000000J05",
+      "de_by_question": "Wie viele Kubikzentimeter (cm³) passen exakt in einen Liter (1 l = 1 dm³)?",
+      "category": "A",
+      "academy_slug": "m6-liter-cm3",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: 1 l = 1000 cm³."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-flaechen-raum-volumen",
+      "de_by_id": "01K4M6F0000000000000000J06",
+      "de_by_question": "Leite die Volumenformel für den Quader V = a · b · c (Grundfläche G = a · b mal Höhe h = c) durch das Auslegen mit Einheitswürfeln her, stelle die Kette der Raummaße mit der Umrechnungszahl 1000 dar (1 m³ = 1000 dm³ = 1000 l = 1.000.000 cm³ = 1.000.000.000 mm³) und berechne das Fassungsvermögen eines quaderförmigen Aquariums mit Länge 60 cm, Breite 30 cm und Höhe 40 cm in Litern.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Karte aus Herleitung, Einheitenkette und Aquariumrechnung. Die neuen Karten trennen diese Teile."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-flaechen-raum-volumen",
+      "de_by_id": "01K4M6F0000000000000000J07",
+      "de_by_question": "Wie berechnet man die relative Häufigkeit h(E) eines Ereignisses bei einer statistischen Versuchsreihe mit n Durchführungen?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Relative Häufigkeit steht nicht im Fachlehrplan M6 der Realschule. Die neue Zelle enthält keine Daten-Karte; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-mathematik-flaechen-raum-volumen",
+      "de_by_id": "01K4M6F0000000000000000J08",
+      "de_by_question": "Unterscheide absolute Häufigkeit H(E) von relativer Häufigkeit h(E) = H(E)/n (Wert zwischen 0 und 1 bzw. 0 % und 100 %), formuliere die Laplace-Wahrscheinlichkeitsformel P(E) = |E| / |Omega| (günstige Ergebnisse geteilt durch alle gleichmöglichen Ergebnisse) und berechne die Wahrscheinlichkeit, mit einem fairen 6-seitigen Spielwürfel: a) eine Primzahl (2, 3, 5), b) eine Zahl größer als 4 zu werfen.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Häufigkeiten und Laplace-Wahrscheinlichkeit stehen nicht im Fachlehrplan M6 der Realschule. Die neue Zelle enthält dazu nichts; die Karte bleibt aktiv."
+    }
+  ]
+}

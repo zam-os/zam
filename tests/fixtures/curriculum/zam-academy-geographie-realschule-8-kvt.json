@@ -1,0 +1,2160 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:geographie-realschule-8",
+  "version": "2026.10.1",
+  "title": "Geographie 8 Realschule (ZAM Academy)",
+  "description": "34 Lektionen und 68 Wiederholungsfragen zu Amerika, China und Indien, Russland, globalen Verflechtungen und einer aktuellen geographischen Recherche nach LehrplanPLUS Bayern. Gemeinsamer Lernpfad für alle Wahlpflichtfächergruppen; eigenständige Recherche, Atlasarbeit und Präsentation ergänzen die App.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/geographie",
+      "label": "ISB · LehrplanPLUS Geographie 8 Realschule",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-countries/",
+      "label": "Natural Earth · Kartendaten 1:110 Mio., Version 5.1.1, Public Domain",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://pubs.usgs.gov/gip/dynamic/understanding.html",
+      "label": "USGS · This Dynamic Earth: Plattenbewegungen",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://oceanservice.noaa.gov/facts/how-hurricanes-form.html",
+      "label": "NOAA · How do hurricanes form?",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.nesdis.noaa.gov/about/k-12-education/severe-weather/what-monsoon",
+      "label": "NOAA · What is a Monsoon?",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.unicef.org/child-rights-convention/convention-text",
+      "label": "UNICEF · UN-Kinderrechtskonvention, Originaltext",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://hdr.undp.org/data-center/human-development-index",
+      "label": "UNDP · Human Development Index: Methode und Daten",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://hdr.undp.org/content/human-development-index-what-it-and-what-it-not",
+      "label": "UNDP · Grenzen und Aussagekraft des HDI",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://footprintnetwork.org/our-work/ecological-footprint/",
+      "label": "Global Footprint Network · Ecological Footprint",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://science.nasa.gov/earth/earth-observatory/world-of-change/aral-sea/",
+      "label": "NASA · World of Change: Shrinking Aral Sea (historische Bildzeitreihe)",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://databank.worldbank.org/source/world-development-indicators",
+      "label": "World Bank · DataBank: datierte Länderkennzahlen recherchieren",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://connect.fsc.org/certification/certification-system",
+      "label": "FSC · Zertifizierung und Produktkette, Selbstdarstellung des Standards",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.msc.org/en-us/about-the-msc/faqs",
+      "label": "MSC · Kriterien und Kontrolle, Selbstdarstellung des Standards",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.fairtrade.net/en/why-fairtrade/how-we-do-it/standards.html",
+      "label": "Fairtrade International · Standards, Selbstdarstellung",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.destatis.de/DE/Themen/Wirtschaft/Aussenhandel/_inhalt.html",
+      "label": "Destatis · Außenhandel: Definitionen und aktuelle Veröffentlichungen",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://science.nasa.gov/earth/earth-observatory/world-of-change/",
+      "label": "NASA · World of Change: datierte Satellitenbildvergleiche",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.fao.org/sustainability/",
+      "label": "FAO · Nachhaltige Landwirtschaft: ökologische, soziale und wirtschaftliche Ziele",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://nsidc.org/learn/parts-cryosphere/frozen-ground-permafrost",
+      "label": "NSIDC · Frozen Ground: Permafrost und Auftauschicht",
+      "checked": "2026-10-26"
+    },
+    {
+      "uri": "https://www.unesco.org/en/education-sustainable-development",
+      "label": "UNESCO · Bildung und nachhaltige Entwicklung",
+      "checked": "2026-10-26"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M5X1BKB5DYJS9Q1BHPHCQWYY",
+      "atom_uri": "urn:zam:atom:01M5X1BKB5DYJS9Q1BHPHCQWYY",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-karte",
+      "title": "Amerika räumlich ordnen",
+      "domain": "geographie/amerika",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-karte",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "amerika",
+          "topic_title": "Doppelkontinent Amerika"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Doppelkontinent Amerika"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB65YKVGE9PH8FM3TG1",
+          "slug": "g8-karte-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Satz beschreibt die Lage des Amazonasbeckens richtig?",
+          "concept": "Es liegt östlich der Anden in Südamerika.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-karte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es liegt östlich der Anden in Südamerika.",
+              "Es liegt westlich der Rocky Mountains in Kanada."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB6T3YTC2HEH5D769PR",
+          "slug": "g8-karte-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Wo liegen die Anden im Verhältnis zum Amazonasbecken?",
+          "concept": "Die Anden liegen westlich des Amazonasbeckens.",
+          "sample_solution": "Die Anden liegen westlich des Amazonasbeckens.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-karte"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB6HHYA67HYRDDR3B20",
+      "atom_uri": "urn:zam:atom:01M5X1BKB6HHYA67HYRDDR3B20",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-platten",
+      "title": "Anden, Erdbeben und Hawaii",
+      "domain": "geographie/amerika",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-platten",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "amerika",
+          "topic_title": "Doppelkontinent Amerika"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Doppelkontinent Amerika"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB6YF4AK06TXV05Q7H9",
+          "slug": "g8-platten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Vorgang erklärt den Vulkanismus der Anden?",
+          "concept": "Subduktion am westlichen Kontinentalrand.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-platten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Subduktion am westlichen Kontinentalrand.",
+              "Ein Hotspot unter jedem Ort Südamerikas."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB68TQY0B63D55T1EW6",
+          "slug": "g8-platten-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum entstehen an einer Subduktionszone oft Erdbeben?",
+          "concept": "Verhakte Plattenabschnitte bauen Spannung auf und lösen sie ruckartig.",
+          "sample_solution": "Verhakte Plattenabschnitte bauen Spannung auf und lösen sie ruckartig.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-platten"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB6TDJ9T8FDMFS8GJTJ",
+      "atom_uri": "urn:zam:atom:01M5X1BKB6TDJ9T8FDMFS8GJTJ",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-stuerme",
+      "title": "Hurrikan, Tornado und Blizzard",
+      "domain": "geographie/amerika",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-stuerme",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "amerika",
+          "topic_title": "Doppelkontinent Amerika"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Doppelkontinent Amerika"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB6AWWEW3FDXBDAMPBY",
+          "slug": "g8-stuerme-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Gefahr kann zusätzlich zum Hurrikanwind auftreten?",
+          "concept": "Sturmflut und Überschwemmung.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-stuerme",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sturmflut und Überschwemmung.",
+              "Ausschließlich vulkanische Asche."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB60M4PDCNPSQVQQNE8",
+          "slug": "g8-stuerme-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Worin unterscheiden sich Tornado und Hurrikan räumlich?",
+          "concept": "Ein Tornado ist eine kleine rotierende Luftsäule; ein Hurrikan ein großräumiges tropisches Sturmsystem.",
+          "sample_solution": "Ein Tornado ist eine kleine rotierende Luftsäule; ein Hurrikan ein großräumiges tropisches Sturmsystem.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-stuerme"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB6176YWJ8DHD8K1GYE",
+      "atom_uri": "urn:zam:atom:01M5X1BKB6176YWJ8DHD8K1GYE",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-risiko",
+      "title": "Warum gleiche Gefahren ungleiche Folgen haben",
+      "domain": "geographie/amerika",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-risiko",
+      "prerequisites": [
+        {
+          "atom_id": "01M5X1BKB6TDJ9T8FDMFS8GJTJ",
+          "type": "soft",
+          "rationale": "Diese Lektion verwendet die dort erläuterte fachliche Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "amerika",
+          "topic_title": "Doppelkontinent Amerika"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Doppelkontinent Amerika"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB6J7PD6K9HCR6VZ0P0",
+          "slug": "g8-risiko-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum können beim gleichen Sturm verschiedene Schäden entstehen?",
+          "concept": "Exposition und Verwundbarkeit unterscheiden sich.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-risiko",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Exposition und Verwundbarkeit unterscheiden sich.",
+              "Die Landesfläche bestimmt jeden einzelnen Schaden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB7VG3P8JJS7MQQ27WQ",
+          "slug": "g8-risiko-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie unterscheidet sich Exposition von Verwundbarkeit?",
+          "concept": "Exposition betrifft die Lage im Gefahrenraum; Verwundbarkeit die Anfälligkeit und Bewältigungsmöglichkeiten.",
+          "sample_solution": "Exposition betrifft die Lage im Gefahrenraum; Verwundbarkeit die Anfälligkeit und Bewältigungsmöglichkeiten.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-risiko"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB7QYSBT0PZZJXKT2R9",
+      "atom_uri": "urn:zam:atom:01M5X1BKB7QYSBT0PZZJXKT2R9",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-siedlung",
+      "title": "Besiedlung hat eine Vorgeschichte",
+      "domain": "geographie/amerika",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-siedlung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "amerika",
+          "topic_title": "Doppelkontinent Amerika"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Doppelkontinent Amerika"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB72ZG1V9JHR00D9CFP",
+          "slug": "g8-siedlung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist an „Europäer besiedelten einen leeren Kontinent“ falsch?",
+          "concept": "Indigene Gesellschaften lebten dort bereits.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-siedlung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Indigene Gesellschaften lebten dort bereits.",
+              "Vor der Kolonisierung gab es dort keinerlei Menschen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB7A8P6YZ5GVBN78974",
+          "slug": "g8-siedlung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist „Entdeckung eines leeren Kontinents“ eine irreführende Beschreibung Amerikas?",
+          "concept": "Sie blendet die lange bestehende indigene Besiedlung und die Folgen der Kolonisierung aus.",
+          "sample_solution": "Sie blendet die lange bestehende indigene Besiedlung und die Folgen der Kolonisierung aus.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-siedlung"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB79SRK1GBWNSXMJ45Z",
+      "atom_uri": "urn:zam:atom:01M5X1BKB79SRK1GBWNSXMJ45Z",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-stadt",
+      "title": "Stadtwachstum auf Bildern erkennen",
+      "domain": "geographie/amerika",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-stadt",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "amerika",
+          "topic_title": "Doppelkontinent Amerika"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Doppelkontinent Amerika"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB72FBSRRV7AJGJXTQJ",
+          "slug": "g8-stadt-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was lässt sich aus dem Bildvergleich sicherer ableiten?",
+          "concept": "Die bebaute Fläche hat sich räumlich erweitert.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-stadt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die bebaute Fläche hat sich räumlich erweitert.",
+              "Das Einkommen jedes Haushalts hat sich verdoppelt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB7A0TVNBNTMWV0XQH5",
+          "slug": "g8-stadt-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Was unterscheidet Verstädterung von Suburbanisierung?",
+          "concept": "Verstädterung erhöht den Stadtbevölkerungsanteil; Suburbanisierung verlagert Menschen oder Funktionen ins Umland.",
+          "sample_solution": "Verstädterung erhöht den Stadtbevölkerungsanteil; Suburbanisierung verlagert Menschen oder Funktionen ins Umland.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-stadt"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB70QRRSKM0HW338WHR",
+      "atom_uri": "urn:zam:atom:01M5X1BKB70QRRSKM0HW338WHR",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-agrar",
+      "title": "Landwirtschaft in den Great Plains",
+      "domain": "geographie/amerika",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-agrar",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "amerika",
+          "topic_title": "Doppelkontinent Amerika"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Doppelkontinent Amerika"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB70PMQNNZZ3S4FS473",
+          "slug": "g8-agrar-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum reicht der Ertrag allein für ein Nachhaltigkeitsurteil nicht?",
+          "concept": "Wasser, Boden und soziale Bedingungen zählen ebenfalls.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-agrar",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wasser, Boden und soziale Bedingungen zählen ebenfalls.",
+              "Ertrag und Wasserverbrauch sind dieselbe Größe."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB7T0P87HX2PHKTTAWA",
+          "slug": "g8-agrar-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum kann intensive Bewässerung Grundwasserreserven verkleinern?",
+          "concept": "Wenn die Entnahme die Neubildung übersteigt, wird der gespeicherte Vorrat aufgebraucht.",
+          "sample_solution": "Wenn die Entnahme die Neubildung übersteigt, wird der gespeicherte Vorrat aufgebraucht.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-agrar"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB76WVSCC36950B24TM",
+      "atom_uri": "urn:zam:atom:01M5X1BKB76WVSCC36950B24TM",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-plantagen",
+      "title": "Plantagenprodukte: Wer trägt die Folgen?",
+      "domain": "geographie/amerika",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-plantagen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "amerika",
+          "topic_title": "Doppelkontinent Amerika"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Doppelkontinent Amerika"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB7R39NKB38N1BCWFAC",
+          "slug": "g8-plantagen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum entscheidet ein günstiger Ladenpreis nicht allein über faire Produktionsbedingungen?",
+          "concept": "Verträge, Bezahlung und Schutzbedingungen müssen geprüft werden.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-plantagen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Verträge, Bezahlung und Schutzbedingungen müssen geprüft werden.",
+              "Ein niedriger Preis garantiert automatisch hohe Löhne."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB7RC85X8YW0ZQ1G2E8",
+          "slug": "g8-plantagen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum kann eine Monokultur ökologische Risiken erhöhen?",
+          "concept": "Einseitiger Anbau kann Schädlingsdruck, Bodenbelastung und den Verlust von Lebensräumen begünstigen.",
+          "sample_solution": "Einseitiger Anbau kann Schädlingsdruck, Bodenbelastung und den Verlust von Lebensräumen begünstigen.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-plantagen"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB7XY043D3WQRS07EYH",
+      "atom_uri": "urn:zam:atom:01M5X1BKB7XY043D3WQRS07EYH",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-amazonas",
+      "title": "Amazonien zwischen Nutzung und Schutz",
+      "domain": "geographie/amerika",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-amazonas",
+      "prerequisites": [
+        {
+          "atom_id": "01M5X1BKB70QRRSKM0HW338WHR",
+          "type": "soft",
+          "rationale": "Diese Lektion verwendet die dort erläuterte fachliche Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "amerika",
+          "topic_title": "Doppelkontinent Amerika"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Doppelkontinent Amerika"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB7X2TG1C9RTSAC0H7N",
+          "slug": "g8-amazonas-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Information braucht ein begründetes Urteil zur neuen Straße?",
+          "concept": "Betroffene Flächen, Rechte und langfristige Folgen.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-amazonas",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Betroffene Flächen, Rechte und langfristige Folgen.",
+              "Nur die Farbe der Straßenfahrzeuge."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB7JAWFYJEQ0JT37F11",
+          "slug": "g8-amazonas-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum bedeutet tropischer Regenwald nicht automatisch dauerhaft fruchtbarer Boden?",
+          "concept": "Viele Nährstoffe stecken in der Biomasse; nach Rodung können Nährstoffverluste und Erosion die Nutzung begrenzen.",
+          "sample_solution": "Viele Nährstoffe stecken in der Biomasse; nach Rodung können Nährstoffverluste und Erosion die Nutzung begrenzen.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-amazonas"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB7WF9ST77T1P4MHWBG",
+      "atom_uri": "urn:zam:atom:01M5X1BKB7WF9ST77T1P4MHWBG",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-vergleich",
+      "title": "USA und Brasilien mit Daten vergleichen",
+      "domain": "geographie/amerika",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-vergleich",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "amerika",
+          "topic_title": "Doppelkontinent Amerika"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Doppelkontinent Amerika"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB7WPXS5ETDKAVDSN66",
+          "slug": "g8-vergleich-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches fiktive Land hat die höhere Leistung pro Kopf?",
+          "concept": "A mit 30.000 Geldeinheiten.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-vergleich",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A mit 30.000 Geldeinheiten.",
+              "B allein wegen der höheren Gesamtsumme."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB7CCFJT4GQRNM93RZN",
+          "slug": "g8-vergleich-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum können Gesamt-BIP und BIP pro Kopf verschiedene Rangfolgen ergeben?",
+          "concept": "Das BIP pro Kopf berücksichtigt die Bevölkerungszahl, das Gesamt-BIP nicht.",
+          "sample_solution": "Das BIP pro Kopf berücksichtigt die Bevölkerungszahl, das Gesamt-BIP nicht.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-vergleich"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB7QZW7RDJ9AWKW9CPP",
+      "atom_uri": "urn:zam:atom:01M5X1BKB7QZW7RDJ9AWKW9CPP",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-kultur",
+      "title": "Amerikanisierung im eigenen Alltag",
+      "domain": "geographie/amerika",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-kultur",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "amerika",
+          "topic_title": "Doppelkontinent Amerika"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Doppelkontinent Amerika"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB7FFEP0T3Y94KSG7KY",
+          "slug": "g8-kultur-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was trifft auf Amerikanisierung zu?",
+          "concept": "Einflüsse werden übernommen und auch lokal verändert.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-kultur",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einflüsse werden übernommen und auch lokal verändert.",
+              "Jeder Mensch übernimmt zwingend dieselbe Kultur."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB7FBWB84KR1JGBMBAS",
+          "slug": "g8-kultur-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Was bezeichnet Amerikanisierung?",
+          "concept": "Die Verbreitung US-amerikanischer Lebensweisen und kultureller Einflüsse, die lokal unterschiedlich aufgenommen werden.",
+          "sample_solution": "Die Verbreitung US-amerikanischer Lebensweisen und kultureller Einflüsse, die lokal unterschiedlich aufgenommen werden.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-kultur"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB7WM8MRQ8HC1JT02RY",
+      "atom_uri": "urn:zam:atom:01M5X1BKB7WM8MRQ8HC1JT02RY",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-grenzen",
+      "title": "Politische und soziale Grenzen",
+      "domain": "geographie/amerika",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-grenzen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "amerika",
+          "topic_title": "Doppelkontinent Amerika"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Doppelkontinent Amerika"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB7GJJD5X01P5H91ZB0",
+          "slug": "g8-grenzen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Art Grenze zeigt eine bewachte Wohnanlage innerhalb einer Stadt?",
+          "concept": "Eine räumlich organisierte soziale Abgrenzung.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-grenzen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine räumlich organisierte soziale Abgrenzung.",
+              "Zwingend eine neue Staatsgrenze."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB7J40ARMAG52N8CBWS",
+          "slug": "g8-grenzen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie unterscheidet sich eine soziale Grenze von einer Staatsgrenze?",
+          "concept": "Eine soziale Grenze trennt Gruppen oder Zugangsmöglichkeiten; eine Staatsgrenze trennt staatliche Hoheitsgebiete.",
+          "sample_solution": "Eine soziale Grenze trennt Gruppen oder Zugangsmöglichkeiten; eine Staatsgrenze trennt staatliche Hoheitsgebiete.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-grenzen"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB7GPSDXT0YFQCY93X6",
+      "atom_uri": "urn:zam:atom:01M5X1BKB7GPSDXT0YFQCY93X6",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-asien",
+      "title": "China und Indien auf der Karte",
+      "domain": "geographie/asien",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-asien",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "asien",
+          "topic_title": "China und Indien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "China und Indien"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB7PK87NW1FR08S3T2Y",
+          "slug": "g8-asien-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wo liegt das Hochland von Tibet im Verhältnis zum Himalaya?",
+          "concept": "Nördlich des Himalaya.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-asien",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nördlich des Himalaya.",
+              "Südlich von Sri Lanka."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB7SY7S50PSEFDZCQK8",
+          "slug": "g8-asien-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie liegen China und Indien im asiatischen Großraum?",
+          "concept": "China liegt in Ostasien, Indien in Südasien; zwischen Teilräumen liegt der Himalaya.",
+          "sample_solution": "China liegt in Ostasien, Indien in Südasien; zwischen Teilräumen liegt der Himalaya.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-asien"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB700MB5F6GCNFC0NHH",
+      "atom_uri": "urn:zam:atom:01M5X1BKB700MB5F6GCNFC0NHH",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-monsun",
+      "title": "Monsun: Regen im Jahresrhythmus",
+      "domain": "geographie/asien",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-monsun",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "asien",
+          "topic_title": "China und Indien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "China und Indien"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB7ZD6CZWC1ECPR8AB4",
+          "slug": "g8-monsun-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bezeichnet der Begriff Monsun vor allem?",
+          "concept": "Den jahreszeitlichen Wechsel vorherrschender Winde.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-monsun",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Den jahreszeitlichen Wechsel vorherrschender Winde.",
+              "Jeden einzelnen Regenschauer weltweit."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB79R6S4ZQRCA1S365Q",
+          "slug": "g8-monsun-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum kann der südasiatische Sommermonsun viel Regen bringen?",
+          "concept": "Feuchte Meeresluft strömt landwärts, steigt auf und kann beim Abkühlen Wasser abregnen.",
+          "sample_solution": "Feuchte Meeresluft strömt landwärts, steigt auf und kann beim Abkühlen Wasser abregnen.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-monsun"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB7TVD4SEQ7WNSPXPH9",
+      "atom_uri": "urn:zam:atom:01M5X1BKB7TVD4SEQ7WNSPXPH9",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-daten",
+      "title": "Länderkennzahlen fair darstellen",
+      "domain": "geographie/asien",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-daten",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "asien",
+          "topic_title": "China und Indien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "China und Indien"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB7MH8A58340Y9JAJ8F",
+          "slug": "g8-daten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Diagramm passt für die Entwicklung einer Größe über mehrere Jahre?",
+          "concept": "Ein Liniendiagramm mit beschrifteten Achsen.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-daten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Liniendiagramm mit beschrifteten Achsen.",
+              "Ein Kreisdiagramm aus unzusammenhängenden Einheiten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB7SRMK71G6PJA1KGAM",
+          "slug": "g8-daten-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie berechnet man die Bevölkerungsdichte?",
+          "concept": "Einwohnerzahl geteilt durch Fläche; üblich ist die Einheit Menschen je km².",
+          "sample_solution": "Einwohnerzahl geteilt durch Fläche; üblich ist die Einheit Menschen je km².",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-daten"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB7MBXY9PB6WPQ7HWEW",
+      "atom_uri": "urn:zam:atom:01M5X1BKB7MBXY9PB6WPQ7HWEW",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-standorte",
+      "title": "Warum Wirtschaftszentren dort liegen",
+      "domain": "geographie/asien",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-standorte",
+      "prerequisites": [
+        {
+          "atom_id": "01M5X1BKB7GPSDXT0YFQCY93X6",
+          "type": "soft",
+          "rationale": "Diese Lektion verwendet die dort erläuterte fachliche Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "asien",
+          "topic_title": "China und Indien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "China und Indien"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB7V9SAAN2Z9CGS327K",
+          "slug": "g8-standorte-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Faktor ist für regelmäßigen Containerexport besonders naheliegend?",
+          "concept": "Gute Anbindung an Hafen und Verkehrsnetz.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-standorte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gute Anbindung an Hafen und Verkehrsnetz.",
+              "Möglichst große Entfernung von jedem Verkehrsknoten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB7WPB9VVJWED1F9HEA",
+          "slug": "g8-standorte-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum werden Standortfaktoren je nach Branche unterschiedlich gewichtet?",
+          "concept": "Branchen benötigen unterschiedliche Kombinationen aus Transport, Fachkräften, Netzen, Märkten und weiteren Bedingungen.",
+          "sample_solution": "Branchen benötigen unterschiedliche Kombinationen aus Transport, Fachkräften, Netzen, Märkten und weiteren Bedingungen.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-standorte"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB7E05J3S0WW6J81PAJ",
+      "atom_uri": "urn:zam:atom:01M5X1BKB7E05J3S0WW6J81PAJ",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-aufstieg",
+      "title": "Wirtschaftlicher Wandel verändert Lebensräume",
+      "domain": "geographie/asien",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-aufstieg",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "asien",
+          "topic_title": "China und Indien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "China und Indien"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB7SPV42EA16Q1RGQZ7",
+          "slug": "g8-aufstieg-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wann liegt ein Warenexportüberschuss vor?",
+          "concept": "Wenn Ausfuhren wertmäßig die Einfuhren übersteigen.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-aufstieg",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn Ausfuhren wertmäßig die Einfuhren übersteigen.",
+              "Wenn jeder einzelne Haushalt gleich viel verdient."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB77N0N5CWAXYNDJ37X",
+          "slug": "g8-aufstieg-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist das Land der Endmontage nicht gleichbedeutend mit der gesamten Wertschöpfung?",
+          "concept": "Entwicklung, Bauteile, Logistik und Vertrieb können in anderen Ländern Wert schaffen.",
+          "sample_solution": "Entwicklung, Bauteile, Logistik und Vertrieb können in anderen Ländern Wert schaffen.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-aufstieg"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB74A4QWF585XV59AYZ",
+      "atom_uri": "urn:zam:atom:01M5X1BKB74A4QWF585XV59AYZ",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-lebenslagen",
+      "title": "Stadt und Land differenziert vergleichen",
+      "domain": "geographie/asien",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-lebenslagen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "asien",
+          "topic_title": "China und Indien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "China und Indien"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB7NBXTKF9DWCT0PE40",
+          "slug": "g8-lebenslagen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was lässt sich aus den Fallkarten ableiten?",
+          "concept": "Die Schulwege dauern unterschiedlich lange.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-lebenslagen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Schulwege dauern unterschiedlich lange.",
+              "Alle Kinder eines Landes haben denselben Alltag."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB7D36HRWJ23333XKGP",
+          "slug": "g8-lebenslagen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum sind Stadt-Land-Vergleiche keine Aussagen über jede einzelne Person?",
+          "concept": "Innerhalb beider Räume unterscheiden sich Einkommen, Infrastruktur und individuelle Lebenslagen stark.",
+          "sample_solution": "Innerhalb beider Räume unterscheiden sich Einkommen, Infrastruktur und individuelle Lebenslagen stark.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-lebenslagen"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB81JT9CQ64PSTEQ7K2",
+      "atom_uri": "urn:zam:atom:01M5X1BKB81JT9CQ64PSTEQ7K2",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-alltag",
+      "title": "Alltag ohne Klischees vergleichen",
+      "domain": "geographie/asien",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-alltag",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "asien",
+          "topic_title": "China und Indien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "China und Indien"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB8F0Q8AYQD35AZV2TC",
+          "slug": "g8-alltag-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie gelingt ein sachlicher Alltagsvergleich?",
+          "concept": "Mit konkreten Kriterien und einer Prüfung der Quelle.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-alltag",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit konkreten Kriterien und einer Prüfung der Quelle.",
+              "Mit einer Eigenschaft für alle Menschen eines Landes."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB85ER58H6BN4NK2HXR",
+          "slug": "g8-alltag-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Was bedeutet Perspektivenwechsel bei einem Alltagsvergleich?",
+          "concept": "Die Situation und Motive anderer nachvollziehen, ohne Faktenprüfung oder eigene begründete Maßstäbe aufzugeben.",
+          "sample_solution": "Die Situation und Motive anderer nachvollziehen, ohne Faktenprüfung oder eigene begründete Maßstäbe aufzugeben.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-alltag"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB8H75503JKXA79NPCH",
+      "atom_uri": "urn:zam:atom:01M5X1BKB8H75503JKXA79NPCH",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-rechte",
+      "title": "Kinderrechte als gemeinsamer Maßstab",
+      "domain": "geographie/asien",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-rechte",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "asien",
+          "topic_title": "China und Indien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "China und Indien"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB8GHFGW63VRG2516ES",
+          "slug": "g8-rechte-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum reicht eine gesetzliche Bildungszusage für den Vergleich nicht allein?",
+          "concept": "Die tatsächlichen Zugangsmöglichkeiten müssen geprüft werden.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-rechte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die tatsächlichen Zugangsmöglichkeiten müssen geprüft werden.",
+              "Ein Gesetz beweist den Schulbesuch jedes Kindes."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB8FS4S6FC4YJ5119SY",
+          "slug": "g8-rechte-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum sind Kinderrechte ein gemeinsamer Vergleichsmaßstab?",
+          "concept": "Sie formulieren grundlegende Ansprüche für alle Kinder unabhängig von Herkunft und Lebensort.",
+          "sample_solution": "Sie formulieren grundlegende Ansprüche für alle Kinder unabhängig von Herkunft und Lebensort.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-rechte"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB8J9GB5FKEDMSZW2JT",
+      "atom_uri": "urn:zam:atom:01M5X1BKB8J9GB5FKEDMSZW2JT",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-praesentation",
+      "title": "China und Indien begründet präsentieren",
+      "domain": "geographie/asien",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-praesentation",
+      "prerequisites": [
+        {
+          "atom_id": "01M5X1BKB7TVD4SEQ7WNSPXPH9",
+          "type": "soft",
+          "rationale": "Diese Lektion verwendet die dort erläuterte fachliche Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "asien",
+          "topic_title": "China und Indien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "China und Indien"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB8HREKRW59F90NE9GE",
+          "slug": "g8-praesentation-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was macht zwei Länderbeispiele vergleichbar?",
+          "concept": "Eine gemeinsame Frage und dieselben Kriterien.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-praesentation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine gemeinsame Frage und dieselben Kriterien.",
+              "Verschiedene Einheiten ohne Erläuterung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB8K0HKWH0V4EFF2V9G",
+          "slug": "g8-praesentation-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Was unterscheidet einen begründeten Vergleich von einer Faktenliste?",
+          "concept": "Eine gemeinsame Frage verbindet dieselben Kriterien mit Belegen, Erklärungen und einem nachvollziehbaren Fazit.",
+          "sample_solution": "Eine gemeinsame Frage verbindet dieselben Kriterien mit Belegen, Erklärungen und einem nachvollziehbaren Fazit.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-praesentation"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB8VPYTBZVKF460RV03",
+      "atom_uri": "urn:zam:atom:01M5X1BKB8VPYTBZVKF460RV03",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-russland",
+      "title": "Russlands Größe und Vielfalt",
+      "domain": "geographie/russland",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-russland",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "russland",
+          "topic_title": "Russland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Russland"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB8XVGAB1FEP16YQT46",
+          "slug": "g8-russland-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was zeigt eine bevölkerungsgewichtete Kartenanamorphose vor allem?",
+          "concept": "Die Verteilung der Bevölkerung nach der gewählten Gewichtung.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-russland",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Verteilung der Bevölkerung nach der gewählten Gewichtung.",
+              "Die unveränderte geografische Fläche jeder Region."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB8AYF58CDJB36BCCKT",
+          "slug": "g8-russland-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist eine flächenverzerrte Bevölkerungskarte keine falsche Landkarte?",
+          "concept": "Sie zeigt bewusst ein anderes Merkmal; Gewichtung und Darstellungszweck müssen in der Legende erklärt sein.",
+          "sample_solution": "Sie zeigt bewusst ein anderes Merkmal; Gewichtung und Darstellungszweck müssen in der Legende erklärt sein.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-russland"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB8S8X2YJ3CDY6WZHM6",
+      "atom_uri": "urn:zam:atom:01M5X1BKB8S8X2YJ3CDY6WZHM6",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-permafrost",
+      "title": "Naturraum nutzen, Folgen mitdenken",
+      "domain": "geographie/russland",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-permafrost",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "russland",
+          "topic_title": "Russland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Russland"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB8B74KWCKNAG53R0RM",
+          "slug": "g8-permafrost-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet Permafrost?",
+          "concept": "Mindestens zwei Jahre durchgehend gefrorener Untergrund.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-permafrost",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mindestens zwei Jahre durchgehend gefrorener Untergrund.",
+              "Jeder Schnee, der über Nacht liegen bleibt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB8F8TG3WYABFTZY58J",
+          "slug": "g8-permafrost-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum können beim Auftauen eisreichen Untergrunds Schäden an Straßen entstehen?",
+          "concept": "Bodeneis schmilzt; der Untergrund kann sich ungleichmäßig setzen und die Straße verformen.",
+          "sample_solution": "Bodeneis schmilzt; der Untergrund kann sich ungleichmäßig setzen und die Straße verformen.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-permafrost"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB8XYQDJ390RWHR6D8X",
+      "atom_uri": "urn:zam:atom:01M5X1BKB8XYQDJ390RWHR6D8X",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-aralsee",
+      "title": "Aralsee: Folgen im verbundenen Raum",
+      "domain": "geographie/russland",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-aralsee",
+      "prerequisites": [
+        {
+          "atom_id": "01M5X1BKB8VPYTBZVKF460RV03",
+          "type": "soft",
+          "rationale": "Diese Lektion verwendet die dort erläuterte fachliche Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "russland",
+          "topic_title": "Russland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Russland"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB84A4M5ZXQGG7B59MD",
+          "slug": "g8-aralsee-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In welchen Staaten liegt der Aralsee?",
+          "concept": "Kasachstan und Usbekistan.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-aralsee",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kasachstan und Usbekistan.",
+              "Ausschließlich in Russland."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB8C56B9VXE75SJ2JTB",
+          "slug": "g8-aralsee-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist Wasserentnahme aus Zuflüssen für einen abflusslosen See bedeutsam?",
+          "concept": "Sie vermindert den Zufluss; bei überwiegenden Verlusten kann der Wasservorrat schrumpfen.",
+          "sample_solution": "Sie vermindert den Zufluss; bei überwiegenden Verlusten kann der Wasservorrat schrumpfen.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-aralsee"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB8MEDW90EM568FH36C",
+      "atom_uri": "urn:zam:atom:01M5X1BKB8MEDW90EM568FH36C",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-handel",
+      "title": "Russlands Verflechtungen zeitlich prüfen",
+      "domain": "geographie/russland",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-handel",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "russland",
+          "topic_title": "Russland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Russland"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB81Y34CF9Z9MWXEZYD",
+          "slug": "g8-handel-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum muss eine Handelskarte ein Bezugsjahr nennen?",
+          "concept": "Handelsströme und politische Bedingungen verändern sich.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-handel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Handelsströme und politische Bedingungen verändern sich.",
+              "Der geografische Norden ändert sich jedes Berichtsjahr."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB8KDXRYNAJYSTC835V",
+          "slug": "g8-handel-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum bedeutet ein höherer Handelswert nicht zwingend eine größere Warenmenge?",
+          "concept": "Preise und Wechselkurse können den Wert verändern, obwohl die Menge gleich bleibt.",
+          "sample_solution": "Preise und Wechselkurse können den Wert verändern, obwohl die Menge gleich bleibt.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-handel"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB8E9XXZJE982TSE874",
+      "atom_uri": "urn:zam:atom:01M5X1BKB8E9XXZJE982TSE874",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-smartphone",
+      "title": "Die Reise eines Smartphones",
+      "domain": "geographie/global",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-smartphone",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "global",
+          "topic_title": "Globale Verflechtungen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Globale Verflechtungen im Alltag"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB8ZPMXY23BF27QSDGN",
+          "slug": "g8-smartphone-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum reicht die Angabe des Montagelandes nicht für die Produktkette?",
+          "concept": "Andere Schritte können an weiteren Orten liegen.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-smartphone",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Andere Schritte können an weiteren Orten liegen.",
+              "Alle Rohstoffe entstehen zwingend am Montageort."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB8539AGTXBKCHA0BAT",
+          "slug": "g8-smartphone-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Welche Schritte gehören zum Lebensweg eines Smartphones?",
+          "concept": "Rohstoffgewinnung, Bauteile, Montage, Transport, Nutzung und Entsorgung oder Rückgewinnung.",
+          "sample_solution": "Rohstoffgewinnung, Bauteile, Montage, Transport, Nutzung und Entsorgung oder Rückgewinnung.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-smartphone"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB806VT13TP95D4R9QQ",
+      "atom_uri": "urn:zam:atom:01M5X1BKB806VT13TP95D4R9QQ",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-jeans",
+      "title": "Eine Jeans, viele Entscheidungen",
+      "domain": "geographie/global",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-jeans",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "global",
+          "topic_title": "Globale Verflechtungen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Globale Verflechtungen im Alltag"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB8WW2B41HC57597AHN",
+          "slug": "g8-jeans-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Angabe ist für einen Wasservergleich besonders wichtig?",
+          "concept": "Ort, Methode und Bezugsgröße des Wasserwerts.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-jeans",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ort, Methode und Bezugsgröße des Wasserwerts.",
+              "Nur die Farbe des Verkaufsetiketts."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB8VSFR2SNKJEDVRJHE",
+          "slug": "g8-jeans-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum gehört die Nutzungsdauer zur Nachhaltigkeitsbewertung eines Produkts?",
+          "concept": "Sie beeinflusst, auf wie viel Gebrauch sich der Herstellungsaufwand verteilt und wann Ersatz nötig wird.",
+          "sample_solution": "Sie beeinflusst, auf wie viel Gebrauch sich der Herstellungsaufwand verteilt und wann Ersatz nötig wird.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-jeans"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB83AKSV14WQEQSNSSA",
+      "atom_uri": "urn:zam:atom:01M5X1BKB83AKSV14WQEQSNSSA",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-wertschoepfung",
+      "title": "Preis ist nicht gleich Verdienst",
+      "domain": "geographie/global",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-wertschoepfung",
+      "prerequisites": [
+        {
+          "atom_id": "01M5X1BKB8E9XXZJE982TSE874",
+          "type": "soft",
+          "rationale": "Diese Lektion verwendet die dort erläuterte fachliche Grundlage."
+        },
+        {
+          "atom_id": "01M5X1BKB806VT13TP95D4R9QQ",
+          "type": "soft",
+          "rationale": "Diese Lektion verwendet die dort erläuterte fachliche Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "global",
+          "topic_title": "Globale Verflechtungen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Globale Verflechtungen im Alltag"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB80MGQSY26AF9M3C8F",
+          "slug": "g8-wertschoepfung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was darf aus dem Handelsanteil von 40 nicht direkt gefolgert werden?",
+          "concept": "Dass der Handelsgewinn genau 40 beträgt.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-wertschoepfung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dass der Handelsgewinn genau 40 beträgt.",
+              "Dass er 40 Prozent des Modellpreises entspricht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB83F7933V7M9AZXA5G",
+          "slug": "g8-wertschoepfung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist ein Preisanteil nicht automatisch Gewinn?",
+          "concept": "Er kann Vorleistungen, Löhne und weitere Kosten enthalten; Gewinn bleibt erst nach Kosten.",
+          "sample_solution": "Er kann Vorleistungen, Löhne und weitere Kosten enthalten; Gewinn bleibt erst nach Kosten.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-wertschoepfung"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB859PSM1S0M6F4THNF",
+      "atom_uri": "urn:zam:atom:01M5X1BKB859PSM1S0M6F4THNF",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-hdi",
+      "title": "Entwicklung mit mehreren Größen betrachten",
+      "domain": "geographie/global",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-hdi",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "global",
+          "topic_title": "Globale Verflechtungen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Globale Verflechtungen im Alltag"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB8QCNJBYH1YJBATTSV",
+          "slug": "g8-hdi-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche drei Dimensionen verbindet der HDI?",
+          "concept": "Gesundheit, Bildung und Lebensstandard.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-hdi",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gesundheit, Bildung und Lebensstandard.",
+              "Nur Exportmenge, Landesfläche und Küstenlänge."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB832FPNN64Z23HFTH3",
+          "slug": "g8-hdi-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum reicht der HDI allein nicht zur Bewertung von Entwicklung?",
+          "concept": "Er verdichtet drei Dimensionen als Durchschnitt und erfasst Ungleichheit, Rechte und Umwelt nicht vollständig.",
+          "sample_solution": "Er verdichtet drei Dimensionen als Durchschnitt und erfasst Ungleichheit, Rechte und Umwelt nicht vollständig.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-hdi"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB8QGW1FVM8CW4GY6F1",
+      "atom_uri": "urn:zam:atom:01M5X1BKB8QGW1FVM8CW4GY6F1",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-fussabdruck",
+      "title": "Ökologischer Fußabdruck mit Grenzen",
+      "domain": "geographie/global",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-fussabdruck",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "global",
+          "topic_title": "Globale Verflechtungen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Globale Verflechtungen im Alltag"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB81P1TDW3SRV303ABW",
+          "slug": "g8-fussabdruck-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was bedeutet ein Fußabdruck oberhalb der zugeordneten Biokapazität?",
+          "concept": "Die rechnerische Nachfrage übersteigt die regenerative Kapazität.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-fussabdruck",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die rechnerische Nachfrage übersteigt die regenerative Kapazität.",
+              "Alle Umweltprobleme seien vollständig gemessen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB8VS20RM0GGRRHC11K",
+          "slug": "g8-fussabdruck-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 1,
+          "question": "Was unterscheidet ökologischen Fußabdruck und Biokapazität?",
+          "concept": "Der Fußabdruck beschreibt rechnerischen Bedarf, Biokapazität die biologische regenerative Kapazität.",
+          "sample_solution": "Der Fußabdruck beschreibt rechnerischen Bedarf, Biokapazität die biologische regenerative Kapazität.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-fussabdruck"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB8B04C0E54J9QB032Z",
+      "atom_uri": "urn:zam:atom:01M5X1BKB8B04C0E54J9QB032Z",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-bildung",
+      "title": "Bildung und Entwicklung wirken zusammen",
+      "domain": "geographie/global",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-bildung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "global",
+          "topic_title": "Globale Verflechtungen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Globale Verflechtungen im Alltag"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB8VBFJNTDE61JEKYV7",
+          "slug": "g8-bildung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ist Bildung kein isolierter Entwicklungsschalter?",
+          "concept": "Zugang hängt auch von Einkommen, Gesundheit und Infrastruktur ab.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-bildung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zugang hängt auch von Einkommen, Gesundheit und Infrastruktur ab.",
+              "Ein Schulgebäude beseitigt automatisch jede Ungleichheit."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB84935W0RQJ5JVGYK9",
+          "slug": "g8-bildung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum spricht man bei Armut und geringem Bildungszugang von einem möglichen Kreislauf?",
+          "concept": "Beide können einander verstärken: Armut erschwert Bildung, begrenzte Bildung kann Erwerbsmöglichkeiten einschränken.",
+          "sample_solution": "Beide können einander verstärken: Armut erschwert Bildung, begrenzte Bildung kann Erwerbsmöglichkeiten einschränken.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-bildung"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB8S5CPB4H11XVTC8GC",
+      "atom_uri": "urn:zam:atom:01M5X1BKB8S5CPB4H11XVTC8GC",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-konsum",
+      "title": "Nachhaltigkeit als Verbraucher mitgestalten",
+      "domain": "geographie/global",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-konsum",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "global",
+          "topic_title": "Globale Verflechtungen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Globale Verflechtungen im Alltag"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB8JQZ379H20XQCYZ19",
+          "slug": "g8-konsum-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist bei einem Nachhaltigkeitssiegel zuerst zu prüfen?",
+          "concept": "Geltungsbereich, Kriterien und Kontrolle.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-konsum",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Geltungsbereich, Kriterien und Kontrolle.",
+              "Nur die Farbe des Logos."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB87ZR14Y0YH70J1GCX",
+          "slug": "g8-konsum-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum garantieren Nachhaltigkeitssiegel nicht automatisch sämtliche sozialen und ökologischen Eigenschaften?",
+          "concept": "Sie gelten für festgelegte Bereiche und Kriterien; weitere Wirkungen müssen zusätzlich geprüft werden.",
+          "sample_solution": "Sie gelten für festgelegte Bereiche und Kriterien; weitere Wirkungen müssen zusätzlich geprüft werden.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-konsum"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB83VYJ6PSACRVHNSMY",
+      "atom_uri": "urn:zam:atom:01M5X1BKB83VYJ6PSACRVHNSMY",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-recherche",
+      "title": "Eine aktuelle geographische Frage untersuchen",
+      "domain": "geographie/projekt",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-recherche",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "projekt",
+          "topic_title": "Deine aktuelle geographische Frage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Deine aktuelle geographische Frage"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB8K6RSSAB9032K4349",
+          "slug": "g8-recherche-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was macht eine geographische Recherchefrage konkret?",
+          "concept": "Ein benannter Raum, ein Anlass und ein untersuchbarer Zusammenhang.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-recherche",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein benannter Raum, ein Anlass und ein untersuchbarer Zusammenhang.",
+              "Nur ein sehr allgemeines Thema ohne Ort."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB82T686WBBJC9WPK1K",
+          "slug": "g8-recherche-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum reichen zwei verschiedene Internetadressen nicht als Nachweis unabhängiger Quellen?",
+          "concept": "Beide können dieselbe ursprüngliche Meldung oder Datengrundlage übernehmen.",
+          "sample_solution": "Beide können dieselbe ursprüngliche Meldung oder Datengrundlage übernehmen.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-recherche"
+        }
+      ]
+    },
+    {
+      "id": "01M5X1BKB843NVS0PF7M5HX5RR",
+      "atom_uri": "urn:zam:atom:01M5X1BKB843NVS0PF7M5HX5RR",
+      "namespace": "zam-academy-geographie-realschule-8",
+      "slug": "g8-urteil",
+      "title": "Ergebnisse zeigen und begründet urteilen",
+      "domain": "geographie/projekt",
+      "reduction": "formal",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-urteil",
+      "prerequisites": [
+        {
+          "atom_id": "01M5X1BKB83VYJ6PSACRVHNSMY",
+          "type": "soft",
+          "rationale": "Diese Lektion verwendet die dort erläuterte fachliche Grundlage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-realschule-8",
+          "topic_code": "projekt",
+          "topic_title": "Deine aktuelle geographische Frage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Deine aktuelle geographische Frage"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M5X1BKB874RG9EC4X6E11P9N",
+          "slug": "g8-urteil-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was trägt ein begründetes Urteil?",
+          "concept": "Belege, offengelegte Kriterien und Abwägung.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-urteil",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Belege, offengelegte Kriterien und Abwägung.",
+              "Nur eine starke Behauptung ohne Quelle."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M5X1BKB8KABNNANRZSKMSDGF",
+          "slug": "g8-urteil-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie unterscheidet sich ein Sachbeleg von einem Bewertungsmaßstab?",
+          "concept": "Ein Beleg stützt eine Aussage darüber, was ist; ein Maßstab begründet, wie etwas beurteilt wird.",
+          "sample_solution": "Ein Beleg stützt eine Aussage darüber, was ist; ein Maßstab begründet, wie etwas beurteilt wird.",
+          "source_link": "https://academy.zam-os.org/geographie-realschule-8/#lesson=g8-urteil"
+        }
+      ]
+    }
+  ]
+}

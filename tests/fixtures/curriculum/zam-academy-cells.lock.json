@@ -85,6 +85,12 @@
     "file": "zam-academy-englisch-realschule-10-kvt.json"
   },
   {
+    "id": "zam-academy:englisch-realschule-5",
+    "version": "2026.11.2",
+    "sha256": "2e01b7804af0aacaa10815e224471e1ec05a289c719b98de9d077ee3c8a5cdea",
+    "file": "zam-academy-englisch-realschule-5-kvt.json"
+  },
+  {
     "id": "zam-academy:englisch-realschule-8",
     "version": "2026.10.2",
     "sha256": "b47a776ab9f7d7d42d4c9ab88d89ce4e1ccee634671bc2fd721d78cb233e4b1b",
@@ -113,6 +119,12 @@
     "version": "2026.10.2",
     "sha256": "bb178630a291b0978f0275db7485a2981ba6826d75938c2c751999e4cee37ed3",
     "file": "zam-academy-franzoesisch-realschule-9-kvt.json"
+  },
+  {
+    "id": "zam-academy:geographie-realschule-8",
+    "version": "2026.10.1",
+    "sha256": "2a0d8076bbef4b9492b6be547187908fe440b644a4d97d900b47196f16f7d4b6",
+    "file": "zam-academy-geographie-realschule-8-kvt.json"
   },
   {
     "id": "zam-academy:geographie-realschule-9",
@@ -165,10 +177,53 @@
     "preview": true
   },
   {
+    "id": "zam-academy:mathematik-gymnasium-11",
+    "version": "2026.11.1",
+    "sha256": "864e20ef75129f08716c8348338ea7da07bb54b870e279617b088727501841b3",
+    "file": "zam-academy-mathematik-gymnasium-11-kvt.json"
+  },
+  {
+    "id": "zam-academy:mathematik-gymnasium-12",
+    "version": "2026.11.1",
+    "sha256": "5d1020a28d1027fe96b0f5cdde15ed354112342e6dbf368a5f7c221f0cc86250",
+    "file": "zam-academy-mathematik-gymnasium-12-kvt.json"
+  },
+  {
+    "id": "zam-academy:mathematik-gymnasium-13",
+    "version": "2026.11.1",
+    "sha256": "9d8f25fb5c7f5a0ca56c4a5186ea57abea148d7246b341d569f2b8215bdd098d",
+    "file": "zam-academy-mathematik-gymnasium-13-kvt.json",
+    "preview": true
+  },
+  {
+    "id": "zam-academy:mathematik-gymnasium-5",
+    "version": "2026.11.1",
+    "sha256": "b5817c93581abd4adeeedfd088fef0715ebe0132163f5e0ed747c398e97ee5aa",
+    "file": "zam-academy-mathematik-gymnasium-5-kvt.json"
+  },
+  {
+    "id": "zam-academy:mathematik-gymnasium-6",
+    "version": "2026.11.2",
+    "sha256": "f75a25b1c0b6e12c69db65ba8744648ee555bdca8dba7832e17a7e808092e702",
+    "file": "zam-academy-mathematik-gymnasium-6-kvt.json"
+  },
+  {
     "id": "zam-academy:mathematik-realschule-10",
     "version": "2026.10.1",
     "sha256": "869d1ca86992a19be6bbd0777238ebd5108927b5f0866d472f71f6681ab0d224",
     "file": "zam-academy-mathematik-realschule-10-kvt.json"
+  },
+  {
+    "id": "zam-academy:mathematik-realschule-5",
+    "version": "2026.11.2",
+    "sha256": "c1ab903bbd86ba27a5d2b4196c020bc0d48318408f562b0150b54c0080cea396",
+    "file": "zam-academy-mathematik-realschule-5-kvt.json"
+  },
+  {
+    "id": "zam-academy:mathematik-realschule-6",
+    "version": "2026.11.2",
+    "sha256": "af94abb0d73fc9b071e683db2859f34dfcd3ea9d1279ab24b460d2c2cee61bb9",
+    "file": "zam-academy-mathematik-realschule-6-kvt.json"
   },
   {
     "id": "zam-academy:mathematik-realschule-7",

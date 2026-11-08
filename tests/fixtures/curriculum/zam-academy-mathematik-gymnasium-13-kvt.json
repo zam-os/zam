@@ -1,0 +1,3811 @@
+{
+ "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+ "tile_id": "zam-academy:mathematik-gymnasium-13",
+ "version": "2026.11.1",
+ "title": "Mathematik 13 Gymnasium (ZAM Academy)",
+ "description": "Vier Lernbereiche der Jahrgangsstufe 13 am Gymnasium (erhöhtes Anforderungsniveau): Flächeninhalt und bestimmtes Integral, Normalverteilung, Geraden und Ebenen im Raum sowie Anwendungen der Differential- und Integralrechnung. 27 Lektionen mit Labor, Aufgaben auf zwei Stufen und Lernkarten. Jede Karte führt zur passenden Lektion zurück.",
+ "publisher": "ZAM Academy",
+ "published_at": "2026-11-08T08:00:00Z",
+ "sources": [
+  {
+   "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/mathematik",
+   "checked": "2026-11-08",
+   "label": "M13, LB 1–4 (erhöhtes Anforderungsniveau)"
+  }
+ ],
+ "atoms": [
+  {
+   "id": "01M6XAHTT63ZJ3D9RA2PFQ3TX6",
+   "atom_uri": "urn:zam:atom:01M6XAHTT63ZJ3D9RA2PFQ3TX6",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "int-1-flaechenbilanz",
+   "title": "Das bestimmte Integral als Flächenbilanz",
+   "domain": "mathematik/analysis",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-1-flaechenbilanz",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-1",
+     "topic_title": "Etappe 1: Flächeninhalt und bestimmtes Integral"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb1",
+     "topic_title": "Flächeninhalt und bestimmtes Integral",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTT65GG5GMA1TV0TQZSG",
+     "slug": "g13-flaechenbilanz",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-1-flaechenbilanz",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Die Länge des Graphen von f zwischen a und b.",
+       "reason": "Die Bogenlänge eines Graphen ist eine andere Größe und wird nicht durch ein Integral über f berechnet."
+      },
+      {
+       "text": "Die mittlere Steigung von f zwischen a und b.",
+       "reason": "Die mittlere Steigung ist der Differenzenquotient (f(b) − f(a)) : (b − a), nicht das Integral über f."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Was misst das bestimmte Integral "
+      },
+      {
+       "type": "math",
+       "tex": "\\int_a^b f(x)\\,dx",
+       "speech": "Integral von a bis b von f von x nach x"
+      },
+      {
+       "type": "text",
+       "text": " in geometrischer Sicht?"
+      }
+     ],
+     "concept_segments": [
+      {
+       "type": "text",
+       "text": "Die Flächenbilanz zwischen Graph und x-Achse: "
+      },
+      {
+       "type": "math",
+       "tex": "A^{+} − A^{-}",
+       "speech": "A plus minus A minus"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Die Flächenbilanz A⁺ − A⁻ zwischen Graph und x-Achse.",
+       "Den Flächeninhalt A⁺ + A⁻ zwischen Graph und x-Achse."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTT6NRM6GNNFKNM01TPX",
+     "slug": "g13-vorzeichenregel-bilanz",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-1-flaechenbilanz",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Sie werden bei der Bilanz gar nicht mitgezählt.",
+       "reason": "Auch Flächen unter der Achse fließen ein, allerdings mit negativem Vorzeichen in die Bilanz."
+      },
+      {
+       "text": "Sie verdoppeln den Wert des Integrals.",
+       "reason": "Ein Verdoppeln entsteht nirgends; die negativen Stücke werden von A⁺ abgezogen, nicht addiert."
+      }
+     ],
+     "question": "Wie wirken sich Flächen unter der x-Achse auf das bestimmte Integral aus?",
+     "concept": "Sie zählen negativ: Das Integral ist A⁺ − A⁻.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Sie zählen negativ: Das Integral ist A⁺ − A⁻.",
+       "Sie zählen positiv wie die Flächen über der Achse."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTT6YCFNHW1X077W9QAG",
+     "slug": "g13-bilanz-ungerade-funktion",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-1-flaechenbilanz",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Die Bilanz ist 8, denn beide Teilflächen sind positiv zu zählen.",
+       "reason": "Die Fläche unter der Achse zählt negativ; addiert werden darf man die Beträge nur beim Flächeninhalt."
+      },
+      {
+       "text": "Die Bilanz ist 4, denn x³ ist auf [0 | 2] positiv und zählt voll.",
+       "reason": "Das Integral über [−2 | 2] misst die gesamte Bilanz, nicht nur den positiven Zweig rechts von 0."
+      }
+     ],
+     "question": "Wie groß ist ∫₋₂² x³ dx, und was sagt das über die Flächenbilanz einer ungeraden Funktion auf einem symmetrischen Intervall aus?",
+     "concept": "Die Bilanz ist 0, denn positive und negative Flächen heben sich paarweise auf.",
+     "sample_solution": "f(x) = x³ ist ungerade: f(−x) = −f(x). Über [−2 | 2] liegt links von 0 die Fläche A⁻ = ∫₋₂⁰ x³ dx und rechts A⁺ = ∫₀² x³ dx, und beide sind gleich groß, denn die Graphenstücke sind zentralsymmetrisch. Mit der Stammfunktion F(x) = x⁴ : 4 folgt F(2) − F(−2) = 4 − 4 = 0. Die Bilanz ist also 0, obwohl beide Teilflächen den Inhalt 4 FE haben. Für jede ungerade Funktion gilt: ∫₋ₐᵃ f(x) dx = 0."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTT7XRDPN2TNK6KRE1J1",
+   "atom_uri": "urn:zam:atom:01M6XAHTT7XRDPN2TNK6KRE1J1",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "int-2-integralfunktion",
+   "title": "Die Integralfunktion",
+   "domain": "mathematik/analysis",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-2-integralfunktion",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTT63ZJ3D9RA2PFQ3TX6",
+     "type": "soft",
+     "rationale": "Die Integralfunktion zählt die Flächenbilanz von a bis x; dafür muss die Flächenbilanz selbst verstanden sein."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-1",
+     "topic_title": "Etappe 1: Flächeninhalt und bestimmtes Integral"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb1",
+     "topic_title": "Flächeninhalt und bestimmtes Integral",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTT7NJ6TMM8Q55N9TB8D",
+     "slug": "g13-integralfunktion-definition",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-2-integralfunktion",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Die Ableitung von f, also F(x) = f′(x) an der Stelle x.",
+       "reason": "Die Integralfunktion ist eine Stammfunktion von f; abgeleitet wird f nicht, sondern integriert."
+      },
+      {
+       "text": "Die Umkehrfunktion von f, ausgewertet an der Stelle x.",
+       "reason": "Eine Umkehrfunktion tauscht x und y aus; die Integralfunktion akkumuliert dagegen Flächen bis x."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Was versteht man unter der Integralfunktion "
+      },
+      {
+       "type": "math",
+       "tex": "F(x) = \\int_a^x f(t)\\,dt",
+       "speech": "F von x gleich Integral von a bis x von f von t nach t"
+      },
+      {
+       "type": "text",
+       "text": "?"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Die Flächenfunktion mit fester Untergrenze a, für die F(a) = 0 gilt.",
+       "Eine beliebige Stammfunktion von f ohne festgelegte Untergrenze."
+      ],
+      "correct_index": 0
+     },
+     "concept": "Die Flächenfunktion mit fester Untergrenze a, für die F(a) = 0 gilt.",
+     "sample_solution": "Die Flächenfunktion mit fester Untergrenze a: F(x) zählt die Flächenbilanz von a bis x, und F(a) = 0 gilt."
+    },
+    {
+     "id": "01M6XAHTT7M0YAZKGQB1YWCCCE",
+     "slug": "g13-f-positiv-f-steigend",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-2-integralfunktion",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "F ist dort konstant, denn positive Flächen verändern die Bilanz nicht.",
+       "reason": "F wird mit f verwechselt: Nicht f ist konstant, sondern F wächst solange f positiv bleibt."
+      },
+      {
+       "text": "F ist dort fallend, denn positive Flächen ziehen die Bilanz nach unten.",
+       "reason": "Bei f > 0 wächst die Flächenbilanz; ein Fallen von F würde f < 0 voraussetzen."
+      }
+     ],
+     "question": "Was passiert mit F(x) = ∫ₐˣ f(t) dt auf einem Intervall, auf dem f positiv ist?",
+     "concept": "F ist dort steigend, denn die Flächenbilanz wächst mit jedem weiteren Stück.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "F ist dort steigend.",
+       "F ist dort fallend."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTT74WGEKT21W2VH723G",
+     "slug": "g13-verlauf-von-f-beschreiben",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-2-integralfunktion",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "F fällt zuerst und steigt ab x = 2 wieder an, am Ende ist F am größten.",
+       "reason": "Bei positivem f wächst die Bilanz; ein Fallen zu Beginn widerspräche f > 0 auf [0 | 2]."
+      },
+      {
+       "text": "F hat bei x = 2 eine Nullstelle und bleibt danach positiv.",
+       "reason": "Verwechselt die Nullstelle von f mit einer Nullstelle von F: Bei x = 2 hat f eine Nullstelle, F hat dort ein Maximum."
+      }
+     ],
+     "question": "f ist auf [0 | 2] positiv, hat bei x = 2 eine Nullstelle mit Vorzeichenwechsel von + nach − und ist auf [2 | 4] negativ. Beschreibe den Verlauf von F(x) = ∫₀ˣ f(t) dt.",
+     "concept": "F steigt bis x = 2, hat dort ein Maximum und fällt danach wieder ab.",
+     "sample_solution": "Solange f positiv ist, wächst die Flächenbilanz: Auf [0 | 2] ist F steigend. Bei x = 2 wechselt f das Vorzeichen von + nach −, also kehrt F um – dort liegt ein Maximum von F. Auf [2 | 4] ist f negativ, jede weitere Fläche verkleinert die Bilanz: F fällt. Weil auf [2 | 4] negative Flächen addiert werden, ist F(4) kleiner als F(2); ob F(4) schon unter F(0) = 0 fällt, hängt von den Flächenstücken ab. F′ = f: Wo f = 0 ist, hat F eine waagerechte Tangente."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTT8XFCWMZ7TMSR9JDER",
+   "atom_uri": "urn:zam:atom:01M6XAHTT8XFCWMZ7TMSR9JDER",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "int-3-hauptsatz",
+   "title": "Hauptsatz der Differential- und Integralrechnung",
+   "domain": "mathematik/analysis",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-3-hauptsatz",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTT7XRDPN2TNK6KRE1J1",
+     "type": "soft",
+     "rationale": "Der Hauptsatz sagt F′ = f für die Integralfunktion; dafür muss der Begriff Integralfunktion stehen."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-1",
+     "topic_title": "Etappe 1: Flächeninhalt und bestimmtes Integral"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb1",
+     "topic_title": "Flächeninhalt und bestimmtes Integral",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTT89EBH75CT0SPZ0DFB",
+     "slug": "g13-hauptsatz-formel",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-3-hauptsatz",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Man bildet den Mittelwert (f(a) + f(b)) : 2 und multipliziert mit b − a.",
+       "reason": "Das ist die Trapezregel: Der Hauptsatz braucht eine Stammfunktion F, nicht den Mittelwert der Randwerte."
+      },
+      {
+       "text": "Man leitet f an den Grenzen ab und addiert die Werte f′(a) + f′(b).",
+       "reason": "Ableitung und Stammfunktion verwechselt: Der Hauptsatz bildet F(b) − F(a) und nicht f′ an den Grenzen."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Wie berechnest du mit dem Hauptsatz den Wert von "
+      },
+      {
+       "type": "math",
+       "tex": "\\int_a^b f(x)\\,dx",
+       "speech": "Integral von a bis b von f von x nach x"
+      },
+      {
+       "type": "text",
+       "text": "?"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Man setzt in eine Stammfunktion F von f die Grenzen ein und bildet F(b) − F(a).",
+       "Man multipliziert f(b) mit der Intervallbreite b − a."
+      ],
+      "correct_index": 0
+     },
+     "concept": "Man setzt in eine Stammfunktion F von f die Grenzen ein und bildet F(b) − F(a).",
+     "sample_solution": "Stammfunktion F mit F′ = f bestimmen und die Grenzen einsetzen: ∫_a^b f(x) dx = F(b)−F(a)"
+    },
+    {
+     "id": "01M6XAHTT8CXCQCCXFEN7M0XG6",
+     "slug": "g13-integralfunktion-oder-stammfunktion",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-3-hauptsatz",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Die Stammfunktion S(x) ist für alle x größer als die Integralfunktion F(x).",
+       "reason": "Die beiden Funktionen sind nicht in der Höhe zu vergleichen: Sie unterscheiden sich um eine Konstante."
+      },
+      {
+       "text": "Die Integralfunktion existiert nur für positive Funktionen, sonst ist sie negativ.",
+       "reason": "Auch für negative f existiert die Integralfunktion; nur ihr Wert kann negativ ausfallen."
+      }
+     ],
+     "question": "Worin unterscheiden sich Integralfunktion und Stammfunktion?",
+     "concept": "Die Integralfunktion hat feste Untergrenze a, F(a) = 0; die Stammfunktion nicht.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Die Integralfunktion hat eine feste Untergrenze a mit F(a) = 0, eine Stammfunktion ist nur bis auf eine Konstante bestimmt.",
+       "Beide Begriffe bezeichnen genau dasselbe, nur in unterschiedlichen Schularten."
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Die Integralfunktion F(x) = ∫ₐˣ f(t) dt hat die feste Untergrenze a mit F(a) = 0; eine Stammfunktion ist nur bis auf eine Konstante bestimmt."
+    },
+    {
+     "id": "01M6XAHTT818FS8GTVP8DW68YE",
+     "slug": "g13-hauptsatz-beispiel-x2",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-3-hauptsatz",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Der Wert ist 27, denn f(3) = 9 und die Breite ist 3.",
+       "reason": "9 · 3 ist das Rechteck über dem größten Funktionswert; die Fläche unter der Parabel ist kleiner als ihr umschließendes Rechteck."
+      },
+      {
+       "text": "Der Wert ist 6, denn F(x) = x² : 2 liefert 9 : 2 + 9 : 2.",
+       "reason": "x² : 2 ist die Stammfunktion von x, nicht von x²; die Potenzregel verlangt x³ : 3."
+      }
+     ],
+     "question": "Berechne ∫₀³ x² dx mit dem Hauptsatz und begründe anschaulich, warum das Ergebnis plausibel ist.",
+     "concept": "Mit F(x) = x³ : 3 folgt F(3) − F(0) = 27 : 3 − 0 = 9.",
+     "sample_solution": "Eine Stammfunktion von f(x) = x² ist F(x) = x³ : 3, denn (x³ : 3)′ = 3x² : 3 = x². Hauptsatz: ∫₀³ x² dx = F(3) − F(0) = 27 : 3 − 0 = 9. Anschaulich: Der Graph von x² liegt auf [0 | 3] vollständig über der x-Achse, die Fläche muss also positiv sein. Das Rechteck 3 · 9 = 27 über [0 | 3] mit Höhe 9 enthält die Fläche vollständig, das Dreieck mit Katheten 3 und 9 hätte die Fläche 13,5 – der Wert 9 liegt dazwischen und passt zur gekrümmten Parabel."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTT9ZY38NQPZXQ3X43B8",
+   "atom_uri": "urn:zam:atom:01M6XAHTT9ZY38NQPZXQ3X43B8",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "int-4-graphen",
+   "title": "Verlaufsschluss zwischen Integrand und Integralfunktion",
+   "domain": "mathematik/analysis",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-4-graphen",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTT8XFCWMZ7TMSR9JDER",
+     "type": "soft",
+     "rationale": "Der Verlaufsschluss nutzt F′ = f aus dem Hauptsatz: Steigung von F ist der Funktionswert von f."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-1",
+     "topic_title": "Etappe 1: Flächeninhalt und bestimmtes Integral"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb1",
+     "topic_title": "Flächeninhalt und bestimmtes Integral",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTT9B8RFA78YS266CSMZ",
+     "slug": "g13-merksatz-f-und-f",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-4-graphen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "F hat auf dem Intervall eine Nullstelle, denn die Fläche wird dort 0.",
+       "reason": "F wird mit f verwechselt: Solange f positiv ist, wächst die Flächenbilanz und F hat keine Nullstelle."
+      },
+      {
+       "text": "F ist auf dem Intervall konkav gekrümmt, denn f ist dort positiv.",
+       "reason": "Die Krümmung von F liest man aus f′ ab: f gibt die Steigung von F vor, nicht deren Krümmung."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Was gilt für den Verlauf von "
+      },
+      {
+       "type": "math",
+       "tex": "F(x) = \\int_0^x f(t)\\,dt",
+       "speech": "F von x gleich Integral von null bis x von f von t nach t"
+      },
+      {
+       "type": "text",
+       "text": ", wenn f auf einem Intervall positiv ist?"
+      }
+     ],
+     "concept_segments": [
+      {
+       "type": "text",
+       "text": "F ist dort steigend, denn "
+      },
+      {
+       "type": "math",
+       "tex": "F' = f > 0",
+       "speech": "F Strich ist gleich f, und f ist größer als null"
+      },
+      {
+       "type": "text",
+       "text": ": Die Flächenbilanz wächst."
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "F ist auf dem Intervall steigend.",
+       "F ist auf dem Intervall fallend."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTT97XG6J2EESBHST7MC",
+     "slug": "g13-extremstelle-vorzeichenwechsel",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-4-graphen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Wo f eine Nullstelle hat, ganz gleich ob dort ein Vorzeichenwechsel ist.",
+       "reason": "Ohne Vorzeichenwechsel bleibt die Flächenbilanz nur stationär: F hat dort keine Extremstelle."
+      },
+      {
+       "text": "Wo die Fläche unter dem Graphen von f am größten ist, dort ist F am größten.",
+       "reason": "Der größte Flächeninhalt unter f bestimmt nicht den Hochpunkt von F: Maßgeblich ist der Vorzeichenwechsel von f."
+      }
+     ],
+     "question": "Wann hat F eine Extremstelle, wenn F′ = f gilt?",
+     "concept": "Wo f das Vorzeichen wechselt: + nach − gibt ein Maximum, − nach + ein Minimum.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Wo f das Vorzeichen wechselt: + nach − gibt ein Maximum, − nach + ein Minimum.",
+       "Wo f den größten Betrag hat."
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Genau dort, wo f das Vorzeichen wechselt: von + nach − ein Maximum, von − nach + ein Minimum."
+    },
+    {
+     "id": "01M6XAHTT9R1M890HY8JD6JAT0",
+     "slug": "g13-von-f-zurueck-zu-f",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-4-graphen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "f(x) = 2x − 4 ist eine Parabel mit Scheitel bei x = 2 und Öffnung nach oben.",
+       "reason": "f ist die Ableitung von F und deshalb eine Gerade: Die Parabel ist der Graph von F, nicht von f."
+      },
+      {
+       "text": "f(x) = x² − 4x + 3, denn bei Integralfunktionen sind F und f immer gleich.",
+       "reason": "F und f verwechselt: Von F(x) = x² − 4x + 3 ist f die Ableitung 2x − 4, nicht F selbst."
+      }
+     ],
+     "question": "Die Integralfunktion lautet F(x) = x² − 4x + 3. Beschreibe den Graphen von f und die Extremstelle von F.",
+     "concept": "f = F′ = 2x − 4 ist eine Gerade; bei x = 2 wechselt f von − nach +, F hat dort ein Minimum.",
+     "sample_solution": "Umgekehrter Verlaufsschluss: f ist die Ableitung von F, also f(x) = F′(x) = 2x − 4. Das ist eine Gerade mit Steigung 2 und Nullstelle bei x = 2. Links von 2 ist f negativ (F fällt), rechts von 2 positiv (F steigt): F hat bei x = 2 ein Minimum. Der Wert ist F(2) = 4 − 8 + 3 = −1. Der Graph von f ist also eine nach rechts steigende Gerade, die die x-Achse bei 2 schneidet; ihr Schnittpunkt mit der y-Achse liegt bei (0 | −4)."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTACH9DG87DAH79XGA1",
+   "atom_uri": "urn:zam:atom:01M6XAHTTACH9DG87DAH79XGA1",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "int-5-stammfunktionen",
+   "title": "Stammfunktionen und Integrationsregeln",
+   "domain": "mathematik/analysis",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-5-stammfunktionen",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTT8XFCWMZ7TMSR9JDER",
+     "type": "soft",
+     "rationale": "Der Hauptsatz setzt Stammfunktionen voraus; hier werden die Regeln gesammelt, mit denen man sie findet."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-1",
+     "topic_title": "Etappe 1: Flächeninhalt und bestimmtes Integral"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb1",
+     "topic_title": "Flächeninhalt und bestimmtes Integral",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTAXDB2XVQV74QZD03K",
+     "slug": "g13-stammfunktion-potenz",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-5-stammfunktionen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "F(x) = n · xⁿ⁻¹ + C, die Ableitung der Potenz.",
+       "reason": "Das ist die Ableitungsregel: Gesucht ist die Stammfunktion mit xⁿ⁺¹ : (n + 1)."
+      },
+      {
+       "text": "F(x) = ln|xⁿ| + C, wie bei der Regel f′ : f.",
+       "reason": "Die Regel f′ : f gehört zum Quotienten f′ : f, nicht zur Potenz xⁿ."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Wie lautet eine Stammfunktion von "
+      },
+      {
+       "type": "math",
+       "tex": "f(x) = x^{n}",
+       "speech": "f von x gleich x hoch n"
+      },
+      {
+       "type": "text",
+       "text": " für n ≠ −1?"
+      }
+     ],
+     "concept_segments": [
+      {
+       "type": "text",
+       "text": "Potenzregel: "
+      },
+      {
+       "type": "math",
+       "tex": "F(x) = \\frac{x^{n+1}}{n+1} + C",
+       "speech": "F von x gleich x hoch n plus eins durch n plus eins plus C"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "F(x) = x^(n+1) : (n + 1) + C",
+       "F(x) = n · x^(n−1) + C"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTTAQJ1DRC23C0S25475",
+     "slug": "g13-regel-f-durch-f",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-5-stammfunktionen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Die Regel f′ : f liefert ∫f′(x) : f(x) dx = e^(f(x)) + C",
+       "reason": "Die e-Regel ist f′ · e^f → e^f; der Quotient f′ : f führt auf ln|f(x)|."
+      },
+      {
+       "text": "Die Regel f′ : f liefert ∫f′(x) : f(x) dx = (f(x))² : 2 + C",
+       "reason": "Potenzregel statt Logarithmusregel: Aus f′ : f wird ln|f(x)|, nicht (f(x))² : 2."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Wie integriert man den Quotienten "
+      },
+      {
+       "type": "math",
+       "tex": "\\frac{f'(x)}{f(x)}",
+       "speech": "f Strich von x geteilt durch f von x"
+      },
+      {
+       "type": "text",
+       "text": "?"
+      }
+     ],
+     "concept_segments": [
+      {
+       "type": "text",
+       "text": "Die Regel f′ : f liefert "
+      },
+      {
+       "type": "math",
+       "tex": "\\int \\frac{f'(x)}{f(x)}\\,dx = \\ln|f(x)| + C",
+       "speech": "das Integral von f Strich von x durch f von x nach x ist gleich ln Betrag f von x plus C"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "∫ f′(x) : f(x) dx = ln|f(x)| + C",
+       "∫ f′(x) : f(x) dx = (f(x))² : 2 + C"
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTTAM80Q9F6GKCPJMQRY",
+     "slug": "g13-stammfunktion-verkettet-efach",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-5-stammfunktionen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "F(x) = (2x + 3) · e^(x² + 3x) + C, denn der Faktor bleibt erhalten.",
+       "reason": "Bei der Produktregel umgekehrt entsteht kein erneutes Produkt; die Ableitung des Exponenten wird zum alleinigen Faktor."
+      },
+      {
+       "text": "F(x) = ln|x² + 3x| + C, wegen der Regel f′ : f.",
+       "reason": "Die Regel f′ : f passt nur bei einem Quotienten; hier steht ein Produkt mit einer e-Funktion."
+      }
+     ],
+     "question": "Bestimme eine Stammfunktion von f(x) = (2x + 3) · e^(x² + 3x) und begründe die verwendete Regel.",
+     "concept": "Mit g(x) = x² + 3x ist g′(x) = 2x + 3, also F(x) = e^(x² + 3x) + C (Regel f′ · e^f → e^f).",
+     "sample_solution": "Erkenne die innere Funktion g(x) = x² + 3x; ihre Ableitung ist g′(x) = 2x + 3 und steht bereits als Faktor vor der e-Funktion: f(x) = g′(x) · e^{g(x)}. Die Integrationsregel für f′ · e^f lautet ∫ f′(x) · e^{f(x)} dx = e^{f(x)} + C. Also ist F(x) = e^{x² + 3x} + C. Probe durch Ableiten: (e^{x²+3x})′ = (2x + 3) · e^{x²+3x} = f(x). Das passt; eine beliebige Konstante darf ergänzt werden."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTBFEMRB740ABDPZHWX",
+   "atom_uri": "urn:zam:atom:01M6XAHTTBFEMRB740ABDPZHWX",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "int-6-flaechen",
+   "title": "Flächen zwischen zwei Graphen",
+   "domain": "mathematik/analysis",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-6-flaechen",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTT8XFCWMZ7TMSR9JDER",
+     "type": "soft",
+     "rationale": "Die Fläche zwischen zwei Graphen wird mit dem Hauptsatz über die Differenzfunktion berechnet."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-1",
+     "topic_title": "Etappe 1: Flächeninhalt und bestimmtes Integral"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb1",
+     "topic_title": "Flächeninhalt und bestimmtes Integral",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTB99P8PVH6NVV7WTEX",
+     "slug": "g13-flaeche-zwei-graphen-formel",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-6-flaechen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "A = f(b) − g(b), also die Differenz am rechten Rand.",
+       "reason": "Die Differenz zweier Funktionswerte ist eine Länge, keine Fläche; Flächen entstehen erst durch Integrieren."
+      },
+      {
+       "text": "A = ∫ₐᵇ f(x) dx multipliziert mit ∫ₐᵇ g(x) dx.",
+       "reason": "Das Produkt zweier Integrale hat keine Flächenbedeutung; gebildet wird das Integral der Differenz."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Wie berechnest du die Fläche zwischen den Graphen von f und g über [a | b]?"
+      }
+     ],
+     "concept_segments": [
+      {
+       "type": "text",
+       "text": "Oberer Graph minus unterer Graph: "
+      },
+      {
+       "type": "math",
+       "tex": "A = \\int_a^b |f(x) − g(x)|\\,dx",
+       "speech": "A ist gleich Integral von a bis b vom Betrag f von x minus g von x nach x"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "A = ∫ₐᵇ |f(x) − g(x)| dx, bei f ≥ g also A = ∫ₐᵇ (f(x) − g(x)) dx.",
+       "A = ∫ₐᵇ (f(x) + g(x)) dx."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTTB7RN2FGB8R7MYY7N2",
+     "slug": "g13-schnittpunkte-grenzen",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-6-flaechen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Weil f und g an den Schnittpunkten beide gleich null sind.",
+       "reason": "An den Schnittpunkten stimmen die Funktionswerte überein (f = g); null sind sie im Allgemeinen nicht."
+      },
+      {
+       "text": "Weil die Fläche außerhalb der Schnittpunkte unendlich groß würde.",
+       "reason": "Auch außerhalb der Schnittpunkte bleibt eine Fläche endlich; die Schnittpunkte trennen lediglich die Bereiche mit f ≥ g und g ≥ f."
+      }
+     ],
+     "question": "Warum sind die Schnittpunkte von f und g die natürlichen Integrationsgrenzen?",
+     "concept": "Zwischen den Schnittpunkten gilt durchgängig f ≥ g oder g ≥ f.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Zwischen den Schnittpunkten gilt durchgängig f ≥ g oder g ≥ f.",
+       "Weil Integrale nur zwischen Nullstellen existieren."
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Zwischen den Schnittpunkten liegen die Graphen in fester Reihenfolge (f ≥ g oder g ≥ f); dort liegt die Fläche zusammenhängend."
+    },
+    {
+     "id": "01M6XAHTTBMJ9HKHGAVHDKYMRJ",
+     "slug": "g13-parabel-gerade-flaeche",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-6-flaechen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Die Fläche beträgt 1 : 2, denn ∫₀¹ x dx = 1 : 2 ist die Fläche unter g.",
+       "reason": "Nur der Graph von g wurde integriert: Gesucht ist die Fläche zwischen f und g, also ∫ (g − f)."
+      },
+      {
+       "text": "Die Fläche beträgt 1 : 3, denn ∫₀¹ (x²) dx = 1 : 3 ist die Fläche unter f.",
+       "reason": "Nur der Graph von f wurde integriert: Zwischen den Schnittpunkten zählt die Differenz g − f."
+      }
+     ],
+     "question": "Berechne die Fläche zwischen f(x) = x² und g(x) = x.",
+     "concept": "Schnittpunkte bei 0 und 1, dazwischen liegt g über f: A = ∫₀¹ (x − x²) dx = 1 : 6.",
+     "sample_solution": "1. Schnittpunkte: x² = x, also x² − x = 0, x(x − 1) = 0, x₁ = 0 und x₂ = 1. 2. Reihenfolge: Für x = 0,5 ist g(0,5) = 0,5 größer als f(0,5) = 0,25, also liegt g über f. 3. Integral der Differenz (oben minus unten): A = ∫₀¹ (x − x²) dx = [x² : 2 − x³ : 3]₀¹ = (1 : 2 − 1 : 3) − 0 = 1 : 6. Die Fläche beträgt 1 : 6 FE. Wer f − g integriert, erhält −1 : 6 und liest am Vorzeichen den Reihenfolgefehler ab."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTCKXQAV3EHDJE29ZHD",
+   "atom_uri": "urn:zam:atom:01M6XAHTTCKXQAV3EHDJE29ZHD",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "int-7-uneigentlich",
+   "title": "Uneigentliche Integrale",
+   "domain": "mathematik/analysis",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-7-uneigentlich",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTACH9DG87DAH79XGA1",
+     "type": "soft",
+     "rationale": "Für die Werte uneigentlicher Integrale braucht man Stammfunktionen wie x^(1−p) : (1 − p) und ln."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-1",
+     "topic_title": "Etappe 1: Flächeninhalt und bestimmtes Integral"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb1",
+     "topic_title": "Flächeninhalt und bestimmtes Integral",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTC7M3SEGHZZ5QFGXM5",
+     "slug": "g13-uneigentlich-grenzwert",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-7-uneigentlich",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Man ersetzt f(x) an der Unendlichkeitsstelle durch 0 und integriert dann.",
+       "reason": "Der Integrand wird nicht verändert: Nur die obere Grenze läuft gegen unendlich."
+      },
+      {
+       "text": "Das Integral ∫₁^∞ f(x) dx ist für solche Funktionen immer unendlich groß.",
+       "reason": "Uneigentlich heißt nur unendliche Grenze: Konvergiert der Grenzwert, bleibt das Integral endlich."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Wie wird ein uneigentliches Integral mit unendlicher oberer Grenze definiert?"
+      }
+     ],
+     "concept_segments": [
+      {
+       "type": "text",
+       "text": "Als Grenzwert bestimmter Integrale: "
+      },
+      {
+       "type": "math",
+       "tex": "\\int_1^{\\infty} f(x)\\,dx = \\lim_{b \\to \\infty} \\int_1^{b} f(x)\\,dx",
+       "speech": "das Integral von eins bis unendlich von f von x nach x ist gleich der Grenzwert für b gegen unendlich des Integrals von eins bis b"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Man integriert bis zu einer oberen Grenze b und lässt b gegen unendlich laufen.",
+       "Man setzt für die obere Grenze eine sehr große Zahl ein und rundet das Ergebnis."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTTC2W7E5C2HFE25QYXJ",
+     "slug": "g13-konvergenz-1-hoch-p",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-7-uneigentlich",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Konvergenz für alle p > 0, denn der Integrand f(x) = 1 : xᵖ wird klein.",
+       "reason": "Klein werden genügt nicht: Erst für p > 1 fällt die Fläche schnell genug ab."
+      },
+      {
+       "text": "Konvergenz genau für p < 1, weil dann die Fläche unter f(x) klein bleibt.",
+       "reason": "Die Ungleichung ist verkehrt: Für p ≤ 1 wächst die Fläche über alle Grenzen, konvergiert wird für p > 1."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Für welche Exponenten p konvergiert "
+      },
+      {
+       "type": "math",
+       "tex": "\\int_1^{\\infty} \\frac{1}{x^{p}}\\,dx",
+       "speech": "das Integral von eins bis unendlich von eins durch x hoch p nach x"
+      },
+      {
+       "type": "text",
+       "text": "?"
+      }
+     ],
+     "concept_segments": [
+      {
+       "type": "text",
+       "text": "Genau für p > 1, mit dem Grenzwert "
+      },
+      {
+       "type": "math",
+       "tex": "\\frac{1}{p − 1}",
+       "speech": "eins durch p minus eins"
+      },
+      {
+       "type": "text",
+       "text": "; für p ≤ 1 divergiert es."
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Konvergenz genau für p > 1, Grenzwert 1 : (p − 1).",
+       "Konvergenz genau für p größer als 0."
+      ],
+      "correct_index": 0
+     },
+     "replaces": [
+      "01K8GD00000000000000000J03"
+     ]
+    },
+    {
+     "id": "01M6XAHTTCTZC3NGK01A8H9XY5",
+     "slug": "g13-integral-1-durch-x3",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-7-uneigentlich",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Der Grenzwert ist 1 : 3, denn bei f(x) = x³ teilt man durch 3.",
+       "reason": "Beim Integrieren von x^(−3) gilt die Potenzregel mit Exponent −2: Der Grenzwert ist 1 : 2, nicht 1 : 3."
+      },
+      {
+       "text": "Das Integral divergiert, denn f(x) = x^(−3) wird sehr schnell klein.",
+       "reason": "Schnell klein werden spricht für Konvergenz: Bei p = 3 > 1 konvergiert das Integral gegen 1 : 2."
+      }
+     ],
+     "question": "Berechne ∫₁^∞ 1 : x³ dx mit einem Grenzwert.",
+     "concept": "∫₁^b x^(−3) dx = (1 − 1 : b²) : 2 strebt gegen 1 : 2.",
+     "sample_solution": "Stammfunktion von x^(−3) ist F(x) = x^(−2) : (−2) = −1 : (2x²). Dann ist ∫₁^b 1 : x³ dx = F(b) − F(1) = −1 : (2b²) + 1 : 2 = (1 − 1 : b²) : 2. Für b → ∞ geht 1 : b² gegen 0, also konvergiert das Integral gegen 1 : 2. Kontrolle: p = 3 ist größer als 1, der Grenzwert lautet nach der Formel 1 : (p − 1) = 1 : 2. Das passt."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTDF5MFAGX4ZEF2F9FZ",
+   "atom_uri": "urn:zam:atom:01M6XAHTTDF5MFAGX4ZEF2F9FZ",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "int-8-gesamtaenderung",
+   "title": "Das bestimmte Integral als Gesamtänderung",
+   "domain": "mathematik/analysis",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-8-gesamtaenderung",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTT8XFCWMZ7TMSR9JDER",
+     "type": "soft",
+     "rationale": "Gesamtänderung = Integral der Änderungsrate ist der Hauptsatz in anwendungsrecher Form: F(b) − F(a)."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-1",
+     "topic_title": "Etappe 1: Flächeninhalt und bestimmtes Integral"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb1",
+     "topic_title": "Flächeninhalt und bestimmtes Integral",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTD4GB970YWF6R5NRZF",
+     "slug": "g13-integral-als-gesamtaenderung",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-8-gesamtaenderung",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Den mittleren Wert der Änderungsrate zwischen a und b.",
+       "reason": "Das Integral ist die Summe aller Rate mal Zeit; der Mittelwert wäre das Integral geteilt durch b − a."
+      },
+      {
+       "text": "Die maximale Änderungsrate auf [a | b].",
+       "reason": "Das Maximum von r wird durch Ableiten oder Abschätzen bestimmt, nicht durch Integrieren."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Was berechnet man mit "
+      },
+      {
+       "type": "math",
+       "tex": "\\int_a^b r(t)\\,dt",
+       "speech": "das Integral von a bis b von r von t nach t"
+      },
+      {
+       "type": "text",
+       "text": ", wenn r(t) die momentane Änderungsrate einer Größe ist?"
+      }
+     ],
+     "concept_segments": [
+      {
+       "type": "text",
+       "text": "Die Gesamtänderung der Größe zwischen a und b: "
+      },
+      {
+       "type": "math",
+       "tex": "\\int_a^b r(t)\\,dt = M(b) − M(a)",
+       "speech": "das Integral von a bis b von r von t nach t ist gleich M von b minus M von a"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Die Gesamtänderung der Größe zwischen a und b.",
+       "Die momentane Änderungsrate im Punkt b."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTTDN9RJA16C2VGJ6EW6",
+     "slug": "g13-strecke-oder-verschiebung",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-8-gesamtaenderung",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Die Strecke ist ∫ v(t) dt, die Verschiebung das Doppelte davon.",
+       "reason": "Ein Verdoppeln hat keine Grundlage; der Unterschied liegt im Vorzeichen der Rückwärtsbewegung."
+      },
+      {
+       "text": "Die Verschiebung ist immer größer als die Strecke.",
+       "reason": "Durch Vorzeichenhebung kann die Verschiebung kleiner sein – im Extremfall 0 bei großer Strecke."
+      }
+     ],
+     "question": "Was unterscheiden Strecke und Verschiebung bei einer Bewegung mit v(t)?",
+     "concept": "Verschiebung = ∫ v(t) dt mit Vorzeichen, Strecke = ∫ |v(t)| dt nur mit Beträgen.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Die Verschiebung ist ∫ v(t) dt mit Vorzeichen, die Strecke ist ∫ |v(t)| dt.",
+       "Beide Begriffe bezeichnen dieselbe Größe, nur in verschiedenen Einheiten."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTTDNNCEC8VJ6NT6JJ94",
+     "slug": "g13-v-profil-strecke-variante",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-8-gesamtaenderung",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Strecke und Verschiebung sind beide 14 m, denn (−2) · 3 zählt wie 2 · 3.",
+       "reason": "Die Strecke addiert Beträge, die Verschiebung die Vorzeichen: Für die Verschiebung zählt (−2) · 3 = −6 m."
+      },
+      {
+       "text": "Die Verschiebung ist 8 m, denn gefahren werden nur 4 · 2 = 8 m vorwärts.",
+       "reason": "Die Rückwärtsfahrt zählt für die Verschiebung negativ: 8 m − 6 m = 2 m."
+      }
+     ],
+     "question": "Ein Fahrzeug fährt 2 s mit 4 m/s und danach 3 s mit −2 m/s. Bestimme Strecke und Verschiebung.",
+     "concept": "Strecke = 4 · 2 + 2 · 3 = 14 m; Verschiebung = 4 · 2 + (−2) · 3 = 2 m.",
+     "sample_solution": "Die Geschwindigkeit ist stückweise konstant, die Flächen unter dem v-Graphen sind Rechtecke. Hinphase: 4 m/s · 2 s = 8 m in positiver Richtung. Rückphase: −2 m/s · 3 s = −6 m, also 6 m zurückgelegt in negativer Richtung. Strecke = 8 m + 6 m = 14 m (alle Stücke als Beträge). Verschiebung = 8 m + (−6 m) = 2 m (Flächenbilanz mit Vorzeichen). Das Fahrzeug steht am Ende 2 m vor dem Startpunkt, hat aber 14 m zurückgelegt."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTEDVNZRHFY95AXQHM6",
+   "atom_uri": "urn:zam:atom:01M6XAHTTEDVNZRHFY95AXQHM6",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "int-9-rotationskoerper",
+   "title": "Rotationskörper und Volumen",
+   "domain": "mathematik/analysis",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-9-rotationskoerper",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTACH9DG87DAH79XGA1",
+     "type": "soft",
+     "rationale": "Für V = π ∫ f² dx muss f² integriert werden; dafür braucht man die Stammfunktionen der Potenzregel."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-1",
+     "topic_title": "Etappe 1: Flächeninhalt und bestimmtes Integral"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb1",
+     "topic_title": "Flächeninhalt und bestimmtes Integral",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTE6PBNZ6QM9EFRH513",
+     "slug": "g13-rotationsvolumen-formel",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-9-rotationskoerper",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "V = 2π ∫ₐᵇ f(x) dx, analog zur Mantelfläche.",
+       "reason": "Die Formel mit 2π liefert eine Mantelfläche beim Rotationsvolumen um die y-Achse, nicht das Scheibenvolumen."
+      },
+      {
+       "text": "V = ∫ₐᵇ f(x)² dx ohne den Faktor π.",
+       "reason": "Jede Kreisscheibe hat die Fläche π r²; der Faktor π darf beim Volumen nicht fehlen."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Wie groß ist das Volumen des Körpers, der entsteht, wenn man den Graphen von f über [a | b] um die x-Achse dreht?"
+      }
+     ],
+     "concept_segments": [
+      {
+       "type": "text",
+       "text": "Scheibenmethode: "
+      },
+      {
+       "type": "math",
+       "tex": "V = \\pi \\int_a^b f(x)^{2}\\,dx",
+       "speech": "V ist gleich pi mal Integral von a bis b von f von x zum Quadrat nach x"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "V = π ∫ₐᵇ f(x)² dx.",
+       "V = π ∫ₐᵇ f(x) dx."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTTEZMT78DSFN2QP2M0Z",
+     "slug": "g13-linearer-graph-kegel",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-9-rotationskoerper",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Eine Kugel, denn Kugeln entstehen aus linearen Drehungen.",
+       "reason": "Eine Kugel entsteht aus der Drehung eines Kreises, also eines halbkreisförmigen Graphen, nicht einer Geraden."
+      },
+      {
+       "text": "Einen Kegelstumpf, auch wenn f an einer Grenze null ist.",
+       "reason": "Ein Kegelstumpf hat zwei positive Radien; verschwindet einer, entsteht ein Kegel."
+      }
+     ],
+     "question": "Welchen Körper erzeugt ein linearer Graph f(x) = k x + d um die x-Achse, wenn f an einer Intervallgrenze verschwindet?",
+     "concept": "Einen Kegel: Läuft f an einer Grenze auf 0 zu, spitzt der Körper zu.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Einen Kegel, denn eine Grenze des Intervalls trägt den Radius 0.",
+       "Einen Zylinder, denn lineare Graphen erzeugen stets Zylinder."
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Einen Kegel: Ist f(a) = 0 oder f(b) = 0, läuft der Radius auf 0 zu und der Körper spitzt zu."
+    },
+    {
+     "id": "01M6XAHTTE89FMTXGB3J6X5JB9",
+     "slug": "g13-volumen-2x-gedreht",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=int-9-rotationskoerper",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "V = 12π, denn f(3) = 6 und V = π r² h : 3 mit h = 1.",
+       "reason": "Die Höhe des Kegels ist die Intervalllänge 3, nicht 1; mit h = 3 ergibt die Formel 36π."
+      },
+      {
+       "text": "V = 72π, denn man muss für x von 0 bis 3 den vollen Wert (2x)² integrieren und verdoppeln.",
+       "reason": "Ein Verdoppeln entsteht nicht; bereits ∫₀³ 4x² dx = 36 enthält die gesamte Rotation um die x-Achse."
+      }
+     ],
+     "question": "Bestimme das Volumen des Rotationskörpers aus f(x) = 2x über [0 | 3] um die x-Achse und vergleiche es mit der Kegelformel.",
+     "concept": "V = π ∫₀³ 4x² dx = π · 4 · 27 : 3 = 36π; mit r = f(3) = 6 und h = 3 folgt π r² h : 3 = 36π.",
+     "sample_solution": "Scheibenmethode: V = π ∫₀³ (2x)² dx = π ∫₀³ 4x² dx = π · [4x³ : 3]₀³ = π · (4 · 27 : 3) = 36π. Vergleich: Der Graph ist linear und verschwindet bei x = 0, also ist der Körper ein Kegel mit Höhe h = 3 und Grundradius r = f(3) = 6. Die Kegelformel liefert V = π r² h : 3 = π · 36 · 3 : 3 = 36π. Beide Wege stimmen überein – die Scheibenmethode bestätigt die bekannte Körperformel."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTF1QFGQH8B8H7Q32ZR",
+   "atom_uri": "urn:zam:atom:01M6XAHTTF1QFGQH8B8H7Q32ZR",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "nv-1-zufallsgroessen",
+   "title": "Diskrete und stetige Zufallsgrößen",
+   "domain": "mathematik/stochastik",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-1-zufallsgroessen",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTT63ZJ3D9RA2PFQ3TX6",
+     "type": "soft",
+     "rationale": "Wahrscheinlichkeit als Fläche unter der Dichte baut auf dem Flächenbegriff des bestimmten Integrals aus LB 1 auf."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-2",
+     "topic_title": "Etappe 2: Normalverteilung"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb2",
+     "topic_title": "Normalverteilung",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTFVFJ9GMZA2HF1Z7Z3",
+     "slug": "g13-diskret-stetig",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-1-zufallsgroessen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Diskrete Größen können jeden Wert eines Intervalls annehmen, stetige nur ganze Zahlen.",
+       "reason": "Die Begriffe sind vertauscht: abzählbar einzelne Ausprägungen heißt diskret, Intervalle heißen stetig."
+      },
+      {
+       "text": "Es kommt nur darauf an, wie viele Nachkommastellen die Werte haben.",
+       "reason": "Die Zahl der Nachkommastellen entscheidet nicht; entscheidend ist, ob die Ausprägungen abzählbar sind."
+      }
+     ],
+     "question": "Woran erkennst du, ob eine Zufallsgröße diskret oder stetig ist?",
+     "concept": "Diskret: abzählbar viele Ausprägungen, stetig: jeder Wert eines Intervalls.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Diskrete Größen haben abzählbar viele Ausprägungen, stetige jeden Wert eines Intervalls.",
+       "Diskrete Größen können jeden Wert eines Intervalls annehmen, stetige nur ganze Zahlen."
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Diskret heißt: abzählbar viele Ausprägungen (zum Beispiel Augenzahlen). Stetig heißt: jeder Wert eines Intervalls ist möglich (zum Beispiel Längen)."
+    },
+    {
+     "id": "01M6XAHTTF0Q8665HKDHK7KXTN",
+     "slug": "g13-stetig-punkt-null",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-1-zufallsgroessen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "P(X = x) ist gleich der Höhe der Dichte f(x) an der Stelle x.",
+       "reason": "Die Dichte ist eine Höhe, keine Wahrscheinlichkeit; Wahrscheinlichkeit entsteht erst als Fläche über ein Intervall."
+      },
+      {
+       "text": "P(X = x) hängt von der Standardabweichung ab und ist meist kleiner als 0,5.",
+       "reason": "Für jeden Einzelwert einer stetigen Größe ist die Wahrscheinlichkeit genau 0, unabhängig von σ."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Wie groß ist "
+      },
+      {
+       "type": "math",
+       "tex": "P(X = x)",
+       "speech": "die Wahrscheinlichkeit, dass X genau x ist"
+      },
+      {
+       "type": "text",
+       "text": ", wenn X stetig ist?"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "P(X = x) = 0, denn ein Einzelwert hat keine Breite.",
+       "P(X = x) ist gleich der Dichte f(x) an dieser Stelle."
+      ],
+      "correct_index": 0
+     },
+     "concept": "P(X = x) = 0, denn ein Einzelwert hat keine Breite und damit keine Fläche.",
+     "sample_solution": "Bei stetigen Größen ist P(X = x) = 0: Ein Einzelwert hat keine Breite und damit keine Fläche unter der Dichte. Nur Intervalle haben Wahrscheinlichkeit.",
+     "replaces": [
+      "01K8GD20000000000000000J01"
+     ]
+    },
+    {
+     "id": "01M6XAHTTFNA07NABQT6WRKVR4",
+     "slug": "g13-kumulative-verteiltung",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-1-zufallsgroessen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "P(X = 3) = F(3) = 0,7, denn F(3) enthält schon den Wert 3.",
+       "reason": "F(3) enthält die Werte 1, 2 und 3 zusammen; für den Einzelwert muss F(2) abgezogen werden."
+      },
+      {
+       "text": "P(X = 3) = 1 − F(2) = 0,65, denn es zählen alle Werte über 2.",
+       "reason": "1 − F(2) ist der Anteil aller Werte größer als 2, also auch X = 4; gesucht ist nur X = 3."
+      }
+     ],
+     "question": "Eine diskrete Zufallsgröße X hat die Werte 1 bis 4. Die kumulative Verteilungsfunktion liefert F(1) = 0,1, F(2) = 0,35, F(3) = 0,7 und F(4) = 1. Wie groß ist P(X = 3), und was misst F(2)?",
+     "concept": "P(X = 3) = F(3) − F(2) = 0,35; F(2) = 0,35 ist der Anteil bis 2.",
+     "sample_solution": "Für einen Einzelwert einer diskreten Größe gilt P(X = k) = F(k) − F(k − 1). Also ist P(X = 3) = F(3) − F(2) = 0,7 − 0,35 = 0,35. Die kumulative Verteilungsfunktion F(x) = P(X ≤ x) misst den Anteil der Werte, die höchstens x betragen: F(2) = P(X ≤ 2) = 0,35."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTGBH1HE2WADA0ZR75E",
+   "atom_uri": "urn:zam:atom:01M6XAHTTGBH1HE2WADA0ZR75E",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "nv-2-glockenkurve",
+   "title": "Messreihen und die Glockenkurve",
+   "domain": "mathematik/stochastik",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-2-glockenkurve",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTF1QFGQH8B8H7Q32ZR",
+     "type": "soft",
+     "rationale": "Histogramme und Dichtefunktionen aus 2.1 sind die Werkzeuge, mit denen man die Glockenform einer Messreihe erkennt."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-2",
+     "topic_title": "Etappe 2: Normalverteilung"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb2",
+     "topic_title": "Normalverteilung",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTGR1CVYN6FD2GDT9X7",
+     "slug": "g13-messwerte-glocke",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-2-glockenkurve",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Messgeräte runden alle Werte auf ganze Zahlen und erzeugen so den Gipfel.",
+       "reason": "Das Runden erzeugt Stufen im Histogramm, erklärt aber keine Häufung um den Mittelwert."
+      },
+      {
+       "text": "Alle Werte zwischen dem kleinsten und größten Messwert sind gleich wahrscheinlich.",
+       "reason": "Eine Gleichverteilung hätte ein Rechteck als Histogramm, kein Maximum in der Mitte."
+      }
+     ],
+     "question": "Warum sind viele Messreihen glockenförmig verteilt?",
+     "concept": "Kleine Zufallseinflüsse addieren sich, die Werte häufen sich um den Mittelwert.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Viele kleine Zufallseinflüsse addieren sich und häufen die Werte um den Mittelwert.",
+       "Messgeräte runden alle Werte auf ganze Zahlen auf."
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Weil sich viele kleine, unabhängige Zufallseinflüsse addieren: Die Werte häufen sich um den Mittelwert, große Abweichungen sind selten."
+    },
+    {
+     "id": "01M6XAHTTGYY5JYM8A62KYFC9S",
+     "slug": "g13-glocke-modell",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-2-glockenkurve",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Rund 68 % der Werte liegen in μ ± 2σ.",
+       "reason": "68 % ist der Anteil von μ ± 1σ; das Intervall μ ± 2σ umfasst rund 95 %."
+      },
+      {
+       "text": "Rund 50 % der Werte liegen in μ ± 2σ.",
+       "reason": "50 % liegen allein links vom Erwartungswert; μ ± 2σ umfasst beide Seiten mit rund 95 %."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Welcher Anteil einer normalverteilten Messreihe liegt im Intervall "
+      },
+      {
+       "type": "math",
+       "tex": "\\mu \\pm 2\\sigma",
+       "speech": "μ plus minus zwei σ"
+      },
+      {
+       "type": "text",
+       "text": "?"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Rund 95 % der Werte liegen in μ ± 2σ.",
+       "Rund 68 % der Werte liegen in μ ± 2σ."
+      ],
+      "correct_index": 0
+     },
+     "concept": "Rund 95 % der Werte liegen in μ ± 2σ.",
+     "sample_solution": "Nach der Sigma-Regel liegen rund 95% der Werte in μ ± 2σ; rund 68 % liegen in μ ± 1σ und rund 99,7 % in μ ± 3σ."
+    },
+    {
+     "id": "01M6XAHTTGE5WWHF3Y1DJ5QE33",
+     "slug": "g13-histogramm-deuten",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-2-glockenkurve",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Eine Gleichverteilung zwischen 48,5 cm und 51,5 cm, denn alle Werte kommen vor.",
+       "reason": "Bei einer Gleichverteilung wären alle Balken gleich hoch; hier häufen sich die Werte in der Mitte."
+      },
+      {
+       "text": "Die Normalverteilung mit μ = 50,0 cm und σ = 1,5 cm, denn 1,5 cm ist die halbe Spannweite.",
+       "reason": "Die halbe Spannweite entspricht 3σ, nicht σ; σ ist ein Drittel davon, also etwa 0,5 cm."
+      }
+     ],
+     "question": "Eine Messreihe von 1000 Werkstücken liefert ein Histogramm mit deutlichem Gipfel bei 50,0 cm, das nach beiden Seiten abfällt; Werte unter 48,5 cm oder über 51,5 cm kommen nur vereinzelt vor. Welche Verteilung passt, und wie schätzt du μ und σ ab?",
+     "concept": "Normalverteilung mit μ ≈ 50,0 cm; aus den Rändern μ ± 3σ folgt σ ≈ 0,5 cm.",
+     "sample_solution": "Das Histogramm ist glockenförmig und symmetrisch um 50,0 cm, also ist die Normalverteilung N(μ; σ) das passende Modell mit μ ≈ 50,0 cm. Die Randbereiche beginnen bei 48,5 cm und 51,5 cm; dort liegen rund 99,7 % der Werte, also ist μ ± 3σ ≈ 50,0 ± 1,5 cm. Daraus folgt 3σ ≈ 1,5 cm und σ ≈ 0,5 cm. Vor der Anwendung prüft man immer zuerst das Histogramm: Die Glocke ist ein Modell, kein Naturgesetz."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTHP287AWD8Y0N3H7RF",
+   "atom_uri": "urn:zam:atom:01M6XAHTTHP287AWD8Y0N3H7RF",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "nv-3-dichte-verteilung",
+   "title": "Dichte- und Verteilungsfunktion der Normalverteilung",
+   "domain": "mathematik/stochastik",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-3-dichte-verteilung",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTF1QFGQH8B8H7Q32ZR",
+     "type": "soft",
+     "rationale": "Dichte, Fläche und kumulative Verteilungsfunktion sind in 2.1 eingeführt; hier werden sie für die Normalverteilung konkret."
+    },
+    {
+     "atom_id": "01M6XAHTTGBH1HE2WADA0ZR75E",
+     "type": "soft",
+     "rationale": "Die Glockenform der Messreihen aus 2.2 ist das Modell, dessen mathematische Form hier behandelt wird."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-2",
+     "topic_title": "Etappe 2: Normalverteilung"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb2",
+     "topic_title": "Normalverteilung",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTHV5B0SPQ6K60PS4A4",
+     "slug": "g13-dichte-mu-sigma",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-3-dichte-verteilung",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "μ ist die maximale Höhe der Dichte, σ ist die Fläche unter dem Graphen.",
+       "reason": "Die maximale Höhe ist 1/(σ√(2π)), und die Fläche unter f ist immer 1 – keiner der beiden Werte ist ein Parameter."
+      },
+      {
+       "text": "σ ist die Symmetrieachse der Glocke, μ ist der Abstand der Wendepunkte.",
+       "reason": "Die Begriffe sind vertauscht: μ beschreibt die Lage der Symmetrieachse, σ die Streuung."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Wie liest man aus der Dichte "
+      },
+      {
+       "type": "math",
+       "tex": "f(x) = \\frac{1}{\\sigma\\sqrt{2\\pi}} \\, e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}",
+       "speech": "f von x ist eins durch σ mal Wurzel aus zwei π mal e hoch minus x minus μ Quadrat durch zwei σ Quadrat"
+      },
+      {
+       "type": "text",
+       "text": " die Parameter μ und σ ab?"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "μ ist die Symmetrieachse der Glocke, σ liest man aus 2σ² im Exponenten.",
+       "μ ist die maximale Höhe der Dichte, σ ist die Fläche unter dem Graphen."
+      ],
+      "correct_index": 0
+     },
+     "concept": "μ ist die Symmetrieachse der Glocke, σ liest man aus 2σ² im Exponenten.",
+     "sample_solution": "μ ist die Lage der Glocke: f ist um x = μ symmetrisch. σ ist die Streuung und steht im Exponenten in 2σ²."
+    },
+    {
+     "id": "01M6XAHTTHNQS8YF6WJ8BG0FSX",
+     "slug": "g13-f-mu-halb",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-3-dichte-verteilung",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "F(μ) = 1, weil die Fläche unter f insgesamt 1 ist.",
+       "reason": "Die Fläche 1 sammelt sich erst für x gegen unendlich; bis μ sind es nur die linke Hälfte."
+      },
+      {
+       "text": "F(μ) = 0, denn bei μ hat die Dichte f ihr Minimum.",
+       "reason": "Bei μ hat f ihr Maximum; F(μ) zählt die linke Hälfte der Fläche und ist damit 0,5."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Wie groß ist "
+      },
+      {
+       "type": "math",
+       "tex": "F(\\mu)",
+       "speech": "F von μ"
+      },
+      {
+       "type": "text",
+       "text": " für eine normalverteilte Zufallsgröße?"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "F(μ) = 0,5, weil die Dichte um μ symmetrisch ist.",
+       "F(μ) = 1, weil die Fläche unter f insgesamt 1 ist."
+      ],
+      "correct_index": 0
+     },
+     "concept": "F(μ) = 0,5, weil die Dichte um μ symmetrisch ist.",
+     "sample_solution": "F(μ) = 0,5, weil die Dichte um μ symmetrisch ist und die Fläche unter f insgesamt 1 beträgt."
+    },
+    {
+     "id": "01M6XAHTTH92TNKCW3W1F111SW",
+     "slug": "g13-term-lesen",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-3-dichte-verteilung",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "μ = 3 und σ = 8, denn im Exponenten steht (x + 3)² und im Nenner 8.",
+       "reason": "Bei (x + 3)² ist μ = −3, und aus 2σ² = 8 folgt σ² = 4, also σ = 2."
+      },
+      {
+       "text": "μ = −3 und σ = 8, denn σ steht als Zahl im Nenner des Exponenten.",
+       "reason": "Im Nenner steht 2σ² = 8, nicht σ; daraus folgt σ = 2, nicht 8."
+      }
+     ],
+     "question": "Die Dichte einer normalverteilten Zufallsgröße lautet f(x) = 1/(2 · √(2π)) · e^(−(x + 3)²/8). Bestimme μ und σ und begründe, wo die Wendepunkte von f liegen.",
+     "concept": "μ = −3 aus (x + 3)², σ = 2 aus 2σ² = 8; die Wendepunkte liegen bei −5 und −1.",
+     "sample_solution": "Die allgemeine Form ist f(x) = 1/(σ√(2π)) · e^(−(x − μ)²/(2σ²)). Im Exponenten steht (x + 3)² = (x − (−3))², also ist μ = −3. Der Nenner des Exponenten ist 2σ² = 8, also σ² = 4 und σ = 2. Die Dichte ist um μ = −3 symmetrisch, und die Wendepunkte liegen bei μ ± σ = −3 ± 2, also bei −5 und −1."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTJ13Z82GTAH62Z5BHG",
+   "atom_uri": "urn:zam:atom:01M6XAHTTJ13Z82GTAH62Z5BHG",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "nv-4-sigma-regeln",
+   "title": "Wahrscheinlichkeiten und Sigma-Regeln",
+   "domain": "mathematik/stochastik",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-4-sigma-regeln",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTHP287AWD8Y0N3H7RF",
+     "type": "soft",
+     "rationale": "P(a < X ≤ b) = F(b) − F(a) setzt Dichte- und Verteilungsfunktion der Normalverteilung aus 2.3 voraus."
+    },
+    {
+     "atom_id": "01M6XAHTTGBH1HE2WADA0ZR75E",
+     "type": "soft",
+     "rationale": "Die Sigma-Regeln 68 – 95 – 99,7 beschreiben die Streuung der Glocke aus 2.2."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-2",
+     "topic_title": "Etappe 2: Normalverteilung"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb2",
+     "topic_title": "Normalverteilung",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTJ1Y6MRSF56PESCYAS",
+     "slug": "g13-p-a-b",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-4-sigma-regeln",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "P(a < X ≤ b) = 1 − F(a), denn gesucht ist alles oberhalb von a.",
+       "reason": "1 − F(a) ist P(X > a) und enthält auch alle Werte über b; für das Intervall fehlt der Abzug bei b."
+      },
+      {
+       "text": "P(a < X ≤ b) = f(b) − f(a) mit den Dichtewerten an den Grenzen.",
+       "reason": "Die Dichte ist eine Höhe, keine Wahrscheinlichkeit; Wahrscheinlichkeiten sind Flächen und stehen in F."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Wie berechnest du für X ~ N(μ; σ) die Wahrscheinlichkeit "
+      },
+      {
+       "type": "math",
+       "tex": "P(a < X \\le b)",
+       "speech": "die Wahrscheinlichkeit, dass X zwischen a und b liegt"
+      },
+      {
+       "type": "text",
+       "text": "?"
+      }
+     ],
+     "concept_segments": [
+      {
+       "type": "math",
+       "tex": "P(a < X \\le b) = F(b) − F(a) = Φ(z_b) − Φ(z_a)",
+       "speech": "P von a kleiner X höchstens b ist gleich F von b minus F von a, also Φ von z b minus Φ von z a"
+      },
+      {
+       "type": "text",
+       "text": " mit z = (x − μ)/σ."
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "P(a < X ≤ b) = F(b) − F(a).",
+       "P(a < X ≤ b) = 1 − F(a)."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTTJ0Q7V96Z02FZZW05N",
+     "slug": "g13-sigma-regeln",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-4-sigma-regeln",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Rund 68 % liegen in μ ± 2σ, 95 % in μ ± 3σ und 99,7 % in μ ± 4σ.",
+       "reason": "Die Intervalle sind um jeweils 1σ zu groß: 68 % gehören zu μ ± 1σ, 95 % zu μ ± 2σ, 99,7 % zu μ ± 3σ."
+      },
+      {
+       "text": "Rund 68 % liegen in μ ± σ, 95 % in μ ± 4σ und 99,7 % in μ ± 6σ.",
+       "reason": "Die Vielfachen sind verdoppelt: 95 % gehören zu μ ± 2σ und 99,7 % zu μ ± 3σ."
+      }
+     ],
+     "question": "Welche drei Anteile beschreiben die Sigma-Regeln der Normalverteilung?",
+     "concept": "Rund 68 % liegen in μ ± 1σ, 95 % in μ ± 2σ und 99,7 % in μ ± 3σ.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Rund 68 % liegen in μ ± 1σ, 95 % in μ ± 2σ und 99,7 % in μ ± 3σ.",
+       "Rund 68 % liegen in μ ± 2σ, 95 % in μ ± 3σ und 99,7 % in μ ± 4σ."
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Rund 68 % der Werte liegen in μ ± 1σ, rund 95 % in μ ± 2σ und rund 99,7 % in μ ± 3σ."
+    },
+    {
+     "id": "01M6XAHTTJDEG16P1KZV3P648W",
+     "slug": "g13-symmetrisches-intervall",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-4-sigma-regeln",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Die Grenzen sind 45 | 55, denn zu P ≈ 0,8 gehört z = 1 (also σ = 5).",
+       "reason": "Die Wahrscheinlichkeit 0,8 ist nicht der z-Wert: Aus 2 · Φ(z) − 1 = 0,8 folgt Φ(z) = 0,9 und z = 1,28."
+      },
+      {
+       "text": "Die Grenzen sind 37,2 | 62,8, denn z · σ = 6,4 wird pro Grenze doppelt gebraucht.",
+       "reason": "Der Abstand d = z · σ = 6,4 zählt pro Grenze einmal; verdoppelt entsteht die falsche Spannweite."
+      }
+     ],
+     "question": "X ist normalverteilt mit μ = 50 und σ = 5. Gesucht ist ein um μ symmetrisches Intervall, in dem rund 80 % der Werte liegen. Die Tabelle liefert Φ(1,28) = 0,8997. Bestimme die beiden Grenzen.",
+     "concept": "P = 2 · Φ(1,28) − 1 ≈ 0,7994; die Grenzen sind 50 ± 1,28 · 5 = 43,6 | 56,4.",
+     "sample_solution": "Für ein symmetrisches Intervall μ ± d gilt P(μ − d < X ≤ μ + d) = 2 · Φ(z) − 1 mit z = d/σ. Aus der Tabelle ist Φ(1,28) = 0,8997, also P = 2 · 0,8997 − 1 = 0,7994 ≈ 0,8. Damit ist z = 1,28 und d = z · σ = 1,28 · 5 = 6,4. Die Grenzen sind 50 − 6,4 = 43,6 und 50 + 6,4 = 56,4."
+    },
+    {
+     "id": "01M6XH4TAW66EXECRS5GJHZ95E",
+     "slug": "g13-standardisierung",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=nv-4-sigma-regeln",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "z = (x − σ) : μ",
+       "reason": "Vertauscht: Im Zähler steht die Abweichung vom Erwartungswert μ, im Nenner teilt die Standardabweichung σ."
+      },
+      {
+       "text": "z = (x − μ) : 2σ",
+       "reason": "Verwechselt die Standardabweichung σ mit der Breite 2σ des Intervalls μ ± 2σ: Standardisiert wird durch σ."
+      }
+     ],
+     "question": "Wie standardisierst du eine normalverteilte Zufallsgröße X ~ N(μ; σ) zu Z ~ N(0; 1)?",
+     "concept": "z = (x − μ) : σ",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "z = (x − μ) : σ",
+       "z = (x − μ) : σ²"
+      ],
+      "correct_index": 0
+     },
+     "replaces": [
+      "01K8GD20000000000000000J03"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTKQXM5KEY6JKS7NX7W",
+   "atom_uri": "urn:zam:atom:01M6XAHTTKQXM5KEY6JKS7NX7W",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "rg-1-geraden",
+   "title": "Geraden im Raum in Parameterform",
+   "domain": "mathematik/geometrie",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-1-geraden",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-3",
+     "topic_title": "Etappe 3: Geraden und Ebenen im Raum"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb3",
+     "topic_title": "Geraden und Ebenen im Raum",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTKCA1DRW2MBY0TZ7Q8",
+     "slug": "g13-geraden-parameterform",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-1-geraden",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "X⃗ = A⃗ + t² · u⃗; die Parameter laufen durch ℝ.",
+       "reason": "Mit t² erreicht man nur nichtnegative Vielfache der Richtung; die Gerade braucht alle reellen t, auch rückwärts."
+      },
+      {
+       "text": "X⃗ = u⃗ + t · A⃗; Stütz- und Richtungsvektor sind vertauscht.",
+       "reason": "A⃗ ist der Stützpunkt, u⃗ die Richtung. Vertauscht läuft die Gerade durch u⃗ in Richtung A⃗."
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "g: X⃗ = A⃗ + t · u⃗ mit Stützpunkt A⃗ und Richtungsvektor u⃗ ≠ 0⃗",
+       "g: X⃗ = A⃗ · u⃗ + t mit Stützpunkt u⃗ und Richtungsvektor A⃗"
+      ],
+      "correct_index": 0
+     },
+     "question": "Wie lautet die Parameterform einer Geraden im Raum, und welche Bedeutung hat t?",
+     "concept": "g: X⃗ = A⃗ + t · u⃗ mit Stützpunkt A⃗, Richtungsvektor u⃗ ≠ 0⃗; t läuft durch ℝ."
+    },
+    {
+     "id": "01M6XAHTTKEKCMJY5V9ZHMJ153",
+     "slug": "g13-gerade-zwei-punkte",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-1-geraden",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "u⃗ = A + B = (4 | 5 | 8), also g: X = (1 | 2 | 3) + t · (4 | 5 | 8).",
+       "reason": "Addiert statt subtrahiert: Für die Richtung braucht man die Differenz B − A, nicht die Summe."
+      },
+      {
+       "text": "u⃗ = (1 | 2 | 3), der Ortsvektor von A: g: X = (3 | 3 | 5) + t · (1 | 2 | 3).",
+       "reason": "Verwechselt Ortsvektor und Richtungsvektor: u⃗ beschreibt wohin die Gerade läuft, nicht wo sie beginnt."
+      }
+     ],
+     "question": "Wie lautet die Geradengleichung durch A = (1 | 2 | 3) und B = (3 | 3 | 5)?",
+     "concept": "u⃗ = B − A = (2 | 1 | 2), also g: X = (1 | 2 | 3) + t · (2 | 1 | 2).",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Der Richtungsvektor ist u⃗ = B − A.",
+       "Der Richtungsvektor ist der Ortsvektor von A."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTTKXZNB6ZCAQ8YBXBXS",
+     "slug": "g13-punktprobe-gerade",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-1-geraden",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "P liegt nicht auf g, denn P − A = (4 | 2 | 6) ist kein Vielfaches von u⃗.",
+       "reason": "Rechenfehler bei der Punktprobe: P − A = (4 | 2 | 6) = 2 · u⃗ ist sehr wohl ein Vielfaches von u⃗."
+      },
+      {
+       "text": "t = 4, also liegt P nicht auf g, denn X(4) = (9 | 6 | 12) ≠ P.",
+       "reason": "Der Parameter wurde aus der x-Koordinate falsch abgelesen: 5 = 1 + 2t liefert t = 2, nicht t = 4."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Punktprobe für "
+      },
+      {
+       "type": "math",
+       "tex": "P(5\\mid 4\\mid 6)",
+       "speech": "P mit den Koordinaten fünf, vier, sechs"
+      },
+      {
+       "type": "text",
+       "text": " auf "
+      },
+      {
+       "type": "math",
+       "tex": "\\mathrm{g}\\colon \\vec{X} = (1\\mid 2\\mid 0) + t \\cdot (2\\mid 1\\mid 3)",
+       "speech": "g Doppelpunkt X gleich eins, zwei, null plus t mal zwei, eins, drei"
+      }
+     ],
+     "concept": "Lösungsskizze: P − A = (4 | 2 | 6) = 2 · u⃗, also t = 2 und P liegt auf g.",
+     "sample_solution": "Punktprobe: P − A = (5 − 1 | 4 − 2 | 6 − 0) = (4 | 2 | 6). Dieser Vektor muss ein Vielfaches von u⃗ = (2 | 1 | 3) sein: (4 | 2 | 6) = 2 · (2 | 1 | 3), also t = 2. Gegenprobe: X(2) = (1 | 2 | 0) + 2 · (2 | 1 | 3) = (5 | 4 | 6) = P. Also liegt P auf g."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTMNK46W5SBNQ50AZF0",
+   "atom_uri": "urn:zam:atom:01M6XAHTTMNK46W5SBNQ50AZF0",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "rg-2-linearkombination",
+   "title": "Lineare Abhängigkeit und Linearkombination",
+   "domain": "mathematik/geometrie",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-2-linearkombination",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTKQXM5KEY6JKS7NX7W",
+     "type": "soft",
+     "rationale": "Geraden und Pfeile im Raum sind die Grundlage, um Vektoren und ihre Vielfachen anschaulich zu deuten."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-3",
+     "topic_title": "Etappe 3: Geraden und Ebenen im Raum"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb3",
+     "topic_title": "Geraden und Ebenen im Raum",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTM515F0855H87PX40Z",
+     "slug": "g13-linearkombination",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-2-linearkombination",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "w⃗ = u⃗ : v⃗ + r · s mit reellen Zahlen r und s.",
+       "reason": "Vektoren werden nicht durcheinander geteilt; eine Linearkombination vervielfacht die Vektoren und addiert sie."
+      },
+      {
+       "text": "w⃗ = r · u⃗ + s · v⃗ mit natürlichen Zahlen r und s.",
+       "reason": "Auch negative und gebrochene Koeffizienten sind erlaubt: r und s laufen durch alle reellen Zahlen."
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "w⃗ = r · u⃗ + s · v⃗ mit reellen Zahlen r, s",
+       "w⃗ = r · u⃗ + s · v⃗ mit ganzen Zahlen r, s"
+      ],
+      "correct_index": 0
+     },
+     "question": "Wie schreibst du eine Linearkombination der Vektoren u⃗ und v⃗ allgemein?",
+     "concept": "w⃗ = r · u⃗ + s · v⃗ mit reellen Zahlen r und s."
+    },
+    {
+     "id": "01M6XAHTTMX3RJTZ2C50V74MRA",
+     "slug": "g13-lineare-abhaengigkeit",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-2-linearkombination",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Wenn beide Vektoren gleich lang sind, also |u⃗| = |v⃗| gilt.",
+       "reason": "Die Länge sagt nichts über die Richtung aus; abhängig sind nur Vektoren im Vielfaches-Verhältnis."
+      },
+      {
+       "text": "Wenn ihr Skalarprodukt verschwindet, also u⃗ ⊙ v⃗ = 0.",
+       "reason": "Ein verschwindendes Skalarprodukt heißt senkrecht – senkrechte Vektoren sind gerade unabhängig, nicht abhängig."
+      }
+     ],
+     "question": "Wann sind zwei Vektoren im ℝ³ linear abhängig?",
+     "concept": "Genau dann, wenn einer ein Vielfaches des anderen ist: u⃗ × v⃗ = 0⃗.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Genau dann, wenn einer ein Vielfaches des anderen ist.",
+       "Genau dann, wenn sie senkrecht zueinander stehen."
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Genau dann, wenn einer ein Vielfaches des anderen ist (u⃗ × v⃗ = 0⃗)."
+    },
+    {
+     "id": "01M6XAHTTM9ET9XMSJATWR54MD",
+     "slug": "g13-linearkombination-darstellen",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-2-linearkombination",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Lösungsskizze: w′ = 2 · u⃗ + 3 · v⃗ + 1, die z-Koordinate wird einfach addiert.",
+       "reason": "Eine Linearkombination enthält nur Vielfache der gegebenen Vektoren; ein Zusatzterm ohne Vektor ist nicht erlaubt."
+      },
+      {
+       "text": "Lösungsskizze: w = 3 · u⃗ + 2 · v⃗, die Koeffizienten stehen in anderer Reihenfolge.",
+       "reason": "Jeder Koeffizient hängt an seinem Vektor: r zählt zu u⃗ und s zu v⃗ – vertauscht stimmt die Probe nicht."
+      }
+     ],
+     "concept": "Lösungsskizze: w = 2 · u⃗ + 3 · v⃗; bei w′ verhindert die z-Koordinate 1 jede Darstellung.",
+     "sample_solution": "Gleichungssystem aus den Koordinaten: r · 1 + s · 0 = 2 liefert r = 2, und r · 0 + s · 1 = 3 liefert s = 3. Probe in der z-Koordinate: 2 · 0 + 3 · 0 = 0, das passt zu w. Also w = 2 · u⃗ + 3 · v⃗. Für w′ = (2 | 3 | 1) müsste in der z-Koordinate r · 0 + s · 0 = 1 gelten, also 0 = 1 – ein Widerspruch. Da u⃗ und v⃗ in der xy-Ebene liegen, kann keine Linearkombination eine z-Koordinate ungleich 0 erzeugen.",
+     "question": "Gegeben sind u⃗ = (1 | 0 | 0) und v⃗ = (0 | 1 | 0). Stelle w⃗ = (2 | 3 | 0) als Linearkombination w⃗ = r · u⃗ + s · v⃗ dar und begründe, warum w⃗′ = (2 | 3 | 1) keine Linearkombination von u⃗ und v⃗ ist."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTNSP690VQQ6W32G7Y0",
+   "atom_uri": "urn:zam:atom:01M6XAHTTNSP690VQQ6W32G7Y0",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "rg-3-ebene-parameterform",
+   "title": "Ebenen in Parameterform",
+   "domain": "mathematik/geometrie",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-3-ebene-parameterform",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTKQXM5KEY6JKS7NX7W",
+     "type": "soft",
+     "rationale": "Die Parameterform der Ebene überträgt das Prinzip Stützpunkt plus Vielfache einer Richtung von der Geraden."
+    },
+    {
+     "atom_id": "01M6XAHTTMNK46W5SBNQ50AZF0",
+     "type": "soft",
+     "rationale": "Alle Punkte der Ebene sind Linearkombinationen der beiden Spannvektoren."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-3",
+     "topic_title": "Etappe 3: Geraden und Ebenen im Raum"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb3",
+     "topic_title": "Geraden und Ebenen im Raum",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTNXR78AJ8S1WVQ9ZBW",
+     "slug": "g13-ebenen-parameterform",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-3-ebene-parameterform",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "E: X⃗ = P⃗ + r · u⃗; für die zweite Richtung genügt ein Vielfaches von u⃗.",
+       "reason": "Eine Richtung spannt nur eine Gerade auf; die Ebene braucht zwei nicht kollineare Spannvektoren."
+      },
+      {
+       "text": "E: X⃗ = r · u⃗ + s · v⃗ ohne Stützpunkt; jede Ebene geht durch den Ursprung.",
+       "reason": "Ohne Stützpunkt P⃗ geht die Ebene durch den Ursprung; andere Ebenen brauchen den Ortsvektor P⃗."
+      }
+     ],
+     "concept": "E: X⃗ = P⃗ + r · u⃗ + s · v⃗ mit r, s ∈ ℝ; u⃗ und v⃗ dürfen nicht kollinear sein.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "E: X⃗ = P⃗ + r · u⃗ + s · v⃗; u⃗ und v⃗ sind nicht kollinear",
+       "E: X⃗ = P⃗ + r · u⃗ + s · v⃗; u⃗ und v⃗ sind kollinear"
+      ],
+      "correct_index": 0
+     },
+     "question": "Wie lautet die Parameterform einer Ebene im Raum, und welche Bedingung müssen u⃗ und v⃗ erfüllen?"
+    },
+    {
+     "id": "01M6XAHTTNAR5Y84JQPNFYC9SX",
+     "slug": "g13-ebene-drei-punkte",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-3-ebene-parameterform",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "u⃗ = Q + P und v⃗ = R + P, die Verbindungsvektoren addieren",
+       "reason": "Für die Richtung braucht man Differenzen nach dem Prinzip Spitze minus Schaft, nicht Summen."
+      },
+      {
+       "text": "Alle drei Punkte in den Term: X = P + Q + R",
+       "reason": "Es gibt genau einen Stützpunkt; aus Q und R werden Spannvektoren gebildet, keine weiteren Punkte addiert."
+      }
+     ],
+     "question": "Wie erhältst du die Parameterform der Ebene durch drei Punkte P, Q und R?",
+     "concept": "u⃗ = Q − P und v⃗ = R − P bilden, dann X = P + r · u⃗ + s · v⃗.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "P, Q und R dürfen nicht auf einer Geraden liegen.",
+       "Drei beliebige Punkte ergeben immer eine Ebene."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTTNEJKY85JVRN86VW6G",
+     "slug": "g13-punktprobe-ebene",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-3-ebene-parameterform",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "X(2 | −1) = (4 | 5 | 1), also stimmt die Probe für r = 2 nicht.",
+       "reason": "Bei r = 2 und s = −1 wurde falsch multipliziert: korrekt ist X(2 | −1) = (2 | 3 | 3)."
+      },
+      {
+       "text": "X(2 | −1) = (0 | 1 | 5), also stimmt die Probe für s = −1 nicht.",
+       "reason": "Vorzeichenfehler bei s = −1: Der Anteil von v⃗ muss abgezogen werden, richtig ist (2 | 3 | 3)."
+      }
+     ],
+     "concept": "Lösungsskizze: X(1 | 1) = (3 | 3 | 0) stimmt; X(2 | −1) = (2 | 3 | 3).",
+     "sample_solution": "Probe: X(1 | 1) = (1 | 0 | 0) + 1 · (1 | 2 | 1) + 1 · (1 | 1 | −1) = (1 + 1 + 1 | 0 + 2 + 1 | 0 + 1 − 1) = (3 | 3 | 0). Die Angabe stimmt. X(2 | −1) = (1 | 0 | 0) + 2 · (1 | 2 | 1) + (−1) · (1 | 1 | −1) = (1 + 2 − 1 | 0 + 4 − 1 | 0 + 2 + 1) = (2 | 3 | 3).",
+     "question": "In der Ebene E: X⃗(r | s) = P⃗ + r · u⃗ + s · v⃗ mit P⃗ = (1 | 0 | 0), u⃗ = (1 | 2 | 1) und v⃗ = (1 | 1 | −1) soll X(1 | 1) = (3 | 3 | 0) liegen. Prüfe die Punktprobe und berechne X(2 | −1)."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTPXBGHYSSPK9QJV2TG",
+   "atom_uri": "urn:zam:atom:01M6XAHTTPXBGHYSSPK9QJV2TG",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "rg-4-ebene-koordinatenform",
+   "title": "Normalenform und Koordinatenform von Ebenen",
+   "domain": "mathematik/geometrie",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-4-ebene-koordinatenform",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTNSP690VQQ6W32G7Y0",
+     "type": "soft",
+     "rationale": "Der Normalenvektor entsteht aus den Spannvektoren der Parameterform als Kreuzprodukt."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-3",
+     "topic_title": "Etappe 3: Geraden und Ebenen im Raum"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb3",
+     "topic_title": "Geraden und Ebenen im Raum",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTPXCXVYF9Q9A06FB21",
+     "slug": "g13-koordinatenform",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-4-ebene-koordinatenform",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "n⃗ × X⃗ = d, also das Kreuzprodukt mit dem Ortsvektor.",
+       "reason": "Das Kreuzprodukt zweier Vektoren ist wieder ein Vektor; die Koordinatenform nutzt das Skalarprodukt mit dem Normalenvektor."
+      },
+      {
+       "text": "n₁ · x · n₂ · y · n₃ · z = d, die Koordinaten werden multipliziert.",
+       "reason": "Die Koordinatenform ist eine Summe der Produkte nᵢ · xᵢ, keine Kette von Multiplikationen."
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "n₁ · x + n₂ · y + n₃ · z = d",
+       "x : n₁ + y : n₂ + z : n₃ = d"
+      ],
+      "correct_index": 0
+     },
+     "question": "Wie lautet die Koordinatenform einer Ebene mit dem Normalenvektor n⃗ = (n₁ | n₂ | n₃)?",
+     "concept": "n⃗ ⊙ X⃗ = d, also n₁ · x + n₂ · y + n₃ · z = d."
+    },
+    {
+     "id": "01M6XAHTTPBV15CTJSZ8EEPWZK",
+     "slug": "g13-ebenen-abstand-ursprung",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-4-ebene-koordinatenform",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "8 LE, der Wert von d in der Gleichung 2x + 2y − z = 8.",
+       "reason": "d ist nicht der Abstand: Erst das Teilen durch |n⃗| = 3 liefert den senkrechten Abstand zum Ursprung."
+      },
+      {
+       "text": "3 LE, die Länge des Normalenvektors |n⃗| = 3 als Abstand.",
+       "reason": "Der Betrag von n⃗ steht im Nenner der Hesse'schen Normalform und nicht im Zähler."
+      }
+     ],
+     "question": "Wie groß ist der Abstand der Ebene 2x + 2y − z = 8 zum Ursprung?",
+     "concept": "8 : 3 ≈ 2,67 LE mit |n⃗| = 3 als Länge des Normalenvektors.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "8 : 3 ≈ 2,67 LE",
+       "8 : 5 = 1,6 LE"
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Der Abstand der Ebene n⃗ ⊙ X = d zum Ursprung ist d : |n⃗| = 8 : 3 ≈ 2,67 LE, denn |n⃗| = √(2² + 2² + (−1)²) = 3."
+    },
+    {
+     "id": "01M6XAHTTP0ZWS3A530VV7N4XX",
+     "slug": "g13-besondere-lage",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-4-ebene-koordinatenform",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Lösungsskizze: Die Ebene geht durch den Ursprung, der Abstand ist 0 LE.",
+       "reason": "d = 10 ist nicht 0: Nur bei d = 0 enthält die Ebene wirklich den Ursprung."
+      },
+      {
+       "text": "Lösungsskizze: n₃ = 0 heißt parallel zur z-Achse, der Abstand ist 10 LE.",
+       "reason": "In 0x + 3y + 4z = 10 fehlt die x-Komponente: Das heißt parallel zur x-Achse, nicht n₃ = 0 zur z-Achse."
+      }
+     ],
+     "concept": "Lösungsskizze: n₁ = 0 heißt parallel zur x-Achse; der Abstand beträgt 10 : 5 = 2 LE.",
+     "sample_solution": "Aus der Gleichung liest man n⃗ = (0 | 3 | 4) und d = 10. Die x-Komponente von n⃗ ist 0: Der Normalenvektor steht senkrecht auf der x-Achse, also verläuft die Ebene parallel zu ihr. Es ist |n⃗| = √(0 + 9 + 16) = 5. Der Abstand zum Ursprung ist |d| : |n⃗| = 10 : 5 = 2 LE. Die Ebene geht nicht durch den Ursprung, denn d = 10 ist nicht 0.",
+     "question": "Gleichung lesen: 0x + 3y + 4z = 10. Lies Normalenvektor, Lage zur x-Achse und Abstand zum Ursprung ab und begründe die Lage."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTQ1GMQDJHG3VJJT7E3",
+   "atom_uri": "urn:zam:atom:01M6XAHTTQ1GMQDJHG3VJJT7E3",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "rg-5-lage-geraden",
+   "title": "Lage zweier Geraden im Raum",
+   "domain": "mathematik/geometrie",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-5-lage-geraden",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTKQXM5KEY6JKS7NX7W",
+     "type": "soft",
+     "rationale": "Die Lage zweier Geraden wird mit ihren Parametergleichungen gerechnet."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-3",
+     "topic_title": "Etappe 3: Geraden und Ebenen im Raum"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb3",
+     "topic_title": "Geraden und Ebenen im Raum",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTQH9DWEPB9NJ4CFERH",
+     "slug": "g13-lage-zweier-geraden",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-5-lage-geraden",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Sich schneidend, parallel oder senkrecht zueinander stehend.",
+       "reason": "Senkrecht beschreibt einen Winkel und keine Lage; als dritter Fall fehlt windschief."
+      },
+      {
+       "text": "Sich schneidend, windschief oder entgegengesetzt gerichtet.",
+       "reason": "Entgegengesetzt ist keine eigene Lage; parallele Geraden bilden den zweiten Grundfall."
+      }
+     ],
+     "question": "Welche drei Lagen können zwei Geraden im Raum zueinander haben?",
+     "concept": "Sich schneidend, parallel oder windschief, dazu der Sonderfall identisch.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "sich schneidend, parallel oder windschief",
+       "sich schneidend, parallel oder senkrecht"
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Sich schneidend, parallel oder windschief (dazu der Sonderfall identisch)."
+    },
+    {
+     "id": "01M6XAHTTQ1RF5WGT2NM1YNAKS",
+     "slug": "g13-schnittwinkel-geraden",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-5-lage-geraden",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "cos φ = u⃗ ⊙ v⃗ : (|u⃗| · |v⃗|) ohne Betrag – das liefert auch stumpfe Winkel.",
+       "reason": "Ohne Betrag kann der Quotient negativ werden und liefert stumpfe Winkel; für den spitzen Schnittwinkel nimmt man den Betrag des Skalarprodukts."
+      },
+      {
+       "text": "cos φ = |u⃗| : |v⃗|, das Verhältnis der beiden Längen.",
+       "reason": "Die Längen allein kennen die Richtung nicht: Im Zähler steht das Skalarprodukt, im Nenner das Produkt der Längen."
+      }
+     ],
+     "concept": "cos φ = |u⃗ ⊙ v⃗| : (|u⃗| · |v⃗|); φ ist der spitze Winkel bis 90°.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "cos φ = |u⃗ ⊙ v⃗| : (|u⃗| · |v⃗|)",
+       "sin φ = |u⃗ ⊙ v⃗| : (|u⃗| · |v⃗|)"
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "cos φ = |u⃗ ⊙ v⃗| : (|u⃗| · |v⃗|); der Schnittwinkel ist der spitze Winkel zwischen 0° und 90°.",
+     "question": "Wie berechnest du den spitzen Schnittwinkel φ zweier Geraden mit den Richtungsvektoren u⃗ und v⃗?"
+    },
+    {
+     "id": "01M6XAHTTQNT9P1M6RWGFBQ3Y9",
+     "slug": "g13-lage-berechnen",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-5-lage-geraden",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Die Geraden schneiden sich in einem Punkt, das Gleichungssystem ist lösbar.",
+       "reason": "Bei s = 1 hat h den Punkt (0 | 2 | 1) und nicht den Ursprung; die Gleichungssystem-Rechnung liefert einen Widerspruch."
+      },
+      {
+       "text": "Die Geraden sind parallel zueinander und haben den Abstand 1 LE.",
+       "reason": "Parallel wären nur Vielfache derselben Richtung; hier sind die Richtungen verschieden, die Geraden windschief."
+      }
+     ],
+     "concept": "Nicht parallel und ohne Schnittpunkt: windschief mit dem Abstand 1 LE.",
+     "sample_solution": "Richtungen vergleichen: (1 | 0 | 0) und (0 | 1 | 0) sind keine Vielfachen, also nicht parallel. Gleichungssystem aufstellen: x: t = 0; y: 0 = 1 + s; z: 0 = 1. Die z-Gleichung ist ein Widerspruch, das System hat keine Lösung – die Geraden sind windschief. Abstand: u⃗ × v⃗ = (0 | 0 | 1), AB⃗ = (0 | 1 | 1), also d = |AB⃗ ⊙ (u⃗ × v⃗)| : |u⃗ × v⃗| = 1 : 1 = 1 LE.",
+     "question": "g: X⃗ = (0 | 0 | 0) + t · (1 | 0 | 0) und h: X⃗ = (0 | 1 | 1) + s · (0 | 1 | 0). Bestimme die Lage der beiden Geraden zueinander und ihren Abstand."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTR42HX0MAA6M1K6302",
+   "atom_uri": "urn:zam:atom:01M6XAHTTR42HX0MAA6M1K6302",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "rg-6-gerade-ebene",
+   "title": "Lage von Gerade und Ebene",
+   "domain": "mathematik/geometrie",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-6-gerade-ebene",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTNSP690VQQ6W32G7Y0",
+     "type": "soft",
+     "rationale": "Die Gerade wird in Parameterform, die Ebene mit ihrer Gleichung eingesetzt."
+    },
+    {
+     "atom_id": "01M6XAHTTPXBGHYSSPK9QJV2TG",
+     "type": "soft",
+     "rationale": "Für die Fallunterscheidung braucht man die Koordinatenform der Ebene mit dem Normalenvektor."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-3",
+     "topic_title": "Etappe 3: Geraden und Ebenen im Raum"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb3",
+     "topic_title": "Geraden und Ebenen im Raum",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTR837RQVRGBHAS1T0A",
+     "slug": "g13-lage-gerade-ebene",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-6-gerade-ebene",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Schnittpunkt, windschief oder parallel als drei Lagen von g und E.",
+       "reason": "Windschief gibt es nur zwischen zwei Geraden; zwischen Gerade und Ebene entscheidet die Punktprobe."
+      },
+      {
+       "text": "Schnittpunkt, tangential oder in der Ebene liegend als drei Lagen.",
+       "reason": "Tangential ist ein Begriff aus der Kugelgeometrie; hier heißt der zweite Fall parallel mit Abstand."
+      }
+     ],
+     "question": "Welche drei Fälle gibt es zwischen einer Geraden g und einer Ebene E?",
+     "concept": "Schnittpunkt, Gerade in der Ebene oder parallel; entscheidend sind n⃗ ⊙ u⃗ und n⃗ ⊙ A − d.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "n⃗ ⊙ u⃗ = 0 heißt: Die Gerade verläuft parallel zur Ebene oder liegt in ihr.",
+       "n⃗ ⊙ u⃗ = 0 bedeutet immer Parallelität."
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Eindeutiger Schnittpunkt (n⃗ ⊙ u⃗ ≠ 0); Gerade in der Ebene (n⃗ ⊙ u⃗ = 0 und n⃗ ⊙ A = d); parallel (n⃗ ⊙ u⃗ = 0 und n⃗ ⊙ A ≠ d)."
+    },
+    {
+     "id": "01M6XAHTTRKX6WJEKJC956758F",
+     "slug": "g13-schnittpunkt-gerade-ebene",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-6-gerade-ebene",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "S⃗ ist der Lotfußpunkt des Lots aus A⃗ auf die Ebene, ohne t zu berechnen.",
+       "reason": "Der Lotfußpunkt liegt senkrecht unter A⃗; der Schnittpunkt der schiefen Geraden entsteht erst durch t in der Geradengleichung."
+      },
+      {
+       "text": "t = (d − n⃗ ⊙ u⃗) : (n⃗ ⊙ A⃗), Zähler und Nenner sind vertauscht belegt.",
+       "reason": "Im Zähler steht d − n⃗ ⊙ A⃗, im Nenner das Skalarprodukt des Normalenvektors mit der Richtung n⃗ ⊙ u⃗."
+      }
+     ],
+     "concept": "t = (d − n⃗ ⊙ A⃗) : (n⃗ ⊙ u⃗) bestimmen, dann S⃗ = A⃗ + t · u⃗ einsetzen.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "t = (d − n⃗ ⊙ A⃗) : (n⃗ ⊙ u⃗), dann S⃗ = A⃗ + t · u⃗ einsetzen",
+       "t = (n⃗ ⊙ A⃗ − d) : (n⃗ ⊙ u⃗), ohne Einsetzen in die Geraden"
+      ],
+      "correct_index": 0
+     },
+     "question": "Wie findest du den Schnittpunkt der Geraden X⃗ = A⃗ + t · u⃗ mit der Ebene n⃗ ⊙ X⃗ = d?"
+    },
+    {
+     "id": "01M6XAHTTR31N5AK8E6J0XJSR8",
+     "slug": "g13-winkel-gerade-ebene",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-6-gerade-ebene",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Lösungsskizze: φ = cos⁻¹(1/3) ≈ 70,5°, also der Restwinkel.",
+       "reason": "Der Winkel zur Normale wird mit dem Kosinus gemessen, der Winkel zur Ebene mit dem Sinus; beide ergänzen sich zu 90°."
+      },
+      {
+       "text": "Lösungsskizze: φ = 0°, denn die Gerade schneidet die Ebene nur.",
+       "reason": "Der Schnittpunkt sagt nichts über den Winkel; φ = 0° hieße, die Gerade läuft in der Ebene mit."
+      }
+     ],
+     "concept": "Lösungsskizze: sin φ = 1 : 3, also φ = sin⁻¹(1/3) ≈ 19,5°.",
+     "sample_solution": "Normalenvektor ablesen: n⃗ = (1 | 2 | 2), Richtung u⃗ = (1 | 0 | 0). n⃗ ⊙ u⃗ = 1 · 1 + 2 · 0 + 2 · 0 = 1. |n⃗| = √(1 + 4 + 4) = 3, |u⃗| = 1. Also sin φ = 1 : (3 · 1) = 1/3 ≈ 0,33 und mit sin⁻¹ (DEG) folgt φ ≈ 19,47°, also rund 19,5°. Gemessen wird zur Ebene: Wäre u⃗ ein Vielfaches von n⃗, stünde die Gerade senkrecht auf E (φ = 90°).",
+     "question": "Die Ebene E: x + 2y + 2z = 5 und die Gerade g: X⃗ = (0 | 0 | 1) + t · (1 | 0 | 0). Wie groß ist der Schnittwinkel φ zwischen g und E?"
+    },
+    {
+     "id": "01M6XH4TAW10X30JS1NF380ZE4",
+     "slug": "g13-schnittwinkel-gerade-ebene",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-6-gerade-ebene",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "cos φ = |u⃗ ⊙ v⃗| : (|u⃗| · |v⃗|)",
+       "reason": "Das ist die Formel für den Winkel zweier Geraden aus ihren Richtungsvektoren; zwischen Gerade und Ebene misst sin mit dem Normalenvektor."
+      },
+      {
+       "text": "sin φ = |n⃗| : |u⃗|, der Quotient der Längen.",
+       "reason": "Nicht die Längen werden dividiert: Der Sinus entsteht aus dem Skalarprodukt sin φ = |n⃗ ⊙ u⃗| : (|n⃗| · |u⃗|)."
+      }
+     ],
+     "question": "Wie berechnest du den Schnittwinkel φ zwischen einer Geraden g mit Richtungsvektor u⃗ und einer Ebene E mit Normalenvektor n⃗?",
+     "concept": "sin φ = |n⃗ ⊙ u⃗| : (|n⃗| · |u⃗|)",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "sin φ = |n⃗ ⊙ u⃗| : (|n⃗| · |u⃗|)",
+       "cos φ = |n⃗ ⊙ u⃗| : (|n⃗| · |u⃗|)"
+      ],
+      "correct_index": 0
+     },
+     "replaces": [
+      "01K8GD10000000000000000J01"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTSMXBHHD7654JBY1R1",
+   "atom_uri": "urn:zam:atom:01M6XAHTTSMXBHHD7654JBY1R1",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "rg-7-lage-ebenen",
+   "title": "Lage zweier Ebenen",
+   "domain": "mathematik/geometrie",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-7-lage-ebenen",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTPXBGHYSSPK9QJV2TG",
+     "type": "soft",
+     "rationale": "Die Lage zweier Ebenen entscheidet sich an ihren Normalenvektoren aus der Koordinatenform."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-3",
+     "topic_title": "Etappe 3: Geraden und Ebenen im Raum"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb3",
+     "topic_title": "Geraden und Ebenen im Raum",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTS1DF9HD3RD5P8P5T8",
+     "slug": "g13-lage-zweier-ebenen",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-7-lage-ebenen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Schnittpunkt, Parallelität oder Deckung als drei Lagen der Ebenen.",
+       "reason": "Zwei Ebenen schneiden sich in einer Geraden und nicht in einem Punkt; der Fall heißt Schnittgerade."
+      },
+      {
+       "text": "Windschief, parallel oder identisch als drei Lagen der Ebenen.",
+       "reason": "Windschief gibt es nur bei Geraden; Ebenen ohne gemeinsame Punkte sind zueinander parallel."
+      }
+     ],
+     "question": "Welche drei Lagen können zwei Ebenen im Raum zueinander haben?",
+     "concept": "Schnittgerade, parallel oder identisch mit n₂⃗ = λ · n₁⃗.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Schnittgerade, parallel oder identisch",
+       "Schnittgerade, windschief oder identisch"
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Schnittgerade (n₁⃗ nicht parallel zu n₂⃗), parallel oder identisch (n₂⃗ = λ · n₁⃗)."
+    },
+    {
+     "id": "01M6XAHTTSWFMPR3BNYWVVZ166",
+     "slug": "g13-schnittgeradenrichtung",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-7-lage-ebenen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "u⃗ = n₁⃗ + n₂⃗, die Summe der beiden Normalenvektoren.",
+       "reason": "Die Summe ist im Allgemeinen nicht zu beiden Normalen senkrecht – die Schnittgerade muss es aber sein."
+      },
+      {
+       "text": "u⃗ = d₁ · n₁⃗ − d₂ · n₂⃗ aus den Abstandsparametern der Ebenen.",
+       "reason": "Die Richtung hängt nur von den Normalenvektoren ab; die d-Werte verschieben die Ebenen, ohne die Richtung der Schnittgeraden zu ändern."
+      }
+     ],
+     "concept": "u⃗ = n₁⃗ × n₂⃗, das Kreuzprodukt der beiden Normalenvektoren.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "u⃗ = n₁⃗ × n₂⃗",
+       "u⃗ = n₁⃗ ⊙ n₂⃗"
+      ],
+      "correct_index": 0
+     },
+     "question": "Wie heißt die Richtung der Schnittgeraden zweier Ebenen mit den Normalenvektoren n₁⃗ und n₂⃗?"
+    },
+    {
+     "id": "01M6XAHTTS8F046XSQNFN0YC8W",
+     "slug": "g13-schnittgerade-bestimmen",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-7-lage-ebenen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Lösungsskizze: g: X = (2 | 0 | 0) + t · (1 | 1 | 1), die Richtung aus n₁⃗ + n₂⃗.",
+       "reason": "Die Richtung der Schnittgeraden ist das Kreuzprodukt n₁⃗ × n₂⃗, nicht die Summe der Normalenvektoren."
+      },
+      {
+       "text": "Lösungsskizze: g: X = (0 | 2 | 0) + t · (1 | −1 | −1), der Stützpunkt aus y = 2 gewählt.",
+       "reason": "Der Stützpunkt muss beide Ebenengleichungen erfüllen: (0 | 2 | 0) verletzt x + z = 2."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Schnittgerade bestimmen: "
+      },
+      {
+       "type": "math",
+       "tex": "x + y = 2 \\quad \\text{und} \\quad x + z = 2",
+       "speech": "x plus y gleich zwei und x plus z gleich zwei"
+      }
+     ],
+     "concept": "Lösungsskizze: u⃗ = n₁⃗ × n₂⃗ = (1 | −1 | −1) und S = (2 | 0 | 0), also g: X = (2 | 0 | 0) + t · (1 | −1 | −1).",
+     "sample_solution": "Normalen ablesen: n₁⃗ = (1 | 1 | 0), n₂⃗ = (1 | 0 | 1). Richtung: u⃗ = n₁⃗ × n₂⃗ = (1 · 1 − 0 · 0 | 0 · 1 − 1 · 1 | 1 · 0 − 1 · 1) = (1 | −1 | −1). Punkt mit dem Ansatz z = 0: aus E₂ folgt x = 2, aus E₁ dann y = 0, also S = (2 | 0 | 0). Probe: 2 + 0 = 2 in E₁ und 2 + 0 = 2 in E₂. Also g: X = (2 | 0 | 0) + t · (1 | −1 | −1)."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTTHSD78WEZGWGMT2PG",
+   "atom_uri": "urn:zam:atom:01M6XAHTTTHSD78WEZGWGMT2PG",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "rg-8-abstaende",
+   "title": "Abstände im Raum",
+   "domain": "mathematik/geometrie",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-8-abstaende",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTPXBGHYSSPK9QJV2TG",
+     "type": "soft",
+     "rationale": "Die Hesse'sche Normalform setzt die Koordinatenform der Ebene voraus."
+    },
+    {
+     "atom_id": "01M6XAHTTQ1GMQDJHG3VJJT7E3",
+     "type": "soft",
+     "rationale": "Der Abstand windschiefer Geraden baut auf ihrer Lagebestimmung auf."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-3",
+     "topic_title": "Etappe 3: Geraden und Ebenen im Raum"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb3",
+     "topic_title": "Geraden und Ebenen im Raum",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTT701KEA5QWNRAPCZ4",
+     "slug": "g13-abstand-punkt-ebene",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-8-abstaende",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "d(P; E) = |n⃗ ⊙ P⃗ − d| ohne die Division.",
+       "reason": "Nur bei einem Einheitsnormalenvektor misst der Zähler den Abstand; allgemein teilt man durch |n⃗|."
+      },
+      {
+       "text": "d(P; E) = |d| : |n⃗|, ganz ohne den Punkt P⃗.",
+       "reason": "Das ist der Abstand der Ebene zum Ursprung; für einen fremden Punkt zählt die Differenz n⃗ ⊙ P⃗ − d."
+      }
+     ],
+     "concept": "d(P; E) = |n⃗ ⊙ P⃗ − d| : |n⃗|.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "d(P; E) = |n⃗ ⊙ P⃗ − d| : |n⃗|",
+       "d(P; E) = |n⃗ ⊙ P⃗| : |n⃗| − d"
+      ],
+      "correct_index": 0
+     },
+     "question": "Wie groß ist der Abstand eines Punktes P⃗ von der Ebene n⃗ ⊙ X⃗ = d?"
+    },
+    {
+     "id": "01M6XAHTTTRA9GTMS2G27MT6PV",
+     "slug": "g13-abstand-windschief",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-8-abstaende",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "d = |AB⃗|, also die Länge des Verbindungsvektors der Stützpunkte.",
+       "reason": "Die Stützpunkte sind beliebig gewählt; gemessen wird der kürzeste Verbindungsweg zwischen den Geraden."
+      },
+      {
+       "text": "d = |u⃗ × v⃗| (die Länge des Kreuzprodukts der Richtungen) als Abstand.",
+       "reason": "Das Kreuzprodukt liefert die Richtung des Lots und den Nenner der Formel, nicht den Abstand selbst."
+      }
+     ],
+     "question": "Wonach berechnet sich der Abstand zweier windschiefer Geraden mit den Richtungen u⃗ und v⃗?",
+     "concept": "d = |AB⃗ ⊙ (u⃗ × v⃗)| : |u⃗ × v⃗|, gemessen am gemeinsamen Senkrechten.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "d = |AB⃗ ⊙ (u⃗ × v⃗)| : |u⃗ × v⃗|",
+       "d = |AB⃗ ⊙ (u⃗ × v⃗)| : (|u⃗| · |v⃗|)"
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "d = |AB⃗ ⊙ (u⃗ × v⃗)| : |u⃗ × v⃗| – gemessen am gemeinsamen senkrechten Verbindungsweg."
+    },
+    {
+     "id": "01M6XAHTTTA37ZHC3CRHDWYFB2",
+     "slug": "g13-abstand-sachaufgabe",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-8-abstaende",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Lösungsskizze: n⃗ = (0 | 0 | 1) liefert direkt 5 LE = 50 m für P.",
+       "reason": "Die z-Koordinate von P ist nicht der Abstand: Abgerechnet wird die Differenz |5 − 2| : |n⃗| = 3 LE."
+      },
+      {
+       "text": "Lösungsskizze: 2 LE = 20 m, nämlich der Wert von d aus der Gleichung.",
+       "reason": "d ist der Achsenabschnitt der Ebene, nicht der Abstand von P: Gesucht ist |5 − 2| = 3 LE."
+      }
+     ],
+     "concept": "Lösungsskizze: n⃗ = (0 | 0 | 1), d = 2; Abstand = |5 − 2| : 1 = 3 LE = 30 m.",
+     "sample_solution": "Gleichung in Koordinatenform schreiben: 0x + 0y + 1z = 2, also n⃗ = (0 | 0 | 1) und d = 2, dazu |n⃗| = 1. Hesse'sche Normalform: |n⃗ ⊙ P − d| : |n⃗| = |(0 · 0 + 0 · 0 + 1 · 5) − 2| : 1 = |5 − 2| = 3 LE. In Meter umgerechnet: 3 · 10 = 30 m.",
+     "question": "Der Messpunkt P(0 | 0 | 5) liegt über einer Grundfläche in der Ebene E: z = 2 (Koordinaten in LE, 1 LE = 10 m). Wie weit ist P von E entfernt – in LE und in Metern?"
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTV5PZJ3J79JJP81B7K",
+   "atom_uri": "urn:zam:atom:01M6XAHTTV5PZJ3J79JJP81B7K",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "rg-9-kugeln",
+   "title": "Kugeln im Raum",
+   "domain": "mathematik/geometrie",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-9-kugeln",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTTHSD78WEZGWGMT2PG",
+     "type": "soft",
+     "rationale": "Alle Lagenfragen bei Kugeln sind Abstandsfragen zwischen Mittelpunkt und Gerader oder Ebene."
+    },
+    {
+     "atom_id": "01M6XAHTTPXBGHYSSPK9QJV2TG",
+     "type": "soft",
+     "rationale": "Die Lage von Kugel und Ebene nutzt den Abstand zur Ebene in Koordinatenform."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-3",
+     "topic_title": "Etappe 3: Geraden und Ebenen im Raum"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb3",
+     "topic_title": "Geraden und Ebenen im Raum",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTVBBG0DEHR5V60CDPY",
+     "slug": "g13-kugelgleichung",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-9-kugeln",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "x² + y² + z² = r² ohne die Koordinaten von M.",
+       "reason": "Nur bei M im Ursprung gilt diese Form; allgemein stehen die Koordinaten von M mit umgekehrtem Vorzeichen in den Klammern."
+      },
+      {
+       "text": "r = (x − m₁)² + (y − m₂)² + (z − m₃)², also ohne Quadrat rechts.",
+       "reason": "Rechts steht r², nicht r: Verglichen wird die Summe der Quadrate mit dem Quadrat des Radius."
+      }
+     ],
+     "concept": "(x − m₁)² + (y − m₂)² + (z − m₃)² = r².",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "(x − m₁)² + (y − m₂)² + (z − m₃)² = r²",
+       "(x − m₁)² + (y − m₂)² + (z − m₃)² = r"
+      ],
+      "correct_index": 0
+     },
+     "question": "Wie lautet die Koordinatenform einer Kugel mit Mittelpunkt M(m₁ | m₂ | m₃) und Radius r?"
+    },
+    {
+     "id": "01M6XAHTTVYD23FSZWR0R5DH7S",
+     "slug": "g13-lage-kugel-ebene",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-9-kugeln",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Man vergleicht die Länge des Normalenvektors n⃗ mit dem Radius r.",
+       "reason": "Die Lage hängt vom Abstand des Mittelpunkts zur Ebene ab und nicht von der Größe von n⃗."
+      },
+      {
+       "text": "Tangent heißt: Die Ebene geht durch den Mittelpunkt M(m₁ | m₂ | m₃).",
+       "reason": "Durch M geht die Ebene nur bei Abstand 0; dann ist der Schnittkreis so groß wie die Kugel selbst."
+      }
+     ],
+     "question": "Woran entscheidest du, ob eine Ebene eine Kugel tangiert, schneidet oder verfehlt?",
+     "concept": "d(M; E) mit r vergleichen: gleich tangent, kleiner schneidend, größer verfehlt.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "d(M; E) = r tangent, d < r schneidend, d > r verfehlt",
+       "d(M; E) = r schneidend, d < r tangent, d > r verfehlt"
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Abstand d(M; E) mit dem Radius vergleichen: d = r tangent, d kleiner als r schneidend, d größer als r kein Kontakt."
+    },
+    {
+     "id": "01M6XAHTTVTFWTMERPT4030ZP6",
+     "slug": "g13-quadratische-ergaenzung",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-9-kugeln",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Lösungsskizze: M = (−1 | −2 | 0) und r = √15 aus den Quadraten.",
+       "reason": "Vorzeichen und Rechenfehler bei der Ergänzung: Richtig ist (x − 1)² + (y + 2)² + z² = 17 mit M = (1 | −2 | 0)."
+      },
+      {
+       "text": "Lösungsskizze: M = (1 | −2 | 0) und r = 17, die Zahl ohne Wurzel.",
+       "reason": "Rechts steht r² = 17: Der Radius ist r = √17, nicht 17."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Quadratische Ergänzung: "
+      },
+      {
+       "type": "math",
+       "tex": "x^2 + y^2 + z^2 − 2x + 4y = 12",
+       "speech": "x Quadrat plus y Quadrat plus z Quadrat minus zwei x plus vier y gleich zwölf"
+      }
+     ],
+     "concept": "Lösungsskizze: (x − 1)² + (y + 2)² + z² = 17, also M = (1 | −2 | 0) und r = √17.",
+     "sample_solution": "Terme zusammenstellen: (x² − 2x) + (y² + 4y) + z² = 12. Quadratisch ergänzen: (x² − 2x + 1) + (y² + 4y + 4) + z² = 12 + 1 + 4. Also (x − 1)² + (y + 2)² + z² = 17. Mittelpunkt M = (1 | −2 | 0) und r² = 17, somit r = √17 ≈ 4,12."
+    },
+    {
+     "id": "01M6XH4TAWZGBYFTCDBV2ZZ491",
+     "slug": "g13-schnittkreisradius",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=rg-9-kugeln",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "ρ = √(r − d), die Differenz der Längen.",
+       "reason": "Unter der Wurzel werden die Längen subtrahiert, nicht ihre Quadrate: Gesucht ist r² − d²."
+      },
+      {
+       "text": "ρ = d, der Abstand zur Ebene als Radius.",
+       "reason": "d ist die Kathete, nicht der Schnittkreisradius: ρ = √(r² − d²) ist kleiner als r."
+      }
+     ],
+     "question": "Eine Ebene schneidet eine Kugel mit Radius r; ihr Abstand zum Mittelpunkt beträgt d < r. Wie groß ist der Radius ρ des Schnittkreises?",
+     "concept": "ρ = √(r² − d²), denn r ist die Hypotenuse.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "ρ = √(r² − d²)",
+       "ρ = √(r² + d²)"
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "In dem rechtwinkligen Dreieck aus Mittelpunkt, Fußpunkt des Lotes und Schnittpunkt ist r die Hypotenuse, d und ρ sind die Katheten: ρ² = r² − d², also ρ = √(r² − d²).",
+     "replaces": [
+      "01K8GD10000000000000000J03"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTWADFEKJ4V76FD9X5H",
+   "atom_uri": "urn:zam:atom:01M6XAHTTWADFEKJ4V76FD9X5H",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "aw-1-verknuepfte-funktionen",
+   "title": "Verkettete Funktionen und die Kettenregel",
+   "domain": "mathematik/analysis",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-1-verknuepfte-funktionen",
+   "prerequisites": [],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-4",
+     "topic_title": "Etappe 4: Anwendungen der Differential- und Integralrechnung"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb4",
+     "topic_title": "Anwendungen der Differential- und Integralrechnung",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTW8T067G5E7ND5RVAY",
+     "slug": "g13-verkettung",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-1-verknuepfte-funktionen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Die äußere Funktion f wird zuerst ausgewertet, dann wird ihr Wert in g eingesetzt.",
+       "reason": "Bei der Verkettung wird das Ergebnis der inneren Funktion in die äußere eingesetzt, nicht umgekehrt."
+      },
+      {
+       "text": "Die beiden Funktionswerte werden addiert, also f(x) plus g(x).",
+       "reason": "Eine Verkettung ist keine Summe; die Funktionen werden nacheinander angewandt."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Wie wird die verkettete Funktion "
+      },
+      {
+       "type": "math",
+       "tex": "(f \\circ g)(x) = f(g(x))",
+       "speech": "runde Klammer f Kreis g Klammer zu von x gleich f von g von x"
+      },
+      {
+       "type": "text",
+       "text": " ausgewertet?"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Zuerst wird die innere Funktion g an x ausgewertet, dann f an diesem Wert.",
+       "Die äußere Funktion f wird zuerst ausgewertet, dann wird ihr Wert in g eingesetzt."
+      ],
+      "correct_index": 0
+     },
+     "concept": "Zuerst wird die innere Funktion g an x ausgewertet, dann f an diesem Wert.",
+     "sample_solution": "Zuerst wird die innere Funktion g an der Stelle x ausgewertet, dann die äußere Funktion f an dieser Stelle: (f∘g)(x) = f(g(x))."
+    },
+    {
+     "id": "01M6XAHTTW13EMVN1NJ0A1NF05",
+     "slug": "g13-kettenregel",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-1-verknuepfte-funktionen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Die Ableitung von f(g(x)) ist die Summe aus äußerer und innerer Ableitung.",
+       "reason": "Die Kettenregel multipliziert die beiden Ableitungen, sie addiert sie nicht."
+      },
+      {
+       "text": "Man leitet nur die äußere Funktion ab und setzt g(x) ein.",
+       "reason": "Ohne den Faktor g′(x) stimmt die Ableitung nur, wenn die innere Funktion linear ist."
+      }
+     ],
+     "question": "Wie lautet die Kettenregel für die Ableitung einer verketteten Funktion?",
+     "concept": "Die Ableitung von f(g(x)) ist f′(g(x)) · g′(x): äußere mal innere Ableitung.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Die Ableitung von f(g(x)) ist f′(g(x)) · g′(x): äußere mal innere Ableitung.",
+       "Die Ableitung von f(g(x)) ist die Summe aus äußerer und innerer Ableitung."
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Die Ableitung von f(g(x)) ist die äußere Ableitung f′(g(x)) mal die innere Ableitung g′(x)."
+    },
+    {
+     "id": "01M6XAHTTWKR7PQYZB05CWGCF0",
+     "slug": "g13-kettenregel-anwendung",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-1-verknuepfte-funktionen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Die Nullstellen sind x = 0 und x = 4; bei P(−4 | 0) liegt der Tiefpunkt von h.",
+       "reason": "Extremstelle und Nullstellen werden verwechselt: x = 0 ist die Extremstelle, x = −4 und x = 4 sind die Nullstellen auf der x-Achse."
+      },
+      {
+       "text": "Die Nullstellen sind x = −4 und x = 4; bei P(0 | −64) liegt der Tiefpunkt von h.",
+       "reason": "Der Funktionswert am Extrempunkt wird nicht sauber ausgewertet: (0² − 16)³ ist (−16)³ = −4096, nicht −64."
+      }
+     ],
+     "question": "Der Graph von h(x) = (x² − 16)³ wird untersucht. Wo liegen die Nullstellen und der Tiefpunkt von h?",
+     "concept": "Die Nullstellen sind x = −4 und x = 4; bei P(0 | −4096) liegt der Tiefpunkt von h.",
+     "sample_solution": "Definitionsbereich: h ist eine Verkettung von Polynomen, also ist 𝔻 = ℝ. Nullstellen: (x² − 16)³ = 0, also x² = 16 und x = −4 oder x = 4. Kettenregel: h′(x) = 3(x² − 16)² · 2x = 6x(x² − 16)², also h′(x) = 0 für x = 0 und x = ±4. Da (x² − 16)³ mit wachsendem Betrag von x wächst, ist h(0) = (−16)³ = −4096 der tiefste Wert; bei x = −4 und x = 4 berührt der Graph die x-Achse. Also liegen die Nullstellen bei x = −4 und x = 4 und der Tiefpunkt bei P(0 | −4096)."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTXDTFVXG16V99278G8",
+   "atom_uri": "urn:zam:atom:01M6XAHTTXDTFVXG16V99278G8",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "aw-2-parameter",
+   "title": "Parameter aus Bedingungen bestimmen",
+   "domain": "mathematik/analysis",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-2-parameter",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTWADFEKJ4V76FD9X5H",
+     "type": "soft",
+     "rationale": "In 4.1 untersuchst du schon Funktionen mit Parametern; hier bestimmst du die Parameterwerte aus Bedingungen."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-4",
+     "topic_title": "Etappe 4: Anwendungen der Differential- und Integralrechnung"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb4",
+     "topic_title": "Anwendungen der Differential- und Integralrechnung",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTXZ97R8YMVQ4EVBSWT",
+     "slug": "g13-bedingung-gleichung",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-2-parameter",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Eine Ungleichung, die nur den Definitionsbereich einschränkt.",
+       "reason": "Eine Bedingung wie f(x₀) = y₀ wird durch Einsetzen zu einer Gleichung, nicht zu einer Ungleichung."
+      },
+      {
+       "text": "Eine Gleichung für die Funktionswerte, die den Parameter nicht enthält.",
+       "reason": "Der Parameter steckt im Term; durch Einsetzen der Bedingung wird er sichtbar und lässt sich auflösen."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Was liefert jede Bedingung an einen Funktionsterm, etwa die Punktbedingung "
+      },
+      {
+       "type": "math",
+       "tex": "f(x_0) = y_0",
+       "speech": "f von x null gleich y null"
+      },
+      {
+       "type": "text",
+       "text": ", für die Parameterbestimmung?"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Eine Gleichung für die Parameter: pro unbekanntem Parameter eine Bedingung.",
+       "Eine Ungleichung, die nur den Definitionsbereich einschränkt."
+      ],
+      "correct_index": 0
+     },
+     "concept": "Eine Gleichung für die Parameter: pro unbekanntem Parameter eine Bedingung.",
+     "sample_solution": "Eine Gleichung für die Parameter: Für jeden unbekannten Parameter braucht man eine eigene Bedingung."
+    },
+    {
+     "id": "01M6XAHTTXVTR05YVRNQ79XXKT",
+     "slug": "g13-parameter-gleichungssystem",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-2-parameter",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Eine Bedingung genügt, weil jeder Parameter einzeln bestimmt wird.",
+       "reason": "Eine Gleichung mit zwei Unbekannten hat unendlich viele Lösungen; man braucht zwei unabhängige Bedingungen."
+      },
+      {
+       "text": "Drei Bedingungen, weil zusätzlich die Ableitung als Unbekannte bestimmt werden muss.",
+       "reason": "Die Ableitung ist keine zusätzliche Unbekannte; sie liefert nur eine weitere Gleichung."
+      }
+     ],
+     "question": "Wie viele Bedingungen brauchst du, um zwei unbekannte Parameter eines Funktionsterms zu bestimmen?",
+     "concept": "Zwei Bedingungen, denn jede Bedingung liefert eine eigene Gleichung.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Zwei Bedingungen, denn jede Bedingung liefert eine eigene Gleichung.",
+       "Eine Bedingung genügt, weil jeder Parameter einzeln bestimmt wird."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTTXV1FMQPCF6RPQ72FV",
+     "slug": "g13-tangente-parameter",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-2-parameter",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "a = 3 und b = 0, denn die Punktbedingung f(1) = 3 genügt als einzige.",
+       "reason": "Die Steigungsbedingung f′(1) = 1 wird ignoriert; eine Gleichung bestimmt zwei Parameter nicht."
+      },
+      {
+       "text": "a = −4 und b = 7, indem man die beiden Gleichungen I und II addiert.",
+       "reason": "Beim Subtrahieren der Gleichungen fällt b weg; wer sie addiert, erhält einen falschen Wert für a."
+      }
+     ],
+     "question": "Die Funktion f(x) = ax² + bx soll durch den Punkt P(1 | 3) gehen und an der Stelle x = 1 die Steigung 1 haben. Bestimme a und b.",
+     "concept": "Gleichungssystem: a + b = 3 und 2a + b = 1. Subtrahieren liefert a = −2, dann b = 5.",
+     "sample_solution": "Punktbedingung: f(1) = a + b = 3 (Gleichung I). Ableitung: f′(x) = 2ax + b, also die Steigungsbedingung f′(1) = 2a + b = 1 (Gleichung II). Gleichung II minus I: a = −2. Einsetzen in I: −2 + b = 3, also b = 5. Kontrolle: f(x) = −2x² + 5x erfüllt f(1) = 3 und f′(1) = −4 + 5 = 1."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTY1QX4HY22F5HPE0G1",
+   "atom_uri": "urn:zam:atom:01M6XAHTTY1QX4HY22F5HPE0G1",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "aw-3-extremwerte",
+   "title": "Extremwertprobleme: Kandidaten und Randwerte",
+   "domain": "mathematik/analysis",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-3-extremwerte",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTXDTFVXG16V99278G8",
+     "type": "soft",
+     "rationale": "Extremwertprobleme führen auf die Bedingung f′ = 0, die in 4.2 als Gleichung für Parameter geübt wird."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-4",
+     "topic_title": "Etappe 4: Anwendungen der Differential- und Integralrechnung"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb4",
+     "topic_title": "Anwendungen der Differential- und Integralrechnung",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTYJN1CA64PA1JW54PY",
+     "slug": "g13-kandidatenliste",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-3-extremwerte",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Nur die Nullstellen von f′ im Inneren des Intervalls.",
+       "reason": "Auch an den Rändern, wo f′ nicht 0 sein muss, können globale Extremwerte liegen."
+      },
+      {
+       "text": "Alle Stellen, an denen die zweite Ableitung f″(x) verschwindet.",
+       "reason": "Die zweite Ableitung prüft die Art eines Extremums, sie liefert nicht die Kandidaten."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Welche Stellen gehören für eine Funktion f auf dem Intervall "
+      },
+      {
+       "type": "math",
+       "tex": "[a; b]",
+       "speech": "von a bis b"
+      },
+      {
+       "type": "text",
+       "text": " in die Kandidatenliste für die globalen Extremwerte?"
+      }
+     ],
+     "concept_segments": [
+      {
+       "type": "text",
+       "text": "Die Nullstellen von "
+      },
+      {
+       "type": "math",
+       "tex": "f'(x) = 0",
+       "speech": "f Strich von x gleich null"
+      },
+      {
+       "type": "text",
+       "text": " im Inneren und die beiden Randwerte "
+      },
+      {
+       "type": "math",
+       "tex": "f(a)",
+       "speech": "f von a"
+      },
+      {
+       "type": "text",
+       "text": " und "
+      },
+      {
+       "type": "math",
+       "tex": "f(b)",
+       "speech": "f von b"
+      },
+      {
+       "type": "text",
+       "text": "."
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Die Nullstellen von f′(x) = 0 im Inneren und die beiden Randwerte f(a) und f(b).",
+       "Nur die Nullstellen von f′ im Inneren des Intervalls."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTTYR2CTZZPFYTMCEMF2",
+     "slug": "g13-hinreichende-bedingung",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-3-extremwerte",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "f″(x₀) positiv ⇒ lokales Maximum, f″(x₀) negativ ⇒ lokales Minimum.",
+       "reason": "Die Vorzeichen sind vertauscht: Eine nach oben geöffnete Krümmung bedeutet ein Minimum."
+      },
+      {
+       "text": "f″(x₀) = 0 ⇒ Maximum, f″(x₀) von 0 verschieden ⇒ Minimum.",
+       "reason": "f″(x₀) = 0 macht die Prüfung unentschieden; das Vorzeichen von f″(x₀) entscheidet über Minimum oder Maximum."
+      }
+     ],
+     "question": "Was besagt die hinreichende Bedingung für eine Extremstelle x₀ mit f′(x₀) = 0?",
+     "concept": "f″(x₀) positiv ⇒ lokales Minimum, f″(x₀) negativ ⇒ lokales Maximum.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "f″(x₀) positiv ⇒ lokales Minimum, f″(x₀) negativ ⇒ lokales Maximum.",
+       "f″(x₀) positiv ⇒ lokales Maximum, f″(x₀) negativ ⇒ lokales Minimum."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTTYJ2XJX578JRENMV2J",
+     "slug": "g13-extrema-intervall",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-3-extremwerte",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Maximum 2 bei x = −1 und Minimum −2 bei x = 1; die Randwerte fallen weg, dort ist f′ nicht 0.",
+       "reason": "Globale Extremwerte können auch an den Rändern liegen; die Randwerte gehören in die Kandidatenliste."
+      },
+      {
+       "text": "Maximum 8 bei x = 2 und Minimum −8 bei x = −2, denn bei f(x) = x³ dominiert der erste Summand.",
+       "reason": "Die Werte werden nicht ausgerechnet: f(2) = 8 − 6 = 2 und f(−2) = −8 + 6 = −2."
+      }
+     ],
+     "question": "Bestimme die globalen Extremwerte von f(x) = x³ − 3x auf dem Intervall von −2 bis 2.",
+     "concept": "f′(x) = 3x² − 3 = 0 bei x = ±1; Kandidatenliste f(−2) = −2, f(−1) = 2, f(1) = −2, f(2) = 2; Maximum 2, Minimum −2.",
+     "sample_solution": "Ableitung: f′(x) = 3x² − 3. Nullstellen: 3x² = 3, also x = 1 oder x = −1; beide liegen im Inneren des Intervalls. Hinreichende Bedingung: f″(x) = 6x, f″(−1) = −6 ist negativ ⇒ lokales Maximum, f″(1) = 6 ist positiv ⇒ lokales Minimum. Kandidatenliste mit den Randwerten: f(−2) = −8 + 6 = −2, f(−1) = 2, f(1) = −2, f(2) = 2. Vergleich: Das globale Maximum ist 2 (bei x = −1 und x = 2), das globale Minimum −2 (bei x = 1 und x = −2)."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTTZB7W05YE4GDPPS9RE",
+   "atom_uri": "urn:zam:atom:01M6XAHTTZB7W05YE4GDPPS9RE",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "aw-4-sachzusammenhaenge",
+   "title": "Extremwerte in Sachzusammenhängen modellieren",
+   "domain": "mathematik/analysis",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-4-sachzusammenhaenge",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTY1QX4HY22F5HPE0G1",
+     "type": "soft",
+     "rationale": "Die Sachoptimierung überträgt die Kandidatenliste und den Randvergleich aus 4.3 auf Modelle mit Nebenbedingungen."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-4",
+     "topic_title": "Etappe 4: Anwendungen der Differential- und Integralrechnung"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb4",
+     "topic_title": "Anwendungen der Differential- und Integralrechnung",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTTZNKWDRCSKGXHFBE1W",
+     "slug": "g13-zaun-modell",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-4-sachzusammenhaenge",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "A(x) = x · (P − x), denn die Längsseite ist die Restlänge des Zauns.",
+       "reason": "An der Mauer fehlt eine Seite: Gezaunt werden zwei Breiten und eine Länge, also 2x + y = P."
+      },
+      {
+       "text": "A(x) = 2x · (P − 2x), denn beide Breitenseiten werden mitgezählt.",
+       "reason": "Die Fläche ist Breite mal Länge; die zweite Breitenseite steckt bereits in der Nebenbedingung."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Wie lautet die Zielfunktion für die Fläche eines rechteckigen Geheges mit Zaunlänge "
+      },
+      {
+       "type": "math",
+       "tex": "P",
+       "speech": "P"
+      },
+      {
+       "type": "text",
+       "text": " an einer Mauer, wenn "
+      },
+      {
+       "type": "math",
+       "tex": "x",
+       "speech": "x"
+      },
+      {
+       "type": "text",
+       "text": " die Breite senkrecht zur Mauer ist?"
+      }
+     ],
+     "concept_segments": [
+      {
+       "type": "text",
+       "text": "Zwei Breitenseiten und eine Längsseite: "
+      },
+      {
+       "type": "math",
+       "tex": "2x + y = P",
+       "speech": "2 x plus y gleich P"
+      },
+      {
+       "type": "text",
+       "text": ", also "
+      },
+      {
+       "type": "math",
+       "tex": "A(x) = x \\cdot (P - 2x)",
+       "speech": "A von x gleich x mal Klammer auf P minus 2 x Klammer zu"
+      },
+      {
+       "type": "text",
+       "text": "."
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Zwei Breitenseiten und eine Längsseite: 2x + y = P, also A(x) = x · (P − 2x).",
+       "A(x) = x · (P − x), denn die Längsseite ist die Restlänge des Zauns."
+      ],
+      "correct_index": 0
+     }
+    },
+    {
+     "id": "01M6XAHTTZW045STAYSA56ERXV",
+     "slug": "g13-randwerte-sachkontext",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-4-sachzusammenhaenge",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Weil die Ableitung an den Rändern immer verschwindet.",
+       "reason": "An Randstellen muss f′ nicht 0 sein; verglichen werden trotzdem alle Kandidaten."
+      },
+      {
+       "text": "Weil die zweite Ableitung an den Rändern ihr Vorzeichen wechselt.",
+       "reason": "Die Krümmung entscheidet über Minimum oder Maximum, nicht über die Frage der Ränder."
+      }
+     ],
+     "question": "Warum müssen beim Extremwertproblem in einem Sachzusammenhang auch die Randwerte verglichen werden?",
+     "concept": "Weil das Optimum am Rand des Definitionsbereichs liegen kann.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Weil das Optimum am Rand des Definitionsbereichs liegen kann.",
+       "Weil die Ableitung an den Rändern immer verschwindet."
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "Weil das Optimum am Rand des Definitionsbereichs liegen kann, etwa wenn die Nebenbedingung den Bereich begrenzt."
+    },
+    {
+     "id": "01M6XAHTTZZEZWSARFEMTJETQ5",
+     "slug": "g13-ergebnis-validieren",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-4-sachzusammenhaenge",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "x = 13 m ist sinnvoll, weil 13 eine positive Zahl und plausibel ist.",
+       "reason": "Nicht nur x muss positiv sein; die Nebenbedingung liefert auch y, und diese Länge muss positiv bleiben."
+      },
+      {
+       "text": "Das Ergebnis wird sinnvoll, wenn die Mauer als dritte Seite mitgezaunt wird.",
+       "reason": "Die Mauer kostet keinen Zaun; die Nebenbedingung lautet weiter 2x + y = 24."
+      }
+     ],
+     "question": "Eine Rechnung liefert für die Breite eines Geheges aus 24 m Zaun an einer Mauer den Wert x = 13 m. Prüfe das Ergebnis.",
+     "concept": "Mit y = 24 − 2 · 13 = −2 m wird die Länge negativ, also ist x = 13 m sinnwidrig.",
+     "sample_solution": "Nebenbedingung einsetzen: y = 24 − 2 · 13 = 24 − 26 = −2 m. Da Längen positiv sein müssen, liegt x = 13 m außerhalb des Definitionsbereichs (x muss zwischen 0 und 12 liegen). Das Ergebnis ist zu verwerfen: Entweder steckt ein Rechenfehler dahinter, oder das Modell passt nicht zur Aufgabe. Validierung heißt immer: Nebenbedingung, Einheiten und Vorzeichen gegen die Wirklichkeit prüfen."
+    }
+   ]
+  },
+  {
+   "id": "01M6XAHTV080V2RDVRCS88QRQK",
+   "atom_uri": "urn:zam:atom:01M6XAHTV080V2RDVRCS88QRQK",
+   "namespace": "zam-academy-mathematik-gymnasium-13",
+   "slug": "aw-5-anwendungen",
+   "title": "Analysis in Wirtschaft, Klima und Technik",
+   "domain": "mathematik/analysis",
+   "reduction": "axiomatic",
+   "typical_age_min": 18,
+   "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-5-anwendungen",
+   "prerequisites": [
+    {
+     "atom_id": "01M6XAHTTZB7W05YE4GDPPS9RE",
+     "type": "soft",
+     "rationale": "Die Anwendungsfenster benutzen dieselben Modellierungs- und Validierungsschritte wie 4.4."
+    },
+    {
+     "atom_id": "01M6XAHTTDF5MFAGX4ZEF2F9FZ",
+     "type": "soft",
+     "rationale": "Die Gesamtmenge aus einer Rate ist das Thema der Lektion int-8, hier in Wirtschaft, Klima und Technik."
+    }
+   ],
+   "curricula": [
+    {
+     "provider": "zam-academy",
+     "subject": "mathematik-gymnasium-13",
+     "topic_code": "stage-4",
+     "topic_title": "Etappe 4: Anwendungen der Differential- und Integralrechnung"
+    },
+    {
+     "provider": "lehrplanplus-bayern",
+     "school_type": "gymnasium",
+     "grade": 13,
+     "subject": "mathematik",
+     "topic_code": "lb4",
+     "topic_title": "Anwendungen der Differential- und Integralrechnung",
+     "exam_relevant": true
+    }
+   ],
+   "practice_items": [
+    {
+     "id": "01M6XAHTV0GSKD91YTV0WT41K2",
+     "slug": "g13-drei-grundfragen",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-5-anwendungen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "Die momentane Änderung (Ableitung) und den Krümmungsradius des Graphen.",
+       "reason": "Der Krümmungsradius ist keine der drei Grundfragen; die dritte Frage ist das Extremum als optimale Stelle."
+      },
+      {
+       "text": "Zweimal dieselbe Größe, denn Ableitung und Integral sind zwei Schreibweisen.",
+       "reason": "Ableitung und Integral beantworten verschiedene Fragen: momentane Änderung und Gesamtänderung."
+      }
+     ],
+     "question_segments": [
+      {
+       "type": "text",
+       "text": "Was berechnest du mit der lokalen Rate "
+      },
+      {
+       "type": "math",
+       "tex": "r(t) = F'(t)",
+       "speech": "r von t gleich F Strich von t"
+      },
+      {
+       "type": "text",
+       "text": " und mit dem bestimmten Integral "
+      },
+      {
+       "type": "math",
+       "tex": "\\int_0^T r(t)\\,dt",
+       "speech": "Integral von 0 bis T über r von t nach t"
+      },
+      {
+       "type": "text",
+       "text": "?"
+      }
+     ],
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "Die momentane Änderung (Ableitung) und die Gesamtmenge (Integral).",
+       "Die momentane Änderung und den Krümmungsradius des Graphen."
+      ],
+      "correct_index": 0
+     },
+     "concept": "Die momentane Änderung (Ableitung) und die Gesamtmenge (Integral).",
+     "sample_solution": "Die momentane Änderung (Ableitung) und die Gesamtmenge über den Zeitraum (Integral); die dritte Grundfrage ist das Extremum als optimale Stelle."
+    },
+    {
+     "id": "01M6XAHTV0T6EP5HH61FGBNC8W",
+     "slug": "g13-gesamtmenge-trapez",
+     "language": "de",
+     "tier": "tier1_fast",
+     "bloom_level": 1,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-5-anwendungen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "G = r₀ · T, die Anfangsrate mal die Dauer T des Zeitraums.",
+       "reason": "Bei fallender Rate ist die Gesamtmenge kleiner als das Rechteck mit der Anfangsrate."
+      },
+      {
+       "text": "G = r_T · T, die Endrate mal die Dauer T (ohne Mittelwert).",
+       "reason": "Am Anfang war die Rate höher; die Gesamtmenge liegt zwischen Endrate mal T und Anfangsrate mal T."
+      }
+     ],
+     "question": "Wie groß ist die Gesamtmenge, wenn eine Rate linear von r₀ auf r_T über die Dauer T fällt?",
+     "concept": "G = (r₀ + r_T) : 2 · T, die Trapezfläche unter dem Ratengraphen.",
+     "fast_check": {
+      "type": "binary_choice",
+      "options": [
+       "G = (r₀ + r_T) : 2 · T, die Fläche des Trapezs unter dem Graphen der Rate.",
+       "G = r₀ · T, die Anfangsrate mal die Dauer."
+      ],
+      "correct_index": 0
+     },
+     "sample_solution": "G = (r₀ + r_T) : 2 · T, die Fläche des Trapezs unter dem Graphen der Rate."
+    },
+    {
+     "id": "01M6XAHTV0YABKT7B7MA1RZAW6",
+     "slug": "g13-emission-validierung",
+     "language": "de",
+     "tier": "tier2_transfer",
+     "bloom_level": 3,
+     "source_link": "https://academy.zam-os.org/mathematik-gymnasium-13/#lesson=aw-5-anwendungen",
+     "materiality": "material",
+     "choice_distractors": [
+      {
+       "text": "G = 8 · 6 = 48 Mio. t (nur die Anfangsrate) über die 6 Jahre.",
+       "reason": "Das ist die Gesamtmenge bei konstanten 8 Mio. t pro Jahr; die fallende Rate liefert weniger."
+      },
+      {
+       "text": "G = 4 · 6 = 24 Mio. t, gerechnet mit der Endrate über 6 Jahre.",
+       "reason": "Das ist die Gesamtmenge bei konstanten 4 Mio. t pro Jahr; am Anfang war die Rate höher."
+      }
+     ],
+     "question": "Eine Emissionsrate fällt linear von 8 auf 4 Mio. t pro Jahr über 6 Jahre. Berechne die Gesamtmenge und validiere das Ergebnis.",
+     "concept": "G = (8 + 4) : 2 · 6 = 36 Mio. t; plausibel zwischen 6 · 4 = 24 und 6 · 8 = 48.",
+     "sample_solution": "Die Rate fällt linear von r₀ = 8 auf r_T = 4 Mio. t pro Jahr über T = 6 Jahre. Die Gesamtmenge ist die Fläche des Trapezs unter r(t): G = (r₀ + r_T) : 2 · T = (8 + 4) : 2 · 6 = 6 · 6 = 36 Mio. t. Validierung: Die Einheit passt (Mio. t pro Jahr mal Jahr ergibt Mio. t), die Größenordnung liegt zwischen der unteren Schranke 4 · 6 = 24 und der oberen Schranke 8 · 6 = 48. Grenzfall: Bei konstanten 8 Mio. t pro Jahr wären es 48 Mio. t, die Senkung spart also 12 Mio. t."
+    }
+   ]
+  }
+ ]
+}
