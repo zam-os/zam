@@ -1,0 +1,1655 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-11-10",
+  "source": "Thomas im Claude-Code-Chat zu zam-os/zam-academy#111 am 2026-11-10, nach den drei Reviews (Stand 0928a39): „Freigabe für die Zellen erteile ich.“ Auf die Rückfrage, was genau freigegeben ist, wählte er „3 A, alle fünf Zellen“. Die Freigabe gilt der Zuordnung der 20 de-by-Karten in dieser Datei (3 A, 0 B, 17 C; keine Stilllegung).",
+  "authorization": "Thomas hat am 10. November 2026 die hier dokumentierten 20 Zuordnungen ausdrücklich freigegeben. Die drei A-Ersetzungen (Kreisbewegung J01 → ph11-zentripetalkraft-richtung, Kreisbewegung J03 → ph11-kepler-3, Wellenlehre J01 → ph11-destruktive-interferenz) erscheinen mit der ersten Veröffentlichung der Zelle; die 17 C-Karten bleiben ohne Nachfolger aktiv. Persönliche Karten und Reviewhistorien bleiben erhalten.",
+  "note": "Abgeglichen wurden die drei bisherigen Physik-11-Zellen (Themen der früheren Jahrgangsstufe 11, im LehrplanPLUS in der Qualifikationsphase) und die zwei Physik-10-Zellen zu Kreisbewegung und Wellen, deren Themen im LehrplanPLUS in Jahrgangsstufe 11 liegen. Thomas hat entschieden, dass beide Physik-10-Zellen in diesem Abgleich bleiben.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "ea825d1c1147fcc5f37de5817c2d6a7c05e2f7ed",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-gymnasium-10-physik-kreisbewegung-gravitation-kepler-gesetze-kvt.json",
+      "tile_id": "de-by:gymnasium-10-physik-kreisbewegung-gravitation-kepler-gesetze",
+      "version": "2026.08.1",
+      "sha256": "602a9f477641ee75243b969421945634d9e997079825aff083ed0065d7eaa8a4"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-10-physik-wellenlehre-akustik-doppler-effekt-kvt.json",
+      "tile_id": "de-by:gymnasium-10-physik-wellenlehre-akustik-doppler-effekt",
+      "version": "2026.08.1",
+      "sha256": "0459a2a6780f3b06e5ea70a38a0ed6120681673339064759a13728f775d11af3"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-11-physik-elektrisches-feld-kondensator-millikan-kvt.json",
+      "tile_id": "de-by:gymnasium-11-physik-elektrisches-feld-kondensator-millikan",
+      "version": "2026.08.1",
+      "sha256": "e767d36bce68ea1875ed4c62d0c8c8cda76bf03cfb457619699da62e33cbc68d"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-11-physik-induktion-schwingkreis-wechselstrom-kvt.json",
+      "tile_id": "de-by:gymnasium-11-physik-induktion-schwingkreis-wechselstrom",
+      "version": "2026.08.1",
+      "sha256": "3d45c91fb1ec444bc439bc64566a99b9ce81c561a24618b1e80d87d76671829c"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-11-physik-magnetfeld-lorentz-massenspektrometer-zyklotron-kvt.json",
+      "tile_id": "de-by:gymnasium-11-physik-magnetfeld-lorentz-massenspektrometer-zyklotron",
+      "version": "2026.08.1",
+      "sha256": "de79c9e40083d89a0a6f05901c16b0efbc1eee5d967117e98eb912e84b926b98"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:gymnasium-10-physik-kreisbewegung-gravitation-kepler-gesetze",
+      "de_by_id": "01K8GA60000000000000000J01",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "In welche Richtung wirkt die Zentripetalkraft "
+        },
+        {
+          "type": "math",
+          "tex": "F_Z",
+          "speech": "F Z"
+        },
+        {
+          "type": "text",
+          "text": ", die einen Körper auf einer kreisförmigen Bahn hält?"
+        }
+      ],
+      "category": "A",
+      "academy_slug": "ph11-zentripetalkraft-richtung",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf: Die Zentripetalkraft zeigt zum Kreismittelpunkt, senkrecht zur Geschwindigkeit. Auch der Schnellcheck stellt dieselbe Gegenantwort (tangential) daneben."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-10-physik-kreisbewegung-gravitation-kepler-gesetze",
+      "de_by_id": "01K8GA60000000000000000J02",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Analysiere die Kinematik und Dynamik der gleichförmigen Kreisbewegung: 1. Kinematische Grundgrößen:   * Umlaufdauer "
+        },
+        {
+          "type": "math",
+          "tex": "T",
+          "speech": "T"
+        },
+        {
+          "type": "text",
+          "text": " & Drehfrequenz "
+        },
+        {
+          "type": "math",
+          "tex": "f",
+          "speech": "f"
+        },
+        {
+          "type": "text",
+          "text": ": "
+        },
+        {
+          "type": "math",
+          "tex": "f = \\frac{1}{T}",
+          "speech": "f gleich 1 durch T"
+        },
+        {
+          "type": "text",
+          "text": " (in "
+        },
+        {
+          "type": "math",
+          "tex": "\\text{Hz} = \\text{s}^{-1}",
+          "speech": "Hertz gleich 1 pro Sekunde"
+        },
+        {
+          "type": "text",
+          "text": ").   * Winkelgeschwindigkeit "
+        },
+        {
+          "type": "math",
+          "tex": "\\omega",
+          "speech": "Omega"
+        },
+        {
+          "type": "text",
+          "text": ": "
+        },
+        {
+          "type": "math",
+          "tex": "\\omega = \\frac{\\Delta \\varphi}{\\Delta t} = \\frac{2\\pi}{T} = 2\\pi f",
+          "speech": "Omega gleich Delta Phi durch Delta t gleich 2 Pi durch T gleich 2 Pi f"
+        },
+        {
+          "type": "text",
+          "text": " (in "
+        },
+        {
+          "type": "math",
+          "tex": "\\frac{\\text{rad}}{\\text{s}}",
+          "speech": "Radiant pro Sekunde"
+        },
+        {
+          "type": "text",
+          "text": ").   * Bahngeschwindigkeit "
+        },
+        {
+          "type": "math",
+          "tex": "v",
+          "speech": "v"
+        },
+        {
+          "type": "text",
+          "text": ": "
+        },
+        {
+          "type": "math",
+          "tex": "v = \\frac{2\\pi r}{T} = \\omega \\cdot r",
+          "speech": "v gleich 2 Pi r durch T gleich Omega mal r"
+        },
+        {
+          "type": "text",
+          "text": " (stets tangential zur Kreisbahn gerichtet), 2. Zentripetalbeschleunigung "
+        },
+        {
+          "type": "math",
+          "tex": "a_Z",
+          "speech": "a Z"
+        },
+        {
+          "type": "text",
+          "text": ":   * Obwohl der Betrag "
+        },
+        {
+          "type": "math",
+          "tex": "|v|",
+          "speech": "Betrag von v"
+        },
+        {
+          "type": "text",
+          "text": " konstant ist, ändert sich permanent die Geschwindigkeitsrichtung "
+        },
+        {
+          "type": "math",
+          "tex": "\\implies",
+          "speech": "daraus folgt"
+        },
+        {
+          "type": "text",
+          "text": " Radialbeschleunigung zum Mittelpunkt:     "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{a_Z = \\frac{v^2}{r} = \\omega^2 \\cdot r}",
+          "block": true,
+          "speech": "a Z gleich v Quadrat durch r gleich Omega Quadrat mal r"
+        },
+        {
+          "type": "text",
+          "text": " 3. Zentripetalkraft "
+        },
+        {
+          "type": "math",
+          "tex": "F_Z",
+          "speech": "F Z"
+        },
+        {
+          "type": "text",
+          "text": ":   * Die nach Newton ("
+        },
+        {
+          "type": "math",
+          "tex": "F = m \\cdot a",
+          "speech": "F gleich m mal a"
+        },
+        {
+          "type": "text",
+          "text": ") erforderliche Kraft, die den Körper auf der Kreisbahn hält:     "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{F_Z = m \\cdot a_Z = m \\cdot \\frac{v^2}{r} = m \\cdot \\omega^2 \\cdot r}",
+          "block": true,
+          "speech": "F Z gleich m mal a Z gleich m mal v Quadrat durch r gleich m mal Omega Quadrat mal r"
+        },
+        {
+          "type": "text",
+          "text": "   * Beispiele: Gravitation bei Planeten, Lorentzkraft bei Elektronen im Magnetfeld, Reibungskraft bei Autokurven, 4. Ein Auto ("
+        },
+        {
+          "type": "math",
+          "tex": "m = 1200\\,\\text{kg}",
+          "speech": "m gleich 1200 Kilogramm"
+        },
+        {
+          "type": "text",
+          "text": ") durchfährt eine Kurve mit dem Radius "
+        },
+        {
+          "type": "math",
+          "tex": "r = 50\\,\\text{m}",
+          "speech": "r gleich 50 Meter"
+        },
+        {
+          "type": "text",
+          "text": " mit der Geschwindigkeit "
+        },
+        {
+          "type": "math",
+          "tex": "v = 20\\,\\frac{\\text{m}}{\\text{s}}",
+          "speech": "v gleich 20 Meter pro Sekunde"
+        },
+        {
+          "type": "text",
+          "text": " ("
+        },
+        {
+          "type": "math",
+          "tex": "72\\,\\frac{\\text{km}}{\\text{h}}",
+          "speech": "72 Kilometer pro Stunde"
+        },
+        {
+          "type": "text",
+          "text": "). Berechne die erforderliche Zentripetalkraft "
+        },
+        {
+          "type": "math",
+          "tex": "F_Z",
+          "speech": "F Z"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Synthesekarte zu Kinematik und Dynamik der Kreisbewegung; ihr Inhalt verteilt sich hier auf drei Lektionen (kb-groessen, kb-zentripetalkraft, kb-verkehr). Eine Historie wird nicht auf mehrere Karten verteilt; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-10-physik-kreisbewegung-gravitation-kepler-gesetze",
+      "de_by_id": "01K8GA60000000000000000J03",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Wie lautet das 3. Keplersche Gesetz über das Verhältnis der Umlaufzeiten "
+        },
+        {
+          "type": "math",
+          "tex": "T_1, T_2",
+          "speech": "T eins, T zwei"
+        },
+        {
+          "type": "text",
+          "text": " zweier Planeten zu den großen Halbachsen "
+        },
+        {
+          "type": "math",
+          "tex": "a_1, a_2",
+          "speech": "a eins, a zwei"
+        },
+        {
+          "type": "text",
+          "text": " ihrer Bahnellipsen?"
+        }
+      ],
+      "category": "A",
+      "academy_slug": "ph11-kepler-3",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf: drittes Kepler’sches Gesetz T₁² / T₂² = a₁³ / a₂³ für zwei Planeten derselben Sonne."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-10-physik-kreisbewegung-gravitation-kepler-gesetze",
+      "de_by_id": "01K8GA60000000000000000J04",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Analysiere das Newtonsche Gravitationsgesetz und die Keplerschen Planetengesetze: 1. Das Gravitationsgesetz (Isaac Newton, 1687):   "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{F_G = G \\cdot \\frac{m_1 \\cdot m_2}{r^2}} \\quad (G \\approx 6{,}674 \\cdot 10^{-11}\\,\\frac{\\text{N}\\cdot\\text{m}^2}{\\text{kg}^2})",
+          "block": true,
+          "speech": "F G gleich G mal m eins mal m zwei durch r Quadrat, mit G ungefähr 6,674 mal 10 hoch minus 11 Newton Quadratmeter pro Kilogramm Quadrat"
+        },
+        {
+          "type": "text",
+          "text": "   * Universelle Massenanziehung; "
+        },
+        {
+          "type": "math",
+          "tex": "F_G \\sim \\frac{1}{r^2}",
+          "speech": "F G proportional zu 1 durch r Quadrat"
+        },
+        {
+          "type": "text",
+          "text": ".   * Erdbeschleunigung an der Erdoberfläche ("
+        },
+        {
+          "type": "math",
+          "tex": "r = R_E, M = M_E",
+          "speech": "r gleich R E, M gleich M E"
+        },
+        {
+          "type": "text",
+          "text": "): "
+        },
+        {
+          "type": "math",
+          "tex": "g = G \\frac{M_E}{R_E^2} \\approx 9{,}81\\,\\frac{\\text{m}}{\\text{s}^2}",
+          "speech": "g gleich G mal M E durch R E Quadrat ungefähr 9,81 Meter pro Sekunde Quadrat"
+        },
+        {
+          "type": "text",
+          "text": ", 2. Die drei Keplerschen Gesetze (Johannes Kepler, 1609/1619):   * 1. Gesetz (Ellipsensatz): Die Planeten bewegen sich auf Ellipsenbahnen, in deren einem gemeinsamen Brennpunkt die Sonne steht.   * 2. Gesetz (Flächensatz): Der Leitstrahl Sonne-Planet überstreicht in gleichen Zeiten gleiche Flächen ("
+        },
+        {
+          "type": "math",
+          "tex": "A_1 = A_2 \\implies",
+          "speech": "A eins gleich A zwei daraus folgt"
+        },
+        {
+          "type": "text",
+          "text": " schnellste Bewegung im Perihel [Sonnennähe], langsamste im Aphel [Sonnenferne] infolge Drehimpulserhaltung).   * 3. Gesetz (Harmonisches Gesetz): Die Quadrate der Umlaufzeiten zweier Planeten verhalten sich wie die dritten Potenzen (Kuben) ihrer großen Halbachsen:     "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{\\frac{T_1^2}{T_2^2} = \\frac{a_1^3}{a_2^3} \\iff \\frac{T^2}{a^3} = \\text{konstant}}",
+          "block": true,
+          "speech": "T eins Quadrat durch T zwei Quadrat gleich a eins hoch drei durch a zwei hoch drei genau dann, wenn T Quadrat durch a hoch drei gleich konstant"
+        },
+        {
+          "type": "text",
+          "text": " 3. Kreisbahn eines Satelliten (1. kosmische Geschwindigkeit):   * Gleichsetzen von Gravitationskraft und Zentripetalkraft: "
+        },
+        {
+          "type": "math",
+          "tex": "F_G = F_Z \\implies G \\frac{M \\cdot m}{r^2} = m \\frac{v^2}{r} \\implies \\mathbf{v = \\sqrt{\\frac{G \\cdot M}{r}}}",
+          "speech": "F G gleich F Z, daraus folgt G mal M mal m durch r Quadrat gleich m mal v Quadrat durch r, daraus folgt v gleich Wurzel aus G mal M durch r"
+        },
+        {
+          "type": "text",
+          "text": " (bodennah: "
+        },
+        {
+          "type": "math",
+          "tex": "v_1 \\approx 7{,}9\\,\\frac{\\text{km}}{\\text{s}}",
+          "speech": "v eins ungefähr 7,9 Kilometer pro Sekunde"
+        },
+        {
+          "type": "text",
+          "text": ")."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Synthesekarte zu Gravitationsgesetz, allen drei Kepler’schen Gesetzen und Satelliten; hier vier Lektionen in zwei Lernbereichen. Kein einzelner Nachfolger; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-10-physik-wellenlehre-akustik-doppler-effekt",
+      "de_by_id": "01K8GA40000000000000000J01",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Welche Interferenzbedingung führt bei der Überlagerung zweier kohärenter Wellen mit dem Gangunterschied "
+        },
+        {
+          "type": "math",
+          "tex": "\\Delta s",
+          "speech": "Delta s"
+        },
+        {
+          "type": "text",
+          "text": " zu vollständiger destruktiver Interferenz (Auslöschung)?"
+        }
+      ],
+      "category": "A",
+      "academy_slug": "ph11-destruktive-interferenz",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf: Bedingung Δs = (2k + 1) · λ / 2 für destruktive Interferenz zweier gleichphasiger Wellenzentren."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-10-physik-wellenlehre-akustik-doppler-effekt",
+      "de_by_id": "01K8GA40000000000000000J02",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Analysiere mechanische Wellen, Wellengrundgleichung und Interferenz: 1. Wellenbegriff & Wellentypen:   * Welle: Räumliche und zeitliche Ausbreitung einer mechanischen Schwingung; transportiert Energie und Impuls, aber keine Materie.   * Transversalwelle (Querwelle): Schwingungsrichtung senkrecht zur Ausbreitungsrichtung (z. B. Seilwelle, Licht/EM-Wellen; polarisierbar).   * Longitudinalwelle (Längswelle): Schwingungsrichtung parallel zur Ausbreitungsrichtung (z. B. Schallwellen in Luft, Druckwellen), 2. Grundgleichung der Wellenausbreitung:   "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{c = \\lambda \\cdot f = \\frac{\\lambda}{T}} \\quad (c = \\text{Ausbreitungsgeschwindigkeit}, \\lambda = \\text{Wellenlänge}, f = \\text{Frequenz})",
+          "block": true,
+          "speech": "c gleich Lambda mal f gleich Lambda durch T, Klammer auf c gleich Ausbreitungsgeschwindigkeit, Lambda gleich Wellenlänge, f gleich Frequenz Klammer zu"
+        },
+        {
+          "type": "text",
+          "text": " 3. Huygenssches Prinzip & Wellenphänomene:   * Jeder Punkt einer Wellenfront ist Ausgangspunkt einer kugelförmigen Elementarwelle.   * Beugung: Abweichung von der geradlinigen Ausbreitung an Kanten/Spalten (deutlich, wenn Spaltbreite "
+        },
+        {
+          "type": "math",
+          "tex": "b \\approx \\lambda",
+          "speech": "b ungefähr Lambda"
+        },
+        {
+          "type": "text",
+          "text": ").   * Interferenz (Superpositionsprinzip):     - Konstruktive Interferenz (Verstärkung): "
+        },
+        {
+          "type": "math",
+          "tex": "\\Delta s = k \\cdot \\lambda",
+          "speech": "Delta s gleich k mal Lambda"
+        },
+        {
+          "type": "text",
+          "text": " ("
+        },
+        {
+          "type": "math",
+          "tex": "k \\in \\mathbb{Z}",
+          "speech": "k Element der ganzen Zahlen"
+        },
+        {
+          "type": "text",
+          "text": ").     - Destruktive Interferenz (Auslöschung): "
+        },
+        {
+          "type": "math",
+          "tex": "\\Delta s = (2k + 1) \\cdot \\frac{\\lambda}{2}",
+          "speech": "Delta s gleich Klammer auf 2 k plus 1 Klammer zu mal Lambda durch 2"
+        },
+        {
+          "type": "text",
+          "text": ", 4. Ein Schallton mit Frequenz "
+        },
+        {
+          "type": "math",
+          "tex": "f = 440\\,\\text{Hz}",
+          "speech": "f gleich 440 Hertz"
+        },
+        {
+          "type": "text",
+          "text": " (Kammerton A) breitet sich in Luft mit der Schallgeschwindigkeit "
+        },
+        {
+          "type": "math",
+          "tex": "c = 340\\,\\frac{\\text{m}}{\\text{s}}",
+          "speech": "c gleich 340 Meter pro Sekunde"
+        },
+        {
+          "type": "text",
+          "text": " aus. Berechne die Wellenlänge "
+        },
+        {
+          "type": "math",
+          "tex": "\\lambda",
+          "speech": "Lambda"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Synthesekarte zu Wellenarten, c = λ · f, Huygens, Beugung und Interferenz; hier vier Lektionen. Kein einzelner Nachfolger; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-10-physik-wellenlehre-akustik-doppler-effekt",
+      "de_by_id": "01K8GA40000000000000000J03",
+      "de_by_question": "Was nimmt ein ruhender Beobachter wahr, wenn sich eine Schallquelle (z. B. ein Krankenwagen mit Sirene) mit hoher Geschwindigkeit auf ihn zubewegt (Doppler-Effekt)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Der Doppler-Effekt steht nicht im Fachlehrplan Physik 11 und wird in diesem Paket nicht gelehrt. Kein Nachfolger; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-10-physik-wellenlehre-akustik-doppler-effekt",
+      "de_by_id": "01K8GA40000000000000000J04",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Analysiere stehende Wellen und den akustischen Doppler-Effekt: 1. Stehende Wellen (Stationäre Wellen):   * Entstehen durch Überlagerung zweier gegenläufiger Wellen gleicher Frequenz und Amplitude (z. B. durch Reflexion an einem festen oder offenen Ende).   * Schwingungsknoten: Orte dauerhafter Ruhe (Auslöschung); Abstand zweier benachbarter Knoten "
+        },
+        {
+          "type": "math",
+          "tex": "= \\frac{\\lambda}{2}",
+          "speech": "gleich Lambda durch 2"
+        },
+        {
+          "type": "text",
+          "text": ".   * Schwingungsbäuche: Orte maximaler Amplitude ("
+        },
+        {
+          "type": "math",
+          "tex": "2 y_{\\text{max}}",
+          "speech": "2 y max"
+        },
+        {
+          "type": "text",
+          "text": ").   * Kein Energietransport, sondern periodischer Austausch von kinetischer und potenzieller Schwingungsenergie, 2. Eigenschwingungen von Saiten & Pfeifen:   * Beidseitig fest eingespannte Saite der Länge "
+        },
+        {
+          "type": "math",
+          "tex": "L",
+          "speech": "L"
+        },
+        {
+          "type": "text",
+          "text": ": "
+        },
+        {
+          "type": "math",
+          "tex": "L = n \\cdot \\frac{\\lambda}{2} \\implies f_n = n \\cdot \\frac{c}{2L}",
+          "speech": "L gleich n mal Lambda durch 2 daraus folgt f n gleich n mal c durch 2 L"
+        },
+        {
+          "type": "text",
+          "text": " (Grundton "
+        },
+        {
+          "type": "math",
+          "tex": "n=1",
+          "speech": "n gleich 1"
+        },
+        {
+          "type": "text",
+          "text": ", Obertöne "
+        },
+        {
+          "type": "math",
+          "tex": "n=2,3,\\dots",
+          "speech": "n gleich 2, 3 und so weiter"
+        },
+        {
+          "type": "text",
+          "text": "), 3. Der Doppler-Effekt (Christian Doppler, 1842):   * Frequenzänderung bei Relativbewegung zwischen Quelle und Beobachter:   * Bewegte Quelle ("
+        },
+        {
+          "type": "math",
+          "tex": "v_Q",
+          "speech": "v Q"
+        },
+        {
+          "type": "text",
+          "text": ") auf ruhenden Beobachter zu:     "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{f' = f_0 \\cdot \\frac{c}{c - v_Q} > f_0} \\quad (\\text{Ton wird höher})",
+          "block": true,
+          "speech": "f Strich gleich f null mal c durch, c minus v Q, größer als f null, der Ton wird höher"
+        },
+        {
+          "type": "text",
+          "text": "   * Bewegte Quelle von ruhendem Beobachter weg:     "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{f' = f_0 \\cdot \\frac{c}{c + v_Q} < f_0} \\quad (\\text{Ton wird tiefer})",
+          "block": true,
+          "speech": "f Strich gleich f null mal c durch, c plus v Q, kleiner als f null, der Ton wird tiefer"
+        },
+        {
+          "type": "text",
+          "text": "   * Überschallknall: Bei "
+        },
+        {
+          "type": "math",
+          "tex": "v_Q \\ge c",
+          "speech": "v Q größer gleich c"
+        },
+        {
+          "type": "text",
+          "text": " bildet sich ein Machscher Kegel (Stoßwelle)."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Synthesekarte zu stehenden Wellen und Doppler-Effekt; der Doppler-Teil hat hier keine Lektion. Kein Nachfolger; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-physik-elektrisches-feld-kondensator-millikan",
+      "de_by_id": "01K8GB40000000000000000J01",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Wie ändert sich die elektrische Feldenergie "
+        },
+        {
+          "type": "math",
+          "tex": "W_{\\text{el}} = \\frac{1}{2} C U^2",
+          "speech": "W el gleich ein halb C U Quadrat"
+        },
+        {
+          "type": "text",
+          "text": " eines aufgeladenen, von der Spannungsquelle getrennten Kondensators ("
+        },
+        {
+          "type": "math",
+          "tex": "Q = \\text{konstant}",
+          "speech": "Q gleich konstant"
+        },
+        {
+          "type": "text",
+          "text": "), wenn der Plattenabstand "
+        },
+        {
+          "type": "math",
+          "tex": "d",
+          "speech": "d"
+        },
+        {
+          "type": "text",
+          "text": " verdoppelt wird?"
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Elektrisches Feld, Kondensator und Millikan-Versuch stehen im LehrplanPLUS des neunjährigen Gymnasiums nicht in Jahrgangsstufe 11, sondern in der Qualifikationsphase. Dieses Paket hat dazu keine Lektion; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-physik-elektrisches-feld-kondensator-millikan",
+      "de_by_id": "01K8GB40000000000000000J02",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Analysiere das elektrische Feld und den Plattenkondensator: 1. Coulombsches Gesetz (Charles Augustin de Coulomb, 1785):   "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{F_C = \\frac{1}{4\\pi \\varepsilon_0 \\varepsilon_r} \\cdot \\frac{q_1 \\cdot q_2}{r^2}} \\quad (\\varepsilon_0 \\approx 8{,}854 \\cdot 10^{-12}\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{V}\\cdot\\text{m}})",
+          "block": true,
+          "speech": "F C gleich 1 durch 4 Pi Epsilon null Epsilon r mal q eins mal q zwei durch r Quadrat, mit Epsilon null ungefähr 8,854 mal 10 hoch minus 12 Amperesekunden pro Voltmeter"
+        },
+        {
+          "type": "text",
+          "text": " 2. Elektrische Feldstärke "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{E}",
+          "speech": "Vektor E"
+        },
+        {
+          "type": "text",
+          "text": " & Potential "
+        },
+        {
+          "type": "math",
+          "tex": "\\varphi",
+          "speech": "Phi"
+        },
+        {
+          "type": "text",
+          "text": ":   * "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{E} = \\frac{\\vec{F}}{q}",
+          "speech": "Vektor E gleich Vektor F durch q"
+        },
+        {
+          "type": "text",
+          "text": " (Kraft pro Probeladung; Einheit: "
+        },
+        {
+          "type": "math",
+          "tex": "\\frac{\\text{N}}{\\text{C}} = \\frac{\\text{V}}{\\text{m}}",
+          "speech": "Newton pro Coulomb gleich Volt pro Meter"
+        },
+        {
+          "type": "text",
+          "text": ").   * Im homogenen Feld eines Plattenkondensators mit Plattenabstand "
+        },
+        {
+          "type": "math",
+          "tex": "d",
+          "speech": "d"
+        },
+        {
+          "type": "text",
+          "text": ": "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{E = \\frac{U}{d}}",
+          "speech": "E gleich U durch d"
+        },
+        {
+          "type": "text",
+          "text": ", 3. Der Plattenkondensator:   * Kapazität "
+        },
+        {
+          "type": "math",
+          "tex": "C",
+          "speech": "C"
+        },
+        {
+          "type": "text",
+          "text": ": "
+        },
+        {
+          "type": "math",
+          "tex": "C = \\frac{Q}{U} = \\varepsilon_0 \\cdot \\varepsilon_r \\cdot \\frac{A}{d}",
+          "speech": "C gleich Q durch U gleich Epsilon null mal Epsilon r mal A durch d"
+        },
+        {
+          "type": "text",
+          "text": " (Einheit: "
+        },
+        {
+          "type": "math",
+          "tex": "1\\text{ Farad [F]} = 1\\,\\frac{\\text{C}}{\\text{V}}",
+          "speech": "1 Farad gleich 1 Coulomb pro Volt"
+        },
+        {
+          "type": "text",
+          "text": ").   * Gespeicherte Feldenergie: "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{W_{\\text{el}} = \\frac{1}{2} C U^2 = \\frac{1}{2} Q U = \\frac{Q^2}{2C}}",
+          "speech": "W el gleich ein halb C U Quadrat gleich ein halb Q U gleich Q Quadrat durch 2 C"
+        },
+        {
+          "type": "text",
+          "text": ", 4. Ein Plattenkondensator mit Fläche "
+        },
+        {
+          "type": "math",
+          "tex": "A = 400\\,\\text{cm}^2",
+          "speech": "A gleich 400 Quadratzentimeter"
+        },
+        {
+          "type": "text",
+          "text": " und Plattenabstand "
+        },
+        {
+          "type": "math",
+          "tex": "d = 2\\,\\text{mm}",
+          "speech": "d gleich 2 Millimeter"
+        },
+        {
+          "type": "text",
+          "text": " im Vakuum ("
+        },
+        {
+          "type": "math",
+          "tex": "\\to \\varepsilon_r = 1",
+          "speech": "also Epsilon r gleich 1"
+        },
+        {
+          "type": "text",
+          "text": ") ist an eine Spannung von "
+        },
+        {
+          "type": "math",
+          "tex": "U = 500\\,\\text{V}",
+          "speech": "U gleich 500 Volt"
+        },
+        {
+          "type": "text",
+          "text": " angeschlossen. Berechne die Kapazität "
+        },
+        {
+          "type": "math",
+          "tex": "C",
+          "speech": "C"
+        },
+        {
+          "type": "text",
+          "text": " und die elektrische Feldstärke "
+        },
+        {
+          "type": "math",
+          "tex": "E",
+          "speech": "E"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Elektrisches Feld, Kondensator und Millikan-Versuch stehen im LehrplanPLUS des neunjährigen Gymnasiums nicht in Jahrgangsstufe 11, sondern in der Qualifikationsphase. Dieses Paket hat dazu keine Lektion; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-physik-elektrisches-feld-kondensator-millikan",
+      "de_by_id": "01K8GB40000000000000000J03",
+      "de_by_question": "Welches fundamentale Ergebnis lieferte der berühmte Öltröpfchenversuch von Robert Andrews Millikan (1909)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Elektrisches Feld, Kondensator und Millikan-Versuch stehen im LehrplanPLUS des neunjährigen Gymnasiums nicht in Jahrgangsstufe 11, sondern in der Qualifikationsphase. Dieses Paket hat dazu keine Lektion; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-physik-elektrisches-feld-kondensator-millikan",
+      "de_by_id": "01K8GB40000000000000000J04",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Analysiere die Bewegung geladener Teilchen im E-Feld und den Millikan-Versuch: 1. Beschleunigung im elektrischen Längsfeld:   * Ein Elektron ("
+        },
+        {
+          "type": "math",
+          "tex": "q = -e",
+          "speech": "q gleich minus e"
+        },
+        {
+          "type": "text",
+          "text": ") durchläuft die Beschleunigungsspannung "
+        },
+        {
+          "type": "math",
+          "tex": "U",
+          "speech": "U"
+        },
+        {
+          "type": "text",
+          "text": ":     "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{W_{\\text{el}} = e \\cdot U = E_{\\text{kin}} = \\frac{1}{2} m_e v^2} \\implies \\mathbf{v = \\sqrt{\\frac{2 e U}{m_e}}}",
+          "block": true,
+          "speech": "W el gleich e mal U gleich E kin gleich ein halb m e v Quadrat daraus folgt v gleich Wurzel aus 2 e U durch m e"
+        },
+        {
+          "type": "text",
+          "text": "   * Definition der Energieeinheit: "
+        },
+        {
+          "type": "math",
+          "tex": "1\\text{ Elektronenvolt [eV]} = 1{,}602 \\cdot 10^{-19}\\,\\text{J}",
+          "speech": "1 Elektronenvolt gleich 1,602 mal 10 hoch minus 19 Joule"
+        },
+        {
+          "type": "text",
+          "text": ", 2. Ablenkung im elektrischen Querfeld (Braun'sche Röhre / Oszilloskop):   * In "
+        },
+        {
+          "type": "math",
+          "tex": "x",
+          "speech": "x"
+        },
+        {
+          "type": "text",
+          "text": "-Richtung: gleichförmige Bewegung "
+        },
+        {
+          "type": "math",
+          "tex": "x(t) = v_x \\cdot t",
+          "speech": "x von t gleich v x mal t"
+        },
+        {
+          "type": "text",
+          "text": ".   * In "
+        },
+        {
+          "type": "math",
+          "tex": "y",
+          "speech": "y"
+        },
+        {
+          "type": "text",
+          "text": "-Richtung: gleichmäßig beschleunigte Bewegung "
+        },
+        {
+          "type": "math",
+          "tex": "y(t) = \\frac{1}{2} a_y t^2 = \\frac{e U_y}{2 m d} t^2 \\implies",
+          "speech": "y von t gleich ein halb a y t Quadrat gleich e U y durch 2 m d mal t Quadrat, daraus folgt"
+        },
+        {
+          "type": "text",
+          "text": " Wurfparabel, 3. Der Millikan-Öltröpfchenversuch:   * Schwebemethode: Elektrische Kraft kompensiert die effektive Gewichtskraft des Tröpfchens:     "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{F_{\\text{el}} = F_G - F_A \\implies q \\cdot \\frac{U_{\\text{schweb}}}{d} = (m_{\\text{Tr}} - m_{\\text{Luft}}) \\cdot g = \\frac{4}{3}\\pi r^3 (\\rho_{\\text{Öl}} - \\rho_{\\text{Luft}}) \\cdot g}",
+          "block": true,
+          "speech": "F el gleich F G minus F A, daraus folgt q mal U schweb durch d gleich, m Tropfen minus m Luft, mal g gleich vier Drittel Pi r hoch 3, mal Rho Öl minus Rho Luft, mal g"
+        },
+        {
+          "type": "text",
+          "text": "   * Sinkmethode (Stokes'sche Reibung "
+        },
+        {
+          "type": "math",
+          "tex": "F_R = 6\\pi \\eta r v_{\\text{sink}}",
+          "speech": "F R gleich 6 Pi Eta r v sink"
+        },
+        {
+          "type": "text",
+          "text": "): Zur Bestimmung des Tröpfchenradius "
+        },
+        {
+          "type": "math",
+          "tex": "r",
+          "speech": "r"
+        },
+        {
+          "type": "text",
+          "text": ".   * Ergebnis: Alle gemessenen Ladungen "
+        },
+        {
+          "type": "math",
+          "tex": "q",
+          "speech": "q"
+        },
+        {
+          "type": "text",
+          "text": " sind ganzzahlige Vielfache "
+        },
+        {
+          "type": "math",
+          "tex": "q = n \\cdot e",
+          "speech": "q gleich n mal e"
+        },
+        {
+          "type": "text",
+          "text": " mit der Elementarladung "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{e \\approx 1{,}602 \\cdot 10^{-19}\\,\\text{C}}",
+          "speech": "e ungefähr 1,602 mal 10 hoch minus 19 Coulomb"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Elektrisches Feld, Kondensator und Millikan-Versuch stehen im LehrplanPLUS des neunjährigen Gymnasiums nicht in Jahrgangsstufe 11, sondern in der Qualifikationsphase. Dieses Paket hat dazu keine Lektion; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-physik-induktion-schwingkreis-wechselstrom",
+      "de_by_id": "01K8GB60000000000000000J01",
+      "de_by_question": "Was besagt die Lenzsche Regel über die Richtung eines durch elektromagnetische Induktion hervorgerufenen Stroms?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Induktionsgesetz, Schwingkreis und Wechselstrom gehören im LehrplanPLUS nicht zu Physik 11 (Induktionsphänomene qualitativ in Ph10, Vertiefung in der Qualifikationsphase). Kein Nachfolger in diesem Paket; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-physik-induktion-schwingkreis-wechselstrom",
+      "de_by_id": "01K8GB60000000000000000J02",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Analysiere das Induktionsgesetz, die Lenzsche Regel und die Selbstinduktion: 1. Magnetischer Fluss "
+        },
+        {
+          "type": "math",
+          "tex": "\\Phi",
+          "speech": "großes Phi"
+        },
+        {
+          "type": "text",
+          "text": ":   * "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{\\Phi = \\vec{B} \\circ \\vec{A} = B \\cdot A \\cdot \\cos(\\alpha)}",
+          "speech": "großes Phi gleich Vektor B mal Vektor A gleich B mal A mal Kosinus von Alpha"
+        },
+        {
+          "type": "text",
+          "text": " (Einheit: "
+        },
+        {
+          "type": "math",
+          "tex": "1\\text{ Weber [Wb]} = 1\\,\\text{V}\\cdot\\text{s} = 1\\,\\text{T}\\cdot\\text{m}^2",
+          "speech": "1 Weber gleich 1 Voltsekunde gleich 1 Tesla mal Quadratmeter"
+        },
+        {
+          "type": "text",
+          "text": "), 2. Das Faradaysche Induktionsgesetz (Michael Faraday, 1831):   * In einer Leiterschleife (oder Spule mit "
+        },
+        {
+          "type": "math",
+          "tex": "N",
+          "speech": "N"
+        },
+        {
+          "type": "text",
+          "text": " Windungen) wird eine Spannung induziert, sobald sich der von ihr umfasste magnetische Fluss zeitlich ändert:     "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{U_{\\text{ind}} = -N \\cdot \\frac{\\mathrm{d}\\Phi}{\\mathrm{d}t} = -N \\cdot \\left( \\frac{\\mathrm{d}B}{\\mathrm{d}t} \\cdot A + B \\cdot \\frac{\\mathrm{d}A}{\\mathrm{d}t} \\right)}",
+          "block": true,
+          "speech": "U ind gleich minus N mal d großes Phi nach d t gleich minus N mal, d B nach d t mal A plus B mal d A nach d t"
+        },
+        {
+          "type": "text",
+          "text": "   * Das negative Vorzeichen drückt die Lenzsche Regel aus, 3. Selbstinduktion & Induktivität "
+        },
+        {
+          "type": "math",
+          "tex": "L",
+          "speech": "L"
+        },
+        {
+          "type": "text",
+          "text": ":   * Stromänderung in einer Spule erzeugt Änderung des eigenen Magnetfelds "
+        },
+        {
+          "type": "math",
+          "tex": "\\implies",
+          "speech": "daraus folgt"
+        },
+        {
+          "type": "text",
+          "text": " Selbstinduktionsspannung:     "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{U_{\\text{ind}} = -L \\cdot \\frac{\\mathrm{d}I}{\\mathrm{d}t}}",
+          "block": true,
+          "speech": "U ind gleich minus L mal d I nach d t"
+        },
+        {
+          "type": "text",
+          "text": "   * Induktivität einer langen Spule: "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{L = \\mu_0 \\cdot \\mu_r \\cdot \\frac{N^2 \\cdot A}{l}}",
+          "speech": "L gleich My null mal My r mal N Quadrat mal A durch l"
+        },
+        {
+          "type": "text",
+          "text": " (Einheit: "
+        },
+        {
+          "type": "math",
+          "tex": "1\\text{ Henry [H]} = 1\\,\\frac{\\text{V}\\cdot\\text{s}}{\\text{A}}",
+          "speech": "1 Henry gleich 1 Voltsekunde pro Ampere"
+        },
+        {
+          "type": "text",
+          "text": ").   * Magnetische Feldenergie: "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{W_{\\text{mag}} = \\frac{1}{2} L I^2}",
+          "speech": "W mag gleich ein halb L I Quadrat"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Induktionsgesetz, Schwingkreis und Wechselstrom gehören im LehrplanPLUS nicht zu Physik 11 (Induktionsphänomene qualitativ in Ph10, Vertiefung in der Qualifikationsphase). Kein Nachfolger in diesem Paket; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-physik-induktion-schwingkreis-wechselstrom",
+      "de_by_id": "01K8GB60000000000000000J03",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Wie lautet die Thomsonsche Schwingungsgleichung für die Periodendauer "
+        },
+        {
+          "type": "math",
+          "tex": "T",
+          "speech": "T"
+        },
+        {
+          "type": "text",
+          "text": " eines ungedämpften elektromagnetischen LC-Schwingkreises?"
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Induktionsgesetz, Schwingkreis und Wechselstrom gehören im LehrplanPLUS nicht zu Physik 11 (Induktionsphänomene qualitativ in Ph10, Vertiefung in der Qualifikationsphase). Kein Nachfolger in diesem Paket; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-physik-induktion-schwingkreis-wechselstrom",
+      "de_by_id": "01K8GB60000000000000000J04",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Analysiere den elektromagnetischen LC-Schwingkreis und den Übergang zum Hertzschen Dipol: 1. Der elektromagnetische Schwingungszyklus (LC-Kreis):   * "
+        },
+        {
+          "type": "math",
+          "tex": "t = 0",
+          "speech": "t gleich 0"
+        },
+        {
+          "type": "text",
+          "text": ": Kondensator voll geladen ("
+        },
+        {
+          "type": "math",
+          "tex": "Q = Q_0, U = U_0",
+          "speech": "Q gleich Q null, U gleich U null"
+        },
+        {
+          "type": "text",
+          "text": "), Strom "
+        },
+        {
+          "type": "math",
+          "tex": "I = 0",
+          "speech": "I gleich 0"
+        },
+        {
+          "type": "text",
+          "text": ". Gesamte Energie im elektrischen Feld ("
+        },
+        {
+          "type": "math",
+          "tex": "W_{\\text{ges}} = \\frac{1}{2} C U_0^2",
+          "speech": "W ges gleich ein halb C U null Quadrat"
+        },
+        {
+          "type": "text",
+          "text": ").   * "
+        },
+        {
+          "type": "math",
+          "tex": "t = \\frac{T}{4}",
+          "speech": "t gleich T durch 4"
+        },
+        {
+          "type": "text",
+          "text": ": Kondensator entladen ("
+        },
+        {
+          "type": "math",
+          "tex": "Q = 0, U = 0",
+          "speech": "Q gleich 0, U gleich 0"
+        },
+        {
+          "type": "text",
+          "text": "), Strom maximal ("
+        },
+        {
+          "type": "math",
+          "tex": "I = I_0",
+          "speech": "I gleich I null"
+        },
+        {
+          "type": "text",
+          "text": "). Gesamte Energie im magnetischen Feld der Spule ("
+        },
+        {
+          "type": "math",
+          "tex": "W_{\\text{ges}} = \\frac{1}{2} L I_0^2",
+          "speech": "W ges gleich ein halb L I null Quadrat"
+        },
+        {
+          "type": "text",
+          "text": ").   * "
+        },
+        {
+          "type": "math",
+          "tex": "t = \\frac{T}{2}",
+          "speech": "t gleich T durch 2"
+        },
+        {
+          "type": "text",
+          "text": ": Kondensator entgegengesetzt voll geladen ("
+        },
+        {
+          "type": "math",
+          "tex": "Q = -Q_0",
+          "speech": "Q gleich minus Q null"
+        },
+        {
+          "type": "text",
+          "text": "), "
+        },
+        {
+          "type": "math",
+          "tex": "I = 0",
+          "speech": "I gleich 0"
+        },
+        {
+          "type": "text",
+          "text": ".   * "
+        },
+        {
+          "type": "math",
+          "tex": "t = \\frac{3T}{4}",
+          "speech": "t gleich 3 T durch 4"
+        },
+        {
+          "type": "text",
+          "text": ": Kondensator entladen, maximaler Strom in Gegenrichtung ("
+        },
+        {
+          "type": "math",
+          "tex": "-I_0",
+          "speech": "minus I null"
+        },
+        {
+          "type": "text",
+          "text": ").   * "
+        },
+        {
+          "type": "math",
+          "tex": "t = T",
+          "speech": "t gleich T"
+        },
+        {
+          "type": "text",
+          "text": ": Ein voller Zyklus vollendet, 2. Differentialgleichung & Thomsonsche Formel (Lord Kelvin / William Thomson):   * Maschenregel: "
+        },
+        {
+          "type": "math",
+          "tex": "U_C + U_L = 0 \\implies \\frac{Q}{C} + L \\cdot \\ddot{Q} = 0 \\implies \\ddot{Q}(t) + \\frac{1}{LC} Q(t) = 0",
+          "speech": "U C plus U L gleich 0, daraus folgt Q durch C plus L mal Q zwei Punkt gleich 0, daraus folgt Q zwei Punkt von t plus 1 durch L C mal Q von t gleich 0"
+        },
+        {
+          "type": "text",
+          "text": ".   * Eigenkreisfrequenz: "
+        },
+        {
+          "type": "math",
+          "tex": "\\omega_0 = \\frac{1}{\\sqrt{LC}} \\implies \\mathbf{T = 2\\pi \\sqrt{L C}} \\implies \\mathbf{f_0 = \\frac{1}{2\\pi \\sqrt{L C}}}",
+          "speech": "Omega null gleich 1 durch Wurzel aus L C daraus folgt T gleich 2 Pi Wurzel aus L C daraus folgt f null gleich 1 durch 2 Pi Wurzel aus L C"
+        },
+        {
+          "type": "text",
+          "text": ", 3. Der Hertzsche Dipol (Heinrich Hertz, 1886):   * Zieht man die Platten des Kondensators auseinander und verkürzt die Spule auf einen geraden Stab, öffnet sich der geschlossene Schwingkreis zu einer linearen Antenne (Dipol) "
+        },
+        {
+          "type": "math",
+          "tex": "\\implies",
+          "speech": "daraus folgt"
+        },
+        {
+          "type": "text",
+          "text": " Abstrahlung freier elektromagnetischer Transversalwellen (Radiowellen, Licht)."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Induktionsgesetz, Schwingkreis und Wechselstrom gehören im LehrplanPLUS nicht zu Physik 11 (Induktionsphänomene qualitativ in Ph10, Vertiefung in der Qualifikationsphase). Kein Nachfolger in diesem Paket; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-physik-magnetfeld-lorentz-massenspektrometer-zyklotron",
+      "de_by_id": "01K8GB50000000000000000J01",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Warum verrichtet die reine magnetische Lorentzkraft "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{F}_L = q \\cdot (\\vec{v} \\times \\vec{B})",
+          "speech": "Vektor F L gleich q mal, Vektor v kreuz Vektor B"
+        },
+        {
+          "type": "text",
+          "text": " an einem geladenen Teilchen physikalisch niemals Arbeit ("
+        },
+        {
+          "type": "math",
+          "tex": "W = 0",
+          "speech": "W gleich 0"
+        },
+        {
+          "type": "text",
+          "text": ") und ändert daher nur die Flugrichtung, aber nie den Betrag der Geschwindigkeit?"
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Lorentzkraft auf freie Ladungen, Massenspektrometer und Zyklotron gehören im LehrplanPLUS in die Qualifikationsphase, nicht zu Physik 11. Kein Nachfolger in diesem Paket; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-physik-magnetfeld-lorentz-massenspektrometer-zyklotron",
+      "de_by_id": "01K8GB50000000000000000J02",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Analysiere das magnetische Feld, die Lorentzkraft und die Kreisbahn im Magnetfeld: 1. Das magnetische Feld & Flussdichte "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{B}",
+          "speech": "Vektor B"
+        },
+        {
+          "type": "text",
+          "text": ":   * Homogenes Magnetfeld einer langen Zylinderspule: "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{B = \\mu_0 \\cdot \\mu_r \\cdot \\frac{N}{l} \\cdot I}",
+          "speech": "B gleich My null mal My r mal N durch l mal I"
+        },
+        {
+          "type": "text",
+          "text": " (mit "
+        },
+        {
+          "type": "math",
+          "tex": "\\mu_0 = 4\\pi \\cdot 10^{-7}\\,\\frac{\\text{V}\\cdot\\text{s}}{\\text{A}\\cdot\\text{m}}",
+          "speech": "My null gleich 4 Pi mal 10 hoch minus 7 Voltsekunden pro Amperemeter"
+        },
+        {
+          "type": "text",
+          "text": ", Einheit: "
+        },
+        {
+          "type": "math",
+          "tex": "1\\text{ Tesla [T]} = 1\\,\\frac{\\text{V}\\cdot\\text{s}}{\\text{m}^2} = 1\\,\\frac{\\text{N}}{\\text{A}\\cdot\\text{m}}",
+          "speech": "1 Tesla gleich 1 Voltsekunde pro Quadratmeter gleich 1 Newton pro Ampere mal Meter"
+        },
+        {
+          "type": "text",
+          "text": "), 2. Die Lorentzkraft (Hendrik Antoon Lorentz):   "
+        },
+        {
+          "type": "math",
+          "tex": "\\mathbf{\\vec{F}_L = q \\cdot (\\vec{v} \\times \\vec{B})} \\implies |F_L| = |q| \\cdot v \\cdot B \\cdot \\sin(\\alpha)",
+          "block": true,
+          "speech": "Vektor F L gleich q mal, Vektor v kreuz Vektor B, daraus folgt Betrag von F L gleich Betrag von q mal v mal B mal Sinus von Alpha"
+        },
+        {
+          "type": "text",
+          "text": "   * Drei-Finger-Regel (Daumen: Ursache "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{v}",
+          "speech": "Vektor v"
+        },
+        {
+          "type": "text",
+          "text": ", Zeigefinger: Vermittlung "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{B}",
+          "speech": "Vektor B"
+        },
+        {
+          "type": "text",
+          "text": ", Mittelfinger: Wirkung "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{F}_L",
+          "speech": "Vektor F L"
+        },
+        {
+          "type": "text",
+          "text": "; Rechte Hand für positive Ladungen / Linke Hand für negative Elektronen), 3. Kreisbewegung im homogenen Magnetfeld:   * Bei "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{v} \\perp \\vec{B}",
+          "speech": "Vektor v senkrecht zu Vektor B"
+        },
+        {
+          "type": "text",
+          "text": " dient die Lorentzkraft als reine Zentripetalkraft:     "
+        },
+        {
+          "type": "math",
+          "tex": "F_L = F_Z \\implies q \\cdot v \\cdot B = m \\cdot \\frac{v^2}{r} \\implies \\mathbf{r = \\frac{m \\cdot v}{q \\cdot B}}",
+          "block": true,
+          "speech": "F L gleich F Z, daraus folgt q mal v mal B gleich m mal v Quadrat durch r, daraus folgt r gleich m mal v, geteilt durch q mal B"
+        },
+        {
+          "type": "text",
+          "text": " 4. Ein Elektron ("
+        },
+        {
+          "type": "math",
+          "tex": "m_e = 9{,}109 \\cdot 10^{-31}\\,\\text{kg}, e = 1{,}602 \\cdot 10^{-19}\\,\\text{C}",
+          "speech": "m e gleich 9,109 mal 10 hoch minus 31 Kilogramm, e gleich 1,602 mal 10 hoch minus 19 Coulomb"
+        },
+        {
+          "type": "text",
+          "text": ") tritt mit "
+        },
+        {
+          "type": "math",
+          "tex": "v = 2 \\cdot 10^7\\,\\frac{\\text{m}}{\\text{s}}",
+          "speech": "v gleich 2 mal 10 hoch 7 Meter pro Sekunde"
+        },
+        {
+          "type": "text",
+          "text": " senkrecht in ein homogenes Magnetfeld der Stärke "
+        },
+        {
+          "type": "math",
+          "tex": "B = 5\\,\\text{mT}",
+          "speech": "B gleich 5 Millitesla"
+        },
+        {
+          "type": "text",
+          "text": " ein. Berechne den Bahnradius "
+        },
+        {
+          "type": "math",
+          "tex": "r",
+          "speech": "r"
+        },
+        {
+          "type": "text",
+          "text": " der Kreisbahn im Fadenstrahlrohr."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Lorentzkraft auf freie Ladungen, Massenspektrometer und Zyklotron gehören im LehrplanPLUS in die Qualifikationsphase, nicht zu Physik 11. Kein Nachfolger in diesem Paket; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-physik-magnetfeld-lorentz-massenspektrometer-zyklotron",
+      "de_by_id": "01K8GB50000000000000000J03",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Welche Bedingung muss die Geschwindigkeit "
+        },
+        {
+          "type": "math",
+          "tex": "v",
+          "speech": "v"
+        },
+        {
+          "type": "text",
+          "text": " eines geladenen Teilchens erfüllen, um einen Wien-Geschwindigkeitsfilter mit gekreuztem "
+        },
+        {
+          "type": "math",
+          "tex": "E",
+          "speech": "E"
+        },
+        {
+          "type": "text",
+          "text": "- und "
+        },
+        {
+          "type": "math",
+          "tex": "B",
+          "speech": "B"
+        },
+        {
+          "type": "text",
+          "text": "-Feld geradlinig und unabgelenkt zu passieren?"
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Lorentzkraft auf freie Ladungen, Massenspektrometer und Zyklotron gehören im LehrplanPLUS in die Qualifikationsphase, nicht zu Physik 11. Kein Nachfolger in diesem Paket; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-physik-magnetfeld-lorentz-massenspektrometer-zyklotron",
+      "de_by_id": "01K8GB50000000000000000J04",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Analysiere moderne physikalische Messinstrumente und Teilchenbeschleuniger: 1. Der Wien-Geschwindigkeitsfilter (Wilhelm Wien, 1897):   * Gekreuztes elektrisches und magnetisches Feld ("
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{E} \\perp \\vec{B} \\perp \\vec{v}",
+          "speech": "Vektor E senkrecht zu Vektor B senkrecht zu Vektor v"
+        },
+        {
+          "type": "text",
+          "text": ").   * Kräftegleichgewicht für geradeaus fliegende Teilchen: "
+        },
+        {
+          "type": "math",
+          "tex": "F_{\\text{el}} = F_L \\implies q \\cdot E = q \\cdot v \\cdot B \\implies \\mathbf{v_0 = \\frac{E}{B}}",
+          "speech": "F el gleich F L, daraus folgt q mal E gleich q mal v mal B, daraus folgt v null gleich E durch B"
+        },
+        {
+          "type": "text",
+          "text": " (völlig unabhängig von Ladung und Masse des Teilchens!), 2. Das Bainbridge-Massenspektrometer (Isotopenanalyse):   * Ionenquelle "
+        },
+        {
+          "type": "math",
+          "tex": "\\rightarrow",
+          "speech": "führt zu"
+        },
+        {
+          "type": "text",
+          "text": " Wien-Filter ("
+        },
+        {
+          "type": "math",
+          "tex": "v_0 = E/B_1",
+          "speech": "v null gleich E durch B eins"
+        },
+        {
+          "type": "text",
+          "text": ") "
+        },
+        {
+          "type": "math",
+          "tex": "\\rightarrow",
+          "speech": "führt zu"
+        },
+        {
+          "type": "text",
+          "text": " Eintritt in zweites Magnetfeld ("
+        },
+        {
+          "type": "math",
+          "tex": "B_2",
+          "speech": "B zwei"
+        },
+        {
+          "type": "text",
+          "text": ").   * Halbkreisbahn auf Fotoplatte/Detektor mit Radius "
+        },
+        {
+          "type": "math",
+          "tex": "r = \\frac{m \\cdot v_0}{q \\cdot B_2} \\implies \\mathbf{m = \\frac{q \\cdot B_1 \\cdot B_2 \\cdot r}{E}}",
+          "speech": "r gleich m mal v null durch q mal B zwei, daraus folgt m gleich q mal B eins mal B zwei mal r durch E"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "math",
+          "tex": "\\implies",
+          "speech": "daraus folgt"
+        },
+        {
+          "type": "text",
+          "text": " Trennung von Isotopen gleicher Ladung nach ihrer Masse "
+        },
+        {
+          "type": "math",
+          "tex": "m",
+          "speech": "m"
+        },
+        {
+          "type": "text",
+          "text": ", 3. Das Zyklotron (Ernest Lawrence, 1930):   * Zwei D-förmige Hohl-Elektroden ('Duanten') im Magnetfeld. Wechselhochspannung im Spalt.   * Zyklotronfrequenz (Isochronie): Umlaufzeit "
+        },
+        {
+          "type": "math",
+          "tex": "T = \\frac{2\\pi r}{v} = \\frac{2\\pi m}{q \\cdot B}",
+          "speech": "T gleich 2 Pi r durch v gleich 2 Pi m durch q mal B"
+        },
+        {
+          "type": "text",
+          "text": " ist unabhängig vom Bahnradius "
+        },
+        {
+          "type": "math",
+          "tex": "r",
+          "speech": "r"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "math",
+          "tex": "\\implies f_Z = \\frac{q \\cdot B}{2\\pi m}",
+          "speech": "daraus folgt f Z gleich q mal B durch 2 Pi m"
+        },
+        {
+          "type": "text",
+          "text": " ist konstant (bis relativistische Massenzunahme einsetzt), 4. Der Hall-Effekt (Edwin Hall, 1879):   * Stromdurchflossener Halbleiter im Magnetfeld "
+        },
+        {
+          "type": "math",
+          "tex": "\\implies",
+          "speech": "daraus folgt"
+        },
+        {
+          "type": "text",
+          "text": " Lorentzkraft lenkt Ladungsträger quer ab "
+        },
+        {
+          "type": "math",
+          "tex": "\\implies",
+          "speech": "daraus folgt"
+        },
+        {
+          "type": "text",
+          "text": " messbare Hall-Spannung "
+        },
+        {
+          "type": "math",
+          "tex": "U_H = R_H \\cdot \\frac{I \\cdot B}{d}",
+          "speech": "U H gleich R H mal I mal B durch d"
+        },
+        {
+          "type": "text",
+          "text": " (Sensor zur berührungslosen Magnetfeldmessung)."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Lorentzkraft auf freie Ladungen, Massenspektrometer und Zyklotron gehören im LehrplanPLUS in die Qualifikationsphase, nicht zu Physik 11. Kein Nachfolger in diesem Paket; die Karte bleibt aktiv."
+    }
+  ]
+}

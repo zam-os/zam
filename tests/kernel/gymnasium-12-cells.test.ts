@@ -16,10 +16,9 @@ const plainText = (value: string | CardText | undefined): string =>
   typeof value === "string" ? value : value ? plainProjection(value) : "";
 
 describe("Gymnasium Klasse 12 Bayern LehrplanPLUS Cells", () => {
+  // Mathematik 12 moved to zam-academy:mathematik-gymnasium-12; its three
+  // school cells are archived in tests/fixtures/legacy/.
   const gym12Cells = [
-    "de-by:gymnasium-12-mathematik-e-funktion-kettenregel-produktregel",
-    "de-by:gymnasium-12-mathematik-lineare-gleichungssysteme-gauss-matrizen",
-    "de-by:gymnasium-12-mathematik-hypothesentests-signifikanzniveau-fehler-1-und-2-art",
     "de-by:gymnasium-12-physik-quantenphysik-lichtelektrischer-effekt-de-broglie-heisenberg",
     "de-by:gymnasium-12-physik-atomphysik-bohrsches-atommodell-linien-spektren-kernspaltung",
     "de-by:gymnasium-12-chemie-chemisches-gleichgewicht-massenwirkungsgesetz-le-chatelier",
@@ -38,11 +37,11 @@ describe("Gymnasium Klasse 12 Bayern LehrplanPLUS Cells", () => {
     "de-by:gymnasium-12-wirtschaft-recht-mikrooekonomie-marktformen-monopol-marktversagen",
   ];
 
-  it("all 19 Gymnasium 12 cells are bundled and retrievable", () => {
+  it("all remaining 16 Gymnasium 12 school cells are bundled and retrievable", () => {
     const allCells = listBundledCells();
     const cellIds = allCells.map((c) => c.tile_id);
 
-    expect(gym12Cells).toHaveLength(19);
+    expect(gym12Cells).toHaveLength(16);
 
     for (const expectedId of gym12Cells) {
       expect(cellIds).toContain(expectedId);
@@ -95,8 +94,8 @@ describe("Gymnasium Klasse 12 Bayern LehrplanPLUS Cells", () => {
       }
     }
 
-    expect(atomIds.size).toBe(38);
-    expect(itemIds.size).toBe(76);
+    expect(atomIds.size).toBe(32);
+    expect(itemIds.size).toBe(64);
   });
 
   describe("enrolment", () => {
@@ -115,7 +114,7 @@ describe("Gymnasium Klasse 12 Bayern LehrplanPLUS Cells", () => {
 
     it("installs and enrols a Klasse 12 STEM cell that previously had 25-character ids", async () => {
       const cellId =
-        "de-by:gymnasium-12-mathematik-e-funktion-kettenregel-produktregel";
+        "de-by:gymnasium-12-physik-quantenphysik-lichtelektrischer-effekt-de-broglie-heisenberg";
       const res = await enrolBundledCell(
         db,
         "01K4TESTUSERGYM1200000001",

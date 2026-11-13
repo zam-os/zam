@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "status": "proposal-only",
+  "approved": null,
+  "source": "No Mittelschule German legacy cells were found for Grades 5\u20137 in zam-os/zam. Realschule, Gymnasium and primary-school cards remain separate. No replacements, retirements or review-history transfers are proposed.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "e6a235f75fe87b9d57af38bd61011027b891492c",
+  "sources": [],
+  "rows": []
+}

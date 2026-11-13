@@ -15,6 +15,7 @@ import {
   getBundledCellTile,
   getTokenById,
   installKvtTile,
+  type KvtTile,
   kvtItemPlainTexts,
   listLibraryTopics,
   needsGenericCurriculumImport,
@@ -29,7 +30,15 @@ const LEGACY_ID =
   "de-by:realschule-8-deutsch-begruendete-stellungnahme-eroerterung";
 const APP = "https://academy.zam-os.org/deutsch-realschule-8/";
 const tile = getBundledCellTile(CELL_ID)!;
-const legacy = getBundledCellTile(LEGACY_ID)!;
+const legacy = JSON.parse(
+  readFileSync(
+    new URL(
+      "../fixtures/legacy/de-by-realschule-8-deutsch-begruendete-stellungnahme-eroerterung-kvt.json",
+      import.meta.url,
+    ),
+    "utf8",
+  ),
+) as KvtTile;
 const items = tile.atoms.flatMap((atom) => atom.practice_items);
 const itemIds = new Set(items.map((item) => item.id));
 const oldIds = legacy.atoms.flatMap((atom) =>
@@ -76,7 +85,9 @@ describe("ZAM Academy Deutsch 8 Realschule cell", () => {
     ).toContain(CELL_ID);
   });
 
-  it("offers the common grade-8 curriculum to every Realschule group", () => {
+  it("offers the common grade-8 curriculum to every Realschule group while the retired school cell stays unbundled", () => {
+    expect(getBundledCell(LEGACY_ID)).toBeUndefined();
+    expect(getBundledCellTile(LEGACY_ID)).toBeUndefined();
     for (const track of [
       undefined,
       "I",
@@ -88,7 +99,7 @@ describe("ZAM Academy Deutsch 8 Realschule cell", () => {
     ]) {
       expect(
         findBundledCellsForScope(scope(8, track)).map((cell) => cell.id),
-      ).toEqual(expect.arrayContaining([CELL_ID, LEGACY_ID]));
+      ).toEqual([CELL_ID]);
       expect(needsGenericCurriculumImport(scope(8, track))).toBe(false);
     }
     for (const position of [
@@ -152,7 +163,7 @@ describe("ZAM Academy Deutsch 8 Realschule cell", () => {
     );
     const bytes = readFileSync(
       new URL(
-        "../fixtures/curriculum/de-by-realschule-8-deutsch-begruendete-stellungnahme-eroerterung-kvt.json",
+        "../fixtures/legacy/de-by-realschule-8-deutsch-begruendete-stellungnahme-eroerterung-kvt.json",
         import.meta.url,
       ),
     );

@@ -21,6 +21,7 @@ import {
   getBundledCellTile,
   getTokenById,
   installKvtTile,
+  type KvtTile,
   kvtItemPlainTexts,
   listLibraryTopics,
   needsGenericCurriculumImport,
@@ -36,7 +37,15 @@ const LEGACY_ID =
   "de-by:realschule-8-geschichte-aufklaerung-revolution-kaiserreich";
 const APP = "https://academy.zam-os.org/geschichte-realschule-8/";
 const tile = getBundledCellTile(CELL_ID)!;
-const legacy = getBundledCellTile(LEGACY_ID)!;
+const legacy = JSON.parse(
+  readFileSync(
+    new URL(
+      "../fixtures/legacy/de-by-realschule-8-geschichte-aufklaerung-revolution-kaiserreich-kvt.json",
+      import.meta.url,
+    ),
+    "utf8",
+  ),
+) as KvtTile;
 const items = tile.atoms.flatMap((atom) => atom.practice_items);
 const itemIds = new Set(items.map((item) => item.id));
 const oldIds = legacy.atoms.flatMap((atom) =>
@@ -83,7 +92,9 @@ describe("ZAM Academy Geschichte 8 Realschule cell", () => {
     ).toContain(CELL_ID);
   });
 
-  it("offers the common grade-8 curriculum to every Realschule group", () => {
+  it("offers the common grade-8 curriculum to every Realschule group while the retired school cell stays unbundled", () => {
+    expect(getBundledCell(LEGACY_ID)).toBeUndefined();
+    expect(getBundledCellTile(LEGACY_ID)).toBeUndefined();
     for (const track of [
       undefined,
       "I",
@@ -99,7 +110,7 @@ describe("ZAM Academy Geschichte 8 Realschule cell", () => {
     ]) {
       expect(
         findBundledCellsForScope(scope(8, track)).map((cell) => cell.id),
-      ).toEqual(expect.arrayContaining([CELL_ID, LEGACY_ID]));
+      ).toEqual([CELL_ID]);
       expect(needsGenericCurriculumImport(scope(8, track))).toBe(false);
     }
     for (const position of [
@@ -159,7 +170,7 @@ describe("ZAM Academy Geschichte 8 Realschule cell", () => {
     );
     const bytes = readFileSync(
       new URL(
-        "../fixtures/curriculum/de-by-realschule-8-geschichte-aufklaerung-revolution-kaiserreich-kvt.json",
+        "../fixtures/legacy/de-by-realschule-8-geschichte-aufklaerung-revolution-kaiserreich-kvt.json",
         import.meta.url,
       ),
     );
@@ -417,7 +428,8 @@ describe("ZAM Academy Geschichte 8 Realschule cell", () => {
       expect(await snapshot()).toEqual(after);
     });
     it("preserves reviewed Academy and legacy cards together during reinstall and reconciliation", async () => {
-      await enrolBundledCell(db, userId, LEGACY_ID);
+      await installKvtTile(db, legacy);
+      for (const id of oldIds) await ensureCard(db, id, userId);
       await enrolBundledCell(db, userId, CELL_ID);
       for (const tokenId of [oldIds[0], items[0].id]) {
         const card = await ensureCard(db, tokenId, userId);

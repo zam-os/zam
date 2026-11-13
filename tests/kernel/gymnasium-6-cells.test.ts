@@ -15,9 +15,9 @@ import {
   openDatabase,
 } from "../../src/kernel/index.js";
 
+// Mathematik 6 moved to zam-academy:mathematik-gymnasium-6; its two school
+// cells are archived in tests/fixtures/legacy/.
 const GYM6_CELL_IDS = [
-  "de-by:gymnasium-6-mathematik-brueche-dezimalbrueche-prozent",
-  "de-by:gymnasium-6-mathematik-flaechen-koerper-prisma",
   "de-by:gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug",
   "de-by:gymnasium-6-biologie-fische-amphibien-reptilien-evolution",
   "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte",
@@ -26,6 +26,7 @@ const GYM6_CELL_IDS = [
   "de-by:gymnasium-6-geographie-europa-raeume-wirtschaft-eu",
   "de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives",
 ];
+const ACADEMY_GYM6_IDS = ["zam-academy:mathematik-gymnasium-6"];
 
 describe("Gymnasium Bayern 6 Curriculum Cells (Unterstufe / Orientierungsstufe)", () => {
   let tempDir: string;
@@ -43,7 +44,7 @@ describe("Gymnasium Bayern 6 Curriculum Cells (Unterstufe / Orientierungsstufe)"
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all bundled cells including all 9 Gymnasium 6 cells", () => {
+  it("lists all remaining Gymnasium 6 school cells and their Academy successor", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(86);
 
@@ -57,6 +58,12 @@ describe("Gymnasium Bayern 6 Curriculum Cells (Unterstufe / Orientierungsstufe)"
       expect(cell?.atomCount).toBe(4);
       expect(cell?.inScopeAtomIds.length).toBe(4);
     }
+    for (const cellId of ACADEMY_GYM6_IDS) {
+      expect(
+        cells.find((c) => c.id === cellId),
+        `Academy cell ${cellId} should be present`,
+      ).toBeDefined();
+    }
   });
 
   it("finds all Grade 6 Gymnasium cells using findBundledCellsForScope", () => {
@@ -65,8 +72,10 @@ describe("Gymnasium Bayern 6 Curriculum Cells (Unterstufe / Orientierungsstufe)"
       schoolType: "gymnasium",
       grade: 6,
     });
-    expect(gym6Cells.length).toBeGreaterThanOrEqual(9);
-    for (const cellId of GYM6_CELL_IDS) {
+    expect(gym6Cells.length).toBeGreaterThanOrEqual(
+      GYM6_CELL_IDS.length + ACADEMY_GYM6_IDS.length,
+    );
+    for (const cellId of [...GYM6_CELL_IDS, ...ACADEMY_GYM6_IDS]) {
       expect(
         gym6Cells.some((c) => c.id === cellId),
         `findBundledCellsForScope should include ${cellId}`,
@@ -74,10 +83,10 @@ describe("Gymnasium Bayern 6 Curriculum Cells (Unterstufe / Orientierungsstufe)"
     }
   });
 
-  it("installs and enrols cleanly into Mathematik 6 Brüche und Prozentrechnung", async () => {
+  it("installs and enrols cleanly into Englisch 6 Past Tenses and Present Perfect", async () => {
     const userId = "01K4TESTUSERGYM60000000001";
     const cellId =
-      "de-by:gymnasium-6-mathematik-brueche-dezimalbrueche-prozent";
+      "de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives";
 
     expect(await isBundledCellInstalled(db, cellId)).toBe(false);
 
@@ -132,7 +141,7 @@ describe("Gymnasium Bayern 6 Curriculum Cells (Unterstufe / Orientierungsstufe)"
     expect(itAtoms.length).toBeGreaterThanOrEqual(4);
   });
 
-  it("supports simultaneous enrolment in ALL 9 Grade 6 Gymnasium cells without conflict", async () => {
+  it("supports simultaneous enrolment in all remaining Grade 6 Gymnasium school cells without conflict", async () => {
     const userId = "01K4TESTUSERALLGYM60000001";
 
     let totalCardsCreated = 0;
@@ -143,12 +152,12 @@ describe("Gymnasium Bayern 6 Curriculum Cells (Unterstufe / Orientierungsstufe)"
       totalCardsCreated += res.cardsCreated;
     }
 
-    // 9 cells * 4 atoms * 2 items = 72 cards
-    expect(totalCardsCreated).toBe(72);
+    // 7 cells * 4 atoms * 2 items = 56 cards
+    expect(totalCardsCreated).toBe(56);
 
     const statuses = await getBundledCellsWithStatus(db, userId);
     const gym6Statuses = statuses.filter((s) => GYM6_CELL_IDS.includes(s.id));
-    expect(gym6Statuses.length).toBe(9);
+    expect(gym6Statuses.length).toBe(GYM6_CELL_IDS.length);
     for (const status of gym6Statuses) {
       expect(status.installed).toBe(true);
       expect(status.enrolled).toBe(true);

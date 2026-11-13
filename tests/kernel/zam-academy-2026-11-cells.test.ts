@@ -13,23 +13,24 @@ import {
   getBundledCellTile,
   getTokenById,
   installKvtTile,
+  type KvtTile,
   listLibraryTopics,
   needsGenericCurriculumImport,
   openDatabase,
 } from "../../src/kernel/index.js";
 
-// The nine Academy cells bundled with the November 2026 release: the first
-// Gymnasium cells (Mathematik 5, 6, 11, 12, 13) and the first grade 5/6
-// Realschule cells, plus Geographie 8. Each one binds its own grade, school
-// type and subject, so discovery offers it beside the school cells it
-// complements. Those school cells stay bundled and active.
+// The nine Academy cells first bundled in November 2026: the first Gymnasium
+// cells (Mathematik 5, 6, 11, 12, 13) and the first grade 5/6 Realschule
+// cells, plus Geographie 8. Their superseded de-by school cells have now
+// retired from tests/fixtures/curriculum/ to tests/fixtures/legacy/.
 //
 // Thomas approved the mappings in tests/fixtures/legacy/ (byte-exact copies of
 // each package's replaces-de-by.json): Mathematik 5/11/12/13 Gymnasium before
 // their first publication, Englisch 5, Mathematik 5/6 Realschule and
 // Mathematik 6 Gymnasium on 2026-11-08, published as 2026.11.2. Every A row
-// moves exactly one history to its successor; C rows stay active; nothing is
-// retired. Geographie 8 maps all four old cards as C and stays a proposal.
+// moves exactly one history to its successor; C rows stay active in existing
+// libraries; nothing is retired. Geographie 8 maps all four old cards as C and
+// keeps existing learner histories intact on enrolment.
 interface Mapping {
   status: string;
   approved: string | null;
@@ -185,9 +186,18 @@ describe.each(CELLS)("ZAM Academy $app cell", (cell) => {
         items.find((item) => item.slug === row.academy_slug)!.id,
       ]),
   );
-  const oldCellIds = [...new Set(mapping.rows.map((row) => row.de_by_cell))];
-  const oldItems = oldCellIds.flatMap((cellId) =>
-    getBundledCellTile(cellId)!.atoms.flatMap((atom) => atom.practice_items),
+  const oldTiles = mapping.sources.map(
+    (source) =>
+      JSON.parse(
+        readFileSync(
+          join(fixtures, "legacy", source.file.split("/").pop() as string),
+          "utf8",
+        ),
+      ) as KvtTile,
+  );
+  const oldCellIds = oldTiles.map((old) => old.tile_id);
+  const oldItems = oldTiles.flatMap((old) =>
+    old.atoms.flatMap((atom) => atom.practice_items),
   );
   const scope = (changes: Record<string, unknown> = {}) => ({
     provider: "lehrplanplus-bayern",
@@ -209,10 +219,13 @@ describe.each(CELLS)("ZAM Academy $app cell", (cell) => {
     expect(tile.retired_items ?? []).toEqual([]);
   });
 
-  it("is offered at its grade beside the school cells it complements, and nowhere else", () => {
+  it("is offered at its grade while the retired school cells stay unbundled, and nowhere else", () => {
     const offered = findBundledCellsForScope(scope()).map((c) => c.id);
     expect(offered).toContain(id);
-    for (const oldCell of oldCellIds) expect(offered).toContain(oldCell);
+    for (const oldCell of oldCellIds) {
+      expect(getBundledCell(oldCell)).toBeUndefined();
+      expect(offered).not.toContain(oldCell);
+    }
     expect(needsGenericCurriculumImport(scope())).toBe(false);
     for (const other of [
       scope({ grade: cell.grade - 1 }),
@@ -241,11 +254,11 @@ describe.each(CELLS)("ZAM Academy $app cell", (cell) => {
   it("declares exactly the approved transfers of its pinned mapping", () => {
     expect(mapping.approved).toBe(cell.approved);
     expect(mapping.status).toBe(cell.approved ? "approved" : "proposal-only");
-    // The mapping was made against the school cells ZAM still bundles.
+    // The mapping was made against the archived school cells in fixtures/legacy/.
     for (const source of mapping.sources)
       expect(
         sha256(
-          join(fixtures, "curriculum", source.file.split("/").pop() as string),
+          join(fixtures, "legacy", source.file.split("/").pop() as string),
         ),
         source.file,
       ).toBe(source.sha256);
@@ -317,8 +330,7 @@ describe.each(CELLS)("ZAM Academy $app cell", (cell) => {
     });
 
     it("moves each approved history and keeps every other old card as it was", async () => {
-      for (const oldCell of oldCellIds)
-        await installKvtTile(db, getBundledCellTile(oldCell)!);
+      for (const oldTile of oldTiles) await installKvtTile(db, oldTile);
       for (const [index, item] of oldItems.entries()) {
         const card = await ensureCard(db, item.id, userId);
         await evaluateRating(db, {

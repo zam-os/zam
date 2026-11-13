@@ -1,0 +1,3248 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:mathematik-mittelschule-6",
+  "version": "2026.11.1",
+  "title": "Mathematik 6 Mittelschule (ZAM Academy)",
+  "description": "Sieben Lernbereiche des LehrplanPLUS Bayern: 35 Lektionen mit Labor und zwei Aufgabenstufen.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-11-11T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/6/mathematik",
+      "checked": "2026-11-11",
+      "label": "M6, LB 1–7"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M74QY1A3NG9GY1RWD2GE8HTJ",
+      "atom_uri": "urn:zam:atom:01M74QY1A3NG9GY1RWD2GE8HTJ",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-2-grundvorstellungen",
+      "title": "Was ein Bruch bedeuten kann",
+      "domain": "mathematik/mittelschule-6/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-2-grundvorstellungen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Bruchzahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchzahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A4G992RPS7PF5H0QE5",
+          "slug": "ms6-rz-2-grundvorstellungen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-2-grundvorstellungen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeuten Zähler und Nenner bei einem Bruchteil eines Ganzen?",
+          "concept": "Der Nenner gibt die Zahl gleich großer Teile an, der Zähler die Zahl der ausgewählten Teile.",
+          "choice_distractors": [
+            {
+              "text": "Der Zähler gibt die Zahl aller Teile an, der Nenner nur die Zahl der ausgewählten Teile.",
+              "reason": "Zähler und Nenner wurden vertauscht."
+            },
+            {
+              "text": "Der Nenner gibt die Größe eines Stücks in Zentimetern an, der Zähler nur seinen Namen.",
+              "reason": "Ein Nenner ist keine Längenangabe."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Nenner gibt die Zahl gleich großer Teile an, der Zähler die Zahl der ausgewählten Teile.",
+              "Der Zähler gibt die Zahl aller Teile an, der Nenner nur die Zahl der ausgewählten Teile."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A4Y4EVY5R1CS1KM5YS",
+          "slug": "ms6-rz-2-grundvorstellungen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-2-grundvorstellungen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "In einer Klasse mit 16 Kindern kommen 2 mit dem Fahrrad, alle anderen zu Fuß. Welcher Anteil kommt zu Fuß? Gib den gekürzten Bruch an.",
+          "concept": "Lösung: Zähler : 7; Nenner : 8.",
+          "sample_solution": "Zu Fuß kommen 16 − 2 = 14 Kinder, also 14/16 der Klasse. Kürze Zähler und Nenner durch 2: Der Anteil ist 7/8.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Zähler : 1; Nenner : 8.",
+              "reason": "2/16 = 1/8 ist der Anteil der Radfahrenden. Gefragt ist der Anteil der übrigen 14 Kinder."
+            },
+            {
+              "text": "Lösung: Zähler : 7; Nenner : 16.",
+              "reason": "Beim Kürzen teilst du Zähler und Nenner durch dieselbe Zahl. Hier wurde nur der Zähler halbiert."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A38M1MGMJVZT9TVHVW",
+      "atom_uri": "urn:zam:atom:01M74QY1A38M1MGMJVZT9TVHVW",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-3-bruchformen",
+      "title": "Echte, unechte und gemischte Brüche",
+      "domain": "mathematik/mittelschule-6/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-3-bruchformen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3NG9GY1RWD2GE8HTJ",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Bruchzahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchzahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A4Z35BHB8BZ3WXY9M9",
+          "slug": "ms6-rz-3-bruchformen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-3-bruchformen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie machst du aus einem gemischten Bruch einen unechten Bruch?",
+          "concept": "Multipliziere die ganzen Anteile mit dem Nenner, addiere den Zähler und behalte den Nenner.",
+          "choice_distractors": [
+            {
+              "text": "Addiere die ganze Zahl zum Nenner und lasse den Zähler bei der Umwandlung unverändert.",
+              "reason": "Die ganzen Anteile müssen in Nennerteile umgerechnet werden."
+            },
+            {
+              "text": "Schreibe die ganze Zahl direkt als Ziffer vor den Zähler; der Wert bleibt dadurch gleich.",
+              "reason": "Das Aneinanderhängen von Ziffern ist keine Bruchumwandlung."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Multipliziere die ganzen Anteile mit dem Nenner, addiere den Zähler und behalte den Nenner.",
+              "Addiere die ganze Zahl zum Nenner und lasse den Zähler bei der Umwandlung unverändert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A419TGDXAPF233VJDW",
+          "slug": "ms6-rz-3-bruchformen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-3-bruchformen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "concept": "Lösung: Anzahl : 23 Gläser.",
+          "sample_solution": "5 Ganze sind 5 · 4 = 20 Viertelliter. Dazu kommen 3 Viertelliter: insgesamt 23/4 l. In jedes Glas passt ein Viertelliter, also reicht jeder der 23 Viertelliter für ein Glas. Du kannst 23 Gläser füllen.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Anzahl : 8 Gläser.",
+              "reason": "Rechne die Ganzen erst in Teile um: Ganze mal Nenner."
+            },
+            {
+              "text": "Lösung: Anzahl : 20 Gläser.",
+              "reason": "Die 5 ganzen Liter füllen 20 Viertellitergläser. Die zusätzlichen 3 Viertelliter füllen noch 3 Gläser."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "In einem Krug sind 5 "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{3}{4}",
+              "speech": "drei Viertel"
+            },
+            {
+              "type": "text",
+              "text": " Liter Saft. Du füllst ihn in Gläser mit je "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{1}{4}",
+              "speech": "ein Viertel"
+            },
+            {
+              "type": "text",
+              "text": " Liter. Wie viele Gläser kannst du füllen?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3Y1DDWDF2QFM50G77",
+      "atom_uri": "urn:zam:atom:01M74QY1A3Y1DDWDF2QFM50G77",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-4-bruchteile",
+      "title": "Bruchteile und das Ganze",
+      "domain": "mathematik/mittelschule-6/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-4-bruchteile",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A38M1MGMJVZT9TVHVW",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Bruchzahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchzahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A47V48CKS4Q1E46QEM",
+          "slug": "ms6-rz-4-bruchteile-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-4-bruchteile",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie findest du einen Bruchteil einer gegebenen Gesamtmenge?",
+          "concept": "Teile das Ganze durch den Nenner und multipliziere das Ergebnis mit dem Zähler.",
+          "choice_distractors": [
+            {
+              "text": "Teile das Ganze durch den Zähler und multipliziere danach mit dem Nenner.",
+              "reason": "Hier wurden Zähler und Nenner vertauscht."
+            },
+            {
+              "text": "Addiere Zähler und Nenner und ziehe diese Summe von der Gesamtmenge ab.",
+              "reason": "Eine Summe von Bruchzahlenziffern beschreibt keinen Anteil."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Teile das Ganze durch den Nenner und multipliziere das Ergebnis mit dem Zähler.",
+              "Teile das Ganze durch den Zähler und multipliziere danach mit dem Nenner."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A4PM7Z3Q4Q91F61B6A",
+          "slug": "ms6-rz-4-bruchteile-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-4-bruchteile",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "concept": "Lösung: Rest : 18 €.",
+          "sample_solution": "Teile das Ganze durch den Nenner und multipliziere das Ergebnis mit dem Zähler. 180 : 10 · 9 = 162. Übrig: 180 − 162 = 18. 18 €.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Rest : 162 €.",
+              "reason": "Das hat sie ausgegeben. Gesucht ist, was übrig bleibt."
+            },
+            {
+              "text": "Lösung: Rest : 9 €.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Lena hat 180 € gespart. Sie gibt "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{9}{10}",
+              "speech": "neun Zehntel"
+            },
+            {
+              "type": "text",
+              "text": " davon für ein Spiel aus. Wie viel Geld bleibt ihr?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A30FTTRFNQCFZ3J85X",
+      "atom_uri": "urn:zam:atom:01M74QY1A30FTTRFNQCFZ3J85X",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-5-erweitern-kuerzen",
+      "title": "Erweitern und Kürzen",
+      "domain": "mathematik/mittelschule-6/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-5-erweitern-kuerzen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3Y1DDWDF2QFM50G77",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Bruchzahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchzahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A43R004FE6R374G7F4",
+          "slug": "ms6-rz-5-erweitern-kuerzen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-5-erweitern-kuerzen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ändert Erweitern den Wert eines Bruchs nicht?",
+          "concept": "Zähler und Nenner werden mit derselben Zahl multipliziert; der Anteil bleibt gleich.",
+          "choice_distractors": [
+            {
+              "text": "Nur der Nenner wird vergrößert, deshalb wird der Wert des Bruchs automatisch größer.",
+              "reason": "Nur den Nenner zu ändern verändert den Wert."
+            },
+            {
+              "text": "Zähler und Nenner werden um dieselbe Zahl erhöht, deshalb bleibt jeder Bruch gleich.",
+              "reason": "Gleiche Summanden in Zähler und Nenner erhalten den Wert nicht allgemein."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zähler und Nenner werden mit derselben Zahl multipliziert; der Anteil bleibt gleich.",
+              "Nur der Nenner wird vergrößert, deshalb wird der Wert des Bruchs automatisch größer."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A4TCZYHK2XFJRMQ63G",
+          "slug": "ms6-rz-5-erweitern-kuerzen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-5-erweitern-kuerzen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "concept": "Lösung: Gewinnlose : 5.",
+          "sample_solution": "Zähler und Nenner werden mit derselben Zahl multipliziert; der Anteil bleibt gleich. 2 · 5 = 10, also auch 1 · 5 = 5. 5 Gewinnlose.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Gewinnlose : 10.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Gewinnlose : 2,5.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "In einem Lostopf sind "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{1}{2}",
+              "speech": "ein Halb"
+            },
+            {
+              "type": "text",
+              "text": " aller Lose Gewinne. Es sind 10 Lose. Schreibe den Anteil als Bruch mit dem Nenner 10. Wie viele Gewinnlose sind es also?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A30TPP90RMY3N18EXT",
+      "atom_uri": "urn:zam:atom:01M74QY1A30TPP90RMY3N18EXT",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-6-stellenwerte",
+      "title": "Dezimalzahlen und Stellenwerte",
+      "domain": "mathematik/mittelschule-6/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-6-stellenwerte",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A30FTTRFNQCFZ3J85X",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Bruchzahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchzahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A4D0XMY108SMRD8J5T",
+          "slug": "ms6-rz-6-stellenwerte-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-6-stellenwerte",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie vergleichst du zwei positive Dezimalzahlen sicher?",
+          "concept": "Vergleiche Stellenwerte von links nach rechts; fehlende Nachkommastellen kannst du mit Nullen ergänzen.",
+          "choice_distractors": [
+            {
+              "text": "Die Zahl mit mehr Nachkommastellen ist immer größer, unabhängig von den Ziffern.",
+              "reason": "Mehr Stellen bedeuten nicht automatisch einen größeren Wert."
+            },
+            {
+              "text": "Lies alle Ziffern hinter dem Komma als ganze Zahl und vergleiche nur diese Zahlen.",
+              "reason": "Nachkommastellen haben unterschiedliche Stellenwerte."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vergleiche Stellenwerte von links nach rechts; fehlende Nachkommastellen kannst du mit Nullen ergänzen.",
+              "Die Zahl mit mehr Nachkommastellen ist immer größer, unabhängig von den Ziffern."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A4SF7Q3280PHYTDV51",
+          "slug": "ms6-rz-6-stellenwerte-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-6-stellenwerte",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Schreibe als Dezimalzahl: 3 Einer, 7 Tausendstel und 3 Zehntel. Achte auf die fehlende Stelle.",
+          "concept": "Lösung: Zahl : 3,307.",
+          "sample_solution": "Vergleiche Stellenwerte von links nach rechts; fehlende Nachkommastellen kannst du mit Nullen ergänzen. E = 3, z = 3, h = 0, t = 7. 3,307.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Zahl : 6,614.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Zahl : 1,653.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A35SMCZXZ4MJA1V2R4",
+      "atom_uri": "urn:zam:atom:01M74QY1A35SMCZXZ4MJA1V2R4",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-9-darstellungen",
+      "title": "Bruch, Dezimalzahl, Prozent und Bild",
+      "domain": "mathematik/mittelschule-6/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-9-darstellungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A30TPP90RMY3N18EXT",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Bruchzahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchzahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A4ERFMYPDPC6NQCS5H",
+          "slug": "ms6-rz-9-darstellungen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-9-darstellungen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet ein Prozentsatz als Bruchdarstellung?",
+          "concept": "Er gibt einen Anteil in Hundertsteln an; derselbe Anteil kann als Bruch oder Dezimalzahl stehen.",
+          "choice_distractors": [
+            {
+              "text": "Er gibt eine feste Anzahl von Personen an, unabhängig von der betrachteten Gesamtgruppe.",
+              "reason": "Ein Prozentsatz beschreibt einen relativen Anteil."
+            },
+            {
+              "text": "Er gibt immer den Nenner eines vollständig gekürzten Bruchs an, niemals den Anteil.",
+              "reason": "Die Zahl beschreibt Hundertstel und ist nicht allgemein ein Nenner."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er gibt einen Anteil in Hundertsteln an; derselbe Anteil kann als Bruch oder Dezimalzahl stehen.",
+              "Er gibt eine feste Anzahl von Personen an, unabhängig von der betrachteten Gesamtgruppe."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A44NF63517SPE3GYE1",
+          "slug": "ms6-rz-9-darstellungen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-9-darstellungen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Von 125 befragten Kindern lesen 120 gern Comics. Gib den Anteil als gekürzten Bruch, als Dezimalzahl und in Prozent an.",
+          "concept": "Lösung: Zähler : 24; Nenner : 25; Dezimalzahl : 0,96; Prozent : 96 %.",
+          "sample_solution": "120/125 = 24/25 = 96/100. Der gekürzte Bruch ist 24/25, die Dezimalzahl 0,96 und der Prozentsatz 96 %.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Zähler : 120; Nenner : 25; Dezimalzahl : 0,96; Prozent : 96 %.",
+              "reason": "Hier wurde nur der Nenner durch 5 geteilt. Beim Kürzen musst du auch den Zähler durch 5 teilen."
+            },
+            {
+              "text": "Lösung: Zähler : 1; Nenner : 25; Dezimalzahl : 0,04; Prozent : 4 %.",
+              "reason": "5/125 = 1/25 beschreibt die Kinder, die nicht gern Comics lesen. Gefragt ist der Anteil der 120 anderen Kinder."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A30CFGAYWM9FPD1V16",
+      "atom_uri": "urn:zam:atom:01M74QY1A30CFGAYWM9FPD1V16",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-12-brueche-addieren",
+      "title": "Brüche addieren und subtrahieren",
+      "domain": "mathematik/mittelschule-6/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-12-brueche-addieren",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A35SMCZXZ4MJA1V2R4",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Bruchzahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchzahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A4AF2Q7YYHXCP9HY7C",
+          "slug": "ms6-rz-12-brueche-addieren-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-12-brueche-addieren",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum brauchst du beim Addieren zweier Brüche einen gemeinsamen Nenner?",
+          "concept": "Du kannst die Zähler erst zusammenzählen, wenn sie gleich große Teile beschreiben.",
+          "choice_distractors": [
+            {
+              "text": "Weil beim Addieren immer die Nenner und danach die Zähler miteinander multipliziert werden.",
+              "reason": "Die Nenner werden beim Addieren nicht als Summanden behandelt."
+            },
+            {
+              "text": "Weil zwei Brüche mit verschiedenen Nennern grundsätzlich keinen gemeinsamen Wert ergeben.",
+              "reason": "Verschiedene Nenner verhindern die Addition nicht."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Du kannst die Zähler erst zusammenzählen, wenn sie gleich große Teile beschreiben.",
+              "Weil beim Addieren immer die Nenner und danach die Zähler miteinander multipliziert werden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A5ZEAPM59XTBMN7M0X",
+          "slug": "ms6-rz-12-brueche-addieren-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-12-brueche-addieren",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "concept": "Lösung: Zähler : 103; Nenner : 24.",
+          "sample_solution": "Wandle die gemischten Zahlen um: 3 1/6 = 19/6 und 1 1/8 = 9/8. Erweitere auf den Hauptnenner 24: 76/24 + 27/24 = 103/24. Zähler und Nenner haben keinen gemeinsamen Teiler außer 1. Zusammen sind es 103/24 Tassen, als gekürzter unechter Bruch.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Zähler : 29; Nenner : 7.",
+              "reason": "Du hast 1/6 + 1/8 zu 2/14 zusammengefasst und die Ganzen addiert. Addiere die Nenner nicht; erweitere auf gleich große Teile."
+            },
+            {
+              "text": "Lösung: Zähler : 7; Nenner : 24.",
+              "reason": "1/6 + 1/8 = 7/24 erfasst nur die Bruchteile. Die 3 + 1 ganzen Tassen fehlen."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Für ein Rezept brauchst du 3 "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{1}{6}",
+              "speech": "ein Sechstel"
+            },
+            {
+              "type": "text",
+              "text": " Tassen Mehl und 1 "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{1}{8}",
+              "speech": "ein Achtel"
+            },
+            {
+              "type": "text",
+              "text": " Tassen Zucker. Wie viele Tassen sind das zusammen? Gib einen gekürzten unechten Bruch an."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A32RFC5Q6D53PY08KK",
+      "atom_uri": "urn:zam:atom:01M74QY1A32RFC5Q6D53PY08KK",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-13-brueche-multiplizieren",
+      "title": "Brüche multiplizieren",
+      "domain": "mathematik/mittelschule-6/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-13-brueche-multiplizieren",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A30CFGAYWM9FPD1V16",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Bruchzahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchzahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A5G8Z8Z49SENFNH98X",
+          "slug": "ms6-rz-13-brueche-multiplizieren-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-13-brueche-multiplizieren",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie multiplizierst du zwei positive Brüche?",
+          "choice_distractors": [
+            {
+              "text": "Multipliziere jeden Zähler nur mit dem gegenüberliegenden Nenner und vertausche die Ergebnisse.",
+              "reason": "Über-Kreuz-Rechnen beschreibt dieses Produkt nicht."
+            },
+            {
+              "text": "Addiere die Zähler und die Nenner getrennt; so erhältst du immer das Produkt.",
+              "reason": "Summen der Zähler und Nenner sind keine Multiplikation."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Multipliziere Zähler mit Zähler und Nenner mit Nenner; kürze möglichst vor dem Ausrechnen.",
+              "Multipliziere jeden Zähler nur mit dem gegenüberliegenden Nenner und vertausche die Ergebnisse."
+            ],
+            "correct_index": 0
+          },
+          "concept": "Multipliziere Zähler mit Zähler und Nenner mit Nenner; kürze möglichst vor dem Ausrechnen."
+        },
+        {
+          "id": "01M74QY1A5X9WQ5H0P0FGYJ797",
+          "slug": "ms6-rz-13-brueche-multiplizieren-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-13-brueche-multiplizieren",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "concept": "Lösung: Zähler : 1; Nenner : 24.",
+          "sample_solution": "Ein Drittel des ganzen Beets ist bepflanzt. Davon sind ein Achtel Karotten: ein Drittel mal ein Achtel ergibt ein Vierundzwanzigstel. Zähler mal Zähler ergibt 1; Nenner mal Nenner ergibt 24. Der Bruch ist vollständig gekürzt.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Zähler : 2; Nenner : 24.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Zähler : 0,5; Nenner : 24.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "math",
+              "tex": "\\frac{1}{3}",
+              "speech": "ein Drittel"
+            },
+            {
+              "type": "text",
+              "text": " eines Beets sind bepflanzt, davon sind "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{1}{8}",
+              "speech": "ein Achtel"
+            },
+            {
+              "type": "text",
+              "text": " Karotten. Welcher Anteil des ganzen Beets besteht aus Karotten?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A33DN91DZXZCY25REN",
+      "atom_uri": "urn:zam:atom:01M74QY1A33DN91DZXZCY25REN",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-16-dezimal-multiplizieren",
+      "title": "Dezimalzahlen multiplizieren und dividieren",
+      "domain": "mathematik/mittelschule-6/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-16-dezimal-multiplizieren",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A32RFC5Q6D53PY08KK",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Bruchzahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchzahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A5VWNC3DDV6G98GSNM",
+          "slug": "ms6-rz-16-dezimal-multiplizieren-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-16-dezimal-multiplizieren",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie setzt du das Komma beim Produkt zweier Dezimalzahlen?",
+          "concept": "Das Produkt erhält zusammen so viele Nachkommastellen, wie beide Faktoren ursprünglich zusammen haben.",
+          "choice_distractors": [
+            {
+              "text": "Das Produkt erhält immer nur so viele Nachkommastellen wie der erste Faktor.",
+              "reason": "Beide Faktoren tragen zur Stellenzahl bei."
+            },
+            {
+              "text": "Das Komma wird nach dem Multiplizieren grundsätzlich ganz weggelassen.",
+              "reason": "Ohne Komma würde der Stellenwert im Allgemeinen geändert."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Produkt erhält zusammen so viele Nachkommastellen, wie beide Faktoren ursprünglich zusammen haben.",
+              "Das Produkt erhält immer nur so viele Nachkommastellen wie der erste Faktor."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A5EFWJ2F6VS317M3J7",
+          "slug": "ms6-rz-16-dezimal-multiplizieren-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-16-dezimal-multiplizieren",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Stoff kostet 1,67 € pro Meter. Du kaufst 2,5 m. Wie viel kostet das? Runde auf Cent.",
+          "concept": "Lösung: Preis : 4,18 €.",
+          "sample_solution": "Das Produkt erhält zusammen so viele Nachkommastellen, wie beide Faktoren ursprünglich zusammen haben. 2,5 · 1,67 = 4,175. 4,18 €.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Preis : 8,36 €.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Preis : 2,09 €.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A37VSRGNC18Q7ZN66X",
+      "atom_uri": "urn:zam:atom:01M74QY1A37VSRGNC18Q7ZN66X",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-19-sachaufgaben",
+      "title": "Rechnen mit Größen",
+      "domain": "mathematik/mittelschule-6/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-19-sachaufgaben",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A33DN91DZXZCY25REN",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Bruchzahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchzahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A59TDQHSE4EVD2BCW2",
+          "slug": "ms6-rz-19-sachaufgaben-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-19-sachaufgaben",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum gleichst du Einheiten vor einer Rechnung mit Größen an?",
+          "concept": "Nur mit passenden Einheiten beziehen sich die Zahlen auf dieselbe Größe und lassen sich sinnvoll verknüpfen.",
+          "choice_distractors": [
+            {
+              "text": "Verschiedene Einheiten darfst du ignorieren, solange die angegebenen Zahlen alle positiv sind.",
+              "reason": "Positive Zahlen beheben keine Einheitenverwechslung."
+            },
+            {
+              "text": "Einheiten werden erst nach jeder Rechnung willkürlich gewählt, damit das Ergebnis kurz bleibt.",
+              "reason": "Die Einheit folgt aus den Größen und Rechenschritten."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur mit passenden Einheiten beziehen sich die Zahlen auf dieselbe Größe und lassen sich sinnvoll verknüpfen.",
+              "Verschiedene Einheiten darfst du ignorieren, solange die angegebenen Zahlen alle positiv sind."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A5MQAKBC8A7EPB1B99",
+          "slug": "ms6-rz-19-sachaufgaben-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-19-sachaufgaben",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Du kaufst 1,5 kg und später noch 750 g derselben Äpfel zu 3,5 € pro kg. Wie viel kostet alles? Runde jeden Einkauf auf Cent. Wie viel Geld bleibt dir von 20 €?",
+          "concept": "Lösung: Zusammen : 7,88 €; Rest : 12,12 €.",
+          "sample_solution": "Erster Einkauf: 1,5 · 3,50 € = 5,25 €. Zweiter Einkauf: 750 g = 0,75 kg; 0,75 · 3,50 € = 2,625 €, auf Cent gerundet 2,63 €. Gesamt: 5,25 € + 2,63 € = 7,88 €. Rückgeld: 20 € − 7,88 € = 12,12 €.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Zusammen : 15,76 €; Rest : 12,12 €.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Zusammen : 3,94 €; Rest : 12,12 €.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3TMGH913R96B2VAXV",
+      "atom_uri": "urn:zam:atom:01M74QY1A3TMGH913R96B2VAXV",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-15-dezimal-addieren",
+      "title": "Dezimalzahlen addieren und subtrahieren",
+      "domain": "mathematik/mittelschule-6/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-15-dezimal-addieren",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A37VSRGNC18Q7ZN66X",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Bruchzahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchzahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A54A2K2A6JVPBWVB3C",
+          "slug": "ms6-rz-15-dezimal-addieren-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-15-dezimal-addieren",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Worauf achtest du beim schriftlichen Addieren von Dezimalzahlen?",
+          "concept": "Gleiche Stellenwerte stehen untereinander: Komma unter Komma, fehlende Stellen mit Nullen ergänzen.",
+          "choice_distractors": [
+            {
+              "text": "Die letzten geschriebenen Ziffern müssen untereinanderstehen, unabhängig von der Lage des Kommas.",
+              "reason": "Entscheidend ist der Stellenwert, nicht die letzte Ziffer."
+            },
+            {
+              "text": "Du addierst die Nachkommateile wie ganze Zahlen und hängst sie ohne Übertrag an die Summe an.",
+              "reason": "Überträge und Stellenwerte gelten auch hinter dem Komma."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gleiche Stellenwerte stehen untereinander: Komma unter Komma, fehlende Stellen mit Nullen ergänzen.",
+              "Die letzten geschriebenen Ziffern müssen untereinanderstehen, unabhängig von der Lage des Kommas."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A521THDZ17DRX5EXCK",
+          "slug": "ms6-rz-15-dezimal-addieren-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-15-dezimal-addieren",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Dein Einkauf: 9,2 €, 5,93 € und 2,7 €. Wie viel musst du bezahlen, und wie viel bekommst du zurück, wenn du mit 20 € zahlst?",
+          "concept": "Lösung: Summe : 17,83 €; Rückgeld : 2,17 €.",
+          "sample_solution": "9,2 + 5,93 + 2,7 = 17,83. 17,83 € und 2,17 € zurück.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Summe : 35,66 €; Rückgeld : 2,17 €.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Summe : 8,91 €; Rückgeld : 2,17 €.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A38424YNH3DCRPCWB7",
+      "atom_uri": "urn:zam:atom:01M74QY1A38424YNH3DCRPCWB7",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "br-durch-natuerliche-zahl",
+      "title": "Einen Bruch gerecht teilen",
+      "domain": "mathematik/mittelschule-6/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=br-durch-natuerliche-zahl",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3TMGH913R96B2VAXV",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Bruchzahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchzahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A5G0KKZ172SHPWXT4J",
+          "slug": "ms6-br-durch-natuerliche-zahl-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=br-durch-natuerliche-zahl",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie teilst du einen positiven Bruch durch eine natürliche Zahl größer als null?",
+          "choice_distractors": [
+            {
+              "text": "Multipliziere nur den Zähler mit der natürlichen Zahl und lasse den Nenner unverändert.",
+              "reason": "Das wäre eine Multiplikation statt einer Division."
+            },
+            {
+              "text": "Addiere die natürliche Zahl zum Nenner und lasse den Zähler unverändert stehen.",
+              "reason": "Das Aufteilen vervielfacht die Teilanzahl, es addiert sie nicht."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Multipliziere den Nenner mit der natürlichen Zahl, behalte zunächst den Zähler und kürze.",
+              "Multipliziere nur den Zähler mit der natürlichen Zahl und lasse den Nenner unverändert."
+            ],
+            "correct_index": 0
+          },
+          "concept": "Multipliziere den Nenner mit der natürlichen Zahl, behalte zunächst den Zähler und kürze."
+        },
+        {
+          "id": "01M74QY1A5JYA9Y0J2VRFVSX8B",
+          "slug": "ms6-br-durch-natuerliche-zahl-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=br-durch-natuerliche-zahl",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "concept": "Lösung: Zähler : 1; Nenner : 10.",
+          "sample_solution": "Teile 3/5 l in 6 gleich große Portionen: 3/5 : 6 = 3/30 = 1/10. Zähler und Nenner wurden durch 3 gekürzt. Jede Portion ist 1/10 l.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Zähler : 3; Nenner : 10.",
+              "reason": "Der Wert stimmt vielleicht schon, aber kürze noch vollständig."
+            },
+            {
+              "text": "Lösung: Zähler : 0,5; Nenner : 10.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "math",
+              "tex": "\\frac{3}{5}",
+              "speech": "drei Fünftel"
+            },
+            {
+              "type": "text",
+              "text": " l Saft werden gerecht auf 6 gleich große Becher verteilt. Welcher Bruchteil eines Liters kommt in einen Becher? Gib den gekürzten Bruch an."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3W2Q1ABJWKP6J9KXZ",
+      "atom_uri": "urn:zam:atom:01M74QY1A3W2Q1ABJWKP6J9KXZ",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "br-rechenregeln-runden",
+      "title": "Rechenregeln und sinnvolles Runden",
+      "domain": "mathematik/mittelschule-6/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=br-rechenregeln-runden",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A38424YNH3DCRPCWB7",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Bruchzahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchzahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A5JH4Y1EMKG26BTPWK",
+          "slug": "ms6-br-rechenregeln-runden-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=br-rechenregeln-runden",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wann rundest du bei einer mehrstufigen Rechnung möglichst?",
+          "concept": "Rechne möglichst genau weiter und runde erst das Endergebnis auf die geforderte Stelle.",
+          "choice_distractors": [
+            {
+              "text": "Runde jeden Zwischenwert sofort auf ganze Zahlen, auch wenn Hundertstel verlangt werden.",
+              "reason": "Frühes Runden kann das Endergebnis verändern."
+            },
+            {
+              "text": "Runde immer auf die Zahl der Stellen des kleinsten gegebenen Werts, ohne die Frage zu lesen.",
+              "reason": "Die geforderte Genauigkeit folgt aus Frage und Sachzusammenhang."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Rechne möglichst genau weiter und runde erst das Endergebnis auf die geforderte Stelle.",
+              "Runde jeden Zwischenwert sofort auf ganze Zahlen, auch wenn Hundertstel verlangt werden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A59RHA2NDHYBN6ZEFS",
+          "slug": "ms6-br-rechenregeln-runden-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=br-rechenregeln-runden",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Rechteck ist 3,4 m lang und 0,5 m breit. Seine Länge setzt sich aus 0,4 m und 3 m zusammen. Berechne den Flächeninhalt und runde auf Hundertstel.",
+          "concept": "Lösung: Ergebnis: 1,7 m².",
+          "sample_solution": "(0,4 + 3) · 0,5 = 1,7. Die dritte Nachkommastelle entscheidet. 1,7 m².",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Ergebnis: 3,4 m².",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Ergebnis: 0,85 m².",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3W4ANS3Q9XQ0PNXX1",
+      "atom_uri": "urn:zam:atom:01M74QY1A3W4ANS3Q9XQ0PNXX1",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-10-vergleichen",
+      "title": "Rationale Zahlen vergleichen",
+      "domain": "mathematik/mittelschule-6/stage-2",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-10-vergleichen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A30TPP90RMY3N18EXT",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Rationale Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Rationale Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A56ETK2J9T6ZVK4TN9",
+          "slug": "ms6-rz-10-vergleichen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-10-vergleichen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie vergleichst du negative rationale Zahlen auf der Zahlengeraden?",
+          "concept": "Die weiter links liegende Zahl ist kleiner; bei negativen Zahlen ist der größere Betrag weiter links.",
+          "choice_distractors": [
+            {
+              "text": "Die Zahl mit dem größeren Betrag ist bei negativen Zahlen grundsätzlich die größere.",
+              "reason": "Betrag und gerichteter Zahlenwert sind verschieden."
+            },
+            {
+              "text": "Bei negativen Brüchen entscheidet allein der Nenner über die Reihenfolge der Werte.",
+              "reason": "Zähler, Nenner und Vorzeichen gehören zusammen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die weiter links liegende Zahl ist kleiner; bei negativen Zahlen ist der größere Betrag weiter links.",
+              "Die Zahl mit dem größeren Betrag ist bei negativen Zahlen grundsätzlich die größere."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A58VHBF7GKMVXYVK8V",
+          "slug": "ms6-rz-10-vergleichen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-10-vergleichen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "concept": "Die erste Zahl ist größer als die zweite Zahl.",
+          "sample_solution": "Mit dem Hauptnenner 20 gilt: −1/4 = −5/20 und −9/10 = −18/20. An der Zahlengeraden liegt −5/20 weiter rechts als −18/20. Daher ist −1/4 > −9/10: Der Morgenwert ist größer als der Abendwert.",
+          "choice_distractors": [
+            {
+              "text": "Die erste Zahl ist kleiner als die zweite Zahl.",
+              "reason": "Die beiden Werte wurden in der Reihenfolge vertauscht; rechne beide in dieselbe Darstellung um."
+            },
+            {
+              "text": "Die beiden Zahlen sind verschiedene Darstellungen desselben Wertes.",
+              "reason": "Beim Umwandeln erhältst du verschiedene Dezimalwerte, keine gleichen Anteile."
+            }
+          ],
+          "question_segments": [
+            {
+              "type": "text",
+              "text": "Am Morgen zeigt das Thermometer "
+            },
+            {
+              "type": "math",
+              "tex": "-\\frac{1}{4}",
+              "speech": "minus ein Viertel"
+            },
+            {
+              "type": "text",
+              "text": " °C, am Abend "
+            },
+            {
+              "type": "math",
+              "tex": "-\\frac{9}{10}",
+              "speech": "minus neun Zehntel"
+            },
+            {
+              "type": "text",
+              "text": " °C. Setze das Zeichen: Morgenwert ▢ Abendwert."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3EWPQH73AWVY374X1",
+      "atom_uri": "urn:zam:atom:01M74QY1A3EWPQH73AWVY374X1",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-11-zahlengerade",
+      "title": "Rationale Zahlen auf der Zahlengeraden",
+      "domain": "mathematik/mittelschule-6/stage-2",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-11-zahlengerade",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3W4ANS3Q9XQ0PNXX1",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Rationale Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Rationale Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A5YJ14600PM5DD3NXS",
+          "slug": "ms6-rz-11-zahlengerade-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-11-zahlengerade",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie bestimmst du den Wert eines Schritts zwischen zwei ganzen Zahlen?",
+          "concept": "Teile die Einheit durch die Anzahl gleich großer Zwischenräume, nicht durch die Anzahl der Striche.",
+          "choice_distractors": [
+            {
+              "text": "Nimm grundsätzlich ein Zehntel, denn rationale Zahlen werden immer in zehn Teile zerlegt.",
+              "reason": "Auch andere Nenner können die Skalierung bestimmen."
+            },
+            {
+              "text": "Zähle beide Randstriche mit und teile die Einheit durch diese größere Anzahl.",
+              "reason": "Gezählt werden Zwischenräume, nicht alle Striche."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Teile die Einheit durch die Anzahl gleich großer Zwischenräume, nicht durch die Anzahl der Striche.",
+              "Nimm grundsätzlich ein Zehntel, denn rationale Zahlen werden immer in zehn Teile zerlegt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A55A788A1Y3CHAV05H",
+          "slug": "ms6-rz-11-zahlengerade-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-11-zahlengerade",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Auf einer Zahlengeraden sind A = 1,8 und B = 2,8 eingetragen. Welche Zahl liegt genau in der Mitte zwischen A und B?",
+          "concept": "Lösung: Mitte : 2,3.",
+          "sample_solution": "Teile die Einheit durch die Anzahl gleich großer Zwischenräume, nicht durch die Anzahl der Striche. Abstand 1, die Hälfte 0,5. 2,3.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Mitte : 4,6.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Mitte : 1,15.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3JWCSM29D4C6G402P",
+      "atom_uri": "urn:zam:atom:01M74QY1A3JWCSM29D4C6G402P",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-zustandsaenderungen",
+      "title": "Änderungen mit Kommazahlen",
+      "domain": "mathematik/mittelschule-6/stage-2",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-zustandsaenderungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3EWPQH73AWVY374X1",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Rationale Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Rationale Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A51K35E9WWZR7ZYK7S",
+          "slug": "ms6-rz-zustandsaenderungen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-zustandsaenderungen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie stellst du eine Abnahme um einen positiven Dezimalbetrag an der Zahlengeraden dar?",
+          "concept": "Vom Start aus führt der Pfeil um diesen Betrag nach links; der Start darf auch negativ sein.",
+          "choice_distractors": [
+            {
+              "text": "Vom Start aus führt der Pfeil immer nach rechts, sobald der Änderungsbetrag positiv ist.",
+              "reason": "Das Wort Abnahme legt die Richtung fest."
+            },
+            {
+              "text": "Ein negativer Start verhindert jede weitere Abnahme, weil links davon keine Zahlen liegen.",
+              "reason": "Die Zahlengerade endet nicht am negativen Start."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vom Start aus führt der Pfeil um diesen Betrag nach links; der Start darf auch negativ sein.",
+              "Vom Start aus führt der Pfeil immer nach rechts, sobald der Änderungsbetrag positiv ist."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A5YZKZGC7JHM9D9K95",
+          "slug": "ms6-rz-zustandsaenderungen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-zustandsaenderungen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Morgens sind es −1,5 °C. Bis mittags steigt die Temperatur um 2,5 Grad und fällt danach um 0,6 Grad. Wie warm ist es am Ende?",
+          "concept": "Lösung: Temperatur: 0,4 °C.",
+          "sample_solution": "Vom Start aus führt der Pfeil um diesen Betrag nach links; der Start darf auch negativ sein. −1,5 + 2,5 = 1. Dann 1 − 0,6. 0,4 °C.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Temperatur: 0,8 °C.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Temperatur: 0,2 °C.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3NB8TKG2312SPTYN7",
+      "atom_uri": "urn:zam:atom:01M74QY1A3NB8TKG2312SPTYN7",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rz-wiederholte-aenderung",
+      "title": "Mehrere gleiche Änderungen",
+      "domain": "mathematik/mittelschule-6/stage-2",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-wiederholte-aenderung",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3JWCSM29D4C6G402P",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Rationale Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Rationale Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A5SJAQ7SX0VSDVGS5K",
+          "slug": "ms6-rz-wiederholte-aenderung-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-wiederholte-aenderung",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie verstehst du eine negative Änderung mal eine natürliche Schrittzahl?",
+          "concept": "Als wiederholte gleiche Pfeile nach links; die Gesamtänderung ist die Summe dieser Schritte.",
+          "choice_distractors": [
+            {
+              "text": "Als eine Änderung nach rechts, weil eine natürliche Schrittzahl jedes Vorzeichen positiv macht.",
+              "reason": "Eine positive Anzahl kehrt die Richtung nicht um."
+            },
+            {
+              "text": "Als eine einzige Änderung derselben Länge, unabhängig von der Anzahl der Schritte.",
+              "reason": "Die Schrittzahl beeinflusst die gesamte Strecke."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als wiederholte gleiche Pfeile nach links; die Gesamtänderung ist die Summe dieser Schritte.",
+              "Als eine Änderung nach rechts, weil eine natürliche Schrittzahl jedes Vorzeichen positiv macht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A5E0B3APKRMFM86XCD",
+          "slug": "ms6-rz-wiederholte-aenderung-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rz-wiederholte-aenderung",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Es sind 4 °C. In den nächsten 5 Stunden fällt die Temperatur jede Stunde um 0,5 Grad. Berechne Gesamtänderung und Endtemperatur.",
+          "concept": "Lösung: Gesamtänderung: −2,5 Grad; Endtemperatur: 1,5 °C.",
+          "sample_solution": "5 · (−0,5) = −2,5. Dann 4 − 2,5. Gesamt −2,5 Grad, Ende 1,5 °C.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Gesamtänderung: −5 Grad; Endtemperatur: 1,5 °C.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Gesamtänderung: −1,25 Grad; Endtemperatur: 1,5 °C.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3472W9S4MA968AW71",
+      "atom_uri": "urn:zam:atom:01M74QY1A3472W9S4MA968AW71",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "ge-5-vierecke",
+      "title": "Vierecke",
+      "domain": "mathematik/mittelschule-6/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-5-vierecke",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3EWPQH73AWVY374X1",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A5CDA9S0GZC0MX60Q9",
+          "slug": "ms6-ge-5-vierecke-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-5-vierecke",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ist jedes Quadrat auch ein Rechteck?",
+          "concept": "Es erfüllt alle Rechteckeigenschaften: vier rechte Winkel und paarweise parallele Gegenseiten.",
+          "choice_distractors": [
+            {
+              "text": "Weil jede Figur mit vier gleich langen Seiten automatisch vier rechte Winkel hat.",
+              "reason": "Eine Raute kann vier gleiche Seiten ohne rechte Winkel haben."
+            },
+            {
+              "text": "Weil Rechteck und Quadrat nur verschiedene Wörter für genau dieselben Figuren sind.",
+              "reason": "Nicht jedes Rechteck hat vier gleich lange Seiten."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es erfüllt alle Rechteckeigenschaften: vier rechte Winkel und paarweise parallele Gegenseiten.",
+              "Weil jede Figur mit vier gleich langen Seiten automatisch vier rechte Winkel hat."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A5AQ3ADZDDJ3DPJ1XY",
+          "slug": "ms6-ge-5-vierecke-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-5-vierecke",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Du spannst am Geobrett ein Viereck mit dieser Eigenschaft: genau ein Paar paralleler Seiten. Welcher Name passt am genauesten?",
+          "concept": "Lösung: Name: Trapez.",
+          "sample_solution": "Das beschreibt genau die Eigenschaften dieser Figur. Die Figur heißt Trapez.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Name: Quadrat.",
+              "reason": "Diese Einordnung passt nicht zu den im Aufgabentext beschriebenen Eigenschaften. Prüfe die Fachbegriffe in der Lektion."
+            },
+            {
+              "text": "Lösung: Name: Parallelogramm.",
+              "reason": "Diese Einordnung passt nicht zu den im Aufgabentext beschriebenen Eigenschaften. Prüfe die Fachbegriffe in der Lektion."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3NCXMGQRNAAC8Q06S",
+      "atom_uri": "urn:zam:atom:01M74QY1A3NCXMGQRNAAC8Q06S",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "ge-3-kreis",
+      "title": "Der Kreis",
+      "domain": "mathematik/mittelschule-6/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-3-kreis",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3472W9S4MA968AW71",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A5SCKFYTYCX2JFH77Z",
+          "slug": "ms6-ge-3-kreis-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-3-kreis",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie hängen Radius und Durchmesser eines Kreises zusammen?",
+          "concept": "Ein Durchmesser geht durch den Mittelpunkt und besteht aus zwei Radien.",
+          "choice_distractors": [
+            {
+              "text": "Ein Radius verbindet zwei beliebige Punkte auf der Kreislinie und heißt auch Durchmesser.",
+              "reason": "Der Radius verbindet Mittelpunkt und Kreislinie."
+            },
+            {
+              "text": "Der Durchmesser ist die Länge der ganzen Kreislinie und wächst nicht mit dem Radius.",
+              "reason": "Durchmesser und Kreisumfang sind unterschiedliche Längen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Durchmesser geht durch den Mittelpunkt und besteht aus zwei Radien.",
+              "Ein Radius verbindet zwei beliebige Punkte auf der Kreislinie und heißt auch Durchmesser."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A5KJR58ZWH7710J2WR",
+          "slug": "ms6-ge-3-kreis-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-3-kreis",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein rundes Becken ist an der breitesten Stelle 62 cm breit. Wie weit ist es vom Mittelpunkt bis zum Rand?",
+          "concept": "Lösung: r : 31 cm.",
+          "sample_solution": "Ein Durchmesser geht durch den Mittelpunkt und besteht aus zwei Radien. 62 cm : 2. r = 31 cm",
+          "choice_distractors": [
+            {
+              "text": "Lösung: r : 124 cm.",
+              "reason": "Prüfe die Richtung: Der Durchmesser ist doppelt so lang wie der Radius."
+            },
+            {
+              "text": "Lösung: r : 15,5 cm.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3CDTTKQYMPA1JXZWP",
+      "atom_uri": "urn:zam:atom:01M74QY1A3CDTTKQYMPA1JXZWP",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "ge-6-koordinatensystem",
+      "title": "Das Koordinatensystem",
+      "domain": "mathematik/mittelschule-6/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-6-koordinatensystem",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3NCXMGQRNAAC8Q06S",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A6D5BDZDJD65VBGN3E",
+          "slug": "ms6-ge-6-koordinatensystem-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-6-koordinatensystem",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Vorzeichen haben Punkte rechts von der Hochachse und unterhalb der Rechtsachse?",
+          "concept": "Der Rechtswert ist positiv und der Hochwert negativ; die Reihenfolge bleibt rechts vor hoch.",
+          "choice_distractors": [
+            {
+              "text": "Beide Koordinaten sind negativ, sobald der Punkt unterhalb einer der beiden Achsen liegt.",
+              "reason": "Die Achsen bestimmen die Vorzeichen unabhängig voneinander."
+            },
+            {
+              "text": "Der Rechtswert wird negativ und der Hochwert positiv, weil die Werte ihre Plätze tauschen.",
+              "reason": "Koordinaten tauschen beim Quadrantenwechsel nicht die Plätze."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Rechtswert ist positiv und der Hochwert negativ; die Reihenfolge bleibt rechts vor hoch.",
+              "Beide Koordinaten sind negativ, sobald der Punkt unterhalb einer der beiden Achsen liegt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A62B1XGW6QMWAHM3EE",
+          "slug": "ms6-ge-6-koordinatensystem-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-6-koordinatensystem",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Schatz liegt 8 Felder südlich und 5 Felder östlich vom Ursprung. Rechts ist Osten, oben Norden. Gib die Koordinaten an.",
+          "concept": "Lösung: x : 5; y : −8.",
+          "sample_solution": "Nach rechts bestimmt x, nach unten bestimmt y. P(5|−8)",
+          "choice_distractors": [
+            {
+              "text": "Lösung: x : −8; y : −8.",
+              "reason": "Du hast x und y vertauscht. Erst rechts oder links, dann hoch oder runter."
+            },
+            {
+              "text": "Lösung: x : 2,5; y : −8.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3ED8A85XMVTS603F9",
+      "atom_uri": "urn:zam:atom:01M74QY1A3ED8A85XMVTS603F9",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "ge-9-koerper",
+      "title": "Körper erkennen",
+      "domain": "mathematik/mittelschule-6/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-9-koerper",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3CDTTKQYMPA1JXZWP",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A6C8TKM0H39Z0JWBWS",
+          "slug": "ms6-ge-9-koerper-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-9-koerper",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ist ein Würfel eine besondere Form eines Quaders?",
+          "concept": "Er besitzt die Quaderstruktur mit sechs rechteckigen Flächen; zusätzlich sind alle Kanten gleich lang.",
+          "choice_distractors": [
+            {
+              "text": "Er besitzt weniger Flächen als ein Quader und wird deshalb als verkleinerter Quader eingeordnet.",
+              "reason": "Würfel und Quader haben jeweils sechs Flächen."
+            },
+            {
+              "text": "Ein Würfel ist nur dann ein Quader, wenn seine Kanten verschiedene Längen haben.",
+              "reason": "Gleiche Kantenlängen sind erlaubt und kennzeichnen den Sonderfall."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er besitzt die Quaderstruktur mit sechs rechteckigen Flächen; zusätzlich sind alle Kanten gleich lang.",
+              "Er besitzt weniger Flächen als ein Quader und wird deshalb als verkleinerter Quader eingeordnet."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A65KM2P08A4X4H5WMN",
+          "slug": "ms6-ge-9-koerper-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-9-koerper",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Du baust 3 Modelle dieses Körpers aus Trinkhalmen und Knetkugeln: Prisma (dreiseitig). Jede Kante ist ein Halm, jede Ecke eine Kugel. Wie viele Halme und wie viele Kugeln brauchst du?",
+          "concept": "Lösung: Halme: 27; Kugeln: 18.",
+          "sample_solution": "Ein dreiseitiges Prisma hat zwei dreieckige Grundflächen mit je 3 Kanten und 3 Verbindungskanten: insgesamt 9 Kanten und 6 Ecken. Für 3 Modelle brauchst du 3 · 9 = 27 Halme und 3 · 6 = 18 Knetkugeln.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Halme: 54; Kugeln: 18.",
+              "reason": "Beim Zählen der Flächenränder wird jede Kante zweimal erfasst, weil sie zu zwei Flächen gehört. Für eine Kante brauchst du nur einen Halm."
+            },
+            {
+              "text": "Lösung: Halme: 27; Kugeln: 15.",
+              "reason": "Das Prisma hat 5 Flächen, aber 6 Ecken. Die Knetkugeln gehören an die Ecken, nicht auf die Flächen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3E0PCD79HB8SJFTHW",
+      "atom_uri": "urn:zam:atom:01M74QY1A3E0PCD79HB8SJFTHW",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "ge-10-netze",
+      "title": "Netze von Quader und Würfel",
+      "domain": "mathematik/mittelschule-6/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-10-netze",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3ED8A85XMVTS603F9",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A626SSTHWJJJ9X3GP2",
+          "slug": "ms6-ge-10-netze-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-10-netze",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran erkennst du ein Netz eines geschlossenen Quaders?",
+          "concept": "Es lässt sich zu sechs passenden Rechteckflächen falten, ohne dass Flächen fehlen oder überlappen.",
+          "choice_distractors": [
+            {
+              "text": "Jede zusammenhängende Anordnung aus sechs Rechtecken ist automatisch ein Quadernetz.",
+              "reason": "Auch bei sechs Flächen kann die Faltung scheitern."
+            },
+            {
+              "text": "Ein Netz zeigt nur die von vorne sichtbaren Flächen; Rückseite und Boden sind entbehrlich.",
+              "reason": "Ein geschlossener Quader braucht alle sechs Flächen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es lässt sich zu sechs passenden Rechteckflächen falten, ohne dass Flächen fehlen oder überlappen.",
+              "Jede zusammenhängende Anordnung aus sechs Rechtecken ist automatisch ein Quadernetz."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A6R7SH8M6S7JBFNFWC",
+          "slug": "ms6-ge-10-netze-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-10-netze",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Für ein Kantenmodell eines Quaders mit den Maßen 5 cm, 8 cm und 6 cm wird Draht gebraucht. Wie viel Draht ist das mindestens?",
+          "concept": "Lösung: Länge: 76 cm.",
+          "sample_solution": "Es lässt sich zu sechs passenden Rechteckflächen falten, ohne dass Flächen fehlen oder überlappen. 4 · (5 + 8 + 6) cm = 4 · 19 cm. Zusammen 76 cm",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Länge: 19 cm.",
+              "reason": "Jede Kantenlänge kommt viermal vor."
+            },
+            {
+              "text": "Lösung: Länge: 38 cm.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A372VRS9M942GD5STC",
+      "atom_uri": "urn:zam:atom:01M74QY1A372VRS9M942GD5STC",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "ge-11-schraegbild",
+      "title": "Schrägbilder zeichnen",
+      "domain": "mathematik/mittelschule-6/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-11-schraegbild",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3E0PCD79HB8SJFTHW",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A6G0KWWNRDXTCAS078",
+          "slug": "ms6-ge-11-schraegbild-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-11-schraegbild",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie zeichnest du ein übliches Schrägbild eines Quaders mit halber Tiefe?",
+          "concept": "Die Vorderfläche bleibt maßgerecht; Tiefenkanten werden parallel, schräg und halb so lang gezeichnet.",
+          "choice_distractors": [
+            {
+              "text": "Alle Kanten werden halbiert, auch die waagrechten und senkrechten Kanten der Vorderfläche.",
+              "reason": "Die Verkürzung betrifft bei dieser Konvention nur die Tiefe."
+            },
+            {
+              "text": "Die Tiefenkanten laufen im Schrägbild auf einen gemeinsamen Fluchtpunkt zu.",
+              "reason": "Ein Schrägbild verwendet parallele Tiefenkanten, keine Fluchtpunktperspektive."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Vorderfläche bleibt maßgerecht; Tiefenkanten werden parallel, schräg und halb so lang gezeichnet.",
+              "Alle Kanten werden halbiert, auch die waagrechten und senkrechten Kanten der Vorderfläche."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A61SFXY5YEQH2W2A0S",
+          "slug": "ms6-ge-11-schraegbild-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-11-schraegbild",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Im Schrägbild eines Quaders ist die schräge Kante 4 cm lang. Wie tief ist der Quader in Wirklichkeit? Und unter welchem Winkel ist die Kante gezeichnet?",
+          "concept": "Lösung: Tiefe: 8 cm; Winkel: 45 °.",
+          "sample_solution": "Die Vorderfläche bleibt maßgerecht; Tiefenkanten werden parallel, schräg und halb so lang gezeichnet. 4 cm · 2 = 8 cm. 8 cm tief, 45°",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Tiefe: 16 cm; Winkel: 45 °.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Tiefe: 4 cm; Winkel: 45 °.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3N4S8EFVMKXHZFSZA",
+      "atom_uri": "urn:zam:atom:01M74QY1A3N4S8EFVMKXHZFSZA",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "ge-12-kopfgeometrie",
+      "title": "Kopfgeometrie",
+      "domain": "mathematik/mittelschule-6/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-12-kopfgeometrie",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A372VRS9M942GD5STC",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A61DY84DYJFYVXKSQ0",
+          "slug": "ms6-ge-12-kopfgeometrie-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-12-kopfgeometrie",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum reichen sechs zusammenhängende Quadrate allein nicht als Beweis für ein Würfelnetz?",
+          "concept": "Beim Falten müssen alle sechs verschiedenen Seiten entstehen, ohne Überlappung und ohne Lücke.",
+          "choice_distractors": [
+            {
+              "text": "Weil ein Würfel sieben Quadrate benötigt: sechs Seiten und ein zusätzliches Quadrat für den Boden.",
+              "reason": "Der Boden ist bereits eine der sechs Seiten."
+            },
+            {
+              "text": "Weil jedes der Quadrate eine andere Größe haben muss, damit die Faltung funktioniert.",
+              "reason": "Die Würfelflächen sind gleich große Quadrate."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beim Falten müssen alle sechs verschiedenen Seiten entstehen, ohne Überlappung und ohne Lücke.",
+              "Weil ein Würfel sieben Quadrate benötigt: sechs Seiten und ein zusätzliches Quadrat für den Boden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A6AGA4FX2S5CQWBH9G",
+          "slug": "ms6-ge-12-kopfgeometrie-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=ge-12-kopfgeometrie",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Du kippst einen Spielwürfel 5-mal und er zeigt am Ende oben 5 Augen. Wie viele Augen zeigen dann alle anderen fünf Seiten zusammen? Alle Seiten zusammen haben 21 Augen.",
+          "concept": "Lösung: Augen: 16.",
+          "sample_solution": "21 − 5 = 16. Das Kippen ändert daran nichts. 16 Augen",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Augen: 32.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Augen: 8.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3KJJF7S03HQFQ5YXZ",
+      "atom_uri": "urn:zam:atom:01M74QY1A3KJJF7S03HQFQ5YXZ",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "fl-6-oberflaeche",
+      "title": "Die Oberfläche von Quader und Würfel",
+      "domain": "mathematik/mittelschule-6/stage-4",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=fl-6-oberflaeche",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3E0PCD79HB8SJFTHW",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Flächeninhalt – Oberflächeninhalt von Quadern"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Oberflächeninhalt von Quadern",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A6421CQ5JB9TDED5S2",
+          "slug": "ms6-fl-6-oberflaeche-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=fl-6-oberflaeche",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie erhältst du die Oberfläche eines Quaders aus seinem Netz?",
+          "choice_distractors": [
+            {
+              "text": "Multipliziere Länge, Breite und Höhe; dieses Produkt ist die gesamte äußere Fläche.",
+              "reason": "Das Produkt dreier Kanten ist das Volumen."
+            },
+            {
+              "text": "Addiere nur die drei verschiedenen Rechtecksflächen, ohne die Gegenflächen mitzuzählen.",
+              "reason": "Jede Gegenfläche gehört ebenfalls zur Oberfläche."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Addiere die Inhalte aller sechs Rechtecke; gleich große Gegenflächen kommen paarweise vor.",
+              "Multipliziere Länge, Breite und Höhe; dieses Produkt ist die gesamte äußere Fläche."
+            ],
+            "correct_index": 0
+          },
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Addiere die Inhalte aller sechs Rechtecke; gleich große Gegenflächen kommen paarweise vor. "
+            },
+            {
+              "type": "math",
+              "tex": "O = 2ab + 2ac + 2bc",
+              "speech": "Oberfläche gleich zweimal a mal b plus zweimal a mal c plus zweimal b mal c"
+            }
+          ]
+        },
+        {
+          "id": "01M74QY1A6QKWRCSRY2497NV4N",
+          "slug": "ms6-fl-6-oberflaeche-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=fl-6-oberflaeche",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Karton ohne Deckel hat die Grundfläche 13 dm · 10 dm und ist 4 dm hoch. Wie viel Pappe wird mindestens gebraucht?",
+          "concept": "Lösung: Pappe : 314 dm².",
+          "sample_solution": "Boden: 13 · 10 = 130 dm². Zwei lange Seiten: 2 · 13 · 4 = 104 dm². Zwei kurze Seiten: 2 · 10 · 4 = 80 dm². Ohne Deckel addierst du diese fünf Flächen: 130 + 104 + 80 = 314 dm².",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Pappe : 444 dm².",
+              "reason": "Der Deckel fehlt. Ziehe ihn von der Oberfläche ab."
+            },
+            {
+              "text": "Lösung: Pappe : 157 dm².",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A304HARQT7R3NWC0QN",
+      "atom_uri": "urn:zam:atom:01M74QY1A304HARQT7R3NWC0QN",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "of-zusammengesetzte-koerper",
+      "title": "Berührungsflächen verschwinden",
+      "domain": "mathematik/mittelschule-6/stage-4",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=of-zusammengesetzte-koerper",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3KJJF7S03HQFQ5YXZ",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Flächeninhalt – Oberflächeninhalt von Quadern"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Oberflächeninhalt von Quadern",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A64X70YMPSA35D56RM",
+          "slug": "ms6-of-zusammengesetzte-koerper-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=of-zusammengesetzte-koerper",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ziehst du beim Zusammenkleben zweier Körper die Kontaktfläche zweimal ab?",
+          "concept": "Vorher war sie an jedem Körper außen; danach liegen beide Kontaktflächen im Inneren.",
+          "choice_distractors": [
+            {
+              "text": "Weil die Kontaktfläche nach dem Kleben auf beiden Körpern zusätzlich außen sichtbar wird.",
+              "reason": "Die Kontaktflächen werden verdeckt statt sichtbar."
+            },
+            {
+              "text": "Weil beim Zusammenkleben zwei vollständige Körpervolumina aus dem Inneren verschwinden.",
+              "reason": "Das Volumen geht beim bloßen Zusammenfügen nicht verloren."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vorher war sie an jedem Körper außen; danach liegen beide Kontaktflächen im Inneren.",
+              "Weil die Kontaktfläche nach dem Kleben auf beiden Körpern zusätzlich außen sichtbar wird."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A6CM65758NC1A10M3V",
+          "slug": "ms6-of-zusammengesetzte-koerper-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=of-zusammengesetzte-koerper",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Drei Würfel mit Kantenlänge 3 cm werden in einer geraden Reihe flächig zusammengeklebt. Wie groß ist die äußere Oberfläche? Zähle die Kontakte.",
+          "concept": "Lösung: Oberfläche: 126 cm².",
+          "sample_solution": "Vorher war sie an jedem Körper außen; danach liegen beide Kontaktflächen im Inneren. 3 · 6 · 3² − 2 · 2 · 3² = 126. 126 cm².",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Oberfläche: 252 cm².",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Oberfläche: 63 cm².",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A34MKPPK68P6AN4RSR",
+      "atom_uri": "urn:zam:atom:01M74QY1A34MKPPK68P6AN4RSR",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rg-1-rauminhalt",
+      "title": "Rauminhalte vergleichen und messen",
+      "domain": "mathematik/mittelschule-6/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-1-rauminhalt",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3ED8A85XMVTS603F9",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Rauminhalt – Quader"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Quader",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A6S41JR26X2PSN2WRN",
+          "slug": "ms6-rg-1-rauminhalt-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-1-rauminhalt",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was misst das Volumen eines Körpers mit Einheitswürfeln?",
+          "concept": "Es zählt, wie viele lückenlos eingepackte Einheitswürfel den gesamten Körper ausfüllen.",
+          "choice_distractors": [
+            {
+              "text": "Es zählt nur die von außen sichtbaren Würfel, weil versteckte Würfel keinen Raum einnehmen.",
+              "reason": "Auch verdeckte Einheitswürfel tragen zum Volumen bei."
+            },
+            {
+              "text": "Es zählt die Quadrate auf dem äußeren Rand, unabhängig von der Tiefe des Körpers.",
+              "reason": "Äußere Quadrate gehören zur Oberfläche."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es zählt, wie viele lückenlos eingepackte Einheitswürfel den gesamten Körper ausfüllen.",
+              "Es zählt nur die von außen sichtbaren Würfel, weil versteckte Würfel keinen Raum einnehmen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A6K8FFKYAJQVVKNWX0",
+          "slug": "ms6-rg-1-rauminhalt-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-1-rauminhalt",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Karton ist innen 21 cm lang, 15 cm breit und 12 cm hoch. Wie viele Würfel mit der Kante 3 cm passen genau hinein? Wie groß ist das Volumen eines solchen Würfels?",
+          "concept": "Lösung: Anzahl : 140; Volumen eines Würfels : 27 cm³.",
+          "sample_solution": "Es zählt, wie viele lückenlos eingepackte Einheitswürfel den gesamten Körper ausfüllen. 7 · 5 · 4; 3 · 3 · 3. 140 Würfel, je 27 cm³.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Anzahl : 280; Volumen eines Würfels : 27 cm³.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Anzahl : 70; Volumen eines Würfels : 27 cm³.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A39WG4V5150RCFNRJP",
+      "atom_uri": "urn:zam:atom:01M74QY1A39WG4V5150RCFNRJP",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rg-2-raumeinheiten",
+      "title": "Raumeinheiten umrechnen",
+      "domain": "mathematik/mittelschule-6/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-2-raumeinheiten",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A34MKPPK68P6AN4RSR",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Rauminhalt – Quader"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Quader",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A69EZYV7AEXJJYA10R",
+          "slug": "ms6-rg-2-raumeinheiten-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-2-raumeinheiten",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ist der Faktor zwischen benachbarten Kubikeinheiten tausend?",
+          "concept": "In Länge, Breite und Höhe passen jeweils zehn kleine Einheiten, zusammen tausend kleine Würfel.",
+          "choice_distractors": [
+            {
+              "text": "Weil bei jeder Volumeneinheit nur eine Kante zehnmal so lang wird und die anderen gleich bleiben.",
+              "reason": "Alle drei Raumrichtungen ändern die Anzahl der kleinen Würfel."
+            },
+            {
+              "text": "Weil Kubikeinheiten grundsätzlich dieselbe Umrechnungszahl wie Flächeneinheiten haben.",
+              "reason": "Flächen- und Raumeinheiten haben unterschiedliche Faktoren."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In Länge, Breite und Höhe passen jeweils zehn kleine Einheiten, zusammen tausend kleine Würfel.",
+              "Weil bei jeder Volumeneinheit nur eine Kante zehnmal so lang wird und die anderen gleich bleiben."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A6M3T0MRFMT1WJ5X4Z",
+          "slug": "ms6-rg-2-raumeinheiten-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-2-raumeinheiten",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Schreibe 6 cm³ 91 mm³ in mm³ und als Dezimalzahl in cm³.",
+          "concept": "Lösung: In mm³ : 6.091; In cm³ : 6,091.",
+          "sample_solution": "In Länge, Breite und Höhe passen jeweils zehn kleine Einheiten, zusammen tausend kleine Würfel. 6 · 1000 + 91 = 6091. 6.091 mm³ = 6,091 cm³.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: In mm³ : 12.182; In cm³ : 6,091.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: In mm³ : 3.045,5; In cm³ : 6,091.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A341SFPK46JBN7YHJ6",
+      "atom_uri": "urn:zam:atom:01M74QY1A341SFPK46JBN7YHJ6",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rg-3-quader-volumen",
+      "title": "Das Volumen von Quader und Würfel",
+      "domain": "mathematik/mittelschule-6/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-3-quader-volumen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A39WG4V5150RCFNRJP",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Rauminhalt – Quader"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Quader",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A6WKK1ENHXX94NFS4S",
+          "slug": "ms6-rg-3-quader-volumen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-3-quader-volumen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum berechnest du das Quadervolumen aus Länge, Breite und Höhe?",
+          "choice_distractors": [
+            {
+              "text": "Länge plus Breite plus Höhe zählt alle Würfel im Körper, unabhängig von den Schichten.",
+              "reason": "Eine Summe von Kantenlängen ist kein Rauminhalt."
+            },
+            {
+              "text": "Das Doppelte der Grundfläche zählt immer alle Würfel, auch bei anderer Höhe.",
+              "reason": "Die Schichtzahl hängt von der Höhe ab."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Länge mal Breite zählt eine Schicht; die Höhe zählt die Zahl solcher Schichten.",
+              "Länge plus Breite plus Höhe zählt alle Würfel im Körper, unabhängig von den Schichten."
+            ],
+            "correct_index": 0
+          },
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Länge mal Breite zählt eine Schicht; die Höhe zählt die Zahl solcher Schichten. "
+            },
+            {
+              "type": "math",
+              "tex": "V = a \\cdot b \\cdot h",
+              "speech": "Volumen gleich Länge mal Breite mal Höhe"
+            }
+          ]
+        },
+        {
+          "id": "01M74QY1A62GPMYCP4FMBJ9X4H",
+          "slug": "ms6-rg-3-quader-volumen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-3-quader-volumen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Aquarium ist 120 cm lang, 4 dm breit und 3 dm hoch. Es wird zu einem Viertel mit Wasser gefüllt. Wie viele Liter fasst es, und wie viel Wasser ist darin?",
+          "concept": "Lösung: Fassungsvermögen : 144 l; Wasser : 36 l.",
+          "sample_solution": "Zuerst 120 cm = 12 dm. Das Fassungsvermögen ist 12 · 4 · 3 = 144 dm³ = 144 l. Ein Viertel davon ist 144 : 4 = 36 l Wasser.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Fassungsvermögen : 288 l; Wasser : 36 l.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Fassungsvermögen : 72 l; Wasser : 36 l.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A3BY4V708JYN2C1HCC",
+      "atom_uri": "urn:zam:atom:01M74QY1A3BY4V708JYN2C1HCC",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rg-4-zusammengesetzte-koerper",
+      "title": "Zusammengesetzte Körper",
+      "domain": "mathematik/mittelschule-6/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-4-zusammengesetzte-koerper",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A341SFPK46JBN7YHJ6",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Rauminhalt – Quader"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Quader",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A6FQYZVR7STXZR50VG",
+          "slug": "ms6-rg-4-zusammengesetzte-koerper-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-4-zusammengesetzte-koerper",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du das Volumen eines zusammengesetzten Körpers aus Quadern?",
+          "concept": "Addiere Volumina lückenloser Teilquader ohne Überlappung oder ziehe eine Aussparung vom Ganzen ab.",
+          "choice_distractors": [
+            {
+              "text": "Addiere grundsätzlich die Oberflächen aller Teilquader; das ergibt auch den Rauminhalt.",
+              "reason": "Oberfläche und Volumen messen verschiedene Größen."
+            },
+            {
+              "text": "Addiere alle umschließenden Quader vollständig, auch wenn Teile doppelt vorkommen.",
+              "reason": "Überlappende Volumina würden doppelt gezählt."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Addiere Volumina lückenloser Teilquader ohne Überlappung oder ziehe eine Aussparung vom Ganzen ab.",
+              "Addiere grundsätzlich die Oberflächen aller Teilquader; das ergibt auch den Rauminhalt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A6YVXGZ06ZMQ0CVZKP",
+          "slug": "ms6-rg-4-zusammengesetzte-koerper-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-4-zusammengesetzte-koerper",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Schwimmbecken ist 4 m breit. Auf 5 m Länge ist es 1,5 m tief, auf den nächsten 6 m ist es 2,5 m tief. Wie viele Kubikmeter Wasser fasst es? Wie viele Stunden dauert das Füllen bei 15 m³ pro Stunde? Runde auf eine Stelle.",
+          "concept": "Lösung: V : 90 m³; Zeit : 6 h.",
+          "sample_solution": "Addiere Volumina lückenloser Teilquader ohne Überlappung oder ziehe eine Aussparung vom Ganzen ab. 30 + 60 = 90; 90 : 15. 90 m³ und ≈ 6 h.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: V : 180 m³; Zeit : 6 h.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: V : 45 m³; Zeit : 6 h.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A4S4QXE722T8QY6BY8",
+      "atom_uri": "urn:zam:atom:01M74QY1A4S4QXE722T8QY6BY8",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "rg-wuerfelbauten-ansichten",
+      "title": "Würfelbauten und Ansichten",
+      "domain": "mathematik/mittelschule-6/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-wuerfelbauten-ansichten",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3BY4V708JYN2C1HCC",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Rauminhalt – Quader"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Quader",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A6BM8ETDQMDHTQ2VGM",
+          "slug": "ms6-rg-wuerfelbauten-ansichten-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-wuerfelbauten-ansichten",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie bestimmst du die Würfelzahl aus einem lückenlosen Bauplan mit Stapelhöhen?",
+          "concept": "Addiere die Höhen aller Stapel; auch die von vorne verdeckten Würfel zählen.",
+          "choice_distractors": [
+            {
+              "text": "Addiere nur die höchsten Stapel jeder Spalte der Vorderansicht.",
+              "reason": "Die Vorderansicht kann hintere Würfel verdecken."
+            },
+            {
+              "text": "Zähle nur die belegten Bodenfelder, unabhängig von der jeweiligen Stapelhöhe.",
+              "reason": "Ein Bodenfeld kann mehrere Würfel tragen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Addiere die Höhen aller Stapel; auch die von vorne verdeckten Würfel zählen.",
+              "Addiere nur die höchsten Stapel jeder Spalte der Vorderansicht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A6ASCPYPJX20NR943Q",
+          "slug": "ms6-rg-wuerfelbauten-ansichten-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=rg-wuerfelbauten-ansichten",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein lückenloser 2 × 2-Würfelbau hat vorne 2 | 3 und hinten 2 | 4 als Stapelhöhen. Zähle alle Würfel und gib die beiden Höhen seiner Vorderansicht an.",
+          "concept": "Lösung: Würfel: 11; Vorderansicht links: 2; Vorderansicht rechts: 4.",
+          "sample_solution": "2 + 3 + 2 + 4 = 11. Vorne: Maximum aus 2 und 2; aus 3 und 4. 11 Würfel, Vorderansicht 2 | 4.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Würfel: 22; Vorderansicht links: 2; Vorderansicht rechts: 4.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Würfel: 5,5; Vorderansicht links: 2; Vorderansicht rechts: 4.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A4YNPYVBKSQMWKQVSF",
+      "atom_uri": "urn:zam:atom:01M74QY1A4YNPYVBKSQMWKQVSF",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "da-1-diagramme",
+      "title": "Strichlisten, Tabellen und Diagramme",
+      "domain": "mathematik/mittelschule-6/stage-6",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=da-1-diagramme",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A3TMGH913R96B2VAXV",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-6",
+          "topic_title": "Etappe 6: Daten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Daten",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A6PVVY15FX27MZ93H2",
+          "slug": "ms6-da-1-diagramme-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=da-1-diagramme",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet die absolute Häufigkeit eines Ergebnisses in einer Umfrage?",
+          "concept": "Sie ist die Anzahl, wie oft genau dieses Ergebnis unter den gezählten Antworten vorkommt.",
+          "choice_distractors": [
+            {
+              "text": "Sie ist immer die Zahl aller Befragten, unabhängig davon, welche Antwort betrachtet wird.",
+              "reason": "Gesamtzahl und Häufigkeit einer einzelnen Antwort sind verschieden."
+            },
+            {
+              "text": "Sie gibt nur den Platz eines Ergebnisses in einer sortierten Rangfolge an.",
+              "reason": "Eine Rangposition ist keine Anzahl von Antworten."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie ist die Anzahl, wie oft genau dieses Ergebnis unter den gezählten Antworten vorkommt.",
+              "Sie ist immer die Zahl aller Befragten, unabhängig davon, welche Antwort betrachtet wird."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A6HP8VESX5QQYTDCZQ",
+          "slug": "ms6-da-1-diagramme-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=da-1-diagramme",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "In einer Umfrage stimmten 19 Kinder für den Hund und 15 für die Katze. Übertrage das in Gedanken in zwei Säulen. Wie viele Kinder wurden gefragt, und um wie viele Stimmen ist die höhere Säule größer?",
+          "concept": "Lösung: Befragte: 34; Unterschied: 4.",
+          "sample_solution": "19 + 15 = 34. 19 − 15 = 4. 34 Befragte, Unterschied 4",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Befragte: 68; Unterschied: 4.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Befragte: 17; Unterschied: 4.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A4PD4WVRVEPSC6S5W8",
+      "atom_uri": "urn:zam:atom:01M74QY1A4PD4WVRVEPSC6S5W8",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "da-3-verzerrungen",
+      "title": "Diagramme kritisch prüfen",
+      "domain": "mathematik/mittelschule-6/stage-6",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=da-3-verzerrungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A4YNPYVBKSQMWKQVSF",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-6",
+          "topic_title": "Etappe 6: Daten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Daten",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A6SX5ZPG9E8SHWQCYV",
+          "slug": "ms6-da-3-verzerrungen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=da-3-verzerrungen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum kann eine abgeschnittene Diagrammachse einen Unterschied übertreiben?",
+          "concept": "Die sichtbaren Balkenlängen beginnen nicht bei null und zeigen deshalb ein verändertes Verhältnis.",
+          "choice_distractors": [
+            {
+              "text": "Weil jede Achse mit verkürzter Beschriftung die zugrunde liegenden Daten automatisch verändert.",
+              "reason": "Die Darstellung verändert nicht die Daten selbst."
+            },
+            {
+              "text": "Weil in einem Diagramm mit Zahlen über hundert grundsätzlich keine Vergleiche möglich sind.",
+              "reason": "Auch große Werte lassen sich bei korrekter Skalierung vergleichen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die sichtbaren Balkenlängen beginnen nicht bei null und zeigen deshalb ein verändertes Verhältnis.",
+              "Weil jede Achse mit verkürzter Beschriftung die zugrunde liegenden Daten automatisch verändert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A7GMXECG95TXCXYJR8",
+          "slug": "ms6-da-3-verzerrungen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=da-3-verzerrungen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine Werbung zeigt Säulen für 120 und 60 Punkte auf einer Achse ab 0. Die Säule von A wirkt doppelt so hoch. Ist A wirklich doppelt so gut wie B?",
+          "concept": "Lösung: Wirklich doppelt so gut?: ja; Doppelter Wert von B wäre: 120.",
+          "sample_solution": "120 − 0 = 120 und 60 − 0 = 60. Das Doppelte von 60 wäre 120. Ja, die Achse beginnt bei 0, und 120 ist das Doppelte von 60.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Wirklich doppelt so gut?: ja; Doppelter Wert von B wäre: 240.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Wirklich doppelt so gut?: ja; Doppelter Wert von B wäre: 60.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A4D6JJXPAM961GQE66",
+      "atom_uri": "urn:zam:atom:01M74QY1A4D6JJXPAM961GQE66",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "da-arithmetisches-mittel",
+      "title": "Durchschnitt verstehen",
+      "domain": "mathematik/mittelschule-6/stage-6",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=da-arithmetisches-mittel",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A4PD4WVRVEPSC6S5W8",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-6",
+          "topic_title": "Etappe 6: Daten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Daten",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A7DX2YCY2GNCBVA1R4",
+          "slug": "ms6-da-arithmetisches-mittel-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=da-arithmetisches-mittel",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du das arithmetische Mittel mehrerer vergleichbarer Messwerte?",
+          "concept": "Addiere alle Werte und teile die Summe durch die Anzahl der Werte.",
+          "choice_distractors": [
+            {
+              "text": "Addiere nur den größten und den kleinsten Wert und teile unabhängig von den Daten durch zwei.",
+              "reason": "Nur zwei Randwerte bestimmen das Mittel im Allgemeinen nicht."
+            },
+            {
+              "text": "Ordne die Werte der Größe nach; der Wert in der Mitte ist immer das arithmetische Mittel.",
+              "reason": "Der mittlere geordnete Wert ist ein anderer Kennwert."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Addiere alle Werte und teile die Summe durch die Anzahl der Werte.",
+              "Addiere nur den größten und den kleinsten Wert und teile unabhängig von den Daten durch zwei."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1A75DZYHRJYVA6770M7",
+          "slug": "ms6-da-arithmetisches-mittel-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=da-arithmetisches-mittel",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "An fünf Tagen wurden am Fahrradständer 10; 15; 16; 14; 19 Fahrräder gezählt. Wie viele waren es im Durchschnitt pro Tag? Runde auf eine Nachkommastelle.",
+          "concept": "Lösung: Durchschnitt: 14,8 Fahrräder.",
+          "sample_solution": "Summe 74; Anzahl 5; 74 : 5 = 14,8. Das Mittel ist 14,8.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Durchschnitt: 29,6 Fahrräder.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Durchschnitt: 7,4 Fahrräder.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY1A4BG1VHTMT7K0Q2Q6M",
+      "atom_uri": "urn:zam:atom:01M74QY1A4BG1VHTMT7K0Q2Q6M",
+      "namespace": "zam-academy-mathematik-mittelschule-6",
+      "slug": "gl-volumen-rueckwaerts",
+      "title": "Volumen rückwärts berechnen",
+      "domain": "mathematik/mittelschule-6/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=gl-volumen-rueckwaerts",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY1A341SFPK46JBN7YHJ6",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-6",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Gleichungen und Formeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen und Formeln",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY1A7T4VKAXHS1WM3C1RH",
+          "slug": "ms6-gl-volumen-rueckwaerts-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=gl-volumen-rueckwaerts",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie findest du die unbekannte Höhe eines Quaders bei bekanntem Volumen und bekannter Grundfläche?",
+          "choice_distractors": [
+            {
+              "text": "Ziehe die Grundfläche vom Volumen ab; die Differenz ist immer die gesuchte Höhe.",
+              "reason": "Flächen und Volumina lassen sich nicht so subtrahieren."
+            },
+            {
+              "text": "Multipliziere das Volumen mit der Grundfläche; so erhältst du die fehlende Kantenlänge.",
+              "reason": "Die Umkehrung des Multiplizierens ist das Teilen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Teile das Volumen durch den Grundflächeninhalt und prüfe das Ergebnis in der Volumenformel.",
+              "Ziehe die Grundfläche vom Volumen ab; die Differenz ist immer die gesuchte Höhe."
+            ],
+            "correct_index": 0
+          },
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Teile das Volumen durch die Grundfläche. G ist deren Flächeninhalt. "
+            },
+            {
+              "type": "math",
+              "tex": "h = \\frac{V}{G}",
+              "speech": "Höhe gleich Volumen geteilt durch Grundflächeninhalt"
+            }
+          ]
+        },
+        {
+          "id": "01M74QY1A7C81D5QD45S43JRGE",
+          "slug": "ms6-gl-volumen-rueckwaerts-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-6/#lesson=gl-volumen-rueckwaerts",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein rechteckiger Behälter mit Innenmaßen 4 dm × 2 dm am Boden soll 64 l Wasser fassen. Wie hoch muss er innen mindestens sein? Gib die Höhe in cm an.",
+          "concept": "Lösung: Höhe: 80 cm.",
+          "sample_solution": "4 · 2 = 8 dm²; 64 : 8 = 8 dm. Das sind 80 cm. 80 cm. Probe: 4 · 2 · 8 = 64.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Höhe: 160 cm.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Höhe: 40 cm.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

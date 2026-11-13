@@ -15,9 +15,9 @@ import {
   openDatabase,
 } from "../../src/kernel/index.js";
 
+// Mathematik 5 moved to zam-academy:mathematik-gymnasium-5; its two school
+// cells are archived in tests/fixtures/legacy/.
 const GYM5_CELL_IDS = [
-  "de-by:gymnasium-5-mathematik-zahlen-rechengesetze-terme",
-  "de-by:gymnasium-5-mathematik-geometrie-flaechen-volumen",
   "de-by:gymnasium-5-biologie-mensch-skelett-sexualbiologie",
   "de-by:gymnasium-5-biologie-pflanzen-bluetenbau-samen",
   "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
@@ -26,6 +26,7 @@ const GYM5_CELL_IDS = [
   "de-by:gymnasium-5-deutsch-grammatik-faelle-rechtschreibung",
   "de-by:gymnasium-5-englisch-starter-grammar-tenses",
 ];
+const ACADEMY_GYM5_IDS = ["zam-academy:mathematik-gymnasium-5"];
 
 describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
   let tempDir: string;
@@ -43,7 +44,7 @@ describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all bundled cells including all 9 Gymnasium 5 cells", () => {
+  it("lists all remaining Gymnasium 5 school cells and their Academy successor", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(77);
 
@@ -57,6 +58,12 @@ describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
       expect(cell?.atomCount).toBe(4);
       expect(cell?.inScopeAtomIds.length).toBe(4);
     }
+    for (const cellId of ACADEMY_GYM5_IDS) {
+      expect(
+        cells.find((c) => c.id === cellId),
+        `Academy cell ${cellId} should be present`,
+      ).toBeDefined();
+    }
   });
 
   it("finds all Grade 5 Gymnasium cells using findBundledCellsForScope", () => {
@@ -65,8 +72,10 @@ describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
       schoolType: "gymnasium",
       grade: 5,
     });
-    expect(gym5Cells.length).toBeGreaterThanOrEqual(9);
-    for (const cellId of GYM5_CELL_IDS) {
+    expect(gym5Cells.length).toBeGreaterThanOrEqual(
+      GYM5_CELL_IDS.length + ACADEMY_GYM5_IDS.length,
+    );
+    for (const cellId of [...GYM5_CELL_IDS, ...ACADEMY_GYM5_IDS]) {
       expect(
         gym5Cells.some((c) => c.id === cellId),
         `findBundledCellsForScope should include ${cellId}`,
@@ -74,9 +83,9 @@ describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
     }
   });
 
-  it("installs and enrols cleanly into Mathematik 5 Ganze Zahlen und Kombinatorik", async () => {
+  it("installs and enrols cleanly into Englisch 5 Starter Grammar and Tenses", async () => {
     const userId = "01K4TESTUSERGYM50000000001";
-    const cellId = "de-by:gymnasium-5-mathematik-zahlen-rechengesetze-terme";
+    const cellId = "de-by:gymnasium-5-englisch-starter-grammar-tenses";
 
     expect(await isBundledCellInstalled(db, cellId)).toBe(false);
 
@@ -131,7 +140,7 @@ describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
     expect(dAtoms.length).toBeGreaterThanOrEqual(4);
   });
 
-  it("supports simultaneous enrolment in ALL 9 Grade 5 Gymnasium cells without conflict", async () => {
+  it("supports simultaneous enrolment in all remaining Grade 5 Gymnasium school cells without conflict", async () => {
     const userId = "01K4TESTUSERALLGYM50000001";
 
     let totalCardsCreated = 0;
@@ -142,12 +151,12 @@ describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
       totalCardsCreated += res.cardsCreated;
     }
 
-    // 9 cells * 4 atoms * 2 items = 72 cards
-    expect(totalCardsCreated).toBe(72);
+    // 7 cells * 4 atoms * 2 items = 56 cards
+    expect(totalCardsCreated).toBe(56);
 
     const statuses = await getBundledCellsWithStatus(db, userId);
     const gym5Statuses = statuses.filter((s) => GYM5_CELL_IDS.includes(s.id));
-    expect(gym5Statuses.length).toBe(9);
+    expect(gym5Statuses.length).toBe(GYM5_CELL_IDS.length);
     for (const status of gym5Statuses) {
       expect(status.installed).toBe(true);
       expect(status.enrolled).toBe(true);

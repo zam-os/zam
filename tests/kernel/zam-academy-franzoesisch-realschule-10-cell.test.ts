@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { ulid } from "ulid";
@@ -183,16 +183,24 @@ describe("ZAM Academy Französisch 10 Realschule cell", () => {
       }
     });
 
-    it("preserves the Französisch 9, Realschule 8 and Gymnasium 10 cards and all their reviews", async () => {
+    it("preserves the Französisch 9, retired Realschule 8 and Gymnasium 10 cards and all their reviews", async () => {
       const oldIds: string[] = [];
       const neighbours = [
-        "zam-academy:franzoesisch-realschule-9",
-        "de-by:realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive",
-        "de-by:gymnasium-10-franzoesisch-francophonie-passif-gerondif",
+        getBundledCellTile("zam-academy:franzoesisch-realschule-9")!,
+        JSON.parse(
+          readFileSync(
+            join(
+              __dirname,
+              "../fixtures/legacy/de-by-realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive-kvt.json",
+            ),
+            "utf8",
+          ),
+        ) as KvtTile,
+        getBundledCellTile(
+          "de-by:gymnasium-10-franzoesisch-francophonie-passif-gerondif",
+        )!,
       ];
-      for (const [index, id] of neighbours.entries()) {
-        const old = getBundledCellTile(id)!;
-        expect(old, id).toBeDefined();
+      for (const [index, old] of neighbours.entries()) {
         await installKvtTile(db, old);
         const tokenId = old.atoms[0].practice_items[0].id;
         oldIds.push(tokenId);

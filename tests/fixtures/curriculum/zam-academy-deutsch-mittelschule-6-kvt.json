@@ -1,0 +1,3375 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:deutsch-mittelschule-6",
+  "version": "2026.11.2",
+  "title": "Deutsch 6 Mittelschule (ZAM Academy)",
+  "description": "52 Lektionen mit Hörmaterial, Fallentscheidungen und eigenen Aufgaben auf zwei Stufen nach LehrplanPLUS Bayern. Gespräche, Handschrift, Ganzschriftlektüre, echte Recherche und Lehrkraftfeedback ergänzen die App.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/6/deutsch",
+      "label": "LehrplanPLUS Bayern · Deutsch 6 Mittelschule",
+      "checked": "2026-11-12"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M78MVGD5DRRPG8VRDMYC9862",
+      "atom_uri": "urn:zam:atom:01M78MVGD5DRRPG8VRDMYC9862",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-vortrag",
+      "title": "Einen Kurzvortrag vorbereiten",
+      "domain": "deutsch/sprechen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-vortrag",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprechen",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Rückmeldung hilft bei einem Vortrag mit richtigen Angaben, aber verdeckter Folie?",
+          "concept": "Die Angaben stimmen; stelle dich seitlich, damit wir den Plan sehen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Angaben stimmen; stelle dich seitlich, damit wir den Plan sehen.",
+              "Dein Inhalt ist deshalb vollständig falsch."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD5CM0BFTCDHZP01TRC",
+          "slug": "d6-vortrag-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-vortrag"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie formulierst du eine kriteriengeleitete Rückmeldung zu einem Kurzvortrag?",
+          "concept": "Benenne eine beobachtete Stelle, erkläre ihre Wirkung auf die Verständlichkeit und schlage eine konkrete Verbesserung vor.",
+          "sample_solution": "Benenne eine beobachtete Stelle, erkläre ihre Wirkung auf die Verständlichkeit und schlage eine konkrete Verbesserung vor.",
+          "id": "01M78MVGD55NCKYXV02XD9W4PT",
+          "slug": "d6-vortrag-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-vortrag"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD5BK7KNW032ZKX532S",
+      "atom_uri": "urn:zam:atom:01M78MVGD5BK7KNW032ZKX532S",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-vorlesen",
+      "title": "Erzählen und wirkungsvoll vorlesen",
+      "domain": "deutsch/sprechen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-vorlesen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprechen",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Im Text atmet Elif aus und sagt „Zum Glück“. Welche Sprechweise stützt diese Haltung?",
+          "concept": "Eine ruhiger werdende Stimme mit weicher Betonung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine ruhiger werdende Stimme mit weicher Betonung.",
+              "Ein aggressiver Ruf ohne weiteren Textbeleg."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD5KKE5ZYZKS8ZXYKFK",
+          "slug": "d6-vorlesen-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-vorlesen"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie begründest du deine Stimmgestaltung beim sinngestaltenden Vorlesen?",
+          "concept": "Verknüpfe ein Textsignal zur Situation oder Haltung der Figur mit einer bewussten Entscheidung zu Tempo, Pause, Betonung oder Stimmführung.",
+          "sample_solution": "Verknüpfe ein Textsignal zur Situation oder Haltung der Figur mit einer bewussten Entscheidung zu Tempo, Pause, Betonung oder Stimmführung.",
+          "id": "01M78MVGD53A2EKPV5TQ0V8DG3",
+          "slug": "d6-vorlesen-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-vorlesen"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD5RSX34JPKBJSCPM7F",
+      "atom_uri": "urn:zam:atom:01M78MVGD5RSX34JPKBJSCPM7F",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-gespraech",
+      "title": "Im Gespräch einen Streit klären",
+      "domain": "deutsch/sprechen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-gespraech",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprechen",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Jo verschränkt im Gruppengespräch die Arme und schweigt. Welche Reaktion ist angemessen?",
+          "concept": "Nachfragen, ob Jo noch Informationen oder Bedenken hat.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nachfragen, ob Jo noch Informationen oder Bedenken hat.",
+              "Behaupten, Jo wolle die Arbeit sabotieren."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD5504PR98NYJMVFYHH",
+          "slug": "d6-gespraech-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-gespraech"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie setzt du dich konstruktiv mit einem Einwand im Gruppengespräch auseinander?",
+          "concept": "Gib das Anliegen sinngemäß wieder, frage Unklares nach und ergänze einen begründeten Vorschlag, der den Einwand berücksichtigt.",
+          "sample_solution": "Gib das Anliegen sinngemäß wieder, frage Unklares nach und ergänze einen begründeten Vorschlag, der den Einwand berücksichtigt.",
+          "id": "01M78MVGD54438KM1C16HB0HGX",
+          "slug": "d6-gespraech-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-gespraech"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD5M8132TZ4Y291B02S",
+      "atom_uri": "urn:zam:atom:01M78MVGD5M8132TZ4Y291B02S",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-rolle",
+      "title": "Eine Figur spielen",
+      "domain": "deutsch/sprechen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-rolle",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprechen",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Jo kennt den Fund eines Schlüssels, Mina sucht noch. Wozu hilft dieses unterschiedliche Figurenwissen beim Spiel?",
+          "concept": "Es begründet Jos Ausweichen und Minas Nachfragen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es begründet Jos Ausweichen und Minas Nachfragen.",
+              "Es macht jede beliebige Stimmgestaltung gleich passend."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD5S1SK8NW0CZSVBD2C",
+          "slug": "d6-rolle-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-rolle"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie beurteilst du die Wirkung einer Rolleninterpretation?",
+          "concept": "Benenne ein beobachtetes stimmliches, körperliches oder akustisches Mittel, erkläre seine Wirkung und prüfe mit einer Textstelle, ob es zur Figur passt.",
+          "sample_solution": "Benenne ein beobachtetes stimmliches, körperliches oder akustisches Mittel, erkläre seine Wirkung und prüfe mit einer Textstelle, ob es zur Figur passt.",
+          "id": "01M78MVGD5YTHXJ04K9H5N6E7Q",
+          "slug": "d6-rolle-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-rolle"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD5ETZYC28WXZNFTXNC",
+      "atom_uri": "urn:zam:atom:01M78MVGD5ETZYC28WXZNFTXNC",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-lernziel",
+      "title": "Deinen nächsten Lernschritt planen",
+      "domain": "deutsch/sprechen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-lernziel",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprechen",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ein Ziel verlangt zwei passende Textbelege. Einer passt, der andere nennt nur die Jackenfarbe. Wie ist das Ziel erreicht?",
+          "concept": "Teilweise: Ein passender Beleg fehlt noch.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Teilweise: Ein passender Beleg fehlt noch.",
+              "Vollständig, weil zwei Stellen vorhanden sind."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD5RNDSRQJY778WS0F3",
+          "slug": "d6-lernziel-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-lernziel"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie leitest du aus einem Lernergebnis ein sinnvolles Folgeziel ab?",
+          "concept": "Vergleiche das Ergebnis mit dem ursprünglichen Ziel, benenne eine belegte Stärke und eine verbleibende Schwierigkeit und plane dafür einen überprüfbaren nächsten Schritt.",
+          "sample_solution": "Vergleiche das Ergebnis mit dem ursprünglichen Ziel, benenne eine belegte Stärke und eine verbleibende Schwierigkeit und plane dafür einen überprüfbaren nächsten Schritt.",
+          "id": "01M78MVGD50JKNAES3H5HH2RBJ",
+          "slug": "d6-lernziel-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-lernziel"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD5EZ6E0ZENKG0XA9Q5",
+      "atom_uri": "urn:zam:atom:01M78MVGD5EZ6E0ZENKG0XA9Q5",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-detektivgeschichte",
+      "title": "Eine gehörte Detektivgeschichte auswerten",
+      "domain": "deutsch/sprechen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-detektivgeschichte",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprechen",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In einer Hörgeschichte fehlt ein Pokal. Nasse Spuren liegen am Fenster; die Hausmeisterin hat den Pokal vor Regen in den Schrank gestellt. Was ist geklärt?",
+          "concept": "Die Hausmeisterin stellte den Pokal zum Schutz in den Schrank.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Hausmeisterin stellte den Pokal zum Schutz in den Schrank.",
+              "Ben hat den Pokal gestohlen."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD5WPTN63ZHWDPVB926",
+          "slug": "d6-detektivgeschichte-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-detektivgeschichte"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie wertest du eine gehörte Detektivgeschichte aus?",
+          "concept": "Du ordnest Hinweise und Ereignisse, unterscheidest Beobachtungen von Vermutungen und nennst geklärte sowie offene Fragen.",
+          "sample_solution": "Du ordnest Hinweise und Ereignisse, unterscheidest Beobachtungen von Vermutungen und nennst geklärte sowie offene Fragen.",
+          "id": "01M78MVGD5VRP2RMEMZ2EC78Y1",
+          "slug": "d6-detektivgeschichte-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-detektivgeschichte"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD5EQK5RFB1BSSSNM0M",
+      "atom_uri": "urn:zam:atom:01M78MVGD5EQK5RFB1BSSSNM0M",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-lesespuren",
+      "title": "Lesespuren legen",
+      "domain": "deutsch/lesen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-lesespuren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "lesen",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "„Der Vorrat war erschöpft: Auch die letzte Kanne war leer.“ Was bedeutet erschöpft hier?",
+          "concept": "Aufgebraucht.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aufgebraucht.",
+              "Körperlich müde."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD50YBZT6D68CX375G1",
+          "slug": "d6-lesespuren-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-lesespuren"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie überprüfst du eine Vermutung zur Bedeutung eines unbekannten Worts?",
+          "concept": "Setze die vermutete Bedeutung in den Satz ein und prüfe sie an den Nachbarsätzen und der Kernaussage; bei verbleibender Unsicherheit schlage nach.",
+          "sample_solution": "Setze die vermutete Bedeutung in den Satz ein und prüfe sie an den Nachbarsätzen und der Kernaussage; bei verbleibender Unsicherheit schlage nach.",
+          "id": "01M78MVGD5XP97DANKVAFSAXY3",
+          "slug": "d6-lesespuren-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-lesespuren"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD5FZAJ69NPDX3AGSPM",
+      "atom_uri": "urn:zam:atom:01M78MVGD5FZAJ69NPDX3AGSPM",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-klang",
+      "title": "Klang und Bilder in Gedichten",
+      "domain": "deutsch/lesen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-klang",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "lesen",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Mittel liegt in „Die Uhr tickt wie ein kleiner Hammer“ vor?",
+          "concept": "Ein Vergleich, der den Klang anschaulich macht.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Vergleich, der den Klang anschaulich macht.",
+              "Eine überprüfbare Behauptung über einen echten Hammer."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD51Y27M7172QT13SE5",
+          "slug": "d6-klang-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-klang"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie begründest du die Wirkung eines Vergleichs in einem Gedicht?",
+          "concept": "Nenne die verglichenen Bereiche und ihr gemeinsames Merkmal und erkläre mit dem Textzusammenhang, welche Vorstellung oder Stimmung daraus entsteht.",
+          "sample_solution": "Nenne die verglichenen Bereiche und ihr gemeinsames Merkmal und erkläre mit dem Textzusammenhang, welche Vorstellung oder Stimmung daraus entsteht.",
+          "id": "01M78MVGD5ZQBHEQWC7VW7YM6T",
+          "slug": "d6-klang-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-klang"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD532WT41RHRJ7P9D6X",
+      "atom_uri": "urn:zam:atom:01M78MVGD532WT41RHRJ7P9D6X",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-lesetagebuch",
+      "title": "Ein Buch auswählen und vorstellen",
+      "domain": "deutsch/lesen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-lesetagebuch",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "lesen",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran zeigt ein Lesetagebuch eine veränderte Leseerwartung?",
+          "concept": "Es vergleicht eine frühere Vermutung mit einer späteren Textstelle.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es vergleicht eine frühere Vermutung mit einer späteren Textstelle.",
+              "Es nennt nur die Anzahl gelesener Seiten."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD5FX43G1D8JKGF8QZE",
+          "slug": "d6-lesetagebuch-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-lesetagebuch"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie unterscheidest du Textbeobachtung und Deutung im Lesetagebuch?",
+          "concept": "Notiere die konkrete Handlung oder Äußerung mit Fundstelle und formuliere anschließend, was sie deiner Ansicht nach bedeutet; kennzeichne Unsicheres.",
+          "sample_solution": "Notiere die konkrete Handlung oder Äußerung mit Fundstelle und formuliere anschließend, was sie deiner Ansicht nach bedeutet; kennzeichne Unsicheres.",
+          "id": "01M78MVGD6YX4Z25JSRB7S0WBS",
+          "slug": "d6-lesetagebuch-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-lesetagebuch"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD6YK89Q0G1026R305Q",
+      "atom_uri": "urn:zam:atom:01M78MVGD6YK89Q0G1026R305Q",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-sachtext",
+      "title": "Sachtexte, Tabellen und Absichten",
+      "domain": "deutsch/lesen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-sachtext",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "lesen",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Eine Tabelle nennt 18 Ausleihen am Montag und 12 am Dienstag. Was ist sicher ablesbar?",
+          "concept": "Am Dienstag gab es sechs Ausleihen weniger.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Am Dienstag gab es sechs Ausleihen weniger.",
+              "Die Zahl der Kinder ist sicher um sechs gesunken."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD69SXDN8B98QXCFEFE",
+          "slug": "d6-sachtext-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-sachtext"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie verbindest du einen Sachtext mit einer zugehörigen Tabelle?",
+          "concept": "Lies Überschrift, Zeilen, Spalten und Einheiten, gleiche die Angaben mit dem Text ab und trenne belegte Ergebnisse von offenen Ursachen oder Fragen.",
+          "sample_solution": "Lies Überschrift, Zeilen, Spalten und Einheiten, gleiche die Angaben mit dem Text ab und trenne belegte Ergebnisse von offenen Ursachen oder Fragen.",
+          "id": "01M78MVGD6946WMGXBZRPA9HSP",
+          "slug": "d6-sachtext-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-sachtext"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD6Q10XP3GMH0404CD1",
+      "atom_uri": "urn:zam:atom:01M78MVGD6Q10XP3GMH0404CD1",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-medienwahl",
+      "title": "Medien passend auswählen",
+      "domain": "deutsch/lesen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-medienwahl",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "lesen",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was prüfst du zuerst bei der Wahl eines Mediums für eine Sachfrage?",
+          "concept": "Ob sein Inhalt die konkrete Frage behandelt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ob sein Inhalt die konkrete Frage behandelt.",
+              "Ob es unabhängig von der Frage möglichst spannend klingt."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD6MZYBZEVCPCHTRJ27",
+          "slug": "d6-medienwahl-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-medienwahl"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum kann dasselbe Medium für Freizeit und Recherche unterschiedlich geeignet sein?",
+          "concept": "Die Zwecke unterscheiden sich: Unterhaltung darf vor allem anregen, eine Recherche braucht passende überprüfbare Informationen zur konkreten Frage.",
+          "sample_solution": "Die Zwecke unterscheiden sich: Unterhaltung darf vor allem anregen, eine Recherche braucht passende überprüfbare Informationen zur konkreten Frage.",
+          "id": "01M78MVGD6D9VS7PS2AQYTF19J",
+          "slug": "d6-medienwahl-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-medienwahl"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD614KP8MDQ9DG4SAKZ",
+      "atom_uri": "urn:zam:atom:01M78MVGD614KP8MDQ9DG4SAKZ",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-recherche",
+      "title": "Eine Information finden und prüfen",
+      "domain": "deutsch/lesen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-recherche",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "lesen",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Eine Museumsseite verlangt Workshop-Anmeldung, ein Flyer wirbt mit spontanem Ausstellungsbesuch. Liegt sicher ein Widerspruch vor?",
+          "concept": "Nein; beide Angaben können verschiedene Besuchsformen betreffen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein; beide Angaben können verschiedene Besuchsformen betreffen.",
+              "Ja; jede unterschiedliche Formulierung ist ein Widerspruch."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD6EC7TVDT7C6YXXWKA",
+          "slug": "d6-recherche-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-recherche"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Angaben sichern eine Rechercheantwort für andere nachvollziehbar ab?",
+          "concept": "Eine inhaltlich passende Quelle, die genaue Fundstelle und bei veränderlichen Informationen ein Datum sowie eine Prüfung von Zuständigkeit und Absicht.",
+          "sample_solution": "Eine inhaltlich passende Quelle, die genaue Fundstelle und bei veränderlichen Informationen ein Datum sowie eine Prüfung von Zuständigkeit und Absicht.",
+          "id": "01M78MVGD63GJ4KE9QA59WDJKW",
+          "slug": "d6-recherche-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-recherche"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD60NRWWTTXP93HVZM5",
+      "atom_uri": "urn:zam:atom:01M78MVGD60NRWWTTXP93HVZM5",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-film",
+      "title": "Wie ein Film Gefühle weckt",
+      "domain": "deutsch/lesen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-film",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "lesen",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Einstellung zeigt das Zittern einer Hand am besten?",
+          "concept": "Eine Detailaufnahme der Hand.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Detailaufnahme der Hand.",
+              "Eine Totale vom ganzen Schulhof."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD6V1CCC5MGJXQYA9D3",
+          "slug": "d6-film-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-film"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie kann der Ton die Stimmung einer Szene verändern?",
+          "concept": "Musik, Geräusche oder Stille beeinflussen, was du erwartest und wie du die Handlung empfindest.",
+          "sample_solution": "Ein plötzliches Knarren kann beim Öffnen einer Tür erschrecken. Vogelstimmen können dieselbe Szene ruhig wirken lassen.",
+          "id": "01M78MVGD6QPBFYY1V4BB1T3BG",
+          "slug": "d6-film-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-film"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD6PXHC227A9ZEPW7PZ",
+      "atom_uri": "urn:zam:atom:01M78MVGD6PXHC227A9ZEPW7PZ",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-medienzeit",
+      "title": "Medienzeit bewusst gestalten",
+      "domain": "deutsch/lesen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-medienzeit",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "lesen",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Während 30 Minuten Spielen laufen 15 Minuten lang gleichzeitig Lieder. Wie viel Zeit ist vergangen?",
+          "concept": "30 Minuten.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "30 Minuten.",
+              "45 Minuten."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD62ARB4TC74QFY52C3",
+          "slug": "d6-medienzeit-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-medienzeit"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie prüfst du, ob eine veränderte Medienregel hilft?",
+          "concept": "Leite sie aus einem beobachteten Problem ab, erprobe sie über einen vereinbarten Zeitraum und vergleiche danach die tatsächlichen Folgen mit deinem Ziel.",
+          "sample_solution": "Leite sie aus einem beobachteten Problem ab, erprobe sie über einen vereinbarten Zeitraum und vergleiche danach die tatsächlichen Folgen mit deinem Ziel.",
+          "id": "01M78MVGD674MB12GSPBXN765Y",
+          "slug": "d6-medienzeit-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-medienzeit"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD61HW64KCSV8K4JNYC",
+      "atom_uri": "urn:zam:atom:01M78MVGD61HW64KCSV8K4JNYC",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-chat",
+      "title": "Respektvoll und sicher schreiben",
+      "domain": "deutsch/lesen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-chat",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "lesen",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum kann „Ganz toll gemacht!“ in einem Chat missverstanden werden?",
+          "concept": "Stimme und Mimik fehlen; der Zusammenhang kann unklar sein.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Stimme und Mimik fehlen; der Zusammenhang kann unklar sein.",
+              "Schriftliche Nachrichten haben immer nur eine mögliche Wirkung."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD6TTJR3REP0H5BX2B8",
+          "slug": "d6-chat-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-chat"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie passt du eine Hilfebitte im digitalen Konflikt an eine Lehrkraft an?",
+          "concept": "Schildere den Verlauf sachlich, nenne das Anliegen und bitte klar um Unterstützung; verwende passende Anrede und Gruß und verbreite keine unnötigen persönlichen Inhalte.",
+          "sample_solution": "Schildere den Verlauf sachlich, nenne das Anliegen und bitte klar um Unterstützung; verwende passende Anrede und Gruß und verbreite keine unnötigen persönlichen Inhalte.",
+          "id": "01M78MVGD6T0V75V3R8GGZ7K1T",
+          "slug": "d6-chat-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-chat"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD69YQKANW9A78EQV9Z",
+      "atom_uri": "urn:zam:atom:01M78MVGD69YQKANW9A78EQV9Z",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-sage",
+      "title": "Sage und Erzählung unterscheiden",
+      "domain": "deutsch/lesen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-sage",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "lesen",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Merkmalskombination spricht für eine Sage?",
+          "concept": "Bestimmter Ort und überliefertes übernatürliches Geschehen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bestimmter Ort und überliefertes übernatürliches Geschehen.",
+              "Nur eine Liste von Öffnungszeiten."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD65Y8KPC7EG98HFT9P",
+          "slug": "d6-sage-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-sage"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wodurch unterscheidet sich eine Ortssage von einer Alltagserzählung?",
+          "concept": "Die Ortssage verbindet einen bestimmten Ort mit einem überlieferten, oft übernatürlichen Geschehen; die Alltagserzählung benötigt dieses Element nicht.",
+          "sample_solution": "Die Ortssage verbindet einen bestimmten Ort mit einem überlieferten, oft übernatürlichen Geschehen; die Alltagserzählung benötigt dieses Element nicht.",
+          "id": "01M78MVGD6Y272DNWFJVVFESX5",
+          "slug": "d6-sage-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-sage"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD6QB1DGCQ6GV4TAQ0Z",
+      "atom_uri": "urn:zam:atom:01M78MVGD6QB1DGCQ6GV4TAQ0Z",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-belege",
+      "title": "Figuren und Räume mit Textstellen deuten",
+      "domain": "deutsch/lesen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-belege",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "lesen",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Im Text ruft Mina „Warte, ich komme mit!“ und greift nach Jos Hand. Welche Deutung ist dadurch gestützt?",
+          "concept": "Mina sucht beim Hinausgehen Nähe zu Jo.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mina sucht beim Hinausgehen Nähe zu Jo.",
+              "Mina möchte Jo sicher bestehlen."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD66YYWBZAGWBZ59M2B",
+          "slug": "d6-belege-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-belege"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie begründest du eine Deutung einer Figur?",
+          "concept": "Du nennst eine konkrete Textstelle und erklärst, wie Handlung oder Äußerung die Deutung stützt; Unsicheres kennzeichnest du.",
+          "sample_solution": "Du nennst eine konkrete Textstelle und erklärst, wie Handlung oder Äußerung die Deutung stützt; Unsicheres kennzeichnest du.",
+          "id": "01M78MVGD6ZZFFMSR0BRM5BTC6",
+          "slug": "d6-belege-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-belege"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD6Q2CTYEWT3V8NNHPK",
+      "atom_uri": "urn:zam:atom:01M78MVGD6Q2CTYEWT3V8NNHPK",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-perspektive",
+      "title": "Wer erzählt und wer weiß was?",
+      "domain": "deutsch/lesen",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-perspektive",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MVGD6QB1DGCQ6GV4TAQ0Z",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "lesen",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Perspektive zeigt „Ich drückte die Tür auf. Ob Jo mich suchte, wusste ich nicht“?",
+          "concept": "Ich-Erzählung mit begrenztem Wissen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ich-Erzählung mit begrenztem Wissen.",
+              "Sachbericht mit bewiesenen Gedanken aller Personen."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD6NFKX6QBCV5DVBQFC",
+          "slug": "d6-perspektive-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-perspektive"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was musst du bei einem Wechsel der Erzählperspektive beachten?",
+          "concept": "Die neue Figur kann nur ihre eigenen Gedanken und das erzählen, was sie wahrnimmt oder erfährt; unbekannte fremde Gedanken bleiben Vermutungen.",
+          "sample_solution": "Die neue Figur kann nur ihre eigenen Gedanken und das erzählen, was sie wahrnimmt oder erfährt; unbekannte fremde Gedanken bleiben Vermutungen.",
+          "id": "01M78MVGD6R9P8VH3DD4YTEF46",
+          "slug": "d6-perspektive-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-perspektive"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD6XV7X1R5YHT66VMES",
+      "atom_uri": "urn:zam:atom:01M78MVGD6XV7X1R5YHT66VMES",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-schreibplan",
+      "title": "Mit einem Schreibplan starten",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-schreibplan",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Eine Mindmap enthält Termin, Regenort und Geschichtenende. Was gehört für eine Einladung vorrangig in den Plan?",
+          "concept": "Termin und Regenort.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Termin und Regenort.",
+              "Nur das verratene Geschichtenende."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD6EG4VRV7E2DX2PY6R",
+          "slug": "d6-schreibplan-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-schreibplan"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum unterscheiden sich die Schreibpläne einer Einladung und eines Berichts zum selben Ereignis?",
+          "concept": "Die Einladung ermöglicht eine künftige Teilnahme; der Bericht informiert geordnet über einen tatsächlichen Ablauf. Deshalb brauchen sie andere Angaben und eine andere zeitliche Perspektive.",
+          "sample_solution": "Die Einladung ermöglicht eine künftige Teilnahme; der Bericht informiert geordnet über einen tatsächlichen Ablauf. Deshalb brauchen sie andere Angaben und eine andere zeitliche Perspektive.",
+          "id": "01M78MVGD6AD6WGB4EGJ8E6K0N",
+          "slug": "d6-schreibplan-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-schreibplan"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD6Y44ETQMP3EZXR13B",
+      "atom_uri": "urn:zam:atom:01M78MVGD6Y44ETQMP3EZXR13B",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-erzaehlen",
+      "title": "Ein Erlebnis spannend erzählen",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-erzaehlen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Formulierung erzeugt Atmosphäre durch konkrete Wahrnehmung?",
+          "concept": "Im stillen Flur schabte etwas; unter der Tür flackerte Licht.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im stillen Flur schabte etwas; unter der Tür flackerte Licht.",
+              "Es war einfach unglaublich spannend und aufregend."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD6Q6FEG9727E77A650",
+          "slug": "d6-erzaehlen-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-erzaehlen"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie erweiterst du eine Erzählung über einen bloßen Handlungsplan hinaus?",
+          "concept": "Wähle passende Sinneseindrücke, treffende Verben und Adjektive sowie Gedanken oder Rede und gestalte den entscheidenden Moment bewusst im Tempo.",
+          "sample_solution": "Wähle passende Sinneseindrücke, treffende Verben und Adjektive sowie Gedanken oder Rede und gestalte den entscheidenden Moment bewusst im Tempo.",
+          "id": "01M78MVGD6X0QXYZFPV8YM8NW0",
+          "slug": "d6-erzaehlen-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-erzaehlen"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD623C9EF49F3HE4QZX",
+      "atom_uri": "urn:zam:atom:01M78MVGD623C9EF49F3HE4QZX",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-weiterschreiben",
+      "title": "Eine Geschichte weiterschreiben",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-weiterschreiben",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MVGD6Y44ETQMP3EZXR13B",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ein Ich hört hinter einer geschlossenen Tür ein Klirren. Welche Aussage wahrt sein Wissen?",
+          "concept": "Vielleicht lag dort ein Schlüssel; sehen konnte ich ihn nicht.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vielleicht lag dort ein Schlüssel; sehen konnte ich ihn nicht.",
+              "Ich sah durch die geschlossene Tür sicher den Schlüssel."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD62P37QXYVXPZZC2RQ",
+          "slug": "d6-weiterschreiben-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-weiterschreiben"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie nutzt du offene Hinweise beim Weiterschreiben?",
+          "concept": "Sammle die festgelegten Hinweise, entwickle daraus eine passende Handlung und löse sie aus der gewählten Perspektive und Zeitform nachvollziehbar auf.",
+          "sample_solution": "Sammle die festgelegten Hinweise, entwickle daraus eine passende Handlung und löse sie aus der gewählten Perspektive und Zeitform nachvollziehbar auf.",
+          "id": "01M78MVGD669QPM71Q5PER8MSH",
+          "slug": "d6-weiterschreiben-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-weiterschreiben"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD6H4DQ4T24P0K9T4VX",
+      "atom_uri": "urn:zam:atom:01M78MVGD6H4DQ4T24P0K9T4VX",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-tierbeschreibung",
+      "title": "Ein Tier genau beschreiben",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-tierbeschreibung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist eine Beobachtung statt einer unbelegten Absichtsdeutung?",
+          "concept": "Die Katze duckt sich hinter den Eimer.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Katze duckt sich hinter den Eimer.",
+              "Die Katze plant bestimmt einen Angriff."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD6NMMDP802ZBCBNBGX",
+          "slug": "d6-tierbeschreibung-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-tierbeschreibung"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie machst du eine Tierbeschreibung für das Wiedererkennen zuverlässig?",
+          "concept": "Ordne sichtbare Merkmale, nenne Besonderheiten präzise und trenne Beobachtung, Wertung und unsichere Deutung.",
+          "sample_solution": "Ordne sichtbare Merkmale, nenne Besonderheiten präzise und trenne Beobachtung, Wertung und unsichere Deutung.",
+          "id": "01M78MVGD647MK291H0N8ZF2Y0",
+          "slug": "d6-tierbeschreibung-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-tierbeschreibung"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD609PJKEN77D05VFPE",
+      "atom_uri": "urn:zam:atom:01M78MVGD609PJKEN77D05VFPE",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-brief",
+      "title": "Einen persönlichen Brief schreiben",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-brief",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Eine Empfängerin befürchtet Lärm bei einer Lesung. Welcher Satz reagiert sachlich?",
+          "concept": "Wir teilen die Gruppe, damit andere Kinder ungestört lesen können.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wir teilen die Gruppe, damit andere Kinder ungestört lesen können.",
+              "Ihre Sorge ist unwichtig, weil wir unseren Plan mögen."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD6KPYCVK515M2W041J",
+          "slug": "d6-brief-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-brief"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet eine begründete Antwortmail von einer bloßen neuen Mitteilung?",
+          "concept": "Sie nimmt auf das Anliegen der erhaltenen Nachricht Bezug, beantwortet es nachvollziehbar und gestaltet Sprache und Aufbau passend zur Empfängerin oder zum Empfänger.",
+          "sample_solution": "Sie nimmt auf das Anliegen der erhaltenen Nachricht Bezug, beantwortet es nachvollziehbar und gestaltet Sprache und Aufbau passend zur Empfängerin oder zum Empfänger.",
+          "id": "01M78MVGD61Q2JVK7ED1D4G6C9",
+          "slug": "d6-brief-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-brief"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD6P33Y5WZAZVCRJ30X",
+      "atom_uri": "urn:zam:atom:01M78MVGD6P33Y5WZAZVCRJ30X",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-ueberarbeiten",
+      "title": "Einen Entwurf gezielt überarbeiten",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-ueberarbeiten",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "„Dann machten wir es dann“ ist richtig abgeschrieben. Was bleibt dennoch zu überarbeiten?",
+          "concept": "Die ungenaue Handlung und der unklare Bezug von es.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die ungenaue Handlung und der unklare Bezug von es.",
+              "Nur die Farbe der Buchstaben."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD64T6HB9VZAS9Z1EBZ",
+          "slug": "d6-ueberarbeiten-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-ueberarbeiten"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie unterscheidest du Wort-, Satz- und Textebene beim Überarbeiten?",
+          "concept": "Prüfe Wörter auf Treffgenauigkeit und Schreibung, Sätze auf Vollständigkeit und Verknüpfung und den Text auf Ziel, Aufbau und vollständige Informationen.",
+          "sample_solution": "Prüfe Wörter auf Treffgenauigkeit und Schreibung, Sätze auf Vollständigkeit und Verknüpfung und den Text auf Ziel, Aufbau und vollständige Informationen.",
+          "id": "01M78MVGD6CT98000D9XKBP8R3",
+          "slug": "d6-ueberarbeiten-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-ueberarbeiten"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD6BBEB9YKEQZZYFY4E",
+      "atom_uri": "urn:zam:atom:01M78MVGD6BBEB9YKEQZZYFY4E",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-handschrift",
+      "title": "Lesbar und entspannt schreiben",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-handschrift",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Eine lesbare Schreibprobe hinterlässt tiefe Druckspuren und die Hand verkrampft. Was überprüfst du?",
+          "concept": "Druck, Stifthaltung und eine mögliche Lockerung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Druck, Stifthaltung und eine mögliche Lockerung.",
+              "Nur die inhaltliche Überschrift des Texts."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD76MKXARN5JAQ52BZF",
+          "slug": "d6-handschrift-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-handschrift"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie korrigierst du eine Schreibgewohnheit selbständig?",
+          "concept": "Beobachte Haltung, Druck, Tempo und Lesbarkeit, verändere gezielt einen Punkt und vergleiche anschließend eine neue Schreibprobe unter ähnlichen Bedingungen.",
+          "sample_solution": "Beobachte Haltung, Druck, Tempo und Lesbarkeit, verändere gezielt einen Punkt und vergleiche anschließend eine neue Schreibprobe unter ähnlichen Bedingungen.",
+          "id": "01M78MVGD7VPHCD8AH0TPXZQQP",
+          "slug": "d6-handschrift-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-handschrift"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD70XCZDFC2NTGEXV6R",
+      "atom_uri": "urn:zam:atom:01M78MVGD70XCZDFC2NTGEXV6R",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-dokument",
+      "title": "Eine Seite übersichtlich gestalten",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-dokument",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was macht eine Text-Bild-Verknüpfung bei einer Anleitung sinnvoll?",
+          "concept": "Das Bild verdeutlicht einen im Text beschriebenen Schritt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Bild verdeutlicht einen im Text beschriebenen Schritt.",
+              "Das Bild ist unabhängig vom Inhalt möglichst groß."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD7YY41RXFHX06WGPZN",
+          "slug": "d6-dokument-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-dokument"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie beurteilst du die Gestaltung eines elektronischen Informationsblatts?",
+          "concept": "Prüfe Lesbarkeit, Gliederung, Auffindbarkeit wichtiger Angaben und den erklärenden Zusammenhang von Text, Bild und Beschriftung.",
+          "sample_solution": "Prüfe Lesbarkeit, Gliederung, Auffindbarkeit wichtiger Angaben und den erklärenden Zusammenhang von Text, Bild und Beschriftung.",
+          "id": "01M78MVGD7BH4G6KTMZQATHEEJ",
+          "slug": "d6-dokument-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-dokument"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD7PNNAFM41A9QK9VTG",
+      "atom_uri": "urn:zam:atom:01M78MVGD7PNNAFM41A9QK9VTG",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-formular",
+      "title": "Ein Formular sorgfältig ausfüllen",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-formular",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ein Formular fragt nach „gewünschte Gruppe“. Deniz möchte Tischtennis lernen. Was passt?",
+          "concept": "Tischtennis.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Tischtennis.",
+              "Yilmaz."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD77MVRE9S05SJQJX9V",
+          "slug": "d6-formular-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-formular"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum liest du Hinweise eines Formulars vor dem Ausfüllen vollständig?",
+          "concept": "Sie erklären zusätzlich zu den Feldnamen den Zweck, nötige Angaben und weitere Schritte wie eine Zustimmung; ausgefüllte Felder allein schließen den Vorgang nicht immer ab.",
+          "sample_solution": "Sie erklären zusätzlich zu den Feldnamen den Zweck, nötige Angaben und weitere Schritte wie eine Zustimmung; ausgefüllte Felder allein schließen den Vorgang nicht immer ab.",
+          "id": "01M78MVGD7CJR1HMBY44N4Y99H",
+          "slug": "d6-formular-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-formular"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD7X9H76494664H9NRV",
+      "atom_uri": "urn:zam:atom:01M78MVGD7X9H76494664H9NRV",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-argumentieren",
+      "title": "Eine Meinung nachvollziehbar begründen",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-argumentieren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage begründet eine Pausenöffnung?",
+          "concept": "Kinder mit frühem Schulbus können dann trotzdem Bücher ausleihen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kinder mit frühem Schulbus können dann trotzdem Bücher ausleihen.",
+              "Eine Pausenöffnung ist gut, weil sie gut ist."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD7B6BA23DTCAH8D52W",
+          "slug": "d6-argumentieren-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-argumentieren"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist der Unterschied zwischen Behauptung und Begründung?",
+          "concept": "Die Behauptung nennt einen Standpunkt; die Begründung erklärt mit einem passenden Grund, warum er gelten soll.",
+          "sample_solution": "Die Behauptung nennt einen Standpunkt; die Begründung erklärt mit einem passenden Grund, warum er gelten soll.",
+          "id": "01M78MVGD7J8GNBKFJKRCMPCY4",
+          "slug": "d6-argumentieren-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-argumentieren"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD7ZXDP00J0ZAMQF054",
+      "atom_uri": "urn:zam:atom:01M78MVGD7ZXDP00J0ZAMQF054",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-aufruf",
+      "title": "Mit einem Aufruf zum Mitmachen einladen",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-aufruf",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MVGD7X9H76494664H9NRV",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Satz ist ein klarer Aufruf?",
+          "concept": "Bring am Donnerstag ein gut erhaltenes Buch zum Tausch in die Aula.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bring am Donnerstag ein gut erhaltenes Buch zum Tausch in die Aula.",
+              "Bücher gab es schon früher."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD7BKVVB1W88VFWP46X",
+          "slug": "d6-aufruf-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-aufruf"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was braucht ein verständlicher Aufruf?",
+          "concept": "Zielgruppe, gewünschte Handlung, nötige Angaben wie Ort und Zeit sowie einen nachvollziehbaren Grund.",
+          "sample_solution": "Zielgruppe, gewünschte Handlung, nötige Angaben wie Ort und Zeit sowie einen nachvollziehbaren Grund.",
+          "id": "01M78MVGD7NWNNBPV8H0N641Z8",
+          "slug": "d6-aufruf-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-aufruf"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD7WH1QHDXZ9N5GQGPT",
+      "atom_uri": "urn:zam:atom:01M78MVGD7WH1QHDXZ9N5GQGPT",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-bericht",
+      "title": "Ein Geschehen sachlich berichten",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-bericht",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MVGD6XV7X1R5YHT66VMES",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ein Protokoll nennt 24 Rückgaben und 19 Ausleihen. Welche Besucherzahl folgt daraus sicher?",
+          "concept": "Keine genaue Zahl verschiedener Kinder.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Keine genaue Zahl verschiedener Kinder.",
+              "Genau 43 verschiedene Kinder."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD77TMYY7Q1F90ANJMC",
+          "slug": "d6-bericht-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-bericht"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie verwendest du recherchierte Zahlen in einem Bericht?",
+          "concept": "Prüfe, was die Zahlen tatsächlich zählen, ordne sie einer Fundstelle zu und übertrage sie nicht ungeprüft auf andere Größen wie verschiedene Besucher.",
+          "sample_solution": "Prüfe, was die Zahlen tatsächlich zählen, ordne sie einer Fundstelle zu und übertrage sie nicht ungeprüft auf andere Größen wie verschiedene Besucher.",
+          "id": "01M78MVGD7RCJJQN68Z2WZMCTZ",
+          "slug": "d6-bericht-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-bericht"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD759DJ19WCCCPBH3KR",
+      "atom_uri": "urn:zam:atom:01M78MVGD759DJ19WCCCPBH3KR",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-vorgang",
+      "title": "Einen Vorgang verständlich beschreiben",
+      "domain": "deutsch/schreiben",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-vorgang",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MVGD6XV7X1R5YHT66VMES",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "schreiben",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was verbessert „Lege den Streifen zwischen zwei Buchseiten“ gegenüber „Lege es rein“?",
+          "concept": "Gegenstand und Zielort der Handlung sind eindeutig.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gegenstand und Zielort der Handlung sind eindeutig.",
+              "Die Anleitung verrät keine Reihenfolge mehr."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD7ZFNN55G3KCBDS6HF",
+          "slug": "d6-vorgang-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-vorgang"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie nutzt du eine Erprobung zur Verbesserung einer Vorgangsbeschreibung?",
+          "concept": "Beobachte, wo eine andere Person ohne Zusatzhilfe stockt oder anders handelt, kläre die fehlende Information und prüfe die überarbeitete Stelle erneut.",
+          "sample_solution": "Beobachte, wo eine andere Person ohne Zusatzhilfe stockt oder anders handelt, kläre die fehlende Information und prüfe die überarbeitete Stelle erneut.",
+          "id": "01M78MVGD78BXMR7RMGTHZRF23",
+          "slug": "d6-vorgang-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-vorgang"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD7W0JJQH27QZTATD70",
+      "atom_uri": "urn:zam:atom:01M78MVGD7W0JJQH27QZTATD70",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-sprachwahl",
+      "title": "Worte für die richtige Situation",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-sprachwahl",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprechen und Zuhören"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet „Mir fällt ein Stein vom Herzen“ nach dem Wiederfinden eines Koffers?",
+          "concept": "Die Person ist sehr erleichtert.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Person ist sehr erleichtert.",
+              "Die Person hat einen echten Stein getragen."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD7DWRCAJ3NGZVXRQ1Y",
+          "slug": "d6-sprachwahl-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-sprachwahl"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Worin unterscheiden sich eine Redensart und ein Sprichwort?",
+          "concept": "Eine Redensart ist eine feste, oft bildhafte Wendung für eine Situation; ein Sprichwort formuliert meist als ganzer Satz eine allgemeine Erfahrung oder einen Rat.",
+          "sample_solution": "Eine Redensart ist eine feste, oft bildhafte Wendung für eine Situation; ein Sprichwort formuliert meist als ganzer Satz eine allgemeine Erfahrung oder einen Rat.",
+          "id": "01M78MVGD7RCFKJ62WH8GPC4DQ",
+          "slug": "d6-sprachwahl-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-sprachwahl"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD739AN01Z9BQCHGVZX",
+      "atom_uri": "urn:zam:atom:01M78MVGD739AN01Z9BQCHGVZX",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-adjektive",
+      "title": "Mit Adjektiven vergleichen",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-adjektive",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Form passt: „Wir arbeiten mit …“ (der kleine rote Wagen)?",
+          "concept": "dem kleinen roten Wagen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "dem kleinen roten Wagen",
+              "den kleine roten Wagen"
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD7FYM9GGSFRK0EF8FA",
+          "slug": "d6-adjektive-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-adjektive"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum darfst du aus „höher als“ nicht automatisch „insgesamt besser als“ machen?",
+          "concept": "Der Komparativ vergleicht ein bestimmtes Merkmal. Eine zweckbezogene Bewertung braucht weitere passende Kriterien.",
+          "sample_solution": "Der Komparativ vergleicht ein bestimmtes Merkmal. Eine zweckbezogene Bewertung braucht weitere passende Kriterien.",
+          "id": "01M78MVGD7433TMEG1RA6CVKBQ",
+          "slug": "d6-adjektive-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-adjektive"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD73AFKZSKWV3KXTE2K",
+      "atom_uri": "urn:zam:atom:01M78MVGD73AFKZSKWV3KXTE2K",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-wortbildung",
+      "title": "Wörter ableiten und zusammensetzen",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-wortbildung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist bei „Regenwasserspeicher“ das Grundwort und der Bedeutungskern?",
+          "concept": "Speicher: ein Speicher für Regenwasser.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Speicher: ein Speicher für Regenwasser.",
+              "Regen: eine besondere Wettervorhersage."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD7FXJ8XAE9Y0DKTTGP",
+          "slug": "d6-wortbildung-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-wortbildung"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie verwendest du Wortbildung zum Verstehen und Gestalten von Texten?",
+          "concept": "Zerlege Fachwörter in erkennbare Bausteine und prüfe die Bedeutung im Kontext; erkläre eigene Neuschöpfungen so, dass Lesende ihren gemeinten Zweck verstehen.",
+          "sample_solution": "Zerlege Fachwörter in erkennbare Bausteine und prüfe die Bedeutung im Kontext; erkläre eigene Neuschöpfungen so, dass Lesende ihren gemeinten Zweck verstehen.",
+          "id": "01M78MVGD71AZ68364YR4VQVPD",
+          "slug": "d6-wortbildung-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-wortbildung"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD7CHXYBRWWA42MBAHC",
+      "atom_uri": "urn:zam:atom:01M78MVGD7CHXYBRWWA42MBAHC",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-satzglieder",
+      "title": "Satzglieder finden und verschieben",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-satzglieder",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MVGD8P8T5ZZYA62887MK3",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Funktion hat „vorsichtig“ in „Kira gibt ihrem Bruder vorsichtig die Lampe“?",
+          "concept": "Modaladverbiale: Art und Weise der Handlung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Modaladverbiale: Art und Weise der Handlung.",
+              "Temporaladverbiale: Zeitpunkt der Handlung."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD79W9RP3XNPZJPKEB9",
+          "slug": "d6-satzglieder-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-satzglieder"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum reicht eine Dativform nicht aus, um ein Dativobjekt festzustellen?",
+          "concept": "Auch eine präpositionale Angabe kann im Dativ stehen. Prüfe zusätzlich die Bedeutung, die Beziehung zum Verb und passende Satzproben.",
+          "sample_solution": "Auch eine präpositionale Angabe kann im Dativ stehen. Prüfe zusätzlich die Bedeutung, die Beziehung zum Verb und passende Satzproben.",
+          "id": "01M78MVGD7VJ7R1SY36VD74P52",
+          "slug": "d6-satzglieder-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-satzglieder"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD7BQF9QFR0XJMNC8PA",
+      "atom_uri": "urn:zam:atom:01M78MVGD7BQF9QFR0XJMNC8PA",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-dehnung",
+      "title": "Lange Vokale richtig schreiben",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-dehnung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Schreibung passt: „Das müde … am Auge senkte sich“?",
+          "concept": "Lid",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Lid",
+              "Lied"
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD7NGX18BA0RAJQS5FN",
+          "slug": "d6-dehnung-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-dehnung"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wozu brauchst du bei gleich klingenden Wörtern wie Lid und Lied den Satzkontext?",
+          "concept": "Der Kontext klärt die gemeinte Bedeutung und damit das passende Wort; die gleiche Vokallänge allein unterscheidet die Schreibungen nicht.",
+          "sample_solution": "Der Kontext klärt die gemeinte Bedeutung und damit das passende Wort; die gleiche Vokallänge allein unterscheidet die Schreibungen nicht.",
+          "id": "01M78MVGD7ENB19NNKFD6S4TQS",
+          "slug": "d6-dehnung-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-dehnung"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD7W6NKYBEG5E78R9HB",
+      "atom_uri": "urn:zam:atom:01M78MVGD7W6NKYBEG5E78R9HB",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-schaerfung",
+      "title": "Kurze Vokale, Doppelkonsonanten, ck und tz",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-schaerfung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum schreibt man „rennt“ mit nn, obwohl danach t folgt?",
+          "concept": "Die Form erhält den Stamm von rennen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Form erhält den Stamm von rennen.",
+              "Weil jedes Wort vor t nn braucht."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD7BF796QES5D4CQD8E",
+          "slug": "d6-schaerfung-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-schaerfung"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie erklärst du die drei f in Schifffahrt?",
+          "concept": "Die Zusammensetzung besteht aus Schiff und Fahrt; an ihrer Grenze bleiben die beiden f des ersten und das erste f des zweiten Bestandteils erhalten.",
+          "sample_solution": "Die Zusammensetzung besteht aus Schiff und Fahrt; an ihrer Grenze bleiben die beiden f des ersten und das erste f des zweiten Bestandteils erhalten.",
+          "id": "01M78MVGD77W1JKCJPJRRMZM5G",
+          "slug": "d6-schaerfung-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-schaerfung"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD77X34FT05CWKQJZ3Y",
+      "atom_uri": "urn:zam:atom:01M78MVGD77X34FT05CWKQJZ3Y",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-verlaengern",
+      "title": "Wörter verlängern und ableiten",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-verlaengern",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Prüfform hilft beim b in „gelb“?",
+          "concept": "das gelbe Blatt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "das gelbe Blatt",
+              "der blaue Rand"
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD7XDSRZFAN74D0Q90K",
+          "slug": "d6-verlaengern-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-verlaengern"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wann ist ein verwandtes Wort als Prüfform geeignet?",
+          "concept": "Es muss in Bedeutung und Wortfamilie zum Ausgangswort gehören und die unsichere Stelle tatsächlich klären; bloße Klangähnlichkeit genügt nicht.",
+          "sample_solution": "Es muss in Bedeutung und Wortfamilie zum Ausgangswort gehören und die unsichere Stelle tatsächlich klären; bloße Klangähnlichkeit genügt nicht.",
+          "id": "01M78MVGD7V9PY1YB83EQ62KDR",
+          "slug": "d6-verlaengern-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-verlaengern"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD771KT8SXGC1D11HWQ",
+      "atom_uri": "urn:zam:atom:01M78MVGD771KT8SXGC1D11HWQ",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-woertliche-rede",
+      "title": "Wörtliche Rede richtig setzen",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-woertliche-rede",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Zeichenfolge passt bei nachgestelltem Begleitsatz zur Frage „Ist der Raum frei?“?",
+          "concept": "„Ist der Raum frei?“, fragte Mina.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "„Ist der Raum frei?“, fragte Mina.",
+              "„Ist der Raum frei“, fragte Mina?"
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD7C0KJ3BS7YNQ8ZFAM",
+          "slug": "d6-woertliche-rede-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-woertliche-rede"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was prüfst du bei einem in die wörtliche Rede eingeschobenen Begleitsatz?",
+          "concept": "Beide Kommas stehen außerhalb der Anführungszeichen. Prüfe außerdem, ob derselbe Redesatz weitergeht und der zweite Teil deshalb hier klein beginnen muss.",
+          "sample_solution": "Beide Kommas stehen außerhalb der Anführungszeichen. Prüfe außerdem, ob derselbe Redesatz weitergeht und der zweite Teil deshalb hier klein beginnen muss.",
+          "id": "01M78MVGD764PRJF6ESE2QB46C",
+          "slug": "d6-woertliche-rede-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-woertliche-rede"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD7HZHKGEDBJR4WXJRM",
+      "atom_uri": "urn:zam:atom:01M78MVGD7HZHKGEDBJR4WXJRM",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-kommas",
+      "title": "Kommas in Listen und Sätzen",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-kommas",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wo steht das notwendige erste Komma: „Wenn der Regen aufhört tragen wir Papier, Stifte und Kleber hinaus“?",
+          "concept": "Nach aufhört.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nach aufhört.",
+              "Nach und."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD73XYSAEP0028P35G2",
+          "slug": "d6-kommas-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-kommas"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum bestimmst du vor dem Kommasetzen die Satzstruktur?",
+          "concept": "So unterscheidest du Grenzen zwischen Haupt- und Nebensätzen, Hauptsatzverbindungen und bloße Aufzählungen, für die unterschiedliche Kommaregeln gelten.",
+          "sample_solution": "So unterscheidest du Grenzen zwischen Haupt- und Nebensätzen, Hauptsatzverbindungen und bloße Aufzählungen, für die unterschiedliche Kommaregeln gelten.",
+          "id": "01M78MVGD77F1XKA76Y3QTBCP5",
+          "slug": "d6-kommas-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-kommas"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD7800QRD3EEF0AZTBT",
+      "atom_uri": "urn:zam:atom:01M78MVGD7800QRD3EEF0AZTBT",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-woerterbuch",
+      "title": "Im Wörterbuch gezielt nachschlagen",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-woerterbuch",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Bedeutung von Schloss passt in „Sie kontrolliert das Schloss am Koffer“?",
+          "concept": "Eine Vorrichtung zum Verschließen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Vorrichtung zum Verschließen.",
+              "Ein herrschaftliches Gebäude."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD7NFHWV5ER30WF35D0",
+          "slug": "d6-woerterbuch-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-woerterbuch"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie nutzt du Wörterbuch und Thesaurus bei einer Textüberarbeitung?",
+          "concept": "Suche die richtige Grundform, wähle die zum Satz passende Bedeutung und prüfe vorgeschlagene Ersatzwörter auf Sinn, Grammatik und Sprachsituation.",
+          "sample_solution": "Suche die richtige Grundform, wähle die zum Satz passende Bedeutung und prüfe vorgeschlagene Ersatzwörter auf Sinn, Grammatik und Sprachsituation.",
+          "id": "01M78MVGD7W66596B188W2SFMH",
+          "slug": "d6-woerterbuch-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-woerterbuch"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD73W2P91HF7V3WW5F2",
+      "atom_uri": "urn:zam:atom:01M78MVGD73W2P91HF7V3WW5F2",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-fehlerkartei",
+      "title": "Aus Fehlern einen Übungsplan machen",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-fehlerkartei",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MVGD7800QRD3EEF0AZTBT",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Nach einer Artikelproben-Übung sinken Nomenfehler, Merkwortfehler bleiben gleich. Was folgt für den Plan?",
+          "concept": "Für Merkwörter eine passende zusätzliche Übung mit neuer Kontrolle planen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für Merkwörter eine passende zusätzliche Übung mit neuer Kontrolle planen.",
+              "Alle Schreibweisen gelten ab sofort als dauerhaft beherrscht."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD7M6HS48TPP3PF1C9T",
+          "slug": "d6-fehlerkartei-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-fehlerkartei"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie nutzt du einen Fehleranalysebogen zur Weiterplanung?",
+          "concept": "Ordne Fehler nach Art, vergleiche beobachtete Ergebnisse mit deinem Übungsziel und wähle für verbleibende Schwierigkeiten eine passende Strategie mit späterer Kontrolle.",
+          "sample_solution": "Ordne Fehler nach Art, vergleiche beobachtete Ergebnisse mit deinem Übungsziel und wähle für verbleibende Schwierigkeiten eine passende Strategie mit späterer Kontrolle.",
+          "id": "01M78MVGD70MCM9Q6AHMXSMCM7",
+          "slug": "d6-fehlerkartei-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-fehlerkartei"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD8P8T5ZZYA62887MK3",
+      "atom_uri": "urn:zam:atom:01M78MVGD8P8T5ZZYA62887MK3",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-praepositionen",
+      "title": "Präpositionen und Fälle passend verwenden",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-praepositionen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Form passt nach „mit“?",
+          "concept": "mit dem kleinen Hund",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "mit dem kleinen Hund",
+              "mit den kleinen Hund"
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD8VZ8N49WCT2FDCWEX",
+          "slug": "d6-praepositionen-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-praepositionen"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum heißt es „in der Tasche“, aber „in die Tasche“?",
+          "concept": "„In der Tasche“ bezeichnet hier einen Ort im Dativ; „in die Tasche“ bezeichnet ein Ziel im Akkusativ.",
+          "sample_solution": "„In der Tasche“ bezeichnet hier einen Ort im Dativ; „in die Tasche“ bezeichnet ein Ziel im Akkusativ.",
+          "id": "01M78MVGD8TRD87QKJ5D5Z89ER",
+          "slug": "d6-praepositionen-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-praepositionen"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD86QVZZR3GWRAPCW57",
+      "atom_uri": "urn:zam:atom:01M78MVGD86QVZZR3GWRAPCW57",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-zeitenfolge",
+      "title": "Vorher und nachher mit Zeitformen zeigen",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-zeitenfolge",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Handlung geschieht zuerst: „Als Ben am Tor ankam, hatte Mina den Schlüssel gefunden“?",
+          "concept": "Mina findet den Schlüssel.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mina findet den Schlüssel.",
+              "Ben kommt am Tor an."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD8KC575YNSTX58Y5JG",
+          "slug": "d6-zeitenfolge-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-zeitenfolge"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie bildest du Plusquamperfekt und Futur I?",
+          "concept": "Plusquamperfekt: hatte oder war plus Partizip Perfekt. Futur I: eine Form von werden plus Infinitiv.",
+          "sample_solution": "Plusquamperfekt: hatte oder war plus Partizip Perfekt. Futur I: eine Form von werden plus Infinitiv.",
+          "id": "01M78MVGD8GJ2XJ9TBVJWTRG29",
+          "slug": "d6-zeitenfolge-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-zeitenfolge"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD8FJGXPBXWRZJ1M7MT",
+      "atom_uri": "urn:zam:atom:01M78MVGD8FJGXPBXWRZJ1M7MT",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-aktiv-passiv",
+      "title": "Handelnde oder Vorgang hervorheben",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-aktiv-passiv",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MVGD86QVZZR3GWRAPCW57",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Schreiben"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Satz steht im Vorgangspassiv?",
+          "concept": "Die Bücher werden sortiert.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Bücher werden sortiert.",
+              "Die Kinder werden die Bücher sortieren."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD8K7CVTGA6GA6RQ7WM",
+          "slug": "d6-aktiv-passiv-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-aktiv-passiv"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie bildest du das Vorgangspassiv im Präsens?",
+          "concept": "Mit einer Präsensform von werden und dem Partizip Perfekt, zum Beispiel „Die Tür wird geöffnet“. Die handelnde Person kann mit von ergänzt werden.",
+          "sample_solution": "Mit einer Präsensform von werden und dem Partizip Perfekt, zum Beispiel „Die Tür wird geöffnet“. Die handelnde Person kann mit von ergänzt werden.",
+          "id": "01M78MVGD8KHQNGXZ2TPVE5R4T",
+          "slug": "d6-aktiv-passiv-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-aktiv-passiv"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD849FKPGH5JB5SQ1X6",
+      "atom_uri": "urn:zam:atom:01M78MVGD849FKPGH5JB5SQ1X6",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-satzverknuepfung",
+      "title": "Sätze nach ihrer Aufgabe verbinden",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-satzverknuepfung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Satz nennt eine Bedingung?",
+          "concept": "Wenn es trocken bleibt, lesen wir draußen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn es trocken bleibt, lesen wir draußen.",
+              "Weil es regnet, lesen wir drinnen."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD815KNBW9YP1P9RC89",
+          "slug": "d6-satzverknuepfung-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-satzverknuepfung"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Funktionen können Nebensätze mit weil, als und wenn haben?",
+          "concept": "Weil kann einen Grund nennen, als ein einmaliges vergangenes Geschehen zeitlich einordnen und wenn eine Bedingung ausdrücken.",
+          "sample_solution": "Weil kann einen Grund nennen, als ein einmaliges vergangenes Geschehen zeitlich einordnen und wenn eine Bedingung ausdrücken.",
+          "id": "01M78MVGD898CQJSYNJ00V0HY6",
+          "slug": "d6-satzverknuepfung-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-satzverknuepfung"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD8JKJ1XR691H62EQEG",
+      "atom_uri": "urn:zam:atom:01M78MVGD8JKJ1XR691H62EQEG",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-nominalisierung",
+      "title": "Nominalisierungen und Höflichkeitsanrede",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-nominalisierung",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MVGD8P8T5ZZYA62887MK3",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Fassung ist richtig?",
+          "concept": "Beim leisen Lesen entdecke ich etwas Neues.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beim leisen Lesen entdecke ich etwas Neues.",
+              "Beim leisen lesen entdecke ich etwas neues."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD8Y89B9X62P82PS7CM",
+          "slug": "d6-nominalisierung-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-nominalisierung"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Woran erkennst du eine Nominalisierung?",
+          "concept": "Ein Verb oder Adjektiv übernimmt die Funktion eines Nomens, oft erkennbar an Begleitern wie das, beim oder etwas: das Lesen, etwas Neues.",
+          "sample_solution": "Ein Verb oder Adjektiv übernimmt die Funktion eines Nomens, oft erkennbar an Begleitern wie das, beim oder etwas: das Lesen, etwas Neues.",
+          "id": "01M78MVGD8J0VBWC9K4JTT94TN",
+          "slug": "d6-nominalisierung-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-nominalisierung"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD87TCNXQPKTG7XA8VN",
+      "atom_uri": "urn:zam:atom:01M78MVGD87TCNXQPKTG7XA8VN",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-das-dass",
+      "title": "Das und dass mit Proben prüfen",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-das-dass",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MVGD849FKPGH5JB5SQ1X6",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Form passt: „Ich hoffe, … du kommst“?",
+          "concept": "dass",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "dass",
+              "das"
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD80JCE75J2M0D27G9D",
+          "slug": "d6-das-dass-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-das-dass"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie prüfst du die Schreibung von das und dass?",
+          "concept": "Das als Artikel oder Pronomen lässt sich häufig durch dieses, jenes oder welches ersetzen. Dass leitet als Konjunktion einen Nebensatz ein und lässt diese Ersatzprobe nicht zu.",
+          "sample_solution": "Das als Artikel oder Pronomen lässt sich häufig durch dieses, jenes oder welches ersetzen. Dass leitet als Konjunktion einen Nebensatz ein und lässt diese Ersatzprobe nicht zu.",
+          "id": "01M78MVGD83V5QG8YH2A44CY09",
+          "slug": "d6-das-dass-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-das-dass"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD8QAS2TETAA5X6XXJB",
+      "atom_uri": "urn:zam:atom:01M78MVGD8QAS2TETAA5X6XXJB",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-getrennt-zusammen",
+      "title": "Wortgruppen und Zusammensetzungen prüfen",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-getrennt-zusammen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Schreibung ist hier richtig?",
+          "concept": "Ich möchte Rad fahren.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ich möchte Rad fahren.",
+              "Ich möchte radfahren."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD8BNTETCQ918HJGAAT",
+          "slug": "d6-getrennt-zusammen-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-getrennt-zusammen"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie helfen Erweiterungs- und Umstellprobe bei einfachen Verbindungen?",
+          "concept": "Sie zeigen, ob ein Wort im Satz eigenständig gebraucht wird, etwa „mit dem Rad fahren“. Für unklare oder besondere Fälle hilft das Wörterbuch.",
+          "sample_solution": "Sie zeigen, ob ein Wort im Satz eigenständig gebraucht wird, etwa „mit dem Rad fahren“. Für unklare oder besondere Fälle hilft das Wörterbuch.",
+          "id": "01M78MVGD87QY4084H5X1PH57B",
+          "slug": "d6-getrennt-zusammen-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-getrennt-zusammen"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD8M1FMDQC9WBHMHZN5",
+      "atom_uri": "urn:zam:atom:01M78MVGD8M1FMDQC9WBHMHZN5",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-worttrennung",
+      "title": "Auch schwierige Trennstellen prüfen",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-worttrennung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Trennung ist zulässig?",
+          "concept": "Se-en",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Se-en",
+              "Se-e"
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD8737RNRBD0G1HSAK6",
+          "slug": "d6-worttrennung-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-worttrennung"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Sonderfälle prüfst du bei der Worttrennung?",
+          "concept": "Kein einzelner Vokalbuchstabe steht allein. Doppellaute bleiben zusammen. Gleiche Vokale werden nur an einer wirklichen Silbengrenze getrennt, etwa Se-en.",
+          "sample_solution": "Kein einzelner Vokalbuchstabe steht allein. Doppellaute bleiben zusammen. Gleiche Vokale werden nur an einer wirklichen Silbengrenze getrennt, etwa Se-en.",
+          "id": "01M78MVGD8Y4ZJ3ECTQ39XNEP7",
+          "slug": "d6-worttrennung-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-worttrennung"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD8YFV3A8E0D1JEPSF4",
+      "atom_uri": "urn:zam:atom:01M78MVGD8YFV3A8E0D1JEPSF4",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-medienvergleich",
+      "title": "Sprache und Wirkung in Medien vergleichen",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-medienvergleich",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Lesen und Medien"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum kann „Wir sammeln und sortieren die Bücher“ leichter verständlich sein als „Durchführung der Sortierung nach der Sammlung“?",
+          "concept": "Die Verben machen Handelnde und Schritte deutlicher.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Verben machen Handelnde und Schritte deutlicher.",
+              "Mehr Nomen machen jeden Text automatisch leichter."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD8JJ8TAVESCC12BCX1",
+          "slug": "d6-medienvergleich-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-medienvergleich"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Merkmale vergleichst du bei der Sprache von Hör- und Bild-Ton-Medien?",
+          "concept": "Wortwahl und Fachbegriffe, Satzarten, Verständlichkeit, Zusammenspiel von Bild und Ton sowie die beabsichtigte Wirkung.",
+          "sample_solution": "Wortwahl und Fachbegriffe, Satzarten, Verständlichkeit, Zusammenspiel von Bild und Ton sowie die beabsichtigte Wirkung.",
+          "id": "01M78MVGD80NYCG4PGC1BPA9XW",
+          "slug": "d6-medienvergleich-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-medienvergleich"
+        }
+      ]
+    },
+    {
+      "id": "01M78MVGD8VH9JNPHWRVG9GDYG",
+      "atom_uri": "urn:zam:atom:01M78MVGD8VH9JNPHWRVG9GDYG",
+      "namespace": "zam-academy-deutsch-mittelschule-6",
+      "slug": "d6-sprachen",
+      "title": "Fachbegriffe und Grußformeln vergleichen",
+      "domain": "deutsch/sprache",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-sprachen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "deutsch-mittelschule-6",
+          "topic_code": "sprache",
+          "topic_title": "Sprache und Rechtschreibung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Sprache und Rechtschreibung"
+        }
+      ],
+      "practice_items": [
+        {
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was erklärt „verdunsten“ im Sachfach?",
+          "concept": "Eine Flüssigkeit geht allmählich in den gasförmigen Zustand über.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Flüssigkeit geht allmählich in den gasförmigen Zustand über.",
+              "Wasser wird immer zu Eis."
+            ],
+            "correct_index": 0
+          },
+          "id": "01M78MVGD8JZXP7RNM2DM7DSZE",
+          "slug": "d6-sprachen-check",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-sprachen"
+        },
+        {
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was vergleichst du bei Grußformeln aus verschiedenen Sprachen?",
+          "concept": "Bedeutung, Form und Verwendungssituation, etwa Tageszeit und angesprochene Person; unbekannte Unterschiede prüfst du nach.",
+          "sample_solution": "Bedeutung, Form und Verwendungssituation, etwa Tageszeit und angesprochene Person; unbekannte Unterschiede prüfst du nach.",
+          "id": "01M78MVGD8GZ6WA8RZ747P2P51",
+          "slug": "d6-sprachen-recall",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/deutsch-mittelschule-6/#lesson=d6-sprachen"
+        }
+      ]
+    }
+  ]
+}

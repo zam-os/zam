@@ -36,19 +36,21 @@ import {
 // cards passes its history on; three (two of them Jahrgangsstufe 9 content)
 // stay active in libraries that hold them. See
 // tests/kernel/zam-academy-englisch-realschule-8-cell.test.ts.
+// Biologie 8, Deutsch 8, Französisch 8, Geographie 8 and Geschichte 8 school
+// cells moved to tests/fixtures/legacy/ alongside their ZAM Academy
+// successors. Two grade-8 school cells remain bundled.
 const RS8_CELL_IDS = [
-  "de-by:realschule-8-biologie-atmung-blutkreislauf",
-  "de-by:realschule-8-biologie-ernaehrung-verdauung",
   "de-by:realschule-8-bwr-erfolgskonten-guv-werkstoffe-rabatte",
-  "de-by:realschule-8-geschichte-aufklaerung-revolution-kaiserreich",
   "de-by:realschule-8-wirtschaft-recht-konsum-geld-jugend",
-  "de-by:realschule-8-geographie-tropen-regenwald-passat-wuesten",
-  "de-by:realschule-8-deutsch-begruendete-stellungnahme-eroerterung",
-  "de-by:realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive",
 ];
 const ACADEMY_RS8_IDS = [
+  "zam-academy:biologie-realschule-8",
   "zam-academy:chemie-realschule-8",
+  "zam-academy:deutsch-realschule-8",
   "zam-academy:englisch-realschule-8",
+  "zam-academy:franzoesisch-realschule-8",
+  "zam-academy:geographie-realschule-8",
+  "zam-academy:geschichte-realschule-8",
   "zam-academy:informatik-realschule-8",
   "zam-academy:mathematik-realschule-8",
   "zam-academy:physik-realschule-8",
@@ -112,14 +114,13 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
     expect(tile.atoms).toHaveLength(2);
   });
 
-  it("installs and enrols cleanly into Deutsch 8 Begründete Stellungnahme", async () => {
-    const user = "learner-rs8-deu";
-    const cellId =
-      "de-by:realschule-8-deutsch-begruendete-stellungnahme-eroerterung";
+  it("installs and enrols cleanly into Wirtschaft und Recht 8 Konsum und Geld", async () => {
+    const user = "learner-rs8-wur";
+    const cellId = "de-by:realschule-8-wirtschaft-recht-konsum-geld-jugend";
 
     const result = await enrolBundledCell(db, user, cellId);
     expect(result.success).toBe(true);
-    expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
+    expect(result.cardsCreated).toBe(8); // 4 atoms * 2 items
   });
 
   it("supports simultaneous co-enrolment in the remaining Grade 8 school cells without conflict", async () => {
@@ -132,12 +133,12 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
       totalCards += res.cardsCreated;
     }
 
-    // 4 cells * 8 + 4 cells * 4 = 32 + 16 = 48 cards
-    expect(totalCards).toBe(48);
+    // BwR 4 + Wirtschaft und Recht 8 = 12 cards
+    expect(totalCards).toBe(12);
 
     const cards = (await db
       .prepare(`SELECT COUNT(*) as count FROM cards WHERE user_id = ?`)
       .get(user)) as { count: number };
-    expect(cards.count).toBe(48);
+    expect(cards.count).toBe(12);
   });
 });

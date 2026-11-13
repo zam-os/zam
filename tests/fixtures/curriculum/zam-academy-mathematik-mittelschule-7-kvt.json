@@ -1,0 +1,4189 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:mathematik-mittelschule-7",
+  "version": "2026.11.1",
+  "title": "Mathematik 7 Mittelschule (ZAM Academy)",
+  "description": "Alle acht Lernbereiche der 7. Klasse Mittelschule in Bayern (Regelklasse R7 und M-Zug M7). 32 Lektionen mit Erklärungen, interaktiven Laboren, Aufgaben auf zwei Stufen und ZAM-Lernkarten.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-11-12T18:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/7/mathematik/regelklasse",
+      "checked": "2026-11-12",
+      "label": "M7 Regelklasse, LB 1–8"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/7/mathematik/mittlere-reife-klasse",
+      "checked": "2026-11-12",
+      "label": "M7 M-Zug, LB 1–8"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M78MFPKYJPSH8A5642G8ZKAC",
+      "atom_uri": "urn:zam:atom:01M78MFPKYJPSH8A5642G8ZKAC",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "pr-1-anteile-hundertstel",
+      "title": "Prozentsätze als Hundertstelbrüche",
+      "domain": "mathematik/prozentrechnung",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-1-anteile-hundertstel",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-1-prozent",
+          "topic_title": "Etappe 1: Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKYWYQ83EQPH8Y0HA18",
+          "slug": "ms7-prozent-hundertstel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-1-anteile-hundertstel",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "p/10 als Zehntelbruch",
+              "reason": "Prozent steht für von hundert (centum), nicht für Zehntel."
+            },
+            {
+              "text": "100/p als Kehrwertbruch",
+              "reason": "Der Nenner ist immer einhundert, p steht im Zähler."
+            }
+          ],
+          "question": "Was bedeutet die Angabe p % als Bruch geschrieben?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "p\\%=\\frac{p}{100}",
+              "speech": "p Prozent gleich p durch einhundert"
+            },
+            {
+              "type": "text",
+              "text": " als Hundertstel"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "p\\%=\\frac{p}{100}",
+                  "speech": "p Prozent gleich p durch einhundert"
+                },
+                {
+                  "type": "text",
+                  "text": " als Hundertstel"
+                }
+              ],
+              "p/10 als Zehntelbruch"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKY6MEYY1G8TM0ACWG7",
+          "slug": "ms7-bruch-auf-100",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-1-anteile-hundertstel",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Zähler und Nenner direkt addieren",
+              "reason": "Brüche vergleicht man durch Erweitern auf Hundertstel, nicht durch Addieren."
+            },
+            {
+              "text": "Nur den Zähler mit Prozent schreiben",
+              "reason": "Erst nach Erweitern auf Nenner 100 gibt der Zähler die Prozentzahl an."
+            }
+          ],
+          "question": "Wie wandelst du einen Bruch wie 7/20 sicher in Prozent um?",
+          "concept": "Auf Nenner 100 erweitern, Zähler ablesen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auf Nenner 100 erweitern, Zähler ablesen",
+              "Zähler und Nenner direkt addieren"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYTK9S0XQADGWHBZEZ",
+          "slug": "ms7-prozent-dezimal",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-1-anteile-hundertstel",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Beide meinen genau denselben Anteil vier",
+              "reason": "0,4 entspricht vier Zehnteln = 40/100, während 4 % nur 4/100 bedeutet."
+            },
+            {
+              "text": "0,4 sind vier Prozent, 4,0 vierzig Prozent",
+              "reason": "Die Zahl 1,00 entspricht 100 %, daher sind 0,4 gleich 40 %."
+            }
+          ],
+          "question": "Worin unterscheiden sich der Anteil 0,4 und die Angabe 4 %?",
+          "concept": "0,4 sind vierzig Prozent, 4 % vier Hundertstel",
+          "sample_solution": "1,00 = 100 %. Damit gilt 0,4 = 0,40 = 40/100 = 40 %. Hingegen ist 4 % = 4/100 = 0,04."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYCT5E60EK96A47C86",
+      "atom_uri": "urn:zam:atom:01M78MFPKYCT5E60EK96A47C86",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "pr-2-anteile-vergleichen",
+      "title": "Anteile mit Prozentsätzen vergleichen",
+      "domain": "mathematik/prozentrechnung",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-2-anteile-vergleichen",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYJPSH8A5642G8ZKAC",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-1-prozent",
+          "topic_title": "Etappe 1: Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKY2VV2BYFW0R0S549W",
+          "slug": "ms7-anteile-vergleichen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-2-anteile-vergleichen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Kleinere Gruppen werden pauschal verdoppelt",
+              "reason": "Statt Verdoppeln bezieht man jede Teilzahl auf die eigene Gesamtanzahl."
+            },
+            {
+              "text": "Höhere Trefferzahlen zählen automatisch doppelt",
+              "reason": "Entscheidend ist das relative Verhältnis zur Gesamtzahl, nicht eine Gewichtung."
+            }
+          ],
+          "question": "Warum reichen bloße Trefferzahlen bei ungleich großen Gruppen nicht aus?",
+          "concept": "Jede Teilzahl bezieht sich auf ihre Gesamtanzahl",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Jede Teilzahl bezieht sich auf ihre Gesamtanzahl",
+              "Kleinere Gruppen werden pauschal verdoppelt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYNE5ZX5K97HQ8VXZB",
+          "slug": "ms7-anteil-quote-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-2-anteile-vergleichen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "p = Gesamt/Teil·100 %",
+              "reason": "Der kleinere Teil gehört in den Zähler, die Gesamtzahl in den Nenner."
+            },
+            {
+              "text": "p = Gesamt − Teil",
+              "reason": "Die Differenz liefert nur den Rest, nicht das prozentuale Verhältnis."
+            }
+          ],
+          "question": "Wie berechnest du den Prozentsatz zum Vergleichen zweier Gruppen?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "p=\\frac{\\text{Teil}}{\\text{Gesamt}}\\cdot 100\\,\\%",
+              "speech": "Prozentsatz gleich Teil durch Gesamt mal einhundert Prozent"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "p=\\frac{\\text{Teil}}{\\text{Gesamt}}\\cdot 100\\,\\%",
+                  "speech": "Prozentsatz gleich Teil durch Gesamt mal einhundert Prozent"
+                }
+              ],
+              "p = Gesamt/Teil·100 %"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYAA0ZZD8Z1W4C2XS3",
+          "slug": "ms7-quote-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-2-anteile-vergleichen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Klasse 7b wegen mehr absoluter Treffer",
+              "reason": "Die 7b hatte auch mehr Versuche: 12/20 = 60 % liegt klar vor 15/30 = 50 %."
+            },
+            {
+              "text": "Beide gleichauf über zehn Treffern",
+              "reason": "Entscheidend ist der Prozentsatz pro Versuch, keine feste Mindestzahl."
+            }
+          ],
+          "question": "In der 7a treffen 12 von 20 Kindern, in der 7b 15 von 30 Kindern. Welche Klasse liegt vorn?",
+          "concept": "Klasse 7a mit 60 % vor 7b mit 50 %",
+          "sample_solution": "7a: 12/20 = 60/100 = 60 %. 7b: 15/30 = 1/2 = 50 %. Anteilsbezogen liegt die 7a vorn."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYPAHZ2H2356G8KSCK",
+      "atom_uri": "urn:zam:atom:01M78MFPKYPAHZ2H2356G8KSCK",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "pr-3-grundbegriffe-berechnen",
+      "title": "Grundwert, Prozentwert und Prozentsatz",
+      "domain": "mathematik/prozentrechnung",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-3-grundbegriffe-berechnen",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYCT5E60EK96A47C86",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-1-prozent",
+          "topic_title": "Etappe 1: Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKY4AQS9SVGZKA8N7FV",
+          "slug": "ms7-grundwert-bedeutung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-3-grundbegriffe-berechnen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Für den kleineren Teilbetrag der Aufgabe",
+              "reason": "Der Teilbetrag ist der Prozentwert P; der Grundwert bildet das Ganze."
+            },
+            {
+              "text": "Für die reine Prozentzahl ohne Einheit",
+              "reason": "Die Prozentzahl ist der Prozentsatz p, nicht die Ausgangsgröße selbst."
+            }
+          ],
+          "question": "Wofür steht der Grundwert G in einer Prozentaufgabe?",
+          "concept": "Für das Ganze und den Ausgangswert von 100 %",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für das Ganze und den Ausgangswert von 100 %",
+              "Für den kleineren Teilbetrag der Aufgabe"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYPCBM7FDYXQMEDA5D",
+          "slug": "ms7-prozentwert-faktor",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-3-grundbegriffe-berechnen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "P = 100 · p + G",
+              "reason": "Man vervielfacht den Grundwert G mit dem Hundertstelbruch p/100."
+            },
+            {
+              "text": "P = 200 · G − p",
+              "reason": "Prozentrechnung multipliziert mit Hundertsteln p/100 statt p abzuziehen."
+            }
+          ],
+          "question": "Wie berechnest du den Prozentwert P im M-Zug mit dem Faktor?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "P=G\\cdot \\frac{p}{100}",
+              "speech": "Prozentwert gleich Grundwert mal p durch einhundert"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "P=G\\cdot \\frac{p}{100}",
+                  "speech": "Prozentwert gleich Grundwert mal p durch einhundert"
+                }
+              ],
+              "P = 100 · p + G"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYX9GG8808FXZ7PJAE",
+          "slug": "ms7-grundwert-umkehrung",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-3-grundbegriffe-berechnen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Man berechnet 25 % von 60 € als 15 €",
+              "reason": "Die gegebenen 60 € sind schon 25 %, nicht das Ganze."
+            },
+            {
+              "text": "Man addiert 25 € auf die gegebenen 60 €",
+              "reason": "Prozentpunkte darf man niemals direkt als Eurobetrag addieren."
+            }
+          ],
+          "question": "25 % eines Preises betragen 60 €. Wie groß ist der Grundwert G?",
+          "concept": "Über 1 % gleich 2,40 € folgen 240 €",
+          "sample_solution": "Dreisatz: 25 % ≙ 60 € → 1 % ≙ 2,40 € → 100 % = 240 €. Faktorprobe: 60 : 0,25 = 240 €."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYDXT3ETPK13FZ45CR",
+      "atom_uri": "urn:zam:atom:01M78MFPKYDXT3ETPK13FZ45CR",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "pr-4-funktionale-zusammenhaenge",
+      "title": "Funktionale Zusammenhänge in der Prozentrechnung",
+      "domain": "mathematik/prozentrechnung",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-4-funktionale-zusammenhaenge",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYPAHZ2H2356G8KSCK",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-1-prozent",
+          "topic_title": "Etappe 1: Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKYYBKEHQ3TC6R5HCFH",
+          "slug": "ms7-prozent-linear-g",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-4-funktionale-zusammenhaenge",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Der Prozentwert P bleibt immer konstant",
+              "reason": "Da P = G · p/100 gilt, verdoppelt sich P zusammen mit G."
+            },
+            {
+              "text": "Der Prozentwert P wird dadurch halbiert",
+              "reason": "Bei doppelt so großem Ganzen wächst auch derselbe Prozentanteil aufs Doppelte."
+            }
+          ],
+          "question": "Was geschieht mit dem Prozentwert P, wenn sich der Grundwert G bei festem Prozentsatz verdoppelt?",
+          "concept": "Der Prozentwert P verdoppelt sich ebenso",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Prozentwert P verdoppelt sich ebenso",
+              "Der Prozentwert P bleibt immer konstant"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYYN2YF9XF43RQ0RHB",
+          "slug": "ms7-prozent-kompensieren",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-4-funktionale-zusammenhaenge",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Der Prozentsatz p % verdoppelt sich",
+              "reason": "Doppelter Grundwert und doppelter Satz würden den vierfachen Prozentwert ergeben."
+            },
+            {
+              "text": "Der Prozentsatz p % bleibt unverändert",
+              "reason": "Wächst nur das Ganze bei festem P, sinkt der Anteil p % auf die Hälfte."
+            }
+          ],
+          "question": "Der Grundwert G verdoppelt sich, der Prozentwert P soll gleich bleiben. Wie ändert sich p %?",
+          "concept": "Der Prozentsatz p % halbiert sich",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Prozentsatz p % halbiert sich",
+              "Der Prozentsatz p % verdoppelt sich"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYH9P0BENRCHKBR69C",
+          "slug": "ms7-prozent-ueberschlag",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-4-funktionale-zusammenhaenge",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Man rechnet grob 30 % als 70 € ohne den Rest",
+              "reason": "Aufteilen in 25 % + 10 % liefert ohne Mehraufwand exakt 84 €."
+            },
+            {
+              "text": "Man rundet direkt auf 50 % gleich 120 € auf",
+              "reason": "Zwischen 35 % und 50 % liegt zu viel Abweichung; 25 % + 10 % trifft genau."
+            }
+          ],
+          "question": "Wie zerlegst du 35 % von 240 € geschickt für den Überschlag?",
+          "concept": "In 25 % gleich 60 € plus 10 % gleich 24 € zu 84 €",
+          "sample_solution": "Weil P linear von p abhängt, gilt P(35 %) = P(25 %) + P(10 %) = 60 € + 24 € = 84 €."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYBZFBY90DF99SH9W7",
+      "atom_uri": "urn:zam:atom:01M78MFPKYBZFBY90DF99SH9W7",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "pr-5-mischungen-beruf",
+      "title": "Mischungsverhältnisse & Berufsaufgaben",
+      "domain": "mathematik/prozentrechnung",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-5-mischungen-beruf",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYDXT3ETPK13FZ45CR",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-1-prozent",
+          "topic_title": "Etappe 1: Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKY84BNRCEBRAA25QTJ",
+          "slug": "ms7-mischung-grundwert",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-5-mischungen-beruf",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Nur die größere Wassermenge von 850 g",
+              "reason": "Prozentanteile einer Mischung beziehen sich auf die komplette Gesamtlösung."
+            },
+            {
+              "text": "Nur die kleinere Salzmenge von 150 g",
+              "reason": "Ein einzelner Stoff kann nicht allein 100 % der gesamten Mischung sein."
+            }
+          ],
+          "question": "Was bildet den Grundwert G, wenn 150 g Salz mit 850 g Wasser gemischt werden?",
+          "concept": "Die Gesamtmasse beider Teile von 1 000 g",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Gesamtmasse beider Teile von 1 000 g",
+              "Nur die größere Wassermenge von 850 g"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYKN9P34W123DKBM5T",
+          "slug": "ms7-verschnitt-rest",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-5-mischungen-beruf",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Genau 15 % der Stange als nutzbarer Rest",
+              "reason": "15 % gehen als Abfall verloren; nutzbar bleibt 100 % minus 15 % = 85 %."
+            },
+            {
+              "text": "Insgesamt 115 % durch das zusätzliche Sägen",
+              "reason": "Verschnitt verringert die brauchbare Länge, statt sie zu vergrößern."
+            }
+          ],
+          "question": "Bei einer Metallstange fallen 15 % Verschnitt ab. Welcher Anteil bleibt nutzbar?",
+          "concept": "Genau 85 % der ursprünglichen Gesamtlänge",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau 85 % der ursprünglichen Gesamtlänge",
+              "Genau 15 % der Stange als nutzbarer Rest"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYHKMPR61YR1FHPRY4",
+          "slug": "ms7-mischung-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-5-mischungen-beruf",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "2 von 6 Teilen sind rund 33 % Betonanteil",
+              "reason": "Insgesamt entstehen 2 + 6 = 8 Teile; 2 von 8 ergibt genau ein Viertel."
+            },
+            {
+              "text": "2 Teile von 10 entsprechen einfach 20 %",
+              "reason": "In der Mischung gibt es acht Teile zusammen, keine zehn Teile."
+            }
+          ],
+          "question": "2 Teile Betonmischung und 6 Teile Kies werden gemischt. Wie viel Prozent hat der erste Anteil?",
+          "concept": "2 von 8 Gesamtteilen entsprechen genau 25 %",
+          "sample_solution": "Gesamtteile G = 2 + 6 = 8 Teile. Anteil des Betons: 2/8 = 1/4 = 25/100 = 25 %."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYAJJG5KXFRH4MGJ3X",
+      "atom_uri": "urn:zam:atom:01M78MFPKYAJJG5KXFRH4MGJ3X",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "pr-6-prozentdiagramme",
+      "title": "Prozentsätze in Diagrammen",
+      "domain": "mathematik/prozentrechnung",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-6-prozentdiagramme",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYBZFBY90DF99SH9W7",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-1-prozent",
+          "topic_title": "Etappe 1: Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKYRAZGK8MCTNT8SYHA",
+          "slug": "ms7-kreisdiagramm-grad",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-6-prozentdiagramme",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Genau 10° durch das Zehnersystem",
+              "reason": "Der Vollkreis misst 360°, also erhält jedes Prozent 360° : 100 = 3,6°."
+            },
+            {
+              "text": "Genau 1° wie die reine Prozentzahl",
+              "reason": "Prozentzahlen laufen bis 100, der Vollkreis umfasst jedoch 360°."
+            }
+          ],
+          "question": "Wie viele Grad des Vollkreises entsprechen im Kreisdiagramm genau 1 %?",
+          "concept": "Genau 3,6° aus 360° durch 100",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau 3,6° aus 360° durch 100",
+              "Genau 10° durch das Zehnersystem"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYK968N9W7WKHQ0AQF",
+          "slug": "ms7-streifendiagramm-summe",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-6-prozentdiagramme",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Immer genau 360 % analog zum Kreis",
+              "reason": "360° gehört als Winkelmaß zum Kreis; ein Streifen stellt genau 100 % dar."
+            },
+            {
+              "text": "Frei zwischen 50 % und 80 % je nach Aufgabe",
+              "reason": "Ein vollständiges Ganzes umfasst in Prozent immer genau 100 %."
+            }
+          ],
+          "question": "Welche Summe ergeben alle Felder eines vollständigen Streifendiagramms?",
+          "concept": "Genau 100 % der gesamten Streifenlänge",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau 100 % der gesamten Streifenlänge",
+              "Immer genau 360 % analog zum Kreis"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKY9Y3GNXY4TDF01JVV",
+          "slug": "ms7-diagramm-kritik-7",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pr-6-prozentdiagramme",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Direkt 20° entsprechend den zwanzig Prozent",
+              "reason": "20 % misst man nicht 1 : 1 als Gradzahl, sondern 20 · 3,6° = 72°."
+            },
+            {
+              "text": "Genau 288° entsprechend der Summe 80 %",
+              "reason": "80 % beschreibt die bereits gezeichneten Felder, nicht den verbleibenden Rest."
+            }
+          ],
+          "question": "Im Kreisdiagramm fehlen nach 45 % und 35 % noch ein Restfeld. Welchen Winkel misst es?",
+          "concept": "Rest 20 % ergibt mal 3,6° genau 72°",
+          "sample_solution": "Restanteil: 100 % − (45 % + 35 %) = 20 %. Sektorwinkel: 20 · 3,6° = 72°."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYZC28BJ7FPCHE0PDG",
+      "atom_uri": "urn:zam:atom:01M78MFPKYZC28BJ7FPCHE0PDG",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "rz-1-zahlengerade-modelle",
+      "title": "Zahlengerade & Pfeilmodelle",
+      "domain": "mathematik/rationale-zahlen",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-1-zahlengerade-modelle",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-2-rationale",
+          "topic_title": "Etappe 2: Rationale Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb2",
+          "topic_title": "Rationale Zahlen – Rechenregeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb2",
+          "topic_title": "Rationale Zahlen – Rechenregeln"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKY5VJE3XSE483SG8DZ",
+          "slug": "ms7-pfeilrichtung-zahlengerade",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-1-zahlengerade-modelle",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Nach rechts in Richtung größerer Zahlen",
+              "reason": "Nach rechts zeigen positive Pfeile; negative Pfeile weisen stets nach links."
+            },
+            {
+              "text": "Senkrecht nach oben über den Startpunkt",
+              "reason": "Die Zahlengerade verläuft waagrecht von kleinen Zahlen links zu großen rechts."
+            }
+          ],
+          "question": "In welche Richtung zeigt auf einer waagrechten Zahlengeraden ein negativer Pfeil?",
+          "concept": "Nach links in Richtung kleinerer Zahlen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nach links in Richtung kleinerer Zahlen",
+              "Nach rechts in Richtung größerer Zahlen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKY84154CKYFRA6Z36E",
+          "slug": "ms7-gegenzahl-subtraktion",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-1-zahlengerade-modelle",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Man kehrt das Endergebnis einfach ins Negative um",
+              "reason": "Nicht das Ergebnis wird umgedreht, sondern der zweite Pfeil in seine Gegenzahl."
+            },
+            {
+              "text": "Man addiert immer beide Beträge ganz ohne Vorzeichen",
+              "reason": "Ungleiche Pfeilrichtungen heben sich teilweise gegenseitig auf."
+            }
+          ],
+          "question": "Wie ersetzt du das Subtrahieren einer rationalen Zahl durch Addition?",
+          "concept": "Man addiert einfach die Gegenzahl des Subtrahenden",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Man addiert einfach die Gegenzahl des Subtrahenden",
+              "Man kehrt das Endergebnis einfach ins Negative um"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYFC0FDMQ1VNDAYDFT",
+          "slug": "ms7-zahlengerade-kontext",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-1-zahlengerade-modelle",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Nur +2 °C wegen 5 minus 3 Grad",
+              "reason": "Erst steigen 5 °C bis 0 °C, danach noch 3 °C weiter auf +3 °C."
+            },
+            {
+              "text": "Genau −8 °C wegen der Startkälte minus 5",
+              "reason": "Weil es mittags wärmer wird, ist die Temperaturänderung positiv."
+            }
+          ],
+          "question": "Morgens hat es −5 °C, mittags +3 °C. Welchen Anstieg zeigt das Pfeilmodell?",
+          "concept": "Von −5 bis +3 liegt ein Anstieg um +8 °C",
+          "sample_solution": "Änderung = Endwert − Startwert = 3 − (−5) = 3 + 5 = +8 °C."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYS4470CJQP3V62S2E",
+      "atom_uri": "urn:zam:atom:01M78MFPKYS4470CJQP3V62S2E",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "rz-2-addition-subtraktion",
+      "title": "Addition & Subtraktion in ℚ",
+      "domain": "mathematik/rationale-zahlen",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-2-addition-subtraktion",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYZC28BJ7FPCHE0PDG",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-2-rationale",
+          "topic_title": "Etappe 2: Rationale Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb2",
+          "topic_title": "Rationale Zahlen – Rechenregeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb2",
+          "topic_title": "Rationale Zahlen – Rechenregeln"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKYQ8H29XVK06SEK0FK",
+          "slug": "ms7-klammer-zeichen-gleich",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-2-addition-subtraktion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Es bleibt ein Minuszeichen wie bei a − b",
+              "reason": "Zwei gleiche Minuszeichen direkt nacheinander werden zu Plus."
+            },
+            {
+              "text": "Der komplette Ausdruck wird sofort null",
+              "reason": "Nur Gegenzahlen heben sich zu null auf, nicht jede Minusklammer."
+            }
+          ],
+          "question": "Welches Rechenzeichen entsteht beim Auflösen von a − (−b)?",
+          "concept": "Es entsteht ein Pluszeichen wie bei a + b",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es entsteht ein Pluszeichen wie bei a + b",
+              "Es bleibt ein Minuszeichen wie bei a − b"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYE07SFCSGWJ02579E",
+          "slug": "ms7-klammer-zeichen-ungleich",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-2-addition-subtraktion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Es entsteht ein Pluszeichen wie bei a + b",
+              "reason": "Neue Schulden hinzubuchen verringert das Guthaben, also Minus."
+            },
+            {
+              "text": "Man teilt den Wert durch b als Quotient",
+              "reason": "Klammerzeichen beeinflussen nur Strichrechnung, keine Division."
+            }
+          ],
+          "question": "Welches Rechenzeichen entsteht beim Auflösen von a + (−b)?",
+          "concept": "Es entsteht ein Minuszeichen wie bei a − b",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es entsteht ein Minuszeichen wie bei a − b",
+              "Es entsteht ein Pluszeichen wie bei a + b"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYT027MV9PTQR24SPS",
+          "slug": "ms7-rationale-subtraktion-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-2-addition-subtraktion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Beide Minusbeträge addieren sich zu −10,50 €",
+              "reason": "Man nimmt Schulden weg statt neue hinzuzufügen: −(−6) wirkt wie +6."
+            },
+            {
+              "text": "Die bloße Differenz liefert genau −1,50 €",
+              "reason": "Da 6,00 € mehr erlassen werden als 4,50 € Schulden bestanden, bleibt +1,50 €."
+            }
+          ],
+          "question": "Erkläre an Schulden, warum (−4,5) − (−6,0) gleich +1,5 ergibt.",
+          "concept": "Von 4,50 € Schulden 6 € erlassen bringt +1,50 €",
+          "sample_solution": "−4,5 − (−6,0) = −4,5 + 6,0 = +1,5."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYHZ9HZ4C0YAKHFKX2",
+      "atom_uri": "urn:zam:atom:01M78MFPKYHZ9HZ4C0YAKHFKX2",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "rz-3-multiplikation-division",
+      "title": "Multiplikation & Division in ℚ",
+      "domain": "mathematik/rationale-zahlen",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-3-multiplikation-division",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYS4470CJQP3V62S2E",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-2-rationale",
+          "topic_title": "Etappe 2: Rationale Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb2",
+          "topic_title": "Rationale Zahlen – Rechenregeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb2",
+          "topic_title": "Rationale Zahlen – Rechenregeln"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKYWT535E9HC9YM3178",
+          "slug": "ms7-mal-gleiche-vorzeichen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-3-multiplikation-division",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Immer negativ minus bei beteiligten Minuszeichen",
+              "reason": "Minus mal Minus bzw. Minus geteilt durch Minus ergibt Plus."
+            },
+            {
+              "text": "Immer genau null bei negativen Vorzeichen",
+              "reason": "Ein Produkt wird nur null, wenn mindestens ein Faktor null ist."
+            }
+          ],
+          "question": "Welches Vorzeichen hat das Produkt zweier Faktoren mit gleichem Vorzeichen?",
+          "concept": "Immer positiv plus, auch bei zweimal minus",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Immer positiv plus, auch bei zweimal minus",
+              "Immer negativ minus bei beteiligten Minuszeichen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKY0E08QA86JK602A9C",
+          "slug": "ms7-mal-ungleiche-vorzeichen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-3-multiplikation-division",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Das Vorzeichen des betragsgrößeren Faktors",
+              "reason": "Der Betragsvergleich gilt beim Addieren/Subtrahieren, nicht bei Punktrechnung."
+            },
+            {
+              "text": "Immer positiv bei erstem positiven Faktor",
+              "reason": "Die Reihenfolge spielt keine Rolle; verschiedene Zeichen ergeben immer Minus."
+            }
+          ],
+          "question": "Welches Vorzeichen hat Produkt oder Quotient bei ungleichen Vorzeichen?",
+          "concept": "Immer negativ minus für beide Kombinationen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Immer negativ minus für beide Kombinationen",
+              "Das Vorzeichen des betragsgrößeren Faktors"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYX3ANDDVYMKV18KKF",
+          "slug": "ms7-aufgabenreihe-begruendung",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-3-multiplikation-division",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Beide Minuszeichen werden willkürlich gestrichen",
+              "reason": "Die Reihe zeigt eine regelmäßige Zunahme um +3 bei jedem Schritt."
+            },
+            {
+              "text": "Man teilt einfach die Zahlen 6 durch minus 2",
+              "reason": "Die Multiplikationsregel wird über schrittweises Weiterführen um +3 begründet."
+            }
+          ],
+          "question": "Wie beweist eine Aufgabenreihe das Ergebnis (−2) · (−3) = +6?",
+          "concept": "Jeder Schritt abwärts erhöht den Wert um +3",
+          "sample_solution": "1·(−3) = −3, 0·(−3) = 0 (+3), (−1)·(−3) = +3 (+3), (−2)·(−3) = +6."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYBWTAQ61T18DJR890",
+      "atom_uri": "urn:zam:atom:01M78MFPKYBWTAQ61T18DJR890",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "rz-4-rechenregeln-vorteilhaft",
+      "title": "Vorteilhaft rechnen & Überschlag in ℚ",
+      "domain": "mathematik/rationale-zahlen",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-4-rechenregeln-vorteilhaft",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYHZ9HZ4C0YAKHFKX2",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-2-rationale",
+          "topic_title": "Etappe 2: Rationale Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb2",
+          "topic_title": "Rationale Zahlen – Rechenregeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb2",
+          "topic_title": "Rationale Zahlen – Rechenregeln"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKY9FWWYZCFNDBDJTWX",
+          "slug": "ms7-rechenreihenfolge-q",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-4-rechenregeln-vorteilhaft",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Immer streng von links nach rechts rechnen",
+              "reason": "Punktrechnung und Klammern haben stets Vorrang vor Strichrechnung."
+            },
+            {
+              "text": "Strichrechnung noch vor Klammern lösen",
+              "reason": "Auch mit negativen Zahlen gilt zuerst Klammer, dann Punkt, zuletzt Strich."
+            }
+          ],
+          "question": "Welche Vorrangregel gilt beim Rechnen mit negativen rationalen Zahlen?",
+          "concept": "Klammer vor Punkt vor Strich",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Klammer vor Punkt vor Strich",
+              "Immer streng von links nach rechts rechnen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKY08SMB2ZEAC2EQP9W",
+          "slug": "ms7-division-bruch-kehrwert",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-4-rechenregeln-vorteilhaft",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Durch Zähler teilen, Nenner ignorieren",
+              "reason": "Man dreht den gesamten Divisor-Bruch um und multipliziert damit."
+            },
+            {
+              "text": "Beim Umdrehen das Minuszeichen löschen",
+              "reason": "Das Vorzeichen des Bruches bleibt auch beim Kehrwert erhalten."
+            }
+          ],
+          "question": "Wie teilst du eine rationale Zahl durch einen Bruch?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Mit Kehrwert multiplizieren: "
+            },
+            {
+              "type": "math",
+              "tex": "a:\\frac{z}{n}=a\\cdot\\frac{n}{z}",
+              "speech": "a geteilt durch z durch n gleich a mal n durch z"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "text",
+                  "text": "Mit Kehrwert multiplizieren: "
+                },
+                {
+                  "type": "math",
+                  "tex": "a:\\frac{z}{n}=a\\cdot\\frac{n}{z}",
+                  "speech": "a geteilt durch z durch n gleich a mal n durch z"
+                }
+              ],
+              "Durch Zähler teilen, Nenner ignorieren"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYJDADZCW2NJCB8FSJ",
+          "slug": "ms7-vorteilhaft-paare",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=rz-4-rechenregeln-vorteilhaft",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Erst −7,3 mit 2,5 schriftlich multiplizieren",
+              "reason": "Das Kommutativgesetz liefert über (−4) · 2,5 sofort die leichte Zehnerzahl −10."
+            },
+            {
+              "text": "7,3 auf 7 abrunden für das Ergebnis 70",
+              "reason": "Durch geschicktes Vertauschen findet man exakt +73 ganz ohne Runden."
+            }
+          ],
+          "question": "Wie berechnest du (−4) · (−7,3) · 2,5 geschickt im Kopf?",
+          "concept": "Erst −4 mal 2,5 gleich −10, dann mal −7,3",
+          "sample_solution": "Kommutativgesetz: (−4 · 2,5) · (−7,3) = (−10) · (−7,3) = +73."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYDW014PEC9YBY27TM",
+      "atom_uri": "urn:zam:atom:01M78MFPKYDW014PEC9YBY27TM",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "ge-1-senkrechte-abstand",
+      "title": "Mittelsenkrechte & Abstände",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-1-senkrechte-abstand",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-3-geometrie",
+          "topic_title": "Etappe 3: Geometrie & Prismen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKYEJ9Q163T7HGGBS74",
+          "slug": "ms7-mittelsenkrechte-eigenschaft",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-1-senkrechte-abstand",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Sie schließen mit A und B einen 60°-Winkel ein",
+              "reason": "Die Mittelsenkrechte steht im 90°-Winkel senkrecht mitten auf AB."
+            },
+            {
+              "text": "Sie liegen immer deutlich näher an A als an B",
+              "reason": "Durch Symmetrie ist der Abstand zu A für jeden Punkt genau gleich groß wie zu B."
+            }
+          ],
+          "question": "Welche Lageeigenschaft besitzen alle Punkte auf der Mittelsenkrechten von AB?",
+          "concept": "Sie sind zu A und B genau gleich weit entfernt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie sind zu A und B genau gleich weit entfernt",
+              "Sie schließen mit A und B einen 60°-Winkel ein"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYYK97B1GSAWWHF993",
+          "slug": "ms7-abstand-punkt-gerade",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-1-senkrechte-abstand",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Entlang einer beliebigen schrägen Verbindungslinie",
+              "reason": "Jede schräge Verbindung ist länger; nur das 90°-Lot liefert den Abstand."
+            },
+            {
+              "text": "Als waagrechte Distanz parallel zum Blattrand",
+              "reason": "Nur bei senkrechter Gerade g fiele waagrecht mit dem Lot zusammen."
+            }
+          ],
+          "question": "Wie misst man den Abstand eines Punktes P zu einer Geraden g?",
+          "concept": "Entlang der Senkrechten vom Punkt auf die Gerade",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Entlang der Senkrechten vom Punkt auf die Gerade",
+              "Entlang einer beliebigen schrägen Verbindungslinie"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYFAB2H3X9MFDMD0K5",
+          "slug": "ms7-mittelsenkrechte-anwendung",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-1-senkrechte-abstand",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Auf einem kleinen Kreis eng um Hütte A",
+              "reason": "Alle Punkte auf diesem Kreis liegen zu nahe an A und zu weit von B."
+            },
+            {
+              "text": "Auf der Verlängerung hinter Hütte B",
+              "reason": "Dort wäre der Brunnen immer näher an B als an A."
+            }
+          ],
+          "question": "Wo liegt ein Brunnen mit exakt gleichem Weg zu zwei Hütten A und B?",
+          "concept": "Auf der Mittelsenkrechten der Strecke AB",
+          "sample_solution": "Alle Punkte mit |PA| = |PB| bilden die Mittelsenkrechte m_AB."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYS4GEFD4P8JV6Y8DF",
+      "atom_uri": "urn:zam:atom:01M78MFPKYS4GEFD4P8JV6Y8DF",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "ge-2-winkelhalbierende",
+      "title": "Winkelhalbierende konstruieren",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-2-winkelhalbierende",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYDW014PEC9YBY27TM",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-3-geometrie",
+          "topic_title": "Etappe 3: Geometrie & Prismen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKY3929ZY21CS5Q0BHR",
+          "slug": "ms7-winkelhalbierende-def",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-2-winkelhalbierende",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Sie steht immer senkrecht auf beiden Schenkeln",
+              "reason": "Senkrecht auf Schenkeln steht sie nur bei einem gestreckten 180°-Winkel."
+            },
+            {
+              "text": "Sie halbiert bloß die gezeichneten Strichlängen",
+              "reason": "Schenkel sind unbegrenzte Strahlen; geteilt wird allein die Winkelweite."
+            }
+          ],
+          "question": "Was leistet die Winkelhalbierende w_α eines Winkels α?",
+          "concept": "Sie teilt α in zwei exakt gleich große Teilwinkel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie teilt α in zwei exakt gleich große Teilwinkel",
+              "Sie steht immer senkrecht auf beiden Schenkeln"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKY6MJC7KSWH30PGA9H",
+          "slug": "ms7-winkelhalbierende-abstand",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-2-winkelhalbierende",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Doppelter Abstand zum Scheitel als zum Rand",
+              "reason": "Gemeint sind die beiden Lote zu den Winkelschenkeln — diese sind gleich lang."
+            },
+            {
+              "text": "Nur genau ein Kreuzungspunkt hat gleichen Abstand",
+              "reason": "Jeder einzelne Punkt entlang der Winkelhalbierenden liegt zu beiden Schenkeln gleich weit."
+            }
+          ],
+          "question": "Welcher Abstands-Zusammenhang gilt auf der Winkelhalbierenden?",
+          "concept": "Gleicher senkrechter Abstand zu beiden Schenkeln",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gleicher senkrechter Abstand zu beiden Schenkeln",
+              "Doppelter Abstand zum Scheitel als zum Rand"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKY46V7XJYRZD6451ZG",
+          "slug": "ms7-winkelhalbierende-konstruktion",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-2-winkelhalbierende",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Kreis um Schenkelende schlägt direkt durch S",
+              "reason": "Schenkel haben kein festes Ende — der erste Zirkelstich liegt stets im Scheitel S."
+            },
+            {
+              "text": "Schenkel verbinden und die Strecke halbieren",
+              "reason": "Bei verschieden langen Schenkelmarken träfe die Streckenmitte den Winkel nicht mittig."
+            }
+          ],
+          "question": "Wie konstruierst du die Winkelhalbierende mit dem Zirkel?",
+          "concept": "Bogen um Scheitel, zwei gleiche Bögen schneiden",
+          "sample_solution": "1. Bogen um S → P₁, P₂ auf den Schenkeln. 2. Gleicher Radius um P₁, P₂ → K. 3. Strahl SK = w_α."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYMHSXW44H8NPQQZYT",
+      "atom_uri": "urn:zam:atom:01M78MFPKYMHSXW44H8NPQQZYT",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "ge-3-massstab-koordinaten",
+      "title": "Maßstab & Koordinatensystem",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-3-massstab-koordinaten",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYDW014PEC9YBY27TM",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-3-geometrie",
+          "topic_title": "Etappe 3: Geometrie & Prismen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKY9VYVY8K02ZBX0SW6",
+          "slug": "ms7-massstab-verkleinerung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-3-massstab-koordinaten",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "1 cm Karte entspricht exakt 25 km Wirklichkeit",
+              "reason": "25 000 cm : 100 = 250 m = 0,25 km, nicht 25 km."
+            },
+            {
+              "text": "Die Karte zeigt das Bild 25 000-mal vergrößert",
+              "reason": "Steht links die 1 und rechts eine große Zahl, wird verkleinert."
+            }
+          ],
+          "question": "Was bedeutet der Kartenmaßstab 1 : 25 000?",
+          "concept": "1 cm Karte entspricht 25 000 cm gleich 250 m echt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1 cm Karte entspricht 25 000 cm gleich 250 m echt",
+              "1 cm Karte entspricht exakt 25 km Wirklichkeit"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKY33ZGQ5T07SD5XJHB",
+          "slug": "ms7-massstab-vergroesserung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-3-massstab-koordinaten",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Eine Verkleinerung des Objekts aufs Fünftel",
+              "reason": "Steht die größere Zahl 5 links, wird fünfmal größer gezeichnet."
+            },
+            {
+              "text": "Die Figur besitzt genau fünf Quadratzentimeter",
+              "reason": "Maßstäbe vergleichen Längenverhältnisse, keine festen Flächenwerte."
+            }
+          ],
+          "question": "Was drückt ein technischer Maßstab wie 5 : 1 aus?",
+          "concept": "5 cm Zeichnung entsprechen 1 cm Originalgröße",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "5 cm Zeichnung entsprechen 1 cm Originalgröße",
+              "Eine Verkleinerung des Objekts aufs Fünftel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKY4ZCP4BCX13AXE829",
+          "slug": "ms7-massstab-karte-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-3-massstab-koordinaten",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "30 000 cm ergeben umgerechnet genau 0,3 km",
+              "reason": "6 · 50 000 liefert dreihunderttausend Zentimeter mit fünf Nullen = 3 km."
+            },
+            {
+              "text": "Durch Faktor 10 000 ergeben sich glatt 30 km",
+              "reason": "Zwischen cm und km liegt der Faktor 100 · 1 000 = 100 000."
+            }
+          ],
+          "question": "Auf der Karte 1 : 50 000 misst ein Weg 6 cm. Wie lang ist er real?",
+          "concept": "300 000 cm ergeben umgerechnet genau 3 km",
+          "sample_solution": "6 cm · 50 000 = 300 000 cm = 3 000 m = 3 km."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYFBXSX0H0SZHDZVVY",
+      "atom_uri": "urn:zam:atom:01M78MFPKYFBXSX0H0SZHDZVVY",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "ge-4-dreiecke-einteilung",
+      "title": "Dreiecke einteilen & beschriften",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-4-dreiecke-einteilung",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYMHSXW44H8NPQQZYT",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-3-geometrie",
+          "topic_title": "Etappe 3: Geometrie & Prismen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKYF5YVFHVNYVD7R5DK",
+          "slug": "ms7-dreieck-beschriftung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-4-dreiecke-einteilung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die Seiten stehen im Uhrzeigersinn neben dem Punkt",
+              "reason": "Seite a liegt immer exakt gegenüber von Eckpunkt A, b gegenüber B, c gegenüber C."
+            },
+            {
+              "text": "Die längste Seite erhält immer den Namen a",
+              "reason": "Der Buchstabe folgt der gegenüberliegenden Ecke, unabhängig von der Länge."
+            }
+          ],
+          "question": "Wie liegen Ecken und Seiten in einem richtig beschrifteten Dreieck?",
+          "concept": "Jede Seite liegt ihrem gleichnamigen Eck gegenüber",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Jede Seite liegt ihrem gleichnamigen Eck gegenüber",
+              "Die Seiten stehen im Uhrzeigersinn neben dem Punkt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYKX3SVVE23WHK5VSX",
+          "slug": "ms7-dreieck-gleichschenklig",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-4-dreiecke-einteilung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Alle drei Innenwinkel mit jeweils 60 Grad",
+              "reason": "Drei gleiche 60°-Winkel besitzt nur das gleichseitige Dreieck."
+            },
+            {
+              "text": "Mindestens ein Innenwinkel mit genau 90 Grad",
+              "reason": "Gleichschenklige Dreiecke können spitz-, recht- oder stumpfwinklig sein."
+            }
+          ],
+          "question": "Welche Winkel sind in jedem gleichschenkligen Dreieck gleich groß?",
+          "concept": "Die beiden Basiswinkel an der Grundseite",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die beiden Basiswinkel an der Grundseite",
+              "Alle drei Innenwinkel mit jeweils 60 Grad"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKY0JHSP6AFPB6WKV80",
+          "slug": "ms7-dreieck-spitze-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-4-dreiecke-einteilung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Beide Basiswinkel sind wie oben genau 70° groß",
+              "reason": "Drei 70°-Winkel ergäben zusammen 210° statt 180°."
+            },
+            {
+              "text": "Jeder Basiswinkel misst volle 110 Grad",
+              "reason": "110° ist noch die Restsumme für beide Basiswinkel zusammen."
+            }
+          ],
+          "question": "Ein gleichschenkliges Dreieck hat den Spitzenwinkel 70°. Wie groß ist ein Basiswinkel?",
+          "concept": "Von 180° bleiben 110°, geteilt durch 2 sind 55°",
+          "sample_solution": "(180° − 70°) : 2 = 110° : 2 = 55°."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYAK8XJRWZYPMHAKMT",
+      "atom_uri": "urn:zam:atom:01M78MFPKYAK8XJRWZYPMHAKMT",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "ge-5-dreieck-konstruktion",
+      "title": "Dreiecke konstruieren (sss, sws, wsw)",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-5-dreieck-konstruktion",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYFBXSX0H0SZHDZVVY",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-3-geometrie",
+          "topic_title": "Etappe 3: Geometrie & Prismen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKYT235AE4DWMW013MC",
+          "slug": "ms7-dreiecksungleichung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-5-dreieck-konstruktion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Wenn mindestens zwei Winkel unter neunzig Grad bleiben",
+              "reason": "Auch bei stumpfen Winkeln entscheidet die Dreiecksungleichung der drei Längen."
+            },
+            {
+              "text": "Solange jede einzelne Seite kürzer als zwanzig Zentimeter ist",
+              "reason": "Die Seiten 2 cm, 3 cm und 8 cm sind alle kurz, schließen aber kein Dreieck."
+            }
+          ],
+          "question": "Wann lassen sich drei Seitenlängen a, b, c zu einem Dreieck zeichnen?",
+          "concept": "Je zwei Seiten sind zusammen länger als die dritte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Je zwei Seiten sind zusammen länger als die dritte",
+              "Wenn mindestens zwei Winkel unter neunzig Grad bleiben"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYKHENXCQSZFHK0KZE",
+          "slug": "ms7-sws-bedeutung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-5-dreieck-konstruktion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Man beginnt zuerst mit allen drei Winkelmaßen",
+              "reason": "Bei sws sind zwei Seiten und genau ihr eingeschlossener Winkel bekannt."
+            },
+            {
+              "text": "Die Zirkelkreise halbieren die beiden Schenkel",
+              "reason": "Die zweite Seitenlänge wird vom Scheitel entlang des Schenkels abgetragen."
+            }
+          ],
+          "question": "Worauf musst du beim Konstruktionssatz sws besonders achten?",
+          "concept": "Der Winkel liegt exakt zwischen den beiden Seiten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Winkel liegt exakt zwischen den beiden Seiten",
+              "Man beginnt zuerst mit allen drei Winkelmaßen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYQ9MW90WVRDNFTYBY",
+          "slug": "ms7-wsw-pruefung",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-5-dreieck-konstruktion",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ja, der dritte Winkel bleibt einfach gleich 5°",
+              "reason": "Schon zwei Winkel überschreiten 180°, ein geschlossenes Dreieck ist unmöglich."
+            },
+            {
+              "text": "Ja, sofern Seite c länger als 5 cm gezeichnet wird",
+              "reason": "Die Strahlen laufen auseinander, unabhängig von der gewählten Seitenlänge c."
+            }
+          ],
+          "question": "Treffen sich die Strahlen bei wsw mit α = 95° und β = 90° zu einem Dreieck?",
+          "concept": "Nein, weil α + β gleich 185° über 180° liegt",
+          "sample_solution": "Für ein Dreieck gilt α + β < 180°. Da 95° + 90° = 185° > 180°, gibt es keinen Schnittpunkt."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYF4Z9QW95MED6S7NY",
+      "atom_uri": "urn:zam:atom:01M78MFPKYF4Z9QW95MED6S7NY",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "ge-6-innenwinkelsumme",
+      "title": "Innenwinkelsumme im Dreieck",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-6-innenwinkelsumme",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYAK8XJRWZYPMHAKMT",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-3-geometrie",
+          "topic_title": "Etappe 3: Geometrie & Prismen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKY966VVR0RDSQ04SX6",
+          "slug": "ms7-winkelsumme-wert",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-6-innenwinkelsumme",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "α + β + γ = 360°",
+              "reason": "360° gilt für Vierecke aus zwei Dreiecken; ein einzelnes Dreieck hat 180°."
+            },
+            {
+              "text": "α + β + γ = 90°",
+              "reason": "90° ist nur ein einziger rechter Winkel, nicht die Summe aller drei."
+            }
+          ],
+          "question": "Wie groß ist die Summe der drei Innenwinkel in jedem beliebigen Dreieck?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\alpha+\\beta+\\gamma=180^\\circ",
+              "speech": "Alpha plus Beta plus Gamma gleich einhundertachtzig Grad"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\alpha+\\beta+\\gamma=180^\\circ",
+                  "speech": "Alpha plus Beta plus Gamma gleich einhundertachtzig Grad"
+                }
+              ],
+              "α + β + γ = 360°"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYQE6HHBGNRX9C4ZQ9",
+          "slug": "ms7-winkelsumme-beweis-ecken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-6-innenwinkelsumme",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Einen geschlossenen Vollkreis mit genau 360°",
+              "reason": "An einer geraden Kante entsteht nur ein Halbkreis mit 180°, kein Vollkreis."
+            },
+            {
+              "text": "Drei exakt deckungsgleiche spitze Winkel",
+              "reason": "Allgemein sind die Ecken ungleich groß, ergänzen sich aber genau zu 180°."
+            }
+          ],
+          "question": "Was zeigen die drei abgerissenen Ecken eines Papierdreiecks aneinandergelegt?",
+          "concept": "Eine gerade Linie mit gestrecktem Winkel 180°",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine gerade Linie mit gestrecktem Winkel 180°",
+              "Einen geschlossenen Vollkreis mit genau 360°"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYZS9YE5HS0QXVFGC7",
+          "slug": "ms7-stumpfwinklig-anzahl",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-6-innenwinkelsumme",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Das Geodreieck misst höchstens bis zu 90°",
+              "reason": "Geodreiecke zeigen bis 180°; die Grenze entsteht allein aus der Winkelsumme."
+            },
+            {
+              "text": "Stumpfe Dreiecke bekommen sonst vier Ecken",
+              "reason": "Jedes Dreieck hat drei Ecken, deren Summe 180° nicht übersteigen kann."
+            }
+          ],
+          "question": "Warum kann ein Dreieck höchstens einen stumpfen Winkel größer 90° haben?",
+          "concept": "Zwei Winkel über 90° übertreffen schon 180°",
+          "sample_solution": "Wären zwei Winkel > 90°, dann wäre α + β > 180° — unmöglich bei Winkelsumme 180°."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYCV4K8TMRRQE52HAW",
+      "atom_uri": "urn:zam:atom:01M78MFPKYCV4K8TMRRQE52HAW",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "ge-7-prismen-erkennen-netze",
+      "title": "Prismen, Schrägbilder & Netze",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-7-prismen-erkennen-netze",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYF4Z9QW95MED6S7NY",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-3-geometrie",
+          "topic_title": "Etappe 3: Geometrie & Prismen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKY4EWJQQ4H916GTGNH",
+          "slug": "ms7-prisma-merkmale",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-7-prismen-erkennen-netze",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Eine Spitze oben mit dreieckigen Mantelflächen",
+              "reason": "Spitz zulaufende Körper sind Pyramiden oder Kegel, keine Prismen."
+            },
+            {
+              "text": "Zwei parallele Kreisscheiben als Boden und Deckel",
+              "reason": "Kreise als Grundflächen gehören zum Zylinder, nicht zum Vieleck-Prisma."
+            }
+          ],
+          "question": "Was kennzeichnet ein gerades Prisma?",
+          "concept": "Zwei gleiche parallele Vielecke plus Rechteckmantel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwei gleiche parallele Vielecke plus Rechteckmantel",
+              "Eine Spitze oben mit dreieckigen Mantelflächen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYPYBG74S6KRG09J92",
+          "slug": "ms7-prisma-ecken-kanten",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-7-prismen-erkennen-netze",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Genau 3 Ecken und insgesamt 6 Kanten",
+              "reason": "Neben den 3 unteren Ecken gehören auch noch 3 obere Ecken an der Deckfläche dazu."
+            },
+            {
+              "text": "Genau 8 Ecken und insgesamt 12 Kanten",
+              "reason": "8 Ecken und 12 Kanten besitzt ein vierseitiges Prisma, nicht das Dreiecksprisma."
+            }
+          ],
+          "question": "Wie viele Ecken und Kanten besitzt ein gerades Dreiecksprisma?",
+          "concept": "Genau 6 Ecken und insgesamt 9 Kanten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau 6 Ecken und insgesamt 9 Kanten",
+              "Genau 3 Ecken und insgesamt 6 Kanten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYY78ADDFEE3R5AC3F",
+          "slug": "ms7-netz-fehler-finden",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=ge-7-prismen-erkennen-netze",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Der Überstand verschwindet beim Kleben von selbst",
+              "reason": "Jede Faltkante im Netz muss exakt zur anstoßenden Kante gleich lang sein."
+            },
+            {
+              "text": "Aus dem Netz entsteht automatisch eine Pyramide",
+              "reason": "Ohne passende Rechteckbreiten schließt kein Prisma — und eine Pyramide erst recht nicht."
+            }
+          ],
+          "question": "Ein Mantelrechteck im Netz ist schmaler als die passende Grundkante. Was passiert?",
+          "concept": "Beim Zusammenfalten bleibt ein Spalt offen",
+          "sample_solution": "An jeder gemeinsamen Faltkante zwischen Grundfläche und Mantel müssen genau gleiche Längen zusammenstoßen."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYXCTBJH47BHVJR9WQ",
+      "atom_uri": "urn:zam:atom:01M78MFPKYXCTBJH47BHVJR9WQ",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "fl-1-parallelogramm",
+      "title": "Parallelogramm: Zerlegung & Fläche",
+      "domain": "mathematik/flaechen",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-1-parallelogramm",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-4-flaechen",
+          "topic_title": "Etappe 4: Flächeninhalt & Oberfläche"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Parallelogramme und Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Parallelogramme und Dreiecke"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKYAKH30TB1PH8HF52R",
+          "slug": "ms7-para-herleitung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-1-parallelogramm",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Falten der vier Ecken in den Mittelpunkt",
+              "reason": "Das verschobene Dreieck macht die Figur direkt zu einem flächengleichen Rechteck."
+            },
+            {
+              "text": "Halbieren und Addieren beider Diagonalen",
+              "reason": "Diagonalen liegen bei allgemeinen Parallelogrammen nicht rechtwinklig."
+            }
+          ],
+          "question": "Wie erklärt man die Flächenformel des Parallelogramms anschaulich?",
+          "concept": "Abschneiden und Verschieben formt ein Rechteck",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Abschneiden und Verschieben formt ein Rechteck",
+              "Falten der vier Ecken in den Mittelpunkt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYECR970W5GCCA6B5E",
+          "slug": "ms7-para-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-1-parallelogramm",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "A = g · b",
+              "reason": "Die schräge Seite b ist länger als das Lot h_g und liefert zu viel Fläche."
+            },
+            {
+              "text": "A = 2·g + 2·b",
+              "reason": "2·g + 2·b berechnet den Umfang rundherum, nicht den Flächeninhalt."
+            }
+          ],
+          "question": "Wie lautet die Formel für den Flächeninhalt eines Parallelogramms?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "A=g\\cdot h_g",
+              "speech": "Flächeninhalt A gleich Grundseite g mal zugehörige Höhe h g"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "A=g\\cdot h_g",
+                  "speech": "Flächeninhalt A gleich Grundseite g mal zugehörige Höhe h g"
+                }
+              ],
+              "A = g · b"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYWNC6K7V31NJKE4N9",
+          "slug": "ms7-para-umkehrung",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-1-parallelogramm",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Man rechnet A mal g und erhält 294 cm",
+              "reason": "Zum Umkehren von A = g · h teilt man A durch g statt zu multiplizieren."
+            },
+            {
+              "text": "Man zieht g von A ab und erhält 35 cm",
+              "reason": "Flächeneinheiten und Längeneinheiten darf man nicht subtrahieren."
+            }
+          ],
+          "question": "Wie findest du die Höhe h_g beim Parallelogramm mit A = 42 cm² und g = 7 cm?",
+          "concept": "Man teilt A durch g und erhält h = 6 cm",
+          "sample_solution": "Aus A = g · h folgt h = A : g = 42 cm² : 7 cm = 6 cm."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYCFZ86MWR9EADXE8P",
+      "atom_uri": "urn:zam:atom:01M78MFPKYCFZ86MWR9EADXE8P",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "fl-2-dreieck",
+      "title": "Dreieck: Flächeninhalt & Umkehrung",
+      "domain": "mathematik/flaechen",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-2-dreieck",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYXCTBJH47BHVJR9WQ",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-4-flaechen",
+          "topic_title": "Etappe 4: Flächeninhalt & Oberfläche"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Parallelogramme und Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Parallelogramme und Dreiecke"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKY5FZ1T76WJZBDXZW5",
+          "slug": "ms7-dreieck-herleitung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-2-dreieck",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ein Dreieck hat nur halb so viele Seiten",
+              "reason": "Entscheidend ist das Verdoppeln zu einer flächendoppelten Figur g · h."
+            },
+            {
+              "text": "Die Höhe wird grundsätzlich doppelt gemessen",
+              "reason": "Jede Höhe misst man nur einmal senkrecht auf ihrer Grundseite."
+            }
+          ],
+          "question": "Warum wird in der Dreiecksformel durch 2 geteilt?",
+          "concept": "Zwei gleiche Dreiecke bilden ein Parallelogramm",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwei gleiche Dreiecke bilden ein Parallelogramm",
+              "Ein Dreieck hat nur halb so viele Seiten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYJ9VH0AJFK2GBXF28",
+          "slug": "ms7-dreieck-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-2-dreieck",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "A = (a · b) · c",
+              "reason": "Drei Längen miteinander malgenommen ergäben ein Volumen, keine Dreiecksfläche."
+            },
+            {
+              "text": "A = (g + h) · 4",
+              "reason": "Umfang oder Summe von Kantenlängen ergibt keinen Flächeninhalt."
+            }
+          ],
+          "question": "Welche Formel berechnet den Flächeninhalt jedes Dreiecks?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "A=\\frac{g\\cdot h}{2}",
+              "speech": "Flächeninhalt A gleich g mal h durch zwei"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "A=\\frac{g\\cdot h}{2}",
+                  "speech": "Flächeninhalt A gleich g mal h durch zwei"
+                }
+              ],
+              "A = (a · b) · c"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYNH92E9HTW5QZF0CF",
+          "slug": "ms7-dreieck-umkehrung-h",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-2-dreieck",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Direkt 30 durch 10 teilen ergibt nur 3 cm",
+              "reason": "Mit h = 3 cm wäre das Dreieck nur (10 · 3) : 2 = 15 cm² groß."
+            },
+            {
+              "text": "Man rechnet 30 · 10 : 2 gleich 150 cm",
+              "reason": "Gesucht ist eine Länge aus dem Flächeninhalt: h = (2 · A) : g = 6 cm."
+            }
+          ],
+          "question": "Ein Dreieck hat A = 30 cm² und Grundseite g = 10 cm. Wie hoch ist h?",
+          "concept": "Erst Fläche verdoppeln zu 60, durch 10 sind 6 cm",
+          "sample_solution": "h = (2 · A) : g = (2 · 30) : 10 = 60 : 10 = 6 cm."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYF4TXEF7A3PD64VCD",
+      "atom_uri": "urn:zam:atom:01M78MFPKYF4TXEF7A3PD64VCD",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "fl-3-zusammengesetzte-flaechen",
+      "title": "Zusammengesetzte Flächen",
+      "domain": "mathematik/flaechen",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-3-zusammengesetzte-flaechen",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYCFZ86MWR9EADXE8P",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-4-flaechen",
+          "topic_title": "Etappe 4: Flächeninhalt & Oberfläche"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Parallelogramme und Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Parallelogramme und Dreiecke"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKYH0JD3XC8ZYQEGFXV",
+          "slug": "ms7-zerlegen-strategie",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-3-zusammengesetzte-flaechen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Längste Außenkante suchen und einfach quadrieren",
+              "reason": "Damit würden Aussparungen und Abschrägungen völlig ignoriert."
+            },
+            {
+              "text": "Alle Außenkanten addieren und durch zwei teilen",
+              "reason": "Außenkanten liefern den Umfang, niemals den Flächeninhalt."
+            }
+          ],
+          "question": "Welche zwei Verfahren helfen bei zusammengesetzten Figuren?",
+          "concept": "Zerlegen in Teilflächen oder Ergänzen minus Lücke",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zerlegen in Teilflächen oder Ergänzen minus Lücke",
+              "Längste Außenkante suchen und einfach quadrieren"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKY85RJW96XN6E7TM2B",
+          "slug": "ms7-ergaenzen-einsatz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-3-zusammengesetzte-flaechen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Wenn alle Innenwinkel unter 30 Grad messen",
+              "reason": "Bei ausgeschnittenen Ecken genügt genau eine Subtraktion statt vieler Teilflächen."
+            },
+            {
+              "text": "Nur wenn man ohne jedes Zeichengerät arbeitet",
+              "reason": "Entscheidend ist die Form mit kleiner Lücke im Rechteck."
+            }
+          ],
+          "question": "Wann ist das Ergänzungsverfahren besonders geschickt?",
+          "concept": "Wenn von einem großen Rechteck eine Ecke fehlt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn von einem großen Rechteck eine Ecke fehlt",
+              "Wenn alle Innenwinkel unter 30 Grad messen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYQJ8K2YC9THNG6N0W",
+          "slug": "ms7-giebel-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-3-zusammengesetzte-flaechen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Alles als Rechteck 8 m mal 5,5 m gleich 44 m²",
+              "reason": "Der Giebel läuft dreieckig zu — sein Inhalt beträgt nur die Hälfte von 8 · 2,5."
+            },
+            {
+              "text": "24 m² plus 20 m² ohne Halbieren gleich 44 m²",
+              "reason": "Für die Dreiecksfläche oben muss (8 · 2,5) noch durch 2 geteilt werden."
+            }
+          ],
+          "question": "Unten Rechteck 8 m × 3 m, darüber Giebeldreieck mit h = 2,5 m. Gesamtfläche?",
+          "concept": "Rechteck 24 m² plus Dreieck 10 m² gleich 34 m²",
+          "sample_solution": "Rechteck = 8 · 3 = 24 m². Dreieck = (8 · 2,5) : 2 = 10 m². Summe = 34 m²."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYEH88JSCKCZCQPAGQ",
+      "atom_uri": "urn:zam:atom:01M78MFPKYEH88JSCKCZCQPAGQ",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "fl-4-trapez-drache-raute",
+      "title": "Trapez, Drachenviereck & Raute",
+      "domain": "mathematik/flaechen",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-4-trapez-drache-raute",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYF4TXEF7A3PD64VCD",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-4-flaechen",
+          "topic_title": "Etappe 4: Flächeninhalt & Oberfläche"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Parallelogramme und Dreiecke"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKYCEWYEKWRPDE8JWCD",
+          "slug": "ms7-trapez-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-4-trapez-drache-raute",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "A = (a · c) · h",
+              "reason": "Die Parallelseiten werden gemittelt addiert, niemals miteinander malgenommen."
+            },
+            {
+              "text": "A = (b + d) · h",
+              "reason": "Die Höhe h steht senkrecht zwischen den parallelen Seiten a und c, nicht b und d."
+            }
+          ],
+          "question": "Wie berechnest du den Flächeninhalt eines Trapezes?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "A=\\frac{a+c}{2}\\cdot h",
+              "speech": "Flächeninhalt A gleich a plus c durch zwei mal h"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "A=\\frac{a+c}{2}\\cdot h",
+                  "speech": "Flächeninhalt A gleich a plus c durch zwei mal h"
+                }
+              ],
+              "A = (a · c) · h"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYNQEEF2Z0PQBHCC9W",
+          "slug": "ms7-drache-raute-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-4-trapez-drache-raute",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "A = 4 · (e · f)",
+              "reason": "e · f ist schon das doppelte Rechteck — die Figur füllt die Hälfte von e · f."
+            },
+            {
+              "text": "A = (e + f) : 4",
+              "reason": "Man multipliziert die Diagonalen und teilt durch zwei, nicht addieren durch vier."
+            }
+          ],
+          "question": "Welche Formel berechnet Drachenviereck und Raute über Diagonalen?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "A=\\frac{e\\cdot f}{2}",
+              "speech": "Flächeninhalt A gleich e mal f durch zwei"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "A=\\frac{e\\cdot f}{2}",
+                  "speech": "Flächeninhalt A gleich e mal f durch zwei"
+                }
+              ],
+              "A = 4 · (e · f)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKY7EXXG5271ASCZKP7",
+          "slug": "ms7-trapez-umkehrung",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-4-trapez-drache-raute",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "40 durch Produkt 10 · 6 ergibt rund 0,67 cm",
+              "reason": "Die Parallelseiten werden gemittelt addiert, niemals miteinander malgenommen."
+            },
+            {
+              "text": "Man teilt 40 direkt durch 10 gleich 4 cm",
+              "reason": "Auch die zweite Parallelseite c = 6 cm bestimmt die mittlere Breite mit."
+            }
+          ],
+          "question": "Ein Trapez hat a = 10 cm, c = 6 cm und A = 40 cm². Wie groß ist h?",
+          "concept": "Mittellinie ist 8 cm, also h = 40 : 8 = 5 cm",
+          "sample_solution": "Mittellinie m = (10 + 6) : 2 = 8 cm. Höhe h = A : m = 40 : 8 = 5 cm."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKY5V2DM3ACEDBX0FJD",
+      "atom_uri": "urn:zam:atom:01M78MFPKY5V2DM3ACEDBX0FJD",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "fl-5-prismen-oberflaeche",
+      "title": "Oberflächeninhalt gerader Prismen",
+      "domain": "mathematik/flaechen",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-5-prismen-oberflaeche",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYF4TXEF7A3PD64VCD",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-4-flaechen",
+          "topic_title": "Etappe 4: Flächeninhalt & Oberfläche"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Parallelogramme und Dreiecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Parallelogramme und Dreiecke"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKYHEZ5KV1ED8KCSBHS",
+          "slug": "ms7-oberflaeche-prisma-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-5-prismen-oberflaeche",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "O = G + M",
+              "reason": "Es fehlt die parallele Deckfläche — Boden und Deckel zählen zusammen 2 · G."
+            },
+            {
+              "text": "O = G · h_k",
+              "reason": "G · h_k berechnet das Volumen des Prismas, nicht seinen Oberflächeninhalt."
+            }
+          ],
+          "question": "Wie lautet die allgemeine Formel für die Oberfläche eines geschlossenen Prismas?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "O=2\\cdot G+M",
+              "speech": "Oberfläche O gleich zwei mal G plus M"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "O=2\\cdot G+M",
+                  "speech": "Oberfläche O gleich zwei mal G plus M"
+                }
+              ],
+              "O = G + M"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYXS0HNY85PAZ76KQR",
+          "slug": "ms7-mantel-umfang",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-5-prismen-oberflaeche",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "M = G : h_k",
+              "reason": "Der Mantel entfaltet sich aus dem Randumfang u mal Körperhöhe h_k."
+            },
+            {
+              "text": "M = G · u",
+              "reason": "Zum Mantel gehört die Körperhöhe h_k entlang des Umfangs u."
+            }
+          ],
+          "question": "Wie berechnet man den Mantel M eines geraden Prismas in einem Schritt?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "M=u\\cdot h_k",
+              "speech": "Mantel M gleich Umfang u mal Körperhöhe h k"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "M=u\\cdot h_k",
+                  "speech": "Mantel M gleich Umfang u mal Körperhöhe h k"
+                }
+              ],
+              "M = G : h_k"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKY64VFA69KWZ0TSD40",
+          "slug": "ms7-oberflaeche-offen-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=fl-5-prismen-oberflaeche",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Auch der Mantel wird zur Sicherheit verdoppelt",
+              "reason": "Der Mantel deckt bereits alle vier Seitenwände einmal ab."
+            },
+            {
+              "text": "Man berechnet einfach das innere Kastenvolumen",
+              "reason": "Farbe bedeckt nur sichtbare Außenflächen in Quadratmetern, kein Volumen."
+            }
+          ],
+          "question": "Ein oben offener Holzkasten wird außen gestrichen. Was ändert sich bei O?",
+          "concept": "Der Boden G zählt nur einfach statt doppelt",
+          "sample_solution": "Fehlt der Deckel, entfällt eine G-Fläche: O_offen = G + u · h_k."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYATZGC3N6ZV4RXEA1",
+      "atom_uri": "urn:zam:atom:01M78MFPKYATZGC3N6ZV4RXEA1",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "vo-1-prismenvolumen-grundidee",
+      "title": "Volumen gerader Prismen",
+      "domain": "mathematik/volumen",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=vo-1-prismenvolumen-grundidee",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-5-volumen",
+          "topic_title": "Etappe 5: Rauminhalt – gerade Prismen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – gerade Prismen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – gerade Prismen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKYFW954J2TAV9YB3AG",
+          "slug": "ms7-prisma-volumen-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=vo-1-prismenvolumen-grundidee",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "V = u · h_k",
+              "reason": "u · h_k liefert nur den Mantel als Oberflächenanteil, kein Volumen."
+            },
+            {
+              "text": "V = 2 · G + M",
+              "reason": "2 · G + M berechnet die gesamte Oberfläche, nicht den Rauminhalt."
+            }
+          ],
+          "question": "Welche Volumenformel gilt einheitlich für jedes gerade Prisma?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V=G\\cdot h_k",
+              "speech": "Volumen V gleich Grundfläche G mal Körperhöhe h k"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "V=G\\cdot h_k",
+                  "speech": "Volumen V gleich Grundfläche G mal Körperhöhe h k"
+                }
+              ],
+              "V = u · h_k"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKYJ38C4EHTS0G1PA6C",
+          "slug": "ms7-hoehen-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=vo-1-prismenvolumen-grundidee",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Beide Bezeichnungen stehen für exakt dieselbe Länge",
+              "reason": "Bei Dreiecks- oder Trapezprismen sind h der Basis und Länge h_k verschieden."
+            },
+            {
+              "text": "h_k misst immer eine beliebige schräge Seitenkante",
+              "reason": "Bei geraden Prismen steht h_k senkrecht auf Grund- und Deckfläche."
+            }
+          ],
+          "question": "Worin unterscheiden sich Grundflächenhöhe h und Körperhöhe h_k?",
+          "concept": "h liegt in der Grundfläche, h_k steht zwischen Böden",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "h liegt in der Grundfläche, h_k steht zwischen Böden",
+              "Beide Bezeichnungen stehen für exakt dieselbe Länge"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZAQWXFZXF138H2ZDH",
+          "slug": "ms7-liter-umrechnung",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=vo-1-prismenvolumen-grundidee",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Nur 4,8 Liter durch Umrechnung mit zehn",
+              "reason": "1 Kubikdezimeter entspricht genau 1 Liter ganz ohne Faktor zehn."
+            },
+            {
+              "text": "Genau 480 Liter durch Multiplikation mit zehn",
+              "reason": "Liter und dm³ haben exakt dieselbe Maßzahl."
+            }
+          ],
+          "question": "Ein Prisma hat G = 12 dm² und h_k = 4 dm. Wie viele Liter passen hinein?",
+          "concept": "48 Kubikdezimeter sind exakt 48 Liter",
+          "sample_solution": "V = G · h_k = 12 dm² · 4 dm = 48 dm³ = 48 Liter."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYAWZ2C5DGJX8YSWE7",
+      "atom_uri": "urn:zam:atom:01M78MFPKYAWZ2C5DGJX8YSWE7",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "vo-2-prismen-beruf-zusammengesetzt",
+      "title": "Zusammengesetzte Körper & Beruf",
+      "domain": "mathematik/volumen",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=vo-2-prismen-beruf-zusammengesetzt",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYATZGC3N6ZV4RXEA1",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-5-volumen",
+          "topic_title": "Etappe 5: Rauminhalt – gerade Prismen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – gerade Prismen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – gerade Prismen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKZA5Y3W562HG43W1TB",
+          "slug": "ms7-koerper-zerlegen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=vo-2-prismen-beruf-zusammengesetzt",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Alle sichtbaren Außenwände als Oberfläche addieren",
+              "reason": "Gesucht ist der umschlossene Rauminhalt in m³, keine Wandfläche."
+            },
+            {
+              "text": "Durchschnittsbreite mal halbe Gesamthöhe rechnen",
+              "reason": "Der Quaderteil bleibt unten voll breit — nur der Giebel läuft dreieckig zu."
+            }
+          ],
+          "question": "Wie berechnest du das Volumen eines Hauses mit Satteldach?",
+          "concept": "Quadervolumen und Dachprisma getrennt addieren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Quadervolumen und Dachprisma getrennt addieren",
+              "Alle sichtbaren Außenwände als Oberfläche addieren"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZ0W7NSWQX8NEY5BZY",
+          "slug": "ms7-masse-dichte",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=vo-2-prismen-beruf-zusammengesetzt",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Vorhandenes Volumen einfach durch Dichte teilen",
+              "reason": "Mehr Volumen desselben Materials bringt mehr Masse — also multiplizieren."
+            },
+            {
+              "text": "Außenfläche anstelle des Volumens verwenden",
+              "reason": "Das Material füllt den gesamten Raum aus, nicht bloß seine Oberfläche."
+            }
+          ],
+          "question": "Wie findest du die Masse bei bekanntem Volumen V und Dichte in g/cm³?",
+          "concept": "Volumen mit dem Gewicht pro Kubikzentimeter malnehmen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Volumen mit dem Gewicht pro Kubikzentimeter malnehmen",
+              "Vorhandenes Volumen einfach durch Dichte teilen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZBJ1HB9MC209G7F9B",
+          "slug": "ms7-profiltraeger-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=vo-2-prismen-beruf-zusammengesetzt",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "V = 18 · 2 m gleich 36 cm³ ohne Umwandeln",
+              "reason": "Zentimeter und Meter dürfen nicht vermischt werden: 2 m = 200 cm."
+            },
+            {
+              "text": "V = 18 · 200 : 2 gleich 1 800 cm³",
+              "reason": "Auch ein L-Profil bildet ein gerades Prisma — man halbiert nicht."
+            }
+          ],
+          "question": "Ein Profilträger hat Querschnitt 18 cm² und Länge 200 cm. Welches Volumen hat er?",
+          "concept": "V = 18 cm² · 200 cm = 3 600 cm³",
+          "sample_solution": "V = Querschnitt · Länge = 18 cm² · 200 cm = 3 600 cm³ = 3,6 dm³."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYC54QHZJ3CXEB2NKS",
+      "atom_uri": "urn:zam:atom:01M78MFPKYC54QHZJ3CXEB2NKS",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "st-1-darstellungen-manipulation",
+      "title": "Diagramme vergleichen & Manipulation",
+      "domain": "mathematik/statistik",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=st-1-darstellungen-manipulation",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-6-statistik",
+          "topic_title": "Etappe 6: Diagramme & Kennwerte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb6",
+          "topic_title": "Diagramme und statistische Kennwerte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb6",
+          "topic_title": "Diagramme und statistische Kennwerte"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKZCJ03BRGKJHEW619Y",
+          "slug": "ms7-manipulierte-y-achse",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=st-1-darstellungen-manipulation",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Alle Säulen schrumpfen gleichmäßig auf null",
+              "reason": "Der fehlende Sockel lässt den leicht höheren Balken vielfach länger aussehen."
+            },
+            {
+              "text": "Die Grafik wird ohne jeden Nachteil viel präziser",
+              "reason": "Ohne klaren Achsenbruch täuscht sie den Betrachter über die wahren Verhältnisse."
+            }
+          ],
+          "question": "Was bewirkt eine abgeschnittene Hochachse, die erst bei 60 statt bei 0 beginnt?",
+          "concept": "Kleine Unterschiede wirken optisch stark übertrieben",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kleine Unterschiede wirken optisch stark übertrieben",
+              "Alle Säulen schrumpfen gleichmäßig auf null"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZH3Z8B19BP5QDXAN7",
+          "slug": "ms7-darstellungsform-wahl",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=st-1-darstellungen-manipulation",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ein Kreisdiagramm mit vollem 360-Grad-Kreis",
+              "reason": "Kreisdiagramme zeigen Anteile eines Ganzen, keine zeitlichen Verläufe."
+            },
+            {
+              "text": "Ausschließlich eine unsortierte Liste von Zahlen",
+              "reason": "Ein Linienverlauf macht Steigen und Fallen sofort erkennbar."
+            }
+          ],
+          "question": "Welche Diagrammform eignet sich am besten für zeitliche Temperaturverläufe?",
+          "concept": "Ein Liniendiagramm entlang einer Zeitachse",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Liniendiagramm entlang einer Zeitachse",
+              "Ein Kreisdiagramm mit vollem 360-Grad-Kreis"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZN4RKW26YVAK6TN20",
+          "slug": "ms7-balkenbreite-trick",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=st-1-darstellungen-manipulation",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Breite verändert im Auge gar keinen Eindruck",
+              "reason": "Unser Blick vergleicht die gesamte Balkenfläche: Faktor 2 · 2 = 4."
+            },
+            {
+              "text": "Doppelte Werte müssen schmaler als einfache sein",
+              "reason": "Alle Balken müssen stets exakt dieselbe Breite behalten."
+            }
+          ],
+          "question": "Ein Balken ist doppelt so hoch UND doppelt so breit gezeichnet. Warum täuscht das?",
+          "concept": "Die Balkenfläche wächst auf das Vierfache an",
+          "sample_solution": "Flächenfaktor = Höhenfaktor 2 · Breitenfaktor 2 = 4. Deshalb immer einheitliche Balkenbreite verwenden."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKY6E5Q672KW7007NR1",
+      "atom_uri": "urn:zam:atom:01M78MFPKY6E5Q672KW7007NR1",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "st-2-stichproben-skalierung",
+      "title": "Qualität von Datenerhebungen",
+      "domain": "mathematik/statistik",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=st-2-stichproben-skalierung",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYC54QHZJ3CXEB2NKS",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-6-statistik",
+          "topic_title": "Etappe 6: Diagramme & Kennwerte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb6",
+          "topic_title": "Diagramme und statistische Kennwerte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb6",
+          "topic_title": "Diagramme und statistische Kennwerte"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKZYVWW65PSF6WSJT47",
+          "slug": "ms7-stichprobe-umfang",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=st-2-stichproben-skalierung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Weil acht keine gerade Zehnerzahl darstellt",
+              "reason": "Das Problem liegt im zu kleinen Umfang, nicht an der Ziffer acht."
+            },
+            {
+              "text": "Weil Befragte grundsätzlich falsch antworten",
+              "reason": "Nicht die Ehrlichkeit, sondern die zu geringe Teilnehmerzahl macht die Aussage schwach."
+            }
+          ],
+          "question": "Warum sagt eine Umfrage unter nur 8 Personen wenig über alle Jugendlichen aus?",
+          "concept": "Zu kleine Stichprobe durch Zufall stark verzerrt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zu kleine Stichprobe durch Zufall stark verzerrt",
+              "Weil acht keine gerade Zehnerzahl darstellt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZ79MAQWED965FT8N2",
+          "slug": "ms7-auswahl-verzerrung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=st-2-stichproben-skalierung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Weil alle Sportler exakt gleich viele Minuten trainieren",
+              "reason": "Der Ort wählt einseitig aktive Menschen aus statt einen Querschnitt aller Bürger."
+            },
+            {
+              "text": "Weil Befragte vor der Tür schneller antworten",
+              "reason": "Entscheidend ist der ausgewählte Ort, nicht die Geschwindigkeit beim Antworten."
+            }
+          ],
+          "question": "Warum verzerrt eine Sport-Umfrage direkt vor einem Fitnessstudio die Gesamtlage?",
+          "concept": "Einseitige Auswahl unter vielen Sportbegeisterten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einseitige Auswahl unter vielen Sportbegeisterten",
+              "Weil alle Sportler exakt gleich viele Minuten trainieren"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZJ2FAWM51YRC4D8TA",
+          "slug": "ms7-skalierung-pruefen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=st-2-stichproben-skalierung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Allein auf Hintergrundfarbe und Linienstärke",
+              "reason": "Farben ändern nicht die zugrunde liegenden Zahlenwerte an der Achse."
+            },
+            {
+              "text": "Man übernimmt einfach den gefühlten Kurvenknick",
+              "reason": "Verschiedene Maßstäbe lassen identische Werte flach oder steil aussehen."
+            }
+          ],
+          "question": "Grafik A skaliert bis 10 000, Grafik B nur bis 1 000. Worauf achtest du beim Vergleich?",
+          "concept": "Auf unterschiedliche Achseneinteilungen und Skalen",
+          "sample_solution": "Unterschiedliche Schrittweiten an der Achse verzerren optisch die Steilheit — immer Skala und Einheiten prüfen."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKY4MEDRWAWWQ2PCB6Y",
+      "atom_uri": "urn:zam:atom:01M78MFPKY4MEDRWAWWQ2PCB6Y",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "st-3-kennwerte",
+      "title": "Mittelwert, Zentralwert & Spannweite",
+      "domain": "mathematik/statistik",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=st-3-kennwerte",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKY6E5Q672KW7007NR1",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-6-statistik",
+          "topic_title": "Etappe 6: Diagramme & Kennwerte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb6",
+          "topic_title": "Diagramme und statistische Kennwerte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb6",
+          "topic_title": "Diagramme und statistische Kennwerte"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKZNG2A4YNJARBJ042W",
+          "slug": "ms7-mittelwert-vs-median",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=st-3-kennwerte",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Das arithmetische Mittel als Durchschnittswert",
+              "reason": "In das arithmetische Mittel fließt der extreme Ausreißer voll mit ein."
+            },
+            {
+              "text": "Die Spannweite zwischen kleinstem und größtem Wert",
+              "reason": "Gerade die Spannweite wird durch einen Ausreißer massiv vergrößert."
+            }
+          ],
+          "question": "Welcher Kennwert bleibt bei einem extremen Ausreißer am Ende am stabilsten?",
+          "concept": "Der Zentralwert durch die reine mittlere Position",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Zentralwert durch die reine mittlere Position",
+              "Das arithmetische Mittel als Durchschnittswert"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZWZEWNR8WGPYX8JQT",
+          "slug": "ms7-spannweite-aussage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=st-3-kennwerte",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Sie bezeichnet den genau mittleren Listenwert",
+              "reason": "Den mittleren Listenwert liefert der Zentralwert, nicht die Spannweite."
+            },
+            {
+              "text": "Sie teilt den größten Wert durch die Anzahl",
+              "reason": "Die Spannweite ist die Differenz aus Maximum und Minimum."
+            }
+          ],
+          "question": "Wofür steht die Spannweite x_max − x_min im Sachzusammenhang?",
+          "concept": "Sie misst die Streuung zwischen Extremwerten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie misst die Streuung zwischen Extremwerten",
+              "Sie bezeichnet den genau mittleren Listenwert"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZEBN907502PCNKB21",
+          "slug": "ms7-median-berechnen-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=st-3-kennwerte",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Man nimmt einfach die kleinere mittlere Zahl 15",
+              "reason": "Bei gerader Anzahl gibt es zwei mittlere Plätze — deren Schnitt ergibt den Median."
+            },
+            {
+              "text": "Man berechnet die Spannweite 22 minus 12 gleich 10",
+              "reason": "Spannweite zeigt die Breite außen, während der Median in der Mitte liegt."
+            }
+          ],
+          "question": "Sechs Werte geordnet: 12, 14, 15, 19, 20, 22. Wie lautet der Zentralwert?",
+          "concept": "Mittelwert der mittleren Zahlen 15 und 19 gleich 17",
+          "sample_solution": "Bei 6 Werten liegen der 3. und 4. Wert in der Mitte: (15 + 19) : 2 = 17."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYG0PJZ0SP42J2RMX2",
+      "atom_uri": "urn:zam:atom:01M78MFPKYG0PJZ0SP42J2RMX2",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "gl-1-terme-vereinfachen",
+      "title": "Terme in ℤ aufstellen & vereinfachen",
+      "domain": "mathematik/gleichungen",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=gl-1-terme-vereinfachen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-7-gleichungen",
+          "topic_title": "Etappe 7: Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKZG97SARNSX4PQ5V4Y",
+          "slug": "ms7-term-ausmultiplizieren",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=gl-1-terme-vereinfachen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "3x − 4",
+              "reason": "Der Faktor 3 vor der Klammer muss auch mit −4 multipliziert werden."
+            },
+            {
+              "text": "4x − 12",
+              "reason": "Nur die Zahl 3 wird mit x malgenommen — nicht die Differenz beider Faktoren."
+            }
+          ],
+          "question": "Was ergibt das Ausmultiplizieren von 3 · (x − 4)?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "3x-12",
+              "speech": "Drei x minus zwölf"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "3x-12",
+                  "speech": "Drei x minus zwölf"
+                }
+              ],
+              "3x − 4"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZ8HTBPHXQ68EKRDRK",
+          "slug": "ms7-gleichartige-glieder",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=gl-1-terme-vereinfachen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Alle Zahlen zusammen ergeben schlicht 13x",
+              "reason": "Reine Zahlen wie 3 und 7 lassen sich niemals mit x-Gliedern addieren."
+            },
+            {
+              "text": "Nur vorne rechnen liefert zusammen 8x",
+              "reason": "5x trägt die Variable x, die reine Zahl 3 jedoch nicht."
+            }
+          ],
+          "question": "Was ergibt das Zusammenfassen des Terms 5x + 3 − 2x + 7?",
+          "concept": "Gleichartige Glieder zu 3x + 10 zusammenfassen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gleichartige Glieder zu 3x + 10 zusammenfassen",
+              "Alle Zahlen zusammen ergeben schlicht 13x"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZ5A2YMXS1QX78WRPZ",
+          "slug": "ms7-term-einsetzen-negativ",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=gl-1-terme-vereinfachen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die Rechnung 4 · −2 minus 5 liefert +3",
+              "reason": "−8 − 5 geht weiter nach links zu −13, nicht ins Positive."
+            },
+            {
+              "text": "Zusammensetzen ergibt 4 − 2 − 5 gleich −3",
+              "reason": "Zwischen 4 und x steht ein Malzeichen, kein Plus oder Minus."
+            }
+          ],
+          "question": "Welchen Wert liefert der Term 4x − 5 beim Einsetzen von x = −2?",
+          "concept": "4 · −2 gleich −8, minus 5 gleich −13",
+          "sample_solution": "T(−2) = 4 · (−2) − 5 = −8 − 5 = −13."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYH2FWTWFD00K41YR2",
+      "atom_uri": "urn:zam:atom:01M78MFPKYH2FWTWFD00K41YR2",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "gl-2-waage-aequivalenz",
+      "title": "Balkenwaage & Äquivalenzumformung",
+      "domain": "mathematik/gleichungen",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=gl-2-waage-aequivalenz",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYG0PJZ0SP42J2RMX2",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-7-gleichungen",
+          "topic_title": "Etappe 7: Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKZ5R9AP7R6J57YQ8M9",
+          "slug": "ms7-aequivalenz-regel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=gl-2-waage-aequivalenz",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Auf der volleren Seite eine Zahl weglassen",
+              "reason": "Einseitiges Verändern stört das Gleichgewicht und verfälscht x."
+            },
+            {
+              "text": "Die x-Boxen einfach auf die rechte Seite kopieren",
+              "reason": "Hinzufügen nur auf einer Seite zerstört sofort die Gleichheit."
+            }
+          ],
+          "question": "Was garantiert bei der Balkenwaage, dass die Lösungsmenge unverändert bleibt?",
+          "concept": "Beide Waagschalen führen denselben Schritt aus",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beide Waagschalen führen denselben Schritt aus",
+              "Auf der volleren Seite eine Zahl weglassen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZSWZNQT8SX6QTXQHM",
+          "slug": "ms7-systematisch-probieren",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=gl-2-waage-aequivalenz",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die rechte Zahl 10 einfach durch 3 ersetzen",
+              "reason": "Eingesetzt wird ausschließlich für die Variable x im Term."
+            },
+            {
+              "text": "Ohne Nachrechnen die nächste ganze Zahl raten",
+              "reason": "Erst der Vergleich von linker und rechter Termseite beweist die Lösung."
+            }
+          ],
+          "question": "Wie prüfst du durch Probieren, ob x = 3 die Gleichung 4x − 2 = 10 löst?",
+          "concept": "Für x drei einsetzen und beide Seiten prüfen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für x drei einsetzen und beide Seiten prüfen",
+              "Die rechte Zahl 10 einfach durch 3 ersetzen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZYF09TK8EB9GD2QWH",
+          "slug": "ms7-umformung-fehler-erkennen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=gl-2-waage-aequivalenz",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Man hätte beidseitig durch 7 teilen müssen",
+              "reason": "Zum Aufheben von + 7 rechnet man − 7, nicht geteilt durch 7."
+            },
+            {
+              "text": "Links hätte auch das x abgezogen werden müssen",
+              "reason": "x bleibt im ersten Schritt unverändert stehen; man zieht nur 7 ab."
+            }
+          ],
+          "question": "Ein Heft zeigt: „3x + 7 = 22 | − 7 → 3x = 29“. Was ist falsch?",
+          "concept": "Rechts hätte man 7 abziehen müssen: 22 − 7 = 15",
+          "sample_solution": "3x + 7 = 22 | − 7 → 3x = 22 − 7 = 15 → x = 5."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKY48GFAV8XW0TEJDC5",
+      "atom_uri": "urn:zam:atom:01M78MFPKY48GFAV8XW0TEJDC5",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "gl-3-gleichungen-loesen",
+      "title": "Gleichungen ax + b = c lösen",
+      "domain": "mathematik/gleichungen",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=gl-3-gleichungen-loesen",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYH2FWTWFD00K41YR2",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-7-gleichungen",
+          "topic_title": "Etappe 7: Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKZV37S444ZAKS11766",
+          "slug": "ms7-zweischritt-reihenfolge",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=gl-3-gleichungen-loesen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Zuerst b und a direkt zusammenaddieren",
+              "reason": "ax + b enthält eine Variable und darf nicht einfach addiert werden."
+            },
+            {
+              "text": "Immer zuerst durch das Vorzeichen eins teilen",
+              "reason": "Am klarsten wird es, wenn zuerst das Zahlglied auf die andere Seite wandert."
+            }
+          ],
+          "question": "In welcher Reihenfolge löst du eine Gleichung der Form ax + b = c?",
+          "concept": "Erst Zahlglied b isolieren, dann durch a teilen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Erst Zahlglied b isolieren, dann durch a teilen",
+              "Zuerst b und a direkt zusammenaddieren"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZTWRAWWQ9F8RJY8YT",
+          "slug": "ms7-probe-ziel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=gl-3-gleichungen-loesen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ergebnis in die letzte Zeile x = … einsetzen",
+              "reason": "Ein Fehler weiter oben fiele in der letzten Zeile gar nicht mehr auf."
+            },
+            {
+              "text": "Gefundene Zahl x einfach noch einmal verdoppeln",
+              "reason": "Erst der Gleichheitstest beider Seiten der Startgleichung sichert das Ergebnis."
+            }
+          ],
+          "question": "Wie beweist du mit der Probe sicher, dass deine Lösung x stimmt?",
+          "concept": "Wert in oberste Ausgangsgleichung einsetzen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wert in oberste Ausgangsgleichung einsetzen",
+              "Ergebnis in die letzte Zeile x = … einsetzen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZA6YBCD07DFC8W9JB",
+          "slug": "ms7-ax-negativ-loesen",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=gl-3-gleichungen-loesen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "20 geteilt durch 4 liefert schlicht x = +5",
+              "reason": "20 geteilt durch −4 hat ungleiche Vorzeichen, also x = −5."
+            },
+            {
+              "text": "Nach 17 − 3 ergibt sich −4x = 14 zu x = −3,5",
+              "reason": "Zum Ausgleichen von −3 addiert man +3, sodass 17 + 3 = 20 entsteht."
+            }
+          ],
+          "question": "Löse die Gleichung −4x − 3 = 17 Schritt für Schritt nach x.",
+          "concept": "Erst + 3 zu −4x = 20, dann durch −4 ist x = −5",
+          "sample_solution": "−4x − 3 = 17 | + 3 → −4x = 20 | :(−4) → x = −5. Probe: (−4)·(−5) − 3 = 17."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYNFT2H503AGBDRCQ7",
+      "atom_uri": "urn:zam:atom:01M78MFPKYNFT2H503AGBDRCQ7",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "pp-1-zuordnungen-linear",
+      "title": "Zuordnungen & lineare Zusammenhänge",
+      "domain": "mathematik/proportionalitaet",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pp-1-zuordnungen-linear",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-8-proportional",
+          "topic_title": "Etappe 8: Proportionalität"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb8",
+          "topic_title": "Proportionalität"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb8",
+          "topic_title": "Proportionalität"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKZ5T50MJ2Q4C3R76AG",
+          "slug": "ms7-proportional-erkennen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pp-1-zuordnungen-linear",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Jede waagrechte Gerade oberhalb der Nullachse",
+              "reason": "Eine waagrechte Gerade bleibt konstant und wächst nicht proportional mit x."
+            },
+            {
+              "text": "Eine gekrümmte Kurve ausgehend vom Ursprung",
+              "reason": "Proportionale Zuordnungen haben stets gleiche Zuwächse — also eine Gerade."
+            }
+          ],
+          "question": "Welche Grafik zeigt eindeutig eine proportionale Zuordnung?",
+          "concept": "Eine Gerade exakt durch den Koordinatenursprung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Gerade exakt durch den Koordinatenursprung",
+              "Jede waagrechte Gerade oberhalb der Nullachse"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZTDF4FVZZGDRF12DS",
+          "slug": "ms7-linear-vs-proportional",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pp-1-zuordnungen-linear",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Der Graph macht bei jeder Minute einen Knick",
+              "reason": "Bei gleichem Minutenpreis wächst er geradlinig, beginnt aber bei der Grundgebühr."
+            },
+            {
+              "text": "Die Kosten fallen bei längeren Gesprächen ab",
+              "reason": "Mit jeder weiteren Minute steigt der Gesamtpreis gleichmäßig weiter."
+            }
+          ],
+          "question": "Wie unterscheidet sich ein Tarif mit Grundgebühr von einer proportionalen Zuordnung?",
+          "concept": "Gerade startet oben bei Grundgebühr statt null",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gerade startet oben bei Grundgebühr statt null",
+              "Der Graph macht bei jeder Minute einen Knick"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZ6MMRX2NV114JTTZW",
+          "slug": "ms7-nicht-linear-beispiel",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pp-1-zuordnungen-linear",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ein Quadrat besitzt vier Ecken statt nur zwei",
+              "reason": "Nicht die Eckenzahl, sondern die ungleichen Wachstumsschritte machen die Kurve."
+            },
+            {
+              "text": "Bei Seitenlänge null gibt es noch keinen Inhalt",
+              "reason": "Proportionale Geraden gehen ebenso durch null; entscheidend ist die Krümmung."
+            }
+          ],
+          "question": "Warum ist die Zuordnung Seitenlänge a → Quadratfläche a² nicht linear?",
+          "concept": "Flächenzuwachs pro Zentimeter wird immer größer",
+          "sample_solution": "1→1, 2→4 (+3), 3→9 (+5), 4→16 (+7): ungleiche Zuwächse pro +1 cm → nicht lineare Kurve."
+        }
+      ]
+    },
+    {
+      "id": "01M78MFPKYBS03MACT419V6DP8",
+      "atom_uri": "urn:zam:atom:01M78MFPKYBS03MACT419V6DP8",
+      "namespace": "zam-academy-mathematik-mittelschule-7",
+      "slug": "pp-2-dreisatz-sachaufgaben",
+      "title": "Proportionale Zuordnungen & Dreisatz",
+      "domain": "mathematik/proportionalitaet",
+      "reduction": "axiomatic",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pp-2-dreisatz-sachaufgaben",
+      "prerequisites": [
+        {
+          "atom_id": "01M78MFPKYNFT2H503AGBDRCQ7",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-7",
+          "topic_code": "stage-8-proportional",
+          "topic_title": "Etappe 8: Proportionalität"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb8",
+          "topic_title": "Proportionalität"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb8",
+          "topic_title": "Proportionalität"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78MFPKZN7266DB6V4B1040K",
+          "slug": "ms7-quotientengleichheit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pp-2-dreisatz-sachaufgaben",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ihr Produkt x mal y bleibt unverändert",
+              "reason": "Konstantes Produkt gehört zur umgekehrten, nicht zur direkten Proportionalität."
+            },
+            {
+              "text": "Ihre Differenz y minus x ist unverändert",
+              "reason": "Proportionalität bedeutet gleichen Quotienten y : x, keine gleiche Differenz."
+            }
+          ],
+          "question": "Was gilt für alle Wertepaare x ≠ 0 einer proportionalen Zuordnung?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Ihr Quotient "
+            },
+            {
+              "type": "math",
+              "tex": "\\frac{y}{x}",
+              "speech": "y geteilt durch x"
+            },
+            {
+              "type": "text",
+              "text": " ist konstant"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "text",
+                  "text": "Ihr Quotient "
+                },
+                {
+                  "type": "math",
+                  "tex": "\\frac{y}{x}",
+                  "speech": "y geteilt durch x"
+                },
+                {
+                  "type": "text",
+                  "text": " ist konstant"
+                }
+              ],
+              "Ihr Produkt x mal y bleibt unverändert"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZBVDXZ62C44NSFKS4",
+          "slug": "ms7-dreisatz-schritte",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pp-2-dreisatz-sachaufgaben",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Zuerst Paare addieren und durch Zielzahl teilen",
+              "reason": "Man teilt zuerst durch die gegebene Menge auf 1 und vervielfacht auf das Ziel."
+            },
+            {
+              "text": "Ausgangszahlen multiplizieren, Ziel abziehen",
+              "reason": "Zuerst wird durch Division die Einheit bestimmt, dann folgt die Multiplikation."
+            }
+          ],
+          "question": "Wie lautet das Grundprinzip beim proportionalen Dreisatz?",
+          "concept": "Auf eine Einheit teilen, dann auf Zielzahl malnehmen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auf eine Einheit teilen, dann auf Zielzahl malnehmen",
+              "Zuerst Paare addieren und durch Zielzahl teilen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78MFPKZDMQ7AGGPXYFPH98J",
+          "slug": "ms7-dreisatz-graph-kontrolle",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-7/#lesson=pp-2-dreisatz-sachaufgaben",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Kleinsten und größten Achsenpunkt steil verbinden",
+              "reason": "Die Ursprungsgerade läuft durch null und das bekannte Wertepaar."
+            },
+            {
+              "text": "Auf den Ursprung bei Zeichnen ganz verzichten",
+              "reason": "Ohne Start im Ursprung wäre die Gerade aus nur einem Punkt gar nicht festgelegt."
+            }
+          ],
+          "question": "Wie kontrollierst du eine Dreisatz-Lösung direkt am Graphen?",
+          "concept": "Ziel-x auf Geradenpunkt suchen und y ablesen",
+          "sample_solution": "Durch (0|0) und das Ausgangspaar liegt die Ursprungsgerade eindeutig fest; jeder Treffer liegt auf ihr."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,3299 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:physik-gymnasium-11",
+  "version": "2026.11.1",
+  "title": "Physik 11 Gymnasium (ZAM Academy)",
+  "description": "Hält fest, was du in der ZAM Academy zu Physik 11 (Gymnasium Bayern, LehrplanPLUS) geübt hast: Kreisbewegung und Gravitation, Schwingungen und Wellen, astronomische Weltbilder, spezielle Relativitätstheorie und Energieversorgung; für das NTG zusätzlich die Methode der kleinen Schritte und Photovoltaik. Jede Karte verlinkt die Lektion mit Modell und Aufgaben.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-11-10T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/physik-gymnasium-11/",
+      "checked": "2026-11-10",
+      "label": "ZAM Academy · Physik 11 Gymnasium"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/physik",
+      "checked": "2026-11-10",
+      "label": "LehrplanPLUS · Physik 11 Gymnasium, LB 1–4"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M724M0ZK7PQX6YKBCS127QT8",
+      "atom_uri": "urn:zam:atom:01M724M0ZK7PQX6YKBCS127QT8",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-kb-groessen",
+      "title": "Kreisbewegungen beschreiben",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-groessen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb1",
+          "topic_title": "Kreisbewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb1",
+          "topic_title": "Kreisbewegung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M10NZXB7307ET1JCAYZJ",
+          "slug": "ph11-winkelgeschwindigkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-groessen",
+          "question": "Wie berechnest du die Winkelgeschwindigkeit einer gleichförmigen Kreisbewegung aus der Umlaufdauer T?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\omega = \\frac{2\\pi}{T}",
+              "speech": "Omega gleich zwei Pi durch T"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\omega = \\frac{2\\pi}{T}",
+                  "speech": "Omega gleich zwei Pi durch T"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "\\omega = \\frac{T}{2\\pi}",
+                  "speech": "Omega gleich T durch zwei Pi"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M10PDN5XJPA54B1CW2G0",
+          "slug": "ph11-bahngeschwindigkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-groessen",
+          "question": "Wie hängen Bahngeschwindigkeit v, Winkelgeschwindigkeit ω und Radius r zusammen?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "v = \\omega \\cdot r",
+              "speech": "v gleich Omega mal r"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "v = \\omega \\cdot r",
+                  "speech": "v gleich Omega mal r"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "v = \\frac{\\omega}{r}",
+                  "speech": "v gleich Omega durch r"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M10QD2P1AH5CD54D7J0Y",
+          "slug": "ph11-karussell-innen-aussen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-groessen",
+          "question": "Zwei Kinder sitzen auf demselben Karussell, eines innen, eines außen. Vergleiche ihre Winkel- und ihre Bahngeschwindigkeit.",
+          "concept": "Gleiche Winkelgeschwindigkeit; außen größere Bahngeschwindigkeit.",
+          "materiality": "material",
+          "sample_solution": "Beide überstreichen in gleicher Zeit denselben Winkel, also ist ω gleich. Wegen v = ω · r legt das äußere Kind in derselben Zeit den längeren Weg zurück."
+        }
+      ]
+    },
+    {
+      "id": "01M724M0ZMSDFAD9EJNH1G5J4Y",
+      "atom_uri": "urn:zam:atom:01M724M0ZMSDFAD9EJNH1G5J4Y",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-kb-zentripetalkraft",
+      "title": "Zentripetalkraft und Zentripetalbeschleunigung",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-zentripetalkraft",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M0ZK7PQX6YKBCS127QT8"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb1",
+          "topic_title": "Kreisbewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb1",
+          "topic_title": "Kreisbewegung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M10RRMY719RYQMBCPFRV",
+          "slug": "ph11-zentripetalkraft-term",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-zentripetalkraft",
+          "question": "Mit welchem Term berechnest du die Zentripetalkraft aus Masse, Bahngeschwindigkeit und Radius?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "F_Z = \\frac{m \\cdot v^2}{r}",
+              "speech": "F Z gleich m mal v Quadrat durch r"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "F_Z = \\frac{m \\cdot v^2}{r}",
+                  "speech": "F Z gleich m mal v Quadrat durch r"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "F_Z = \\frac{m \\cdot v}{r^2}",
+                  "speech": "F Z gleich m mal v durch r Quadrat"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M10SY4A2Y0BKJ2B5R03K",
+          "slug": "ph11-zentripetalkraft-richtung",
+          "replaces": [
+            "01K8GA60000000000000000J01"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-zentripetalkraft",
+          "question": "In welche Richtung zeigt die Zentripetalkraft bei einer Kreisbewegung?",
+          "concept": "Zum Mittelpunkt der Kreisbahn, senkrecht zur Geschwindigkeit.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zum Mittelpunkt der Kreisbahn, senkrecht zur Geschwindigkeit.",
+              "Tangential in Bewegungsrichtung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M10TPQ4P8MVTGF38FQH6",
+          "slug": "ph11-zentrifugalkraft-abgrenzen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-zentripetalkraft",
+          "question": "Grenze Zentripetalkraft und Zentrifugalkraft voneinander ab.",
+          "concept": "Zentripetalkraft: reale Kraft zur Mitte; Zentrifugalkraft: Scheinkraft im mitbewegten Bezugssystem.",
+          "materiality": "material",
+          "sample_solution": "Von außen betrachtet wirkt nur eine reale Kraft zum Mittelpunkt (zum Beispiel Fadenkraft oder Haftreibung); sie ändert die Richtung der Geschwindigkeit. Die Zentrifugalkraft braucht nur ein mitbewegter Beobachter zur Beschreibung. Die beiden Kräfte heben sich nicht auf; sonst liefe der Körper geradeaus."
+        }
+      ]
+    },
+    {
+      "id": "01M724M0ZNA4VAMA69XV2JX3H3",
+      "atom_uri": "urn:zam:atom:01M724M0ZNA4VAMA69XV2JX3H3",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-kb-experiment",
+      "title": "Schülerexperiment: Wovon hängt die Zentripetalkraft ab?",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-experiment",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M0ZMSDFAD9EJNH1G5J4Y"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb1",
+          "topic_title": "Kreisbewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb1",
+          "topic_title": "Kreisbewegung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M10V8KNNZBEKQ2JD6S45",
+          "slug": "ph11-zentripetalkraft-omega-quadrat",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-experiment",
+          "question": "Wie ändert sich die Zentripetalkraft, wenn bei gleicher Masse und gleichem Radius die Winkelgeschwindigkeit verdoppelt wird?",
+          "concept": "Sie vervierfacht sich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie vervierfacht sich.",
+              "Sie verdoppelt sich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M10WPPXE389V11071MTV",
+          "slug": "ph11-experiment-eine-groesse",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-experiment",
+          "question": "Wie untersuchst du im Experiment die Abhängigkeit einer Größe von mehreren anderen?",
+          "concept": "Immer nur eine Größe variieren, die anderen konstant halten.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Immer nur eine Größe variieren, die anderen konstant halten.",
+              "Alle Größen gleichzeitig ändern, um Zeit zu sparen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M10X9BT2R7N24JSJDMP8",
+          "slug": "ph11-proportionalitaet-diagramm",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-experiment",
+          "question": "Wie zeigst du mit einem Diagramm, dass die Zentripetalkraft proportional zu ω² ist?",
+          "concept": "F über ω² auftragen: Es ergibt sich eine Ursprungsgerade.",
+          "materiality": "material",
+          "sample_solution": "Bei festem m und r wird ω variiert und F gemessen. Im F-ω-Diagramm entsteht eine Parabel; trägt man F über ω² auf, liegen die Punkte im Rahmen der Messgenauigkeit auf einer Geraden durch den Ursprung."
+        }
+      ]
+    },
+    {
+      "id": "01M724M0ZPHQ5GZGDMW7V3QT5M",
+      "atom_uri": "urn:zam:atom:01M724M0ZPHQ5GZGDMW7V3QT5M",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-kb-verkehr",
+      "title": "Kurvenfahrt: Kreisbewegungen in Alltag und Technik",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-verkehr",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M0ZMSDFAD9EJNH1G5J4Y"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb1",
+          "topic_title": "Kreisbewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb1",
+          "topic_title": "Kreisbewegung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M10Y7GR0W4F4EG4S7PKZ",
+          "slug": "ph11-kurve-zentripetalkraft",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-verkehr",
+          "question": "Welche Kraft wirkt bei einem Auto in einer ebenen Kurve als Zentripetalkraft?",
+          "concept": "Die Haftreibungskraft zwischen Reifen und Fahrbahn.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Haftreibungskraft zwischen Reifen und Fahrbahn.",
+              "Die Motorkraft in Fahrtrichtung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M10ZCTAP60M3SVAN86JX",
+          "slug": "ph11-kurve-doppelte-geschwindigkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-verkehr",
+          "question": "Wie ändert sich die nötige Zentripetalkraft, wenn ein Auto dieselbe Kurve doppelt so schnell fährt?",
+          "concept": "Sie vervierfacht sich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie vervierfacht sich.",
+              "Sie verdoppelt sich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M110N3QZJE8C98MNXZNJ",
+          "slug": "ph11-kurve-hoechstgeschwindigkeit",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-verkehr",
+          "question": "Leite die Höchstgeschwindigkeit in einer ebenen Kurve aus der Haftreibung her.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "v_{max} = \\sqrt{\\mu_H \\cdot g \\cdot r}",
+              "speech": "v max gleich Wurzel aus mü H mal g mal r"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Die nötige Zentripetalkraft darf höchstens so groß sein wie die größtmögliche Haftreibungskraft: m · v² / r ≤ μ_H · m · g. Die Masse kürzt sich; auflösen nach v liefert v_max = √(μ_H · g · r)."
+        }
+      ]
+    },
+    {
+      "id": "01M724M0ZQ7S6CG8HKTEYKYP0F",
+      "atom_uri": "urn:zam:atom:01M724M0ZQ7S6CG8HKTEYKYP0F",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-kb-gravitation",
+      "title": "Newtons Gravitationsgesetz",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-gravitation",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb1",
+          "topic_title": "Kreisbewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb1",
+          "topic_title": "Kreisbewegung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M1119VP928N27Z39FYJE",
+          "slug": "ph11-gravitationsgesetz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-gravitation",
+          "question": "Wie lautet das Newton’sche Gravitationsgesetz für zwei Massen im Abstand r ihrer Mittelpunkte?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "F_G = G \\cdot \\frac{m_1 \\cdot m_2}{r^2}",
+              "speech": "F G gleich G mal m eins mal m zwei durch r Quadrat"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "F_G = G \\cdot \\frac{m_1 \\cdot m_2}{r^2}",
+                  "speech": "F G gleich G mal m eins mal m zwei durch r Quadrat"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "F_G = G \\cdot \\frac{m_1 \\cdot m_2}{r}",
+                  "speech": "F G gleich G mal m eins mal m zwei durch r"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M1128YVKSVJ1SKAZZAAR",
+          "slug": "ph11-gravitation-doppelter-abstand",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-gravitation",
+          "question": "Wie groß ist die Gravitationskraft im doppelten Abstand der Mittelpunkte?",
+          "concept": "Ein Viertel der ursprünglichen Kraft.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Viertel der ursprünglichen Kraft.",
+              "Die Hälfte der ursprünglichen Kraft."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M1136PNB1J1BJZ4P0E0M",
+          "slug": "ph11-ortsfaktor-aus-gravitation",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-gravitation",
+          "question": "Wie erhältst du den Ortsfaktor g an der Oberfläche eines Planeten aus dessen Masse M und Radius r?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "g = \\frac{G \\cdot M}{r^2}",
+              "speech": "g gleich G mal M durch r Quadrat"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "An der Oberfläche ist die Gewichtskraft die Gravitationskraft: m · g = G · M · m / r². Die Masse m des Körpers kürzt sich, es bleibt g = G · M / r²."
+        }
+      ]
+    },
+    {
+      "id": "01M724M0ZR43EXFN3JA6S56QW7",
+      "atom_uri": "urn:zam:atom:01M724M0ZR43EXFN3JA6S56QW7",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-kb-satelliten",
+      "title": "Satelliten und Himmelskörper auf Kreisbahnen",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-satelliten",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M0ZQ7S6CG8HKTEYKYP0F"
+        },
+        {
+          "atom_id": "01M724M0ZMSDFAD9EJNH1G5J4Y"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb1",
+          "topic_title": "Kreisbewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb1",
+          "topic_title": "Kreisbewegung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M114D1QNTVZJVBDVY1X0",
+          "slug": "ph11-satellit-ansatz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-satelliten",
+          "question": "Mit welchem Ansatz modellierst du die Kreisbahn eines Satelliten?",
+          "concept": "Die Gravitationskraft wirkt als Zentripetalkraft.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Gravitationskraft wirkt als Zentripetalkraft.",
+              "Gravitationskraft und Zentripetalkraft heben sich auf."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M115C025AD005XMWFGAB",
+          "slug": "ph11-satellit-masse",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-satelliten",
+          "question": "Wie hängt die Umlaufdauer eines Satelliten auf einer festen Kreisbahn von seiner Masse ab?",
+          "concept": "Gar nicht; die Satellitenmasse kürzt sich heraus.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gar nicht; die Satellitenmasse kürzt sich heraus.",
+              "Schwerere Satelliten laufen langsamer um."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M116Q1RQNDZ5EY37RTA5",
+          "slug": "ph11-satellit-bahngeschwindigkeit",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=kb-satelliten",
+          "question": "Leite die Bahngeschwindigkeit eines Satelliten auf einer Kreisbahn mit Radius r um einen Körper der Masse M her.",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "v = \\sqrt{\\frac{G \\cdot M}{r}}",
+              "speech": "v gleich Wurzel aus G mal M durch r"
+            }
+          ],
+          "materiality": "material",
+          "sample_solution": "Ansatz: G · M · m / r² = m · v² / r. Die Masse m kürzt sich, Multiplikation mit r ergibt v² = G · M / r. Je größer der Bahnradius, desto kleiner die Geschwindigkeit."
+        }
+      ]
+    },
+    {
+      "id": "01M724M0ZSGVWH4PZ76AJHVA36",
+      "atom_uri": "urn:zam:atom:01M724M0ZSGVWH4PZ76AJHVA36",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-sw-schwingung",
+      "title": "Schwingungen beschreiben und Diagramme lesen",
+      "domain": "physik/schwingungen-wellen",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-schwingung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M117FB4KJG5M0Y4HP00T",
+          "slug": "ph11-frequenz-periodendauer",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-schwingung",
+          "question": "Wie hängen Frequenz f und Periodendauer T einer Schwingung zusammen?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "f = \\frac{1}{T}",
+              "speech": "f gleich eins durch T"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "f = \\frac{1}{T}",
+                  "speech": "f gleich eins durch T"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "f = 2\\pi \\cdot T",
+                  "speech": "f gleich zwei Pi mal T"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M118V4TCSPMCMZ8RC4D5",
+          "slug": "ph11-amplitude",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-schwingung",
+          "question": "Was ist die Amplitude einer Schwingung?",
+          "concept": "Die größte Auslenkung aus der Ruhelage.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die größte Auslenkung aus der Ruhelage.",
+              "Der Abstand zwischen den beiden Umkehrpunkten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M119VMJK11180GZ9XZ02",
+          "slug": "ph11-harmonische-schwingung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-schwingung",
+          "question": "Wann heißt eine Schwingung harmonisch, und wie sieht ihr Zeit-Auslenkung-Diagramm aus?",
+          "concept": "Rücktreibende Kraft proportional zur Auslenkung; das Diagramm ist eine Sinuskurve.",
+          "materiality": "material",
+          "sample_solution": "Bei einer harmonischen Schwingung ist die rücktreibende Kraft proportional zur Auslenkung und zur Ruhelage gerichtet. Das Zeit-Auslenkung-Diagramm ist sinusförmig, zum Beispiel y(t) = A · sin(2π · t / T)."
+        }
+      ]
+    },
+    {
+      "id": "01M724M0ZTCDV3BX8JNMGVH9A2",
+      "atom_uri": "urn:zam:atom:01M724M0ZTCDV3BX8JNMGVH9A2",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-sw-federpendel",
+      "title": "Das Federpendel: Kraft, Energie und Periodendauer",
+      "domain": "physik/schwingungen-wellen",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-federpendel",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M0ZSGVWH4PZ76AJHVA36"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M11AMB4HAPG5EC1JA0VE",
+          "slug": "ph11-federpendel-periodendauer",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-federpendel",
+          "question": "Wie berechnest du die Periodendauer eines Federpendels mit Masse m und Federhärte D?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "T = 2\\pi \\cdot \\sqrt{\\frac{m}{D}}",
+              "speech": "T gleich zwei Pi mal Wurzel aus m durch D"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "T = 2\\pi \\cdot \\sqrt{\\frac{m}{D}}",
+                  "speech": "T gleich zwei Pi mal Wurzel aus m durch D"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "T = 2\\pi \\cdot \\sqrt{\\frac{D}{m}}",
+                  "speech": "T gleich zwei Pi mal Wurzel aus D durch m"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M11BB2VVRC6MH58V7WBH",
+          "slug": "ph11-federpendel-geschwindigkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-federpendel",
+          "question": "Wo ist beim Federpendel der Betrag der Geschwindigkeit am größten?",
+          "concept": "Beim Durchgang durch die Ruhelage.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beim Durchgang durch die Ruhelage.",
+              "In den Umkehrpunkten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M11CE6QYNPVZHSHM99S6",
+          "slug": "ph11-federpendel-energie",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-federpendel",
+          "question": "Beschreibe die Energieumwandlungen beim reibungsfreien Federpendel während einer Periode.",
+          "concept": "Spannenergie und kinetische Energie wandeln sich periodisch ineinander um; die Summe bleibt gleich.",
+          "materiality": "material",
+          "sample_solution": "In den Umkehrpunkten liegt die gesamte Schwingungsenergie als Spannenergie ½ · D · A² vor, in der Ruhelage als kinetische Energie ½ · m · v_max². In einer Periode läuft diese Umwandlung zweimal hin und zurück."
+        }
+      ]
+    },
+    {
+      "id": "01M724M0ZV0XYV9AB0BDT6CJPS",
+      "atom_uri": "urn:zam:atom:01M724M0ZV0XYV9AB0BDT6CJPS",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-sw-fadenpendel",
+      "title": "Schülerexperiment: Die Schwingungsdauer des Fadenpendels",
+      "domain": "physik/schwingungen-wellen",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-fadenpendel",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M0ZSGVWH4PZ76AJHVA36"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M11DPSJMZBCFK7TVR7G4",
+          "slug": "ph11-fadenpendel-periodendauer",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-fadenpendel",
+          "question": "Wie lautet die Periodendauer eines Fadenpendels der Länge l bei kleinen Auslenkungen?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "T = 2\\pi \\cdot \\sqrt{\\frac{l}{g}}",
+              "speech": "T gleich zwei Pi mal Wurzel aus l durch g"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "T = 2\\pi \\cdot \\sqrt{\\frac{l}{g}}",
+                  "speech": "T gleich zwei Pi mal Wurzel aus l durch g"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "T = 2\\pi \\cdot \\sqrt{\\frac{g}{l}}",
+                  "speech": "T gleich zwei Pi mal Wurzel aus g durch l"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M11E3DMV15F4BVNRW350",
+          "slug": "ph11-fadenpendel-masse",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-fadenpendel",
+          "question": "Wie beeinflusst die Masse des Pendelkörpers die Periodendauer eines Fadenpendels?",
+          "concept": "Gar nicht.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gar nicht.",
+              "Größere Masse, größere Periodendauer."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M11FTQ77PJN9VJE1WW1T",
+          "slug": "ph11-fadenpendel-auswertung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-fadenpendel",
+          "question": "Wie weist du grafisch nach, dass beim Fadenpendel T² proportional zur Länge l ist, und was liefert die Steigung?",
+          "concept": "T² über l auftragen: Ursprungsgerade mit der Steigung 4π² / g.",
+          "materiality": "material",
+          "sample_solution": "Im T-l-Diagramm liegt eine gekrümmte Kurve vor. Trägt man T² über l auf, ergibt sich eine Gerade durch den Ursprung. Aus T² = (4π² / g) · l folgt die Steigung 4π² / g; daraus lässt sich g bestimmen."
+        }
+      ]
+    },
+    {
+      "id": "01M724M0ZWT95VE7HH2D5K6KGD",
+      "atom_uri": "urn:zam:atom:01M724M0ZWT95VE7HH2D5K6KGD",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-sw-messunsicherheit",
+      "title": "Messunsicherheiten erkennen und angeben",
+      "domain": "physik/schwingungen-wellen",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-messunsicherheit",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M0ZV0XYV9AB0BDT6CJPS"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M11G80AWGTW47N647YJS",
+          "slug": "ph11-zehn-schwingungen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-messunsicherheit",
+          "question": "Warum stoppt man die Zeit für zehn Schwingungen statt für eine?",
+          "concept": "Der Stoppfehler verteilt sich auf zehn Perioden.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Stoppfehler verteilt sich auf zehn Perioden.",
+              "Weil das Pendel dann gleichmäßiger schwingt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M11H4XWES7K5BM8YAYV2",
+          "slug": "ph11-systematische-abweichung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-messunsicherheit",
+          "question": "Welche Art von Messabweichung lässt sich durch häufiges Wiederholen nicht verringern?",
+          "concept": "Die systematische Abweichung.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die systematische Abweichung.",
+              "Die zufällige Abweichung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M11JGERWEGQRCS72JM1V",
+          "slug": "ph11-messergebnis-angeben",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-messunsicherheit",
+          "question": "Wie gibst du das Ergebnis einer mehrfach gemessenen Größe mit Messunsicherheit an?",
+          "concept": "Mittelwert ± Unsicherheit, zum Beispiel halbe Spannweite oder Standardabweichung.",
+          "materiality": "material",
+          "sample_solution": "Der Mittelwert ist der beste Schätzwert. Die Streuung der Werte beschreibt die halbe Spannweite oder die Standardabweichung. Die Unsicherheit wird auf eine geltende Ziffer gerundet, der Mittelwert auf dieselbe Stelle, zum Beispiel T = (1,42 ± 0,03) s."
+        }
+      ]
+    },
+    {
+      "id": "01M724M0ZXM49ZG36FEGH1CAP7",
+      "atom_uri": "urn:zam:atom:01M724M0ZXM49ZG36FEGH1CAP7",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-sw-wellen",
+      "title": "Mechanische Wellen: längs, quer und c = λ · f",
+      "domain": "physik/schwingungen-wellen",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-wellen",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M0ZSGVWH4PZ76AJHVA36"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M11K3MDMTRKFFNP0XP87",
+          "slug": "ph11-wellengleichung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-wellen",
+          "question": "Wie hängen Ausbreitungsgeschwindigkeit c, Wellenlänge λ und Frequenz f einer Welle zusammen?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "c = \\lambda \\cdot f",
+              "speech": "c gleich Lambda mal f"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "c = \\lambda \\cdot f",
+                  "speech": "c gleich Lambda mal f"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "c = \\frac{\\lambda}{f}",
+                  "speech": "c gleich Lambda durch f"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M11M4RSZDE247CPNJF0W",
+          "slug": "ph11-longitudinalwelle",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-wellen",
+          "question": "In welche Richtung schwingen die Oszillatoren bei einer Longitudinalwelle?",
+          "concept": "Längs der Ausbreitungsrichtung.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Längs der Ausbreitungsrichtung.",
+              "Quer zur Ausbreitungsrichtung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M11N5WCMYKP7KYW1T7HQ",
+          "slug": "ph11-welle-transport",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-wellen",
+          "question": "Was transportiert eine mechanische Welle, und was nicht? Begründe mit dem Modell gekoppelter Oszillatoren.",
+          "concept": "Energie und Schwingungszustand, aber keinen Stoff.",
+          "materiality": "material",
+          "sample_solution": "Jeder Oszillator schwingt um seine feste Ruhelage und regt über die Kopplung den Nachbarn an, der dieselbe Schwingung etwas später ausführt. So wandern Energie und Schwingungszustand weiter, die Teilchen des Trägers bleiben im Mittel an ihrem Ort."
+        }
+      ]
+    },
+    {
+      "id": "01M724M0ZYVP1C58JXEEMRKAQS",
+      "atom_uri": "urn:zam:atom:01M724M0ZYVP1C58JXEEMRKAQS",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-sw-superposition",
+      "title": "Beugung und Superposition",
+      "domain": "physik/schwingungen-wellen",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-superposition",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M0ZXM49ZG36FEGH1CAP7"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M11PEXV00YFKAADE53B8",
+          "slug": "ph11-superpositionsprinzip",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-superposition",
+          "question": "Was besagt das Superpositionsprinzip für zwei Wellen, die sich an einem Ort überlagern?",
+          "concept": "Die Auslenkungen addieren sich mit ihrem Vorzeichen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Auslenkungen addieren sich mit ihrem Vorzeichen.",
+              "Die größere Welle verdrängt die kleinere."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M11QSZQTE1EZNN0RBAMF",
+          "slug": "ph11-beugung-bedingung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-superposition",
+          "question": "Wann ist die Beugung einer Welle an einer Öffnung besonders deutlich?",
+          "concept": "Wenn die Öffnung etwa so groß wie die Wellenlänge oder kleiner ist.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn die Öffnung etwa so groß wie die Wellenlänge oder kleiner ist.",
+              "Wenn die Öffnung sehr viel größer als die Wellenlänge ist."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M11RAG0BM9P3CFN5AN0J",
+          "slug": "ph11-wellenphaenomene",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-superposition",
+          "question": "Welche beiden Phänomene gelten als typische Kennzeichen von Wellen, und was bedeuten sie?",
+          "concept": "Beugung und Interferenz.",
+          "materiality": "material",
+          "sample_solution": "Beugung: Eine Welle breitet sich hinter einer Öffnung oder einem Hindernis auch in den Schattenraum aus. Interferenz: Wellen überlagern sich und verstärken oder schwächen sich je nach Ort. Beobachtet man beides, ist ein Wellenmodell angebracht."
+        }
+      ]
+    },
+    {
+      "id": "01M724M0ZZZXB2R3QCW7KG5MVF",
+      "atom_uri": "urn:zam:atom:01M724M0ZZZXB2R3QCW7KG5MVF",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-sw-interferenz",
+      "title": "Zweistrahlinterferenz und Gangunterschied",
+      "domain": "physik/schwingungen-wellen",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-interferenz",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M0ZYVP1C58JXEEMRKAQS"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M11SQTN23KSK21982HNG",
+          "slug": "ph11-konstruktive-interferenz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-interferenz",
+          "question": "Bei welchem Gangunterschied zweier gleichphasiger Wellenzentren entsteht konstruktive Interferenz?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\Delta s = k \\cdot \\lambda",
+              "speech": "Delta s gleich k mal Lambda"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\Delta s = k \\cdot \\lambda",
+                  "speech": "Delta s gleich k mal Lambda"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "\\Delta s = (2k+1) \\cdot \\frac{\\lambda}{4}",
+                  "speech": "Delta s gleich zwei k plus eins mal Lambda Viertel"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M11TNNHJQ2BHF58778RN",
+          "slug": "ph11-destruktive-interferenz",
+          "replaces": [
+            "01K8GA40000000000000000J01"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-interferenz",
+          "question": "Bei welchem Gangunterschied zweier gleichphasiger Wellenzentren entsteht destruktive Interferenz?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\Delta s = (2k+1) \\cdot \\frac{\\lambda}{2}",
+              "speech": "Delta s gleich zwei k plus eins mal Lambda Halbe"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\Delta s = (2k+1) \\cdot \\frac{\\lambda}{2}",
+                  "speech": "Delta s gleich zwei k plus eins mal Lambda Halbe"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "\\Delta s = 2k \\cdot \\lambda",
+                  "speech": "Delta s gleich zwei k mal Lambda"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M11VT799SNMDYTNQY3R3",
+          "slug": "ph11-gangunterschied-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-interferenz",
+          "question": "Begründe mit dem Gangunterschied, warum es zwischen zwei gleichphasig schwingenden Lautsprechern laute und leise Stellen gibt.",
+          "concept": "Der Gangunterschied entscheidet, ob Berg auf Berg oder Berg auf Tal trifft.",
+          "materiality": "material",
+          "sample_solution": "An jedem Ort haben die beiden Wellen verschieden lange Wege zurückgelegt. Ist der Unterschied ein ganzzahliges Vielfaches von λ, kommen sie im Gleichtakt an und verstärken sich. Ist er ein ungeradzahliges Vielfaches von λ / 2, treffen Berg und Tal zusammen und schwächen sich ab."
+        }
+      ]
+    },
+    {
+      "id": "01M724M1000MBA3TT13ZT1EXCD",
+      "atom_uri": "urn:zam:atom:01M724M1000MBA3TT13ZT1EXCD",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-sw-stehende-wellen",
+      "title": "Stehende Wellen",
+      "domain": "physik/schwingungen-wellen",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-stehende-wellen",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M0ZZZXB2R3QCW7KG5MVF"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M11WRTGA142HXY75PDFA",
+          "slug": "ph11-knotenabstand",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-stehende-wellen",
+          "question": "Wie groß ist der Abstand benachbarter Knoten einer stehenden Welle?",
+          "concept": "Eine halbe Wellenlänge.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine halbe Wellenlänge.",
+              "Eine ganze Wellenlänge."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M11XGBTE25QQ33VSV89C",
+          "slug": "ph11-stehende-welle-bedingung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-stehende-wellen",
+          "question": "Welche Bedingung erfüllt eine stehende Welle auf einem Träger der Länge L mit zwei festen Enden?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "L = n \\cdot \\frac{\\lambda}{2}",
+              "speech": "L gleich n mal Lambda Halbe"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "L = n \\cdot \\frac{\\lambda}{2}",
+                  "speech": "L gleich n mal Lambda Halbe"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "L = n \\cdot 2\\lambda",
+                  "speech": "L gleich n mal zwei Lambda"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M11YZB6JSSHJCV45MNF4",
+          "slug": "ph11-stehende-welle-entstehung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-stehende-wellen",
+          "question": "Wie entsteht eine stehende Welle, und wodurch unterscheidet sie sich von einer fortschreitenden Welle?",
+          "concept": "Überlagerung zweier gegenläufiger Wellen gleicher Frequenz; ortsfeste Knoten und Bäuche, kein Energietransport.",
+          "materiality": "material",
+          "sample_solution": "Eine einlaufende Welle und ihre am Ende reflektierte Welle überlagern sich. An den Knoten löschen sie sich dauernd aus, an den Bäuchen schwingt der Träger mit größter Amplitude. Das Muster wandert nicht, und es wird keine Energie in Ausbreitungsrichtung transportiert."
+        }
+      ]
+    },
+    {
+      "id": "01M724M1013JKWJERFNPS4KZWD",
+      "atom_uri": "urn:zam:atom:01M724M1013JKWJERFNPS4KZWD",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-sw-doppelspalt",
+      "title": "Licht am Doppelspalt: Farbe und Wellenlänge",
+      "domain": "physik/schwingungen-wellen",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-doppelspalt",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M0ZZZXB2R3QCW7KG5MVF"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M11Z7192CHXJZM2BSE3F",
+          "slug": "ph11-doppelspalt-schirmbild",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-doppelspalt",
+          "question": "Was zeigt der Schirm, wenn einfarbiges Laserlicht auf einen Doppelspalt fällt?",
+          "concept": "Viele helle und dunkle Streifen in regelmäßigem Abstand.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Viele helle und dunkle Streifen in regelmäßigem Abstand.",
+              "Genau zwei helle Streifen, einen je Spalt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M120ACBBX27CCSHKZXHK",
+          "slug": "ph11-farbe-wellenlaenge",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-doppelspalt",
+          "question": "Welches sichtbare Licht hat die größere Wellenlänge: rotes oder blaues?",
+          "concept": "Rotes Licht.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Rotes Licht.",
+              "Blaues Licht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M1216FXSGCWJ9N2MSP51",
+          "slug": "ph11-doppelspalt-deutung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-doppelspalt",
+          "question": "Deute das Streifenmuster hinter dem Doppelspalt mit dem Wellenmodell.",
+          "concept": "Interferenz der Lichtwellen aus beiden Spalten: hell bei Δs = k · λ, dunkel bei Δs = (2k + 1) · λ / 2.",
+          "materiality": "material",
+          "sample_solution": "Beide Spalte wirken als gleichphasige Wellenzentren. Auf dem Schirm überlagern sich die Wellen: Wo der Gangunterschied ein ganzzahliges Vielfaches der Wellenlänge ist, verstärken sie sich (helle Streifen); bei ungeradzahligen Vielfachen der halben Wellenlänge löschen sie sich aus (dunkle Streifen)."
+        }
+      ]
+    },
+    {
+      "id": "01M724M1023561GN6TBNP9Y4MA",
+      "atom_uri": "urn:zam:atom:01M724M1023561GN6TBNP9Y4MA",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-sw-lichtmodelle",
+      "title": "Photonenmodell und Wellenmodell des Lichts",
+      "domain": "physik/schwingungen-wellen",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-lichtmodelle",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M1013JKWJERFNPS4KZWD"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb2",
+          "topic_title": "Schwingungen und Wellen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M1225MVD7F8BDHQPRSC2",
+          "slug": "ph11-wellenmodell-anwendung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-lichtmodelle",
+          "question": "Mit welchem Lichtmodell erklärst du Beugung und Interferenz?",
+          "concept": "Mit dem Wellenmodell.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem Wellenmodell.",
+              "Mit dem Photonenmodell."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M1231QQF0QVXE6H0QZ7K",
+          "slug": "ph11-photonenmodell-anwendung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-lichtmodelle",
+          "question": "Mit welchem Lichtmodell erklärst du die Linienspektren leuchtender Gase?",
+          "concept": "Mit dem Photonenmodell.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem Photonenmodell.",
+              "Mit dem Wellenmodell."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M1242Z38N6VCA1KZS9YV",
+          "slug": "ph11-lichtmodelle-vergleich",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=sw-lichtmodelle",
+          "question": "Vergleiche Photonen- und Wellenmodell des Lichts hinsichtlich ihrer Anwendbarkeit.",
+          "concept": "Wellenmodell für Ausbreitung und Interferenz; Photonenmodell für Emission, Absorption und Nachweis.",
+          "materiality": "material",
+          "sample_solution": "Das Wellenmodell beschreibt, wie sich Licht ausbreitet und überlagert (Beugung, Interferenz). Das Photonenmodell beschreibt, dass Licht Energie in Portionen abgibt und aufnimmt (Linienspektren, einzelne Detektortreffer). Keines erklärt allein alle Beobachtungen; die Fragestellung entscheidet über das Modell."
+        }
+      ]
+    },
+    {
+      "id": "01M724M103Y7SARZYW2KW41AHE",
+      "atom_uri": "urn:zam:atom:01M724M103Y7SARZYW2KW41AHE",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-ew-weltbilder",
+      "title": "Vom geozentrischen zum heliozentrischen Weltbild",
+      "domain": "physik/weltbild",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-weltbilder",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M1256BSSHFXN0Y8GB6PK",
+          "slug": "ph11-heliozentrisch",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-weltbilder",
+          "question": "Was steht im heliozentrischen Weltbild im Mittelpunkt der Planetenbewegung?",
+          "concept": "Die Sonne.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Sonne.",
+              "Die Erde."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M1266SFT8Y61KH4FMV0J",
+          "slug": "ph11-galilei-jupitermonde",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-weltbilder",
+          "question": "Welche Fernrohrbeobachtung Galileis zeigte, dass nicht alle Himmelskörper die Erde umkreisen?",
+          "concept": "Vier Monde umkreisen den Jupiter.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vier Monde umkreisen den Jupiter.",
+              "Die Sonne geht im Osten auf."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M127TKZMK040R2QQTRF7",
+          "slug": "ph11-weltbildwandel",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-weltbilder",
+          "question": "Nenne die wesentlichen Schritte vom geozentrischen zum heliozentrischen Weltbild.",
+          "concept": "Kopernikus (Modell), Brahe (Messungen), Kepler (Ellipsen), Galilei (Fernrohr), Newton (Gravitation).",
+          "materiality": "material",
+          "sample_solution": "Ptolemäus beschrieb die Planeten geozentrisch mit Epizykeln. Kopernikus stellte 1543 die Sonne in die Mitte. Kepler fand aus Brahes Messungen die Ellipsenbahnen, Galilei sah Jupitermonde und Venusphasen, Newton erklärte die Bahnen 1687 mit dem Gravitationsgesetz."
+        }
+      ]
+    },
+    {
+      "id": "01M724M104A2Z52TY9VXYA09CB",
+      "atom_uri": "urn:zam:atom:01M724M104A2Z52TY9VXYA09CB",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-ew-kepler",
+      "title": "Die Kepler’schen Gesetze",
+      "domain": "physik/weltbild",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-kepler",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M103Y7SARZYW2KW41AHE"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M128EN8VPKMNCKVSHJXS",
+          "slug": "ph11-kepler-1",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-kepler",
+          "question": "Was besagt das erste Kepler’sche Gesetz?",
+          "concept": "Planeten bewegen sich auf Ellipsen; in einem Brennpunkt steht die Sonne.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Planeten bewegen sich auf Ellipsen; in einem Brennpunkt steht die Sonne.",
+              "Planeten bewegen sich auf Kreisen; im Mittelpunkt steht die Sonne."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12921BPG9YR5XKDHJGF",
+          "slug": "ph11-kepler-2",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-kepler",
+          "question": "Wo ist ein Planet nach dem zweiten Kepler’schen Gesetz am schnellsten?",
+          "concept": "Im sonnennächsten Punkt (Perihel).",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im sonnennächsten Punkt (Perihel).",
+              "Im sonnenfernsten Punkt (Aphel)."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12ASGS49GQS4QASMM82",
+          "slug": "ph11-kepler-3",
+          "replaces": [
+            "01K8GA60000000000000000J03"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-kepler",
+          "question": "Wie lautet das dritte Kepler’sche Gesetz für zwei Planeten derselben Sonne?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\frac{T_1^2}{T_2^2} = \\frac{a_1^3}{a_2^3}",
+              "speech": "T eins Quadrat durch T zwei Quadrat gleich a eins hoch drei durch a zwei hoch drei"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\frac{T_1^2}{T_2^2} = \\frac{a_1^3}{a_2^3}",
+                  "speech": "T eins Quadrat durch T zwei Quadrat gleich a eins hoch drei durch a zwei hoch drei"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "\\frac{T_1^3}{T_2^3} = \\frac{a_1^2}{a_2^2}",
+                  "speech": "T eins hoch drei durch T zwei hoch drei gleich a eins Quadrat durch a zwei Quadrat"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01M724M105KPAMAJTFFMR8HR9W",
+      "atom_uri": "urn:zam:atom:01M724M105KPAMAJTFFMR8HR9W",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-ew-universum",
+      "title": "Das moderne astronomische Weltbild",
+      "domain": "physik/weltbild",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-universum",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M12BGVF2A2A47AQ2XKGX",
+          "slug": "ph11-hubble-beziehung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-universum",
+          "question": "Was sagt die Hubble-Beziehung über ferne Galaxien aus?",
+          "concept": "Je weiter entfernt, desto größer die Fluchtgeschwindigkeit.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Je weiter entfernt, desto größer die Fluchtgeschwindigkeit.",
+              "Alle Galaxien entfernen sich gleich schnell."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12CVA26TFR8T77V1GV9",
+          "slug": "ph11-alter-universum",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-universum",
+          "question": "Vor etwa wie vielen Jahren begann nach dem Urknallmodell die Entwicklung des Universums?",
+          "concept": "Vor etwa 13,8 Milliarden Jahren.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vor etwa 13,8 Milliarden Jahren.",
+              "Vor etwa 4,6 Milliarden Jahren."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12DFKPX9K6JR8ZPRAP4",
+          "slug": "ph11-urknall-belege",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-universum",
+          "question": "Nenne zwei Beobachtungen, die das Urknallmodell stützen.",
+          "concept": "Rotverschiebung ferner Galaxien und kosmische Hintergrundstrahlung.",
+          "materiality": "material",
+          "sample_solution": "Das Licht ferner Galaxien ist umso stärker rotverschoben, je weiter sie entfernt sind; das wird als Expansion des Raums gedeutet. Die aus allen Richtungen nahezu gleichmäßig eintreffende Hintergrundstrahlung gilt als abgekühlte Strahlung aus der heißen Frühzeit."
+        }
+      ]
+    },
+    {
+      "id": "01M724M106EF6A910AGDHW7TQZ",
+      "atom_uri": "urn:zam:atom:01M724M106EF6A910AGDHW7TQZ",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-ew-postulate",
+      "title": "Einsteins Postulate und die Relativität der Gleichzeitigkeit",
+      "domain": "physik/weltbild",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-postulate",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M12EFYSKP65PK7CFD27C",
+          "slug": "ph11-relativitaetsprinzip",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-postulate",
+          "question": "Was besagt das Relativitätsprinzip (erstes Einstein’sches Postulat)?",
+          "concept": "In allen Inertialsystemen gelten dieselben physikalischen Gesetze.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In allen Inertialsystemen gelten dieselben physikalischen Gesetze.",
+              "Nur im ruhenden Bezugssystem gelten die physikalischen Gesetze exakt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12F2EEGWFAJNTSMN1BW",
+          "slug": "ph11-konstanz-lichtgeschwindigkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-postulate",
+          "question": "Was besagt das zweite Einstein’sche Postulat über die Lichtgeschwindigkeit im Vakuum?",
+          "concept": "Sie ist in jedem Inertialsystem gleich groß.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie ist in jedem Inertialsystem gleich groß.",
+              "Sie hängt von der Geschwindigkeit der Lichtquelle ab."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12G99B21KRBMAA98VG4",
+          "slug": "ph11-relativitaet-gleichzeitigkeit",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-postulate",
+          "question": "Was bedeutet Relativität der Gleichzeitigkeit, und woraus folgt sie?",
+          "concept": "Ob zwei Ereignisse an verschiedenen Orten gleichzeitig sind, hängt vom Bezugssystem ab.",
+          "materiality": "material",
+          "sample_solution": "Blitzt in der Mitte eines fahrenden Waggons eine Lampe auf, erreicht das Licht für die Reisende beide Enden gleichzeitig. Vom Bahnsteig aus läuft es ebenfalls mit c in beide Richtungen, das hintere Ende fährt ihm aber entgegen: Dort kommt es früher an. Das folgt aus der Konstanz der Lichtgeschwindigkeit."
+        }
+      ]
+    },
+    {
+      "id": "01M724M1077DK32C3NKWRP3ZGW",
+      "atom_uri": "urn:zam:atom:01M724M1077DK32C3NKWRP3ZGW",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-ew-zeitdilatation",
+      "title": "Zeitdilatation: Bewegte Uhren gehen langsamer",
+      "domain": "physik/weltbild",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-zeitdilatation",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M106EF6A910AGDHW7TQZ"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M12H9H3FV8DQAPEM4KWA",
+          "slug": "ph11-lorentzfaktor",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-zeitdilatation",
+          "question": "Wie ist der Lorentzfaktor γ definiert?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\gamma = \\frac{1}{\\sqrt{1 - \\frac{v^2}{c^2}}}",
+              "speech": "Gamma gleich eins durch Wurzel aus eins minus v Quadrat durch c Quadrat"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\gamma = \\frac{1}{\\sqrt{1 - \\frac{v^2}{c^2}}}",
+                  "speech": "Gamma gleich eins durch Wurzel aus eins minus v Quadrat durch c Quadrat"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "\\gamma = \\sqrt{1 - \\frac{v^2}{c^2}}",
+                  "speech": "Gamma gleich Wurzel aus eins minus v Quadrat durch c Quadrat"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12JXWK2271NXD2ZVYFR",
+          "slug": "ph11-zeitdilatation",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-zeitdilatation",
+          "question": "Wie hängt die von dir gemessene Zeit Δt mit der Eigenzeit Δt₀ einer bewegten Uhr zusammen?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\Delta t = \\gamma \\cdot \\Delta t_0",
+              "speech": "Delta t gleich Gamma mal Delta t null"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\Delta t = \\gamma \\cdot \\Delta t_0",
+                  "speech": "Delta t gleich Gamma mal Delta t null"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "\\Delta t = \\frac{\\Delta t_0}{\\gamma}",
+                  "speech": "Delta t gleich Delta t null durch Gamma"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12KDJFYJCFTPM4EYZ7C",
+          "slug": "ph11-lichtuhr",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-zeitdilatation",
+          "question": "Erkläre mit der Lichtuhr, warum eine bewegte Uhr aus Sicht eines ruhenden Beobachters langsamer geht.",
+          "concept": "Das Licht legt einen längeren, schrägen Weg mit derselben Geschwindigkeit c zurück.",
+          "materiality": "material",
+          "sample_solution": "Im Ruhesystem der Uhr läuft das Licht senkrecht zwischen zwei Spiegeln. Für den Beobachter bewegt sich die Uhr, das Licht läuft schräg und damit weiter. Weil es auch für ihn mit c läuft, dauert ein Tick länger: Δt = γ · Δt₀."
+        }
+      ]
+    },
+    {
+      "id": "01M724M1083DFHPK4P6EHGJF2Z",
+      "atom_uri": "urn:zam:atom:01M724M1083DFHPK4P6EHGJF2Z",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-ew-laengenkontraktion",
+      "title": "Längenkontraktion und Myonen",
+      "domain": "physik/weltbild",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-laengenkontraktion",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M1077DK32C3NKWRP3ZGW"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M12MRNKFRW7G7MXV725G",
+          "slug": "ph11-laengenkontraktion",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-laengenkontraktion",
+          "question": "Wie lang misst du einen Körper der Eigenlänge l₀, der sich mit v an dir vorbeibewegt?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "l = \\frac{l_0}{\\gamma}",
+              "speech": "l gleich l null durch Gamma"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "l = \\frac{l_0}{\\gamma}",
+                  "speech": "l gleich l null durch Gamma"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "l = \\gamma \\cdot l_0",
+                  "speech": "l gleich Gamma mal l null"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12NX31X8AXR27QWDSTS",
+          "slug": "ph11-klassische-mechanik-grenze",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-laengenkontraktion",
+          "question": "Für welche Geschwindigkeiten bleibt die klassische Mechanik eine sehr gute Näherung?",
+          "concept": "Für Geschwindigkeiten weit unter der Lichtgeschwindigkeit.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für Geschwindigkeiten weit unter der Lichtgeschwindigkeit.",
+              "Für alle Geschwindigkeiten bis zur Lichtgeschwindigkeit."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12PR2B2S7RH31S2BJQW",
+          "slug": "ph11-myonen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-laengenkontraktion",
+          "question": "Warum erreichen viele Myonen der Höhenstrahlung den Erdboden, obwohl sie in Ruhe im Mittel nach 2,2 µs zerfallen?",
+          "concept": "Erdsystem: Zeitdilatation verlängert ihre Lebensdauer; Myonensystem: die Atmosphäre ist längenkontrahiert.",
+          "materiality": "material",
+          "sample_solution": "Klassisch kämen die Myonen im Mittel nur etwa 660 m weit. Im Erdsystem sind sie bewegte Uhren: Ihre Lebensdauer ist um den Faktor γ verlängert. In ihrem eigenen Ruhesystem ist die Lebensdauer 2,2 µs, die Atmosphäre aber um den Faktor γ verkürzt. Beide Beschreibungen liefern dasselbe Ergebnis."
+        }
+      ]
+    },
+    {
+      "id": "01M724M109NCPS82BJ4FJTRB6N",
+      "atom_uri": "urn:zam:atom:01M724M109NCPS82BJ4FJTRB6N",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-ew-deutsche-physik",
+      "title": "Wissenschaft im Spannungsfeld: die „Deutsche Physik“",
+      "domain": "physik/weltbild",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-deutsche-physik",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M106EF6A910AGDHW7TQZ"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M12QPVZKK4FJ7ED3QC3S",
+          "slug": "ph11-deutsche-physik-ablehnung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-deutsche-physik",
+          "question": "Aus welchen Gründen lehnte die „Deutsche Physik“ die Relativitätstheorie ab?",
+          "concept": "Aus ideologischen und antisemitischen Gründen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aus ideologischen und antisemitischen Gründen.",
+              "Wegen widersprechender Messergebnisse."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12RW7QDFH0T9VJ6XH20",
+          "slug": "ph11-massstab-physik",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-deutsche-physik",
+          "question": "Woran wird in der Physik die Gültigkeit einer Theorie gemessen?",
+          "concept": "An Experimenten und schlüssiger Argumentation.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "An Experimenten und schlüssiger Argumentation.",
+              "An der Herkunft und dem Ansehen ihrer Urheber."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12S4JQHG1J91W3CCYY2",
+          "slug": "ph11-wissenschaft-gesellschaft",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-deutsche-physik",
+          "question": "Was zeigt das Beispiel der „Deutschen Physik“ über das Verhältnis von Wissenschaft, Gesellschaft und Politik?",
+          "concept": "Politik kann die Akzeptanz von Erkenntnissen behindern, nicht aber über ihre Richtigkeit entscheiden.",
+          "materiality": "material",
+          "sample_solution": "Lenard und Stark lehnten Relativitäts- und Quantentheorie als „jüdisch“ ab; nach 1933 wurden Forschende entlassen und vertrieben. Macht, Geld und Medien beeinflussen, was gelehrt und geglaubt wird. Ob eine Theorie stimmt, entscheiden überprüfbare Belege."
+        }
+      ]
+    },
+    {
+      "id": "01M724M10AVK8S5JZX72YJYQMN",
+      "atom_uri": "urn:zam:atom:01M724M10AVK8S5JZX72YJYQMN",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-ew-energieentwertung",
+      "title": "Reversibel, irreversibel und der Wirkungsgrad",
+      "domain": "physik/weltbild",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-energieentwertung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M12T8Q90Q5WV6NG6VHC8",
+          "slug": "ph11-irreversibel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-energieentwertung",
+          "question": "Was kennzeichnet einen irreversiblen Vorgang?",
+          "concept": "Er läuft von selbst nicht rückwärts ab.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er läuft von selbst nicht rückwärts ab.",
+              "Bei ihm geht Energie verloren."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12VSSJ3SS9F0QCM5T35",
+          "slug": "ph11-wirkungsgrad",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-energieentwertung",
+          "question": "Wie ist der Wirkungsgrad definiert?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\eta = \\frac{E_{nutz}}{E_{zu}}",
+              "speech": "Eta gleich E nutz durch E zu"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\eta = \\frac{E_{nutz}}{E_{zu}}",
+                  "speech": "Eta gleich E nutz durch E zu"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "\\eta = \\frac{E_{zu}}{E_{nutz}}",
+                  "speech": "Eta gleich E zu durch E nutz"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12W2PY3MG0M0XNWGPJG",
+          "slug": "ph11-energieentwertung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-energieentwertung",
+          "question": "Was bedeutet Energieentwertung, und was folgt daraus für den Wirkungsgrad?",
+          "concept": "Energie bleibt erhalten, wird aber weniger nutzbar; jeder reale Wirkungsgrad liegt unter 100 %.",
+          "materiality": "material",
+          "sample_solution": "Bei irreversiblen Vorgängen verteilt sich Energie als innere Energie auf viele Teilchen der Umgebung. Sie ist noch vorhanden, lässt sich aber nicht mehr vollständig nutzen. Weil jeder reale Vorgang Energie entwertet, ist der Wirkungsgrad stets kleiner als 100 %."
+        }
+      ]
+    },
+    {
+      "id": "01M724M10B5K9HB01NCQ3AD5D8",
+      "atom_uri": "urn:zam:atom:01M724M10B5K9HB01NCQ3AD5D8",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-ew-energieversorgung",
+      "title": "Energieversorgung beurteilen: Daten und Nutzwertanalyse",
+      "domain": "physik/weltbild",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-energieversorgung",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M10AVK8S5JZX72YJYQMN"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M12XBC6P55P5HTCGHES3",
+          "slug": "ph11-nutzwertanalyse-gewichte",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-energieversorgung",
+          "question": "Was drücken die Gewichte der Kriterien in einer Nutzwertanalyse aus?",
+          "concept": "Eine Wertentscheidung der Bewertenden.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Wertentscheidung der Bewertenden.",
+              "Ein physikalisches Messergebnis."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12YMBYXH94F5X6FMV3H",
+          "slug": "ph11-volllaststunden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-energieversorgung",
+          "question": "Wie berechnest du die Jahresenergie einer Anlage aus Nennleistung und Volllaststunden?",
+          "concept": "Jahresenergie = Nennleistung · Volllaststunden.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Jahresenergie = Nennleistung · Volllaststunden.",
+              "Jahresenergie = Nennleistung / Volllaststunden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M12ZHNH7PHWVNCK3RKVG",
+          "slug": "ph11-nutzwertanalyse-ablauf",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-energieversorgung",
+          "question": "Beschreibe die Schritte einer Nutzwertanalyse zur Energieversorgung.",
+          "concept": "Kriterien festlegen, gewichten, Optionen bepunkten, gewichteten Mittelwert bilden.",
+          "materiality": "material",
+          "sample_solution": "Zuerst werden Kriterien wie Wirkungsgrad, Ressourcen und Umweltwirkung festgelegt und gewichtet. Jede Option erhält je Kriterium Punkte, die auf Daten beruhen sollen. Der Nutzwert ist die Summe aus Gewicht mal Punkten, geteilt durch die Summe der Gewichte. Daten und Gewichte werden offen genannt."
+        }
+      ]
+    },
+    {
+      "id": "01M724M10CR3B0BB3Y3A85C5BQ",
+      "atom_uri": "urn:zam:atom:01M724M10CR3B0BB3Y3A85C5BQ",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-ew-energiesparen",
+      "title": "Energie einsparen und effizient nutzen",
+      "domain": "physik/weltbild",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-energiesparen",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M10AVK8S5JZX72YJYQMN"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "exam_relevant": false,
+          "topic_code": "lb3",
+          "topic_title": "Eigenverantwortliche Arbeit an physikalischen Themen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M130RVTEVBZ2G0W50NGH",
+          "slug": "ph11-energieeffizienz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-energiesparen",
+          "question": "Was bedeutet Energieeffizienz?",
+          "concept": "Derselbe Nutzen mit weniger Energie.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Derselbe Nutzen mit weniger Energie.",
+              "Weniger Nutzen bei gleicher Energie."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M131CC1H6ERDBFS9094B",
+          "slug": "ph11-kilowattstunde",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-energiesparen",
+          "question": "Wie viele Megajoule sind eine Kilowattstunde?",
+          "concept": "3,6 MJ",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "3,6 MJ",
+              "1 MJ"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M132V03EVW9QGJAB1JR4",
+          "slug": "ph11-einsparpotential",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=ew-energiesparen",
+          "question": "Wo liegen in privaten Haushalten die größten Energieeinsparpotentiale, und wie schätzt du eine Maßnahme ab?",
+          "concept": "Bei Raumwärme, Warmwasser und Verkehr; Abschätzung mit E = P · t.",
+          "materiality": "material",
+          "sample_solution": "Der größte Teil des Energiebedarfs eines Haushalts entfällt auf Heizung und Warmwasser, dazu kommt der Verkehr; Beleuchtung ist ein kleiner Posten. Eine Maßnahme schätzt du ab, indem du Leistung mal Betriebsdauer vorher und nachher vergleichst."
+        }
+      ]
+    },
+    {
+      "id": "01M724M10DF6N3X0E6S13V9TH0",
+      "atom_uri": "urn:zam:atom:01M724M10DF6N3X0E6S13V9TH0",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-nt-kleine-schritte",
+      "title": "Die Methode der kleinen Schritte",
+      "domain": "physik/profil-ntg",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-kleine-schritte",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "track": "NTG",
+          "exam_relevant": false,
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M133SW4NV23D66Q2JXC6",
+          "slug": "ph11-kleine-schritte-annahme",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-kleine-schritte",
+          "question": "Welche Annahme macht die Methode der kleinen Schritte innerhalb eines Zeitschritts?",
+          "concept": "Die Kraft ist konstant.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Kraft ist konstant.",
+              "Die Geschwindigkeit ist konstant."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M1341MC5TD7SQT7X8N1F",
+          "slug": "ph11-kleine-schritte-geschwindigkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-kleine-schritte",
+          "question": "Wie berechnest du in einem Zeitschritt Δt die neue Geschwindigkeit?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "v_{neu} = v + a \\cdot \\Delta t",
+              "speech": "v neu gleich v plus a mal Delta t"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "v_{neu} = v + a \\cdot \\Delta t",
+                  "speech": "v neu gleich v plus a mal Delta t"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "v_{neu} = v \\cdot a \\cdot \\Delta t",
+                  "speech": "v neu gleich v mal a mal Delta t"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M1351XCYG7QM2WK8E1W1",
+          "slug": "ph11-kleine-schritte-ablauf",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-kleine-schritte",
+          "question": "Beschreibe die Rechenschritte der Methode der kleinen Schritte für einen Zeitschritt.",
+          "concept": "Kraft → Beschleunigung → neue Geschwindigkeit → neuer Ort → Zeit weiterzählen.",
+          "materiality": "material",
+          "sample_solution": "Aus dem momentanen Zustand wird die Kraft berechnet, daraus a = F / m. Dann folgen v_neu = v + a · Δt und der neue Ort; die Zeit wächst um Δt. Mit den neuen Werten beginnt der nächste Schritt."
+        }
+      ]
+    },
+    {
+      "id": "01M724M10EKZ6M40J376GP22HE",
+      "atom_uri": "urn:zam:atom:01M724M10EKZ6M40J376GP22HE",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-nt-luftwiderstand",
+      "title": "Simulation: Freier Fall mit Luftwiderstand",
+      "domain": "physik/profil-ntg",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-luftwiderstand",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M10DF6N3X0E6S13V9TH0"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "track": "NTG",
+          "exam_relevant": false,
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M136HHB1N80BR6AZHQZ1",
+          "slug": "ph11-endgeschwindigkeit-bedingung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-luftwiderstand",
+          "question": "Wann erreicht ein fallender Körper mit Luftwiderstand seine Endgeschwindigkeit?",
+          "concept": "Wenn Luftwiderstand und Gewichtskraft gleich groß sind.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn Luftwiderstand und Gewichtskraft gleich groß sind.",
+              "Wenn der Luftwiderstand null geworden ist."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M137X16Z234D2THR6HXA",
+          "slug": "ph11-endgeschwindigkeit-term",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-luftwiderstand",
+          "question": "Wie groß ist die Endgeschwindigkeit beim Fall mit Luftwiderstand F_L = k · v²?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "v_E = \\sqrt{\\frac{m \\cdot g}{k}}",
+              "speech": "v E gleich Wurzel aus m mal g durch k"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "v_E = \\sqrt{\\frac{m \\cdot g}{k}}",
+                  "speech": "v E gleich Wurzel aus m mal g durch k"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "v_E = \\frac{m \\cdot g}{k}",
+                  "speech": "v E gleich m mal g durch k"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M138C8T0N42V77X0MWG7",
+          "slug": "ph11-simulation-guete",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-luftwiderstand",
+          "question": "Wie prüfst du die Güte einer Simulation mit der Methode der kleinen Schritte?",
+          "concept": "Zeitschritt verkleinern, bekannten Grenzfall prüfen, mit dem Realexperiment vergleichen.",
+          "materiality": "material",
+          "sample_solution": "Ändert sich das Ergebnis beim Halbieren von Δt kaum noch, ist der Zeitschritt klein genug. Ein Grenzfall mit bekannter Lösung (ohne Luftwiderstand: v = g · t) muss richtig herauskommen. Schließlich wird die Simulation mit Messwerten verglichen, zum Beispiel aus einer Videoanalyse."
+        }
+      ]
+    },
+    {
+      "id": "01M724M10FMBJMP15PW6ABY84K",
+      "atom_uri": "urn:zam:atom:01M724M10FMBJMP15PW6ABY84K",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-nt-schwingung-simulieren",
+      "title": "Schwingungen simulieren und Parameter untersuchen",
+      "domain": "physik/profil-ntg",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-schwingung-simulieren",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M10DF6N3X0E6S13V9TH0"
+        },
+        {
+          "atom_id": "01M724M0ZTCDV3BX8JNMGVH9A2"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "track": "NTG",
+          "exam_relevant": false,
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M139P20TWZ9XXJV4HD88",
+          "slug": "ph11-simulation-federkraft",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-schwingung-simulieren",
+          "question": "Welches Kraftgesetz verwendet die Simulation eines Federpendels in jedem Zeitschritt?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "F = -D \\cdot x",
+              "speech": "F gleich minus D mal x"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "F = -D \\cdot x",
+                  "speech": "F gleich minus D mal x"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "F = -D \\cdot v",
+                  "speech": "F gleich minus D mal v"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M13AKEG4NFABYH54FD64",
+          "slug": "ph11-simulation-masse-vervierfachen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-schwingung-simulieren",
+          "question": "Wie ändert sich die simulierte Periodendauer eines Federpendels bei vierfacher Masse?",
+          "concept": "Sie verdoppelt sich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie verdoppelt sich.",
+              "Sie vervierfacht sich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M13BBB4H8HDPS5Z6HRXK",
+          "slug": "ph11-simulation-parameter",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-schwingung-simulieren",
+          "question": "Wie gewinnst du mit einer Simulation Erkenntnisse über ein physikalisches System?",
+          "concept": "Jeweils einen Parameter variieren, das Ergebnis beobachten und mit Theorie oder Messung vergleichen.",
+          "materiality": "material",
+          "sample_solution": "Die Simulation ist ein Experiment am Modell. Man hält alle Parameter bis auf einen fest, ändert diesen schrittweise und liest zum Beispiel die Periodendauer ab. So zeigt sich die Abhängigkeit, etwa T ~ √m. Das Ergebnis gilt nur im Rahmen des Modells und wird an Formel oder Messung geprüft."
+        }
+      ]
+    },
+    {
+      "id": "01M724M10GYFZ2R7HE6VB6RHJ0",
+      "atom_uri": "urn:zam:atom:01M724M10GYFZ2R7HE6VB6RHJ0",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-nt-kennlinie",
+      "title": "Schülerexperiment: Kennlinie und Maximum-Power-Point einer Solarzelle",
+      "domain": "physik/profil-ntg",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-kennlinie",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "track": "NTG",
+          "exam_relevant": false,
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M13CTZ491XJ5WZKAT32X",
+          "slug": "ph11-mpp",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-kennlinie",
+          "question": "Was ist der Maximum-Power-Point einer Solarzelle?",
+          "concept": "Der Arbeitspunkt mit der größten abgegebenen Leistung.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Arbeitspunkt mit der größten abgegebenen Leistung.",
+              "Der Punkt mit der größten Stromstärke."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M13DYW0FWPTFEZHDQ94M",
+          "slug": "ph11-solarzelle-kurzschluss-leistung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-kennlinie",
+          "question": "Wie groß ist die abgegebene Leistung einer Solarzelle im Kurzschluss und im Leerlauf?",
+          "concept": "In beiden Fällen null.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In beiden Fällen null.",
+              "In beiden Fällen maximal."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M13EYD1J0BPENP14VCSH",
+          "slug": "ph11-kennlinie-bestrahlung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-kennlinie",
+          "question": "Wie ändert sich die U-I-Kennlinie einer Solarzelle, wenn die Bestrahlungsstärke steigt?",
+          "concept": "Die Kurzschlussstromstärke wächst etwa proportional, die Leerlaufspannung nur wenig; der MPP verschiebt sich.",
+          "materiality": "material",
+          "sample_solution": "Mehr Licht setzt mehr Ladungsträger frei; die Kurzschlussstromstärke ist etwa proportional zur Bestrahlungsstärke. Die Leerlaufspannung steigt nur leicht. Damit wächst die Leistung im MPP, und der passende Lastwiderstand ändert sich."
+        }
+      ]
+    },
+    {
+      "id": "01M724M10HG8ABQFPH3NZNDGQS",
+      "atom_uri": "urn:zam:atom:01M724M10HG8ABQFPH3NZNDGQS",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-nt-pv-anlage",
+      "title": "Photovoltaikanlagen: Technik und Nutzen bewerten",
+      "domain": "physik/profil-ntg",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-pv-anlage",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M10GYFZ2R7HE6VB6RHJ0"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "track": "NTG",
+          "exam_relevant": false,
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M13FXX2CYVVDPPDY9Q3R",
+          "slug": "ph11-wechselrichter",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-pv-anlage",
+          "question": "Welche Aufgabe hat der Wechselrichter einer Photovoltaikanlage?",
+          "concept": "Er wandelt Gleichstrom in netzgerechten Wechselstrom um.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er wandelt Gleichstrom in netzgerechten Wechselstrom um.",
+              "Er wandelt Wechselstrom in Gleichstrom um."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M13GG02RX1Y83YPVBQY3",
+          "slug": "ph11-mpp-tracker",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-pv-anlage",
+          "question": "Welche Aufgabe hat der MPP-Tracker?",
+          "concept": "Er hält die Module im Arbeitspunkt größter Leistung.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er hält die Module im Arbeitspunkt größter Leistung.",
+              "Er dreht die Module der Sonne nach."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M13HWJNDEHRYKWKR7PBF",
+          "slug": "ph11-pv-jahresertrag",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-pv-anlage",
+          "question": "Wie schätzt du den Jahresertrag einer Photovoltaikanlage ab, und warum deckt er den Bedarf eines Hauses nicht zu jeder Zeit?",
+          "concept": "Ertrag ≈ kWp · spezifischer Ertrag (etwa 900 bis 1100 kWh/kWp); Erzeugung und Bedarf fallen zeitlich nicht zusammen.",
+          "materiality": "material",
+          "sample_solution": "Eine Anlage mit 8 kWp liefert in Deutschland grob 8 · 1000 kWh = 8000 kWh im Jahr. Mittags und im Sommer entsteht Überschuss, abends und im Winter fehlt Strom. Ohne Speicher wird deshalb nur ein Teil selbst verbraucht; der Rest wird eingespeist."
+        }
+      ]
+    },
+    {
+      "id": "01M724M10J360AWV5MA48JWWR7",
+      "atom_uri": "urn:zam:atom:01M724M10J360AWV5MA48JWWR7",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-nt-aktivitaet",
+      "title": "Vorträge und Veröffentlichungen auswerten, Stellung nehmen",
+      "domain": "physik/profil-ntg",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-aktivitaet",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "track": "NTG",
+          "exam_relevant": false,
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M13JTXR06VJVPBW2DJ9D",
+          "slug": "ph11-vortrag-auswerten",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-aktivitaet",
+          "question": "Welche drei Dinge entnimmst du einem Vortrag oder einer Veröffentlichung?",
+          "concept": "Fachliche Inhalte, Argumentationsmuster und Interessenlage.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fachliche Inhalte, Argumentationsmuster und Interessenlage.",
+              "Titel, Länge und Zahl der Abbildungen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M13KCGR1SM2VKJJR9RYR",
+          "slug": "ph11-einzelbeispiel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-aktivitaet",
+          "question": "Was belegt ein Einzelbeispiel in einer Argumentation?",
+          "concept": "Keinen allgemeinen Zusammenhang.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Keinen allgemeinen Zusammenhang.",
+              "Den allgemeinen Zusammenhang, wenn es glaubwürdig ist."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M13M5YCVS22NRACNF6XD",
+          "slug": "ph11-stellungnahme-aufbau",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-aktivitaet",
+          "question": "Wie baust du eine physikalisch fundierte Stellungnahme auf?",
+          "concept": "Sachverhalt, Prüfung der Belege, Abwägung nach genannten Kriterien, begründetes Urteil.",
+          "materiality": "material",
+          "sample_solution": "Zuerst wird der Sachverhalt in eigenen Worten dargestellt. Dann werden die physikalischen Belege auf Richtigkeit, Einheiten und Größenordnungen geprüft. Es folgt die Abwägung mit offen genannten Kriterien, getrennt nach Daten und Wertung, und am Ende ein begründetes Urteil."
+        }
+      ]
+    },
+    {
+      "id": "01M724M10KMYXXT6443042RVQE",
+      "atom_uri": "urn:zam:atom:01M724M10KMYXXT6443042RVQE",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-nt-jahrmarkt",
+      "title": "Auswahlthema: Physik auf dem Jahrmarkt",
+      "domain": "physik/profil-ntg",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-jahrmarkt",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M0ZMSDFAD9EJNH1G5J4Y"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "track": "NTG",
+          "exam_relevant": false,
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M13N43GS5EYKCYT964P3",
+          "slug": "ph11-zentripetalbeschleunigung-umlaufdauer",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-jahrmarkt",
+          "question": "Wie berechnest du die Zentripetalbeschleunigung aus Umlaufdauer T und Bahnradius r?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "a_Z = \\left(\\frac{2\\pi}{T}\\right)^2 \\cdot r",
+              "speech": "a Z gleich zwei Pi durch T in Klammern zum Quadrat mal r"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "a_Z = \\left(\\frac{2\\pi}{T}\\right)^2 \\cdot r",
+                  "speech": "a Z gleich zwei Pi durch T in Klammern zum Quadrat mal r"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "a_Z = \\frac{2\\pi}{T} \\cdot r",
+                  "speech": "a Z gleich zwei Pi durch T mal r"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M13PZGADPR5G7NEP4H3K",
+          "slug": "ph11-looping-mindestgeschwindigkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-jahrmarkt",
+          "question": "Wie schnell muss ein Wagen im höchsten Punkt eines Loopings mit Radius r mindestens sein?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "v_{min} = \\sqrt{g \\cdot r}",
+              "speech": "v min gleich Wurzel aus g mal r"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "v_{min} = \\sqrt{g \\cdot r}",
+                  "speech": "v min gleich Wurzel aus g mal r"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "v_{min} = g \\cdot r",
+                  "speech": "v min gleich g mal r"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M13QZ2E6NNF9QZK9K3P4",
+          "slug": "ph11-looping-form",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-jahrmarkt",
+          "question": "Warum sind Loopings oben enger gebaut als unten?",
+          "concept": "Unten bleibt die Beschleunigung erträglich, oben genügt eine kleinere Geschwindigkeit.",
+          "materiality": "material",
+          "sample_solution": "Im tiefsten Punkt ist der Wagen am schnellsten; ein großer Krümmungsradius hält die Zentripetalbeschleunigung dort in Grenzen. Oben ist der Wagen langsam; ein kleiner Radius senkt die nötige Mindestgeschwindigkeit √(g · r). So werden gesundheitlich riskante Belastungen vermieden."
+        }
+      ]
+    },
+    {
+      "id": "01M724M10MXK21BRBFGPE5NP88",
+      "atom_uri": "urn:zam:atom:01M724M10MXK21BRBFGPE5NP88",
+      "namespace": "zam-academy-physik-gymnasium-11",
+      "slug": "ph11-nt-chaos",
+      "title": "Auswahlthema: Modelle, Kausalität und Chaos",
+      "domain": "physik/profil-ntg",
+      "reduction": "classical",
+      "typical_age_min": 16,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-chaos",
+      "prerequisites": [
+        {
+          "atom_id": "01M724M10DF6N3X0E6S13V9TH0"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "track": "NTG",
+          "exam_relevant": false,
+          "topic_code": "lb4",
+          "topic_title": "Profilbereich am NTG"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724M13RX3TMQDRN5BTM3A42",
+          "slug": "ph11-schwache-kausalitaet",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-chaos",
+          "question": "Was besagt die schwache Kausalität?",
+          "concept": "Gleiche Ursachen haben gleiche Wirkungen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gleiche Ursachen haben gleiche Wirkungen.",
+              "Ähnliche Ursachen haben ähnliche Wirkungen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M13SJPR3Y18DKHA96KNE",
+          "slug": "ph11-starke-kausalitaet",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-chaos",
+          "question": "Was besagt die starke Kausalität?",
+          "concept": "Ähnliche Ursachen haben ähnliche Wirkungen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ähnliche Ursachen haben ähnliche Wirkungen.",
+              "Jede Wirkung hat mehrere Ursachen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M724M13TG12H3FHFXPSNTP13",
+          "slug": "ph11-chaotisches-system",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-11/#lesson=nt-chaos",
+          "question": "Was kennzeichnet ein chaotisches System, und was folgt daraus für Vorhersagen?",
+          "concept": "Kleine Unterschiede der Anfangsbedingungen wachsen stark an; Langzeitvorhersagen sind nicht möglich.",
+          "materiality": "material",
+          "sample_solution": "Ein chaotisches System folgt eindeutigen Gesetzen, verletzt aber die starke Kausalität. Weil Anfangswerte nie beliebig genau bekannt sind, laufen Vorhersage und Wirklichkeit nach einiger Zeit auseinander. Beim Wetter rechnet man deshalb viele Läufe mit leicht veränderten Anfangswerten und gibt Wahrscheinlichkeiten an."
+        }
+      ]
+    }
+  ]
+}

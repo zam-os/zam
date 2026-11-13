@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { ulid } from "ulid";
@@ -6,26 +6,53 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   type Database,
   enrolBundledCell,
+  ensureCard,
   evaluateRating,
   findBundledCellsForScope,
   getBundledCell,
   getBundledCellTile,
   getTokenById,
   installKvtTile,
+  type KvtTile,
   listLibraryTopics,
   needsGenericCurriculumImport,
   openDatabase,
 } from "../../src/kernel/index.js";
+import mapping from "../fixtures/legacy/zam-academy-mathematik-realschule-7-replaces-de-by.json" with {
+  type: "json",
+};
 
 const CELL_ID = "zam-academy:mathematik-realschule-7";
 const APP = "https://academy.zam-os.org/mathematik-realschule-7/";
 const tile = getBundledCellTile(CELL_ID)!;
+const items = tile.atoms.flatMap((atom) => atom.practice_items);
 const LEGACY_IDS = [
   "de-by:realschule-7-mathematik-geometrie-achsen-punktsymmetrie",
   "de-by:realschule-7-mathematik-kongruenz-dreiecke-vektoren",
   "de-by:realschule-7-mathematik-prozent-zinsrechnung",
   "de-by:realschule-7-mathematik-rationale-zahlen-terme",
 ];
+const LEGACY_FILES = [
+  "de-by-realschule-7-mathematik-geometrie-achsen-punktsymmetrie-kvt.json",
+  "de-by-realschule-7-mathematik-kongruenz-dreiecke-vektoren-kvt.json",
+  "de-by-realschule-7-mathematik-prozent-zinsrechnung-kvt.json",
+  "de-by-realschule-7-mathematik-rationale-zahlen-terme-kvt.json",
+];
+const legacyTiles = LEGACY_FILES.map(
+  (file) =>
+    JSON.parse(
+      readFileSync(join(__dirname, "../fixtures/legacy", file), "utf8"),
+    ) as KvtTile,
+);
+const TRANSFERS = new Map(
+  mapping.rows
+    .filter((row) => row.category === "A")
+    .map((row) => [
+      row.de_by_id,
+      items.find((item) => item.slug === row.academy_slug)!.id,
+    ]),
+);
+const RETIRED_LEGACY_ID = "01K4M7K0000000000000000J02";
 
 // The published app's eleven I-only lessons. All other lessons serve both
 // Fachlehrplaene; in II/III their Lernbereich numbers differ from Zweig I.
@@ -57,22 +84,29 @@ const matchingCell = (track?: string) =>
   findBundledCellsForScope(scope(track)).find((cell) => cell.id === CELL_ID)!;
 
 describe("ZAM Academy Mathematik 7 Realschule cell", () => {
-  it("bundles the published cell beside all four school cells without approving a history transfer", () => {
-    expect(tile.version).toBe("2026.10.1");
+  it("bundles the published cell with approved replacements and retires the superseded school cells", () => {
+    expect(tile.version).toBe("2026.11.1");
     expect(getBundledCell(CELL_ID)).toMatchObject({
       title: "Mathematik 7 Realschule (ZAM Academy)",
       publisher: "ZAM Academy",
       gradeLabel: "ZAM Academy",
       atomCount: 42,
     });
-    expect(tile.atoms.flatMap((atom) => atom.practice_items)).toHaveLength(126);
-    expect(tile.retired_items ?? []).toEqual([]);
-    for (const atom of tile.atoms)
-      for (const item of atom.practice_items)
-        expect(item.replaces ?? [], item.id).toEqual([]);
+    expect(items).toHaveLength(126);
+    expect(tile.retired_items).toEqual([
+      expect.objectContaining({ id: RETIRED_LEGACY_ID }),
+    ]);
+    expect(mapping.approved).toBe("2026-11-13");
+    expect(TRANSFERS.size).toBe(7);
+    expect(
+      items
+        .filter((item) => item.replaces?.length)
+        .map((item) => [item.replaces, item.id])
+        .sort(),
+    ).toEqual([...TRANSFERS].map(([old, next]) => [[old], next]).sort());
     for (const id of LEGACY_IDS) {
-      expect(getBundledCell(id), id).toBeDefined();
-      expect(getBundledCellTile(id), id).toBeDefined();
+      expect(getBundledCell(id), id).toBeUndefined();
+      expect(getBundledCellTile(id), id).toBeUndefined();
     }
   });
 
@@ -86,24 +120,16 @@ describe("ZAM Academy Mathematik 7 Realschule cell", () => {
     "III",
     "IIIa",
     "IIIb",
-  ])("offers the complete Academy cell at curriculum track %s", (track) => {
+  ])("offers only the Academy cell at curriculum track %s", (track) => {
     const cell = matchingCell(track);
     expect(cell).toBeDefined();
     // Discovery selects a cell, not a branch-specific subset of its cards.
     // Taking an Academy cell enrols its complete published scope.
     expect(cell.inScopeAtomIds).toHaveLength(42);
     expect(needsGenericCurriculumImport(scope(track))).toBe(false);
-    const expectedLegacy =
-      track === undefined || track === "I" || track === "wpfg1"
-        ? LEGACY_IDS
-        : LEGACY_IDS.filter(
-            (id) =>
-              id !==
-              "de-by:realschule-7-mathematik-kongruenz-dreiecke-vektoren",
-          );
     expect(
-      new Set(findBundledCellsForScope(scope(track)).map((entry) => entry.id)),
-    ).toEqual(new Set([CELL_ID, ...expectedLegacy]));
+      findBundledCellsForScope(scope(track)).map((entry) => entry.id),
+    ).toEqual([CELL_ID]);
   });
 
   it("binds 42 lessons to eight Lernbereiche in I and 31 lessons to six in II/III", () => {
@@ -227,8 +253,13 @@ describe("ZAM Academy Mathematik 7 Realschule cell", () => {
       expect(await snapshot()).toEqual(before);
     });
 
-    it("leaves all 30 old cards and 60 reviews intact and starts the 126 Academy cards unlearned", async () => {
-      for (const id of LEGACY_IDS) await enrolBundledCell(db, userId, id);
+    it("moves the 7 approved histories, retires 01K4M7K0000000000000000J02, and keeps the 22 C cards active", async () => {
+      for (const legacy of legacyTiles) await installKvtTile(db, legacy);
+      const oldItems = legacyTiles.flatMap((legacy) =>
+        legacy.atoms.flatMap((atom) => atom.practice_items),
+      );
+      expect(oldItems).toHaveLength(30);
+      for (const item of oldItems) await ensureCard(db, item.id, userId);
       const originals = (await snapshot()).cards;
       expect(originals).toHaveLength(30);
       for (const [index, card] of originals.entries()) {
@@ -250,29 +281,38 @@ describe("ZAM Academy Mathematik 7 Realschule cell", () => {
       const before = await snapshot();
       expect(before.reviews).toHaveLength(60);
       const oldIds = new Set(before.cards.map((card) => card.id));
-      const oldTokens = await Promise.all(
-        originals.map((card) => getTokenById(db, String(card.token_id))),
-      );
+      const withoutToken = ({ token_id, ...rest }: Record<string, unknown>) =>
+        rest;
 
-      expect(await enrolBundledCell(db, userId, CELL_ID)).toMatchObject({
+      const first = await enrolBundledCell(db, userId, CELL_ID);
+      expect(first).toMatchObject({
         success: true,
-        cardsCreated: 126,
-        cardsReused: 0,
+        cardsReused: 7,
       });
+      let created = first.cardsCreated;
+      for (let round = 0; round < 5; round++) {
+        const next = await enrolBundledCell(db, userId, CELL_ID);
+        if (next.cardsCreated === 0) break;
+        created += next.cardsCreated;
+      }
+      expect(created).toBe(119);
       const after = await snapshot();
-      expect(after.cards).toHaveLength(156);
-      expect(after.cards.filter((card) => oldIds.has(card.id))).toEqual(
-        before.cards,
-      );
-      expect(after.reviews).toEqual(before.reviews);
-      expect(
-        await Promise.all(
-          originals.map((card) => getTokenById(db, String(card.token_id))),
-        ),
-      ).toEqual(oldTokens);
-      for (const token of oldTokens) {
-        expect(token).toBeDefined();
-        expect(token?.deprecated_at).toBeNull();
+      expect(after.cards).toHaveLength(149);
+      for (const group of ["cards", "reviews"] as const) {
+        for (const row of before[group]) {
+          const next = after[group].find((other) => other.id === row.id)!;
+          expect(withoutToken(next)).toEqual(withoutToken(row));
+          const old = String(row.token_id);
+          expect(next.token_id).toBe(TRANSFERS.get(old) ?? old);
+        }
+      }
+      for (const item of oldItems) {
+        const deprecated = Boolean(
+          (await getTokenById(db, item.id))?.deprecated_at,
+        );
+        expect(deprecated, item.id).toBe(
+          TRANSFERS.has(item.id) || item.id === RETIRED_LEGACY_ID,
+        );
       }
       for (const card of after.cards.filter((entry) => !oldIds.has(entry.id)))
         expect(card).toMatchObject({
@@ -285,6 +325,7 @@ describe("ZAM Academy Mathematik 7 Realschule cell", () => {
         cardsCreated: 0,
         alreadyEnrolled: true,
       });
+      // Snapshot of cards and reviews remains stable across repeated enrolment.
       expect(await snapshot()).toEqual(after);
     });
   });

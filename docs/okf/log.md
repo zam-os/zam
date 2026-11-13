@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-13
+
+- **Update** — [Token and Card Model](token-card-model.md)
+
 ## 2026-11-08
 
 - **Update** — [Token and Card Model](token-card-model.md)
