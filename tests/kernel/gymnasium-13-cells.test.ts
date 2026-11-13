@@ -16,10 +16,9 @@ const plainText = (value: string | CardText | undefined): string =>
   typeof value === "string" ? value : value ? plainProjection(value) : "";
 
 describe("Gymnasium Klasse 13 Bayern LehrplanPLUS Cells", () => {
+  // Mathematik 13 moved to zam-academy:mathematik-gymnasium-13; its three
+  // school cells are archived in tests/fixtures/legacy/.
   const gym13Cells = [
-    "de-by:gymnasium-13-mathematik-gebrochen-rationale-funktionen-asymptoten-uneigentliche-integrale",
-    "de-by:gymnasium-13-mathematik-geometrie-abstaende-hesse-kugeln-schnittwinkel",
-    "de-by:gymnasium-13-mathematik-stochastik-stetige-zufallsgroessen-normalverteilung-sigma-regeln",
     "de-by:gymnasium-13-physik-astrophysik-hrd-sternentwicklung-kosmologie-hubble",
     "de-by:gymnasium-13-physik-relativitaetstheorie-zeitdilatation-laengenkontraktion-e-mc2",
     "de-by:gymnasium-13-chemie-farbstoffe-mesomerie-chromophore-azofarbstoffe-spektroskopie",
@@ -37,11 +36,11 @@ describe("Gymnasium Klasse 13 Bayern LehrplanPLUS Cells", () => {
     "de-by:gymnasium-13-wirtschaft-recht-wirtschaftspolitik-stabilitaetsgesetz-aussenhandel",
   ];
 
-  it("all 18 Gymnasium 13 cells are bundled and retrievable", () => {
+  it("all remaining 15 Gymnasium 13 school cells are bundled and retrievable", () => {
     const allCells = listBundledCells();
     const cellIds = allCells.map((c) => c.tile_id);
 
-    expect(gym13Cells).toHaveLength(18);
+    expect(gym13Cells).toHaveLength(15);
 
     for (const expectedId of gym13Cells) {
       expect(cellIds).toContain(expectedId);
@@ -94,8 +93,8 @@ describe("Gymnasium Klasse 13 Bayern LehrplanPLUS Cells", () => {
       }
     }
 
-    expect(atomIds.size).toBe(36);
-    expect(itemIds.size).toBe(72);
+    expect(atomIds.size).toBe(30);
+    expect(itemIds.size).toBe(60);
   });
 
   describe("enrolment", () => {
@@ -114,7 +113,7 @@ describe("Gymnasium Klasse 13 Bayern LehrplanPLUS Cells", () => {
 
     it("installs and enrols a Klasse 13 STEM cell that previously had 25-character ids", async () => {
       const cellId =
-        "de-by:gymnasium-13-mathematik-gebrochen-rationale-funktionen-asymptoten-uneigentliche-integrale";
+        "de-by:gymnasium-13-physik-astrophysik-hrd-sternentwicklung-kosmologie-hubble";
       const res = await enrolBundledCell(
         db,
         "01K4TESTUSERGYM1300000001",

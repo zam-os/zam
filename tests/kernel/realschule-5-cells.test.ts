@@ -15,16 +15,20 @@ import {
   openDatabase,
 } from "../../src/kernel/index.js";
 
+// Mathematik 5, Englisch 5 and Deutsch 5 moved to their ZAM Academy cells
+// (zam-academy:mathematik-realschule-5, zam-academy:englisch-realschule-5,
+// zam-academy:deutsch-realschule-5); their five school cells are archived in
+// tests/fixtures/legacy/.
 const RS5_CELL_IDS = [
-  "de-by:realschule-5-mathematik-zahlen-rechengesetze",
-  "de-by:realschule-5-mathematik-geometrie-groessen-flaechen",
   "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
   "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
   "de-by:realschule-5-natur-technik-mikroskop-experiment-dateien",
   "de-by:realschule-5-geographie-erde-gradnetz-orientierung",
-  "de-by:realschule-5-deutsch-erzaehlen-wortarten-faelle",
-  "de-by:realschule-5-deutsch-rechtschreibung-laute-woertliche-rede",
-  "de-by:realschule-5-englisch-grundlagen-to-be-have-got",
+];
+const ACADEMY_RS5_IDS = [
+  "zam-academy:deutsch-realschule-5",
+  "zam-academy:englisch-realschule-5",
+  "zam-academy:mathematik-realschule-5",
 ];
 
 describe("Realschule Bayern 5 Curriculum Cells (Eingangsstufe)", () => {
@@ -43,7 +47,7 @@ describe("Realschule Bayern 5 Curriculum Cells (Eingangsstufe)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all bundled cells including all 9 Realschule 5 cells", () => {
+  it("lists all remaining Realschule 5 school cells and their Academy successors", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(68);
 
@@ -57,6 +61,12 @@ describe("Realschule Bayern 5 Curriculum Cells (Eingangsstufe)", () => {
       expect(cell?.atomCount).toBe(4);
       expect(cell?.inScopeAtomIds.length).toBe(4);
     }
+    for (const cellId of ACADEMY_RS5_IDS) {
+      expect(
+        cells.find((c) => c.id === cellId),
+        `Academy cell ${cellId} should be present`,
+      ).toBeDefined();
+    }
   });
 
   it("finds all Grade 5 Realschule cells using findBundledCellsForScope", () => {
@@ -65,8 +75,10 @@ describe("Realschule Bayern 5 Curriculum Cells (Eingangsstufe)", () => {
       schoolType: "realschule",
       grade: 5,
     });
-    expect(rs5Cells.length).toBeGreaterThanOrEqual(9);
-    for (const cellId of RS5_CELL_IDS) {
+    expect(rs5Cells.length).toBeGreaterThanOrEqual(
+      RS5_CELL_IDS.length + ACADEMY_RS5_IDS.length,
+    );
+    for (const cellId of [...RS5_CELL_IDS, ...ACADEMY_RS5_IDS]) {
       expect(
         rs5Cells.some((c) => c.id === cellId),
         `findBundledCellsForScope should include ${cellId}`,
@@ -74,9 +86,9 @@ describe("Realschule Bayern 5 Curriculum Cells (Eingangsstufe)", () => {
     }
   });
 
-  it("installs and enrols cleanly into Mathematik 5 Zahlen und Rechengesetze", async () => {
+  it("installs and enrols cleanly into Biologie 5 Skelett und Organe", async () => {
     const userId = "01K4TESTUSER000000000000001";
-    const cellId = "de-by:realschule-5-mathematik-zahlen-rechengesetze";
+    const cellId = "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe";
 
     expect(await isBundledCellInstalled(db, cellId)).toBe(false);
 
@@ -117,24 +129,23 @@ describe("Realschule Bayern 5 Curriculum Cells (Eingangsstufe)", () => {
     ).toBe(true);
   });
 
-  it("installs and enrols cleanly into Deutsch 5 Rechtschreibung und Wörtliche Rede", async () => {
+  it("installs and enrols cleanly into Geographie 5 Erde und Gradnetz", async () => {
     const userId = "01K4TESTUSER000000000000003";
-    const cellId =
-      "de-by:realschule-5-deutsch-rechtschreibung-laute-woertliche-rede";
+    const cellId = "de-by:realschule-5-geographie-erde-gradnetz-orientierung";
 
     const res = await enrolBundledCell(db, userId, cellId);
     expect(res.success).toBe(true);
     expect(res.cardsCreated).toBe(8);
 
-    const dAtoms = (await db
+    const geoAtoms = (await db
       .prepare(
-        "SELECT a.id, a.title, a.slug FROM learning_atoms a WHERE a.namespace LIKE 'deutsch-%'",
+        "SELECT a.id, a.title, a.slug FROM learning_atoms a WHERE a.namespace LIKE 'geographie-%'",
       )
       .all()) as Array<{ id: string; title: string; slug: string }>;
-    expect(dAtoms.length).toBeGreaterThanOrEqual(4);
+    expect(geoAtoms.length).toBeGreaterThanOrEqual(4);
   });
 
-  it("supports simultaneous enrolment in ALL 9 Grade 5 Realschule cells without conflict", async () => {
+  it("supports simultaneous enrolment in all remaining Grade 5 Realschule school cells without conflict", async () => {
     const userId = "01K4TESTUSERALLRS5000000001";
 
     let totalCardsCreated = 0;
@@ -145,12 +156,12 @@ describe("Realschule Bayern 5 Curriculum Cells (Eingangsstufe)", () => {
       totalCardsCreated += res.cardsCreated;
     }
 
-    // 9 cells * 4 atoms * 2 items = 72 cards
-    expect(totalCardsCreated).toBe(72);
+    // 4 cells * 4 atoms * 2 items = 32 cards
+    expect(totalCardsCreated).toBe(32);
 
     const statuses = await getBundledCellsWithStatus(db, userId);
     const rs5Statuses = statuses.filter((s) => RS5_CELL_IDS.includes(s.id));
-    expect(rs5Statuses.length).toBe(9);
+    expect(rs5Statuses.length).toBe(RS5_CELL_IDS.length);
     for (const status of rs5Statuses) {
       expect(status.installed).toBe(true);
       expect(status.enrolled).toBe(true);

@@ -36,7 +36,16 @@ const CELL_ID = "zam-academy:biologie-realschule-8";
 const APP = "https://academy.zam-os.org/biologie-realschule-8/";
 const tile = getBundledCellTile(CELL_ID)!;
 const legacyTiles = mapping.sources.map(
-  (source) => getBundledCellTile(source.tile_id)!,
+  (source) =>
+    JSON.parse(
+      readFileSync(
+        new URL(
+          `../fixtures/legacy/${source.file.split("/").pop()}`,
+          import.meta.url,
+        ),
+        "utf8",
+      ),
+    ) as KvtTile,
 );
 const items = tile.atoms.flatMap((atom) => atom.practice_items);
 const itemIds = new Set(items.map((item) => item.id));
@@ -83,7 +92,11 @@ describe("ZAM Academy Biologie 8 Realschule cell", () => {
     ).toContain(CELL_ID);
   });
 
-  it("offers grade 8 to every group alongside the two unchanged school cells", () => {
+  it("offers grade 8 to every group while the two retired school cells stay unbundled", () => {
+    for (const old of legacyTiles) {
+      expect(getBundledCell(old.tile_id)).toBeUndefined();
+      expect(getBundledCellTile(old.tile_id)).toBeUndefined();
+    }
     for (const track of [
       undefined,
       "I",
@@ -98,10 +111,8 @@ describe("ZAM Academy Biologie 8 Realschule cell", () => {
       "wpfg3b",
     ]) {
       expect(
-        findBundledCellsForScope(scope(8, track))
-          .map((cell) => cell.id)
-          .sort(),
-      ).toEqual([CELL_ID, ...legacyTiles.map((old) => old.tile_id)].sort());
+        findBundledCellsForScope(scope(8, track)).map((cell) => cell.id),
+      ).toEqual([CELL_ID]);
       expect(needsGenericCurriculumImport(scope(8, track))).toBe(false);
     }
     for (const position of [
@@ -163,14 +174,14 @@ describe("ZAM Academy Biologie 8 Realschule cell", () => {
       oldItems.map((item) => item.id).sort(),
     );
     for (const source of mapping.sources) {
-      const file = source.file.replace(/^tests\/fixtures\//, "");
+      const file = source.file.split("/").pop() as string;
       const legacyBytes = readFileSync(
-        new URL(`../fixtures/curriculum/${file}`, import.meta.url),
+        new URL(`../fixtures/legacy/${file}`, import.meta.url),
       );
       expect(createHash("sha256").update(legacyBytes).digest("hex")).toBe(
         source.sha256,
       );
-      expect(getBundledCell(source.tile_id)).toBeDefined();
+      expect(getBundledCell(source.tile_id)).toBeUndefined();
     }
     for (const row of mapping.rows) {
       const old = oldItems.find((item) => item.id === row.de_by_id)!;

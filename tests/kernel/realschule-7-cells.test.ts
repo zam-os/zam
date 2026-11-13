@@ -19,11 +19,9 @@ import {
 // zam-academy:informatik-realschule-8 (zam-os/zam-academy#62, #63), which binds
 // the IT-Anfangsunterricht (modules 1.1–1.9) to Jahrgangsstufen 6, 7 and 8. See
 // tests/kernel/zam-academy-informatik-realschule-8-cell.test.ts.
+// The four Mathematik 7 school cells moved to zam-academy:mathematik-realschule-7
+// and are archived in tests/fixtures/legacy/.
 const RS7_CELL_IDS = [
-  "de-by:realschule-7-mathematik-rationale-zahlen-terme",
-  "de-by:realschule-7-mathematik-prozent-zinsrechnung",
-  "de-by:realschule-7-mathematik-geometrie-achsen-punktsymmetrie",
-  "de-by:realschule-7-mathematik-kongruenz-dreiecke-vektoren",
   "de-by:realschule-7-physik-mechanik-bewegung-geschwindigkeit",
   "de-by:realschule-7-physik-waermelehre-temperatur-ausdehnung",
   "de-by:realschule-7-biologie-wirbeltiere-oekologie",
@@ -36,6 +34,10 @@ const RS7_CELL_IDS = [
   "de-by:realschule-7-deutsch-satzstrukturen-adverbialsaetze-kommasetzung",
   "de-by:realschule-7-englisch-grammatik-tenses",
   "de-by:realschule-7-franzoesisch-starter-grammatik-verben",
+];
+const ACADEMY_RS7_IDS = [
+  "zam-academy:informatik-realschule-8",
+  "zam-academy:mathematik-realschule-7",
 ];
 
 describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe)", () => {
@@ -54,7 +56,7 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all bundled cells including all 16 Realschule 7 cells", () => {
+  it("lists all remaining Realschule 7 school cells and their Academy successors", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(96);
 
@@ -68,6 +70,12 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
       expect(cell?.atomCount).toBeGreaterThanOrEqual(2);
       expect(cell?.inScopeAtomIds.length).toBe(cell?.atomCount);
     }
+    for (const cellId of ACADEMY_RS7_IDS) {
+      expect(
+        cells.find((c) => c.id === cellId),
+        `Academy cell ${cellId} should be present`,
+      ).toBeDefined();
+    }
   });
 
   it("finds all Grade 7 Realschule cells using findBundledCellsForScope", () => {
@@ -76,11 +84,10 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
       schoolType: "realschule",
       grade: 7,
     });
-    expect(rs7Cells.length).toBeGreaterThanOrEqual(16);
-    for (const cellId of [
-      ...RS7_CELL_IDS,
-      "zam-academy:informatik-realschule-8",
-    ]) {
+    expect(rs7Cells.length).toBeGreaterThanOrEqual(
+      RS7_CELL_IDS.length + ACADEMY_RS7_IDS.length,
+    );
+    for (const cellId of [...RS7_CELL_IDS, ...ACADEMY_RS7_IDS]) {
       expect(
         rs7Cells.some((c) => c.id === cellId),
         `findBundledCellsForScope should include ${cellId}`,
@@ -146,7 +153,7 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
     expect(fraAtoms.length).toBe(2);
   });
 
-  it("supports simultaneous enrolment in ALL 16 Grade 7 Realschule cells without conflict", async () => {
+  it("supports simultaneous enrolment in all remaining Grade 7 Realschule school cells without conflict", async () => {
     const userId = "01K4TESTUSERALLRS7000000001";
 
     let totalCardsCreated = 0;
@@ -157,12 +164,12 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
       totalCardsCreated += res.cardsCreated;
     }
 
-    // 10 * 8 (40 atoms * 2) + 3*2 (Mathe) + 3*2 (Deu1) + 2*2 (Deu2) + 3*2 (BwR1) + 2*2 (BwR2) + 2*2 (Fra) = 80 + 30 = 110 cards
-    expect(totalCardsCreated).toBe(110);
+    // 110 prior total minus the 30 cards across the 4 retired Mathematik 7 cells = 80 cards
+    expect(totalCardsCreated).toBe(80);
 
     const statuses = await getBundledCellsWithStatus(db, userId);
     const rs7Statuses = statuses.filter((s) => RS7_CELL_IDS.includes(s.id));
-    expect(rs7Statuses.length).toBe(16);
+    expect(rs7Statuses.length).toBe(RS7_CELL_IDS.length);
     for (const status of rs7Statuses) {
       expect(status.installed).toBe(true);
       expect(status.enrolled).toBe(true);

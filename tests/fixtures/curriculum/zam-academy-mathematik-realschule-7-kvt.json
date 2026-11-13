@@ -1,9 +1,9 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "zam-academy:mathematik-realschule-7",
-  "version": "2026.10.1",
+  "version": "2026.11.1",
   "title": "Mathematik 7 Realschule (ZAM Academy)",
-  "description": "Acht Lernbereiche für Zweig I, sechs für II/III. 42 Lektionen mit Labor, Aufgaben auf zwei Stufen und Lernkarten. Historienübertragung bleibt bis zur ausdrücklichen Freigabe aus.",
+  "description": "Acht Lernbereiche für Zweig I, sechs für II/III. 42 Lektionen mit Labor, Aufgaben auf zwei Stufen und Lernkarten. Ab Version 2026.11.1 mit freigegebener Übertragung für sieben A-Karten und Stilllegung einer fehlerhaften SsW-Altkarte.",
   "publisher": "ZAM Academy",
   "published_at": "2026-10-23T08:00:00Z",
   "sources": [
@@ -1286,7 +1286,10 @@
               "text": "."
             }
           ],
-          "sample_solution": "Spitze minus Schaft: sieben minus zwei ergibt fünf; vier minus eins ergibt drei. Der Vektor führt um fünf nach rechts und drei nach oben."
+          "sample_solution": "Spitze minus Schaft: sieben minus zwei ergibt fünf; vier minus eins ergibt drei. Der Vektor führt um fünf nach rechts und drei nach oben.",
+          "replaces": [
+            "01K4M7K0000000000000000J05"
+          ]
         }
       ]
     },
@@ -1767,7 +1770,10 @@
               "Zu einem rechten Winkel von 90 Grad."
             ],
             "correct_index": 0
-          }
+          },
+          "replaces": [
+            "01K4M7S0000000000000000J05"
+          ]
         },
         {
           "id": "01M5M5BP0F46PAEVHV8FWRHEQ7",
@@ -1864,7 +1870,10 @@
               "Sie hängt vom Flächeninhalt ab."
             ],
             "correct_index": 0
-          }
+          },
+          "replaces": [
+            "01K4M7S0000000000000000J07"
+          ]
         },
         {
           "id": "01M5M5BP0F1KGBJR4BVPQ4PY0E",
@@ -2360,7 +2369,10 @@
               "Der Winkel darf jeder beliebigen der beiden Seiten gegenüberliegen."
             ],
             "correct_index": 0
-          }
+          },
+          "replaces": [
+            "01K4M7K0000000000000000J01"
+          ]
         },
         {
           "id": "01M5M5BP0G5V2XK724RW8FKA05",
@@ -3698,7 +3710,10 @@
               "Im Schnittpunkt der inneren Winkelhalbierenden."
             ],
             "correct_index": 0
-          }
+          },
+          "replaces": [
+            "01K4M7K0000000000000000J03"
+          ]
         },
         {
           "id": "01M5M5GPKQSWCZ73H2AWA583XR",
@@ -4650,7 +4665,10 @@
               "Mit 0,2, denn das ist der neue Gesamtwert."
             ],
             "correct_index": 0
-          }
+          },
+          "replaces": [
+            "01K4M7P0000000000000000J03"
+          ]
         },
         {
           "id": "01M5M5GPKQ1C1054VWVS8PARC9",
@@ -4902,7 +4920,10 @@
               "Dem Prozentwert, also nur dem Ertrag."
             ],
             "correct_index": 0
-          }
+          },
+          "replaces": [
+            "01K4M7P0000000000000000J05"
+          ]
         },
         {
           "id": "01M5M5GPKQC18DRKJHWSEYWZZW",
@@ -5735,6 +5756,12 @@
           "sample_solution": "Die reale Zunahme beträgt zehn bezogen auf neunzig, also rund elf Komma eins Prozent. Die Resthöhen ab achtzig übertreiben diesen Eindruck; ein Säulendiagramm ab null zeigt den Vergleich angemessener."
         }
       ]
+    }
+  ],
+  "retired_items": [
+    {
+      "id": "01K4M7K0000000000000000J02",
+      "reason": "Die alte Gesamtfrage wird auf mehrere neue Abrufe verteilt. Ihre Musterlösung behauptet fälschlich, ein Winkel gegenüber der kürzeren gegebenen Seite ergebe stets zwei Dreiecke; es können auch null oder eine Lösung sein. Daher Kategorie C mit vorgeschlagener Stilllegung ohne Historienübertrag. Bis Thomas dies ausdrücklich freigibt, deklariert die ausgelieferte Zelle keine Stilllegung."
     }
   ]
 }

@@ -39,20 +39,20 @@ const ENROL_SMOKE_CELLS = [
   "de-by:gymnasium-9-mathematik-quadratische-funktionen-pythagoras-trigonometrie",
   "de-by:gymnasium-10-mathematik-trigonometrie-sinus-kosinussatz-bogenmass",
   "de-by:gymnasium-10-wirtschaft-recht-bgb-vertragsrecht-unternehmen",
-  "de-by:gymnasium-11-mathematik-kurvendiskussion-extremwertprobleme-wendepunkte",
-  "de-by:gymnasium-12-mathematik-e-funktion-kettenregel-produktregel",
-  "de-by:gymnasium-13-mathematik-gebrochen-rationale-funktionen-asymptoten-uneigentliche-integrale",
+  "de-by:gymnasium-11-physik-elektrisches-feld-kondensator-millikan",
+  "de-by:gymnasium-12-physik-quantenphysik-lichtelektrischer-effekt-de-broglie-heisenberg",
+  "de-by:gymnasium-13-physik-astrophysik-hrd-sternentwicklung-kosmologie-hubble",
   "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
 ];
 
 describe("Gymnasium Bayern Full Curriculum (Klassen 5–13) Integrity & Quality Audit", () => {
-  it("verifies global uniqueness and schema compliance across all 138 Gymnasium Bayern cells (Grades 5-13)", () => {
+  it("verifies global uniqueness and schema compliance across all 124 remaining Gymnasium Bayern cells (Grades 5-13)", () => {
     const allCells = listBundledCells();
     const byGymCells = allCells.filter((c) =>
       c.tile_id.startsWith("de-by:gymnasium-"),
     );
 
-    expect(byGymCells.length).toBe(138);
+    expect(byGymCells.length).toBe(124);
 
     const allAtomIds = new Set<string>();
     const allItemIds = new Set<string>();
@@ -107,21 +107,21 @@ describe("Gymnasium Bayern Full Curriculum (Klassen 5–13) Integrity & Quality 
       }
     }
 
-    expect(gradeCellCounts[5]).toBe(9);
-    expect(gradeCellCounts[6]).toBe(9);
+    expect(gradeCellCounts[5]).toBe(7);
+    expect(gradeCellCounts[6]).toBe(7);
     expect(gradeCellCounts[7]).toBe(13);
     expect(gradeCellCounts[8]).toBe(16);
     expect(gradeCellCounts[9]).toBe(15);
     expect(gradeCellCounts[10]).toBe(18);
-    expect(gradeCellCounts[11]).toBe(21);
-    expect(gradeCellCounts[12]).toBe(19);
-    expect(gradeCellCounts[13]).toBe(18);
+    expect(gradeCellCounts[11]).toBe(17);
+    expect(gradeCellCounts[12]).toBe(16);
+    expect(gradeCellCounts[13]).toBe(15);
 
     expect(allAtomIds.size).toBe(
       byGymCells.reduce((acc, c) => acc + c.atoms.length, 0),
     );
-    expect(allAtomIds.size).toBeGreaterThanOrEqual(280);
-    expect(allItemIds.size).toBeGreaterThanOrEqual(560);
+    expect(allAtomIds.size).toBeGreaterThanOrEqual(245);
+    expect(allItemIds.size).toBeGreaterThanOrEqual(490);
   });
 
   it("finds Wirtschaft and NuT cells under official LehrplanPLUS subject slugs", () => {

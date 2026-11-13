@@ -1,0 +1,2858 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:mathematik-mittelschule-5",
+  "version": "2026.11.1",
+  "title": "Mathematik 5 Mittelschule (ZAM Academy)",
+  "description": "Sieben Lernbereiche des LehrplanPLUS Bayern: 32 Lektionen mit Labor und zwei Aufgabenstufen.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-11-11T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/5/mathematik",
+      "checked": "2026-11-11",
+      "label": "M5, LB 1–7"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M74QY18ER03HEGY3SRG5JKCJ",
+      "atom_uri": "urn:zam:atom:01M74QY18ER03HEGY3SRG5JKCJ",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "nz-1-zahlenmenge",
+      "title": "Natürliche Zahlen ohne Ende",
+      "domain": "mathematik/mittelschule-5/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-1-zahlenmenge",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Natürliche Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Natürliche Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY18FFPT2QK6TGQ627TTH",
+          "slug": "ms5-nz-1-zahlenmenge-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-1-zahlenmenge",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum gibt es keine größte natürliche Zahl?",
+          "concept": "Zu jeder natürlichen Zahl gibt es einen Nachfolger, der um eins größer ist.",
+          "choice_distractors": [
+            {
+              "text": "Nach der größten benannten Zahl gibt es keine weiteren natürlichen Zahlen.",
+              "reason": "Die Zahlennamen begrenzen die Menge nicht."
+            },
+            {
+              "text": "Nur Zahlen mit höchstens neun Stellen gehören zu den natürlichen Zahlen.",
+              "reason": "Die Stellenzahl ist keine Grenze der natürlichen Zahlen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zu jeder natürlichen Zahl gibt es einen Nachfolger, der um eins größer ist.",
+              "Nach der größten benannten Zahl gibt es keine weiteren natürlichen Zahlen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY199P9111VCHA1RJXK1B",
+          "slug": "ms5-nz-1-zahlenmenge-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-1-zahlenmenge",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Videozähler zeigt gerade 10.000.000 Aufrufe. Welche Zahl zeigte er direkt vor dem letzten Aufruf?",
+          "concept": "Lösung: Vorgänger: 9.999.999.",
+          "sample_solution": "Zu jeder natürlichen Zahl gibt es einen Nachfolger, der um eins größer ist. 10.000.000 − 1 = 9.999.999. Vorgänger: 9.999.999",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Vorgänger: 10.000.001.",
+              "reason": "Das ist der Nachfolger. Der Vorgänger ist um 1 kleiner."
+            },
+            {
+              "text": "Lösung: Vorgänger: 4.999.999,5.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18F4WFXWH3MCPDNE21E",
+      "atom_uri": "urn:zam:atom:01M74QY18F4WFXWH3MCPDNE21E",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "nz-2-stufenzahlen",
+      "title": "Stufenzahlen und Stellenwerte",
+      "domain": "mathematik/mittelschule-5/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-2-stufenzahlen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18ER03HEGY3SRG5JKCJ",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Natürliche Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Natürliche Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY199PBYWGQXMCNPK6VV1",
+          "slug": "ms5-nz-2-stufenzahlen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-2-stufenzahlen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie ändert sich der Wert einer Ziffer eine Stelle weiter links im Dezimalsystem?",
+          "concept": "Eine Stelle weiter links hat dieselbe Ziffer den zehnfachen Wert.",
+          "choice_distractors": [
+            {
+              "text": "Eine Stelle weiter links hat dieselbe Ziffer immer nur einen Wert mehr.",
+              "reason": "Die Stellenwerte wachsen mit Faktor zehn, nicht durch Addition von eins."
+            },
+            {
+              "text": "Die Ziffer behält überall denselben Wert, ihre Position ist unwichtig.",
+              "reason": "Ziffer und Stellenwert müssen zusammen betrachtet werden."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Stelle weiter links hat dieselbe Ziffer den zehnfachen Wert.",
+              "Eine Stelle weiter links hat dieselbe Ziffer immer nur einen Wert mehr."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1993A691JJF02SNZSKV",
+          "slug": "ms5-nz-2-stufenzahlen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-2-stufenzahlen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Mia sagt: „In 536.124 ist die 2 genau 2 wert.“ Das stimmt nicht. Gib den richtigen Wert der Ziffer 2 an.",
+          "concept": "Lösung: Wert: 20.",
+          "sample_solution": "Die Ziffer 2 steht an der Zehnerstelle: 2 · 10. Der Wert ist 20.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Wert: 30.",
+              "reason": "Die gesuchte Ziffer steht hier für zwei Zehner, nicht für drei Zehner."
+            },
+            {
+              "text": "Lösung: Wert: 40.",
+              "reason": "Die Stellenwerttafel ergibt zwei Zehner, nicht vier Zehner."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FWV9Z53V40CZ5GXWE",
+      "atom_uri": "urn:zam:atom:01M74QY18FWV9Z53V40CZ5GXWE",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "nz-3-zahlenstrahl",
+      "title": "Zahlenstrahl und Größenvergleich",
+      "domain": "mathematik/mittelschule-5/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-3-zahlenstrahl",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18F4WFXWH3MCPDNE21E",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Natürliche Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Natürliche Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY199J1CCBYEDT3GYS44S",
+          "slug": "ms5-nz-3-zahlenstrahl-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-3-zahlenstrahl",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie liest du den Wert eines einzelnen Schritts am Zahlenstrahl ab?",
+          "concept": "Teile den Unterschied zweier beschrifteter Werte durch die Anzahl gleicher Zwischenräume.",
+          "choice_distractors": [
+            {
+              "text": "Zähle alle eingezeichneten Striche, einschließlich beider beschrifteten Randstriche.",
+              "reason": "Zwischenräume und Striche sind verschieden viele."
+            },
+            {
+              "text": "Nimm immer den Unterschied der Beschriftungen als Wert eines einzelnen Schritts.",
+              "reason": "Zwischen beschrifteten Werten können mehrere Schritte liegen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Teile den Unterschied zweier beschrifteter Werte durch die Anzahl gleicher Zwischenräume.",
+              "Zähle alle eingezeichneten Striche, einschließlich beider beschrifteten Randstriche."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY199078YCA30FKC69SJ4",
+          "slug": "ms5-nz-3-zahlenstrahl-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-3-zahlenstrahl",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Auf einer Skala für Wasserstände stehen 0 und 10.000 Millimeter, dazwischen 5 gleiche Abschnitte. Der Wasserstand zeigt auf Strich Nummer 2. Wie hoch ist er?",
+          "concept": "Lösung: Zahl: 4.000 mm.",
+          "sample_solution": "Ein Abschnitt ist 10.000 : 5 = 2.000 wert. 2 · 2.000 = 4.000. Am Strich steht 4.000.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Zahl: 2 mm.",
+              "reason": "Das ist die Nummer des Strichs. Multipliziere sie mit dem Wert eines Abschnitts."
+            },
+            {
+              "text": "Lösung: Zahl: 2.000 mm.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FZ1XZZS26VC0C230M",
+      "atom_uri": "urn:zam:atom:01M74QY18FZ1XZZS26VC0C230M",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "nz-4-runden",
+      "title": "Runden",
+      "domain": "mathematik/mittelschule-5/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-4-runden",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FWV9Z53V40CZ5GXWE",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Natürliche Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Natürliche Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY199FCMES8W25Z541ZK8",
+          "slug": "ms5-nz-4-runden-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-4-runden",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Ziffer entscheidet beim Runden auf eine vorgegebene Stelle?",
+          "concept": "Die erste wegfallende Ziffer: null bis vier abrunden, fünf bis neun aufrunden.",
+          "choice_distractors": [
+            {
+              "text": "Immer die letzte Ziffer der ganzen Zahl, unabhängig von der gefragten Rundungsstelle.",
+              "reason": "Die Entscheidungsziffer steht unmittelbar rechts der Rundungsstelle."
+            },
+            {
+              "text": "Immer die erste Ziffer der Zahl, weil sie den größten Stellenwert besitzt.",
+              "reason": "Der größte Stellenwert entscheidet nicht über jede Rundung."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die erste wegfallende Ziffer: null bis vier abrunden, fünf bis neun aufrunden.",
+              "Immer die letzte Ziffer der ganzen Zahl, unabhängig von der gefragten Rundungsstelle."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY1991F6BRYHFFX1326P1",
+          "slug": "ms5-nz-4-runden-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-4-runden",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Land hat 94.908.880 Einwohner. Eine Zeitung nennt die Zahl in ganzen Tausendern. Welche Zahl druckt sie?",
+          "concept": "Lösung: Gerundet: 94.909.000.",
+          "sample_solution": "Die Ziffer rechts neben der Tausenderstelle von 94.908.880 ist 8. 94.908.880 ≈ 94.909.000",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Gerundet: 94.908.000.",
+              "reason": "Du hast in die falsche Richtung gerundet. Schau auf die Ziffer rechts neben der Rundungsstelle."
+            },
+            {
+              "text": "Lösung: Gerundet: 47.454.500.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18F4ZFD2AQNFZWCT5R7",
+      "atom_uri": "urn:zam:atom:01M74QY18F4ZFD2AQNFZWCT5R7",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "nz-7-addieren-subtrahieren",
+      "title": "Schriftlich addieren und subtrahieren",
+      "domain": "mathematik/mittelschule-5/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-7-addieren-subtrahieren",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FZ1XZZS26VC0C230M",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Natürliche Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Natürliche Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY199ZSGSE2Z0X7RQ146J",
+          "slug": "ms5-nz-7-addieren-subtrahieren-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-7-addieren-subtrahieren",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet Entbündeln beim schriftlichen Subtrahieren?",
+          "concept": "Eine Einheit der linken Nachbarstelle wird in zehn Einheiten der nächsten kleineren Stelle getauscht.",
+          "choice_distractors": [
+            {
+              "text": "Man streicht die kleinere Ziffer durch und vertauscht die beiden Zahlen in derselben Spalte.",
+              "reason": "Vertauschen in einer Spalte ändert die ganze Rechnung."
+            },
+            {
+              "text": "Man erhöht nur die kleine Ziffer um zehn und lässt die linke Nachbarstelle unverändert.",
+              "reason": "Die abgegebene Einheit muss links abgezogen werden."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Einheit der linken Nachbarstelle wird in zehn Einheiten der nächsten kleineren Stelle getauscht.",
+              "Man streicht die kleinere Ziffer durch und vertauscht die beiden Zahlen in derselben Spalte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY199KGH868PCM87MXPMB",
+          "slug": "ms5-nz-7-addieren-subtrahieren-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-7-addieren-subtrahieren",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Verein hat 732.447 € auf dem Konto. Durch ein Sommerfest kommen 518.549 € dazu. Wie viel Geld hat er dann?",
+          "concept": "Lösung: Wert der Summe: 1.250.996 €.",
+          "sample_solution": "Probe durch Überschlag: 732.000 + 519.000. Ergebnis: 1.250.996",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Wert der Summe: 213.898 €.",
+              "reason": "Prüfe die Rechenart noch einmal."
+            },
+            {
+              "text": "Lösung: Wert der Summe: 625.498 €.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FHQF68BKGM7PY2PY3",
+      "atom_uri": "urn:zam:atom:01M74QY18FHQF68BKGM7PY2PY3",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "nz-8-multiplizieren-dividieren",
+      "title": "Schriftlich multiplizieren und dividieren",
+      "domain": "mathematik/mittelschule-5/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-8-multiplizieren-dividieren",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18F4ZFD2AQNFZWCT5R7",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Natürliche Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Natürliche Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY199XG7NBHZ5BFZZF2Q2",
+          "slug": "ms5-nz-8-multiplizieren-dividieren-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-8-multiplizieren-dividieren",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie prüfst du eine Division mit Rest?",
+          "concept": "Multipliziere Quotient und Divisor und addiere den Rest; der Rest ist kleiner als der Divisor.",
+          "choice_distractors": [
+            {
+              "text": "Addiere Quotient und Divisor und multipliziere diese Summe danach mit dem Rest.",
+              "reason": "Die Umkehrung der Division ist die Multiplikation."
+            },
+            {
+              "text": "Multipliziere nur Quotient und Divisor; der Rest gehört nicht in die Probe.",
+              "reason": "Der Rest gehört zum ursprünglichen Dividend zurück."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Multipliziere Quotient und Divisor und addiere den Rest; der Rest ist kleiner als der Divisor.",
+              "Addiere Quotient und Divisor und multipliziere diese Summe danach mit dem Rest."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY199XSBA2ZWVBSNHTA8W",
+          "slug": "ms5-nz-8-multiplizieren-dividieren-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-8-multiplizieren-dividieren",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine Druckerei liefert 27 Paletten mit je 5.363 Heften. Wie viele Hefte sind das?",
+          "concept": "Lösung: Wert des Produkts: 144.801.",
+          "sample_solution": "Zerlege 27 in 20 + 7. Die Teilprodukte sind 5.363 · 20 = 107.260 und 5.363 · 7 = 37.541. Addiere: 107.260 + 37.541 = 144.801. Es sind 144.801 Hefte. Der Überschlag 5.000 · 30 = 150.000 passt dazu.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Wert des Produkts: 37.541.",
+              "reason": "Du hast nur mit den Einern gerechnet. Multipliziere auch mit den Zehnern."
+            },
+            {
+              "text": "Lösung: Wert des Produkts: 48.267.",
+              "reason": "Die 2 in 27 steht für 20, nicht für 2. Das Zehnerprodukt ist 107.260; ohne die Stellenverschiebung rechnest du nur 5.363 · 9."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FGEFWMKET1PYVBEJD",
+      "atom_uri": "urn:zam:atom:01M74QY18FGEFWMKET1PYVBEJD",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "nz-9-sachaufgaben",
+      "title": "Sachaufgaben und Überschlag",
+      "domain": "mathematik/mittelschule-5/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-9-sachaufgaben",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FHQF68BKGM7PY2PY3",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Natürliche Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Natürliche Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY199RXRPVDX3XYQ3DW1J",
+          "slug": "ms5-nz-9-sachaufgaben-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-9-sachaufgaben",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wann musst du ein rechnerisches Ergebnis bei einer Packungsaufgabe aufrunden?",
+          "concept": "Wenn du genug ganze Packungen brauchst und ein Restbedarf bleibt, brauchst du eine zusätzliche Packung.",
+          "choice_distractors": [
+            {
+              "text": "Bei ganzen Packungen wird immer abgerundet, auch wenn danach noch Material fehlt.",
+              "reason": "Abrunden kann den Bedarf unterschreiten."
+            },
+            {
+              "text": "Ein Ergebnis wird immer auf die nächstliegende ganze Zahl gerundet, unabhängig vom Bedarf.",
+              "reason": "Sachgerechtes Runden hängt von der Frage ab."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn du genug ganze Packungen brauchst und ein Restbedarf bleibt, brauchst du eine zusätzliche Packung.",
+              "Bei ganzen Packungen wird immer abgerundet, auch wenn danach noch Material fehlt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19AV83VHE25Z9J3R4CQ",
+          "slug": "ms5-nz-9-sachaufgaben-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-9-sachaufgaben",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Der Bus für einen Ausflug kostet 400 €. Dazu kommt für jedes der 29 Kinder ein Eintritt von 12 €. Wie viel kostet der Ausflug insgesamt?",
+          "concept": "Lösung: Gesamt: 748 €.",
+          "sample_solution": "Eintritte: 29 · 12 = 348. Dazu der Bus: 348 + 400 = 748. Der Ausflug kostet 748 €.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Gesamt: 348 €.",
+              "reason": "Du hast den Bus vergessen."
+            },
+            {
+              "text": "Lösung: Gesamt: 11.948 €.",
+              "reason": "Der Bus wird nur einmal bezahlt, nicht für jedes Kind."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18F379K4ER37649KG5G",
+      "atom_uri": "urn:zam:atom:01M74QY18F379K4ER37649KG5G",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "nz-folgen",
+      "title": "Zahlenfolgen untersuchen",
+      "domain": "mathematik/mittelschule-5/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-folgen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FGEFWMKET1PYVBEJD",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Natürliche Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Natürliche Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19ACS9BB4HX0AMSH4G2",
+          "slug": "ms5-nz-folgen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-folgen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie prüfst du eine vermutete Regel für eine Zahlenfolge?",
+          "concept": "Prüfe, ob die Regel jeden gegebenen Übergang erklärt, und beachte die Vorgabe der Aufgabe.",
+          "choice_distractors": [
+            {
+              "text": "Prüfe nur den Übergang zwischen den ersten beiden Zahlen; alle weiteren sind unwichtig.",
+              "reason": "Ein Übergang reicht nicht als Prüfung der ganzen Folge."
+            },
+            {
+              "text": "Eine endliche Zahlenliste hat grundsätzlich nur eine einzige mögliche Fortsetzung.",
+              "reason": "Endlich viele Angaben können mehrere Regeln zulassen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Prüfe, ob die Regel jeden gegebenen Übergang erklärt, und beachte die Vorgabe der Aufgabe.",
+              "Prüfe nur den Übergang zwischen den ersten beiden Zahlen; alle weiteren sind unwichtig."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19AFTAAXMCGFF152CQ1",
+          "slug": "ms5-nz-folgen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-folgen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Zähler zeigt nacheinander 562.500; 561.400; 560.300. Er ändert sich immer gleich. Welche Zahl zeigt er zwei Schritte nach dem letzten Wert?",
+          "concept": "Lösung: Zahl: 558.100.",
+          "sample_solution": "Jeder Schritt bedeutet − 1.100. Vom Start aus brauchst du vier Schritte. Die gesuchte Zahl ist 558.100.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Zahl: 1.116.200.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Zahl: 279.050.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18F1B4F2KFMDHMXW1P1",
+      "atom_uri": "urn:zam:atom:01M74QY18F1B4F2KFMDHMXW1P1",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "nz-rechenregeln",
+      "title": "Rechenregeln und Rechenvorteile",
+      "domain": "mathematik/mittelschule-5/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-rechenregeln",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18F379K4ER37649KG5G",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Natürliche Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Natürliche Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19AZNSBGJCV9GVDRK3H",
+          "slug": "ms5-nz-rechenregeln-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-rechenregeln",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In welcher Reihenfolge rechnest du Terme mit Klammern, Mal und Plus?",
+          "concept": "Zuerst Klammern, dann Punktrechnung, dann Strichrechnung; gleichrangig von links nach rechts.",
+          "choice_distractors": [
+            {
+              "text": "Du rechnest jede Aufgabe immer von links nach rechts, auch über Klammern hinweg.",
+              "reason": "Klammern und Rangordnung müssen beachtet werden."
+            },
+            {
+              "text": "Du addierst zuerst alle Zahlen und führst erst danach die Multiplikationen aus.",
+              "reason": "Eine frühe Addition kann den Wert des Terms ändern."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zuerst Klammern, dann Punktrechnung, dann Strichrechnung; gleichrangig von links nach rechts.",
+              "Du rechnest jede Aufgabe immer von links nach rechts, auch über Klammern hinweg."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19A7PFR9ACTSKSFZBG3",
+          "slug": "ms5-nz-rechenregeln-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=nz-rechenregeln",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Für 6 Gruppen kaufst du jeweils 6 rote und 10 blaue Hefte. Wie viele Hefte sind das insgesamt? Stelle dir für jede Gruppe eine Klammer vor.",
+          "concept": "Lösung: Ergebnis: 96.",
+          "sample_solution": "Je Gruppe 6 + 10 = 16. Dann 6 Gruppen. Das Ergebnis ist 96.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Ergebnis: 66.",
+              "reason": "Prüfe, ob die Klammer nur eine Zahl oder die ganze Summe vervielfacht."
+            },
+            {
+              "text": "Lösung: Ergebnis: 48.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FHW7E2B5143P1WHJW",
+      "atom_uri": "urn:zam:atom:01M74QY18FHW7E2B5143P1WHJW",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "gz-1-negative-zahlen",
+      "title": "Warum negative Zahlen?",
+      "domain": "mathematik/mittelschule-5/stage-2",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gz-1-negative-zahlen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FWV9Z53V40CZ5GXWE",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Ganze Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Ganze Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19AK4V3V7KFTVT9G2JG",
+          "slug": "ms5-gz-1-negative-zahlen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gz-1-negative-zahlen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was beschreibt eine negative Temperatur auf der Celsius-Skala?",
+          "concept": "Sie liegt unter dem Nullpunkt der Skala, nicht unter einer kleinsten möglichen Zahl.",
+          "choice_distractors": [
+            {
+              "text": "Sie bedeutet, dass keine Temperatur vorhanden ist, weil Temperaturen nicht negativ sein können.",
+              "reason": "Negative Temperaturen sind sinnvolle Zustände."
+            },
+            {
+              "text": "Sie liegt immer unter jeder anderen Temperatur, unabhängig vom Abstand zum Nullpunkt.",
+              "reason": "Auch negative Werte können miteinander verglichen werden."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie liegt unter dem Nullpunkt der Skala, nicht unter einer kleinsten möglichen Zahl.",
+              "Sie bedeutet, dass keine Temperatur vorhanden ist, weil Temperaturen nicht negativ sein können."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19AXHTPPY14AGA63DKA",
+          "slug": "ms5-gz-1-negative-zahlen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gz-1-negative-zahlen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "In der Nacht hat es −2 °C. Bis zum Mittag steigt die Temperatur um 7 Grad, am Abend fällt sie wieder um 3 Grad. Welche Temperatur ist am Abend?",
+          "concept": "Lösung: Temperatur: 2 °C.",
+          "sample_solution": "−2 + 7 = 5, dann 5 − 3 = 2. Am Abend sind es 2 °C.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Temperatur: 4 °C.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Temperatur: 1 °C.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18F36XF7SVBXZH61EQX",
+      "atom_uri": "urn:zam:atom:01M74QY18F36XF7SVBXZH61EQX",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "gz-3-zahlengerade",
+      "title": "Die Zahlengerade",
+      "domain": "mathematik/mittelschule-5/stage-2",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gz-3-zahlengerade",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FHW7E2B5143P1WHJW",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Ganze Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Ganze Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19A5E26CXYRTA75G7M8",
+          "slug": "ms5-gz-3-zahlengerade-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gz-3-zahlengerade",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche von zwei Zahlen ist auf der Zahlengeraden kleiner?",
+          "concept": "Die weiter links liegende Zahl ist kleiner, auch wenn beide Zahlen negativ sind.",
+          "choice_distractors": [
+            {
+              "text": "Bei negativen Zahlen ist immer die Zahl mit dem größeren Abstand zur Null größer.",
+              "reason": "Bei negativen Zahlen liegt der größere Betrag weiter links."
+            },
+            {
+              "text": "Die Zahl näher an der Null ist immer kleiner, auch wenn beide Zahlen negativ sind.",
+              "reason": "Die Nähe zur Null ist keine allgemeine Ordnungsregel."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die weiter links liegende Zahl ist kleiner, auch wenn beide Zahlen negativ sind.",
+              "Bei negativen Zahlen ist immer die Zahl mit dem größeren Abstand zur Null größer."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19AST8WRXBXQKSKR159",
+          "slug": "ms5-gz-3-zahlengerade-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gz-3-zahlengerade",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine Skala für Höhen zeigt 0 m auf Meereshöhe, ein Strich bedeutet 50 m. Ein U-Boot liegt 4 Striche unter der Null. Welche Höhe ist das?",
+          "concept": "Lösung: Zahl: −200 m.",
+          "sample_solution": "Die weiter links liegende Zahl ist kleiner, auch wenn beide Zahlen negativ sind. 4 · 50 = 200, negativ. Die Zahl ist −200.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Zahl: −400 m.",
+              "reason": "Die Zahl der Schritte wurde verdoppelt; lies die Skalierung und die Position erneut ab."
+            },
+            {
+              "text": "Lösung: Zahl: −100 m.",
+              "reason": "Die Schrittweite wurde halbiert; die markierte Position entspricht zweihundert Metern unter null."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18F4HYVJ55YT2H8S572",
+      "atom_uri": "urn:zam:atom:01M74QY18F4HYVJ55YT2H8S572",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "gz-zustandsaenderungen",
+      "title": "Zustand und Änderung",
+      "domain": "mathematik/mittelschule-5/stage-2",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gz-zustandsaenderungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18F36XF7SVBXZH61EQX",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Ganze Zahlen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Ganze Zahlen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19APZ0E0DFXMXD06X1Y",
+          "slug": "ms5-gz-zustandsaenderungen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gz-zustandsaenderungen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie unterscheiden sich Vorzeichen und Rechenzeichen in einer Zustandsaufgabe?",
+          "concept": "Das Vorzeichen gehört zum Zustand; das Rechenzeichen gibt die Richtung der Änderung an.",
+          "choice_distractors": [
+            {
+              "text": "Das Vorzeichen zählt die Zahl der Änderungen; das Rechenzeichen beschreibt nur die Einheit.",
+              "reason": "Vorzeichen zählen keine Schritte."
+            },
+            {
+              "text": "Ein negativer Start bedeutet automatisch, dass jede weitere Änderung nach links führt.",
+              "reason": "Von einem negativen Start kann die Änderung auch nach rechts führen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Vorzeichen gehört zum Zustand; das Rechenzeichen gibt die Richtung der Änderung an.",
+              "Das Vorzeichen zählt die Zahl der Änderungen; das Rechenzeichen beschreibt nur die Einheit."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19ATR4PRF8FY634YMTR",
+          "slug": "ms5-gz-zustandsaenderungen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gz-zustandsaenderungen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Morgens sind es −2 °C. Mittags ist es 11 Grad kälter, abends noch einmal 6 Grad kälter. Wie warm ist es abends?",
+          "concept": "Lösung: Temperatur: −19 °C.",
+          "sample_solution": "Das Vorzeichen gehört zum Zustand; das Rechenzeichen gibt die Richtung der Änderung an. −2 − 11 = −13. Dann −13 − 6. Es sind −19 °C.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Temperatur: −38 °C.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Temperatur: −9,5 °C.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18F5M4B1CHJR601WNXP",
+      "atom_uri": "urn:zam:atom:01M74QY18F5M4B1CHJR601WNXP",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "ge-1-grundbegriffe",
+      "title": "Punkt, Strecke, Halbgerade, Gerade",
+      "domain": "mathematik/mittelschule-5/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-1-grundbegriffe",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18F4WFXWH3MCPDNE21E",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren und Lagebeziehungen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19ACPQ4ZGAVGH2GWY03",
+          "slug": "ms5-ge-1-grundbegriffe-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-1-grundbegriffe",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wodurch unterscheiden sich Strecke und Gerade?",
+          "concept": "Eine Strecke hat zwei Endpunkte und eine Länge; eine Gerade läuft in beiden Richtungen weiter.",
+          "choice_distractors": [
+            {
+              "text": "Eine Strecke hat keinen Endpunkt; eine Gerade endet an zwei festgelegten Punkten.",
+              "reason": "Endpunkte wurden den falschen Linien zugeordnet."
+            },
+            {
+              "text": "Eine Gerade ist immer waagrecht, während eine Strecke immer senkrecht gezeichnet wird.",
+              "reason": "Die Lage im Bild definiert die Linienart nicht."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Strecke hat zwei Endpunkte und eine Länge; eine Gerade läuft in beiden Richtungen weiter.",
+              "Eine Strecke hat keinen Endpunkt; eine Gerade endet an zwei festgelegten Punkten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19ADKVY3KT9NE474Z82",
+          "slug": "ms5-ge-1-grundbegriffe-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-1-grundbegriffe",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "In einer Zeichnung steht [PQ]. Welche Linie ist gemeint, und wie viele Endpunkte hat sie?",
+          "concept": "Lösung: Linie: Strecke; Endpunkte: 2.",
+          "sample_solution": "Eine eckige Klammer markiert einen festen Endpunkt. [PQ] ist eine Strecke.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Linie: Strecke; Endpunkte: 4.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Linie: Strecke; Endpunkte: 1.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FCT1G69DD805NNTW0",
+      "atom_uri": "urn:zam:atom:01M74QY18FCT1G69DD805NNTW0",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "ge-2-lagebeziehungen",
+      "title": "Lagebeziehungen",
+      "domain": "mathematik/mittelschule-5/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-2-lagebeziehungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18F5M4B1CHJR601WNXP",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren und Lagebeziehungen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19ADB7YTPQV39YHGZ87",
+          "slug": "ms5-ge-2-lagebeziehungen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-2-lagebeziehungen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie misst du den Abstand eines Punktes von einer Geraden?",
+          "concept": "Miss die kürzeste Verbindung; sie verläuft senkrecht vom Punkt zur Geraden.",
+          "choice_distractors": [
+            {
+              "text": "Miss eine beliebige schräge Verbindung vom Punkt zu irgendeiner Stelle der Geraden.",
+              "reason": "Eine schräge Verbindung ist im Allgemeinen länger."
+            },
+            {
+              "text": "Miss immer waagrecht nach rechts, auch wenn die gegebene Gerade schräg liegt.",
+              "reason": "Die Richtung hängt von der Lage der Geraden ab."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Miss die kürzeste Verbindung; sie verläuft senkrecht vom Punkt zur Geraden.",
+              "Miss eine beliebige schräge Verbindung vom Punkt zu irgendeiner Stelle der Geraden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19A8XQCYH5DSK9T7E9G",
+          "slug": "ms5-ge-2-lagebeziehungen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-2-lagebeziehungen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Stelle dir beide als Geraden vor: Die Längsseiten deines Hefts. Wie liegen sie zueinander?",
+          "concept": "Die beiden Geraden verlaufen parallel zueinander.",
+          "sample_solution": "Prüfe zuerst den Abstand, dann den Winkel. Die Lage ist: parallel.",
+          "choice_distractors": [
+            {
+              "text": "Die beiden Geraden schneiden sich in einem rechten Winkel.",
+              "reason": "Die beschriebenen Längsseiten haben keinen Schnittpunkt."
+            },
+            {
+              "text": "Die beiden Geraden treffen sich unter einem schrägen Winkel.",
+              "reason": "Parallele Längsseiten haben überall denselben Abstand und treffen sich nicht."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FRJ5V5DSW0P6M783F",
+      "atom_uri": "urn:zam:atom:01M74QY18FRJ5V5DSW0P6M783F",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "uf-1-umfang",
+      "title": "Umfang von Rechteck und Quadrat",
+      "domain": "mathematik/mittelschule-5/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-1-umfang",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FCT1G69DD805NNTW0",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren und Lagebeziehungen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19AB84Z7J87VCP5JYVY",
+          "slug": "ms5-uf-1-umfang-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-1-umfang",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie findest du den Umfang eines Rechtecks?",
+          "choice_distractors": [
+            {
+              "text": "Multipliziere Länge und Breite; das Ergebnis ist die Länge des gesamten Randes.",
+              "reason": "Das Produkt liefert den Flächeninhalt."
+            },
+            {
+              "text": "Addiere nur eine lange und eine kurze Seite; weitere Seiten zählen nicht mit.",
+              "reason": "Eine lange und eine kurze Seite sind nur der halbe Rand."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Addiere alle vier Seitenlängen; Länge und Breite kommen jeweils zweimal vor.",
+              "Multipliziere Länge und Breite; das Ergebnis ist die Länge des gesamten Randes."
+            ],
+            "correct_index": 0
+          },
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Addiere alle vier Seitenlängen; Länge und Breite kommen jeweils zweimal vor. "
+            },
+            {
+              "type": "math",
+              "tex": "U = 2 \\cdot a + 2 \\cdot b",
+              "speech": "Umfang gleich zweimal Länge plus zweimal Breite"
+            }
+          ]
+        },
+        {
+          "id": "01M74QY19A9F3WES73EAGQ5SQE",
+          "slug": "ms5-uf-1-umfang-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-1-umfang",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein quadratisches Beet hat die Seitenlänge 16 m. Wie viele Meter Beeteinfassung braucht es?",
+          "concept": "Lösung: U : 64 m.",
+          "sample_solution": "Das quadratische Beet hat vier gleich lange Seiten. Addiere diese vier Seiten oder rechne 4 · 16 m = 64 m. Es werden 64 m Beeteinfassung benötigt.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: U : 256 m.",
+              "reason": "Das ist die Fläche. Für den Umfang addierst du alle Seiten."
+            },
+            {
+              "text": "Lösung: U : 32 m.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FAE4076EVSE9JDCDQ",
+      "atom_uri": "urn:zam:atom:01M74QY18FAE4076EVSE9JDCDQ",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "uf-2-umfang-vielecke",
+      "title": "Umfang von Vielecken",
+      "domain": "mathematik/mittelschule-5/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-2-umfang-vielecke",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FRJ5V5DSW0P6M783F",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren und Lagebeziehungen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19A5K6A00KZRBR7W608",
+          "slug": "ms5-uf-2-umfang-vielecke-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-2-umfang-vielecke",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Strecken gehören zum Umfang einer zusammengesetzten Figur?",
+          "concept": "Nur der äußere Rand wird einmal vollständig gezählt; Innenkanten gehören nicht dazu.",
+          "choice_distractors": [
+            {
+              "text": "Alle Kanten aller Teilfiguren zählen mit, auch wenn sie vollständig im Inneren liegen.",
+              "reason": "Innenkanten liegen nicht am äußeren Rand."
+            },
+            {
+              "text": "Nur die längsten Seiten werden addiert; kurze Einbuchtungen werden weggelassen.",
+              "reason": "Auch kleine Randstücke gehören zum Umfang."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur der äußere Rand wird einmal vollständig gezählt; Innenkanten gehören nicht dazu.",
+              "Alle Kanten aller Teilfiguren zählen mit, auch wenn sie vollständig im Inneren liegen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19A9436RK36H6TY499R",
+          "slug": "ms5-uf-2-umfang-vielecke-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-2-umfang-vielecke",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Grundstück hat sechs Seiten: 6 m, 10 m, 8 m, 11 m, 10 m, 5 m. Es bekommt einen Zaun mit einem 3 m breiten Tor. Wie viele Meter Zaun braucht man?",
+          "concept": "Lösung: Zaun: 47 m.",
+          "sample_solution": "Nur der äußere Rand wird einmal vollständig gezählt; Innenkanten gehören nicht dazu. U = 50 m. 50 m − 3 m. 47 m Zaun",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Zaun: 50 m.",
+              "reason": "Das ist der ganze Umfang. Das Tor braucht keinen Zaun."
+            },
+            {
+              "text": "Lösung: Zaun: 23,5 m.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FYPPBKAVF7CV5CEET",
+      "atom_uri": "urn:zam:atom:01M74QY18FYPPBKAVF7CV5CEET",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "ge-koordinaten-erster-quadrant",
+      "title": "Punkte im ersten Quadranten",
+      "domain": "mathematik/mittelschule-5/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-koordinaten-erster-quadrant",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FAE4076EVSE9JDCDQ",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren und Lagebeziehungen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19AT625Q63W7B6SPK4R",
+          "slug": "ms5-ge-koordinaten-erster-quadrant-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-koordinaten-erster-quadrant",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeuten die beiden Werte eines Punktes im ersten Quadranten?",
+          "concept": "Der erste ist der Rechtswert, der zweite der Hochwert; beide Wege starten am Ursprung.",
+          "choice_distractors": [
+            {
+              "text": "Der erste ist der Hochwert, der zweite der Rechtswert; die Reihenfolge darf wechseln.",
+              "reason": "Die Koordinaten haben eine feste Reihenfolge."
+            },
+            {
+              "text": "Die beiden Werte beschreiben eine einzige Entfernung, ihre Summe legt den Punkt fest.",
+              "reason": "Eine Entfernung allein legt die Lage in der Ebene nicht fest."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der erste ist der Rechtswert, der zweite der Hochwert; beide Wege starten am Ursprung.",
+              "Der erste ist der Hochwert, der zweite der Rechtswert; die Reihenfolge darf wechseln."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19AZSYH01ZTHPDQ30EV",
+          "slug": "ms5-ge-koordinaten-erster-quadrant-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-koordinaten-erster-quadrant",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Auf dem Plan liegt der Start bei (4 | 3). Gehe 2 Einheiten nach rechts und 1 nach oben. Welche Koordinaten hat das Ziel?",
+          "concept": "Lösung: Rechtswert: 6; Hochwert: 4.",
+          "sample_solution": "Der erste ist der Rechtswert, der zweite der Hochwert; beide Wege starten am Ursprung. 4 + 2 = 6; 3 + 1 = 4. Der Punkt ist (6 | 4).",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Rechtswert: 12; Hochwert: 4.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Rechtswert: 3; Hochwert: 4.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18F8QVZ4V6SH0QPGJRZ",
+      "atom_uri": "urn:zam:atom:01M74QY18F8QVZ4V6SH0QPGJRZ",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "ge-winkel-bis-180",
+      "title": "Winkel bis 180°",
+      "domain": "mathematik/mittelschule-5/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-winkel-bis-180",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FYPPBKAVF7CV5CEET",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren und Lagebeziehungen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19AQ4WHRMRX8145XBXX",
+          "slug": "ms5-ge-winkel-bis-180-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-winkel-bis-180",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Skala liest du beim Messen eines Winkels mit dem Geodreieck?",
+          "concept": "Die Skala, die am angelegten ersten Schenkel mit null Grad beginnt.",
+          "choice_distractors": [
+            {
+              "text": "Immer die äußere Skala, unabhängig davon, wo der erste Schenkel liegt.",
+              "reason": "Die passende Skala hängt vom ersten Schenkel ab."
+            },
+            {
+              "text": "Immer die größere der beiden Zahlen am zweiten Schenkel, auch bei spitzen Winkeln.",
+              "reason": "Spitze Winkel können einen kleinen Messwert haben."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Skala, die am angelegten ersten Schenkel mit null Grad beginnt.",
+              "Immer die äußere Skala, unabhängig davon, wo der erste Schenkel liegt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19A9C0SZAK25A9TE4Y5",
+          "slug": "ms5-ge-winkel-bis-180-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-winkel-bis-180",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine Klappe soll 30° weit geöffnet werden. Ordne den Winkel ein und gib an, wie viele Grad bis zur gestreckten Öffnung fehlen.",
+          "concept": "Lösung: Winkelart: spitzer Winkel; Bis 180° fehlen: 150 °.",
+          "sample_solution": "30° ist kleiner als 90°. spitzer Winkel; es fehlen 150°.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Winkelart: spitzer Winkel; Bis 180° fehlen: 300 °.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Winkelart: spitzer Winkel; Bis 180° fehlen: 75 °.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FDPZZSKNJK7E9WX02",
+      "atom_uri": "urn:zam:atom:01M74QY18FDPZZSKNJK7E9WX02",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "ge-umfang-dreieck",
+      "title": "Umfang am Dreieck",
+      "domain": "mathematik/mittelschule-5/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-umfang-dreieck",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18F8QVZ4V6SH0QPGJRZ",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren und Lagebeziehungen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19AH18F57ESK5KN4AS4",
+          "slug": "ms5-ge-umfang-dreieck-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-umfang-dreieck",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du den Umfang eines Dreiecks aus seinen Seitenlängen?",
+          "choice_distractors": [
+            {
+              "text": "Multipliziere die drei Seitenlängen miteinander und gib das Ergebnis als Länge an.",
+              "reason": "Das Produkt dreier Längen ist kein Umfang."
+            },
+            {
+              "text": "Addiere nur die beiden längsten Seiten, weil die dritte den Rand nicht verändert.",
+              "reason": "Alle drei Seiten bilden den Rand."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bringe die drei Längen in dieselbe Einheit und addiere alle drei Seiten.",
+              "Multipliziere die drei Seitenlängen miteinander und gib das Ergebnis als Länge an."
+            ],
+            "correct_index": 0
+          },
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Bringe die drei Längen in dieselbe Einheit und addiere alle drei Seiten. "
+            },
+            {
+              "type": "math",
+              "tex": "U = a + b + c",
+              "speech": "Umfang gleich Summe der drei Seitenlängen"
+            }
+          ]
+        },
+        {
+          "id": "01M74QY19BQEVT5T7R2HMSBP0R",
+          "slug": "ms5-ge-umfang-dreieck-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=ge-umfang-dreieck",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine dreieckige Fahne hat Seiten von 70 cm, 90 cm und 11 dm. Zum Säumen brauchst du zusätzlich 5 cm Band. Wie viele Zentimeter Band brauchst du?",
+          "concept": "Lösung: Bandlänge / Umfang: 275 cm.",
+          "sample_solution": "Bringe die drei Längen in dieselbe Einheit und addiere alle drei Seiten. 11 dm = 110 cm. Rand 270 cm, dazu 5 cm. 275 cm.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Bandlänge / Umfang: 550 cm.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Bandlänge / Umfang: 137,5 cm.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FMNA9EPY4S4FWM9W2",
+      "atom_uri": "urn:zam:atom:01M74QY18FMNA9EPY4S4FWM9W2",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "uf-3-flaechen-vergleichen",
+      "title": "Flächen vergleichen",
+      "domain": "mathematik/mittelschule-5/stage-4",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-3-flaechen-vergleichen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FRJ5V5DSW0P6M783F",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Flächeninhalt – Rechtecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Rechtecke",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19BZER9RDT0XEH5J57M",
+          "slug": "ms5-uf-3-flaechen-vergleichen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-3-flaechen-vergleichen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was muss beim Vergleichen von Flächen mit Plättchen gleich bleiben?",
+          "concept": "Die verwendete Flächeneinheit muss gleich groß sein; dann kannst du die Anzahlen vergleichen.",
+          "choice_distractors": [
+            {
+              "text": "Die Anzahl der Plättchen reicht immer aus, auch wenn ihre Größen verschieden sind.",
+              "reason": "Verschieden große Einheiten machen Anzahlen unvergleichbar."
+            },
+            {
+              "text": "Die längste Seite allein entscheidet den Flächeninhalt; die Breite spielt keine Rolle.",
+              "reason": "Auch die Breite beeinflusst den Flächeninhalt."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die verwendete Flächeneinheit muss gleich groß sein; dann kannst du die Anzahlen vergleichen.",
+              "Die Anzahl der Plättchen reicht immer aus, auch wenn ihre Größen verschieden sind."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19B7T89ZPCP8J50ZJX6",
+          "slug": "ms5-uf-3-flaechen-vergleichen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-3-flaechen-vergleichen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Boden A besteht aus 8 Fliesen zu je 4 Karos. Boden B besteht aus 36 einzelnen Karos. Welcher Boden ist größer?",
+          "concept": "Lösung: Größer ist …: Boden B; Karos von Boden A: 32.",
+          "sample_solution": "8 · 4 = 32 Karos, dazu 36 Karos bei Boden B. Boden B ist größer.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Größer ist …: Boden B; Karos von Boden A: 64.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Größer ist …: Boden B; Karos von Boden A: 16.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FACBNXZW3N0J8XBKG",
+      "atom_uri": "urn:zam:atom:01M74QY18FACBNXZW3N0J8XBKG",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "uf-5-flaeche-rechteck",
+      "title": "Flächeninhalt von Rechteck und Quadrat",
+      "domain": "mathematik/mittelschule-5/stage-4",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-5-flaeche-rechteck",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FMNA9EPY4S4FWM9W2",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Flächeninhalt – Rechtecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Rechtecke",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19BX3VXYEBWVNP8J1GN",
+          "slug": "ms5-uf-5-flaeche-rechteck-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-5-flaeche-rechteck",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ist der Flächeninhalt eines Rechtecks das Produkt aus Länge und Breite?",
+          "choice_distractors": [
+            {
+              "text": "Die beiden Seitenlängen zählen gemeinsam alle Randstücke, daher werden sie addiert.",
+              "reason": "Hier werden Rand und Inhalt verwechselt."
+            },
+            {
+              "text": "Ein Rechteck enthält immer gleich viele Quadrate, solange sein Umfang gleich bleibt.",
+              "reason": "Gleicher Umfang erzwingt keinen gleichen Flächeninhalt."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Breite zählt die Reihen, die Länge die Einheitsquadrate je Reihe.",
+              "Die beiden Seitenlängen zählen gemeinsam alle Randstücke, daher werden sie addiert."
+            ],
+            "correct_index": 0
+          },
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Die Breite zählt die Reihen, die Länge die Einheitsquadrate je Reihe. "
+            },
+            {
+              "type": "math",
+              "tex": "A = a \\cdot b",
+              "speech": "Flächeninhalt gleich Länge mal Breite"
+            }
+          ]
+        },
+        {
+          "id": "01M74QY19BTHA1Q0J5FAFXF2QW",
+          "slug": "ms5-uf-5-flaeche-rechteck-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-5-flaeche-rechteck",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Saal ist 20 m lang und 15 m breit. Ein Quadratmeter Boden kostet 3 €. Wie teuer ist der Boden?",
+          "concept": "Lösung: Kosten: 900 €.",
+          "sample_solution": "Die Breite zählt die Reihen, die Länge die Einheitsquadrate je Reihe. A = 20 · 15 = 300 m². 300 · 3 = 900. 900 €",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Kosten: 210 €.",
+              "reason": "Du hast den Umfang genommen. Hier zählt die Fläche."
+            },
+            {
+              "text": "Lösung: Kosten: 450 €.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FDE59QAWYZVGF1PZS",
+      "atom_uri": "urn:zam:atom:01M74QY18FDE59QAWYZVGF1PZS",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "uf-6-zusammengesetzt",
+      "title": "Flächen von Vielecken",
+      "domain": "mathematik/mittelschule-5/stage-4",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-6-zusammengesetzt",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FACBNXZW3N0J8XBKG",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Flächeninhalt – Rechtecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Rechtecke",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19B565VCS7ZYK3AQJP1",
+          "slug": "ms5-uf-6-zusammengesetzt-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-6-zusammengesetzt",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie bestimmst du den Inhalt einer L-förmigen Fläche aus Rechtecken?",
+          "concept": "Zerlege ohne Überlappung und addiere oder ergänze zum Rechteck und ziehe die Lücke ab.",
+          "choice_distractors": [
+            {
+              "text": "Addiere die Flächen von Rechtecken beliebiger Größe, auch wenn sie sich überlappen.",
+              "reason": "Überlappungen würden doppelt gezählt."
+            },
+            {
+              "text": "Berechne nur das umschließende Rechteck; die ausgesparte Ecke zählt zur Fläche dazu.",
+              "reason": "Die ausgesparte Ecke gehört nicht zum Inhalt."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zerlege ohne Überlappung und addiere oder ergänze zum Rechteck und ziehe die Lücke ab.",
+              "Addiere die Flächen von Rechtecken beliebiger Größe, auch wenn sie sich überlappen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19BGR1Y5TSYDDAS1B1B",
+          "slug": "ms5-uf-6-zusammengesetzt-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=uf-6-zusammengesetzt",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Erdgeschoss hat einen Grundriss aus einem Rechteck von 14 m mal 7 m, in dessen Ecke ein 2 m mal 3 m großer Schacht liegt. Wie groß ist die Wohnfläche?",
+          "concept": "Lösung: A : 92 m².",
+          "sample_solution": "Zerlege ohne Überlappung und addiere oder ergänze zum Rechteck und ziehe die Lücke ab. 14 · 7 = 98. 2 · 3 = 6. 98 − 6 = 92. A = 92 m²",
+          "choice_distractors": [
+            {
+              "text": "Lösung: A : 98 m².",
+              "reason": "Das fehlende Stück musst du noch abziehen."
+            },
+            {
+              "text": "Lösung: A : 104 m².",
+              "reason": "Du hast die Ecke addiert. Sie fehlt aber."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FJBZ66F8C7FSV066Q",
+      "atom_uri": "urn:zam:atom:01M74QY18FJBZ66F8C7FSV066Q",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "fl-flaecheneinheiten",
+      "title": "Flächeneinheiten umrechnen",
+      "domain": "mathematik/mittelschule-5/stage-4",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=fl-flaecheneinheiten",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FDE59QAWYZVGF1PZS",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Flächeninhalt – Rechtecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Rechtecke",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19BRWX9GB1GNAG0X0G8",
+          "slug": "ms5-fl-flaecheneinheiten-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=fl-flaecheneinheiten",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ist der Faktor zur kleinen benachbarten Flächeneinheit hundert?",
+          "concept": "Zehn kleine Quadrate passen in jede von zehn Reihen, zusammen sind es hundert.",
+          "choice_distractors": [
+            {
+              "text": "Weil die Zahl der Seiten eines Quadrats bei jedem Einheitenwechsel auf hundert steigt.",
+              "reason": "Die Seitenzahl bleibt vier."
+            },
+            {
+              "text": "Weil man bei jeder Einheit unabhängig von ihrer Art immer zwei Nullen anhängt.",
+              "reason": "Der Faktor hängt von der Größenart ab."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zehn kleine Quadrate passen in jede von zehn Reihen, zusammen sind es hundert.",
+              "Weil die Zahl der Seiten eines Quadrats bei jedem Einheitenwechsel auf hundert steigt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19BGXGH4K1D18E1DV07",
+          "slug": "ms5-fl-flaecheneinheiten-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=fl-flaecheneinheiten",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine Fläche misst 43 cm² und 69 mm². Wie groß ist die gesamte Fläche in mm²?",
+          "concept": "Lösung: Fläche: 4.369 mm².",
+          "sample_solution": "Zehn kleine Quadrate passen in jede von zehn Reihen, zusammen sind es hundert. 43 · 100 = 4300. Dazu 69. 4.369 mm².",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Fläche: 499 mm².",
+              "reason": "Bei Flächen hat jede Stufe den Faktor 100, nicht 10."
+            },
+            {
+              "text": "Lösung: Fläche: 2.184,5 mm².",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FCPRN3JV00NKPYEP5",
+      "atom_uri": "urn:zam:atom:01M74QY18FCPRN3JV00NKPYEP5",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "gr-1-masszahl-schaetzen",
+      "title": "Maßzahl, Maßeinheit und Schätzen",
+      "domain": "mathematik/mittelschule-5/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-1-masszahl-schaetzen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FHQF68BKGM7PY2PY3",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Größen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Größen im Alltag",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19BJ4W1SM7BSK0205KG",
+          "slug": "ms5-gr-1-masszahl-schaetzen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-1-masszahl-schaetzen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie schätzt du eine unbekannte Größe sinnvoll?",
+          "concept": "Vergleiche mit einer bekannten Bezugsgröße und prüfe, ob die Einheit zur Situation passt.",
+          "choice_distractors": [
+            {
+              "text": "Nimm die größte verfügbare Einheit, weil sie jede Schätzung automatisch genauer macht.",
+              "reason": "Die Einheit beeinflusst die Handlichkeit, nicht automatisch die Genauigkeit."
+            },
+            {
+              "text": "Wähle eine möglichst große Zahl; die Einheit kann später beliebig ergänzt werden.",
+              "reason": "Zahl und Einheit gehören gemeinsam zur Größenangabe."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vergleiche mit einer bekannten Bezugsgröße und prüfe, ob die Einheit zur Situation passt.",
+              "Nimm die größte verfügbare Einheit, weil sie jede Schätzung automatisch genauer macht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19BSK1FWS5D1EAP0RJ3",
+          "slug": "ms5-gr-1-masszahl-schaetzen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-1-masszahl-schaetzen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Kind ist etwa 1,4 m groß. Wie viele Zentimeter sind das?",
+          "concept": "Lösung: Maßzahl: 140 cm.",
+          "sample_solution": "Ein Meter entspricht 100 Zentimetern. Deshalb rechnest du 1,4 · 100 = 140. Das Kind ist etwa 140 cm groß.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Maßzahl: 280 cm.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Maßzahl: 70 cm.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FKPYH6SMVPGVYDDRC",
+      "atom_uri": "urn:zam:atom:01M74QY18FKPYH6SMVPGVYDDRC",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "gr-2-laenge-masse",
+      "title": "Länge und Masse umrechnen",
+      "domain": "mathematik/mittelschule-5/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-2-laenge-masse",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FCPRN3JV00NKPYEP5",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Größen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Größen im Alltag",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19BGRMZQH6YS22QY96T",
+          "slug": "ms5-gr-2-laenge-masse-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-2-laenge-masse",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie ändern sich die Maßzahlen beim Wechsel in eine kleinere Einheit?",
+          "concept": "Die Maßzahl wird größer, der beschriebene Gegenstand bleibt gleich groß oder schwer.",
+          "choice_distractors": [
+            {
+              "text": "Die Maßzahl wird kleiner, weil eine kleinere Einheit auch weniger Einheiten braucht.",
+              "reason": "Kleinere Einheiten passen häufiger in dieselbe Größe."
+            },
+            {
+              "text": "Der Gegenstand wird größer oder schwerer, sobald du eine andere Einheit hinschreibst.",
+              "reason": "Die Schreibweise verändert den Gegenstand nicht."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Maßzahl wird größer, der beschriebene Gegenstand bleibt gleich groß oder schwer.",
+              "Die Maßzahl wird kleiner, weil eine kleinere Einheit auch weniger Einheiten braucht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19BKJATDJS7QAM65FHC",
+          "slug": "ms5-gr-2-laenge-masse-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-2-laenge-masse",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Datenblatt nennt 91 m. Das Programm braucht die Angabe in dm. Welche Zahl gibst du ein?",
+          "concept": "Lösung: Ergebnis: 910 dm.",
+          "sample_solution": "Multipliziere 91 mit den Umrechnungszahlen von m bis dm. 91 m = 910 dm",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Ergebnis: 9,1 dm.",
+              "reason": "Zur kleineren Einheit wird die Maßzahl größer."
+            },
+            {
+              "text": "Lösung: Ergebnis: 455 dm.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18F5YNMRTVY2YCQXG23",
+      "atom_uri": "urn:zam:atom:01M74QY18F5YNMRTVY2YCQXG23",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "gr-3-geld-zeit-hohlmass",
+      "title": "Geld, Zeit und Hohlmaße umrechnen",
+      "domain": "mathematik/mittelschule-5/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-3-geld-zeit-hohlmass",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FKPYH6SMVPGVYDDRC",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Größen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Größen im Alltag",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19B9JWY5E6ZCVE2ATJE",
+          "slug": "ms5-gr-3-geld-zeit-hohlmass-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-3-geld-zeit-hohlmass",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum kannst du Stunden und Minuten nicht wie Euro und Cent umrechnen?",
+          "concept": "Eine Stunde hat sechzig Minuten, ein Euro hundert Cent; die Umrechnungszahlen sind verschieden.",
+          "choice_distractors": [
+            {
+              "text": "Stunden haben ebenfalls hundert Minuten, nur bei Sekunden gibt es eine Ausnahme.",
+              "reason": "Hier werden verschiedene Einheitenleitern verwechselt."
+            },
+            {
+              "text": "Geldbeträge und Zeitspannen haben grundsätzlich keine festen Umrechnungszahlen.",
+              "reason": "Für beide Größen gibt es feste Beziehungen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Stunde hat sechzig Minuten, ein Euro hundert Cent; die Umrechnungszahlen sind verschieden.",
+              "Stunden haben ebenfalls hundert Minuten, nur bei Sekunden gibt es eine Ausnahme."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19BS1JKRK3S89S403MW",
+          "slug": "ms5-gr-3-geld-zeit-hohlmass-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-3-geld-zeit-hohlmass",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Der Bus fährt um 7:25 Uhr ab und kommt um 9:25 Uhr an. Wie lange dauert die Fahrt in Minuten?",
+          "concept": "Lösung: Dauer: 120 min.",
+          "sample_solution": "Von 7:25 bis 8:00 sind es 35 min. Bis 9:00 kommen 60 min dazu. Bis 9:25 kommen 25 min dazu. Die Dauer ist 120 min.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Dauer: 200 min.",
+              "reason": "Eine Stunde hat 60 Minuten, nicht 100."
+            },
+            {
+              "text": "Lösung: Dauer: 60 min.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FZ3T2V8XF42X56BHD",
+      "atom_uri": "urn:zam:atom:01M74QY18FZ3T2V8XF42X56BHD",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "gr-7-sachaufgaben",
+      "title": "Sachaufgaben mit Größen",
+      "domain": "mathematik/mittelschule-5/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-7-sachaufgaben",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18F5YNMRTVY2YCQXG23",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Größen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Größen im Alltag",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19B8HGWXD6S6WD89FR0",
+          "slug": "ms5-gr-7-sachaufgaben-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-7-sachaufgaben",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie prüfst du die Lösung einer Sachaufgabe mit Größen?",
+          "concept": "Vergleiche Einheit, Größenordnung und Antwort mit der Frage und der wirklichen Situation.",
+          "choice_distractors": [
+            {
+              "text": "Eine richtige Zahl reicht; Einheit und Bedeutung können für die Prüfung entfallen.",
+              "reason": "Eine Zahl ohne passende Einheit kann die Frage verfehlen."
+            },
+            {
+              "text": "Jede Zahl aus dem Aufgabentext muss in der Rechnung mindestens einmal vorkommen.",
+              "reason": "Texte können irrelevante Informationen enthalten."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vergleiche Einheit, Größenordnung und Antwort mit der Frage und der wirklichen Situation.",
+              "Eine richtige Zahl reicht; Einheit und Bedeutung können für die Prüfung entfallen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19BD9AGEYQHDJH31R2G",
+          "slug": "ms5-gr-7-sachaufgaben-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-7-sachaufgaben",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Für einen Wandertag bekommen 23 Kinder je 1 Müsliriegel. Eine Packung mit 8 Riegeln kostet 4 €. Wie viel kostet der Einkauf?",
+          "concept": "Lösung: Kosten: 12 €.",
+          "sample_solution": "23 · 1 = 23. 23 : 8 ergibt 3 Packungen. 3 · 4 € = 12 €. 12 €",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Kosten: 8 €.",
+              "reason": "Dann reichen die Riegel nicht. Hier musst du aufrunden."
+            },
+            {
+              "text": "Lösung: Kosten: 6 €.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FDQASDCTMZR9QW98Z",
+      "atom_uri": "urn:zam:atom:01M74QY18FDQASDCTMZR9QW98Z",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "gr-alltagsbrueche",
+      "title": "Alltagsbrüche und Kommaschreibweise",
+      "domain": "mathematik/mittelschule-5/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-alltagsbrueche",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FZ3T2V8XF42X56BHD",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Größen im Alltag"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Größen im Alltag",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19BBT035ZKPXH8VR6JG",
+          "slug": "ms5-gr-alltagsbrueche-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-alltagsbrueche",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum haben eine Viertelstunde und ein Viertelliter verschiedene Maßzahlen in kleinen Einheiten?",
+          "concept": "Das jeweilige Ganze ist verschieden: eine Stunde hat sechzig Minuten, ein Liter tausend Milliliter.",
+          "choice_distractors": [
+            {
+              "text": "Ein Viertel ist immer fünfundzwanzig kleine Einheiten, unabhängig von der Größe des Ganzen.",
+              "reason": "Ein Anteil bezieht sich immer auf sein Ganzes."
+            },
+            {
+              "text": "Bei Zeit bedeutet ein Viertel ein Drittel, bei Flüssigkeiten bedeutet es eine Hälfte.",
+              "reason": "Die Bedeutung von Viertel bleibt gleich; verschieden sind die Einheiten."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das jeweilige Ganze ist verschieden: eine Stunde hat sechzig Minuten, ein Liter tausend Milliliter.",
+              "Ein Viertel ist immer fünfundzwanzig kleine Einheiten, unabhängig von der Größe des Ganzen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19B3NCBVWH772EFVDJK",
+          "slug": "ms5-gr-alltagsbrueche-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gr-alltagsbrueche",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Auf einem Vorrats- oder Zeitplan stehen 3 ¾ kg. Wie viel ist das insgesamt in g?",
+          "concept": "Lösung: Betrag: 3.750 g.",
+          "sample_solution": "1000 : 4 = 250. 3 solche Teile ergeben 750. Dazu 3 Ganze. 3.750 g.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Betrag: 7.500 g.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Betrag: 1.875 g.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18F19PD9D08PA1W50NG",
+      "atom_uri": "urn:zam:atom:01M74QY18F19PD9D08PA1W50NG",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "da-1-diagramme",
+      "title": "Strichlisten, Tabellen und Diagramme",
+      "domain": "mathematik/mittelschule-5/stage-6",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=da-1-diagramme",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18F4WFXWH3MCPDNE21E",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-6",
+          "topic_title": "Etappe 6: Daten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Daten",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19BR6P5Q3T4BKEA4TD0",
+          "slug": "ms5-da-1-diagramme-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=da-1-diagramme",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet die absolute Häufigkeit eines Ergebnisses in einer Umfrage?",
+          "concept": "Sie ist die Anzahl, wie oft genau dieses Ergebnis unter den gezählten Antworten vorkommt.",
+          "choice_distractors": [
+            {
+              "text": "Sie ist immer die Zahl aller Befragten, unabhängig davon, welche Antwort betrachtet wird.",
+              "reason": "Gesamtzahl und Häufigkeit einer einzelnen Antwort sind verschieden."
+            },
+            {
+              "text": "Sie gibt nur den Platz eines Ergebnisses in einer sortierten Rangfolge an.",
+              "reason": "Eine Rangposition ist keine Anzahl von Antworten."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie ist die Anzahl, wie oft genau dieses Ergebnis unter den gezählten Antworten vorkommt.",
+              "Sie ist immer die Zahl aller Befragten, unabhängig davon, welche Antwort betrachtet wird."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19BFF2E76NWR2QMD5MK",
+          "slug": "ms5-da-1-diagramme-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=da-1-diagramme",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "In einer Umfrage stimmten 15 Kinder für den Hund und 17 für die Katze. Übertrage das in Gedanken in zwei Säulen. Wie viele Kinder wurden gefragt, und um wie viele Stimmen ist die höhere Säule größer?",
+          "concept": "Lösung: Befragte: 32; Unterschied: 2.",
+          "sample_solution": "15 + 17 = 32. 17 − 15 = 2. 32 Befragte, Unterschied 2",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Befragte: 64; Unterschied: 2.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Befragte: 16; Unterschied: 2.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FDNJMV77AXM68YT2H",
+      "atom_uri": "urn:zam:atom:01M74QY18FDNJMV77AXM68YT2H",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "da-3-verzerrungen",
+      "title": "Diagramme kritisch prüfen",
+      "domain": "mathematik/mittelschule-5/stage-6",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=da-3-verzerrungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18F19PD9D08PA1W50NG",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-6",
+          "topic_title": "Etappe 6: Daten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Daten",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19BEXGJ8K4YKE088EZH",
+          "slug": "ms5-da-3-verzerrungen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=da-3-verzerrungen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum kann eine abgeschnittene Diagrammachse einen Unterschied übertreiben?",
+          "concept": "Die sichtbaren Balkenlängen beginnen nicht bei null und zeigen deshalb ein verändertes Verhältnis.",
+          "choice_distractors": [
+            {
+              "text": "Weil jede Achse mit verkürzter Beschriftung die zugrunde liegenden Daten automatisch verändert.",
+              "reason": "Die Darstellung verändert nicht die Daten selbst."
+            },
+            {
+              "text": "Weil in einem Diagramm mit Zahlen über hundert grundsätzlich keine Vergleiche möglich sind.",
+              "reason": "Auch große Werte lassen sich bei korrekter Skalierung vergleichen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die sichtbaren Balkenlängen beginnen nicht bei null und zeigen deshalb ein verändertes Verhältnis.",
+              "Weil jede Achse mit verkürzter Beschriftung die zugrunde liegenden Daten automatisch verändert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19BEN80FV25NR631CS4",
+          "slug": "ms5-da-3-verzerrungen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=da-3-verzerrungen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine Werbung zeigt Säulen für 120 und 90 Punkte auf einer Achse ab 60. Die Säule von A wirkt doppelt so hoch. Ist A wirklich doppelt so gut wie B?",
+          "concept": "Lösung: Wirklich doppelt so gut?: nein; Doppelter Wert von B wäre: 180.",
+          "sample_solution": "120 − 60 = 60 und 90 − 60 = 30. Das Doppelte von 90 wäre 180. Nein, 120 ist nicht das Doppelte von 90.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Wirklich doppelt so gut?: nein; Doppelter Wert von B wäre: 360.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Wirklich doppelt so gut?: nein; Doppelter Wert von B wäre: 90.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18FW04V1HS3BSHKP3TA",
+      "atom_uri": "urn:zam:atom:01M74QY18FW04V1HS3BSHKP3TA",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "gl-zahlenraetsel",
+      "title": "Zahlenrätsel lösen",
+      "domain": "mathematik/mittelschule-5/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gl-zahlenraetsel",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FACBNXZW3N0J8XBKG",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Gleichungen und Formeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen und Formeln",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19B3BN5ZPZME1RAV0WC",
+          "slug": "ms5-gl-zahlenraetsel-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gl-zahlenraetsel",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie prüfst du, ob eine gefundene Zahl eine Gleichung löst?",
+          "concept": "Setze die Zahl für die Variable ein und prüfe, ob beide Seiten denselben Wert haben.",
+          "choice_distractors": [
+            {
+              "text": "Prüfe nur, ob die Zahl im Aufgabentext vorkommt; dann ist sie immer eine Lösung.",
+              "reason": "Die Lösung muss nicht im Text stehen."
+            },
+            {
+              "text": "Addiere die gefundene Zahl zu beiden ursprünglichen Seiten, ohne sie für die Variable einzusetzen.",
+              "reason": "Für die Probe wird der Variablenwert eingesetzt."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Setze die Zahl für die Variable ein und prüfe, ob beide Seiten denselben Wert haben.",
+              "Prüfe nur, ob die Zahl im Aufgabentext vorkommt; dann ist sie immer eine Lösung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19BWE08A4HSD13HX51M",
+          "slug": "ms5-gl-zahlenraetsel-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gl-zahlenraetsel",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ich denke mir eine Zahl, addiere 21 und danach 7. Das Ergebnis ist 41. Welche Zahl habe ich gedacht?",
+          "concept": "Lösung: x : 13.",
+          "sample_solution": "41 − 7 = 34; dann 34 − 21 = 13. Probe: 13 + 21 = 34. x = 13.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: x : 26.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: x : 6,5.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M74QY18F0CAP4S4GMFJB3SWQ",
+      "atom_uri": "urn:zam:atom:01M74QY18F0CAP4S4GMFJB3SWQ",
+      "namespace": "zam-academy-mathematik-mittelschule-5",
+      "slug": "gl-rechteck-rueckwaerts",
+      "title": "Rechtecke rückwärts berechnen",
+      "domain": "mathematik/mittelschule-5/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gl-rechteck-rueckwaerts",
+      "prerequisites": [
+        {
+          "atom_id": "01M74QY18FW04V1HS3BSHKP3TA",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion erklärt eine Darstellung oder Rechenstrategie, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-5",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Gleichungen und Formeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen und Formeln",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M74QY19BE76HS10WDR1GFK4K",
+          "slug": "ms5-gl-rechteck-rueckwaerts-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gl-rechteck-rueckwaerts",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie findest du eine fehlende Rechteckseite aus Fläche und bekannter Seite?",
+          "concept": "Teile den Flächeninhalt durch die bekannte Seitenlänge und prüfe mit der Multiplikation.",
+          "choice_distractors": [
+            {
+              "text": "Ziehe die bekannte Seitenlänge vom Flächeninhalt ab und übernimm die Flächeneinheit.",
+              "reason": "Länge und Fläche können nicht so subtrahiert werden."
+            },
+            {
+              "text": "Halbiere immer den Flächeninhalt, unabhängig davon, wie lang die bekannte Seite ist.",
+              "reason": "Die bekannte Seite bestimmt den Divisor."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Teile den Flächeninhalt durch die bekannte Seitenlänge und prüfe mit der Multiplikation.",
+              "Ziehe die bekannte Seitenlänge vom Flächeninhalt ab und übernimm die Flächeneinheit."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M74QY19B2F6XSPM6ZPZ5N477",
+          "slug": "ms5-gl-rechteck-rueckwaerts-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-5/#lesson=gl-rechteck-rueckwaerts",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein rechteckiger Garten hat 40 m² Fläche und ist 8 m lang. Wie viel Zaun wird einmal rundherum benötigt? Berechne zuerst die fehlende Breite.",
+          "concept": "Lösung: Breite: 5 m; Zaun: 26 m.",
+          "sample_solution": "40 : 8 = 5. Probe: 8 · 5 = 40. Umfang: 2 · (8 + 5). Breite 5 m, Zaun 26 m.",
+          "choice_distractors": [
+            {
+              "text": "Lösung: Breite: 10 m; Zaun: 26 m.",
+              "reason": "Der gesuchte Wert wird hier doppelt gezählt; prüfe die Rechenschritte und die Bedeutung der Größe."
+            },
+            {
+              "text": "Lösung: Breite: 2,5 m; Zaun: 26 m.",
+              "reason": "Der gesuchte Wert wird hier halbiert; prüfe, wie viele Teile oder Schritte wirklich gezählt werden."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

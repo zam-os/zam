@@ -1,0 +1,3038 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:biologie-gymnasium-11",
+  "version": "2026.11.3",
+  "title": "Biologie 11 Gymnasium · Einführungsklasse (ZAM Academy)",
+  "description": "Wiederholungskarten zu den sechs Lernbereichen der bayerischen Einführungsklasse: Erkenntnisgewinnung, Zellen, Ökosystem Mensch, Stoffwechsel, Genetik und Verhaltensbiologie.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/biologie-gymnasium-11/",
+      "label": "ZAM Academy · Biologie für die Einführungsklasse"
+    },
+    {
+      "uri": "https://www.isb.bayern.de/fileadmin/user_upload/Gymnasium/Einfuehrungsklasse/biologie.pdf",
+      "label": "ISB · Umsetzungshinweise Biologie für die Einführungsklasse",
+      "checked": "2026-11-10"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/biologie",
+      "label": "LehrplanPLUS · Biologie 10 Gymnasium (Vorkenntnisse)",
+      "checked": "2026-11-10"
+    },
+    {
+      "uri": "https://www.infektionsschutz.de/infektionen/behandlungsmoeglichkeiten/antibiotika/",
+      "label": "BIÖG · Wie wirken Antibiotika?",
+      "checked": "2026-11-10"
+    },
+    {
+      "uri": "https://www.infektionsschutz.de/infektionen/krankheitsbilder/atemwegsinfektionen/",
+      "label": "BIÖG · Übertragung bei Atemwegsinfektionen",
+      "checked": "2026-11-10"
+    },
+    {
+      "uri": "https://www.liebesleben.de/fuer-alle/hiv-aids/",
+      "label": "BIÖG · HIV: Übertragung und Schutz",
+      "checked": "2026-11-10"
+    },
+    {
+      "uri": "https://www.rki.de/DE/Themen/Infektionskrankheiten/Impfen/Impfthemen-A-Z/G/Gemeinschaftsschutz.html",
+      "label": "RKI · Gemeinschaftsschutz durch Impfungen",
+      "checked": "2026-11-10"
+    },
+    {
+      "uri": "https://www.dge.de/gesunde-ernaehrung/gut-essen-und-trinken/dge-ernaehrungskreis/",
+      "label": "DGE · Ernährungskreis für gesunde Erwachsene",
+      "checked": "2026-11-10"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M724F0PV6J9T9PW076NZRW6M",
+      "atom_uri": "urn:zam:atom:01M724F0PV6J9T9PW076NZRW6M",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-hypothesen-und-kontrolle",
+      "title": "Fragestellung, Hypothese und Kontrolle",
+      "domain": "biologie/lb1",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=hypothesen-und-kontrolle",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb1",
+          "topic_title": "Erkenntnisse gewinnen, bewerten und kommunizieren"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Erkenntnisse gewinnen, bewerten und kommunizieren"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PXJ623TDMV9T62XAER",
+          "slug": "bio11-hypothesen-und-kontrolle-hypothese",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=hypothesen-und-kontrolle",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was macht eine biologische Hypothese prüfbar?",
+          "concept": "Sie sagt ein beobachtbares Ergebnis unter festgelegten Bedingungen voraus.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie sagt ein beobachtbares Ergebnis unter festgelegten Bedingungen voraus.",
+              "Sie beschreibt nur, was im Labor schon passiert ist."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie fasst eine Beobachtung zusammen, ohne ein Ergebnis vorhersagen zu müssen.",
+              "reason": "Verwechselt die Beobachtung mit einer überprüfbaren Vorhersage."
+            },
+            {
+              "text": "Sie erklärt ein Phänomen so allgemein, dass kein möglicher Befund sie infrage stellen kann.",
+              "reason": "Hält fehlende Widerlegbarkeit für ein Merkmal einer wissenschaftlichen Hypothese."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXTYHR7C10BW07C9A7",
+          "slug": "bio11-hypothesen-und-kontrolle-kontrolle",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=hypothesen-und-kontrolle",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum bleibt die Hefemenge bei einem Vergleich zweier Temperaturen gleich?",
+          "concept": "Damit die Wirkung der Temperatur vom Einfluss der Hefemenge getrennt werden kann.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Damit die Wirkung der Temperatur vom Einfluss der Hefemenge getrennt werden kann.",
+              "Damit keine Wiederholung des Versuchs mehr nötig ist."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Damit im warmen Ansatz zusätzlich mehr Zellen zur Gasbildung beitragen.",
+              "reason": "Verändert mit der Hefemenge einen zweiten Einflussfaktor."
+            },
+            {
+              "text": "Damit Temperatur und Hefemenge gemeinsam als einzige Ursache untersucht werden können.",
+              "reason": "Verwechselt das gemeinsame Variieren zweier Faktoren mit der Prüfung eines einzelnen Faktors."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXRP17GFE9MZB5A6CJ",
+          "slug": "bio11-hypothesen-und-kontrolle-vergleich",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=hypothesen-und-kontrolle",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Hefeversuch ändert Temperatur und Zuckermenge zugleich. Warum ist die Ursache unklar?",
+          "concept": "Beide Faktoren können die Gasbildung beeinflussen. Ein neuer Vergleich hält die Zuckermenge konstant und variiert nur die Temperatur.",
+          "sample_solution": "Beide Faktoren können die Gasbildung beeinflussen. Ein neuer Vergleich hält die Zuckermenge konstant und variiert nur die Temperatur."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PWXHBCFJ0NA9A8526G",
+      "atom_uri": "urn:zam:atom:01M724F0PWXHBCFJ0NA9A8526G",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-messdaten-und-modelle",
+      "title": "Messdaten und Modelle prüfen",
+      "domain": "biologie/lb1",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=messdaten-und-modelle",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PV6J9T9PW076NZRW6M",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb1",
+          "topic_title": "Erkenntnisse gewinnen, bewerten und kommunizieren"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Erkenntnisse gewinnen, bewerten und kommunizieren"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PX15JYQW7ZGJCNGQCV",
+          "slug": "bio11-messdaten-und-modelle-achsen",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=messdaten-und-modelle",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Größe steht bei einem Experiment mit veränderter Temperatur gewöhnlich auf der x-Achse?",
+          "concept": "Die eingestellte Temperatur.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die eingestellte Temperatur.",
+              "Die pro Minute erzeugte Gasmenge."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die gemessene Gasbildungsrate.",
+              "reason": "Verwechselt die Messgröße mit dem absichtlich veränderten Faktor."
+            },
+            {
+              "text": "Der berechnete Mittelwert der Gasbildung.",
+              "reason": "Ordnet eine Auswertung der abhängigen Größe der falschen Achse zu."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXAYWC8WRM4XPZ1A8Q",
+          "slug": "bio11-messdaten-und-modelle-streuung",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=messdaten-und-modelle",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Information fehlt, wenn du nur Mittelwerte ohne Einzelwerte siehst?",
+          "concept": "Wie weit die Wiederholungsmessungen auseinanderliegen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wie weit die Wiederholungsmessungen auseinanderliegen.",
+              "Welche mittlere Rate in der Reihe am höchsten ist."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Welche durchschnittliche Rate bei jeder Temperatur gemessen wurde.",
+              "reason": "Übersieht, dass die Mittelwerte diese Information bereits zeigen."
+            },
+            {
+              "text": "Welche Temperatur im Versuch absichtlich eingestellt wurde.",
+              "reason": "Verwechselt die Versuchsbedingungen mit der Streuung der Wiederholungen."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PX4XXN4P7763RX96BW",
+          "slug": "bio11-messdaten-und-modelle-grenze",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=messdaten-und-modelle",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Bei 20, 40 und 60 °C ist die Rate bei 40 °C am höchsten. Warum ist das genaue Optimum noch offen?",
+          "concept": "Zwischen diesen Temperaturen wurde nicht gemessen. Feiner abgestufte, wiederholte Messungen könnten das Optimum eingrenzen.",
+          "sample_solution": "Zwischen diesen Temperaturen wurde nicht gemessen. Feiner abgestufte, wiederholte Messungen könnten das Optimum eingrenzen."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PW7QH2Y2JWYN2TCQC5",
+      "atom_uri": "urn:zam:atom:01M724F0PW7QH2Y2JWYN2TCQC5",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-quellen-und-urteile",
+      "title": "Quellen prüfen und Entscheidungen begründen",
+      "domain": "biologie/lb1",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=quellen-und-urteile",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWXHBCFJ0NA9A8526G",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb1",
+          "topic_title": "Erkenntnisse gewinnen, bewerten und kommunizieren"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Erkenntnisse gewinnen, bewerten und kommunizieren"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PXGPKSXFH0CBHPH7YG",
+          "slug": "bio11-quellen-und-urteile-quelle",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=quellen-und-urteile",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was prüfst du, bevor du eine Ernährungsempfehlung für Erwachsene auf Jugendliche überträgst?",
+          "concept": "Ob Zielgruppe und Bedingungen zur eigenen Frage passen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ob Zielgruppe und Bedingungen zur eigenen Frage passen.",
+              "Ob dieselbe Empfehlung auf vielen Webseiten steht."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ob die Empfehlung in möglichst vielen anderen Beiträgen wiederholt wird.",
+              "reason": "Verwechselt häufige Wiederholung mit Eignung für eine andere Zielgruppe."
+            },
+            {
+              "text": "Ob eine bekannte Marke dieselbe Empfehlung für ihre Produkte verwendet.",
+              "reason": "Verwechselt Werbung und Bekanntheit mit einer passenden wissenschaftlichen Grundlage."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PX943076X9GNKHK693",
+          "slug": "bio11-quellen-und-urteile-kriterium",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=quellen-und-urteile",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was ist ein Bewertungskriterium, wenn du biologische Handlungsoptionen vergleichst?",
+          "concept": "Ein Maßstab wie Gesundheit, Kosten oder gerechter Zugang.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Maßstab wie Gesundheit, Kosten oder gerechter Zugang.",
+              "Eine bereits ausgewählte Maßnahme wie der Kauf eines Geräts."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine bereits ausgewählte Maßnahme wie der Kauf eines Geräts.",
+              "reason": "Verwechselt eine Handlungsoption mit dem Maßstab zu ihrer Bewertung."
+            },
+            {
+              "text": "Ein einzelner Messwert, der alle gesellschaftlichen Ziele festlegt.",
+              "reason": "Verwechselt beschreibende Daten mit der Gewichtung von Werten und Zielen."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXEMC1APB6QHWTACJR",
+          "slug": "bio11-quellen-und-urteile-beleg",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=quellen-und-urteile",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Pausenangebot wird häufiger gekauft. Warum belegt das keinen Gesundheitsnutzen?",
+          "concept": "Die Kaufzahl misst Nutzung. Ein Gesundheitsnutzen braucht passende Gesundheitsdaten und einen Vergleich, der andere Ursachen berücksichtigt.",
+          "sample_solution": "Die Kaufzahl misst Nutzung. Ein Gesundheitsnutzen braucht passende Gesundheitsdaten und einen Vergleich, der andere Ursachen berücksichtigt."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PW81103YK5PHFCSH3J",
+      "atom_uri": "urn:zam:atom:01M724F0PW81103YK5PHFCSH3J",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-mikroskop-und-gewebe",
+      "title": "Gewebe mikroskopieren",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=mikroskop-und-gewebe",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb2",
+          "topic_title": "Zytologische Grundlagen des Lebens"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Zytologische Grundlagen des Lebens"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PXXZV7QMN35PRHB596",
+          "slug": "bio11-mikroskop-und-gewebe-reihenfolge",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=mikroskop-und-gewebe",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Mit welchem Objektiv beginnst du bei einem neuen mikroskopischen Präparat?",
+          "concept": "Mit dem Objektiv der kleinsten Vergrößerung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem Objektiv der kleinsten Vergrößerung.",
+              "Mit dem Objektiv der größten Vergrößerung."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mit dem Objektiv der größten Vergrößerung.",
+              "reason": "Verkleinert das Bildfeld schon vor der Orientierung im Präparat."
+            },
+            {
+              "text": "Mit einem möglichst stark vergrößernden Okular zuerst.",
+              "reason": "Verwechselt den Okularwechsel mit der Wahl eines übersichtlichen Objektivs."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXW4QMAQ26CKXWEV86",
+          "slug": "bio11-mikroskop-und-gewebe-vergroesserung",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=mikroskop-und-gewebe",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie erhältst du die Gesamtvergrößerung eines Lichtmikroskops?",
+          "concept": "Du multiplizierst die Vergrößerungen von Okular und Objektiv.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Du multiplizierst die Vergrößerungen von Okular und Objektiv.",
+              "Du addierst die Vergrößerungen von Okular und Objektiv."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Du addierst die Vergrößerungen von Okular und Objektiv.",
+              "reason": "Verwechselt die Kombination zweier Vergrößerungsfaktoren mit einer Summe."
+            },
+            {
+              "text": "Du dividierst die Objektivvergrößerung durch die Okularvergrößerung.",
+              "reason": "Verwechselt das Zusammenwirken der Faktoren mit einem Verhältnis."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXA7Y1GND8QSP26CW8",
+          "slug": "bio11-mikroskop-und-gewebe-bildfeld",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=mikroskop-und-gewebe",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum zentrierst du die interessante Stelle vor dem Wechsel zum stärkeren Objektiv?",
+          "concept": "Das sichtbare Feld wird kleiner. Ein zentrierter Ausschnitt bleibt beim Wechsel im Blick.",
+          "sample_solution": "Das sichtbare Feld wird kleiner. Ein zentrierter Ausschnitt bleibt beim Wechsel im Blick."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PWTBQFV4A34TWSVANJ",
+      "atom_uri": "urn:zam:atom:01M724F0PWTBQFV4A34TWSVANJ",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-tier-und-pflanzenzelle",
+      "title": "Tierische und pflanzliche Zellen erkennen",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=tier-und-pflanzenzelle",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PW81103YK5PHFCSH3J",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb2",
+          "topic_title": "Zytologische Grundlagen des Lebens"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Zytologische Grundlagen des Lebens"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PXMH1R5T052S92MZGK",
+          "slug": "bio11-tier-und-pflanzenzelle-vakuole",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=tier-und-pflanzenzelle",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was trägt in einer wassergefüllten Pflanzenzelle zur Stütze gegen die Zellwand bei?",
+          "concept": "Der Innendruck, zu dem die große Zentralvakuole beiträgt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Innendruck, zu dem die große Zentralvakuole beiträgt.",
+              "Der Sauerstoff in den Mitochondrien."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Zellwand allein, die unabhängig vom Wassergehalt dieselbe Spannung erzeugt.",
+              "reason": "Verwechselt die Festigkeit der Wand mit dem vom Wassergehalt abhängigen Innendruck."
+            },
+            {
+              "text": "Die starre Form der Chloroplasten, die das Zellinnere gegen die Zellwand abstützt.",
+              "reason": "Verwechselt Photosyntheseorganellen mit der wassergefüllten Zentralvakuole."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PX3ZSXR9714QY1BAM2",
+          "slug": "bio11-tier-und-pflanzenzelle-chloroplast",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=tier-und-pflanzenzelle",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Organell nutzt Lichtenergie zur Photosynthese?",
+          "concept": "Der Chloroplast.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Chloroplast.",
+              "Das Mitochondrium."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das Mitochondrium.",
+              "reason": "Verwechselt Zellatmung und Photosynthese."
+            },
+            {
+              "text": "Die Zentralvakuole.",
+              "reason": "Verwechselt Wasserspeicherung und Stütze mit lichtgetriebenem Stoffaufbau."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXSGRXHXEMQD9VY7YC",
+          "slug": "bio11-tier-und-pflanzenzelle-zwiebel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=tier-und-pflanzenzelle",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum kann farblose Zwiebelhaut trotz fehlender sichtbarer Chloroplasten pflanzlich sein?",
+          "concept": "Nicht jedes Pflanzengewebe betreibt Photosynthese. Zellwände und eine große Zentralvakuole stützen die Bestimmung als Pflanzengewebe.",
+          "sample_solution": "Nicht jedes Pflanzengewebe betreibt Photosynthese. Zellwände und eine große Zentralvakuole stützen die Bestimmung als Pflanzengewebe."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PWNZZNPTJCJC41JBE4",
+      "atom_uri": "urn:zam:atom:01M724F0PWNZZNPTJCJC41JBE4",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-prokaryoten-und-reiche",
+      "title": "Prokaryoten und Eukaryoten vergleichen",
+      "domain": "biologie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=prokaryoten-und-reiche",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWTBQFV4A34TWSVANJ",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb2",
+          "topic_title": "Zytologische Grundlagen des Lebens"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Zytologische Grundlagen des Lebens"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PXABBTK063PRWS4RQQ",
+          "slug": "bio11-prokaryoten-und-reiche-kern",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=prokaryoten-und-reiche",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Woran erkennst du prokaryotischen Zellbau im Vergleich zur Hefezelle?",
+          "concept": "Die Erbinformation ist nicht durch eine Kernmembran abgegrenzt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Erbinformation ist nicht durch eine Kernmembran abgegrenzt.",
+              "Die Zelle besitzt überhaupt keine Erbinformation."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Erbinformation ist nur innerhalb eines membranumhüllten Zellkerns zugänglich.",
+              "reason": "Überträgt den eukaryotischen Zellkern auf ein Bakterium."
+            },
+            {
+              "text": "Die Erbinformation liegt ausschließlich in den Mitochondrien der Zelle.",
+              "reason": "Schreibt Prokaryoten Mitochondrien zu und verlegt ihr Chromosom dorthin."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXMENEHCN6Y4BQ4Q6P",
+          "slug": "bio11-prokaryoten-und-reiche-wand",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=prokaryoten-und-reiche",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Zellwand passt eher zu einem Pilz als zu einer Blattzelle?",
+          "concept": "Eine Wand mit Chitin.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Wand mit Chitin.",
+              "Eine Wand aus Cellulose."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Wand mit Cellulose.",
+              "reason": "Verwechselt den typischen pflanzlichen Wandbaustoff mit dem von Pilzen."
+            },
+            {
+              "text": "Eine Wand mit Murein.",
+              "reason": "Verwechselt die Zellwand vieler Bakterien mit der von Pilzen."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXAVZRWBQNJG1331A7",
+          "slug": "bio11-prokaryoten-und-reiche-proteinsynthese",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=prokaryoten-und-reiche",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum kann ein Bakterium ohne Zellkern trotzdem Proteine herstellen?",
+          "concept": "Seine DNA ist als Vorlage verfügbar, auch ohne Kernhülle. Ribosomen setzen die RNA-Information in Aminosäureketten um.",
+          "sample_solution": "Seine DNA ist als Vorlage verfügbar, auch ohne Kernhülle. Ribosomen setzen die RNA-Information in Aminosäureketten um."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PWRW85VBNRZKW1MEZH",
+      "atom_uri": "urn:zam:atom:01M724F0PWRW85VBNRZKW1MEZH",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-mikrobiom-und-infektion",
+      "title": "Mikrobiom, Übertragung und Schutz",
+      "domain": "biologie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=mikrobiom-und-infektion",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWNZZNPTJCJC41JBE4",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb3",
+          "topic_title": "Ökosystem Mensch"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Ökosystem Mensch"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PX1C8CD6JD9RKQ7SPY",
+          "slug": "bio11-mikrobiom-und-infektion-mitbewohner",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=mikrobiom-und-infektion",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Wie können nützliche Hautbakterien Krankheitserreger behindern?",
+          "concept": "Sie konkurrieren mit ihnen um Platz und Nährstoffe.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie konkurrieren mit ihnen um Platz und Nährstoffe.",
+              "Sie bilden als Leukozyten spezifische Antikörper."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie setzen als körpereigene Abwehrzellen passende Antikörper frei.",
+              "reason": "Verwechselt Bakterien mit antikörperproduzierenden Körperzellen."
+            },
+            {
+              "text": "Sie machen die gesamte Körperoberfläche dauerhaft frei von Mikroorganismen.",
+              "reason": "Verwechselt Konkurrenz im Mikrobiom mit Sterilität."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXNQSB3HDM0J3WRMGC",
+          "slug": "bio11-mikrobiom-und-infektion-uebertragung",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=mikrobiom-und-infektion",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum richtet sich eine Hygienemaßnahme nach dem Übertragungsweg?",
+          "concept": "Sie muss den tatsächlichen Weg des Erregers unterbrechen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie muss den tatsächlichen Weg des Erregers unterbrechen.",
+              "Alle Erreger werden unabhängig vom Weg gleich übertragen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie muss bei allen Krankheitserregern denselben Körperbereich reinigen.",
+              "reason": "Ignoriert die unterschiedlichen Übertragungswege."
+            },
+            {
+              "text": "Sie muss die Beschwerden nach der Infektion mit einem passenden Wirkstoff behandeln.",
+              "reason": "Verwechselt Unterbrechen der Übertragung mit Behandlung einer bestehenden Erkrankung."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PX6663GM1M1BSJWJ0T",
+          "slug": "bio11-mikrobiom-und-infektion-luft",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=mikrobiom-und-infektion",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie begründest du, dass Lüften bei einem über die Luft übertragenen Virus helfen kann?",
+          "concept": "Frischluft verdünnt ausgeatmete virushaltige Partikel im Innenraum. Das senkt die mögliche eingeatmete Menge, beseitigt aber nicht jedes Risiko.",
+          "sample_solution": "Frischluft verdünnt ausgeatmete virushaltige Partikel im Innenraum. Das senkt die mögliche eingeatmete Menge, beseitigt aber nicht jedes Risiko."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PWM2W5PJMQCNEV8N9H",
+      "atom_uri": "urn:zam:atom:01M724F0PWM2W5PJMQCNEV8N9H",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-bakterien-und-viren",
+      "title": "Bakterielle und virale Infektionen",
+      "domain": "biologie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=bakterien-und-viren",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWNZZNPTJCJC41JBE4",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M724F0PWRW85VBNRZKW1MEZH",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb3",
+          "topic_title": "Ökosystem Mensch"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Ökosystem Mensch"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PXAG0NMWYDV6THRNM1",
+          "slug": "bio11-bakterien-und-viren-wirt",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=bakterien-und-viren",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Warum braucht ein Virus eine passende Wirtszelle zur Vermehrung?",
+          "concept": "Es nutzt die Zellmaschinerie des Wirts zur Herstellung seiner Bestandteile.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es nutzt die Zellmaschinerie des Wirts zur Herstellung seiner Bestandteile.",
+              "Es vermehrt sich selbst durch Zweiteilung und nutzt den Wirt nur als Schutz."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Es teilt seine vollständige Zelle und nutzt den Wirt nur für zusätzlichen Platz.",
+              "reason": "Verwechselt die Virusvermehrung mit der Zweiteilung einer Zelle."
+            },
+            {
+              "text": "Es nutzt eigene Ribosomen und braucht den Wirt ausschließlich als Energiequelle.",
+              "reason": "Schreibt Viren eine eigene Proteinsynthese zu."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXS819GS9W1EM18S3C",
+          "slug": "bio11-bakterien-und-viren-lyse",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=bakterien-und-viren",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was bedeutet Lyse beim lytischen Zyklus eines Phagen?",
+          "concept": "Die Wirtszelle wird zerstört und fertige Phagen werden frei.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Wirtszelle wird zerstört und fertige Phagen werden frei.",
+              "Die Wirtszelle teilt sich und vererbt nur ihre eigene DNA."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Wirtszelle teilt sich in zwei Zellen mit gleicher Bakterien-DNA.",
+              "reason": "Verwechselt Lyse mit bakterieller Zweiteilung."
+            },
+            {
+              "text": "Das Viruserbmaterial wird kopiert, während die Wirtszelle erhalten bleibt.",
+              "reason": "Verwechselt die Herstellung von Virusbestandteilen mit deren Freisetzung bei der Lyse."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXNTMQ751H2HC7Q7ZS",
+          "slug": "bio11-bakterien-und-viren-antibiotikum",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=bakterien-und-viren",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum hilft ein Hemmstoff des Bakterienzellwandaufbaus nicht gegen Influenzaviren?",
+          "concept": "Influenzaviren stellen keine bakterielle Zellwand her. Der Angriffspunkt des Hemmstoffs fehlt.",
+          "sample_solution": "Influenzaviren stellen keine bakterielle Zellwand her. Der Angriffspunkt des Hemmstoffs fehlt."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PW764ZJ80TKRF8RW5R",
+      "atom_uri": "urn:zam:atom:01M724F0PW764ZJ80TKRF8RW5R",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-immunabwehr",
+      "title": "Angeborene und spezifische Abwehr",
+      "domain": "biologie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=immunabwehr",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWM2W5PJMQCNEV8N9H",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb3",
+          "topic_title": "Ökosystem Mensch"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Ökosystem Mensch"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PXYMF848PWP1BXTWBR",
+          "slug": "bio11-immunabwehr-angeboren",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=immunabwehr",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Zellen können bei der angeborenen Abwehr eingedrungene Teilchen aufnehmen?",
+          "concept": "Fresszellen wie Makrophagen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fresszellen wie Makrophagen.",
+              "Plasmazellen als Produzenten spezifischer Antikörper."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Plasmazellen, die Antikörper freisetzen.",
+              "reason": "Verwechselt die Produktion von Antikörpern mit Phagozytose."
+            },
+            {
+              "text": "Rote Blutkörperchen mit Hämoglobin.",
+              "reason": "Verwechselt Sauerstofftransport mit der Aufnahme von Fremdteilchen."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXSP90R65GV7MCJXQD",
+          "slug": "bio11-immunabwehr-antikoerper",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=immunabwehr",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Woran bindet ein spezifischer Antikörper?",
+          "concept": "An eine passende Struktur eines Antigens.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "An eine passende Struktur eines Antigens.",
+              "An jede Körperzelle unabhängig von ihrer Oberfläche."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "An jede Zelle mit irgendeiner Oberfläche.",
+              "reason": "Verwechselt spezifische Bindung mit einer unspezifischen Zellreaktion."
+            },
+            {
+              "text": "An jedes Protein, weil Proteine denselben räumlichen Bau haben.",
+              "reason": "Übersieht die unterschiedlichen Oberflächenstrukturen von Proteinen."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXESDSGG86JRC939J7",
+          "slug": "bio11-immunabwehr-entzuendung",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=immunabwehr",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum kann eine entzündete Stelle rot und warm werden?",
+          "concept": "Gefäße weiten sich und die Stelle wird stärker durchblutet. Das ist ein frühes Zeichen der angeborenen Abwehr.",
+          "sample_solution": "Gefäße weiten sich und die Stelle wird stärker durchblutet. Das ist ein frühes Zeichen der angeborenen Abwehr."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PW3E6HXE6A4QNB9A9Q",
+      "atom_uri": "urn:zam:atom:01M724F0PW3E6HXE6A4QNB9A9Q",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-immunisierung",
+      "title": "Aktive und passive Immunisierung",
+      "domain": "biologie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=immunisierung",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PW764ZJ80TKRF8RW5R",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb3",
+          "topic_title": "Ökosystem Mensch"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Ökosystem Mensch"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PXCMAQRHX0G5NSF0JK",
+          "slug": "bio11-immunisierung-aktiv",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=immunisierung",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Warum braucht aktive Immunisierung Zeit?",
+          "concept": "Der Körper muss eine eigene spezifische Antwort und Gedächtniszellen aufbauen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Körper muss eine eigene spezifische Antwort und Gedächtniszellen aufbauen.",
+              "Die von außen zugeführten Antikörper müssen erst abgebaut werden."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die zugeführten fertigen Antikörper müssen erst ein eigenes Gedächtnis bilden.",
+              "reason": "Verwechselt passive Antikörpergabe mit dem Aufbau einer aktiven Immunantwort."
+            },
+            {
+              "text": "Der Schutz entsteht erst, nachdem der unveränderte Krankheitserreger eine Erkrankung ausgelöst hat.",
+              "reason": "Verwechselt vorbeugende Immunisierung mit der Voraussetzung, die Krankheit durchzumachen."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PX90TNV7TV5CX569MZ",
+          "slug": "bio11-immunisierung-passiv",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=immunisierung",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was erhält der Körper bei einer passiven Immunisierung?",
+          "concept": "Bereits gebildete, passende Antikörper.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bereits gebildete, passende Antikörper.",
+              "Nur ein Antigen für den Aufbau eines eigenen Gedächtnisses."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Antigene für eine spätere eigene Antwort.",
+              "reason": "Verwechselt passive Gabe mit dem Prinzip aktiver Immunisierung."
+            },
+            {
+              "text": "Neue Erreger für eine anhaltende Vermehrung.",
+              "reason": "Verwechselt Immunisierung mit dem Aufbau einer Infektion."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXZ6MB7558VN6Z2H2H",
+          "slug": "bio11-immunisierung-gemeinschaft",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=immunisierung",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Unter welcher Bedingung kann Immunität vieler Menschen auch andere indirekt schützen?",
+          "concept": "Wenn sie die Weitergabe des Erregers ausreichend verringert, erreichen weniger Übertragungsketten Menschen mit geringem eigenem Schutz.",
+          "sample_solution": "Wenn sie die Weitergabe des Erregers ausreichend verringert, erreichen weniger Übertragungsketten Menschen mit geringem eigenem Schutz."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PWQRSYBTC1SADM3HFE",
+      "atom_uri": "urn:zam:atom:01M724F0PWQRSYBTC1SADM3HFE",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-mensch-als-offenes-system",
+      "title": "Der Mensch als offenes System",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=mensch-als-offenes-system",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWTBQFV4A34TWSVANJ",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PXJH2DVDA7K0E2D2QW",
+          "slug": "bio11-mensch-als-offenes-system-offen",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=mensch-als-offenes-system",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was macht den menschlichen Körper zu einem offenen System?",
+          "concept": "Er tauscht Stoffe und Energie mit der Umgebung aus.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er tauscht Stoffe und Energie mit der Umgebung aus.",
+              "Er tauscht Energie aus, aber keine Stoffe."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er tauscht Energie aus, seine Stoffmenge bleibt nach außen abgeschlossen.",
+              "reason": "Verwechselt ein offenes System mit einem für Stoffe geschlossenen System."
+            },
+            {
+              "text": "Er tauscht Stoffe aus, ohne Energie mit der Umgebung zu übertragen.",
+              "reason": "Übersieht Wärme und den Energieinhalt aufgenommener Stoffe."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXDV3FFSWY2GRETPDD",
+          "slug": "bio11-mensch-als-offenes-system-umbau",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=mensch-als-offenes-system",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Woraus kann eine Zelle nach der Verdauung körpereigene Proteine aufbauen?",
+          "concept": "Aus aufgenommenen Aminosäuren.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aus aufgenommenen Aminosäuren.",
+              "Unmittelbar aus unzerlegten Nahrungsproteinen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Aus ganzen Nahrungsproteinen.",
+              "reason": "Übersieht die Zerlegung in kleinere Bausteine vor dem Wiederaufbau."
+            },
+            {
+              "text": "Aus aufgenommenen Fettsäuren als Proteinbausteinen.",
+              "reason": "Verwechselt die Bausteine von Fetten und Proteinen."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXC9XSR2PJVGHZF62X",
+          "slug": "bio11-mensch-als-offenes-system-kohlendioxid",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=mensch-als-offenes-system",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie gelangt in Muskelzellen gebildetes Kohlenstoffdioxid aus dem Körper?",
+          "concept": "Es wird über den Blutkreislauf zur Lunge transportiert, gelangt in die Lungenbläschen und wird ausgeatmet.",
+          "sample_solution": "Es wird über den Blutkreislauf zur Lunge transportiert, gelangt in die Lungenbläschen und wird ausgeatmet."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PW664BKC2W4PBNV082",
+      "atom_uri": "urn:zam:atom:01M724F0PW664BKC2W4PBNV082",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-makro-und-mikronaehrstoffe",
+      "title": "Nährstoffe und ausgewogene Ernährung",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=makro-und-mikronaehrstoffe",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWQRSYBTC1SADM3HFE",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PXB4FFR731Y6JM54XM",
+          "slug": "bio11-makro-und-mikronaehrstoffe-glykogen",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=makro-und-mikronaehrstoffe",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Aus welchen Bausteinen besteht Glykogen?",
+          "concept": "Aus vielen Glucosebausteinen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aus vielen Glucosebausteinen.",
+              "Aus Glycerin und Fettsäuren."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Aus Glycerin und Fettsäuren.",
+              "reason": "Verwechselt ein Polysaccharid mit einem typischen Fett."
+            },
+            {
+              "text": "Aus vielen Aminosäurebausteinen.",
+              "reason": "Verwechselt Kohlenhydrate und Proteine."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PX7X6ETSJ0PY3XTP7E",
+          "slug": "bio11-makro-und-mikronaehrstoffe-essentiell",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=makro-und-mikronaehrstoffe",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was heißt essenziell bei einem Nahrungsbestandteil?",
+          "concept": "Der Körper kann ihn nicht in ausreichender Menge selbst herstellen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Körper kann ihn nicht in ausreichender Menge selbst herstellen.",
+              "Der Körper speichert ihn immer unbegrenzt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Körper benötigt ihn ausschließlich als besonders energiereichen Vorratsstoff.",
+              "reason": "Verwechselt die notwendige Zufuhr mit der Funktion als Energiespeicher."
+            },
+            {
+              "text": "Der Körper benötigt ihn nur bei einem besonders hohen Energieverbrauch.",
+              "reason": "Verwechselt notwendige Zufuhr mit einem erhöhten Energiebedarf."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXPRWTCF8Y9WVAJCV3",
+          "slug": "bio11-makro-und-mikronaehrstoffe-vergleich",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=makro-und-mikronaehrstoffe",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum reicht gleicher Energiegehalt nicht aus, um zwei Mahlzeiten ernährungsbiologisch gleichzusetzen?",
+          "concept": "Ihre Mengen an Proteinen, Fetten, Kohlenhydraten, Ballaststoffen, Vitaminen und Mineralstoffen können unterschiedlich sein.",
+          "sample_solution": "Ihre Mengen an Proteinen, Fetten, Kohlenhydraten, Ballaststoffen, Vitaminen und Mineralstoffen können unterschiedlich sein."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PWSS0557R2GM44PXJJ",
+      "atom_uri": "urn:zam:atom:01M724F0PWSS0557R2GM44PXJJ",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-enzyme-und-aktivierungsenergie",
+      "title": "Enzyme und Aktivierungsenergie",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=enzyme-und-aktivierungsenergie",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PW664BKC2W4PBNV082",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PXQ9THFSMKSD7PMNMH",
+          "slug": "bio11-enzyme-und-aktivierungsenergie-barriere",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=enzyme-und-aktivierungsenergie",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was senkt ein Enzym, ohne die Energiedifferenz der Reaktion zu ändern?",
+          "concept": "Die Aktivierungsenergie.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Aktivierungsenergie.",
+              "Die Energie der fertigen Produkte."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Energie der Produkte.",
+              "reason": "Verwechselt die Aktivierungsbarriere mit dem Endniveau der Reaktion."
+            },
+            {
+              "text": "Die Menge der Substrate.",
+              "reason": "Verwechselt eine Energiegröße mit einer Stoffmenge."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PX7JG8W8S6TQD40QFW",
+          "slug": "bio11-enzyme-und-aktivierungsenergie-spezifisch",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=enzyme-und-aktivierungsenergie",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was erklärt die Substratspezifität eines Enzyms?",
+          "concept": "Die räumlichen und chemischen Eigenschaften seines aktiven Zentrums.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die räumlichen und chemischen Eigenschaften seines aktiven Zentrums.",
+              "Die hohe Temperatur in allen Verdauungsorganen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die gleich hohe Temperatur in allen Räumen des Verdauungstrakts.",
+              "reason": "Verwechselt passende Substratbindung mit einer äußeren Versuchsbedingung."
+            },
+            {
+              "text": "Die Substratmenge allein, unabhängig von den Eigenschaften des aktiven Zentrums.",
+              "reason": "Verwechselt das Substratangebot mit der strukturellen Passung eines Substrats."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PXTH030PPMHT1518Z3",
+          "slug": "bio11-enzyme-und-aktivierungsenergie-wiederverwendung",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=enzyme-und-aktivierungsenergie",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum kann eine Amylase mehrere Stärkemoleküle nacheinander umsetzen?",
+          "concept": "Nach der Spaltung lösen sich die Produkte. Das Enzym ist wieder verfügbar, weil es bei der Umsetzung nicht verbraucht wird.",
+          "sample_solution": "Nach der Spaltung lösen sich die Produkte. Das Enzym ist wieder verfügbar, weil es bei der Umsetzung nicht verbraucht wird."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PWVBRMEAGBBHBQ0NSJ",
+      "atom_uri": "urn:zam:atom:01M724F0PWVBRMEAGBBHBQ0NSJ",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-enzymaktivitaet",
+      "title": "Enzymaktivität messen",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=enzymaktivitaet",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWSS0557R2GM44PXJJ",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M724F0PWXHBCFJ0NA9A8526G",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PXP0J8DNYGQJQ33JN2",
+          "slug": "bio11-enzymaktivitaet-denaturierung",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=enzymaktivitaet",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Warum kann sehr hohe Temperatur die Aktivität eines Proteinenzyms senken?",
+          "concept": "Seine räumliche Struktur und damit das aktive Zentrum können sich verändern.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Seine räumliche Struktur und damit das aktive Zentrum können sich verändern.",
+              "Die Enzymmenge wächst bei Hitze unabhängig vom Versuch."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Enzymmoleküle werden bei jeder Reaktion als Brennstoff verbraucht.",
+              "reason": "Verwechselt den Biokatalysator mit einem verbrauchten Reaktionsstoff."
+            },
+            {
+              "text": "Die Aktivierungsenergie steigt ausschließlich wegen der schnelleren Teilchenbewegung.",
+              "reason": "Verwechselt Temperaturabhängigkeit der Teilchenbewegung mit der Änderung des Reaktionswegs."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PY9X0AK5YVHSH7YPZR",
+          "slug": "bio11-enzymaktivitaet-saettigung",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=enzymaktivitaet",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was begrenzt bei hohem Substratangebot und gleicher Enzymmenge die Geschwindigkeit?",
+          "concept": "Die vorhandenen aktiven Zentren können nur begrenzt viel pro Zeit umsetzen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die vorhandenen aktiven Zentren können nur begrenzt viel pro Zeit umsetzen.",
+              "Es treffen bei hoher Substratmenge keine Teilchen mehr aufeinander."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Substratteilchen bewegen sich bei hoher Konzentration grundsätzlich nicht mehr.",
+              "reason": "Verwechselt begrenzte Enzymkapazität mit einem Stillstand der Teilchenbewegung."
+            },
+            {
+              "text": "Die eingesetzte Enzymmenge vergrößert sich bei jeder Erhöhung der Substratmenge.",
+              "reason": "Übersieht, dass die Enzymmenge im Vergleich konstant bleibt."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYBP7PW3R7C40C0QN7",
+          "slug": "bio11-enzymaktivitaet-vergleich",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=enzymaktivitaet",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie untersuchst du den Einfluss des pH-Werts auf die Enzymaktivität?",
+          "concept": "Miss bei mehreren pH-Werten die anfängliche Produktmenge pro Zeit. Halte Temperatur, Enzym- und Substratmenge konstant und wiederhole jede Bedingung.",
+          "sample_solution": "Miss bei mehreren pH-Werten die anfängliche Produktmenge pro Zeit. Halte Temperatur, Enzym- und Substratmenge konstant und wiederhole jede Bedingung."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PW7M75MS3YS6MYVRG6",
+      "atom_uri": "urn:zam:atom:01M724F0PW7M75MS3YS6MYVRG6",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-verdauung",
+      "title": "Verdauung: Nahrung wird zerlegt",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=verdauung",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWSS0557R2GM44PXJJ",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PY72WQGGVQY94PHQ6H",
+          "slug": "bio11-verdauung-peristaltik",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=verdauung",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Wie transportiert die Speiseröhre den Nahrungsbissen?",
+          "concept": "Durch wellenförmige Muskelbewegungen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch wellenförmige Muskelbewegungen.",
+              "Durch Diffusion aus dem Magen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Durch Diffusion aus dem Magen.",
+              "reason": "Verwechselt Teilchenbewegung mit dem Transport eines Nahrungsbissens."
+            },
+            {
+              "text": "Durch den Blutstrom der Darmzotten.",
+              "reason": "Verwechselt die Bewegung des Breis mit späterem Nährstofftransport."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYY8BMWCMYV3QRWMM3",
+          "slug": "bio11-verdauung-galle",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=verdauung",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Aufgabe erfüllt Galle beim Fettabbau?",
+          "concept": "Sie verteilt Fett auf kleine Tröpfchen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie verteilt Fett auf kleine Tröpfchen.",
+              "Sie spaltet Fett als Verdauungsenzym."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie spaltet Fett als Verdauungsenzym.",
+              "reason": "Verwechselt Emulgieren mit einer enzymatischen Spaltung."
+            },
+            {
+              "text": "Sie baut Fett zu Aminosäuren um.",
+              "reason": "Verwechselt Fettabbauprodukte mit Proteinbausteinen."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYJZ31FS6S0FKGJ9WQ",
+          "slug": "bio11-verdauung-protein",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=verdauung",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wo beginnt die Proteinverdauung und welche Teilchen stehen später für die Aufnahme bereit?",
+          "concept": "Pepsin beginnt die Spaltung im Magen. Im Dünndarm entstehen vor allem Aminosäuren und kleine Peptide.",
+          "sample_solution": "Pepsin beginnt die Spaltung im Magen. Im Dünndarm entstehen vor allem Aminosäuren und kleine Peptide."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PWJYY5SB3HXE318121",
+      "atom_uri": "urn:zam:atom:01M724F0PWJYY5SB3HXE318121",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-resorption",
+      "title": "Resorption im Dünndarm",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=resorption",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PW7M75MS3YS6MYVRG6",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M724F0PWTBQFV4A34TWSVANJ",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PY2NHJ75FXZAN49E6J",
+          "slug": "bio11-resorption-flaeche",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=resorption",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was vergrößert die Oberfläche für die Nährstoffaufnahme im Dünndarm?",
+          "concept": "Darmzotten und Mikrovilli.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Darmzotten und Mikrovilli.",
+              "Nur die Flüssigkeit im Darminneren."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Große Fetttröpfchen im Darminhalt.",
+              "reason": "Verwechselt die Oberfläche eines Nahrungsbestandteils mit der Darmwand."
+            },
+            {
+              "text": "Dicke Muskelschichten der Darmwand.",
+              "reason": "Verwechselt den Transport des Darminhalts mit seiner Aufnahmefläche."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PY8MF0GGSC4EC613QD",
+          "slug": "bio11-resorption-passiv",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=resorption",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was unterscheidet passiven Transport von aktivem Transport gegen ein Gefälle?",
+          "concept": "Passiver Transport folgt einem Gefälle und braucht keine zusätzliche Energiezufuhr.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Passiver Transport folgt einem Gefälle und braucht keine zusätzliche Energiezufuhr.",
+              "Passiver Transport befördert Stoffe nur gegen ihr Gefälle."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Passiver Transport bewegt Stoffe mit Energieaufwand gegen ihr Gefälle.",
+              "reason": "Vertauscht die Bedingungen von aktivem und passivem Transport."
+            },
+            {
+              "text": "Passiver Transport bezeichnet die Bewegung des Nahrungsbreis durch Muskelwellen.",
+              "reason": "Verwechselt Membrantransport mit Peristaltik."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYGMH6Y8VTKDVGNW7Y",
+          "slug": "bio11-resorption-wege",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=resorption",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche den anfänglichen Abtransport von Glucose und großen Fettpaketen aus einer Darmzotte.",
+          "concept": "Glucose gelangt überwiegend ins Kapillarblut. Viele große Fettpakete gelangen zuerst in Lymphgefäße und später ins Blut.",
+          "sample_solution": "Glucose gelangt überwiegend ins Kapillarblut. Viele große Fettpakete gelangen zuerst in Lymphgefäße und später ins Blut."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PW7QYMD7C8X5S7XHYA",
+      "atom_uri": "urn:zam:atom:01M724F0PW7QYMD7C8X5S7XHYA",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-gasaustausch",
+      "title": "Gasaustausch durch Diffusion",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=gasaustausch",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWQRSYBTC1SADM3HFE",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PYYZFQW9VSCRXP7K5J",
+          "slug": "bio11-gasaustausch-richtung",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=gasaustausch",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Wohin diffundiert Sauerstoff in der Lunge bei normalem Austausch?",
+          "concept": "Aus der Luft der Lungenbläschen ins sauerstoffärmere Blut.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aus der Luft der Lungenbläschen ins sauerstoffärmere Blut.",
+              "Aus dem Blut in die Luft der Lungenbläschen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Aus dem Blut in die Luft der Lungenbläschen.",
+              "reason": "Vertauscht die Richtung des Sauerstoffgefälles."
+            },
+            {
+              "text": "Aus den Muskelzellen zurück in die Lungenbläschen.",
+              "reason": "Verwechselt Sauerstoffaufnahme und den Rücktransport eines Stoffwechselprodukts."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYE45X599CPSBHTERP",
+          "slug": "bio11-gasaustausch-strecke",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=gasaustausch",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welchen Vorteil bietet eine dünne Trennschicht zwischen Lungenbläschen und Kapillare?",
+          "concept": "Sie verkürzt die Diffusionsstrecke.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie verkürzt die Diffusionsstrecke.",
+              "Sie erhöht den Sauerstoffbedarf der Zelle."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie steigert den Sauerstoffbedarf.",
+              "reason": "Verwechselt günstige Austauschbedingungen mit einem höheren Bedarf."
+            },
+            {
+              "text": "Sie vergrößert den Weg eines Sauerstoffteilchens durch das Gewebe.",
+              "reason": "Leitet aus einer dünneren Schicht eine längere Strecke ab."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYH5GD180VYHRRZRPG",
+          "slug": "bio11-gasaustausch-gefaelle",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=gasaustausch",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum muss das Blut an einem Lungenbläschen weiterfließen?",
+          "concept": "Der Blutstrom ersetzt sauerstoffreicheres durch sauerstoffärmeres Blut. So bleibt das Gefälle für weiteren Sauerstofftransport erhalten.",
+          "sample_solution": "Der Blutstrom ersetzt sauerstoffreicheres durch sauerstoffärmeres Blut. So bleibt das Gefälle für weiteren Sauerstofftransport erhalten."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PWG2YNMDQVPBK1FCER",
+      "atom_uri": "urn:zam:atom:01M724F0PWG2YNMDQVPBK1FCER",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-herz-und-kreislauf",
+      "title": "Lungen- und Körperkreislauf",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=herz-und-kreislauf",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PW7QYMD7C8X5S7XHYA",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M724F0PWQRSYBTC1SADM3HFE",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PYTRT1R734TPWY2DTT",
+          "slug": "bio11-herz-und-kreislauf-arterie",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=herz-und-kreislauf",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Woran erkennst du eine Arterie, unabhängig vom Sauerstoffgehalt?",
+          "concept": "Sie führt Blut vom Herzen weg.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie führt Blut vom Herzen weg.",
+              "Sie führt Blut zum Herzen hin."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie führt Blut zum Herzen hin.",
+              "reason": "Vertauscht die Definition von Arterie und Vene."
+            },
+            {
+              "text": "Sie führt immer sauerstoffreiches Blut.",
+              "reason": "Verwechselt Flussrichtung mit dem Sauerstoffgehalt."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYBCMZNP6GQNE7E0Z6",
+          "slug": "bio11-herz-und-kreislauf-haemoglobin",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=herz-und-kreislauf",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Protein bindet den größten Teil des Sauerstoffs im Blut?",
+          "concept": "Hämoglobin.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Hämoglobin.",
+              "Kollagen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kollagen.",
+              "reason": "Verwechselt ein Strukturprotein mit einem Sauerstofftransportprotein."
+            },
+            {
+              "text": "Myoglobin.",
+              "reason": "Verwechselt den Sauerstoffspeicher in Muskelzellen mit dem Haupttransporter im Blut."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYM8XMDDN870PQ9M3E",
+          "slug": "bio11-herz-und-kreislauf-lungenvene",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=herz-und-kreislauf",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum ist Blut in der Lungenvene sauerstoffreicher als in der Lungenarterie?",
+          "concept": "Die Lungenarterie bringt Blut aus dem rechten Herzen zur Lunge. Es nimmt in den Lungenkapillaren Sauerstoff auf und fließt über die Lungenvene zum linken Herzen.",
+          "sample_solution": "Die Lungenarterie bringt Blut aus dem rechten Herzen zur Lunge. Es nimmt in den Lungenkapillaren Sauerstoff auf und fließt über die Lungenvene zum linken Herzen."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PWZRVRNNXWJFTZBSD9",
+      "atom_uri": "urn:zam:atom:01M724F0PWZRVRNNXWJFTZBSD9",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-zellatmung-und-atp",
+      "title": "Zellatmung und der ATP–ADP-Kreislauf",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=zellatmung-und-atp",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWG2YNMDQVPBK1FCER",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M724F0PWQRSYBTC1SADM3HFE",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PYJAQ3Q2EV4F89SZKG",
+          "slug": "bio11-zellatmung-und-atp-redox",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=zellatmung-und-atp",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welcher Ausgangsstoff wird in der aeroben Zellatmung oxidiert?",
+          "concept": "Glucose.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Glucose.",
+              "Sauerstoff."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sauerstoff.",
+              "reason": "Verwechselt den reduzierten Reaktionspartner mit dem oxidierten."
+            },
+            {
+              "text": "Wasser.",
+              "reason": "Verwechselt ein Reaktionsprodukt mit dem oxidierten Ausgangsstoff."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PY8MXQMCPA0PGCRBW2",
+          "slug": "bio11-zellatmung-und-atp-atp",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=zellatmung-und-atp",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was entsteht aus ATP bei seiner Umsetzung mit Wasser für Zellarbeit?",
+          "concept": "ADP und anorganisches Phosphat.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ADP und anorganisches Phosphat.",
+              "Glucose und Sauerstoff."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Glucose und Sauerstoff.",
+              "reason": "Verwechselt die Umsetzung des ATP mit einer Gesamtbilanz der Photosynthese."
+            },
+            {
+              "text": "Glucose und Phosphat.",
+              "reason": "Verwechselt den Umbau eines Nukleotids mit der Freisetzung des Nährstoffs Glucose."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYMSYAE0SH9WD6ZADB",
+          "slug": "bio11-zellatmung-und-atp-kopplung",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=zellatmung-und-atp",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie verbindet das ATP–ADP-System Zellatmung und Muskelarbeit?",
+          "concept": "Energie aus Zellatmung ermöglicht ATP-Bildung aus ADP und Phosphat. Die gekoppelte Umsetzung des ATP treibt Muskelarbeit an; ADP wird erneut genutzt.",
+          "sample_solution": "Energie aus Zellatmung ermöglicht ATP-Bildung aus ADP und Phosphat. Die gekoppelte Umsetzung des ATP treibt Muskelarbeit an; ADP wird erneut genutzt."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PXJ7A083CWARBSGFGD",
+      "atom_uri": "urn:zam:atom:01M724F0PXJ7A083CWARBSGFGD",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-photosynthese-vergleichen",
+      "title": "Photosynthese und Zellatmung vergleichen",
+      "domain": "biologie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=photosynthese-vergleichen",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWZRVRNNXWJFTZBSD9",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M724F0PWTBQFV4A34TWSVANJ",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Stoff- und Energieumwandlung im Menschen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PY90SYN1414R4V383V",
+          "slug": "bio11-photosynthese-vergleichen-sauerstoffquelle",
+          "replaces": [
+            "01K8GBH0000000000000000J01"
+          ],
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=photosynthese-vergleichen",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Aus welchem Ausgangsstoff stammt der Sauerstoff, den Pflanzen bei der Photosynthese freisetzen?",
+          "concept": "Aus Wasser.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aus Wasser.",
+              "Aus Kohlenstoffdioxid."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Aus Kohlenstoffdioxid.",
+              "reason": "Verwechselt die Kohlenstoffquelle mit der Quelle des freigesetzten Sauerstoffs."
+            },
+            {
+              "text": "Aus Glucose.",
+              "reason": "Verwechselt ein Produkt des Stoffaufbaus mit dem Ausgangsstoff der Sauerstofffreisetzung."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYNB73R8PT73XJ0ZY7",
+          "slug": "bio11-photosynthese-vergleichen-dunkel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=photosynthese-vergleichen",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Vorgang kann in einer grünen Blattzelle auch im Dunkeln weiterlaufen?",
+          "concept": "Zellatmung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zellatmung.",
+              "Photosynthese mit Lichtenergie."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Photosynthese.",
+              "reason": "Verwechselt die lichtabhängige Energiebereitstellung mit Zellatmung."
+            },
+            {
+              "text": "Lichtreaktion.",
+              "reason": "Übersieht, dass photochemische Reaktionen Licht benötigen."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYEXCZD2CVYC6T98KB",
+          "slug": "bio11-photosynthese-vergleichen-energiebilanz",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=photosynthese-vergleichen",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche die Stoffbilanz und Energieumwandlung bei Photosynthese und aerober Zellatmung.",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "Photosynthese: Lichtenergie wird in chemische Energie organischer Stoffe überführt. Vereinfachte Nettogleichung: "
+            },
+            {
+              "type": "math",
+              "tex": "6\\,\\mathrm{CO}_2 + 6\\,\\mathrm{H}_2\\mathrm{O} \\rightarrow \\mathrm{C}_6\\mathrm{H}_{12}\\mathrm{O}_6 + 6\\,\\mathrm{O}_2",
+              "speech": "Sechs Moleküle Kohlenstoffdioxid und sechs Moleküle Wasser werden in der vereinfachten Bilanz zu einem Molekül Glucose und sechs Molekülen Sauerstoff.",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "Zellatmung: Frei werdende chemische Energie ermöglicht ATP-Bildung; ein Teil wird als Wärme abgegeben. Gesamtgleichung: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{C}_6\\mathrm{H}_{12}\\mathrm{O}_6 + 6\\,\\mathrm{O}_2 \\rightarrow 6\\,\\mathrm{CO}_2 + 6\\,\\mathrm{H}_2\\mathrm{O}",
+              "speech": "Ein Molekül Glucose und sechs Moleküle Sauerstoff werden zu sechs Molekülen Kohlenstoffdioxid und sechs Molekülen Wasser.",
+              "block": true
+            }
+          ],
+          "sample_solution": [
+            {
+              "type": "text",
+              "text": "Photosynthese: Lichtenergie wird in chemische Energie organischer Stoffe überführt. Vereinfachte Nettogleichung: "
+            },
+            {
+              "type": "math",
+              "tex": "6\\,\\mathrm{CO}_2 + 6\\,\\mathrm{H}_2\\mathrm{O} \\rightarrow \\mathrm{C}_6\\mathrm{H}_{12}\\mathrm{O}_6 + 6\\,\\mathrm{O}_2",
+              "speech": "Sechs Moleküle Kohlenstoffdioxid und sechs Moleküle Wasser werden in der vereinfachten Bilanz zu einem Molekül Glucose und sechs Molekülen Sauerstoff.",
+              "block": true
+            },
+            {
+              "type": "text",
+              "text": "Zellatmung: Frei werdende chemische Energie ermöglicht ATP-Bildung; ein Teil wird als Wärme abgegeben. Gesamtgleichung: "
+            },
+            {
+              "type": "math",
+              "tex": "\\mathrm{C}_6\\mathrm{H}_{12}\\mathrm{O}_6 + 6\\,\\mathrm{O}_2 \\rightarrow 6\\,\\mathrm{CO}_2 + 6\\,\\mathrm{H}_2\\mathrm{O}",
+              "speech": "Ein Molekül Glucose und sechs Moleküle Sauerstoff werden zu sechs Molekülen Kohlenstoffdioxid und sechs Molekülen Wasser.",
+              "block": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PXB1A521R6FGS0J964",
+      "atom_uri": "urn:zam:atom:01M724F0PXB1A521R6FGS0J964",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-proteine-struktur-und-funktion",
+      "title": "Proteine: Struktur und Funktion",
+      "domain": "biologie/lb5",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=proteine-struktur-und-funktion",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWSS0557R2GM44PXJJ",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M724F0PWG2YNMDQVPBK1FCER",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Genetik"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Genetik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PYTW5FTY10C5Z2Z9PZ",
+          "slug": "bio11-proteine-struktur-und-funktion-sequenz",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=proteine-struktur-und-funktion",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was beeinflusst die räumliche Faltung einer Proteinkette?",
+          "concept": "Die Reihenfolge und Eigenschaften ihrer Aminosäuren.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Reihenfolge und Eigenschaften ihrer Aminosäuren.",
+              "Nur die Menge an Kohlenstoffdioxid im Gewebe."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ausschließlich die Größe der Zelle, in der die Kette gebildet wird.",
+              "reason": "Verwechselt den Ort der Proteinbildung mit den Eigenschaften der Kette."
+            },
+            {
+              "text": "Die Reihenfolge der Zuckerbausteine in der Nahrung des Organismus.",
+              "reason": "Verwechselt Aminosäuresequenz und Kohlenhydrataufbau."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYD4EX21DGJCYV01J9",
+          "slug": "bio11-proteine-struktur-und-funktion-kollagen",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=proteine-struktur-und-funktion",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Bau erklärt die Stützfunktion von Kollagen?",
+          "concept": "Seine Ketten können zugfeste Fasern bilden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Seine Ketten können zugfeste Fasern bilden.",
+              "Sein aktives Zentrum spaltet Stärke."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sein aktives Zentrum kann Stärke spalten.",
+              "reason": "Verwechselt mechanische Stabilität mit einer Enzymfunktion."
+            },
+            {
+              "text": "Seine Bindungsstelle kann Sauerstoff tragen.",
+              "reason": "Verwechselt die Strukturaufgabe mit der Funktion von Hämoglobin."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYGAFJEQSHFYS2G03C",
+          "slug": "bio11-proteine-struktur-und-funktion-form",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=proteine-struktur-und-funktion",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum kann ein Protein nach dem Erhitzen ausfallen, obwohl seine Aminosäurereihenfolge unverändert ist?",
+          "concept": "Hitze kann die Faltung verändern. Eine Bindungsstelle oder ein aktives Zentrum verliert dadurch die für seine Aufgabe passende Form.",
+          "sample_solution": "Hitze kann die Faltung verändern. Eine Bindungsstelle oder ein aktives Zentrum verliert dadurch die für seine Aufgabe passende Form."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PXHMGQXBSD1F9JDGRC",
+      "atom_uri": "urn:zam:atom:01M724F0PXHMGQXBSD1F9JDGRC",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-dna-und-chromosomen",
+      "title": "DNA und Organisation der Erbinformation",
+      "domain": "biologie/lb5",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=dna-und-chromosomen",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWNZZNPTJCJC41JBE4",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Genetik"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Genetik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PYNBRN5WF9Y3DK6CKD",
+          "slug": "bio11-dna-und-chromosomen-paarung",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=dna-und-chromosomen",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Base paart sich in DNA mit Guanin?",
+          "concept": "Cytosin.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Cytosin.",
+              "Thymin."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Thymin.",
+              "reason": "Verwechselt das Basenpaar A–T mit dem Partner von Guanin."
+            },
+            {
+              "text": "Adenin.",
+              "reason": "Verwechselt das Basenpaar A–T mit dem Partner von Guanin."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYQQ4F02B1AD5QRQGW",
+          "slug": "bio11-dna-und-chromosomen-plasmid",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=dna-und-chromosomen",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was ist ein Plasmid bei vielen Bakterien?",
+          "concept": "Ein kleiner zusätzlicher DNA-Ring.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein kleiner zusätzlicher DNA-Ring.",
+              "Der von einer Kernhülle umgebene Hauptteil der Erbinformation."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Protein zur DNA-Verpackung.",
+              "reason": "Verwechselt zusätzliche DNA mit einem Protein, das DNA organisiert."
+            },
+            {
+              "text": "Eine Membranhülle um das Bakterienchromosom.",
+              "reason": "Schreibt dem Plasmid die Abgrenzungsfunktion eines Zellkerns zu."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYTKSK6XVPSSQHS7PB",
+          "slug": "bio11-dna-und-chromosomen-karyogramm",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=dna-und-chromosomen",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum kann ein normales Karyogramm eine Veränderung einer einzelnen Base nicht ausschließen?",
+          "concept": "Das Karyogramm zeigt Zahl und grobe Struktur der Chromosomen. Eine einzelne Base ist erst bei einer Untersuchung der Sequenz unterscheidbar.",
+          "sample_solution": "Das Karyogramm zeigt Zahl und grobe Struktur der Chromosomen. Eine einzelne Base ist erst bei einer Untersuchung der Sequenz unterscheidbar."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PXWXDJ1QZTYREA6RVX",
+      "atom_uri": "urn:zam:atom:01M724F0PXWXDJ1QZTYREA6RVX",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-vom-gen-zum-merkmal",
+      "title": "Vom Gen über das Protein zum Merkmal",
+      "domain": "biologie/lb5",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=vom-gen-zum-merkmal",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PXB1A521R6FGS0J964",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M724F0PXHMGQXBSD1F9JDGRC",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Genetik"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Genetik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PYHR5QKNCGJJWF19N1",
+          "slug": "bio11-vom-gen-zum-merkmal-transkription",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=vom-gen-zum-merkmal",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welches Molekül entsteht bei der Transkription einer DNA-Vorlage?",
+          "concept": "RNA.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "RNA.",
+              "Eine Aminosäurekette."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Protein.",
+              "reason": "Verwechselt Transkription mit Translation."
+            },
+            {
+              "text": "ATP.",
+              "reason": "Verwechselt die RNA-Abschrift mit einem Energieträger der Zelle."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYGSZ0Z4DZ5579FCK5",
+          "slug": "bio11-vom-gen-zum-merkmal-translation",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=vom-gen-zum-merkmal",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was macht das Ribosom bei der Translation?",
+          "concept": "Es verbindet Aminosäuren nach der Information der mRNA.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es verbindet Aminosäuren nach der Information der mRNA.",
+              "Es verdoppelt die gesamte DNA vor der Teilung."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Es kopiert die gesamte DNA zur Vorbereitung einer Zellteilung.",
+              "reason": "Verwechselt Translation und DNA-Replikation."
+            },
+            {
+              "text": "Es zerlegt Nahrungsproteine in resorbierbare Aminosäuren.",
+              "reason": "Verwechselt den Proteinaufbau mit Verdauung."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYWWCKJWVQB0ZD3RP1",
+          "slug": "bio11-vom-gen-zum-merkmal-merkmal",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=vom-gen-zum-merkmal",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie kann eine Änderung in einem proteincodierenden Gen die Blütenfarbe beeinflussen?",
+          "concept": "Wenn sie das Farbstoffenzym verändert, kann dessen Aktivität sinken. Dann kann weniger Farbstoff entstehen. Nicht jede Basenänderung ändert das Protein oder seine Funktion.",
+          "sample_solution": "Wenn sie das Farbstoffenzym verändert, kann dessen Aktivität sinken. Dann kann weniger Farbstoff entstehen. Nicht jede Basenänderung ändert das Protein oder seine Funktion."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PXN21GWYWAZNAAV4M8",
+      "atom_uri": "urn:zam:atom:01M724F0PXN21GWYWAZNAAV4M8",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-replikation-und-mitose",
+      "title": "DNA-Replikation und Mitose",
+      "domain": "biologie/lb5",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=replikation-und-mitose",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PXHMGQXBSD1F9JDGRC",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Genetik"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Genetik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PYJFN5H20K5CPNC5GA",
+          "slug": "bio11-replikation-und-mitose-semikonservativ",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=replikation-und-mitose",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was enthält jede neue DNA-Doppelhelix nach semikonservativer Replikation?",
+          "concept": "Einen alten und einen neu aufgebauten Strang.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einen alten und einen neu aufgebauten Strang.",
+              "Zwei neue Stränge; beide alten bleiben zusammen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zwei neu aufgebaute Stränge, während die alten zusammenbleiben.",
+              "reason": "Verwechselt semikonservative und konservative Verdopplung."
+            },
+            {
+              "text": "Einen alten Strang ohne einen passenden neuen Gegenstrang.",
+              "reason": "Übersieht, dass wieder eine vollständige Doppelhelix entsteht."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYV6PNZEQR2C0MNA8S",
+          "slug": "bio11-replikation-und-mitose-dna-menge",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=replikation-und-mitose",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was verdoppelt sich in der S-Phase vor der Mitose?",
+          "concept": "Die DNA-Menge.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die DNA-Menge.",
+              "Die Zahl der Zellkerne."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Kernzahl.",
+              "reason": "Verwechselt die DNA-Kopie mit einer Kernteilung."
+            },
+            {
+              "text": "Die Zellzahl.",
+              "reason": "Verwechselt die S-Phase mit der Teilung des Zellplasmas."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYT79XYW0211AWPFS4",
+          "slug": "bio11-replikation-und-mitose-verteilung",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=replikation-und-mitose",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie erhalten beide Tochterkerne bei der Mitose einen vollständigen Chromosomensatz?",
+          "concept": "Die Schwesterchromatiden jedes kopierten Chromosoms werden auf verschiedene Tochterkerne verteilt. Jeder Kern erhält eine Kopie jedes Chromosoms.",
+          "sample_solution": "Die Schwesterchromatiden jedes kopierten Chromosoms werden auf verschiedene Tochterkerne verteilt. Jeder Kern erhält eine Kopie jedes Chromosoms."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PXBHKDV4ZWSRXQDH7F",
+      "atom_uri": "urn:zam:atom:01M724F0PXBHKDV4ZWSRXQDH7F",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-meiose-und-vielfalt",
+      "title": "Meiose, Befruchtung und genetische Vielfalt",
+      "domain": "biologie/lb5",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=meiose-und-vielfalt",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PXN21GWYWAZNAAV4M8",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Genetik"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb5",
+          "topic_title": "Grundlagen der Genetik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PYMQYM5VA35TPTNTMR",
+          "slug": "bio11-meiose-und-vielfalt-homologe",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=meiose-und-vielfalt",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was wird bei der ersten meiotischen Reifeteilung getrennt?",
+          "concept": "Die homologen Chromosomen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die homologen Chromosomen.",
+              "Die Schwesterchromatiden jedes Chromosoms."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Schwesterchromatiden.",
+              "reason": "Verwechselt die erste mit der zweiten Reifeteilung."
+            },
+            {
+              "text": "Die Basen der DNA-Stränge.",
+              "reason": "Verwechselt die Verteilung von Chromosomen mit der Trennung von DNA-Strängen."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYK9TJT25K7BX4W4J9",
+          "slug": "bio11-meiose-und-vielfalt-befruchtung",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=meiose-und-vielfalt",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie entsteht bei der Befruchtung wieder ein diploider Chromosomensatz?",
+          "concept": "Zwei haploide Sätze werden vereinigt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwei haploide Sätze werden vereinigt.",
+              "Der Satz einer Keimzelle wird durch Verdauung halbiert."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein haploider Satz verdoppelt sich.",
+              "reason": "Verwechselt die Vereinigung zweier Keimzellen mit einer Verdopplung in einer einzelnen Keimzelle."
+            },
+            {
+              "text": "Zwei diploide Sätze werden ohne Änderung zusammengefügt.",
+              "reason": "Übersieht die Halbierung des Satzes bei der Keimzellbildung."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYCG82YM4A5FRNV8FQ",
+          "slug": "bio11-meiose-und-vielfalt-kombination",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=meiose-und-vielfalt",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum erzeugt die zufällige Ausrichtung homologer Paare unterschiedliche Keimzellen?",
+          "concept": "Die Ausrichtung jedes Paars kann wechseln. Keimzellen können daher unterschiedliche Kombinationen ursprünglich mütterlicher und väterlicher Chromosomen enthalten.",
+          "sample_solution": "Die Ausrichtung jedes Paars kann wechseln. Keimzellen können daher unterschiedliche Kombinationen ursprünglich mütterlicher und väterlicher Chromosomen enthalten."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PXWPP52GZZGAWVZQR7",
+      "atom_uri": "urn:zam:atom:01M724F0PXWPP52GZZGAWVZQR7",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-reiz-reaktion-und-synapse",
+      "title": "Vom Reiz zur Reaktion",
+      "domain": "biologie/lb6",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=reiz-reaktion-und-synapse",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PWTBQFV4A34TWSVANJ",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb6",
+          "topic_title": "Grundlagen der Verhaltensbiologie"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb6",
+          "topic_title": "Grundlagen der Verhaltensbiologie"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PYJHZ220273DH8TRV0",
+          "slug": "bio11-reiz-reaktion-und-synapse-afferent",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=reiz-reaktion-und-synapse",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "In welche Richtung leitet eine afferente Nervenbahn?",
+          "concept": "Zum Zentralnervensystem hin.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zum Zentralnervensystem hin.",
+              "Vom Zentralnervensystem zum Erfolgsorgan."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zum Erfolgsorgan hin.",
+              "reason": "Vertauscht afferente und efferente Richtung."
+            },
+            {
+              "text": "Vom Muskel unmittelbar zur benachbarten Drüse.",
+              "reason": "Verwechselt die Richtung einer Bahn mit einer Verbindung beliebiger Organe."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PY6MYGFWTBT23G22N4",
+          "slug": "bio11-reiz-reaktion-und-synapse-spalt",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=reiz-reaktion-und-synapse",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was überbrückt bei einer chemischen Synapse den Spalt?",
+          "concept": "Ein freigesetzter Botenstoff.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein freigesetzter Botenstoff.",
+              "Eine durchgehende Verlängerung des Axons."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Ausläufer des Axons.",
+              "reason": "Verwechselt den synaptischen Spalt mit einer durchgehenden Zellverbindung."
+            },
+            {
+              "text": "Ein isolierender Myelinring.",
+              "reason": "Verwechselt elektrische Isolation am Axon mit der Übertragung an der Synapse."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYYG04V4DR862X3KRP",
+          "slug": "bio11-reiz-reaktion-und-synapse-effektor",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=reiz-reaktion-und-synapse",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Welche Rolle spielt ein Muskel im Reiz-Reaktions-Schema?",
+          "concept": "Als Erfolgsorgan setzt er ein efferentes Signal in Bewegung um. Der Reiz wird vorher von Sinneszellen erfasst.",
+          "sample_solution": "Als Erfolgsorgan setzt er ein efferentes Signal in Bewegung um. Der Reiz wird vorher von Sinneszellen erfasst."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PXEHZ03HAMSR0797ZN",
+      "atom_uri": "urn:zam:atom:01M724F0PXEHZ03HAMSR0797ZN",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-attrappenversuch",
+      "title": "Verhalten mit Attrappen untersuchen",
+      "domain": "biologie/lb6",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=attrappenversuch",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PV6J9T9PW076NZRW6M",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M724F0PXWPP52GZZGAWVZQR7",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb6",
+          "topic_title": "Grundlagen der Verhaltensbiologie"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb6",
+          "topic_title": "Grundlagen der Verhaltensbiologie"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PYNW3KEHNG6HT60KMR",
+          "slug": "bio11-attrappenversuch-ein-faktor",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=attrappenversuch",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Wie prüfst du gezielt, ob die Bewegung einer Attrappe eine Reaktion verändert?",
+          "concept": "Vergleiche gleiche Attrappen mit und ohne Bewegung bei gleichem Fütterungszustand.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vergleiche gleiche Attrappen mit und ohne Bewegung bei gleichem Fütterungszustand.",
+              "Vergleiche eine bewegte rote Attrappe vor der Fütterung mit einer unbewegten blauen danach."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Vergleiche eine bewegte rote Attrappe mit einer unbewegten blauen bei gleichem Fütterungszustand.",
+              "reason": "Verändert neben Bewegung gleichzeitig die Farbe."
+            },
+            {
+              "text": "Vergleiche dieselbe unbewegte Attrappe jeweils vor und nach der Fütterung.",
+              "reason": "Prüft den inneren Zustand statt des Reizmerkmals Bewegung."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYMHWZJY0Q4CWFZCND",
+          "slug": "bio11-attrappenversuch-innen",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=attrappenversuch",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was ist beim Attrappenversuch ein innerer Faktor?",
+          "concept": "Der Fütterungszustand des Tiers.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Fütterungszustand des Tiers.",
+              "Die Farbe der Attrappe."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Farbe der Attrappe.",
+              "reason": "Verwechselt eine äußere Reizeigenschaft mit dem inneren Zustand."
+            },
+            {
+              "text": "Die Entfernung zur Attrappe.",
+              "reason": "Verwechselt eine äußere Versuchsbedingung mit dem inneren Zustand."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYT1FF91BJZ99K5XDN",
+          "slug": "bio11-attrappenversuch-beobachtung",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=attrappenversuch",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum notierst du zuerst „der Fisch schnappt“ und deutest erst später „er ist hungrig“?",
+          "concept": "Zuschnappen ist beobachtbar. Hunger ist eine mögliche Erklärung, die du etwa durch einen kontrollierten Vergleich vor und nach der Fütterung prüfst.",
+          "sample_solution": "Zuschnappen ist beobachtbar. Hunger ist eine mögliche Erklärung, die du etwa durch einen kontrollierten Vergleich vor und nach der Fütterung prüfst."
+        }
+      ]
+    },
+    {
+      "id": "01M724F0PXC204NGR2Q4B1RMAK",
+      "atom_uri": "urn:zam:atom:01M724F0PXC204NGR2Q4B1RMAK",
+      "namespace": "zam-academy-biologie-gymnasium-11",
+      "slug": "bio11-genetisch-oder-erworben",
+      "title": "Genetische und erworbene Verhaltensanteile",
+      "domain": "biologie/lb6",
+      "reduction": "classical",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=genetisch-oder-erworben",
+      "prerequisites": [
+        {
+          "atom_id": "01M724F0PXEHZ03HAMSR0797ZN",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M724F0PWXHBCFJ0NA9A8526G",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-11",
+          "topic_code": "lb6",
+          "topic_title": "Grundlagen der Verhaltensbiologie"
+        },
+        {
+          "provider": "isb-bayern-einfuehrungsklasse",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "track": "einfuehrungsklasse",
+          "subject": "biologie",
+          "topic_code": "lb6",
+          "topic_title": "Grundlagen der Verhaltensbiologie"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M724F0PYCF7QSTX28P14AMD2",
+          "slug": "bio11-genetisch-oder-erworben-vorbild",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=genetisch-oder-erworben",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was stützt ein Verhalten, das auch ohne das untersuchte Vorbild auftritt?",
+          "concept": "Dieses konkrete Vorbild ist für das Verhalten nicht notwendig.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dieses konkrete Vorbild ist für das Verhalten nicht notwendig.",
+              "Jegliche Erfahrung ist für das Verhalten ausgeschlossen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Dieses Verhalten kann sich durch jede weitere Erfahrung gar nicht mehr verändern.",
+              "reason": "Verallgemeinert den Ausschluss eines Vorbilds auf jede mögliche Lernerfahrung."
+            },
+            {
+              "text": "Dieses Verhalten muss ausschließlich durch das Verhalten eines Vorbilds ausgelöst werden.",
+              "reason": "Widerspricht dem Auftreten ohne das untersuchte Vorbild."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PY07QGN7EJX5ASFDXZ",
+          "slug": "bio11-genetisch-oder-erworben-lernen",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=genetisch-oder-erworben",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Befund spricht in einem kontrollierten Vergleich für einen erworbenen Anteil?",
+          "concept": "Nach gleicher Übungszeit ändert sich ein Muster vor allem bei Tieren mit Vorbild.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nach gleicher Übungszeit ändert sich ein Muster vor allem bei Tieren mit Vorbild.",
+              "Beide Gruppen zeigen von Anfang an dieselbe Grundbewegung."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Beide Gruppen zeigen bereits vor der Beobachtung dieselbe Grundbewegung.",
+              "reason": "Verwechselt einen gemeinsamen Ausgangsbefund mit einer Änderung durch Erfahrung."
+            },
+            {
+              "text": "Nach unterschiedlicher Übungszeit unterscheidet sich die Leistung beider Gruppen.",
+              "reason": "Übersieht die Übungszeit als Störfaktor beim Vergleich der Vorbilderfahrung."
+            }
+          ]
+        },
+        {
+          "id": "01M724F0PYTKMH8D5KJ531JVJH",
+          "slug": "bio11-genetisch-oder-erworben-grenze",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-11/#lesson=genetisch-oder-erworben",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum beweist ein historischer Versuch ohne Kontakt zu Artgenossen kein vollständig angeborenes Verhalten?",
+          "concept": "Er schließt nur bestimmte Lerngelegenheiten aus. Eigene Übung und andere Erfahrungen bleiben möglich; Isolation verändert zudem weitere Aufzuchtbedingungen.",
+          "sample_solution": "Er schließt nur bestimmte Lerngelegenheiten aus. Eigene Übung und andere Erfahrungen bleiben möglich; Isolation verändert zudem weitere Aufzuchtbedingungen."
+        }
+      ]
+    }
+  ]
+}

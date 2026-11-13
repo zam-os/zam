@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-11-08T20:56:07Z
+timestamp: 2026-11-13T19:00:00Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -275,6 +275,9 @@ Curriculum discovery compares official subject ids with their fixture aliases
 track bindings keep groups II, IIIa and IIIb separate. A shared II/III binding
 reaches each of those groups; a binding for II alone never matches a learner
 in III, IIIa or IIIb. A combined II/III scope is a broad search filter.
+For LehrplanPLUS Mittelschule, `curriculumTrackMembers` normalizes the manifest
+track ids `regelklasse` and `mittlere-reife-klasse` to the compact track codes
+`R` and `M` used by Mittelschule grade 7 and 8 Academy cells.
 The BwR 9 manifest offers group II only. Its Academy cell binds the five
 grade-9 learning areas to that group; its two optional VAT refreshers carry
 only an Academy binding. Wirtschaft und Recht 9 is the opposite case: one
@@ -313,7 +316,7 @@ without any mastery transfer and declares no `replaces` (approved 2026-10-24).
 The old cell is no longer bundled; all four personal card states and review
 histories remain intact.
 
-Französisch 10 Realschule is bundled as an additional Academy cell, version
+Französisch 10 Realschule is bundled as an Academy cell, version
 2026.10.2, with 57 lessons and 171 French practice items (2026.10.2 corrects
 two distractor reasons and one sample solution; ids are unchanged). Like Französisch 9
 it binds every lesson to track `IIIa` (grade 10, exam-relevant), so discovery
@@ -324,7 +327,7 @@ therefore declares neither `replaces` nor `retired_items`. Taking it creates
 171 unlearned cards and leaves every French card state and review history
 of grade 9, the Realschule-8 cell and the Gymnasium-10 cell unchanged.
 
-Biologie 8 Realschule is bundled as an additional Academy cell, version
+Biologie 8 Realschule is bundled as an Academy cell, version
 2026.10.2, with 30 lessons and 60 practice items. The five official learning
 areas comprise 4 lessons on methods, 6 on microorganisms, 8 on defence,
 5 on human development and 7 on evolution. Every lesson binds only to
@@ -336,20 +339,17 @@ microorganisms in their own Biology area with a seed emblem, defence
 and development under the Human Body, and evolution under Evolution and
 Ecology. All cards link to their training lesson and form one library topic.
 
-Both earlier Biologie-8 school cells remain bundled and active. All 16
-rows of the upstream mapping are C, proposal-only and unapproved:
-even the earlier oxygen-transport prompt also mentions haemoglobin,
-whereas the new fast check does not. No successor is declared. The cell
-has neither `replaces` nor `retired_items`. Its byte-exact proposal and
-the hashes of both legacy fixtures are pinned. Installing creates no
-personal cards; taking the cell creates 60 unlearned cards without
-changing the 16 earlier cards or their review histories. Repeating
-installation and enrolment changes no schedule or review. New Tier-2
-siblings wait for their atom's initial Tier-1 review. Updating from
-version 2026.10.1 adds explicit binding metadata and keeps every identity,
-retrieval, card state and review unchanged.
+Both earlier Biologie-8 school cells have retired from the bundle to
+`tests/fixtures/legacy/`. All 16 rows of the upstream mapping are C, keeping
+held cards active with no successor or retirement declared; the hashes of both
+legacy fixtures are pinned. Installing creates no personal cards; taking the
+cell creates 60 unlearned cards without changing the 16 earlier cards or their
+review histories. Repeating installation and enrolment changes no schedule or
+review. New Tier-2 siblings wait for their atom's initial Tier-1 review.
+Updating from version 2026.10.1 adds explicit binding metadata and keeps every
+identity, retrieval, card state and review unchanged.
 
-Deutsch 8 Realschule is bundled as an additional Academy cell, version
+Deutsch 8 Realschule is bundled as an Academy cell, version
 2026.10.1, with 40 lessons and 80 practice items: 6 lessons on speaking and
 listening, 12 on reading, literature and media, 13 on writing and argument,
 and 9 on language. Its official bindings name grade 8 and the four learning
@@ -358,16 +358,16 @@ and IIIb alike. Each card links to its training lesson; these links form
 one library topic. Its domains use the existing German subject and Writing
 and Argumentation atlas area.
 
-The earlier four-card Deutsch-8 argumentation cell remains bundled and
-active. All four rows of the upstream mapping are C, proposal-only and
-unapproved, with no successor or retirement. A byte-exact copy pins that
-proposal and the legacy fixture hash. Installing the additional cell creates
+The earlier four-card Deutsch-8 argumentation cell has retired to
+`tests/fixtures/legacy/`. All four rows of the upstream mapping are C, keeping
+held cards active with no successor or retirement. A byte-exact copy pins that
+record and the legacy fixture hash. Installing the Academy cell creates
 no personal cards. Taking it creates 80 unlearned cards without changing
 the earlier four cards or their review histories. Synthesis
 siblings wait for their atom's first fast-check review. Repeating
 installation and enrolment changes no schedule or review history.
 
-Deutsch 10 Realschule is bundled as an additional Academy cell, version
+Deutsch 10 Realschule is bundled as an Academy cell, version
 2026.10.2, with 30 lessons and 60 practice items. Its official bindings name
 grade 10 and the four learning areas of the common German curriculum, with
 no track restriction, so discovery offers it to I, II, IIIa and IIIb alike.
@@ -378,16 +378,16 @@ are marked exam-relevant. Five fast checks carry their required material
 in the question, and a fixed publication timestamp keeps the displayed date
 stable.
 
-The earlier four-card Deutsch-10 school cell remains bundled and active.
-The Academy cell declares neither `replaces` nor `retired_items`; its
-upstream mapping records four C rows without an approved history transfer.
-A bundled copy pins that proposal and the legacy fixture hash for review.
-Installing the additional cell creates no personal cards. Taking it creates
-60 unlearned cards for a learner who has none of its items yet and leaves
-all four earlier card states and review histories unchanged. Repeating
+The earlier four-card Deutsch-10 school cell has retired to
+`tests/fixtures/legacy/`. The Academy cell declares neither `replaces` nor
+`retired_items`; its upstream mapping records four C rows (`keep-active`)
+without history transfer. A bundled copy pins that record and the legacy
+fixture hash. Installing the Academy cell creates no personal cards. Taking it
+creates 60 unlearned cards for a learner who has none of its items yet and
+leaves all four earlier card states and review histories unchanged. Repeating
 installation and enrolment changes no schedule or review history.
 
-Englisch 10 Realschule is bundled as an additional Academy cell, version
+Englisch 10 Realschule is bundled as an Academy cell, version
 2026.10.1, with 46 lessons and 92 practice items. Its official bindings name
 grade 10 and the five learning areas of the common English curriculum,
 without a track restriction, so discovery offers it to I, II, IIIa and IIIb.
@@ -397,10 +397,10 @@ Landeskunde and Literature atlas areas. Each links back to its training
 lesson, and all lesson links form one library topic. The declared task
 language is English; English-to-German mediation has German answers.
 
-The earlier four-card Englisch-10 school cell remains bundled and active.
-The Academy cell declares neither `replaces` nor `retired_items`. Its
-upstream proposal records four C rows, `keep-active`, without an approved
-history transfer; a byte-exact bundled copy pins that proposal and its
+The earlier four-card Englisch-10 school cell has retired to
+`tests/fixtures/legacy/`. The Academy cell declares neither `replaces` nor
+`retired_items`. Its upstream record keeps all four C rows active without a
+history transfer; a byte-exact bundled copy pins that record and its
 legacy source hash. Installing the cell creates no personal cards. Taking
 it creates 92 unlearned cards for a learner who has none of its items yet,
 while all four earlier card states and their review histories stay
@@ -527,7 +527,7 @@ starts the other 101 cards unlearned, and a learner who already holds
 reviewed cards on both the old card and its successor makes enrolment
 refuse instead of merging the two histories.
 
-Geschichte 8 Realschule is bundled as an additional Academy cell, version
+Geschichte 8 Realschule is bundled as an Academy cell, version
 2026.10.1, with 35 core lessons and three optional English lessons, 76
 practice items in total. Its common official bindings name grade 8 without
 a track restriction, so discovery offers it to I, II, IIIa and IIIb alike.
@@ -537,14 +537,14 @@ The school atlas places each lesson in its own learning area; the world
 atlas uses the existing History subject. Every practice item links back to
 its training lesson, and these links form one library topic.
 
-The earlier eight-card Geschichte-8 school cell remains bundled and active.
-All eight rows of the upstream mapping are C, proposal-only and unapproved,
-with no successor or retirement. A byte-exact copy pins that proposal and
-the legacy fixture hash. Installing the additional cell creates no personal
-cards. Taking it creates 76 unlearned cards without changing the earlier
-eight cards or their review histories. New Tier-2 siblings wait for their
-atom's first fast-check review. Repeating installation and enrolment, or
-reconciling the installed cells, changes no schedule or review history,
+The earlier eight-card Geschichte-8 school cell has retired to
+`tests/fixtures/legacy/`. All eight rows of the upstream record are C,
+keeping held cards active with no successor or retirement. A byte-exact copy
+pins that record and the legacy fixture hash. Installing the Academy cell
+creates no personal cards. Taking it creates 76 unlearned cards without changing
+the earlier eight cards or their review histories. New Tier-2 siblings wait
+for their atom's first fast-check review. Repeating installation and enrolment,
+or reconciling the installed cells, changes no schedule or review history,
 including when a learner holds reviewed cards from both cells.
 
 Geschichte 10 has one Fachlehrplan for all Wahlpflichtfächergruppen, so its
@@ -569,7 +569,7 @@ margin db = p − kv, and retires the two multi-part C cards as
 personal card states and review histories; they no longer enter the review
 queue. The old cell is no longer bundled.
 
-Mathematik 7 is bundled as an additional Academy cell, version 2026.10.1,
+Mathematik 7 Realschule is bundled as an Academy cell, version 2026.11.1,
 with 42 lessons and 126 practice items. Its bindings cover all 42 lessons in
 the eight learning areas of Zweig I, and 31 lessons in the six learning
 areas of II/III; the latter binding reaches II, IIIa and IIIb. Every card
@@ -577,12 +577,11 @@ links to its lesson in the training app. Curriculum discovery offers the
 cell as a whole: taking the Academy cell enrols all 126 cards, rather than
 filtering them to the learner's branch.
 
-The four earlier Mathematik-7 school cells remain bundled. The published
-Academy cell declares neither `replaces` nor `retired_items`; its mapping
-proposal has not been approved. Installing or enrolling it leaves all 30
-old cards and their review histories untouched and creates the Academy
-cards unlearned. Repeating enrolment creates no duplicates and changes no
-schedule or review history.
+Version 2026.11.1 implements Thomas's approved mapping (2026-11-13) and
+replaces all four earlier Mathematik-7 school cells, which are now archived in
+`tests/fixtures/legacy/`: seven A rows transfer their card states and review
+histories via `replaces`, `01K4M7K0000000000000000J02` retires via
+`retired_items`, and 22 C cards stay active in libraries that hold them.
 
 Mathematik 8 has two Fachlehrpläne as well: Zweig I learns the Drehung, space
 coordinates, Ungleichungen and lines y = mx + t, Zweig II/III triangles and
@@ -643,16 +642,37 @@ Nine Academy cells joined in November 2026: Mathematik 5, 6, 11, 12 and 13
 Gymnasium, the first Gymnasium cells; Mathematik 5 and 6 and Englisch 5
 Realschule, the first grade-5 and grade-6 Realschule cells; and Geographie 8
 Realschule. Each binds its grade, school type and subject under
-`lehrplanplus-bayern` without a track, so the curriculum path offers it beside
-the school cells of that grade, which stay bundled and active. Mathematik 13
-Gymnasium is a preview: teacher review and teacher videos are open. Thomas
-approved the mappings of eight of them, and each A row moves exactly one
-review history to its successor: 5, 7, 1, 2 and 5 cards for Gymnasium 5, 6,
-11, 12 and 13, 8 and 6 for Mathematik 5 and 6 Realschule, and 4 for Englisch 5.
-Their C rows stay active and nothing is retired. Geographie 8 maps the four
-cards of its school cell as C, as a proposal, and moves no history. On an atom
-where the learner already holds a moved card, each enrolment adds one new
-sibling, so the remaining cards follow on later enrolments.
+`lehrplanplus-bayern` without a track, and each A row moves one review history
+to its successor (5, 7, 1, 2 and 5 cards for Gymnasium 5, 6, 11, 12 and 13;
+8 and 6 for Mathematik 5 and 6 Realschule; 4 for Englisch 5) while C cards
+keep their histories unchanged. On an atom where the learner already holds a
+moved card, each enrolment adds one new sibling, so the remaining cards follow
+on later enrolments.
+
+In release 0.63.0 (2026-11-13), eleven additional Academy cells joined (58 bundled
+Academy cells total), alongside the retirement of 33 superseded `de-by:` school
+cells to `tests/fixtures/legacy/` (those 9 from 2026-11-08 = 19 cells, the 8
+`C`-only Realschule cells for Geographie 8, Biologie 8, Deutsch 8, Französisch 8,
+Geschichte 8, Deutsch 10 and Englisch 10, plus Mathematik 7 Realschule [4] and
+Deutsch 5 Realschule [2]):
+
+- **Deutsch 5 Realschule** (`2026.11.2`, preview): 37 lessons, 77 items; approved
+  mapping moves 8 A cards via `replaces`, retires 5 cards via `retired_items`,
+  and keeps 3 C cards active while both grade-5 German school cells retire.
+- **Biologie 11 Gymnasium** (`2026.11.3`, preview): 28 lessons, 84 items under
+  `isb-bayern-einfuehrungsklasse` (`track: "einfuehrungsklasse"`); moves 1 A
+  card and keeps 7 C cards active while both LehrplanPLUS Biology 11 school
+  cells remain bundled.
+- **Physik 11 Gymnasium** (`2026.11.1`): 34 lessons, 102 items under
+  `lehrplanplus-bayern`; moves 3 A cards and keeps 17 C cards active with no
+  retirements (*keine Stilllegung*), so all five Gymnasium 10/11 physics school
+  cells remain bundled.
+- **Mittelschule Deutsch 5–8 and Mathematik 5–8**: eight cells
+  (`deutsch-mittelschule-5` `2026.11.2` [51/102], `-6` `2026.11.2` [52/104],
+  `-7` `2026.11.1` [37/74], `-8` `2026.11.1` [37/74], `mathematik-mittelschule-5`
+  `2026.11.1` [32/64], `-6` `2026.11.1` [35/70], `-7` `2026.11.1` [32/96],
+  `-8` `2026.11.1` [31/93]); grades 7 and 8 normalize manifest tracks
+  `regelklasse` and `mittlere-reife-klasse` to `R` and `M`.
 
 Different cells may reuse the same atom and some of the same practice items.
 Installation status therefore checks every declared atom and item id, while
@@ -671,7 +691,7 @@ changed mappings require real re-retrieval.
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
-- Tests: `tests/kernel/zam-academy-2026-11-cells.test.ts`, `tests/kernel/zam-academy-englisch-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-deutsch-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-chemie-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-informatik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-8-cell.test.ts`, `tests/kernel/kvt-card-text.test.ts`, `tests/kernel/zam-academy-politik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-deutsch-realschule-10-cell.test.ts`, `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`, `tests/kernel/academy-catalog.test.ts`, `tests/kernel/academy-cells-lock.test.ts`, `tests/kernel/tile-version.test.ts`, `tests/kernel/zam-academy-uml-cell.test.ts`, `tests/kernel/zam-academy-geographie-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-chemie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-7-cell.test.ts`, `tests/kernel/zam-academy-it-cells.test.ts`, `tests/kernel/zam-academy-informatik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-9-cell.test.ts`, `tests/cli/curriculum-lehrplanplus-bayern.test.ts`, `tests/cli/academy-sync-script.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-10-cell.test.ts`
+- Tests: `tests/kernel/zam-academy-2026-11-cells.test.ts`, `tests/kernel/zam-academy-2026-11-13-cells.test.ts`, `tests/kernel/zam-academy-englisch-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-deutsch-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-chemie-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-informatik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-8-cell.test.ts`, `tests/kernel/kvt-card-text.test.ts`, `tests/kernel/zam-academy-politik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-deutsch-realschule-10-cell.test.ts`, `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`, `tests/kernel/academy-catalog.test.ts`, `tests/kernel/academy-cells-lock.test.ts`, `tests/kernel/tile-version.test.ts`, `tests/kernel/zam-academy-uml-cell.test.ts`, `tests/kernel/zam-academy-geographie-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-chemie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-7-cell.test.ts`, `tests/kernel/zam-academy-it-cells.test.ts`, `tests/kernel/zam-academy-informatik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-9-cell.test.ts`, `tests/cli/curriculum-lehrplanplus-bayern.test.ts`, `tests/cli/academy-sync-script.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-10-cell.test.ts`
 - Code: `src/kernel/atlas/weltwissen-emblems.ts`, `src/kernel/atlas/weltwissen-seed.ts`, `src/kernel/atlas/palette.ts`, `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/library/topics.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/import/material-import.ts`, `src/kernel/library/academy-catalog.ts`, `src/kernel/library/tile-version.ts`, `scripts/sync-academy-cells.mjs`, `src/cli/curriculum/providers/lehrplanplus-bayern/manifest.ts`
 
 - [ADR 2026-03-26 — Personal Workflow Foundations](../adr/2026-03-26-personal-workflow-foundations.md)

@@ -202,11 +202,18 @@ describe("bundled tiles carry clean card text (ADR 2026-10-14b)", () => {
   });
 
   it("an item rewritten into segments declares its materiality", () => {
+    // Cards authored natively with segments after the card-text migration have
+    // no prior plain-text wording whose change needs classification (`kvt-attach`
+    // defaults absent `materiality` to `"material"`).
+    const BORN_SEGMENTED = new Set([
+      "zam-academy-biologie-gymnasium-11-kvt.json 01M724F0PYEXCZD2CVYC6T98KB",
+    ]);
     const undeclared = ALL.filter(
-      ({ item }) =>
+      ({ file, item }) =>
         (item.question_segments !== undefined ||
           item.concept_segments !== undefined) &&
-        item.materiality === undefined,
+        item.materiality === undefined &&
+        !BORN_SEGMENTED.has(`${file} ${item.id}`),
     ).map(({ file, item }) => `${file} ${item.id}`);
     expect(undeclared).toEqual([]);
   });

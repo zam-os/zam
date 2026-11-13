@@ -15,6 +15,7 @@ import {
   getBundledCellTile,
   getTokenById,
   installKvtTile,
+  type KvtTile,
   kvtItemPlainTexts,
   listLibraryTopics,
   needsGenericCurriculumImport,
@@ -29,7 +30,15 @@ const LEGACY_ID =
   "de-by:realschule-10-englisch-abschlusspruefung-text-production-mediation";
 const APP = "https://academy.zam-os.org/englisch-realschule-10/";
 const tile = getBundledCellTile(CELL_ID)!;
-const legacy = getBundledCellTile(LEGACY_ID)!;
+const legacy = JSON.parse(
+  readFileSync(
+    new URL(
+      "../fixtures/legacy/de-by-realschule-10-englisch-abschlusspruefung-text-production-mediation-kvt.json",
+      import.meta.url,
+    ),
+    "utf8",
+  ),
+) as KvtTile;
 const items = tile.atoms.flatMap((atom) => atom.practice_items);
 const itemIds = new Set(items.map((item) => item.id));
 const oldIds = legacy.atoms.flatMap((atom) =>
@@ -99,6 +108,8 @@ describe("ZAM Academy Englisch 10 Realschule cell", () => {
   });
 
   it("offers the common grade-10 curriculum to every Realschule group", () => {
+    expect(getBundledCell(LEGACY_ID)).toBeUndefined();
+    expect(getBundledCellTile(LEGACY_ID)).toBeUndefined();
     for (const track of [
       undefined,
       "I",
@@ -110,7 +121,7 @@ describe("ZAM Academy Englisch 10 Realschule cell", () => {
     ]) {
       expect(
         findBundledCellsForScope(scope(10, track)).map((cell) => cell.id),
-      ).toEqual(expect.arrayContaining([CELL_ID, LEGACY_ID]));
+      ).toEqual([CELL_ID]);
       expect(needsGenericCurriculumImport(scope(10, track))).toBe(false);
     }
     for (const position of [
@@ -175,7 +186,7 @@ describe("ZAM Academy Englisch 10 Realschule cell", () => {
     );
     const bytes = readFileSync(
       new URL(
-        "../fixtures/curriculum/de-by-realschule-10-englisch-abschlusspruefung-text-production-mediation-kvt.json",
+        "../fixtures/legacy/de-by-realschule-10-englisch-abschlusspruefung-text-production-mediation-kvt.json",
         import.meta.url,
       ),
     );

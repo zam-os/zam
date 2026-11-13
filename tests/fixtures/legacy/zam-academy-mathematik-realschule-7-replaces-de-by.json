@@ -1,0 +1,570 @@
+{
+  "schema": 1,
+  "approved": "2026-11-13",
+  "status": "approved",
+  "source": "Thomas in der ZAM-Release-Sitzung am 2026-11-13: „Falls irgendwo noch eine Mapping-Freigabe nicht protokolliert ist, dann gebe ich sie hiermit formal. Das Mergen bedeutet Zustimmung.“ Die Freigabe gilt der Zuordnung der 30 de-by-Karten in dieser Datei (7 A replace, 0 B, 1 C retire [01K4M7K0000000000000000J02], 22 C keep-active). Ab Zellversion 2026.11.1 tragen die 7 Nachfolger je ein replaces und retired_items legt 01K4M7K0000000000000000J02 still.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "3ff6ee18389b6b2ac602a7265a2ecd695f395107",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-7-mathematik-geometrie-achsen-punktsymmetrie-kvt.json",
+      "sha256": "79576b89c0182c54591bf1ff80dbe585cb0c5b02e1355c1dbe6e3154c277483c",
+      "tile_id": "de-by:realschule-7-mathematik-geometrie-achsen-punktsymmetrie"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-7-mathematik-kongruenz-dreiecke-vektoren-kvt.json",
+      "sha256": "e55519358e92c7ea8717b38783a616ac83f3ae0b65143f18cd76f6fbcbe86242",
+      "tile_id": "de-by:realschule-7-mathematik-kongruenz-dreiecke-vektoren"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-7-mathematik-prozent-zinsrechnung-kvt.json",
+      "sha256": "b95e7cad9df97d4a86549e12bd68fb77f0ac1a1d9c212253355b81d75ea22577",
+      "tile_id": "de-by:realschule-7-mathematik-prozent-zinsrechnung"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-7-mathematik-rationale-zahlen-terme-kvt.json",
+      "sha256": "e1a1f40ae17a67f4d02d74682a422fa89c568bdc0d92a45f0b4bcefbb6793311",
+      "tile_id": "de-by:realschule-7-mathematik-rationale-zahlen-terme"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-geometrie-achsen-punktsymmetrie",
+      "de_by_id": "01K4M7S0000000000000000J01",
+      "de_by_question": "Welche grundlegende Abbildungseigenschaft ändert sich bei einer Achsenspiegelung im Gegensatz zur Drehung oder Verschiebung?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Achsenspiegelung ist Vorwissen aus M6. Die neue Karte fragt den erhaltenen Umlaufsinn einer Verschiebung statt der Umkehrung bei Spiegelung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-geometrie-achsen-punktsymmetrie",
+      "de_by_id": "01K4M7S0000000000000000J02",
+      "de_by_question": "Nenne die vier Haupteigenschaften der Achsenspiegelung (Geradentreue, Längentreue, Winkeltreue, Umkehrung des Umlaufsinns / Gegensinnigkeit), definiere die Mittelsenkrechte m_[AB] als geometrischen Ort aller Punkte und beschreibe die Zirkel-und-Lineal-Konstruktion der Winkelhalbierenden w_alpha.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Altfrage zu Spiegelung, Mittelsenkrechter und Winkelhalbierenden ist auf mehrere neue Abrufe verteilt; kein vollständiger Einzelnachfolger."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-geometrie-achsen-punktsymmetrie",
+      "de_by_id": "01K4M7S0000000000000000J03",
+      "de_by_question": "Einer Drehung um welchen Drehwinkel entspricht eine Punktspiegelung an einem Zentrum Z geometrisch?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Punktspiegelung als Halbwendung ist Vorwissen; kein identischer neuer Abruf in diesem M7-Paket."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-geometrie-achsen-punktsymmetrie",
+      "de_by_id": "01K4M7S0000000000000000J04",
+      "de_by_question": "Beschreibe die Abbildungsvorschrift der Punktspiegelung Z_Z (Drehung um 180°), begründe, warum jede Bildgerade parallel zur Ausgangsgeraden verläuft (Parallelentreue) und beweise, dass jedes Parallelogramm punktsymmetrisch bezüglich des Schnittpunkts seiner Diagonalen ist.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteiliger Beweis zur Punktspiegelung ist nicht als vollständige neue Karte erhalten."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-geometrie-achsen-punktsymmetrie",
+      "de_by_id": "01K4M7S0000000000000000J05",
+      "de_by_question": "Zu welcher Winkelsumme ergänzen sich zwei Nebenwinkel an einer Geradengeradenkreuzung?",
+      "category": "A",
+      "academy_slug": "m7-pv-6-parallelen-winkel-2",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf: Nebenwinkel ergänzen sich zu 180 Grad. Nur Vorschlag; die ausgelieferte Zelle deklariert keine Ersetzung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-geometrie-achsen-punktsymmetrie",
+      "de_by_id": "01K4M7S0000000000000000J06",
+      "de_by_question": "Definiere und skizziere die vier Winkelpaare an geschnittenen Parallelen: Scheitelwinkel (gleich groß), Nebenwinkel (ergänzen sich zu 180°), Stufenwinkel / F-Winkel (gleich groß an Parallelen) und Wechselwinkel / Z-Winkel (gleich groß an Parallelen) und bestimme alle 8 Teilwinkel an einer Doppelkreuzung mit g || h, wenn ein Winkel alpha_1 = 65° beträgt.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die alte Gesamtfrage verlangt alle vier Winkelpaare und alle acht Teilwinkel; neue Einzelkarten teilen diese Inhalte auf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-geometrie-achsen-punktsymmetrie",
+      "de_by_id": "01K4M7S0000000000000000J07",
+      "de_by_question": "Wie groß ist die Summe der Innenwinkel alpha + beta + gamma in JEDEM ebenen Dreieck?",
+      "category": "A",
+      "academy_slug": "m7-pv-7-winkelsummen-1",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf: Innenwinkelsumme jedes ebenen Dreiecks. Nur Vorschlag; die ausgelieferte Zelle deklariert keine Ersetzung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-geometrie-achsen-punktsymmetrie",
+      "de_by_id": "01K4M7S0000000000000000J08",
+      "de_by_question": "Beweise den Innenwinkelsummensatz im Dreieck (alpha + beta + gamma = 180°) mithilfe einer Parallelen zur Grundseite durch den Eckpunkt C (unter Verwendung von Wechselwinkeln), formuliere den Außenwinkelsatz (alpha' = beta + gamma) und berechne die Innenwinkel eines Dreiecks, wenn beta doppelt so groß wie alpha ist und gamma = 60° beträgt.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die alte Gesamtfrage kombiniert Beweis, Außenwinkelsatz und ein bestimmtes Verhältnisbeispiel. Kein neuer Einzelabruf bewahrt die ganze Aufgabe."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-kongruenz-dreiecke-vektoren",
+      "de_by_id": "01K4M7K0000000000000000J01",
+      "de_by_question": "Welche Bedingung muss beim Kongruenzsatz SsW (großes S, kleines s, Winkel W) zwingend erfüllt sein, damit das Dreieck eindeutig konstruierbar ist?",
+      "category": "A",
+      "academy_slug": "m7-dr-3-kongruenz-1",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf der Gegenlage des gegebenen Winkels zur längeren Seite bei SsW; nur Zweig I. Nur Vorschlag; die ausgelieferte Zelle deklariert keine Ersetzung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-kongruenz-dreiecke-vektoren",
+      "de_by_id": "01K4M7K0000000000000000J02",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Definiere den Begriff der geometrischen Kongruenz (Deckungsgleichheit "
+        },
+        {
+          "type": "math",
+          "tex": "\\cong",
+          "speech": "kongruent zu"
+        },
+        {
+          "type": "text",
+          "text": ": zwei Figuren stimmen in allen Seitenlängen und Winkelmaßen überein und können durch Kongruenzabbildungen aufeinander abgebildet werden), formuliere die 4 Kongruenzsätze für Dreiecke (1. SSS: drei Seiten, 2. SWS: zwei Seiten und der von ihnen eingeschlossene Winkel, 3. WSW bzw. SWW: eine Seite und zwei Winkel, 4. Ssw: zwei Seiten und der Gegenwinkel der größeren Seite) und begründe, warum 'WWW' (drei Winkel) KEIN Kongruenzsatz ist (sondern nur Ähnlichkeit "
+        },
+        {
+          "type": "math",
+          "tex": "\\sim",
+          "speech": "proportional zu"
+        },
+        {
+          "type": "text",
+          "text": " garantiert)."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "reason": "Die alte Gesamtfrage wird auf mehrere neue Abrufe verteilt. Ihre Musterlösung behauptet fälschlich, ein Winkel gegenüber der kürzeren gegebenen Seite ergebe stets zwei Dreiecke; es können auch null oder eine Lösung sein. Daher Kategorie C mit vorgeschlagener Stilllegung ohne Historienübertrag. Bis Thomas dies ausdrücklich freigibt, deklariert die ausgelieferte Zelle keine Stilllegung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-kongruenz-dreiecke-vektoren",
+      "de_by_id": "01K4M7K0000000000000000J03",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "In welchem Schnittpunkt liegt der Mittelpunkt des Umkreises (Kreis, der durch alle 3 Eckpunkte "
+        },
+        {
+          "type": "math",
+          "tex": "A, B, C",
+          "speech": "A, B, C"
+        },
+        {
+          "type": "text",
+          "text": " des Dreiecks verläuft)?"
+        }
+      ],
+      "category": "A",
+      "academy_slug": "m7-ol-7-umkreis-inkreis-1",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf: Umkreismittelpunkt als Schnitt der Mittelsenkrechten. Nur Vorschlag; die ausgelieferte Zelle deklariert keine Ersetzung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-kongruenz-dreiecke-vektoren",
+      "de_by_id": "01K4M7K0000000000000000J04",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Charakterisiere die 4 ausgezeichneten Punkte und Transversalen des Dreiecks: 1. Mittelsenkrechte ("
+        },
+        {
+          "type": "math",
+          "tex": "m_a, m_b, m_c",
+          "speech": "m a, m b, m c"
+        },
+        {
+          "type": "text",
+          "text": "): Stehen senkrecht auf den Seitenmitten; ihr Schnittpunkt "
+        },
+        {
+          "type": "math",
+          "tex": "U",
+          "speech": "U"
+        },
+        {
+          "type": "text",
+          "text": " ist der Mittelpunkt des Umkreises (Radius "
+        },
+        {
+          "type": "math",
+          "tex": "r=UA=UB=UC",
+          "speech": "r gleich U A gleich U B gleich U C"
+        },
+        {
+          "type": "text",
+          "text": "), 2. Winkelhalbierende ("
+        },
+        {
+          "type": "math",
+          "tex": "w_\\alpha, w_\\beta, w_\\gamma",
+          "speech": "w Alpha, w Beta, w Gamma"
+        },
+        {
+          "type": "text",
+          "text": "): Halbieren die Innenwinkel; ihr Schnittpunkt "
+        },
+        {
+          "type": "math",
+          "tex": "I",
+          "speech": "I"
+        },
+        {
+          "type": "text",
+          "text": " ist der Mittelpunkt des Inkreises (berührt alle 3 Dreiecksseiten von innen), 3. Seitenhalbierende ("
+        },
+        {
+          "type": "math",
+          "tex": "s_a, s_b, s_c",
+          "speech": "s a, s b, s c"
+        },
+        {
+          "type": "text",
+          "text": "): Verbinden Eckpunkte mit gegenüberliegenden Seitenmitten; schneiden sich im Schwerpunkt "
+        },
+        {
+          "type": "math",
+          "tex": "S",
+          "speech": "S"
+        },
+        {
+          "type": "text",
+          "text": ", der jede Seitenhalbierende im Verhältnis "
+        },
+        {
+          "type": "math",
+          "tex": "2:1",
+          "speech": "2 zu 1"
+        },
+        {
+          "type": "text",
+          "text": " (vom Eckpunkt aus) teilt, 4. Höhen ("
+        },
+        {
+          "type": "math",
+          "tex": "h_a, h_b, h_c",
+          "speech": "h a, h b, h c"
+        },
+        {
+          "type": "text",
+          "text": "): Stehen senkrecht auf den Seiten durch den gegenüberliegenden Eckpunkt; schneiden sich im Höhenschnittpunkt "
+        },
+        {
+          "type": "math",
+          "tex": "H",
+          "speech": "H"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Alte Gesamtfrage mit vier Transversalen einschließlich Höhenschnittpunkt; neue Karten behandeln getrennt Umkreis/Inkreis und den Schwerpunkt nur in I."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-kongruenz-dreiecke-vektoren",
+      "de_by_id": "01K4M7K0000000000000000J05",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Wie lauten die Koordinaten des Vektors "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{v} = \\vec{AB}",
+          "speech": "Vektor v gleich Vektor A B"
+        },
+        {
+          "type": "text",
+          "text": " von Punkt "
+        },
+        {
+          "type": "math",
+          "tex": "A(2|1)",
+          "speech": "Punkt A mit den Koordinaten 2 und 1"
+        },
+        {
+          "type": "text",
+          "text": " zum Bildpunkt "
+        },
+        {
+          "type": "math",
+          "tex": "B(7|4)",
+          "speech": "Punkt B mit den Koordinaten 7 und 4"
+        },
+        {
+          "type": "text",
+          "text": " nach der 'Spitze-minus-Schaft'-Regel?"
+        }
+      ],
+      "category": "A",
+      "academy_slug": "m7-pv-2-vektoren-3",
+      "action": "replace",
+      "reason": "Gleiche Punkte A(2|1), B(7|4), gleiche Frage nach AB und gleiche Antwort (5|3). Nur Vorschlag; die ausgelieferte Zelle deklariert keine Ersetzung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-kongruenz-dreiecke-vektoren",
+      "de_by_id": "01K4M7K0000000000000000J06",
+      "de_by_question": [
+        {
+          "type": "text",
+          "text": "Erkläre den Vektorbegriff der bayerischen Realschulmathematik: 1. Vektor als Menge aller parallelen, gleich langen und gleich gerichteten Pfeile (Repräsentant einer Parallelverschiebung), 2. Berechnung des Verbindungsvektors zweier Punkte "
+        },
+        {
+          "type": "math",
+          "tex": "A(x_A|y_A)",
+          "speech": "Punkt A mit den Koordinaten x A und y A"
+        },
+        {
+          "type": "text",
+          "text": " und "
+        },
+        {
+          "type": "math",
+          "tex": "B(x_B|y_B)",
+          "speech": "Punkt B mit den Koordinaten x B und y B"
+        },
+        {
+          "type": "text",
+          "text": " über die Regel 'Spitze minus Schaft': "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{AB} = \\begin{pmatrix} x_B - x_A \\\\ y_B - y_A \\end{pmatrix}",
+          "speech": "Vektor A B gleich Spaltenvektor x B minus x A, y B minus y A"
+        },
+        {
+          "type": "text",
+          "text": ", 3. Der Gegenvektor "
+        },
+        {
+          "type": "math",
+          "tex": "-\\vec{v} = \\begin{pmatrix} -v_x \\\\ -v_y \\end{pmatrix}",
+          "speech": "minus Vektor v gleich dem Vektor aus minus v x und minus v y"
+        },
+        {
+          "type": "text",
+          "text": " (gleiche Länge und Richtung, entgegengesetzte Orientierung), 4. Vektoraddition (Hintereinanderausführung): "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{u} + \\vec{w} = \\begin{pmatrix} u_x + w_x \\\\ u_y + w_y \\end{pmatrix}",
+          "speech": "Vektor u plus Vektor w gleich Spaltenvektor u x plus w x, u y plus w y"
+        },
+        {
+          "type": "text",
+          "text": " und berechne für "
+        },
+        {
+          "type": "math",
+          "tex": "P(-3|4)",
+          "speech": "Punkt P mit den Koordinaten minus 3 und 4"
+        },
+        {
+          "type": "text",
+          "text": ", "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{v} = \\begin{pmatrix} 6 \\\\ -2 \\end{pmatrix}",
+          "speech": "Vektor v gleich Spaltenvektor 6, minus 2"
+        },
+        {
+          "type": "text",
+          "text": " und "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{w} = \\begin{pmatrix} -1 \\\\ 5 \\end{pmatrix}",
+          "speech": "Vektor w gleich Spaltenvektor minus 1, 5"
+        },
+        {
+          "type": "text",
+          "text": " den Bildpunkt "
+        },
+        {
+          "type": "math",
+          "tex": "P'",
+          "speech": "P Strich"
+        },
+        {
+          "type": "text",
+          "text": " nach Verschiebung um "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{v}",
+          "speech": "Vektor v"
+        },
+        {
+          "type": "text",
+          "text": " sowie den Summenvektor "
+        },
+        {
+          "type": "math",
+          "tex": "\\vec{s} = \\vec{v} + \\vec{w}",
+          "speech": "Vektor s gleich Vektor v plus Vektor w"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ],
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die alte Gesamtfrage verbindet Definition, Gegenvektor, Addition und zwei Beispiele. Neue Abrufe sind getrennt; Addition gehört ausdrücklich nur zu I."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-prozent-zinsrechnung",
+      "de_by_id": "01K4M7P0000000000000000J01",
+      "de_by_question": "Wie lautet die Grundformel zur Berechnung des Prozentwerts W aus Grundwert G und Prozentsatz p%?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Grundformel der Prozentrechnung ist Vorwissen. Die neue M7-Erweiterung fragt Änderungsfaktoren und Jahreszinsen statt exakt dieses Abrufs."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-prozent-zinsrechnung",
+      "de_by_id": "01K4M7P0000000000000000J02",
+      "de_by_question": "Definiere die drei Grundgrößen der Prozentrechnung (Grundwert G, Prozentwert W, Prozentsatz p = p/100), stelle die Formeln zur Berechnung aller drei Größen dar und berechne: a) 15 % von 240 €, b) wie viel Prozent 18 Schüler von 30 Schülern sind, c) den Grundwert G, wenn 45 kg genau 30 % entsprechen.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Grundaufgabe zur Prozentrechnung ist Vorwissen und nicht vollständig als eine neue Karte erhalten."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-prozent-zinsrechnung",
+      "de_by_id": "01K4M7P0000000000000000J03",
+      "de_by_question": "Mit welchem Änderungsfaktor (Prozentfaktor q) muss ein Grundwert direkt multipliziert werden, um einen um 20 % reduzierten Preis zu berechnen?",
+      "category": "A",
+      "academy_slug": "m7-pr-1-veraenderter-grundwert-1",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf des Faktors 0,8 bei einer Verminderung um 20 Prozent. Nur Vorschlag; die ausgelieferte Zelle deklariert keine Ersetzung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-prozent-zinsrechnung",
+      "de_by_id": "01K4M7P0000000000000000J04",
+      "de_by_question": "Erkläre das Rechnen mit dem Prozentfaktor q (vermehrt: q = 1 + p/100; vermindert: q = 1 - p/100) und löse folgende Praxisaufgabe: Ein Fahrrad kostet nach einem Rabatt von 15 % im Sommerschlussverkauf noch 595 €. Berechne den ursprünglichen Originalpreis vor der Rabattierung.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Altfrage mit beiden Faktoren und dem Fahrradbeispiel 595 Euro ist nicht vollständig auf einer neuen Karte erhalten."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-prozent-zinsrechnung",
+      "de_by_id": "01K4M7P0000000000000000J05",
+      "de_by_question": "Welchem Begriff aus der Prozentrechnung entspricht das angelegte Kapital K in der Zinsrechnung?",
+      "category": "A",
+      "academy_slug": "m7-pr-3-zinsrechnung-1",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf: Kapital entspricht dem Grundwert. Nur Vorschlag; die ausgelieferte Zelle deklariert keine Ersetzung."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-prozent-zinsrechnung",
+      "de_by_id": "01K4M7P0000000000000000J06",
+      "de_by_question": "Stelle die Begriffe der Zinsrechnung denen der Prozentrechnung gegenüber (Kapital K <-> Grundwert G; Jahreszinsen Z <-> Prozentwert W; Zinssatz p% <-> Prozentsatz p%) und berechne das Guthaben nach einem Jahr, wenn ein Sparer ein Kapital von K = 4500 € zu einem Zinssatz von p% = 2,4 % fest für 1 Jahr anlegt.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die Zuordnung aller drei Größen und das Beispiel mit 4500 Euro sind nicht vollständig auf einer neuen Karte erhalten."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-prozent-zinsrechnung",
+      "de_by_id": "01K4M7P0000000000000000J07",
+      "de_by_question": "Wie viele Tage hat nach der deutschen kaufmännischen Zinsmethode (30/360-Regel) jeder Monat und wie viele Tage hat das Bankjahr?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die kaufmännische 30/360-Methode ist im vorliegenden M7-Fachlehrplan nicht ausdrücklich gefordert. Das Paket behandelt ein Anlagejahr ohne diese Zusatzkonvention."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-prozent-zinsrechnung",
+      "de_by_id": "01K4M7P0000000000000000J08",
+      "de_by_question": "Formuliere die Formeln für Monatszinsen (Z_m = K · p · m / (100 · 12)) und Tageszinsen (Z_t = K · p · t / (100 · 360)) und berechne die Überziehungszinsen (Dispozinsen), die eine Kundin zahlen muss, wenn ihr Girokonto 80 Tage lang um K = 1200 € bei einem Dispozinssatz von p% = 12 % überzogen war.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Unterjährige Monats- und Tageszinsen samt Dispokontext sind nicht Teil des hier nachgewiesenen Jahreszinsumfangs."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-rationale-zahlen-terme",
+      "de_by_id": "01K4M7R0000000000000000J01",
+      "de_by_question": "Welcher mathematische Begriff bezeichnet den Abstand einer Zahl auf der Zahlengeraden zum Nullpunkt 0 (immer nicht-negativ)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Betrag als Abstand ist M6-Vorwissen; keine identische neue Einzelkarte."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-rationale-zahlen-terme",
+      "de_by_id": "01K4M7R0000000000000000J02",
+      "de_by_question": "Definiere die Zahlenmenge der rationalen Zahlen Q (alle Brüche p/q mit p in Z, q in N), unterscheide Betrag |x| von Gegenzahl -x und ordne die Zahlen -3,5; 2/3; -7/2; 0; |-4,2| auf der Zahlengeraden der Größe nach mit dem Kleiner-Zeichen (<).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Rationale Zahlen, Gegenzahl und Zahlengeradenordnung sind M6-Vorwissen; keine vollständige neue Gesamtfrage."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-rationale-zahlen-terme",
+      "de_by_id": "01K4M7R0000000000000000J03",
+      "de_by_question": "Welches Vorzeichen hat das Produkt zweier rationaler Zahlen mit gleichem Vorzeichen (z. B. (-4) · (-6))?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Vorzeichenregeln sind M6-Vorwissen; keine identische neue Einzelkarte."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-rationale-zahlen-terme",
+      "de_by_id": "01K4M7R0000000000000000J04",
+      "de_by_question": "Formuliere die Vorzeichenregeln für Addition, Subtraktion, Multiplikation und Division rationaler Zahlen, erläutere die Rechengesetze (Kommutativ-, Assoziativ- und Distributivgesetz) und berechne den Wert des Terms: (-12) : (-3) + (-5) · 4 - (-8).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Altfrage zu allen Rechengesetzen und einer Zahlenrechnung ist nicht vollständig übernommen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-rationale-zahlen-terme",
+      "de_by_id": "01K4M7R0000000000000000J05",
+      "de_by_question": "Welcher Art von Term liegt vor, wenn die zuletzt auszuführende Rechenoperation eine Multiplikation ist?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die Benennung einer Termstruktur als Produkt ist Vorwissen; kein identischer neuer Einzelabruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-rationale-zahlen-terme",
+      "de_by_id": "01K4M7R0000000000000000J06",
+      "de_by_question": "Erkläre den Unterschied zwischen Variable (Platzhalter für Zahlen) und Term (sinnvoller Rechenausdruck), bestimme die Rechenart der Termstruktur von T(x) = 3 · (x - 4) + 7 (Summe oder Produkt?) und berechne den Termwert T(-2) sowie T(5).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Variable, Termstruktur und zwei konkrete Termwerte sind nicht vollständig auf einer neuen Karte erhalten."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-rationale-zahlen-terme",
+      "de_by_id": "01K4M7R0000000000000000J07",
+      "de_by_question": "Welche beiden Termglieder sind 'gleichartig' und dürfen durch Addition/Subtraktion ihrer Koeffizienten direkt zusammengefasst werden?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die neue Regel zu gleichartigen Summanden prüft die allgemeine Bedingung, nicht die alte konkrete Auswahl 5xy und −8xy. Kein sicher identischer Abruf."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-mathematik-rationale-zahlen-terme",
+      "de_by_id": "01K4M7R0000000000000000J08",
+      "de_by_question": "Vereinfache den Term T(a, b) = 4a - [3b - 2(a - 5b) + 6a] schrittweise durch schrittweises Auflösen der inneren und äußeren Klammern und klammere im Term 15x²y - 25xy² den größtmöglichen gemeinsamen Faktor vollständig aus.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die komplexe verschachtelte Klammer- und Ausklammeraufgabe wird nicht als eine neue Karte erhalten; anspruchsvollere Summenterme liegen im Folgejahrgang."
+    }
+  ]
+}

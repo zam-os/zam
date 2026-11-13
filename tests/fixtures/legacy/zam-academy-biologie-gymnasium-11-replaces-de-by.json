@@ -1,0 +1,87 @@
+{
+  "source_repository": "zam-os/zam",
+  "source_commit": "ea825d1c1147fcc5f37de5817c2d6a7c05e2f7ed",
+  "status": "approved",
+  "approved": "2026-11-10",
+  "source": "Thomas explicitly approved the proposed A mapping for PR #110 in this package's Codex chat on 2026-11-10: \"Freigabe erteilt - Fable 5.2 hat auch noch einmal nachgeschaut - sieht gut aus, bitte als Admin mergen\". This approves the one photosynthesis history transfer; the seven C cards stay active and none is retired.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-gymnasium-11-biologie-neurobiologie-aktionspotential-synapsen-signaltransduktion-kvt.json",
+      "tile_id": "de-by:gymnasium-11-biologie-neurobiologie-aktionspotential-synapsen-signaltransduktion",
+      "version": "2026.08.1",
+      "sha256": "89e4b1243afb2ccbdab7adfee67e852663dfce04624fd494a4aacc769fb0a3bd"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-11-biologie-stoffwechselphysiologie-fotosynthese-zellatmung-atp-kvt.json",
+      "tile_id": "de-by:gymnasium-11-biologie-stoffwechselphysiologie-fotosynthese-zellatmung-atp",
+      "version": "2026.08.1",
+      "sha256": "931c182bab9fa7651877e5d835b33a57a122ae9e1ceaaf5dcbe931a7189058c9"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:gymnasium-11-biologie-neurobiologie-aktionspotential-synapsen-signaltransduktion",
+      "de_by_id": "01K8GBG0000000000000000J01",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The depolarization mechanism through voltage-gated sodium channels is beyond the stimulus–response overview. The new pathway lesson does not test ion flux."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-biologie-neurobiologie-aktionspotential-synapsen-signaltransduktion",
+      "de_by_id": "01K8GBG0000000000000000J02",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "This synthesis combines resting potential, action-potential phases and saltatory conduction. No introduction-class lesson retrieves the whole sequence."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-biologie-neurobiologie-aktionspotential-synapsen-signaltransduktion",
+      "de_by_id": "01K8GBG0000000000000000J03",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The inhibitory GABA or glycine receptor mechanism is different from the new general chemical-synapse retrieval. The question also conflates inhibition with obligatory hyperpolarization."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-biologie-neurobiologie-aktionspotential-synapsen-signaltransduktion",
+      "de_by_id": "01K8GBG0000000000000000J04",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The old synthesis spans molecular release, postsynaptic integration and neurotoxins. The introductory receptor model keeps only the general mechanism."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-biologie-stoffwechselphysiologie-fotosynthese-zellatmung-atp",
+      "de_by_id": "01K8GBH0000000000000000J01",
+      "category": "A",
+      "academy_slug": "bio11-photosynthese-vergleichen-sauerstoffquelle",
+      "action": "replace",
+      "reason": "Both cards ask the single retrieval of water as the source of the oxygen released during photosynthesis, independent of the reaction pathway."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-biologie-stoffwechselphysiologie-fotosynthese-zellatmung-atp",
+      "de_by_id": "01K8GBH0000000000000000J02",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The original asks for light reactions, electron transport and the Calvin cycle. The successor lesson compares only overall balances."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-biologie-stoffwechselphysiologie-fotosynthese-zellatmung-atp",
+      "de_by_id": "01K8GBH0000000000000000J03",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Identifying the final electron acceptor at mitochondrial complex IV is more specific than explaining glucose oxidation or oxygen use in the net reaction."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-11-biologie-stoffwechselphysiologie-fotosynthese-zellatmung-atp",
+      "de_by_id": "01K8GBH0000000000000000J04",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The original covers four aerobic stages and a numerical ATP yield. The introductory card asks about ATP–ADP coupling without transferring mastery of the pathways."
+    }
+  ]
+}

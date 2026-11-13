@@ -21,6 +21,7 @@ import {
   getBundledCellTile,
   getTokenById,
   installKvtTile,
+  type KvtTile,
   kvtItemPlainTexts,
   listLibraryTopics,
   needsGenericCurriculumImport,
@@ -36,7 +37,15 @@ const APP = "https://academy.zam-os.org/franzoesisch-realschule-8/";
 const LEGACY_ID =
   "de-by:realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive";
 const tile = getBundledCellTile(CELL_ID)!;
-const legacy = getBundledCellTile(LEGACY_ID)!;
+const legacy = JSON.parse(
+  readFileSync(
+    new URL(
+      "../fixtures/legacy/de-by-realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive-kvt.json",
+      import.meta.url,
+    ),
+    "utf8",
+  ),
+) as KvtTile;
 const items = tile.atoms.flatMap((atom) => atom.practice_items);
 const itemIds = new Set(items.map((item) => item.id));
 const oldItems = legacy.atoms.flatMap((atom) => atom.practice_items);
@@ -91,12 +100,12 @@ describe("ZAM Academy French 8 Realschule cell", () => {
     ).toHaveLength(42);
   });
 
-  it("offers the package for Grade 8 IIIa beside the active legacy cell", () => {
+  it("offers the package for Grade 8 IIIa while the retired legacy cell stays unbundled", () => {
+    expect(getBundledCell(LEGACY_ID)).toBeUndefined();
+    expect(getBundledCellTile(LEGACY_ID)).toBeUndefined();
     for (const track of [undefined, "IIIa", "wpfg3a"]) {
       const cells = findBundledCellsForScope(scope(track));
-      expect(cells.map((cell) => cell.id).sort()).toEqual(
-        [CELL_ID, LEGACY_ID].sort(),
-      );
+      expect(cells.map((cell) => cell.id)).toEqual([CELL_ID]);
       expect(
         cells
           .find((cell) => cell.id === CELL_ID)
@@ -192,7 +201,7 @@ describe("ZAM Academy French 8 Realschule cell", () => {
     const source = mapping.sources[0];
     const legacyBytes = readFileSync(
       new URL(
-        `../fixtures/curriculum/${source.source_path.split("/").at(-1)}`,
+        `../fixtures/legacy/${source.source_path.split("/").at(-1)}`,
         import.meta.url,
       ),
     );

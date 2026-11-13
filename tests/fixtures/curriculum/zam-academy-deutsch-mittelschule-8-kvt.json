@@ -1,0 +1,3487 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:deutsch-mittelschule-8",
+	"version": "2026.11.1",
+	"title": "Deutsch 8 Mittelschule (ZAM Academy)",
+	"description": "37 Lektionen und 74 gezielte Wiederholungsfragen für Regelklasse und M-Zug zu Zuhören, Bewerbung, Diskussion, Literatur, Medien, Stellungnahme, Grammatik und Rechtschreibung nach LehrplanPLUS Bayern. Mündliche Praxis, Jugendbuchlektüre, Schreibkonferenz und Lehrkraftfeedback ergänzen die App.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/8/deutsch/regelklasse",
+			"checked": "2026-11-12",
+			"label": "LehrplanPLUS Bayern, Mittelschule 8, Deutsch (Regelklasse)"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/8/deutsch/mittlere-reife-klasse",
+			"checked": "2026-11-12",
+			"label": "LehrplanPLUS Bayern, Mittelschule 8, Deutsch (M-Zug)"
+		},
+		{
+			"uri": "https://www.rechtschreibrat.com/DOX/RfdR_Amtliches-Regelwerk_2024.pdf",
+			"checked": "2026-11-12",
+			"label": "Rat für deutsche Rechtschreibung, Amtliches Regelwerk"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M79ZVYW7TQ5XAS7XCRPMMRCZ",
+			"atom_uri": "urn:zam:atom:01M79ZVYW7TQ5XAS7XCRPMMRCZ",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "hoerverstehen-reportage-vergleich",
+			"title": "Hörspiele, Diskussionen und Sendeformen vergleichen",
+			"domain": "deutsch/mittelschule-8/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=hoerverstehen-reportage-vergleich",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprechen",
+					"topic_title": "1 Sprechen & Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZ4AN1F5DRCDZHDNPHG6",
+					"slug": "hoerverstehen-reportage-vergleich-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wodurch unterscheidet sich die Hintergrundreportage im Hörfunk am klarsten von einer reinen Nachrichtensendung?",
+					"concept": "Sie vertieft ein Thema über O‑Töne, Atmo-Geräusche und Zusammenhänge statt nur nackte Fakten knapp zu melden.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=hoerverstehen-reportage-vergleich",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie vertieft ein Thema über O‑Töne, Atmo-Geräusche und Zusammenhänge statt nur nackte Fakten knapp zu melden.",
+							"Sie erfindet frei alle Ortsnamen und Sprecher, um möglichst geheimnisvoll zu wirken."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Sie erfindet frei alle Ortsnamen und Sprecher, um möglichst geheimnisvoll zu wirken.",
+							"reason": "Reportagen recherchieren reale Ereignisse und erfinden keine Fakten."
+						},
+						{
+							"text": "Sie verliest ausschließlich Wetterwerte und Straßenkürzel ohne jede Stimmlage oder Ortsgeräusche.",
+							"reason": "Gerade O‑Töne und Atmosphäre kennzeichnen die Reportage."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZ4H2NAWJA28TSZ9KS0D",
+					"slug": "hoerverstehen-reportage-vergleich-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum empfiehlt sich beim Zuhören einer längeren Diskussion die Trennung von Faktennotizen und Nachfragen?",
+					"concept": "Man sichert zuerst zuverlässige Aussagen der Sprecher und hält gezielte Rückfragen geordnet fürs Gespräch bereit.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=hoerverstehen-reportage-vergleich",
+					"sample_solution": "Man sichert zuerst zuverlässige Aussagen der Sprecher und hält gezielte Rückfragen geordnet fürs Gespräch bereit.",
+					"choice_distractors": [
+						{
+							"text": "Man kann danach alle Aussagen der Gegner streichen und nur noch eigene Behauptungen unkommentiert vorlesen.",
+							"reason": "Verstehendes Zuhören prüft fremde Positionen fair und präzise."
+						},
+						{
+							"text": "Man muss sich ab der dritten Minute überhaupt nicht mehr auf das weitere Gespräch konzentrieren.",
+							"reason": "Gerade für Anschlussfragen bleibt aktives Zuhören bis zum Schluss nötig."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYWE2RD3SXQNNS9Y5M81",
+			"atom_uri": "urn:zam:atom:01M79ZVYWE2RD3SXQNNS9Y5M81",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "vortrag-praktikum-feedback",
+			"title": "Vorträge zu Betriebspraktikum und Projekten überzeugend halten",
+			"domain": "deutsch/mittelschule-8/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=vortrag-praktikum-feedback",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYW7TQ5XAS7XCRPMMRCZ",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprechen",
+					"topic_title": "1 Sprechen & Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZ4R1QXJ2VNKBZA3GJZ1",
+					"slug": "vortrag-praktikum-feedback-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum schaden vollgeschriebene Folien mit langen Sätzen fast jedem Schülervortrag?",
+					"concept": "Das Publikum liest still vor und hört kaum noch zu, während der Vortragende zum Ablesen verleitet wird.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=vortrag-praktikum-feedback",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das Publikum liest still vor und hört kaum noch zu, während der Vortragende zum Ablesen verleitet wird.",
+							"Weil digitale Folien grundsätzlich weniger als zwölf Wörter pro Präsentation zeigen dürfen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Weil digitale Beamer lange Texte nach zwei Minuten automatisch unleserlich ausblenden lassen.",
+							"reason": "Das Problem ist die geteilte Aufmerksamkeit der Zuhörer, nicht die Technik."
+						},
+						{
+							"text": "Weil nur gedruckte Arbeitsblätter überhaupt eine Gliederung und Überschrift besitzen können.",
+							"reason": "Auch Folien brauchen Struktur, aber mit knappen Impulsen statt Fließtext."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZ4ZGC9VS9PPSRTGGHSV",
+					"slug": "vortrag-praktikum-feedback-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woran erkennst du beim Präsentieren eine gelungene Körpersprache mit echtem Adressatenbezug?",
+					"concept": "Offener Stand zum Raum, ruhige unterstützende Gestik und wechselnder Blickkontakt zu vielen Zuhörern.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=vortrag-praktikum-feedback",
+					"sample_solution": "Offener Stand zum Raum, ruhige unterstützende Gestik und wechselnder Blickkontakt zu vielen Zuhörern.",
+					"choice_distractors": [
+						{
+							"text": "Verschränkte Arme vor der Brust, rasches Hin- und Herlaufen und starrer Blick auf die Karteikarte.",
+							"reason": "Unruhe und Abwenden bauen Distanz zum Publikum auf."
+						},
+						{
+							"text": "Möglichst schnelles Vorlesen vom Rücken der Leinwand aus, um unter zwei Minuten zu bleiben.",
+							"reason": "Adressatenbezug verlangt deutliche Zuwendung statt Tempohetze."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYWNWHD1FKZNMQQYW8RR",
+			"atom_uri": "urn:zam:atom:01M79ZVYWNWHD1FKZNMQQYW8RR",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "bewerbungsgespraech-und-telefonat",
+			"title": "Im Bewerbungsgespräch und am Telefon sicher auftreten",
+			"domain": "deutsch/mittelschule-8/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=bewerbungsgespraech-und-telefonat",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYW7TQ5XAS7XCRPMMRCZ",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprechen",
+					"topic_title": "1 Sprechen & Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZ56KAKXQF4W82ZZ38QC",
+					"slug": "bewerbungsgespraech-und-telefonat-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum überzeugen konkrete Erfahrungsbeispiele im Bewerbungsgespräch mehr als allgemeine Sätze wie ‚Ich bin motiviert‘?",
+					"concept": "Ein konkretes Beispiel aus Schule oder Freizeit belegt zuverlässig, wie du tatsächlich arbeitest.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=bewerbungsgespraech-und-telefonat",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein konkretes Beispiel aus Schule oder Freizeit belegt zuverlässig, wie du tatsächlich arbeitest.",
+							"Weil allgemeine Sätze in einem Betriebspraktikum gesetzlich verboten sind."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Weil allgemeine Sätze in deutschen Vorstellungsgesprächen grundsätzlich als unhöflich verboten sind.",
+							"reason": "Es geht nicht um Verbote, sondern um Glaubwürdigkeit durch Belege."
+						},
+						{
+							"text": "Weil Betriebe nach strenger Vorschrift ausschließlich fertige Meisterbriefe anhören wollen.",
+							"reason": "Schüler bewerben sich mit Lernbereitschaft und ersten Schulerfahrungen."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZ5DCDX9V4AB8B3MS4E4",
+					"slug": "bewerbungsgespraech-und-telefonat-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche drei Dinge solltest du vor einem Bewerbungstelefonat griffbereit vor dir liegen haben?",
+					"concept": "Name der Ansprechperson, exakter Praktikumszeitraum sowie Block und Stift für sofortige Notizen.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=bewerbungsgespraech-und-telefonat",
+					"sample_solution": "Name der Ansprechperson, exakter Praktikumszeitraum sowie Block und Stift für sofortige Notizen.",
+					"choice_distractors": [
+						{
+							"text": "Nur eine kurze Chat-Abkürzung, bunte Kopfhörer und ein leeres Videospielmenü.",
+							"reason": "Seriöse Vorbereitung vermeidet Störungen und Hektik."
+						},
+						{
+							"text": "Sämtliche Klassenarbeiten seit der fünften Klasse sowie den kompletten Familienlebenslauf.",
+							"reason": "Am Telefon zählen knappe Rahmendaten und Mitschreibbereitschaft."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYWWMQ55STM9QN093GY3",
+			"atom_uri": "urn:zam:atom:01M79ZVYWWMQ55STM9QN093GY3",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "diskussion-debatte-moderation",
+			"title": "Diskussionen und Debatten vorbereiten, leiten und lösen",
+			"domain": "deutsch/mittelschule-8/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=diskussion-debatte-moderation",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYWE2RD3SXQNNS9Y5M81",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprechen",
+					"topic_title": "1 Sprechen & Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZ5M0TRWXQRPS89C4E43",
+					"slug": "diskussion-debatte-moderation-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Haltung zeichnet einen konstruktiven Moderator in einer kontroversen Schuldebatte aus?",
+					"concept": "Er bleibt neutral, sichert allen Fairplay beim Rederecht und fasst Zwischenergebnisse für einen Kompromiss zusammen.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=diskussion-debatte-moderation",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Er bleibt neutral, sichert allen Fairplay beim Rederecht und fasst Zwischenergebnisse für einen Kompromiss zusammen.",
+							"Er redet mindestens die Hälfte der Gesamtzeit selbst und lobt nur seine Freunde."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Er vertritt nur seine private Meinung besonders laut und entzieht Kritikern sofort jedes Rederecht.",
+							"reason": "Parteilichkeit zerstört das Vertrauen in die Gesprächsleitung."
+						},
+						{
+							"text": "Er schaltet die Diskussion sofort ab, sobald zwei unterschiedliche Standpunkte erstmals sichtbar werden.",
+							"reason": "Gerade aus unterschiedlichen Argumenten soll das Gespräch klären."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZ5V7D8NQN7VRTV72FE4",
+					"slug": "diskussion-debatte-moderation-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie gehst du in einer Debatte sinnvoll auf ein Gegenargument deines Gesprächspartners ein?",
+					"concept": "Du greifst seinen nachvollziehbaren Kern kurz auf, prüfst ihn an Fakten und stellst deine begründete Ergänzung dagegen.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=diskussion-debatte-moderation",
+					"sample_solution": "Du greifst seinen nachvollziehbaren Kern kurz auf, prüfst ihn an Fakten und stellst deine begründete Ergänzung dagegen.",
+					"choice_distractors": [
+						{
+							"text": "Du ignorierst seinen Beitrag vollständig und liest stattdessen deine vorbereiteten Sätze Wort für Wort laut ab.",
+							"reason": "Vorlesen ohne Bezug beendet jeden echten Gedankenaustausch."
+						},
+						{
+							"text": "Du machst dich vor der Klasse über seine Betonung lustig, damit er sich beim nächsten Mal zurückhält.",
+							"reason": "Persönliche Abwertung widerspricht fairen Gesprächsregeln."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYX350WC417M9ZHKH40X",
+			"atom_uri": "urn:zam:atom:01M79ZVYX350WC417M9ZHKH40X",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "lernverhalten-und-lernplanung",
+			"title": "Eigenes Lernverhalten reflektieren und nächste Lernschritte planen",
+			"domain": "deutsch/mittelschule-8/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=lernverhalten-und-lernplanung",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYWE2RD3SXQNNS9Y5M81",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprechen",
+					"topic_title": "1 Sprechen & Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZ62E2DG40ME6PRHVDFT",
+					"slug": "lernverhalten-und-lernplanung-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum reicht der bloße Satz ‚Ich muss für Deutsch mehr lernen‘ als Lernplan fast nie aus?",
+					"concept": "Ihm fehlen konkretes Teilziel, passende Lernmethode und ein überprüfbarer Zeitpunkt.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=lernverhalten-und-lernplanung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ihm fehlen konkretes Teilziel, passende Lernmethode und ein überprüfbarer Zeitpunkt.",
+							"Weil Lernpläne grundsätzlich nur von den Eltern unterschrieben werden dürfen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Weil ein guter Lernplan ausschließlich nach der genauen Seitenanzahl des gesamten Schulbuchs berechnet wird.",
+							"reason": "Gezieltes Üben an eigenen Schwerpunkten schlägt pauschales Seitenlesen."
+						},
+						{
+							"text": "Weil schriftliche Planung beim Üben von Vorträgen oder Aufsätzen eher wertvolle Minuten wegnimmt.",
+							"reason": "Kurze konkrete Planung spart im Gegenteil unproduktives Wiederholen."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZ694N07CW7B23JFJ7CP",
+					"slug": "lernverhalten-und-lernplanung-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche zwei Bestandteile gehören zu einem hilfreichen Lernstand-Feedback für Mitschüler?",
+					"concept": "Eine beobachtete Stärke am konkreten Text und ein klarer, machbarer Tipp für den nächsten Übungsschritt.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=lernverhalten-und-lernplanung",
+					"sample_solution": "Eine beobachtete Stärke am konkreten Text und ein klarer, machbarer Tipp für den nächsten Übungsschritt.",
+					"choice_distractors": [
+						{
+							"text": "Eine möglichst harte Gesamtnote am Rand sowie der pauschale Hinweis auf mehr Fleiß am Schreibtisch.",
+							"reason": "Pauschale Noten ohne konkreten Tipp helfen nicht beim Verbessern."
+						},
+						{
+							"text": "Das stillschweigende Umschreiben aller Sätze durch den Partner, ohne gemeinsam darüber zu sprechen.",
+							"reason": "Nur wer den Grund versteht, verbessert den nächsten eigenen Text."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYXAB0X61BF0HAN1N2RC",
+			"atom_uri": "urn:zam:atom:01M79ZVYXAB0X61BF0HAN1N2RC",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "rollenbiografie-und-buehne",
+			"title": "Rollenbiografie, Körpersprache und szenisches Spiel gestalten",
+			"domain": "deutsch/mittelschule-8/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=rollenbiografie-und-buehne",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprechen",
+					"topic_title": "1 Sprechen & Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZ6G2PS1WBHHR38XR20D",
+					"slug": "rollenbiografie-und-buehne-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welchen konkreten Nutzen hat eine Rollenbiografie vor dem szenischen Spielen?",
+					"concept": "Man versteht Wünsche, Ängste und Vorgeschichte der Figur, sodass Gestik, Tonfall und Blickkontakt glaubwürdig werden.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=rollenbiografie-und-buehne",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Man versteht Wünsche, Ängste und Vorgeschichte der Figur, sodass Gestik, Tonfall und Blickkontakt glaubwürdig werden.",
+							"Man darf während des ganzen Theaterstücks seine Lebensdaten laut vom Blatt ablesen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Man liest sie auf offener Bühne als starre Liste vor, statt überhaupt einen Konflikt zu spielen.",
+							"reason": "Die Rollenbiografie bereitet das Spiel vor, ersetzt aber nicht die Szene."
+						},
+						{
+							"text": "Sie dient nur dazu, im Deutschheft eine lange Ausarbeitung mit Reimen abzuschreiben.",
+							"reason": "Ihre Aufgabe ist direkt das vertiefte Rollenverständnis für Stimme und Körper."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZ6QEPTDV34RBZWHG567",
+					"slug": "rollenbiografie-und-buehne-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche nonverbale Änderung verändert eine Bühnenszene meist sofort stärker als ein zusätzlicher Satz?",
+					"concept": "Gezielter Blickaustausch, bewusstes Verkürzen oder Vergrößern der Distanz und ein Wechsel der Körperhaltung.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=rollenbiografie-und-buehne",
+					"sample_solution": "Gezielter Blickaustausch, bewusstes Verkürzen oder Vergrößern der Distanz und ein Wechsel der Körperhaltung.",
+					"choice_distractors": [
+						{
+							"text": "Das Tragen besonders greller Schuhe sowie das Auswendiglernen der Seitenzahlen im Schulbuch.",
+							"reason": "Entscheidend sind Beziehungssignale zwischen den Figuren im Raum."
+						},
+						{
+							"text": "Möglichst häufiges Wiederholen exakt derselben Handbewegung alle zwei Sekunden ohne Pause.",
+							"reason": "Mechanische Wiederholung wirkt eher unfreiwillig als aussagekräftig."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYXHZJ289D0ZE53VZN23",
+			"atom_uri": "urn:zam:atom:01M79ZVYXHZJ289D0ZE53VZN23",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "sprachebenen-im-gespraech",
+			"title": "Sprachebene gezielt nach Gesprächspartner und Situation wählen",
+			"domain": "deutsch/mittelschule-8/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=sprachebenen-im-gespraech",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYWNWHD1FKZNMQQYW8RR",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprechen",
+					"topic_title": "1 Sprechen & Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZ6Y5CN65MFASWF3WMF7",
+					"slug": "sprachebenen-im-gespraech-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches Kriterium entscheidet in einem Gespräch am stärksten darüber, ob Dialekt, Jugendsprache oder Standardsprache passt?",
+					"concept": "Die konkrete Situation, das Verhältnis zum Gesprächspartner und die erwartete Verständlichkeit.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=sprachebenen-im-gespraech",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die konkrete Situation, das Verhältnis zum Gesprächspartner und die erwartete Verständlichkeit.",
+							"Allein die Uhrzeit sowie die genaue Anzahl aller Anwesenden im Raum."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Ausschließlich das Alter des Redners, weil alle Menschen lebenslang nur eine einzige Ebene sprechen.",
+							"reason": "Sprecherinnen wechseln je nach Situation flexibel zwischen mehreren Varietäten."
+						},
+						{
+							"text": "Dass man in jedem Telefonat grundsätzlich möglichst schwere Fremdwörter einbauen muss.",
+							"reason": "Übertriebene Fremdwörter erschweren oft sogar die sachliche Verständigung."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZ75DQKHH29GY4D1NWMK",
+					"slug": "sprachebenen-im-gespraech-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum reicht im Praktikumsgespräch ein vages Wort wie ‚das Ding da hinten‘ oft nicht aus?",
+					"concept": "Weil unklare Alltagswörter Fehlerquellen schaffen, während Fachbegriffe Teile und Abläufe eindeutig benennen.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=sprachebenen-im-gespraech",
+					"sample_solution": "Weil unklare Alltagswörter Fehlerquellen schaffen, während Fachbegriffe Teile und Abläufe eindeutig benennen.",
+					"choice_distractors": [
+						{
+							"text": "Weil Handwerksbetriebe streng verbieten, Gegenstände im Raum überhaupt mit dem Finger anzusehen.",
+							"reason": "Präzise Fachwörter sichern Verständigung auch über Telefon oder Plan."
+						},
+						{
+							"text": "Weil einfache deutsche Nomen im gesamten achten Schuljahr als Dialekt eingestuft werden.",
+							"reason": "Es geht um inhaltliche Eindeutigkeit statt um Verbot einfacher Wörter."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYXRM4KG17HGRNCRC25V",
+			"atom_uri": "urn:zam:atom:01M79ZVYXRM4KG17HGRNCRC25V",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "superstrukturen-und-vorlesen",
+			"title": "Superstrukturen erkennen, gezielt lesen und sinngestaltend vorlesen",
+			"domain": "deutsch/mittelschule-8/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=superstrukturen-und-vorlesen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "lesen",
+					"topic_title": "2 Lesen & Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZ7C1YSTDC9FG55VCHK2",
+					"slug": "superstrukturen-und-vorlesen-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was versteht man beim Lesen unter der ‚Superstruktur‘ eines Textes?",
+					"concept": "Das typische Aufbaugerüst einer Textsorte, etwa Vorspann vor Detail in der Meldung oder These vor Argument in der Stellungnahme.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=superstrukturen-und-vorlesen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das typische Aufbaugerüst einer Textsorte, etwa Vorspann vor Detail in der Meldung oder These vor Argument in der Stellungnahme.",
+							"Eine besonders schwere, hochgestochene Fremdwortliste ganz am Ende eines gedruckten Buches."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Eine möglichst verzierte Überschrift mit mindestens drei unterschiedlichen Farben auf jeder Seite.",
+							"reason": "Superstruktur meint die gedankliche Textordnung, nicht die reine Druckfarbe."
+						},
+						{
+							"text": "Die Gesamtzahl aller Fremdwörter, die in einem Schulaufsatz mindestens einmal vorkommen.",
+							"reason": "Es geht um wiederkehrende Textteile, nicht um Wörterzahlen."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZ7KCNF2144T31E838BM",
+					"slug": "superstrukturen-und-vorlesen-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann ersetzt man beim Vorlesen oder Erarbeiten das schnelle Querlesen zwingend durch genaues, langsames Lesen?",
+					"concept": "Sobald komplexe Zusammenhänge belegt, Schritte befolgt oder feine sprachliche Zwischentöne vorgetragen werden sollen.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=superstrukturen-und-vorlesen",
+					"sample_solution": "Sobald komplexe Zusammenhänge belegt, Schritte befolgt oder feine sprachliche Zwischentöne vorgetragen werden sollen.",
+					"choice_distractors": [
+						{
+							"text": "Sobald ein Buch mehr als fünf Kapitel besitzt und gar keine farbigen Zeichnungen mehr abdruckt.",
+							"reason": "Die Textdichte und Aufgabe bestimmen das Tempo, nicht die reine Kapitelzahl."
+						},
+						{
+							"text": "Immer erst dann, wenn die gesamte Vorleserunde schon vor der Pause komplett beendet ist.",
+							"reason": "Genaues Prüfen braucht man während des Verstehens und vor dem Vortrag."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYXZ087R5QJV7H4F0CF7",
+			"atom_uri": "urn:zam:atom:01M79ZVYXZ087R5QJV7H4F0CF7",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "textanalyse-und-hintergrund",
+			"title": "Werk, Autorenbiografie, Zeitgeschichte und Satire einordnen",
+			"domain": "deutsch/mittelschule-8/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=textanalyse-und-hintergrund",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYXRM4KG17HGRNCRC25V",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "lesen",
+					"topic_title": "2 Lesen & Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZ7TR3JA8Y5V1DGAN95Z",
+					"slug": "textanalyse-und-hintergrund-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was ist das Hauptkennzeichen einer Satire?",
+					"concept": "Sie kritisiert reale Missstände, indem sie typische Fehler gezielt übertreibt, verzerrt oder verspottet.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=textanalyse-und-hintergrund",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie kritisiert reale Missstände, indem sie typische Fehler gezielt übertreibt, verzerrt oder verspottet.",
+							"Sie meldet aktuelle Börsenkurse und Polizeiberichte streng ohne jede persönliche Färbung."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Sie gibt sachliche Kochrezepte Schritt für Schritt möglichst neutral und ohne jeden Witz wieder.",
+							"reason": "Satire wertet spöttisch und überzeichnet gerade bewusst."
+						},
+						{
+							"text": "Sie vermeidet jeden Bezug zur Gegenwart und beschreibt nur erfundene Zauberwelten ohne Kritik.",
+							"reason": "Satire richtet sich stets auf erkennbare menschliche oder gesellschaftliche Schwächen."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZ81EG7VHQ1CDDVDAEF4",
+					"slug": "textanalyse-und-hintergrund-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche goldene Regel gilt beim Einsatz historischer oder biografischer Zusatzinfos in der Textanalyse?",
+					"concept": "Sie machen Zusammenhänge verständlicher, müssen aber stets mit konkreten Textstellen statt bloßer Vermutung belegt werden.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=textanalyse-und-hintergrund",
+					"sample_solution": "Sie machen Zusammenhänge verständlicher, müssen aber stets mit konkreten Textstellen statt bloßer Vermutung belegt werden.",
+					"choice_distractors": [
+						{
+							"text": "Sobald die Lebensdaten des Autors bekannt sind, braucht man den literarischen Text gar nicht mehr genau zu zitieren.",
+							"reason": "Das Werk selbst bleibt immer Ausgangspunkt und Prüfstein jeder Deutung."
+						},
+						{
+							"text": "Man setzt einfach jedes Erlebnis der Hauptfigur komplett mit der echten Kindheit des Verfassers gleich.",
+							"reason": "Fiktionale Texte verwandeln Motive frei und sind keine eins-zu-eins-Protokolle."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYY6C0RE2H0HXPRT93N3",
+			"atom_uri": "urn:zam:atom:01M79ZVYY6C0RE2H0HXPRT93N3",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "figuren-zitate-und-fachbegriffe",
+			"title": "Erzählperspektive, Figurenbeziehungen und Raum-/Zeitgestaltung deuten",
+			"domain": "deutsch/mittelschule-8/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=figuren-zitate-und-fachbegriffe",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYXRM4KG17HGRNCRC25V",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "lesen",
+					"topic_title": "2 Lesen & Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZ88ZVTJ2ZGNW21JRJ1D",
+					"slug": "figuren-zitate-und-fachbegriffe-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was unterscheidet personales Erzählverhalten am klarsten von einem auktorialen Erzähler?",
+					"concept": "Personal erlebt man alles nah durch den Wissensstand einer Figur; auktorial überschaut der Erzähler alle Figuren und kommentiert von außen.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=figuren-zitate-und-fachbegriffe",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Personal erlebt man alles nah durch den Wissensstand einer Figur; auktorial überschaut der Erzähler alle Figuren und kommentiert von außen.",
+							"Personal steht immer im Futur II, während auktoriale Texte im Imperativ bleiben."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Personal nennt alle Personen nur mit ihren Hausnummern; auktorial nutzt immer die Ich‑Form.",
+							"reason": "Auch auktoriales Erzählen steht in der dritten Person, hat aber Überblick und Distanz."
+						},
+						{
+							"text": "Personale Texte erscheinen nur als gedrucktes Theaterstück, auktoriale Texte nur als gereimte Ballade.",
+							"reason": "Beide Begriffe betreffen Erzählhaltungen innerhalb epischer Texte."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZ8FD7D70WF80F6T3SZN",
+					"slug": "figuren-zitate-und-fachbegriffe-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wozu dienen Zeitdehnung und enge, dunkle Raumgestaltung oft in literarischen Texten?",
+					"concept": "Sie machen innere Anspannung, Beklemmung oder einen entscheidenden Wendepunkt für Leser intensiv spürbar.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=figuren-zitate-und-fachbegriffe",
+					"sample_solution": "Sie machen innere Anspannung, Beklemmung oder einen entscheidenden Wendepunkt für Leser intensiv spürbar.",
+					"choice_distractors": [
+						{
+							"text": "Sie sollen das Buch künstlich länger drucken, damit mehr Seiten im Inhaltsverzeichnis entstehen.",
+							"reason": "Raum und Zeit sind bewusste künstlerische Bedeutungsträger."
+						},
+						{
+							"text": "Sie zeigen immer an, dass das erzählte Ereignis garantiert nie zu Ende gehen wird.",
+							"reason": "Zeitdehnung lenkt den Blick auf einen einzelnen inneren Augenblick."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYYDZF5F147N3Z2ERKMC",
+			"atom_uri": "urn:zam:atom:01M79ZVYYDZF5F147N3Z2ERKMC",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "bildsprache-metapher-symbolik",
+			"title": "Bildsprache deuten: Metapher, Symbolik, Hyperbel und Euphemismus",
+			"domain": "deutsch/mittelschule-8/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=bildsprache-metapher-symbolik",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYY6C0RE2H0HXPRT93N3",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "lesen",
+					"topic_title": "2 Lesen & Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZ8PJSSJCC0Z3YT94YDG",
+					"slug": "bildsprache-metapher-symbolik-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wodurch unterscheidet sich ein Euphemismus grundlegend von einer Hyperbel?",
+					"concept": "Ein Euphemismus mildert Unangenehmes beschönigend ab; eine Hyperbel übertreibt bewusst ins Maßlose.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=bildsprache-metapher-symbolik",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein Euphemismus mildert Unangenehmes beschönigend ab; eine Hyperbel übertreibt bewusst ins Maßlose.",
+							"Ein Euphemismus steht nur in Tierfabeln, eine Hyperbel ausschließlich in Kochbüchern."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Ein Euphemismus setzt immer ein Vergleichswort ‚wie‘, eine Hyperbel dagegen ein Semikolon.",
+							"reason": "Es geht nicht um Vergleichspartikel oder Zeichensetzung, sondern um Bedeutungsabsicht."
+						},
+						{
+							"text": "Ein Euphemismus kritisiert spöttisch Fehler des Lesers; eine Hyperbel verschweigt alle Gefühle.",
+							"reason": "Spöttische Überzeichnung wäre Satire bzw. Ironie, nicht ein beschönigender Euphemismus."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZ8X2K82A5NP7K294G0T",
+					"slug": "bildsprache-metapher-symbolik-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum sollte man beim Lesen politischer oder betrieblicher Meldungen besonders auf Euphemismen achten?",
+					"concept": "Weil sie Nachteile oder Konflikte hinter freundlich klingenden Wörtern verbergen und so Urteile lenken können.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=bildsprache-metapher-symbolik",
+					"sample_solution": "Weil sie Nachteile oder Konflikte hinter freundlich klingenden Wörtern verbergen und so Urteile lenken können.",
+					"choice_distractors": [
+						{
+							"text": "Weil jedes beschönigende Substantiv in amtlichen Texten rechtlich durch drei Punkte ersetzt werden muss.",
+							"reason": "Die Kritik dient der eigenen Urteilsbildung, nicht einer Satzzeichenregel."
+						},
+						{
+							"text": "Weil man Euphemismen in der Abschlussprüfung niemals zusammen mit Sachtexten lesen darf.",
+							"reason": "Gerade die Analyse pragmatischer Texte deckt solche Absichten auf."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYYM3A1VXKZ5EG024AFM",
+			"atom_uri": "urn:zam:atom:01M79ZVYYM3A1VXKZ5EG024AFM",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "buch-film-theater-vergleich",
+			"title": "Buch, Film, Hörtext und Theateraufführung kritisch vergleichen",
+			"domain": "deutsch/mittelschule-8/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=buch-film-theater-vergleich",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYY6C0RE2H0HXPRT93N3",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "lesen",
+					"topic_title": "2 Lesen & Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZ94VFYT6GTQ1360K7Z2",
+					"slug": "buch-film-theater-vergleich-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum muss eine gelungene Literaturverfilmung manchmal Szenen kürzen oder durch Bilder ersetzen?",
+					"concept": "Weil Kino visuelle und hörbare Mittel nutzt und in rund zwei Stunden Verdichtung braucht statt gedanklicher Langbeschreibung.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=buch-film-theater-vergleich",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Weil Kino visuelle und hörbare Mittel nutzt und in rund zwei Stunden Verdichtung braucht statt gedanklicher Langbeschreibung.",
+							"Weil Regisseure grundsätzlich das zugrundeliegende Buch überhaupt nicht lesen dürfen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Weil alle Verlage pro verfilmtem Kapitel eine feste Kürzungsstrafe an die Kinos verlangen.",
+							"reason": "Änderungen folgen filmischen Gestaltungsprinzipien, keinen Strafgebühren."
+						},
+						{
+							"text": "Weil ein Kinofilm sonst exakt drei Wochen ohne Unterbrechung im Saal laufen müsste.",
+							"reason": "Verdichtung soll Dramaturgie und Rhythmus sichern."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZ9BG1TFJPHKNKT94ZM3",
+					"slug": "buch-film-theater-vergleich-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welcher besondere Mehrwert unterscheidet einen Theaterbesuch von jedem Buch und Kinofilm?",
+					"concept": "Die unmittelbare Live-Begegnung mit leibhaftigen Schauspielern im selben Raum, bei der jeder Abend einmalig entsteht.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=buch-film-theater-vergleich",
+					"sample_solution": "Die unmittelbare Live-Begegnung mit leibhaftigen Schauspielern im selben Raum, bei der jeder Abend einmalig entsteht.",
+					"choice_distractors": [
+						{
+							"text": "Die Möglichkeit, das Theaterstück beliebig oft anzuhalten und per Zeitlupe in Großaufnahme zu zoomen.",
+							"reason": "Zeitlupe und Großaufnahme gehören zu Film und Video, nicht zur Live-Bühne."
+						},
+						{
+							"text": "Dass im Theater grundsätzlich gar kein geschriebener Text, keine Bühne und kein Licht genutzt werden.",
+							"reason": "Bühne, Licht und Dramentext sind im Gegenteil zentrale Theatermittel."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYYVDZS879P7X7M3W2VN",
+			"atom_uri": "urn:zam:atom:01M79ZVYYVDZS879P7X7M3W2VN",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "jugendbuch-stimmungen-erkunden",
+			"title": "Jugendbuch nach Handlungssträngen, Motiven und Grundstimmungen erschließen",
+			"domain": "deutsch/mittelschule-8/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=jugendbuch-stimmungen-erkunden",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYY6C0RE2H0HXPRT93N3",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "lesen",
+					"topic_title": "2 Lesen & Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZ9JJT88VNAPBB9BVJTN",
+					"slug": "jugendbuch-stimmungen-erkunden-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was versteht man bei der Untersuchung eines Jugendbuchs unter einem literarischen ‚Motiv‘?",
+					"concept": "Ein wiederkehrendes Bild oder Ding, das tiefere Bedeutung für Handlung und Figuren trägt.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=jugendbuch-stimmungen-erkunden",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein wiederkehrendes Bild oder Ding, das tiefere Bedeutung für Handlung und Figuren trägt.",
+							"Ausschließlich das farbige Titelbild auf dem Einband des neuen Taschenbuchs."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Die genaue Gesamtanzahl aller gedruckten Seiten zwischen Vorwort und Verlagsanzeige.",
+							"reason": "Seitenzahlen geben Umfang an, kein inhaltlich-symbolisches Motiv."
+						},
+						{
+							"text": "Eine alphabetische Liste sämtlicher schwierigen Rechtschreibwörter im ganzen Roman.",
+							"reason": "Eine Wortliste wäre ein Glossar, kein literarisches Motiv."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZ9SFZEPYFC9WNW12AT9",
+					"slug": "jugendbuch-stimmungen-erkunden-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum lohnt es sich bei einer Jugendbuchpräsentation, menschliche Grundstimmungen wie Trauer oder Glück anhand einer konkreten Stelle zu zeigen?",
+					"concept": "So erlebt das Publikum die Entwicklung der Figur unmittelbar mit und versteht, warum das Buch lesenswert ist.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=jugendbuch-stimmungen-erkunden",
+					"sample_solution": "So erlebt das Publikum die Entwicklung der Figur unmittelbar mit und versteht, warum das Buch lesenswert ist.",
+					"choice_distractors": [
+						{
+							"text": "Damit man auf jede Nennung von Figuren, Ort und Konflikt im Vortrag ganz verzichten kann.",
+							"reason": "Stimmungen wachsen gerade aus Handlung und Figurenlage hervor."
+						},
+						{
+							"text": "Weil ein Vortrag sonst niemals länger als dreißig Sekunden dauern dürfte.",
+							"reason": "Ziel ist inhaltliche Tiefe und Leseneugier, keine reine Zeitdehnung."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYZ2AQ3BDY6G324S4B87",
+			"atom_uri": "urn:zam:atom:01M79ZVYZ2AQ3BDY6G324S4B87",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "journalistische-textsorten",
+			"title": "Journalistische Textsorten, Intention und Quellenlage prüfen",
+			"domain": "deutsch/mittelschule-8/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=journalistische-textsorten",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "lesen",
+					"topic_title": "2 Lesen & Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZA0BQRVJGYBERYK13XC",
+					"slug": "journalistische-textsorten-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Textsorte darf ausdrücklich werten, loben oder kritisieren – solange sie klar von der neutralen Meldung getrennt bleibt?",
+					"concept": "Der Kommentar sowie ein begründeter Leserbrief aus dem Publikum.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=journalistische-textsorten",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Kommentar sowie ein begründeter Leserbrief aus dem Publikum.",
+							"Die klassische Kurznachricht in einer seriösen Tageszeitung oder Nachrichtensendung."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Ausschließlich das gedruckte Fahrplanverzeichnis am Bahnhof mit allen regulären Abfahrtszeiten.",
+							"reason": "Ein Fahrplan informiert rein sachlich ohne jede politische oder persönliche Wertung."
+						},
+						{
+							"text": "Jeder objektive Wetterbericht, solange er unter einer halben Seite bleibt.",
+							"reason": "Auch Wetterberichte liefern gemessene bzw. prognostizierte Daten ohne Meinungskommentar."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZA7R7Z8H6QDGQWAZVGE",
+					"slug": "journalistische-textsorten-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was unterscheidet den Leserbrief formal am klarsten von einem allgemeinen Kommentar der Redaktion?",
+					"concept": "Er stammt von Leserinnen oder Lesern und bezieht sich ausdrücklich auf einen zuvor veröffentlichten Artikel mit Datum.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=journalistische-textsorten",
+					"sample_solution": "Er stammt von Leserinnen oder Lesern und bezieht sich ausdrücklich auf einen zuvor veröffentlichten Artikel mit Datum.",
+					"choice_distractors": [
+						{
+							"text": "Ein Leserbrief darf im Deutschen niemals Nebensätze oder vollständige Verben enthalten.",
+							"reason": "Leserbriefe werden in vollständiger, höflicher Standardsprache verfasst."
+						},
+						{
+							"text": "Ein Kommentar steht immer am Ende eines Gedichts, ein Leserbrief immer auf einer Verpackung.",
+							"reason": "Beide gehören als meinungsbetonte Formen zur Presse und Medienöffentlichkeit."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYZ940BEQACY17X6098W",
+			"atom_uri": "urn:zam:atom:01M79ZVYZ940BEQACY17X6098W",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "manipulation-infotainment-medien",
+			"title": "Manipulation, Propaganda und Infotainment kritisch durchschauen",
+			"domain": "deutsch/mittelschule-8/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=manipulation-infotainment-medien",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYZ2AQ3BDY6G324S4B87",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "lesen",
+					"topic_title": "2 Lesen & Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZAE7WWJRK3DMNXS1TN6",
+					"slug": "manipulation-infotainment-medien-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was bezeichnet der Begriff ‚Infotainment‘ im Fernsehen und in Online-Medien?",
+					"concept": "Eine Mischform, die sachliche Information und unterhaltende Darstellung verbindet.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=manipulation-infotainment-medien",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine Mischform, die sachliche Information und unterhaltende Darstellung verbindet.",
+							"Ein kostenloses Druckprogramm für amtliche Formulare ohne jede Grafik."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Eine gedruckte Sammlung von zehn veralteten Lexikonbänden ohne jedes Farbfoto.",
+							"reason": "Infotainment lebt gerade von unterhaltenden, oft filmischen oder digitalen Elementen."
+						},
+						{
+							"text": "Ein spezieller Fachausdruck für langsame Theaterproben ohne Publikum.",
+							"reason": "Es stammt aus Journalismus und Massenmedien, nicht von Theaterproben."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZANMQ0D58T7KKDSB671",
+					"slug": "manipulation-infotainment-medien-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche zwei typischen Warnsignale deuten bei einem Videoclip stark auf gezielte Manipulation statt seriöser Information?",
+					"concept": "Emotionale Übertreibungen bei Bild, Ton und Wortwahl kombiniert mit fehlenden Quellen, fehlendem Datum und einseitiger Darstellung.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=manipulation-infotainment-medien",
+					"sample_solution": "Emotionale Übertreibungen bei Bild, Ton und Wortwahl kombiniert mit fehlenden Quellen, fehlendem Datum und einseitiger Darstellung.",
+					"choice_distractors": [
+						{
+							"text": "Die Nutzung normaler Standardsprache kombiniert mit vollständigen Quellenangaben direkt unter dem Videofenster.",
+							"reason": "Genau diese Merkmale zeichnen im Gegenteil sauberen Journalismus aus."
+						},
+						{
+							"text": "Eine ruhige Sprechstimme im Sachbericht sowie zwei eingeblendete gegensätzliche Expertenmeinungen.",
+							"reason": "Abgewogene Gegenüberstellung beider Seiten beugt Manipulation gerade vor."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYZG8JB37CGCNE3TMJT5",
+			"atom_uri": "urn:zam:atom:01M79ZVYZG8JB37CGCNE3TMJT5",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "medienwahl-urheberrecht-produktion",
+			"title": "Medien verantwortungsbewusst wählen, planen und rechtssicher nutzen",
+			"domain": "deutsch/mittelschule-8/lesen",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=medienwahl-urheberrecht-produktion",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYZ940BEQACY17X6098W",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "lesen",
+					"topic_title": "2 Lesen & Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZAWG1419S4457CXM7F2",
+					"slug": "medienwahl-urheberrecht-produktion-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum reicht bloßes ‚Ich nenne den Fotografen im Abspann‘ beim Kopieren fremder Internetfotos meist NICHT aus?",
+					"concept": "Urheberrechtlich brauchst du vor dem Veröffentlichen grundsätzlich die Erlaubnis oder eine passende CC-Lizenz.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=medienwahl-urheberrecht-produktion",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Urheberrechtlich brauchst du vor dem Veröffentlichen grundsätzlich die Erlaubnis oder eine passende CC-Lizenz.",
+							"Weil man Fotografennamen rechtlich immer nur rückwärts schreiben darf."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Weil ein gedruckter Abspann ausschließlich bei Kinofilmen über neunzig Minuten Laufzeit gilt.",
+							"reason": "Lizenz- und Erlaubnispflicht gelten bei jedem digitalen oder gedruckten Medium."
+						},
+						{
+							"text": "Weil alle Fotos auf öffentlich erreichbaren Webseiten automatisch komplett rechtefrei sind.",
+							"reason": "Öffentlich sichtbar bedeutet rechtlich niemals automatisch frei zur Weiterverwendung."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZB35Y2WXCB9H7V5ZDDA",
+					"slug": "medienwahl-urheberrecht-produktion-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was macht ein ehrliches einwöchiges Medienprotokoll im Vergleich zu bloßen Schätzungen aus dem Bauch heraus so hilfreich?",
+					"concept": "Es macht tatsächliche Nutzungszeiten und ungeplante Lücken sichtbar, sodass man bewusste Zeitfenster gezielt anpassen kann.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=medienwahl-urheberrecht-produktion",
+					"sample_solution": "Es macht tatsächliche Nutzungszeiten und ungeplante Lücken sichtbar, sodass man bewusste Zeitfenster gezielt anpassen kann.",
+					"choice_distractors": [
+						{
+							"text": "Es sperrt sämtliche Mediatheken, Büchereien und Kinos für ein ganzes Jahr komplett für jeden Schüler.",
+							"reason": "Es soll bewussten Mediengenuss ermöglichen statt blind alles zu verbieten."
+						},
+						{
+							"text": "Es ersetzt jede schulische Deutschprüfung durch reine Messwerte der Bildschirmhelligkeit.",
+							"reason": "Das Protokoll dient ausschließlich der persönlichen Selbststeuerung im Alltag."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYZQFD4HG0B9GYB59HBV",
+			"atom_uri": "urn:zam:atom:01M79ZVYZQFD4HG0B9GYB59HBV",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "edv-und-komplexe-formulare",
+			"title": "Texte per EDV professionell gestalten und Formulare sicher ausfüllen",
+			"domain": "deutsch/mittelschule-8/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=edv-und-komplexe-formulare",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "3 Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZBA5M5JG4EF58S3JTM1",
+					"slug": "edv-und-komplexe-formulare-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum arbeitet man in der Textverarbeitung bei Überschriften besser mit festen Formatvorlagen statt mit vielen einzelnen Leerzeilen?",
+					"concept": "So bleiben Abstände im ganzen Dokument einheitlich, lassen sich in einem Klick ändern und erzeugen saubere Inhaltsverzeichnisse.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=edv-und-komplexe-formulare",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"So bleiben Abstände im ganzen Dokument einheitlich, lassen sich in einem Klick ändern und erzeugen saubere Inhaltsverzeichnisse.",
+							"Weil die Leertaste in deutschen Textverarbeitungsprogrammen am Satzende grundsätzlich gesperrt wird."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Weil einzelne Leerzeilen auf Papier stets in dunkelgrauer Farbe mitten über den Text gedruckt werden.",
+							"reason": "Leerzeilen drucken unsichtbar, verschieben aber bei jeder Textänderung alle folgenden Seiten."
+						},
+						{
+							"text": "Weil Formatvorlagen automatisch alle Rechtschreib- und Kommafehler im eigenen Text korrigieren.",
+							"reason": "Rechtschreibung muss weiterhin geprüft werden – Formatvorlagen sichern das Layout."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZBH1JN9QFF5WH96JEY8",
+					"slug": "edv-und-komplexe-formulare-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was solltest du bei einem komplexen Online-Formular für Betriebspraktikum oder Fahrtkostenerstattung vor dem Klick auf ‚Absenden‘ immer prüfen?",
+					"concept": "Alle markierten Pflichtfelder, das richtige Datums- und Zahlenformat, angehängte Nachweise sowie gegebenenfalls die Unterschrift der Eltern.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=edv-und-komplexe-formulare",
+					"sample_solution": "Alle markierten Pflichtfelder, das richtige Datums- und Zahlenformat, angehängte Nachweise sowie gegebenenfalls die Unterschrift der Eltern.",
+					"choice_distractors": [
+						{
+							"text": "Ob möglichst viele bunte Emojis und umgangssprachliche Grüße direkt hinter der Hausnummer stehen.",
+							"reason": "Formulare erwarten sachliche, vollständige und standardisierte Angaben."
+						},
+						{
+							"text": "Ob alle Beträge vorsichtshalber auf null gerundet und leere Felder einfach durch Fragezeichen ersetzt wurden.",
+							"reason": "Unvollständige Pflichtangaben blockieren oder verzögern jede Bearbeitung."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVYZYZ6ZHN8GW64K15ZV4",
+			"atom_uri": "urn:zam:atom:01M79ZVYZYZ6ZHN8GW64K15ZV4",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "numerische-gliederung-und-grafik",
+			"title": "Stoff numerisch gliedern und Sachtexte mit Grafik bündeln",
+			"domain": "deutsch/mittelschule-8/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=numerische-gliederung-und-grafik",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYZQFD4HG0B9GYB59HBV",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "3 Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZBRDPAPPF9GZPTP2S7F",
+					"slug": "numerische-gliederung-und-grafik-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche formale Regel musst du bei einer numerischen Gliederung (z. B. 1.1 / 1.2) unbedingt beachten?",
+					"concept": "Untergliederst du einen Punkt, braucht es mindestens zwei Unterpunkte, sodass auf 1.1 stets 1.2 folgt.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=numerische-gliederung-und-grafik",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Untergliederst du einen Punkt, braucht es mindestens zwei Unterpunkte, sodass auf 1.1 stets 1.2 folgt.",
+							"Jeder Unterpunkt muss immer wieder mit einer neuen Farbe statt mit Zahlen geschrieben werden."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Man beginnt im Hauptteil immer bei Punkt 5.1 und lässt alle ersten Ziffern komplett leer.",
+							"reason": "Gliederungsziffern laufen sauber geordnet ab 1 fort."
+						},
+						{
+							"text": "Hinter jeder Dezimalzahl in der Überschrift muss ein doppeltes Fragezeichen gesetzt werden.",
+							"reason": "Überschriften einer Sachgliederung sind meist knappe Nominalgruppen ohne Fragezeichen."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZBZ2EBM5R18TN0Y5WXB",
+					"slug": "numerische-gliederung-und-grafik-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was leistet die Kombination aus Fließtext und Diagramm besser als ein reiner Aufsatz oder ein bloßes Schaubild allein?",
+					"concept": "Das Diagramm zeigt Verhältnisse auf einen Blick, während der Fließtext Ursachen, Auffälligkeiten und Folgen verständlich erklärt.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=numerische-gliederung-und-grafik",
+					"sample_solution": "Das Diagramm zeigt Verhältnisse auf einen Blick, während der Fließtext Ursachen, Auffälligkeiten und Folgen verständlich erklärt.",
+					"choice_distractors": [
+						{
+							"text": "Man spart sich dadurch jede Überschrift, jede Quellenangabe und alle vollständigen Sätze im Text.",
+							"reason": "Gerade saubere Beschriftung und Einordnung machen beides gemeinsam stark."
+						},
+						{
+							"text": "Es verlängert jeden kurzen Hinweis künstlich auf das Doppelte durch wörtliche Wiederholung derselben Zahlen.",
+							"reason": "Text und Grafik sollten sich ergänzen, nicht redundant doppeln."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ05YJZYV2D91EJTVME8",
+			"atom_uri": "urn:zam:atom:01M79ZVZ05YJZYV2D91EJTVME8",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "zitate-und-indirekte-rede-einbinden",
+			"title": "Zitate und indirekte Rede formgerecht in Texte integrieren",
+			"domain": "deutsch/mittelschule-8/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=zitate-und-indirekte-rede-einbinden",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "3 Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZC64Z29G11XW59E09E5",
+					"slug": "zitate-und-indirekte-rede-einbinden-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie kennzeichnest du beim wörtlichen Zitieren richtig, dass du mitten aus dem Originalsatz ein unwichtiges Wort weggelassen hast?",
+					"concept": "Mit drei Auslassungspunkten in eckigen Klammern, ohne den Sinn des Satzes zu verfälschen.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=zitate-und-indirekte-rede-einbinden",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Mit drei Auslassungspunkten in eckigen Klammern, ohne den Sinn des Satzes zu verfälschen.",
+							"Man lässt die Stelle einfach stillschweigend weg und verschiebt die Wörter ohne Zeichen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Man ersetzt die ausgelassenen Wörter durch ein kurzes Synonym in Kursivschrift ohne Hinweis.",
+							"reason": "Wörtliche Zitate dürfen keine stillschweigend veränderten Wörter enthalten."
+						},
+						{
+							"text": "Man streicht einfach alle Anführungszeichen am Anfang und Ende des ganzen Absatzes komplett weg.",
+							"reason": "Ohne Anführungszeichen entsteht verbotenes Abschreiben (Plagiat)."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZCDVSBY4TM2M5MKA20E",
+					"slug": "zitate-und-indirekte-rede-einbinden-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum zieht der Deutschunterricht für klare indirekte Rede im Zweifel ‚sie kämen‘ gegenüber ‚sie würden kommen‘ vor?",
+					"concept": "Solange eindeutige Formen des Konjunktivs I oder II üblich sind, klingen sie kürzer und präziser als die Umschreibung mit ‚würde‘.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=zitate-und-indirekte-rede-einbinden",
+					"sample_solution": "Solange eindeutige Formen des Konjunktivs I oder II üblich sind, klingen sie kürzer und präziser als die Umschreibung mit ‚würde‘.",
+					"choice_distractors": [
+						{
+							"text": "Weil das Hilfsverb ‚würde‘ in sämtlichen deutschen Zeitungen und Büchern grundsätzlich falsch gilt.",
+							"reason": "Bei veralteten Konjunktiv-II-Formen wie ‚hülfe‘ ist ‚würde‘ durchaus üblich – nur bei klarem Konjunktiv vermeidet man es."
+						},
+						{
+							"text": "Weil man beim Konjunktiv II im gesamten achten Schuljahr alle Kommas weglassen darf.",
+							"reason": "Auch indirekte Rede in Konjunktivform folgt selbstverständlich der Kommaregel."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ0C4H1ZW2A7CH5RJF8Y",
+			"atom_uri": "urn:zam:atom:01M79ZVZ0C4H1ZW2A7CH5RJF8Y",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "perspektivwechsel-und-erzaehlen",
+			"title": "Erzähltexte durch Perspektivwechsel und Stilmittel lebendig formen",
+			"domain": "deutsch/mittelschule-8/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=perspektivwechsel-und-erzaehlen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "3 Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZCM52E12SC5MABQHSBQ",
+					"slug": "perspektivwechsel-und-erzaehlen-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Worauf musst du beim Perspektivwechsel zu einer Nebenfigur in einer Erzählung besonders achten?",
+					"concept": "Die neue Erzählerfigur berichtet nur, was sie aus ihrer Lage tatsächlich erleben kann.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=perspektivwechsel-und-erzaehlen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die neue Erzählerfigur berichtet nur, was sie aus ihrer Lage tatsächlich erleben kann.",
+							"Man muss alle Namen sämtlicher beteiligten Figuren ab dem zweiten Absatz komplett ändern."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Man wechselt nach jedem dritten Wort wieder zurück zur allwissenden Erzählerstimme.",
+							"reason": "Ständiges Springen ohne Plan zerstört die einheitliche Wahrnehmung."
+						},
+						{
+							"text": "Alle Sätze eines Perspektivwechsels müssen zwingend im Passiv Futur II verfasst werden.",
+							"reason": "Die Zeitform folgt der gewählten Erzählsituation, meistens Präteritum oder Präsens."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZCVSBP4F0N3GBVXEB8R",
+					"slug": "perspektivwechsel-und-erzaehlen-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum wirkt ein treffender Vergleich beim anschaulichen Erzählen stärker als bloßes ‚Er war sehr aufgeregt‘?",
+					"concept": "Ein konkretes Bild wie ‚Herz wie ein Hammer‘ macht das Gefühl sofort nacherlebbar.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=perspektivwechsel-und-erzaehlen",
+					"sample_solution": "Ein konkretes Bild wie ‚Herz wie ein Hammer‘ macht das Gefühl sofort nacherlebbar.",
+					"choice_distractors": [
+						{
+							"text": "Weil Verlage kurze Sätze ohne Vergleiche grundsätzlich nie auf Papier drucken.",
+							"reason": "Es geht um plastische Leserwirkung, nicht um Druckregeln."
+						},
+						{
+							"text": "Weil ein Vergleich im Deutschen jedes gebeugte Verb am Satzende ersetzt.",
+							"reason": "Auch Sätze mit Vergleichen brauchen selbstverständlich ein vollständiges Verb."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ0KT8W5SR62FFWPE63K",
+			"atom_uri": "urn:zam:atom:01M79ZVZ0KT8W5SR62FFWPE63K",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "sachbericht-vorgang-protokoll",
+			"title": "Vorgänge, Ereignisse und Protokolle auf Mitschriftenbasis verfassen",
+			"domain": "deutsch/mittelschule-8/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=sachbericht-vorgang-protokoll",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "3 Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZD2BBWJMBM406B2HVBC",
+					"slug": "sachbericht-vorgang-protokoll-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Angaben gehören zwingend schon in den Kopf eines formgerechten Unterrichts-, Exkursions- oder Sitzungsprotokolls?",
+					"concept": "Anlass, Datum, Beginn/Ort, Teilnehmende sowie der Name der protokollierenden Person.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=sachbericht-vorgang-protokoll",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Anlass, Datum, Beginn/Ort, Teilnehmende sowie der Name der protokollierenden Person.",
+							"Die persönlichen Lieblingsfächer aller Mitglieder sowie eine gereimte Begrüßung."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Nur der Spitzname des Sitzungsleiters sowie sämtliche privaten Handynummern im Klartext.",
+							"reason": "Sachlichkeit und Datenschutz verlangen klare offizielle Basisdaten."
+						},
+						{
+							"text": "Eine ausführliche Nacherzählung des gesamten Vormittags mit allen persönlichen Witzen.",
+							"reason": "Protokolle konzentrieren sich strikt auf Thema, Kernpunkte und Beschlüsse."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZD9MYACZDRC6WMX73Y8",
+					"slug": "sachbericht-vorgang-protokoll-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum verzichtet man im sachlichen Protokoll auf Wertwörter wie ‚genialer Vorschlag‘ oder ‚unsinniger Streit‘?",
+					"concept": "Weil ein Protokoll Entscheidungen neutral und überprüfbar für alle Beteiligten dokumentiert statt Partei zu ergreifen.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=sachbericht-vorgang-protokoll",
+					"sample_solution": "Weil ein Protokoll Entscheidungen neutral und überprüfbar für alle Beteiligten dokumentiert statt Partei zu ergreifen.",
+					"choice_distractors": [
+						{
+							"text": "Weil positive Adjektive nach deutscher Rechtschreibregel nur in Briefen vorkommen dürfen.",
+							"reason": "Wertende Adjektive fehlen im Protokoll aus Gründen der Neutralität."
+						},
+						{
+							"text": "Weil Protokolle grundsätzlich ohne jedes Verb als reine Zahlenlisten abgedruckt werden.",
+							"reason": "Gerade vollständige Sätze sichern klare Zuständigkeiten."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ0TKR61YTAYX0PTDJ1V",
+			"atom_uri": "urn:zam:atom:01M79ZVZ0TKR61YTAYX0PTDJ1V",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "stellungnahme-und-kommentar",
+			"title": "Argumente gewichten und eine begründete Stellungnahme verfassen",
+			"domain": "deutsch/mittelschule-8/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=stellungnahme-und-kommentar",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYZYZ6ZHN8GW64K15ZV4",
+					"type": "soft"
+				},
+				{
+					"atom_id": "01M79ZVYZ2AQ3BDY6G324S4B87",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "3 Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZDGEX8PT69WM3EXW3K0",
+					"slug": "stellungnahme-und-kommentar-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum stellt man beim Argumentieren ein schwächeres Gegenargument oft an den Anfang der eigenen Kette?",
+					"concept": "Man räumt den Einwand fair ein, entkräftet ihn sachlich und steigert danach die eigenen positiven Argumente bis zum Höhepunkt.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=stellungnahme-und-kommentar",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Man räumt den Einwand fair ein, entkräftet ihn sachlich und steigert danach die eigenen positiven Argumente bis zum Höhepunkt.",
+							"Weil alle Gegenmeinungen am Ende einer Stellungnahme gesetzlich als unzulässig gestrichen werden."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Weil der Hauptteil einer Stellungnahme immer mit mindestens fünf Fragezeichen beginnen muss.",
+							"reason": "Nicht Satzzeichen, sondern argumentatives Gewicht bestimmt die Reihenfolge."
+						},
+						{
+							"text": "Weil Konjunktionen wie ‚weil‘ und ‚deshalb‘ erst ab dem fünften Absatz erlaubt sind.",
+							"reason": "Begründende Konjunktionen braucht man in jedem einzelnen Argument."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZDQH2BTGMCNE9Y67KZT",
+					"slug": "stellungnahme-und-kommentar-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Aus welchen drei Bausteinen besteht ein überzeugendes einzelnes Argument (‚3‑B‑Schritt‘)?",
+					"concept": "Behauptung aufstellen, schlüssige Begründung anschließen und beides mit einem konkreten Beispiel oder Beleg stützen.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=stellungnahme-und-kommentar",
+					"sample_solution": "Behauptung aufstellen, schlüssige Begründung anschließen und beides mit einem konkreten Beispiel oder Beleg stützen.",
+					"choice_distractors": [
+						{
+							"text": "Überschrift, gereimte Zweierstrophe und anschließende Wiederholung genau derselben Überschrift.",
+							"reason": "Stellungnahmen überzeugen sachlogisch durch Grund und Beispiel, nicht durch Reime."
+						},
+						{
+							"text": "Persönliche Beleidigung der Gegenposition, bloße Behauptung und doppeltes Ausrufezeichen.",
+							"reason": "Unsachliche Angriffe schwächen die eigene Glaubwürdigkeit sofort."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ11YSJ4H81V0D0X5FVC",
+			"atom_uri": "urn:zam:atom:01M79ZVZ11YSJ4H81V0D0X5FVC",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "textuntersuchung-dialog-monolog",
+			"title": "Textuntersuchung schreiben und gestaltend als Dialog/Monolog deuten",
+			"domain": "deutsch/mittelschule-8/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=textuntersuchung-dialog-monolog",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYY6C0RE2H0HXPRT93N3",
+					"type": "soft"
+				},
+				{
+					"atom_id": "01M79ZVZ05YJZYV2D91EJTVME8",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "3 Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZDY98RSCCC031JTCR49",
+					"slug": "textuntersuchung-dialog-monolog-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Erzählform kennzeichnet einen gelungenen inneren Monolog als Form des gestaltenden Interpretierens?",
+					"concept": "Ich‑Form im Präsens mit unmittelbaren Gedankensprüngen, Zweifeln und Selbstfragen passend zur Vorlage.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=textuntersuchung-dialog-monolog",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ich‑Form im Präsens mit unmittelbaren Gedankensprüngen, Zweifeln und Selbstfragen passend zur Vorlage.",
+							"Sachliches Präteritum eines außenstehenden Berichterstatters ganz ohne Gefühle."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Die dritte Person Singular im Plusquamperfekt samt abschließender Quellenangabe am Rand.",
+							"reason": "Das gehört in Analyse oder Bericht, niemals in den unmittelbaren Gedankenstrom."
+						},
+						{
+							"text": "Ausschließlich vollständige, förmliche Geschäfts-E‑Mails an unbekannte Empfänger.",
+							"reason": "Gedanken verlaufen spontan, abgebrochen und persönlich statt formell."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZE5YSCYG817C1WWT1HT",
+					"slug": "textuntersuchung-dialog-monolog-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was unterscheidet eine vollständige schriftliche Textuntersuchung von einer bloßen Inhaltsangabe?",
+					"concept": "Sie benennt sprachliche Mittel mit Zitaten, deutet deren Wirkung und schließt oft begründet.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=textuntersuchung-dialog-monolog",
+					"sample_solution": "Sie benennt sprachliche Mittel mit Zitaten, deutet deren Wirkung und schließt oft begründet.",
+					"choice_distractors": [
+						{
+							"text": "Eine Textuntersuchung darf den Namen der Hauptfigur sowie den Handlungsort überhaupt nicht nennen.",
+							"reason": "Gerade konkrete Figuren und Stellen bilden das Fundament der Deutung."
+						},
+						{
+							"text": "Sie steht immer in der Zukunftsform Futur I und verzichtet komplett auf eigene Sätze.",
+							"reason": "Analysen werden sachlich im Präsens formuliert und zitieren nur gezielt."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ18ARS0NR0MY6JJS6ZM",
+			"atom_uri": "urn:zam:atom:01M79ZVZ18ARS0NR0MY6JJS6ZM",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "bewerbung-und-praktikumsmappe",
+			"title": "Bewerbungsanschreiben und Praktikumsmappe fürs Portfolio erstellen",
+			"domain": "deutsch/mittelschule-8/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=bewerbung-und-praktikumsmappe",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYWNWHD1FKZNMQQYW8RR",
+					"type": "soft"
+				},
+				{
+					"atom_id": "01M79ZVYZQFD4HG0B9GYB59HBV",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "3 Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZECG56FQ12NKMJX3FX0",
+					"slug": "bewerbung-und-praktikumsmappe-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche formale Schreibweise ist beim Betreff eines heutigen Bewerbungsanschreibens (nach DIN 5008) richtig?",
+					"concept": "Man setzt eine aussagekräftige fettgedruckte Zeile mit Zeitraum ohne das vorangestellte Wort ‚Betreff:‘.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=bewerbung-und-praktikumsmappe",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Man setzt eine aussagekräftige fettgedruckte Zeile mit Zeitraum ohne das vorangestellte Wort ‚Betreff:‘.",
+							"Man schreibt das Wort ‚Betreff!!!‘ dreimal rot unterstrichen ganz oben links vor die Absenderadresse."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Man setzt als Betreff einfach ein kurzes ‚Hallo, hier meine Daten‘ genau rechts unter die Unterschrift.",
+							"reason": "Der Betreff gehört direkt über die Anrede und nennt präzise die Stelle."
+						},
+						{
+							"text": "Man kopiert den gesamten Lebenslauf inklusive aller Grundschulnoten mitten in die Betreffzeile.",
+							"reason": "Der Betreff bleibt kurz ein- bis höchstens zweizeilig."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZEKWNZDE1N2M16475GD",
+					"slug": "bewerbung-und-praktikumsmappe-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum sollte dein Bewerbungsanschreiben für ein Betriebspraktikum nie bloß ‚Ich muss von der Schule aus…‘ schreiben?",
+					"concept": "Weil Betriebe sehen wollen, was dich konkret am Beruf und am Unternehmen interessiert und welche Stärken du mitbringst.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=bewerbung-und-praktikumsmappe",
+					"sample_solution": "Weil Betriebe sehen wollen, was dich konkret am Beruf und am Unternehmen interessiert und welche Stärken du mitbringst.",
+					"choice_distractors": [
+						{
+							"text": "Weil Betriebe rechtlich gar keine Schülerinnen und Schüler mehr während der Schulzeit aufnehmen dürfen.",
+							"reason": "Betriebspraktika gehören fest zur Berufsorientierung – Eigeninteresse überzeugt dabei."
+						},
+						{
+							"text": "Weil Sätze mit dem Verb ‚müssen‘ nach der deutschen Rechtschreibung grundsätzlich falsch geschrieben sind.",
+							"reason": "Es geht um die motivierte Wirkung beim Leser, nicht um ein Grammatikverbot."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ1F9ER0BE67VJS8A58V",
+			"atom_uri": "urn:zam:atom:01M79ZVZ1F9ER0BE67VJS8A58V",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "schreibkonferenz-und-portfolio",
+			"title": "Texte im Expertenteam überarbeiten und Schreibprozess dokumentieren",
+			"domain": "deutsch/mittelschule-8/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=schreibkonferenz-und-portfolio",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVYZYZ6ZHN8GW64K15ZV4",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "schreiben",
+					"topic_title": "3 Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZETGMQW99FSGHH0010F",
+					"slug": "schreibkonferenz-und-portfolio-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum arbeitet man bei Schreibkonferenzen im ‚Expertenteam‘ mit festen Spezialrollen statt einfach ‚Lies mal durch, ob es gut klingt‘?",
+					"concept": "Jedes Teammitglied prüft konzentriert einen Teilbereich wie Aufbau oder Norm, sodass kaum etwas untergeht.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=schreibkonferenz-und-portfolio",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Jedes Teammitglied prüft konzentriert einen Teilbereich wie Aufbau oder Norm, sodass kaum etwas untergeht.",
+							"Weil sonst kein einziges Komma mehr an das Ende eines Fragesatzes gesetzt werden darf."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Damit man sich als Gruppe gemeinsam alle peinlichen Tippfehler einfach vor der ganzen Klasse vorlesen kann.",
+							"reason": "Rückmeldungen erfolgen respektvoll und konstruktiv mit Verbesserungsziel."
+						},
+						{
+							"text": "Weil ein Text grundsätzlich genau dreißig verschiedene Überschriften braucht.",
+							"reason": "Rollenverteilung dient allein der gründlicheren Überarbeitungsqualität."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZF1F6YYAKEMMMCPMV03",
+					"slug": "schreibkonferenz-und-portfolio-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welchen Nutzen bringt das Kommentieren des eigenen Schreibprozesses im Schreibportfolio?",
+					"concept": "Man erkennt persönliche Stärken und Fehlerquellen über mehrere Texte hinweg und setzt sich gezielte Vorsätze für künftige Aufgaben.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=schreibkonferenz-und-portfolio",
+					"sample_solution": "Man erkennt persönliche Stärken und Fehlerquellen über mehrere Texte hinweg und setzt sich gezielte Vorsätze für künftige Aufgaben.",
+					"choice_distractors": [
+						{
+							"text": "Es ersetzt jede schulische Deutschprüfung und macht weiteres Schreiben für das gesamte Schuljahr unnötig.",
+							"reason": "Reflexion begleitet und verbessert das Schreiben dauerhaft, statt es abzuschaffen."
+						},
+						{
+							"text": "Es sammelt lediglich leere Schmierblätter ohne eigene Einschätzung, bis der Ordner voll ist.",
+							"reason": "Gerade die bewusste Kommentierung macht das Portfolio wertvoll."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ1PF659VHJKDC05G1YR",
+			"atom_uri": "urn:zam:atom:01M79ZVZ1PF659VHJKDC05G1YR",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "fachsprachen-und-arbeitswelt",
+			"title": "Fachsprachen der Arbeitswelt sowie gesprochene und geschriebene Sprache",
+			"domain": "deutsch/mittelschule-8/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=fachsprachen-und-arbeitswelt",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprache",
+					"topic_title": "4 Sprache & Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZF8BW6YR8ARTN24RVQ5",
+					"slug": "fachsprachen-und-arbeitswelt-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wodurch unterscheidet sich geschriebene Sprache im Kern von unmittelbarer gesprochener Sprache im Alltag?",
+					"concept": "Geschriebene Texte bleiben kontextunabhängig in ganzen Sätzen klar, während mündliche Rede durch Mimik und direkte Situation verkürzt.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=fachsprachen-und-arbeitswelt",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Geschriebene Texte bleiben kontextunabhängig in ganzen Sätzen klar, während mündliche Rede durch Mimik und direkte Situation verkürzt.",
+							"Gesprochene Sprache kennt überhaupt keine Substantive oder Vergangenheitsformen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Gesprochene Sprache verwendet grundsätzlich immer Konjunktiv I, während geschriebene Texte nur aus kurzen Befehlen bestehen.",
+							"reason": "Konjunktiv und vollständige Sätze prägen im Gegenteil besonders die geschriebene Standardsprache."
+						},
+						{
+							"text": "Geschriebene Texte verzichten komplett auf Wortarten und dürfen beliebig auf Zeigewörter wie ‚dort drüben‘ bauen.",
+							"reason": "Gerade ‚dort drüben‘ wird ohne Situation unverständlich."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZFFQSNVWCQ5PHVMDSAT",
+					"slug": "fachsprachen-und-arbeitswelt-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum nutzen Handwerk, Kaufleute und Technik so viele genau festgelegte Fachbegriffe?",
+					"concept": "Um Gegenstände, Maße und Arbeitsschritte rasch, knapp und ohne gefährliche Verwechslungen eindeutig zu benennen.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=fachsprachen-und-arbeitswelt",
+					"sample_solution": "Um Gegenstände, Maße und Arbeitsschritte rasch, knapp und ohne gefährliche Verwechslungen eindeutig zu benennen.",
+					"choice_distractors": [
+						{
+							"text": "Damit neue Auszubildende möglichst lange an einfachen Aufgaben rätseln müssen, ohne jemanden fragen zu können.",
+							"reason": "Fachsprache dient sachlicher Präzision, nicht dem Verwirren anderer."
+						},
+						{
+							"text": "Weil alle Fachwörter direkt aus derselben antiken Sprache stammen und gar keine Übersetzung erlauben.",
+							"reason": "Fachwörter stammen aus vielen Quellen und sind gerade klar definierbar."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ1X7AGHZFJ1Z76DQQYG",
+			"atom_uri": "urn:zam:atom:01M79ZVZ1X7AGHZFJ1Z76DQQYG",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "soziolekt-regiolekt-sprachwandel",
+			"title": "Soziolekt, Regiolekt und Sprachwandel im Deutschen untersuchen",
+			"domain": "deutsch/mittelschule-8/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=soziolekt-regiolekt-sprachwandel",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVZ1PF659VHJKDC05G1YR",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprache",
+					"topic_title": "4 Sprache & Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZFP7Y9G0EKX353CDBHW",
+					"slug": "soziolekt-regiolekt-sprachwandel-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was kennzeichnet einen ‚Soziolekt‘ im Vergleich zu einem regionalen Dialekt?",
+					"concept": "Ein Soziolekt ist die Sprachform einer gesellschaftlichen Gruppe oder Szene unabhängig vom Bundesland.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=soziolekt-regiolekt-sprachwandel",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein Soziolekt ist die Sprachform einer gesellschaftlichen Gruppe oder Szene unabhängig vom Bundesland.",
+							"Ein Soziolekt umfasst ausschließlich ausgestorbene Wörter aus dem Mittelalter."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Ein Soziolekt ist ausschließlich die strenge Amtssprache von Gerichten im Süden Deutschlands.",
+							"reason": "Rechtssprache ist eine Fachsprache; Soziolekt beschreibt Gruppensprachen allgemein."
+						},
+						{
+							"text": "Ein Soziolekt darf grundsätzlich nur geschrieben, aber niemals laut gesprochen werden.",
+							"reason": "Gerade Jugendsprache als Soziolekt lebt besonders im mündlichen Gespräch."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZFX8QFW2F56TQARZ7V3",
+					"slug": "soziolekt-regiolekt-sprachwandel-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woran lässt sich vergangener Sprachgebrauch älterer deutscher Texte neben alten Wörtern oft sofort ablesen?",
+					"concept": "An älteren Schreibweisen wie ‚ph‘ oder ‚th‘, veralteten Beugungsformen wie dem Dativ-e und heute unüblichen Anredeformen.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=soziolekt-regiolekt-sprachwandel",
+					"sample_solution": "An älteren Schreibweisen wie ‚ph‘ oder ‚th‘, veralteten Beugungsformen wie dem Dativ-e und heute unüblichen Anredeformen.",
+					"choice_distractors": [
+						{
+							"text": "Daran, dass ältere Texte grundsätzlich komplett ohne Verben und ohne Satzzeichen gedruckt wurden.",
+							"reason": "Auch vor hundert Jahren galten Satzzeichen und vollständige Verben."
+						},
+						{
+							"text": "Daran, dass in älteren deutschen Texten sämtliche Nomen kleingeschrieben standen.",
+							"reason": "Substantivgroßschreibung existiert im Deutschen schon seit vielen Jahrhunderten."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ24BPMKDF6QEVBZ4BYH",
+			"atom_uri": "urn:zam:atom:01M79ZVZ24BPMKDF6QEVBZ4BYH",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "internationalismen-und-sprachvergleich",
+			"title": "Fremdwörter, Internationalismen und Satzbau über Sprachen vergleichen",
+			"domain": "deutsch/mittelschule-8/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=internationalismen-und-sprachvergleich",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprache",
+					"topic_title": "4 Sprache & Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZG47MFF6EZXD6SE7PYT",
+					"slug": "internationalismen-und-sprachvergleich-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum nennt man Wörter wie ‚Demokratie‘, ‚Computer‘ oder ‚Energie‘ auch ‚Internationalismen‘?",
+					"concept": "Weil sie in sehr vielen Sprachen fast gleich vorkommen und international ähnlich verstanden werden.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=internationalismen-und-sprachvergleich",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Weil sie in sehr vielen Sprachen fast gleich vorkommen und international ähnlich verstanden werden.",
+							"Weil sie ausschließlich auf Briefmarken außerhalb Europas gedruckt werden dürfen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Weil jedes dieser Wörter aus mindestens zwanzig unterschiedlichen Endungen zusammengesetzt bleibt.",
+							"reason": "Entscheidend ist die länderübergreifende Verbreitung, nicht die Wortlänge."
+						},
+						{
+							"text": "Weil man solche Wörter beim Sprechen immer komplett in die eigene Herkunftssprache übersetzen muss.",
+							"reason": "Im Gegenteil verstehen Sprecher vieler Länder sie gerade unübersetzt wieder."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZGBQW5BD7XZ3VG66KMG",
+					"slug": "internationalismen-und-sprachvergleich-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche bekannte deutsche Besonderheit im Satzbau fällt beim direkten Vergleich mit einem englischen ‚because‘-Nebensatz sofort auf?",
+					"concept": "Im eingeleiteten deutschen Nebensatz wandert das gebeugte Verb ans Satzende, während es im Englischen hinter dem Subjekt bleibt.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=internationalismen-und-sprachvergleich",
+					"sample_solution": "Im eingeleiteten deutschen Nebensatz wandert das gebeugte Verb ans Satzende, während es im Englischen hinter dem Subjekt bleibt.",
+					"choice_distractors": [
+						{
+							"text": "Im Deutschen darf ein kausaler Nebensatz überhaupt kein Subjekt und kein Komma mehr tragen.",
+							"reason": "Auch der deutsche Nebensatz hat Subjekt und verpflichtendes Komma."
+						},
+						{
+							"text": "Im Englischen wird jedes Substantiv im Nebensatz konsequent mit großem Anfangsbuchstaben geschrieben.",
+							"reason": "Substantivgroßschreibung gibt es im Deutschen, nicht im Englischen."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ2BYAYQ4C21T3FF89VA",
+			"atom_uri": "urn:zam:atom:01M79ZVZ2BYAYQ4C21T3FF89VA",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "euphemismus-und-digitale-mails",
+			"title": "Rhetorische Wirkung und digitale Kommunikation (Bewerbungs-E‑Mail vs. Chat)",
+			"domain": "deutsch/mittelschule-8/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=euphemismus-und-digitale-mails",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVZ18ARS0NR0MY6JJS6ZM",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprache",
+					"topic_title": "4 Sprache & Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZGJWKRHEQ5HGN4FFEG2",
+					"slug": "euphemismus-und-digitale-mails-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum ersetzt man die Abkürzung ‚Mfg‘ am Schluss einer Bewerbungs-E‑Mail durch ausgeschriebene Grüße?",
+					"concept": "Ausgeschriebenes ‚Mit freundlichen Grüßen‘ zeigt Sorgfalt und Respekt, während Abkürzungen im ersten Kontakt flüchtig wirken.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=euphemismus-und-digitale-mails",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ausgeschriebenes ‚Mit freundlichen Grüßen‘ zeigt Sorgfalt und Respekt, während Abkürzungen im ersten Kontakt flüchtig wirken.",
+							"Weil die Buchstabenfolge ‚Mfg‘ von jedem E‑Mail-Server automatisch gelöscht wird."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Weil Abkürzungen in digitalen Postfächern grundsätzlich als unerwünschter Werbespam in den Papierkorb wandern.",
+							"reason": "‚Mfg‘ fällt nicht durch Filter, wirkt aber unpersönlich und hastig."
+						},
+						{
+							"text": "Weil man am Ende einer offiziellen E‑Mail im Deutschen überhaupt keinen eigenen Namen mehr angeben darf.",
+							"reason": "Gerade Vor- und Nachname plus Telefonkontakt sind unverzichtbar."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZGS4Q2SA7QVRP6HM9VV",
+					"slug": "euphemismus-und-digitale-mails-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Bestandteile verwandeln eine vage Mail ‚Betreff: Bewerbung‘ sofort in einen professionellen Betreff?",
+					"concept": "Die genaue Position oder Praktikumsart, der Zeitraum sowie idealerweise der eigene Vor- und Nachname.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=euphemismus-und-digitale-mails",
+					"sample_solution": "Die genaue Position oder Praktikumsart, der Zeitraum sowie idealerweise der eigene Vor- und Nachname.",
+					"choice_distractors": [
+						{
+							"text": "Mindestens drei lachende Gesichts-Emojis sowie die genaue Beschreibung des eigenen Hobbys.",
+							"reason": "Sachlichkeit und Eindeutigkeit zählen im Posteingang der Personalabteilung."
+						},
+						{
+							"text": "Ausschließlich das aktuelle Geburtsdatum ohne jeden Hinweis darauf, worum es eigentlich geht.",
+							"reason": "Ohne Anlass und Zeitraum weiß der Empfänger gar nicht, wozu die Mail gehört."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ2JZT8CRMJ3BYQA5EER",
+			"atom_uri": "urn:zam:atom:01M79ZVZ2JZT8CRMJ3BYQA5EER",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "wortschatz-homonyme-bedeutung",
+			"title": "Wortfelder, Oberbegriffe, Antonyme, Homonyme und Mehrdeutigkeit",
+			"domain": "deutsch/mittelschule-8/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=wortschatz-homonyme-bedeutung",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprache",
+					"topic_title": "4 Sprache & Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZH0S5MNQPC33B818Q9C",
+					"slug": "wortschatz-homonyme-bedeutung-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was bezeichnet der Fachbegriff ‚Antonym‘ bei der Wortschatzarbeit?",
+					"concept": "Ein klares Gegensatzwort wie ‚fleißig‘ vs. ‚träge‘ oder ‚sparen‘ vs. ‚verschwenden‘.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=wortschatz-homonyme-bedeutung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein klares Gegensatzwort wie ‚fleißig‘ vs. ‚träge‘ oder ‚sparen‘ vs. ‚verschwenden‘.",
+							"Ein neu erfundenes Fremdwort aus einer digitalen Gaming-Gruppe."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Ein Wort mit exakt derselben Bedeutung und derselben grammatischen Endung.",
+							"reason": "Bedeutungsgleichheit oder -nähe nennt man Synonym, nicht Antonym."
+						},
+						{
+							"text": "Ein fehlendes Wort am Ende eines abgebrochenen Satzes im inneren Monolog.",
+							"reason": "Unvollständige Sätze heißen Ellipsen."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZH7FN36DFYKT8QM1746",
+					"slug": "wortschatz-homonyme-bedeutung-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woran entscheidet sich beim Lesen sofort, welche Bedeutung ein Homonym wie ‚die Bank‘ oder ‚der/die Leiter‘ wirklich trägt?",
+					"concept": "An seinem Artikel, seinen grammatischen Formen wie dem Plural sowie am inhaltlichen Zusammenhang im Satz.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=wortschatz-homonyme-bedeutung",
+					"sample_solution": "An seinem Artikel, seinen grammatischen Formen wie dem Plural sowie am inhaltlichen Zusammenhang im Satz.",
+					"choice_distractors": [
+						{
+							"text": "Allein an der Schriftfarbe und daran, ob es zufällig an einem Montag gelesen wird.",
+							"reason": "Kontext und Grammatik bestimmen die gemeinte Bedeutung zuverlässig."
+						},
+						{
+							"text": "Daran, dass alle Homonyme im Deutschen am Wortende grundsätzlich kleingeschrieben werden.",
+							"reason": "Nomen-Homonyme wie Bank oder Leiter werden stets normal großgeschrieben."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ2S91VMQZMFPZ1CX8AB",
+			"atom_uri": "urn:zam:atom:01M79ZVZ2S91VMQZMFPZ1CX8AB",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "wortbildung-umlaut-kurzwoerter",
+			"title": "Wortbildung: Umlautung, Kurzwörter und fachsprachliche Nominalisierung",
+			"domain": "deutsch/mittelschule-8/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=wortbildung-umlaut-kurzwoerter",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprache",
+					"topic_title": "4 Sprache & Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZHE0R2R3CTYGQRSM0YR",
+					"slug": "wortbildung-umlaut-kurzwoerter-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches praktische Wissen liefert die Wortbildung über ‚Umlautung‘ sofort für deine Rechtschreibung?",
+					"concept": "Wer Wörter auf einen verwandten Stamm mit a, o, u oder au zurückführt, weiß sicher, wann ä oder äu statt e oder eu steht.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=wortbildung-umlaut-kurzwoerter",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wer Wörter auf einen verwandten Stamm mit a, o, u oder au zurückführt, weiß sicher, wann ä oder äu statt e oder eu steht.",
+							"Umlaute wie ä, ö, ü müssen am Satzanfang grundsätzlich immer klein geschrieben werden."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Dass jedes Kurzwort im Deutschen mindestens zwei Umlaute enthalten muss, um gültig zu bleiben.",
+							"reason": "Kurzwörter wie Pkw, Uni oder Info brauchen keinerlei Umlaut."
+						},
+						{
+							"text": "Dass Verben mit Stammvokalwechsel vor einem Nebensatz niemals ein Komma zulassen.",
+							"reason": "Kommaregeln hängen von Nebensätzen ab, nicht vom Stammvokal."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZHNBP4FMTHGX5GA6GS0",
+					"slug": "wortbildung-umlaut-kurzwoerter-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann sind Kurzwörter wie ‚ÖPNV‘, ‚Kfz‘ oder ‚Azubi‘ in eigenen Sachtexten sinnvoll – und wann eher ungünstig?",
+					"concept": "Sie sind sinnvoll, wenn Platz gespart wird und die Abkürzung bekannt ist; bei Erstnennung für Außenstehende empfiehlt sich die ausgeschriebene Form.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=wortbildung-umlaut-kurzwoerter",
+					"sample_solution": "Sie sind sinnvoll, wenn Platz gespart wird und die Abkürzung bekannt ist; bei Erstnennung für Außenstehende empfiehlt sich die ausgeschriebene Form.",
+					"choice_distractors": [
+						{
+							"text": "Sie gelten nur in persönlichen Briefen an Freunde, während jeder Betrieb solche Abkürzungen streng verbietet.",
+							"reason": "Gerade Betriebe und Fahrpläne nutzen bekannte Kurzwörter täglich nach Einführung."
+						},
+						{
+							"text": "Man sollte jedes normale Nomen im gesamten Aufsatz durch die ersten drei Anfangsbuchstaben abkürzen.",
+							"reason": "Unverständliche Eigenkürzel erschweren jedes flüssige Lesen massiv."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ304TAXKJES8P21G2WX",
+			"atom_uri": "urn:zam:atom:01M79ZVZ304TAXKJES8P21G2WX",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "wortarten-und-modalformen",
+			"title": "Wortarten sicher bestimmen und Modalformen des Verbs gezielt nutzen",
+			"domain": "deutsch/mittelschule-8/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=wortarten-und-modalformen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprache",
+					"topic_title": "4 Sprache & Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZHW757NANPT45ZRYVZM",
+					"slug": "wortarten-und-modalformen-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche drei ‚Modi‘ (Aussageweisen) des Verbs unterscheidet man in der deutschen Grammatik?",
+					"concept": "Indikativ als Wirklichkeitsform, Konjunktiv als Möglichkeits- und Berichtsform sowie Imperativ als Aufforderungsform.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=wortarten-und-modalformen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Indikativ als Wirklichkeitsform, Konjunktiv als Möglichkeits- und Berichtsform sowie Imperativ als Aufforderungsform.",
+							"Präsens, Präteritum und Futur II als die drei einzigen deutschen Wortarten."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Aktiv, Vorgangspassiv und Zustandspassiv zur Angabe der genauen Blickrichtung des Lesers.",
+							"reason": "Aktiv und Passiv sind Handlungsrichtungen (Genus Verbi), nicht die drei Modi."
+						},
+						{
+							"text": "Konjunktion, Präposition und Artikel zur Verbindung verschiedener Nebensätze.",
+							"reason": "Das sind Wortarten, keine Modi eines gebeugten Verbs."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZJ37TZ5P8WTPQ9RBM0P",
+					"slug": "wortarten-und-modalformen-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wodurch unterscheidet sich ein Adjektiv wie ‚ruhig‘ meist eindeutig von einem reinen Adverb wie ‚morgen‘ oder ‚sehr‘?",
+					"concept": "Adjektive lassen sich beugen wie in ‚der ruhige Fluss‘, während echte Adverbien völlig unveränderlich bleiben.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=wortarten-und-modalformen",
+					"sample_solution": "Adjektive lassen sich beugen wie in ‚der ruhige Fluss‘, während echte Adverbien völlig unveränderlich bleiben.",
+					"choice_distractors": [
+						{
+							"text": "Adjektive stehen immer am allerletzten Ende des Satzes und werden konsequent großgeschrieben.",
+							"reason": "Großgeschrieben werden Nomen; Adjektive stehen oft flektiert direkt vor Nomen."
+						},
+						{
+							"text": "Reine Adverbien müssen in der deutschen Sprache grundsätzlich mit einem Bindestrich gekoppelt werden.",
+							"reason": "Adverbien wie ‚dort‘, ‚oft‘ oder ‚heute‘ sind einfache unveränderliche Wörter ohne Bindestrich."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ379V0PHB2GV9Y4KJSM",
+			"atom_uri": "urn:zam:atom:01M79ZVZ379V0PHB2GV9Y4KJSM",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "konjunktiv-und-indirekte-rede",
+			"title": "Konjunktiv I, Konjunktiv II und indirekte Rede souverän bilden",
+			"domain": "deutsch/mittelschule-8/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=konjunktiv-und-indirekte-rede",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVZ304TAXKJES8P21G2WX",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprache",
+					"topic_title": "4 Sprache & Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZJAYVJ02H5814KW4XVG",
+					"slug": "konjunktiv-und-indirekte-rede-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wann setzt man in der indirekten Rede den Konjunktiv II (z. B. ‚hätten‘, ‚kämen‘) statt des Konjunktivs I ein?",
+					"concept": "Immer dann, wenn der Konjunktiv I mit der normalen Wirklichkeitsform des Indikativs genau gleich aussieht.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=konjunktiv-und-indirekte-rede",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Immer dann, wenn der Konjunktiv I mit der normalen Wirklichkeitsform des Indikativs genau gleich aussieht.",
+							"Grundsätzlich bei jedem Verb der deutschen Sprache, weil es keinen Konjunktiv I mehr gibt."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Ausschließlich bei kurzen Fragen im Plural, die mit einem direkten Imperativ beginnen.",
+							"reason": "Auch normale Aussagesätze brauchen die Ersatzregel bei Gleichklang."
+						},
+						{
+							"text": "Immer dann, wenn der Satz kein einziges Substantiv oder keinen Artikel mehr enthält.",
+							"reason": "Die Ersatzregel hängt allein von der Verbform ab, nicht von den Nomen."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZJHVXAS0KBGK5CBDS6S",
+					"slug": "konjunktiv-und-indirekte-rede-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche zwei Begleitwörter musst du beim Umwandeln wörtlicher Rede in indirekte Rede neben dem Verb oft zusätzlich anpassen?",
+					"concept": "Pronomen wie ‚ich‘ oder ‚mein‘ zu ‚sie‘ oder ‚ihr‘ sowie teils Orts- und Zeitangaben wie ‚hier‘ oder ‚heute‘.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=konjunktiv-und-indirekte-rede",
+					"sample_solution": "Pronomen wie ‚ich‘ oder ‚mein‘ zu ‚sie‘ oder ‚ihr‘ sowie teils Orts- und Zeitangaben wie ‚hier‘ oder ‚heute‘.",
+					"choice_distractors": [
+						{
+							"text": "Sämtliche Großbuchstaben am Beginn der Substantive sowie alle Zahlwörter im Text.",
+							"reason": "Nomen-Großschreibung und Zahlen bleiben beim Perspektivwechsel natürlich erhalten."
+						},
+						{
+							"text": "Den eigenen Namen des Autors sowie das Erscheinungsjahr auf der Rückseite des Buches.",
+							"reason": "Anpassen muss man grammatische Bezugswörter zur Sprechperspektive."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ3EHS75CPDBS7V8NHB3",
+			"atom_uri": "urn:zam:atom:01M79ZVZ3EHS75CPDBS7V8NHB3",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "satzgefuege-schachtelsatz-adverbiale",
+			"title": "Satzgefüge, Schachtelsatz, Finaladverbiale und Attributivsatz",
+			"domain": "deutsch/mittelschule-8/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=satzgefuege-schachtelsatz-adverbiale",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVZ304TAXKJES8P21G2WX",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprache",
+					"topic_title": "4 Sprache & Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZJR82T1HCRTSAFRBMDC",
+					"slug": "satzgefuege-schachtelsatz-adverbiale-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches eindeutige Merkmal beweist bei der Satzgliedprobe, dass ein Attributivsatz kein eigenes Satzglied darstellt?",
+					"concept": "Er kann nicht allein vor das gebeugte Verb des Hauptsatzes wandern, sondern bleibt untrennbar an sein Bezugsnomen gebunden.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=satzgefuege-schachtelsatz-adverbiale",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Er kann nicht allein vor das gebeugte Verb des Hauptsatzes wandern, sondern bleibt untrennbar an sein Bezugsnomen gebunden.",
+							"Er enthält im Deutschen grundsätzlich überhaupt kein eigenes Verb oder Komma."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Er wird stets ohne Relativpronomen nur mit dem Fragewort ‚wozu‘ am Satzende eingeleitet.",
+							"reason": "‚Wozu‘ fragt nach dem Finaladverbiale; Attributivsätze beginnen meist mit Relativpronomen wie der/die/das/welcher."
+						},
+						{
+							"text": "Er darf ausschließlich einmal pro gesamtem Aufsatz in einem Gespräch vorkommen.",
+							"reason": "Attributivsätze treten überall dort auf, wo ein Nomen genau erklärt werden muss."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZJZXHQ16VE14X48PAD9",
+					"slug": "satzgefuege-schachtelsatz-adverbiale-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche zwei Nebensatztypen oder Infinitivkonstruktionen drücken ein klassisches Finaladverbiale (Zweck/Absicht) aus?",
+					"concept": "Ein Nebensatz mit ‚damit‘ oder eine Infinitivgruppe mit ‚um … zu‘ als Antwort auf die Frage ‚Wozu?‘.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=satzgefuege-schachtelsatz-adverbiale",
+					"sample_solution": "Ein Nebensatz mit ‚damit‘ oder eine Infinitivgruppe mit ‚um … zu‘ als Antwort auf die Frage ‚Wozu?‘.",
+					"choice_distractors": [
+						{
+							"text": "Ausschließlich Nebensätze mit ‚weil‘ und ‚da‘ als direkte Begründung einer Vergangenheit.",
+							"reason": "‚Weil‘ und ‚da‘ markieren Gründe (kausal), nicht den bezweckten Nutzen (final)."
+						},
+						{
+							"text": "Ein Relativsatz mit ‚welcher‘, der lediglich ein einzelnes Substantiv näher beschreibt.",
+							"reason": "Das ist ein Attributivsatz, kein finales Adverbiale."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ3NSVG1TKD4APY73DTV",
+			"atom_uri": "urn:zam:atom:01M79ZVZ3NSVG1TKD4APY73DTV",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "gross-klein-bindestrich-getrennt",
+			"title": "Nominaler Kern, Bindestrich, Straßennamen und Getrennt-/Zusammenschreibung",
+			"domain": "deutsch/mittelschule-8/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=gross-klein-bindestrich-getrennt",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprache",
+					"topic_title": "4 Sprache & Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZK6B67QQB2HND7SFCC9",
+					"slug": "gross-klein-bindestrich-getrennt-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Regel gilt sicher für zusammengesetzte Begriffe mit Einzelbuchstaben oder Ziffern wie ‚E‑Mail‘ oder ‚10‑Minuten-Pause‘?",
+					"concept": "Zwischen Einzelbuchstabe bzw. Ziffer und Wort sowie zwischen den Gliedern einer mehrteiligen Zusammensetzung stehen Bindestriche.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=gross-klein-bindestrich-getrennt",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zwischen Einzelbuchstabe bzw. Ziffer und Wort sowie zwischen den Gliedern einer mehrteiligen Zusammensetzung stehen Bindestriche.",
+							"Einzelbuchstaben und Ziffern werden mitten im Wort grundsätzlich komplett ohne Pause oder Zeichen zusammengedrückt."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Es reicht immer, ausschließlich einen einzigen Bindestrich ganz vor das allerletzte Nomen zu setzen.",
+							"reason": "Halbe Bindestrichkopplungen wie ‚10 Minuten-Pause‘ sind fehlerhaft – alle Teile durchkoppeln."
+						},
+						{
+							"text": "Ziffern und Einzelbuchstaben zwingen im gesamten folgenden Nebensatz automatisch zu Kleinschreibung.",
+							"reason": "Der substantivische Kern nach dem Bindestrich bleibt selbstverständlich groß."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZKDH9751E77B47KCWZR",
+					"slug": "gross-klein-bindestrich-getrennt-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woran erkennst du auch bei langen eingeschobenen Wörtern wie ‚das unerwartet laute Klatschen‘ sicher, welches Wort großgeschrieben wird?",
+					"concept": "Das Artikelwort ‚das‘ bezieht sich trotz der Adjektive auf das abschließende nominalisierte Wort ‚Klatschen‘ als Kern.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=gross-klein-bindestrich-getrennt",
+					"sample_solution": "Das Artikelwort ‚das‘ bezieht sich trotz der Adjektive auf das abschließende nominalisierte Wort ‚Klatschen‘ als Kern.",
+					"choice_distractors": [
+						{
+							"text": "Man schreibt nach ‚das‘ einfach sämtliche dazwischenstehenden Adjektive inklusive ‚unerwartet‘ ebenfalls groß.",
+							"reason": "Artikel und dazwischengeschobene Attribute bleiben klein – nur der nominale Kern wird groß."
+						},
+						{
+							"text": "Sobald zwei Adjektive zwischen Artikel und Verb stehen, schreibt man alle drei Wörter klein.",
+							"reason": "Einschübe heben die Nominalisierung niemals auf."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ3WQNMW6KPRNP7SPYX2",
+			"atom_uri": "urn:zam:atom:01M79ZVZ3WQNMW6KPRNP7SPYX2",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "homonyme-homographe-fremdwoerter",
+			"title": "Homonyme, Homophone, Homographe und Fremdwortschreibung",
+			"domain": "deutsch/mittelschule-8/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=homonyme-homographe-fremdwoerter",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVZ2JZT8CRMJ3BYQA5EER",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprache",
+					"topic_title": "4 Sprache & Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZKM8SH7526JZZRZQN09",
+					"slug": "homonyme-homographe-fremdwoerter-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wodurch unterscheidet sich ein ‚Homograph‘ (z. B. ‚umfahren‘ oder ‚übersetzen‘) von einem bloßen Homophon?",
+					"concept": "Ein Homograph wird exakt gleich geschrieben, kann aber unterschiedlich betont werden und trägt dann ganz verschiedene Bedeutungen.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=homonyme-homographe-fremdwoerter",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein Homograph wird exakt gleich geschrieben, kann aber unterschiedlich betont werden und trägt dann ganz verschiedene Bedeutungen.",
+							"Ein Homograph wird in jedem Satz anders geschrieben, klingt aber beim Sprechen genau gleich."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Ein Homograph darf in deutschen Sätzen nur einmal im Singular und niemals im Infinitiv vorkommen.",
+							"reason": "Gerade im Infinitiv fällt die identische Schreibweise vieler Homographe auf."
+						},
+						{
+							"text": "Ein Homograph bezeichnet zwei Wörter, die aus derselben lateinischen Wurzel genau dasselbe bedeuten.",
+							"reason": "Bedeutungsähnliche Wörter sind Synonyme; Homographe haben oft entgegengesetzte oder fremde Bedeutungen."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZKVEKHGQ2J47MECNX64",
+					"slug": "homonyme-homographe-fremdwoerter-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche verlässliche Schreibregel gilt praktisch ausnahmslos für alle deutschen Fremdwort-Nomen auf ‚-zion/-tion‘ und Verben auf ‚-iren/-ieren‘?",
+					"concept": "Die Nomenendung schreibt man konsequent mit ‚-tion‘ und die Verbendung durchweg mit ‚-ieren‘.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=homonyme-homographe-fremdwoerter",
+					"sample_solution": "Die Nomenendung schreibt man konsequent mit ‚-tion‘ und die Verbendung durchweg mit ‚-ieren‘.",
+					"choice_distractors": [
+						{
+							"text": "Nach kurzen Vokalen schreibt man stets ‚-zion‘ und nach langen Vokalen immer kurzes ‚-iren‘ ohne ‚e‘.",
+							"reason": "Beide Endungen halten ihre festen Bausteine unabhängig vom vorausgehenden Vokal ein."
+						},
+						{
+							"text": "Beide Endungen werden in der achten Klasse je nach Region wahlweise mit ‚z‘ oder ‚ie‘ freigestellt.",
+							"reason": "Das amtliche Regelwerk legt genau ‚-tion‘ und ‚-ieren‘ fest."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M79ZVZ437H3FS5P1WJMJP2P4",
+			"atom_uri": "urn:zam:atom:01M79ZVZ437H3FS5P1WJMJP2P4",
+			"namespace": "zam-academy-deutsch-mittelschule-8",
+			"slug": "zeichensetzung-komma-semikolon",
+			"title": "Erweiterte Zeichensetzung: Apposition, Semikolon, Gedankenstrich und Auslassung",
+			"domain": "deutsch/mittelschule-8/sprache",
+			"reduction": "formal",
+			"typical_age_min": 13,
+			"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=zeichensetzung-komma-semikolon",
+			"prerequisites": [
+				{
+					"atom_id": "01M79ZVZ379V0PHB2GV9Y4KJSM",
+					"type": "soft"
+				},
+				{
+					"atom_id": "01M79ZVZ3EHS75CPDBS7V8NHB3",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-mittelschule-8",
+					"topic_code": "sprache",
+					"topic_title": "4 Sprache & Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "R",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 8,
+					"subject": "deutsch",
+					"track": "M",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M79ZVZM22ER736XDT7SX1ZK2",
+					"slug": "zeichensetzung-komma-semikolon-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Komma-Falle unterläuft vielen Schreibenden bei einer nachgestellten Apposition wie ‚Herr Bauer, mein neuer Meister erklärte das Werkzeug‘?",
+					"concept": "Sie setzen zwar das erste Komma vor dem Beisatz, vergessen aber das zweite, schließende Komma vor dem Weiterführen des Satzes.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=zeichensetzung-komma-semikolon",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie setzen zwar das erste Komma vor dem Beisatz, vergessen aber das zweite, schließende Komma vor dem Weiterführen des Satzes.",
+							"Man darf bei Personenbezeichnungen nach einem Vornamen grundsätzlich überhaupt kein Komma setzen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Man muss hinter jedem Artikel innerhalb einer Apposition ein weiteres Semikolon ergänzen.",
+							"reason": "Semikola trennen gleichrangige Teilsätze, keine Beisatz-Wörter."
+						},
+						{
+							"text": "Nach einer Apposition wandert das gebeugte Verb des Hauptsatzes stets ans allerletzte Satzende.",
+							"reason": "Das Verb bleibt nach der eingeschobenen Apposition regulär direkt an zweiter Hauptsatzposition."
+						}
+					]
+				},
+				{
+					"id": "01M79ZVZM9FB4VG3X5QJ89TC2W",
+					"slug": "zeichensetzung-komma-semikolon-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie setzt du den Ergänzungsstrich bei ‚Schülerinnen und Schüler‘ bzw. ‚Haupt- und Nebensätze‘ orthografisch richtig?",
+					"concept": "Direkt an das gekürzte Wort ‚Haupt-‘ ohne Leerzeichen davor, gefolgt von einem Leerzeichen vor ‚und Nebensätze‘.",
+					"source_link": "https://academy.zam-os.org/deutsch-mittelschule-8/#lesson=zeichensetzung-komma-semikolon",
+					"sample_solution": "Direkt an das gekürzte Wort ‚Haupt-‘ ohne Leerzeichen davor, gefolgt von einem Leerzeichen vor ‚und Nebensätze‘.",
+					"choice_distractors": [
+						{
+							"text": "Man setzt auf beiden Seiten von ‚und‘ einen langen Gedankenstrich ohne jedes weitere Nomen.",
+							"reason": "Der Ergänzungsstrich vertritt gezielt genau den weggelassenen gemeinsamen Wortteil."
+						},
+						{
+							"text": "Man schreibt ‚Haupt und-Nebensätze‘, indem der Bindestrich immer erst vor das vollständige zweite Wort rückt.",
+							"reason": "Der Strich markiert immer genau die Lücke beim unvollständigen Wort ‚Haupt-‘."
+						}
+					]
+				}
+			]
+		}
+	]
+}

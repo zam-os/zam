@@ -1,0 +1,4054 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:mathematik-mittelschule-8",
+  "version": "2026.11.1",
+  "title": "Mathematik 8 Mittelschule (ZAM Academy)",
+  "description": "Alle acht Lernbereiche der 8. Klasse Mittelschule in Bayern (Regelklasse R8 und M-Zug M8). 30 Lektionen mit Erklärungen, interaktiven Laboren, Aufgaben auf zwei Stufen und ZAM-Lernkarten.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-11-12T20:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/8/mathematik/regelklasse",
+      "checked": "2026-11-12",
+      "label": "M8 Regelklasse, LB 1–8"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/8/mathematik/mittlere-reife-klasse",
+      "checked": "2026-11-12",
+      "label": "M8 M-Zug, LB 1–8"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M78NF6SAAZJ5QEENAP81M7N8",
+      "atom_uri": "urn:zam:atom:01M78NF6SAAZJ5QEENAP81M7N8",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "pr-1-rabatt-preisaenderung",
+      "title": "Rabatt, Preiserhöhung & Preissenkung",
+      "domain": "mathematik/prozentrechnung",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-1-rabatt-preisaenderung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-1-prozent",
+          "topic_title": "Etappe 1: Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SAT1BHV9BYT8439ZXB",
+          "slug": "ms8-verminderter-gw",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-1-rabatt-preisaenderung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Auf 20 % vom alten Preis",
+              "reason": "20 % ist der Rabattanteil; gezahlt werden die restlichen 80 %."
+            },
+            {
+              "text": "Auf 120 % vom alten Preis",
+              "reason": "Bei einem Preisnachlass sinkt der Wert unter den Ausgangspreis."
+            }
+          ],
+          "question": "Auf wie viel Prozent sinkt ein Preis nach 20 % Rabatt?",
+          "concept": "Auf 80 % vom alten Preis",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auf 80 % vom alten Preis",
+              "Auf 20 % vom alten Preis"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAAVFZ63VVXX8S9H41",
+          "slug": "ms8-verkettete-prozent",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-1-rabatt-preisaenderung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Weil Rabatt grundsätzlich doppelt zählt",
+              "reason": "Der zweite Prozentsatz bezieht sich auf den erhöhten Zwischenwert."
+            },
+            {
+              "text": "Weil Prozentrechnung nicht abrundbar ist",
+              "reason": "Die Reihenfolge der Grundwerte erklärt die Abweichung exakt."
+            }
+          ],
+          "question": "Warum ergibt +20 % gefolgt von −20 % nicht wieder 100 €?",
+          "concept": "Die 20 % Abschlag wirken auf 120 €",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die 20 % Abschlag wirken auf 120 €",
+              "Weil Rabatt grundsätzlich doppelt zählt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAWGB5H2EKYFYED7K4",
+          "slug": "ms8-rabatt-kette-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-1-rabatt-preisaenderung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Zweimal zehn Prozent ergeben glatt 160 €",
+              "reason": "Vom neuen Wert 180 € werden 10 %, also 18 €, abgezogen: 162 €."
+            },
+            {
+              "text": "Man zieht nur einmal zehn Prozent zu 180 €",
+              "reason": "Zwei nacheinander gewährte Rabatte werden beide wirksam."
+            }
+          ],
+          "question": "Ein Rad kostet 200 €, sinkt um 10 % und danach nochmals um 10 %. Was kostet es jetzt?",
+          "concept": "Erst 180 € und danach genau 162 €",
+          "sample_solution": "1. Schritt: 200 € − 20 € = 180 €. 2. Schritt: 180 € − 18 € = 162 € (entspricht 81 %, nicht 80 %)."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAR1MVB5X3PJYZPS53",
+      "atom_uri": "urn:zam:atom:01M78NF6SAR1MVB5X3PJYZPS53",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "pr-2-skonto-umsatzsteuer",
+      "title": "Skonto & Umsatzsteuer richtig verketten",
+      "domain": "mathematik/prozentrechnung",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-2-skonto-umsatzsteuer",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAAZJ5QEENAP81M7N8",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-1-prozent",
+          "topic_title": "Etappe 1: Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SA0EX8E32SC06GZA05",
+          "slug": "ms8-skonto-bedeutung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-2-skonto-umsatzsteuer",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Pflichtzuschlag für späte Überweisung",
+              "reason": "Skonto ist ein Abzug vom Rechnungsbetrag bei schneller Zahlung."
+            },
+            {
+              "text": "Staatliche Steuer auf alle Kaufverträge",
+              "reason": "Die staatliche Abgabe heißt Umsatzsteuer, nicht Skonto."
+            }
+          ],
+          "question": "Was bedeutet Skonto beim Bezahlen einer Handwerkerrechnung?",
+          "concept": "Preisnachlass bei rascher Barzahlung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Preisnachlass bei rascher Barzahlung",
+              "Pflichtzuschlag für späte Überweisung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAZ9SDS2FMSSSBVBQ0",
+          "slug": "ms8-umsatzsteuer-satz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-2-skonto-umsatzsteuer",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Der Bruttopreis entspricht genau 100 %",
+              "reason": "Die 19 % Umsatzsteuer werden immer auf den Nettowert aufgeschlagen."
+            },
+            {
+              "text": "Der Rabattbetrag bildet genau 100 %",
+              "reason": "Steuersätze beziehen sich stets auf den netto geforderten Preis."
+            }
+          ],
+          "question": "Welcher Grundwert gehört zur 19-%-Umsatzsteuer auf Rechnungen?",
+          "concept": "Der Nettopreis entspricht genau 100 %",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Nettopreis entspricht genau 100 %",
+              "Der Bruttopreis entspricht genau 100 %"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAZPBKRBEVWKXMNNT9",
+          "slug": "ms8-brutto-auf-netto-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-2-skonto-umsatzsteuer",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Man zieht 19 % von 238 € zu 192,78 € ab",
+              "reason": "238 € sind schon 119 %, daher teilt man durch 119 statt 19 % davon zu nehmen."
+            },
+            {
+              "text": "Man subtrahiert glatt 19 € bis zu 219 €",
+              "reason": "Prozentuale Steuern hängen vom Grundwert ab und sind kein Festbetrag."
+            }
+          ],
+          "question": "Eine Rechnung über 238 € enthält 19 % Umsatzsteuer. Wie hoch ist der Nettobetrag?",
+          "concept": "238 € durch 1,19 ergibt genau 200 €",
+          "sample_solution": "Bruttopreis = 119 %. Damit ist 1 % = 238 € : 119 = 2 €, also Netto (100 %) = 200 €."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SA5732C398A5351421",
+      "atom_uri": "urn:zam:atom:01M78NF6SA5732C398A5351421",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "pr-3-brutto-netto-tara",
+      "title": "Bruttogewicht, Nettogewicht & Tara",
+      "domain": "mathematik/prozentrechnung",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-3-brutto-netto-tara",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAR1MVB5X3PJYZPS53",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-1-prozent",
+          "topic_title": "Etappe 1: Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SA2H1H7FPVK70QZK51",
+          "slug": "ms8-tara-begriff",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-3-brutto-netto-tara",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Nur das reine Gewicht der eingefüllten Ware",
+              "reason": "Das reine Warengewicht heißt Nettogewicht, Verpackung heißt Tara."
+            },
+            {
+              "text": "Das Gesamtgewicht mit der Ladung zusammen",
+              "reason": "Das Gesamtgewicht aus Ware und Verpackung nennt man Bruttogewicht."
+            }
+          ],
+          "question": "Was misst die Tara beim Transport von Waren in Kisten oder Fässern?",
+          "concept": "Nur das Eigengewicht der Verpackung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur das Eigengewicht der Verpackung",
+              "Nur das reine Gewicht der eingefüllten Ware"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SA3J356WX749DM170J",
+          "slug": "ms8-brutto-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-3-brutto-netto-tara",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Netto = Brutto + Tara",
+              "reason": "Das Bruttogewicht ist das schwerere Gesamtgewicht aus Ware und Verpackung."
+            },
+            {
+              "text": "Tara = Brutto · Netto",
+              "reason": "Gewichte werden addiert oder subtrahiert, niemals multipliziert."
+            }
+          ],
+          "question": "Welcher Zusammenhang verknüpft Brutto, Netto und Tara?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{Brutto}=\\text{Netto}+\\text{Tara}",
+              "speech": "Brutto gleich Netto plus Tara"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\text{Brutto}=\\text{Netto}+\\text{Tara}",
+                  "speech": "Brutto gleich Netto plus Tara"
+                }
+              ],
+              "Netto = Brutto + Tara"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SA74YVSBE0DM96W5Z9",
+          "slug": "ms8-tara-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-3-brutto-netto-tara",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "4 kg Verpackung lassen 46 kg Ware",
+              "reason": "Zehn Prozent von 50 kg sind 5 kg, daher verbleiben 45 kg Netto."
+            },
+            {
+              "text": "Auf 50 kg kommen noch 5 kg zu 55 kg",
+              "reason": "Die Tara steckt bereits im Gesamtgewicht von 50 kg und wird abgezogen."
+            }
+          ],
+          "question": "Eine Kiste wiegt voll 50 kg; die leere Kiste macht 10 % vom Brutto aus. Wie viel Ware ist darin?",
+          "concept": "5 kg Verpackung lassen 45 kg Ware",
+          "sample_solution": "Tara = 10 % von 50 kg = 5 kg. Nettogewicht = 50 kg − 5 kg = 45 kg."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAVN2JR410ZNSQWMT6",
+      "atom_uri": "urn:zam:atom:01M78NF6SAVN2JR410ZNSQWMT6",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "pr-4-wachstumsfaktor",
+      "title": "Wachstumsfaktor q & mehrfache Verkettung",
+      "domain": "mathematik/prozentrechnung",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-4-wachstumsfaktor",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SA5732C398A5351421",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-1-prozent",
+          "topic_title": "Etappe 1: Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SAZ4CCX4CDSZX6AJZ6",
+          "slug": "ms8-faktor-q-plus",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-4-wachstumsfaktor",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "q = 0,15",
+              "reason": "Die Zahl 0,15 berechnet nur den Zuwachs allein, nicht den Endwert."
+            },
+            {
+              "text": "q = 0,85",
+              "reason": "Der Faktor 0,85 gehört zu einer Senkung um fünfzehn Prozent."
+            }
+          ],
+          "question": "Mit welchem Wachstumsfaktor q berechnest du eine Erhöhung um 15 % in einem Schritt?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "q=1{,}15",
+              "speech": "q gleich eins komma eins fünf"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "q=1{,}15",
+                  "speech": "q gleich eins komma eins fünf"
+                }
+              ],
+              "q = 0,15"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SATV16DTGEC4RN74FW",
+          "slug": "ms8-faktor-q-kette",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-4-wachstumsfaktor",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Man zählt minus zwanzig und zehn zu 0,90",
+              "reason": "Verkettete Prozentänderungen werden immer als Faktoren multipliziert."
+            },
+            {
+              "text": "Man mittelt beide Prozentsätze zu genau 0,95",
+              "reason": "Das arithmetische Mittel bildet aufeinanderfolgende Grundwertwechsel nicht ab."
+            }
+          ],
+          "question": "Wie fasst du −20 % Rabatt und +10 % Zuschlag mit Faktoren zusammen?",
+          "concept": "Man multipliziert 0,80 mit 1,10 zu 0,88",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Man multipliziert 0,80 mit 1,10 zu 0,88",
+              "Man zählt minus zwanzig und zehn zu 0,90"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SA2D4WGT9JFB436YEW",
+          "slug": "ms8-faktor-umkehr-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-4-wachstumsfaktor",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "120 € mal 1,20 ergeben zusammen 144 €",
+              "reason": "Rückwärts rechnet man durch Dividieren durch den Faktor 0,80."
+            },
+            {
+              "text": "120 € plus glatt zwanzig sind nur 140 €",
+              "reason": "Zwanzig Prozent waren vom größeren Originalpreis abgezogen worden."
+            }
+          ],
+          "question": "Ein Mantel kostet nach 20 % Rabatt noch 120 €. Wie hoch war der ursprüngliche Preis?",
+          "concept": "120 € geteilt durch 0,80 sind 150 €",
+          "sample_solution": "Endwert = G · 0,80 ⇒ G = 120 € : 0,80 = 150 €. Probe: 150 € · 0,80 = 120 €."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAXNHG4D3HEAZKFJ63",
+      "atom_uri": "urn:zam:atom:01M78NF6SAXNHG4D3HEAZKFJ63",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "pr-5-kalkulation-verkaufspreis",
+      "title": "Verkaufspreiskalkulation im Handel",
+      "domain": "mathematik/prozentrechnung",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-5-kalkulation-verkaufspreis",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SA5732C398A5351421",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-1-prozent",
+          "topic_title": "Etappe 1: Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SA7RTXNYFGJY1TRVBW",
+          "slug": "ms8-kalkulation-selbstkosten",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-5-kalkulation-verkaufspreis",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Bruttoverkaufspreis minus Rabattbetrag",
+              "reason": "Selbstkosten entstehen vorher aus Einkauf und laufenden Betriebskosten."
+            },
+            {
+              "text": "Nettoverkaufspreis plus Mehrwertsteuer",
+              "reason": "Umsatzsteuer wird erst ganz am Schluss auf den Nettoverkaufspreis aufgeschlagen."
+            }
+          ],
+          "question": "Woraus setzen sich die Selbstkosten eines Händlers im Schema zusammen?",
+          "concept": "Einkaufspreis plus Handlungskostenanteil",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einkaufspreis plus Handlungskostenanteil",
+              "Bruttoverkaufspreis minus Rabattbetrag"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAR89RPGH8RQTA7YMJ",
+          "slug": "ms8-kalkulation-reihenfolge",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-5-kalkulation-verkaufspreis",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Immer direkt auf den Einkaufspreis",
+              "reason": "Der Endkunde zahlt die Steuer auf den vollständigen Nettoverkaufspreis."
+            },
+            {
+              "text": "Nur auf den reinen Geschäftsgewinn",
+              "reason": "Bemessungsgrundlage der Mehrwertsteuer ist der komplette Netto-Erlös."
+            }
+          ],
+          "question": "Worauf werden beim Verkaufsschema die 19 % Umsatzsteuer aufgeschlagen?",
+          "concept": "Immer auf den Nettoverkaufspreis",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Immer auf den Nettoverkaufspreis",
+              "Immer direkt auf den Einkaufspreis"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SA2XZTEEHSR40VHRCG",
+          "slug": "ms8-kalkulation-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-5-kalkulation-verkaufspreis",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Summe dreißig Prozent liefert direkt 130 €",
+              "reason": "Der Gewinnzuschlag 10 % bezieht sich auf die 120 € Selbstkosten, nicht auf 100 €."
+            },
+            {
+              "text": "Man zieht alle Prozentsätze zu genau 70 € ab",
+              "reason": "Unkosten und gewünschter Gewinn erhöhen den Ausgangspreis stufenweise."
+            }
+          ],
+          "question": "Ein Artikel kostet im Einkauf 100 €, Handlungskosten 20 %, Gewinn 10 %. Wie hoch ist der Netto-VK?",
+          "concept": "Selbstkosten 120 €, Netto-VK wird 132 €",
+          "sample_solution": "SK = 100 € · 1,20 = 120 €. Netto-VK = 120 € · 1,10 = 132 €. (Plus 19 % USt = 157,08 €.)"
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAHF6SR8SKVCZ94VY6",
+      "atom_uri": "urn:zam:atom:01M78NF6SAHF6SR8SKVCZ94VY6",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "pr-6-schaubilder-prozent",
+      "title": "Schaubilder & kritische Bewertung",
+      "domain": "mathematik/prozentrechnung",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-6-schaubilder-prozent",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAXNHG4D3HEAZKFJ63",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-1-prozent",
+          "topic_title": "Etappe 1: Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SAB43KZXEJ0MN21HS3",
+          "slug": "ms8-vollkreis-winkel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-6-schaubilder-prozent",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Genau 1,8 Grad wie am Halbkreis",
+              "reason": "Ein Vollkreis misst 360°, daher gilt 360° : 100 = 3,6° (1,8° gehört zum Halbkreis)."
+            },
+            {
+              "text": "Genau 10 Grad pro Prozentwert",
+              "reason": "Hundert Prozent ergeben 360 Grad, ein Prozent folglich 3,6 Grad."
+            }
+          ],
+          "question": "Welchem Mittelpunktswinkel entspricht 1 % im Kreisdiagramm (Vollkreis)?",
+          "concept": "Genau 3,6 Grad am Vollkreis",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau 3,6 Grad am Vollkreis",
+              "Genau 1,8 Grad wie am Halbkreis"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAQXTWP0CZXT9ZRJG2",
+          "slug": "ms8-diagramm-manipulation",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-6-schaubilder-prozent",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Verwendung einer zweiten Farbe pro Balken",
+              "reason": "Farben unterscheiden Kategorien; eine abgeschnittene y-Achse verzerrt Größenverhältnisse."
+            },
+            {
+              "text": "Vollständige Beschriftung jeder Einheit",
+              "reason": "Klare Einheiten und Skalen machen Diagramme gerade verlässlich lesbar."
+            }
+          ],
+          "question": "Wodurch können Balken- oder Säulendiagramme Änderungen stark übertrieben zeigen?",
+          "concept": "Abgeschnittene Hochachse ohne Start bei null",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Abgeschnittene Hochachse ohne Start bei null",
+              "Verwendung einer zweiten Farbe pro Balken"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAS9RPMA9G4NVBYRP8",
+          "slug": "ms8-streifendiagramm-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-6-schaubilder-prozent",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Genau 35 Zentimeter am Lineal",
+              "reason": "100 % füllen den 10-cm-Streifen — 35 % sind 35 mm, nicht 35 cm."
+            },
+            {
+              "text": "Genau 3,6 Millimeter Breite",
+              "reason": "3,6° gehören zum Vollkreiswinkel; beim 10-cm-Streifen gilt 1 % = 1 mm."
+            }
+          ],
+          "question": "Ein Streifendiagramm ist 10 cm (100 mm) lang. Wie lang zeichnest du einen Bereich mit 35 %?",
+          "concept": "Genau 3,5 Zentimeter am Lineal",
+          "sample_solution": "Bei 10 cm Gesamtlänge (100 mm) entspricht 1 % genau 1 mm. Für 35 % trägst du 35 mm = 3,5 cm ab."
+        }
+      ]
+    },
+    {
+      "id": "01M78W9FTMDQHV9JCF27KGJ3RZ",
+      "atom_uri": "urn:zam:atom:01M78W9FTMDQHV9JCF27KGJ3RZ",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "pr-6m-halbkreis-plus-minus",
+      "title": "Plus-Minus- & Halbkreisdiagramm (M8)",
+      "domain": "mathematik/prozentrechnung",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-6m-halbkreis-plus-minus",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAHF6SR8SKVCZ94VY6",
+          "type": "soft",
+          "rationale": "Vertieft die grundlegenden Prozentdiagramme um Halbkreis- und Plus-Minus-Darstellungen im M-Zug."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-1-prozent",
+          "topic_title": "Etappe 1: Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78W9FTMN0F2FEG3M92567EE",
+          "slug": "ms8-halbkreis-winkel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-6m-halbkreis-plus-minus",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Genau 3,6 Grad wie am Vollkreis",
+              "reason": "Ein Halbkreis hat nur 180° Gesamtumfang, daher 180° : 100 = 1,8°."
+            },
+            {
+              "text": "Genau 1,0 Grad bei hundert Teilen",
+              "reason": "Hundert Prozent füllen 180°, nicht hundert Grad."
+            }
+          ],
+          "question": "Welchem Mittelpunktswinkel entspricht 1 % im Halbkreisdiagramm (M8)?",
+          "concept": "Genau 1,8 Grad am Halbkreis",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau 1,8 Grad am Halbkreis",
+              "Genau 3,6 Grad wie am Vollkreis"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78W9FTM66ZG9YDTQ98EWB2Q",
+          "slug": "ms8-plus-minus-nulllinie",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-6m-halbkreis-plus-minus",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Zuwachs gegenüber dem Ausgangswert",
+              "reason": "Zuwächse werden rechts bzw. oberhalb der Nulllinie eingetragen."
+            },
+            {
+              "text": "Unveränderter Wert bei null Euro",
+              "reason": "Ohne Veränderung bleibt der Balken bei null; Balken links davon zeigen Abnahmen."
+            }
+          ],
+          "question": "Was zeigt ein Balken links oder unterhalb der Nulllinie im Plus-Minus-Diagramm an?",
+          "concept": "Prozentualer Rückgang unter Startwert",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Prozentualer Rückgang unter Startwert",
+              "Zuwachs gegenüber dem Ausgangswert"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78W9FTMGQ1YG2DS2M69C8FP",
+          "slug": "ms8-plus-minus-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-6m-halbkreis-plus-minus",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Absoluter Fehlbetrag von fünf Euro",
+              "reason": "Die Balkenlänge gibt Prozentabweichungen relativ zum Vorwert an."
+            },
+            {
+              "text": "Messfehler von genau fünf Prozentpunkten",
+              "reason": "Negative Balken links der Nulllinie zeigen echte Abnahmen an."
+            }
+          ],
+          "question": "In einem Plus-Minus-Diagramm steigen Umsätze um +15 %, −5 % und +20 %. Was bedeutet der Wert −5 %?",
+          "concept": "Rückgang um fünf Prozent unter dem Start",
+          "sample_solution": "Die Mittellinie markiert 0 %. Werte links davon (−5 %) stellen einen prozentualen Rückgang dar."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAFJQFGXRNMN1GNHPZ",
+      "atom_uri": "urn:zam:atom:01M78NF6SAFJQFGXRNMN1GNHPZ",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "pr-7-promillerechnung",
+      "title": "Promille als Tausendstel nutzen",
+      "domain": "mathematik/prozentrechnung",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-7-promillerechnung",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAHF6SR8SKVCZ94VY6",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-1-prozent",
+          "topic_title": "Etappe 1: Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb1",
+          "topic_title": "Prozentrechnung"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SA6P10F0H2Y14872D6",
+          "slug": "ms8-promille-bruch",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-7-promillerechnung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "p/100 als gewöhnlicher Hundertstelbruch",
+              "reason": "Prozent zählt von hundert; Promille teilt das Ganze in eintausend Teile."
+            },
+            {
+              "text": "1000/p als umgekehrter Kehrwert",
+              "reason": "Der Grundwert steht als Tausender im Nenner des Anteilsbruchs."
+            }
+          ],
+          "question": "Welcher Bruch beschreibt die Angabe p ‰ („von Tausend“)?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\frac{p}{1000}",
+              "speech": "p durch eintausend"
+            },
+            {
+              "type": "text",
+              "text": " als Tausendstelanteil"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\frac{p}{1000}",
+                  "speech": "p durch eintausend"
+                },
+                {
+                  "type": "text",
+                  "text": " als Tausendstelanteil"
+                }
+              ],
+              "p/100 als gewöhnlicher Hundertstelbruch"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAWWKRV3SH0KT2HTN5",
+          "slug": "ms8-promille-prozent-wechsel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-7-promillerechnung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Genau 5,0 % des Grundwerts",
+              "reason": "Weil 1 % gleich 10 ‰ sind, teilt man die Promillezahl durch zehn."
+            },
+            {
+              "text": "Genau 50 % des Grundwerts",
+              "reason": "Fünf Tausendstel sind ein winziger Bruchteil, deutlich unter einem Prozent."
+            }
+          ],
+          "question": "Wie viel Prozent entsprechen genau 5 ‰?",
+          "concept": "Genau 0,5 % des Grundwerts",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau 0,5 % des Grundwerts",
+              "Genau 5,0 % des Grundwerts"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAJRFWTXP9KGMTDTMZ",
+          "slug": "ms8-promille-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=pr-7-promillerechnung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Vier Hundertstel geben bereits glatt 2 000 €",
+              "reason": "Es handelt sich um Promille (Tausendstel), nicht um vier Prozent."
+            },
+            {
+              "text": "Vier Zehntel Prozent liefern volle 20 000 €",
+              "reason": "Durch Eintausend teilen liefert 50 € pro Promille, also 200 €."
+            }
+          ],
+          "question": "Eine Versicherung berechnet 4 ‰ Prämie bei 50 000 € Wert. Wie hoch ist der Beitrag?",
+          "concept": "Ein Tausendstel ist 50 €, mal 4 gibt 200 €",
+          "sample_solution": "1 ‰ von 50 000 € = 50 000 € : 1 000 = 50 €. Für 4 ‰: 4 · 50 € = 200 €."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAVD9580GFCGSFFVA2",
+      "atom_uri": "urn:zam:atom:01M78NF6SAVD9580GFCGSFFVA2",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "wz-1-quadrieren-radizieren",
+      "title": "Quadrieren & Radizieren als Umkehrung",
+      "domain": "mathematik/wurzeln",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=wz-1-quadrieren-radizieren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-2-wurzeln",
+          "topic_title": "Etappe 2: Quadratzahlen und Quadratwurzeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb2",
+          "topic_title": "Quadratzahlen und Quadratwurzeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb2",
+          "topic_title": "Quadratzahlen und Quadratwurzeln"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SABY25GTYG8E9WW3JR",
+          "slug": "ms8-radizieren-umkehrung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=wz-1-quadrieren-radizieren",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Das Halbieren einer geraden Seitenzahl",
+              "reason": "Die Gegentätigkeit zu mal zwei ist geteilt durch zwei, nicht Wurzelziehen."
+            },
+            {
+              "text": "Das Verdreifachen einer bekannten Länge",
+              "reason": "Potenzieren hoch zwei kehrt man über die zweite Wurzel um."
+            }
+          ],
+          "question": "Was macht das Wurzelziehen (Radizieren) rückgängig?",
+          "concept": "Das Quadrieren einer positiven Seitenlänge",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Quadrieren einer positiven Seitenlänge",
+              "Das Halbieren einer geraden Seitenzahl"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAEW3K6DA5GTCTXH43",
+          "slug": "ms8-wurzel-symbol",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=wz-1-quadrieren-radizieren",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die halbe Fläche von exakt vierzig komma fünf",
+              "reason": "Gesucht ist ein Faktor, der mit sich selbst multipliziert 81 ergibt."
+            },
+            {
+              "text": "Die negative Zahl minus einundachtzig sofort",
+              "reason": "Die Quadratwurzel ist stets eindeutig nicht-negativ definiert."
+            }
+          ],
+          "question": "Was liefert die Quadratwurzel √81 aus einer positiven Quadratfläche?",
+          "concept": "Die positive Zahl neun mit neun im Quadrat 81",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die positive Zahl neun mit neun im Quadrat 81",
+              "Die halbe Fläche von exakt vierzig komma fünf"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SA9P570YWAWX7G756G",
+          "slug": "ms8-wurzel-kreis-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=wz-1-quadrieren-radizieren",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die Viertel-Strecke beträgt genau 49 m",
+              "reason": "Aus der Fläche findet man die Quadratseite durch Radizieren, nicht Teilen durch vier."
+            },
+            {
+              "text": "Die doppelte Seite misst volle 98 m",
+              "reason": "Da a · a = 196 gilt, prüft man 14 · 14 = 196 m²."
+            }
+          ],
+          "question": "Ein quadratisches Beet hat die Fläche A = 196 m². Wie lang ist eine Zaunseite?",
+          "concept": "Die Wurzel aus 196 ergibt genau 14 m",
+          "sample_solution": "a = √(196 m²) = 14 m, weil 14² = 196. Umfang wäre dann 4 · 14 m = 56 m."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SA3C82QNZADN12E0NK",
+      "atom_uri": "urn:zam:atom:01M78NF6SA3C82QNZADN12E0NK",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "wz-2-quadratwurzeln-ueberschlag",
+      "title": "Quadratzahlen & Wurzelwerte überschlagen",
+      "domain": "mathematik/wurzeln",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=wz-2-quadratwurzeln-ueberschlag",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAVD9580GFCGSFFVA2",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-2-wurzeln",
+          "topic_title": "Etappe 2: Quadratzahlen und Quadratwurzeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb2",
+          "topic_title": "Quadratzahlen und Quadratwurzeln"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SAS7PC92B4HHQ5MJF0",
+          "slug": "ms8-negativ-quadrat",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=wz-2-quadratwurzeln-ueberschlag",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Negativ gleich minus neunundvierzig immer",
+              "reason": "Das Quadrat jeder von null verschiedenen Zahl ist positiv."
+            },
+            {
+              "text": "Immer genau null durch Vorzeichenwechsel",
+              "reason": "Zwei gleiche negative Faktoren ergeben ein positives Produkt."
+            }
+          ],
+          "question": "Welches Vorzeichen hat (−7)² beim Quadrieren einer negativen Zahl?",
+          "concept": "Positiv gleich neunundvierzig wegen minus mal minus",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Positiv gleich neunundvierzig wegen minus mal minus",
+              "Negativ gleich minus neunundvierzig immer"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAQ0XHBEC82BN2VF9C",
+          "slug": "ms8-klammer-quadrat-unterschied",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=wz-2-quadratwurzeln-ueberschlag",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Beide liefern sicher plus fünfundzwanzig",
+              "reason": "Ohne Klammer steht das Minus vor dem Quadrat und bleibt negativ."
+            },
+            {
+              "text": "Erster ergibt minus zehn, zweiter plus zehn",
+              "reason": "Quadrieren bedeutet hoch zwei nehmen, nicht verdoppeln."
+            }
+          ],
+          "question": "Worin unterscheiden sich die Ausdrücke (−5)² und −5²?",
+          "concept": "Erster ergibt 25, zweiter minus fünfundzwanzig",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Erster ergibt 25, zweiter minus fünfundzwanzig",
+              "Beide liefern sicher plus fünfundzwanzig"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SA94P9MZ8ZXEBAGBPS",
+          "slug": "ms8-wurzel-eingrenzen-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=wz-2-quadratwurzeln-ueberschlag",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Zwischen 7 und 8 wegen 49 < 75 < 64",
+              "reason": "75 ist größer als 8² = 64 und kleiner als 9² = 81."
+            },
+            {
+              "text": "Zwischen 9 und 10 wegen 81 < 75 < 100",
+              "reason": "81 liegt bereits oberhalb von 75, daher ist √75 kleiner als neun."
+            }
+          ],
+          "question": "Zwischen welchen benachbarten natürlichen Zahlen liegt √75?",
+          "concept": "Zwischen 8 und 9 wegen 64 < 75 < 81",
+          "sample_solution": "Nachbarquadratzahlen: 8² = 64 < 75 < 81 = 9². Da 75 näher bei 81 liegt, ist √75 ≈ 8,7."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAEJG7ESNEBH8WJ5GZ",
+      "atom_uri": "urn:zam:atom:01M78NF6SAEJG7ESNEBH8WJ5GZ",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "kz-1-kreis-zirkel-pi",
+      "title": "Kreise, Durchmesser & Kreiszahl π",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-1-kreis-zirkel-pi",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-3-kreis",
+          "topic_title": "Etappe 3: Geometrische Figuren und Körper"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SA6YX87VGC2V0GZASX",
+          "slug": "ms8-durchmesser-radius",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-1-kreis-zirkel-pi",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "r = 2 · d",
+              "reason": "Der Durchmesser läuft quer durch den Mittelpunkt und ist doppelt so lang wie r."
+            },
+            {
+              "text": "d = r + 2",
+              "reason": "Die Beziehung ist ein festes Verhältnis mal zwei, keine Addition."
+            }
+          ],
+          "question": "Welcher Zusammenhang gilt zwischen Radius r und Durchmesser d jedes Kreises?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "d=2\\cdot r",
+              "speech": "Durchmesser gleich zwei mal Radius"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "d=2\\cdot r",
+                  "speech": "Durchmesser gleich zwei mal Radius"
+                }
+              ],
+              "r = 2 · d"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SATPZEW4WR71WMX826",
+          "slug": "ms8-pi-definition",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-1-kreis-zirkel-pi",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Den halben Radiuswert rund 1,57",
+              "reason": "Egal wie groß der Kreis ist, u : d bleibt konstant rund 3,14."
+            },
+            {
+              "text": "Das doppelte Ausmaß rund 6,28",
+              "reason": "6,28 entspricht u : r, also zwei mal Pi."
+            }
+          ],
+          "question": "Welchen konstanten Wert liefert der Quotient u : d bei jedem Kreis?",
+          "concept": "Die feste Kreiszahl Pi rund 3,14",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die feste Kreiszahl Pi rund 3,14",
+              "Den halben Radiuswert rund 1,57"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAY3CQEZN8CXW12HCX",
+          "slug": "ms8-umfang-direkt-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-1-kreis-zirkel-pi",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "35 cm mal zwei ergeben exakt 70 cm",
+              "reason": "Der zurückgelegte Weg entspricht dem Kreisumfang u = π · d."
+            },
+            {
+              "text": "70 cm geteilt durch Pi gibt rund 22,3 cm",
+              "reason": "Man multipliziert den Durchmesser mit 3,14, statt zu teilen."
+            }
+          ],
+          "question": "Ein Fahrradreifen hat den Durchmesser d = 70 cm. Welche Strecke legt er bei einer Umdrehung zurück?",
+          "concept": "70 cm mal Pi ergeben rund 219,9 cm",
+          "sample_solution": "u = π · d ≈ 3,1416 · 70 cm ≈ 219,9 cm (oder mit 3,14 gerechnet: 219,8 cm)."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAXZX9S5X99PVXZF77",
+      "atom_uri": "urn:zam:atom:01M78NF6SAXZX9S5X99PVXZF77",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "kz-2-kreisumfang-umkehrung",
+      "title": "Kreisumfang & Umkehraufgaben in Beruf & Alltag",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-2-kreisumfang-umkehrung",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAEJG7ESNEBH8WJ5GZ",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-3-kreis",
+          "topic_title": "Etappe 3: Geometrische Figuren und Körper"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SAVXMT50SJK3SVTR7Y",
+          "slug": "ms8-umfang-radius-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-2-kreisumfang-umkehrung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "u = π · r²",
+              "reason": "Das Quadrat r² gehört zur Kreisfläche, nicht zum linearen Umfang."
+            },
+            {
+              "text": "u = π · r",
+              "reason": "Einmal Pi · r wäre nur die Hälfte, ein Halbkreisbogen."
+            }
+          ],
+          "question": "Welche Formel berechnet den Kreisumfang u aus dem Radius r?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "u=2\\cdot\\pi\\cdot r",
+              "speech": "Umfang gleich zwei mal Pi mal r"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "u=2\\cdot\\pi\\cdot r",
+                  "speech": "Umfang gleich zwei mal Pi mal r"
+                }
+              ],
+              "u = π · r²"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAKRDPB0RJASDYFMDY",
+          "slug": "ms8-umfang-umkehren",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-2-kreisumfang-umkehrung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "r = u : 2",
+              "reason": "Zur Umkehrung von u = π · d teilt man den Umfang durch die Kreiszahl Pi."
+            },
+            {
+              "text": "d = π · r²",
+              "reason": "Pi · r² gehört zum Flächeninhalt, beim Umfang teilt man u durch Pi."
+            }
+          ],
+          "question": "Wie gewinnst du aus gemessenem Baumumfang u direkt den Durchmesser d?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "d=\\frac{u}{\\pi}",
+              "speech": "Durchmesser gleich Umfang durch Pi"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "d=\\frac{u}{\\pi}",
+                  "speech": "Durchmesser gleich Umfang durch Pi"
+                }
+              ],
+              "r = u : 2"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAMABATF03C9A894WD",
+          "slug": "ms8-umfang-umkehr-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-2-kreisumfang-umkehrung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Mit Pi malnehmen ergibt rund 197,3 cm",
+              "reason": "Aus dem Umfang folgt erst d = 62,8 : 3,14 = 20 cm, dann halbiert man zu r."
+            },
+            {
+              "text": "Nur halbieren liefert rund 31,4 cm",
+              "reason": "Halbieren allein beachtet die Kreiszahl Pi beim Kreisumfang noch nicht."
+            }
+          ],
+          "question": "Ein Säulenfuß misst genau 62,8 cm im Umfang. Wie groß ist sein Radius r?",
+          "concept": "Durch 2π teilen ergibt ziemlich genau 10 cm",
+          "sample_solution": "d = u : π ≈ 62,8 cm : 3,14 = 20 cm ⇒ Radius r = d : 2 = 10 cm."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAJ0BFQ0SGY6G259N2",
+      "atom_uri": "urn:zam:atom:01M78NF6SAJ0BFQ0SGY6G259N2",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "kz-3-kreisbogen-sektor",
+      "title": "Kreisbogen b & Kreissektor",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-3-kreisbogen-sektor",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAXZX9S5X99PVXZF77",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-3-kreis",
+          "topic_title": "Etappe 3: Geometrische Figuren und Körper"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SANMYY90ZF79QPRGB2",
+          "slug": "ms8-bogen-anteil",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-3-kreisbogen-sektor",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Genau der Hälfte wegen 90° von 180°",
+              "reason": "Ein voller Kreiswinkel misst 360°, daher steht 90° für ein Viertel."
+            },
+            {
+              "text": "Genau einem Drittel wegen 90° von 270°",
+              "reason": "Der Vollwinkel beträgt immer dreihundertsechzig Grad."
+            }
+          ],
+          "question": "Welchem Anteil des Vollkreises entspricht ein Mittelpunktswinkel von μ = 90°?",
+          "concept": "Genau einem Viertel wegen 90° von 360°",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau einem Viertel wegen 90° von 360°",
+              "Genau der Hälfte wegen 90° von 180°"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SA00NX68RE642YKZ4E",
+          "slug": "ms8-kreisbogen-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-3-kreisbogen-sektor",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "b = π · (r + 360°)",
+              "reason": "Der Winkelanteil μ / 360° skaliert den Vollkreisumfang auf den Sektor."
+            },
+            {
+              "text": "b = r² · (π : 360°)",
+              "reason": "r² gehört zum Flächeninhalt, nicht zur Bogenlänge."
+            }
+          ],
+          "question": "Mit welcher Formel berechnest du die Länge b eines Kreisbogens?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "b=2\\cdot\\pi\\cdot r\\cdot\\frac{\\mu}{360^{\\circ}}",
+              "speech": "Bogen gleich zwei mal Pi mal r mal Mü durch dreihundertsechzig Grad"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "b=2\\cdot\\pi\\cdot r\\cdot\\frac{\\mu}{360^{\\circ}}",
+                  "speech": "Bogen gleich zwei mal Pi mal r mal Mü durch dreihundertsechzig Grad"
+                }
+              ],
+              "b = π · (r + 360°)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SA0B2VHVF4H66N0SZX",
+          "slug": "ms8-kreisbogen-umkehr-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-3-kreisbogen-sektor",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ein Drittel Kreis entspricht glatt 120°",
+              "reason": "9,42 cm ist ein Viertel des Vollkreises 37,68 cm, also 90°."
+            },
+            {
+              "text": "Ein Sechstel Kreis entspricht glatt 60°",
+              "reason": "Bei 60° wäre der Bogen nur rund 6,28 cm lang."
+            }
+          ],
+          "question": "Ein Kreisbogen bei r = 6 cm hat eine Länge von 9,42 cm (Halbkreisumfang 18,84 cm). Wie groß ist μ?",
+          "concept": "Halber Halbkreis entspricht exakt 90°",
+          "sample_solution": "u = 2 · 3,14 · 6 cm = 37,68 cm. Anteil: 9,42 : 37,68 = 1/4 ⇒ μ = 360° : 4 = 90°."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SADSD73AXFJJFZ351M",
+      "atom_uri": "urn:zam:atom:01M78NF6SADSD73AXFJJFZ351M",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "kz-4-zusammengesetzte-umfaenge",
+      "title": "Umfänge zusammengesetzter Figuren",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-4-zusammengesetzte-umfaenge",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAXZX9S5X99PVXZF77",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-3-kreis",
+          "topic_title": "Etappe 3: Geometrische Figuren und Körper"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SA7PYJ1P4YP61MWMFM",
+          "slug": "ms8-aussenrand-regel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-4-zusammengesetzte-umfaenge",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Auch jede gestrichelte Trennlinie im Inneren",
+              "reason": "Innere Trennlinien helfen beim Zerlegen der Fläche, gehören aber nicht zum Rand."
+            },
+            {
+              "text": "Nur die geraden Rechteckkanten ohne Bögen",
+              "reason": "Kreis- und Halbkreisbögen außen am Rand bilden ebenfalls einen Teil des Umfangs."
+            }
+          ],
+          "question": "Welche Linien zählen beim Berechnen des Umfangs einer zusammengesetzten Figur mit?",
+          "concept": "Ausschließlich alle Linien entlang der Außenkante",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ausschließlich alle Linien entlang der Außenkante",
+              "Auch jede gestrichelte Trennlinie im Inneren"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAKNRRB72222HQ6Y95",
+          "slug": "ms8-stadion-umfang",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-4-zusammengesetzte-umfaenge",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Zu genau einem Viertelkreisumfang π · r : 2",
+              "reason": "Zwei gleich große Halbkreise ergänzen sich exakt zu einem ganzen Kreis."
+            },
+            {
+              "text": "Zu exakt zwei ganzen Kreisumfängen 2 · π · d",
+              "reason": "Jeder Halbkreis liefert nur einen halben Kreisrand."
+            }
+          ],
+          "question": "Wie fasst du zwei gegenüberliegende gleiche Halbkreise beim Umfang geschickt zusammen?",
+          "concept": "Zusammen zu genau einem Vollkreisumfang π · d",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zusammen zu genau einem Vollkreisumfang π · d",
+              "Zu genau einem Viertelkreisumfang π · r : 2"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAFCX8NM97HKDA3AQT",
+          "slug": "ms8-stadion-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-4-zusammengesetzte-umfaenge",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Alle vier Rechteckseiten plus Kreis geben 365,6 m",
+              "reason": "Die beiden inneren 40-m-Breiten liegen innen und zählen nicht zur Laufbahn."
+            },
+            {
+              "text": "Nur zwei Geraden plus ein Halbkreis geben 222,8 m",
+              "reason": "Beide Endkurven ergeben zusammen einen vollen Kreisumfang."
+            }
+          ],
+          "question": "Ein Sportfeld besteht aus einem 80 m langen Rechteck (Breite d = 40 m) und zwei Halbkreisen an den Schmalseiten. Wie lang ist eine Runde?",
+          "concept": "160 m Geraden plus ca. 125,6 m Kreis geben 285,6 m",
+          "sample_solution": "2 Geraden = 2 · 80 m = 160 m. 2 Halbkreise = 1 Vollkreis u ≈ 3,14 · 40 m = 125,6 m ⇒ 285,6 m."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAYGNTHZFGE90PQRQ1",
+      "atom_uri": "urn:zam:atom:01M78NF6SAYGNTHZFGE90PQRQ1",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "kz-5-zylinder-netze-schraegbild",
+      "title": "Zylinder: Eigenschaften, Netze & Schrägbilder",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-5-zylinder-netze-schraegbild",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SADSD73AXFJJFZ351M",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-3-kreis",
+          "topic_title": "Etappe 3: Geometrische Figuren und Körper"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SA3AX10CDNSGDCZ362",
+          "slug": "ms8-zylinder-flaechen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-5-zylinder-netze-schraegbild",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ein großer Kreis plus zwei spitze Dreiecke",
+              "reason": "Die Seitenfläche rollt sich zu einem Rechteck ab, nicht zu Dreiecken."
+            },
+            {
+              "text": "Sechs rechteckige Seitenflächen ohne Kreise",
+              "reason": "Sechs Rechtecke ergeben ein Quader-Netz, keinen runden Zylinder."
+            }
+          ],
+          "question": "Aus welchen drei Flächen besteht das Netz jedes geraden Kreiszylinders?",
+          "concept": "Zwei deckungsgleiche Kreise plus ein Mantelrechteck",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwei deckungsgleiche Kreise plus ein Mantelrechteck",
+              "Ein großer Kreis plus zwei spitze Dreiecke"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAVFHBRHT7HBNDKNYK",
+          "slug": "ms8-zylinder-mantelbreite",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-5-zylinder-netze-schraegbild",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Genau dem einfachen Radius r der Grundscheibe",
+              "reason": "Das Rechteck wickelt sich einmal ganz um den Kreis herum."
+            },
+            {
+              "text": "Genau dem Flächeninhalt G des Grundkreises",
+              "reason": "Strecke passt zu Strecke: die Mantelbreite entspricht der Umfangslänge u."
+            }
+          ],
+          "question": "Welcher Kreisgröße muss die Breite b des Mantelrechtecks im Zylindernetz exakt entsprechen?",
+          "concept": "Genau dem Umfang u der Grundkreisscheibe",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau dem Umfang u der Grundkreisscheibe",
+              "Genau dem einfachen Radius r der Grundscheibe"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SA92NS3QKY4TB0K71N",
+          "slug": "ms8-zylindernetz-fehler-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kz-5-zylinder-netze-schraegbild",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Weil zwei gleich große Kreise nicht parallel stehen können",
+              "reason": "Im Netz sitzen Grund- und Deckkreis auf gegenüberliegenden langen Rechteckkanten."
+            },
+            {
+              "text": "Weil Kreise am Mantel nicht gekrümmt werden dürfen",
+              "reason": "Jeder Kreis liegt sauber gegenüber dem anderen am abgewickelten Rechteck."
+            }
+          ],
+          "question": "Warum ist ein Netz fehlerhaft, bei dem beide Grundkreise an derselben Rechteckseite kleben?",
+          "concept": "Beim Falten fehlt unten ein Deckel und oben liegen zwei",
+          "sample_solution": "Damit sich das Netz zum geschlossenen Zylinder falten lässt, gehören die Kreise an gegenüberliegende Rechteckseiten."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAXY1FR6VGDV3W31Y4",
+      "atom_uri": "urn:zam:atom:01M78NF6SAXY1FR6VGDV3W31Y4",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "kf-1-kreisflaeche-herleitung",
+      "title": "Flächeninhalt des Kreises herleiten",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-1-kreisflaeche-herleitung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-4-kreisflaeche",
+          "topic_title": "Etappe 4: Flächeninhalt – Kreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Kreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Kreise"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SA0GME7MQ2S02YJC5J",
+          "slug": "ms8-sektor-rechteck-herleitung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-1-kreisflaeche-herleitung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Länge voller Umfang und Höhe gleich Durchmesser",
+              "reason": "Die Kreislinie verteilt sich je zur Hälfte auf Ober- und Unterseite."
+            },
+            {
+              "text": "Länge gleich Radius r und Höhe gleich r²",
+              "reason": "r² ist bereits eine Flächeneinheit, keine lineare Seitenlänge."
+            }
+          ],
+          "question": "Welche Kanten hat das genäherte Rechteck aus zerschnittenen Kreissektoren?",
+          "concept": "Länge ein halber Umfang π · r und Höhe r",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Länge ein halber Umfang π · r und Höhe r",
+              "Länge voller Umfang und Höhe gleich Durchmesser"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SA9WJP9PYKS9FJGMQG",
+          "slug": "ms8-kreisflaeche-schranke",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-1-kreisflaeche-herleitung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Zwischen kleinem Quadrat r² und Doppelquadrat 2r²",
+              "reason": "Da π ≈ 3,14 gilt, liegt die Kreisfläche r² · π zwischen 2r² und 4r²."
+            },
+            {
+              "text": "Zwischen großem Umquadrat 4r² und 8r²",
+              "reason": "Der Kreis passt komplett in das Umquadrat mit Fläche 4r² hinein."
+            }
+          ],
+          "question": "Zwischen welchen Quadratflächen liegt jede Kreisfläche mit Radius r anschaulich?",
+          "concept": "Zwischen Innenquadrat 2r² und Umquadrat 4r²",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwischen Innenquadrat 2r² und Umquadrat 4r²",
+              "Zwischen kleinem Quadrat r² und Doppelquadrat 2r²"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SA7FS6CW147T1DV0JY",
+          "slug": "ms8-radius-verdoppeln-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-1-kreisflaeche-herleitung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Die Kreisfläche wird nur doppelt so groß",
+              "reason": "Da der Radius in r² quadriert eingeht, gilt 2² = 4-fache Fläche."
+            },
+            {
+              "text": "Die Kreisfläche steigt genau aufs Dreifache",
+              "reason": "Mit Faktor zwei im Quadrat wächst der Inhalt auf das Vierfache."
+            }
+          ],
+          "question": "Der Radius r eines runden Pizzaschildes wird verdoppelt. Wie ändert sich der Flächeninhalt?",
+          "concept": "Die Kreisfläche wird viermal so groß",
+          "sample_solution": "A_alt = r² · π ⇒ A_neu = (2r)² · π = 4 · r² · π = 4 · A_alt."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAF7DFNV15R2D5B1QS",
+      "atom_uri": "urn:zam:atom:01M78NF6SAF7DFNV15R2D5B1QS",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "kf-2-kreisflaeche-umkehrung",
+      "title": "Kreisfläche & Umkehraufgaben mit Wurzelziehen",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-2-kreisflaeche-umkehrung",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAXY1FR6VGDV3W31Y4",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-4-kreisflaeche",
+          "topic_title": "Etappe 4: Flächeninhalt – Kreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Kreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Kreise"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SA7EMJJXWB955CTMGZ",
+          "slug": "ms8-kreisflaeche-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-2-kreisflaeche-umkehrung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "A = 2 · π · r",
+              "reason": "Zwei · Pi · r berechnet den Umfang als Länge, nicht die Fläche."
+            },
+            {
+              "text": "A = d² · π",
+              "reason": "Mit dem Durchmesser d statt r entsteht das Vierfache der Kreisfläche."
+            }
+          ],
+          "question": "Wie lautet die Formel für den Flächeninhalt A eines Kreises mit Radius r?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "A=r^2\\cdot\\pi",
+              "speech": "Fläche gleich r Quadrat mal Pi"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "A=r^2\\cdot\\pi",
+                  "speech": "Fläche gleich r Quadrat mal Pi"
+                }
+              ],
+              "A = 2 · π · r"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAX9FE23JC4TZF1C0X",
+          "slug": "ms8-kreis-radius-umkehren",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-2-kreisflaeche-umkehrung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "r = √(d · π)",
+              "reason": "Aus dem Durchmesser erhält man r durch Halbieren; aus A zieht man √(A : π)."
+            },
+            {
+              "text": "r = √(u : 2)",
+              "reason": "Beim Umfang teilt man durch 2π ohne Wurzel; aus A zieht man √(A : π)."
+            }
+          ],
+          "question": "Wie bestimmst du aus bekannter Kreisfläche A rückwärts den Radius r?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "r=\\sqrt{\\frac{A}{\\pi}}",
+              "speech": "r gleich Wurzel aus A durch Pi"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "r=\\sqrt{\\frac{A}{\\pi}}",
+                  "speech": "r gleich Wurzel aus A durch Pi"
+                }
+              ],
+              "r = √(d · π)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAJMRKM50M2GCJTHJV",
+          "slug": "ms8-kreis-umkehr-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-2-kreisflaeche-umkehrung",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "78,5 durch 3,14 ergibt direkt 25 m Radius",
+              "reason": "25 ist erst r² in Quadratmetern; die Wurzel aus 25 liefert r = 5 m."
+            },
+            {
+              "text": "78,5 durch 6,28 ergibt rund 12,5 m",
+              "reason": "Flächenumkehrung teilt durch Pi und zieht anschließend die Quadratwurzel."
+            }
+          ],
+          "question": "Ein rundes Beet soll 78,5 m² Fläche erhalten. Welchen Radius r steckt der Gärtner ab?",
+          "concept": "78,5 durch 3,14 gibt 25, also Radius 5 m",
+          "sample_solution": "r² = A : π ≈ 78,5 m² : 3,14 = 25 m² ⇒ r = √25 m = 5 m."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SA53F658PP0H7X947E",
+      "atom_uri": "urn:zam:atom:01M78NF6SA53F658PP0H7X947E",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "kf-3-kreisring-sektor",
+      "title": "Kreisring & Kreissektor (Ausschnitt)",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-3-kreisring-sektor",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAF7DFNV15R2D5B1QS",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-4-kreisflaeche",
+          "topic_title": "Etappe 4: Flächeninhalt – Kreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Kreise"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SANA9FF0EX32B8B192",
+          "slug": "ms8-kreisring-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-3-kreisring-sektor",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "A = (R − r)² · π",
+              "reason": "Außenkreis minus Innenkreis verlangt R² − r², nicht (R − r)²."
+            },
+            {
+              "text": "A = (R + r) · π",
+              "reason": "Eine Flächenberechnung braucht quadratische Radien mit Einheit Quadratzentimeter."
+            }
+          ],
+          "question": "Wie berechnest du die Fläche eines Kreisrings mit Außenradius R und Innenradius r?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "A_{\\text{Ring}}=(R^2-r^2)\\cdot\\pi",
+              "speech": "Kreisringfläche gleich Klammer auf R Quadrat minus r Quadrat Klammer zu mal Pi"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "A_{\\text{Ring}}=(R^2-r^2)\\cdot\\pi",
+                  "speech": "Kreisringfläche gleich Klammer auf R Quadrat minus r Quadrat Klammer zu mal Pi"
+                }
+              ],
+              "A = (R − r)² · π"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SATPF9D3EC7XRM97F1",
+          "slug": "ms8-sektor-flaeche-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-3-kreisring-sektor",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "A = 2 · (r · π · μ)",
+              "reason": "Der Anteil μ / 360° skaliert die ganze Kreisfläche r² · π."
+            },
+            {
+              "text": "A = r² · (360° : μ)",
+              "reason": "Größere Winkel geben größere Flächen; μ steht daher im Zähler."
+            }
+          ],
+          "question": "Wie berechnest du die Fläche eines Kreisausschnitts mit Mittelpunktswinkel μ?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "A_{\\text{Sek}}=r^2\\cdot\\pi\\cdot\\frac{\\mu}{360^{\\circ}}",
+              "speech": "Sektorfläche gleich r Quadrat mal Pi mal Mü durch dreihundertsechzig Grad"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "A_{\\text{Sek}}=r^2\\cdot\\pi\\cdot\\frac{\\mu}{360^{\\circ}}",
+                  "speech": "Sektorfläche gleich r Quadrat mal Pi mal Mü durch dreihundertsechzig Grad"
+                }
+              ],
+              "A = 2 · (r · π · μ)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAM8PNHE4YZVPPGQK8",
+          "slug": "ms8-kreisring-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-3-kreisring-sektor",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Aus 5 minus 3 folgen nur 4 · π ≈ 12,56 cm²",
+              "reason": "Erst die beiden Quadrate bilden: 25 − 9 = 16, dann mit Pi malnehmen."
+            },
+            {
+              "text": "Aus 25 plus 9 folgen 34 · π ≈ 106,76 cm²",
+              "reason": "Das innere Loch wird herausgeschnitten, also subtrahiert statt addiert."
+            }
+          ],
+          "question": "Ein Ring hat Außenradius R = 5 cm und Innenradius r = 3 cm. Wie groß ist seine Fläche?",
+          "concept": "Aus 25 minus 9 folgen 16 · π ≈ 50,24 cm²",
+          "sample_solution": "A_Ring = (5² − 3²) · π = (25 − 9) · 3,14 = 16 · 3,14 = 50,24 cm²."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SARCXYBX9X0EYJZW5V",
+      "atom_uri": "urn:zam:atom:01M78NF6SARCXYBX9X0EYJZW5V",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "kf-4-zusammengesetzte-kreisflaechen",
+      "title": "Zusammengesetzte Kreisflächen",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-4-zusammengesetzte-kreisflaechen",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAF7DFNV15R2D5B1QS",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-4-kreisflaeche",
+          "topic_title": "Etappe 4: Flächeninhalt – Kreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Kreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Kreise"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SA4GNC8DWW5F2EQE6B",
+          "slug": "ms8-flaechen-strategie",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-4-zusammengesetzte-kreisflaechen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Einfach alle gegebenen Längen miteinander malnehmen",
+              "reason": "Kombinierte Formen brauchen sinnvolles Aufteilen oder Abziehen von Löchern."
+            },
+            {
+              "text": "Nur den Gesamtumfang mit zwei multiplizieren",
+              "reason": "Umfang und Flächeninhalt sind völlig unterschiedliche Messgrößen."
+            }
+          ],
+          "question": "Welche zwei Grundstrategien helfen bei zusammengesetzten Flächen mit Kreisteilen?",
+          "concept": "In bekannte Teilflächen zerlegen oder ergänzen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In bekannte Teilflächen zerlegen oder ergänzen",
+              "Einfach alle gegebenen Längen miteinander malnehmen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAMJ8GPKB6AXJGAPRH",
+          "slug": "ms8-vier-viertelkreise",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-4-zusammengesetzte-kreisflaechen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Genau einem halben Kreis entlang einer Kante",
+              "reason": "Vier Viertel ergeben zusammen vier Viertel gleich ein Ganzes."
+            },
+            {
+              "text": "Genau zwei vollen Kreisen außerhalb der Ecken",
+              "reason": "Viermal ein Viertel addiert sich immer genau zu 1."
+            }
+          ],
+          "question": "Welcher Figur entsprechen vier ausgeschnittene Viertelkreise mit gleichem Radius zusammen?",
+          "concept": "Genau einem kompletten ausgeschnittenen Vollkreis",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau einem kompletten ausgeschnittenen Vollkreis",
+              "Genau einem halben Kreis entlang einer Kante"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAWBEZMD8EDYY9GSPF",
+          "slug": "ms8-ausschnitt-quadrat-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-4-zusammengesetzte-kreisflaechen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "36 cm² minus nur einen Viertelkreis bleiben 28,9 cm²",
+              "reason": "Alle vier Ecken bilden zusammen einen Vollkreis mit r = 3 cm."
+            },
+            {
+              "text": "36 cm² plus voller Kreis ergeben rund 64,26 cm²",
+              "reason": "Die Ecken wurden herausgeschnitten, ihre Fläche wird abgezogen."
+            }
+          ],
+          "question": "Aus einem Quadrat (a = 6 cm) werden in allen 4 Ecken Viertelkreise (r = 3 cm) ausgeschnitten. Was bleibt?",
+          "concept": "36 cm² minus 9·π cm² bleiben rund 7,74 cm²",
+          "sample_solution": "A_Rest = a² − r² · π = 36 − 9 · 3,14 = 36 − 28,26 = 7,74 cm²."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SABVH7FSQMHWDSK11V",
+      "atom_uri": "urn:zam:atom:01M78NF6SABVH7FSQMHWDSK11V",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "kf-5-zylinder-oberflaeche",
+      "title": "Oberflächeninhalt von Zylindern",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-5-zylinder-oberflaeche",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SARCXYBX9X0EYJZW5V",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-4-kreisflaeche",
+          "topic_title": "Etappe 4: Flächeninhalt – Kreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Kreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Kreise"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SAQM4JJMXZBWNJTGGT",
+          "slug": "ms8-mantelflaeche-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-5-zylinder-oberflaeche",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "M = r² · π · h_k",
+              "reason": "r² · π · hk berechnet das Volumen, nicht das abgerollte Mantelrechteck."
+            },
+            {
+              "text": "M = r · h_k",
+              "reason": "Die Rechteckbreite entspricht dem gesamten Umfang u = 2 · π · r."
+            }
+          ],
+          "question": "Wie berechnest du die Mantelfläche M eines geraden Zylinders?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "M=2\\cdot\\pi\\cdot r\\cdot h_k",
+              "speech": "Mantelfläche gleich zwei mal Pi mal r mal Körperhöhe"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "M=2\\cdot\\pi\\cdot r\\cdot h_k",
+                  "speech": "Mantelfläche gleich zwei mal Pi mal r mal Körperhöhe"
+                }
+              ],
+              "M = r² · π · h_k"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAMH1R4PWX29TQ3T2R",
+          "slug": "ms8-oberflaeche-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-5-zylinder-oberflaeche",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "O = G · h_k",
+              "reason": "G · hk berechnet das Volumen im Raum, nicht die Außenfläche im Netz."
+            },
+            {
+              "text": "O = u · h_k",
+              "reason": "Umfang mal Körperhöhe ergibt nur den Mantel ohne Boden und Deckel."
+            }
+          ],
+          "question": "Welche Formel beschreibt den vollständigen Oberflächeninhalt O eines geschlossenen Zylinders?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "O=2\\cdot G+M",
+              "speech": "Oberfläche gleich zwei mal Grundfläche plus Mantelfläche"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "O=2\\cdot G+M",
+                  "speech": "Oberfläche gleich zwei mal Grundfläche plus Mantelfläche"
+                }
+              ],
+              "O = G · h_k"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAEJD7NX85PD0GFSKZ",
+          "slug": "ms8-offener-zylinder-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=kf-5-zylinder-oberflaeche",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Zwei Deckel plus Mantel ergeben rund 351,7 cm²",
+              "reason": "Ohne Deckel zählt nur einmal Grundfläche G plus Mantelfläche M."
+            },
+            {
+              "text": "Allein der Boden ohne Mantel misst rund 50,2 cm²",
+              "reason": "Auch die gekrümmte Seitenwand besteht natürlich aus Blech."
+            }
+          ],
+          "question": "Eine Konservendose ohne Deckel hat r = 4 cm und hₖ = 10 cm. Wie viel Blech braucht sie mindestens?",
+          "concept": "Nur ein Boden plus Mantel ergeben rund 301,4 cm²",
+          "sample_solution": "G ≈ 3,14 · 16 = 50,24 cm². M ≈ 2 · 3,14 · 4 · 10 = 251,2 cm². Offen: 50,24 + 251,2 = 301,44 cm²."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAN67SDEY3RGQ4SZFC",
+      "atom_uri": "urn:zam:atom:01M78NF6SAN67SDEY3RGQ4SZFC",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "zy-1-zylindervolumen-analogie",
+      "title": "Zylindervolumen (Analogie V = G · hₖ)",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zy-1-zylindervolumen-analogie",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-5-zylinder",
+          "topic_title": "Etappe 5: Rauminhalt – Zylinder"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Zylinder"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Zylinder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SA0V05G1P10B2S6VJ3",
+          "slug": "ms8-volumen-analogie",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zy-1-zylindervolumen-analogie",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "V = 2 · r + h_k",
+              "reason": "Grundfläche stapelt sich über die Höhe per Multiplikation, nicht durch Addition."
+            },
+            {
+              "text": "V = M · 2",
+              "reason": "Die Mantelfläche allein ersetzt nicht das Produkt aus Grundfläche und Höhe."
+            }
+          ],
+          "question": "Warum gilt für das Volumen von Quader, Dreiecksprisma und Zylinder dieselbe Grundidee?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V=G\\cdot h_k",
+              "speech": "Volumen gleich Grundfläche mal Körperhöhe"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "V=G\\cdot h_k",
+                  "speech": "Volumen gleich Grundfläche mal Körperhöhe"
+                }
+              ],
+              "V = 2 · r + h_k"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAWR3BVVJ72YYP59SX",
+          "slug": "ms8-zylindervolumen-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zy-1-zylindervolumen-analogie",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "V = 2 · π · r · h_k",
+              "reason": "2 · π · r · hk ist nur der äußere Mantel, für das Volumen braucht man r² · π."
+            },
+            {
+              "text": "V = d² · π · h_k",
+              "reason": "Mit dem Durchmesser statt Radius würde man das Vierfache berechnen."
+            }
+          ],
+          "question": "Wie lautet die ausmultiplizierte Volumenformel für den geraden Kreiszylinder?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V=r^2\\cdot\\pi\\cdot h_k",
+              "speech": "Volumen gleich r Quadrat mal Pi mal Körperhöhe"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "V=r^2\\cdot\\pi\\cdot h_k",
+                  "speech": "Volumen gleich r Quadrat mal Pi mal Körperhöhe"
+                }
+              ],
+              "V = 2 · π · r · h_k"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAQB7ZQNFD8HH55X9K",
+          "slug": "ms8-liter-umrechnung-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zy-1-zylindervolumen-analogie",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Genau 157 Liter durch Teilen durch hundert",
+              "reason": "Ein Kubikdezimeter bzw. Liter enthält exakt eintausend Kubikzentimeter."
+            },
+            {
+              "text": "Genau 1,57 Liter durch vier Nullen",
+              "reason": "Die Umrechnungszahl für Raumeinheiten zum nächsten Schritt lautet tausend."
+            }
+          ],
+          "question": "Ein zylindrischer Eimer fasst 15 700 cm³ Wasser. Wie viel Liter sind das?",
+          "concept": "Genau 15,7 Liter wegen 1 000 cm³ je Liter",
+          "sample_solution": "1 Liter = 1 dm³ = 1 000 cm³. Daher sind 15 700 cm³ : 1 000 = 15,7 Liter."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAPW4R9WSS1WMTTTBJ",
+      "atom_uri": "urn:zam:atom:01M78NF6SAPW4R9WSS1WMTTTBJ",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "zy-2-zylinder-zusammengesetzt",
+      "title": "Zylindervolumen & berufsbezogene Körper",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zy-2-zylinder-zusammengesetzt",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAN67SDEY3RGQ4SZFC",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-5-zylinder",
+          "topic_title": "Etappe 5: Rauminhalt – Zylinder"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Zylinder"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Zylinder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SAW52TQQHGPGT70W9N",
+          "slug": "ms8-zylinder-hoehe-umkehr",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zy-2-zylinder-zusammengesetzt",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "h = V : u",
+              "reason": "Man teilt das Volumen durch die Grundfläche G, nicht durch den Umfang u."
+            },
+            {
+              "text": "h = r · G",
+              "reason": "Grundfläche mal Radius liefert keinen korrekten Höhenwert."
+            }
+          ],
+          "question": "Wie berechnest du rückwärts die Füllhöhe h eines Zylinders bei gegebenem Volumen V?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "h=\\frac{V}{G}",
+              "speech": "Füllhöhe gleich Volumen geteilt durch Grundfläche"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "h=\\frac{V}{G}",
+                  "speech": "Füllhöhe gleich Volumen geteilt durch Grundfläche"
+                }
+              ],
+              "h = V : u"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SA6YET4ZQW2T4W0W6X",
+          "slug": "ms8-halbzylinder-faktor",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zy-2-zylinder-zusammengesetzt",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Genau 0,25 mal Vollzylindervolumen",
+              "reason": "Ein Halbzylinder fasst genau die Hälfte des entsprechenden Vollzylinders."
+            },
+            {
+              "text": "Genau 2,0 mal Vollzylindervolumen",
+              "reason": "Ein halber Körper hat auch nur die Hälfte des Volumens."
+            }
+          ],
+          "question": "Welcher Faktor vereinfacht das Volumen eines halbrunden Wassertrogs?",
+          "concept": "Genau 0,5 mal Vollzylindervolumen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau 0,5 mal Vollzylindervolumen",
+              "Genau 0,25 mal Vollzylindervolumen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAHJWDYR3A5CKMJFW6",
+          "slug": "ms8-zylinder-kombi-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zy-2-zylinder-zusammengesetzt",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "480 cm³ plus ganzer Zylinder ergeben 731,2 cm³",
+              "reason": "Der Aufsatz ist nur ein Halbzylinder, daher halbiert man 251,2 cm³ zu 125,6 cm³."
+            },
+            {
+              "text": "480 cm³ minus 125,6 cm³ liefern rund 354,4 cm³",
+              "reason": "Der Halbzylinder steht auf dem Quader und wird addiert."
+            }
+          ],
+          "question": "Auf einem Quader (V = 480 cm³) steht ein Halbzylinder mit r = 4 cm und hₖ = 5 cm. Wie groß ist V_ges?",
+          "concept": "480 cm³ plus ca. 125,6 cm³ sind rund 605,6 cm³",
+          "sample_solution": "V_Halbzyl = 0,5 · r² · π · hk ≈ 0,5 · 16 · 3,14 · 5 = 125,6 cm³ ⇒ V_ges = 480 + 125,6 = 605,6 cm³."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAGTHNCTX9QVYWKQAM",
+      "atom_uri": "urn:zam:atom:01M78NF6SAGTHNCTX9QVYWKQAM",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "zy-3-kreisringzylinder",
+      "title": "Kreisringzylinder (Rohre & Hohlzylinder)",
+      "domain": "mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zy-3-kreisringzylinder",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAPW4R9WSS1WMTTTBJ",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-5-zylinder",
+          "topic_title": "Etappe 5: Rauminhalt – Zylinder"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Zylinder"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SA2FD466RZRBW9F60R",
+          "slug": "ms8-hohlzylinder-prinzip",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zy-3-kreisringzylinder",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Nur der äußere Vollkreis mit Radius R",
+              "reason": "Der hohle Innenkanal enthält kein Material und wird ausgespart."
+            },
+            {
+              "text": "Die abgewickelte Mantelfläche als Rechteck",
+              "reason": "Die Rohrlänge entspricht der Höhe hₖ, nicht der Stirnfläche."
+            }
+          ],
+          "question": "Welche Fläche bildet die Grundfläche G bei einem runden Metallrohr (Hohlzylinder)?",
+          "concept": "Der Kreisring zwischen R und r",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Kreisring zwischen R und r",
+              "Nur der äußere Vollkreis mit Radius R"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SAWRFPEC7KBP2TDR8E",
+          "slug": "ms8-hohlzylinder-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zy-3-kreisringzylinder",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "V = 2 · (R + d)",
+              "reason": "Die Ringfläche braucht quadrierte Radien (R² − r²) · π mal Körperhöhe hk."
+            },
+            {
+              "text": "V = (R − d) · π",
+              "reason": "Ein Volumen vervielfacht stets die Ringfläche (R² − r²) · π mit hk."
+            }
+          ],
+          "question": "Mit welcher Formel berechnest du das Materialvolumen V eines Hohlzylinders?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V=(R^2-r^2)\\cdot\\pi\\cdot h_k",
+              "speech": "Volumen gleich R Quadrat minus r Quadrat in Klammern mal Pi mal Körperhöhe"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "V=(R^2-r^2)\\cdot\\pi\\cdot h_k",
+                  "speech": "Volumen gleich R Quadrat minus r Quadrat in Klammern mal Pi mal Körperhöhe"
+                }
+              ],
+              "V = 2 · (R + d)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SACSZ139HSA7EVSF1B",
+          "slug": "ms8-rohr-volumen-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zy-3-kreisringzylinder",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Aus 16 plus 4 folgen volle 628,0 cm³",
+              "reason": "R² − r² = 16 − 4 = 12, nicht addiert."
+            },
+            {
+              "text": "Aus 4 minus 2 folgen nur 125,6 cm³",
+              "reason": "Zuerst einzeln quadrieren: 4² − 2² = 12, dann mit π · 10 malnehmen."
+            }
+          ],
+          "question": "Ein Stahlrohr (hₖ = 10 cm) hat Außenradius R = 4 cm und Innenradius r = 2 cm. Wie groß ist das Stahlvolumen?",
+          "concept": "Aus 16 minus 4 folgen 120·π ≈ 376,8 cm³",
+          "sample_solution": "G_Ring = (4² − 2²) · π = 12 · 3,14 = 37,68 cm². V = 37,68 · 10 = 376,8 cm³."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SA9QX975XR6V7NZQ17",
+      "atom_uri": "urn:zam:atom:01M78NF6SA9QX975XR6V7NZQ17",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "zf-1-zufall-laplace",
+      "title": "Zufallsexperimente & Laplace-Versuche",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zf-1-zufall-laplace",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-6-zufall",
+          "topic_title": "Etappe 6: Zufallsexperimente"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb6",
+          "topic_title": "Zufallsexperimente"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb6",
+          "topic_title": "Zufallsexperimente"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SAYP6QRQ3B6FW80NTH",
+          "slug": "ms8-laplace-merkmal",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zf-1-zufall-laplace",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Wenn genau zwei mögliche Ergebnisse herauskommen",
+              "reason": "Laplace gilt für beliebig viele Ergebnisse, sobald alle dieselbe Chance haben."
+            },
+            {
+              "text": "Wenn man das Ergebnis vorab genau berechnen kann",
+              "reason": "Ein Zufallsexperiment liefert im Einzelfall gerade keinen sicher vorhersagbaren Ausgang."
+            }
+          ],
+          "question": "Wann nennt man ein Zufallsexperiment ein Laplace-Experiment?",
+          "concept": "Wenn jedes einzelne Ergebnis exakt gleich wahrscheinlich ist",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn jedes einzelne Ergebnis exakt gleich wahrscheinlich ist",
+              "Wenn genau zwei mögliche Ergebnisse herauskommen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SA7P3KXFREF7181HK9",
+          "slug": "ms8-kein-laplace-beispiel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zf-1-zufall-laplace",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Werfen eines gleichmäßigen Spielwürfels",
+              "reason": "Beim fairen Würfel hat jede der sechs Zahlen exakt die Chance ein Sechstel."
+            },
+            {
+              "text": "Drehen eines achtfach gleich geteilten Glücksrads",
+              "reason": "Gleich große Sektoren führen auf ein reguläres Laplace-Experiment."
+            }
+          ],
+          "question": "Welcher Versuch ist typischerweise KEIN Laplace-Experiment?",
+          "concept": "Werfen einer unsymmetrischen Reißzwecke",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Werfen einer unsymmetrischen Reißzwecke",
+              "Werfen eines gleichmäßigen Spielwürfels"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SASV6YE72NH6ZS4R05",
+          "slug": "ms8-laplace-formel-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zf-1-zufall-laplace",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Vier von acht anderen Kugeln ergeben 50 %",
+              "reason": "Im Nenner steht immer die Gesamtanzahl aller Kugeln: 4 + 3 + 5 = 12."
+            },
+            {
+              "text": "Eine einzelne rote Kugel liefert ein Zwölftel",
+              "reason": "Günstige Ergebnisse gibt es hier vier Stück, nicht eins."
+            }
+          ],
+          "question": "In einer Urne liegen 4 rote, 3 blaue und 5 gelbe Kugeln. Wie groß ist P(rot)?",
+          "concept": "Vier von zwölf Kugeln ergeben ein Drittel",
+          "sample_solution": "Gesamt: 4 + 3 + 5 = 12 gleich wahrscheinliche Kugeln ⇒ P(rot) = 4/12 = 1/3 ≈ 33,3 %."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAR6P9BD0638T4GQ9F",
+      "atom_uri": "urn:zam:atom:01M78NF6SAR6P9BD0638T4GQ9F",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "zf-2-relative-haeufigkeit-gdz",
+      "title": "Relative Häufigkeit & Gesetz der großen Zahl",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zf-2-relative-haeufigkeit-gdz",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SA9QX975XR6V7NZQ17",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-6-zufall",
+          "topic_title": "Etappe 6: Zufallsexperimente"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb6",
+          "topic_title": "Zufallsexperimente"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb6",
+          "topic_title": "Zufallsexperimente"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SA7ZZN9DYJ295X1KBF",
+          "slug": "ms8-relative-haeufigkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zf-2-relative-haeufigkeit-gdz",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "h = n : 2",
+              "reason": "Die relative Häufigkeit teilt die Trefferzahl k durch alle Versuche n."
+            },
+            {
+              "text": "h = k · 10",
+              "reason": "Treffer k werden durch die Versuchszahl n geteilt, nicht vervielfacht."
+            }
+          ],
+          "question": "Wie berechnest du aus k Treffern und n Versuchen die relative Häufigkeit h?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "h=\\frac{k}{n}",
+              "speech": "relative Häufigkeit gleich k durch n"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "h=\\frac{k}{n}",
+                  "speech": "relative Häufigkeit gleich k durch n"
+                }
+              ],
+              "h = n : 2"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SB3MR60BTXA21J6425",
+          "slug": "ms8-gesetz-grosse-zahl",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zf-2-relative-haeufigkeit-gdz",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Nach tausend Würfen fällt exakt jeder sechste auf sechs",
+              "reason": "Zufallsschwankungen bleiben möglich, werden im Anteil aber immer kleiner."
+            },
+            {
+              "text": "Kurze Serien treffen die Wahrscheinlichkeit immer exakter",
+              "reason": "Gerade bei wenigen Versuchen streuen die Anteile stark."
+            }
+          ],
+          "question": "Was besagt das Gesetz der Großen Zahl für eine lange Versuchsreihe?",
+          "concept": "Relative Häufigkeit pendelt sich bei der Wahrscheinlichkeit ein",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Relative Häufigkeit pendelt sich bei der Wahrscheinlichkeit ein",
+              "Nach tausend Würfen fällt exakt jeder sechste auf sechs"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SBQGSS7FBET6SPVV11",
+          "slug": "ms8-haeufigkeit-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zf-2-relative-haeufigkeit-gdz",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Lea mit vierundzwanzig absoluten Treffern",
+              "reason": "Bei unterschiedlich vielen Versuchen vergleicht man über relative Häufigkeiten."
+            },
+            {
+              "text": "Beide genau gleich stark um ein Drittel",
+              "reason": "24/80 sind 30 %, während 18/50 exakt 36 % ergibt."
+            }
+          ],
+          "question": "Lea wirft 80-mal und trifft 24-mal. Tim wirft 50-mal und trifft 18-mal. Wer war relativ treffsicherer?",
+          "concept": "Tim mit 36 % vor Lea mit dreißig Prozent",
+          "sample_solution": "Lea: 24/80 = 3/10 = 30 %. Tim: 18/50 = 36/100 = 36 %. Tim traf relativ öfter."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SA86FDPAGZYZA89FMC",
+      "atom_uri": "urn:zam:atom:01M78NF6SA86FDPAGZYZA89FMC",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "zf-3-gewinnchancen-aenderungen",
+      "title": "Gewinnchancen bewerten & verändern",
+      "domain": "mathematik/stochastik",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zf-3-gewinnchancen-aenderungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAR6P9BD0638T4GQ9F",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-6-zufall",
+          "topic_title": "Etappe 6: Zufallsexperimente"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb6",
+          "topic_title": "Zufallsexperimente"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb6",
+          "topic_title": "Zufallsexperimente"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SBVZRX7DZVF8NXT31F",
+          "slug": "ms8-gewinnchance-vergleichen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zf-3-gewinnchancen-aenderungen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Indem man ausschließlich die Gewinnfelder zählt",
+              "reason": "Drei Gewinnfelder von zehn sind schwächer als zwei Gewinnfelder von vier."
+            },
+            {
+              "text": "Indem man das Rad mit kleineren Feldern nimmt",
+              "reason": "Ohne Trefferanteil sagt die Gesamtzahl nichts über die Chance aus."
+            }
+          ],
+          "question": "Wie entscheidest du fair, welches von zwei unterschiedlich großen Glücksrädern bessere Chancen hat?",
+          "concept": "Durch Vergleichen der gekürzten Brüche oder Prozentsätze",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch Vergleichen der gekürzten Brüche oder Prozentsätze",
+              "Indem man ausschließlich die Gewinnfelder zählt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SBQBVJWPF2VSN9XCYM",
+          "slug": "ms8-chance-veraendern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zf-3-gewinnchancen-aenderungen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Beide Eingriffe bewirken exakt denselben Wert",
+              "reason": "Eine blaue Kugel wegnehmen ergibt 3 von 9 (33,3 %), eine rote dazu ergibt 4 von 11 (36,4 %)."
+            },
+            {
+              "text": "Nur beide Zahlen verdoppeln erhöht die Chance",
+              "reason": "Erweitern ändert nur die Stückzahl, lässt die Chance unverändert."
+            }
+          ],
+          "question": "Was vergrößert die Gewinnchance in einer Urne mit 3 roten und 7 blauen Kugeln stärker: +1 rote oder −1 blaue Kugel?",
+          "concept": "Eine rote Kugel dazulegen gibt 4 von 11",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine rote Kugel dazulegen gibt 4 von 11",
+              "Beide Eingriffe bewirken exakt denselben Wert"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SB6C8M843PAS42EPA2",
+          "slug": "ms8-gewinnchance-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=zf-3-gewinnchancen-aenderungen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Säckchen B wegen mehr absoluter Gewinnlose",
+              "reason": "Im Verhältnis liegt 5/8 = 62,5 % höher als 7/12 ≈ 58,3 %."
+            },
+            {
+              "text": "Beide geben genau ein halbes Gewinnverhältnis",
+              "reason": "Beide Anteile liegen klar über 50 %, sind aber verschieden."
+            }
+          ],
+          "question": "Säckchen A bietet 5 Gewinne von 8 Losen, Säckchen B 7 von 12. Welches hat höhere Chancen?",
+          "concept": "Säckchen A mit 62,5 % vor B mit 58,3 %",
+          "sample_solution": "A: 5/8 = 62,5 %. B: 7/12 ≈ 58,3 %. Damit bietet Säckchen A die bessere Gewinnchance."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SACXP36Q18Y9AKM1RH",
+      "atom_uri": "urn:zam:atom:01M78NF6SACXP36Q18Y9AKM1RH",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "gl-1-terme-k-a-d-gesetz",
+      "title": "Terme aufstellen & vereinfachen in ℚ",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=gl-1-terme-k-a-d-gesetz",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-7-gleichungen",
+          "topic_title": "Etappe 7: Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SBG3RZJV84GCPDTXCX",
+          "slug": "ms8-distributiv-klammer",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=gl-1-terme-k-a-d-gesetz",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Nur erstes Glied malnehmen zu −6x − 4",
+              "reason": "Der Vorfaktor gehört zu beiden Summanden in der Klammer."
+            },
+            {
+              "text": "Vorzeichen innen weglassen zu −6x − 8",
+              "reason": "Minus mal minus ergibt im zweiten Glied ein positives + 8."
+            }
+          ],
+          "question": "Wie multiplizierst du eine Summe in der Klammer wie −2 · (3x − 4) korrekt aus?",
+          "concept": "Jedes Klammerglied mal −2 ergibt −6x + 8",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Jedes Klammerglied mal −2 ergibt −6x + 8",
+              "Nur erstes Glied malnehmen zu −6x − 4"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SBMQZW808GE4JNXTP2",
+          "slug": "ms8-gleichartige-terme",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=gl-1-terme-k-a-d-gesetz",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Alle Vorfaktoren zusammen zu exakt 10xy",
+              "reason": "Verschiedene Variablen wie x, y und reine Zahlen bleiben strikt getrennt."
+            },
+            {
+              "text": "x und reine Zahlen direkt zu 7x + 3y",
+              "reason": "Die Zahl vier enthält kein x und darf nicht dazu addiert werden."
+            }
+          ],
+          "question": "Welche Termglieder darfst du bei 5x + 3y − 2x + 4 zusammenfassen?",
+          "concept": "Nur gleichartige Variable zu 3x + 3y + 4",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur gleichartige Variable zu 3x + 3y + 4",
+              "Alle Vorfaktoren zusammen zu exakt 10xy"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SBDV1PD1PZD4FSFGF3",
+          "slug": "ms8-term-wert-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=gl-1-terme-k-a-d-gesetz",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "6x − 3 liefert für 2,5 den Wert 12",
+              "reason": "Nach Ausmultiplizieren von 6x − 3 wird noch −4x zu 2x − 3 verrechnet."
+            },
+            {
+              "text": "2x − 1 liefert für 2,5 den Wert 4",
+              "reason": "Der Faktor 3 vor der Klammer verdreifacht auch die −1 zu −3."
+            }
+          ],
+          "question": "Berechne den Wert des vereinfachten Terms 3·(2x − 1) − 4x für x = 2,5.",
+          "concept": "2x − 3 liefert für 2,5 den Wert 2",
+          "sample_solution": "3·(2x − 1) − 4x = 6x − 3 − 4x = 2x − 3. Für x = 2,5: 2·2,5 − 3 = 5 − 3 = 2."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SA2BMT1XCXQ349PWZZ",
+      "atom_uri": "urn:zam:atom:01M78NF6SA2BMT1XCXQ349PWZZ",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "gl-2-gleichungen-klammern",
+      "title": "Gleichungen mit Klammern & beidseitiger Variable",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=gl-2-gleichungen-klammern",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SACXP36Q18Y9AKM1RH",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-7-gleichungen",
+          "topic_title": "Etappe 7: Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SBAJQAVCYGXB8MS8SJ",
+          "slug": "ms8-waage-umformung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=gl-2-gleichungen-klammern",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Damit die Variable rechts immer verschwindet",
+              "reason": "Nur identische Äquivalenzumformungen erhalten dieselbe Lösungsmenge."
+            },
+            {
+              "text": "Damit sich das Gleichheitszeichen sofort umdreht",
+              "reason": "Das Gleichheitszeichen bleibt genau dann gültig, wenn beide Seiten gleich bleiben."
+            }
+          ],
+          "question": "Warum musst du auf beiden Seiten einer Gleichung stets denselben Rechenschritt ausführen?",
+          "concept": "Sonst verliert die Gleichung ihr Gleichgewicht",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sonst verliert die Gleichung ihr Gleichgewicht",
+              "Damit die Variable rechts immer verschwindet"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SBBC7Q68K351NA5N0P",
+          "slug": "ms8-probe-durchfuehren",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=gl-2-gleichungen-klammern",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Nur alle Vorfaktoren zusammenzählen und runden",
+              "reason": "Bei einer echten Lösung liefern linke und rechte Seite denselben Zahlenwert."
+            },
+            {
+              "text": "Die Lösung sofort einfach noch einmal quadrieren",
+              "reason": "Quadrieren überprüft keinen Ausgangsterm."
+            }
+          ],
+          "question": "Wie prüfst du mit der Probe sicher, ob x = 3 Lösung deiner Gleichung ist?",
+          "concept": "3 links und rechts einsetzen und Gleichheit prüfen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "3 links und rechts einsetzen und Gleichheit prüfen",
+              "Nur alle Vorfaktoren zusammenzählen und runden"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SB5R17T7K7FQVT39W5",
+          "slug": "ms8-rueckschluss-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=gl-2-gleichungen-klammern",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Vorher x = 15, am Anfang also x + 4 = 19",
+              "reason": "Aus x = 5 folgt zuerst · 3 zu 3x = 15 und anschließend + 4 zu 3x + 4 = 19."
+            },
+            {
+              "text": "Am Anfang stand schon genau 5x + 4 = 19",
+              "reason": "Beim Rückwärtsrechnen dreht sich geteilt durch drei zu mal drei."
+            }
+          ],
+          "question": "Nach | − 4 und anschließendem | : 3 entsteht x = 5. Welche Gleichung stand am Anfang?",
+          "concept": "Vorher 3x = 15, am Anfang also 3x + 4 = 19",
+          "sample_solution": "Rückwärts von unten: x = 5 |·3 ⇒ 3x = 15 |+4 ⇒ 3x + 4 = 19."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SANAA2W1H13SQ844Y3",
+      "atom_uri": "urn:zam:atom:01M78NF6SANAA2W1H13SQ844Y3",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "gl-3-sachaufgaben-mischungen",
+      "title": "Sachaufgaben, Knobelrätsel & Rückwärts schließen",
+      "domain": "mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=gl-3-sachaufgaben-mischungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SA2BMT1XCXQ349PWZZ",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-7-gleichungen",
+          "topic_title": "Etappe 7: Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SBJBRE2Q6WMHG9Y00N",
+          "slug": "ms8-sachaufgabe-schritt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=gl-3-sachaufgaben-mischungen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Sofort irgendeinen ungefähren Zahlenwert raten",
+              "reason": "Erst eine festgelegte Unbekannte x erlaubt es, den Text in eine Gleichung zu übersetzen."
+            },
+            {
+              "text": "Die Einheiten komplett vorab weglassen",
+              "reason": "Einheitentreue verhindert später unbemerkte Mischfehler."
+            }
+          ],
+          "question": "Womit startest du beim Lösen einer eingekleideten Sachaufgabe durch eine Gleichung?",
+          "concept": "Einer Größe klar die Variable x zuordnen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einer Größe klar die Variable x zuordnen",
+              "Sofort irgendeinen ungefähren Zahlenwert raten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SBVEF1GCQH22SG93JA",
+          "slug": "ms8-sachaufgabe-plausibilitaet",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=gl-3-sachaufgaben-mischungen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Ob man eine besonders hohe Zahl gefunden hat",
+              "reason": "Eine rechnerische Lösung wie minus drei Kinder wäre sachlich unsinnig."
+            },
+            {
+              "text": "Ob im Antwortsatz alle Klammern noch stehen",
+              "reason": "Der Antwortsatz nennt sachlich die gefragte Größe mit passender Einheit."
+            }
+          ],
+          "question": "Was prüfst du zwingend am Ende jeder Textgleichungsaufgabe?",
+          "concept": "Ob das Ergebnis sinnvoll zur Sachsituation passt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ob das Ergebnis sinnvoll zur Sachsituation passt",
+              "Ob man eine besonders hohe Zahl gefunden hat"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SBDRE7QWVWHPB6C5ST",
+          "slug": "ms8-textgleichung-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=gl-3-sachaufgaben-mischungen",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "38 geteilt durch 2 ergibt schon direkt 19 m",
+              "reason": "19 m + 19 m wären zwei gleich lange Teile ohne die 6 m Unterschied."
+            },
+            {
+              "text": "38 plus 6 geteilt durch 2 gibt 22 m für Teil A",
+              "reason": "Teil A ist der kürzere Teil, daher zieht man den Überschuss zuerst ab: (38 − 6) : 2 = 16 m."
+            }
+          ],
+          "question": "Ein 38 m langes Seil wird so zerschnitten, dass Teil B genau 6 m länger ist als Teil A. Wie lang ist Teil A?",
+          "concept": "x plus x plus 6 gibt 38, also x = 16 m",
+          "sample_solution": "Teil A = x, Teil B = x + 6 ⇒ x + (x + 6) = 38 ⇒ 2x = 32 ⇒ x = 16 m (Teil B = 22 m)."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAYP031FJ0Y0WGE13H",
+      "atom_uri": "urn:zam:atom:01M78NF6SAYP031FJ0Y0WGE13H",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "fk-1-zuordnungen-massstab",
+      "title": "Zuordnungen, Darstellungswechsel & Maßstab",
+      "domain": "mathematik/funktionen",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=fk-1-zuordnungen-massstab",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-8-funktionen",
+          "topic_title": "Etappe 8: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "R",
+          "topic_code": "lb8",
+          "topic_title": "Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb8",
+          "topic_title": "Funktionale Zusammenhänge"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SBXQMPWPQ191VNPGJM",
+          "slug": "ms8-proportional-vs-linear",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=fk-1-zuordnungen-massstab",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Gerade beginnt immer oberhalb der y-Achse",
+              "reason": "Nur proportionale Geraden gehen exakt durch den Nullpunkt (0 | 0)."
+            },
+            {
+              "text": "Graph krümmt sich steil nach oben weg",
+              "reason": "Eine Krümmung zeigt eine nicht lineare Zuordnung an."
+            }
+          ],
+          "question": "Woran erkennst du am Graphen sofort eine proportionale statt nur linearen Zuordnung?",
+          "concept": "Gerade verläuft exakt durch den Ursprung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gerade verläuft exakt durch den Ursprung",
+              "Gerade beginnt immer oberhalb der y-Achse"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SB11AND0JM9R33MKF2",
+          "slug": "ms8-massstab-wahl",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=fk-1-zuordnungen-massstab",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Immer von derselben festen Schrittweite eins",
+              "reason": "Bei großen Werten wie tausend braucht man angepasste Zehner- oder Hunderterschritte."
+            },
+            {
+              "text": "Allein von der Anzahl der Kurvenpunkte",
+              "reason": "Die Spannweite der Daten bestimmt die Achsenauslastung."
+            }
+          ],
+          "question": "Wovon hängt die passende Schrittweite an den Koordinatenachsen vor allem ab?",
+          "concept": "Vom kleinsten und größten auftretenden Wert",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vom kleinsten und größten auftretenden Wert",
+              "Immer von derselben festen Schrittweite eins"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SB2ZE6XXPW7A0SG4ZK",
+          "slug": "ms8-zuordnung-tabelle-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=fk-1-zuordnungen-massstab",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Proportional wegen gleichmäßigen Zuwächsen +6",
+              "reason": "Proportional verlangt bei x = 0 den Wert 0; hier startet die Gerade bei vier."
+            },
+            {
+              "text": "Nicht linear wegen den geraden Zahlenpaaren",
+              "reason": "Gleiche x-Schritte liefern stets gleiche y-Zuwächse (+6), also eine Gerade."
+            }
+          ],
+          "question": "Eine Tabelle gibt x=0 → 4, x=2 → 10, x=4 → 16. Welcher Zuordnungstyp liegt vor?",
+          "concept": "Linear mit Startwert 4 wegen konstant +6 je 2",
+          "sample_solution": "Zu jedem Δx = +2 gehört Δy = +6 ⇒ Steigung 3. Bei x = 0 ist y = 4 ≠ 0 ⇒ linear (y = 3x + 4)."
+        }
+      ]
+    },
+    {
+      "id": "01M78NF6SAE51PWTAZJSG33MT4",
+      "atom_uri": "urn:zam:atom:01M78NF6SAE51PWTAZJSG33MT4",
+      "namespace": "zam-academy-mathematik-mittelschule-8",
+      "slug": "fk-2-lineare-funktionen-mxt",
+      "title": "Lineare Funktionen y = m · x + t",
+      "domain": "mathematik/funktionen",
+      "reduction": "axiomatic",
+      "typical_age_min": 13,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=fk-2-lineare-funktionen-mxt",
+      "prerequisites": [
+        {
+          "atom_id": "01M78NF6SAYP031FJ0Y0WGE13H",
+          "type": "soft",
+          "rationale": "Baut direkt auf den Begriffen einer vorangehenden Lektion derselben Etappe auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-8",
+          "topic_code": "stage-8-funktionen",
+          "topic_title": "Etappe 8: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 8,
+          "subject": "mathematik",
+          "track": "M",
+          "topic_code": "lb8",
+          "topic_title": "Funktionale Zusammenhänge"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78NF6SB0GTXKGV17AEPRZNY",
+          "slug": "ms8-achsenabschnitt-t",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=fk-2-lineare-funktionen-mxt",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "Als x-Wert bei Schnittpunkt auf der x-Achse",
+              "reason": "Setzt man x = 0 ein, bleibt genau y = t auf der senkrechten Achse."
+            },
+            {
+              "text": "Als Länge vom Ursprung zur Steigungsspitze",
+              "reason": "Das Steigungsdreieck bestimmt die Steigung m, nicht unmittelbar t."
+            }
+          ],
+          "question": "Wo liest du den Parameter t in y = m · x + t unmittelbar am Graphen ab?",
+          "concept": "Als y-Wert beim Schnittpunkt auf der y-Achse",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als y-Wert beim Schnittpunkt auf der y-Achse",
+              "Als x-Wert bei Schnittpunkt auf der x-Achse"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SB2KTB1SPSJ6CHRN7V",
+          "slug": "ms8-steigungsdreieck-m",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=fk-2-lineare-funktionen-mxt",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "m = t : x",
+              "reason": "Die Steigung ergibt sich als Quotient aus Höhen- und Rechts-Schritt, nicht aus t."
+            },
+            {
+              "text": "m = y + t",
+              "reason": "Das Steigungsdreieck nutzt Differenzen Δy und Δx entlang der Geraden."
+            }
+          ],
+          "question": "Wie berechnet man die Steigung m mithilfe eines Steigungsdreiecks?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "m=\\frac{\\Delta y}{\\Delta x}",
+              "speech": "Steigung m gleich Delta y durch Delta x"
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "m=\\frac{\\Delta y}{\\Delta x}",
+                  "speech": "Steigung m gleich Delta y durch Delta x"
+                }
+              ],
+              "m = t : x"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78NF6SB4KK8X2TB5H6HNPZ0",
+          "slug": "ms8-geradengleichung-transfer",
+          "language": "de",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-8/#lesson=fk-2-lineare-funktionen-mxt",
+          "materiality": "material",
+          "choice_distractors": [
+            {
+              "text": "y gleich zwei mal x plus fünf steigend",
+              "reason": "Da sie um 4 fällt bei 2 rechts, ist m = −4 : 2 = −2."
+            },
+            {
+              "text": "y gleich minus vier mal x plus fünf",
+              "reason": "Der Höhenunterschied −4 muss noch durch den Schritt Δx = 2 geteilt werden."
+            }
+          ],
+          "question": "Eine Gerade geht durch (0 | 5) und fällt pro Schritt um Δx = 2 nach unten um Δy = −4. Wie heißt sie?",
+          "concept": "y gleich minus zwei mal x plus fünf",
+          "sample_solution": "t = 5 beim Punkt (0 | 5). Steigung m = Δy : Δx = −4 : 2 = −2 ⇒ Gleichung y = −2·x + 5."
+        }
+      ]
+    }
+  ]
+}

@@ -19,15 +19,13 @@ import {
 // cells moved to zam-academy:chemie-realschule-10 (#43), the history cell to
 // zam-academy:geschichte-realschule-10 (#45) and the BwR cell to
 // zam-academy:bwr-realschule-10 (#50, mapping approved in #51).
-// Deutsch 10 (#46) and Englisch 10 (#49) are additional Academy offerings;
-// their four old cards each stay bundled and active because no replacement
-// or retirement was approved. Politik und Gesellschaft 10 (#52) is also
-// additional; there is no earlier PuG-10 school cell to replace. Französisch 10
-// (#54) is additional too and is bound to Wahlpflichtfächergruppe IIIa.
+// Deutsch 10 (#46) and Englisch 10 (#49) school cells also moved to
+// tests/fixtures/legacy/ alongside their Academy successors; Wirtschaft und Recht
+// 10 stays bundled as the remaining Realschule 10 school cell. Politik und
+// Gesellschaft 10 (#52) has no earlier PuG-10 school cell to replace. Französisch
+// 10 (#54) is bound to Wahlpflichtfächergruppe IIIa.
 const RS10_CELL_IDS = [
   "de-by:realschule-10-wirtschaft-recht-strafrecht-arbeitsrecht-sozialstaat",
-  "de-by:realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel",
-  "de-by:realschule-10-englisch-abschlusspruefung-text-production-mediation",
 ];
 const ACADEMY_RS10_IDS = [
   "zam-academy:biologie-realschule-10",
@@ -58,7 +56,7 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists the 3 Realschule 10 school cells and the Academy offerings", () => {
+  it("lists the remaining Realschule 10 school cell and the Academy offerings", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(100);
 
@@ -86,17 +84,17 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
     }
   });
 
-  it("installs and enrols cleanly into Deutsch 10 Dialektische Erörterung", async () => {
-    const user = "learner-rs10-deu";
+  it("installs and enrols cleanly into Wirtschaft und Recht 10", async () => {
+    const user = "learner-rs10-wur";
     const cellId =
-      "de-by:realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel";
+      "de-by:realschule-10-wirtschaft-recht-strafrecht-arbeitsrecht-sozialstaat";
 
     const result = await enrolBundledCell(db, user, cellId);
     expect(result.success).toBe(true);
     expect(result.cardsCreated).toBe(4); // 2 atoms * 2 items
   });
 
-  it("supports simultaneous co-enrolment in the 3 Grade 10 school cells without conflict", async () => {
+  it("enrols the remaining Grade 10 school cell cleanly", async () => {
     const user = "complete-rs10-candidate";
 
     let totalCards = 0;
@@ -106,12 +104,11 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
       totalCards += res.cardsCreated;
     }
 
-    // 3 cells * 4 = 12 cards
-    expect(totalCards).toBe(12);
+    expect(totalCards).toBe(4);
 
     const cards = (await db
       .prepare(`SELECT COUNT(*) as count FROM cards WHERE user_id = ?`)
       .get(user)) as { count: number };
-    expect(cards.count).toBe(12);
+    expect(cards.count).toBe(4);
   });
 });

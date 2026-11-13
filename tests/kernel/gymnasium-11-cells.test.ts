@@ -16,11 +16,9 @@ const plainText = (value: string | CardText | undefined): string =>
   typeof value === "string" ? value : value ? plainProjection(value) : "";
 
 describe("Gymnasium Klasse 11 Bayern LehrplanPLUS Cells", () => {
+  // Mathematik 11 moved to zam-academy:mathematik-gymnasium-11; its four
+  // school cells are archived in tests/fixtures/legacy/.
   const gym11Cells = [
-    "de-by:gymnasium-11-mathematik-kurvendiskussion-extremwertprobleme-wendepunkte",
-    "de-by:gymnasium-11-mathematik-integralrechnung-hauptsatz-flaechenberechnung",
-    "de-by:gymnasium-11-mathematik-analytische-geometrie-ebenen-abstaende",
-    "de-by:gymnasium-11-mathematik-stochastik-bernoulli-binomialverteilung",
     "de-by:gymnasium-11-physik-elektrisches-feld-kondensator-millikan",
     "de-by:gymnasium-11-physik-magnetfeld-lorentz-massenspektrometer-zyklotron",
     "de-by:gymnasium-11-physik-induktion-schwingkreis-wechselstrom",
@@ -40,11 +38,11 @@ describe("Gymnasium Klasse 11 Bayern LehrplanPLUS Cells", () => {
     "de-by:gymnasium-11-wirtschaft-recht-vwl-vgr-ezb-geldpolitik-fiskalpolitik",
   ];
 
-  it("all 21 Gymnasium 11 cells are bundled and retrievable", () => {
+  it("all remaining 17 Gymnasium 11 school cells are bundled and retrievable", () => {
     const allCells = listBundledCells();
     const cellIds = allCells.map((c) => c.tile_id);
 
-    expect(gym11Cells).toHaveLength(21);
+    expect(gym11Cells).toHaveLength(17);
 
     for (const expectedId of gym11Cells) {
       expect(cellIds).toContain(expectedId);
@@ -92,7 +90,7 @@ describe("Gymnasium Klasse 11 Bayern LehrplanPLUS Cells", () => {
 
     it("installs and enrols a Klasse 11 STEM cell that previously had 25-character ids", async () => {
       const cellId =
-        "de-by:gymnasium-11-mathematik-kurvendiskussion-extremwertprobleme-wendepunkte";
+        "de-by:gymnasium-11-physik-elektrisches-feld-kondensator-millikan";
       const res = await enrolBundledCell(
         db,
         "01K4TESTUSERGYM1100000001",

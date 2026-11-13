@@ -55,7 +55,9 @@ describe("bundled ZAM Academy cells", () => {
     // yet (Mathematik 13 also lacks its teacher videos). Lifting this is a catalog change in
     // zam-os/zam-academy, followed by `npm run academy:sync`.
     expect(recorded).toEqual([
+      "zam-academy:biologie-gymnasium-11",
       "zam-academy:deutsch-grundschule-4",
+      "zam-academy:deutsch-realschule-5",
       "zam-academy:hsu-grundschule-4",
       "zam-academy:mathematik-grundschule-4",
       "zam-academy:mathematik-gymnasium-13",

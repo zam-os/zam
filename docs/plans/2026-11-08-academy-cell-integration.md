@@ -9,11 +9,12 @@ Academy authors follow is `AGENTS.md` in `zam-os/zam-academy`.
 
 ## Where it stands
 
-On 2026-11-08, 47 Academy cells were bundled, together with 186 `de-by:`
-school cells in 123 grade/subject places. In 16 of those places an Academy
-cell stands next to the school cells. 38 school cells have already left the
-bundle; their snapshots are in `tests/fixtures/legacy/`. Count again when
-you pick this up.
+On 2026-11-13 (ZAM 0.63.0), 58 Academy cells are bundled together with 153 `de-by:`
+school cells in 107 grade/subject places (exact provider+place overlap with an
+active `de-by:` cell remains in `gymnasium|11|physik` and `realschule|8|physik`,
+plus `gymnasium|11|biologie` across `isb-bayern-einfuehrungsklasse` vs.
+`lehrplanplus-bayern`). 70 school cells have already left the bundle; their
+snapshots are in `tests/fixtures/legacy/`. Count again when you pick this up.
 
 ## One integration round
 
@@ -66,11 +67,7 @@ cell by itself.
 
 ## Open
 
-- [ ] The school cells next to the nine cells of 2026-11-08 are still
-  bundled: Mathematik 5, 6, 11, 12, 13 Gymnasium, Mathematik 5 and 6
-  Realschule, Englisch 5 Realschule, Geographie 8 Realschule. Each needs
-  Thomas's decision to retire it.
-- [ ] Geographie 8: its mapping (4 C) is still a proposal.
-- [ ] The Gymnasium places from grade 7 to 13 outside Mathematik have no
-  Academy cell yet. The Realschule places without one include grade 7
-  outside Mathematik, and grades 5 and 6 outside Mathematik and Englisch.
+- [x] Retire the school cells superseded by the nine cells of 2026-11-08, the eight earlier `C`-only Realschule cells (Geographie 8, Biologie 8, Deutsch 8, Französisch 8, Geschichte 8, Deutsch 10, Englisch 10), Mathematik 7 Realschule (`2026.11.1`, 7 A / 1 C retire / 22 C keep-active), and Deutsch 5 Realschule (`2026.11.2` preview, 8 A / 5 C retire / 3 C keep-active): 33 school cells moved to `tests/fixtures/legacy/` on 2026-11-13 (0.63.0).
+- [ ] Physik 10/11 Gymnasium (`physik-gymnasium-11`, `keine Stilllegung` decided) and Biologie 11 Gymnasium (`biologie-gymnasium-11` is `einfuehrungsklasse` under `isb-bayern-einfuehrungsklasse`): their 5 + 2 `de-by:` cells deliberately stay bundled and active.
+- [ ] Check whether any open upstream PRs in `zam-os/zam-academy` (such as Mittelschule Mathematik 9/10) are ready for the next release.
+- [ ] The Gymnasium places from grade 7 to 13 outside Mathematik (and Mathematik 7–10) have no Academy cell yet. The Realschule places without one include grade 7 outside Mathematik, and grades 5 and 6 outside Mathematik, Englisch, and Deutsch 5.

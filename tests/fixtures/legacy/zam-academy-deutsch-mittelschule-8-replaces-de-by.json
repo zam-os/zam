@@ -1,0 +1,10 @@
+{
+	"schema": 1,
+	"status": "proposal-only",
+	"approved": null,
+	"note": "Kein Altbestand für Deutsch 8 Mittelschule in zam-os/zam (geprüft auf Commit e6a235f75fe87b9d57af38bd61011027b891492c). Vorhandene Zellen gehören zur Realschule (de-by-realschule-8-deutsch-*). Daher keine Ersetzungen oder Stilllegungen.",
+	"source_repository": "zam-os/zam",
+	"source_commit": "e6a235f75fe87b9d57af38bd61011027b891492c",
+	"sources": [],
+	"rows": []
+}
